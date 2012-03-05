@@ -1,0 +1,89 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ImageMaterialExtension.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf
+{
+    using System;
+    using System.Windows.Markup;
+    using System.Windows.Media;
+
+    /// <summary>
+    /// Markupextension for Image Materials
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// Material={helix:ImageMaterial images\\myimage.png, Opacity=0.8}
+    ///   </code>
+    /// </example>
+    public class ImageMaterialExtension : MarkupExtension
+    {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The path.
+        /// </summary>
+        private readonly string path;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageMaterialExtension"/> class.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        public ImageMaterialExtension(string path)
+        {
+            this.path = path;
+            this.Opacity = 1;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        ///   Gets or sets the opacity.
+        /// </summary>
+        /// <value>The opacity.</value>
+        public double Opacity { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this material is emissive.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this material is emissive; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsEmissive { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+        /// </summary>
+        /// <param name="serviceProvider">
+        /// Object that can provide services for the markup extension.
+        /// </param>
+        /// <returns>
+        /// The object value to set on the property where the extension is applied.
+        /// </returns>
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            if (this.IsEmissive)
+            {
+                return MaterialHelper.CreateEmissiveImageMaterial(this.path, Brushes.Black);
+            }
+
+            return MaterialHelper.CreateImageMaterial(this.path, this.Opacity);
+        }
+
+        #endregion
+    }
+}

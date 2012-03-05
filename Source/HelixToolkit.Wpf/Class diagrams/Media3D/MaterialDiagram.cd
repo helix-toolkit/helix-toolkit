@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Windows.Media.Media3D.DiffuseMaterial">
+    <Position X="0.5" Y="4.5" Width="3.25" />
+    <Members>
+      <Field Name="AmbientColorProperty" Hidden="true" />
+      <Field Name="BrushProperty" Hidden="true" />
+      <Field Name="ColorProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.EmissiveMaterial">
+    <Position X="7.5" Y="4.5" Width="3.25" />
+    <Members>
+      <Field Name="BrushProperty" Hidden="true" />
+      <Field Name="ColorProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Material">
+    <Position X="5.75" Y="1.5" Width="3.25" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.MaterialCollection" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="3.25" />
+    <NestedTypes>
+      <Struct Name="System.Windows.Media.Media3D.MaterialCollection.Enumerator" Collapsed="true">
+        <TypeIdentifier />
+        <Lollipop Position="0.2" />
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.MaterialGroup">
+    <Position X="11" Y="4.5" Width="3.25" />
+    <Members>
+      <Field Name="ChildrenProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.SpecularMaterial">
+    <Position X="4" Y="4.5" Width="3.25" />
+    <Members>
+      <Field Name="BrushProperty" Hidden="true" />
+      <Field Name="ColorProperty" Hidden="true" />
+      <Field Name="SpecularPowerProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

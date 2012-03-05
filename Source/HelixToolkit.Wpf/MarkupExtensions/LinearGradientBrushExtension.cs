@@ -1,0 +1,85 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LinearGradientBrushExtension.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf
+{
+    using System;
+    using System.Windows.Markup;
+    using System.Windows.Media;
+
+    /// <summary>
+    /// Markupextension for LinearGradientBrush
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// Background={helix:LinearGradientBrush Black,White}
+    ///   </code>
+    /// </example>
+    public class LinearGradientBrushExtension : MarkupExtension
+    {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The brush.
+        /// </summary>
+        private readonly LinearGradientBrush brush;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearGradientBrushExtension"/> class.
+        /// </summary>
+        /// <param name="startColor">
+        /// The start color.
+        /// </param>
+        /// <param name="endColor">
+        /// The end color.
+        /// </param>
+        /// <param name="angle">
+        /// The angle.
+        /// </param>
+        public LinearGradientBrushExtension(Color startColor, Color endColor, double angle)
+        {
+            this.brush = new LinearGradientBrush(startColor, endColor, angle);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearGradientBrushExtension"/> class.
+        /// </summary>
+        /// <param name="startColor">
+        /// The start color.
+        /// </param>
+        /// <param name="endColor">
+        /// The end color.
+        /// </param>
+        public LinearGradientBrushExtension(Color startColor, Color endColor)
+            : this(startColor, endColor, 90)
+        {
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Returns the linear gradient brush.
+        /// </summary>
+        /// <param name="serviceProvider">
+        /// Object that can provide services for the markup extension.
+        /// </param>
+        /// <returns>
+        /// The brush to set on the property where the extension is applied.
+        /// </returns>
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return this.brush;
+        }
+
+        #endregion
+    }
+}

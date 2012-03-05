@@ -1,0 +1,23 @@
+﻿<local:StereoControl x:Class="HelixToolkit.Wpf.WiggleView3D" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:HelixToolkit.Wpf" x:Name="thisControl">
+    <Grid>
+        <Viewport3D x:Name="View1">
+            <Viewport3D.Camera>
+                <PerspectiveCamera />
+            </Viewport3D.Camera>
+        </Viewport3D>
+
+        <local:CameraController x:Name="CameraControl1" Camera="{Binding Camera, ElementName=thisControl}" CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" Viewport="{Binding ElementName=View1}">
+            <local:CameraController.InputBindings>
+                <MouseBinding Gesture="RightClick" Command="{x:Static local:CameraController.RotateCommand}"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="{x:Static local:CameraController.PanCommand}"/>
+                <MouseBinding Gesture="Ctrl+RightClick" Command="{x:Static local:CameraController.ZoomCommand}"/>
+                <!--<MouseBinding Gesture="Ctrl+Shift+RightClick" Command="{x:Static local:CameraController.ZoomRectangleCommand}"/>-->
+                <MouseBinding Gesture="Alt+RightClick" Command="{x:Static local:CameraController.ChangeFieldOfViewCommand}"/>
+                <MouseBinding Gesture="RightDoubleClick" Command="{x:Static local:CameraController.ChangeLookAtCommand}"/>
+                <KeyBinding Key="E" Modifiers="Ctrl+Shift" Command="{x:Static local:CameraController.ZoomExtentsCommand}"/>
+                <MouseBinding Gesture="MiddleDoubleClick" Command="{x:Static local:CameraController.ResetCameraCommand}"/>
+            </local:CameraController.InputBindings>
+        </local:CameraController>
+
+    </Grid>
+</local:StereoControl>

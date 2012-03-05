@@ -1,0 +1,51 @@
+newmtl floor
+Ka  0.5 0.5 0.5 
+Kd  0.4 0.4 0.4
+Ks  0 0 0 
+d  1
+
+newmtl ceiling
+Ka  0.5 0.5 0.5 
+Kd  0.4 0.4 0.4
+Ks  0 0 0 
+d  1
+
+newmtl back
+Ka  0.5 0.5 0.5 
+Kd  0.4 0.4 0.4
+Ks  0 0 0 
+d  1
+
+newmtl green
+Ka  0 0.5 0
+Kd  0 0.5 0
+Ks  0 0 0
+d  1
+
+newmtl red
+Ka  0.5 0 0
+Kd  0.5 0 0
+Ks  0.5 0 0
+d  1
+
+newmtl short_box
+Ka  0.6 0.6 0.6
+Kd  0.5 0.5 0.5
+Ks  0 0 0
+d  1
+
+newmtl tall_box
+Ka  0.6 0.6 0.6
+Kd  0.5 0.5 0.5
+Ks  0 0 0
+d  1
+
+# these values are only approximations
+# details at: http://www.graphics.cornell.edu/online/box/
+#
+# units are watts/nm^2
+newmtl light
+Ka  0 0 0
+Kd  18.9914 14.4266 3.8927
+Ks  0.78 0.78 0.78
+
