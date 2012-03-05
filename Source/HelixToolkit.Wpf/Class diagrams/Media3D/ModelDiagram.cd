@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Windows.Media.Media3D.Model3DGroup">
+    <Position X="0.5" Y="5" Width="2.5" />
+    <Members>
+      <Field Name="ChildrenProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Model3DCollection" Collapsed="true">
+    <Position X="5.25" Y="2.25" Width="2.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Model3D">
+    <Position X="2" Y="0.75" Width="2.5" />
+    <Members>
+      <Field Name="TransformProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.MeshGeometry3D">
+    <Position X="10.5" Y="3.25" Width="2.5" />
+    <Members>
+      <Field Name="NormalsProperty" Hidden="true" />
+      <Field Name="PositionsProperty" Hidden="true" />
+      <Field Name="TextureCoordinatesProperty" Hidden="true" />
+      <Field Name="TriangleIndicesProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.GeometryModel3D">
+    <Position X="3.75" Y="5" Width="2.5" />
+    <Members>
+      <Field Name="BackMaterialProperty" Hidden="true" />
+      <Field Name="GeometryProperty" Hidden="true" />
+      <Field Name="MaterialProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Geometry3D">
+    <Position X="10.5" Y="1" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Light">
+    <Position X="7" Y="5" Width="2.5" />
+    <Members>
+      <Field Name="ColorProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

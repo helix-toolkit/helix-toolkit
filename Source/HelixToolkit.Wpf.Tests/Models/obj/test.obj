@@ -1,0 +1,129 @@
+# reference a material file
+# Objects in this file will reference materials in the material file
+mtllib ./test.mtl
+
+# vt describes a texture coordinate of x y z (or less, as needed)
+vt 1.337 13.37 133.7
+vt 3.145 31.45 314.5
+vt 2.718 27.18 271.8
+# 3 texture coords
+
+##################
+# box
+##################
+# v defines a vertex point in 3space of x y z
+v  8 0 11.0
+v  16 0 6
+v  3 0 3
+v  11 0 -1
+v  8 20 11
+v  16 20 6
+v  3 20 3
+v  11 0 -1
+# 8 vertices
+
+# Defines a material to use- this material will continue
+# to be used until it is replaced with another.
+usemtl red_material
+
+# f v/vt/vn v/vt/vn v/vt/vn describes a face
+# Faces are composed of vertex/texture/normal indices
+# The order is always v/vt/vn
+# There are a couple examples of combinations of v/vt/vn below
+f 1/1/1 3/2/2 4/3/3
+f 4//1 2//2 1//3
+f 5/1 6/2 8/3
+f 8 7 5
+f 1 2 6
+f 6 5 1
+f 2 4 8
+f 8 6 2
+f 4 3 7
+f 7 8 4
+f 3 1 5
+f 5 7 3
+
+usemtl green_material
+
+##################
+# sphere
+##################
+v 10 10 10
+# vn defines a vertex normal in 3space of x y z
+vn 1 0 0
+vn 1 0 0
+# sp v vn vn describes a sphere in this format:
+#    position = v
+#    up normal = vn
+#    equator normal = vn
+# where v is a vertex index and vn is a vertex normal index
+# The radius of the sphere is the length of the up normal.
+#
+# You can use negative numbers to refer to relative indices
+# These indices point to the previous vertex and 2 previous normals
+sp -1 -1 -2
+
+usemtl blue_material
+
+##################
+# plane
+##################
+v 0 0 -10
+vn 0 0 1
+vn 1 0 0
+# pl v vn vn defines a a plane in this format:
+#    position = v
+#    face normal = vn
+#    rotation normal = vn
+pl 10 3 4
+
+
+##################
+# point light
+##################
+v 0 38 20
+usemtl light_material
+# lp v describes a plane in this format:
+#    position = v
+lp 11
+
+##################
+# disc light
+##################
+v 0 40 20
+vn 0 -1 0
+# ld v vn defines a disc light in this format:
+#    position = v
+#    face_normal = vn
+# The radius of the disc is the length of face normal
+ld 12 5
+
+##################
+# quad light
+##################
+v 0 46 20
+v 0 42 20
+v 0 42 22
+v 0 46 22
+# lq v v v v defines a quad light in this format:
+#    v = position 1
+#    v = position 2
+#    v = position 3
+#    v = position 4
+lq 13 14 15 16
+
+##################
+# camera
+##################
+v  0 20 45
+vn  0 1 0
+vn  0 0 -1
+# c v v vn describes a camera in this format:
+#    position = v
+#    focus point = v
+#    up normal vector = vn
+# Note that the focus point defines the direction the camera is facing
+# The up vector and the focus point are enough to orient the camera in 3space
+c 17 6 7
+
+

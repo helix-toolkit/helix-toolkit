@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Windows.Media.Media3D.Model3D">
+    <Position X="3.75" Y="1.5" Width="2.5" />
+    <Members>
+      <Field Name="TransformProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Light">
+    <Position X="3.75" Y="4.25" Width="2.5" />
+    <Members>
+      <Field Name="ColorProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.DirectionalLight">
+    <Position X="3.75" Y="7" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.AmbientLight">
+    <Position X="1" Y="7" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.PointLight">
+    <Position X="5" Y="10.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.SpotLight">
+    <Position X="8.25" Y="10.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.PointLightBase">
+    <Position X="6.5" Y="7" Width="2.5" />
+    <Members>
+      <Field Name="ConstantAttenuationProperty" Hidden="true" />
+      <Field Name="LinearAttenuationProperty" Hidden="true" />
+      <Field Name="PositionProperty" Hidden="true" />
+      <Field Name="QuadraticAttenuationProperty" Hidden="true" />
+      <Field Name="RangeProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

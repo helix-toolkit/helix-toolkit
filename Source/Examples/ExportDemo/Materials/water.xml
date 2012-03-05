@@ -1,0 +1,88 @@
+<Object Identifier="Default Model" Label="Default Model" Name="" Type="Model">
+  <Object Identifier="Material #1" Label="Layered Material" Name="Material #1" Type="Material">
+    <Object Identifier="#1" Label="Whitted Material" Name="#1" Type="Material">
+      <Object Identifier="./Diffuse/Weighted Texture" Label="Weighted Texture" Name="" Type="Texture">
+        <Object Identifier="Constant Texture" Label="Constant Texture" Name="" Type="Texture">
+          <Parameter Name="Color" Type="RGB" Value="0 0 0.8"/>
+        </Object>
+        <Parameter Name="Weight #0" Type="Real" Value="0.5"/>
+      </Object>
+      <Object Identifier="./Refraction/Weighted Texture" Label="Weighted Texture" Name="" Type="Texture">
+        <Object Identifier="Constant Texture" Label="Constant Texture" Name="" Type="Texture">
+          <Parameter Name="Color" Type="RGB" Value="1 1 1"/>
+        </Object>
+        <Parameter Name="Weight #0" Type="Real" Value="0.5"/>
+      </Object>
+      <Parameter Name="Shininess" Type="Real" Value="128"/>
+      <Parameter Name="Transmitted Shininess" Type="Real" Value="128"/>
+      <Parameter Name="Index of Refraction" Type="Real" Value="1.33"/>
+      <!-- IOR -->
+      <Parameter Name="Specular Sampling" Type="Boolean" Value="0"/>
+      <Parameter Name="Transmitted Sampling" Type="Boolean" Value="0"/>
+      <Parameter Name="Specular Attenuation" Type="String" Value="Cosine"/>
+      <Parameter Name="Transmitted Attenuation" Type="String" Value="Cosine"/>
+    </Object>
+    <Object Identifier="Grasy water" Label="Snell Material" Name="Grasy water" Type="Material">
+      <Object Identifier="./Reflection/Weighted Texture" Label="Weighted Texture" Name="" Type="Texture">
+        <Object Identifier="Fresnel Ramp Texture" Label="Fresnel Ramp Texture" Name="" Type="Texture">
+          <Parameter Name="Low Color" Type="RGB" Value="0 0 0"/>
+          <Parameter Name="High Color" Type="RGB" Value="0.988235 0.992157 1"/>
+          <Parameter Name="Index of Refraction" Type="Real" Value="0"/>
+          <Parameter Name="Inverted Attenuation" Type="Boolean" Value="0"/>
+          <Parameter Name="Exit Attenuation" Type="Boolean" Value="1"/>
+        </Object>
+        <Parameter Name="Weight #0" Type="Real" Value="0.96"/>
+      </Object>
+      <Object Identifier="./Refraction/Weighted Texture" Label="Weighted Texture" Name="" Type="Texture">
+        <Object Identifier="Constant Texture" Label="Constant Texture" Name="" Type="Texture">
+          <Parameter Name="Color" Type="RGB" Value="0.956863 0.956863 0.956863"/>
+        </Object>
+        <Parameter Name="Weight #0" Type="Real" Value="0.96"/>
+      </Object>
+      <Parameter Name="Fresnel" Type="Boolean" Value="0"/>
+      <Parameter Name="Dispersion" Type="Boolean" Value="0"/>
+      <Parameter Name="./Index of Refraction/Index" Type="Real" Value="1.33"/>
+      <Parameter Name="N-K File" Type="String" Value=""/>
+    </Object>
+    <Object Identifier="Weight #0" Label="Constant Texture" Name="Weight #0" Type="Texture">
+      <Parameter Name="Color" Type="RGB" Value="1 1 1"/>
+    </Object>
+    <Object Identifier="Weight #1" Label="Constant Texture" Name="Weight #1" Type="Texture">
+      <Parameter Name="Color" Type="RGB" Value="1 1 1"/>
+    </Object>
+  </Object>
+  <Object Identifier="Bump Mapping #0" Label="Bump Mapping" Name="Bump Mapping #0" Type="Intersection Modifier">
+    <Object Identifier="./Texture/Marble Texture" Label="Marble Texture" Name="" Type="Texture">
+      <Parameter Name="Low Color" Type="RGB" Value="0 0 0"/>
+      <Parameter Name="High Color" Type="RGB" Value="1 1 1"/>
+      <Parameter Name="Offset X" Type="Real" Value="0"/>
+      <Parameter Name="Offset Y" Type="Real" Value="0"/>
+      <Parameter Name="Offset Z" Type="Real" Value="0"/>
+      <Parameter Name="Scale X" Type="Real" Value="0.1"/>
+      <Parameter Name="Scale Y" Type="Real" Value="0.1"/>
+      <Parameter Name="Scale Z" Type="Real" Value="0.35"/>
+      <Parameter Name="Local" Type="Boolean" Value="1"/>
+      <Parameter Name="Octaves" Type="Integer" Value="1"/>
+      <Parameter Name="Omega" Type="Real" Value="0.5"/>
+      <Parameter Name="Variation" Type="Real" Value="0.3"/>
+    </Object>
+    <Parameter Name="Strength" Type="Real" Value="1"/>
+  </Object>
+  <Object Identifier="Bump Mapping #1" Label="Bump Mapping" Name="Bump Mapping #1" Type="Intersection Modifier">
+    <Object Identifier="./Texture/Marble Texture" Label="Marble Texture" Name="" Type="Texture">
+      <Parameter Name="Low Color" Type="RGB" Value="0 0 0"/>
+      <Parameter Name="High Color" Type="RGB" Value="1 1 1"/>
+      <Parameter Name="Offset X" Type="Real" Value="0"/>
+      <Parameter Name="Offset Y" Type="Real" Value="0"/>
+      <Parameter Name="Offset Z" Type="Real" Value="0"/>
+      <Parameter Name="Scale X" Type="Real" Value="0.1"/>
+      <Parameter Name="Scale Y" Type="Real" Value="0.1"/>
+      <Parameter Name="Scale Z" Type="Real" Value="0.35"/>
+      <Parameter Name="Local" Type="Boolean" Value="1"/>
+      <Parameter Name="Octaves" Type="Integer" Value="1"/>
+      <Parameter Name="Omega" Type="Real" Value="0.5"/>
+      <Parameter Name="Variation" Type="Real" Value="0.3"/>
+    </Object>
+    <Parameter Name="Strength" Type="Real" Value="1"/>
+  </Object>
+</Object>

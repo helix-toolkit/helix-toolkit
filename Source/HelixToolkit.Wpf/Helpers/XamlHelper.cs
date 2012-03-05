@@ -1,0 +1,69 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="XamlHelper.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf
+{
+    using System.IO;
+    using System.Text;
+    using System.Windows.Controls;
+    using System.Windows.Markup;
+    using System.Xml;
+
+    /// <summary>
+    /// Provides helper methods to generate xaml.
+    /// </summary>
+    public class XamlHelper
+    {
+        #region Public Methods
+
+        /// <summary>
+        /// Gets the xaml for the specified viewport.
+        /// </summary>
+        /// <param name="view">
+        /// The viewport.
+        /// </param>
+        /// <returns>
+        /// The get xaml.
+        /// </returns>
+        public static string GetXaml(Viewport3D view)
+        {
+            var sb = new StringBuilder();
+            var tw = new StringWriter(sb);
+            var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
+            XamlWriter.Save(view, xw);
+            xw.Close();
+            string xaml = sb.ToString();
+
+            xaml =
+                xaml.Replace(
+                    string.Format("<Viewport3D Height=\"{0}\" Width=\"{1}\" ", view.ActualHeight, view.ActualWidth), 
+                    "<Viewport3D ");
+
+            return xaml;
+        }
+
+        /// <summary>
+        /// Gets the xaml for the specified object.
+        /// </summary>
+        /// <param name="obj">
+        /// The object.
+        /// </param>
+        /// <returns>
+        /// The get xaml.
+        /// </returns>
+        public static string GetXaml(object obj)
+        {
+            var sb = new StringBuilder();
+            var tw = new StringWriter(sb);
+            var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
+            XamlWriter.Save(obj, xw);
+            xw.Close();
+            return sb.ToString();
+        }
+
+        #endregion
+    }
+}

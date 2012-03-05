@@ -1,0 +1,11 @@
+﻿<Window x:Class="MemoryLeakTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Memory test" Height="350" Width="525">
+    <StackPanel>
+        <Button Content="Open a HelixViewport3D" Click="Open1Click"/>
+        <Button Content="Open 3 HelixViewport3Ds in a tab control" Click="Open2Click"/>
+        <Button Content="Open a HelixViewport3D with a SortingVisual3D" Click="Open3Click"/>
+        <Button Content="GC.Collect" Click="CollectClick"/>
+    </StackPanel>
+</Window>

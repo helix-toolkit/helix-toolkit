@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HelixToolkit.AnimatedMeshElement3D">
+    <Position X="0.5" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="_animationWatch" Hidden="true" />
+      <Field Name="_updateTimer" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAABAQAAAAAAAAgAAAAAAABQAgAAAKAQ=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\AnimatedMeshElement3D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HelixToolkit.ArrowVisual3D">
+    <Position X="5.5" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="DiameterProperty" Hidden="true" />
+      <Field Name="HeadLengthProperty" Hidden="true" />
+      <Field Name="Point1Property" Hidden="true" />
+      <Field Name="Point2Property" Hidden="true" />
+      <Field Name="SidesProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAIAgAQAQCAAgAAAAAAAAAAAICABAAgAAAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\ArrowVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.BoxVisual3D">
+    <Position X="13.75" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="BottomFaceProperty" Hidden="true" />
+      <Field Name="CenterProperty" Hidden="true" />
+      <Field Name="HeightProperty" Hidden="true" />
+      <Field Name="LengthProperty" Hidden="true" />
+      <Field Name="TopFaceProperty" Hidden="true" />
+      <Field Name="WidthProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAiBAIBAAAAEAgAACAAFBAAAAAAAAAAAAAAAgIABA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\BoxVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.CubeVisual3D">
+    <Position X="3" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="SideLengthProperty" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="HelixToolkit.BoxVisual3D" FixedToPoint="true">
+      <Path>
+        <Point X="14.75" Y="7.75" />
+        <Point X="14.75" Y="7.375" />
+        <Point X="3.875" Y="7.375" />
+        <Point X="3.875" Y="7.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAACAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\CubeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.GridLinesVisual3D">
+    <Position X="24.75" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="_LengthDirection" Hidden="true" />
+      <Field Name="_WidthDirection" Hidden="true" />
+      <Field Name="CenterProperty" Hidden="true" />
+      <Field Name="DistanceProperty" Hidden="true" />
+      <Field Name="HeightProperty" Hidden="true" />
+      <Field Name="LengthDirectionProperty" Hidden="true" />
+      <Field Name="MajorDistanceProperty" Hidden="true" />
+      <Field Name="NormalProperty" Hidden="true" />
+      <Field Name="ThicknessProperty" Hidden="true" />
+      <Field Name="WidthProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgqAAADAABAAAqAAAAgFAAAAAIAEAABgAAAABIBAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\GridLinesVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.HelixVisual3D">
+    <Position X="16.5" Y="10.75" Width="2" />
+    <Members>
+      <Field Name="LengthProperty" Hidden="true" />
+      <Field Name="PhaseProperty" Hidden="true" />
+      <Field Name="RadiusProperty" Hidden="true" />
+      <Field Name="TurnsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAIABAAAAAAAAAAAAAAAgBAAAAAAAAAAEAACgCABAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\HelixVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.MeshVisual3D">
+    <Position X="8.25" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="MeshProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAggAAEAAAAAQAAAAAAAAAAAAAAAAAAAQAggABAAAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\MeshVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.MyModelUIElement3D">
+    <Position X="12.75" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="ModelProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAgAAAAAAIA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\MyModelUIElement3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.ParametricSurface3D">
+    <Position X="16.5" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="MeshSizeUProperty" Hidden="true" />
+      <Field Name="MeshSizeVProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAABAAAAAAAAAAAAAgAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\ParametricSurface3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.PlaneVisual3D">
+    <Position X="22" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="DivLengthProperty" Hidden="true" />
+      <Field Name="DivWidthProperty" Hidden="true" />
+      <Field Name="LengthDirectionProperty" Hidden="true" />
+      <Field Name="LengthProperty" Hidden="true" />
+      <Field Name="NormalProperty" Hidden="true" />
+      <Field Name="OriginProperty" Hidden="true" />
+      <Field Name="WidthProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgiBAACAAAAAAgAAAAAFBAAAgIAIAAAAAAAAgAAAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\PlaneVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.SphereVisual3D">
+    <Position X="27.5" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="CenterProperty" Hidden="true" />
+      <Field Name="PhiDivProperty" Hidden="true" />
+      <Field Name="RadiusProperty" Hidden="true" />
+      <Field Name="ThetaDivProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAIgAACAAAAAAAgIAAAAAAAAAAAAAAAAAAACAAIBAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\SphereVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.MeshElement3D">
+    <Position X="12.75" Y="2.75" Width="2" />
+    <Members>
+      <Field Name="BackMaterialProperty" Hidden="true" />
+      <Field Name="MaterialProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gFAAkAAAAAAAAAAAIAAEAAAgAAAADAAACAQCAAAQgAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\MeshElement3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.TruncatedConeVisual3D">
+    <Position X="11" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="BaseCapProperty" Hidden="true" />
+      <Field Name="BaseRadiusProperty" Hidden="true" />
+      <Field Name="HeightProperty" Hidden="true" />
+      <Field Name="NormalProperty" Hidden="true" />
+      <Field Name="OriginProperty" Hidden="true" />
+      <Field Name="ThetaDivProperty" Hidden="true" />
+      <Field Name="TopCapProperty" Hidden="true" />
+      <Field Name="TopRadiusProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AgAggAAABAABACAAAACBABBAAIAIAIAAAEAACAgABAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\TruncatedConeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.TubeVisual3D">
+    <Position X="30" Y="11.5" Width="2" />
+    <Members>
+      <Field Name="DiameterProperty" Hidden="true" />
+      <Field Name="DivisionsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAABABAAAAACIAABAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\TubeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.TubeSegmentVisual3D">
+    <Position X="19.25" Y="7.75" Width="2" />
+    <Members>
+      <Field Name="DiameterProperty" Hidden="true" />
+      <Field Name="InnerDiameterProperty" Hidden="true" />
+      <Field Name="Point1Property" Hidden="true" />
+      <Field Name="Point2Property" Hidden="true" />
+      <Field Name="SidesProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAQAAAIAgAQAAAAAgAAAAAAAIAAAIAABAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\TubeSegmentVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Geometry3D" Collapsed="true">
+    <Position X="15.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.MeshGeometry3D" Collapsed="true">
+    <Position X="17.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="HelixToolkit.ExtrudedVisual3D">
+    <Position X="30.25" Y="7.75" Width="1.5" />
+    <Members>
+      <Field Name="IsClosedProperty" Hidden="true" />
+      <Field Name="PathProperty" Hidden="true" />
+      <Field Name="SectionProperty" Hidden="true" />
+      <Field Name="UpVectorProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AEAAgAAAAAAAAAIAAAAAAAQAAQAAAEAAAAgAAIAAAgA=</HashCode>
+      <FileName>Visual3Ds\TesselatedVisuals\ExtrudedVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
