@@ -112,6 +112,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void ChangeCameraWidth(double delta, Point3D zoomAround)
         {
+            if (delta < -0.5)
+            {
+                delta = -0.5;
+            }
+
             switch (this.CameraMode)
             {
                 case CameraMode.WalkAround:
