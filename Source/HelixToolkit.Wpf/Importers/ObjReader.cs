@@ -795,7 +795,7 @@ namespace HelixToolkit.Wpf
                     if (File.Exists(path))
                     {
                         var img = new BitmapImage(new Uri(path, UriKind.Relative));
-                        var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved };
+                        var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute };
                         mg.Children.Add(new DiffuseMaterial(textureBrush));
                     }
                 }
