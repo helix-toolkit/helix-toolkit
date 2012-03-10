@@ -44,8 +44,8 @@
                     </StackPanel>
                 </MenuItem>
             </MenuItem>
-            <pt:EnumMenuItem SelectedValue="{Binding CameraRotationMode, Mode=OneWay, ElementName=view1}" Header="CameraRotationMode"/>
-            <pt:EnumMenuItem SelectedValue="{Binding CameraMode, Mode=OneWay,ElementName=view1}" Header="CameraMode"/>
+            <pt:EnumMenuItem SelectedValue="{Binding CameraRotationMode, ElementName=view1}" Header="CameraRotationMode"/>
+            <pt:EnumMenuItem SelectedValue="{Binding CameraMode, ElementName=view1}" Header="CameraMode"/>
         </Menu>
         <helix:HelixViewport3D x:Name="view1">
             <helix:HelixViewport3D.DefaultCamera>
