@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf
             "Points",
             typeof(IList<Point3D>),
             typeof(ScreenSpaceVisual3D),
-            new UIPropertyMetadata(new List<Point3D>(), GeometryChanged));
+            new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         ///   The clipping object.
@@ -83,6 +83,7 @@ namespace HelixToolkit.Wpf
             this.Mesh = new MeshGeometry3D();
             this.Model = new GeometryModel3D { Geometry = this.Mesh };
             this.Content = this.Model;
+            this.Points = new List<Point3D>();
             this.OnColorChanged();
         }
 
@@ -282,6 +283,6 @@ namespace HelixToolkit.Wpf
 
         #endregion
 
-      
+
     }
 }
