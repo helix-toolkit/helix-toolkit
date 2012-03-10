@@ -11,21 +11,20 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    ///   A visual element that extrudes a section along a path.
+    /// A visual element that extrudes a section along a path.
     /// </summary>
     /// <remarks>
-    ///   The implementation will not work well if there are sharp bends in the path.
+    /// The implementation will not work well if there are sharp bends in the path.
     /// </remarks>
     public class ExtrudedVisual3D : MeshElement3D
     {
         // See also "The GLE Tubing and Extrusion Library":
         // http://linas.org/gle/
         // http://sharpmap.codeplex.com/Thread/View.aspx?ThreadId=18864
-
         #region Constants and Fields
 
         /// <summary>
-        /// The diameters property.
+        ///   The diameters property.
         /// </summary>
         public static readonly DependencyProperty DiametersProperty = DependencyProperty.Register(
             "Diameters", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null));
@@ -47,22 +46,19 @@ namespace HelixToolkit.Wpf
         ///   The path property.
         /// </summary>
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-            "Path",
-            typeof(IList<Point3D>),
-            typeof(ExtrudedVisual3D),
-            new UIPropertyMetadata(new List<Point3D>(), GeometryChanged));
+            "Path", typeof(IList<Point3D>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         ///   The section property.
         /// </summary>
         public static readonly DependencyProperty SectionProperty = DependencyProperty.Register(
-            "Section",
-            typeof(IList<Point>),
-            typeof(ExtrudedVisual3D),
+            "Section", 
+            typeof(IList<Point>), 
+            typeof(ExtrudedVisual3D), 
             new UIPropertyMetadata(new List<Point>(), GeometryChanged));
 
         /// <summary>
-        /// The texture coordinates property.
+        ///   The texture coordinates property.
         /// </summary>
         public static readonly DependencyProperty TextureCoordinatesProperty =
             DependencyProperty.Register(
@@ -72,10 +68,22 @@ namespace HelixToolkit.Wpf
         ///   The up vector property.
         /// </summary>
         public static readonly DependencyProperty UpVectorProperty = DependencyProperty.Register(
-            "UpVector",
-            typeof(Vector3D),
-            typeof(PipeVisual3D),
+            "UpVector", 
+            typeof(Vector3D), 
+            typeof(PipeVisual3D), 
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="ExtrudedVisual3D" /> class.
+        /// </summary>
+        public ExtrudedVisual3D()
+        {
+            this.Path = new List<Point3D>();
+        }
 
         #endregion
 
@@ -91,6 +99,7 @@ namespace HelixToolkit.Wpf
             {
                 return (IList<double>)this.GetValue(DiametersProperty);
             }
+
             set
             {
                 this.SetValue(DiametersProperty, value);
@@ -173,6 +182,7 @@ namespace HelixToolkit.Wpf
             {
                 return (IList<double>)this.GetValue(TextureCoordinatesProperty);
             }
+
             set
             {
                 this.SetValue(TextureCoordinatesProperty, value);
@@ -201,18 +211,25 @@ namespace HelixToolkit.Wpf
         #region Methods
 
         /// <summary>
-        ///   Do the tesselation and return the <see cref="MeshGeometry3D" /> .
+        /// Do the tesselation and return the <see cref="MeshGeometry3D"/> .
         /// </summary>
-        /// <returns> A triangular mesh geometry. </returns>
+        /// <returns>
+        /// A triangular mesh geometry. 
+        /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
+            if (this.Path == null)
+            {
+                return null;
+            }
+
             var builder = new MeshBuilder(false, this.TextureCoordinates != null);
             builder.AddTube(
-                this.Path,
-                this.TextureCoordinates,
-                this.Diameters,
-                this.Section,
-                this.IsPathClosed,
+                this.Path, 
+                this.TextureCoordinates, 
+                this.Diameters, 
+                this.Section, 
+                this.IsPathClosed, 
                 this.IsSectionClosed);
             return builder.ToMesh();
         }
