@@ -74,12 +74,15 @@ namespace HelixToolkit.Wpf
             if (this.Points != null)
             {
                 int n = this.Points.Count;
-                if (this.Mesh.TriangleIndices.Count != n * 3)
+                if (n > 0)
                 {
-                    this.Mesh.TriangleIndices = this.builder.CreateIndices(n);
-                }
+                    if (this.Mesh.TriangleIndices.Count != n * 3)
+                    {
+                        this.Mesh.TriangleIndices = this.builder.CreateIndices(n);
+                    }
 
-                this.Mesh.Positions = this.builder.CreatePositions(this.Points, this.Thickness, this.DepthOffset);
+                    this.Mesh.Positions = this.builder.CreatePositions(this.Points, this.Thickness, this.DepthOffset);
+                }
             }
         }
 
