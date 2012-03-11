@@ -8,7 +8,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.IO.Compression;
@@ -21,6 +20,7 @@ namespace HelixToolkit.Wpf
     /// A Wavefront .obj file reader.
     /// </summary>
     /// <remarks>
+    /// See the file format specifications at
     /// http://en.wikipedia.org/wiki/Obj
     /// http://www.martinreddy.net/gfx/3d/OBJ.spec
     /// http://www.eg-models.de/formats/Format_Obj.html
@@ -47,13 +47,13 @@ namespace HelixToolkit.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the groups.
+        ///   Gets the groups.
         /// </summary>
         /// <value>The groups.</value>
         public IList<Group> Groups { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the materials.
+        ///   Gets the materials.
         /// </summary>
         /// <value>The materials.</value>
         public Dictionary<string, MaterialDefinition> Materials { get; private set; }
@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf
         {
             this.TexturePath = Path.GetDirectoryName(path);
             var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var result = Read(s);
+            var result = this.Read(s);
             s.Close();
             return result;
         }
@@ -179,7 +179,7 @@ namespace HelixToolkit.Wpf
                         case "usemtl":
                             this.SetMaterial(values);
                             break;
-                        case "s":
+                        case "input":
                             this.SetSmoothing(values);
                             break;
                         case "o":
@@ -198,13 +198,14 @@ namespace HelixToolkit.Wpf
         /// The path.
         /// </param>
         /// <returns>
+        /// A Model3D object containing the model.
         /// </returns>
         public Model3DGroup ReadZ(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
             var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             var deflateStream = new GZipStream(s, CompressionMode.Decompress, true);
-            var result = Read(deflateStream);
+            var result = this.Read(deflateStream);
             deflateStream.Close();
             s.Close();
             return result;
@@ -215,12 +216,13 @@ namespace HelixToolkit.Wpf
         #region Methods
 
         /// <summary>
-        /// The color parse.
+        /// Parses a color string.
         /// </summary>
         /// <param name="values">
-        /// The values.
+        /// The input.
         /// </param>
         /// <returns>
+        /// The parsed color.
         /// </returns>
         private static Color ColorParse(string values)
         {
@@ -229,31 +231,32 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The double parse.
+        /// Parse a string containing a double value.
         /// </summary>
-        /// <param name="s">
-        /// The s.
+        /// <param name="input">
+        /// The input string.
         /// </param>
         /// <returns>
-        /// The double parse.
+        /// The value.
         /// </returns>
-        private static double DoubleParse(string s)
+        private static double DoubleParse(string input)
         {
-            return double.Parse(s, CultureInfo.InvariantCulture);
+            return double.Parse(input, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        /// The split.
+        /// Splits the specified string using whitespace(input) as separators.
         /// </summary>
-        /// <param name="values">
-        /// The values.
+        /// <param name="input">
+        /// The input string.
         /// </param>
         /// <returns>
+        /// List of input.
         /// </returns>
-        private static double[] Split(string values)
+        private static IList<double> Split(string input)
         {
-            values = values.Trim();
-            var fields = values.SplitOnWhitespace();
+            input = input.Trim();
+            var fields = input.SplitOnWhitespace();
             var result = new double[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
@@ -273,7 +276,7 @@ namespace HelixToolkit.Wpf
         /// The id.
         /// </param>
         /// <param name="values">
-        /// The values.
+        /// The input.
         /// </param>
         private static void SplitLine(string line, out string id, out string values)
         {
@@ -293,7 +296,7 @@ namespace HelixToolkit.Wpf
         /// The add face.
         /// </summary>
         /// <param name="values">
-        /// The values.
+        /// The input.
         /// </param>
         private void AddFace(string values)
         {
@@ -321,10 +324,12 @@ namespace HelixToolkit.Wpf
                 {
                     vi = this.Points.Count + vi;
                 }
+
                 if (vti < 0)
                 {
                     vti = this.TexCoords.Count + vti;
                 }
+
                 if (vni < 0)
                 {
                     vni = this.Normals.Count + vni;
@@ -403,7 +408,7 @@ namespace HelixToolkit.Wpf
         /// The add normal.
         /// </summary>
         /// <param name="values">
-        /// The values.
+        /// The input.
         /// </param>
         private void AddNormal(string values)
         {
@@ -415,7 +420,7 @@ namespace HelixToolkit.Wpf
         /// The add tex coord.
         /// </summary>
         /// <param name="values">
-        /// The values.
+        /// The input.
         /// </param>
         private void AddTexCoord(string values)
         {
@@ -427,7 +432,7 @@ namespace HelixToolkit.Wpf
         /// The add vertex.
         /// </summary>
         /// <param name="values">
-        /// The values.
+        /// The input.
         /// </param>
         private void AddVertex(string values)
         {
@@ -436,9 +441,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The build model.
+        /// Builds the model.
         /// </summary>
         /// <returns>
+        /// A Model3D object.
         /// </returns>
         private Model3DGroup BuildModel()
         {
@@ -454,12 +460,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The get material.
+        /// Gets the material with the specified name.
         /// </summary>
         /// <param name="materialName">
         /// The material name.
         /// </param>
         /// <returns>
+        /// The material.
         /// </returns>
         private Material GetMaterial(string materialName)
         {
@@ -555,10 +562,6 @@ namespace HelixToolkit.Wpf
 
                             break;
 
-                        // case "tr":
-                        // if (currentMaterial != null)
-                        // currentMaterial.Dissolved = DoubleParse(values);
-                        // break;
                         case "illum":
                             if (currentMaterial != null && value != null)
                             {
@@ -622,7 +625,7 @@ namespace HelixToolkit.Wpf
         /// The set smoothing.
         /// </summary>
         /// <param name="s">
-        /// The s.
+        /// The input.
         /// </param>
         private void SetSmoothing(string s)
         {
@@ -784,6 +787,8 @@ namespace HelixToolkit.Wpf
             public Material GetMaterial(string texturePath)
             {
                 var mg = new MaterialGroup();
+
+                // add the diffuse component
                 if (this.DiffuseMap == null)
                 {
                     var diffuseBrush = new SolidColorBrush(this.Diffuse) { Opacity = this.Dissolved };
@@ -795,11 +800,29 @@ namespace HelixToolkit.Wpf
                     if (File.Exists(path))
                     {
                         var img = new BitmapImage(new Uri(path, UriKind.Relative));
-                        var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute };
+                        var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
                         mg.Children.Add(new DiffuseMaterial(textureBrush));
                     }
                 }
 
+                // add the ambient components (using EmissiveMaterial)
+                if (this.AmbientMap == null)
+                {
+                    var ambientBrush = new SolidColorBrush(this.Ambient) { Opacity = this.Dissolved };
+                    mg.Children.Add(new EmissiveMaterial(ambientBrush));
+                }
+                else
+                {
+                    var path = Path.Combine(texturePath, this.AmbientMap);
+                    if (File.Exists(path))
+                    {
+                        var img = new BitmapImage(new Uri(path, UriKind.Relative));
+                        var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
+                        mg.Children.Add(new EmissiveMaterial(textureBrush));
+                    }
+                }
+
+                // add the specular component
                 mg.Children.Add(new SpecularMaterial(new SolidColorBrush(this.Specular), this.SpecularCoefficient));
 
                 return mg;
