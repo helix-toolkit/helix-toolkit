@@ -2305,9 +2305,6 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            Debug.Assert(
-                this.coordinateView != null, string.Format("{0} is missing from the template.", PartCoordinateView));
-
             // update the coordinateview camera
             this.OnCameraChanged();
 
