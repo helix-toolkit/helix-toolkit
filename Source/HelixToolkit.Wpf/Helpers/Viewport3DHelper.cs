@@ -1249,7 +1249,7 @@ namespace HelixToolkit.Wpf
                     var model = modelVisual.Content;
                     if (model != null)
                     {
-                        if (type.IsAssignableFrom(model.GetType()))
+                        if (type.IsInstanceOfType(model))
                         {
                             output.Add(model);
                         }
@@ -1283,7 +1283,7 @@ namespace HelixToolkit.Wpf
         {
             foreach (var model in collection)
             {
-                if (type.IsAssignableFrom(model.GetType()))
+                if (type.IsInstanceOfType(model))
                 {
                     output.Add(model);
                 }
