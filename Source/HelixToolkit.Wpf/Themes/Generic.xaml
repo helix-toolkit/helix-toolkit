@@ -48,8 +48,11 @@
                                 <local:CameraController.InputBindings>
                                     <local:InputBindingX Gezture="{Binding ResetCameraKeyGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.ResetCameraCommand}"/>
                                     <local:InputBindingX Gezture="{Binding RotateGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.RotateCommand}"/>
+                                    <local:InputBindingX Gezture="{Binding RotateGesture2, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.RotateCommand}"/>
                                     <local:InputBindingX Gezture="{Binding PanGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.PanCommand}"/>
+                                    <local:InputBindingX Gezture="{Binding PanGesture2, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.PanCommand}"/>
                                     <local:InputBindingX Gezture="{Binding ZoomGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.ZoomCommand}"/>
+                                    <local:InputBindingX Gezture="{Binding ZoomGesture2, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.ZoomCommand}"/>
                                     <local:InputBindingX Gezture="{Binding ZoomRectangleGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.ZoomRectangleCommand}"/>
                                     <local:InputBindingX Gezture="{Binding ChangeFieldOfViewGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.ChangeFieldOfViewCommand}"/>
                                     <local:InputBindingX Gezture="{Binding ChangeLookAtGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.ChangeLookAtCommand}"/>
