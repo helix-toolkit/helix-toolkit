@@ -808,8 +808,7 @@ namespace HelixToolkit.Wpf
                 // add the ambient components (using EmissiveMaterial)
                 if (this.AmbientMap == null)
                 {
-                    var ambientBrush = new SolidColorBrush(this.Ambient) { Opacity = this.Dissolved };
-                    mg.Children.Add(new EmissiveMaterial(ambientBrush));
+                    // ambient material is not supported by WPF?
                 }
                 else
                 {
