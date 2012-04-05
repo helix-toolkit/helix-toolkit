@@ -431,7 +431,7 @@ namespace HelixToolkit.Wpf
                 foreach (var vertex in this.Mesh.Vertices)
                 {
                     var gm = new MeshBuilder(false, false);
-                    gm.AddSphere(vertex.Position, this.VertexRadius, 4);
+                    gm.AddSubdivisionSphere(vertex.Position, this.VertexRadius, 4);
                     var vertexElement = new ModelUIElement3D
                         {
                            Model = new GeometryModel3D(gm.ToMesh(), this.VertexMaterial) 

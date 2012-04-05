@@ -278,7 +278,7 @@ namespace HelixToolkit.Wpf
                 var gm = new MeshBuilder(false,false);
                 foreach (var p in this.Mesh.Vertices)
                 {
-                    gm.AddSphere(p, this.VertexRadius, 1);
+                    gm.AddSubdivisionSphere(p, this.VertexRadius, 1);
 
                     // gm.AddBox(p, VertexRadius, VertexRadius, VertexRadius);
                 }
