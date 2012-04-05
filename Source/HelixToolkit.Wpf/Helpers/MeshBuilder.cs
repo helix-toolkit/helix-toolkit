@@ -462,6 +462,9 @@ namespace HelixToolkit.Wpf
         /// <param name="thetaDiv">
         /// The number of divisions around the cone.
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Cone_(geometry).
+        /// </remarks>
         public void AddCone(
             Point3D origin,
             Vector3D direction,
@@ -472,7 +475,6 @@ namespace HelixToolkit.Wpf
             bool topCap,
             int thetaDiv)
         {
-            ////   http://en.wikipedia.org/wiki/Cone_(geometry)
             var pc = new PointCollection();
             if (baseCap)
             {
@@ -563,11 +565,13 @@ namespace HelixToolkit.Wpf
         /// The diameters.
         /// </param>
         /// <param name="thetaDiv">
-        /// The theta div.
+        /// The number of divisions around the cylinder.
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Cylinder_(geometry).
+        /// </remarks>
         public void AddCylinder(Point3D p1, Point3D p2, double diameter, int thetaDiv)
         {
-            //// http://en.wikipedia.org/wiki/Cylinder_(geometry)
             Vector3D n = p2 - p1;
             double l = n.Length;
             n.Normalize();
@@ -587,7 +591,7 @@ namespace HelixToolkit.Wpf
         /// The diameters.
         /// </param>
         /// <param name="thetaDiv">
-        /// The theta div.
+        /// The number of divisions around the cylinders.
         /// </param>
         public void AddEdges(IList<Point3D> pts, IList<int> edges, double diameter, int thetaDiv)
         {
@@ -664,12 +668,14 @@ namespace HelixToolkit.Wpf
         /// <param name="textureCoordinateList">
         /// The texture coordinate list.
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Loft_(3D).
+        /// </remarks>
         public void AddLoftedGeometry(
             IList<IList<Point3D>> positionsList,
             IList<IList<Vector3D>> normalList,
             IList<IList<Point>> textureCoordinateList)
         {
-            //// http://en.wikipedia.org/wiki/Loft_(3D)
             int index0 = this.positions.Count;
             int n = -1;
             for (int i = 0; i < positionsList.Count; i++)
@@ -834,9 +840,11 @@ namespace HelixToolkit.Wpf
         /// <param name="height">
         /// The height.
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Pyramid_(geometry).
+        /// </remarks>
         public void AddPyramid(Point3D center, double sideLength, double height)
         {
-            //// http://en.wikipedia.org/wiki/Pyramid_(geometry)
             var p1 = new Point3D(center.X - sideLength * 0.5, center.Y - sideLength * 0.5, center.Z);
             var p2 = new Point3D(center.X + sideLength * 0.5, center.Y - sideLength * 0.5, center.Z);
             var p3 = new Point3D(center.X + sideLength * 0.5, center.Y + sideLength * 0.5, center.Z);
@@ -1133,8 +1141,12 @@ namespace HelixToolkit.Wpf
         /// The radius.
         /// </param>
         /// <param name="shareVertices">
-        /// if set to <c>true</c> [share vertices].
+        /// share vertices if set to <c>true</c>.
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Icosahedron
+        /// and http://www.gamedev.net/community/forums/topic.asp?topic_id=283350.
+        /// </remarks>
         public void AddRegularIcosahedron(Point3D center, double radius, bool shareVertices)
         {
             double a = Math.Sqrt(2.0 / (5.0 + Math.Sqrt(5.0)));
@@ -1154,8 +1166,6 @@ namespace HelixToolkit.Wpf
                     new Vector3D(b, a, 0), new Vector3D(-b, a, 0), new Vector3D(b, -a, 0), new Vector3D(-b, -a, 0)
                 };
 
-            // http://en.wikipedia.org/wiki/Icosahedron
-            // http://www.gamedev.net/community/forums/topic.asp?topic_id=283350
             if (shareVertices)
             {
                 int index0 = this.positions.Count;
@@ -1196,9 +1206,11 @@ namespace HelixToolkit.Wpf
         /// <param name="thetaDiv">
         /// The number of divisions around the mesh.
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Surface_of_revolution.
+        /// </remarks>
         public void AddRevolvedGeometry(IList<Point> points, Point3D origin, Vector3D direction, int thetaDiv)
         {
-            ////   http://en.wikipedia.org/wiki/Surface_of_revolution
             direction.Normalize();
 
             // Find two unit vectors orthogonal to the specified direction
@@ -1505,12 +1517,14 @@ namespace HelixToolkit.Wpf
         /// <param name="stripTextureCoordinates">
         /// The texture coordinates.
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Triangle_strip.
+        /// </remarks>
         public void AddTriangleStrip(
             IList<Point3D> stripPositions,
             IList<Vector3D> stripNormals = null,
             IList<Point> stripTextureCoordinates = null)
         {
-            ////   http://en.wikipedia.org/wiki/Triangle_strip
             if (stripPositions == null)
             {
                 throw new ArgumentNullException("stripPositions");
@@ -1536,7 +1550,6 @@ namespace HelixToolkit.Wpf
                 throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
             }
 
-            // http://en.wikipedia.org/wiki/Triangle_strip
             int index0 = this.positions.Count;
             for (int i = 0; i < stripPositions.Count; i++)
             {
