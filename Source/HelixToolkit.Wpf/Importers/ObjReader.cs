@@ -364,13 +364,13 @@ namespace HelixToolkit.Wpf
             if (normals == null)
             {
                 // turn off normals in the mesh builder
-                this.CurrentGroup.MeshBuilder.normals = null;
+                this.CurrentGroup.MeshBuilder.CreateNormals = false;
             }
 
             if (textureCoordinates == null)
             {
                 // turn off texture coordinates in the mesh builder
-                this.CurrentGroup.MeshBuilder.textureCoordinates = null;
+                this.CurrentGroup.MeshBuilder.CreateTextureCoordinates = false;
             }
 
             // TRIANGLE

@@ -2,6 +2,9 @@
 // <copyright file="MeshBuilder.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Builds MeshGeometry3D objects.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
@@ -17,84 +20,64 @@ namespace HelixToolkit.Wpf
     /// Builds MeshGeometry3D objects.
     /// </summary>
     /// <remarks>
-    /// Performance tips for MeshGeometry3D (http://msdn.microsoft.com/en-us/library/bb613553.aspx)
-    ///   <para>
+    /// Performance tips for MeshGeometry3D (http://msdn.microsoft.com/en-us/library/bb613553.aspx) 
+    /// <para>
     /// High impact:
-    ///     Mesh animation—changing the individual vertices of a mesh on a per-frame basis—is not always efficient in 
-    ///     Windows Presentation Foundation (WPF).  To minimize the performance impact of change notifications when 
-    ///     each vertex is modified, detach the mesh from the visual tree before performing per-vertex modification.  
-    ///     Once the mesh has been modified, reattach it to the visual tree.  Also, try to minimize the size of meshes 
-    ///     that will be animated in this way.
-    ///   </para>
+    /// Mesh animation—changing the individual vertices of a mesh on a per-frame basis—is not always efficient in 
+    /// Windows Presentation Foundation (WPF).  To minimize the performance impact of change notifications when 
+    /// each vertex is modified, detach the mesh from the visual tree before performing per-vertex modification.  
+    /// Once the mesh has been modified, reattach it to the visual tree.  Also, try to minimize the size of meshes 
+    /// that will be animated in this way.
+    /// </para>
     /// <para>
     /// Medium impact:
-    ///     When a mesh is defined as abutting triangles with shared vertices and those vertices have the same position, 
-    ///     normal, and texture coordinates, define each shared vertex only once and then define your triangles by 
-    ///     index with TriangleIndices.
-    ///   </para>
+    /// When a mesh is defined as abutting triangles with shared vertices and those vertices have the same position, 
+    /// normal, and texture coordinates, define each shared vertex only once and then define your triangles by 
+    /// index with TriangleIndices.
+    /// </para>
     /// <para>
     /// Low impact:
-    ///     To minimize the construction time of large collections in Windows Presentation Foundation (WPF), 
-    ///     such as a MeshGeometry3D’s Positions, Normals, TextureCoordinates, and TriangleIndices, pre-size 
-    ///     the collections before value population. If possible, pass the collections’ constructors prepopulated 
-    ///     data structures such as arrays or Lists.
-    ///   </para>
+    /// To minimize the construction time of large collections in Windows Presentation Foundation (WPF), 
+    /// such as a MeshGeometry3D’s Positions, Normals, TextureCoordinates, and TriangleIndices, pre-size 
+    /// the collections before value population. If possible, pass the collections’ constructors prepopulated 
+    /// data structures such as arrays or Lists.
+    /// </para>
     /// </remarks>
     public class MeshBuilder
     {
         #region Constants and Fields
 
         /// <summary>
-        ///   The normals.
-        /// </summary>
-        internal Vector3DCollection normals;
-
-        /// <summary>
-        ///   The positions.
-        /// </summary>
-        internal Point3DCollection positions;
-
-        /// <summary>
-        ///   The texture coordinates.
-        /// </summary>
-        internal PointCollection textureCoordinates;
-
-        /// <summary>
-        ///   The triangle indices.
-        /// </summary>
-        internal Int32Collection triangleIndices;
-
-        /// <summary>
-        /// 'All curves should have the same number of points' exception message.
+        ///   'All curves should have the same number of points' exception message.
         /// </summary>
         private const string AllCurvesShouldHaveTheSameNumberOfPoints =
             "All curves should have the same number of points";
 
         /// <summary>
-        /// 'Source mesh normals should not be null' exception message.
+        ///   'Source mesh normals should not be null' exception message.
         /// </summary>
         private const string SourceMeshNormalsShouldNotBeNull = "Source mesh normals should not be null.";
 
         /// <summary>
-        /// 'Source mesh texture coordinates should not be null' exception message.
+        ///   'Source mesh texture coordinates should not be null' exception message.
         /// </summary>
         private const string SourceMeshTextureCoordinatesShouldNotBeNull =
             "Source mesh texture coordinates should not be null.";
 
         /// <summary>
-        /// 'Wrong number of normals' exception message.
+        ///   'Wrong number of diameters' exception message.
+        /// </summary>
+        private const string WrongNumberOfDiameters = "Wrong number of diameters.";
+
+        /// <summary>
+        ///   'Wrong number of normals' exception message.
         /// </summary>
         private const string WrongNumberOfNormals = "Wrong number of normals.";
 
         /// <summary>
-        /// 'Wrong number of texture coordinates' exception message.
+        ///   'Wrong number of texture coordinates' exception message.
         /// </summary>
         private const string WrongNumberOfTextureCoordinates = "Wrong number of texture coordinates.";
-
-        /// <summary>
-        /// 'Wrong number of diameters' exception message.
-        /// </summary>
-        private const string WrongNumberOfDiameters = "Wrong number of diameters.";
 
         /// <summary>
         ///   The circle cache.
@@ -102,19 +85,39 @@ namespace HelixToolkit.Wpf
         private static readonly Dictionary<int, IList<Point>> CircleCache = new Dictionary<int, IList<Point>>();
 
         /// <summary>
-        /// The unit sphere cache.
+        ///   The unit sphere cache.
         /// </summary>
         private static readonly Dictionary<int, MeshGeometry3D> UnitSphereCache = new Dictionary<int, MeshGeometry3D>();
+
+        /// <summary>
+        ///   The normals.
+        /// </summary>
+        private Vector3DCollection normals;
+
+        /// <summary>
+        ///   The positions.
+        /// </summary>
+        private Point3DCollection positions;
+
+        /// <summary>
+        ///   The texture coordinates.
+        /// </summary>
+        private PointCollection textureCoordinates;
+
+        /// <summary>
+        ///   The triangle indices.
+        /// </summary>
+        private Int32Collection triangleIndices;
 
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "MeshBuilder" /> class.
+        /// Initializes a new instance of the <see cref="MeshBuilder"/> class. 
         /// </summary>
         /// <remarks>
-        ///   Normal and texture coordinate generation are included.
+        /// Normal and texture coordinate generation are included.
         /// </remarks>
         public MeshBuilder()
             : this(true, true)
@@ -122,13 +125,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MeshBuilder"/> class.
+        /// Initializes a new instance of the <see cref="MeshBuilder"/> class. 
         /// </summary>
         /// <param name="generateNormals">
-        /// Generate normals.
+        /// Generate normals. 
         /// </param>
         /// <param name="generateTextureCoordinates">
-        /// Generate texture coordinates.
+        /// Generate texture coordinates. 
         /// </param>
         public MeshBuilder(bool generateNormals, bool generateTextureCoordinates)
         {
@@ -197,7 +200,7 @@ namespace HelixToolkit.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets the normals.
+        ///   Gets the normals of the mesh.
         /// </summary>
         /// <value>The normals.</value>
         public Vector3DCollection Normals
@@ -209,9 +212,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the positions collection.
+        ///   Gets the positions collection of the mesh.
         /// </summary>
-        /// <value>The positions.</value>
+        /// <value> The positions. </value>
         public Point3DCollection Positions
         {
             get
@@ -221,7 +224,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the texture coordinates.
+        ///   Gets the texture coordinates of the mesh.
         /// </summary>
         /// <value>The texture coordinates.</value>
         public PointCollection TextureCoordinates
@@ -244,6 +247,60 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to create normals.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if normals should be created; otherwise, <c>false</c>.
+        /// </value>
+        public bool CreateNormals
+        {
+            get
+            {
+                return this.normals != null;
+            }
+
+            set
+            {
+                if (value && this.normals == null)
+                {
+                    this.normals = new Vector3DCollection();
+                }
+
+                if (!value)
+                {
+                    this.normals = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to create texture coordinates.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if texture coordinates should be created; otherwise, <c>false</c>.
+        /// </value>
+        public bool CreateTextureCoordinates
+        {
+            get
+            {
+                return this.textureCoordinates != null;
+            }
+
+            set
+            {
+                if (value && this.textureCoordinates == null)
+                {
+                    this.textureCoordinates = new PointCollection();
+                }
+
+                if (!value)
+                {
+                    this.textureCoordinates = null;
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -252,10 +309,10 @@ namespace HelixToolkit.Wpf
         /// Gets a circle section (cached).
         /// </summary>
         /// <param name="thetaDiv">
-        /// The number of division.
+        /// The number of division. 
         /// </param>
         /// <returns>
-        /// A circle.
+        /// A circle. 
         /// </returns>
         public static IList<Point> GetCircle(int thetaDiv)
         {
@@ -278,19 +335,19 @@ namespace HelixToolkit.Wpf
         /// Adds an arrow to the mesh.
         /// </summary>
         /// <param name="point1">
-        /// The start point.
+        /// The start point. 
         /// </param>
         /// <param name="point2">
-        /// The end point.
+        /// The end point. 
         /// </param>
         /// <param name="diameter">
-        /// The diameters of the tube.
+        /// The diameter of the arrow cylinder. 
         /// </param>
         /// <param name="headLength">
-        /// Length of the head (in diameters units).
+        /// Length of the head (relative to diameter). 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the arrow.
+        /// The number of divisions around the arrow. 
         /// </param>
         public void AddArrow(Point3D point1, Point3D point2, double diameter, double headLength = 3, int thetaDiv = 18)
         {
@@ -300,10 +357,10 @@ namespace HelixToolkit.Wpf
 
             var pc = new PointCollection
                 {
-                    new Point(0, 0),
-                    new Point(0, r),
-                    new Point(length - diameter * headLength, r),
-                    new Point(length - diameter * headLength, r * 2),
+                    new Point(0, 0), 
+                    new Point(0, r), 
+                    new Point(length - (diameter * headLength), r), 
+                    new Point(length - (diameter * headLength), r * 2), 
                     new Point(length, 0)
                 };
 
@@ -311,24 +368,24 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds the edges of a bounding box.
+        /// Adds the edges of a bounding box as cylinders.
         /// </summary>
-        /// <param name="bb">
-        /// The bb.
+        /// <param name="boundingBox">
+        /// The bounding box. 
         /// </param>
         /// <param name="diameter">
-        /// The diameters.
+        /// The diameter of the cylinders. 
         /// </param>
-        public void AddBoundingBox(Rect3D bb, double diameter)
+        public void AddBoundingBox(Rect3D boundingBox, double diameter)
         {
-            var p0 = new Point3D(bb.X, bb.Y, bb.Z);
-            var p1 = new Point3D(bb.X, bb.Y + bb.SizeY, bb.Z);
-            var p2 = new Point3D(bb.X + bb.SizeX, bb.Y + bb.SizeY, bb.Z);
-            var p3 = new Point3D(bb.X + bb.SizeX, bb.Y, bb.Z);
-            var p4 = new Point3D(bb.X, bb.Y, bb.Z + bb.SizeZ);
-            var p5 = new Point3D(bb.X, bb.Y + bb.SizeY, bb.Z + bb.SizeZ);
-            var p6 = new Point3D(bb.X + bb.SizeX, bb.Y + bb.SizeY, bb.Z + bb.SizeZ);
-            var p7 = new Point3D(bb.X + bb.SizeX, bb.Y, bb.Z + bb.SizeZ);
+            var p0 = new Point3D(boundingBox.X, boundingBox.Y, boundingBox.Z);
+            var p1 = new Point3D(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
+            var p2 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
+            var p3 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z);
+            var p4 = new Point3D(boundingBox.X, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
+            var p5 = new Point3D(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
+            var p6 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
+            var p7 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
 
             Action<Point3D, Point3D> addEdge = (c1, c2) => this.AddCylinder(c1, c2, diameter, 10);
 
@@ -349,19 +406,19 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Add a box aligned with the X, Y and Z axes.
+        /// Adds a box aligned with the X, Y and Z axes.
         /// </summary>
         /// <param name="center">
-        /// The center.
+        /// The center point of the box. 
         /// </param>
         /// <param name="xlength">
-        /// The width.
+        /// The length of the box along the X axis. 
         /// </param>
         /// <param name="ylength">
-        /// The length.
+        /// The length of the box along the Y axis. 
         /// </param>
         /// <param name="zlength">
-        /// The height.
+        /// The length of the box along the Z axis. 
         /// </param>
         public void AddBox(Point3D center, double xlength, double ylength, double zlength)
         {
@@ -371,36 +428,36 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds a box aligned with the X, Y and Z axes.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
+        /// <param name="rectangle">
+        /// The 3-D "rectangle". 
         /// </param>
-        public void AddBox(Rect3D rect)
+        public void AddBox(Rect3D rectangle)
         {
             this.AddBox(
-                new Point3D(rect.X + rect.SizeX * 0.5, rect.Y + rect.SizeY * 0.5, rect.Z + rect.SizeZ * 0.5),
-                rect.SizeX,
-                rect.SizeY,
-                rect.SizeZ,
+                new Point3D(rectangle.X + (rectangle.SizeX * 0.5), rectangle.Y + (rectangle.SizeY * 0.5), rectangle.Z + (rectangle.SizeZ * 0.5)),
+                rectangle.SizeX,
+                rectangle.SizeY,
+                rectangle.SizeZ,
                 BoxFaces.All);
         }
 
         /// <summary>
-        /// Add a box with specifed faces, align with the X, Y and Z axes.
+        /// Adds a box with the specifed faces, aligned with the X, Y and Z axes.
         /// </summary>
         /// <param name="center">
-        /// The center of the box.
+        /// The center point of the box. 
         /// </param>
         /// <param name="xlength">
-        /// The length of the box along the X axis.
+        /// The length of the box along the X axis. 
         /// </param>
         /// <param name="ylength">
-        /// The length of the box along the Y axis.
+        /// The length of the box along the Y axis. 
         /// </param>
         /// <param name="zlength">
-        /// The length of the box along the Z axis.
+        /// The length of the box along the Z axis. 
         /// </param>
         /// <param name="faces">
-        /// The faces to include.
+        /// The faces to include. 
         /// </param>
         public void AddBox(Point3D center, double xlength, double ylength, double zlength, BoxFaces faces)
         {
@@ -436,31 +493,31 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a cone.
+        /// Adds a (possibly truncated) cone.
         /// </summary>
         /// <param name="origin">
-        /// The origin.
+        /// The origin. 
         /// </param>
         /// <param name="direction">
-        /// The direction.
+        /// The direction (normalization not required). 
         /// </param>
         /// <param name="baseRadius">
-        /// The base radius.
+        /// The base radius. 
         /// </param>
         /// <param name="topRadius">
-        /// The top radius.
+        /// The top radius. 
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height. 
         /// </param>
         /// <param name="baseCap">
-        /// Include a base cap if set to <c>true</c>.
+        /// Include a base cap if set to <c>true</c> . 
         /// </param>
         /// <param name="topCap">
-        /// Include the top cap if set to <c>true</c>.
+        /// Include the top cap if set to <c>true</c> . 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the cone.
+        /// The number of divisions around the cone. 
         /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Cone_(geometry).
@@ -492,25 +549,41 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Adds a cone.
+        /// </summary>
+        /// <param name="origin">The origin point.</param>
+        /// <param name="apex">The apex point.</param>
+        /// <param name="baseRadius">The base radius.</param>
+        /// <param name="baseCap">
+        /// Include a base cap if set to <c>true</c> . 
+        /// </param>
+        /// <param name="thetaDiv">The theta div.</param>
+        public void AddCone(Point3D origin, Point3D apex, double baseRadius, bool baseCap, int thetaDiv)
+        {
+            var dir = apex - origin;
+            this.AddCone(origin, dir, baseRadius, 0, dir.Length, baseCap, false, thetaDiv);
+        }
+
+        /// <summary>
         /// Adds a cube face.
         /// </summary>
         /// <param name="center">
-        /// The center of the cube.
+        /// The center of the cube. 
         /// </param>
         /// <param name="normal">
-        /// The normal.
+        /// The normal vector for the face. 
         /// </param>
         /// <param name="up">
-        /// The up vector for the face.
+        /// The up vector for the face. 
         /// </param>
         /// <param name="dist">
-        /// The dist from the center of the cube to the face.
+        /// The dist from the center of the cube to the face. 
         /// </param>
         /// <param name="width">
-        /// The width of the face.
+        /// The width of the face. 
         /// </param>
         /// <param name="height">
-        /// The height of the face.
+        /// The height of the face. 
         /// </param>
         public void AddCubeFace(Point3D center, Vector3D normal, Vector3D up, double dist, double width, double height)
         {
@@ -556,16 +629,16 @@ namespace HelixToolkit.Wpf
         /// Adds a cylinder to the mesh.
         /// </summary>
         /// <param name="p1">
-        /// The p1.
+        /// The first point. 
         /// </param>
         /// <param name="p2">
-        /// The p2.
+        /// The second point. 
         /// </param>
         /// <param name="diameter">
-        /// The diameters.
+        /// The diameters. 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the cylinder.
+        /// The number of divisions around the cylinder. 
         /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Cylinder_(geometry).
@@ -581,52 +654,55 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds a collection of edges as cylinders.
         /// </summary>
-        /// <param name="pts">
-        /// The PTS.
+        /// <param name="points">
+        /// The points. 
         /// </param>
         /// <param name="edges">
-        /// The edges.
+        /// The edge indices. 
         /// </param>
         /// <param name="diameter">
-        /// The diameters.
+        /// The diameter of the cylinders. 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the cylinders.
+        /// The number of divisions around the cylinders. 
         /// </param>
-        public void AddEdges(IList<Point3D> pts, IList<int> edges, double diameter, int thetaDiv)
+        public void AddEdges(IList<Point3D> points, IList<int> edges, double diameter, int thetaDiv)
         {
             for (int i = 0; i < edges.Count - 1; i += 2)
             {
-                this.AddCylinder(pts[edges[i]], pts[edges[i + 1]], diameter, thetaDiv);
+                this.AddCylinder(points[edges[i]], points[edges[i + 1]], diameter, thetaDiv);
             }
         }
 
         /// <summary>
-        /// Add the extruded geometry of the specified curve and direction.
+        /// Adds an extruded surface of the specified curve.
         /// </summary>
         /// <param name="points">
-        /// The points.
+        /// The 2D points describing the curve to extrude. 
         /// </param>
-        /// <param name="xdirection">
-        /// The x axis direction.
+        /// <param name="xaxis">
+        /// The x-axis. 
         /// </param>
         /// <param name="p0">
-        /// The p0.
+        /// The start origin of the extruded surface. 
         /// </param>
         /// <param name="p1">
-        /// The p1.
+        /// The end origin of the extruded surface. 
         /// </param>
-        public void AddExtrudedGeometry(IList<Point> points, Vector3D xdirection, Point3D p0, Point3D p1)
+        /// <remarks>
+        /// The y-axis is determined by the cross product between the specified x-axis and the p1-p0 vector.
+        /// </remarks>
+        public void AddExtrudedGeometry(IList<Point> points, Vector3D xaxis, Point3D p0, Point3D p1)
         {
-            var ydirection = Vector3D.CrossProduct(xdirection, p1 - p0);
+            var ydirection = Vector3D.CrossProduct(xaxis, p1 - p0);
             ydirection.Normalize();
-            xdirection.Normalize();
+            xaxis.Normalize();
 
             int index0 = this.positions.Count;
             int np = 2 * points.Count;
             foreach (var p in points)
             {
-                var v = xdirection * p.X + ydirection * p.Y;
+                var v = (xaxis * p.X) + (ydirection * p.Y);
                 this.positions.Add(p0 + v);
                 this.positions.Add(p1 + v);
                 v.Normalize();
@@ -644,7 +720,7 @@ namespace HelixToolkit.Wpf
 
                 int i1 = index0 + 1;
                 int i2 = (index0 + 2) % np;
-                int i3 = (index0 + 2) % np + 1;
+                int i3 = ((index0 + 2) % np) + 1;
 
                 this.triangleIndices.Add(i1);
                 this.triangleIndices.Add(i2);
@@ -657,16 +733,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds the lofted geometry.
+        /// Adds a lofted surface.
         /// </summary>
         /// <param name="positionsList">
-        /// List of lofting sections.
+        /// List of lofting sections. 
         /// </param>
         /// <param name="normalList">
-        /// The normal list.
+        /// The normal list. 
         /// </param>
         /// <param name="textureCoordinateList">
-        /// The texture coordinate list.
+        /// The texture coordinate list. 
         /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Loft_(3D).
@@ -724,7 +800,7 @@ namespace HelixToolkit.Wpf
             {
                 for (int j = 0; j + 1 < n; j++)
                 {
-                    int i0 = index0 + i * n + j;
+                    int i0 = index0 + (i * n) + j;
                     int i1 = i0 + n;
                     int i2 = i1 + 1;
                     int i3 = i0 + 1;
@@ -740,16 +816,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Add a single node.
+        /// Adds a single node.
         /// </summary>
         /// <param name="position">
-        /// The position.
+        /// The position. 
         /// </param>
         /// <param name="normal">
-        /// The normal.
+        /// The normal. 
         /// </param>
         /// <param name="textureCoordinate">
-        /// The texture coordinate.
+        /// The texture coordinate. 
         /// </param>
         public void AddNode(Point3D position, Vector3D normal, Point textureCoordinate)
         {
@@ -767,22 +843,22 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a hollow pipe.
+        /// Adds a (possibly hollow) pipe.
         /// </summary>
         /// <param name="point1">
-        /// The start point.
+        /// The start point. 
         /// </param>
         /// <param name="point2">
-        /// The end point.
+        /// The end point. 
         /// </param>
         /// <param name="innerDiameter">
-        /// The inner diameters.
+        /// The inner diameter. 
         /// </param>
         /// <param name="diameter">
-        /// The outer diameters.
+        /// The outer diameter. 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions.
+        /// The number of divisions around the pipe. 
         /// </param>
         public void AddPipe(Point3D point1, Point3D point2, double innerDiameter, double diameter, int thetaDiv)
         {
@@ -793,13 +869,15 @@ namespace HelixToolkit.Wpf
 
             var pc = new PointCollection
                 {
-                    new Point(0, innerDiameter / 2),
-                    new Point(0, diameter / 2),
-                    new Point(height, diameter / 2),
+                    new Point(0, innerDiameter / 2), 
+                    new Point(0, diameter / 2), 
+                    new Point(height, diameter / 2), 
                     new Point(height, innerDiameter / 2)
                 };
+
             if (innerDiameter > 0)
             {
+                // Add the inner surface
                 pc.Add(new Point(0, innerDiameter / 2));
             }
 
@@ -810,8 +888,11 @@ namespace HelixToolkit.Wpf
         /// Adds a polygon.
         /// </summary>
         /// <param name="points">
-        /// The points of the polygon.
+        /// The points of the polygon. 
         /// </param>
+        /// <remarks>
+        /// If the number of points is greater than 4, a triangle fan is used.
+        /// </remarks>
         public void AddPolygon(IList<Point3D> points)
         {
             switch (points.Count)
@@ -832,23 +913,23 @@ namespace HelixToolkit.Wpf
         /// Adds a pyramid.
         /// </summary>
         /// <param name="center">
-        /// The center.
+        /// The center. 
         /// </param>
         /// <param name="sideLength">
-        /// Length of the side.
+        /// Length of the sides of the pyramid. 
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height of the pyramid. 
         /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Pyramid_(geometry).
         /// </remarks>
         public void AddPyramid(Point3D center, double sideLength, double height)
         {
-            var p1 = new Point3D(center.X - sideLength * 0.5, center.Y - sideLength * 0.5, center.Z);
-            var p2 = new Point3D(center.X + sideLength * 0.5, center.Y - sideLength * 0.5, center.Z);
-            var p3 = new Point3D(center.X + sideLength * 0.5, center.Y + sideLength * 0.5, center.Z);
-            var p4 = new Point3D(center.X - sideLength * 0.5, center.Y + sideLength * 0.5, center.Z);
+            var p1 = new Point3D(center.X - (sideLength * 0.5), center.Y - (sideLength * 0.5), center.Z);
+            var p2 = new Point3D(center.X + (sideLength * 0.5), center.Y - (sideLength * 0.5), center.Z);
+            var p3 = new Point3D(center.X + (sideLength * 0.5), center.Y + (sideLength * 0.5), center.Z);
+            var p4 = new Point3D(center.X - (sideLength * 0.5), center.Y + (sideLength * 0.5), center.Z);
             var p5 = new Point3D(center.X, center.Y, center.Z + height);
             this.AddTriangle(p1, p2, p5);
             this.AddTriangle(p2, p3, p5);
@@ -857,20 +938,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a quad.
+        /// Adds a quadrilateral polygon.
         /// </summary>
         /// <param name="p0">
-        /// The p0.
+        /// The first point. 
         /// </param>
         /// <param name="p1">
-        /// The p1.
+        /// The second point. 
         /// </param>
         /// <param name="p2">
-        /// The p2.
+        /// The third point. 
         /// </param>
         /// <param name="p3">
-        /// The p3.
+        /// The fourth point. 
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Quadrilateral.
+        /// </remarks>
         public void AddQuad(Point3D p0, Point3D p1, Point3D p2, Point3D p3)
         {
             ////   The nodes are arranged in counter-clockwise order
@@ -888,32 +972,35 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a quad.
+        /// Adds a quadrilateral polygon.
         /// </summary>
         /// <param name="p0">
-        /// The p0.
+        /// The first point. 
         /// </param>
         /// <param name="p1">
-        /// The p1.
+        /// The second point. 
         /// </param>
         /// <param name="p2">
-        /// The p2.
+        /// The third point. 
         /// </param>
         /// <param name="p3">
-        /// The p3.
+        /// The fourth point. 
         /// </param>
         /// <param name="uv0">
-        /// The uv0.
+        /// The first texture coordinate. 
         /// </param>
         /// <param name="uv1">
-        /// The uv1.
+        /// The second texture coordinate. 
         /// </param>
         /// <param name="uv2">
-        /// The uv2.
+        /// The third texture coordinate. 
         /// </param>
         /// <param name="uv3">
-        /// The uv3.
+        /// The fourth texture coordinate. 
         /// </param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Quadrilateral.
+        /// </remarks>
         public void AddQuad(Point3D p0, Point3D p1, Point3D p2, Point3D p3, Point uv0, Point uv1, Point uv2, Point uv3)
         {
             ////   The nodes are arranged in counter-clockwise order
@@ -958,16 +1045,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds the quads.
+        /// Adds a list of quadrilateral polygons.
         /// </summary>
         /// <param name="quadPositions">
-        /// The points.
+        /// The points. 
         /// </param>
         /// <param name="quadNormals">
-        /// The normals.
+        /// The normals. 
         /// </param>
         /// <param name="quadTextureCoordinates">
-        /// The tex coords.
+        /// The texture coordinates. 
         /// </param>
         public void AddQuads(
             IList<Point3D> quadPositions, IList<Vector3D> quadNormals, IList<Point> quadTextureCoordinates)
@@ -1038,10 +1125,10 @@ namespace HelixToolkit.Wpf
         /// Adds a rectangular mesh (m x n points).
         /// </summary>
         /// <param name="points">
-        /// The one-dimensional array of points. The points are stored row-by-row.
+        /// The one-dimensional array of points. The points are stored row-by-row. 
         /// </param>
         /// <param name="columns">
-        /// The number of columns in the rectangular mesh.
+        /// The number of columns in the rectangular mesh. 
         /// </param>
         public void AddRectangularMesh(IList<Point3D> points, int columns)
         {
@@ -1075,16 +1162,16 @@ namespace HelixToolkit.Wpf
         /// Adds a rectangular mesh defined by a two-dimensional arrary of points.
         /// </summary>
         /// <param name="points">
-        /// The points.
+        /// The points. 
         /// </param>
         /// <param name="texCoords">
-        /// The texture coordinates (optional).
+        /// The texture coordinates (optional). 
         /// </param>
         /// <param name="closed0">
-        /// set to <c>true</c> if the mesh is closed in the 1st dimension.
+        /// set to <c>true</c> if the mesh is closed in the 1st dimension. 
         /// </param>
         /// <param name="closed1">
-        /// set to <c>true</c> if the mesh is closed in the 2nd dimension.
+        /// set to <c>true</c> if the mesh is closed in the 2nd dimension. 
         /// </param>
         public void AddRectangularMesh(
             Point3D[,] points, Point[,] texCoords = null, bool closed0 = false, bool closed1 = false)
@@ -1132,20 +1219,19 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Add a regular icosahedron.
+        /// Adds a regular icosahedron.
         /// </summary>
         /// <param name="center">
-        /// The center.
+        /// The center. 
         /// </param>
         /// <param name="radius">
-        /// The radius.
+        /// The radius. 
         /// </param>
         /// <param name="shareVertices">
-        /// share vertices if set to <c>true</c>.
+        /// share vertices if set to <c>true</c> . 
         /// </param>
         /// <remarks>
-        /// See http://en.wikipedia.org/wiki/Icosahedron
-        /// and http://www.gamedev.net/community/forums/topic.asp?topic_id=283350.
+        /// See http://en.wikipedia.org/wiki/Icosahedron and http://www.gamedev.net/community/forums/topic.asp?topic_id=283350.
         /// </remarks>
         public void AddRegularIcosahedron(Point3D center, double radius, bool shareVertices)
         {
@@ -1155,14 +1241,14 @@ namespace HelixToolkit.Wpf
 
             var icosahedronIndices = new[]
                 {
-                    1, 4, 0, 4, 9, 0, 4, 5, 9, 8, 5, 4, 1, 8, 4, 1, 10, 8, 10, 3, 8, 8, 3, 5, 3, 2, 5, 3, 7, 2, 3, 10, 7,
+                    1, 4, 0, 4, 9, 0, 4, 5, 9, 8, 5, 4, 1, 8, 4, 1, 10, 8, 10, 3, 8, 8, 3, 5, 3, 2, 5, 3, 7, 2, 3, 10, 7, 
                     10, 6, 7, 6, 11, 7, 6, 0, 11, 6, 1, 0, 10, 1, 6, 11, 0, 9, 2, 11, 9, 5, 2, 9, 11, 2, 7
                 };
 
             var icosahedronVertices = new[]
                 {
-                    new Vector3D(-a, 0, b), new Vector3D(a, 0, b), new Vector3D(-a, 0, -b), new Vector3D(a, 0, -b),
-                    new Vector3D(0, b, a), new Vector3D(0, b, -a), new Vector3D(0, -b, a), new Vector3D(0, -b, -a),
+                    new Vector3D(-a, 0, b), new Vector3D(a, 0, b), new Vector3D(-a, 0, -b), new Vector3D(a, 0, -b), 
+                    new Vector3D(0, b, a), new Vector3D(0, b, -a), new Vector3D(0, -b, a), new Vector3D(0, -b, -a), 
                     new Vector3D(b, a, 0), new Vector3D(-b, a, 0), new Vector3D(b, -a, 0), new Vector3D(-b, -a, 0)
                 };
 
@@ -1171,7 +1257,7 @@ namespace HelixToolkit.Wpf
                 int index0 = this.positions.Count;
                 foreach (var v in icosahedronVertices)
                 {
-                    this.positions.Add(center + v * radius);
+                    this.positions.Add(center + (v * radius));
                 }
 
                 foreach (int i in icosahedronIndices)
@@ -1184,27 +1270,27 @@ namespace HelixToolkit.Wpf
                 for (int i = 0; i + 2 < icosahedronIndices.Length; i += 3)
                 {
                     this.AddTriangle(
-                        center + icosahedronVertices[icosahedronIndices[i]] * radius,
-                        center + icosahedronVertices[icosahedronIndices[i + 1]] * radius,
-                        center + icosahedronVertices[icosahedronIndices[i + 2]] * radius);
+                        center + (icosahedronVertices[icosahedronIndices[i]] * radius),
+                        center + (icosahedronVertices[icosahedronIndices[i + 1]] * radius),
+                        center + (icosahedronVertices[icosahedronIndices[i + 2]] * radius));
                 }
             }
         }
 
         /// <summary>
-        /// Add a surface of revolution.
+        /// Adds a surface of revolution.
         /// </summary>
         /// <param name="points">
-        /// The points (x coordinates are radius, y coordinates are distance from the origin along the axis of revolution)
+        /// The points (x coordinates are radius, y coordinates are distance from the origin along the axis of revolution) 
         /// </param>
         /// <param name="origin">
-        /// The origin of the revolution axis.
+        /// The origin of the revolution axis. 
         /// </param>
         /// <param name="direction">
-        /// The direction of the revolution axis.
+        /// The direction of the revolution axis. 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the mesh.
+        /// The number of divisions around the mesh. 
         /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Surface_of_revolution.
@@ -1230,13 +1316,13 @@ namespace HelixToolkit.Wpf
 
             for (int i = 0; i < thetaDiv; i++)
             {
-                Vector3D w = v * circle[i].X + u * circle[i].Y;
+                var w = (v * circle[i].X) + (u * circle[i].Y);
 
                 for (int j = 0; j + 1 < n; j++)
                 {
                     // Add segment
-                    var q1 = origin + direction * points[j].X + w * points[j].Y;
-                    var q2 = origin + direction * points[j + 1].X + w * points[j + 1].Y;
+                    var q1 = origin + (direction * points[j].X) + (w * points[j].Y);
+                    var q2 = origin + (direction * points[j + 1].X) + (w * points[j + 1].Y);
 
                     // todo:should not add segment if q1==q2 (corner point)
                     // const double eps = 1e-6;
@@ -1245,7 +1331,7 @@ namespace HelixToolkit.Wpf
                     double tx = points[j + 1].X - points[j].X;
                     double ty = points[j + 1].Y - points[j].Y;
 
-                    var normal = -direction * ty + w * tx;
+                    var normal = (-direction * ty) + (w * tx);
                     normal.Normalize();
 
                     this.positions.Add(q1);
@@ -1263,9 +1349,9 @@ namespace HelixToolkit.Wpf
                         this.textureCoordinates.Add(new Point((double)i / (thetaDiv - 1), (double)(j + 1) / (n - 1)));
                     }
 
-                    int i0 = index0 + i * rowNodes + j * 2;
+                    int i0 = index0 + (i * rowNodes) + (j * 2);
                     int i1 = i0 + 1;
-                    int i2 = index0 + ((i + 1) * rowNodes + j * 2) % totalNodes;
+                    int i2 = index0 + ((((i + 1) * rowNodes) + (j * 2)) % totalNodes);
                     int i3 = i2 + 1;
 
                     this.triangleIndices.Add(i1);
@@ -1280,42 +1366,45 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds the sphere.
+        /// Adds a sphere (by subdiving a regular icosahedron).
         /// </summary>
         /// <param name="center">
-        /// The center.
+        /// The center of the sphere. 
         /// </param>
         /// <param name="radius">
-        /// The radius.
+        /// The radius of the sphere. 
         /// </param>
         /// <param name="subdivisions">
-        /// The number of triangular subdivisions.
+        /// The number of triangular subdivisions of the original icosahedron. 
         /// </param>
-        public void AddSphere(Point3D center, double radius, int subdivisions)
+        /// <remarks>
+        /// See http://www.fho-emden.de/~hoffmann/ikos27042002.pdf.
+        /// </remarks>
+        public void AddSubdivisionSphere(Point3D center, double radius, int subdivisions)
         {
             int p0 = this.positions.Count;
             this.Append(GetUnitSphere(subdivisions));
             int p1 = this.positions.Count;
             for (int i = p0; i < p1; i++)
             {
-                this.positions[i] = center + radius * this.positions[i].ToVector3D();
+                this.positions[i] = center + (radius * this.positions[i].ToVector3D());
             }
         }
 
         /// <summary>
-        /// Add a sphere.
+        /// Adds a sphere.
         /// </summary>
         /// <param name="center">
-        /// The center.
+        /// The center of the sphere. 
         /// </param>
         /// <param name="radius">
-        /// The radius.
+        /// The radius of the sphere. 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the sphere.
+        /// The number of divisions around the sphere. 
         /// </param>
         /// <param name="phiDiv">
-        /// The number of divisions from top to bottom of the sphere.
+        /// The number of divisions from top to bottom of the sphere. 
         /// </param>
         public void AddSphere(Point3D center, double radius, int thetaDiv = 20, int phiDiv = 10)
         {
@@ -1338,7 +1427,7 @@ namespace HelixToolkit.Wpf
                     double y = Math.Sin(theta) * Math.Sin(phi);
                     double z = Math.Cos(phi);
 
-                    var p = new Point3D(center.X + radius * x, center.Y + radius * y, center.Z + radius * z);
+                    var p = new Point3D(center.X + (radius * x), center.Y + (radius * y), center.Z + (radius * z));
                     this.positions.Add(p);
 
                     if (this.normals != null)
@@ -1362,13 +1451,13 @@ namespace HelixToolkit.Wpf
         /// Adds a triangle.
         /// </summary>
         /// <param name="p0">
-        /// The p0.
+        /// The first point. 
         /// </param>
         /// <param name="p1">
-        /// The p1.
+        /// The second point. 
         /// </param>
         /// <param name="p2">
-        /// The p2.
+        /// The third point. 
         /// </param>
         public void AddTriangle(Point3D p0, Point3D p1, Point3D p2)
         {
@@ -1382,22 +1471,22 @@ namespace HelixToolkit.Wpf
         /// Adds a triangle.
         /// </summary>
         /// <param name="p0">
-        /// The p0.
+        /// The first point. 
         /// </param>
         /// <param name="p1">
-        /// The p1.
+        /// The second point. 
         /// </param>
         /// <param name="p2">
-        /// The p2.
+        /// The third point. 
         /// </param>
         /// <param name="uv0">
-        /// The uv0.
+        /// The first texture coordinate. 
         /// </param>
         /// <param name="uv1">
-        /// The uv1.
+        /// The second texture coordinate. 
         /// </param>
         /// <param name="uv2">
-        /// The uv2.
+        /// The third texture coordinate. 
         /// </param>
         public void AddTriangle(Point3D p0, Point3D p1, Point3D p2, Point uv0, Point uv1, Point uv2)
         {
@@ -1429,10 +1518,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds the triangle fan.
+        /// Adds a triangle fan.
         /// </summary>
         /// <param name="vertices">
-        /// The vertex indices of the triangle fan.
+        /// The vertex indices of the triangle fan. 
         /// </param>
         public void AddTriangleFan(IList<int> vertices)
         {
@@ -1448,13 +1537,13 @@ namespace HelixToolkit.Wpf
         /// Adds a triangle fan to the mesh
         /// </summary>
         /// <param name="fanPositions">
-        /// The triangle fan points.
+        /// The points of the triangle fan. 
         /// </param>
         /// <param name="fanNormals">
-        /// The normals.
+        /// The normals of the triangle fan. 
         /// </param>
         /// <param name="fanTextureCoordinates">
-        /// The texture coordinates.
+        /// The texture coordinates of the triangle fan. 
         /// </param>
         public void AddTriangleFan(
             IList<Point3D> fanPositions, IList<Vector3D> fanNormals = null, IList<Point> fanTextureCoordinates = null)
@@ -1509,13 +1598,13 @@ namespace HelixToolkit.Wpf
         /// Adds a triangle strip to the mesh.
         /// </summary>
         /// <param name="stripPositions">
-        /// The points.
+        /// The points of the triangle strip. 
         /// </param>
         /// <param name="stripNormals">
-        /// The normals.
+        /// The normals of the triangle strip. 
         /// </param>
         /// <param name="stripTextureCoordinates">
-        /// The texture coordinates.
+        /// The texture coordinates of the triangle strip. 
         /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Triangle_strip.
@@ -1585,13 +1674,13 @@ namespace HelixToolkit.Wpf
         /// Adds a list of triangles.
         /// </summary>
         /// <param name="trianglePositions">
-        /// The points.
+        /// The points. 
         /// </param>
         /// <param name="triangleNormals">
-        /// The normals.
+        /// The normals. 
         /// </param>
         /// <param name="triangleTextureCoordinates">
-        /// The texture coordinates.
+        /// The texture coordinates. 
         /// </param>
         public void AddTriangles(
             IList<Point3D> trianglePositions,
@@ -1658,40 +1747,40 @@ namespace HelixToolkit.Wpf
         /// Adds a tube.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// A list of points defining the centers of the tube. 
         /// </param>
         /// <param name="values">
-        /// The texture coordinate X values (optional).
+        /// The texture coordinate X-values (optional). 
         /// </param>
-        /// <param name="diameter">
-        /// The diameters (optional).
+        /// <param name="diameters">
+        /// The diameters (optional). 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the tube.
+        /// The number of divisions around the tube. 
         /// </param>
         /// <param name="isTubeClosed">
-        /// If the tube path is closed set this flag to true.
+        /// Set to true if the tube path is closed. 
         /// </param>
-        public void AddTube(IList<Point3D> path, double[] values, double[] diameter, int thetaDiv, bool isTubeClosed)
+        public void AddTube(IList<Point3D> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed)
         {
-            var pc = GetCircle(thetaDiv);
-            this.AddTube(path, values, diameter, pc, isTubeClosed, true);
+            var circle = GetCircle(thetaDiv);
+            this.AddTube(path, values, diameters, circle, isTubeClosed, true);
         }
 
         /// <summary>
         /// Adds a tube.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// A list of points defining the centers of the tube. 
         /// </param>
         /// <param name="diameter">
-        /// The diameter of the tube.
+        /// The diameter of the tube. 
         /// </param>
         /// <param name="thetaDiv">
-        /// The number of divisions around the tube.
+        /// The number of divisions around the tube. 
         /// </param>
         /// <param name="isTubeClosed">
-        /// If the tube path is closed set this flag to true.
+        /// Set to true if the tube path is closed. 
         /// </param>
         public void AddTube(IList<Point3D> path, double diameter, int thetaDiv, bool isTubeClosed)
         {
@@ -1699,25 +1788,25 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a tube.
+        /// Adds a tube with a custom section.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// A list of points defining the centers of the tube. 
         /// </param>
         /// <param name="values">
-        /// The texture coordinate X values (optional).
+        /// The texture coordinate X values (optional). 
         /// </param>
         /// <param name="diameters">
-        /// The diameters (optional).
+        /// The diameters (optional). 
         /// </param>
         /// <param name="section">
-        /// The section.
+        /// The section to extrude along the tube path. 
         /// </param>
         /// <param name="isTubeClosed">
-        /// If the tube is closed set to <c>true</c>.
+        /// If the tube is closed set to <c>true</c> . 
         /// </param>
         /// <param name="isSectionClosed">
-        /// if set to <c>true</c> [is section closed].
+        /// if set to <c>true</c> [is section closed]. 
         /// </param>
         public void AddTube(
             IList<Point3D> path,
@@ -1731,7 +1820,7 @@ namespace HelixToolkit.Wpf
             {
                 throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
             }
-            
+
             if (diameters != null && diameters.Count == 0)
             {
                 throw new InvalidOperationException(WrongNumberOfDiameters);
@@ -1765,7 +1854,7 @@ namespace HelixToolkit.Wpf
                 var v = up;
                 for (int j = 0; j < sectionLength; j++)
                 {
-                    var w = section[j].X * u * r + section[j].Y * v * r;
+                    var w = (section[j].X * u * r) + (section[j].Y * v * r);
                     var q = path[i] + w;
                     this.positions.Add(q);
                     if (this.normals != null)
@@ -1777,7 +1866,9 @@ namespace HelixToolkit.Wpf
                     if (this.textureCoordinates != null)
                     {
                         this.textureCoordinates.Add(
-                            values != null ? new Point(values[i % valuesCount], (double)j / (sectionLength - 1)) : new Point());
+                            values != null
+                                ? new Point(values[i % valuesCount], (double)j / (sectionLength - 1))
+                                : new Point());
                     }
                 }
             }
@@ -1789,7 +1880,7 @@ namespace HelixToolkit.Wpf
         /// Appends the specified mesh.
         /// </summary>
         /// <param name="mesh">
-        /// The mesh.
+        /// The mesh. 
         /// </param>
         public void Append(MeshBuilder mesh)
         {
@@ -1805,7 +1896,7 @@ namespace HelixToolkit.Wpf
         /// Appends the specified mesh.
         /// </summary>
         /// <param name="mesh">
-        /// The mesh.
+        /// The mesh. 
         /// </param>
         public void Append(MeshGeometry3D mesh)
         {
@@ -1821,16 +1912,16 @@ namespace HelixToolkit.Wpf
         /// Appends the specified points and triangles.
         /// </summary>
         /// <param name="positionsToAppend">
-        /// The points.
+        /// The points to append. 
         /// </param>
         /// <param name="triangleIndicesToAppend">
-        /// The triangle indices.
+        /// The triangle indices to append. 
         /// </param>
         /// <param name="normalsToAppend">
-        /// The normals.
+        /// The normals to append. 
         /// </param>
         /// <param name="textureCoordinatesToAppend">
-        /// The texture coordinates.
+        /// The texture coordinates to append. 
         /// </param>
         public void Append(
             IList<Point3D> positionsToAppend,
@@ -1895,16 +1986,16 @@ namespace HelixToolkit.Wpf
         /// Chamfers the specified corner (experimental code).
         /// </summary>
         /// <param name="p">
-        /// The corner point.
+        /// The corner point. 
         /// </param>
         /// <param name="d">
-        /// The chamfer distance.
+        /// The chamfer distance. 
         /// </param>
         /// <param name="eps">
-        /// The corner search limit distance.
+        /// The corner search limit distance. 
         /// </param>
         /// <param name="chamferPoints">
-        /// If this parameter is provided, the collection will be filled with the generated chamfer points.
+        /// If this parameter is provided, the collection will be filled with the generated chamfer points. 
         /// </param>
         public void ChamferCorner(Point3D p, double d, double eps = 1e-6, IList<Point3D> chamferPoints = null)
         {
@@ -1915,7 +2006,7 @@ namespace HelixToolkit.Wpf
 
             var cornerNormal = this.FindCornerNormal(p, eps);
 
-            var newCornerPoint = p - cornerNormal * d;
+            var newCornerPoint = p - (cornerNormal * d);
             int index0 = this.positions.Count;
             this.positions.Add(newCornerPoint);
 
@@ -2013,10 +2104,10 @@ namespace HelixToolkit.Wpf
         /// Checks the performance limits.
         /// </summary>
         /// <remarks>
-        /// http://msdn.microsoft.com/en-us/library/bb613553.aspx
-        ///   Try to keep mesh sizes under these limits:
-        ///   Positions : 20,001 Point3D instances
-        ///   TriangleIndices : 60,003 Int32 instances
+        /// See http://msdn.microsoft.com/en-us/library/bb613553.aspx.
+        /// Try to keep mesh sizes under these limits: 
+        /// Positions : 20,001 Point3D instances 
+        /// TriangleIndices : 60,003 Int32 instances
         /// </remarks>
         public void CheckPerformanceLimits()
         {
@@ -2035,13 +2126,13 @@ namespace HelixToolkit.Wpf
         /// Scales the positions (and normals).
         /// </summary>
         /// <param name="scaleX">
-        /// The X scale factor.
+        /// The X scale factor. 
         /// </param>
         /// <param name="scaleY">
-        /// The Y scale factor.
+        /// The Y scale factor. 
         /// </param>
         /// <param name="scaleZ">
-        /// The Z scale factor.
+        /// The Z scale factor. 
         /// </param>
         public void Scale(double scaleX, double scaleY, double scaleZ)
         {
@@ -2066,7 +2157,7 @@ namespace HelixToolkit.Wpf
         /// Performs a linear subdivision of the mesh.
         /// </summary>
         /// <param name="barycentric">
-        /// Barycentric(?) if set to <c>true</c>.
+        /// Barycentric(?) if set to <c>true</c> . 
         /// </param>
         public void SubdivideLinear(bool barycentric = false)
         {
@@ -2081,13 +2172,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Converts the geometry to a <see cref="MeshGeometry3D"/>.
+        /// Converts the geometry to a <see cref="MeshGeometry3D"/> .
         /// </summary>
         /// <param name="freeze">
-        /// freeze the mesh if set to <c>true</c>.
+        /// freeze the mesh if set to <c>true</c> . 
         /// </param>
         /// <returns>
-        /// A mesh geometry.
+        /// A mesh geometry. 
         /// </returns>
         public MeshGeometry3D ToMesh(bool freeze = false)
         {
@@ -2121,13 +2212,13 @@ namespace HelixToolkit.Wpf
         #region Methods
 
         /// <summary>
-        /// The get unit sphere.
+        /// Gets a unit sphere from the cache.
         /// </summary>
         /// <param name="subdivisions">
-        /// The subdivisions.
+        /// The number of subdivisions. 
         /// </param>
         /// <returns>
-        /// A unit sphere mesh.
+        /// A unit sphere mesh. 
         /// </returns>
         private static MeshGeometry3D GetUnitSphere(int subdivisions)
         {
@@ -2156,16 +2247,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds normals to a rectangular mesh.
+        /// Adds normals for a rectangular mesh.
         /// </summary>
         /// <param name="index0">
-        /// The index 0.
+        /// The index 0. 
         /// </param>
         /// <param name="rows">
-        /// The number of rows.
+        /// The number of rows. 
         /// </param>
         /// <param name="columns">
-        /// The number of columns.
+        /// The number of columns. 
         /// </param>
         private void AddRectangularMeshNormals(int index0, int rows, int columns)
         {
@@ -2188,9 +2279,9 @@ namespace HelixToolkit.Wpf
 
                     int j0 = j1 - 1;
                     var u = Point3D.Subtract(
-                        this.positions[index0 + i1 * columns + j0], this.positions[index0 + i0 * columns + j0]);
+                        this.positions[index0 + (i1 * columns) + j0], this.positions[index0 + (i0 * columns) + j0]);
                     var v = Point3D.Subtract(
-                        this.positions[index0 + i0 * columns + j1], this.positions[index0 + i0 * columns + j0]);
+                        this.positions[index0 + (i0 * columns) + j1], this.positions[index0 + (i0 * columns) + j0]);
                     var normal = Vector3D.CrossProduct(u, v);
                     normal.Normalize();
                     this.normals.Add(normal);
@@ -2199,13 +2290,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds texture coordinates to a rectangular mesh.
+        /// Adds texture coordinates for a rectangular mesh.
         /// </summary>
         /// <param name="rows">
-        /// The number of rows.
+        /// The number of rows. 
         /// </param>
         /// <param name="columns">
-        /// The number of columns.
+        /// The number of columns. 
         /// </param>
         private void AddRectangularMeshTextureCoordinates(int rows, int columns)
         {
@@ -2224,16 +2315,16 @@ namespace HelixToolkit.Wpf
         /// Add triangle indices for a rectangular mesh.
         /// </summary>
         /// <param name="index0">
-        /// The index offset.
+        /// The index offset. 
         /// </param>
         /// <param name="rows">
-        /// The number of rows.
+        /// The number of rows. 
         /// </param>
         /// <param name="columns">
-        /// The number of columns.
+        /// The number of columns. 
         /// </param>
         /// <param name="isSpherical">
-        /// set the flag to true to create a sphere mesh (triangles at top and bottom).
+        /// set the flag to true to create a sphere mesh (triangles at top and bottom). 
         /// </param>
         private void AddRectangularMeshTriangleIndices(int index0, int rows, int columns, bool isSpherical = false)
         {
@@ -2241,7 +2332,7 @@ namespace HelixToolkit.Wpf
             {
                 for (int j = 0; j < columns - 1; j++)
                 {
-                    int ij = i * columns + j;
+                    int ij = (i * columns) + j;
                     if (!isSpherical || i > 0)
                     {
                         this.triangleIndices.Add(index0 + ij);
@@ -2263,19 +2354,19 @@ namespace HelixToolkit.Wpf
         /// Adds triangular indices for a rectangular mesh.
         /// </summary>
         /// <param name="index0">
-        /// The index 0.
+        /// The index 0. 
         /// </param>
         /// <param name="rows">
-        /// The rows.
+        /// The rows. 
         /// </param>
         /// <param name="columns">
-        /// The columns.
+        /// The columns. 
         /// </param>
         /// <param name="rowsClosed">
-        /// True if rows are closed.
+        /// True if rows are closed. 
         /// </param>
         /// <param name="columnsClosed">
-        /// True if columns are closed.
+        /// True if columns are closed. 
         /// </param>
         private void AddRectangularMeshTriangleIndices(
             int index0, int rows, int columns, bool rowsClosed, bool columnsClosed)
@@ -2296,10 +2387,10 @@ namespace HelixToolkit.Wpf
             {
                 for (int j = 0; j < n2; j++)
                 {
-                    int i00 = index0 + i * columns + j;
-                    int i01 = index0 + i * columns + (j + 1) % columns;
-                    int i10 = index0 + ((i + 1) % rows) * columns + j;
-                    int i11 = index0 + ((i + 1) % rows) * columns + (j + 1) % columns;
+                    int i00 = index0 + (i * columns) + j;
+                    int i01 = index0 + (i * columns) + ((j + 1) % columns);
+                    int i10 = index0 + (((i + 1) % rows) * columns) + j;
+                    int i11 = index0 + (((i + 1) % rows) * columns) + ((j + 1) % columns);
                     this.triangleIndices.Add(i00);
                     this.triangleIndices.Add(i11);
                     this.triangleIndices.Add(i01);
@@ -2312,16 +2403,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Finds the average normal to the specified corner.
+        /// Finds the average normal to the specified corner (experimental code).
         /// </summary>
         /// <param name="p">
-        /// The corner point.
+        /// The corner point. 
         /// </param>
         /// <param name="eps">
-        /// The corner search limit distance.
+        /// The corner search limit distance. 
         /// </param>
         /// <returns>
-        /// The normal.
+        /// The normal. 
         /// </returns>
         private Vector3D FindCornerNormal(Point3D p, double eps)
         {
@@ -2458,9 +2549,9 @@ namespace HelixToolkit.Wpf
                 var v01 = p1 - p0;
                 var v12 = p2 - p1;
                 var v20 = p0 - p2;
-                var p01 = p0 + v01 * 0.5;
-                var p12 = p1 + v12 * 0.5;
-                var p20 = p2 + v20 * 0.5;
+                var p01 = p0 + (v01 * 0.5);
+                var p12 = p1 + (v12 * 0.5);
+                var p20 = p2 + (v20 * 0.5);
 
                 int i01 = ip++;
                 int i12 = ip++;
@@ -2486,9 +2577,9 @@ namespace HelixToolkit.Wpf
                     var t01 = uv1 - uv0;
                     var t12 = uv2 - uv1;
                     var t20 = uv0 - uv2;
-                    var u01 = uv0 + t01 * 0.5;
-                    var u12 = uv1 + t12 * 0.5;
-                    var u20 = uv2 + t20 * 0.5;
+                    var u01 = uv0 + (t01 * 0.5);
+                    var u12 = uv1 + (t12 * 0.5);
+                    var u20 = uv2 + (t20 * 0.5);
                     this.TextureCoordinates.Add(u01);
                     this.TextureCoordinates.Add(u12);
                     this.TextureCoordinates.Add(u20);
@@ -2536,9 +2627,9 @@ namespace HelixToolkit.Wpf
                 var v01 = p1 - p0;
                 var v12 = p2 - p1;
                 var v20 = p0 - p2;
-                var p01 = p0 + v01 * 0.5;
-                var p12 = p1 + v12 * 0.5;
-                var p20 = p2 + v20 * 0.5;
+                var p01 = p0 + (v01 * 0.5);
+                var p12 = p1 + (v12 * 0.5);
+                var p20 = p2 + (v20 * 0.5);
                 var m = new Point3D((p0.X + p1.X + p2.X) / 3, (p0.Y + p1.Y + p2.Y) / 3, (p0.Z + p1.Z + p2.Z) / 3);
 
                 int i01 = im + 1;
@@ -2567,9 +2658,9 @@ namespace HelixToolkit.Wpf
                     var t01 = uv1 - uv0;
                     var t12 = uv2 - uv1;
                     var t20 = uv0 - uv2;
-                    var u01 = uv0 + t01 * 0.5;
-                    var u12 = uv1 + t12 * 0.5;
-                    var u20 = uv2 + t20 * 0.5;
+                    var u01 = uv0 + (t01 * 0.5);
+                    var u12 = uv1 + (t12 * 0.5);
+                    var u20 = uv2 + (t20 * 0.5);
                     var uvm = new Point((uv0.X + uv1.X) * 0.5, (uv0.Y + uv1.Y) * 0.5);
                     this.TextureCoordinates.Add(uvm);
                     this.TextureCoordinates.Add(u01);
