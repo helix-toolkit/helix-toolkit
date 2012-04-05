@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// The mai n 3 ds.
             /// </summary>
-            MAIN3DS = 0x4D4D, 
+            MAIN3DS = 0x4D4D,
 
             // Main Chunks
 
@@ -67,191 +67,191 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// The version.
             /// </summary>
-            VERSION = 0x0002, 
+            VERSION = 0x0002,
 
             /// <summary>
             /// The meshversion.
             /// </summary>
-            MESHVERSION = 0x3D3E, 
+            MESHVERSION = 0x3D3E,
 
             // sub defines of EDIT3DS
 
             /// <summary>
             /// The edi t_ material.
             /// </summary>
-            EDIT_MATERIAL = 0xAFFF, 
+            EDIT_MATERIAL = 0xAFFF,
 
             /// <summary>
             /// The edi t_ confi g 1.
             /// </summary>
-            EDIT_CONFIG1 = 0x0100, 
+            EDIT_CONFIG1 = 0x0100,
 
             /// <summary>
             /// The edi t_ confi g 2.
             /// </summary>
-            EDIT_CONFIG2 = 0x3E3D, 
+            EDIT_CONFIG2 = 0x3E3D,
 
             /// <summary>
             /// The edi t_ vie w_ p 1.
             /// </summary>
-            EDIT_VIEW_P1 = 0x7012, 
+            EDIT_VIEW_P1 = 0x7012,
 
             /// <summary>
             /// The edi t_ vie w_ p 2.
             /// </summary>
-            EDIT_VIEW_P2 = 0x7011, 
+            EDIT_VIEW_P2 = 0x7011,
 
             /// <summary>
             /// The edi t_ vie w_ p 3.
             /// </summary>
-            EDIT_VIEW_P3 = 0x7020, 
+            EDIT_VIEW_P3 = 0x7020,
 
             /// <summary>
             /// The edi t_ vie w 1.
             /// </summary>
-            EDIT_VIEW1 = 0x7001, 
+            EDIT_VIEW1 = 0x7001,
 
             /// <summary>
             /// The edi t_ backgr.
             /// </summary>
-            EDIT_BACKGR = 0x1200, 
+            EDIT_BACKGR = 0x1200,
 
             /// <summary>
             /// The edi t_ ambient.
             /// </summary>
-            EDIT_AMBIENT = 0x2100, 
+            EDIT_AMBIENT = 0x2100,
 
             /// <summary>
             /// The edi t_ object.
             /// </summary>
-            EDIT_OBJECT = 0x4000, 
+            EDIT_OBJECT = 0x4000,
 
             /// <summary>
             /// The edi t_ unkn w 01.
             /// </summary>
-            EDIT_UNKNW01 = 0x1100, 
+            EDIT_UNKNW01 = 0x1100,
 
             /// <summary>
             /// The edi t_ unkn w 02.
             /// </summary>
-            EDIT_UNKNW02 = 0x1201, 
+            EDIT_UNKNW02 = 0x1201,
 
             /// <summary>
             /// The edi t_ unkn w 03.
             /// </summary>
-            EDIT_UNKNW03 = 0x1300, 
+            EDIT_UNKNW03 = 0x1300,
 
             /// <summary>
             /// The edi t_ unkn w 04.
             /// </summary>
-            EDIT_UNKNW04 = 0x1400, 
+            EDIT_UNKNW04 = 0x1400,
 
             /// <summary>
             /// The edi t_ unkn w 05.
             /// </summary>
-            EDIT_UNKNW05 = 0x1420, 
+            EDIT_UNKNW05 = 0x1420,
 
             /// <summary>
             /// The edi t_ unkn w 06.
             /// </summary>
-            EDIT_UNKNW06 = 0x1450, 
+            EDIT_UNKNW06 = 0x1450,
 
             /// <summary>
             /// The edi t_ unkn w 07.
             /// </summary>
-            EDIT_UNKNW07 = 0x1500, 
+            EDIT_UNKNW07 = 0x1500,
 
             /// <summary>
             /// The edi t_ unkn w 08.
             /// </summary>
-            EDIT_UNKNW08 = 0x2200, 
+            EDIT_UNKNW08 = 0x2200,
 
             /// <summary>
             /// The edi t_ unkn w 09.
             /// </summary>
-            EDIT_UNKNW09 = 0x2201, 
+            EDIT_UNKNW09 = 0x2201,
 
             /// <summary>
             /// The edi t_ unkn w 10.
             /// </summary>
-            EDIT_UNKNW10 = 0x2210, 
+            EDIT_UNKNW10 = 0x2210,
 
             /// <summary>
             /// The edi t_ unkn w 11.
             /// </summary>
-            EDIT_UNKNW11 = 0x2300, 
+            EDIT_UNKNW11 = 0x2300,
 
             /// <summary>
             /// The edi t_ unkn w 12.
             /// </summary>
-            EDIT_UNKNW12 = 0x2302, 
+            EDIT_UNKNW12 = 0x2302,
 
             /// <summary>
             /// The edi t_ unkn w 13.
             /// </summary>
-            EDIT_UNKNW13 = 0x3000, 
+            EDIT_UNKNW13 = 0x3000,
 
             /// <summary>
             /// The edi t_ unkn w 14.
             /// </summary>
-            EDIT_UNKNW14 = 0xAFFF, 
+            EDIT_UNKNW14 = 0xAFFF,
 
             // sub defines of EDIT_MATERIAL
             /// <summary>
             /// The ma t_ nam e 01.
             /// </summary>
-            MAT_NAME01 = 0xA000, 
+            MAT_NAME01 = 0xA000,
 
             /// <summary>
             /// The ma t_ luminance.
             /// </summary>
-            MAT_LUMINANCE = 0xA010, 
+            MAT_LUMINANCE = 0xA010,
 
             /// <summary>
             /// The ma t_ diffuse.
             /// </summary>
-            MAT_DIFFUSE = 0xA020, 
+            MAT_DIFFUSE = 0xA020,
 
             /// <summary>
             /// The ma t_ specular.
             /// </summary>
-            MAT_SPECULAR = 0xA030, 
+            MAT_SPECULAR = 0xA030,
 
             /// <summary>
             /// The ma t_ shininess.
             /// </summary>
-            MAT_SHININESS = 0xA040, 
+            MAT_SHININESS = 0xA040,
 
             /// <summary>
             /// The ma t_ map.
             /// </summary>
-            MAT_MAP = 0xA200, 
+            MAT_MAP = 0xA200,
 
             /// <summary>
             /// The ma t_ mapfile.
             /// </summary>
-            MAT_MAPFILE = 0xA300, 
+            MAT_MAPFILE = 0xA300,
 
             // sub defines of EDIT_OBJECT
             /// <summary>
             /// The ob j_ trimesh.
             /// </summary>
-            OBJ_TRIMESH = 0x4100, 
+            OBJ_TRIMESH = 0x4100,
 
             /// <summary>
             /// The ob j_ light.
             /// </summary>
-            OBJ_LIGHT = 0x4600, 
+            OBJ_LIGHT = 0x4600,
 
             /// <summary>
             /// The ob j_ camera.
             /// </summary>
-            OBJ_CAMERA = 0x4700, 
+            OBJ_CAMERA = 0x4700,
 
             /// <summary>
             /// The ob j_ unknw n 01.
             /// </summary>
-            OBJ_UNKNWN01 = 0x4010, 
+            OBJ_UNKNWN01 = 0x4010,
 
             /// <summary>
             /// The ob j_ unknw n 02.
@@ -262,107 +262,107 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// The ca m_ unknw n 01.
             /// </summary>
-            CAM_UNKNWN01 = 0x4710, 
+            CAM_UNKNWN01 = 0x4710,
 
             /// <summary>
             /// The ca m_ unknw n 02.
             /// </summary>
-            CAM_UNKNWN02 = 0x4720, 
+            CAM_UNKNWN02 = 0x4720,
 
             // sub defines of OBJ_LIGHT
             /// <summary>
             /// The li t_ off.
             /// </summary>
-            LIT_OFF = 0x4620, 
+            LIT_OFF = 0x4620,
 
             /// <summary>
             /// The li t_ spot.
             /// </summary>
-            LIT_SPOT = 0x4610, 
+            LIT_SPOT = 0x4610,
 
             /// <summary>
             /// The li t_ unknw n 01.
             /// </summary>
-            LIT_UNKNWN01 = 0x465A, 
+            LIT_UNKNWN01 = 0x465A,
 
             // sub defines of OBJ_TRIMESH
             /// <summary>
             /// The tr i_ vertexl.
             /// </summary>
-            TRI_VERTEXL = 0x4110, 
+            TRI_VERTEXL = 0x4110,
 
             /// <summary>
             /// The tr i_ face l 2.
             /// </summary>
-            TRI_FACEL2 = 0x4111, 
+            TRI_FACEL2 = 0x4111,
 
             /// <summary>
             /// The tr i_ face l 1.
             /// </summary>
-            TRI_FACEL1 = 0x4120, 
+            TRI_FACEL1 = 0x4120,
 
             /// <summary>
             /// The tr i_ facemat.
             /// </summary>
-            TRI_FACEMAT = 0x4130, 
+            TRI_FACEMAT = 0x4130,
 
             /// <summary>
             /// The tr i_ texcoord.
             /// </summary>
-            TRI_TEXCOORD = 0x4140, 
+            TRI_TEXCOORD = 0x4140,
 
             /// <summary>
             /// The tr i_ smooth.
             /// </summary>
-            TRI_SMOOTH = 0x4150, 
+            TRI_SMOOTH = 0x4150,
 
             /// <summary>
             /// The tr i_ local.
             /// </summary>
-            TRI_LOCAL = 0x4160, 
+            TRI_LOCAL = 0x4160,
 
             /// <summary>
             /// The tr i_ visible.
             /// </summary>
-            TRI_VISIBLE = 0x4165, 
+            TRI_VISIBLE = 0x4165,
 
             // sub defs of KEYF3DS
 
             /// <summary>
             /// The key f_ unknw n 01.
             /// </summary>
-            KEYF_UNKNWN01 = 0xB009, 
+            KEYF_UNKNWN01 = 0xB009,
 
             /// <summary>
             /// The key f_ unknw n 02.
             /// </summary>
-            KEYF_UNKNWN02 = 0xB00A, 
+            KEYF_UNKNWN02 = 0xB00A,
 
             /// <summary>
             /// The key f_ frames.
             /// </summary>
-            KEYF_FRAMES = 0xB008, 
+            KEYF_FRAMES = 0xB008,
 
             /// <summary>
             /// The key f_ objdes.
             /// </summary>
-            KEYF_OBJDES = 0xB002, 
+            KEYF_OBJDES = 0xB002,
 
             /// <summary>
             /// The key f_ hierarchy.
             /// </summary>
-            KEYF_HIERARCHY = 0xB030, 
+            KEYF_HIERARCHY = 0xB030,
 
             /// <summary>
             /// The kfname.
             /// </summary>
-            KFNAME = 0xB010, 
+            KFNAME = 0xB010,
 
             // these define the different color chunk types
             /// <summary>
             /// The co l_ rgb.
             /// </summary>
-            COL_RGB = 0x0010, 
+            COL_RGB = 0x0010,
 
             /// <summary>
             /// The co l_ tru.
@@ -371,44 +371,44 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// The co l_ unk.
             /// </summary>
-            COL_UNK = 0x0013, 
+            COL_UNK = 0x0013,
 
             // defines for viewport chunks
 
             /// <summary>
             /// The top.
             /// </summary>
-            TOP = 0x0001, 
+            TOP = 0x0001,
 
             /// <summary>
             /// The bottom.
             /// </summary>
-            BOTTOM = 0x0002, 
+            BOTTOM = 0x0002,
 
             /// <summary>
             /// The left.
             /// </summary>
-            LEFT = 0x0003, 
+            LEFT = 0x0003,
 
             /// <summary>
             /// The right.
             /// </summary>
-            RIGHT = 0x0004, 
+            RIGHT = 0x0004,
 
             /// <summary>
             /// The front.
             /// </summary>
-            FRONT = 0x0005, 
+            FRONT = 0x0005,
 
             /// <summary>
             /// The back.
             /// </summary>
-            BACK = 0x0006, 
+            BACK = 0x0006,
 
             /// <summary>
             /// The user.
             /// </summary>
-            USER = 0x0007, 
+            USER = 0x0007,
 
             /// <summary>
             /// The camera.
@@ -417,17 +417,17 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// The light.
             /// </summary>
-            LIGHT = 0x0009, 
+            LIGHT = 0x0009,
 
             /// <summary>
             /// The disabled.
             /// </summary>
-            DISABLED = 0x0010, 
+            DISABLED = 0x0010,
 
             /// <summary>
             /// The bogus.
             /// </summary>
-            BOGUS = 0x0011, 
+            BOGUS = 0x0011,
         }
 
         #endregion
@@ -797,7 +797,6 @@ namespace HelixToolkit.Wpf
             // mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(luminance)));
             if (texture != null)
             {
-                // Debug.WriteLine("Loading " + texture);
                 string ext = Path.GetExtension(texture).ToLower();
 
                 // TGA not supported - convert textures to .png!
@@ -815,7 +814,7 @@ namespace HelixToolkit.Wpf
                 if (File.Exists(path))
                 {
                     var img = new BitmapImage(new Uri(path, UriKind.Relative));
-                    var textureBrush = new ImageBrush(img);
+                    var textureBrush = new ImageBrush(img) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
                     mg.Children.Add(new DiffuseMaterial(textureBrush));
                 }
                 else
@@ -862,7 +861,7 @@ namespace HelixToolkit.Wpf
                         this.ReadTriangularMesh(size);
                         break;
 
-                        // case ChunkID.OBJ_CAMERA:
+                    // case ChunkID.OBJ_CAMERA:
                     default:
                         {
                             byte[] bytes = this.ReadData(size - 6);
