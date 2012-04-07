@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// A regular expression containing "a one or more whitespaces" pattern.
         /// </summary>
-        private static Regex oneOrMoreWhitespaces = new Regex(@"\s+");
+        private static Regex oneOrMoreWhitespaces = new Regex(@"\s+", RegexOptions.Compiled);
 
         /// <summary>
         /// Splits the string on whitespace.
