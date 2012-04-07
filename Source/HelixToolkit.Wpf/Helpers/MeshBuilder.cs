@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -1666,6 +1667,45 @@ namespace HelixToolkit.Wpf
                     this.triangleIndices.Add(i + 1);
                     this.triangleIndices.Add(i + 3);
                     this.triangleIndices.Add(i + 2);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a polygon specified by vertex index (uses a triangle fan).
+        /// </summary>
+        /// <param name="vertexIndices">The vertex indices.</param>
+        public void AddPolygon(IList<int> vertexIndices)
+        {
+            int n = vertexIndices.Count;
+            for (int i = 0; i + 2 < n; i++)
+            {
+                this.triangleIndices.Add(vertexIndices[0]);
+                this.triangleIndices.Add(vertexIndices[i + 1]);
+                this.triangleIndices.Add(vertexIndices[i + 2]);
+            }
+        }
+
+        /// <summary>
+        /// Adds a polygon defined by vertex indices (uses the cutting ears algorithm).
+        /// </summary>
+        /// <param name="vertexIndices">The vertex indices.</param>
+        public void AddPolygonByCuttingEars(IList<int> vertexIndices)
+        {
+            var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
+
+            var poly3D = new Polygon3D(points);
+
+            // Transform the polygon to 2D
+            var poly2D = poly3D.Flatten();
+
+            // Triangulate
+            var triangulatedIndices = poly2D.Triangulate();
+            if (triangulatedIndices != null)
+            {
+                foreach (var i in triangulatedIndices)
+                {
+                    this.triangleIndices.Add(vertexIndices[i]);
                 }
             }
         }

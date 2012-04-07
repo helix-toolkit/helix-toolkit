@@ -24,12 +24,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The normal regex.
         /// </summary>
-        private readonly Regex normalRegex = new Regex(@"normal\s*(\S*)\s*(\S*)\s*(\S*)");
+        private readonly Regex normalRegex = new Regex(@"normal\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
         /// <summary>
         /// The vertex regex.
         /// </summary>
-        private readonly Regex vertexRegex = new Regex(@"vertex\s*(\S*)\s*(\S*)\s*(\S*)");
+        private readonly Regex vertexRegex = new Regex(@"vertex\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
         /// <summary>
         /// The index.
