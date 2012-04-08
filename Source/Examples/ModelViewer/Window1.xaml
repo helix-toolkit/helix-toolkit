@@ -84,12 +84,13 @@
 
         <helix:HelixViewport3D x:Name="view1" CameraRotationMode="Trackball" ModelUpDirection="0,1,0">
             <ModelVisual3D x:Name="root1">
-            <!--<helix:CubeVisual3D Fill="Red"/> 
+                <!--<helix:CubeVisual3D Fill="Red"/> 
                 <helix:GridLinesVisual3D/>-->
-            <helix:DefaultLights/>
-            <helix:FileModelVisual3D Source="{Binding CurrentModelPath, Mode=TwoWay}" ModelLoaded="ModelLoaded"/>
-            <!--<helix:Expander3D Expansion="{Binding Expansion}" Content="{Binding CurrentModel}"/>-->
-            <!-- <helix:HelixViewport3D.Triggers>
+                <helix:DefaultLights/>
+                <ModelVisual3D Content="{Binding CurrentModel}"/>
+                <!--<helix:FileModelVisual3D Source="{Binding CurrentModelPath, Mode=TwoWay}" ModelLoaded="ModelLoaded"/>-->
+                <!--<helix:Expander3D Expansion="{Binding Expansion}" Content="{Binding CurrentModel}"/>-->
+                <!-- <helix:HelixViewport3D.Triggers>
                 <EventTrigger 
             </helix:HelixViewport3D.Triggers>-->
             </ModelVisual3D>
