@@ -71,6 +71,11 @@ namespace HelixToolkit.Wpf
         private const string WrongNumberOfDiameters = "Wrong number of diameters.";
 
         /// <summary>
+        ///   'Wrong number of positions' exception message.
+        /// </summary>
+        private const string WrongNumberOfPositions = "Wrong number of positions.";
+
+        /// <summary>
         ///   'Wrong number of normals' exception message.
         /// </summary>
         private const string WrongNumberOfNormals = "Wrong number of normals.";
@@ -1714,13 +1719,13 @@ namespace HelixToolkit.Wpf
         /// Adds a list of triangles.
         /// </summary>
         /// <param name="trianglePositions">
-        /// The points. 
+        /// The points (the number of points must be a multiple of 3). 
         /// </param>
         /// <param name="triangleNormals">
-        /// The normals. 
+        /// The normals (corresponding to the points). 
         /// </param>
         /// <param name="triangleTextureCoordinates">
-        /// The texture coordinates. 
+        /// The texture coordinates (corresponding to the points). 
         /// </param>
         public void AddTriangles(
             IList<Point3D> trianglePositions,
@@ -1732,14 +1737,19 @@ namespace HelixToolkit.Wpf
                 throw new ArgumentNullException("trianglePositions");
             }
 
-            if (this.normals != null && this.normals == null)
+            if (this.normals != null && triangleNormals == null)
             {
                 throw new ArgumentNullException("triangleNormals");
             }
 
-            if (this.textureCoordinates != null && this.textureCoordinates == null)
+            if (this.textureCoordinates != null && triangleTextureCoordinates == null)
             {
                 throw new ArgumentNullException("triangleTextureCoordinates");
+            }
+
+            if (trianglePositions.Count % 3 != 0)
+            {
+                throw new InvalidOperationException(WrongNumberOfPositions);
             }
 
             if (triangleNormals != null && triangleNormals.Count != trianglePositions.Count)
@@ -1775,11 +1785,9 @@ namespace HelixToolkit.Wpf
             }
 
             int indexEnd = this.positions.Count;
-            for (int i = index0; i + 2 < indexEnd; i++)
+            for (int i = index0; i < indexEnd; i++)
             {
                 this.triangleIndices.Add(i);
-                this.triangleIndices.Add(i + 1);
-                this.triangleIndices.Add(i + 2);
             }
         }
 
