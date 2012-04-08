@@ -62,5 +62,38 @@ namespace HelixToolkitTests
             var mg1 = gm1.Geometry as MeshGeometry3D;
             Assert.AreEqual(12, mg1.TriangleIndices.Count / 3);
         }
+
+        [Test]
+        public void Read_SmoothingOff_ValidModel()
+        {
+            var r = new ObjReader();
+            var model = r.Read(@"Models\obj\SmoothingOff.obj");
+            Assert.AreEqual(1, model.Children.Count);
+            var gm1 = model.Children[0] as GeometryModel3D;
+            var mg1 = gm1.Geometry as MeshGeometry3D;
+            Assert.AreEqual(4, mg1.TriangleIndices.Count / 3);
+        }
+
+        [Test]
+        public void Read_SmoothingGroup0_ValidModel()
+        {
+            var r = new ObjReader();
+            var model = r.Read(@"Models\obj\SmoothingGroup0.obj");
+            Assert.AreEqual(1, model.Children.Count);
+            var gm1 = model.Children[0] as GeometryModel3D;
+            var mg1 = gm1.Geometry as MeshGeometry3D;
+            Assert.AreEqual(4, mg1.TriangleIndices.Count / 3);
+        }
+
+        [Test]
+        public void Read_SmoothingGroup1_ValidModel()
+        {
+            var r = new ObjReader();
+            var model = r.Read(@"Models\obj\SmoothingGroup1.obj");
+            Assert.AreEqual(1, model.Children.Count);
+            var gm1 = model.Children[0] as GeometryModel3D;
+            var mg1 = gm1.Geometry as MeshGeometry3D;
+            Assert.AreEqual(4, mg1.TriangleIndices.Count / 3);
+        }
     }
 }
