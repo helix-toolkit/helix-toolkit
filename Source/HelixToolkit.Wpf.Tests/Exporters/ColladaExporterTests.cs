@@ -4,24 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Media3D;
-using System.Xml;
-using System.Xml.Schema;
-using HelixToolkit.Wpf;
-using NUnit.Framework;
-using NUnitHelpers;
-
 namespace HelixToolkitTests
 {
+    using System.Diagnostics.CodeAnalysis;
+    using System.Xml.Schema;
+    using HelixToolkit.Wpf;
+    using NUnit.Framework;
+
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class ColladaExporterTests : ExporterTests
     {
-
         [Test]
         public void Export_SimpleModel_ValidOutput()
         {
@@ -30,11 +24,12 @@ namespace HelixToolkitTests
             {
                 ExportSimpleModel(e);
             }
-            var result = Validate(path);
+
+            var result = this.Validate(path);
             Assert.IsNull(result, result);
         }
        
-        string Validate(string path)
+        private string Validate(string path)
         {
             var sc = new XmlSchemaSet();
             string dir = @"..\..\..\..\Schemas\Collada\";

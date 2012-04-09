@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using HelixToolkit.Wpf;
-
 namespace HelixToolkitTests
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    using HelixToolkit.Wpf;
+    using NUnit.Framework;
+
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class StereoHelperTests
     {
