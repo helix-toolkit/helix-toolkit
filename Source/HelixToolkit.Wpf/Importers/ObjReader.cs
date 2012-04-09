@@ -297,7 +297,13 @@ namespace HelixToolkit.Wpf
                             this.LoadMaterialLib(values);
                             break;
                         case "usemtl": // material name
+                            this.EnsureNewMesh();
+
                             this.SetMaterial(values);
+                            break;
+                        case "usemap": // texture map name
+                            this.EnsureNewMesh();
+
                             break;
                         case "bevel": // bevel interpolation
                         case "c_interp": // color interpolation 
@@ -429,6 +435,18 @@ namespace HelixToolkit.Wpf
         {
             this.Groups.Add(new Group(name));
             this.smoothingGroupMaps.Clear();
+        }
+
+        /// <summary>
+        /// Ensures that a new mesh is created.
+        /// </summary>
+        private void EnsureNewMesh()
+        {
+            if (this.CurrentGroup.MeshBuilder.TriangleIndices.Count != 0)
+            {
+                this.CurrentGroup.AddMesh();
+                this.smoothingGroupMaps.Clear();
+            }
         }
 
         /// <summary>
@@ -676,8 +694,10 @@ namespace HelixToolkit.Wpf
             var modelGroup = new Model3DGroup();
             foreach (var g in this.Groups)
             {
-                var gm = new GeometryModel3D { Geometry = g.MeshBuilder.ToMesh(), Material = g.Material, BackMaterial = g.Material };
-                modelGroup.Children.Add(gm);
+                foreach (var gm in g.CreateModels())
+                {
+                    modelGroup.Children.Add(gm);
+                }
             }
 
             return modelGroup;
@@ -857,6 +877,16 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public class Group
         {
+            /// <summary>
+            /// List of mesh builders.
+            /// </summary>
+            private readonly IList<MeshBuilder> meshBuilders;
+
+            /// <summary>
+            /// List of materials.
+            /// </summary>
+            private readonly IList<Material> materials;
+
             #region Constructors and Destructors
 
             /// <summary>
@@ -868,8 +898,9 @@ namespace HelixToolkit.Wpf
             public Group(string name)
             {
                 this.Name = name;
-                this.Material = MaterialHelper.CreateMaterial(Brushes.Green);
-                this.MeshBuilder = new MeshBuilder(true, true);
+                this.meshBuilders = new List<MeshBuilder>();
+                this.materials = new List<Material>();
+                this.AddMesh();
             }
 
             #endregion
@@ -877,24 +908,64 @@ namespace HelixToolkit.Wpf
             #region Public Properties
 
             /// <summary>
-            ///   Gets or sets the material.
+            ///   Sets the material.
             /// </summary>
             /// <value>The material.</value>
-            public Material Material { get; set; }
+            public Material Material
+            {
+                set
+                {
+                    this.materials[this.materials.Count - 1] = value;
+                }
+            }
 
             /// <summary>
-            ///   Gets or sets the mesh builder.
+            ///   Gets the mesh builder for the current mesh.
             /// </summary>
             /// <value>The mesh builder.</value>
-            public MeshBuilder MeshBuilder { get; set; }
+            public MeshBuilder MeshBuilder
+            {
+                get
+                {
+                    return this.meshBuilders[this.meshBuilders.Count - 1];
+                }
+            }
 
             /// <summary>
-            ///   Gets or sets the name.
+            ///   Gets or sets the group name.
             /// </summary>
             /// <value>The name.</value>
             public string Name { get; set; }
 
             #endregion
+
+            /// <summary>
+            /// Adds a mesh.
+            /// </summary>
+            public void AddMesh()
+            {
+                var meshBuilder = new MeshBuilder(true, true);
+                this.meshBuilders.Add(meshBuilder);
+                this.materials.Add(HelixToolkit.Wpf.Materials.Green);
+            }
+
+            /// <summary>
+            /// Creates the models of the group.
+            /// </summary>
+            /// <returns>The models.</returns>
+            public IEnumerable<Model3D> CreateModels()
+            {
+                for (int i = 0; i < this.meshBuilders.Count; i++)
+                {
+                    yield return
+                        new GeometryModel3D
+                            {
+                                Geometry = this.meshBuilders[i].ToMesh(),
+                                Material = this.materials[i],
+                                BackMaterial = this.materials[i]
+                            };
+                }
+            }
         }
 
         /// <summary>
