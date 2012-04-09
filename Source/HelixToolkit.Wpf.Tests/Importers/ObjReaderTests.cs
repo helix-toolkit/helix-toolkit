@@ -30,7 +30,7 @@ namespace HelixToolkitTests
         {
             var r = new ObjReader();
             var model = r.Read(@"Models\obj\cornell_box.obj");
-            Assert.AreEqual(2, model.Children.Count);
+            Assert.AreEqual(9, model.Children.Count);
             var gm1 = model.Children[1] as GeometryModel3D;
             var mg1 = gm1.Geometry as MeshGeometry3D;
             // Assert.AreEqual(69451, mg1.TriangleIndices.Count / 3);
@@ -57,7 +57,7 @@ namespace HelixToolkitTests
         {
             var r = new ObjReader();
             var model = r.Read(@"Models\obj\test.obj");
-            Assert.AreEqual(1, model.Children.Count);
+            Assert.AreEqual(2, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             var mg1 = gm1.Geometry as MeshGeometry3D;
             Assert.AreEqual(12, mg1.TriangleIndices.Count / 3);
