@@ -4,17 +4,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows.Media.Media3D;
-
-using HelixToolkit.Wpf;
-using NUnit.Framework;
-
 namespace HelixToolkitTests
 {
+    using System.Diagnostics.CodeAnalysis;
+    using System.Windows.Media.Media3D;
+
+    using HelixToolkit.Wpf;
+    using NUnit.Framework;
+
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class StlReaderTests
     {
-        // test models from http://orion.math.iastate.edu/burkardt/data/stl/stl.html
+        //// test models from http://orion.math.iastate.edu/burkardt/data/stl/stl.html
 
         [Test]
         public void Read_Bottle_ValidModel()
