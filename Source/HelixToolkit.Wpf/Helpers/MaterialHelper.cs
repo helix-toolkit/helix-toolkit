@@ -49,13 +49,9 @@ namespace HelixToolkit.Wpf
             }
 
             var dm = material as DiffuseMaterial;
-            if (dm != null)
+            if (dm != null && dm.Brush != null)
             {
-                var scb = dm.Brush as SolidColorBrush;
-                if (scb != null)
-                {
-                    scb.Opacity = d;
-                }
+                dm.Brush.Opacity = d;
             }
         }
 
