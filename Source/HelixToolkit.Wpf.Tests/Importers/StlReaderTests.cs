@@ -7,6 +7,7 @@
 namespace HelixToolkitTests
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
@@ -67,9 +68,24 @@ namespace HelixToolkitTests
             var model = r.Read(@"Models\stl\cube.stl");
             Assert.AreEqual(1, model.Children.Count);
             var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
-            
+
             // Expects 6 quad faces => 12 triangles
             Assert.AreEqual(12, m0.TriangleIndices.Count / 3);
+        }
+
+        [Test]
+        public void Read_BottleFromStream_ValidModel()
+        {
+            Model3DGroup model;
+            using (var s = File.OpenRead(@"Models\stl\bottle.stl"))
+            {
+                var r = new StLReader();
+                model = r.Read(s);
+            }
+
+            Assert.AreEqual(1, model.Children.Count);
+            var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
+            Assert.AreEqual(1240, m0.TriangleIndices.Count / 3);
         }
     }
 }
