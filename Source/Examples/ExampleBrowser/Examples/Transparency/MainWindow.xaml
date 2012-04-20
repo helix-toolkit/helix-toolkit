@@ -1,0 +1,32 @@
+﻿<Window x:Class="TransparencyDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="TransparencyDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Scene">
+                <MenuItem Header="IsSorting" IsCheckable="True" IsChecked="{Binding IsSorting, ElementName=sortingVisual1}"/>
+            </MenuItem>
+        </Menu>
+        <ht:HelixViewport3D InfiniteSpin="True">
+            <ht:SunLight/>
+            <!-- Sorting frequency is set to 2 to make it visible what is going on... -->
+            <ht:SortingVisual3D x:Name="sortingVisual1" Method="BoundingBoxCorners" SortingFrequency="2">
+                <ht:RectangleVisual3D Origin="0,0,0" Normal="1,0,0" LengthDirection="0,1,0" Fill="#80FF0000"/>
+                <ht:RectangleVisual3D Origin="1,0,0" Normal="1,0,0" LengthDirection="0,1,0" Fill="#8000FF00"/>
+                <ht:RectangleVisual3D Origin="-1,0,0" Normal="1,0,0" LengthDirection="0,1,0" Fill="#800000FF"/>
+
+                <!--<ht:PlaneVisual3D Origin="0,0,0" Normal="0,1,0" LengthDirection="1,0,0" Fill="#80FF0000"/>
+                <ht:PlaneVisual3D Origin="0,1,0" Normal="0,1,0" LengthDirection="1,0,0" Fill="#8000FF00"/>
+                <ht:PlaneVisual3D Origin="0,-1,0" Normal="0,1,0" LengthDirection="1,0,0" Fill="#800000FF"/>
+
+                <ht:PlaneVisual3D Origin="0,0,0" Normal="0,0,1" LengthDirection="1,0,0" Fill="#80FF0000"/>
+                <ht:PlaneVisual3D Origin="0,0,1" Normal="0,0,1" LengthDirection="1,0,0" Fill="#8000FF00"/>
+                <ht:PlaneVisual3D Origin="0,0,-1" Normal="0,0,1" LengthDirection="1,0,0" Fill="#800000FF"/>-->
+
+                <ht:CubeVisual3D Center="-3,0,0" SideLength="1" Fill="Black"/>
+                <ht:CubeVisual3D Center="3,0,0" SideLength="1" Fill="Black"/>
+            </ht:SortingVisual3D>
+        </ht:HelixViewport3D>
+    </DockPanel>
+</Window>

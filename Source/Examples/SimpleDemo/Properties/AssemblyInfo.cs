@@ -1,12 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -16,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("SimpleDemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HelixToolkit")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SimpleDemo")]
-[assembly: AssemblyCopyright("HelixToolkit")]
+[assembly: AssemblyCopyright("Copyright © 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -56,6 +48,6 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("2012.1.1.*")]
-[assembly: AssemblyVersion("2012.1.1.*")]
-[assembly: AssemblyFileVersion("2012.1.1.0")]
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
