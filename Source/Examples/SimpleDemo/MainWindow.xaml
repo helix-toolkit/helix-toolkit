@@ -1,0 +1,12 @@
+﻿<Window x:Class="ExampleBrowser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:HelixToolkit="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="SimpleDemo" Height="480" Width="640">
+    <Grid>
+        <HelixToolkit:HelixViewport3D ZoomExtentsWhenLoaded="True">
+            <HelixToolkit:SunLight/>
+            <HelixToolkit:BoxVisual3D Center="0,0,1" Length="2" Width="1" Height="0.5"/>
+            <HelixToolkit:GridLinesVisual3D Width="8" Length="8" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
+        </HelixToolkit:HelixViewport3D>
+    </Grid>
+</Window>

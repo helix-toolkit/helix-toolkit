@@ -1,0 +1,11 @@
+﻿<Window x:Class="ChamferDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="ChamferDemo" Height="480" Width="640">
+    <Grid>
+        <helix:HelixViewport3D x:Name="view1" Background="DarkGreen" IsHeadLightEnabled="True">
+            <!--<helix:DefaultLightsVisual3D/>-->
+        </helix:HelixViewport3D>
+    </Grid>
+</Window>
