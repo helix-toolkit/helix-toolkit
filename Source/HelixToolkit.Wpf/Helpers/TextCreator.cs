@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf
         /// <param name="textColor">
         /// The color of the text.
         /// </param>
-        /// <param name="bDoubleSided">
+        /// <param name="isDoubleSided">
         /// Visible from both sides?
         /// </param>
         /// <param name="height">
@@ -40,53 +40,37 @@ namespace HelixToolkit.Wpf
         /// <param name="center">
         /// The center of the label
         /// </param>
-        /// <param name="over">
+        /// <param name="textDirection">
         /// Horizontal direction of the label
         /// </param>
-        /// <param name="up">
+        /// <param name="updirection">
         /// Vertical direction of the label
         /// </param>
         /// <returns>
         /// Suitable for adding to your Viewport3D
         /// </returns>
         public static ModelVisual3D CreateTextLabel3D(
-            string text, Brush textColor, bool bDoubleSided, double height, Point3D center, Vector3D over, Vector3D up)
+            string text, Brush textColor, bool isDoubleSided, double height, Point3D center, Vector3D textDirection, Vector3D updirection)
         {
-            var mv3D = new ModelVisual3D
+            return new ModelVisual3D
                 {
-                   Content = CreateTextLabelModel3D(text, textColor, bDoubleSided, height, center, over, up) 
+                    Content = CreateTextLabelModel3D(text, textColor, isDoubleSided, height, center, textDirection, updirection)
                 };
-            return mv3D;
         }
 
         /// <summary>
-        /// Creates a Model3D for the text label.
+        /// Creates a model for the text label.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="textColor">
-        /// Color of the text.
-        /// </param>
-        /// <param name="bDoubleSided">
-        /// if set to <c>true</c> [b double sided].
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="center">
-        /// The center.
-        /// </param>
-        /// <param name="over">
-        /// The over.
-        /// </param>
-        /// <param name="up">
-        /// Up.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="textColor">Color of the text.</param>
+        /// <param name="isDoubleSided">double sided text if set to <c>true</c>.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="center">The center.</param>
+        /// <param name="textDirection">The textDirection.</param>
+        /// <param name="updirection">The updirection.</param>
+        /// <returns>A model.</returns>
         public static GeometryModel3D CreateTextLabelModel3D(
-            string text, Brush textColor, bool bDoubleSided, double height, Point3D center, Vector3D over, Vector3D up)
+            string text, Brush textColor, bool isDoubleSided, double height, Point3D center, Vector3D textDirection, Vector3D updirection)
         {
             // First we need a textblock containing the text of our label
             var tb = new TextBlock(new Run(text)) { Foreground = textColor, FontFamily = new FontFamily("Arial") };
@@ -106,16 +90,16 @@ namespace HelixToolkit.Wpf
             // p1 is the upper left
             // p2 is the lower right
             // p3 is the upper right
-            Point3D p0 = center - width / 2 * over - height / 2 * up;
-            Point3D p1 = p0 + up * 1 * height;
-            Point3D p2 = p0 + over * width;
-            Point3D p3 = p0 + up * 1 * height + over * width;
+            var p0 = center - width / 2 * textDirection - height / 2 * updirection;
+            var p1 = p0 + updirection * 1 * height;
+            var p2 = p0 + textDirection * width;
+            var p3 = p0 + updirection * 1 * height + textDirection * width;
 
             // Now build the geometry for the sign.  It's just a
             // rectangle made of two triangles, on each side.
             var mg = new MeshGeometry3D { Positions = new Point3DCollection { p0, p1, p2, p3 } };
 
-            if (bDoubleSided)
+            if (isDoubleSided)
             {
                 mg.Positions.Add(p0); // 4
                 mg.Positions.Add(p1); // 5
@@ -130,7 +114,7 @@ namespace HelixToolkit.Wpf
             mg.TriangleIndices.Add(2);
             mg.TriangleIndices.Add(3);
 
-            if (bDoubleSided)
+            if (isDoubleSided)
             {
                 mg.TriangleIndices.Add(4);
                 mg.TriangleIndices.Add(5);
@@ -147,7 +131,7 @@ namespace HelixToolkit.Wpf
             mg.TextureCoordinates.Add(new Point(1, 1));
             mg.TextureCoordinates.Add(new Point(1, 0));
 
-            if (bDoubleSided)
+            if (isDoubleSided)
             {
                 mg.TextureCoordinates.Add(new Point(1, 1));
                 mg.TextureCoordinates.Add(new Point(1, 0));

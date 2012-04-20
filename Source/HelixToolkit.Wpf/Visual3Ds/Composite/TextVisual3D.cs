@@ -6,7 +6,6 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -29,10 +28,10 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The direction property.
         /// </summary>
-        public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
-            "Direction", 
-            typeof(Vector3D), 
-            typeof(TextVisual3D), 
+        public static readonly DependencyProperty TextDirectionProperty = DependencyProperty.Register(
+            "TextDirection",
+            typeof(Vector3D),
+            typeof(TextVisual3D),
             new UIPropertyMetadata(new Vector3D(1, 0, 0), VisualChanged));
 
         /// <summary>
@@ -56,15 +55,15 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The up property.
         /// </summary>
-        public static readonly DependencyProperty UpProperty = DependencyProperty.Register(
-            "Up", typeof(Vector3D), typeof(TextVisual3D), new UIPropertyMetadata(new Vector3D(0, 0, 1), VisualChanged));
+        public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
+            "UpDirection", typeof(Vector3D), typeof(TextVisual3D), new UIPropertyMetadata(new Vector3D(0, 0, 1), VisualChanged));
 
         #endregion
 
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the center.
+        ///   Gets or sets the center of the text.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -81,26 +80,26 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the direction.
+        ///   Gets or sets the text direction.
         /// </summary>
         /// <value>The direction.</value>
-        public Vector3D Direction
+        public Vector3D TextDirection
         {
             get
             {
-                return (Vector3D)this.GetValue(DirectionProperty);
+                return (Vector3D)this.GetValue(TextDirectionProperty);
             }
 
             set
             {
-                this.SetValue(DirectionProperty, value);
+                this.SetValue(TextDirectionProperty, value);
             }
         }
 
         /// <summary>
-        ///   Gets or sets the fill.
+        ///   Gets or sets the fill brush.
         /// </summary>
-        /// <value>The fill.</value>
+        /// <value>The fill brush.</value>
         public Brush Fill
         {
             get
@@ -115,9 +114,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the height.
+        ///   Gets or sets the height of the text.
         /// </summary>
-        /// <value>The height.</value>
+        /// <value>The text height.</value>
         public double Height
         {
             get
@@ -149,19 +148,19 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets up.
+        /// Gets or sets the up direction of the text.
         /// </summary>
-        /// <value>Up.</value>
-        public Vector3D Up
+        /// <value>The up direction.</value>
+        public Vector3D UpDirection
         {
             get
             {
-                return (Vector3D)this.GetValue(UpProperty);
+                return (Vector3D)this.GetValue(UpDirectionProperty);
             }
 
             set
             {
-                this.SetValue(UpProperty, value);
+                this.SetValue(UpDirectionProperty, value);
             }
         }
 
@@ -178,7 +177,7 @@ namespace HelixToolkit.Wpf
         /// <param name="textColor">
         /// The color of the text.
         /// </param>
-        /// <param name="bDoubleSided">
+        /// <param name="isDoubleSided">
         /// Visible from both sides?
         /// </param>
         /// <param name="height">
@@ -187,26 +186,29 @@ namespace HelixToolkit.Wpf
         /// <param name="center">
         /// The center of the label
         /// </param>
-        /// <param name="over">
+        /// <param name="textDirection">
         /// Horizontal direction of the label
         /// </param>
-        /// <param name="up">
+        /// <param name="updirection">
         /// Vertical direction of the label
         /// </param>
         /// <returns>
         /// Suitable for adding to your Viewport3D
         /// </returns>
         public static GeometryModel3D CreateTextLabel3D(
-            string text, Brush textColor, bool bDoubleSided, double height, Point3D center, Vector3D over, Vector3D up)
+            string text,
+            Brush textColor,
+            bool isDoubleSided,
+            double height,
+            Point3D center,
+            Vector3D textDirection,
+            Vector3D updirection)
         {
             // First we need a textblock containing the text of our label
-            var tb = new TextBlock(new Run(text));
-            tb.Foreground = textColor;
-            tb.FontFamily = new FontFamily("Arial");
+            var tb = new TextBlock(new Run(text)) { Foreground = textColor, FontFamily = new FontFamily("Arial") };
 
             // Now use that TextBlock as the brush for a material
-            var mat = new DiffuseMaterial();
-            mat.Brush = new VisualBrush(tb);
+            var mat = new DiffuseMaterial { Brush = new VisualBrush(tb) };
 
             // We just assume the characters are square
             double width = text.Length * height;
@@ -217,16 +219,16 @@ namespace HelixToolkit.Wpf
             // p1 is the upper left
             // p2 is the lower right
             // p3 is the upper right
-            Point3D p0 = center - width / 2 * over - height / 2 * up;
-            Point3D p1 = p0 + up * 1 * height;
-            Point3D p2 = p0 + over * width;
-            Point3D p3 = p0 + up * 1 * height + over * width;
+            Point3D p0 = center - width / 2 * textDirection - height / 2 * updirection;
+            Point3D p1 = p0 + updirection * 1 * height;
+            Point3D p2 = p0 + textDirection * width;
+            Point3D p3 = p0 + updirection * 1 * height + textDirection * width;
 
             // Now build the geometry for the sign.  It's just a
             // rectangle made of two triangles, on each side.
             var mg = new MeshGeometry3D { Positions = new Point3DCollection { p0, p1, p2, p3 } };
 
-            if (bDoubleSided)
+            if (isDoubleSided)
             {
                 mg.Positions.Add(p0); // 4
                 mg.Positions.Add(p1); // 5
@@ -241,7 +243,7 @@ namespace HelixToolkit.Wpf
             mg.TriangleIndices.Add(2);
             mg.TriangleIndices.Add(3);
 
-            if (bDoubleSided)
+            if (isDoubleSided)
             {
                 mg.TriangleIndices.Add(4);
                 mg.TriangleIndices.Add(5);
@@ -258,7 +260,7 @@ namespace HelixToolkit.Wpf
             mg.TextureCoordinates.Add(new Point(1, 1));
             mg.TextureCoordinates.Add(new Point(1, 0));
 
-            if (bDoubleSided)
+            if (isDoubleSided)
             {
                 mg.TextureCoordinates.Add(new Point(1, 1));
                 mg.TextureCoordinates.Add(new Point(1, 0));
@@ -299,7 +301,7 @@ namespace HelixToolkit.Wpf
             else
             {
                 this.Content = CreateTextLabel3D(
-                    this.Text, this.Fill, true, this.Height, this.Center, this.Direction, this.Up);
+                    this.Text, this.Fill, true, this.Height, this.Center, this.TextDirection, this.UpDirection);
             }
         }
 

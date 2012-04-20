@@ -219,7 +219,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the width of the grid area.
+        ///   Gets or sets the width of the grid area (perpendicular to the length direction).
         /// </summary>
         /// <value>The width.</value>
         public double Width
