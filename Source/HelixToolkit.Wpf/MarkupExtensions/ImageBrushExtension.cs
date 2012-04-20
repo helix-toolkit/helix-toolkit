@@ -25,9 +25,9 @@ namespace HelixToolkit.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The path.
+        /// The uri.
         /// </summary>
-        private readonly string path;
+        private readonly string uri;
 
         #endregion
 
@@ -36,15 +36,22 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageBrushExtension"/> class.
         /// </summary>
-        /// <param name="path">
-        /// The path.
+        /// <param name="uri">
+        /// The uri.
         /// </param>
-        public ImageBrushExtension(string path)
+        public ImageBrushExtension(string uri)
         {
-            this.path = path;
+            this.uri = uri;
+            this.UriKind = UriKind.RelativeOrAbsolute;            
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets or sets the kind of the URI.
+        /// </summary>
+        /// <value>The kind of the URI.</value>
+        public UriKind UriKind { get; set; }
 
         #region Public Methods
 
@@ -59,15 +66,15 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var fullPath = Path.GetFullPath(this.path);
-            if (!File.Exists(fullPath))
-            {
-                return null;
-            }
+            //var fullPath = Path.GetFullPath(this.uri);
+            //if (!File.Exists(fullPath))
+            //{
+            //    return null;
+            //}
 
             var image = new BitmapImage();
             image.BeginInit();
-            image.UriSource = new Uri(fullPath);
+            image.UriSource = new Uri(this.uri, this.UriKind);
             image.EndInit();
             return new ImageBrush(image);
         }

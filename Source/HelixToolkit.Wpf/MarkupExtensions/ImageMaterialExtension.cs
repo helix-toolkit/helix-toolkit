@@ -41,6 +41,7 @@ namespace HelixToolkit.Wpf
         {
             this.path = path;
             this.Opacity = 1;
+            this.UriKind = UriKind.RelativeOrAbsolute;
         }
 
         #endregion
@@ -52,6 +53,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <value>The opacity.</value>
         public double Opacity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the kind of the URI.
+        /// </summary>
+        /// <value>The kind of the URI.</value>
+        public UriKind UriKind { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this material is emissive.
@@ -78,10 +85,10 @@ namespace HelixToolkit.Wpf
         {
             if (this.IsEmissive)
             {
-                return MaterialHelper.CreateEmissiveImageMaterial(this.path, Brushes.Black);
+                return MaterialHelper.CreateEmissiveImageMaterial(this.path, Brushes.Black, this.UriKind);
             }
 
-            return MaterialHelper.CreateImageMaterial(this.path, this.Opacity);
+            return MaterialHelper.CreateImageMaterial(this.path, this.Opacity, this.UriKind);
         }
 
         #endregion
