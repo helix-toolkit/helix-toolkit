@@ -18,26 +18,26 @@ namespace HelixToolkit.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The edge diameter property.
+        ///   The edge diameter property.
         /// </summary>
         public static readonly DependencyProperty EdgeDiameterProperty = DependencyProperty.Register(
-            "EdgeDiameter", typeof(double), typeof(MeshVisual3D), new UIPropertyMetadata(0.03,MeshChanged));
+            "EdgeDiameter", typeof(double), typeof(MeshVisual3D), new UIPropertyMetadata(0.03, MeshChanged));
 
         /// <summary>
-        /// The edge material property.
+        ///   The edge material property.
         /// </summary>
         public static readonly DependencyProperty EdgeMaterialProperty = DependencyProperty.Register(
             "EdgeMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Gray));
 
         /// <summary>
-        /// The face back material property.
+        ///   The face back material property.
         /// </summary>
         public static readonly DependencyProperty FaceBackMaterialProperty =
             DependencyProperty.Register(
                 "FaceBackMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Gray));
 
         /// <summary>
-        /// The face material property.
+        ///   The face material property.
         /// </summary>
         public static readonly DependencyProperty FaceMaterialProperty = DependencyProperty.Register(
             "FaceMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Blue));
@@ -49,28 +49,35 @@ namespace HelixToolkit.Wpf
             "Mesh", typeof(Mesh3D), typeof(MeshVisual3D), new UIPropertyMetadata(null, MeshChanged));
 
         /// <summary>
-        /// The shared vertices property.
+        ///   The shared vertices property.
         /// </summary>
         public static readonly DependencyProperty SharedVerticesProperty = DependencyProperty.Register(
             "SharedVertices", typeof(bool), typeof(MeshVisual3D), new UIPropertyMetadata(false, MeshChanged));
 
         /// <summary>
-        /// The shrink factor property.
+        ///   The shrink factor property.
         /// </summary>
         public static readonly DependencyProperty ShrinkFactorProperty = DependencyProperty.Register(
             "ShrinkFactor", typeof(double), typeof(MeshVisual3D), new UIPropertyMetadata(0.0, MeshChanged));
 
         /// <summary>
-        /// The vertex material property.
+        ///   The vertex material property.
         /// </summary>
         public static readonly DependencyProperty VertexMaterialProperty = DependencyProperty.Register(
             "VertexMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Gold));
 
         /// <summary>
-        /// The vertex radius property.
+        ///   The vertex radius property.
         /// </summary>
         public static readonly DependencyProperty VertexRadiusProperty = DependencyProperty.Register(
             "VertexRadius", typeof(double), typeof(MeshVisual3D), new UIPropertyMetadata(0.05, MeshChanged));
+
+        /// <summary>
+        /// The vertex resolution property.
+        /// </summary>
+        public static readonly DependencyProperty VertexResolutionProperty =
+            DependencyProperty.Register(
+                "VertexResolution", typeof(int), typeof(MeshVisual3D), new UIPropertyMetadata(2));
 
         #endregion
 
@@ -79,7 +86,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the edge diameter.
         /// </summary>
-        /// <value>The edge diameter.</value>
+        /// <value> The edge diameter. </value>
         public double EdgeDiameter
         {
             get
@@ -96,7 +103,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the edge material.
         /// </summary>
-        /// <value>The edge material.</value>
+        /// <value> The edge material. </value>
         public Material EdgeMaterial
         {
             get
@@ -113,7 +120,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the face back material.
         /// </summary>
-        /// <value>The face back material.</value>
+        /// <value> The face back material. </value>
         public Material FaceBackMaterial
         {
             get
@@ -130,7 +137,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the face material.
         /// </summary>
-        /// <value>The face material.</value>
+        /// <value> The face material. </value>
         public Material FaceMaterial
         {
             get
@@ -147,7 +154,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the mesh.
         /// </summary>
-        /// <value>The mesh.</value>
+        /// <value> The mesh. </value>
         public Mesh3D Mesh
         {
             get
@@ -164,7 +171,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets a value indicating whether to share vertices (smooth shading).
         /// </summary>
-        /// <value><c>true</c> if vertices are shared; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if vertices are shared; otherwise, <c>false</c> . </value>
         public bool SharedVertices
         {
             get
@@ -181,7 +188,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the shrink factor.
         /// </summary>
-        /// <value>The shrink factor.</value>
+        /// <value> The shrink factor. </value>
         public double ShrinkFactor
         {
             get
@@ -198,13 +205,13 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the mapping from triangle index to face index.
         /// </summary>
-        /// <value>The index mapping.</value>
+        /// <value> The index mapping. </value>
         public List<int> TriangleIndexToFaceIndex { get; set; }
 
         /// <summary>
         ///   Gets or sets the vertex material.
         /// </summary>
-        /// <value>The vertex material.</value>
+        /// <value> The vertex material. </value>
         public Material VertexMaterial
         {
             get
@@ -221,7 +228,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the vertex radius.
         /// </summary>
-        /// <value>The vertex radius.</value>
+        /// <value> The vertex radius. </value>
         public double VertexRadius
         {
             get
@@ -235,6 +242,23 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        ///   Gets or sets the vertex resolution (number of subdivisions).
+        /// </summary>
+        /// <value> The vertex resolution. </value>
+        public int VertexResolution
+        {
+            get
+            {
+                return (int)this.GetValue(VertexResolutionProperty);
+            }
+
+            set
+            {
+                this.SetValue(VertexResolutionProperty, value);
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -243,10 +267,10 @@ namespace HelixToolkit.Wpf
         /// The mesh changed.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The obj. 
         /// </param>
         /// <param name="args">
-        /// The args.
+        /// The args. 
         /// </param>
         protected static void MeshChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
@@ -275,10 +299,10 @@ namespace HelixToolkit.Wpf
             // Add the nodes
             if (this.VertexRadius > 0)
             {
-                var gm = new MeshBuilder(false,false);
+                var gm = new MeshBuilder(false, false);
                 foreach (var p in this.Mesh.Vertices)
                 {
-                    gm.AddSubdivisionSphere(p, this.VertexRadius, 1);
+                    gm.AddSubdivisionSphere(p, this.VertexRadius, this.VertexResolution);
 
                     // gm.AddBox(p, VertexRadius, VertexRadius, VertexRadius);
                 }
@@ -290,10 +314,10 @@ namespace HelixToolkit.Wpf
             if (this.EdgeDiameter > 0)
             {
                 var em = new MeshBuilder(false, false);
-                int fi = 0;
+                //// int fi = 0;
                 foreach (var p in this.Mesh.Faces)
                 {
-                    var n = this.Mesh.GetFaceNormal(fi++);
+                    //// var n = this.Mesh.GetFaceNormal(fi++);
                     for (int i = 0; i < p.Length; i += 1)
                     {
                         var p0 = this.Mesh.Vertices[p[i]];
