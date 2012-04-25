@@ -237,6 +237,18 @@ namespace HelixToolkit.Wpf
             "IsZoomEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
+        ///   The touch mode property.
+        /// </summary>
+        public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
+            "TouchMode", typeof(TouchMode), typeof(HelixViewport3D), new UIPropertyMetadata(TouchMode.Panning));
+
+        /// <summary>
+        /// The IsTouchZoomEnabled property.
+        /// </summary>
+        public static readonly DependencyProperty IsTouchZoomEnabledProperty =
+            DependencyProperty.Register("IsTouchZoomEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
+        /// <summary>
         ///   The left view gesture property.
         /// </summary>
         public static readonly DependencyProperty LeftViewGestureProperty =
@@ -746,7 +758,6 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes static members of the <see cref="HelixViewport3D"/> class. 
-        ///   Initializes static members of the <see cref="HelixViewport3D"/> class. Initializes static members of the <see cref="HelixViewport3D"/> class.
         /// </summary>
         static HelixViewport3D()
         {
@@ -758,7 +769,6 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HelixViewport3D"/> class. 
-        ///   Initializes a new instance of the <see cref="HelixViewport3D"/> class. Initializes a new instance of the <see cref="HelixViewport3D"/> class.
         /// </summary>
         public HelixViewport3D()
         {
@@ -797,7 +807,6 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Finalizes an instance of the <see cref="HelixViewport3D"/> class. 
-        ///   Finalizes an instance of the <see cref="HelixViewport3D"/> class. Finalizes an instance of the <see cref="HelixViewport3D"/> class.
         /// </summary>
         ~HelixViewport3D()
         {
@@ -834,6 +843,35 @@ namespace HelixToolkit.Wpf
         ///   Gets the command that toggles between orthographic and perspective camera.
         /// </summary>
         public static RoutedCommand OrthographicToggleCommand { get; private set; }
+
+        /// <summary>
+        ///   Gets or sets the touch mode.
+        /// </summary>
+        /// <value> The touch mode. </value>
+        public TouchMode TouchMode
+        {
+            get
+            {
+                return (TouchMode)this.GetValue(TouchModeProperty);
+            }
+
+            set
+            {
+                this.SetValue(TouchModeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if touch zoom is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsTouchZoomEnabled
+        {
+            get { return (bool)GetValue(IsTouchZoomEnabledProperty); }
+            set { SetValue(IsTouchZoomEnabledProperty, value); }
+        }
 
         /// <summary>
         ///   Gets or sets the back view gesture.
