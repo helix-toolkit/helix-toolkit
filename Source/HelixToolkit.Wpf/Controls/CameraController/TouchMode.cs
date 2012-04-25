@@ -12,17 +12,17 @@ namespace HelixToolkit.Wpf
     public enum TouchMode
     {
         /// <summary>
-        ///   The selecting.
+        ///   No touch handling mode.
         /// </summary>
-        Selecting, 
+        None,
 
         /// <summary>
-        ///   The panning.
+        ///   The panning mode.
         /// </summary>
-        Panning, 
+        Panning,
 
         /// <summary>
-        ///   The rotating.
+        ///   The rotating mode.
         /// </summary>
         Rotating
     }
