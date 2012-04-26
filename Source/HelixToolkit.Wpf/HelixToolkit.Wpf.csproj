@@ -63,6 +63,7 @@
     <Compile Include="Controls\CameraController\RotateHandler.cs" />
     <Compile Include="Controls\CameraController\ZoomHandler.cs" />
     <Compile Include="Controls\CameraController\ZoomRectangleHandler.cs" />
+    <Compile Include="HelixToolkitException.cs" />
     <Compile Include="Controls\HelixViewport3D.cs" />
     <Compile Include="Controls\CameraController\MouseGestureHandler.cs" />
     <Compile Include="Controls\IHelixViewport3D.cs" />

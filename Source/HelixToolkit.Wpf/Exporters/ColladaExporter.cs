@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColladaExporter.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
@@ -68,7 +68,6 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColladaExporter"/> class. 
-        /// Initializes a new instance of the <see cref="X3DExporter"/> class.
         /// </summary>
         /// <param name="path">
         /// The path.

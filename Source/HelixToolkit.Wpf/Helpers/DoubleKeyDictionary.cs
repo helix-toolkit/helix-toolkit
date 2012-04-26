@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DoubleKeyDictionary.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
@@ -280,7 +280,6 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DoubleKeyPairValue{K,T,V}"/> class. 
-        /// Initializes a new instance of the <see cref="DoubleKeyPairValue&lt;K, T, V&gt;"/> class.
         /// </summary>
         /// <param name="key1">
         /// The key1.
