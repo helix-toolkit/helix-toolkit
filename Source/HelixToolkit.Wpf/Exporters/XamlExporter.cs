@@ -60,12 +60,13 @@ namespace HelixToolkit.Wpf
         #region Public Methods
 
         /// <summary>
-        /// Wraps the in resource dictionary.
+        /// Wraps the specified object in a resource dictionary.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object to be wrapped.
         /// </param>
         /// <returns>
+        /// A resource dictionary.
         /// </returns>
         public static ResourceDictionary WrapInResourceDictionary(object obj)
         {
