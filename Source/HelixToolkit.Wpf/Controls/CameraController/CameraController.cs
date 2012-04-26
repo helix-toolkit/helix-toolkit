@@ -2,6 +2,9 @@
 // <copyright file="CameraController.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   A control that manipulates the camera by mouse and keyboard gestures.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
@@ -20,23 +23,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class CameraController : Grid
     {
-        /// <summary>
-        ///   Gets or sets the minimum field of view.
-        /// </summary>
-        /// <value> The minimum fov. </value>
-        public double MinimumFieldOfView
-        {
-            get
-            {
-                return (double)this.GetValue(MinimumFieldOfViewProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinimumFieldOfViewProperty, value);
-            }
-        }
-
         /// <summary>
         ///   The minimum fov property.
         /// </summary>
@@ -79,9 +65,9 @@ namespace HelixToolkit.Wpf
         ///   The camera property.
         /// </summary>
         public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
-            "Camera", 
-            typeof(ProjectionCamera), 
-            typeof(CameraController), 
+            "Camera",
+            typeof(ProjectionCamera),
+            typeof(CameraController),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, CameraChanged));
 
         /// <summary>
@@ -209,9 +195,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty =
             DependencyProperty.Register(
-                "CameraRotationMode", 
-                typeof(CameraRotationMode), 
-                typeof(CameraController), 
+                "CameraRotationMode",
+                typeof(CameraRotationMode),
+                typeof(CameraController),
                 new UIPropertyMetadata(CameraRotationMode.Turntable));
 
         /// <summary>
@@ -230,9 +216,9 @@ namespace HelixToolkit.Wpf
         ///   The up direction property.
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
-            "ModelUpDirection", 
-            typeof(Vector3D), 
-            typeof(CameraController), 
+            "ModelUpDirection",
+            typeof(Vector3D),
+            typeof(CameraController),
             new UIPropertyMetadata(new Vector3D(0, 0, 1)));
 
         /// <summary>
@@ -303,9 +289,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleCursorProperty =
             DependencyProperty.Register(
-                "ZoomRectangleCursor", 
-                typeof(Cursor), 
-                typeof(CameraController), 
+                "ZoomRectangleCursor",
+                typeof(Cursor),
+                typeof(CameraController),
                 new UIPropertyMetadata(Cursors.ScrollSE));
 
         /// <summary>
@@ -343,7 +329,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The is touch zoom enabled property.
+        ///   The is touch zoom enabled property.
         /// </summary>
         public static readonly DependencyProperty IsTouchZoomEnabledProperty =
             DependencyProperty.Register(
@@ -354,9 +340,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewCursorProperty =
             DependencyProperty.Register(
-                "ChangeFieldOfViewCursor", 
-                typeof(Cursor), 
-                typeof(CameraController), 
+                "ChangeFieldOfViewCursor",
+                typeof(Cursor),
+                typeof(CameraController),
                 new UIPropertyMetadata(Cursors.ScrollNS));
 
         /// <summary>
@@ -429,6 +415,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes static members of the <see cref="CameraController"/> class. 
+        ///   Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class.
         /// </summary>
         static CameraController()
         {
@@ -509,6 +496,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraController"/> class. 
+        ///   Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class.
         /// </summary>
         public CameraController()
         {
@@ -523,6 +511,23 @@ namespace HelixToolkit.Wpf
 
             this.InitializeBindings();
             this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
+        }
+
+        /// <summary>
+        ///   Gets or sets the minimum field of view.
+        /// </summary>
+        /// <value> The minimum fov. </value>
+        public double MinimumFieldOfView
+        {
+            get
+            {
+                return (double)this.GetValue(MinimumFieldOfViewProperty);
+            }
+
+            set
+            {
+                this.SetValue(MinimumFieldOfViewProperty, value);
+            }
         }
 
         /// <summary>
@@ -950,6 +955,141 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        ///   Gets or sets the sensitivity for rotation by the left and right keys.
+        /// </summary>
+        /// <value> The rotation sensitivity. </value>
+        /// <remarks>
+        ///   Use -1 to invert the rotation direction.
+        /// </remarks>
+        public double LeftRightRotationSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(LeftRightRotationSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(LeftRightRotationSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   The left right rotation sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty LeftRightRotationSensitivityProperty =
+            DependencyProperty.Register(
+                "LeftRightRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+        /// <summary>
+        ///   Gets or sets the sensitivity for rotation by the up and down keys.
+        /// </summary>
+        /// <value> The rotation sensitivity. </value>
+        /// <remarks>
+        ///   Use -1 to invert the rotation direction.
+        /// </remarks>
+        public double UpDownRotationSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(UpDownRotationSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(UpDownRotationSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   The up down rotation sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty UpDownRotationSensitivityProperty =
+            DependencyProperty.Register(
+                "UpDownRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+        /// <summary>
+        ///   Gets or sets the sensitivity for pan by the left and right keys.
+        /// </summary>
+        /// <value> The pan sensitivity. </value>
+        /// <remarks>
+        ///   Use -1 to invert the pan direction.
+        /// </remarks>
+        public double LeftRightPanSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(LeftRightPanSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(LeftRightPanSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   The left right pan sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty LeftRightPanSensitivityProperty =
+            DependencyProperty.Register(
+                "LeftRightPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+        /// <summary>
+        ///   Gets or sets the sensitivity for pan by the up and down keys.
+        /// </summary>
+        /// <value> The pan sensitivity. </value>
+        /// <remarks>
+        ///   Use -1 to invert the pan direction.
+        /// </remarks>
+        public double UpDownPanSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(UpDownPanSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(UpDownPanSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   The up down Pan sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty UpDownPanSensitivityProperty =
+            DependencyProperty.Register(
+                "UpDownPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+        /// <summary>
+        ///   Gets or sets the sensitivity for zoom by the pageup and pagedown keys.
+        /// </summary>
+        /// <value> The zoom sensitivity. </value>
+        /// <remarks>
+        ///   Use -1 to invert the zoom direction.
+        /// </remarks>
+        public double PageUpDownZoomSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(PageUpDownZoomSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(PageUpDownZoomSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   The page up down zoom sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty PageUpDownZoomSensitivityProperty =
+            DependencyProperty.Register(
+                "PageUpDownZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+        /// <summary>
         ///   Gets or sets the rotation sensitivity (degrees/pixel).
         /// </summary>
         /// <value> The rotation sensitivity. </value>
@@ -965,6 +1105,7 @@ namespace HelixToolkit.Wpf
                 this.SetValue(RotationSensitivityProperty, value);
             }
         }
+
 
         /// <summary>
         ///   Gets or sets InertiaFactor.
@@ -1394,7 +1535,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The rendering event listener.
+        ///   The rendering event listener.
         /// </summary>
         private readonly RenderingEventListener renderingEventListener;
 
@@ -1573,19 +1714,19 @@ namespace HelixToolkit.Wpf
                 switch (e.Key)
                 {
                     case Key.Left:
-                        this.AddRotateForce(-1 * f, 0);
+                        this.AddRotateForce(-1 * f * this.LeftRightRotationSensitivity, 0);
                         e.Handled = true;
                         break;
                     case Key.Right:
-                        this.AddRotateForce(1 * f, 0);
+                        this.AddRotateForce(1 * f * this.LeftRightRotationSensitivity, 0);
                         e.Handled = true;
                         break;
                     case Key.Up:
-                        this.AddRotateForce(0, -1 * f);
+                        this.AddRotateForce(0, -1 * f * this.UpDownRotationSensitivity);
                         e.Handled = true;
                         break;
                     case Key.Down:
-                        this.AddRotateForce(0, 1 * f);
+                        this.AddRotateForce(0, 1 * f * this.UpDownRotationSensitivity);
                         e.Handled = true;
                         break;
                 }
@@ -1595,19 +1736,19 @@ namespace HelixToolkit.Wpf
                 switch (e.Key)
                 {
                     case Key.Left:
-                        this.AddPanForce(-5 * f, 0);
+                        this.AddPanForce(-5 * f * this.LeftRightPanSensitivity, 0);
                         e.Handled = true;
                         break;
                     case Key.Right:
-                        this.AddPanForce(5 * f, 0);
+                        this.AddPanForce(5 * f * this.LeftRightPanSensitivity, 0);
                         e.Handled = true;
                         break;
                     case Key.Up:
-                        this.AddPanForce(0, -5 * f);
+                        this.AddPanForce(0, -5 * f * this.UpDownPanSensitivity);
                         e.Handled = true;
                         break;
                     case Key.Down:
-                        this.AddPanForce(0, 5 * f);
+                        this.AddPanForce(0, 5 * f * this.UpDownPanSensitivity);
                         e.Handled = true;
                         break;
                 }
@@ -1616,11 +1757,11 @@ namespace HelixToolkit.Wpf
             switch (e.Key)
             {
                 case Key.PageUp:
-                    this.AddZoomForce(-0.1 * f);
+                    this.AddZoomForce(-0.1 * f * this.PageUpDownZoomSensitivity);
                     e.Handled = true;
                     break;
                 case Key.PageDown:
-                    this.AddZoomForce(0.1 * f);
+                    this.AddZoomForce(0.1 * f * this.PageUpDownZoomSensitivity);
                     e.Handled = true;
                     break;
                 case Key.Back:
