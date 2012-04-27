@@ -49,6 +49,9 @@
                                                     IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
                                                     LeftRightRotationSensitivity="{TemplateBinding LeftRightRotationSensitivity}"
                                                     UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
+                                                    LeftRightPanSensitivity="{TemplateBinding LeftRightPanSensitivity}"
+                                                    UpDownPanSensitivity="{TemplateBinding UpDownPanSensitivity}"
+                                                    PageUpDownZoomSensitivity="{TemplateBinding PageUpDownZoomSensitivity}"
                                                     >
                                 <local:CameraController.InputBindings>
                                     <local:InputBindingX Gezture="{Binding ResetCameraKeyGesture, RelativeSource={RelativeSource TemplatedParent}}" Command="{x:Static local:CameraController.ResetCameraCommand}"/>
