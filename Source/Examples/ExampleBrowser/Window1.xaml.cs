@@ -43,6 +43,7 @@ namespace ExampleBrowser
             this.Examples.Add(new Example(typeof(ManipulatorDemo.MainWindow), null, "Adding manipulators to the model."));
             this.Examples.Add(new Example(typeof(MaterialDemo.MainWindow), null, "Demonstrates material properties."));
             this.Examples.Add(new Example(typeof(OverlayDemo.MainWindow), null, "Overlays 2D text and geometry on the 3D model."));
+            this.Examples.Add(new Example(typeof(PenroseTriangleDemo.MainWindow), null, "Shows a Penrose triangle in 3D."));
             this.Examples.Add(new Example(typeof(PointsAndLinesDemo.MainWindow), null, "Renders text and lines."));
             this.Examples.Add(new Example(typeof(PolyhedronDemo.MainWindow), null, "Polyhedra models."));
             this.Examples.Add(new Example(typeof(PyramidDemo.MainWindow), null, "Performance test showing a pyramid."));
