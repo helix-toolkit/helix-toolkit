@@ -53,8 +53,8 @@ namespace ExampleBrowser
             this.Examples.Add(new Example(typeof(SubdivisionDemo.MainWindow), null, "Surface subdivision by Loop's algorithm."));
             this.Examples.Add(new Example(typeof(SurfacePlotDemo.MainWindow), null, "Plotting a surface in 3D."));
             this.Examples.Add(new Example(typeof(TerrainDemo.MainWindow), null, "Rendering a terrain loaded from a .bt file."));
-            this.Examples.Add(new Example(typeof(TransparencyDemo.MainWindow), null, "Uses 'depth sorting' to show a transparent model."));
-            this.Examples.Add(new Example(typeof(TubeDemo.MainWindow), null, "Shows the TubeVisual3D."));
+            this.Examples.Add(new Example(typeof(TransparencyDemo.MainWindow), null, "Uses 'depth sorting' to show a transparent model. The sorting frequency is reduced to show what is going on."));
+            this.Examples.Add(new Example(typeof(TubeDemo.MainWindow), null, "Shows Borromean rings using the TubeVisual3D."));
             this.Examples.Add(new Example(typeof(UIElementDemo.MainWindow), null, "Test of UIElement3D in HelixViewport3D."));
             this.Examples.Add(new Example(typeof(UpDirectionDemo.MainWindow), null, "Test of y-up in HelixViewport3D."));
             this.Examples.Add(new Example(typeof(ViewportFeaturesDemo.MainWindow), null, "Demonstrates features of the HelixViewport3D."));

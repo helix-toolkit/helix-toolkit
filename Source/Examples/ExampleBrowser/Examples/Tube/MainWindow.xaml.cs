@@ -10,8 +10,6 @@ using System.Windows.Media.Media3D;
 
 namespace TubeDemo
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -33,19 +31,19 @@ namespace TubeDemo
             DataContext = this;
         }
 
-        private IList<Point3D> CreatePath(double min, double max, int n, Func<double, double> fx, Func<double, double> fy, Func<double, double> fz)
+        private Point3DCollection CreatePath(double min, double max, int n, Func<double, double> fx, Func<double, double> fy, Func<double, double> fz)
         {
-            var list = new List<Point3D>(n);
+            var list = new Point3DCollection(n);
             for (int i = 0; i < n; i++)
             {
-                double u = min + (max - min) * i / (n - 1);
+                double u = min + (max - min) * i / n;
                 list.Add(new Point3D(fx(u), fy(u), fz(u)));
             }
             return list;
         }
 
-        public IList<Point3D> Ring1 { get; set; }
-        public IList<Point3D> Ring2 { get; set; }
-        public IList<Point3D> Ring3 { get; set; }
+        public Point3DCollection Ring1 { get; set; }
+        public Point3DCollection Ring2 { get; set; }
+        public Point3DCollection Ring3 { get; set; }
     }
 }
