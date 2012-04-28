@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf
 {
     using System.Collections.Generic;
     using System.Windows;
+    using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     /// <summary>
@@ -46,16 +47,16 @@ namespace HelixToolkit.Wpf
         ///   The path property.
         /// </summary>
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-            "Path", typeof(IList<Point3D>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
+            "Path", typeof(Point3DCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         ///   The section property.
         /// </summary>
         public static readonly DependencyProperty SectionProperty = DependencyProperty.Register(
             "Section", 
-            typeof(IList<Point>), 
-            typeof(ExtrudedVisual3D), 
-            new UIPropertyMetadata(new List<Point>(), GeometryChanged));
+            typeof(PointCollection), 
+            typeof(ExtrudedVisual3D),
+            new UIPropertyMetadata(new PointCollection(), GeometryChanged));
 
         /// <summary>
         ///   The texture coordinates property.
@@ -82,7 +83,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public ExtrudedVisual3D()
         {
-            this.Path = new List<Point3D>();
+            this.Path = new Point3DCollection();
         }
 
         #endregion
@@ -142,11 +143,11 @@ namespace HelixToolkit.Wpf
         ///   Gets or sets the path.
         /// </summary>
         /// <value> The path. </value>
-        public IList<Point3D> Path
+        public Point3DCollection Path
         {
             get
             {
-                return (IList<Point3D>)this.GetValue(PathProperty);
+                return (Point3DCollection)this.GetValue(PathProperty);
             }
 
             set
@@ -159,11 +160,11 @@ namespace HelixToolkit.Wpf
         ///   Gets or sets the section.
         /// </summary>
         /// <value> The section. </value>
-        public IList<Point> Section
+        public PointCollection Section
         {
             get
             {
-                return (IList<Point>)this.GetValue(SectionProperty);
+                return (PointCollection)this.GetValue(SectionProperty);
             }
 
             set
