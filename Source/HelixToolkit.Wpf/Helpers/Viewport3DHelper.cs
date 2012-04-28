@@ -22,8 +22,7 @@ namespace HelixToolkit.Wpf
     /// Helper methods for Viewport3D.
     /// </summary>
     /// <remarks>
-    /// See Charles Petzold's book "3D programming for Windows"
-    ///   and Eric Sink's "Twelve Days of WPF 3D"
+    /// See Charles Petzold's book "3D programming for Windows" and Eric Sink's "Twelve Days of WPF 3D"
     ///   http://www.ericsink.com/wpf3d/index.html
     /// </remarks>
     public static class Viewport3DHelper
@@ -100,7 +99,7 @@ namespace HelixToolkit.Wpf
                     ExportCollada(view, fileName);
                     break;
                 default:
-                    throw new InvalidOperationException("Not supported file format.");
+                    throw new HelixToolkitException("Not supported file format.");
             }
         }
 
@@ -346,7 +345,7 @@ namespace HelixToolkit.Wpf
 
             if (!m.HasInverse)
             {
-                throw new ApplicationException("camera transform has no inverse");
+                throw new HelixToolkitException("Camera transform has no inverse.");
             }
 
             m.Invert();
@@ -377,47 +376,47 @@ namespace HelixToolkit.Wpf
                 throw new ArgumentNullException("camera");
             }
 
-            if (camera is MatrixCamera)
+            var perspectiveCamera = camera as PerspectiveCamera;
+            if (perspectiveCamera != null)
             {
-                return (camera as MatrixCamera).ProjectionMatrix;
-            }
-
-            if (camera is OrthographicCamera)
-            {
-                var orthocam = camera as OrthographicCamera;
-
-                double xscale = 2 / orthocam.Width;
-                double yscale = xscale * aspectRatio;
-                double znear = orthocam.NearPlaneDistance;
-                double zfar = orthocam.FarPlaneDistance;
-
-                // Hey, check this out!
-                if (double.IsPositiveInfinity(zfar))
-                {
-                    zfar = 1E10;
-                }
-
-                return new Matrix3D(
-                    xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, 1 / (znear - zfar), 0, 0, 0, znear / (znear - zfar), 1);
-            }
-
-            if (camera is PerspectiveCamera)
-            {
-                var perscam = camera as PerspectiveCamera;
-
                 // The angle-to-radian formula is a little off because only
                 // half the angle enters the calculation.
-                double xscale = 1 / Math.Tan(Math.PI * perscam.FieldOfView / 360);
+                double xscale = 1 / Math.Tan(Math.PI * perspectiveCamera.FieldOfView / 360);
                 double yscale = xscale * aspectRatio;
-                double znear = perscam.NearPlaneDistance;
-                double zfar = perscam.FarPlaneDistance;
+                double znear = perspectiveCamera.NearPlaneDistance;
+                double zfar = perspectiveCamera.FarPlaneDistance;
                 double zscale = double.IsPositiveInfinity(zfar) ? -1 : (zfar / (znear - zfar));
                 double zoffset = znear * zscale;
 
                 return new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, zscale, -1, 0, 0, zoffset, 0);
             }
 
-            throw new ApplicationException("unknown camera type");
+            var orthographicCamera = camera as OrthographicCamera;
+            if (orthographicCamera != null)
+            {
+                double xscale = 2.0 / orthographicCamera.Width;
+                double yscale = xscale * aspectRatio;
+                double znear = orthographicCamera.NearPlaneDistance;
+                double zfar = orthographicCamera.FarPlaneDistance;
+
+                if (double.IsPositiveInfinity(zfar))
+                {
+                    zfar = znear * 1e5;
+                }
+
+                double dzinv = 1.0 / (znear - zfar);
+
+                var m = new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, dzinv, 0, 0, 0, znear * dzinv, 1);
+                return m;
+            }
+
+            var matrixCamera = camera as MatrixCamera;
+            if (matrixCamera != null)
+            {
+                return matrixCamera.ProjectionMatrix;
+            }
+
+            throw new HelixToolkitException("Unknown camera type.");
         }
 
         /// <summary>
@@ -465,7 +464,7 @@ namespace HelixToolkit.Wpf
 
                 if (!cameraTransform.HasInverse)
                 {
-                    throw new ApplicationException("camera transform has no inverse");
+                    throw new HelixToolkitException("Camera transform has no inverse.");
                 }
 
                 cameraTransform.Invert();
@@ -563,9 +562,6 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A Matrix3D object with the camera view transform matrix, or a Matrix3D with all zeros if the "camera" is null.
         /// </returns>
-        /// <exception cref="ApplicationException">
-        /// if the 'camera' is neither of type MatrixCamera nor ProjectionCamera. 
-        /// </exception>
         public static Matrix3D GetViewMatrix(Camera camera)
         {
             if (camera == null)
@@ -611,7 +607,7 @@ namespace HelixToolkit.Wpf
                     1);
             }
 
-            throw new ApplicationException("unknown camera type");
+            throw new HelixToolkitException("Unknown camera type.");
         }
 
         /// <summary>
@@ -718,7 +714,7 @@ namespace HelixToolkit.Wpf
                 return false;
             }
 
-            matrixViewport.Invert();
+            matrixViewport.Invert();            
             matrixCamera.Invert();
 
             var pointNormalized = matrixViewport.Transform(pointIn3D);
@@ -917,7 +913,7 @@ namespace HelixToolkit.Wpf
                     encoder = png;
                     break;
                 default:
-                    throw new InvalidOperationException("Not supported file format.");
+                    throw new HelixToolkitException("Not supported file format.");
             }
 
             using (Stream stm = File.Create(fileName))
