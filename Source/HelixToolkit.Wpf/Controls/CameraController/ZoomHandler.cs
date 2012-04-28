@@ -67,11 +67,6 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void ChangeCameraPosition(double delta, Point3D zoomAround)
         {
-            if (!this.Controller.IsZoomEnabled)
-            {
-                return;
-            }
-
             if (delta < -0.5)
             {
                 delta = -0.5;
@@ -81,19 +76,7 @@ namespace HelixToolkit.Wpf
             switch (this.CameraMode)
             {
                 case CameraMode.Inspect:
-                    Point3D target = this.CameraPosition + this.CameraLookDirection;
-                    Vector3D relativeTarget = zoomAround - target;
-                    Vector3D relativePosition = zoomAround - this.CameraPosition;
-
-                    Vector3D newRelativePosition = relativePosition * (1 + delta);
-                    Vector3D newRelativeTarget = relativeTarget * (1 + delta);
-
-                    Point3D newTarget = zoomAround - newRelativeTarget;
-                    Point3D newPosition = zoomAround - newRelativePosition;
-                    Vector3D newLookDirection = newTarget - newPosition;
-
-                    this.CameraLookDirection = newLookDirection;
-                    this.CameraPosition = newPosition;
+                    this.ChangeCameraDistance(delta, zoomAround);
                     break;
                 case CameraMode.WalkAround:
                     this.CameraPosition -= this.CameraLookDirection * delta;
@@ -122,20 +105,7 @@ namespace HelixToolkit.Wpf
                 case CameraMode.WalkAround:
                 case CameraMode.Inspect:
                 case CameraMode.FixedPosition:
-                    // Handle the 'zoomAround' point
-                    Point3D target = this.CameraPosition + this.CameraLookDirection;
-                    Vector3D relativeTarget = zoomAround - target;
-                    Vector3D relativePosition = zoomAround - this.CameraPosition;
-
-                    Vector3D newRelativePosition = relativePosition * (1 + delta);
-                    Vector3D newRelativeTarget = relativeTarget * (1 + delta);
-
-                    Point3D newTarget = zoomAround - newRelativeTarget;
-                    Point3D newPosition = zoomAround - newRelativePosition;
-                    Vector3D newLookDirection = newTarget - newPosition;
-
-                    this.CameraLookDirection = newLookDirection;
-                    this.CameraPosition = newPosition;
+                    this.ChangeCameraDistance(delta, zoomAround);
 
                     // Modify the camera width
                     var ocamera = this.Camera as OrthographicCamera;
@@ -146,6 +116,29 @@ namespace HelixToolkit.Wpf
 
                     break;
             }
+        }
+
+        /// <summary>
+        /// Changes the camera distance.
+        /// </summary>
+        /// <param name="delta">The delta.</param>
+        /// <param name="zoomAround">The zoom around point.</param>
+        private void ChangeCameraDistance(double delta, Point3D zoomAround)
+        {
+            // Handle the 'zoomAround' point
+            var target = this.CameraPosition + this.CameraLookDirection;
+            var relativeTarget = zoomAround - target;
+            var relativePosition = zoomAround - this.CameraPosition;
+
+            var newRelativePosition = relativePosition * (1 + delta);
+            var newRelativeTarget = relativeTarget * (1 + delta);
+
+            var newTarget = zoomAround - newRelativeTarget;
+            var newPosition = zoomAround - newRelativePosition;
+            var newLookDirection = newTarget - newPosition;
+
+            this.CameraLookDirection = newLookDirection;
+            this.CameraPosition = newPosition;
         }
 
         /// <summary>
@@ -171,7 +164,7 @@ namespace HelixToolkit.Wpf
             double d = this.CameraLookDirection.Length;
             double r = d * Math.Tan(0.5 * fov / 180 * Math.PI);
 
-            fov *= 1 + delta * 0.5;
+            fov *= 1 + (delta * 0.5);
             if (fov < this.Controller.MinimumFieldOfView)
             {
                 fov = this.Controller.MinimumFieldOfView;
@@ -258,6 +251,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void Zoom(double delta, Point3D zoomAround)
         {
+            if (!this.Controller.IsZoomEnabled)
+            {
+                return;
+            }
+
             if (this.Camera is PerspectiveCamera)
             {
                 if (this.CameraMode == CameraMode.FixedPosition || this.changeFieldOfView)
@@ -268,6 +266,8 @@ namespace HelixToolkit.Wpf
                 {
                     this.ChangeCameraPosition(delta, zoomAround);
                 }
+
+                return;
             }
 
             if (this.Camera is OrthographicCamera)

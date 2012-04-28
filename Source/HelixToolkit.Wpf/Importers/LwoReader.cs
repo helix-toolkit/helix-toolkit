@@ -24,15 +24,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class LwoReader : IModelReader
     {
-        #region Constants and Fields
-
-        /// <summary>
-        /// The reader.
-        /// </summary>
-        private BinaryReader reader;
-
-        #endregion
-
         #region Public Properties
 
         /// <summary>
@@ -79,78 +70,82 @@ namespace HelixToolkit.Wpf
         /// The path.
         /// </param>
         /// <returns>
+        /// A Model3D.
         /// </returns>
         public Model3DGroup Read(string path)
         {
             var texturePath = Path.GetDirectoryName(path);
-            var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            this.TexturePath = texturePath;
-            var result = Read(s);
-            s.Close();
-            return result;
+            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                this.TexturePath = texturePath;
+                return this.Read(s);
+            }
         }
 
         /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">
-        /// The s.
+        /// The stream.
         /// </param>
         /// <returns>
+        /// A Model3D.
         /// </returns>
         public Model3DGroup Read(Stream s)
         {
-            this.reader = new BinaryReader(s);
-
-            long length = this.reader.BaseStream.Length;
-
-            string headerID = this.ReadChunkId();
-            if (headerID != "FORM")
+            using (var reader = new BinaryReader(s))
             {
-                throw new FileFormatException("Unknown file");
-            }
+                long length = reader.BaseStream.Length;
 
-            int headerSize = this.ReadChunkSize();
-
-            if (headerSize + 8 != length)
-            {
-                throw new FileFormatException("Incomplete file (file length does not match header)");
-            }
-
-            string header2 = this.ReadChunkId();
-            if (header2 != "LWOB")
-            {
-                throw new FileFormatException("Unknown file format (" + header2 + ").");
-            }
-
-            while (this.reader.BaseStream.Position < this.reader.BaseStream.Length)
-            {
-                string id = this.ReadChunkId();
-                int size = this.ReadChunkSize();
-
-                switch (id)
+                string headerID = this.ReadChunkId(reader);
+                if (headerID != "FORM")
                 {
-                    case "PNTS":
-                        this.ReadPoints(size);
-                        break;
-                    case "SRFS":
-                        this.ReadSurface(size);
-                        break;
-                    case "POLS":
-                        this.ReadPolygons(size);
-                        break;
-                    case "SURF":
-                    default:
-
-                        // download the whole chunk
-                        var bytes = this.ReadData(size);
-                        break;
+                    throw new FileFormatException("Unknown file");
                 }
+
+                int headerSize = this.ReadChunkSize(reader);
+
+                if (headerSize + 8 != length)
+                {
+                    throw new FileFormatException("Incomplete file (file length does not match header)");
+                }
+
+                string header2 = this.ReadChunkId(reader);
+                if (header2 != "LWOB")
+                {
+                    throw new FileFormatException("Unknown file format (" + header2 + ").");
+                }
+
+                while (reader.BaseStream.Position < reader.BaseStream.Length)
+                {
+                    string id = this.ReadChunkId(reader);
+                    int size = this.ReadChunkSize(reader);
+
+                    switch (id)
+                    {
+                        case "PNTS":
+                            this.ReadPoints(reader, size);
+                            break;
+                        case "SRFS":
+                            this.ReadSurface(reader, size);
+                            break;
+                        case "POLS":
+                            this.ReadPolygons(reader, size);
+                            break;
+                            // ReSharper disable RedundantCaseLabel
+                        case "SURF":
+                            // ReSharper restore RedundantCaseLabel
+                        default:
+                            // download the whole chunk
+                            // ReSharper disable UnusedVariable
+                            var data = this.ReadData(reader, size);
+                            // ReSharper restore UnusedVariable
+                            break;
+                    }
+                }
+
+                return this.BuildModel();
             }
-
-            this.reader.Close();
-
-            return this.BuildModel();
         }
 
         #endregion
@@ -158,9 +153,10 @@ namespace HelixToolkit.Wpf
         #region Methods
 
         /// <summary>
-        /// The build model.
+        /// Builds the model.
         /// </summary>
         /// <returns>
+        /// A Model3D.
         /// </returns>
         private Model3DGroup BuildModel()
         {
@@ -168,10 +164,7 @@ namespace HelixToolkit.Wpf
             int index = 0;
             foreach (var mesh in this.Meshes)
             {
-                var gm = new GeometryModel3D();
-                gm.Geometry = mesh.ToMesh();
-                gm.Material = this.Materials[index];
-                gm.BackMaterial = gm.Material;
+                var gm = new GeometryModel3D { Geometry = mesh.ToMesh(), Material = this.Materials[index], BackMaterial = this.Materials[index] };
                 modelGroup.Children.Add(gm);
                 index++;
             }
@@ -180,97 +173,97 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The read chunk id.
+        /// Read the chunk id.
         /// </summary>
+        /// <param name="reader">The reader.</param>
         /// <returns>
-        /// The read chunk id.
+        /// The chunk id.
         /// </returns>
-        private string ReadChunkId()
+        private string ReadChunkId(BinaryReader reader)
         {
-            var chars = this.reader.ReadChars(4);
+            var chars = reader.ReadChars(4);
             return new string(chars);
         }
 
         /// <summary>
-        /// The read chunk size.
+        /// Read the chunk size.
         /// </summary>
+        /// <param name="reader">The reader.</param>
         /// <returns>
-        /// The read chunk size.
+        /// The chunk size.
         /// </returns>
-        private int ReadChunkSize()
+        private int ReadChunkSize(BinaryReader reader)
         {
-            return this.ReadInt();
+            return this.ReadInt(reader);
         }
 
         /// <summary>
         /// Read the data block of a chunk.
         /// </summary>
-        /// <param name="size">
-        /// Excluding header size
-        /// </param>
+        /// <param name="reader">The reader.</param>
+        /// <param name="size">Excluding header size</param>
         /// <returns>
+        /// The data.
         /// </returns>
-        private byte[] ReadData(int size)
+        private byte[] ReadData(BinaryReader reader, int size)
         {
-            return this.reader.ReadBytes(size);
+            return reader.ReadBytes(size);
         }
 
         /// <summary>
         /// Read big-endian float.
         /// </summary>
+        /// <param name="reader">The reader.</param>
         /// <returns>
         /// The read float.
         /// </returns>
-        private float ReadFloat()
+        private float ReadFloat(BinaryReader reader)
         {
-            var bytes = this.reader.ReadBytes(4);
+            var bytes = reader.ReadBytes(4);
             return BitConverter.ToSingle(new[] { bytes[3], bytes[2], bytes[1], bytes[0] }, 0);
         }
 
         /// <summary>
         /// Read big-endian int.
         /// </summary>
+        /// <param name="reader">The reader.</param>
         /// <returns>
         /// The read int.
         /// </returns>
-        private int ReadInt()
+        private int ReadInt(BinaryReader reader)
         {
-            var bytes = this.reader.ReadBytes(4);
+            var bytes = reader.ReadBytes(4);
             return BitConverter.ToInt32(new[] { bytes[3], bytes[2], bytes[1], bytes[0] }, 0);
         }
 
         /// <summary>
-        /// The read points.
+        /// Read points.
         /// </summary>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        private void ReadPoints(int size)
+        /// <param name="reader">The reader.</param>
+        /// <param name="size">The size of the points array.</param>
+        private void ReadPoints(BinaryReader reader, int size)
         {
-            int nPoints = size / 4 / 3;
-            this.Points = new List<Point3D>(nPoints);
-            for (int i = 0; i < nPoints; i++)
+            int n = size / 4 / 3;
+            this.Points = new List<Point3D>(n);
+            for (int i = 0; i < n; i++)
             {
-                float x = this.ReadFloat();
-                float y = this.ReadFloat();
-                float z = this.ReadFloat();
+                float x = this.ReadFloat(reader);
+                float y = this.ReadFloat(reader);
+                float z = this.ReadFloat(reader);
                 this.Points.Add(new Point3D(x, y, z));
             }
         }
 
         /// <summary>
-        /// The read polygons.
+        /// Read polygons.
         /// </summary>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <exception cref="NotSupportedException">
-        /// </exception>
-        private void ReadPolygons(int size)
+        /// <param name="reader">The reader.</param>
+        /// <param name="size">The size.</param>
+        private void ReadPolygons(BinaryReader reader, int size)
         {
             while (size > 0)
             {
-                short nverts = this.ReadShortInt();
+                short nverts = this.ReadShortInt(reader);
                 if (nverts <= 0)
                 {
                     throw new NotSupportedException("details are not supported");
@@ -279,11 +272,11 @@ namespace HelixToolkit.Wpf
                 var pts = new List<Point3D>(nverts);
                 for (int i = 0; i < nverts; i++)
                 {
-                    int vidx = this.ReadShortInt();
+                    int vidx = this.ReadShortInt(reader);
                     pts.Add(this.Points[vidx]);
                 }
 
-                short surfaceIndex = this.ReadShortInt();
+                short surfaceIndex = this.ReadShortInt(reader);
                 size -= (2 + nverts) * 2;
 
                 this.Meshes[surfaceIndex - 1].AddTriangleFan(pts);
@@ -293,45 +286,44 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Read big-endian short.
         /// </summary>
+        /// <param name="reader">The reader.</param>
         /// <returns>
         /// The read short int.
         /// </returns>
-        private short ReadShortInt()
+        private short ReadShortInt(BinaryReader reader)
         {
-            var bytes = this.reader.ReadBytes(2);
+            var bytes = reader.ReadBytes(2);
             return BitConverter.ToInt16(new[] { bytes[1], bytes[0] }, 0);
         }
 
         /// <summary>
-        /// The read string.
+        /// Read a string.
         /// </summary>
-        /// <param name="size">
-        /// The size.
-        /// </param>
+        /// <param name="reader">The reader.</param>
+        /// <param name="size">The size.</param>
         /// <returns>
-        /// The read string.
+        /// The string.
         /// </returns>
-        private string ReadString(int size)
+        private string ReadString(BinaryReader reader, int size)
         {
-            var bytes = this.reader.ReadBytes(size);
+            var bytes = reader.ReadBytes(size);
             var enc = new ASCIIEncoding();
             var s = enc.GetString(bytes);
             return s.Trim('\0');
         }
 
         /// <summary>
-        /// The read surface.
+        /// Read a surface.
         /// </summary>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        private void ReadSurface(int size)
+        /// <param name="reader">The reader.</param>
+        /// <param name="size">The size.</param>
+        private void ReadSurface(BinaryReader reader, int size)
         {
             this.Surfaces = new List<string>();
             this.Meshes = new List<MeshBuilder>();
             this.Materials = new List<Material>();
 
-            string name = this.ReadString(size);
+            string name = this.ReadString(reader, size);
             var names = name.Split('\0');
             for (int i = 0; i < names.Length; i++)
             {

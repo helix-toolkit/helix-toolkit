@@ -26,12 +26,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   The light group.
         /// </summary>
-        protected Model3DGroup lightGroup = new Model3DGroup();
+        private readonly Model3DGroup lightGroup = new Model3DGroup();
 
         /// <summary>
         ///   The lights visual.
         /// </summary>
-        protected ModelVisual3D lightsVisual = new ModelVisual3D();
+        private readonly ModelVisual3D lightsVisual = new ModelVisual3D();
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Initializes a new instance of the <see cref = "LightSetup" /> class.
         /// </summary>
-        public LightSetup()
+        protected LightSetup()
         {
             this.Content = this.lightGroup;
             this.Children.Add(this.lightsVisual);
@@ -132,13 +132,14 @@ namespace HelixToolkit.Wpf
                         dir.Normalize();
 
                         var target = new Point3D(0, 0, 0);
-                        var source = target - dir * 20;
-                        var p2 = source + dir * 10;
+                        var source = target - (dir * 20);
+                        var p2 = source + (dir * 10);
 
                         var sphere = new SphereVisual3D();
                         sphere.BeginEdit();
                         sphere.Center = source;
-                        sphere.Radius = 1.0; sphere.Fill = new SolidColorBrush(dl.Color);
+                        sphere.Radius = 1.0; 
+                        sphere.Fill = new SolidColorBrush(dl.Color);
                         sphere.EndEdit();
                         this.lightsVisual.Children.Add(sphere);
 

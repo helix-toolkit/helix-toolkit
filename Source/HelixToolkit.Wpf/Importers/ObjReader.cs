@@ -194,10 +194,10 @@ namespace HelixToolkit.Wpf
         public Model3DGroup Read(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
-            var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var result = this.Read(s);
-            s.Close();
-            return result;
+            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                return this.Read(s);
+            }
         }
 
         /// <summary>
@@ -338,12 +338,11 @@ namespace HelixToolkit.Wpf
         public Model3DGroup ReadZ(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
-            var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var deflateStream = new GZipStream(s, CompressionMode.Decompress, true);
-            var result = this.Read(deflateStream);
-            deflateStream.Close();
-            s.Close();
-            return result;
+            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var deflateStream = new GZipStream(s, CompressionMode.Decompress, true);
+                return this.Read(deflateStream);
+            }
         }
 
         #endregion
@@ -1105,9 +1104,7 @@ namespace HelixToolkit.Wpf
                     var path = Path.Combine(texturePath, this.DiffuseMap);
                     if (File.Exists(path))
                     {
-                        var img = new BitmapImage(new Uri(path, UriKind.Relative));
-                        var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
-                        mg.Children.Add(new DiffuseMaterial(textureBrush));
+                        mg.Children.Add(new DiffuseMaterial(this.CreateTextureBrush(path)));
                     }
                 }
 
@@ -1121,9 +1118,7 @@ namespace HelixToolkit.Wpf
                     var path = Path.Combine(texturePath, this.AmbientMap);
                     if (File.Exists(path))
                     {
-                        var img = new BitmapImage(new Uri(path, UriKind.Relative));
-                        var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
-                        mg.Children.Add(new EmissiveMaterial(textureBrush));
+                        mg.Children.Add(new EmissiveMaterial(this.CreateTextureBrush(path)));
                     }
                 }
 
@@ -1134,6 +1129,18 @@ namespace HelixToolkit.Wpf
                 }
 
                 return mg.Children.Count != 1 ? mg : mg.Children[0];
+            }
+
+            /// <summary>
+            /// Creates a texture brush.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns>The brush.</returns>
+            private ImageBrush CreateTextureBrush(string path)
+            {
+                var img = new BitmapImage(new Uri(path, UriKind.Relative));
+                var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
+                return textureBrush;
             }
 
             #endregion

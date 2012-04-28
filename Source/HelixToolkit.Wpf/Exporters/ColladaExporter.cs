@@ -8,7 +8,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using System.Reflection;
     using System.Text;
@@ -33,29 +32,29 @@ namespace HelixToolkit.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The effect id.
+        /// The effect dictionary.
         /// </summary>
-        private readonly Dictionary<Material, string> EffectID = new Dictionary<Material, string>();
+        private readonly Dictionary<Material, string> effects = new Dictionary<Material, string>();
 
         /// <summary>
-        /// The geometry id.
+        /// The geometry dictionary.
         /// </summary>
-        private readonly Dictionary<MeshGeometry3D, string> GeometryId = new Dictionary<MeshGeometry3D, string>();
+        private readonly Dictionary<MeshGeometry3D, string> geometries = new Dictionary<MeshGeometry3D, string>();
 
         /// <summary>
-        /// The light id.
+        /// The light dictionary.
         /// </summary>
-        private readonly Dictionary<Light, string> LightID = new Dictionary<Light, string>();
+        private readonly Dictionary<Light, string> lights = new Dictionary<Light, string>();
 
         /// <summary>
-        /// The material id.
+        /// The material dictionary.
         /// </summary>
-        private readonly Dictionary<Material, string> MaterialID = new Dictionary<Material, string>();
+        private readonly Dictionary<Material, string> materials = new Dictionary<Material, string>();
 
         /// <summary>
-        /// The node id.
+        /// The node dictionary.
         /// </summary>
-        private readonly Dictionary<Model3D, string> NodeId = new Dictionary<Model3D, string>();
+        private readonly Dictionary<Model3D, string> nodes = new Dictionary<Model3D, string>();
 
         /// <summary>
         ///   The writer.
@@ -338,7 +337,7 @@ namespace HelixToolkit.Wpf
                 return;
             }
 
-            string id = this.EffectID[m];
+            string id = this.effects[m];
             this.writer.WriteStartElement("effect");
             this.writer.WriteAttributeString("id", id);
             this.writer.WriteAttributeString("name", id);
@@ -383,14 +382,18 @@ namespace HelixToolkit.Wpf
         private void ExportGeometry(GeometryModel3D model, Transform3D transform)
         {
             var mg = model.Geometry as MeshGeometry3D;
-            Debug.Assert(mg != null);
+            if (mg == null)
+            {
+                throw new InvalidOperationException("Model is not a MeshGeometry3D.");
+            }
+
             this.writer.WriteStartElement("geometry");
             this.writer.WriteStartElement("mesh");
 
             // write positions
-            int id = this.GeometryId.Count;
+            int id = this.geometries.Count;
             string meshId = "mesh" + id;
-            this.GeometryId.Add(mg, meshId);
+            this.geometries.Add(mg, meshId);
 
             this.writer.WriteStartElement("source");
             string positionsId = "p" + id;
@@ -398,7 +401,7 @@ namespace HelixToolkit.Wpf
             this.writer.WriteStartElement("float_array");
             string positionsArrayId = positionsId + "-array";
             this.writer.WriteAttributeString("id", positionsArrayId);
-            this.writer.WriteAttributeString("count", (mg.Positions.Count * 3).ToString());
+            this.writer.WriteAttributeString("count", (mg.Positions.Count * 3).ToString(CultureInfo.InvariantCulture));
             var psb = new StringBuilder();
             foreach (var p in mg.Positions)
             {
@@ -411,7 +414,7 @@ namespace HelixToolkit.Wpf
             this.writer.WriteStartElement("technique_common");
             this.writer.WriteStartElement("accessor");
             this.writer.WriteAttributeString("source", "#" + positionsArrayId);
-            this.writer.WriteAttributeString("count", mg.Positions.Count.ToString());
+            this.writer.WriteAttributeString("count", mg.Positions.Count.ToString(CultureInfo.InvariantCulture));
             this.writer.WriteAttributeString("stride", "3");
             this.writer.WriteStartElement("param");
             this.writer.WriteAttributeString("name", "X");
@@ -446,7 +449,7 @@ namespace HelixToolkit.Wpf
             this.writer.WriteEndElement(); // vertices
 
             this.writer.WriteStartElement("triangles");
-            this.writer.WriteAttributeString("count", mg.TriangleIndices.Count.ToString());
+            this.writer.WriteAttributeString("count", mg.TriangleIndices.Count.ToString(CultureInfo.InvariantCulture));
             this.writer.WriteAttributeString("material", "xx");
             this.writer.WriteStartElement("input");
             this.writer.WriteAttributeString("offset", "0");
@@ -474,13 +477,13 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void ExportLight(Light light)
         {
-            if (light == null || this.LightID.ContainsKey(light))
+            if (light == null || this.lights.ContainsKey(light))
             {
                 return;
             }
 
-            string id = "light_" + this.LightID.Count;
-            this.LightID.Add(light, id);
+            string id = "light_" + this.lights.Count;
+            this.lights.Add(light, id);
             this.writer.WriteStartElement("light");
             this.writer.WriteAttributeString("id", id);
             this.writer.WriteAttributeString("name", id);
@@ -554,15 +557,15 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void ExportMaterial(Material m)
         {
-            if (m == null || this.MaterialID.ContainsKey(m))
+            if (m == null || this.materials.ContainsKey(m))
             {
                 return;
             }
 
-            string id = "material_" + this.MaterialID.Count;
-            string effectid = "effect_" + this.MaterialID.Count;
-            this.MaterialID.Add(m, id);
-            this.EffectID.Add(m, effectid);
+            string id = "material_" + this.materials.Count;
+            string effectid = "effect_" + this.materials.Count;
+            this.materials.Add(m, id);
+            this.effects.Add(m, effectid);
             this.writer.WriteStartElement("material");
             this.writer.WriteAttributeString("id", id);
             this.writer.WriteAttributeString("name", id);
@@ -584,22 +587,25 @@ namespace HelixToolkit.Wpf
         private void ExportNode(GeometryModel3D gm, Transform3D transform)
         {
             var mg = gm.Geometry as MeshGeometry3D;
-            Debug.Assert(mg != null);
+            if (mg == null)
+            {
+                throw new InvalidOperationException("Model is not a MeshGeometry3D.");
+            }
 
-            string geometryId = this.GeometryId[mg];
+            string geometryId = this.geometries[mg];
             string nodeId = geometryId + "-node";
-            this.NodeId.Add(gm, nodeId);
+            this.nodes.Add(gm, nodeId);
             this.writer.WriteStartElement("node");
             this.writer.WriteAttributeString("id", nodeId);
             this.writer.WriteAttributeString("name", nodeId);
             string frontMaterialId;
             string backMaterialId;
-            if (gm.Material != null && this.MaterialID.TryGetValue(gm.Material, out frontMaterialId))
+            if (gm.Material != null && this.materials.TryGetValue(gm.Material, out frontMaterialId))
             {
                 this.BindMaterial(geometryId, frontMaterialId);
             }
 
-            if (gm.BackMaterial != null && this.MaterialID.TryGetValue(gm.BackMaterial, out backMaterialId))
+            if (gm.BackMaterial != null && this.materials.TryGetValue(gm.BackMaterial, out backMaterialId))
             {
                 this.BindMaterial(geometryId, backMaterialId);
             }
@@ -618,7 +624,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void ExportSceneNode(Model3D gm, Transform3D transform)
         {
-            string nodeId = this.NodeId[gm];
+            string nodeId = this.nodes[gm];
             string instanceId = nodeId + "-instance";
             this.writer.WriteStartElement("node");
             this.writer.WriteAttributeString("id", instanceId);
@@ -641,14 +647,8 @@ namespace HelixToolkit.Wpf
         {
             // this.writer.WriteElementString("color", string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", color.R / 255.0, color.G / 255.0, color.B / 255.0));
             this.writer.WriteElementString(
-                "color", 
-                string.Format(
-                    CultureInfo.InvariantCulture, 
-                    "{0} {1} {2} {3}", 
-                    color.R / 255.0, 
-                    color.G / 255.0, 
-                    color.B / 255.0, 
-                    color.A / 255.0));
+                "color",
+                string.Format(CultureInfo.InvariantCulture, "{0} {1} {2} {3}", color.R / 255.0, color.G / 255.0, color.B / 255.0, color.A / 255.0));
         }
 
         /// <summary>
@@ -677,23 +677,23 @@ namespace HelixToolkit.Wpf
         private void WriteMatrix(string name, Matrix3D m)
         {
             string value = string.Format(
-                CultureInfo.InvariantCulture, 
-                "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15}", 
-                m.M11, 
-                m.M12, 
-                m.M13, 
-                m.OffsetX, 
-                m.M21, 
-                m.M22, 
-                m.M23, 
-                m.OffsetY, 
-                m.M31, 
-                m.M32, 
-                m.M33, 
-                m.OffsetZ, 
-                0, 
-                0, 
-                0, 
+                CultureInfo.InvariantCulture,
+                "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15}",
+                m.M11,
+                m.M12,
+                m.M13,
+                m.OffsetX,
+                m.M21,
+                m.M22,
+                m.M23,
+                m.OffsetY,
+                m.M31,
+                m.M32,
+                m.M33,
+                m.OffsetZ,
+                0,
+                0,
+                0,
                 1);
 
             this.writer.WriteElementString(name, value);

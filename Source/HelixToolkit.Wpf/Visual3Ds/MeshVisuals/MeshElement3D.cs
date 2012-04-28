@@ -70,6 +70,7 @@ namespace HelixToolkit.Wpf
             this.Content = new GeometryModel3D();
             this.UpdateModel();
         }
+        
         #endregion
 
         #region Public Properties

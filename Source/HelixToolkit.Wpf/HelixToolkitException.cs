@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Represents errors that occurs in the Helix 3D Toolkit.
     /// </summary>
+    [Serializable]
     public class HelixToolkitException : Exception
     {
         #region Constructors and Destructors

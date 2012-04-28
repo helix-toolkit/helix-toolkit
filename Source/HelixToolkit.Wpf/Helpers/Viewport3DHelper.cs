@@ -887,39 +887,8 @@ namespace HelixToolkit.Wpf
         /// <param name="m">The oversampling multiplier.</param>
         public static void SaveBitmap(Viewport3D view, string fileName, Brush background = null, int m = 1)
         {
-            if (background == null)
-            {
-                background = Brushes.Transparent;
-            }
-
-            var bmp = RenderBitmap(view, background, m);
-            BitmapEncoder encoder;
-            string ext = System.IO.Path.GetExtension(fileName);
-            if (ext != null)
-            {
-                ext = ext.ToLower();
-            }
-
-            switch (ext)
-            {
-                case ".jpg":
-                    var jpg = new JpegBitmapEncoder();
-                    jpg.Frames.Add(BitmapFrame.Create(bmp));
-                    encoder = jpg;
-                    break;
-                case ".png":
-                    var png = new PngBitmapEncoder();
-                    png.Frames.Add(BitmapFrame.Create(bmp));
-                    encoder = png;
-                    break;
-                default:
-                    throw new HelixToolkitException("Not supported file format.");
-            }
-
-            using (Stream stm = File.Create(fileName))
-            {
-                encoder.Save(stm);
-            }
+            var exporter = new BitmapExporter(fileName) { Background = background, OversamplingMultiplier = m };
+            exporter.Export(view);
         }
 
         /// <summary>
@@ -1069,9 +1038,10 @@ namespace HelixToolkit.Wpf
         {
             var scb = background as SolidColorBrush;
             var backgroundColor = scb != null ? scb.Color : Colors.White;
-            var e = new KerkytheaExporter(fileName) { Width = width, Height = height, BackgroundColor = backgroundColor };
-            e.Export(view);
-            e.Close();
+            using (var e = new KerkytheaExporter(fileName) { Width = width, Height = height, BackgroundColor = backgroundColor })
+            {
+                e.Export(view);
+            }
         }
 
         /// <summary>
@@ -1085,9 +1055,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ExportObj(Viewport3D view, string fileName)
         {
-            var e = new ObjExporter(fileName);
-            e.Export(view);
-            e.Close();
+            using (var e = new ObjExporter(fileName))
+            {
+                e.Export(view);
+            }
         }
 
         /// <summary>
@@ -1101,9 +1072,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ExportX3D(Viewport3D view, string fileName)
         {
-            var e = new X3DExporter(fileName);
-            e.Export(view);
-            e.Close();
+            using (var e = new X3DExporter(fileName))
+            {
+                e.Export(view);
+            }
         }
 
         /// <summary>
@@ -1113,9 +1085,10 @@ namespace HelixToolkit.Wpf
         /// <param name="fileName">Name of the file.</param>
         private static void ExportCollada(Viewport3D view, string fileName)
         {
-            var e = new ColladaExporter(fileName);
-            e.Export(view);
-            e.Close();
+            using (var e = new ColladaExporter(fileName))
+            {
+                e.Export(view);
+            }
         }
 
         /// <summary>
@@ -1129,9 +1102,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ExportXaml(Viewport3D view, string fileName)
         {
-            var e = new XamlExporter(fileName);
-            e.Export(view);
-            e.Close();
+            using (var e = new XamlExporter(fileName))
+            {
+                e.Export(view);
+            }
         }
 
         /// <summary>

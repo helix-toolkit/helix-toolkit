@@ -26,17 +26,19 @@ namespace HelixToolkit.Wpf
         public static void Compress(string source)
         {
             var ext = Path.GetExtension(source);
-            var infile = File.OpenRead(source);
-            var input = new byte[infile.Length];
-            infile.Read(input, 0, input.Length);
-            infile.Close();
+            byte[] input;
+            using (var infile = File.OpenRead(source))
+            {
+                input = new byte[infile.Length];
+                infile.Read(input, 0, input.Length);
+            }
 
             var dest = Path.ChangeExtension(source, ext + "z");
-            var outfile = File.OpenWrite(dest);
-            var zip = new GZipStream(outfile, CompressionMode.Compress);
-            zip.Write(input, 0, input.Length);
-            zip.Close();
-            outfile.Close();
+            using (var outfile = File.OpenWrite(dest))
+            {
+                var zip = new GZipStream(outfile, CompressionMode.Compress);
+                zip.Write(input, 0, input.Length);
+            }
         }
 
         #endregion
