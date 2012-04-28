@@ -63,11 +63,11 @@ namespace ContourDemo
             var p = ContourPlane.Position;
             var n = ContourPlane.Normal;
             var segments = MeshGeometryHelper.GetContourSegments(model.Geometry as MeshGeometry3D, p, n).ToList();
-            foreach (IList<Point3D> contour in MeshGeometryHelper.CombineSegments(segments, 1e-6).ToList())
+            foreach (var contour in MeshGeometryHelper.CombineSegments(segments, 1e-6).ToList())
             {
                 if (contour.Count == 0)
                     continue;
-                view2.Children.Add(new TubeVisual3D { Diameter = 0.03, Path = contour, Fill = Brushes.Green });
+                view2.Children.Add(new TubeVisual3D { Diameter = 0.03, Path = new Point3DCollection(contour), Fill = Brushes.Green });
             }
         }
 
