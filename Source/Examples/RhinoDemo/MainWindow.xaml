@@ -13,6 +13,7 @@
             <Setter Property="ZoomCursor" Value="Cursors\ZoomCursor.cur"/>
             <Setter Property="PanCursor" Value="Cursors\PanCursor.cur"/>
             <Setter Property="CurrentPosition" Value="{Binding CurrentPosition}"/>
+            <Setter Property="EnableCurrentPosition" Value="true"/>
         </Style>
         <Style x:Key="NoButtonStyle" TargetType="{x:Type ToggleButton}">
             <Style.Setters>

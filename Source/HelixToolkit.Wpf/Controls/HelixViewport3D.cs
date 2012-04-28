@@ -35,6 +35,12 @@ namespace HelixToolkit.Wpf
         #region Constants and Fields
 
         /// <summary>
+        /// The EnableCurrentPosition property.
+        /// </summary>
+        public static readonly DependencyProperty EnableCurrentPositionProperty =
+            DependencyProperty.Register("EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
+
+        /// <summary>
         ///   The left right pan sensitivity property.
         /// </summary>
         public static readonly DependencyProperty LeftRightPanSensitivityProperty =
@@ -1225,9 +1231,24 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if calculation is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableCurrentPosition
+        {
+            get { return (bool)GetValue(EnableCurrentPositionProperty); }
+            set { SetValue(EnableCurrentPositionProperty, value); }
+        }
+
+        /// <summary>
         ///   Gets or sets the current position.
         /// </summary>
         /// <value> The current position. </value>
+        /// <remarks>
+        /// The <see cref="EnableCurrentPosition"/> property must be set to true to enable updating of this property.
+        /// </remarks>
         public Point3D CurrentPosition
         {
             get
@@ -2745,18 +2766,22 @@ namespace HelixToolkit.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            var pt = e.GetPosition(this);
-            var pos = this.FindNearestPoint(pt);
-            if (pos != null)
+            
+            if (this.EnableCurrentPosition)
             {
-                this.CurrentPosition = pos.Value;
-            }
-            else
-            {
-                var p = Viewport3DHelper.UnProject(this.Viewport, pt);
-                if (p != null)
+                var pt = e.GetPosition(this);
+                var pos = this.FindNearestPoint(pt);
+                if (pos != null)
                 {
-                    this.CurrentPosition = p.Value;
+                    this.CurrentPosition = pos.Value;
+                }
+                else
+                {
+                    var p = Viewport3DHelper.UnProject(this.Viewport, pt);
+                    if (p != null)
+                    {
+                        this.CurrentPosition = p.Value;
+                    }
                 }
             }
         }
