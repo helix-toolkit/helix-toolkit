@@ -2,227 +2,444 @@
 // <copyright file="GridLines.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents grid lines.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
 
 namespace RhinoDemo
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+
     using HelixToolkit.Wpf;
 
+    /// <summary>
+    /// Represents grid lines.
+    /// </summary>
     public class GridLines : ModelVisual3D
     {
-        public static readonly DependencyProperty CenterProperty =
-            DependencyProperty.Register("Center", typeof(Point3D), typeof(GridLines),
-                                        new UIPropertyMetadata(new Point3D(), GeometryChanged));
+        #region Constants and Fields
 
-        public static readonly DependencyProperty DistanceProperty =
-            DependencyProperty.Register("MinorDistance", typeof(double), typeof(GridLines),
-                                        new PropertyMetadata(1.0, GeometryChanged));
+        /// <summary>
+        /// The center property.
+        /// </summary>
+        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
+            "Center", typeof(Point3D), typeof(GridLines), new UIPropertyMetadata(new Point3D(), GeometryChanged));
 
-        private static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((GridLines)d).OnGeometryChanged();
-        }
+        /// <summary>
+        /// The distance property.
+        /// </summary>
+        public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
+            "MinorDistance", typeof(double), typeof(GridLines), new PropertyMetadata(1.0, GeometryChanged));
 
-        private void OnGeometryChanged()
-        {
-            foreach (LinesVisual3D lines in Children)
-                lines.IsRendering = false;
-
-            Children.Clear();
-            CreateGrid();
-        }
-
-        public static readonly DependencyProperty LengthProperty =
-            DependencyProperty.Register("Length", typeof(double), typeof(GridLines),
-                                        new PropertyMetadata(100.0, GeometryChanged));
-
+        /// <summary>
+        /// The length direction property.
+        /// </summary>
         public static readonly DependencyProperty LengthDirectionProperty =
-            DependencyProperty.Register("LengthDirection", typeof(Vector3D), typeof(GridLines),
-                                        new UIPropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
+            DependencyProperty.Register(
+                "LengthDirection",
+                typeof(Vector3D),
+                typeof(GridLines),
+                new UIPropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
 
-        public static readonly DependencyProperty MajorDistanceProperty =
-            DependencyProperty.Register("MajorDistance", typeof(double), typeof(GridLines),
-                                        new PropertyMetadata(10.0, GeometryChanged));
+        /// <summary>
+        /// The length property.
+        /// </summary>
+        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
+            "Length", typeof(double), typeof(GridLines), new PropertyMetadata(100.0, GeometryChanged));
 
-        public static readonly DependencyProperty NormalProperty =
-            DependencyProperty.Register("Normal", typeof(Vector3D), typeof(GridLines),
-                                        new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
+        /// <summary>
+        /// The major distance property.
+        /// </summary>
+        public static readonly DependencyProperty MajorDistanceProperty = DependencyProperty.Register(
+            "MajorDistance", typeof(double), typeof(GridLines), new PropertyMetadata(10.0, GeometryChanged));
 
-        public double MajorLineThickness
-        {
-            get { return (double)GetValue(MajorLineThicknessProperty); }
-            set { SetValue(MajorLineThicknessProperty, value); }
-        }
+        /// <summary>
+        /// The major line color property.
+        /// </summary>
+        public static readonly DependencyProperty MajorLineColorProperty = DependencyProperty.Register(
+            "MajorLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(140, 140, 140)));
 
+        /// <summary>
+        /// The major line thickness property.
+        /// </summary>
         public static readonly DependencyProperty MajorLineThicknessProperty =
-            DependencyProperty.Register("MajorLineThickness", typeof(double), typeof(GridLines), new UIPropertyMetadata(1.2));
+            DependencyProperty.Register(
+                "MajorLineThickness", typeof(double), typeof(GridLines), new UIPropertyMetadata(1.2));
 
-        public double MinorLineThickness
-        {
-            get { return (double)GetValue(MinorLineThicknessProperty); }
-            set { SetValue(MinorLineThicknessProperty, value); }
-        }
+        /// <summary>
+        /// The minor line color property.
+        /// </summary>
+        public static readonly DependencyProperty MinorLineColorProperty = DependencyProperty.Register(
+            "MinorLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(150, 150, 150)));
 
+        /// <summary>
+        /// The minor line thickness property.
+        /// </summary>
         public static readonly DependencyProperty MinorLineThicknessProperty =
-            DependencyProperty.Register("MinorLineThickness", typeof(double), typeof(GridLines), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register(
+                "MinorLineThickness", typeof(double), typeof(GridLines), new UIPropertyMetadata(1.0));
 
+        /// <summary>
+        /// The normal property.
+        /// </summary>
+        public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
+            "Normal",
+            typeof(Vector3D),
+            typeof(GridLines),
+            new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
-        public static readonly DependencyProperty WidthProperty =
-            DependencyProperty.Register("Width", typeof(double), typeof(GridLines),
-                                        new PropertyMetadata(100.0, GeometryChanged));
+        /// <summary>
+        /// The width property.
+        /// </summary>
+        public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
+            "Width", typeof(double), typeof(GridLines), new PropertyMetadata(100.0, GeometryChanged));
 
-        public Color MajorLineColor
-        {
-            get { return (Color)GetValue(MajorLineColorProperty); }
-            set { SetValue(MajorLineColorProperty, value); }
-        }
+        /// <summary>
+        /// The x axis line color property.
+        /// </summary>
+        public static readonly DependencyProperty XAxisLineColorProperty = DependencyProperty.Register(
+            "XAxisLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(150, 75, 75)));
 
-        public static readonly DependencyProperty MajorLineColorProperty =
-            DependencyProperty.Register("MajorLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(140, 140, 140)));
+        /// <summary>
+        /// The y axis line color property.
+        /// </summary>
+        public static readonly DependencyProperty YAxisLineColorProperty = DependencyProperty.Register(
+            "YAxisLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(75, 150, 75)));
 
-        public Color MinorLineColor
-        {
-            get { return (Color)GetValue(MinorLineColorProperty); }
-            set { SetValue(MinorLineColorProperty, value); }
-        }
+        /// <summary>
+        /// The z axis line color property.
+        /// </summary>
+        public static readonly DependencyProperty ZAxisLineColorProperty = DependencyProperty.Register(
+            "ZAxisLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(75, 75, 150)));
 
-        public static readonly DependencyProperty MinorLineColorProperty =
-            DependencyProperty.Register("MinorLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(150, 150, 150)));
-
-        public Color XAxisLineColor
-        {
-            get { return (Color)GetValue(XAxisLineColorProperty); }
-            set { SetValue(XAxisLineColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty XAxisLineColorProperty =
-            DependencyProperty.Register("XAxisLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(150, 75, 75)));
-
-        public Color YAxisLineColor
-        {
-            get { return (Color)GetValue(YAxisLineColorProperty); }
-            set { SetValue(YAxisLineColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty YAxisLineColorProperty =
-            DependencyProperty.Register("YAxisLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(75, 150, 75)));
-
-
-        public Color ZAxisLineColor
-        {
-            get { return (Color)GetValue(ZAxisLineColorProperty); }
-            set { SetValue(ZAxisLineColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty ZAxisLineColorProperty =
-            DependencyProperty.Register("ZAxisLineColor", typeof(Color), typeof(GridLines), new UIPropertyMetadata(Color.FromRgb(75, 75, 150)));
-
+        /// <summary>
+        /// The length direction.
+        /// </summary>
         private Vector3D lengthDirection;
+
+        /// <summary>
+        /// The width direction.
+        /// </summary>
         private Vector3D widthDirection;
 
-        public Point3D Center
-        {
-            get { return (Point3D)GetValue(CenterProperty); }
-            set { SetValue(CenterProperty, value); }
-        }
+        #endregion
 
-        public Vector3D Normal
-        {
-            get { return (Vector3D)GetValue(NormalProperty); }
-            set { SetValue(NormalProperty, value); }
-        }
+        #region Constructors and Destructors
 
-        public Vector3D LengthDirection
-        {
-            get { return (Vector3D)GetValue(LengthDirectionProperty); }
-            set { SetValue(LengthDirectionProperty, value); }
-        }
-
-        public double Length
-        {
-            get { return (double)GetValue(LengthProperty); }
-            set { SetValue(LengthProperty, value); }
-        }
-
-        public double Width
-        {
-            get { return (double)GetValue(WidthProperty); }
-            set { SetValue(WidthProperty, value); }
-        }
-
-        public double MinorDistance
-        {
-            get { return (double)GetValue(DistanceProperty); }
-            set { SetValue(DistanceProperty, value); }
-        }
-
-        public double MajorDistance
-        {
-            get { return (double)GetValue(MajorDistanceProperty); }
-            set { SetValue(MajorDistanceProperty, value); }
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GridLines"/> class. 
+        ///   Initializes a new instance of the <see cref="GridLines"/> class.
+        /// </summary>
         public GridLines()
         {
-            CreateGrid();
+            this.CreateGrid();
         }
 
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        ///   Gets or sets the center of the grid.
+        /// </summary>
+        /// <value> The center. </value>
+        public Point3D Center
+        {
+            get
+            {
+                return (Point3D)this.GetValue(CenterProperty);
+            }
+
+            set
+            {
+                this.SetValue(CenterProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the length.
+        /// </summary>
+        /// <value> The length. </value>
+        public double Length
+        {
+            get
+            {
+                return (double)this.GetValue(LengthProperty);
+            }
+
+            set
+            {
+                this.SetValue(LengthProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the length direction.
+        /// </summary>
+        /// <value> The length direction. </value>
+        public Vector3D LengthDirection
+        {
+            get
+            {
+                return (Vector3D)this.GetValue(LengthDirectionProperty);
+            }
+
+            set
+            {
+                this.SetValue(LengthDirectionProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the distance between major grid lines.
+        /// </summary>
+        /// <value> The major distance. </value>
+        public double MajorDistance
+        {
+            get
+            {
+                return (double)this.GetValue(MajorDistanceProperty);
+            }
+
+            set
+            {
+                this.SetValue(MajorDistanceProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the color of the major line.
+        /// </summary>
+        /// <value> The color of the major line. </value>
+        public Color MajorLineColor
+        {
+            get
+            {
+                return (Color)this.GetValue(MajorLineColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(MajorLineColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the major line thickness.
+        /// </summary>
+        /// <value> The major line thickness. </value>
+        public double MajorLineThickness
+        {
+            get
+            {
+                return (double)this.GetValue(MajorLineThicknessProperty);
+            }
+
+            set
+            {
+                this.SetValue(MajorLineThicknessProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the distance between minor grid lines.
+        /// </summary>
+        /// <value> The minor distance. </value>
+        public double MinorDistance
+        {
+            get
+            {
+                return (double)this.GetValue(DistanceProperty);
+            }
+
+            set
+            {
+                this.SetValue(DistanceProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the color of the minor line.
+        /// </summary>
+        /// <value> The color of the minor line. </value>
+        public Color MinorLineColor
+        {
+            get
+            {
+                return (Color)this.GetValue(MinorLineColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(MinorLineColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the minor line thickness.
+        /// </summary>
+        /// <value> The minor line thickness. </value>
+        public double MinorLineThickness
+        {
+            get
+            {
+                return (double)this.GetValue(MinorLineThicknessProperty);
+            }
+
+            set
+            {
+                this.SetValue(MinorLineThicknessProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the normal of the grid.
+        /// </summary>
+        /// <value> The normal. </value>
+        public Vector3D Normal
+        {
+            get
+            {
+                return (Vector3D)this.GetValue(NormalProperty);
+            }
+
+            set
+            {
+                this.SetValue(NormalProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the width.
+        /// </summary>
+        /// <value> The width. </value>
+        public double Width
+        {
+            get
+            {
+                return (double)this.GetValue(WidthProperty);
+            }
+
+            set
+            {
+                this.SetValue(WidthProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the color of the X axis line.
+        /// </summary>
+        /// <value> The color of the X axis line. </value>
+        public Color XAxisLineColor
+        {
+            get
+            {
+                return (Color)this.GetValue(XAxisLineColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(XAxisLineColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the color of the Y axis line.
+        /// </summary>
+        /// <value> The color of the Y axis line. </value>
+        public Color YAxisLineColor
+        {
+            get
+            {
+                return (Color)this.GetValue(YAxisLineColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(YAxisLineColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the color of the Z axis line.
+        /// </summary>
+        /// <value> The color of the Z axis line. </value>
+        public Color ZAxisLineColor
+        {
+            get
+            {
+                return (Color)this.GetValue(ZAxisLineColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZAxisLineColorProperty, value);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Creates the grid.
+        /// </summary>
         protected void CreateGrid()
         {
-
             var majorLinePoints = new Point3DCollection();
             var minorLinePoints = new Point3DCollection();
-            var xLinePoints = new Point3DCollection();
-            var yLinePoints = new Point3DCollection();
+            var xlinePoints = new Point3DCollection();
+            var ylinePoints = new Point3DCollection();
 
-            lengthDirection = LengthDirection;
-            lengthDirection.Normalize();
-            widthDirection = Vector3D.CrossProduct(Normal, lengthDirection);
-            widthDirection.Normalize();
+            this.lengthDirection = this.LengthDirection;
+            this.lengthDirection.Normalize();
+            this.widthDirection = Vector3D.CrossProduct(this.Normal, this.lengthDirection);
+            this.widthDirection.Normalize();
 
-            var mesh = new MeshBuilder(true, false);
-            double minX = -Width / 2;
-            double minY = -Length / 2;
-            double maxX = Width / 2;
-            double maxY = Length / 2;
+            double minX = -this.Width / 2;
+            double minY = -this.Length / 2;
+            double maxX = this.Width / 2;
+            double maxY = this.Length / 2;
+
+            double z = this.MajorDistance * 1e-4;
 
             double x = minX;
-            double eps = MinorDistance / 10;
+            double eps = this.MinorDistance / 10;
             while (x <= maxX + eps)
             {
-                var pc = IsMultipleOf(x, MajorDistance) ? majorLinePoints : minorLinePoints;
-                if (x == 0)
+                var pc = IsMultipleOf(x, this.MajorDistance) ? majorLinePoints : minorLinePoints;
+                if (Math.Abs(x) < double.Epsilon)
                 {
-                    AddLine(pc,GetPoint(x, minY),GetPoint(x, 0));
-                    AddLine(yLinePoints,GetPoint(x, 0),GetPoint(x, maxY));
+                    this.AddLine(pc, this.GetPoint(x, minY, z), this.GetPoint(x, 0, z));
+                    this.AddLine(ylinePoints, this.GetPoint(x, 0, 2 * z), this.GetPoint(x, maxY, 2 * z));
                 }
                 else
                 {
-                        AddLine(pc,GetPoint(x, minY),GetPoint(x,maxY));
+                    this.AddLine(pc, this.GetPoint(x, minY, z), this.GetPoint(x, maxY, z));
                 }
-                x += MinorDistance;
+
+                x += this.MinorDistance;
             }
 
             double y = minY;
             while (y <= maxY + eps)
             {
-                var pc = IsMultipleOf(y, MajorDistance) ? majorLinePoints : minorLinePoints;
-                if (y == 0)
+                var pc = IsMultipleOf(y, this.MajorDistance) ? majorLinePoints : minorLinePoints;
+                if (Math.Abs(y) < double.Epsilon)
                 {
-                    AddLine(pc,GetPoint(minX, y),GetPoint(0, y));
-                    AddLine(xLinePoints,GetPoint(0, y),GetPoint(maxX, y));
-
+                    this.AddLine(pc, this.GetPoint(minX, y), this.GetPoint(0, y));
+                    this.AddLine(xlinePoints, this.GetPoint(0, y, 2 * z), this.GetPoint(maxX, y, 2 * z));
                 }
                 else
                 {
-                   AddLine(pc,GetPoint(minX, y),GetPoint(maxY, y));
+                    this.AddLine(pc, this.GetPoint(minX, y), this.GetPoint(maxY, y));
                 }
-                y += MinorDistance;
+
+                y += this.MinorDistance;
             }
 
             var majorLines = new LinesVisual3D
@@ -240,45 +457,119 @@ namespace RhinoDemo
                     Points = minorLinePoints,
                     IsRendering = true
                 };
-            var xLines = new LinesVisual3D
-            {
-                Color = this.YAxisLineColor,
-                Thickness = this.MajorLineThickness,
-                Points = xLinePoints,
-                IsRendering = true
-            };
-            var yLines = new LinesVisual3D
-            {
-                Color = this.XAxisLineColor,
-                Thickness = this.MajorLineThickness,
-                Points = yLinePoints,
-                IsRendering = true
-            };
-            Children.Add(majorLines);
-            Children.Add(minorLines);
-            Children.Add(xLines);
-            Children.Add(yLines);
+
+            var xlines = new LinesVisual3D
+                {
+                    Color = this.YAxisLineColor,
+                    Thickness = this.MajorLineThickness,
+                    Points = xlinePoints,
+                    IsRendering = true
+                };
+
+            var ylines = new LinesVisual3D
+                {
+                    Color = this.XAxisLineColor,
+                    Thickness = this.MajorLineThickness,
+                    Points = ylinePoints,
+                    IsRendering = true
+                };
+            this.Children.Add(majorLines);
+            this.Children.Add(minorLines);
+            this.Children.Add(xlines);
+            this.Children.Add(ylines);
         }
 
+        /// <summary>
+        /// The geometry changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((GridLines)d).OnGeometryChanged();
+        }
+
+        /// <summary>
+        /// Determines whether the specified value is a multiple of x.
+        /// </summary>
+        /// <param name="value">
+        /// The value. 
+        /// </param>
+        /// <param name="x">
+        /// The x value. 
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the value is a multiple of x; otherwise, <c>false</c> . 
+        /// </returns>
+        private static bool IsMultipleOf(double value, double x)
+        {
+            double y2 = x * (int)(value / x);
+            return Math.Abs(value - y2) < 1e-3;
+        }
+
+        /// <summary>
+        /// Adds the line.
+        /// </summary>
+        /// <param name="pc">
+        /// The pc. 
+        /// </param>
+        /// <param name="p0">
+        /// The p0. 
+        /// </param>
+        /// <param name="p1">
+        /// The p1. 
+        /// </param>
+        /// <param name="divisions">
+        /// The divisions. 
+        /// </param>
         private void AddLine(Point3DCollection pc, Point3D p0, Point3D p1, int divisions = 10)
         {
             var v = p1 - p0;
-            for (int i=0;i<divisions;i++)
+            for (int i = 0; i < divisions; i++)
             {
-                pc.Add(p0 + v * (double)i/divisions);
-                pc.Add(p0 + v * (double)(i+1)/divisions);
+                pc.Add(p0 + v * i / divisions);
+                pc.Add(p0 + v * (i + 1) / divisions);
             }
         }
 
-        private static bool IsMultipleOf(double y, double d)
+        /// <summary>
+        /// Gets the point at the specified local coordinates.
+        /// </summary>
+        /// <param name="x">
+        /// The x. 
+        /// </param>
+        /// <param name="y">
+        /// The y. 
+        /// </param>
+        /// <param name="z">
+        /// The z. 
+        /// </param>
+        /// <returns>
+        /// A point. 
+        /// </returns>
+        private Point3D GetPoint(double x, double y, double z = 0)
         {
-            double y2 = d * (int)(y / d);
-            return Math.Abs(y - y2) < 1e-3;
+            return this.Center + this.widthDirection * x + this.lengthDirection * y + this.Normal * z;
         }
 
-        private Point3D GetPoint(double x, double y)
+        /// <summary>
+        /// Called when the geometry changed.
+        /// </summary>
+        private void OnGeometryChanged()
         {
-            return Center + widthDirection * x + lengthDirection * y;
+            foreach (LinesVisual3D lines in this.Children)
+            {
+                lines.IsRendering = false;
+            }
+
+            this.Children.Clear();
+            this.CreateGrid();
         }
+
+        #endregion
     }
 }
