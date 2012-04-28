@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RelayCommand.cs" company="Helix 3D Toolkit">
+// <copyright file="RelayCommand{T}.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,45 +11,46 @@ namespace MvvmFoundation.Wpf
     using System.Windows.Input;
 
     /// <summary>
-    /// A command whose sole purpose is to 
+    /// A command whose sole purpose is to
     /// relay its functionality to other
     /// objects by invoking delegates. The
     /// default return value for the CanExecute
     /// method is 'true'.
     /// </summary>
-    public class RelayCommand : ICommand
+    /// <typeparam name="T">The type.</typeparam>
+    public class RelayCommand<T> : ICommand
     {
         #region Fields
 
         /// <summary>
         /// The execute action.
         /// </summary>
-        private readonly Action execute;
+        private readonly Action<T> execute;
 
         /// <summary>
         /// The can execute function.
         /// </summary>
-        private readonly Func<bool> canExecute;
+        private readonly Predicate<T> canExecute;
 
         #endregion // Fields
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand"/> class.
+        /// Initializes a new instance of the <see cref="RelayCommand&lt;T&gt;"/> class.
         /// </summary>
-        /// <param name="execute">The execution logic.</param>
-        public RelayCommand(Action execute)
+        /// <param name="execute">The execute.</param>
+        public RelayCommand(Action<T> execute)
             : this(execute, null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand"/> class.
+        /// Initializes a new instance of the <see cref="RelayCommand&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         /// <param name="canExecute">The execution status logic.</param>
-        public RelayCommand(Action execute, Func<bool> canExecute)
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             if (execute == null)
             {
@@ -96,7 +97,7 @@ namespace MvvmFoundation.Wpf
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return this.canExecute == null || this.canExecute();
+            return this.canExecute == null || this.canExecute((T)parameter);
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace MvvmFoundation.Wpf
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
         public void Execute(object parameter)
         {
-            this.execute();
+            this.execute((T)parameter);
         }
 
         #endregion // ICommand Members
