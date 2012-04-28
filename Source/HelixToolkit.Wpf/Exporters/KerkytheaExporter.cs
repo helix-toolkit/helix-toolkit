@@ -474,36 +474,6 @@ namespace HelixToolkit.Wpf
             this.WriteParameter(name, "Transform", value);
         }
 
-        /// <summary>
-        /// Writes the transposed transform.
-        /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        public void WriteTransformT(string name, Matrix3D m)
-        {
-            string value = string.Format(
-                CultureInfo.InvariantCulture,
-                "{0:0.######} {1:0.######} {2:0.######} {3:0.######} {4:0.######} {5:0.######} {6:0.######} {7:0.######} {8:0.######} {9:0.######} {10:0.######} {11:0.######}",
-                m.M11,
-                m.M21,
-                m.M31,
-                m.OffsetX,
-                m.M12,
-                m.M22,
-                m.M32,
-                m.OffsetY,
-                m.M13,
-                m.M23,
-                m.M33,
-                m.OffsetZ);
-
-            this.WriteParameter(name, "Transform", value);
-        }
-
         #endregion
 
         #region Methods
@@ -779,7 +749,7 @@ namespace HelixToolkit.Wpf
                 this.ExportMapChannel(mesh);
             }
 
-            this.WriteTransformT("Frame", tg.Value);
+            this.WriteTransform("Frame", tg.Value);
 
             this.WriteParameter("Enabled", true);
             this.WriteParameter("Visible", true);
@@ -973,41 +943,41 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The to kerkythea string.
+        /// Converts a point to a kerkythea string.
         /// </summary>
-        /// <param name="p">
-        /// The p.
+        /// <param name="point">
+        /// The vector.
         /// </param>
         /// <returns>
-        /// The to kerkythea string.
+        /// A string.
         /// </returns>
-        private static string ToKerkytheaString(Point3D p)
+        private static string ToKerkytheaString(Point3D point)
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0:0.######} {1:0.######} {2:0.######}",
-                NotNaN(p.X, 1),
-                NotNaN(p.Y, 0),
-                NotNaN(p.Z, 0));
+                NotNaN(point.X, 1),
+                NotNaN(point.Y, 0),
+                NotNaN(point.Z, 0));
         }
 
         /// <summary>
-        /// The to kerkythea string.
+        /// Converts a vector to a kerkythea string.
         /// </summary>
-        /// <param name="p">
-        /// The p.
+        /// <param name="vector">
+        /// The vector.
         /// </param>
         /// <returns>
-        /// The to kerkythea string.
+        /// A string.
         /// </returns>
-        private static string ToKerkytheaString(Vector3D p)
+        private static string ToKerkytheaString(Vector3D vector)
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0:0.######} {1:0.######} {2:0.######}",
-                NotNaN(p.X, 1),
-                NotNaN(p.Y, 0),
-                NotNaN(p.Z, 0));
+                NotNaN(vector.X, 1),
+                NotNaN(vector.Y, 0),
+                NotNaN(vector.Z, 0));
         }
 
         /// <summary>

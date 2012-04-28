@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf
         public StereoControl()
         {
             this.Camera = CameraHelper.CreateDefaultCamera();
-            this.Camera.Changed += this.Camera_Changed;
+            this.Camera.Changed += this.CameraChanged;
             this.Children = new ObservableCollection<Visual3D>();
         }
 
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the children.
+        ///   Gets the children.
         /// </summary>
         /// <value>The children.</value>
         public ObservableCollection<Visual3D> Children { get; private set; }
@@ -273,7 +273,7 @@ namespace HelixToolkit.Wpf
             this.LeftViewport = left;
             this.RightViewport = right;
 
-            this.Children.CollectionChanged += this.Children_CollectionChanged;
+            this.Children.CollectionChanged += this.ChildrenCollectionChanged;
 
             if (createLights)
             {
@@ -328,33 +328,35 @@ namespace HelixToolkit.Wpf
         {
             var scb = this.Background as SolidColorBrush;
 
-            var leftExporter = new KerkytheaExporter(leftFileName);
-            if (scb != null)
+            using (var leftExporter = new KerkytheaExporter(leftFileName))
             {
-                leftExporter.BackgroundColor = scb.Color;
+                if (scb != null)
+                {
+                    leftExporter.BackgroundColor = scb.Color;
+                }
+
+                leftExporter.Reflections = true;
+                leftExporter.Shadows = true;
+                leftExporter.SoftShadows = true;
+                leftExporter.Width = (int)this.LeftViewport.ActualWidth;
+                leftExporter.Height = (int)this.LeftViewport.ActualHeight;
+                leftExporter.Export(this.LeftViewport);
             }
 
-            leftExporter.Reflections = true;
-            leftExporter.Shadows = true;
-            leftExporter.SoftShadows = true;
-            leftExporter.Width = (int)this.LeftViewport.ActualWidth;
-            leftExporter.Height = (int)this.LeftViewport.ActualHeight;
-            leftExporter.Export(this.LeftViewport);
-            leftExporter.Close();
-
-            var rightExporter = new KerkytheaExporter(rightFileName);
-            if (scb != null)
+            using (var rightExporter = new KerkytheaExporter(rightFileName))
             {
-                rightExporter.BackgroundColor = scb.Color;
-            }
+                if (scb != null)
+                {
+                    rightExporter.BackgroundColor = scb.Color;
+                }
 
-            rightExporter.Reflections = true;
-            rightExporter.Shadows = true;
-            rightExporter.SoftShadows = true;
-            rightExporter.Width = (int)this.RightViewport.ActualWidth;
-            rightExporter.Height = (int)this.RightViewport.ActualHeight;
-            rightExporter.Export(this.RightViewport);
-            rightExporter.Close();
+                rightExporter.Reflections = true;
+                rightExporter.Shadows = true;
+                rightExporter.SoftShadows = true;
+                rightExporter.Width = (int)this.RightViewport.ActualWidth;
+                rightExporter.Height = (int)this.RightViewport.ActualHeight;
+                rightExporter.Export(this.RightViewport);
+            }
         }
 
         /// <summary>
@@ -417,7 +419,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The camera_ changed.
+        /// Handle the camera changed event.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -425,13 +427,13 @@ namespace HelixToolkit.Wpf
         /// <param name="e">
         /// The event arguments.
         /// </param>
-        private void Camera_Changed(object sender, EventArgs e)
+        private void CameraChanged(object sender, EventArgs e)
         {
             this.UpdateCameras();
         }
 
         /// <summary>
-        /// The children_ collection changed.
+        /// Handle changes in the children collection.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -439,7 +441,7 @@ namespace HelixToolkit.Wpf
         /// <param name="e">
         /// The event arguments.
         /// </param>
-        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ChildrenCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // todo: update left and right collections here
         }

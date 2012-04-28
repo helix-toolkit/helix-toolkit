@@ -48,6 +48,7 @@ namespace HelixToolkit.Wpf
                     {
                         var r = new LwoReader();
                         model = r.Read(path);
+
                         break;
                     }
 

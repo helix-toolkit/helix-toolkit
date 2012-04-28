@@ -19,6 +19,11 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public abstract class Exporter : IExporter, IDisposable
     {
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
+
         #region Public Methods
 
         /// <summary>
@@ -52,7 +57,10 @@ namespace HelixToolkit.Wpf
             var bmp = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
             var rect = new Grid
                 {
-                   Background = brush, Width = 1, Height = 1, LayoutTransform = new ScaleTransform(w, h) 
+                    Background = brush,
+                    Width = 1,
+                    Height = 1,
+                    LayoutTransform = new ScaleTransform(w, h)
                 };
             rect.Arrange(new Rect(0, 0, w, h));
             bmp.Render(rect);
@@ -78,7 +86,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void Dispose()
         {
-            this.Close();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -184,6 +193,22 @@ namespace HelixToolkit.Wpf
         {
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.Close();
+                }
+            }
+
+            this.disposed = true;
+        }
         #endregion
     }
 }

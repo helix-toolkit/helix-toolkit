@@ -16,15 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class MaterialHelper
     {
-        #region Constants and Fields
-
-        /// <summary>
-        ///   The default specular power.
-        /// </summary>
-        public static double DefaultSpecularPower = 100;
-
-        #endregion
-
         #region Public Methods
 
         /// <summary>
@@ -147,20 +138,6 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Creates a material for the specified brush.
-        /// </summary>
-        /// <param name="brush">
-        /// The brush.
-        /// </param>
-        /// <returns>
-        /// The material.
-        /// </returns>
-        public static Material CreateMaterial(Brush brush)
-        {
-            return CreateMaterial(brush, DefaultSpecularPower);
-        }
-
-        /// <summary>
         /// Creates a material with the specifed brush as diffuse material. 
         ///   This method will also add a white specular material.
         /// </summary>
@@ -173,7 +150,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The material.
         /// </returns>
-        public static Material CreateMaterial(Brush brush, double specularPower)
+        public static Material CreateMaterial(Brush brush, double specularPower = 100)
         {
             var mg = new MaterialGroup();
             mg.Children.Add(new DiffuseMaterial(brush));
@@ -257,15 +234,12 @@ namespace HelixToolkit.Wpf
         /// Gets the image from the specified uri.
         /// </summary>
         /// <param name="uri">The uri.</param>
-        /// <returns>The image.</returns>
+        /// <param name="uriKind">Specifies whether the uri string is relative or absolute.</param>
+        /// <returns>
+        /// The image.
+        /// </returns>
         private static BitmapImage GetImage(string uri, UriKind uriKind = UriKind.RelativeOrAbsolute)
         {
-            //var fullPath = Path.GetFullPath(uri);
-            //if (!File.Exists(fullPath))
-            //{
-            //    return null;
-            //}
-
             var image = new BitmapImage();
             image.BeginInit();
             image.UriSource = new Uri(uri, uriKind);

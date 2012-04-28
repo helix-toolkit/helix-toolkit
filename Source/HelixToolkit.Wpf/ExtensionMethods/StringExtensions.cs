@@ -35,7 +35,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="items">The items.</param>
         /// <param name="prefix">The prefix.</param>
-        /// <returns>A string.</returns>
+        /// <param name="separator">The separator.</param>
+        /// <returns>
+        /// A string.
+        /// </returns>
         public static string EnumerateToString(this IEnumerable items, string prefix = null, string separator = " ")
         {
             var builder = new StringBuilder();

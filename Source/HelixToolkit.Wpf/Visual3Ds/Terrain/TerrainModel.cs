@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
@@ -105,6 +106,7 @@ namespace HelixToolkit.Wpf
         /// The level of detail.
         /// </param>
         /// <returns>
+        /// The Model3D.
         /// </returns>
         public GeometryModel3D CreateModel(int lod)
         {
@@ -146,11 +148,7 @@ namespace HelixToolkit.Wpf
                 mesh.TextureCoordinates = this.Texture.TextureCoordinates;
             }
 
-            var model = new GeometryModel3D();
-            model.Geometry = mesh;
-            model.Material = material;
-            model.BackMaterial = material;
-            return model;
+            return new GeometryModel3D { Geometry = mesh, Material = material, BackMaterial = material };
         }
 
         /// <summary>
@@ -161,14 +159,24 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void Load(string source)
         {
-            var ext = Path.GetExtension(source).ToLower();
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            var ext = Path.GetExtension(source);
+            if (ext != null)
+            {
+                ext = ext.ToLower();
+            }
+
             switch (ext)
             {
                 case ".btz":
-                    this.ReadBTZ(source);
+                    this.ReadZippedFile(source);
                     break;
                 case ".bt":
-                    ReadBT(source);
+                    this.ReadTerrainFile(source);
                     break;
             }
         }
@@ -177,72 +185,71 @@ namespace HelixToolkit.Wpf
         /// Reads a .bt (Binary terrain) file.
         ///   http://www.vterrain.org/Implementation/Formats/BT.html
         /// </summary>
-        /// <param name="s">
+        /// <param name="stream">
         /// The stream.
         /// </param>
-        public void ReadBT(Stream s)
+        public void ReadTerrainFile(Stream stream)
         {
-            var reader = new BinaryReader(s);
-
-            var buffer = reader.ReadBytes(10);
-            var enc = new ASCIIEncoding();
-            var marker = enc.GetString(buffer);
-            if (!marker.StartsWith("binterr"))
+            using (var reader = new BinaryReader(stream))
             {
-                throw new FileFormatException("Invalid marker.");
-            }
-
-            var version = marker.Substring(7);
-
-            this.Width = reader.ReadInt32();
-            this.Height = reader.ReadInt32();
-            short dataSize = reader.ReadInt16();
-            bool isFloatingPoint = reader.ReadInt16() == 1;
-            short horizontalUnits = reader.ReadInt16();
-            short utmZone = reader.ReadInt16();
-            short datum = reader.ReadInt16();
-            this.Left = reader.ReadDouble();
-            this.Right = reader.ReadDouble();
-            this.Bottom = reader.ReadDouble();
-            this.Top = reader.ReadDouble();
-            short proj = reader.ReadInt16();
-            float scale = reader.ReadSingle();
-            var padding = reader.ReadBytes(190);
-
-            int index = 0;
-            this.Data = new double[this.Width * this.Height];
-            this.MinimumZ = double.MaxValue;
-            this.MaximumZ = double.MinValue;
-
-            for (int y = 0; y < this.Height; y++)
-            {
-                for (int x = 0; x < this.Width; x++)
+                var buffer = reader.ReadBytes(10);
+                var enc = new ASCIIEncoding();
+                var marker = enc.GetString(buffer);
+                if (!marker.StartsWith("binterr"))
                 {
-                    double z;
+                    throw new FileFormatException("Invalid marker.");
+                }
 
-                    if (dataSize == 2)
-                    {
-                        z = reader.ReadUInt16();
-                    }
-                    else
-                    {
-                        z = isFloatingPoint ? reader.ReadSingle() : reader.ReadUInt32();
-                    }
+                var version = marker.Substring(7);
 
-                    this.Data[index++] = z;
-                    if (z < this.MinimumZ)
-                    {
-                        this.MinimumZ = z;
-                    }
+                this.Width = reader.ReadInt32();
+                this.Height = reader.ReadInt32();
+                short dataSize = reader.ReadInt16();
+                bool isFloatingPoint = reader.ReadInt16() == 1;
+                short horizontalUnits = reader.ReadInt16();
+                short utmZone = reader.ReadInt16();
+                short datum = reader.ReadInt16();
+                this.Left = reader.ReadDouble();
+                this.Right = reader.ReadDouble();
+                this.Bottom = reader.ReadDouble();
+                this.Top = reader.ReadDouble();
+                short proj = reader.ReadInt16();
+                float scale = reader.ReadSingle();
+                var padding = reader.ReadBytes(190);
 
-                    if (z > this.MaximumZ)
+                int index = 0;
+                this.Data = new double[this.Width * this.Height];
+                this.MinimumZ = double.MaxValue;
+                this.MaximumZ = double.MinValue;
+
+                for (int y = 0; y < this.Height; y++)
+                {
+                    for (int x = 0; x < this.Width; x++)
                     {
-                        this.MaximumZ = z;
+                        double z;
+
+                        if (dataSize == 2)
+                        {
+                            z = reader.ReadUInt16();
+                        }
+                        else
+                        {
+                            z = isFloatingPoint ? reader.ReadSingle() : reader.ReadUInt32();
+                        }
+
+                        this.Data[index++] = z;
+                        if (z < this.MinimumZ)
+                        {
+                            this.MinimumZ = z;
+                        }
+
+                        if (z > this.MaximumZ)
+                        {
+                            this.MaximumZ = z;
+                        }
                     }
                 }
             }
-
-            reader.Close();
         }
 
         #endregion
@@ -250,32 +257,32 @@ namespace HelixToolkit.Wpf
         #region Methods
 
         /// <summary>
-        /// The read bt.
+        /// Reads the specified .bt terrain file.
         /// </summary>
-        /// <param name="source">
-        /// The source.
+        /// <param name="path">
+        /// The file name.
         /// </param>
-        private void ReadBT(string source)
+        private void ReadTerrainFile(string path)
         {
-            var infile = File.OpenRead(source);
-            ReadBT(infile);
-            infile.Close();
+            using (var infile = File.OpenRead(path))
+            {
+                this.ReadTerrainFile(infile);
+            }
         }
 
         /// <summary>
-        /// The read btz.
+        /// Read a gzipped .bt file.
         /// </summary>
         /// <param name="source">
         /// The source.
         /// </param>
-        private void ReadBTZ(string source)
+        private void ReadZippedFile(string source)
         {
-            var infile = File.OpenRead(source);
-            var deflateStream = new GZipStream(infile, CompressionMode.Decompress, true);
-
-            ReadBT(deflateStream);
-            deflateStream.Close();
-            infile.Close();
+            using (var infile = File.OpenRead(source))
+            {
+                var deflateStream = new GZipStream(infile, CompressionMode.Decompress, true);
+                this.ReadTerrainFile(deflateStream);
+            }
         }
 
         #endregion

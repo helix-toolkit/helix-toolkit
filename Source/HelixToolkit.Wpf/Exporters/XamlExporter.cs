@@ -25,7 +25,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   The xw.
         /// </summary>
-        private readonly XmlTextWriter xw;
+        private readonly XmlTextWriter writer;
+
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
 
         #endregion
 
@@ -40,7 +45,7 @@ namespace HelixToolkit.Wpf
         public XamlExporter(string path)
         {
             this.CreateResourceDictionary = true;
-            this.xw = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented };
+            this.writer = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented };
         }
 
         #endregion
@@ -48,10 +53,10 @@ namespace HelixToolkit.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [create resource dictionary].
+        ///   Gets or sets a value indicating whether to create a resource dictionary.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [create resource dictionary]; otherwise, <c>false</c>.
+        ///   <c>true</c> if a resource dictionary should be created; otherwise, <c>false</c>.
         /// </value>
         public bool CreateResourceDictionary { get; set; }
 
@@ -94,7 +99,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void Close()
         {
-            this.xw.Close();
+            this.writer.Close();
         }
 
         /// <summary>
@@ -102,7 +107,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void Dispose()
         {
-            this.Close();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -119,7 +125,7 @@ namespace HelixToolkit.Wpf
                 obj = WrapInResourceDictionary(obj);
             }
 
-            XamlWriter.Save(obj, this.xw);
+            XamlWriter.Save(obj, this.writer);
         }
 
         /// <summary>
@@ -136,7 +142,7 @@ namespace HelixToolkit.Wpf
                 obj = WrapInResourceDictionary(obj);
             }
 
-            XamlWriter.Save(obj, this.xw);
+            XamlWriter.Save(obj, this.writer);
         }
 
         /// <summary>
@@ -153,9 +159,26 @@ namespace HelixToolkit.Wpf
                 obj = WrapInResourceDictionary(obj);
             }
 
-            XamlWriter.Save(obj, this.xw);
+            XamlWriter.Save(obj, this.writer);
         }
 
         #endregion
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.Close();
+                }
+            }
+
+            this.disposed = true;
+        }
     }
 }
