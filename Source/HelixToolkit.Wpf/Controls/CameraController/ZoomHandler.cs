@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf
         /// <param name="zoomAround">
         /// The point to zoom around.
         /// </param>
-        public void ChangeCameraPosition(double delta, Point3D zoomAround)
+        public void ZoomByChangingCameraPosition(double delta, Point3D zoomAround)
         {
             if (delta < -0.5)
             {
@@ -84,6 +84,25 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        public void MoveCameraPosition(Vector3D delta)
+        {
+            var z = this.CameraLookDirection;
+            z.Normalize();
+            var x = Vector3D.CrossProduct(this.CameraLookDirection, this.CameraUpDirection);
+            var y = Vector3D.CrossProduct(x, z);
+            y.Normalize();
+            x = Vector3D.CrossProduct(z, y);
+
+            // delta *= this.ZoomSensitivity;
+            switch (this.CameraMode)
+            {
+                case CameraMode.Inspect:
+                case CameraMode.WalkAround:
+                    this.CameraPosition += x * delta.X + y * delta.Y + z * delta.Z;
+                    break;
+            }
+        }
+
         /// <summary>
         /// The change camera width.
         /// </summary>
@@ -93,7 +112,7 @@ namespace HelixToolkit.Wpf
         /// <param name="zoomAround">
         /// The zoom around.
         /// </param>
-        public void ChangeCameraWidth(double delta, Point3D zoomAround)
+        public void ZoomByChangingCameraWidth(double delta, Point3D zoomAround)
         {
             if (delta < -0.5)
             {
@@ -147,7 +166,7 @@ namespace HelixToolkit.Wpf
         /// <param name="delta">
         /// The relative change in fov.
         /// </param>
-        public void ChangeFieldOfView(double delta)
+        public void ZoomByChangingFieldOfView(double delta)
         {
             var pcamera = this.Camera as PerspectiveCamera;
             if (pcamera == null)
@@ -260,11 +279,11 @@ namespace HelixToolkit.Wpf
             {
                 if (this.CameraMode == CameraMode.FixedPosition || this.changeFieldOfView)
                 {
-                    this.ChangeFieldOfView(delta);
+                    this.ZoomByChangingFieldOfView(delta);
                 }
                 else
                 {
-                    this.ChangeCameraPosition(delta, zoomAround);
+                    this.ZoomByChangingCameraPosition(delta, zoomAround);
                 }
 
                 return;
@@ -272,7 +291,7 @@ namespace HelixToolkit.Wpf
 
             if (this.Camera is OrthographicCamera)
             {
-                this.ChangeCameraWidth(delta, zoomAround);
+                this.ZoomByChangingCameraWidth(delta, zoomAround);
             }
         }
 
