@@ -189,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\Maze\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Examples\Overlay\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -370,6 +374,16 @@
     <Compile Include="Examples\Material\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\Maze\Cell.cs" />
+    <Compile Include="Examples\Maze\IMazeGenerator.cs" />
+    <Compile Include="Examples\Maze\IMazeSolver.cs" />
+    <Compile Include="Examples\Maze\MazeGenerator2.cs" />
+    <Compile Include="Examples\Maze\MainViewModel.cs" />
+    <Compile Include="Examples\Maze\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Maze\MazeGenerator1.cs" />
+    <Compile Include="Examples\Maze\MazeSolver1.cs" />
     <Compile Include="Examples\Overlay\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -460,6 +474,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\MazeDemo_small.png" />
     <Resource Include="Images\PenroseTriangleDemo_small.png" />
     <Resource Include="Images\ExportDemo_small.png" />
     <Resource Include="Images\AnaglyphDemo_small.png" />

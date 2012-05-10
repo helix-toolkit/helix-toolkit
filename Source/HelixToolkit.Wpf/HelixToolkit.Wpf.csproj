@@ -89,6 +89,7 @@
     <Compile Include="Geometry\Polygon3D.cs" />
     <Compile Include="Geometry\Mesh3D.cs" />
     <Compile Include="Geometry\BoundingSphere.cs" />
+    <Compile Include="Helpers\CanonicalSplineHelper.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ContourHelper.cs" />
     <Compile Include="Helpers\WeakEventManagers\RenderingEventManager.cs" />

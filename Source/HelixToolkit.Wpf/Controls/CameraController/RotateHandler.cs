@@ -184,7 +184,7 @@ namespace HelixToolkit.Wpf
             Vector3D relativePosition = rotateAround - this.CameraPosition;
 
             double d = -1;
-            if (this.CameraMode == CameraMode.WalkAround)
+            if (this.CameraMode != CameraMode.Inspect)
             {
                 d = 0.2;
             }
@@ -218,7 +218,10 @@ namespace HelixToolkit.Wpf
             Vector3D newLookDirection = newTarget - newPosition;
 
             this.CameraLookDirection = newLookDirection;
-            this.CameraPosition = newPosition;
+            if (CameraMode == CameraMode.Inspect)
+            {
+                this.CameraPosition = newPosition;
+            }
             this.CameraUpDirection = newUpDirection;
         }
 
@@ -244,7 +247,7 @@ namespace HelixToolkit.Wpf
             right.Normalize();
 
             double d = -0.5;
-            if (this.CameraMode == CameraMode.WalkAround)
+            if (this.CameraMode != CameraMode.Inspect)
             {
                 d *= -0.2;
             }
@@ -267,7 +270,7 @@ namespace HelixToolkit.Wpf
             Point3D newPosition = rotateAround - newRelativePosition;
 
             this.CameraLookDirection = newTarget - newPosition;
-            if (CameraMode != CameraMode.FixedPosition)
+            if (CameraMode == CameraMode.Inspect)
             {
                 this.CameraPosition = newPosition;
             }
@@ -476,7 +479,10 @@ namespace HelixToolkit.Wpf
             var newPosition = rotateAround - newRelativePosition;
 
             this.CameraLookDirection = newTarget - newPosition;
-            this.CameraPosition = newPosition;
+            if (CameraMode == CameraMode.Inspect)
+            {
+                this.CameraPosition = newPosition;
+            }
             this.CameraUpDirection = newUpDirection;
         }
 
@@ -543,7 +549,10 @@ namespace HelixToolkit.Wpf
             var newPosition = rotateAround - newRelativePosition;
 
             this.CameraLookDirection = newTarget - newPosition;
-            this.CameraPosition = newPosition;
+            if (CameraMode == CameraMode.Inspect)
+            {
+                this.CameraPosition = newPosition;
+            }
             this.CameraUpDirection = newUpDirection;
         }
 

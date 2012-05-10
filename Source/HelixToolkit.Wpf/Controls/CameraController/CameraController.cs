@@ -389,6 +389,11 @@ namespace HelixToolkit.Wpf
         private Vector3D panSpeed;
 
         /// <summary>
+        /// The move speed.
+        /// </summary>
+        private Vector3D moveSpeed;
+
+        /// <summary>
         ///   The rotation speed.
         /// </summary>
         private Vector rotationSpeed;
@@ -1036,6 +1041,20 @@ namespace HelixToolkit.Wpf
                 "LeftRightPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
+        /// Gets or sets the move sensitivity.
+        /// </summary>
+        /// <value>The move sensitivity.</value>
+        public double MoveSensitivity
+        {
+            get { return (double)GetValue(MoveSensitivityProperty); }
+            set { SetValue(MoveSensitivityProperty, value); }
+        }
+
+        public static readonly DependencyProperty MoveSensitivityProperty =
+            DependencyProperty.Register("MoveSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+
+        /// <summary>
         ///   Gets or sets the sensitivity for pan by the up and down keys.
         /// </summary>
         /// <value> The pan sensitivity. </value>
@@ -1182,7 +1201,23 @@ namespace HelixToolkit.Wpf
                 "IsRotationEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsPanEnabled.
+        /// Gets or sets a value indicating whether move is enabled.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if move is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMoveEnabled
+        {
+            get { return (bool)GetValue(IsMoveEnabledProperty); }
+            set { SetValue(IsMoveEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsMoveEnabledProperty =
+            DependencyProperty.Register("IsMoveEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether pan is enabled.
         /// </summary>
         public bool IsPanEnabled
         {
@@ -1617,6 +1652,12 @@ namespace HelixToolkit.Wpf
                 this.panSpeed *= factor;
             }
 
+            if (Math.Abs(this.moveSpeed.LengthSquared) > 0.0001)
+            {
+                this.zoomHandler.MoveCameraPosition(this.moveSpeed * time);
+                this.moveSpeed *= factor;
+            }
+
             if (Math.Abs(this.zoomSpeed) > 0.1)
             {
                 this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D);
@@ -1770,6 +1811,28 @@ namespace HelixToolkit.Wpf
                         e.Handled = true;
                     }
 
+                    break;
+            }
+
+            switch (e.Key)
+            {
+                case Key.W:
+                    this.AddMoveForce(0, 0, 0.1 * f * this.MoveSensitivity);
+                    break;
+                case Key.A:
+                    this.AddMoveForce(-0.1 * f * this.LeftRightPanSensitivity, 0, 0);
+                    break;
+                case Key.S:
+                    this.AddMoveForce(0, 0, -0.1 * f * this.MoveSensitivity);
+                    break;
+                case Key.D:
+                    this.AddMoveForce(0.1 * f * this.LeftRightPanSensitivity, 0, 0);
+                    break;
+                case Key.Z:
+                    this.AddMoveForce(0, -0.1 * f * this.LeftRightPanSensitivity, 0);
+                    break;
+                case Key.Q:
+                    this.AddMoveForce(0, 0.1 * f * this.LeftRightPanSensitivity, 0);
                     break;
             }
         }
@@ -1939,6 +2002,22 @@ namespace HelixToolkit.Wpf
 
             this.PushCameraSetting();
             this.panSpeed += pan * 40;
+        }
+
+        public void AddMoveForce(double dx, double dy, double dz)
+        {
+            this.AddMoveForce(new Vector3D(dx, dy, dz));
+        }
+
+        public void AddMoveForce(Vector3D delta)
+        {
+            if (!this.IsMoveEnabled)
+            {
+                return;
+            }
+
+            this.PushCameraSetting();
+            this.moveSpeed += delta * 40;
         }
 
         /// <summary>
