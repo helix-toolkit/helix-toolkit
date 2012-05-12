@@ -2,6 +2,9 @@
 // <copyright file="TranslateManipulator.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   A visual element that contains a manipulator that can translate along an axis.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
@@ -50,7 +53,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the diameter of the manipulator arrow.
         /// </summary>
-        /// <value>The diameter.</value>
+        /// <value> The diameter. </value>
         public double Diameter
         {
             get
@@ -67,7 +70,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the direction of the translation.
         /// </summary>
-        /// <value>The direction.</value>
+        /// <value> The direction. </value>
         public Vector3D Direction
         {
             get
@@ -84,7 +87,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the length of the manipulator arrow.
         /// </summary>
-        /// <value>The length.</value>
+        /// <value> The length. </value>
         public double Length
         {
             get
@@ -107,38 +110,38 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected override void OnGeometryChanged()
         {
-            var mb = new MeshBuilder(false,false);
+            var mb = new MeshBuilder(false, false);
             var p0 = new Point3D(0, 0, 0);
-            Vector3D d = this.Direction;
+            var d = this.Direction;
             d.Normalize();
-            Point3D p1 = p0 + d * this.Length;
+            var p1 = p0 + (d * this.Length);
             mb.AddArrow(p0, p1, this.Diameter);
-            this.model.Geometry = mb.ToMesh();
+            this.Model.Geometry = mb.ToMesh();
         }
 
         /// <summary>
         /// The on mouse down.
         /// </summary>
         /// <param name="e">
-        /// The event arguments.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            Vector3D wDirection = this.ToWorld(this.Direction);
+            var direction = this.ToWorld(this.Direction);
 
-            Vector3D up = Vector3D.CrossProduct(this.Camera.LookDirection, wDirection);
-            Point3D HitPlaneOrigin = this.ToWorld(this.Position);
-            this.HitPlaneNormal = Vector3D.CrossProduct(up, wDirection);
-            Point p = e.GetPosition(this.ParentViewport);
+            var up = Vector3D.CrossProduct(this.Camera.LookDirection, direction);
+            var hitPlaneOrigin = this.ToWorld(this.Position);
+            this.HitPlaneNormal = Vector3D.CrossProduct(up, direction);
+            var p = e.GetPosition(this.ParentViewport);
 
-            Point3D? np = this.GetNearestPoint(p, HitPlaneOrigin, this.HitPlaneNormal);
+            var np = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
             if (np == null)
             {
                 return;
             }
 
-            Point3D lp = this.ToLocal(np.Value);
+            var lp = this.ToLocal(np.Value);
 
             this.lastPoint = lp;
             this.CaptureMouse();
@@ -148,37 +151,35 @@ namespace HelixToolkit.Wpf
         /// The on mouse move.
         /// </summary>
         /// <param name="e">
-        /// The event arguments.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
             if (this.IsMouseCaptured)
             {
-                Point3D HitPlaneOrigin = this.ToWorld(this.Position);
-                Point p = e.GetPosition(this.ParentViewport);
-                Point3D? nearestPoint = this.GetNearestPoint(p, HitPlaneOrigin, this.HitPlaneNormal);
+                var hitPlaneOrigin = this.ToWorld(this.Position);
+                var p = e.GetPosition(this.ParentViewport);
+                var nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
                 if (nearestPoint == null)
                 {
                     return;
                 }
 
-                Vector3D delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;
+                var delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;
                 this.Value += Vector3D.DotProduct(delta, this.Direction);
 
                 if (this.TargetTransform != null)
                 {
                     var translateTransform = new TranslateTransform3D(delta);
                     this.TargetTransform = Transform3DHelper.CombineTransform(translateTransform, this.TargetTransform);
-
-                    // this.Transform = Transform3DHelper.CombineTransform(translateTransform, this.Transform);
                 }
                 else
                 {
                     this.Position += delta;
                 }
 
-                nearestPoint = this.GetNearestPoint(p, HitPlaneOrigin, this.HitPlaneNormal);
+                nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
                 if (nearestPoint != null)
                 {
                     this.lastPoint = this.ToLocal(nearestPoint.Value);
@@ -190,20 +191,20 @@ namespace HelixToolkit.Wpf
         /// Gets the nearest point on the translation axis.
         /// </summary>
         /// <param name="position">
-        /// The position (in screen coordinates).
+        /// The position (in screen coordinates). 
         /// </param>
         /// <param name="hitPlaneOrigin">
-        /// The hit plane origin (world coordinate system).
+        /// The hit plane origin (world coordinate system). 
         /// </param>
         /// <param name="hitPlaneNormal">
-        /// The hit plane normal (world coordinate system).
+        /// The hit plane normal (world coordinate system). 
         /// </param>
         /// <returns>
-        /// The nearest point (world coordinates) or null if no point could be found.
+        /// The nearest point (world coordinates) or null if no point could be found. 
         /// </returns>
         private Point3D? GetNearestPoint(Point position, Point3D hitPlaneOrigin, Vector3D hitPlaneNormal)
         {
-            Point3D? hpp = this.GetHitPlanePoint(position, hitPlaneOrigin, hitPlaneNormal);
+            var hpp = this.GetHitPlanePoint(position, hitPlaneOrigin, hitPlaneNormal);
             if (hpp == null)
             {
                 return null;
