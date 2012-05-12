@@ -59,8 +59,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public RotateManipulator()
         {
-            this.model = new GeometryModel3D();
-            this.Visual3DModel = this.model;
+            this.Model = new GeometryModel3D();
+            this.Visual3DModel = this.Model;
             this.OnGeometryChanged();
         }
 
@@ -145,19 +145,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected override void OnGeometryChanged()
         {
-            var mb = new MeshBuilder(false,false);
+            var mb = new MeshBuilder(false, false);
             var p0 = new Point3D(0, 0, 0);
-            Vector3D d = this.Axis;
+            var d = this.Axis;
             d.Normalize();
-            Point3D p1 = p0 - d * this.Length * 0.5;
-            Point3D p2 = p0 + d * this.Length * 0.5;
+            var p1 = p0 - (d * this.Length * 0.5);
+            var p2 = p0 + (d * this.Length * 0.5);
             mb.AddPipe(p1, p2, this.InnerDiameter, this.Diameter, 60);
-
-            // if (this.debugPoint != null)
-            // {
-            // mb.AddSphere(this.debugPoint.Value, 0.2);
-            // }
-            this.model.Geometry = mb.ToMesh();
+            this.Model.Geometry = mb.ToMesh();
         }
 
         /// <summary>
@@ -169,11 +164,11 @@ namespace HelixToolkit.Wpf
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            Point3D hitPlaneOrigin = this.ToWorld(this.Position);
-            Vector3D hitPlaneNormal = this.ToWorld(this.Axis);
-            Point p = e.GetPosition(this.ParentViewport);
+            var hitPlaneOrigin = this.ToWorld(this.Position);
+            var hitPlaneNormal = this.ToWorld(this.Axis);
+            var p = e.GetPosition(this.ParentViewport);
 
-            Point3D? hitPoint = this.GetHitPlanePoint(p, hitPlaneOrigin, hitPlaneNormal);
+            var hitPoint = this.GetHitPlanePoint(p, hitPlaneOrigin, hitPlaneNormal);
             if (hitPoint != null)
             {
                 this.lastPoint = this.ToLocal(hitPoint.Value);
@@ -191,24 +186,24 @@ namespace HelixToolkit.Wpf
             base.OnMouseMove(e);
             if (this.IsMouseCaptured)
             {
-                Point3D hitPlaneOrigin = this.ToWorld(this.Position);
-                Vector3D hitPlaneNormal = this.ToWorld(this.Axis);
+                var hitPlaneOrigin = this.ToWorld(this.Position);
+                var hitPlaneNormal = this.ToWorld(this.Axis);
 
-                Point position = e.GetPosition(this.ParentViewport);
-                Point3D? hitPoint = this.GetHitPlanePoint(position, hitPlaneOrigin, hitPlaneNormal);
+                var position = e.GetPosition(this.ParentViewport);
+                var hitPoint = this.GetHitPlanePoint(position, hitPlaneOrigin, hitPlaneNormal);
                 if (hitPoint == null)
                 {
                     return;
                 }
 
-                Point3D currentPoint = this.ToLocal(hitPoint.Value);
+                var currentPoint = this.ToLocal(hitPoint.Value);
 
-                Vector3D v = this.lastPoint - this.Position;
-                Vector3D u = currentPoint - this.Position;
+                var v = this.lastPoint - this.Position;
+                var u = currentPoint - this.Position;
                 v.Normalize();
                 u.Normalize();
 
-                Vector3D currentAxis = Vector3D.CrossProduct(u, v);
+                var currentAxis = Vector3D.CrossProduct(u, v);
                 double sign = -Vector3D.DotProduct(this.Axis, currentAxis);
                 double theta = Math.Sign(sign) * Math.Asin(currentAxis.Length) / Math.PI * 180;
                 this.Value += theta;
@@ -217,8 +212,6 @@ namespace HelixToolkit.Wpf
                 {
                     var rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(this.Axis, theta), Pivot);                    
                     this.TargetTransform = Transform3DHelper.CombineTransform(rotateTransform, this.TargetTransform);
-
-                    // this.Transform = Transform3DHelper.CombineTransform(rotateTransform, this.Transform);
                 }
 
                 hitPoint = this.GetHitPlanePoint(position, hitPlaneOrigin, hitPlaneNormal);

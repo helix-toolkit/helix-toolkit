@@ -2,16 +2,19 @@
 // <copyright file="Manipulator.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   An abstract base class for manipulators.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
 {
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
-    using System.Windows.Data;
 
     /// <summary>
     /// An abstract base class for manipulators.
@@ -37,6 +40,12 @@ namespace HelixToolkit.Wpf
                 new Vector3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PositionChanged));
 
         /// <summary>
+        ///   The pivot point property.
+        /// </summary>
+        public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
+            "Pivot", typeof(Point3D), typeof(Manipulator), new PropertyMetadata(new Point3D()));
+
+        /// <summary>
         ///   The position property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
@@ -45,14 +54,6 @@ namespace HelixToolkit.Wpf
             typeof(Manipulator), 
             new FrameworkPropertyMetadata(
                 new Point3D(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PositionChanged));
-
-        /// <summary>
-        ///   The pivot point property.
-        /// </summary>
-        public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
-            "Pivot",
-            typeof(Point3D),
-            typeof(Manipulator), new PropertyMetadata(new Point3D())); 
 
         /// <summary>
         ///   The target transform property.
@@ -73,37 +74,17 @@ namespace HelixToolkit.Wpf
             typeof(Manipulator), 
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        /// <summary>
-        ///   The camera.
-        /// </summary>
-        protected ProjectionCamera Camera;
-
-        /// <summary>
-        ///   The hit plane normal.
-        /// </summary>
-        protected Vector3D HitPlaneNormal;
-
-        /// <summary>
-        ///   The parent viewport.
-        /// </summary>
-        protected Viewport3D ParentViewport;
-
-        /// <summary>
-        ///   The model.
-        /// </summary>
-        protected GeometryModel3D model;
-
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Manipulator" /> class.
+        ///   Initializes a new instance of the <see cref="Manipulator" /> class.
         /// </summary>
-        public Manipulator()
+        protected Manipulator()
         {
-            this.model = new GeometryModel3D();
-            this.Visual3DModel = this.model;
+            this.Model = new GeometryModel3D();
+            this.Visual3DModel = this.Model;
             this.OnGeometryChanged();
         }
 
@@ -114,7 +95,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the color of the manipulator.
         /// </summary>
-        /// <value>The color.</value>
+        /// <value> The color. </value>
         public Color Color
         {
             get
@@ -131,7 +112,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the offset of the visual (this vector is added to the Position point).
         /// </summary>
-        /// <value>The offset.</value>
+        /// <value> The offset. </value>
         public Vector3D Offset
         {
             get
@@ -146,9 +127,26 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        ///   Gets or sets the pivot point of the manipulator.
+        /// </summary>
+        /// <value> The position. </value>
+        public Point3D Pivot
+        {
+            get
+            {
+                return (Point3D)this.GetValue(PivotProperty);
+            }
+
+            set
+            {
+                this.SetValue(PivotProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the position of the manipulator.
         /// </summary>
-        /// <value>The position.</value>
+        /// <value> The position. </value>
         public Point3D Position
         {
             get
@@ -160,16 +158,6 @@ namespace HelixToolkit.Wpf
             {
                 this.SetValue(PositionProperty, value);
             }
-        }
-
-        /// <summary>
-        ///   Gets or sets the pivot point of the manipulator.
-        /// </summary>
-        /// <value>The position.</value>
-        public Point3D Pivot
-        {
-            get { return (Point3D)this.GetValue(PivotProperty); }
-            set { this.SetValue(PivotProperty, value); }
         }
 
         /// <summary>
@@ -191,7 +179,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         ///   Gets or sets the manipulator value.
         /// </summary>
-        /// <value>The value.</value>
+        /// <value> The value. </value>
         public double Value
         {
             get
@@ -207,16 +195,65 @@ namespace HelixToolkit.Wpf
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        ///   Gets or sets the camera.
+        /// </summary>
+        protected ProjectionCamera Camera { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the hit plane normal.
+        /// </summary>
+        protected Vector3D HitPlaneNormal { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the model.
+        /// </summary>
+        protected GeometryModel3D Model { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the parent viewport.
+        /// </summary>
+        protected Viewport3D ParentViewport { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Binds this manipulator to a given Visual3D.
+        /// </summary>
+        /// <param name="source">
+        /// Source Visual3D which receives the manipulator transforms. 
+        /// </param>
+        public virtual void Bind(ModelVisual3D source)
+        {
+            BindingOperations.SetBinding(this, TargetTransformProperty, new Binding("Transform") { Source = source });
+            BindingOperations.SetBinding(this, TransformProperty, new Binding("Transform") { Source = source });
+        }
+
+        /// <summary>
+        /// Releases the binding of this manipulator.
+        /// </summary>
+        public virtual void UnBind()
+        {
+            BindingOperations.ClearBinding(this, TargetTransformProperty);
+            BindingOperations.ClearBinding(this, TransformProperty);
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// Called when Geometry is changed.
         /// </summary>
         /// <param name="d">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
         /// </param>
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -227,16 +264,16 @@ namespace HelixToolkit.Wpf
         /// Projects the point on the hit plane.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The p. 
         /// </param>
         /// <param name="hitPlaneOrigin">
-        /// The hit Plane Origin.
+        /// The hit Plane Origin. 
         /// </param>
         /// <param name="hitPlaneNormal">
-        /// The hit plane normal (world coordinate system).
+        /// The hit plane normal (world coordinate system). 
         /// </param>
         /// <returns>
-        /// The point in world coordinates.
+        /// The point in world coordinates. 
         /// </returns>
         protected virtual Point3D? GetHitPlanePoint(Point p, Point3D hitPlaneOrigin, Vector3D hitPlaneNormal)
         {
@@ -252,14 +289,18 @@ namespace HelixToolkit.Wpf
         /// The on mouse down.
         /// </summary>
         /// <param name="e">
-        /// The event arguments.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
             this.ParentViewport = Visual3DHelper.GetViewport3D(this);
             this.Camera = this.ParentViewport.Camera as ProjectionCamera;
-            this.HitPlaneNormal = this.Camera.LookDirection;
+            var projectionCamera = this.Camera;
+            if (projectionCamera != null)
+            {
+                this.HitPlaneNormal = projectionCamera.LookDirection;
+            }
 
             this.CaptureMouse();
         }
@@ -268,7 +309,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse up.
         /// </summary>
         /// <param name="e">
-        /// The event arguments.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
@@ -280,14 +321,14 @@ namespace HelixToolkit.Wpf
         /// Transforms from world to local coordinates.
         /// </summary>
         /// <param name="worldPoint">
-        /// The point (world coords).
+        /// The point (world coords). 
         /// </param>
         /// <returns>
-        /// Transformed vector (local coords).
+        /// Transformed vector (local coords). 
         /// </returns>
         protected Point3D ToLocal(Point3D worldPoint)
         {
-            Matrix3D mat = Visual3DHelper.GetTransform(this);
+            var mat = Visual3DHelper.GetTransform(this);
             mat.Invert();
             var t = new MatrixTransform3D(mat);
             return t.Transform(worldPoint);
@@ -297,14 +338,14 @@ namespace HelixToolkit.Wpf
         /// Transforms from local to world coordinates.
         /// </summary>
         /// <param name="point">
-        /// The point (local coords).
+        /// The point (local coords). 
         /// </param>
         /// <returns>
-        /// Transformed point (world coords).
+        /// Transformed point (world coords). 
         /// </returns>
         protected Point3D ToWorld(Point3D point)
         {
-            Matrix3D mat = Visual3DHelper.GetTransform(this);
+            var mat = Visual3DHelper.GetTransform(this);
             var t = new MatrixTransform3D(mat);
             return t.Transform(point);
         }
@@ -313,14 +354,14 @@ namespace HelixToolkit.Wpf
         /// Transforms from local to world coordinates.
         /// </summary>
         /// <param name="vector">
-        /// The vector (local coords).
+        /// The vector (local coords). 
         /// </param>
         /// <returns>
-        /// Transformed vector (world coords).
+        /// Transformed vector (world coords). 
         /// </returns>
         protected Vector3D ToWorld(Vector3D vector)
         {
-            Matrix3D mat = Visual3DHelper.GetTransform(this);
+            var mat = Visual3DHelper.GetTransform(this);
             var t = new MatrixTransform3D(mat);
             return t.Transform(vector);
         }
@@ -329,10 +370,10 @@ namespace HelixToolkit.Wpf
         /// The color changed.
         /// </summary>
         /// <param name="d">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The event arguments.
+        /// The event arguments. 
         /// </param>
         private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -343,10 +384,10 @@ namespace HelixToolkit.Wpf
         /// Called when position has been changed.
         /// </summary>
         /// <param name="d">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private static void PositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -358,8 +399,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private void OnColorChanged()
         {
-            this.model.Material = MaterialHelper.CreateMaterial(this.Color);
-            this.model.BackMaterial = this.model.Material;
+            this.Model.Material = MaterialHelper.CreateMaterial(this.Color);
+            this.Model.BackMaterial = this.Model.Material;
         }
 
         /// <summary>
@@ -367,41 +408,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private void OnPositionChanged()
         {
-            this.Transform = new TranslateTransform3D(
-                this.Position.X + this.Offset.X, this.Position.Y + this.Offset.Y, this.Position.Z + this.Offset.Z);
-        }
-
-        #endregion
-
-        #region Public Bindig Methods
-
-        /// <summary>
-        /// Binds this manipulator to a given Visual3D.
-        /// </summary>
-        /// <param name="source">Source Visual3D which receives the manipulator transforms.</param>
-        public virtual void Bind(ModelVisual3D source)
-        {
-            BindingOperations.SetBinding(this,
-                CombinedManipulator.TargetTransformProperty,
-                new Binding("Transform")
-                {
-                    Source = source
-                });
-            BindingOperations.SetBinding(this,
-                CombinedManipulator.TransformProperty,
-                new Binding("Transform")
-                {
-                    Source = source
-                });
-        }
-
-        /// <summary>
-        /// Releases the binding of this manipulator.
-        /// </summary>
-        public virtual void UnBind()
-        {
-            BindingOperations.ClearBinding(this, CombinedManipulator.TargetTransformProperty);
-            BindingOperations.ClearBinding(this, CombinedManipulator.TransformProperty);
+            this.Transform = new TranslateTransform3D(this.Position.X + this.Offset.X, this.Position.Y + this.Offset.Y, this.Position.Z + this.Offset.Z);
         }
 
         #endregion
