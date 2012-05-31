@@ -208,8 +208,8 @@ namespace HelixToolkit.Wpf
                 // http://gpwiki.org/index.php/Loading_3ds_files
                 // http://www.flipcode.com/archives/3DS_File_Loader.shtml
                 // http://sandy.googlecode.com/svn/trunk/sandy/as3/branches/3.0.2/src/sandy/parser/Parser3DS.as
-                var headerID = this.ReadChunkId(reader);
-                if (headerID != ChunkID.MAIN3DS)
+                var headerId = this.ReadChunkId(reader);
+                if (headerId != ChunkID.MAIN3DS)
                 {
                     throw new FileFormatException("Unknown file");
                 }
@@ -533,7 +533,11 @@ namespace HelixToolkit.Wpf
             // mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(luminance)));
             if (texture != null)
             {
-                string ext = Path.GetExtension(texture).ToLower();
+                string ext = Path.GetExtension(texture);
+                if (ext != null)
+                {
+                    ext = ext.ToLower();
+                }
 
                 // TGA not supported - convert textures to .png!
                 if (ext == ".tga")
@@ -541,12 +545,8 @@ namespace HelixToolkit.Wpf
                     texture = Path.ChangeExtension(texture, ".png");
                 }
 
-                if (ext == ".bmp")
-                {
-                    texture = Path.ChangeExtension(texture, ".jpg");
-                }
-
-                string path = Path.Combine(this.TexturePath, texture);
+                var actualTexturePath = this.TexturePath ?? string.Empty;
+                string path = Path.Combine(actualTexturePath, texture);
                 if (File.Exists(path))
                 {
                     var img = new BitmapImage(new Uri(path, UriKind.Relative));
@@ -555,7 +555,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    Debug.WriteLine(string.Format("Texture {0} not found in {1}", texture, this.TexturePath));
+                    Debug.WriteLine(string.Format("Texture not found: {0}", Path.GetFullPath(path)));
                     mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(diffuse)));
                 }
             }
@@ -599,7 +599,7 @@ namespace HelixToolkit.Wpf
                         this.ReadTriangularMesh(reader, size);
                         break;
 
-                        // case ChunkID.OBJ_CAMERA:
+                    // case ChunkID.OBJ_CAMERA:
                     default:
                         {
                             this.ReadData(reader, size - 6);
