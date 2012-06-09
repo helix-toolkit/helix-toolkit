@@ -35,27 +35,94 @@ namespace HelixToolkit.Wpf
         #region Constants and Fields
 
         /// <summary>
+        /// The coordinate system width property.
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemWidthProperty =
+            DependencyProperty.Register(
+                "CoordinateSystemWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+
+        /// <summary>
+        /// The coordinate system height property.
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemHeightProperty =
+            DependencyProperty.Register(
+                "CoordinateSystemHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+
+        /// <summary>
+        /// The coordinate system horizontal position property.
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemHorizontalPositionProperty =
+            DependencyProperty.Register(
+                "CoordinateSystemHorizontalPosition", 
+                typeof(HorizontalAlignment), 
+                typeof(HelixViewport3D), 
+                new UIPropertyMetadata(HorizontalAlignment.Left));
+
+        /// <summary>
+        /// The coordinate system vertical position property.
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemVerticalPositionProperty =
+            DependencyProperty.Register(
+                "CoordinateSystemVerticalPosition", 
+                typeof(VerticalAlignment), 
+                typeof(HelixViewport3D), 
+                new UIPropertyMetadata(VerticalAlignment.Bottom));
+
+        /// <summary>
+        /// The view cube width property.
+        /// </summary>
+        public static readonly DependencyProperty ViewCubeWidthProperty = DependencyProperty.Register(
+            "ViewCubeWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+
+        /// <summary>
+        /// The view cube height property.
+        /// </summary>
+        public static readonly DependencyProperty ViewCubeHeightProperty = DependencyProperty.Register(
+            "ViewCubeHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+
+        /// <summary>
+        /// The view cube horizontal position property.
+        /// </summary>
+        public static readonly DependencyProperty ViewCubeHorizontalPositionProperty =
+            DependencyProperty.Register(
+                "ViewCubeHorizontalPosition", 
+                typeof(HorizontalAlignment), 
+                typeof(HelixViewport3D), 
+                new UIPropertyMetadata(HorizontalAlignment.Right));
+
+        /// <summary>
+        /// The view cube vertical position property.
+        /// </summary>
+        public static readonly DependencyProperty ViewCubeVerticalPositionProperty =
+            DependencyProperty.Register(
+                "ViewCubeVerticalPosition", 
+                typeof(VerticalAlignment), 
+                typeof(HelixViewport3D), 
+                new UIPropertyMetadata(VerticalAlignment.Bottom));
+
+        /// <summary>
         /// The EnableCurrentPosition property.
         /// </summary>
         public static readonly DependencyProperty EnableCurrentPositionProperty =
-            DependencyProperty.Register("EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register(
+                "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The left right pan sensitivity property.
+        /// The left right pan sensitivity property.
         /// </summary>
         public static readonly DependencyProperty LeftRightPanSensitivityProperty =
             DependencyProperty.Register(
                 "LeftRightPanSensitivity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   The up down Pan sensitivity property.
+        /// The up down Pan sensitivity property.
         /// </summary>
         public static readonly DependencyProperty UpDownPanSensitivityProperty =
             DependencyProperty.Register(
                 "UpDownPanSensitivity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   The page up down zoom sensitivity property.
+        /// The page up down zoom sensitivity property.
         /// </summary>
         public static readonly DependencyProperty PageUpDownZoomSensitivityProperty =
             DependencyProperty.Register(
@@ -76,713 +143,713 @@ namespace HelixToolkit.Wpf
                 "LeftRightRotationSensitivity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   The default camera property.
+        /// The default camera property.
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
             "DefaultCamera", typeof(ProjectionCamera), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The back view gesture property.
+        /// The back view gesture property.
         /// </summary>
         public static readonly DependencyProperty BackViewGestureProperty =
             DependencyProperty.Register(
-                "BackViewGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "BackViewGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new KeyGesture(Key.B, ModifierKeys.Control)));
 
         /// <summary>
-        ///   The bottom view gesture property.
+        /// The bottom view gesture property.
         /// </summary>
         public static readonly DependencyProperty BottomViewGestureProperty =
             DependencyProperty.Register(
-                "BottomViewGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "BottomViewGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new KeyGesture(Key.D, ModifierKeys.Control)));
 
         /// <summary>
-        ///   The camera changed event.
+        /// The camera changed event.
         /// </summary>
         public static readonly RoutedEvent CameraChangedEvent = EventManager.RegisterRoutedEvent(
             "CameraChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
 
         /// <summary>
-        ///   The camera inertia factor property.
+        /// The camera inertia factor property.
         /// </summary>
         public static readonly DependencyProperty CameraInertiaFactorProperty =
             DependencyProperty.Register(
                 "CameraInertiaFactor", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(0.93));
 
         /// <summary>
-        ///   The camera info property.
+        /// The camera info property.
         /// </summary>
         public static readonly DependencyProperty CameraInfoProperty = DependencyProperty.Register(
             "CameraInfo", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The camera mode property.
+        /// The camera mode property.
         /// </summary>
         public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
             "CameraMode", typeof(CameraMode), typeof(HelixViewport3D), new UIPropertyMetadata(CameraMode.Inspect));
 
         /// <summary>
-        ///   The camera rotation mode property.
+        /// The camera rotation mode property.
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty =
             DependencyProperty.Register(
-                "CameraRotationMode",
-                typeof(CameraRotationMode),
-                typeof(HelixViewport3D),
+                "CameraRotationMode", 
+                typeof(CameraRotationMode), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(CameraRotationMode.Turntable, CameraRotationModeChanged));
 
         /// <summary>
-        ///   The change fov cursor property.
+        /// The change fov cursor property.
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewCursorProperty =
             DependencyProperty.Register(
-                "ChangeFieldOfViewCursor",
-                typeof(Cursor),
-                typeof(HelixViewport3D),
+                "ChangeFieldOfViewCursor", 
+                typeof(Cursor), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(Cursors.ScrollNS));
 
         /// <summary>
-        ///   The change field of view gesture property.
+        /// The change field of view gesture property.
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewGestureProperty =
             DependencyProperty.Register(
-                "ChangeFieldOfViewGesture",
-                typeof(MouseGesture),
-                typeof(HelixViewport3D),
+                "ChangeFieldOfViewGesture", 
+                typeof(MouseGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick, ModifierKeys.Alt)));
 
         /// <summary>
-        ///   The change field of view gesture property.
+        /// The change field of view gesture property.
         /// </summary>
         public static readonly DependencyProperty ChangeLookAtGestureProperty =
             DependencyProperty.Register(
-                "ChangeLookAtGesture",
-                typeof(MouseGesture),
-                typeof(HelixViewport3D),
+                "ChangeLookAtGesture", 
+                typeof(MouseGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new MouseGesture(MouseAction.RightDoubleClick)));
 
         /// <summary>
-        ///   The current position property.
+        /// The current position property.
         /// </summary>
         public static readonly DependencyProperty CurrentPositionProperty =
             DependencyProperty.Register(
-                "CurrentPosition",
-                typeof(Point3D),
-                typeof(HelixViewport3D),
+                "CurrentPosition", 
+                typeof(Point3D), 
+                typeof(HelixViewport3D), 
                 new FrameworkPropertyMetadata(
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The debug info property.
+        /// The debug info property.
         /// </summary>
         public static readonly DependencyProperty DebugInfoProperty = DependencyProperty.Register(
             "DebugInfo", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The enable head light property.
+        /// The enable head light property.
         /// </summary>
         public static readonly DependencyProperty EnableHeadLightProperty =
             DependencyProperty.Register(
-                "IsHeadLightEnabled",
-                typeof(bool),
-                typeof(HelixViewport3D),
+                "IsHeadLightEnabled", 
+                typeof(bool), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(false, HeadlightChanged));
 
         /// <summary>
-        ///   The field of view text property.
+        /// The field of view text property.
         /// </summary>
         public static readonly DependencyProperty FieldOfViewTextProperty =
             DependencyProperty.Register(
                 "FieldOfViewText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The frame rate property.
+        /// The frame rate property.
         /// </summary>
         public static readonly DependencyProperty FrameRateProperty = DependencyProperty.Register(
             "FrameRate", typeof(int), typeof(HelixViewport3D));
 
         /// <summary>
-        ///   The frame rate text property.
+        /// The frame rate text property.
         /// </summary>
         public static readonly DependencyProperty FrameRateTextProperty = DependencyProperty.Register(
             "FrameRateText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The front view gesture property.
+        /// The front view gesture property.
         /// </summary>
         public static readonly DependencyProperty FrontViewGestureProperty =
             DependencyProperty.Register(
-                "FrontViewGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "FrontViewGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new KeyGesture(Key.F, ModifierKeys.Control)));
 
         /// <summary>
-        ///   The infinite spin property.
+        /// The infinite spin property.
         /// </summary>
         public static readonly DependencyProperty InfiniteSpinProperty = DependencyProperty.Register(
             "InfiniteSpin", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The info background property.
+        /// The info background property.
         /// </summary>
         public static readonly DependencyProperty InfoBackgroundProperty = DependencyProperty.Register(
-            "InfoBackground",
-            typeof(Brush),
-            typeof(HelixViewport3D),
+            "InfoBackground", 
+            typeof(Brush), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(new SolidColorBrush(Color.FromArgb(0x80, 0xff, 0xff, 0xff))));
 
         /// <summary>
-        ///   The info foreground property.
+        /// The info foreground property.
         /// </summary>
         public static readonly DependencyProperty InfoForegroundProperty = DependencyProperty.Register(
             "InfoForeground", typeof(Brush), typeof(HelixViewport3D), new UIPropertyMetadata(Brushes.Black));
 
         /// <summary>
-        ///   The is change fov enabled property.
+        /// The is change fov enabled property.
         /// </summary>
         public static readonly DependencyProperty IsChangeFieldOfViewEnabledProperty =
             DependencyProperty.Register(
                 "IsChangeFieldOfViewEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The is pan enabled property.
+        /// The is pan enabled property.
         /// </summary>
         public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
             "IsPanEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The is rotation enabled property.
+        /// The is rotation enabled property.
         /// </summary>
         public static readonly DependencyProperty IsRotationEnabledProperty =
             DependencyProperty.Register(
                 "IsRotationEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The is zoom enabled property.
+        /// The is zoom enabled property.
         /// </summary>
         public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
             "IsZoomEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The touch mode property.
+        /// The touch mode property.
         /// </summary>
         public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
             "TouchMode", typeof(TouchMode), typeof(HelixViewport3D), new UIPropertyMetadata(TouchMode.Panning));
 
         /// <summary>
-        ///   The IsTouchZoomEnabled property.
+        /// The IsTouchZoomEnabled property.
         /// </summary>
         public static readonly DependencyProperty IsTouchZoomEnabledProperty =
             DependencyProperty.Register(
                 "IsTouchZoomEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The left view gesture property.
+        /// The left view gesture property.
         /// </summary>
         public static readonly DependencyProperty LeftViewGestureProperty =
             DependencyProperty.Register(
-                "LeftViewGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "LeftViewGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new KeyGesture(Key.L, ModifierKeys.Control)));
 
         /// <summary>
-        ///   The maximum field of view property.
+        /// The maximum field of view property.
         /// </summary>
         public static readonly DependencyProperty MaximumFieldOfViewProperty =
             DependencyProperty.Register(
                 "MaximumFieldOfView", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(140.0));
 
         /// <summary>
-        ///   The minimum field of view property.
+        /// The minimum field of view property.
         /// </summary>
         public static readonly DependencyProperty MinimumFieldOfViewProperty =
             DependencyProperty.Register(
                 "MinimumFieldOfView", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(5.0));
 
         /// <summary>
-        ///   The model up direction property.
+        /// The model up direction property.
         /// </summary>
         public static readonly DependencyProperty ModelUpDirectionProperty =
             DependencyProperty.Register(
-                "ModelUpDirection",
-                typeof(Vector3D),
-                typeof(HelixViewport3D),
+                "ModelUpDirection", 
+                typeof(Vector3D), 
+                typeof(HelixViewport3D), 
                 new FrameworkPropertyMetadata(
                     new Vector3D(0, 0, 1), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The orthographic property.
+        /// The orthographic property.
         /// </summary>
         public static readonly DependencyProperty OrthographicProperty = DependencyProperty.Register(
             "Orthographic", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false, OrthographicChanged));
 
         /// <summary>
-        ///   The orthographic toggle gesture property.
+        /// The orthographic toggle gesture property.
         /// </summary>
         public static readonly DependencyProperty OrthographicToggleGestureProperty =
             DependencyProperty.Register(
-                "OrthographicToggleGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "OrthographicToggleGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new KeyGesture(Key.O, ModifierKeys.Control | ModifierKeys.Shift)));
 
         /// <summary>
-        ///   The pan cursor property.
+        /// The pan cursor property.
         /// </summary>
         public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
             "PanCursor", typeof(Cursor), typeof(HelixViewport3D), new UIPropertyMetadata(Cursors.Hand));
 
         /// <summary>
-        ///   The pan gesture property.
+        /// The pan gesture property.
         /// </summary>
         public static readonly DependencyProperty PanGestureProperty = DependencyProperty.Register(
-            "PanGesture",
-            typeof(MouseGesture),
-            typeof(HelixViewport3D),
+            "PanGesture", 
+            typeof(MouseGesture), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick, ModifierKeys.Shift)));
 
         /// <summary>
-        ///   The alternative pan gesture property.
+        /// The alternative pan gesture property.
         /// </summary>
         public static readonly DependencyProperty PanGesture2Property = DependencyProperty.Register(
-            "PanGesture2",
-            typeof(MouseGesture),
-            typeof(HelixViewport3D),
+            "PanGesture2", 
+            typeof(MouseGesture), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(new MouseGesture(MouseAction.MiddleClick)));
 
         /// <summary>
-        ///   The alternative zoom gesture property.
+        /// The alternative zoom gesture property.
         /// </summary>
         public static readonly DependencyProperty ZoomGesture2Property = DependencyProperty.Register(
             "ZoomGesture2", typeof(MouseGesture), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The rotate gesture 2 property.
+        /// The rotate gesture 2 property.
         /// </summary>
         public static readonly DependencyProperty RotateGesture2Property = DependencyProperty.Register(
             "RotateGesture2", typeof(MouseGesture), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The reset camera gesture property.
+        /// The reset camera gesture property.
         /// </summary>
         public static readonly DependencyProperty ResetCameraGestureProperty =
             DependencyProperty.Register(
-                "ResetCameraGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "ResetCameraGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new MouseGesture(MouseAction.MiddleDoubleClick)));
 
         /// <summary>
-        ///   The reset camera key gesture property.
+        /// The reset camera key gesture property.
         /// </summary>
         public static readonly DependencyProperty ResetCameraKeyGestureProperty =
             DependencyProperty.Register(
-                "ResetCameraKeyGesture",
-                typeof(KeyGesture),
-                typeof(HelixViewport3D),
+                "ResetCameraKeyGesture", 
+                typeof(KeyGesture), 
+                typeof(HelixViewport3D), 
                 new FrameworkPropertyMetadata(
                     new KeyGesture(Key.Home), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The right view gesture property.
+        /// The right view gesture property.
         /// </summary>
         public static readonly DependencyProperty RightViewGestureProperty =
             DependencyProperty.Register(
-                "RightViewGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "RightViewGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new KeyGesture(Key.R, ModifierKeys.Control)));
 
         /// <summary>
-        ///   The fixed mouse down point property.
+        /// The fixed mouse down point property.
         /// </summary>
         public static readonly DependencyProperty RotateAroundMouseDownPointProperty =
             DependencyProperty.Register(
                 "RotateAroundMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The rotate cursor property.
+        /// The rotate cursor property.
         /// </summary>
         public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
             "RotateCursor", typeof(Cursor), typeof(HelixViewport3D), new UIPropertyMetadata(Cursors.SizeAll));
 
         /// <summary>
-        ///   The rotate gesture property.
+        /// The rotate gesture property.
         /// </summary>
         public static readonly DependencyProperty RotateGestureProperty = DependencyProperty.Register(
-            "RotateGesture",
-            typeof(MouseGesture),
-            typeof(HelixViewport3D),
+            "RotateGesture", 
+            typeof(MouseGesture), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick)));
 
         /// <summary>
-        ///   The rotation sensitivity property.
+        /// The rotation sensitivity property.
         /// </summary>
         public static readonly DependencyProperty RotationSensitivityProperty =
             DependencyProperty.Register(
                 "RotationSensitivity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   The show camera info property.
+        /// The show camera info property.
         /// </summary>
         public static readonly DependencyProperty ShowCameraInfoProperty = DependencyProperty.Register(
-            "ShowCameraInfo",
-            typeof(bool),
-            typeof(HelixViewport3D),
+            "ShowCameraInfo", 
+            typeof(bool), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(false, ShowCameraInfoChanged));
 
         /// <summary>
-        ///   The show camera target property.
+        /// The show camera target property.
         /// </summary>
         public static readonly DependencyProperty ShowCameraTargetProperty =
             DependencyProperty.Register(
                 "ShowCameraTarget", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The show coordinate system property.
+        /// The show coordinate system property.
         /// </summary>
         public static readonly DependencyProperty ShowCoordinateSystemProperty =
             DependencyProperty.Register(
                 "ShowCoordinateSystem", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The show field of view property.
+        /// The show field of view property.
         /// </summary>
         public static readonly DependencyProperty ShowFieldOfViewProperty =
             DependencyProperty.Register(
-                "ShowFieldOfView",
-                typeof(bool),
-                typeof(HelixViewport3D),
+                "ShowFieldOfView", 
+                typeof(bool), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(false, ShowFieldOfViewChanged));
 
         /// <summary>
-        ///   The show frame rate property.
+        /// The show frame rate property.
         /// </summary>
         public static readonly DependencyProperty ShowFrameRateProperty = DependencyProperty.Register(
-            "ShowFrameRate",
-            typeof(bool),
-            typeof(HelixViewport3D),
+            "ShowFrameRate", 
+            typeof(bool), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(false, (d, e) => ((HelixViewport3D)d).OnShowFrameRateChanged()));
 
         /// <summary>
-        ///   The show triangle count info property.
+        /// The show triangle count info property.
         /// </summary>
         public static readonly DependencyProperty ShowTriangleCountInfoProperty =
             DependencyProperty.Register(
-                "ShowTriangleCountInfo",
-                typeof(bool),
-                typeof(HelixViewport3D),
+                "ShowTriangleCountInfo", 
+                typeof(bool), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(false, (d, e) => ((HelixViewport3D)d).OnShowTriangleCountInfoChanged()));
 
         /// <summary>
-        ///   The show view cube property.
+        /// The show view cube property.
         /// </summary>
         public static readonly DependencyProperty ShowViewCubeProperty = DependencyProperty.Register(
             "ShowViewCube", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The status property.
+        /// The status property.
         /// </summary>
         public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(
             "Status", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The sub title property.
+        /// The sub title property.
         /// </summary>
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
             "SubTitle", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The sub title size property.
+        /// The sub title size property.
         /// </summary>
         public static readonly DependencyProperty SubTitleSizeProperty = DependencyProperty.Register(
             "SubTitleSize", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(12.0));
 
         /// <summary>
-        ///   The text brush property.
+        /// The text brush property.
         /// </summary>
         public static readonly DependencyProperty TextBrushProperty = DependencyProperty.Register(
             "TextBrush", typeof(Brush), typeof(HelixViewport3D), new UIPropertyMetadata(Brushes.Black));
 
         /// <summary>
-        ///   The title background property.
+        /// The title background property.
         /// </summary>
         public static readonly DependencyProperty TitleBackgroundProperty =
             DependencyProperty.Register(
                 "TitleBackground", typeof(Brush), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The title font family property.
+        /// The title font family property.
         /// </summary>
         public static readonly DependencyProperty TitleFontFamilyProperty =
             DependencyProperty.Register(
                 "TitleFontFamily", typeof(FontFamily), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The title property.
+        /// The title property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The title size property.
+        /// The title size property.
         /// </summary>
         public static readonly DependencyProperty TitleSizeProperty = DependencyProperty.Register(
             "TitleSize", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(12.0));
 
         /// <summary>
-        ///   The top view gesture property.
+        /// The top view gesture property.
         /// </summary>
         public static readonly DependencyProperty TopViewGestureProperty = DependencyProperty.Register(
-            "TopViewGesture",
-            typeof(InputGesture),
-            typeof(HelixViewport3D),
+            "TopViewGesture", 
+            typeof(InputGesture), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(new KeyGesture(Key.U, ModifierKeys.Control)));
 
         /// <summary>
-        ///   The triangle count info property.
+        /// The triangle count info property.
         /// </summary>
         public static readonly DependencyProperty TriangleCountInfoProperty =
             DependencyProperty.Register(
                 "TriangleCountInfo", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The view cube back text property.
+        /// The view cube back text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeBackTextProperty =
             DependencyProperty.Register(
                 "ViewCubeBackText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata("B"));
 
         /// <summary>
-        ///   The view cube bottom text property.
+        /// The view cube bottom text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeBottomTextProperty =
             DependencyProperty.Register(
                 "ViewCubeBottomText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata("D"));
 
         /// <summary>
-        ///   The view cube front text property.
+        /// The view cube front text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeFrontTextProperty =
             DependencyProperty.Register(
                 "ViewCubeFrontText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata("F"));
 
         /// <summary>
-        ///   The view cube left text property.
+        /// The view cube left text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeLeftTextProperty =
             DependencyProperty.Register(
                 "ViewCubeLeftText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata("L"));
 
         /// <summary>
-        ///   The view cube opacity property.
+        /// The view cube opacity property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeOpacityProperty =
             DependencyProperty.Register(
                 "ViewCubeOpacity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(0.5));
 
         /// <summary>
-        ///   The view cube right text property.
+        /// The view cube right text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeRightTextProperty =
             DependencyProperty.Register(
                 "ViewCubeRightText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata("R"));
 
         /// <summary>
-        ///   The view cube top text property.
+        /// The view cube top text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeTopTextProperty =
             DependencyProperty.Register(
                 "ViewCubeTopText", typeof(string), typeof(HelixViewport3D), new UIPropertyMetadata("U"));
 
         /// <summary>
-        ///   Zoom around mouse down point property.
+        /// Zoom around mouse down point property.
         /// </summary>
         public static readonly DependencyProperty ZoomAroundMouseDownPointProperty =
             DependencyProperty.Register(
                 "ZoomAroundMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The zoom cursor property.
+        /// The zoom cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
             "ZoomCursor", typeof(Cursor), typeof(HelixViewport3D), new UIPropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
-        ///   The Zoom extents gesture property.
+        /// The Zoom extents gesture property.
         /// </summary>
         public static readonly DependencyProperty ZoomExtentsGestureProperty =
             DependencyProperty.Register(
-                "ZoomExtentsGesture",
-                typeof(InputGesture),
-                typeof(HelixViewport3D),
+                "ZoomExtentsGesture", 
+                typeof(InputGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(new KeyGesture(Key.E, ModifierKeys.Control | ModifierKeys.Shift)));
 
         /// <summary>
-        ///   The zoom extents when loaded property.
+        /// The zoom extents when loaded property.
         /// </summary>
         public static readonly DependencyProperty ZoomExtentsWhenLoadedProperty =
             DependencyProperty.Register(
                 "ZoomExtentsWhenLoaded", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The zoom gesture property.
+        /// The zoom gesture property.
         /// </summary>
         public static readonly DependencyProperty ZoomGestureProperty = DependencyProperty.Register(
-            "ZoomGesture",
-            typeof(MouseGesture),
-            typeof(HelixViewport3D),
+            "ZoomGesture", 
+            typeof(MouseGesture), 
+            typeof(HelixViewport3D), 
             new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick, ModifierKeys.Control)));
 
         /// <summary>
-        ///   The zoom rectangle cursor property.
+        /// The zoom rectangle cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleCursorProperty =
             DependencyProperty.Register(
                 "ZoomRectangleCursor", typeof(Cursor), typeof(HelixViewport3D), new UIPropertyMetadata(Cursors.ScrollSE));
 
         /// <summary>
-        ///   The zoom rectangle gesture property.
+        /// The zoom rectangle gesture property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleGestureProperty =
             DependencyProperty.Register(
-                "ZoomRectangleGesture",
-                typeof(MouseGesture),
-                typeof(HelixViewport3D),
+                "ZoomRectangleGesture", 
+                typeof(MouseGesture), 
+                typeof(HelixViewport3D), 
                 new UIPropertyMetadata(
                     new MouseGesture(MouseAction.RightClick, ModifierKeys.Control | ModifierKeys.Shift)));
 
         /// <summary>
-        ///   The zoom sensitivity property.
+        /// The zoom sensitivity property.
         /// </summary>
         public static readonly DependencyProperty ZoomSensitivityProperty =
             DependencyProperty.Register(
                 "ZoomSensitivity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   The adorner layer name.
+        /// The adorner layer name.
         /// </summary>
         private const string PartAdornerLayer = "PART_AdornerLayer";
 
         /// <summary>
-        ///   The camera controller name.
+        /// The camera controller name.
         /// </summary>
         private const string PartCameraController = "PART_CameraController";
 
         /// <summary>
-        ///   The coordinate view name.
+        /// The coordinate view name.
         /// </summary>
         private const string PartCoordinateView = "PART_CoordinateView";
 
         /// <summary>
-        ///   The view cube name.
+        /// The view cube name.
         /// </summary>
         private const string PartViewCube = "PART_ViewCube";
 
         /// <summary>
-        ///   The view cube viewport name.
+        /// The view cube viewport name.
         /// </summary>
         private const string PartViewCubeViewport = "PART_ViewCubeViewport";
 
         /// <summary>
-        ///   The framerate stopwatch.
+        /// The framerate stopwatch.
         /// </summary>
         private readonly Stopwatch fpsWatch = new Stopwatch();
 
         /// <summary>
-        ///   The head light.
+        /// The head light.
         /// </summary>
         private readonly DirectionalLight headLight = new DirectionalLight { Color = Colors.White };
 
         /// <summary>
-        ///   The rendering event listener.
+        /// The rendering event listener.
         /// </summary>
         private readonly RenderingEventListener renderingEventListener;
 
         /// <summary>
-        ///   The lights.
+        /// The lights.
         /// </summary>
         private readonly Model3DGroup lights;
 
         /// <summary>
-        ///   The orthographic camera.
+        /// The orthographic camera.
         /// </summary>
         private readonly OrthographicCamera orthographicCamera;
 
         /// <summary>
-        ///   The perspective camera.
+        /// The perspective camera.
         /// </summary>
         private readonly PerspectiveCamera perspectiveCamera;
 
         /// <summary>
-        ///   The viewport.
+        /// The viewport.
         /// </summary>
         private readonly Viewport3D viewport;
 
         /// <summary>
-        ///   The is subscribed to rendering event.
+        /// The is subscribed to rendering event.
         /// </summary>
         private bool isSubscribedToRenderingEvent;
 
         /// <summary>
-        ///   The "control has been loaded before" flag.
+        /// The "control has been loaded before" flag.
         /// </summary>
         private bool hasBeenLoadedBefore;
 
         /// <summary>
-        ///   The adorner layer.
+        /// The adorner layer.
         /// </summary>
         private AdornerDecorator adornerLayer;
 
         /// <summary>
-        ///   The camera controller.
+        /// The camera controller.
         /// </summary>
         private CameraController cameraController;
 
         /// <summary>
-        ///   The coordinate system lights.
+        /// The coordinate system lights.
         /// </summary>
         private Model3DGroup coordinateSystemLights;
 
         /// <summary>
-        ///   The coordinate view.
+        /// The coordinate view.
         /// </summary>
         private Viewport3D coordinateView;
 
         /// <summary>
-        ///   The current camera.
+        /// The current camera.
         /// </summary>
         private Camera currentCamera;
 
         /// <summary>
-        ///   The frame counter.
+        /// The frame counter.
         /// </summary>
         private int frameCounter;
 
         /// <summary>
-        ///   The frame counter for info field updates.
+        /// The frame counter for info field updates.
         /// </summary>
         private int infoFrameCounter;
 
         /// <summary>
-        ///   The view cube.
+        /// The view cube.
         /// </summary>
         private ViewCubeVisual3D viewCube;
 
         /// <summary>
-        ///   The view cube lights.
+        /// The view cube lights.
         /// </summary>
         private Model3DGroup viewCubeLights;
 
         /// <summary>
-        ///   The view cube view.
+        /// The view cube view.
         /// </summary>
         private Viewport3D viewCubeViewport;
 
@@ -791,8 +858,7 @@ namespace HelixToolkit.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="HelixViewport3D"/> class. 
-        ///   Initializes static members of the <see cref="HelixViewport3D"/> class.
+        /// Initializes static members of the <see cref="HelixViewport3D"/> class. Initializes static members of the <see cref="HelixViewport3D"/> class.
         /// </summary>
         static HelixViewport3D()
         {
@@ -803,8 +869,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HelixViewport3D"/> class. 
-        ///   Initializes a new instance of the <see cref="HelixViewport3D"/> class.
+        /// Initializes a new instance of the <see cref="HelixViewport3D"/> class. Initializes a new instance of the <see cref="HelixViewport3D"/> class.
         /// </summary>
         public HelixViewport3D()
         {
@@ -841,9 +906,9 @@ namespace HelixToolkit.Wpf
 
 #if DEBUG
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="HelixViewport3D"/> class. 
-        /// </summary>
+    // <summary>
+    // Finalizes an instance of the <see cref="HelixViewport3D"/> class. 
+    // </summary>
         ~HelixViewport3D()
         {
             Debug.WriteLine("HelixViewport3D finalized.");
@@ -856,7 +921,7 @@ namespace HelixToolkit.Wpf
         #region Public Events
 
         /// <summary>
-        ///   Event when a property has been changed
+        /// Event when a property has been changed
         /// </summary>
         public event RoutedEventHandler CameraChanged
         {
@@ -876,16 +941,170 @@ namespace HelixToolkit.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets the command that toggles between orthographic and perspective camera.
+        /// Gets the command that toggles between orthographic and perspective camera.
         /// </summary>
         public static RoutedCommand OrthographicToggleCommand { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the sensitivity for pan by the left and right keys.
+        /// Gets or sets the width of the coordinate system viewport.
         /// </summary>
-        /// <value> The pan sensitivity. </value>
+        /// <value>
+        /// The width of the coordinate system viewport. 
+        /// </value>
+        public double CoordinateSystemWidth
+        {
+            get
+            {
+                return (double)this.GetValue(CoordinateSystemWidthProperty);
+            }
+
+            set
+            {
+                this.SetValue(CoordinateSystemWidthProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the coordinate system viewport.
+        /// </summary>
+        /// <value>
+        /// The height of the coordinate system viewport. 
+        /// </value>
+        public double CoordinateSystemHeight
+        {
+            get
+            {
+                return (double)this.GetValue(CoordinateSystemHeightProperty);
+            }
+
+            set
+            {
+                this.SetValue(CoordinateSystemHeightProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the horizontal position of the coordinate system viewport.
+        /// </summary>
+        /// <value>
+        /// The horizontal position. 
+        /// </value>
+        public HorizontalAlignment CoordinateSystemHorizontalPosition
+        {
+            get
+            {
+                return (HorizontalAlignment)this.GetValue(CoordinateSystemHorizontalPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(CoordinateSystemHorizontalPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the vertical position of the coordinate system viewport.
+        /// </summary>
+        /// <value>
+        /// The vertical position. 
+        /// </value>
+        public VerticalAlignment CoordinateSystemVerticalPosition
+        {
+            get
+            {
+                return (VerticalAlignment)this.GetValue(CoordinateSystemVerticalPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(CoordinateSystemVerticalPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the width of the view cube viewport.
+        /// </summary>
+        /// <value>
+        /// The width of the view cube viewport. 
+        /// </value>
+        public double ViewCubeWidth
+        {
+            get
+            {
+                return (double)this.GetValue(ViewCubeWidthProperty);
+            }
+
+            set
+            {
+                this.SetValue(ViewCubeWidthProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the view cube viewport.
+        /// </summary>
+        /// <value>
+        /// The height of the view cube viewport. 
+        /// </value>
+        public double ViewCubeHeight
+        {
+            get
+            {
+                return (double)this.GetValue(ViewCubeHeightProperty);
+            }
+
+            set
+            {
+                this.SetValue(ViewCubeHeightProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the horizontal position of the view cube viewport.
+        /// </summary>
+        /// <value>
+        /// The horizontal position. 
+        /// </value>
+        public HorizontalAlignment ViewCubeHorizontalPosition
+        {
+            get
+            {
+                return (HorizontalAlignment)this.GetValue(ViewCubeHorizontalPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(ViewCubeHorizontalPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the vertical position of view cube viewport.
+        /// </summary>
+        /// <value>
+        /// The vertical position. 
+        /// </value>
+        public VerticalAlignment ViewCubeVerticalPosition
+        {
+            get
+            {
+                return (VerticalAlignment)this.GetValue(ViewCubeVerticalPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(ViewCubeVerticalPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the sensitivity for pan by the left and right keys.
+        /// </summary>
+        /// <value>
+        /// The pan sensitivity. 
+        /// </value>
         /// <remarks>
-        ///   Use -1 to invert the pan direction.
+        /// Use -1 to invert the pan direction.
         /// </remarks>
         public double LeftRightPanSensitivity
         {
@@ -901,11 +1120,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sensitivity for pan by the up and down keys.
+        /// Gets or sets the sensitivity for pan by the up and down keys.
         /// </summary>
-        /// <value> The pan sensitivity. </value>
+        /// <value>
+        /// The pan sensitivity. 
+        /// </value>
         /// <remarks>
-        ///   Use -1 to invert the pan direction.
+        /// Use -1 to invert the pan direction.
         /// </remarks>
         public double UpDownPanSensitivity
         {
@@ -921,11 +1142,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sensitivity for zoom by the pageup and pagedown keys.
+        /// Gets or sets the sensitivity for zoom by the pageup and pagedown keys.
         /// </summary>
-        /// <value> The zoom sensitivity. </value>
+        /// <value>
+        /// The zoom sensitivity. 
+        /// </value>
         /// <remarks>
-        ///   Use -1 to invert the zoom direction.
+        /// Use -1 to invert the zoom direction.
         /// </remarks>
         public double PageUpDownZoomSensitivity
         {
@@ -941,11 +1164,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sensitivity for rotation by the up and down keys.
+        /// Gets or sets the sensitivity for rotation by the up and down keys.
         /// </summary>
-        /// <value> The rotation sensitivity. </value>
+        /// <value>
+        /// The rotation sensitivity. 
+        /// </value>
         /// <remarks>
-        ///   Use -1 to invert the rotation direction.
+        /// Use -1 to invert the rotation direction.
         /// </remarks>
         public double UpDownRotationSensitivity
         {
@@ -961,11 +1186,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sensitivity for rotation by the left and right keys.
+        /// Gets or sets the sensitivity for rotation by the left and right keys.
         /// </summary>
-        /// <value> The rotation sensitivity. </value>
+        /// <value>
+        /// The rotation sensitivity. 
+        /// </value>
         /// <remarks>
-        ///   Use -1 to invert the rotation direction.
+        /// Use -1 to invert the rotation direction.
         /// </remarks>
         public double LeftRightRotationSensitivity
         {
@@ -981,9 +1208,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the touch mode.
+        /// Gets or sets the touch mode.
         /// </summary>
-        /// <value> The touch mode. </value>
+        /// <value>
+        /// The touch mode. 
+        /// </value>
         public TouchMode TouchMode
         {
             get
@@ -998,9 +1227,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
+        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
         /// </summary>
-        /// <value> <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . 
+        /// </value>
         public bool IsTouchZoomEnabled
         {
             get
@@ -1015,9 +1246,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the back view gesture.
+        /// Gets or sets the back view gesture.
         /// </summary>
-        /// <value> The back view gesture. </value>
+        /// <value>
+        /// The back view gesture. 
+        /// </value>
         public InputGesture BackViewGesture
         {
             get
@@ -1032,9 +1265,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the bottom view gesture.
+        /// Gets or sets the bottom view gesture.
         /// </summary>
-        /// <value> The bottom view gesture. </value>
+        /// <value>
+        /// The bottom view gesture. 
+        /// </value>
         public InputGesture BottomViewGesture
         {
             get
@@ -1049,9 +1284,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera.
+        /// Gets or sets the camera.
         /// </summary>
-        /// <value> The camera. </value>
+        /// <value>
+        /// The camera. 
+        /// </value>
         public ProjectionCamera Camera
         {
             get
@@ -1074,7 +1311,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the camera controller
+        /// Gets the camera controller
         /// </summary>
         public CameraController CameraController
         {
@@ -1085,9 +1322,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera inertia factor.
+        /// Gets or sets the camera inertia factor.
         /// </summary>
-        /// <value> The camera inertia factor. </value>
+        /// <value>
+        /// The camera inertia factor. 
+        /// </value>
         public double CameraInertiaFactor
         {
             get
@@ -1102,9 +1341,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera info.
+        /// Gets or sets the camera info.
         /// </summary>
-        /// <value> The camera info. </value>
+        /// <value>
+        /// The camera info. 
+        /// </value>
         public string CameraInfo
         {
             get
@@ -1119,7 +1360,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref="CameraMode" />
+        /// Gets or sets the <see cref="CameraMode"/>
         /// </summary>
         public CameraMode CameraMode
         {
@@ -1135,7 +1376,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera rotation mode.
+        /// Gets or sets the camera rotation mode.
         /// </summary>
         public CameraRotationMode CameraRotationMode
         {
@@ -1151,9 +1392,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the change fov cursor.
+        /// Gets or sets the change fov cursor.
         /// </summary>
-        /// <value> The change fov cursor. </value>
+        /// <value>
+        /// The change fov cursor. 
+        /// </value>
         public Cursor ChangeFieldOfViewCursor
         {
             get
@@ -1168,9 +1411,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the default camera.
+        /// Gets or sets the default camera.
         /// </summary>
-        /// <value> The default camera. </value>
+        /// <value>
+        /// The default camera. 
+        /// </value>
         public ProjectionCamera DefaultCamera
         {
             get
@@ -1185,9 +1430,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the change field of view gesture.
+        /// Gets or sets the change field of view gesture.
         /// </summary>
-        /// <value> The change field of view gesture. </value>
+        /// <value>
+        /// The change field of view gesture. 
+        /// </value>
         public MouseGesture ChangeFieldOfViewGesture
         {
             get
@@ -1202,9 +1449,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the change lookat view gesture.
+        /// Gets or sets the change lookat view gesture.
         /// </summary>
-        /// <value> The change lookat gesture. </value>
+        /// <value>
+        /// The change lookat gesture. 
+        /// </value>
         public MouseGesture ChangeLookAtGesture
         {
             get
@@ -1219,9 +1468,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the children.
+        /// Gets the children.
         /// </summary>
-        /// <value> The children. </value>
+        /// <value>
+        /// The children. 
+        /// </value>
         public Visual3DCollection Children
         {
             get
@@ -1234,18 +1485,27 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
         /// </summary>
         /// <value>
-        /// <c>true</c> if calculation is enabled; otherwise, <c>false</c>.
+        /// <c>true</c> if calculation is enabled; otherwise, <c>false</c> . 
         /// </value>
         public bool EnableCurrentPosition
         {
-            get { return (bool)GetValue(EnableCurrentPositionProperty); }
-            set { SetValue(EnableCurrentPositionProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(EnableCurrentPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(EnableCurrentPositionProperty, value);
+            }
         }
 
         /// <summary>
-        ///   Gets or sets the current position.
+        /// Gets or sets the current position.
         /// </summary>
-        /// <value> The current position. </value>
+        /// <value>
+        /// The current position. 
+        /// </value>
         /// <remarks>
         /// The <see cref="EnableCurrentPosition"/> property must be set to true to enable updating of this property.
         /// </remarks>
@@ -1263,9 +1523,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the debug info text.
+        /// Gets or sets the debug info text.
         /// </summary>
-        /// <value> The debug info text. </value>
+        /// <value>
+        /// The debug info text. 
+        /// </value>
         public string DebugInfo
         {
             get
@@ -1280,9 +1542,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the field of view text.
+        /// Gets or sets the field of view text.
         /// </summary>
-        /// <value> The field of view text. </value>
+        /// <value>
+        /// The field of view text. 
+        /// </value>
         public string FieldOfViewText
         {
             get
@@ -1297,9 +1561,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the frame rate.
+        /// Gets or sets the frame rate.
         /// </summary>
-        /// <value> The frame rate. </value>
+        /// <value>
+        /// The frame rate. 
+        /// </value>
         public int FrameRate
         {
             get
@@ -1314,9 +1580,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the frame rate text.
+        /// Gets or sets the frame rate text.
         /// </summary>
-        /// <value> The frame rate text. </value>
+        /// <value>
+        /// The frame rate text. 
+        /// </value>
         public string FrameRateText
         {
             get
@@ -1331,9 +1599,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the front view gesture.
+        /// Gets or sets the front view gesture.
         /// </summary>
-        /// <value> The front view gesture. </value>
+        /// <value>
+        /// The front view gesture. 
+        /// </value>
         public InputGesture FrontViewGesture
         {
             get
@@ -1348,9 +1618,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [infinite spin].
+        /// Gets or sets a value indicating whether [infinite spin].
         /// </summary>
-        /// <value> <c>true</c> if [infinite spin]; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if [infinite spin]; otherwise, <c>false</c> . 
+        /// </value>
         public bool InfiniteSpin
         {
             get
@@ -1365,9 +1637,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the background brush for the CameraInfo and TriangleCount fields.
+        /// Gets or sets the background brush for the CameraInfo and TriangleCount fields.
         /// </summary>
-        /// <value> The info background. </value>
+        /// <value>
+        /// The info background. 
+        /// </value>
         public Brush InfoBackground
         {
             get
@@ -1382,9 +1656,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the foreground brush for informational text.
+        /// Gets or sets the foreground brush for informational text.
         /// </summary>
-        /// <value> The foreground brush. </value>
+        /// <value>
+        /// The foreground brush. 
+        /// </value>
         public Brush InfoForeground
         {
             get
@@ -1399,7 +1675,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether change of fov is enabled.
+        /// Gets or sets a value indicating whether change of fov is enabled.
         /// </summary>
         public bool IsChangeFieldOfViewEnabled
         {
@@ -1415,9 +1691,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is head light enabled.
+        /// Gets or sets a value indicating whether this instance is head light enabled.
         /// </summary>
-        /// <value> <c>true</c> if this instance is head light enabled; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if this instance is head light enabled; otherwise, <c>false</c> . 
+        /// </value>
         public bool IsHeadLightEnabled
         {
             get
@@ -1432,7 +1710,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether pan is enabled.
+        /// Gets or sets a value indicating whether pan is enabled.
         /// </summary>
         public bool IsPanEnabled
         {
@@ -1448,7 +1726,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether rotation is enabled.
+        /// Gets or sets a value indicating whether rotation is enabled.
         /// </summary>
         public bool IsRotationEnabled
         {
@@ -1464,7 +1742,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether zoom is enabled.
+        /// Gets or sets a value indicating whether zoom is enabled.
         /// </summary>
         public bool IsZoomEnabled
         {
@@ -1480,9 +1758,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the left view gesture.
+        /// Gets or sets the left view gesture.
         /// </summary>
-        /// <value> The left view gesture. </value>
+        /// <value>
+        /// The left view gesture. 
+        /// </value>
         public InputGesture LeftViewGesture
         {
             get
@@ -1497,9 +1777,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the lights.
+        /// Gets the lights.
         /// </summary>
-        /// <value> The lights. </value>
+        /// <value>
+        /// The lights. 
+        /// </value>
         public Model3DGroup Lights
         {
             get
@@ -1509,9 +1791,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the maximum field of view.
+        /// Gets or sets the maximum field of view.
         /// </summary>
-        /// <value> The maximum field of view. </value>
+        /// <value>
+        /// The maximum field of view. 
+        /// </value>
         public double MaximumFieldOfView
         {
             get
@@ -1526,9 +1810,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the minimum field of view.
+        /// Gets or sets the minimum field of view.
         /// </summary>
-        /// <value> The minimum field of view. </value>
+        /// <value>
+        /// The minimum field of view. 
+        /// </value>
         public double MinimumFieldOfView
         {
             get
@@ -1543,9 +1829,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the up direction of the model. This is used by the view cube.
+        /// Gets or sets the up direction of the model. This is used by the view cube.
         /// </summary>
-        /// <value> The model up direction. </value>
+        /// <value>
+        /// The model up direction. 
+        /// </value>
         public Vector3D ModelUpDirection
         {
             get
@@ -1560,9 +1848,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this <see cref="HelixViewport3D" /> is orthographic.
+        /// Gets or sets a value indicating whether this <see cref="HelixViewport3D"/> is orthographic.
         /// </summary>
-        /// <value> <c>true</c> if orthographic; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if orthographic; otherwise, <c>false</c> . 
+        /// </value>
         public bool Orthographic
         {
             get
@@ -1577,9 +1867,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the orthographic toggle gesture.
+        /// Gets or sets the orthographic toggle gesture.
         /// </summary>
-        /// <value> The orthographic toggle gesture. </value>
+        /// <value>
+        /// The orthographic toggle gesture. 
+        /// </value>
         public InputGesture OrthographicToggleGesture
         {
             get
@@ -1594,9 +1886,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the pan cursor.
+        /// Gets or sets the pan cursor.
         /// </summary>
-        /// <value> The pan cursor. </value>
+        /// <value>
+        /// The pan cursor. 
+        /// </value>
         public Cursor PanCursor
         {
             get
@@ -1611,9 +1905,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the pan gesture.
+        /// Gets or sets the pan gesture.
         /// </summary>
-        /// <value> The pan gesture. </value>
+        /// <value>
+        /// The pan gesture. 
+        /// </value>
         public MouseGesture PanGesture
         {
             get
@@ -1628,9 +1924,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the alternative pan gesture.
+        /// Gets or sets the alternative pan gesture.
         /// </summary>
-        /// <value> The alternative pan gesture. </value>
+        /// <value>
+        /// The alternative pan gesture. 
+        /// </value>
         public MouseGesture PanGesture2
         {
             get
@@ -1645,9 +1943,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the alternative zoom gesture.
+        /// Gets or sets the alternative zoom gesture.
         /// </summary>
-        /// <value> The alternative zoom gesture. </value>
+        /// <value>
+        /// The alternative zoom gesture. 
+        /// </value>
         public MouseGesture ZoomGesture2
         {
             get
@@ -1662,9 +1962,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the alternative rotate gesture.
+        /// Gets or sets the alternative rotate gesture.
         /// </summary>
-        /// <value> The alternative rotate gesture. </value>
+        /// <value>
+        /// The alternative rotate gesture. 
+        /// </value>
         public MouseGesture RotateGesture2
         {
             get
@@ -1679,7 +1981,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the ResetCameraGesture.
+        /// Gets or sets the ResetCameraGesture.
         /// </summary>
         public InputGesture ResetCameraGesture
         {
@@ -1695,9 +1997,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the reset camera key gesture.
+        /// Gets or sets the reset camera key gesture.
         /// </summary>
-        /// <value> The reset camera key gesture. </value>
+        /// <value>
+        /// The reset camera key gesture. 
+        /// </value>
         public KeyGesture ResetCameraKeyGesture
         {
             get
@@ -1712,9 +2016,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the right view gesture.
+        /// Gets or sets the right view gesture.
         /// </summary>
-        /// <value> The right view gesture. </value>
+        /// <value>
+        /// The right view gesture. 
+        /// </value>
         public InputGesture RightViewGesture
         {
             get
@@ -1729,9 +2035,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to rotate around the mouse down point.
+        /// Gets or sets a value indicating whether to rotate around the mouse down point.
         /// </summary>
-        /// <value> <c>true</c> if rotatation around the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if rotatation around the mouse down point is enabled; otherwise, <c>false</c> . 
+        /// </value>
         public bool RotateAroundMouseDownPoint
         {
             get
@@ -1746,9 +2054,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the rotate cursor.
+        /// Gets or sets the rotate cursor.
         /// </summary>
-        /// <value> The rotate cursor. </value>
+        /// <value>
+        /// The rotate cursor. 
+        /// </value>
         public Cursor RotateCursor
         {
             get
@@ -1763,9 +2073,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the rotate gesture.
+        /// Gets or sets the rotate gesture.
         /// </summary>
-        /// <value> The rotate gesture. </value>
+        /// <value>
+        /// The rotate gesture. 
+        /// </value>
         public MouseGesture RotateGesture
         {
             get
@@ -1780,9 +2092,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the rotation sensitivity.
+        /// Gets or sets the rotation sensitivity.
         /// </summary>
-        /// <value> The rotation sensitivity. </value>
+        /// <value>
+        /// The rotation sensitivity. 
+        /// </value>
         public double RotationSensitivity
         {
             get
@@ -1797,9 +2111,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show camera info.
+        /// Gets or sets a value indicating whether to show camera info.
         /// </summary>
-        /// <value> <c>true</c> if [show camera info]; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if [show camera info]; otherwise, <c>false</c> . 
+        /// </value>
         public bool ShowCameraInfo
         {
             get
@@ -1814,9 +2130,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show the camera target adorner.
+        /// Gets or sets a value indicating whether to show the camera target adorner.
         /// </summary>
-        /// <value> <c>true</c> if [show camera target]; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if [show camera target]; otherwise, <c>false</c> . 
+        /// </value>
         public bool ShowCameraTarget
         {
             get
@@ -1831,9 +2149,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [show coordinate system].
+        /// Gets or sets a value indicating whether [show coordinate system].
         /// </summary>
-        /// <value> <c>true</c> if [show coordinate system]; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if [show coordinate system]; otherwise, <c>false</c> . 
+        /// </value>
         public bool ShowCoordinateSystem
         {
             get
@@ -1848,9 +2168,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show field of view.
+        /// Gets or sets a value indicating whether to show field of view.
         /// </summary>
-        /// <value> <c>true</c> if [show field of view]; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if [show field of view]; otherwise, <c>false</c> . 
+        /// </value>
         public bool ShowFieldOfView
         {
             get
@@ -1865,9 +2187,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show frame rate.
+        /// Gets or sets a value indicating whether to show frame rate.
         /// </summary>
-        /// <value> <c>true</c> if [show frame rate]; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if [show frame rate]; otherwise, <c>false</c> . 
+        /// </value>
         public bool ShowFrameRate
         {
             get
@@ -1882,7 +2206,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show the total number of triangles in the scene.
+        /// Gets or sets a value indicating whether to show the total number of triangles in the scene.
         /// </summary>
         public bool ShowTriangleCountInfo
         {
@@ -1898,9 +2222,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [show view cube].
+        /// Gets or sets a value indicating whether [show view cube].
         /// </summary>
-        /// <value> <c>true</c> if [show view cube]; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if [show view cube]; otherwise, <c>false</c> . 
+        /// </value>
         public bool ShowViewCube
         {
             get
@@ -1915,9 +2241,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the status.
+        /// Gets or sets the status.
         /// </summary>
-        /// <value> The status. </value>
+        /// <value>
+        /// The status. 
+        /// </value>
         public string Status
         {
             get
@@ -1932,9 +2260,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sub title.
+        /// Gets or sets the sub title.
         /// </summary>
-        /// <value> The sub title. </value>
+        /// <value>
+        /// The sub title. 
+        /// </value>
         public string SubTitle
         {
             get
@@ -1949,9 +2279,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the size of the sub title.
+        /// Gets or sets the size of the sub title.
         /// </summary>
-        /// <value> The size of the sub title. </value>
+        /// <value>
+        /// The size of the sub title. 
+        /// </value>
         public double SubTitleSize
         {
             get
@@ -1966,9 +2298,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the text brush.
+        /// Gets or sets the text brush.
         /// </summary>
-        /// <value> The text brush. </value>
+        /// <value>
+        /// The text brush. 
+        /// </value>
         public Brush TextBrush
         {
             get
@@ -1983,9 +2317,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the title.
+        /// Gets or sets the title.
         /// </summary>
-        /// <value> The title. </value>
+        /// <value>
+        /// The title. 
+        /// </value>
         public string Title
         {
             get
@@ -2000,9 +2336,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the title background brush.
+        /// Gets or sets the title background brush.
         /// </summary>
-        /// <value> The title background. </value>
+        /// <value>
+        /// The title background. 
+        /// </value>
         public Brush TitleBackground
         {
             get
@@ -2017,9 +2355,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the title font family.
+        /// Gets or sets the title font family.
         /// </summary>
-        /// <value> The title font family. </value>
+        /// <value>
+        /// The title font family. 
+        /// </value>
         public FontFamily TitleFontFamily
         {
             get
@@ -2034,9 +2374,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the size of the title.
+        /// Gets or sets the size of the title.
         /// </summary>
-        /// <value> The size of the title. </value>
+        /// <value>
+        /// The size of the title. 
+        /// </value>
         public double TitleSize
         {
             get
@@ -2051,9 +2393,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the top view gesture.
+        /// Gets or sets the top view gesture.
         /// </summary>
-        /// <value> The top view gesture. </value>
+        /// <value>
+        /// The top view gesture. 
+        /// </value>
         public InputGesture TopViewGesture
         {
             get
@@ -2068,7 +2412,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets TriangleCountInfo.
+        /// Gets or sets TriangleCountInfo.
         /// </summary>
         public string TriangleCountInfo
         {
@@ -2084,9 +2428,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the view cube back text.
+        /// Gets or sets the view cube back text.
         /// </summary>
-        /// <value> The view cube back text. </value>
+        /// <value>
+        /// The view cube back text. 
+        /// </value>
         public string ViewCubeBackText
         {
             get
@@ -2101,9 +2447,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the view cube bottom text.
+        /// Gets or sets the view cube bottom text.
         /// </summary>
-        /// <value> The view cube bottom text. </value>
+        /// <value>
+        /// The view cube bottom text. 
+        /// </value>
         public string ViewCubeBottomText
         {
             get
@@ -2118,9 +2466,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the view cube front text.
+        /// Gets or sets the view cube front text.
         /// </summary>
-        /// <value> The view cube front text. </value>
+        /// <value>
+        /// The view cube front text. 
+        /// </value>
         public string ViewCubeFrontText
         {
             get
@@ -2135,9 +2485,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the view cube left text.
+        /// Gets or sets the view cube left text.
         /// </summary>
-        /// <value> The view cube left text. </value>
+        /// <value>
+        /// The view cube left text. 
+        /// </value>
         public string ViewCubeLeftText
         {
             get
@@ -2152,7 +2504,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the opacity of the ViewCube when inactive.
+        /// Gets or sets the opacity of the ViewCube when inactive.
         /// </summary>
         public double ViewCubeOpacity
         {
@@ -2168,9 +2520,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the view cube right text.
+        /// Gets or sets the view cube right text.
         /// </summary>
-        /// <value> The view cube right text. </value>
+        /// <value>
+        /// The view cube right text. 
+        /// </value>
         public string ViewCubeRightText
         {
             get
@@ -2185,9 +2539,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the view cube top text.
+        /// Gets or sets the view cube top text.
         /// </summary>
-        /// <value> The view cube top text. </value>
+        /// <value>
+        /// The view cube top text. 
+        /// </value>
         public string ViewCubeTopText
         {
             get
@@ -2202,9 +2558,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the viewport.
+        /// Gets the viewport.
         /// </summary>
-        /// <value> The viewport. </value>
+        /// <value>
+        /// The viewport. 
+        /// </value>
         public Viewport3D Viewport
         {
             get
@@ -2214,9 +2572,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to zoom around mouse down point.
+        /// Gets or sets a value indicating whether to zoom around mouse down point.
         /// </summary>
-        /// <value> <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        /// <value>
+        /// <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . 
+        /// </value>
         public bool ZoomAroundMouseDownPoint
         {
             get
@@ -2231,9 +2591,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the zoom cursor.
+        /// Gets or sets the zoom cursor.
         /// </summary>
-        /// <value> The zoom cursor. </value>
+        /// <value>
+        /// The zoom cursor. 
+        /// </value>
         public Cursor ZoomCursor
         {
             get
@@ -2248,7 +2610,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ZoomExtentsGesture.
+        /// Gets or sets ZoomExtentsGesture.
         /// </summary>
         public InputGesture ZoomExtentsGesture
         {
@@ -2264,7 +2626,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to Zoom extents when the control has loaded.
+        /// Gets or sets a value indicating whether to Zoom extents when the control has loaded.
         /// </summary>
         public bool ZoomExtentsWhenLoaded
         {
@@ -2280,9 +2642,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the zoom gesture.
+        /// Gets or sets the zoom gesture.
         /// </summary>
-        /// <value> The zoom gesture. </value>
+        /// <value>
+        /// The zoom gesture. 
+        /// </value>
         public MouseGesture ZoomGesture
         {
             get
@@ -2297,9 +2661,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the zoom rectangle cursor.
+        /// Gets or sets the zoom rectangle cursor.
         /// </summary>
-        /// <value> The zoom rectangle cursor. </value>
+        /// <value>
+        /// The zoom rectangle cursor. 
+        /// </value>
         public Cursor ZoomRectangleCursor
         {
             get
@@ -2314,9 +2680,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the zoom rectangle gesture.
+        /// Gets or sets the zoom rectangle gesture.
         /// </summary>
-        /// <value> The zoom rectangle gesture. </value>
+        /// <value>
+        /// The zoom rectangle gesture. 
+        /// </value>
         public MouseGesture ZoomRectangleGesture
         {
             get
@@ -2331,9 +2699,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the zoom sensitivity.
+        /// Gets or sets the zoom sensitivity.
         /// </summary>
-        /// <value> The zoom sensitivity. </value>
+        /// <value>
+        /// The zoom sensitivity. 
+        /// </value>
         public double ZoomSensitivity
         {
             get
@@ -2766,7 +3136,7 @@ namespace HelixToolkit.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            
+
             if (this.EnableCurrentPosition)
             {
                 var pt = e.GetPosition(this);
@@ -2812,8 +3182,7 @@ namespace HelixToolkit.Wpf
         {
             var a = new DoubleAnimation(toOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
                 {
-                    AccelerationRatio = 0.3,
-                    DecelerationRatio = 0.5
+                   AccelerationRatio = 0.3, DecelerationRatio = 0.5 
                 };
             obj.BeginAnimation(OpacityProperty, a);
         }

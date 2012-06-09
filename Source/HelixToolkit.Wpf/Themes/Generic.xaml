@@ -81,7 +81,10 @@
                             </local:CameraController>
 
                             <!-- Coordinate system -->
-                            <Viewport3D x:Name="PART_CoordinateView" Width="80" Height="80" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" ClipToBounds="False" Visibility="{TemplateBinding ShowCoordinateSystem, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Viewport3D x:Name="PART_CoordinateView" 
+                                        Width="{TemplateBinding CoordinateSystemWidth}" Height="{TemplateBinding CoordinateSystemHeight}" Margin="0" 
+                                        HorizontalAlignment="{TemplateBinding CoordinateSystemHorizontalPosition}" VerticalAlignment="{TemplateBinding CoordinateSystemVerticalPosition}" 
+                                        ClipToBounds="False" Visibility="{TemplateBinding ShowCoordinateSystem, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <local:ArrowVisual3D Point2="10 0 0" Fill="#964B4B" />
                                 <local:ArrowVisual3D Point2="0 10 0" Fill="#4B964B" />
                                 <local:ArrowVisual3D Point2="0 0 10" Fill="#4B4B96" />
@@ -119,7 +122,10 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Viewport3D x:Name="PART_ViewCubeViewport" Width="80" Height="80" Margin="0" Opacity="0.5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Viewport3D x:Name="PART_ViewCubeViewport" 
+                                        Width="{TemplateBinding ViewCubeWidth}" Height="{TemplateBinding ViewCubeHeight}" Margin="0" 
+                                        HorizontalAlignment="{TemplateBinding ViewCubeHorizontalPosition}" VerticalAlignment="{TemplateBinding ViewCubeVerticalPosition}" 
+                                        Opacity="0.5" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <local:ViewCubeVisual3D x:Name="PART_ViewCube" 
                                                         ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}" 
                                                         TopText="{Binding ViewCubeTopText, RelativeSource={RelativeSource TemplatedParent}}"
