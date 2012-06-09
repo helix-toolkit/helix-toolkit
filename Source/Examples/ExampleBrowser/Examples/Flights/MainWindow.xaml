@@ -1,0 +1,48 @@
+﻿<Window x:Class="FlightsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="FlightsDemo" 
+        Height="720" Width="960">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="420"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="8">
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Content="From"/>
+                <ComboBox x:Name="From" Margin="4" IsEditable="True" Grid.Column="1" PreviewKeyDown="FromPreviewKeyDown" KeyUp="FromToChanged"/>
+                <Label Content="To" Grid.Row="1"/>
+                <ComboBox x:Name="To" Grid.Row="1" IsEditable="True" Grid.Column="1" Margin="4" PreviewKeyDown="ToPreviewKeyDown" KeyUp="FromToChanged"/>
+            </Grid>
+            <ListView Name="list1" ItemsSource="{Binding Flights}" KeyDown="ListViewKeyDown">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="From" DisplayMemberBinding="{Binding From}" Width="90"/>
+                        <GridViewColumn Header="To" DisplayMemberBinding="{Binding To}" Width="90"/>
+                        <GridViewColumn Header="Distance" DisplayMemberBinding="{Binding Distance,StringFormat='{}{0:0} km'}" Width="70"/>
+                        <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Time}" Width="65"/>
+                        <GridViewColumn Header="CO₂" DisplayMemberBinding="{Binding CO2, StringFormat='{}{0:0} kg'}" Width="60"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+        <GridSplitter ResizeDirection="Columns" Width="6"/>
+        <t:HelixViewport3D Grid.Column="1" x:Name="view1"  Background="Black" 
+                       MouseDown="OnMouseDown" MouseMove="OnMouseMove" CameraRotationMode="Turntable" ShowCameraTarget="False" IsHeadLightEnabled="True">
+            <!--<t:DefaultLightsVisual3D/>-->
+            <t:SphereVisual3D x:Name="earth" Radius="1" 
+                              Material="{t:ImageMaterial 'pack://application:,,,/Examples/Flights/earth4k.jpg'}" ThetaDiv="180" PhiDiv="90" />
+        </t:HelixViewport3D>
+        <TextBlock x:Name="text1" Grid.Column="1" Foreground="White" Margin="4" Text="Click on your start and end points" VerticalAlignment="Bottom"/>
+        <TextBlock x:Name="text2" Grid.Column="1" Foreground="White" Margin="4" VerticalAlignment="Top"/>
+    </Grid>
+</Window>

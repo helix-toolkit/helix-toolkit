@@ -1,0 +1,92 @@
+<!--
+#
+# X3D Web3D Extensions Public Schema:
+#
+#	http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPublic.xsd
+#
+#	current version:  3.1.0
+#
+#	created:          14 September 2004
+#
+#	revised:          2 October 2004
+#
+#	Maintainer:       Don Brutzman
+#
+# Purpose: support Web3D Consortium extensions to the X3D tagset.
+# The primary Extensible 3D (X3D) Schema
+# x3d-3.1.xsd is augmented by node definitions in
+# x3d-3.1-Web3dExtensionsPublic.xsd and
+# x3d-3.1-Web3dExtensionsPrivate.xsd
+#
+# X3D Specification Schemas:
+#	http://www.web3d.org/specifications/x3d-3.1.xsd
+#	http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPublic.xsd
+#	http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPrivate.xsd
+#
+# Web3D extensions update URL:
+#	http://www.web3d.org/x3d/content/x3d-3.1-Web3dExtensionsPublic.xsd
+#
+# changelog:
+#	http://www.web3d.org/specifications/x3d-schema-changelog.txt
+#
+-->
+
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.1.0">
+
+<!-- construction note:  unlike xs:element, xs:attributeGroup constructs from parent schema not referencable -->
+
+<!-- ================================================================= -->
+
+	<!-- enter element and attribute definitions here -->
+
+	<!-- LatticeXvlComponent -->
+
+	<xs:simpleType name="XvlShell.shellTypes">
+		<xs:annotation>
+			<xs:appinfo></xs:appinfo>
+			<xs:documentation source=""/>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="POLYGON_MESH"/>
+			<xs:enumeration value="LATTICE_MESH"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="XvlShell">
+		<xs:annotation>
+			<xs:appinfo/>
+			<xs:documentation source=""/>
+		</xs:annotation>
+		<xs:complexType mixed="false">
+			<xs:sequence>
+				<xs:element ref="IS" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element ref="MetadataDouble"/>
+					<xs:element ref="MetadataFloat"/>
+					<xs:element ref="MetadataInteger"/>
+					<xs:element ref="MetadataSet"/>
+					<xs:element ref="MetadataString"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attribute name="DEF" type="xs:ID"/>
+			<xs:attribute name="USE" type="xs:IDREF"/>
+			<!--X3DGeometryNode-->
+			<xs:attribute name="shellType" type="XvlShell.shellTypes"/>
+			<xs:attribute name="numberOfDivisions" type="SFInt32"/>
+			<xs:attribute name="vertexRound" type="MFFloat"/>
+			<xs:attribute name="edgeBeginCoordIndex" type="MFInt32"/>
+			<xs:attribute name="edgeEndCoordIndex" type="MFInt32"/>
+			<xs:attribute name="edgeRound" type="MFFloat"/>
+			<xs:attribute name="edgeBeginVector" type="MFVec3f"/>
+			<xs:attribute name="edgeEndVector" type="MFVec3f"/>
+			<xs:attribute name="faceCoordIndex" type="MFInt32"/>
+			<xs:attribute name="faceTexCoordIndex" type="MFInt32"/>
+			<xs:attribute name="faceEmpty" type="MFBool"/>
+			<xs:attribute name="faceHidden" type="MFBool"/>
+			<xs:attribute name="containerField" type="xs:NMTOKEN" default="geometry"/>
+		</xs:complexType>
+	</xs:element>
+
+<!-- ================================================================= -->
+
+</xs:schema>

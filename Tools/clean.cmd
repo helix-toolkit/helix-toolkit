@@ -1,0 +1,1 @@
+devenv.exe ..\Source\HelixToolkit.sln /Clean Release

@@ -1,0 +1,1 @@
+wikidoc.exe /Output=..\output\Wiki ..\Output\HelixToolkit.Wpf.dll > UpdateWikiDocumentation.log
