@@ -147,6 +147,7 @@
     </Compile>
     <Compile Include="Visual3Ds\MeshVisuals\TestModels\Teapot.cs" />
     <Compile Include="Visual3Ds\ScreenSpaceVisuals\BillboardVisual3D.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\BoundingBoxWireFrameVisual3D.cs" />
     <Compile Include="Visual3Ds\ScreenSpaceVisuals\TextBillboardVisual3D.cs" />
     <Compile Include="Visual3Ds\ScreenSpaceVisuals\LinesVisual3D.cs" />
     <Compile Include="Helpers\ScreenSpace\PointGeometryBuilder.cs" />
