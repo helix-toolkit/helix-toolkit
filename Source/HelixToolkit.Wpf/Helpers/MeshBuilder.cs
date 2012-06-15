@@ -469,32 +469,32 @@ namespace HelixToolkit.Wpf
         {
             if ((faces & BoxFaces.Front) == BoxFaces.Front)
             {
-                this.AddCubeFace(center, new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
-            }
-
-            if ((faces & BoxFaces.Left) == BoxFaces.Left)
-            {
-                this.AddCubeFace(center, new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
-            }
-
-            if ((faces & BoxFaces.Right) == BoxFaces.Right)
-            {
-                this.AddCubeFace(center, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
+                this.AddCubeFace(center, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
             }
 
             if ((faces & BoxFaces.Back) == BoxFaces.Back)
             {
-                this.AddCubeFace(center, new Vector3D(0, -1, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
+                this.AddCubeFace(center, new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
+            }
+
+            if ((faces & BoxFaces.Left) == BoxFaces.Left)
+            {
+                this.AddCubeFace(center, new Vector3D(0, -1, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
+            }
+
+            if ((faces & BoxFaces.Right) == BoxFaces.Right)
+            {
+                this.AddCubeFace(center, new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
             }
 
             if ((faces & BoxFaces.Top) == BoxFaces.Top)
             {
-                this.AddCubeFace(center, new Vector3D(0, 0, 1), new Vector3D(0, -1, 0), zlength, ylength, xlength);
+                this.AddCubeFace(center, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), zlength, xlength, ylength);
             }
 
             if ((faces & BoxFaces.Bottom) == BoxFaces.Bottom)
             {
-                this.AddCubeFace(center, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), zlength, ylength, xlength);
+                this.AddCubeFace(center, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), zlength, xlength, ylength);
             }
         }
 
