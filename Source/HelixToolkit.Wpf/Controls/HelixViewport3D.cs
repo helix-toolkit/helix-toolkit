@@ -10,6 +10,7 @@
 namespace HelixToolkit.Wpf
 {
     using System;
+    using System.Collections;
     using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Windows;
@@ -53,9 +54,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemHorizontalPositionProperty =
             DependencyProperty.Register(
-                "CoordinateSystemHorizontalPosition", 
-                typeof(HorizontalAlignment), 
-                typeof(HelixViewport3D), 
+                "CoordinateSystemHorizontalPosition",
+                typeof(HorizontalAlignment),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(HorizontalAlignment.Left));
 
         /// <summary>
@@ -63,9 +64,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemVerticalPositionProperty =
             DependencyProperty.Register(
-                "CoordinateSystemVerticalPosition", 
-                typeof(VerticalAlignment), 
-                typeof(HelixViewport3D), 
+                "CoordinateSystemVerticalPosition",
+                typeof(VerticalAlignment),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(VerticalAlignment.Bottom));
 
         /// <summary>
@@ -85,9 +86,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ViewCubeHorizontalPositionProperty =
             DependencyProperty.Register(
-                "ViewCubeHorizontalPosition", 
-                typeof(HorizontalAlignment), 
-                typeof(HelixViewport3D), 
+                "ViewCubeHorizontalPosition",
+                typeof(HorizontalAlignment),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(HorizontalAlignment.Right));
 
         /// <summary>
@@ -95,9 +96,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ViewCubeVerticalPositionProperty =
             DependencyProperty.Register(
-                "ViewCubeVerticalPosition", 
-                typeof(VerticalAlignment), 
-                typeof(HelixViewport3D), 
+                "ViewCubeVerticalPosition",
+                typeof(VerticalAlignment),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(VerticalAlignment.Bottom));
 
         /// <summary>
@@ -153,9 +154,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty BackViewGestureProperty =
             DependencyProperty.Register(
-                "BackViewGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "BackViewGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.B, ModifierKeys.Control)));
 
         /// <summary>
@@ -163,9 +164,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty BottomViewGestureProperty =
             DependencyProperty.Register(
-                "BottomViewGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "BottomViewGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.D, ModifierKeys.Control)));
 
         /// <summary>
@@ -198,9 +199,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty =
             DependencyProperty.Register(
-                "CameraRotationMode", 
-                typeof(CameraRotationMode), 
-                typeof(HelixViewport3D), 
+                "CameraRotationMode",
+                typeof(CameraRotationMode),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(CameraRotationMode.Turntable, CameraRotationModeChanged));
 
         /// <summary>
@@ -208,9 +209,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewCursorProperty =
             DependencyProperty.Register(
-                "ChangeFieldOfViewCursor", 
-                typeof(Cursor), 
-                typeof(HelixViewport3D), 
+                "ChangeFieldOfViewCursor",
+                typeof(Cursor),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(Cursors.ScrollNS));
 
         /// <summary>
@@ -218,9 +219,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewGestureProperty =
             DependencyProperty.Register(
-                "ChangeFieldOfViewGesture", 
-                typeof(MouseGesture), 
-                typeof(HelixViewport3D), 
+                "ChangeFieldOfViewGesture",
+                typeof(MouseGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick, ModifierKeys.Alt)));
 
         /// <summary>
@@ -228,9 +229,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ChangeLookAtGestureProperty =
             DependencyProperty.Register(
-                "ChangeLookAtGesture", 
-                typeof(MouseGesture), 
-                typeof(HelixViewport3D), 
+                "ChangeLookAtGesture",
+                typeof(MouseGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new MouseGesture(MouseAction.RightDoubleClick)));
 
         /// <summary>
@@ -238,9 +239,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CurrentPositionProperty =
             DependencyProperty.Register(
-                "CurrentPosition", 
-                typeof(Point3D), 
-                typeof(HelixViewport3D), 
+                "CurrentPosition",
+                typeof(Point3D),
+                typeof(HelixViewport3D),
                 new FrameworkPropertyMetadata(
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -255,9 +256,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty EnableHeadLightProperty =
             DependencyProperty.Register(
-                "IsHeadLightEnabled", 
-                typeof(bool), 
-                typeof(HelixViewport3D), 
+                "IsHeadLightEnabled",
+                typeof(bool),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(false, HeadlightChanged));
 
         /// <summary>
@@ -284,9 +285,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty FrontViewGestureProperty =
             DependencyProperty.Register(
-                "FrontViewGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "FrontViewGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.F, ModifierKeys.Control)));
 
         /// <summary>
@@ -299,9 +300,9 @@ namespace HelixToolkit.Wpf
         /// The info background property.
         /// </summary>
         public static readonly DependencyProperty InfoBackgroundProperty = DependencyProperty.Register(
-            "InfoBackground", 
-            typeof(Brush), 
-            typeof(HelixViewport3D), 
+            "InfoBackground",
+            typeof(Brush),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(new SolidColorBrush(Color.FromArgb(0x80, 0xff, 0xff, 0xff))));
 
         /// <summary>
@@ -354,9 +355,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty LeftViewGestureProperty =
             DependencyProperty.Register(
-                "LeftViewGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "LeftViewGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.L, ModifierKeys.Control)));
 
         /// <summary>
@@ -378,9 +379,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ModelUpDirectionProperty =
             DependencyProperty.Register(
-                "ModelUpDirection", 
-                typeof(Vector3D), 
-                typeof(HelixViewport3D), 
+                "ModelUpDirection",
+                typeof(Vector3D),
+                typeof(HelixViewport3D),
                 new FrameworkPropertyMetadata(
                     new Vector3D(0, 0, 1), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -395,9 +396,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty OrthographicToggleGestureProperty =
             DependencyProperty.Register(
-                "OrthographicToggleGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "OrthographicToggleGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.O, ModifierKeys.Control | ModifierKeys.Shift)));
 
         /// <summary>
@@ -410,18 +411,18 @@ namespace HelixToolkit.Wpf
         /// The pan gesture property.
         /// </summary>
         public static readonly DependencyProperty PanGestureProperty = DependencyProperty.Register(
-            "PanGesture", 
-            typeof(MouseGesture), 
-            typeof(HelixViewport3D), 
+            "PanGesture",
+            typeof(MouseGesture),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick, ModifierKeys.Shift)));
 
         /// <summary>
         /// The alternative pan gesture property.
         /// </summary>
         public static readonly DependencyProperty PanGesture2Property = DependencyProperty.Register(
-            "PanGesture2", 
-            typeof(MouseGesture), 
-            typeof(HelixViewport3D), 
+            "PanGesture2",
+            typeof(MouseGesture),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(new MouseGesture(MouseAction.MiddleClick)));
 
         /// <summary>
@@ -441,9 +442,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ResetCameraGestureProperty =
             DependencyProperty.Register(
-                "ResetCameraGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "ResetCameraGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new MouseGesture(MouseAction.MiddleDoubleClick)));
 
         /// <summary>
@@ -451,9 +452,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ResetCameraKeyGestureProperty =
             DependencyProperty.Register(
-                "ResetCameraKeyGesture", 
-                typeof(KeyGesture), 
-                typeof(HelixViewport3D), 
+                "ResetCameraKeyGesture",
+                typeof(KeyGesture),
+                typeof(HelixViewport3D),
                 new FrameworkPropertyMetadata(
                     new KeyGesture(Key.Home), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -462,9 +463,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty RightViewGestureProperty =
             DependencyProperty.Register(
-                "RightViewGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "RightViewGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.R, ModifierKeys.Control)));
 
         /// <summary>
@@ -484,9 +485,9 @@ namespace HelixToolkit.Wpf
         /// The rotate gesture property.
         /// </summary>
         public static readonly DependencyProperty RotateGestureProperty = DependencyProperty.Register(
-            "RotateGesture", 
-            typeof(MouseGesture), 
-            typeof(HelixViewport3D), 
+            "RotateGesture",
+            typeof(MouseGesture),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick)));
 
         /// <summary>
@@ -500,9 +501,9 @@ namespace HelixToolkit.Wpf
         /// The show camera info property.
         /// </summary>
         public static readonly DependencyProperty ShowCameraInfoProperty = DependencyProperty.Register(
-            "ShowCameraInfo", 
-            typeof(bool), 
-            typeof(HelixViewport3D), 
+            "ShowCameraInfo",
+            typeof(bool),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(false, ShowCameraInfoChanged));
 
         /// <summary>
@@ -524,18 +525,18 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ShowFieldOfViewProperty =
             DependencyProperty.Register(
-                "ShowFieldOfView", 
-                typeof(bool), 
-                typeof(HelixViewport3D), 
+                "ShowFieldOfView",
+                typeof(bool),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(false, ShowFieldOfViewChanged));
 
         /// <summary>
         /// The show frame rate property.
         /// </summary>
         public static readonly DependencyProperty ShowFrameRateProperty = DependencyProperty.Register(
-            "ShowFrameRate", 
-            typeof(bool), 
-            typeof(HelixViewport3D), 
+            "ShowFrameRate",
+            typeof(bool),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(false, (d, e) => ((HelixViewport3D)d).OnShowFrameRateChanged()));
 
         /// <summary>
@@ -543,9 +544,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ShowTriangleCountInfoProperty =
             DependencyProperty.Register(
-                "ShowTriangleCountInfo", 
-                typeof(bool), 
-                typeof(HelixViewport3D), 
+                "ShowTriangleCountInfo",
+                typeof(bool),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(false, (d, e) => ((HelixViewport3D)d).OnShowTriangleCountInfoChanged()));
 
         /// <summary>
@@ -608,9 +609,9 @@ namespace HelixToolkit.Wpf
         /// The top view gesture property.
         /// </summary>
         public static readonly DependencyProperty TopViewGestureProperty = DependencyProperty.Register(
-            "TopViewGesture", 
-            typeof(InputGesture), 
-            typeof(HelixViewport3D), 
+            "TopViewGesture",
+            typeof(InputGesture),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(new KeyGesture(Key.U, ModifierKeys.Control)));
 
         /// <summary>
@@ -687,9 +688,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ZoomExtentsGestureProperty =
             DependencyProperty.Register(
-                "ZoomExtentsGesture", 
-                typeof(InputGesture), 
-                typeof(HelixViewport3D), 
+                "ZoomExtentsGesture",
+                typeof(InputGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.E, ModifierKeys.Control | ModifierKeys.Shift)));
 
         /// <summary>
@@ -703,9 +704,9 @@ namespace HelixToolkit.Wpf
         /// The zoom gesture property.
         /// </summary>
         public static readonly DependencyProperty ZoomGestureProperty = DependencyProperty.Register(
-            "ZoomGesture", 
-            typeof(MouseGesture), 
-            typeof(HelixViewport3D), 
+            "ZoomGesture",
+            typeof(MouseGesture),
+            typeof(HelixViewport3D),
             new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick, ModifierKeys.Control)));
 
         /// <summary>
@@ -720,9 +721,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleGestureProperty =
             DependencyProperty.Register(
-                "ZoomRectangleGesture", 
-                typeof(MouseGesture), 
-                typeof(HelixViewport3D), 
+                "ZoomRectangleGesture",
+                typeof(MouseGesture),
+                typeof(HelixViewport3D),
                 new UIPropertyMetadata(
                     new MouseGesture(MouseAction.RightClick, ModifierKeys.Control | ModifierKeys.Shift)));
 
@@ -906,9 +907,9 @@ namespace HelixToolkit.Wpf
 
 #if DEBUG
 
-    // <summary>
-    // Finalizes an instance of the <see cref="HelixViewport3D"/> class. 
-    // </summary>
+        // <summary>
+        // Finalizes an instance of the <see cref="HelixViewport3D"/> class. 
+        // </summary>
         ~HelixViewport3D()
         {
             Debug.WriteLine("HelixViewport3D finalized.");
@@ -3093,6 +3094,56 @@ namespace HelixToolkit.Wpf
             }
         }
 
+
+        /// <summary>
+        /// Removes the specified items.
+        /// </summary>
+        /// <param name="oldValue">The items to remove.</param>
+        private void RemoveItems(IEnumerable oldValue)
+        {
+            if (oldValue != null)
+            {
+                foreach (var element in oldValue)
+                {
+                    var visual = element as Visual3D;
+                    if (visual != null)
+                    {
+                        this.Children.Remove(visual);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified items.
+        /// </summary>
+        /// <param name="newValue">The items to add.</param>
+        private void AddItems(IEnumerable newValue)
+        {
+            if (newValue != null)
+            {
+                foreach (var element in newValue)
+                {
+                    var visual = element as Visual3D;
+                    if (visual != null)
+                    {
+                        this.Children.Add(visual);
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Called when the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property changes.
+        /// </summary>
+        /// <param name="oldValue">Old value of the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property.</param>
+        /// <param name="newValue">New value of the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property.</param>
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            this.RemoveItems(oldValue);
+            this.AddItems(newValue);
+        }
+
         /// <summary>
         /// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
         /// </summary>
@@ -3104,22 +3155,16 @@ namespace HelixToolkit.Wpf
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (Visual3D v in e.NewItems)
-                    {
-                        this.Children.Add(v);
-                    }
-
+                    this.AddItems(e.NewItems);
                     break;
                 case NotifyCollectionChangedAction.Move:
+                    // todo
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (Visual3D v in e.OldItems)
-                    {
-                        this.Children.Remove(v);
-                    }
-
+                    this.RemoveItems(e.OldItems);
                     break;
                 case NotifyCollectionChangedAction.Replace:
+                    // todo
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     this.Children.Clear();
@@ -3182,7 +3227,8 @@ namespace HelixToolkit.Wpf
         {
             var a = new DoubleAnimation(toOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
                 {
-                   AccelerationRatio = 0.3, DecelerationRatio = 0.5 
+                    AccelerationRatio = 0.3,
+                    DecelerationRatio = 0.5
                 };
             obj.BeginAnimation(OpacityProperty, a);
         }
@@ -3352,7 +3398,7 @@ namespace HelixToolkit.Wpf
             }
 
             // update the info fields every 100 frames
-            // todo: should only update when the visual model of the Viewport3D changes
+            // (it would be better to update only when the visual model of the Viewport3D changes)
             this.infoFrameCounter++;
             if (this.ShowTriangleCountInfo && this.infoFrameCounter > 100)
             {

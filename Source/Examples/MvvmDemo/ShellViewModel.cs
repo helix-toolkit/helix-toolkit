@@ -30,7 +30,11 @@ namespace MvvmDemo
         {
             Title = "MVVM demo (using Caliburn.Micro)";
             Objects = new ObservableCollection<Visual3D>();
-            Objects.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Objects_CollectionChanged);
+            Objects.CollectionChanged += this.Objects_CollectionChanged;
+
+            // Initialize with two objects
+            this.Add();
+            this.Add();
         }
 
         void Objects_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
