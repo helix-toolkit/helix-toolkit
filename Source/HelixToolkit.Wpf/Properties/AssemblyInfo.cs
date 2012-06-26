@@ -7,6 +7,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Markup;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -51,3 +52,6 @@ using System.Windows;
 // [assembly: AssemblyVersion("2012.1.1.*")]
 [assembly: AssemblyVersion("2012.1.1.*")]
 [assembly: AssemblyFileVersion("2012.1.1.0")]
+
+[assembly: XmlnsPrefix("http://helixtoolkit.codeplex.com", "h")]
+[assembly: XmlnsDefinition("http://helixtoolkit.codeplex.com", "HelixToolkit.Wpf")]
