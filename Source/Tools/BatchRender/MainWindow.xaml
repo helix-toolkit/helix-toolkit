@@ -1,0 +1,21 @@
+﻿<Window x:Class="BatchRender.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Kerkythea batch rendering" Height="350" Width="525">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Running" IsCheckable="True" IsChecked="{Binding IsRunning}"/>
+                <MenuItem Header="Change executable" IsCheckable="True" IsChecked="{Binding ChangeExecutable}"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="ExitClick"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="{Binding ProcessList.Count, StringFormat='{}{0} running jobs.'}" DockPanel.Dock="Bottom"/>
+        </StatusBar>
+        <TextBox Visibility="{Binding ExecutableVisibility}" Margin="4" DockPanel.Dock="Top" Text="{Binding Executable, ValidatesOnDataErrors=True}"/>
+        <ListBox ItemsSource="{Binding Jobs}" SelectionMode="Extended" Margin="4" KeyDown="ListBox_KeyDown"
+                 AllowDrop="True" Drop="ListBox_Drop" ToolTip="Drag-drop your Kerkythea .xml files here.">            
+        </ListBox>
+    </DockPanel>
+</Window>

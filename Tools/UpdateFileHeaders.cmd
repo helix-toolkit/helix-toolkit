@@ -1,0 +1,1 @@
+FileHeaderUpdater.exe /Company="Helix 3D Toolkit" /Copyright="http://helixtoolkit.codeplex.com, license: Ms-PL" /Directory="..\Source"

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="Open" Width="682.667" Height="682.667" Clip="F1 M 0,0L 682.667,0L 682.667,682.667L 0,682.667L 0,0">
+	<Canvas x:Name="Layer_1" Width="682.667" Height="682.667" Canvas.Left="0" Canvas.Top="0"/>
+	<Canvas x:Name="Foreground" Width="682.667" Height="682.667" Canvas.Left="0" Canvas.Top="0">
+		<Path x:Name="Path" Width="455.627" Height="637.169" Canvas.Left="113.571" Canvas.Top="8" Stretch="Fill" Fill="#FF5E4A1C" Data="M 114.766,8L 504.959,60.7747C 518.064,62.8813 526.223,70.1267 529.431,82.5054L 529.431,381.284C 527.486,390.433 529.526,398.712 535.551,406.12L 556.96,415.433C 565.192,421.224 568.252,429.504 566.139,440.269L 569.198,607.911C 568.319,625.275 564.155,645.503 520.254,645.165L 113.571,550.584L 114.766,8 Z "/>
+		<Path x:Name="Path_0" Width="431.041" Height="609.616" Canvas.Left="123.887" Canvas.Top="22.4214" Stretch="Fill" Data="F1 M 123.887,541.72L 510.435,632.033C 550.347,632.34 554.131,613.951 554.928,598.165L 552.148,445.763C 554.069,435.975 551.289,428.449 543.805,423.185L 524.34,414.719C 518.861,407.984 517.011,400.456 518.779,392.14L 518.779,90.156C 515.861,78.9 508.445,72.316 496.531,70.4L 123.887,22.4214L 123.887,541.72 Z ">
+			<Path.Fill>
+				<LinearGradientBrush StartPoint="0.045987,0.424616" EndPoint="0.927847,0.424616">
+					<LinearGradientBrush.RelativeTransform>
+						<TransformGroup>
+							<SkewTransform CenterX="0.045987" CenterY="0.424616" AngleX="-7.54568" AngleY="0"/>
+							<RotateTransform CenterX="0.045987" CenterY="0.424616" Angle="7.82573"/>
+						</TransformGroup>
+					</LinearGradientBrush.RelativeTransform>
+					<LinearGradientBrush.GradientStops>
+						<GradientStop Color="#FFF4D182" Offset="0"/>
+						<GradientStop Color="#FFF7D585" Offset="1"/>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Path.Fill>
+		</Path>
+		<Viewbox x:Name="Group" Width="682.667" Height="682.667" Canvas.Left="0" Canvas.Top="0">
+			<Canvas Width="682.667" Height="682.667">
+				<Canvas Width="682.667" Height="682.667" x:Name="Clip" Clip="F1 M 0,0L 682.667,0L 682.667,682.667L 0,682.667L 0,0 Z ">
+					<Path x:Name="Path_1" Width="172.369" Height="665.716" Canvas.Left="113.468" Canvas.Top="8.95056" Stretch="Fill" Fill="#FF5E4A1C" Data="M 120.421,8.95056L 267.252,89.6678C 277.972,95.1426 284.089,102.388 285.605,111.399L 285.605,400.113C 286.745,426.967 283.688,441.455 276.431,443.579L 248.897,455.993L 247.055,662.261C 245.505,679.368 224.997,676.133 218.831,668.325L 126.54,575.561C 116.273,569.092 112.195,558.744 114.305,544.516L 114.305,24.4719C 112.139,19.6625 114.177,14.4866 120.421,8.95056 Z "/>
+				</Canvas>
+			</Canvas>
+		</Viewbox>
+		<Path x:Name="Path_2" Width="151.969" Height="632.275" Canvas.Left="123.087" Canvas.Top="25.244" Stretch="Fill" Data="F1 M 123.824,39.3534L 123.824,541.72C 121.964,554.656 125.561,564.061 134.612,569.941L 217.633,651.815C 223.073,658.911 237.844,661.723 239.209,646.169L 239.88,449.824L 266.761,435.687C 273.16,433.757 275.856,420.589 274.851,396.175L 274.851,118.38C 273.513,110.189 268.12,103.601 258.668,98.6213L 129.219,25.244C 123.713,30.2773 121.915,34.9827 123.824,39.3534 Z ">
+			<Path.Fill>
+				<LinearGradientBrush StartPoint="-0.00864969,0.482545" EndPoint="0.865939,0.482545">
+					<LinearGradientBrush.RelativeTransform>
+						<TransformGroup>
+							<SkewTransform CenterX="-0.00864969" CenterY="0.482545" AngleX="-36.2886" AngleY="0"/>
+							<RotateTransform CenterX="-0.00864969" CenterY="0.482545" Angle="2.67489"/>
+						</TransformGroup>
+					</LinearGradientBrush.RelativeTransform>
+					<LinearGradientBrush.GradientStops>
+						<GradientStop Color="#FFF4D182" Offset="0"/>
+						<GradientStop Color="#FFF7D585" Offset="1"/>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Path.Fill>
+		</Path>
+		<Viewbox x:Name="Group_3" Width="682.667" Height="682.667" Canvas.Left="0" Canvas.Top="0">
+			<Canvas Width="682.667" Height="682.667">
+				<Canvas Width="682.667" Height="682.667" x:Name="Clip_4" Clip="F1 M 0,0L 682.667,0L 682.667,682.667L 0,682.667L 0,0 Z ">
+					<Path x:Name="Path_5" Width="38.3093" Height="181.584" Canvas.Left="505.732" Canvas.Top="433.484" Stretch="Fill" Fill="#FF6DA7FF" Data="M 506.599,433.484L 544.042,443.552L 543.175,615.068L 505.732,605.002L 506.599,433.484 Z "/>
+					<Path x:Name="Path_6" Width="24.2627" Height="137.505" Canvas.Left="512.434" Canvas.Top="442.957" Stretch="Fill" Fill="#FFFFFFFF" Data="M 512.983,442.957L 536.696,450.582L 536.151,580.462L 512.434,572.838L 512.983,442.957 Z "/>
+				</Canvas>
+			</Canvas>
+		</Viewbox>
+		<Rectangle x:Name="Rectangle" Width="5.20801" Height="500.752" Canvas.Left="144.787" Canvas.Top="56.708" Stretch="Fill">
+			<Rectangle.Fill>
+				<LinearGradientBrush StartPoint="0.500114,0.960005" EndPoint="0.500111,0.18086">
+					<LinearGradientBrush.GradientStops>
+						<GradientStop Color="#FFB09452" Offset="0"/>
+						<GradientStop Color="#FFF3AF01" Offset="1"/>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+		<Rectangle x:Name="Rectangle_7" Width="5.20801" Height="500.752" Canvas.Left="132.636" Canvas.Top="43.4387" Stretch="Fill">
+			<Rectangle.Fill>
+				<LinearGradientBrush StartPoint="0.500041,0.960004" EndPoint="0.500038,0.18086">
+					<LinearGradientBrush.GradientStops>
+						<GradientStop Color="#FFB09452" Offset="0"/>
+						<GradientStop Color="#FFF3AF01" Offset="1"/>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+		<Rectangle x:Name="Rectangle_8" Width="5.20934" Height="500.755" Canvas.Left="158.677" Canvas.Top="76.1707" Stretch="Fill">
+			<Rectangle.Fill>
+				<LinearGradientBrush StartPoint="0.499978,0.960004" EndPoint="0.499975,0.180864">
+					<LinearGradientBrush.GradientStops>
+						<GradientStop Color="#FFB09452" Offset="0"/>
+						<GradientStop Color="#FFF3AF01" Offset="1"/>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+	</Canvas>
+</Canvas>
