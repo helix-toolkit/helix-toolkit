@@ -130,7 +130,7 @@
     <Content Include="Models\LeonardoVehicle.3ds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Dog.3ds">
+    <Content Include="Models\Moose.3ds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
