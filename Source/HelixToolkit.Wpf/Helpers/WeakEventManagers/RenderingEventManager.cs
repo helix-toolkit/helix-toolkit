@@ -1,3 +1,9 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RenderingEventManager.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System.Windows.Media;
@@ -12,7 +18,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected override void StartListening()
         {
-            CompositionTarget.Rendering += base.Handler;
+            CompositionTarget.Rendering += this.Handler;
         }
 
         /// <summary>
@@ -20,7 +26,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected override void StopListening()
         {
-            CompositionTarget.Rendering -= base.Handler;
+            CompositionTarget.Rendering -= this.Handler;
         }
     }
 }

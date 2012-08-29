@@ -1,3 +1,9 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RenderingEventListener.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System;
