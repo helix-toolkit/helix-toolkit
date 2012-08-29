@@ -95,7 +95,7 @@
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ContourHelper.cs" />
     <Compile Include="Helpers\WeakEventManagers\RenderingEventManager.cs" />
-    <Compile Include="Helpers\WeakEventManagers\WeakEventManagerBaseT.cs" />
+    <Compile Include="Helpers\WeakEventManagers\WeakEventManagerBase{TManager}.cs" />
     <Compile Include="Helpers\LoopSubdivision.cs" />
     <Compile Include="Helpers\DoubleKeyDictionary.cs" />
     <Compile Include="Controls\CameraController\CameraController.cs" />
@@ -133,7 +133,7 @@
     <Compile Include="Visual3Ds\Composite\FileModelVisual3D.cs" />
     <Compile Include="Helpers\WeakEventListeners\RenderingEventListener.cs" />
     <Compile Include="Visual3Ds\Composite\RenderingModelVisual3D.cs" />
-    <Compile Include="Helpers\WeakEventListeners\WeakEventListenerT.cs" />
+    <Compile Include="Helpers\WeakEventListeners\WeakEventListener{TEventManager,TEventArgs}.cs" />
     <Compile Include="Visual3Ds\LightSetups\LightSetup.cs" />
     <Compile Include="Visual3Ds\LightSetups\SunLight.cs" />
     <Compile Include="Visual3Ds\LightSetups\ThreePointLights.cs" />

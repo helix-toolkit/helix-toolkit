@@ -1,3 +1,9 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="WeakEventListener{TEventManager,TEventArgs}.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -43,6 +49,7 @@ namespace HelixToolkit.Wpf
             {
                 return false;       // unrecognized event
             }
+
             return true;
         }
     }

@@ -1,3 +1,9 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="WeakEventManagerBase{TManager}.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -42,6 +48,7 @@ namespace HelixToolkit.Wpf
                     manager = new TManager();
                     SetCurrentManager(managerType, manager);
                 }
+
                 return manager;
             }
         }
@@ -54,6 +61,7 @@ namespace HelixToolkit.Wpf
         {
             this.StartListening();
         }
+        
         /// <summary>
         /// When overridden in a derived class, stops listening on the provided source for the event being managed.
         /// </summary>
@@ -62,6 +70,7 @@ namespace HelixToolkit.Wpf
         {
             this.StopListening();
         }
+        
         /// <summary>
         /// Handlers the specified sender.
         /// </summary>
