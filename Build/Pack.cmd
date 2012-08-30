@@ -1,9 +1,10 @@
 mkdir ..\Packages\HelixToolkit\lib
-set dest=..\Packages\HelixToolkit\lib\NET40
-mkdir %dest%
+mkdir ..\Packages\HelixToolkit\lib\NET40
 
-copy ..\Output\HelixToolkit.Wpf.dll %dest%
-copy ..\Output\HelixToolkit.Wpf.xml %dest%
-copy ..\Output\HelixToolkit.Wpf.pdb %dest%
+copy ..\Output\HelixToolkit.Wpf.dll ..\Packages\HelixToolkit\lib\NET40
+copy ..\Output\HelixToolkit.Wpf.xml ..\Packages\HelixToolkit\lib\NET40
+copy ..\Output\HelixToolkit.Wpf.pdb ..\Packages\HelixToolkit\lib\NET40
 copy ..\license.txt ..\Packages\HelixToolkit
+
+set EnableNuGetPackageRestore=true
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\HelixToolkit\HelixToolkit.nuspec -OutputDirectory ..\Packages > pack.log
