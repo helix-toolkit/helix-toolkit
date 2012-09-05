@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.Input_NET40", "HelixToolkit.Wpf.Input\HelixToolkit.Wpf.Input_NET40.csproj", "{20A2B996-7124-4783-AF5E-907EF7167881}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf_NET40", "HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj", "{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{20A2B996-7124-4783-AF5E-907EF7167881}.Release|x86.ActiveCfg = Release|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
