@@ -93,22 +93,22 @@ namespace HelixToolkit.Wpf
                                     knobDiameter, outerDiameter, Divisions);
                 }
 
-            builder.AddBox(new Point3D(Columns * 0.5 * grid, Rows * 0.5 * grid, height - wallThickness / 2), length, width,
+            builder.AddBox(new Point3D(Columns * 0.5 * grid, Rows * 0.5 * grid, height - wallThickness / 2), width, length,
                           wallThickness,
                           MeshBuilder.BoxFaces.All);
-            builder.AddBox(new Point3D(margin + wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2), length,
-                           wallThickness, height - wallThickness,
+            builder.AddBox(new Point3D(margin + wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2), 
+                           wallThickness, length, height - wallThickness,
                            MeshBuilder.BoxFaces.All ^ MeshBuilder.BoxFaces.Top);
             builder.AddBox(
-                new Point3D(Columns * grid - margin - wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2), length,
-                wallThickness, height - wallThickness,
+                new Point3D(Columns * grid - margin - wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2), 
+                wallThickness, length, height - wallThickness,
                 MeshBuilder.BoxFaces.All ^ MeshBuilder.BoxFaces.Top);
             builder.AddBox(new Point3D(Columns * 0.5 * grid, margin + wallThickness / 2, height / 2 - wallThickness / 2),
-                           wallThickness, width, height - wallThickness,
+                           width, wallThickness, height - wallThickness,
                            MeshBuilder.BoxFaces.All ^ MeshBuilder.BoxFaces.Top);
             builder.AddBox(
                 new Point3D(Columns * 0.5 * grid, Rows * grid - margin - wallThickness / 2, height / 2 - wallThickness / 2),
-                wallThickness, width, height - wallThickness,
+                width, wallThickness, height - wallThickness,
                 MeshBuilder.BoxFaces.All ^ MeshBuilder.BoxFaces.Top);
 
             return builder.ToMesh();
