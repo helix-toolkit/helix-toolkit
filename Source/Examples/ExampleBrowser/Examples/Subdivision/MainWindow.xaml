@@ -1,0 +1,43 @@
+﻿<Window x:Class="SubdivisionDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="SubdivisionDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open..." Click="FileOpen_Click"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="FileExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Triangulation">
+                <MenuItem Header="Barycentric subdivision" IsCheckable="True" IsChecked="{Binding BarycentricTriangulation}"/>
+            </MenuItem>
+            <pt:EnumMenuItem Header="Subdivision scheme" SelectedValue="{Binding SubdivisionScheme}"/>
+            <MenuItem Header="View">
+                <MenuItem Header="Edges" IsCheckable="True" IsChecked="{Binding ViewEdges}"/>
+                <MenuItem Header="Vertices" IsCheckable="True" IsChecked="{Binding ViewVertices}"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom" >
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Subdivisions:" VerticalAlignment="Center" Margin="4"/>
+                    <TextBlock Text="{Binding Levels}" VerticalAlignment="Center" Margin="4"/>
+                    <Slider Width="200" Value="{Binding Levels}" Minimum="1" Maximum="5" SmallChange="1" LargeChange="1"/>
+                </StackPanel>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock x:Name="subdivisionStatus" VerticalAlignment="Center" Margin="4"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <h:HelixViewport3D x:Name="view1" ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" ModelUpDirection="0,0,1" CameraRotationMode="Trackball" RotateAroundMouseDownPoint="True" ZoomAroundMouseDownPoint="True">
+            <!--<h:SunLight/>-->
+            <h:MeshVisual3D x:Name="model1" FaceMaterial="{h:Material Red}"/>
+            <h:MeshVisual3D x:Name="model2" FaceMaterial="{h:Material Green}"/>
+            <h:MeshVisual3D x:Name="model3" FaceMaterial="{h:Material Blue}" SharedVertices="True"/>
+        </h:HelixViewport3D>
+    </DockPanel>
+</Window>

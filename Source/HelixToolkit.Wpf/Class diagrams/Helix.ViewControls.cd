@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HelixToolkit.StereoControl">
+    <Position X="10.75" Y="1.5" Width="3" />
+    <Members>
+      <Field Name="_viewport" Hidden="true" />
+      <Field Name="CameraProperty" Hidden="true" />
+      <Field Name="CameraRotationModeProperty" Hidden="true" />
+      <Field Name="CopyDirectionVectorProperty" Hidden="true" />
+      <Field Name="CopyUpVectorProperty" Hidden="true" />
+      <Field Name="CrossViewingProperty" Hidden="true" />
+      <Field Name="StereoBaseProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ACAChEAAEAAAgAAAAAA1AgGAAAAACAAgAgQJDATAAEA=</HashCode>
+      <FileName>Controls\Stereo\StereoControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.StereoView3D">
+    <Position X="7.5" Y="7.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Stereo\StereoView3D.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.AnaglyphView3D">
+    <Position X="10.75" Y="7.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Stereo\AnaglyphView3D.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.WiggleView3D">
+    <Position X="14.25" Y="7.25" Width="2.75" />
+    <Members>
+      <Field Name="timer" Hidden="true" />
+      <Field Name="watch" Hidden="true" />
+      <Field Name="WiggleRateProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAwAAAAACAAAQABAAAAAAgABAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Stereo\WiggleView3D.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.HelixView3D">
+    <Position X="1" Y="1.5" Width="2.75" />
+    <Members>
+      <Field Name="_adornerLayer" Hidden="true" />
+      <Field Name="_cameraController" Hidden="true" />
+      <Field Name="_coordinateSystemLights" Hidden="true" />
+      <Field Name="_coordinateView" Hidden="true" />
+      <Field Name="_fpsWatch" Hidden="true" />
+      <Field Name="_frames" Hidden="true" />
+      <Field Name="_headLight" Hidden="true" />
+      <Field Name="_lights" Hidden="true" />
+      <Field Name="_prevTime" Hidden="true" />
+      <Field Name="_viewCube" Hidden="true" />
+      <Field Name="_viewCubeLights" Hidden="true" />
+      <Field Name="_viewCubeView" Hidden="true" />
+      <Method Name="_viewCubeView_MouseEnter" Hidden="true" />
+      <Method Name="_viewCubeView_MouseLeave" Hidden="true" />
+      <Field Name="_viewport" Hidden="true" />
+      <Method Name="AnimateOpacity" Hidden="true" />
+      <Field Name="CameraChangedEvent" Hidden="true" />
+      <Field Name="CameraModeProperty" Hidden="true" />
+      <Field Name="CameraRotationModeProperty" Hidden="true" />
+      <Method Name="CameraTargetChanged" Hidden="true" />
+      <Method Name="CompositionTarget_Rendering" Hidden="true" />
+      <Field Name="EnableHeadLightProperty" Hidden="true" />
+      <Field Name="FrameRateProperty" Hidden="true" />
+      <Field Name="FrameRateTextProperty" Hidden="true" />
+      <Method Name="HelixView3D" Hidden="true" />
+      <Field Name="InfiniteSpinProperty" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnHeadlightChanged" Hidden="true" />
+      <Field Name="PartAdornerLayer" Hidden="true" />
+      <Field Name="PartCameraController" Hidden="true" />
+      <Field Name="PartCoordinateView" Hidden="true" />
+      <Field Name="PartViewCube" Hidden="true" />
+      <Field Name="PartViewCubeView" Hidden="true" />
+      <Method Name="RaiseCameraChangedEvent" Hidden="true" />
+      <Field Name="ShowCoordinateSystemProperty" Hidden="true" />
+      <Field Name="ShowFrameRateProperty" Hidden="true" />
+      <Field Name="ShowViewCubeProperty" Hidden="true" />
+      <Field Name="StatusProperty" Hidden="true" />
+      <Field Name="SubTitleProperty" Hidden="true" />
+      <Field Name="SubTitleSizeProperty" Hidden="true" />
+      <Field Name="TextBrushProperty" Hidden="true" />
+      <Field Name="TitleBackgroundProperty" Hidden="true" />
+      <Field Name="TitleFontFamilyProperty" Hidden="true" />
+      <Field Name="TitleProperty" Hidden="true" />
+      <Field Name="TitleSizeProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ICNiiJAWAElswklCAqCMLlDwdggEARARASAMIDSAwA8=</HashCode>
+      <FileName>Controls\HelixView3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.CameraController">
+    <Position X="4" Y="1.5" Width="2.75" />
+    <Members>
+      <Field Name="_fixRelative" Hidden="true" />
+      <Field Name="_isFixed" Hidden="true" />
+      <Field Name="_isSpinning" Hidden="true" />
+      <Field Name="_lastPoint3D" Hidden="true" />
+      <Field Name="_lastPosition" Hidden="true" />
+      <Field Name="_lastTick" Hidden="true" />
+      <Field Name="_mouseDownPoint3D" Hidden="true" />
+      <Field Name="_mouseDownPosition" Hidden="true" />
+      <Field Name="_panning" Hidden="true" />
+      <Field Name="_panSpeed" Hidden="true" />
+      <Field Name="_rotating" Hidden="true" />
+      <Field Name="_rotationSpeed" Hidden="true" />
+      <Field Name="_spinningSpeed" Hidden="true" />
+      <Field Name="_spinWatch" Hidden="true" />
+      <Field Name="_targetAdorner" Hidden="true" />
+      <Field Name="_watch" Hidden="true" />
+      <Field Name="_zooming" Hidden="true" />
+      <Field Name="_zoomSpeed" Hidden="true" />
+      <Field Name="CameraModeProperty" Hidden="true" />
+      <Field Name="CameraProperty" Hidden="true" />
+      <Field Name="CameraRotationModeProperty" Hidden="true" />
+      <Field Name="EnabledProperty" Hidden="true" />
+      <Field Name="EventSurfaceProperty" Hidden="true" />
+      <Field Name="FixedMouseDownPointProperty" Hidden="true" />
+      <Field Name="InertiaFactorProperty" Hidden="true" />
+      <Field Name="InfiniteSpinProperty" Hidden="true" />
+      <Field Name="IsPanEnabledProperty" Hidden="true" />
+      <Field Name="IsZoomEnabledProperty" Hidden="true" />
+      <Field Name="ShowCameraTargetProperty" Hidden="true" />
+      <Field Name="SpinReleaseTimeProperty" Hidden="true" />
+      <Field Name="TargetModelProperty" Hidden="true" />
+      <Field Name="ViewportProperty" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>iQmiSAAJUIQOj8TcMIBuDBCQVCaBSyEFECAMBQhkLIM=</HashCode>
+      <FileName>Controls\CameraController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.Viewport3DController">
+    <Position X="7.25" Y="1.5" Width="2.75" />
+    <Members>
+      <Field Name="_cameraController" Hidden="true" />
+      <Field Name="CameraModeProperty" Hidden="true" />
+      <Field Name="CameraRotationModeProperty" Hidden="true" />
+      <Field Name="InfiniteSpinProperty" Hidden="true" />
+      <Field Name="partCameraControl" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgABAAgAAAAAAAACABAAAAQABAAAIABAAAAA=</HashCode>
+      <FileName>Controls\Viewport3DController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="HelixToolkit.MouseAction">
+    <Position X="14.5" Y="2.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAgAAEAAAAAgAFAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Controls\CameraController.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HelixToolkit.CameraMode">
+    <Position X="14.5" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAABAAAAAAgAAA=</HashCode>
+      <FileName>Controls\CameraController.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HelixToolkit.CameraRotationMode">
+    <Position X="14.5" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\CameraController.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
