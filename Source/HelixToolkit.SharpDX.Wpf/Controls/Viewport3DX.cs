@@ -14,9 +14,9 @@ namespace HelixToolkit.SharpDX.Wpf
     public class Element3DCollection : List<Element3D> { }
 
     [DefaultEvent("OnChildrenChanged"), DefaultProperty("Children")]
-    [ContentProperty("Children")]
+    [ContentProperty("Items")]
     [TemplatePart(Name = "PART_Canvas", Type = typeof(DPFCanvas))]
-    public class Viewport3DX : Control, IRenderable
+    public class Viewport3DX : ItemsControl, IRenderable
     {
         public Camera Camera
         {
@@ -27,16 +27,16 @@ namespace HelixToolkit.SharpDX.Wpf
         public static readonly DependencyProperty CameraProperty =
             DependencyProperty.Register("Camera", typeof(Camera), typeof(Viewport3DX));
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [Bindable(true)]
-        public Element3DCollection Children
-        {
-            get { return (Element3DCollection)GetValue(ChildrenProperty); }
-            private set { SetValue(ChildrenProperty, value); }
-        }
+        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        //[Bindable(true)]
+        //public Element3DCollection Children
+        //{
+        //    get { return (Element3DCollection)GetValue(ChildrenProperty); }
+        //    private set { SetValue(ChildrenProperty, value); }
+        //}
 
-        public static readonly DependencyProperty ChildrenProperty =
-            DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(Viewport3DX));
+        //public static readonly DependencyProperty ChildrenProperty =
+        //    DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(Viewport3DX));
 
         static Viewport3DX()
         {
@@ -45,7 +45,7 @@ namespace HelixToolkit.SharpDX.Wpf
 
         public Viewport3DX()
         {
-            this.Children = new Element3DCollection();
+            //this.Children = new Element3DCollection();
         }
 
         public override void OnApplyTemplate()
@@ -65,23 +65,23 @@ namespace HelixToolkit.SharpDX.Wpf
 
         void IRenderable.Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Children)
-            {
-                e.Attach(host);
-            }
+            //foreach (IRenderable e in this.Items)
+            //{
+            //    e.Attach(host);
+            //}
         }
 
         void IRenderable.Detach()
         {
-            foreach (IRenderable e in this.Children)
-            {
-                e.Detach();
-            }
+            //foreach (IRenderable e in this.Items)
+            //{
+            //    e.Detach();
+            //}
         }
 
         void IRenderable.Update(TimeSpan timeSpan)
         {
-            foreach (IRenderable e in this.Children)
+            foreach (IRenderable e in this.Items)
             {
                 e.Update(timeSpan);
             }
@@ -89,10 +89,10 @@ namespace HelixToolkit.SharpDX.Wpf
 
         void IRenderable.Render()
         {
-            foreach (IRenderable e in this.Children)
-            {
-                e.Render();
-            }
+            //foreach (IRenderable e in this.Items)
+            //{
+            //    e.Render();
+            //}
         }
     }
 }

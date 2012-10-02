@@ -29,7 +29,7 @@
             </StatusBarItem>
             <Separator/>
             <StatusBarItem>
-                <TextBlock Text="{Binding Children.Count, ElementName=view1, StringFormat='Children: {0}'}"/>
+                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat='Children: {0}'}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>
