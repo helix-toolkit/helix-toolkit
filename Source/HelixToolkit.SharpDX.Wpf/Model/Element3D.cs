@@ -6,7 +6,7 @@ namespace HelixToolkit.SharpDX.Wpf
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>
-    public abstract class Element3D : DependencyObject, IRenderable
+    public abstract class Element3D : FrameworkElement, IRenderable
     {
         protected virtual void Attach(IRenderHost host)
         {
