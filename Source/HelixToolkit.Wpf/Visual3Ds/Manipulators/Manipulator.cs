@@ -39,11 +39,6 @@ namespace HelixToolkit.Wpf
             new FrameworkPropertyMetadata(
                 new Vector3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PositionChanged));
 
-        /// <summary>
-        ///   The pivot point property.
-        /// </summary>
-        public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
-            "Pivot", typeof(Point3D), typeof(Manipulator), new PropertyMetadata(new Point3D()));
 
         /// <summary>
         ///   The position property.
@@ -71,8 +66,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", 
             typeof(double), 
-            typeof(Manipulator), 
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            typeof(Manipulator),
+            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
 
         #endregion
 
@@ -126,22 +121,7 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        /// <summary>
-        ///   Gets or sets the pivot point of the manipulator.
-        /// </summary>
-        /// <value> The position. </value>
-        public Point3D Pivot
-        {
-            get
-            {
-                return (Point3D)this.GetValue(PivotProperty);
-            }
-
-            set
-            {
-                this.SetValue(PivotProperty, value);
-            }
-        }
+        
 
         /// <summary>
         ///   Gets or sets the position of the manipulator.
@@ -391,8 +371,28 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void PositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Manipulator)d).OnPositionChanged();
+            ((Manipulator)d).OnPositionChanged(e);
         }
+
+
+        /// <summary>
+        /// Called when value has been changed.
+        /// </summary>
+        /// <param name="d">
+        /// The sender. 
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// </param>
+        private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Manipulator)d).OnValueChanged(e);
+        }
+
+        /// <summary>
+        /// Called when value is changed.
+        /// </summary>
+        protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e){ }
 
         /// <summary>
         /// The on color changed.
@@ -406,7 +406,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Called when position is changed.
         /// </summary>
-        private void OnPositionChanged()
+        protected virtual void OnPositionChanged(DependencyPropertyChangedEventArgs e)
         {
             this.Transform = new TranslateTransform3D(this.Position.X + this.Offset.X, this.Position.Y + this.Offset.Y, this.Position.Z + this.Offset.Z);
         }

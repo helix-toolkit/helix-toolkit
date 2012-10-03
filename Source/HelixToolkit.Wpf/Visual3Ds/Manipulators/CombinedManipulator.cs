@@ -318,14 +318,14 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return this.translateXManipulator.Pivot;
+                return this.rotateXManipulator.Pivot;
             }
 
             set
             {
-                this.translateXManipulator.Pivot = value;
-                this.translateYManipulator.Pivot = value;
-                this.translateZManipulator.Pivot = value;
+                //this.translateXManipulator.Pivot = value;
+                //this.translateYManipulator.Pivot = value;
+                //this.translateZManipulator.Pivot = value;
                 this.rotateXManipulator.Pivot = value;
                 this.rotateYManipulator.Pivot = value;
                 this.rotateZManipulator.Pivot = value;
