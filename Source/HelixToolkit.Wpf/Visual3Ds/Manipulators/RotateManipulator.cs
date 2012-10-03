@@ -46,6 +46,12 @@ namespace HelixToolkit.Wpf
             "Length", typeof(double), typeof(RotateManipulator), new UIPropertyMetadata(0.1, GeometryChanged));
 
         /// <summary>
+        ///   The pivot point property.
+        /// </summary>
+        public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
+            "Pivot", typeof(Point3D), typeof(Manipulator), new PropertyMetadata(new Point3D()));
+
+        /// <summary>
         ///   The last point.
         /// </summary>
         private Point3D lastPoint;
@@ -133,6 +139,23 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(LengthProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the pivot point of the manipulator.
+        /// </summary>
+        /// <value> The position. </value>
+        public Point3D Pivot
+        {
+            get
+            {
+                return (Point3D)this.GetValue(PivotProperty);
+            }
+
+            set
+            {
+                this.SetValue(PivotProperty, value);
             }
         }
 
