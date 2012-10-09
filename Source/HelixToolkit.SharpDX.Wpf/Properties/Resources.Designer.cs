@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HelixToolkit.SharpDX.Wpf.Properties
-{
-
-
+namespace HelixToolkit.SharpDX.Wpf.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,49 +22,126 @@ namespace HelixToolkit.SharpDX.Wpf.Properties
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HelixToolkit.SharpDX.Wpf.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
+        ///// File: Tutorial06.fx
+        /////
+        ///// Copyright (c) Microsoft Corporation. All rights reserved.
+        /////--------------------------------------------------------------------------------------
+        ///
+        ///
+        /////--------------------------------------------------------------------------------------
+        ///// Constant Buffer Variables
+        /////--------------------------------------------------------------------------------------
+        ///matrix World;
+        ///matrix View;        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Default {
+            get {
+                return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
+        ///// File: Tutorial06.fx
+        /////
+        ///// Copyright (c) Microsoft Corporation. All rights reserved.
+        /////--------------------------------------------------------------------------------------
+        ///
+        ///
+        /////--------------------------------------------------------------------------------------
+        ///// Constant Buffer Variables
+        /////--------------------------------------------------------------------------------------
+        ///matrix World;
+        ///matrix View;        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Lighting {
+            get {
+                return ResourceManager.GetString("Lighting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SeamlessWallTexture06 {
+            get {
+                object obj = ResourceManager.GetObject("SeamlessWallTexture06", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
+        ///// 
+        ///// Permission is hereby granted, free of charge, to any person obtaining a copy
+        ///// of this software and associated documentation files (the &quot;Software&quot;), to deal
+        ///// in the Software without restriction, including without limitation the rights
+        ///// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        ///// copies of the Software, and to permit persons to whom the Software is
+        ///// furnished to do so, subject to the following condition [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Simple {
+            get {
+                return ResourceManager.GetString("Simple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
+        ///// File: Tutorial07.fx
+        /////
+        ///// Copyright (c) Microsoft Corporation. All rights reserved.
+        /////--------------------------------------------------------------------------------------
+        ///
+        /////--------------------------------------------------------------------------------------
+        ///// Constant Buffer Variables
+        /////--------------------------------------------------------------------------------------
+        ///Texture2D txDiffuse;
+        ///SamplerS [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Texture {
+            get {
+                return ResourceManager.GetString("Texture", resourceCulture);
             }
         }
     }

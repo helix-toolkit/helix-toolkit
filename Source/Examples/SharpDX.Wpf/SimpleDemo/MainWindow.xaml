@@ -8,14 +8,18 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <htx:Viewport3DX x:Name="view1" Camera="{Binding Camera}">
+        
+        <htx:Viewport3DX    Grid.Row="0" x:Name="view1" Camera="{Binding Camera}">
             <htx:MeshGeometryModel3D Geometry="{Binding CubeFaces}" Material="{Binding Material1}"/>
             <htx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>
             <htx:DirectionalLight Direction="15,15,15"/>
-        </htx:Viewport3DX>
+        </htx:Viewport3DX>        
 
         <StatusBar Grid.Row="1">
+            <StatusBarItem>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding FpsCounter.Value, StringFormat='{}D3D10 - {0:0.00} FPS', ElementName=view1}"/>
+            </StatusBarItem>
+            <Separator/>
             <StatusBarItem>
                 <TextBlock Text="{Binding Camera.Position, StringFormat='Position: {0}'}"/>
             </StatusBarItem>
@@ -30,7 +34,7 @@
             <Separator/>
             <StatusBarItem>
                 <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat='Children: {0}'}"/>
-            </StatusBarItem>
+            </StatusBarItem>          
         </StatusBar>
     </Grid>
 </Window>

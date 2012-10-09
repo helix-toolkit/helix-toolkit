@@ -75,7 +75,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FpsCounter.cs" />
+    <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Model\GroupElement3D.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\BoxFaces.cs" />
     <Compile Include="Utilities\LineBuilder.cs" />
     <Compile Include="Utilities\MeshBuilder.cs" />
@@ -111,11 +118,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -126,6 +128,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -135,6 +138,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shaders\Texture.fx" />
+    <None Include="Textures\seafloor.dds" />
+    <None Include="Textures\Seamless_wall_texture_06_by_Caym.jpg" />
+    <None Include="Shaders\Default.fx" />
+    <Content Include="Shaders\Lighting.fx" />
+    <Content Include="Shaders\Simple.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(SolutionDir)..\Tools\Pepita\PepitaGet.dll" />
