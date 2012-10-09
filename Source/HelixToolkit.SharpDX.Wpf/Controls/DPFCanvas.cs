@@ -10,6 +10,10 @@
     using global::SharpDX.DXGI;
     using global::SharpDX.Direct3D10;
 
+    using Direct3D = global::SharpDX.Direct3D;
+    using Direct3D10 = global::SharpDX.Direct3D10;
+    using Device = global::SharpDX.Direct3D10.Device;
+
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
     // 
     // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,15 +36,15 @@
 
     public class DPFCanvas : Image, IRenderHost
     {
-        private global::SharpDX.Direct3D10.Device Device;
-        private Texture2D RenderTarget;
-        private Texture2D DepthStencil;
-        private RenderTargetView RenderTargetView;
-        private DepthStencilView DepthStencilView;
-        private DX10ImageSource D3DSurface;
-        private Stopwatch RenderTimer;
-        private IRenderable renderRenderable;
-        private bool SceneAttached;
+        private Device m_device;
+        private Texture2D m_renderTarget;
+        private Texture2D m_depthStencil;
+        private RenderTargetView m_renderTargetView;
+        private DepthStencilView m_depthStencilView;
+        private DX10ImageSource m_surfaceD3D;
+        private Stopwatch m_renderTimer;
+        private IRenderable m_renderRenderable;
+        private bool m_sceneAttached;        
 
         public Color4 ClearColor = global::SharpDX.Color.Black;
 
@@ -51,7 +55,7 @@
 
         public DPFCanvas()
         {
-            this.RenderTimer = new Stopwatch();
+            this.m_renderTimer = new Stopwatch();
             this.Loaded += this.WindowLoaded;
             this.Unloaded += this.WindowClosing;
         }
@@ -80,43 +84,42 @@
 
         private void StartD3D()
         {
-            this.Device = new global::SharpDX.Direct3D10.Device1(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
-
-            this.D3DSurface = new DX10ImageSource();
-            this.D3DSurface.IsFrontBufferAvailableChanged += this.OnIsFrontBufferAvailableChanged;
+            this.m_device = new Direct3D10.Device1(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
+            this.m_surfaceD3D = new DX10ImageSource();
+            this.m_surfaceD3D.IsFrontBufferAvailableChanged += this.OnIsFrontBufferAvailableChanged;
 
             this.CreateAndBindTargets();
 
-            this.Source = this.D3DSurface;
+            this.Source = this.m_surfaceD3D;
         }
 
         private void EndD3D()
         {
-            if (this.renderRenderable != null)
+            if (this.m_renderRenderable != null)
             {
-                this.renderRenderable.Detach();
-                this.SceneAttached = false;
+                this.m_renderRenderable.Detach();
+                this.m_sceneAttached = false;
             }
 
-            this.D3DSurface.IsFrontBufferAvailableChanged -= this.OnIsFrontBufferAvailableChanged;
+            this.m_surfaceD3D.IsFrontBufferAvailableChanged -= this.OnIsFrontBufferAvailableChanged;
             this.Source = null;
 
-            Disposer.RemoveAndDispose(ref this.D3DSurface);
-            Disposer.RemoveAndDispose(ref this.RenderTargetView);
-            Disposer.RemoveAndDispose(ref this.DepthStencilView);
-            Disposer.RemoveAndDispose(ref this.RenderTarget);
-            Disposer.RemoveAndDispose(ref this.DepthStencil);
-            Disposer.RemoveAndDispose(ref this.Device);
+            Disposer.RemoveAndDispose(ref this.m_surfaceD3D);
+            Disposer.RemoveAndDispose(ref this.m_renderTargetView);
+            Disposer.RemoveAndDispose(ref this.m_depthStencilView);
+            Disposer.RemoveAndDispose(ref this.m_renderTarget);
+            Disposer.RemoveAndDispose(ref this.m_depthStencil);
+            Disposer.RemoveAndDispose(ref this.m_device);
         }
 
         private void CreateAndBindTargets()
         {
-            this.D3DSurface.SetRenderTargetDX10(null);
+            this.m_surfaceD3D.SetRenderTargetDX10(null);
 
-            Disposer.RemoveAndDispose(ref this.RenderTargetView);
-            Disposer.RemoveAndDispose(ref this.DepthStencilView);
-            Disposer.RemoveAndDispose(ref this.RenderTarget);
-            Disposer.RemoveAndDispose(ref this.DepthStencil);
+            Disposer.RemoveAndDispose(ref this.m_renderTargetView);
+            Disposer.RemoveAndDispose(ref this.m_depthStencilView);
+            Disposer.RemoveAndDispose(ref this.m_renderTarget);
+            Disposer.RemoveAndDispose(ref this.m_depthStencil);
 
             int width = Math.Max((int)this.ActualWidth, 100);
             int height = Math.Max((int)this.ActualHeight, 100);
@@ -149,39 +152,39 @@
                 ArraySize = 1,
             };
 
-            this.RenderTarget = new Texture2D(this.Device, colordesc);
-            this.DepthStencil = new Texture2D(this.Device, depthdesc);
-            this.RenderTargetView = new RenderTargetView(this.Device, this.RenderTarget);
-            this.DepthStencilView = new DepthStencilView(this.Device, this.DepthStencil);
+            this.m_renderTarget = new Texture2D(this.m_device, colordesc);
+            this.m_depthStencil = new Texture2D(this.m_device, depthdesc);
+            this.m_renderTargetView = new RenderTargetView(this.m_device, this.m_renderTarget);
+            this.m_depthStencilView = new DepthStencilView(this.m_device, this.m_depthStencil);
 
-            this.D3DSurface.SetRenderTargetDX10(this.RenderTarget);
+            this.m_surfaceD3D.SetRenderTargetDX10(this.m_renderTarget);
         }
 
         private void StartRendering()
         {
-            if (this.RenderTimer.IsRunning)
+            if (this.m_renderTimer.IsRunning)
                 return;
 
             CompositionTarget.Rendering += OnRendering;
-            this.RenderTimer.Start();
+            this.m_renderTimer.Start();
         }
 
         private void StopRendering()
         {
-            if (!this.RenderTimer.IsRunning)
+            if (!this.m_renderTimer.IsRunning)
                 return;
 
             CompositionTarget.Rendering -= OnRendering;
-            this.RenderTimer.Stop();
+            this.m_renderTimer.Stop();
         }
 
         private void OnRendering(object sender, EventArgs e)
         {
-            if (!this.RenderTimer.IsRunning)
+            if (!this.m_renderTimer.IsRunning)
                 return;
 
-            this.Render(this.RenderTimer.Elapsed);
-            this.D3DSurface.InvalidateD3DImage();
+            this.Render(this.m_renderTimer.Elapsed);
+            this.m_surfaceD3D.InvalidateD3DImage();
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -190,34 +193,34 @@
             base.OnRenderSizeChanged(sizeInfo);
         }
 
-        void Render(TimeSpan sceneTime)
+        private void Render(TimeSpan sceneTime)
         {
-            var device = this.Device;
+            var device = this.m_device;
             if (device == null)
                 return;
 
-            var renderTarget = this.RenderTarget;
+            var renderTarget = this.m_renderTarget;
             if (renderTarget == null)
                 return;
 
             int targetWidth = renderTarget.Description.Width;
             int targetHeight = renderTarget.Description.Height;
 
-            device.OutputMerger.SetTargets(this.DepthStencilView, this.RenderTargetView);
+            device.OutputMerger.SetTargets(this.m_depthStencilView, this.m_renderTargetView);
             device.Rasterizer.SetViewports(new Viewport(0, 0, targetWidth, targetHeight, 0.0f, 1.0f));
 
-            device.ClearRenderTargetView(this.RenderTargetView, this.ClearColor);
-            device.ClearDepthStencilView(this.DepthStencilView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+            device.ClearRenderTargetView(this.m_renderTargetView, this.ClearColor);
+            device.ClearDepthStencilView(this.m_depthStencilView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
 
             if (this.Renderable != null)
             {
-                if (!this.SceneAttached)
+                if (!this.m_sceneAttached)
                 {
-                    this.SceneAttached = true;
-                    this.renderRenderable.Attach(this);
+                    this.m_sceneAttached = true;
+                    this.m_renderRenderable.Attach(this);
                 }
 
-                this.Renderable.Update(this.RenderTimer.Elapsed);
+                this.Renderable.Update(this.m_renderTimer.Elapsed);
                 this.Renderable.Render();
             }
 
@@ -228,7 +231,7 @@
         {
             // this fires when the screensaver kicks in, the machine goes into sleep or hibernate
             // and any other catastrophic losses of the d3d device from WPF's point of view
-            if (this.D3DSurface.IsFrontBufferAvailable)
+            if (this.m_surfaceD3D.IsFrontBufferAvailable)
             {
                 this.StartRendering();
             }
@@ -255,30 +258,31 @@
         {
             get
             {
-                return this.renderRenderable;
+                return this.m_renderRenderable;
             }
 
             set
             {
-                if (ReferenceEquals(this.renderRenderable, value))
+                if (ReferenceEquals(this.m_renderRenderable, value))
                 {
                     return;
                 }
 
-                if (this.renderRenderable != null)
+                if (this.m_renderRenderable != null)
                 {
-                    this.renderRenderable.Detach();
+                    this.m_renderRenderable.Detach();
                 }
 
-                this.SceneAttached = false;
-                this.renderRenderable = value;
+                this.m_sceneAttached = false;
+                this.m_renderRenderable = value;
             }
         }
 
-        global::SharpDX.Direct3D10.Device IRenderHost.Device
+        Device IRenderHost.Device
         {
-            get { return this.Device; }
+            get { return this.m_device; }
         }
+
     }
 
     public static class Disposer

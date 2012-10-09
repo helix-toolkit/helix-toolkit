@@ -22,6 +22,14 @@ namespace SimpleDemo
         {
             InitializeComponent();
             this.DataContext = new MainViewModel();
+
+            /// set up the trackball
+            //var trackball = new Wpf3DTools.Trackball();
+            TrackBall.EventSource = view1;            
+            //m_viewport.Camera.Transform = trackball.Transform;
+            //m_light.Transform = trackball.RotateTransform;
         }
+
+        public static readonly Wpf3DTools.Trackball TrackBall = new Wpf3DTools.Trackball();
     }
 }

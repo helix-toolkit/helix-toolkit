@@ -11,6 +11,7 @@ namespace HelixToolkit.SharpDX.Wpf
 
     using global::SharpDX;
 
+
     public class Element3DCollection : List<Element3D> { }
 
     [DefaultEvent("OnChildrenChanged"), DefaultProperty("Children")]
@@ -24,19 +25,28 @@ namespace HelixToolkit.SharpDX.Wpf
             set { SetValue(CameraProperty, value); }
         }
 
+        public FpsCounter FpsCounter
+        {
+            get { return (FpsCounter)GetValue(FpsCounterProperty); }
+            private set { SetValue(FpsCounterProperty, value); }
+        }
+
         public static readonly DependencyProperty CameraProperty =
             DependencyProperty.Register("Camera", typeof(Camera), typeof(Viewport3DX));
 
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        //[Bindable(true)]
-        //public Element3DCollection Children
-        //{
-        //    get { return (Element3DCollection)GetValue(ChildrenProperty); }
-        //    private set { SetValue(ChildrenProperty, value); }
-        //}
+        public static readonly DependencyProperty FpsCounterProperty =
+            DependencyProperty.Register("FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata(new FpsCounter()));
 
-        //public static readonly DependencyProperty ChildrenProperty =
-        //    DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(Viewport3DX));
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Bindable(true)]
+        public Element3DCollection Children
+        {
+            get { return (Element3DCollection)GetValue(ChildrenProperty); }
+            private set { SetValue(ChildrenProperty, value); }
+        }
+
+        public static readonly DependencyProperty ChildrenProperty =
+            DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(Viewport3DX));
 
         static Viewport3DX()
         {
@@ -45,14 +55,14 @@ namespace HelixToolkit.SharpDX.Wpf
 
         public Viewport3DX()
         {
-            //this.Children = new Element3DCollection();
+            this.Children = new Element3DCollection();
         }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             this.Canvas = this.GetTemplateChild("PART_Canvas") as DPFCanvas;
-            this.Canvas.Renderable = this;
+            this.Canvas.Renderable = this;            
         }
 
         protected DPFCanvas Canvas { get; private set; }
@@ -60,23 +70,25 @@ namespace HelixToolkit.SharpDX.Wpf
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            ((ProjectionCamera)Camera).Position = new Vector3(0, 0, 100);
+            //var py = ((ProjectionCamera)Camera).Position;
+            //py.Y = py.Y + 0.1f;
+            //((ProjectionCamera)Camera).Position = py;// new Vector3(0, 0, 100);
         }
 
         void IRenderable.Attach(IRenderHost host)
         {
-            //foreach (IRenderable e in this.Items)
-            //{
-            //    e.Attach(host);
-            //}
+            foreach (IRenderable e in this.Items)
+            {
+                e.Attach(host);
+            }
         }
 
         void IRenderable.Detach()
         {
-            //foreach (IRenderable e in this.Items)
-            //{
-            //    e.Detach();
-            //}
+            foreach (IRenderable e in this.Items)
+            {
+                e.Detach();
+            }
         }
 
         void IRenderable.Update(TimeSpan timeSpan)
@@ -89,10 +101,10 @@ namespace HelixToolkit.SharpDX.Wpf
 
         void IRenderable.Render()
         {
-            //foreach (IRenderable e in this.Items)
-            //{
-            //    e.Render();
-            //}
+            foreach (IRenderable e in this.Items)
+            {
+                e.Render();
+            }
         }
     }
 }
