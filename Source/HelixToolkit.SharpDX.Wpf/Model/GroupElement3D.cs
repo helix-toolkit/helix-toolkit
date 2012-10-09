@@ -9,22 +9,31 @@ namespace HelixToolkit.SharpDX.Wpf
             this.Children = new Element3DCollection();
         }
 
-        protected override void Attach(IRenderHost host)
+        public override void Attach(IRenderHost host)
         {
             base.Attach(host);
-            foreach (IRenderable c in this.Children) c.Attach(host);
+            foreach (var c in this.Children)
+            {
+                c.Attach(host);
+            }
         }
-        
-        protected override void Detach()
+
+        public override void Detach()
         {
             base.Detach();
-            foreach (IRenderable c in this.Children) c.Detach();
+            foreach (var c in this.Children)
+            {
+                c.Detach();
+            }
         }
-        
-        protected override void Render()
+
+        public override void Render(RenderContext context)
         {
-            base.Render();
-            foreach (IRenderable c in this.Children) c.Render();
+            base.Render(context);
+            foreach (var c in this.Children)
+            {
+                c.Render(context);
+            }
         }
     }
 }

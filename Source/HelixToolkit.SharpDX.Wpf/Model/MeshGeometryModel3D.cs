@@ -22,23 +22,24 @@ namespace HelixToolkit.SharpDX.Wpf
         public static readonly DependencyProperty MaterialProperty =
             DependencyProperty.Register("Material", typeof(Material), typeof(MeshGeometryModel3D), new UIPropertyMetadata(null));
 
-        protected override void Attach(IRenderHost host)
+        public override void Attach(IRenderHost host)
         {
             base.Attach(host);
             if (Geometry != null)
                 Geometry.Attach(host);
         }
-        protected override void Detach()
+        public override void Detach()
         {
             base.Detach();
             if (Geometry != null)
                 Geometry.Detach();
         }
-        protected override void Render()
+
+        public override void Render(RenderContext context)
         {
-            base.Render();
+            base.Render(context);
             if (Geometry != null)
-                Geometry.Render();
+                Geometry.Render(context);
         }
     }
 }

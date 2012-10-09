@@ -62,7 +62,7 @@ namespace HelixToolkit.SharpDX.Wpf
         {
             base.OnApplyTemplate();
             this.Canvas = this.GetTemplateChild("PART_Canvas") as DPFCanvas;
-            this.Canvas.Renderable = this;            
+            this.Canvas.Renderable = this;
         }
 
         protected DPFCanvas Canvas { get; private set; }
@@ -77,15 +77,19 @@ namespace HelixToolkit.SharpDX.Wpf
 
         void IRenderable.Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Items)
+            foreach (Element3D e in this.Items)
             {
                 e.Attach(host);
             }
+
+            /// --- start stop watch
+            s_stopWatch.Start();
+
         }
 
         void IRenderable.Detach()
         {
-            foreach (IRenderable e in this.Items)
+            foreach (Element3D e in this.Items)
             {
                 e.Detach();
             }
@@ -93,17 +97,22 @@ namespace HelixToolkit.SharpDX.Wpf
 
         void IRenderable.Update(TimeSpan timeSpan)
         {
-            foreach (IRenderable e in this.Items)
+            foreach (Element3D e in this.Items)
             {
                 e.Update(timeSpan);
             }
         }
 
+        private static System.Diagnostics.Stopwatch s_stopWatch = new System.Diagnostics.Stopwatch();
+
         void IRenderable.Render()
         {
-            foreach (IRenderable e in this.Items)
+            this.FpsCounter.AddFrame(s_stopWatch.Elapsed);
+
+            var context = new RenderContext(this.Camera, this.Canvas, Matrix.Identity);
+            foreach (Element3D e in this.Items)
             {
-                e.Render();
+                e.Render(context);
             }
         }
     }
