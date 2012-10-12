@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="">
-//   
+//
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,8 +20,6 @@ namespace OverlayDemo
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
@@ -46,20 +44,16 @@ namespace OverlayDemo
 
             var text1 = new TextBlock
                 {
-                    Text = "Hello world!", 
-                    FontWeight = FontWeights.Bold, 
-                    FontSize = 16, 
-                    Foreground = Brushes.YellowGreen, 
-                    Background = Brushes.Gray, 
+                    Text = "Hello world!",
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 16,
+                    Foreground = Brushes.YellowGreen,
+                    Background = Brushes.Gray,
                     Padding = new Thickness(4)
                 };
             Overlay.SetPosition3D(text1, new Point3D(0, 0, 10));
             this.overlay1.Children.Add(text1);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The composition target rendering.
@@ -82,6 +76,5 @@ namespace OverlayDemo
             }
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CubeVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,20 +13,14 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class CubeVisual3D : BoxVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The side length property.
         /// </summary>
         public static readonly DependencyProperty SideLengthProperty = DependencyProperty.Register(
             "SideLength", typeof(double), typeof(CubeVisual3D), new UIPropertyMetadata(1.0, SideLengthChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the length of the cube sides.
+        /// Gets or sets the length of the cube sides.
         /// </summary>
         /// <value>The length of the sides.</value>
         public double SideLength
@@ -41,10 +35,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(SideLengthProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The side length changed.
@@ -70,6 +60,5 @@ namespace HelixToolkit.Wpf
             this.EndEdit();
         }
 
-        #endregion
     }
 }

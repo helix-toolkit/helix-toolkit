@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RotateHandler.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,36 +16,30 @@ namespace HelixToolkit.Wpf
     /// </summary>
     internal class RotateHandler : MouseGestureHandler
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The change look at.
+        /// The change look at.
         /// </summary>
         private readonly bool changeLookAt;
 
         /// <summary>
-        ///   The x rotation axis.
+        /// The x rotation axis.
         /// </summary>
         private Vector3D rotationAxisX;
 
         /// <summary>
-        ///   The y rotation axis.
+        /// The y rotation axis.
         /// </summary>
         private Vector3D rotationAxisY;
 
         /// <summary>
-        ///   The rotation point.
+        /// The rotation point.
         /// </summary>
         private Point rotationPoint;
 
         /// <summary>
-        ///   The 3D rotation point.
+        /// The 3D rotation point.
         /// </summary>
         private Point3D rotationPoint3D;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RotateHandler"/> class.
@@ -61,10 +55,6 @@ namespace HelixToolkit.Wpf
         {
             this.changeLookAt = changeLookAt;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Occurs when the manipulation is completed.
@@ -330,10 +320,6 @@ namespace HelixToolkit.Wpf
             this.Controller.StopSpin();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The can execute.
         /// </summary>
@@ -556,6 +542,5 @@ namespace HelixToolkit.Wpf
             this.CameraUpDirection = newUpDirection;
         }
 
-        #endregion
     }
 }

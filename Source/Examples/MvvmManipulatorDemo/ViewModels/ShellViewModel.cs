@@ -4,12 +4,11 @@
 
     public class ShellViewModel : PropertyChangedBase
     {
-        
 
         public ShellViewModel()
         {
-          
-        }        
+
+        }
 
         private double translateValue;
         public double TranslateValue
@@ -21,7 +20,7 @@
                 {
                     translateValue = value;
                     NotifyOfPropertyChange(() => this.TranslateValue);
-                  
+
                 }
             }
         }

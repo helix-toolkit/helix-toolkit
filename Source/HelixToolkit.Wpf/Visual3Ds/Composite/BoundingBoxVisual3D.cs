@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BoundingBoxVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,32 +15,26 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class BoundingBoxVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The bounding box property.
+        /// The bounding box property.
         /// </summary>
         public static readonly DependencyProperty BoundingBoxProperty = DependencyProperty.Register(
             "BoundingBox", typeof(Rect3D), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(new Rect3D(), BoxChanged));
 
         /// <summary>
-        ///   The diameter property.
+        /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(0.1, BoxChanged));
 
         /// <summary>
-        ///   The fill property.
+        /// The fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Brush), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(Brushes.Yellow, FillChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the bounding box.
+        /// Gets or sets the bounding box.
         /// </summary>
         /// <value> The bounding box. </value>
         public Rect3D BoundingBox
@@ -57,7 +51,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the diameter.
+        /// Gets or sets the diameter.
         /// </summary>
         /// <value> The diameter. </value>
         public double Diameter
@@ -74,7 +68,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the brush of the bounding box.
+        /// Gets or sets the brush of the bounding box.
         /// </summary>
         /// <value> The brush. </value>
         public Brush Fill
@@ -89,10 +83,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(FillProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Updates the box.
@@ -150,10 +140,10 @@ namespace HelixToolkit.Wpf
         /// Called when the box dimensions changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void BoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -164,10 +154,10 @@ namespace HelixToolkit.Wpf
         /// Called when the fill changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void FillChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -178,10 +168,10 @@ namespace HelixToolkit.Wpf
         /// Adds an edge.
         /// </summary>
         /// <param name="p1">
-        /// The start point. 
+        /// The start point.
         /// </param>
         /// <param name="p2">
-        /// The end point. 
+        /// The end point.
         /// </param>
         private void AddEdge(Point3D p1, Point3D p2)
         {
@@ -196,6 +186,5 @@ namespace HelixToolkit.Wpf
             this.Children.Add(fv);
         }
 
-        #endregion
     }
 }

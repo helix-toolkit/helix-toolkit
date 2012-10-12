@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TerrainModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,86 +18,80 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// Supports the following terrain file types
-    ///   .bt
-    ///   .btz
-    ///   <para>
+    /// .bt
+    /// .btz
+    ///  <para>
     /// Read .bt files from disk, keeps the model data and creates the Model3D.
-    ///     The .btz format is a gzip compressed version of the .bt format.
-    ///   </para>
+    /// The .btz format is a gzip compressed version of the .bt format.
+    ///  </para>
     /// </remarks>
     public class TerrainModel
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the bottom.
+        /// Gets or sets the bottom.
         /// </summary>
         /// <value>The bottom.</value>
         public double Bottom { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data.
+        /// Gets or sets the data.
         /// </summary>
         /// <value>The data.</value>
         public double[] Data { get; set; }
 
         /// <summary>
-        ///   Gets or sets the height.
+        /// Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
         public int Height { get; set; }
 
         /// <summary>
-        ///   Gets or sets the left.
+        /// Gets or sets the left.
         /// </summary>
         /// <value>The left.</value>
         public double Left { get; set; }
 
         /// <summary>
-        ///   Gets or sets the maximum Z.
+        /// Gets or sets the maximum Z.
         /// </summary>
         /// <value>The maximum Z.</value>
         public double MaximumZ { get; set; }
 
         /// <summary>
-        ///   Gets or sets the minimum Z.
+        /// Gets or sets the minimum Z.
         /// </summary>
         /// <value>The minimum Z.</value>
         public double MinimumZ { get; set; }
 
         /// <summary>
-        ///   Gets or sets the offset.
+        /// Gets or sets the offset.
         /// </summary>
         /// <value>The offset.</value>
         public Point3D Offset { get; set; }
 
         /// <summary>
-        ///   Gets or sets the right.
+        /// Gets or sets the right.
         /// </summary>
         /// <value>The right.</value>
         public double Right { get; set; }
 
         /// <summary>
-        ///   Gets or sets the texture.
+        /// Gets or sets the texture.
         /// </summary>
         /// <value>The texture.</value>
         public TerrainTexture Texture { get; set; }
 
         /// <summary>
-        ///   Gets or sets the top.
+        /// Gets or sets the top.
         /// </summary>
         /// <value>The top.</value>
         public double Top { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
         public int Width { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates the 3D model of the terrain.
@@ -183,7 +177,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Reads a .bt (Binary terrain) file.
-        ///   http://www.vterrain.org/Implementation/Formats/BT.html
+        /// http://www.vterrain.org/Implementation/Formats/BT.html
         /// </summary>
         /// <param name="stream">
         /// The stream.
@@ -252,10 +246,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Reads the specified .bt terrain file.
         /// </summary>
@@ -285,6 +275,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

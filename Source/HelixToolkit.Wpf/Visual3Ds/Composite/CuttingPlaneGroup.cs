@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CuttingPlaneGroup.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class CuttingPlaneGroup : RenderingModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The is enabled property.
         /// </summary>
@@ -49,12 +47,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private bool forceUpdate;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "CuttingPlaneGroup" /> class.
+        /// Initializes a new instance of the <see cref = "CuttingPlaneGroup" /> class.
         /// </summary>
         public CuttingPlaneGroup()
         {
@@ -62,18 +56,14 @@ namespace HelixToolkit.Wpf
             this.CuttingPlanes = new List<Plane3D>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the cutting planes.
+        /// Gets or sets the cutting planes.
         /// </summary>
         /// <value>The cutting planes.</value>
         public List<Plane3D> CuttingPlanes { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether cutting is enabled.
+        /// Gets or sets a value indicating whether cutting is enabled.
         /// </summary>
         public bool IsEnabled
         {
@@ -87,10 +77,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(IsEnabledProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The is sorting changed.
@@ -226,6 +212,5 @@ namespace HelixToolkit.Wpf
             this.ApplyCuttingPlanes(true);
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CombinedManipulator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
 //   A visual element that shows translation and rotation manipulators.
@@ -19,111 +19,105 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class CombinedManipulator : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The can rotate x property.
+        /// The can rotate x property.
         /// </summary>
         public static readonly DependencyProperty CanRotateXProperty = DependencyProperty.Register(
             "CanRotateX", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        ///   The can rotate y property.
+        /// The can rotate y property.
         /// </summary>
         public static readonly DependencyProperty CanRotateYProperty = DependencyProperty.Register(
             "CanRotateY", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        ///   The can rotate z property.
+        /// The can rotate z property.
         /// </summary>
         public static readonly DependencyProperty CanRotateZProperty = DependencyProperty.Register(
             "CanRotateZ", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        ///   The can translate x property.
+        /// The can translate x property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateXProperty = DependencyProperty.Register(
             "CanTranslateX", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        ///   The can translate y property.
+        /// The can translate y property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateYProperty = DependencyProperty.Register(
             "CanTranslateY", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        ///   The can translate z property.
+        /// The can translate z property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateZProperty = DependencyProperty.Register(
             "CanTranslateZ", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        ///   The diameter property.
+        /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(CombinedManipulator), new UIPropertyMetadata(2.0, DiameterChanged));
 
         /// <summary>
-        ///   The target transform property.
+        /// The target transform property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty =
             DependencyProperty.Register(
-                "TargetTransform", 
-                typeof(Transform3D), 
-                typeof(CombinedManipulator), 
+                "TargetTransform",
+                typeof(Transform3D),
+                typeof(CombinedManipulator),
                 new FrameworkPropertyMetadata(
                     Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The rotate x manipulator.
+        /// The rotate x manipulator.
         /// </summary>
         private readonly RotateManipulator rotateXManipulator;
 
         /// <summary>
-        ///   The rotate y manipulator.
+        /// The rotate y manipulator.
         /// </summary>
         private readonly RotateManipulator rotateYManipulator;
 
         /// <summary>
-        ///   The rotate z manipulator.
+        /// The rotate z manipulator.
         /// </summary>
         private readonly RotateManipulator rotateZManipulator;
 
         /// <summary>
-        ///   The translate x manipulator.
+        /// The translate x manipulator.
         /// </summary>
         private readonly TranslateManipulator translateXManipulator;
 
         /// <summary>
-        ///   The translate y manipulator.
+        /// The translate y manipulator.
         /// </summary>
         private readonly TranslateManipulator translateYManipulator;
 
         /// <summary>
-        ///   The translate z manipulator.
+        /// The translate z manipulator.
         /// </summary>
         private readonly TranslateManipulator translateZManipulator;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref="CombinedManipulator" /> class.
+        /// Initializes a new instance of the <see cref="CombinedManipulator" /> class.
         /// </summary>
         public CombinedManipulator()
         {
             this.translateXManipulator = new TranslateManipulator
                 {
-                   Direction = new Vector3D(1, 0, 0), Color = Colors.Red 
+                   Direction = new Vector3D(1, 0, 0), Color = Colors.Red
                 };
             this.translateYManipulator = new TranslateManipulator
                 {
-                   Direction = new Vector3D(0, 1, 0), Color = Colors.Green 
+                   Direction = new Vector3D(0, 1, 0), Color = Colors.Green
                 };
             this.translateZManipulator = new TranslateManipulator
                 {
-                   Direction = new Vector3D(0, 0, 1), Color = Colors.Blue 
+                   Direction = new Vector3D(0, 0, 1), Color = Colors.Blue
                 };
             this.rotateXManipulator = new RotateManipulator { Axis = new Vector3D(1, 0, 0), Color = Colors.Red };
             this.rotateYManipulator = new RotateManipulator { Axis = new Vector3D(0, 1, 0), Color = Colors.Green };
@@ -132,16 +126,16 @@ namespace HelixToolkit.Wpf
             BindingOperations.SetBinding(this, TransformProperty, new Binding("TargetTransform") { Source = this });
 
             BindingOperations.SetBinding(
-                this.translateXManipulator, 
-                Manipulator.TargetTransformProperty, 
+                this.translateXManipulator,
+                Manipulator.TargetTransformProperty,
                 new Binding("TargetTransform") { Source = this });
             BindingOperations.SetBinding(
-                this.translateYManipulator, 
-                Manipulator.TargetTransformProperty, 
+                this.translateYManipulator,
+                Manipulator.TargetTransformProperty,
                 new Binding("TargetTransform") { Source = this });
             BindingOperations.SetBinding(
-                this.translateZManipulator, 
-                Manipulator.TargetTransformProperty, 
+                this.translateZManipulator,
+                Manipulator.TargetTransformProperty,
                 new Binding("TargetTransform") { Source = this });
             BindingOperations.SetBinding(
                 this.rotateXManipulator, RotateManipulator.DiameterProperty, new Binding("Diameter") { Source = this });
@@ -150,27 +144,23 @@ namespace HelixToolkit.Wpf
             BindingOperations.SetBinding(
                 this.rotateZManipulator, RotateManipulator.DiameterProperty, new Binding("Diameter") { Source = this });
             BindingOperations.SetBinding(
-                this.rotateXManipulator, 
-                Manipulator.TargetTransformProperty, 
+                this.rotateXManipulator,
+                Manipulator.TargetTransformProperty,
                 new Binding("TargetTransform") { Source = this });
             BindingOperations.SetBinding(
-                this.rotateYManipulator, 
-                Manipulator.TargetTransformProperty, 
+                this.rotateYManipulator,
+                Manipulator.TargetTransformProperty,
                 new Binding("TargetTransform") { Source = this });
             BindingOperations.SetBinding(
-                this.rotateZManipulator, 
-                Manipulator.TargetTransformProperty, 
+                this.rotateZManipulator,
+                Manipulator.TargetTransformProperty,
                 new Binding("TargetTransform") { Source = this });
 
             this.OnChildrenChanged();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can rotate X.
+        /// Gets or sets a value indicating whether this instance can rotate X.
         /// </summary>
         /// <value> <c>true</c> if this instance can rotate X; otherwise, <c>false</c> . </value>
         public bool CanRotateX
@@ -187,7 +177,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can rotate Y.
+        /// Gets or sets a value indicating whether this instance can rotate Y.
         /// </summary>
         /// <value> <c>true</c> if this instance can rotate Y; otherwise, <c>false</c> . </value>
         public bool CanRotateY
@@ -204,7 +194,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can rotate Z.
+        /// Gets or sets a value indicating whether this instance can rotate Z.
         /// </summary>
         /// <value> <c>true</c> if this instance can rotate Z; otherwise, <c>false</c> . </value>
         public bool CanRotateZ
@@ -221,7 +211,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can translate X.
+        /// Gets or sets a value indicating whether this instance can translate X.
         /// </summary>
         /// <value> <c>true</c> if this instance can translate X; otherwise, <c>false</c> . </value>
         public bool CanTranslateX
@@ -238,7 +228,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can translate Y.
+        /// Gets or sets a value indicating whether this instance can translate Y.
         /// </summary>
         /// <value> <c>true</c> if this instance can translate Y; otherwise, <c>false</c> . </value>
         public bool CanTranslateY
@@ -255,7 +245,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can translate Z.
+        /// Gets or sets a value indicating whether this instance can translate Z.
         /// </summary>
         /// <value> <c>true</c> if this instance can translate Z; otherwise, <c>false</c> . </value>
         public bool CanTranslateZ
@@ -272,7 +262,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the diameter.
+        /// Gets or sets the diameter.
         /// </summary>
         /// <value> The diameter. </value>
         public double Diameter
@@ -289,7 +279,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the offset of the visual (this vector is added to the Position point).
+        /// Gets or sets the offset of the visual (this vector is added to the Position point).
         /// </summary>
         /// <value> The offset. </value>
         public Vector3D Offset
@@ -311,7 +301,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the pivot point of the manipulator.
+        /// Gets or sets the pivot point of the manipulator.
         /// </summary>
         /// <value> The position. </value>
         public Point3D Pivot
@@ -333,7 +323,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the position of the manipulator.
+        /// Gets or sets the position of the manipulator.
         /// </summary>
         /// <value> The position. </value>
         public Point3D Position
@@ -355,7 +345,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the target transform.
+        /// Gets or sets the target transform.
         /// </summary>
         /// <value> The target transform. </value>
         public Transform3D TargetTransform
@@ -371,15 +361,11 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Binds this manipulator to a given Visual3D.
         /// </summary>
         /// <param name="source">
-        /// Source Visual3D which receives the manipulator transforms. 
+        /// Source Visual3D which receives the manipulator transforms.
         /// </param>
         public virtual void Bind(ModelVisual3D source)
         {
@@ -395,10 +381,6 @@ namespace HelixToolkit.Wpf
             BindingOperations.ClearBinding(this, TargetTransformProperty);
             BindingOperations.ClearBinding(this, TransformProperty);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The on children changed.
@@ -448,10 +430,10 @@ namespace HelixToolkit.Wpf
         /// The children changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void ChildrenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -462,16 +444,15 @@ namespace HelixToolkit.Wpf
         /// The diameter changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void DiameterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((CombinedManipulator)d).OnDiameterChanged();
         }
 
-        #endregion
     }
 }

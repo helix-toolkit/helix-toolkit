@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ViewCubeVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,8 +21,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class ViewCubeVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The back text property.
         /// </summary>
@@ -97,24 +95,16 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
         /// </summary>
         public ViewCubeVisual3D()
         {
             this.UpdateVisuals();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the back text.
+        /// Gets or sets the back text.
         /// </summary>
         /// <value>The back text.</value>
         public string BackText
@@ -131,7 +121,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the bottom text.
+        /// Gets or sets the bottom text.
         /// </summary>
         /// <value>The bottom text.</value>
         public string BottomText
@@ -148,7 +138,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the center.
+        /// Gets or sets the center.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -165,7 +155,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the front text.
+        /// Gets or sets the front text.
         /// </summary>
         /// <value>The front text.</value>
         public string FrontText
@@ -182,7 +172,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the left text.
+        /// Gets or sets the left text.
         /// </summary>
         /// <value>The left text.</value>
         public string LeftText
@@ -199,7 +189,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the model up direction.
+        /// Gets or sets the model up direction.
         /// </summary>
         /// <value>The model up direction.</value>
         public Vector3D ModelUpDirection
@@ -216,7 +206,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the right text.
+        /// Gets or sets the right text.
         /// </summary>
         /// <value>The right text.</value>
         public string RightText
@@ -233,7 +223,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the size.
+        /// Gets or sets the size.
         /// </summary>
         /// <value>The size.</value>
         public double Size
@@ -250,7 +240,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the top text.
+        /// Gets or sets the top text.
         /// </summary>
         /// <value>The top text.</value>
         public string TopText
@@ -267,7 +257,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the viewport.
+        /// Gets or sets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
         public Viewport3D Viewport
@@ -282,10 +272,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ViewportProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The viewport changed.
@@ -499,6 +485,5 @@ namespace HelixToolkit.Wpf
             CameraHelper.AnimateTo(camera, pos, lookdir, updir, 500);
         }
 
-        #endregion
     }
 }

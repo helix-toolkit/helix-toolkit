@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ImageMaterialExtension.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,20 +16,14 @@ namespace HelixToolkit.Wpf
     /// <example>
     /// <code>
     /// Material={helix:ImageMaterial images\\myimage.png, Opacity=0.8}
-    ///   </code>
+    ///  </code>
     /// </example>
     public class ImageMaterialExtension : MarkupExtension
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The path.
         /// </summary>
         private readonly string path;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageMaterialExtension"/> class.
@@ -44,12 +38,8 @@ namespace HelixToolkit.Wpf
             this.UriKind = UriKind.RelativeOrAbsolute;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the opacity.
+        /// Gets or sets the opacity.
         /// </summary>
         /// <value>The opacity.</value>
         public double Opacity { get; set; }
@@ -67,10 +57,6 @@ namespace HelixToolkit.Wpf
         /// <c>true</c> if this material is emissive; otherwise, <c>false</c>.
         /// </value>
         public bool IsEmissive { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
@@ -91,6 +77,5 @@ namespace HelixToolkit.Wpf
             return MaterialHelper.CreateImageMaterial(this.path, this.Opacity, this.UriKind);
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HalfEdgeMeshVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,10 +22,8 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class HalfEdgeMesh
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref="HalfEdgeMesh" /> class.
+        /// Initializes a new instance of the <see cref="HalfEdgeMesh" /> class.
         /// </summary>
         public HalfEdgeMesh()
         {
@@ -38,10 +36,10 @@ namespace HelixToolkit.Wpf
         /// Initializes a new instance of the <see cref="HalfEdgeMesh"/> class.
         /// </summary>
         /// <param name="vertices">
-        /// The vertices. 
+        /// The vertices.
         /// </param>
         /// <param name="triangleIndices">
-        /// The triangle indices. 
+        /// The triangle indices.
         /// </param>
         public HalfEdgeMesh(IList<Point3D> vertices, IList<int> triangleIndices = null)
             : this()
@@ -62,40 +60,32 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the edges.
+        /// Gets or sets the edges.
         /// </summary>
         /// <value> The edges. </value>
         public IList<HalfEdge> Edges { get; set; }
 
         /// <summary>
-        ///   Gets or sets the faces.
+        /// Gets or sets the faces.
         /// </summary>
         /// <value> The faces. </value>
         public IList<Face> Faces { get; set; }
 
         /// <summary>
-        ///   Gets or sets the vertices.
+        /// Gets or sets the vertices.
         /// </summary>
         /// <value> The vertices. </value>
         public IList<Vertex> Vertices { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// Adds the face.
         /// </summary>
         /// <param name="indices">
-        /// The indices. 
+        /// The indices.
         /// </param>
         /// <returns>
-        /// The face. 
+        /// The face.
         /// </returns>
         public Face AddFace(params int[] indices)
         {
@@ -109,9 +99,9 @@ namespace HelixToolkit.Wpf
             {
                 faceEdges[j] = new HalfEdge
                     {
-                        StartVertex = faceVertices[j], 
-                        EndVertex = faceVertices[(j + 1) % n], 
-                        Face = face, 
+                        StartVertex = faceVertices[j],
+                        EndVertex = faceVertices[(j + 1) % n],
+                        Face = face,
                         Index = this.Edges.Count
                     };
                 this.Edges.Add(faceEdges[j]);
@@ -212,13 +202,13 @@ namespace HelixToolkit.Wpf
         /// Create a MeshGeometry3D.
         /// </summary>
         /// <returns>
-        /// A MeshGeometry3D. 
+        /// A MeshGeometry3D.
         /// </returns>
         public MeshGeometry3D ToMeshGeometry3D()
         {
             return new MeshGeometry3D
                 {
-                    Positions = new Point3DCollection(this.Vertices.Select(v => v.Position)), 
+                    Positions = new Point3DCollection(this.Vertices.Select(v => v.Position)),
                     TriangleIndices = new Int32Collection(this.Triangulate())
                 };
         }
@@ -227,7 +217,7 @@ namespace HelixToolkit.Wpf
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance. 
+        /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -257,24 +247,20 @@ namespace HelixToolkit.Wpf
         /// Gets the triangle indices.
         /// </summary>
         /// <returns>
-        /// The triangle indices. 
+        /// The triangle indices.
         /// </returns>
         public IEnumerable<int> Triangulate()
         {
             return from face in this.Faces from v in face.Triangulate() select v.Index;
         }
 
-        #endregion
-
         /// <summary>
         /// Represents a face.
         /// </summary>
         public class Face
         {
-            #region Public Properties
-
             /// <summary>
-            ///   Gets the adjacent faces.
+            /// Gets the adjacent faces.
             /// </summary>
             /// <value> The adjacent faces. </value>
             public IEnumerable<Face> AdjacentFaces
@@ -286,13 +272,13 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the first edge of the face.
+            /// Gets or sets the first edge of the face.
             /// </summary>
             /// <value> The edge. </value>
             public HalfEdge Edge { get; set; }
 
             /// <summary>
-            ///   Gets the edges.
+            /// Gets the edges.
             /// </summary>
             /// <value> The edges. </value>
             public IEnumerable<HalfEdge> Edges
@@ -310,19 +296,19 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the index.
+            /// Gets or sets the index.
             /// </summary>
             /// <value> The index. </value>
             public int Index { get; set; }
 
             /// <summary>
-            ///   Gets or sets the tag.
+            /// Gets or sets the tag.
             /// </summary>
             /// <value> The tag. </value>
             public object Tag { get; set; }
 
             /// <summary>
-            ///   Gets the vertices.
+            /// Gets the vertices.
             /// </summary>
             /// <value> The vertices. </value>
             public IEnumerable<Vertex> Vertices
@@ -333,22 +319,18 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            #endregion
-
-            #region Public Methods and Operators
-
             /// <summary>
             /// Returns a <see cref="System.String"/> that represents this instance.
             /// </summary>
             /// <returns>
-            /// A <see cref="System.String"/> that represents this instance. 
+            /// A <see cref="System.String"/> that represents this instance.
             /// </returns>
             public override string ToString()
             {
                 return string.Format(
-                    "f{0}: {1} | {2}", 
-                    this.Index, 
-                    this.Vertices.Select(v => v.Index).EnumerateToString("v"), 
+                    "f{0}: {1} | {2}",
+                    this.Index,
+                    this.Vertices.Select(v => v.Index).EnumerateToString("v"),
                     this.Edges.Select(e => e.Index).EnumerateToString("e"));
             }
 
@@ -356,7 +338,7 @@ namespace HelixToolkit.Wpf
             /// Triangulates this face.
             /// </summary>
             /// <returns>
-            /// Triangulated vertices. 
+            /// Triangulated vertices.
             /// </returns>
             public IEnumerable<Vertex> Triangulate()
             {
@@ -369,7 +351,6 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            #endregion
         }
 
         /// <summary>
@@ -377,16 +358,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public class HalfEdge
         {
-            #region Public Properties
-
             /// <summary>
-            ///   Gets or sets the adjacent edge.
+            /// Gets or sets the adjacent edge.
             /// </summary>
             /// <value> The adjacent edge. </value>
             public HalfEdge AdjacentEdge { get; set; }
 
             /// <summary>
-            ///   Gets the adjacent face.
+            /// Gets the adjacent face.
             /// </summary>
             /// <value> The adjacent face. </value>
             public Face AdjacentFace
@@ -398,42 +377,40 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the end vertex.
+            /// Gets or sets the end vertex.
             /// </summary>
             /// <value> The end vertex. </value>
             public Vertex EndVertex { get; set; }
 
             /// <summary>
-            ///   Gets or sets the face.
+            /// Gets or sets the face.
             /// </summary>
             /// <value> The face. </value>
             public Face Face { get; set; }
 
             /// <summary>
-            ///   Gets or sets the index.
+            /// Gets or sets the index.
             /// </summary>
             /// <value> The index. </value>
             public int Index { get; set; }
 
             /// <summary>
-            ///   Gets or sets the next edge.
+            /// Gets or sets the next edge.
             /// </summary>
             /// <value> The next edge. </value>
             public HalfEdge NextEdge { get; set; }
 
             /// <summary>
-            ///   Gets or sets the start vertex.
+            /// Gets or sets the start vertex.
             /// </summary>
             /// <value> The start vertex. </value>
             public Vertex StartVertex { get; set; }
 
             /// <summary>
-            ///   Gets or sets the tag.
+            /// Gets or sets the tag.
             /// </summary>
             /// <value> The tag. </value>
             public object Tag { get; set; }
-
-            #endregion
 
             // public Vertex StartVertex
             // {
@@ -451,13 +428,11 @@ namespace HelixToolkit.Wpf
             // return null;
             // }
             // }
-            #region Public Methods and Operators
-
             /// <summary>
             /// Checks if the halfedge is on the boundary of the mesh.
             /// </summary>
             /// <returns>
-            /// <c>true</c> if the halfedge is on the boundary; otherwise, <c>false</c> . 
+            /// <c>true</c> if the halfedge is on the boundary; otherwise, <c>false</c> .
             /// </returns>
             public bool IsOnBoundary()
             {
@@ -468,21 +443,20 @@ namespace HelixToolkit.Wpf
             /// Returns a <see cref="System.String"/> that represents this instance.
             /// </summary>
             /// <returns>
-            /// A <see cref="System.String"/> that represents this instance. 
+            /// A <see cref="System.String"/> that represents this instance.
             /// </returns>
             public override string ToString()
             {
                 return string.Format(
-                    "e{0}: v{1}->v{2} ae{3} f{4} af{5}", 
-                    this.Index, 
-                    this.StartVertex.Index, 
-                    this.EndVertex.Index, 
-                    this.AdjacentEdge != null ? this.AdjacentEdge.Index.ToString(CultureInfo.InvariantCulture) : "-", 
+                    "e{0}: v{1}->v{2} ae{3} f{4} af{5}",
+                    this.Index,
+                    this.StartVertex.Index,
+                    this.EndVertex.Index,
+                    this.AdjacentEdge != null ? this.AdjacentEdge.Index.ToString(CultureInfo.InvariantCulture) : "-",
                     this.Face.Index,
                     this.AdjacentFace != null ? this.AdjacentFace.Index.ToString(CultureInfo.InvariantCulture) : "-");
             }
 
-            #endregion
         }
 
         /// <summary>
@@ -490,10 +464,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public class Vertex
         {
-            #region Public Properties
-
             /// <summary>
-            ///   Gets the adjacent faces.
+            /// Gets the adjacent faces.
             /// </summary>
             /// <value> The adjacent faces. </value>
             public IEnumerable<Face> AdjacentFaces
@@ -505,13 +477,13 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the first incoming edge.
+            /// Gets or sets the first incoming edge.
             /// </summary>
             /// <value> The first incoming edge. </value>
             public HalfEdge FirstIncomingEdge { get; set; }
 
             /// <summary>
-            ///   Gets the incoming halfedges.
+            /// Gets the incoming halfedges.
             /// </summary>
             /// <value> The incoming edges. </value>
             public IEnumerable<HalfEdge> IncomingEdges
@@ -529,13 +501,13 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the index.
+            /// Gets or sets the index.
             /// </summary>
             /// <value> The index. </value>
             public int Index { get; set; }
 
             /// <summary>
-            ///   Gets the halfedges originating from the vertex.
+            /// Gets the halfedges originating from the vertex.
             /// </summary>
             public IEnumerable<HalfEdge> OutgoingEdges
             {
@@ -546,25 +518,25 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the position.
+            /// Gets or sets the position.
             /// </summary>
             /// <value> The position. </value>
             public Point3D Position { get; set; }
 
             /// <summary>
-            ///   Gets or sets the tag.
+            /// Gets or sets the tag.
             /// </summary>
             /// <value> The tag. </value>
             public object Tag { get; set; }
 
             /// <summary>
-            ///   Gets or sets the value.
+            /// Gets or sets the value.
             /// </summary>
             /// <value> The value. </value>
             public double Value { get; set; }
 
             /// <summary>
-            ///   Gets the vertices in the one ring neighborhood.
+            /// Gets the vertices in the one ring neighborhood.
             /// </summary>
             public IEnumerable<Vertex> Vertices
             {
@@ -574,15 +546,11 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            #endregion
-
-            #region Public Methods and Operators
-
             /// <summary>
             /// Determines whether the vertex is on the boundary.
             /// </summary>
             /// <returns>
-            /// <c>true</c> if the vertex is on the boundary; otherwise, <c>false</c> . 
+            /// <c>true</c> if the vertex is on the boundary; otherwise, <c>false</c> .
             /// </returns>
             public bool IsOnBoundary()
             {
@@ -598,20 +566,19 @@ namespace HelixToolkit.Wpf
             /// Returns a <see cref="System.String"/> that represents this instance.
             /// </summary>
             /// <returns>
-            /// A <see cref="System.String"/> that represents this instance. 
+            /// A <see cref="System.String"/> that represents this instance.
             /// </returns>
             public override string ToString()
             {
                 return string.Format(
-                    "v{0}: {1} | {2} | {3} | {4}", 
-                    this.Index, 
-                    this.FirstIncomingEdge.Face.Edges.Select(e => e.Index).EnumerateToString("e"), 
-                    this.IncomingEdges.Select(e => e.Index).EnumerateToString("ie"), 
-                    this.OutgoingEdges.Select(e => e.Index).EnumerateToString("oe"), 
+                    "v{0}: {1} | {2} | {3} | {4}",
+                    this.Index,
+                    this.FirstIncomingEdge.Face.Edges.Select(e => e.Index).EnumerateToString("e"),
+                    this.IncomingEdges.Select(e => e.Index).EnumerateToString("ie"),
+                    this.OutgoingEdges.Select(e => e.Index).EnumerateToString("oe"),
                     this.AdjacentFaces.Select(f => f.Index).EnumerateToString("af"));
             }
 
-            #endregion
         }
     }
 }

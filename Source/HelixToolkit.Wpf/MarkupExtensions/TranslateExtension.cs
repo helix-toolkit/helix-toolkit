@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TranslateExtension.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class TranslateExtension : MarkupExtension
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TranslateExtension"/> class.
         /// </summary>
@@ -34,19 +32,11 @@ namespace HelixToolkit.Wpf
             this.Offset = new Vector3D(dx, dy, dz);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the offset.
+        /// Gets or sets the offset.
         /// </summary>
         /// <value>The offset.</value>
         public Vector3D Offset { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
@@ -62,6 +52,5 @@ namespace HelixToolkit.Wpf
             return new TranslateTransform3D(this.Offset);
         }
 
-        #endregion
     }
 }

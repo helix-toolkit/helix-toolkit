@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Ray3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,10 +14,8 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Ray3D
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Ray3D" /> class.
+        /// Initializes a new instance of the <see cref = "Ray3D" /> class.
         /// </summary>
         public Ray3D()
         {
@@ -53,25 +51,17 @@ namespace HelixToolkit.Wpf
             this.Direction = p1 - p0;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the direction.
+        /// Gets or sets the direction.
         /// </summary>
         /// <value>The direction.</value>
         public Vector3D Direction { get; set; }
 
         /// <summary>
-        ///   Gets or sets the origin.
+        /// Gets or sets the origin.
         /// </summary>
         /// <value>The origin.</value>
         public Point3D Origin { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the point on the ray that is nearest the specified point.
@@ -109,6 +99,5 @@ namespace HelixToolkit.Wpf
             return this.Origin + u * this.Direction;
         }
 
-        #endregion
     }
 }

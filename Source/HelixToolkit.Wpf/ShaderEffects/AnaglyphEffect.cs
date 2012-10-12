@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AnaglyphEffect.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,18 +16,16 @@ namespace HelixToolkit.Wpf
     /// Provides an anaglyph blending effect.
     /// </summary>
     /// <remarks>
-    /// Usage: 
-    ///   1. Add the effect to the LEFT EYE UIElement. 
-    ///   2. Set RightInput to a VisualBrush of the RIGHT EYE UIElement.
-    ///   See the AnaglyphView3D for an example.
+    /// Usage:
+    /// 1. Add the effect to the LEFT EYE UIElement.
+    /// 2. Set RightInput to a VisualBrush of the RIGHT EYE UIElement.
+    /// See the AnaglyphView3D for an example.
     /// </remarks>
     public class AnaglyphEffect : ShaderEffect
     {
         // Brush-valued properties turn into sampler-property in the shader.
         // This helper sets "ImplicitInput" as the default, meaning the default
         // sampler is whatever the rendering of the element it's being applied to is.
-        #region Constants and Fields
-
         /// <summary>
         /// The left input property.
         /// </summary>
@@ -38,9 +36,9 @@ namespace HelixToolkit.Wpf
         /// The method property.
         /// </summary>
         public static readonly DependencyProperty MethodProperty = DependencyProperty.Register(
-            "Method", 
-            typeof(AnaglyphMethod), 
-            typeof(AnaglyphEffect), 
+            "Method",
+            typeof(AnaglyphMethod),
+            typeof(AnaglyphEffect),
             new UIPropertyMetadata(AnaglyphMethod.Gray, AnaglyphMethodChanged));
 
         // Brush-valued properties turn into sampler-property in the shader.
@@ -58,12 +56,12 @@ namespace HelixToolkit.Wpf
         private const string EffectFile = "ShaderEffects/AnaglyphEffect.ps";
 
         /// <summary>
-        ///   This property is mapped to the offset variable within the pixel shader.
+        /// This property is mapped to the offset variable within the pixel shader.
         /// </summary>
         private static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
-            "Offset", 
-            typeof(float), 
-            typeof(AnaglyphEffect), 
+            "Offset",
+            typeof(float),
+            typeof(AnaglyphEffect),
             new UIPropertyMetadata(0.0f, PixelShaderConstantCallback(1)));
 
         /// <summary>
@@ -72,20 +70,16 @@ namespace HelixToolkit.Wpf
         private static readonly PixelShader Shader = new PixelShader();
 
         /// <summary>
-        ///   This property is mapped to the method variable within the pixel shader.
+        /// This property is mapped to the method variable within the pixel shader.
         /// </summary>
         private static readonly DependencyProperty ShaderMethodProperty = DependencyProperty.Register(
-            "ShaderMethod", 
-            typeof(float), 
-            typeof(AnaglyphEffect), 
+            "ShaderMethod",
+            typeof(float),
+            typeof(AnaglyphEffect),
             new UIPropertyMetadata(1.0f, PixelShaderConstantCallback(0)));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes static members of the <see cref="AnaglyphEffect"/> class. 
+        /// Initializes static members of the <see cref="AnaglyphEffect"/> class.
         /// </summary>
         static AnaglyphEffect()
         {
@@ -96,7 +90,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "AnaglyphEffect" /> class.
+        /// Initializes a new instance of the <see cref = "AnaglyphEffect" /> class.
         /// </summary>
         public AnaglyphEffect()
         {
@@ -109,12 +103,8 @@ namespace HelixToolkit.Wpf
             this.UpdateShaderValue(RightInputProperty);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the left input brush.
+        /// Gets or sets the left input brush.
         /// </summary>
         /// <value>The left input.</value>
         public Brush LeftInput
@@ -131,7 +121,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the anaglyph method.
+        /// Gets or sets the anaglyph method.
         /// </summary>
         /// <value>The method.</value>
         public AnaglyphMethod Method
@@ -148,7 +138,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the horizontal offset.
+        /// Gets or sets the horizontal offset.
         /// </summary>
         public float Offset
         {
@@ -164,7 +154,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the right input brush.
+        /// Gets or sets the right input brush.
         /// </summary>
         /// <value>The right input.</value>
         public Brush RightInput
@@ -180,12 +170,8 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets the shader method.
+        /// Gets or sets the shader method.
         /// </summary>
         private float ShaderMethod
         {
@@ -194,10 +180,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ShaderMethodProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The anaglyph method changed.
@@ -214,6 +196,5 @@ namespace HelixToolkit.Wpf
             ef.ShaderMethod = (int)ef.Method;
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="VerletIntegrator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,25 +15,19 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/Verlet_integration
-    ///   http://www.gamasutra.com/resource_guide/20030121/jacobson_01.shtml
-    ///   http://code.google.com/p/verlet/
-    ///   http://www.gamedev.net/reference/articles/article2200.asp
+    /// http://www.gamasutra.com/resource_guide/20030121/jacobson_01.shtml
+    /// http://code.google.com/p/verlet/
+    /// http://www.gamedev.net/reference/articles/article2200.asp
     /// </remarks>
     public class VerletIntegrator
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The dtprev.
         /// </summary>
         private double dtprev;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "VerletIntegrator" /> class.
+        /// Initializes a new instance of the <see cref = "VerletIntegrator" /> class.
         /// </summary>
         public VerletIntegrator()
         {
@@ -43,55 +37,47 @@ namespace HelixToolkit.Wpf
             this.Constraints = new List<Constraint>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the accelerations.
+        /// Gets or sets the accelerations.
         /// </summary>
         /// <value>The accelerations.</value>
         public Vector3D[] Accelerations { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the constraints.
+        /// Gets or sets the constraints.
         /// </summary>
         /// <value>The constraints.</value>
         public List<Constraint> Constraints { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the damping.
+        /// Gets or sets the damping.
         /// </summary>
         /// <value>The damping.</value>
         public double Damping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the inverse mass.
+        /// Gets or sets the inverse mass.
         /// </summary>
         /// <value>The inverse mass.</value>
         public double[] InverseMass { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the iterations.
+        /// Gets or sets the iterations.
         /// </summary>
         /// <value>The iterations.</value>
         public int Iterations { get; set; }
 
         /// <summary>
-        ///   Gets or sets the positions.
+        /// Gets or sets the positions.
         /// </summary>
         /// <value>The positions.</value>
         public Point3D[] Positions { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the positions0.
+        /// Gets or sets the positions0.
         /// </summary>
         /// <value>The positions0.</value>
         public Point3D[] Positions0 { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Adds the constraint.
@@ -299,12 +285,8 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
         // Time corrected verlet integration
         // http://www.gamedev.net/reference/articles/article2200.asp
-        #region Methods
-
         /// <summary>
         /// The integrate.
         /// </summary>
@@ -351,7 +333,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 
     /// <summary>
@@ -359,8 +340,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public abstract class Constraint
     {
-        #region Public Methods
-
         /// <summary>
         /// Satisfies the constraint.
         /// </summary>
@@ -372,7 +351,6 @@ namespace HelixToolkit.Wpf
         /// </param>
         public abstract void Satisfy(VerletIntegrator vs, int iteration);
 
-        #endregion
     }
 
     /// <summary>
@@ -380,8 +358,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class SphereConstraint : Constraint
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SphereConstraint"/> class.
         /// </summary>
@@ -402,37 +378,29 @@ namespace HelixToolkit.Wpf
             this.RadiusSquared = radius * radius;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the center.
+        /// Gets or sets the center.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center { get; set; }
 
         /// <summary>
-        ///   Gets or sets the index.
+        /// Gets or sets the index.
         /// </summary>
         /// <value>The index.</value>
         public int Index { get; set; }
 
         /// <summary>
-        ///   Gets or sets the radius.
+        /// Gets or sets the radius.
         /// </summary>
         /// <value>The radius.</value>
         public double Radius { get; set; }
 
         /// <summary>
-        ///   Gets or sets the radius squared.
+        /// Gets or sets the radius squared.
         /// </summary>
         /// <value>The radius squared.</value>
         public double RadiusSquared { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Satisfies the constraint.
@@ -454,7 +422,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 
     /// <summary>
@@ -462,8 +429,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class FloorConstraint : Constraint
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FloorConstraint"/> class.
         /// </summary>
@@ -479,25 +444,17 @@ namespace HelixToolkit.Wpf
             this.Friction = friction;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the friction.
+        /// Gets or sets the friction.
         /// </summary>
         /// <value>The friction.</value>
         public double Friction { get; set; }
 
         /// <summary>
-        ///   Gets or sets the index.
+        /// Gets or sets the index.
         /// </summary>
         /// <value>The index.</value>
         public int Index { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Satisfies the constraint.
@@ -561,7 +518,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 
     /// <summary>
@@ -569,8 +525,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class DistanceConstraint : Constraint
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DistanceConstraint"/> class.
         /// </summary>
@@ -586,43 +540,35 @@ namespace HelixToolkit.Wpf
             this.Index2 = B;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the index1.
+        /// Gets or sets the index1.
         /// </summary>
         /// <value>The index1.</value>
         public int Index1 { get; set; }
 
         /// <summary>
-        ///   Gets or sets the index2.
+        /// Gets or sets the index2.
         /// </summary>
         /// <value>The index2.</value>
         public int Index2 { get; set; }
 
         /// <summary>
-        ///   Gets or sets the iterations.
+        /// Gets or sets the iterations.
         /// </summary>
         /// <value>The iterations.</value>
         public int Iterations { get; set; }
 
         /// <summary>
-        ///   Gets or sets the relaxation factor.
+        /// Gets or sets the relaxation factor.
         /// </summary>
         /// <value>The relaxation factor.</value>
         public double RelaxationFactor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the restlength.
+        /// Gets or sets the restlength.
         /// </summary>
         /// <value>The restlength.</value>
         public double Restlength { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Satisfies the constraint.
@@ -662,6 +608,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

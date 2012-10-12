@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MeshNormalsVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class MeshNormalsVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The color property.
         /// </summary>
@@ -30,17 +28,13 @@ namespace HelixToolkit.Wpf
             "Diameter", typeof(double), typeof(MeshNormalsVisual3D), new UIPropertyMetadata(0.1, MeshChanged));
 
         /// <summary>
-        ///   The mesh property.
+        /// The mesh property.
         /// </summary>
         public static readonly DependencyProperty MeshProperty = DependencyProperty.Register(
             "Mesh", typeof(MeshGeometry3D), typeof(MeshNormalsVisual3D), new UIPropertyMetadata(null, MeshChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color of the normals.
+        /// Gets or sets the color of the normals.
         /// </summary>
         /// <value> The color. </value>
         public Color Color
@@ -57,7 +51,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the diameter of the normal arrows.
+        /// Gets or sets the diameter of the normal arrows.
         /// </summary>
         /// <value> The diameter. </value>
         public double Diameter
@@ -74,7 +68,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the mesh.
+        /// Gets or sets the mesh.
         /// </summary>
         /// <value> The mesh. </value>
         public MeshGeometry3D Mesh
@@ -90,18 +84,14 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The mesh changed.
         /// </summary>
         /// <param name="obj">
-        /// The obj. 
+        /// The obj.
         /// </param>
         /// <param name="args">
-        /// The args. 
+        /// The args.
         /// </param>
         protected static void MeshChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
@@ -124,10 +114,9 @@ namespace HelixToolkit.Wpf
 
             this.Content = new GeometryModel3D
                 {
-                   Geometry = builder.ToMesh(true), Material = MaterialHelper.CreateMaterial(this.Color) 
+                   Geometry = builder.ToMesh(true), Material = MaterialHelper.CreateMaterial(this.Color)
                 };
         }
 
-        #endregion
     }
 }

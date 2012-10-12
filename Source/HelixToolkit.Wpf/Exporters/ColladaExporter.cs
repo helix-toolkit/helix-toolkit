@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColladaExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,16 +21,14 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/COLLADA
-    ///   http://www.khronos.org/collada/
-    ///   https://collada.org/mediawiki/index.php/COLLADA_-_Digital_Asset_and_FX_Exchange_Schema
-    ///   https://collada.org/mediawiki/index.php/COLLADA.net
-    ///   http://www.mogware.com/index.php?page=collada.NET
-    ///   http://www.okino.com/conv/exp_collada.htm
+    /// http://www.khronos.org/collada/
+    /// https://collada.org/mediawiki/index.php/COLLADA_-_Digital_Asset_and_FX_Exchange_Schema
+    /// https://collada.org/mediawiki/index.php/COLLADA.net
+    /// http://www.mogware.com/index.php?page=collada.NET
+    /// http://www.okino.com/conv/exp_collada.htm
     /// </remarks>
     public class ColladaExporter : Exporter
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The effect dictionary.
         /// </summary>
@@ -57,16 +55,12 @@ namespace HelixToolkit.Wpf
         private readonly Dictionary<Model3D, string> nodes = new Dictionary<Model3D, string>();
 
         /// <summary>
-        ///   The writer.
+        /// The writer.
         /// </summary>
         private readonly XmlTextWriter writer;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColladaExporter"/> class. 
+        /// Initializes a new instance of the <see cref="ColladaExporter"/> class.
         /// </summary>
         /// <param name="path">
         /// The path.
@@ -80,31 +74,23 @@ namespace HelixToolkit.Wpf
             this.writer.WriteAttributeString("version", "1.5.0");
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the author.
+        /// Gets or sets the author.
         /// </summary>
         /// <value>The author.</value>
         public string Author { get; set; }
 
         /// <summary>
-        ///   Gets or sets the comments.
+        /// Gets or sets the comments.
         /// </summary>
         /// <value>The comments.</value>
         public string Comments { get; set; }
 
         /// <summary>
-        ///   Gets or sets the copyright.
+        /// Gets or sets the copyright.
         /// </summary>
         /// <value>The copyright.</value>
         public string Copyright { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Closes this exporter.
@@ -119,7 +105,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Exports the specified viewport.
-        ///   Exports model, camera and lights.
+        /// Exports model, camera and lights.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -172,10 +158,6 @@ namespace HelixToolkit.Wpf
             this.writer.WriteEndElement();
             this.writer.WriteEndElement();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Exports the model.
@@ -715,6 +697,5 @@ namespace HelixToolkit.Wpf
             this.writer.WriteEndElement();
         }
 
-        #endregion
     }
 }

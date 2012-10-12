@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Exporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -23,8 +23,6 @@ namespace HelixToolkit.Wpf
         /// The disposed flag.
         /// </summary>
         private bool disposed;
-
-        #region Public Methods
 
         /// <summary>
         /// Renders the brush.
@@ -92,7 +90,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Exports the specified viewport.
-        ///   Exports model, camera and lights.
+        /// Exports model, camera and lights.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -135,10 +133,6 @@ namespace HelixToolkit.Wpf
             this.ExportHeader();
             Visual3DHelper.TraverseModel<GeometryModel3D>(model, this.ExportModel);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Exports the camera.
@@ -209,6 +203,5 @@ namespace HelixToolkit.Wpf
 
             this.disposed = true;
         }
-        #endregion
     }
 }

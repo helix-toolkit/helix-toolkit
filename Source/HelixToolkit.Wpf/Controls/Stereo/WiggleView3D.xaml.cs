@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="WiggleView3D.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public partial class WiggleView3D : StereoControl
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The wiggle rate property.
         /// </summary>
@@ -35,12 +33,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly Stopwatch watch = new Stopwatch();
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "WiggleView3D" /> class.
+        /// Initializes a new instance of the <see cref = "WiggleView3D" /> class.
         /// </summary>
         public WiggleView3D()
         {
@@ -69,12 +63,8 @@ namespace HelixToolkit.Wpf
             RenderingEventManager.AddListener(renderingEventListener);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Wiggles per second
+        /// Wiggles per second
         /// </summary>
         public double WiggleRate
         {
@@ -88,10 +78,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(WiggleRateProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The wiggle rate changed.
@@ -149,6 +135,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

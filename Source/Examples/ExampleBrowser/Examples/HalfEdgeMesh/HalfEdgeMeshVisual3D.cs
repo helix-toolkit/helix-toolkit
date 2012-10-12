@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HalfEdgeMeshVisual3D.cs" company="">
-//   
+//
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,16 +21,14 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class HalfEdgeMeshVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The adjacent material property.
         /// </summary>
         public static readonly DependencyProperty AdjacentMaterialProperty =
             DependencyProperty.Register(
-                "AdjacentMaterial", 
-                typeof(Material), 
-                typeof(HalfEdgeMeshVisual3D), 
+                "AdjacentMaterial",
+                typeof(Material),
+                typeof(HalfEdgeMeshVisual3D),
                 new UIPropertyMetadata(Materials.Green));
 
         /// <summary>
@@ -38,41 +36,41 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ConnectedMaterialProperty =
             DependencyProperty.Register(
-                "ConnectedMaterial", 
-                typeof(Material), 
-                typeof(HalfEdgeMeshVisual3D), 
+                "ConnectedMaterial",
+                typeof(Material),
+                typeof(HalfEdgeMeshVisual3D),
                 new UIPropertyMetadata(Materials.Red));
 
         /// <summary>
-        ///   The edge diameter property.
+        /// The edge diameter property.
         /// </summary>
         public static readonly DependencyProperty EdgeDiameterProperty = DependencyProperty.Register(
             "EdgeDiameter", typeof(double), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(0.03, MeshChanged));
 
         /// <summary>
-        ///   The edge material property.
+        /// The edge material property.
         /// </summary>
         public static readonly DependencyProperty EdgeMaterialProperty = DependencyProperty.Register(
             "EdgeMaterial", typeof(Material), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(Materials.White));
 
         /// <summary>
-        ///   The face back material property.
+        /// The face back material property.
         /// </summary>
         public static readonly DependencyProperty FaceBackMaterialProperty =
             DependencyProperty.Register(
-                "FaceBackMaterial", 
-                typeof(Material), 
-                typeof(HalfEdgeMeshVisual3D), 
+                "FaceBackMaterial",
+                typeof(Material),
+                typeof(HalfEdgeMeshVisual3D),
                 new UIPropertyMetadata(Materials.Gray));
 
         /// <summary>
-        ///   The face material property.
+        /// The face material property.
         /// </summary>
         public static readonly DependencyProperty FaceMaterialProperty = DependencyProperty.Register(
             "FaceMaterial", typeof(Material), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(Materials.Blue));
 
         /// <summary>
-        ///   The mesh property.
+        /// The mesh property.
         /// </summary>
         public static readonly DependencyProperty MeshProperty = DependencyProperty.Register(
             "Mesh", typeof(HalfEdgeMesh), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(null, MeshChanged));
@@ -82,19 +80,19 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty SelectedMaterialProperty =
             DependencyProperty.Register(
-                "SelectedMaterial", 
-                typeof(Material), 
-                typeof(HalfEdgeMeshVisual3D), 
+                "SelectedMaterial",
+                typeof(Material),
+                typeof(HalfEdgeMeshVisual3D),
                 new UIPropertyMetadata(Materials.Yellow));
 
         /// <summary>
-        ///   The shared vertices property.
+        /// The shared vertices property.
         /// </summary>
         public static readonly DependencyProperty SharedVerticesProperty = DependencyProperty.Register(
             "SharedVertices", typeof(bool), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(false, MeshChanged));
 
         /// <summary>
-        ///   The shrink factor property.
+        /// The shrink factor property.
         /// </summary>
         public static readonly DependencyProperty ShrinkFactorProperty = DependencyProperty.Register(
             "ShrinkFactor", typeof(double), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(0.1, MeshChanged));
@@ -104,41 +102,37 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty UnselectedMaterialProperty =
             DependencyProperty.Register(
-                "UnselectedMaterial", 
-                typeof(Material), 
-                typeof(HalfEdgeMeshVisual3D), 
+                "UnselectedMaterial",
+                typeof(Material),
+                typeof(HalfEdgeMeshVisual3D),
                 new UIPropertyMetadata(Materials.Gray));
 
         /// <summary>
-        ///   The vertex material property.
+        /// The vertex material property.
         /// </summary>
         public static readonly DependencyProperty VertexMaterialProperty = DependencyProperty.Register(
             "VertexMaterial", typeof(Material), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(Materials.Gold));
 
         /// <summary>
-        ///   The vertex radius property.
+        /// The vertex radius property.
         /// </summary>
         public static readonly DependencyProperty VertexRadiusProperty = DependencyProperty.Register(
             "VertexRadius", typeof(double), typeof(HalfEdgeMeshVisual3D), new UIPropertyMetadata(0.05, MeshChanged));
 
         /// <summary>
-        ///   The face to face visual map.
+        /// The face to face visual map.
         /// </summary>
         private Dictionary<HalfEdgeMesh.Face, ModelUIElement3D> faceVisuals;
 
         /// <summary>
-        ///   The half edge to half edge visual map.
+        /// The half edge to half edge visual map.
         /// </summary>
         private Dictionary<HalfEdgeMesh.HalfEdge, ModelUIElement3D> halfEdgeVisuals;
 
         /// <summary>
-        ///   The vertex to vertex visual map.
+        /// The vertex to vertex visual map.
         /// </summary>
         private Dictionary<HalfEdgeMesh.Vertex, ModelUIElement3D> vertexVisuals;
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets AdjacentMaterial.
@@ -173,7 +167,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the edge diameter.
+        /// Gets or sets the edge diameter.
         /// </summary>
         /// <value> The edge diameter. </value>
         public double EdgeDiameter
@@ -190,7 +184,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the edge material.
+        /// Gets or sets the edge material.
         /// </summary>
         /// <value> The edge material. </value>
         public Material EdgeMaterial
@@ -207,7 +201,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the face back material.
+        /// Gets or sets the face back material.
         /// </summary>
         /// <value> The face back material. </value>
         public Material FaceBackMaterial
@@ -224,7 +218,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the face material.
+        /// Gets or sets the face material.
         /// </summary>
         /// <value> The face material. </value>
         public Material FaceMaterial
@@ -241,7 +235,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the mesh.
+        /// Gets or sets the mesh.
         /// </summary>
         /// <value> The mesh. </value>
         public HalfEdgeMesh Mesh
@@ -274,7 +268,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to share vertices (smooth shading).
+        /// Gets or sets a value indicating whether to share vertices (smooth shading).
         /// </summary>
         /// <value> <c>true</c> if vertices are shared; otherwise, <c>false</c> . </value>
         public bool SharedVertices
@@ -291,7 +285,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the shrink factor.
+        /// Gets or sets the shrink factor.
         /// </summary>
         /// <value> The shrink factor. </value>
         public double ShrinkFactor
@@ -324,7 +318,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the vertex material.
+        /// Gets or sets the vertex material.
         /// </summary>
         /// <value> The vertex material. </value>
         public Material VertexMaterial
@@ -341,7 +335,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the vertex radius.
+        /// Gets or sets the vertex radius.
         /// </summary>
         /// <value> The vertex radius. </value>
         public double VertexRadius
@@ -357,10 +351,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         /// Finds the centroid of the specified face.
         /// </summary>
@@ -368,7 +358,7 @@ namespace HelixToolkit.Wpf
         /// The vertices.
         /// </param>
         /// <returns>
-        /// The centroid. 
+        /// The centroid.
         /// </returns>
         public Point3D FindCentroid(IList<Point3D> vertices)
         {
@@ -393,18 +383,14 @@ namespace HelixToolkit.Wpf
             return new Point3D(x, y, z);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The mesh changed.
         /// </summary>
         /// <param name="obj">
-        /// The obj. 
+        /// The obj.
         /// </param>
         /// <param name="args">
-        /// The args. 
+        /// The args.
         /// </param>
         protected static void MeshChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
@@ -434,7 +420,7 @@ namespace HelixToolkit.Wpf
                     gm.AddSubdivisionSphere(vertex.Position, this.VertexRadius, 4);
                     var vertexElement = new ModelUIElement3D
                         {
-                           Model = new GeometryModel3D(gm.ToMesh(), this.VertexMaterial) 
+                           Model = new GeometryModel3D(gm.ToMesh(), this.VertexMaterial)
                         };
                     var currentVertex = vertex;
                     vertexElement.MouseLeftButtonDown += (s, e) => this.HighlightVertex(currentVertex);
@@ -468,7 +454,7 @@ namespace HelixToolkit.Wpf
                             Model =
                                 new GeometryModel3D(gm.ToMesh(), this.FaceMaterial)
                                     {
-                                       BackMaterial = this.FaceBackMaterial 
+                                       BackMaterial = this.FaceBackMaterial
                                     }
                         };
                     var currentFace = face;
@@ -492,7 +478,7 @@ namespace HelixToolkit.Wpf
                     gm.AddArrow(start, end, this.EdgeDiameter);
                     var edgeElement = new ModelUIElement3D
                         {
-                           Model = new GeometryModel3D(gm.ToMesh(), this.EdgeMaterial) 
+                           Model = new GeometryModel3D(gm.ToMesh(), this.EdgeMaterial)
                         };
                     var currentEdge = edge;
                     edgeElement.MouseLeftButtonDown += (s, e) => { this.HighlightEdge(currentEdge); };
@@ -702,6 +688,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

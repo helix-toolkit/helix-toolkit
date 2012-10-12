@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LinearGradientBrushExtension.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,20 +16,14 @@ namespace HelixToolkit.Wpf
     /// <example>
     /// <code>
     /// Background={helix:LinearGradientBrush Black,White}
-    ///   </code>
+    ///  </code>
     /// </example>
     public class LinearGradientBrushExtension : MarkupExtension
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The brush.
         /// </summary>
         private readonly LinearGradientBrush brush;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearGradientBrushExtension"/> class.
@@ -62,10 +56,6 @@ namespace HelixToolkit.Wpf
         {
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Returns the linear gradient brush.
         /// </summary>
@@ -80,6 +70,5 @@ namespace HelixToolkit.Wpf
             return this.brush;
         }
 
-        #endregion
     }
 }

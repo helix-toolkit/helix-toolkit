@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Window1.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -27,7 +27,6 @@ namespace SolarsystemDemo
     /// </summary>
     public partial class Window1 : Window
     {
-        
 
         SolarSystem3D SolarSystem;
 
@@ -43,15 +42,11 @@ namespace SolarsystemDemo
             Loaded += new RoutedEventHandler(Window1_Loaded);
         }
 
-
         void Window1_Loaded(object sender, RoutedEventArgs e)
         {
             SolarSystem.InitModel();
             SolarSystem.UpdateModel();
         }
-
-
-
 
     }
 }

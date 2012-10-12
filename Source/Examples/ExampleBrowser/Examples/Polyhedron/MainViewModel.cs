@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -149,7 +149,6 @@ namespace PolyhedronDemo
             set { model = value; RaisePropertyChanged("Model"); }
         }
 
-        #region PropertyChanged Block
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -160,7 +159,5 @@ namespace PolyhedronDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        #endregion
-
     }
 }

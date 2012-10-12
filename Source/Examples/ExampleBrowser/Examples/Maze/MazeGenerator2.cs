@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MazeGenerator2.cs" company="Helix 3D Toolkit examples">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -54,10 +54,9 @@ namespace MazeDemo
                 throw new InvalidOperationException("Height must be an odd number");
             }
 
-
             bool[,] maze = new bool[height, width];
 
-            // Initialize maze (all walls intact) 
+            // Initialize maze (all walls intact)
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)

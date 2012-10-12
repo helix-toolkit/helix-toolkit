@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LwoReader.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -24,44 +24,34 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class LwoReader : IModelReader
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the materials.
+        /// Gets the materials.
         /// </summary>
         /// <value>The materials.</value>
         public IList<Material> Materials { get; private set; }
 
         /// <summary>
-        ///   Gets the meshes.
+        /// Gets the meshes.
         /// </summary>
         /// <value>The meshes.</value>
         public IList<MeshBuilder> Meshes { get; private set; }
 
         /// <summary>
-        ///   Gets the surfaces.
+        /// Gets the surfaces.
         /// </summary>
         /// <value>The surfaces.</value>
         public IList<string> Surfaces { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the texture path.
+        /// Gets or sets the texture path.
         /// </summary>
         /// <value>The texture path.</value>
         public string TexturePath { get; set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets Points.
         /// </summary>
         private IList<Point3D> Points { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Reads the model from the specified path.
@@ -147,10 +137,6 @@ namespace HelixToolkit.Wpf
                 return this.BuildModel();
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Builds the model.
@@ -341,6 +327,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

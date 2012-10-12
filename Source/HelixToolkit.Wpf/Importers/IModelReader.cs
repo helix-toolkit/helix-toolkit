@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IModelReader.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public interface IModelReader
     {
-        #region Public Methods
-
         /// <summary>
         /// Reads the model from the specified path.
         /// </summary>
@@ -38,6 +36,5 @@ namespace HelixToolkit.Wpf
         /// </returns>
         Model3DGroup Read(Stream s);
 
-        #endregion
     }
 }

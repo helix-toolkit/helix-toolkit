@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Transform3DHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,8 +13,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class Transform3DHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Combines two transforms.
         /// </summary>
@@ -35,6 +33,5 @@ namespace HelixToolkit.Wpf
             return g;
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Visual3DHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,17 +20,11 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class Visual3DHelper
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The visual 3 d model property info.
         /// </summary>
         private static readonly PropertyInfo Visual3DModelPropertyInfo = typeof(Visual3D).GetProperty(
             "Visual3DModel", BindingFlags.Instance | BindingFlags.NonPublic);
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Finds a child of the specified type.
@@ -337,10 +331,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Gets the children.
         /// </summary>
@@ -418,6 +408,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

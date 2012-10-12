@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OffReader.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,23 +15,20 @@ namespace HelixToolkit.Wpf
     /// A Geomview Object File Format (OFF) reader.
     /// </summary>
     /// <remarks>
-    ///   The reader does not parse colors, normals and texture coordinates.
-    ///   Only 3 dimensional vertices are supported.
-    ///   Homogeneous coordinates are not supported.
-    ///   See the following links for information about the file format:
-    ///   http://www.geomview.org/
-    ///   http://people.sc.fsu.edu/~jburkardt/data/off/off.html
-    ///   http://people.sc.fsu.edu/~jburkardt/html/off_format.html
-    ///   http://segeval.cs.princeton.edu/public/off_format.html
-    ///   http://paulbourke.net/dataformats/off/
+    /// The reader does not parse colors, normals and texture coordinates.
+    /// Only 3 dimensional vertices are supported.
+    /// Homogeneous coordinates are not supported.
+    /// See the following links for information about the file format:
+    /// http://www.geomview.org/
+    /// http://people.sc.fsu.edu/~jburkardt/data/off/off.html
+    /// http://people.sc.fsu.edu/~jburkardt/html/off_format.html
+    /// http://segeval.cs.princeton.edu/public/off_format.html
+    /// http://paulbourke.net/dataformats/off/
     /// </remarks>
     public class OffReader : IModelReader
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "OffReader" /> class. 
-        ///   Initializes a new instance of the <see cref = "ObjReader" /> class.
+        /// Initializes a new instance of the <see cref = "OffReader" /> class.
         /// </summary>
         public OffReader()
         {
@@ -43,12 +40,8 @@ namespace HelixToolkit.Wpf
             this.Faces = new List<int[]>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the faces.
+        /// Gets the faces.
         /// </summary>
         public IList<int[]> Faces { get; private set; }
 
@@ -58,13 +51,9 @@ namespace HelixToolkit.Wpf
         // public IList<Point> TexCoords { get; set; }
 
         /// <summary>
-        ///   Gets the vertices.
+        /// Gets the vertices.
         /// </summary>
         public IList<Point3D> Vertices { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates a mesh from the loaded file.
@@ -309,10 +298,6 @@ namespace HelixToolkit.Wpf
             return this.CreateModel3D();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Gets int values from a string.
         /// </summary>
@@ -375,6 +360,5 @@ namespace HelixToolkit.Wpf
             return input;
         }
 
-        #endregion
     }
 }

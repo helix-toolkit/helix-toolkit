@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CameraSetting.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,8 +13,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class CameraSetting
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraSetting"/> class.
         /// </summary>
@@ -41,48 +39,40 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets FarPlaneDistance.
+        /// Gets or sets FarPlaneDistance.
         /// </summary>
         public double FarPlaneDistance { get; set; }
 
         /// <summary>
-        ///   Gets or sets FieldOfView.
+        /// Gets or sets FieldOfView.
         /// </summary>
         public double FieldOfView { get; set; }
 
         /// <summary>
-        ///   Gets or sets LookDirection.
+        /// Gets or sets LookDirection.
         /// </summary>
         public Vector3D LookDirection { get; set; }
 
         /// <summary>
-        ///   Gets or sets NearPlaneDistance.
+        /// Gets or sets NearPlaneDistance.
         /// </summary>
         public double NearPlaneDistance { get; set; }
 
         /// <summary>
-        ///   Gets or sets Position.
+        /// Gets or sets Position.
         /// </summary>
         public Point3D Position { get; set; }
 
         /// <summary>
-        ///   Gets or sets UpDirection.
+        /// Gets or sets UpDirection.
         /// </summary>
         public Vector3D UpDirection { get; set; }
 
         /// <summary>
-        ///   Gets or sets Width.
+        /// Gets or sets Width.
         /// </summary>
         public double Width { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The update camera.
@@ -110,6 +100,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MouseGestureHandler.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     internal abstract class MouseGestureHandler
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseGestureHandler"/> class.
         /// </summary>
@@ -31,12 +29,8 @@ namespace HelixToolkit.Wpf
             this.ManipulationWatch = new Stopwatch();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets Origin.
+        /// Gets Origin.
         /// </summary>
         public Point3D Origin
         {
@@ -56,12 +50,8 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets the camera.
+        /// Gets the camera.
         /// </summary>
         /// <value>The camera.</value>
         protected ProjectionCamera Camera
@@ -73,7 +63,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera look direction.
+        /// Gets or sets the camera look direction.
         /// </summary>
         /// <value>The camera look direction.</value>
         protected Vector3D CameraLookDirection
@@ -90,7 +80,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the camera mode.
+        /// Gets the camera mode.
         /// </summary>
         /// <value>The camera mode.</value>
         protected CameraMode CameraMode
@@ -102,7 +92,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera position.
+        /// Gets or sets the camera position.
         /// </summary>
         /// <value>The camera position.</value>
         protected Point3D CameraPosition
@@ -119,7 +109,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the camera target.
+        /// Gets the camera target.
         /// </summary>
         /// <value>The camera target.</value>
         protected Point3D CameraTarget
@@ -131,7 +121,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera up direction.
+        /// Gets or sets the camera up direction.
         /// </summary>
         /// <value>The camera up direction.</value>
         protected Vector3D CameraUpDirection
@@ -148,27 +138,27 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the controller.
+        /// Gets or sets the controller.
         /// </summary>
         protected CameraController Controller { get; set; }
 
         /// <summary>
-        ///   Gets or sets the last point (2D screen coordinates).
+        /// Gets or sets the last point (2D screen coordinates).
         /// </summary>
         protected Point LastPoint { get; set; }
 
         /// <summary>
-        ///   Gets or sets the last point (3D world coordinates).
+        /// Gets or sets the last point (3D world coordinates).
         /// </summary>
         protected Point3D? LastPoint3D { get; set; }
 
         /// <summary>
-        ///   Gets or sets the manipulation watch.
+        /// Gets or sets the manipulation watch.
         /// </summary>
         protected Stopwatch ManipulationWatch { get; set; }
 
         /// <summary>
-        ///   Gets the model up direction.
+        /// Gets the model up direction.
         /// </summary>
         /// <value>The model up direction.</value>
         protected Vector3D ModelUpDirection
@@ -180,22 +170,22 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
+        /// Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
         /// </summary>
         protected Point3D? MouseDownNearestPoint3D { get; set; }
 
         /// <summary>
-        ///   Gets or sets the mouse down point (2D screen coordinates).
+        /// Gets or sets the mouse down point (2D screen coordinates).
         /// </summary>
         protected Point MouseDownPoint { get; set; }
 
         /// <summary>
-        ///   Gets or sets the mouse down point (3D world coordinates).
+        /// Gets or sets the mouse down point (3D world coordinates).
         /// </summary>
         protected Point3D? MouseDownPoint3D { get; set; }
 
         /// <summary>
-        ///   Gets the rotation sensitivity.
+        /// Gets the rotation sensitivity.
         /// </summary>
         /// <value>The rotation sensitivity.</value>
         protected double RotationSensitivity
@@ -207,7 +197,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the viewport.
+        /// Gets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
         protected Viewport3D Viewport
@@ -219,7 +209,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the height of the viewport.
+        /// Gets the height of the viewport.
         /// </summary>
         /// <value>The height of the viewport.</value>
         protected double ViewportHeight
@@ -231,7 +221,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the width of the viewport.
+        /// Gets the width of the viewport.
         /// </summary>
         /// <value>The width of the viewport.</value>
         protected double ViewportWidth
@@ -243,7 +233,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the zoom sensitivity.
+        /// Gets the zoom sensitivity.
         /// </summary>
         /// <value>The zoom sensitivity.</value>
         protected double ZoomSensitivity
@@ -255,13 +245,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the old cursor.
+        /// Gets or sets the old cursor.
         /// </summary>
         private Cursor OldCursor { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Occurs when the manipulation is completed.
@@ -366,10 +352,6 @@ namespace HelixToolkit.Wpf
         {
             return this.UnProject(p, this.CameraTarget, this.CameraLookDirection);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Occurs when the command associated with this handler initiates a check to determine whether the command can be executed on the command target.
@@ -510,6 +492,5 @@ namespace HelixToolkit.Wpf
             this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
         }
 
-        #endregion
     }
 }

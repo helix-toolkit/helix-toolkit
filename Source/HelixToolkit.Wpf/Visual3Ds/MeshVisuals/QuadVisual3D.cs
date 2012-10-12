@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="QuadVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -31,50 +31,44 @@ namespace HelixToolkit.Wpf
         // |               |
         // +---------------+
         // (0,1)          (1,1)
-        #region Constants and Fields
-
         /// <summary>
         /// The point 1 property.
         /// </summary>
         public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
-            "Point1", 
-            typeof(Point3D), 
-            typeof(QuadVisual3D), 
+            "Point1",
+            typeof(Point3D),
+            typeof(QuadVisual3D),
             new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
         /// The point 2 property.
         /// </summary>
         public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
-            "Point2", 
-            typeof(Point3D), 
-            typeof(QuadVisual3D), 
+            "Point2",
+            typeof(Point3D),
+            typeof(QuadVisual3D),
             new UIPropertyMetadata(new Point3D(1, 0, 0), GeometryChanged));
 
         /// <summary>
         /// The point 3 property.
         /// </summary>
         public static readonly DependencyProperty Point3Property = DependencyProperty.Register(
-            "Point3", 
-            typeof(Point3D), 
-            typeof(QuadVisual3D), 
+            "Point3",
+            typeof(Point3D),
+            typeof(QuadVisual3D),
             new UIPropertyMetadata(new Point3D(1, 1, 0), GeometryChanged));
 
         /// <summary>
         /// The point 4 property.
         /// </summary>
         public static readonly DependencyProperty Point4Property = DependencyProperty.Register(
-            "Point4", 
-            typeof(Point3D), 
-            typeof(QuadVisual3D), 
+            "Point4",
+            typeof(Point3D),
+            typeof(QuadVisual3D),
             new UIPropertyMetadata(new Point3D(0, 1, 0), GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the first point.
+        /// Gets or sets the first point.
         /// </summary>
         /// <value>The point1.</value>
         public Point3D Point1
@@ -91,7 +85,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the second point.
+        /// Gets or sets the second point.
         /// </summary>
         /// <value>The point2.</value>
         public Point3D Point2
@@ -108,7 +102,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the third point.
+        /// Gets or sets the third point.
         /// </summary>
         /// <value>The point3.</value>
         public Point3D Point3
@@ -125,7 +119,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the fourth point.
+        /// Gets or sets the fourth point.
         /// </summary>
         /// <value>The point4.</value>
         public Point3D Point4
@@ -141,10 +135,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
@@ -153,17 +143,16 @@ namespace HelixToolkit.Wpf
         {
             var builder = new MeshBuilder(false,true);
             builder.AddQuad(
-                this.Point1, 
-                this.Point2, 
-                this.Point3, 
-                this.Point4, 
-                new Point(0, 1), 
-                new Point(1, 1), 
-                new Point(1, 0), 
+                this.Point1,
+                this.Point2,
+                this.Point3,
+                this.Point4,
+                new Point(0, 1),
+                new Point(1, 1),
+                new Point(1, 0),
                 new Point(0, 0));
             return builder.ToMesh();
         }
 
-        #endregion
     }
 }

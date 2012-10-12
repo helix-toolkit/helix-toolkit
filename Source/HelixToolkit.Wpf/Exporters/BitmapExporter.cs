@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BitmapExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,8 +18,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class BitmapExporter : IExporter
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BitmapExporter"/> class.
         /// </summary>
@@ -32,31 +30,23 @@ namespace HelixToolkit.Wpf
             this.OversamplingMultiplier = 2;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the background brush.
+        /// Gets or sets the background brush.
         /// </summary>
         /// <value>The background.</value>
         public Brush Background { get; set; }
 
         /// <summary>
-        ///   Gets or sets the name of the file.
+        /// Gets or sets the name of the file.
         /// </summary>
         /// <value>The name of the file.</value>
         public string FileName { get; set; }
 
         /// <summary>
-        ///   Gets or sets the oversampling multiplier.
+        /// Gets or sets the oversampling multiplier.
         /// </summary>
         /// <value>The oversampling multiplier.</value>
         public int OversamplingMultiplier { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Exports the specified viewport.
@@ -121,6 +111,5 @@ namespace HelixToolkit.Wpf
             throw new NotImplementedException();
         }
 
-        #endregion
     }
 }

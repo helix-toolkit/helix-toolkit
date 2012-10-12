@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public interface IExporter
     {
-        #region Public Methods
-
         /// <summary>
         /// Exports the specified viewport.
         /// </summary>
@@ -40,6 +38,5 @@ namespace HelixToolkit.Wpf
         /// </param>
         void Export(Model3D model);
 
-        #endregion
     }
 }

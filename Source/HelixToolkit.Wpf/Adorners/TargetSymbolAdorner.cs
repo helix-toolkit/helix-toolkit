@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TargetSymbolAdorner.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,8 +18,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class TargetSymbolAdorner : Adorner
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetSymbolAdorner"/> class.
         /// </summary>
@@ -35,19 +33,11 @@ namespace HelixToolkit.Wpf
             this.Position = position;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the position.
+        /// Gets or sets the position.
         /// </summary>
         /// <value>The position.</value>
         public Point Position { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Called when rendering.
@@ -84,23 +74,22 @@ namespace HelixToolkit.Wpf
             dc.DrawArc(null, lightPen, this.Position, 280, 350, r4, r4);
 
             dc.DrawLine(
-                lightPen, 
-                new Point(this.Position.X, this.Position.Y - r2), 
+                lightPen,
+                new Point(this.Position.X, this.Position.Y - r2),
                 new Point(this.Position.X, this.Position.Y - r3));
             dc.DrawLine(
-                lightPen, 
-                new Point(this.Position.X, this.Position.Y + r2), 
+                lightPen,
+                new Point(this.Position.X, this.Position.Y + r2),
                 new Point(this.Position.X, this.Position.Y + r3));
             dc.DrawLine(
-                lightPen, 
-                new Point(this.Position.X - r2, this.Position.Y), 
+                lightPen,
+                new Point(this.Position.X - r2, this.Position.Y),
                 new Point(this.Position.X - r3, this.Position.Y));
             dc.DrawLine(
-                lightPen, 
-                new Point(this.Position.X + r2, this.Position.Y), 
+                lightPen,
+                new Point(this.Position.X + r2, this.Position.Y),
                 new Point(this.Position.X + r3, this.Position.Y));
         }
 
-        #endregion
     }
 }

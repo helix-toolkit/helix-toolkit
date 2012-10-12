@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StudioReader.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
 //   A 3D Studio file reader.
@@ -30,16 +30,10 @@ namespace HelixToolkit.Wpf
         //// http://code.google.com/p/lib3ds/
         //// http://blogs.msdn.com/b/danlehen/archive/2005/10/09/478923.aspx
 
-        #region Constants and Fields
-
         /// <summary>
-        ///   The materials.
+        /// The materials.
         /// </summary>
         private readonly Dictionary<string, Material> materials = new Dictionary<string, Material>();
-
-        #endregion
-
-        #region Enums
 
         /// <summary>
         /// The chunk id.
@@ -149,37 +143,25 @@ namespace HelixToolkit.Wpf
             // ReSharper restore InconsistentNaming
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the texture path.
+        /// Gets or sets the texture path.
         /// </summary>
         /// <value> The texture path. </value>
         public string TexturePath { get; set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets Model.
+        /// Gets or sets Model.
         /// </summary>
         private Model3DGroup Model { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Reads the model from the specified path.
         /// </summary>
         /// <param name="path">
-        /// The path. 
+        /// The path.
         /// </param>
         /// <returns>
-        /// The model. 
+        /// The model.
         /// </returns>
         public Model3DGroup Read(string path)
         {
@@ -194,10 +176,10 @@ namespace HelixToolkit.Wpf
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">
-        /// The stream. 
+        /// The stream.
         /// </param>
         /// <returns>
-        /// The model. 
+        /// The model.
         /// </returns>
         public Model3DGroup Read(Stream s)
         {
@@ -255,18 +237,14 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Read a chunk id.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <returns>
-        /// The chunk ID. 
+        /// The chunk ID.
         /// </returns>
         private ChunkID ReadChunkId(BinaryReader reader)
         {
@@ -277,10 +255,10 @@ namespace HelixToolkit.Wpf
         /// Read a chunk size.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <returns>
-        /// The read chunk size. 
+        /// The read chunk size.
         /// </returns>
         private int ReadChunkSize(BinaryReader reader)
         {
@@ -291,10 +269,10 @@ namespace HelixToolkit.Wpf
         /// Read a color.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <returns>
-        /// A color. 
+        /// A color.
         /// </returns>
         private Color ReadColor(BinaryReader reader)
         {
@@ -340,13 +318,13 @@ namespace HelixToolkit.Wpf
         /// Read data.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <param name="size">
-        /// Excluding header size 
+        /// Excluding header size
         /// </param>
         /// <returns>
-        /// The data. 
+        /// The data.
         /// </returns>
         private byte[] ReadData(BinaryReader reader, int size)
         {
@@ -357,10 +335,10 @@ namespace HelixToolkit.Wpf
         /// Read a face list.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <returns>
-        /// The face list. 
+        /// The face list.
         /// </returns>
         private Int32Collection ReadFaceList(BinaryReader reader)
         {
@@ -381,13 +359,13 @@ namespace HelixToolkit.Wpf
         /// Read face materials.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <param name="msize">
-        /// The msize. 
+        /// The msize.
         /// </param>
         /// <returns>
-        /// The materials. 
+        /// The materials.
         /// </returns>
         private List<FaceMaterial> ReadFaceMaterials(BinaryReader reader, int msize)
         {
@@ -436,13 +414,13 @@ namespace HelixToolkit.Wpf
         /// Read a mat map.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <param name="size">
-        /// The size. 
+        /// The size.
         /// </param>
         /// <returns>
-        /// The mat map. 
+        /// The mat map.
         /// </returns>
         private string ReadMatMap(BinaryReader reader, int size)
         {
@@ -463,10 +441,10 @@ namespace HelixToolkit.Wpf
         /// Read a material.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <param name="msize">
-        /// The size. 
+        /// The size.
         /// </param>
         private void ReadMaterial(BinaryReader reader, int msize)
         {
@@ -576,10 +554,10 @@ namespace HelixToolkit.Wpf
         /// Read an object.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <param name="msize">
-        /// The size. 
+        /// The size.
         /// </param>
         private void ReadObject(BinaryReader reader, int msize)
         {
@@ -613,10 +591,10 @@ namespace HelixToolkit.Wpf
         /// Read a string.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <returns>
-        /// The string. 
+        /// The string.
         /// </returns>
         private string ReadString(BinaryReader reader)
         {
@@ -639,10 +617,10 @@ namespace HelixToolkit.Wpf
         /// Read tex coords.
         /// </summary>
         /// <param name="reader">
-        /// The reader. 
+        /// The reader.
         /// </param>
         /// <returns>
-        /// The tex coords. 
+        /// The tex coords.
         /// </returns>
         private PointCollection ReadTexCoords(BinaryReader reader)
         {
@@ -707,7 +685,7 @@ namespace HelixToolkit.Wpf
         /// The reader.
         /// </param>
         /// <param name="chunkSize">
-        /// The chunk size. 
+        /// The chunk size.
         /// </param>
         private void ReadTriangularMesh(BinaryReader reader, int chunkSize)
         {
@@ -818,26 +796,21 @@ namespace HelixToolkit.Wpf
             return pts;
         }
 
-        #endregion
-
         /// <summary>
         /// The face material.
         /// </summary>
         private class FaceMaterial
         {
-            #region Public Properties
-
             /// <summary>
-            ///   Gets or sets Faces.
+            /// Gets or sets Faces.
             /// </summary>
             public Int32Collection Faces { get; set; }
 
             /// <summary>
-            ///   Gets or sets Name.
+            /// Gets or sets Name.
             /// </summary>
             public string Name { get; set; }
 
-            #endregion
         }
     }
 }

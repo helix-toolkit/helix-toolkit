@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CameraMode.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,17 +12,17 @@ namespace HelixToolkit.Wpf
     public enum CameraMode
     {
         /// <summary>
-        ///   Orbits around a point (fixed target position, move closer target when zooming).
+        /// Orbits around a point (fixed target position, move closer target when zooming).
         /// </summary>
-        Inspect, 
+        Inspect,
 
         /// <summary>
-        ///   Walk around (fixed camera position, move in cameradirection when zooming).
+        /// Walk around (fixed camera position, move in cameradirection when zooming).
         /// </summary>
-        WalkAround, 
+        WalkAround,
 
         /// <summary>
-        ///   Fixed camera target, change FOV when zooming.
+        /// Fixed camera target, change FOV when zooming.
         /// </summary>
         FixedPosition
     }

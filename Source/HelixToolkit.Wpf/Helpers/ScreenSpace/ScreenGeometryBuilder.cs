@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScreenGeometryBuilder.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,26 +13,20 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public abstract class ScreenGeometryBuilder
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The parent visual.
+        /// The parent visual.
         /// </summary>
         protected readonly Visual3D visual;
 
         /// <summary>
-        ///   The screen to visual transformation matrix.
+        /// The screen to visual transformation matrix.
         /// </summary>
         protected Matrix3D screenToVisual;
 
         /// <summary>
-        ///   The visual to screen transformation matrix.
+        /// The visual to screen transformation matrix.
         /// </summary>
         protected Matrix3D visualToScreen;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenGeometryBuilder"/> class.
@@ -44,10 +38,6 @@ namespace HelixToolkit.Wpf
         {
             this.visual = visual;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Updates the transforms.
@@ -80,6 +70,5 @@ namespace HelixToolkit.Wpf
             return true;
         }
 
-        #endregion
     }
 }

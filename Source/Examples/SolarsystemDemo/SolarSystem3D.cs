@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SolarSystem3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -31,8 +31,6 @@ namespace SolarsystemDemo
             set { _days = value; OnPropertyChanged("Days"); OnPropertyChanged("Time"); TimeChanged(); }
         }
 
-
-
         public DateTime Time
         {
             get { return Time0.AddDays(_days); }
@@ -49,7 +47,6 @@ namespace SolarsystemDemo
             Time0 = DateTime.Now;
         }
 
-
         public void InitModel()
         {
             foreach (Planet3D p in Children)
@@ -62,8 +59,6 @@ namespace SolarsystemDemo
                 p.UpdateModel();
         }
 
-        #region INotifyPropertyChanged Members
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
@@ -74,7 +69,5 @@ namespace SolarsystemDemo
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        #endregion
-
     }
 }

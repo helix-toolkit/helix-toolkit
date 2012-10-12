@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MapTexture.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class MapTexture : TerrainTexture
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MapTexture"/> class.
         /// </summary>
@@ -28,37 +26,29 @@ namespace HelixToolkit.Wpf
             this.Material = MaterialHelper.CreateImageMaterial(source, 1);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the bottom.
+        /// Gets or sets the bottom.
         /// </summary>
         /// <value>The bottom.</value>
         public double Bottom { get; set; }
 
         /// <summary>
-        ///   Gets or sets the left.
+        /// Gets or sets the left.
         /// </summary>
         /// <value>The left.</value>
         public double Left { get; set; }
 
         /// <summary>
-        ///   Gets or sets the right.
+        /// Gets or sets the right.
         /// </summary>
         /// <value>The right.</value>
         public double Right { get; set; }
 
         /// <summary>
-        ///   Gets or sets the top.
+        /// Gets or sets the top.
         /// </summary>
         /// <value>The top.</value>
         public double Top { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Calculates the texture of the specified model.
@@ -84,6 +74,5 @@ namespace HelixToolkit.Wpf
             this.TextureCoordinates = texcoords;
         }
 
-        #endregion
     }
 }

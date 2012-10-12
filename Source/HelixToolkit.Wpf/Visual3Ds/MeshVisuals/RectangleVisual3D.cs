@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RectangleVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class RectangleVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The div length property.
         /// </summary>
@@ -34,9 +32,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty LengthDirectionProperty =
             DependencyProperty.Register(
-                "LengthDirection", 
-                typeof(Vector3D), 
-                typeof(RectangleVisual3D), 
+                "LengthDirection",
+                typeof(Vector3D),
+                typeof(RectangleVisual3D),
                 new PropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
 
         /// <summary>
@@ -49,18 +47,18 @@ namespace HelixToolkit.Wpf
         /// The normal property.
         /// </summary>
         public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
-            "Normal", 
-            typeof(Vector3D), 
-            typeof(RectangleVisual3D), 
+            "Normal",
+            typeof(Vector3D),
+            typeof(RectangleVisual3D),
             new PropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
         /// The origin property.
         /// </summary>
         public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
-            "Origin", 
-            typeof(Point3D), 
-            typeof(RectangleVisual3D), 
+            "Origin",
+            typeof(Point3D),
+            typeof(RectangleVisual3D),
             new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
@@ -69,12 +67,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(RectangleVisual3D), new PropertyMetadata(10.0, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the number of divisions in the 'length' direction.
+        /// Gets or sets the number of divisions in the 'length' direction.
         /// </summary>
         /// <value>The number of divisions.</value>
         public int DivLength
@@ -91,7 +85,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of divisions in the 'width' direction.
+        /// Gets or sets the number of divisions in the 'width' direction.
         /// </summary>
         /// <value>The number of divisions.</value>
         public int DivWidth
@@ -108,7 +102,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length.
+        /// Gets or sets the length.
         /// </summary>
         /// <value>The length.</value>
         public double Length
@@ -125,7 +119,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length direction.
+        /// Gets or sets the length direction.
         /// </summary>
         /// <value>The length direction.</value>
         public Vector3D LengthDirection
@@ -142,7 +136,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the normal vector of the plane.
+        /// Gets or sets the normal vector of the plane.
         /// </summary>
         /// <value>The normal.</value>
         public Vector3D Normal
@@ -159,7 +153,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the center point of the plane.
+        /// Gets or sets the center point of the plane.
         /// </summary>
         /// <value>The origin.</value>
         public Point3D Origin
@@ -176,7 +170,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the width.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
         public double Width
@@ -191,10 +185,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(WidthProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
@@ -231,6 +221,5 @@ namespace HelixToolkit.Wpf
             return builder.ToMesh();
         }
 
-        #endregion
     }
 }

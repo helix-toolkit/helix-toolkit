@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Polygon3DTests.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ namespace HelixToolkitTests
     public class Polygon3DTests
     {
         [Test]
-        public void IsPlanar_PlanarPolygon_ReturnsTrue() 
+        public void IsPlanar_PlanarPolygon_ReturnsTrue()
         {
             var p = new Polygon3D();
             p.Points.Add(new Point3D(0, 0, 0));

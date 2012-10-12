@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,7 +21,6 @@ namespace RhinoDemo
             InitializeComponent();
             DataContext = this;
         }
-        #region PropertyChanged Block
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -32,8 +31,6 @@ namespace RhinoDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        #endregion
-
 
         private Point3D _currentPosition;
 

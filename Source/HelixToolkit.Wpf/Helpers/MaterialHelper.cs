@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MaterialHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class MaterialHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Changes the opacity of a material.
         /// </summary>
@@ -138,8 +136,8 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Creates a material with the specifed brush as diffuse material. 
-        ///   This method will also add a white specular material.
+        /// Creates a material with the specifed brush as diffuse material.
+        /// This method will also add a white specular material.
         /// </summary>
         /// <param name="brush">
         /// The brush.
@@ -198,8 +196,6 @@ namespace HelixToolkit.Wpf
 
             return mg;
         }
-
-        #endregion
 
         /// <summary>
         /// Gets the first material of the specified type.

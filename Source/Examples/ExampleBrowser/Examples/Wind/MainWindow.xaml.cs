@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ using WiimoteLib;
 namespace WindDemo
 {
     /// <summary>
-    ///   Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
@@ -48,7 +48,6 @@ namespace WindDemo
                     model.Children.Add(visual);
                 }
             }
-
 
             var seasurface = new RectangleVisual3D
                                  {
@@ -100,7 +99,6 @@ namespace WindDemo
             }
         }
 
-
         private void OnWiimoteChanged(object sender, WiimoteChangedEventArgs e)
         {
             HeadTracking(e.WiimoteState.IRState);
@@ -133,7 +131,7 @@ namespace WindDemo
                 double phi = 20.0 * (my - 384) / 384;
                 Dispatcher.BeginInvoke(new Action(() => SetTransform(scale, theta, phi)));
             }
-            //else 
+            //else
             //    Dispatcher.BeginInvoke(new Action(() => SetTransform(1, 0, 0)));
         }
 

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MeshGeometryHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,8 +20,6 @@ namespace HelixToolkit.Wpf
         // Optimizing 3D Collections in WPF
         // http://blogs.msdn.com/timothyc/archive/2006/08/31/734308.aspx
         // - Remember to disconnect collections from the MeshGeometry when changing it
-
-        #region Public Methods
 
         /// <summary>
         /// Calculates the normals.
@@ -188,7 +186,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Finds all edges where the angle between adjacent triangle normals
-        ///   is larger than minimumAngle
+        /// is larger than minimumAngle
         /// </summary>
         /// <param name="mesh">
         /// a mesh
@@ -400,10 +398,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Create a 64-bit key from two 32-bit indices
         /// </summary>
@@ -438,8 +432,6 @@ namespace HelixToolkit.Wpf
             i0 = (UInt32)(key >> 32);
             i1 = (UInt32)((key << 32) >> 32);
         }
-
-        #endregion
 
         /// <summary>
         /// Cuts the mesh with the specified plane.

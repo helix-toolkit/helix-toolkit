@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NotNullToVisibilityConverter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,28 +17,18 @@ namespace HelixToolkit.Wpf
     [ValueConversion(typeof(object), typeof(Visibility))]
     public class NotNullToVisibilityConverter : IValueConverter
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "NotNullToVisibilityConverter" /> class.
+        /// Initializes a new instance of the <see cref = "NotNullToVisibilityConverter" /> class.
         /// </summary>
         public NotNullToVisibilityConverter()
         {
             this.Inverted = false;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether this converter is inverted.
+        /// Gets or sets a value indicating whether this converter is inverted.
         /// </summary>
         public bool Inverted { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Converts a value.
@@ -93,10 +83,9 @@ namespace HelixToolkit.Wpf
         /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {           
+        {
             throw new NotImplementedException();
         }
 
-        #endregion
     }
 }

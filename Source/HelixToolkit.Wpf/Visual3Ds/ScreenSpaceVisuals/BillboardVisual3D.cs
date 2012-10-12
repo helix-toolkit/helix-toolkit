@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BillboardVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class BillboardVisual3D : RenderingModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The depth offset property.
         /// </summary>
@@ -24,62 +22,57 @@ namespace HelixToolkit.Wpf
             "DepthOffset", typeof(double), typeof(BillboardVisual3D), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        ///   The height property.
+        /// The height property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register(
             "Height", typeof(double), typeof(BillboardVisual3D), new UIPropertyMetadata(10.0, GeometryChanged));
 
         /// <summary>
-        ///   The material property.
+        /// The material property.
         /// </summary>
         public static readonly DependencyProperty MaterialProperty = DependencyProperty.Register(
-            "Material", 
-            typeof(Material), 
-            typeof(BillboardVisual3D), 
+            "Material",
+            typeof(Material),
+            typeof(BillboardVisual3D),
             new UIPropertyMetadata(Materials.Red, MaterialChanged));
 
         /// <summary>
-        ///   The position property.
+        /// The position property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", 
-            typeof(Point3D), 
-            typeof(BillboardVisual3D), 
+            "Position",
+            typeof(Point3D),
+            typeof(BillboardVisual3D),
             new UIPropertyMetadata(new Point3D(), GeometryChanged));
 
         /// <summary>
-        ///   The width property.
+        /// The width property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(BillboardVisual3D), new UIPropertyMetadata(10.0, GeometryChanged));
 
         /// <summary>
-        ///   The mesh.
+        /// The mesh.
         /// </summary>
         protected MeshGeometry3D Mesh;
 
         /// <summary>
-        ///   The model.
+        /// The model.
         /// </summary>
         protected GeometryModel3D Model;
 
         /// <summary>
-        ///   The builder.
+        /// The builder.
         /// </summary>
         private readonly PointGeometryBuilder builder;
 
         /// <summary>
-        ///   The is rendering flag.
+        /// The is rendering flag.
         /// </summary>
         private bool isRendering;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "BillboardVisual3D" /> class. 
-        ///   Initializes a new instance of the <see cref = "PointsVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "BillboardVisual3D" /> class.
         /// </summary>
         public BillboardVisual3D()
         {
@@ -97,12 +90,8 @@ namespace HelixToolkit.Wpf
             this.OnGeometryChanged();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the depth offset.
+        /// Gets or sets the depth offset.
         /// </summary>
         /// <value>The depth offset.</value>
         public double DepthOffset
@@ -119,7 +108,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the height.
+        /// Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
         public double Height
@@ -136,8 +125,8 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is being rendered.
-        ///   When the visual is removed from the visual tree, this property should be set to false.
+        /// Gets or sets a value indicating whether this instance is being rendered.
+        /// When the visual is removed from the visual tree, this property should be set to false.
         /// </summary>
         public bool IsRendering
         {
@@ -164,7 +153,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the material.
+        /// Gets or sets the material.
         /// </summary>
         /// <value>The material.</value>
         public Material Material
@@ -181,7 +170,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the position (center) of the billboard.
+        /// Gets or sets the position (center) of the billboard.
         /// </summary>
         /// <value>The position.</value>
         public Point3D Position
@@ -198,7 +187,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the width.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
         public double Width
@@ -214,10 +203,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The on material changed.
         /// </summary>
@@ -225,10 +210,6 @@ namespace HelixToolkit.Wpf
         {
             this.Model.Material = this.Material;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The geometry changed.
@@ -323,6 +304,5 @@ namespace HelixToolkit.Wpf
             this.UpdateGeometry();
         }
 
-        #endregion
     }
 }

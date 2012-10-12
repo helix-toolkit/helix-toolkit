@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ModelImporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class ModelImporter
     {
-        #region Public Methods
-
         /// <summary>
         /// Loads a model from the specified path.
         /// </summary>
@@ -87,6 +85,5 @@ namespace HelixToolkit.Wpf
             return model;
         }
 
-        #endregion
     }
 }

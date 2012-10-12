@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Expander3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Expander3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The expand origin property.
         /// </summary>
@@ -41,12 +39,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private Point3D actualExpandOrigin;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the origin of the expansion.
+        /// Gets or sets the origin of the expansion.
         /// </summary>
         /// <value>The expand origin.</value>
         public Point3D? ExpandOrigin
@@ -63,7 +57,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the expansion factor.
+        /// Gets or sets the expansion factor.
         /// </summary>
         /// <value>The expansion.</value>
         public double Expansion
@@ -79,10 +73,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Expands to the specified value.
         /// </summary>
@@ -96,14 +86,10 @@ namespace HelixToolkit.Wpf
         {
             var a = new DoubleAnimation(value, new Duration(TimeSpan.FromMilliseconds(animationTime)))
                 {
-                   AccelerationRatio = 0.3, DecelerationRatio = 0.5 
+                   AccelerationRatio = 0.3, DecelerationRatio = 0.5
                 };
             this.BeginAnimation(ExpansionProperty, a);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The expansion changed.
@@ -184,6 +170,5 @@ namespace HelixToolkit.Wpf
             model.Transform = Transform3DHelper.CombineTransform(ot, t);
         }
 
-        #endregion
     }
 }

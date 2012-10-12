@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BindableTranslateManipulator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
 //   A visual element that contains a manipulator that can translate along an axis.
@@ -20,40 +20,34 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class BindableTranslateManipulator : Manipulator
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The diameter property.
+        /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(BindableTranslateManipulator), new UIPropertyMetadata(0.2, GeometryChanged));
 
         /// <summary>
-        ///   The direction property.
+        /// The direction property.
         /// </summary>
         public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
-            "Direction", 
+            "Direction",
             typeof(Vector3D),
-            typeof(BindableTranslateManipulator), 
+            typeof(BindableTranslateManipulator),
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        ///   The length property.
+        /// The length property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(BindableTranslateManipulator), new UIPropertyMetadata(2.0, GeometryChanged));
 
         /// <summary>
-        ///   The last point.
+        /// The last point.
         /// </summary>
         private Point3D lastPoint;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the diameter of the manipulator arrow.
+        /// Gets or sets the diameter of the manipulator arrow.
         /// </summary>
         /// <value> The diameter. </value>
         public double Diameter
@@ -70,7 +64,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the direction of the translation.
+        /// Gets or sets the direction of the translation.
         /// </summary>
         /// <value> The direction. </value>
         public Vector3D Direction
@@ -87,7 +81,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length of the manipulator arrow.
+        /// Gets or sets the length of the manipulator arrow.
         /// </summary>
         /// <value> The length. </value>
         public double Length
@@ -103,23 +97,15 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-             
-
-
-        #region Methods
-       
-
-
         // Moves the Manipulator position  by the change in value along the direction vector
         protected override void OnValueChanged(DependencyPropertyChangedEventArgs e)
-        {         
+        {
             var oldValue = (double)e.OldValue;
             var newValue = (double)e.NewValue;
             var delta = newValue - oldValue;
             var deltaVector = new Vector3D(this.Direction.X, this.Direction.Y, this.Direction.Z);
             deltaVector.Normalize();
-            deltaVector = deltaVector * delta;   
+            deltaVector = deltaVector * delta;
             Position = Position  + deltaVector;
         }
 
@@ -134,7 +120,6 @@ namespace HelixToolkit.Wpf
                 this.TargetTransform = Transform3DHelper.CombineTransform(translateTransform, this.TargetTransform);
             }
         }
-
 
         /// <summary>
         /// Called when geometry has been changed.
@@ -154,7 +139,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse down.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -182,7 +167,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse move.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -197,8 +182,8 @@ namespace HelixToolkit.Wpf
                     return;
                 }
 
-                var delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;                
-                this.Value += Vector3D.DotProduct(delta, this.Direction);               
+                var delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;
+                this.Value += Vector3D.DotProduct(delta, this.Direction);
 
                 nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
                 if (nearestPoint != null)
@@ -212,16 +197,16 @@ namespace HelixToolkit.Wpf
         /// Gets the nearest point on the translation axis.
         /// </summary>
         /// <param name="position">
-        /// The position (in screen coordinates). 
+        /// The position (in screen coordinates).
         /// </param>
         /// <param name="hitPlaneOrigin">
-        /// The hit plane origin (world coordinate system). 
+        /// The hit plane origin (world coordinate system).
         /// </param>
         /// <param name="hitPlaneNormal">
-        /// The hit plane normal (world coordinate system). 
+        /// The hit plane normal (world coordinate system).
         /// </param>
         /// <returns>
-        /// The nearest point (world coordinates) or null if no point could be found. 
+        /// The nearest point (world coordinates) or null if no point could be found.
         /// </returns>
         private Point3D? GetNearestPoint(Point position, Point3D hitPlaneOrigin, Vector3D hitPlaneNormal)
         {
@@ -235,6 +220,5 @@ namespace HelixToolkit.Wpf
             return ray.GetNearest(hpp.Value);
         }
 
-        #endregion
     }
 }

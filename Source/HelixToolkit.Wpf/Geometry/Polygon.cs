@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Polygon.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,19 +14,13 @@ namespace HelixToolkit.Wpf
     public class Polygon
     {
         // http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm
-        #region Constants and Fields
-
         /// <summary>
         /// The points.
         /// </summary>
         internal PointCollection points;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the points.
+        /// Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
         public PointCollection Points
@@ -42,10 +36,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Triangulate the polygon by cutting ears
         /// </summary>
@@ -55,6 +45,5 @@ namespace HelixToolkit.Wpf
             return CuttingEarsTriangulator.Triangulate(this.points);
         }
 
-        #endregion
     }
 }

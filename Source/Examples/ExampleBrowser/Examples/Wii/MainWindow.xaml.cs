@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ namespace WiiDemo
         public ExplodingMesh(MeshGeometry3D inputMesh, Point3D hitpos)
         {
             var mesh = MeshGeometryHelper.NoSharedVertices(inputMesh);
-            
+
             double cx, cy, cz;
             cx = cy = cz = 0;
             for (int i = 0; i < mesh.Positions.Count; i++)
@@ -107,7 +107,7 @@ namespace WiiDemo
             }
             int n = mesh.Positions.Count;
             var center = new Point3D(cx / n, cy / n, cz / n);
-            
+
             integrator = new VerletIntegrator();
             integrator.Resize(mesh.Positions.Count);
             var r = new Random();

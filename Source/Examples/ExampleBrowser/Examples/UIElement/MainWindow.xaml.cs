@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ namespace UIElementDemo
                 e.Handled = true;
             }
         }
-       
+
         private void ZoomExtents_Click(object sender, RoutedEventArgs e)
         {
             view1.ZoomExtents(500);

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HelixVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,53 +15,47 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/Helix
-    ///   A helix (pl: helixes or helices) is a type of space curve, i.e. a smooth curve in three-dimensional space. 
-    ///   It is characterised by the fact that the tangent line at any point makes a constant angle with a fixed line 
-    ///   called the axis. Examples of helixes are coil springs and the handrails of spiral staircases. A "filled-in" 
-    ///   helix – for example, a spiral ramp – is called a helicoid. Helices are important in biology, as the DNA
-    ///   molecule is formed as two intertwined helices, and many proteins have helical substructures, known as alpha 
-    ///   helices. The word helix comes from the Greek word ἕλιξ.
+    /// A helix (pl: helixes or helices) is a type of space curve, i.e. a smooth curve in three-dimensional space.
+    /// It is characterised by the fact that the tangent line at any point makes a constant angle with a fixed line
+    /// called the axis. Examples of helixes are coil springs and the handrails of spiral staircases. A "filled-in"
+    /// helix – for example, a spiral ramp – is called a helicoid. Helices are important in biology, as the DNA
+    /// molecule is formed as two intertwined helices, and many proteins have helical substructures, known as alpha
+    /// helices. The word helix comes from the Greek word ἕλιξ.
     /// </remarks>
     public class HelixVisual3D : ParametricSurface3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The diameter property.
+        /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(0.5, GeometryChanged));
 
         /// <summary>
-        ///   The length property.
+        /// The length property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        ///   The phase property.
+        /// The phase property.
         /// </summary>
         public static readonly DependencyProperty PhaseProperty = DependencyProperty.Register(
             "Phase", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
 
         /// <summary>
-        ///   The radius property.
+        /// The radius property.
         /// </summary>
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
             "Radius", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        ///   The turns property.
+        /// The turns property.
         /// </summary>
         public static readonly DependencyProperty TurnsProperty = DependencyProperty.Register(
             "Turns", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the diameter.
+        /// Gets or sets the diameter.
         /// </summary>
         /// <value>The diameter.</value>
         public double Diameter
@@ -78,7 +72,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length.
+        /// Gets or sets the length.
         /// </summary>
         /// <value>The length.</value>
         public double Length
@@ -95,7 +89,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the phase.
+        /// Gets or sets the phase.
         /// </summary>
         /// <value>The phase.</value>
         public double Phase
@@ -112,7 +106,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the radius.
+        /// Gets or sets the radius.
         /// </summary>
         /// <value>The radius.</value>
         public double Radius
@@ -129,7 +123,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of turns.
+        /// Gets or sets the number of turns.
         /// </summary>
         /// <value>The turns.</value>
         public double Turns
@@ -144,10 +138,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(TurnsProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Evaluates the surface.
@@ -181,6 +171,5 @@ namespace HelixToolkit.Wpf
             return new Point3D(x, y, z);
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="X3DExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,23 +17,17 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/X3D
-    ///   http://en.wikipedia.org/wiki/Web3D
-    ///   Validation
-    ///   http://www.w3.org/People/mimasa/test/schemas/SCHEMA/x3d-3.0.xsd
-    ///   http://www.web3d.org/x3d/tools/schematron/X3dSchematron.html
+    /// http://en.wikipedia.org/wiki/Web3D
+    /// Validation
+    /// http://www.w3.org/People/mimasa/test/schemas/SCHEMA/x3d-3.0.xsd
+    /// http://www.web3d.org/x3d/tools/schematron/X3dSchematron.html
     /// </remarks>
     public class X3DExporter : Exporter
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The writer.
+        /// The writer.
         /// </summary>
         private readonly XmlTextWriter writer;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="X3DExporter"/> class.
@@ -58,18 +52,14 @@ namespace HelixToolkit.Wpf
                 "xsd:noNamespaceSchemaLocation", "http://www.web3d.org/specifications/x3d-3.1.xsd");
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the metadata.
+        /// Gets or sets the metadata.
         /// </summary>
         /// <value>The metadata.</value>
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        ///   Sets the title.
+        /// Sets the title.
         /// </summary>
         /// <value>The title.</value>
         public string Title
@@ -79,10 +69,6 @@ namespace HelixToolkit.Wpf
                 this.SetMetadata("title", value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Closes this exporter.
@@ -96,10 +82,6 @@ namespace HelixToolkit.Wpf
             base.Close();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Exports the header.
         /// </summary>
@@ -112,7 +94,7 @@ namespace HelixToolkit.Wpf
                 this.writer.WriteStartElement("meta");
                 this.writer.WriteAttributeString("name", kvp.Key);
                 this.writer.WriteAttributeString("value", kvp.Value);
-                this.writer.WriteEndElement(); // meta                
+                this.writer.WriteEndElement(); // meta
             }
 
             this.writer.WriteEndElement(); // head
@@ -184,29 +166,27 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
         /* Example
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
         <X3D profile='Immersive' version='3.0' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation=' http://www.web3d.org/specifications/x3d-3.0.xsd '>
         <head>
-        <meta name='title' content='Pyramid.x3d'/> 
-        <meta name='creator' content='MV4204 class'/> 
-        <meta name='created' content='8 July 2000'/> 
-        <meta name='modified' content='27 December 2003'/> 
-        <meta name='description' content='Constructing a Pyramid geometric primitive in order to show use of points and coordinate indices.'/> 
-        <meta name='identifier' content=' http://www.web3d.org/x3d/content/examples/Basic/course/Pyramid.x3d '/> 
-        <meta name='generator' content='X3D-Edit 3.2, https://savage.nps.edu/X3D-Edit'/> 
+        <meta name='title' content='Pyramid.x3d'/>
+        <meta name='creator' content='MV4204 class'/>
+        <meta name='created' content='8 July 2000'/>
+        <meta name='modified' content='27 December 2003'/>
+        <meta name='description' content='Constructing a Pyramid geometric primitive in order to show use of points and coordinate indices.'/>
+        <meta name='identifier' content=' http://www.web3d.org/x3d/content/examples/Basic/course/Pyramid.x3d '/>
+        <meta name='generator' content='X3D-Edit 3.2, https://savage.nps.edu/X3D-Edit'/>
         <meta name='license' content='../license.html'/>
-        </head> 
+        </head>
         <Scene>
-        <Viewpoint description='Pyramid' orientation='0 1 0 .2' position='4 0 25' fieldOfView='0.7854'/> 
+        <Viewpoint description='Pyramid' orientation='0 1 0 .2' position='4 0 25' fieldOfView='0.7854'/>
         <Transform translation='0 -5 0'>
         <Shape>
         <IndexedFaceSet coordIndex='0 1 2 -1 1 3 2 -1 2 3 0 -1 3 1 0'>
         <Coordinate point='0 0 0 10 0 0 5 0 8.3 5 8.3 2.8'/>
-        </IndexedFaceSet> 
+        </IndexedFaceSet>
         <Appearance>
         <Material diffuseColor='0.8 0.8 0.2' specularColor='0 0 0.5'/>
         </Appearance>

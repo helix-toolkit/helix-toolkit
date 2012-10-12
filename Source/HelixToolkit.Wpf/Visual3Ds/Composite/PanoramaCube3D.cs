@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PanoramaCube3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,8 +18,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class PanoramaCube3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The auto center property.
         /// </summary>
@@ -49,12 +47,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly ModelVisual3D visualChild;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PanoramaCube3D" /> class.
+        /// Initializes a new instance of the <see cref = "PanoramaCube3D" /> class.
         /// </summary>
         public PanoramaCube3D()
         {
@@ -62,12 +56,8 @@ namespace HelixToolkit.Wpf
             this.Children.Add(this.visualChild);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether [auto center].
+        /// Gets or sets a value indicating whether [auto center].
         /// </summary>
         /// <value><c>true</c> if [auto center]; otherwise, <c>false</c>.</value>
         public bool AutoCenter
@@ -84,7 +74,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show seams.
+        /// Gets or sets a value indicating whether to show seams.
         /// </summary>
         public bool ShowSeams
         {
@@ -100,7 +90,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the size of the cube.
+        /// Gets or sets the size of the cube.
         /// </summary>
         /// <value>The size.</value>
         public double Size
@@ -117,17 +107,17 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the panorama/skybox directory or file prefix.
+        /// Gets or sets the panorama/skybox directory or file prefix.
         /// </summary>
         /// <remarks>
-        ///   If a directory is specified, the filename prefix will be set to "cube".
-        ///   If the filename prefix is "cube", the faces of the cube should be named
-        ///   cube_f.jpg
-        ///   cube_b.jpg
-        ///   cube_l.jpg
-        ///   cube_r.jpg
-        ///   cube_u.jpg
-        ///   cube_d.jpg
+        /// If a directory is specified, the filename prefix will be set to "cube".
+        /// If the filename prefix is "cube", the faces of the cube should be named
+        /// cube_f.jpg
+        /// cube_b.jpg
+        /// cube_l.jpg
+        /// cube_r.jpg
+        /// cube_u.jpg
+        /// cube_d.jpg
         /// </remarks>
         /// <value>The source.</value>
         public string Source
@@ -142,10 +132,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(SourceProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The source changed.
@@ -272,6 +258,5 @@ namespace HelixToolkit.Wpf
             this.visualChild.Content = group;
         }
 
-        #endregion
     }
 }

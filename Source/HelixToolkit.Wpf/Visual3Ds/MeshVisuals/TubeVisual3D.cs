@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TubeVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,38 +17,28 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class TubeVisual3D : ExtrudedVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The diameter property.
+        /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(TubeVisual3D), new UIPropertyMetadata(1.0, SectionChanged));
 
         /// <summary>
-        ///   The theta div property.
+        /// The theta div property.
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(TubeVisual3D), new UIPropertyMetadata(36, SectionChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TubeVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "TubeVisual3D" /> class.
         /// </summary>
         public TubeVisual3D()
         {
             this.OnSectionChanged();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the diameter of the tube.
+        /// Gets or sets the diameter of the tube.
         /// </summary>
         /// <value>The diameter of the tube.</value>
         public double Diameter
@@ -65,7 +55,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of divsions around the tube.
+        /// Gets or sets the number of divsions around the tube.
         /// </summary>
         /// <value>The theta div.</value>
         public int ThetaDiv
@@ -80,10 +70,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ThetaDivProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The section changed.
@@ -113,10 +99,9 @@ namespace HelixToolkit.Wpf
             }
 
             this.Section = pc;
- 
+
             this.OnGeometryChanged();
         }
 
-        #endregion
     }
 }

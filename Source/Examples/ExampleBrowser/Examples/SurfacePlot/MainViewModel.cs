@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -159,7 +159,6 @@ namespace SurfacePlotDemo
             return K;
         }
 
-        #region PropertyChanged Block
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -170,8 +169,6 @@ namespace SurfacePlotDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        #endregion
-
 
     }
 }

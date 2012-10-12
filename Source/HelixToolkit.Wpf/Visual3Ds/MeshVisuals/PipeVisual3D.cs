@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PipeVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class PipeVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The diameter property.
         /// </summary>
@@ -32,18 +30,18 @@ namespace HelixToolkit.Wpf
         /// The point 1 property.
         /// </summary>
         public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
-            "Point1", 
-            typeof(Point3D), 
-            typeof(PipeVisual3D), 
+            "Point1",
+            typeof(Point3D),
+            typeof(PipeVisual3D),
             new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
         /// The point 2 property.
         /// </summary>
         public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
-            "Point2", 
-            typeof(Point3D), 
-            typeof(PipeVisual3D), 
+            "Point2",
+            typeof(Point3D),
+            typeof(PipeVisual3D),
             new UIPropertyMetadata(new Point3D(0, 0, 10), GeometryChanged));
 
         /// <summary>
@@ -52,12 +50,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(PipeVisual3D), new UIPropertyMetadata(36, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the (outer) diameter.
+        /// Gets or sets the (outer) diameter.
         /// </summary>
         /// <value>The diameter.</value>
         public double Diameter
@@ -74,7 +68,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the inner diameter.
+        /// Gets or sets the inner diameter.
         /// </summary>
         /// <value>The inner diameter.</value>
         public double InnerDiameter
@@ -91,7 +85,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the start point.
+        /// Gets or sets the start point.
         /// </summary>
         /// <value>The start point.</value>
         public Point3D Point1
@@ -108,7 +102,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the end point.
+        /// Gets or sets the end point.
         /// </summary>
         /// <value>The end point.</value>
         public Point3D Point2
@@ -125,7 +119,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the theta div.
+        /// Gets or sets the theta div.
         /// </summary>
         /// <value>The theta div.</value>
         public int ThetaDiv
@@ -141,10 +135,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
@@ -156,6 +146,5 @@ namespace HelixToolkit.Wpf
             return builder.ToMesh();
         }
 
-        #endregion
     }
 }

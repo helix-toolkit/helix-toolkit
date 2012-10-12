@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FlightVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ namespace FlightsDemo
         {
             var tube = new TubeVisual3D();
             // tube.Material = MaterialHelper.CreateMaterial(Color.FromArgb(80, 255, 255, 255)); // Materials.Yellow;
-            tube.Fill = new SolidColorBrush(Color.FromArgb(80, 255, 255, 255)); 
+            tube.Fill = new SolidColorBrush(Color.FromArgb(80, 255, 255, 255));
             Children.Add(tube);
             Children.Add(new SphereVisual3D() { Center = p1, Radius = 100, Material = Materials.Green });
             Children.Add(new SphereVisual3D() { Center = p2, Radius = 100, Material = Materials.Red });
@@ -131,7 +131,6 @@ namespace FlightsDemo
             double a = Math.Sqrt(pt.X * pt.X + pt.Y * pt.Y);
             lat = Math.Atan2(pt.Z, a) * 180 / Math.PI;
         }
-
 
         public static Point3D LatLonToPoint(double latitude, double longitude)
         {

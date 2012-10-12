@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Exploder3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Exploder3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The is exploding property.
         /// </summary>
@@ -37,15 +35,11 @@ namespace HelixToolkit.Wpf
         {
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is exploding.
+        /// Gets or sets a value indicating whether this instance is exploding.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is exploding; otherwise, <c>false</c>.
+        ///  <c>true</c> if this instance is exploding; otherwise, <c>false</c>.
         /// </value>
         public bool IsExploding
         {
@@ -59,8 +53,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(IsExplodingProperty, value);
             }
         }
-
-        #endregion
 
         // todo
     }

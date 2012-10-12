@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -27,17 +27,17 @@ namespace ClothDemo
         public MainWindow()
         {
             InitializeComponent();
-            
+
             CreateFlag();
-            
+
             DataContext = this;
             Loaded += MainWindow_Loaded;
-            
+
             watch = new Stopwatch();
             watch.Start();
             integratorThread = new Thread(IntegrationWorker);
             integratorThread.Start();
-           
+
             CompositionTarget.Rendering += this.OnCompositionTargetRendering;
             this.Closing += MainWindow_Closing;
         }
@@ -53,7 +53,7 @@ namespace ClothDemo
             {
                 double dt = 1.0 * watch.ElapsedTicks / Stopwatch.Frequency;
                 watch.Restart();
-                Flag.Update(dt);                
+                Flag.Update(dt);
             }
         }
 
@@ -66,7 +66,6 @@ namespace ClothDemo
         {
             view1.ZoomExtents();
         }
-
 
         private void CreateFlag()
         {

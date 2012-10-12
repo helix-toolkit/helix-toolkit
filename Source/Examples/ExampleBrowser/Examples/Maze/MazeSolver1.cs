@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MazeSolver1.cs" company="Helix 3D Toolkit examples">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ namespace MazeDemo
         {
             var stack = new Stack<Cell>();
             stack.Push(start);
-         
+
             var visited = new bool[maze.GetLength(0), maze.GetLength(1)];
             var previousCell = new Cell[maze.GetLength(0), maze.GetLength(1)];
 

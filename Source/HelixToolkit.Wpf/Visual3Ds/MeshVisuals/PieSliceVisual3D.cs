@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PieSliceVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class PieSliceVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The center property.
         /// </summary>
@@ -66,12 +64,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty UpVectorProperty = DependencyProperty.Register(
             "UpVector", typeof(Vector3D), typeof(PieSliceVisual3D), new UIPropertyMetadata(new Vector3D(0, 1, 0), GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the center.
+        /// Gets or sets the center.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -88,7 +82,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the end angle.
+        /// Gets or sets the end angle.
         /// </summary>
         /// <value>The end angle.</value>
         public double EndAngle
@@ -105,7 +99,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the inner radius.
+        /// Gets or sets the inner radius.
         /// </summary>
         /// <value>The inner radius.</value>
         public double InnerRadius
@@ -122,7 +116,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the normal.
+        /// Gets or sets the normal.
         /// </summary>
         /// <value>The normal.</value>
         public Vector3D Normal
@@ -139,7 +133,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the outer radius.
+        /// Gets or sets the outer radius.
         /// </summary>
         /// <value>The outer radius.</value>
         public double OuterRadius
@@ -156,7 +150,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the start angle.
+        /// Gets or sets the start angle.
         /// </summary>
         /// <value>The start angle.</value>
         public double StartAngle
@@ -173,7 +167,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of angular divisions of the slice.
+        /// Gets or sets the number of angular divisions of the slice.
         /// </summary>
         /// <value>The theta div.</value>
         public int ThetaDiv
@@ -190,7 +184,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets up vector.
+        /// Gets or sets up vector.
         /// </summary>
         /// <value>Up vector.</value>
         public Vector3D UpVector
@@ -205,10 +199,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(UpVectorProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
@@ -232,6 +222,5 @@ namespace HelixToolkit.Wpf
             return b.ToMesh();
         }
 
-        #endregion
     }
 }
