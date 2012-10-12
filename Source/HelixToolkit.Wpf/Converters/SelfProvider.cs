@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SelfProvider.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public abstract class SelfProvider : MarkupExtension
     {
-        #region Public Methods
-
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
         /// </summary>
@@ -33,6 +31,5 @@ namespace HelixToolkit.Wpf
             return this;
         }
 
-        #endregion
     }
 }

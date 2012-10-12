@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GridLines.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
 //   Represents grid lines.
@@ -21,8 +21,6 @@ namespace RhinoDemo
     /// </summary>
     public class GridLines : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The center property.
         /// </summary>
@@ -126,25 +124,16 @@ namespace RhinoDemo
         /// </summary>
         private Vector3D widthDirection;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="GridLines"/> class. 
-        ///   Initializes a new instance of the <see cref="GridLines"/> class.
+        /// Initializes a new instance of the <see cref="GridLines"/> class.
         /// </summary>
         public GridLines()
         {
             this.CreateGrid();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the center of the grid.
+        /// Gets or sets the center of the grid.
         /// </summary>
         /// <value> The center. </value>
         public Point3D Center
@@ -161,7 +150,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the length.
+        /// Gets or sets the length.
         /// </summary>
         /// <value> The length. </value>
         public double Length
@@ -178,7 +167,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the length direction.
+        /// Gets or sets the length direction.
         /// </summary>
         /// <value> The length direction. </value>
         public Vector3D LengthDirection
@@ -195,7 +184,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the distance between major grid lines.
+        /// Gets or sets the distance between major grid lines.
         /// </summary>
         /// <value> The major distance. </value>
         public double MajorDistance
@@ -212,7 +201,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the color of the major line.
+        /// Gets or sets the color of the major line.
         /// </summary>
         /// <value> The color of the major line. </value>
         public Color MajorLineColor
@@ -229,7 +218,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the major line thickness.
+        /// Gets or sets the major line thickness.
         /// </summary>
         /// <value> The major line thickness. </value>
         public double MajorLineThickness
@@ -246,7 +235,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the distance between minor grid lines.
+        /// Gets or sets the distance between minor grid lines.
         /// </summary>
         /// <value> The minor distance. </value>
         public double MinorDistance
@@ -263,7 +252,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the color of the minor line.
+        /// Gets or sets the color of the minor line.
         /// </summary>
         /// <value> The color of the minor line. </value>
         public Color MinorLineColor
@@ -280,7 +269,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the minor line thickness.
+        /// Gets or sets the minor line thickness.
         /// </summary>
         /// <value> The minor line thickness. </value>
         public double MinorLineThickness
@@ -297,7 +286,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the normal of the grid.
+        /// Gets or sets the normal of the grid.
         /// </summary>
         /// <value> The normal. </value>
         public Vector3D Normal
@@ -314,7 +303,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the width.
+        /// Gets or sets the width.
         /// </summary>
         /// <value> The width. </value>
         public double Width
@@ -331,7 +320,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the color of the X axis line.
+        /// Gets or sets the color of the X axis line.
         /// </summary>
         /// <value> The color of the X axis line. </value>
         public Color XAxisLineColor
@@ -348,7 +337,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the color of the Y axis line.
+        /// Gets or sets the color of the Y axis line.
         /// </summary>
         /// <value> The color of the Y axis line. </value>
         public Color YAxisLineColor
@@ -365,7 +354,7 @@ namespace RhinoDemo
         }
 
         /// <summary>
-        ///   Gets or sets the color of the Z axis line.
+        /// Gets or sets the color of the Z axis line.
         /// </summary>
         /// <value> The color of the Z axis line. </value>
         public Color ZAxisLineColor
@@ -380,10 +369,6 @@ namespace RhinoDemo
                 this.SetValue(ZAxisLineColorProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates the grid.
@@ -497,13 +482,13 @@ namespace RhinoDemo
         /// Determines whether the specified value is a multiple of x.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="x">
-        /// The x value. 
+        /// The x value.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the value is a multiple of x; otherwise, <c>false</c> . 
+        /// <c>true</c> if the value is a multiple of x; otherwise, <c>false</c> .
         /// </returns>
         private static bool IsMultipleOf(double value, double x)
         {
@@ -515,16 +500,16 @@ namespace RhinoDemo
         /// Adds the line.
         /// </summary>
         /// <param name="pc">
-        /// The pc. 
+        /// The pc.
         /// </param>
         /// <param name="p0">
-        /// The p0. 
+        /// The p0.
         /// </param>
         /// <param name="p1">
-        /// The p1. 
+        /// The p1.
         /// </param>
         /// <param name="divisions">
-        /// The divisions. 
+        /// The divisions.
         /// </param>
         private void AddLine(Point3DCollection pc, Point3D p0, Point3D p1, int divisions = 10)
         {
@@ -540,16 +525,16 @@ namespace RhinoDemo
         /// Gets the point at the specified local coordinates.
         /// </summary>
         /// <param name="x">
-        /// The x. 
+        /// The x.
         /// </param>
         /// <param name="y">
-        /// The y. 
+        /// The y.
         /// </param>
         /// <param name="z">
-        /// The z. 
+        /// The z.
         /// </param>
         /// <returns>
-        /// A point. 
+        /// A point.
         /// </returns>
         private Point3D GetPoint(double x, double y, double z = 0)
         {
@@ -570,6 +555,5 @@ namespace RhinoDemo
             this.CreateGrid();
         }
 
-        #endregion
     }
 }

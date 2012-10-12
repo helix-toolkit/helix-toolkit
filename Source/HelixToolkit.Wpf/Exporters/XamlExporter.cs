@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XamlExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,10 +20,8 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class XamlExporter : IExporter, IDisposable
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The xw.
+        /// The xw.
         /// </summary>
         private readonly XmlTextWriter writer;
 
@@ -31,10 +29,6 @@ namespace HelixToolkit.Wpf
         /// The disposed flag.
         /// </summary>
         private bool disposed;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XamlExporter"/> class.
@@ -48,21 +42,13 @@ namespace HelixToolkit.Wpf
             this.writer = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented };
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether to create a resource dictionary.
+        /// Gets or sets a value indicating whether to create a resource dictionary.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if a resource dictionary should be created; otherwise, <c>false</c>.
+        ///  <c>true</c> if a resource dictionary should be created; otherwise, <c>false</c>.
         /// </value>
         public bool CreateResourceDictionary { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Wraps the specified object in a resource dictionary.
@@ -161,8 +147,6 @@ namespace HelixToolkit.Wpf
 
             XamlWriter.Save(obj, this.writer);
         }
-
-        #endregion
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources

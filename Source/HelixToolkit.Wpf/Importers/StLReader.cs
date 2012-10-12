@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StLReader.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,34 +19,28 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class StLReader : IModelReader
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The normal regex.
+        /// The normal regex.
         /// </summary>
         private readonly Regex normalRegex = new Regex(@"normal\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
         /// <summary>
-        ///   The vertex regex.
+        /// The vertex regex.
         /// </summary>
         private readonly Regex vertexRegex = new Regex(@"vertex\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
         /// <summary>
-        ///   The index.
+        /// The index.
         /// </summary>
         private int index;
 
         /// <summary>
-        ///   The last.
+        /// The last.
         /// </summary>
         private Color last;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="StLReader"/> class. 
+        /// Initializes a new instance of the <see cref="StLReader"/> class.
         /// </summary>
         public StLReader()
         {
@@ -54,49 +48,37 @@ namespace HelixToolkit.Wpf
             this.Materials = new List<Material>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the materials.
+        /// Gets the materials.
         /// </summary>
         /// <value> The materials. </value>
         public IList<Material> Materials { get; private set; }
 
         /// <summary>
-        ///   Gets the meshes.
+        /// Gets the meshes.
         /// </summary>
         /// <value> The meshes. </value>
         public IList<MeshBuilder> Meshes { get; private set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets the ascii reader.
+        /// Gets or sets the ascii reader.
         /// </summary>
         /// <value> The ascii reader. </value>
         private StreamReader AsciiReader { get; set; }
 
         /// <summary>
-        ///   Gets or sets binaryReader.
+        /// Gets or sets binaryReader.
         /// </summary>
         private BinaryReader BinaryReader { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Reads the model from the specified path.
         /// </summary>
         /// <param name="path">
-        /// The path. 
+        /// The path.
         /// </param>
         /// <returns>
-        /// The model. 
+        /// The model.
         /// </returns>
         public Model3DGroup Read(string path)
         {
@@ -113,10 +95,10 @@ namespace HelixToolkit.Wpf
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">
-        /// The stream. 
+        /// The stream.
         /// </param>
         /// <returns>
-        /// The model. 
+        /// The model.
         /// </returns>
         public Model3DGroup Read(Stream s)
         {
@@ -150,7 +132,7 @@ namespace HelixToolkit.Wpf
         /// Reads ascii.
         /// </summary>
         /// <param name="s">
-        /// The s. 
+        /// The s.
         /// </param>
         public void ReadA(Stream s)
         {
@@ -189,7 +171,7 @@ namespace HelixToolkit.Wpf
         /// Reads a binary stream.
         /// </summary>
         /// <param name="s">
-        /// The s. 
+        /// The s.
         /// </param>
         public void ReadB(Stream s)
         {
@@ -215,21 +197,17 @@ namespace HelixToolkit.Wpf
             this.BinaryReader.Close();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The split line.
         /// </summary>
         /// <param name="line">
-        /// The line. 
+        /// The line.
         /// </param>
         /// <param name="id">
-        /// The id. 
+        /// The id.
         /// </param>
         /// <param name="values">
-        /// The values. 
+        /// The values.
         /// </param>
         private static void SplitLine(string line, out string id, out string values)
         {
@@ -272,7 +250,7 @@ namespace HelixToolkit.Wpf
         /// The parse normal a.
         /// </summary>
         /// <param name="normal">
-        /// The normal. 
+        /// The normal.
         /// </param>
         /// <returns>
         /// </returns>
@@ -297,7 +275,7 @@ namespace HelixToolkit.Wpf
         /// The read triangle a.
         /// </summary>
         /// <param name="normal">
-        /// The normal. 
+        /// The normal.
         /// </param>
         private void ReadFacetA(string normal)
         {
@@ -344,7 +322,7 @@ namespace HelixToolkit.Wpf
         /// Read float (4 byte)
         /// </summary>
         /// <returns>
-        /// The read float b. 
+        /// The read float b.
         /// </returns>
         private float ReadFloatB()
         {
@@ -356,7 +334,7 @@ namespace HelixToolkit.Wpf
         /// The read header b.
         /// </summary>
         /// <returns>
-        /// The read header b. 
+        /// The read header b.
         /// </returns>
         private string ReadHeaderB()
         {
@@ -368,7 +346,7 @@ namespace HelixToolkit.Wpf
         /// The read line a.
         /// </summary>
         /// <param name="token">
-        /// The token. 
+        /// The token.
         /// </param>
         /// <exception cref="FileFormatException">
         /// </exception>
@@ -389,7 +367,7 @@ namespace HelixToolkit.Wpf
         /// Reads a line from the asciiReader.
         /// </summary>
         /// <returns>
-        /// The line 
+        /// The line
         /// </returns>
         private string ReadLineA()
         {
@@ -406,7 +384,7 @@ namespace HelixToolkit.Wpf
         /// The read number triangles b.
         /// </summary>
         /// <returns>
-        /// The read number triangles b. 
+        /// The read number triangles b.
         /// </returns>
         private uint ReadNumberTrianglesB()
         {
@@ -503,7 +481,7 @@ namespace HelixToolkit.Wpf
         /// Read UInt16.
         /// </summary>
         /// <returns>
-        /// The read u int 16 b. 
+        /// The read u int 16 b.
         /// </returns>
         private ushort ReadUInt16B()
         {
@@ -515,7 +493,7 @@ namespace HelixToolkit.Wpf
         /// Read UInt32.
         /// </summary>
         /// <returns>
-        /// The read u int 32 b. 
+        /// The read u int 32 b.
         /// </returns>
         private uint ReadUInt32B()
         {
@@ -527,13 +505,13 @@ namespace HelixToolkit.Wpf
         /// Tries to parse a vertex from a string.
         /// </summary>
         /// <param name="line">
-        /// The input string. 
+        /// The input string.
         /// </param>
         /// <param name="point">
-        /// The vertex point. 
+        /// The vertex point.
         /// </param>
         /// <returns>
-        /// True if parsing was successful. 
+        /// True if parsing was successful.
         /// </returns>
         private bool TryParseVertex(string line, out Point3D point)
         {
@@ -552,6 +530,5 @@ namespace HelixToolkit.Wpf
             return true;
         }
 
-        #endregion
     }
 }

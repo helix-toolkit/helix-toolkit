@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ namespace FlightsDemo
                 points.Clear();
                 text1.Text = ftv.ToString();
 
-                // todo: 
+                // todo:
                 // zoom the flight path into the view without changing
                 // camera target
 
@@ -135,7 +135,6 @@ namespace FlightsDemo
             Flights.Add(ftv);
         }
 
-
         private void FromPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -173,7 +172,6 @@ namespace FlightsDemo
 
             return result.ToArray();
         }
-
 
         private Airport FindAirport(string text)
         {

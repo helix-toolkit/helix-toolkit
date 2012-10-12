@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XamlHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class XamlHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Gets the xaml for the specified viewport.
         /// </summary>
@@ -67,6 +65,5 @@ namespace HelixToolkit.Wpf
             return sb.ToString();
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LegoVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -46,7 +46,6 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty DivisionsProperty =
             DependencyProperty.Register("Divisions", typeof(int), typeof(LegoVisual3D), new UIPropertyMetadata(12));
 
-        
         [Category("Lego attributes")]
         public int Height
         {
@@ -96,11 +95,11 @@ namespace HelixToolkit.Wpf
             builder.AddBox(new Point3D(Columns * 0.5 * grid, Rows * 0.5 * grid, height - wallThickness / 2), width, length,
                           wallThickness,
                           MeshBuilder.BoxFaces.All);
-            builder.AddBox(new Point3D(margin + wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2), 
+            builder.AddBox(new Point3D(margin + wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2),
                            wallThickness, length, height - wallThickness,
                            MeshBuilder.BoxFaces.All ^ MeshBuilder.BoxFaces.Top);
             builder.AddBox(
-                new Point3D(Columns * grid - margin - wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2), 
+                new Point3D(Columns * grid - margin - wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2),
                 wallThickness, length, height - wallThickness,
                 MeshBuilder.BoxFaces.All ^ MeshBuilder.BoxFaces.Top);
             builder.AddBox(new Point3D(Columns * 0.5 * grid, margin + wallThickness / 2, height / 2 - wallThickness / 2),

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RelayCommand.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ namespace MvvmFoundation.Wpf
     using System.Windows.Input;
 
     /// <summary>
-    /// A command whose sole purpose is to 
+    /// A command whose sole purpose is to
     /// relay its functionality to other
     /// objects by invoking delegates. The
     /// default return value for the CanExecute
@@ -19,8 +19,6 @@ namespace MvvmFoundation.Wpf
     /// </summary>
     public class RelayCommand : ICommand
     {
-        #region Fields
-
         /// <summary>
         /// The execute action.
         /// </summary>
@@ -30,10 +28,6 @@ namespace MvvmFoundation.Wpf
         /// The can execute function.
         /// </summary>
         private readonly Func<bool> canExecute;
-
-        #endregion // Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
@@ -59,10 +53,6 @@ namespace MvvmFoundation.Wpf
             this.execute = execute;
             this.canExecute = canExecute;
         }
-
-        #endregion // Constructors
-
-        #region ICommand Members
 
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
@@ -108,6 +98,5 @@ namespace MvvmFoundation.Wpf
             this.execute();
         }
 
-        #endregion // ICommand Members
     }
 }

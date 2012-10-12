@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ namespace StudioDemo
                     foreach (var mc in mv.Children)
                         yield return new VisualElement(mc);
                 }
-                
+
                 var mg = element as Model3DGroup;
                 if (mg != null)
                     foreach (var mc in mg.Children) yield return new VisualElement(mc);
@@ -156,7 +156,7 @@ namespace StudioDemo
             ApplicationTitle = "3D Model viewer";
             Elements = new List<VisualElement>();
             foreach (var c in hv.Children) Elements.Add(new VisualElement(c));
-            
+
         }
 
         private void FileExit()

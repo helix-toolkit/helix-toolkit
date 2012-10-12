@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RenderManExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,16 +18,10 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class RenderManExporter : Exporter
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The writer.
+        /// The writer.
         /// </summary>
         private readonly StreamWriter writer;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderManExporter"/> class.
@@ -40,10 +34,6 @@ namespace HelixToolkit.Wpf
             this.writer = new StreamWriter(path, false, Encoding.UTF8);
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Closes this exporter.
         /// </summary>
@@ -52,10 +42,6 @@ namespace HelixToolkit.Wpf
             this.writer.Close();
             base.Close();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Exports the camera.
@@ -106,6 +92,5 @@ namespace HelixToolkit.Wpf
             // todo
         }
 
-        #endregion
     }
 }

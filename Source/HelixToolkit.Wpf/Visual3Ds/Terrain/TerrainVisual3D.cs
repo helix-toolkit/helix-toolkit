@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TerrainVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,18 +14,16 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// The following terrrain model file formats are supported:
-    ///   .bt
-    ///   .btz (gzip compressed .bt)
-    ///   <para>
+    /// .bt
+    /// .btz (gzip compressed .bt)
+    ///  <para>
     /// The origin of model will be at the midpoint of the terrain.
-    ///     A compression method to convert from ".bt" to ".btz" can be found in the GZipHelper.
-    ///     Note that no LOD algorithm is implemented - this is for small terrains only...
-    ///   </para>
+    /// A compression method to convert from ".bt" to ".btz" can be found in the GZipHelper.
+    /// Note that no LOD algorithm is implemented - this is for small terrains only...
+    ///  </para>
     /// </remarks>
     public class TerrainVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The source property.
         /// </summary>
@@ -37,12 +35,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly ModelVisual3D visualChild;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TerrainVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "TerrainVisual3D" /> class.
         /// </summary>
         public TerrainVisual3D()
         {
@@ -50,12 +44,8 @@ namespace HelixToolkit.Wpf
             this.Children.Add(this.visualChild);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the source terrain file.
+        /// Gets or sets the source terrain file.
         /// </summary>
         /// <value>The source.</value>
         public string Source
@@ -70,10 +60,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(SourceProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The source changed.
@@ -104,6 +90,5 @@ namespace HelixToolkit.Wpf
             this.visualChild.Content = r.CreateModel(2);
         }
 
-        #endregion
     }
 }

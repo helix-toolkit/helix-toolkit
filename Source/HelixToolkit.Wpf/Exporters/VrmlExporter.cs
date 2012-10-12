@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="VrmlExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,24 +16,18 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/Vrml
-    ///   http://en.wikipedia.org/wiki/Web3D
-    ///   VRML plugin/browser detector:
-    ///   http://cic.nist.gov/vrml/vbdetect.html
-    ///   Links
-    ///   http://openvrml.org/
+    /// http://en.wikipedia.org/wiki/Web3D
+    /// VRML plugin/browser detector:
+    /// http://cic.nist.gov/vrml/vbdetect.html
+    /// Links
+    /// http://openvrml.org/
     /// </remarks>
     public class VrmlExporter : Exporter
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The writer.
+        /// The writer.
         /// </summary>
         private readonly StreamWriter writer;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VrmlExporter"/> class.
@@ -54,10 +48,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Closes this exporter.
         /// </summary>
@@ -66,10 +56,6 @@ namespace HelixToolkit.Wpf
             this.writer.Close();
             base.Close();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Exports the model.
@@ -118,10 +104,10 @@ namespace HelixToolkit.Wpf
             {
                 this.writer.WriteLine(
                     string.Format(
-                        CultureInfo.InvariantCulture, 
-                        "{0} {1} {2},", 
-                        mesh.TriangleIndices[i], 
-                        mesh.TriangleIndices[i + 1], 
+                        CultureInfo.InvariantCulture,
+                        "{0} {1} {2},",
+                        mesh.TriangleIndices[i],
+                        mesh.TriangleIndices[i + 1],
                         mesh.TriangleIndices[i + 2]));
             }
 
@@ -133,6 +119,5 @@ namespace HelixToolkit.Wpf
             // writer.WriteLine("}"); // Transform
         }
 
-        #endregion
     }
 }

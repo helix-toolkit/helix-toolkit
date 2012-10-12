@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SlopeTexture.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class SlopeTexture : TerrainTexture
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SlopeTexture"/> class.
         /// </summary>
@@ -36,19 +34,11 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the brush.
+        /// Gets or sets the brush.
         /// </summary>
         /// <value>The brush.</value>
         public Brush Brush { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Calculates the texture for the specified model.
@@ -85,6 +75,5 @@ namespace HelixToolkit.Wpf
             this.Material = MaterialHelper.CreateMaterial(this.Brush);
         }
 
-        #endregion
     }
 }

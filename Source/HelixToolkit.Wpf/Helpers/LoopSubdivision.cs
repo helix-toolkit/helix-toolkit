@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LoopSubdivision.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,12 +18,12 @@ namespace HelixToolkit.Wpf
     public enum SubdivisionScheme
     {
         /// <summary>
-        ///   Loop's original scheme
+        /// Loop's original scheme
         /// </summary>
         Loop,
 
         /// <summary>
-        ///   Loop subdivision with Warren's weights
+        /// Loop subdivision with Warren's weights
         /// </summary>
         Warren
     }
@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf
     /// Builds a subdivision surface from a triangular mesh.
     /// </summary>
     /// <remarks>
-    /// <para>    
+    /// <para>
     /// http:///en.wikipedia.org/wiki/Subdivision_surface
     /// http:///en.wikipedia.org/wiki/Loop_subdivision_surface
     /// http:///research.microsoft.com/~cloop/thesis.pdf
@@ -47,56 +47,56 @@ namespace HelixToolkit.Wpf
     /// Copyright (c) 2009, Jesus Mena
     /// All rights reserved.
     /// </para>
-    /// <para>    
-    /// Redistribution and use in source and binary forms, with or without 
-    /// modification, are permitted provided that the following conditions are 
+    /// <para>
+    /// Redistribution and use in source and binary forms, with or without
+    /// modification, are permitted provided that the following conditions are
     /// met:
     /// </para>
-    /// <para>    
-    ///    * Redistributions of source code must retain the above copyright 
-    ///      notice, this list of conditions and the following disclaimer.
-    ///    * Redistributions in binary form must reproduce the above copyright 
-    ///      notice, this list of conditions and the following disclaimer in 
-    ///      the documentation and/or other materials provided with the distribution
+    /// <para>
+    /// * Redistributions of source code must retain the above copyright
+    /// notice, this list of conditions and the following disclaimer.
+    /// * Redistributions in binary form must reproduce the above copyright
+    /// notice, this list of conditions and the following disclaimer in
+    /// the documentation and/or other materials provided with the distribution
     /// </para>
-    /// <para>    
-    /// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-    /// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
-    /// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
-    /// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
-    /// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-    /// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
-    /// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-    /// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-    /// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-    /// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+    /// <para>
+    /// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    /// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    /// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    /// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+    /// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+    /// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    /// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    /// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    /// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    /// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     /// POSSIBILITY OF SUCH DAMAGE.
     /// </para>
     /// </remarks>
     public class LoopSubdivision
     {
         /// <summary>
-        ///   The vertices.
+        /// The vertices.
         /// </summary>
         private IList<Vector3D> vertices;
 
         /// <summary>
-        ///   The triangle indices.
+        /// The triangle indices.
         /// </summary>
         private IList<int> triangleIndices;
 
         /// <summary>
-        ///   The new vertices (temoporary list).
+        /// The new vertices (temoporary list).
         /// </summary>
         private IList<Vector3D> newVertices;
 
         /// <summary>
-        ///   The new triangle indices (temporary list).
+        /// The new triangle indices (temporary list).
         /// </summary>
         private IList<int> newTriangleIndices;
 
         /// <summary>
-        ///   Gets or sets the subdivision scheme.
+        /// Gets or sets the subdivision scheme.
         /// </summary>
         /// <value>The scheme.</value>
         public SubdivisionScheme Scheme { get; set; }
@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the positions.
+        /// Gets the positions.
         /// </summary>
         /// <value>The positions.</value>
         public IList<Point3D> Positions
@@ -172,15 +172,15 @@ namespace HelixToolkit.Wpf
 
         // Original vertices: va, vb, vc, vd.
         // New vertices: vp, vq, vr.
-        // vb                  vb             
-        // |  \                 |  \ 
+        // vb                  vb
+        // |  \                 |  \
         // |    \              vp----vq
         // |      \             | \ / \
-        // va ---- vc   ->     va--vr--vc 
+        // va ---- vc   ->     va--vr--vc
         // |      /             |     /
         // |    /               |   /
         // |  /                 | /
-        // vd                  vd               
+        // vd                  vd
 
         /// <summary>
         /// Adds a triangle.
@@ -217,7 +217,7 @@ namespace HelixToolkit.Wpf
 #if !METHOD2
 
         /// <summary>
-        ///   The edge vertice.
+        /// The edge vertice.
         /// </summary>
         private Dictionary<int, int[]>[] edgeVertice;
 
@@ -233,7 +233,7 @@ namespace HelixToolkit.Wpf
         /// <param name="i">
         /// 0: index of the new vertex between (x,y)
         /// 1: index of the first opposite vertex between (x,y)
-        /// 2: index of the second opposite vertex between (x,y)       
+        /// 2: index of the second opposite vertex between (x,y)
         /// </param>
         /// <returns>
         /// The vertex index.
@@ -260,7 +260,7 @@ namespace HelixToolkit.Wpf
         /// <param name="i">
         /// 0: index of the new vertex between (x,y)
         /// 1: index of the first opposite vertex between (x,y)
-        /// 2: index of the second opposite vertex between (x,y)       
+        /// 2: index of the second opposite vertex between (x,y)
         /// </param>
         /// <param name="value">
         /// The vertex index.
@@ -286,7 +286,7 @@ namespace HelixToolkit.Wpf
             l = l << 32;
             l += v1;
             if (!edgeVertice.ContainsKey(l))
-                return 0; 
+                return 0;
             return edgeVertice[l][i];
         }
 
@@ -457,7 +457,7 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            // new positions of the original vertices	
+            // new positions of the original vertices
             for (int v = 0; v < nVertices; v++)
             {
                 int k = adjVertice[v].Count;

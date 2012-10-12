@@ -2,7 +2,7 @@ Helix 3D Toolkit
 ========================================================================
 Helix 3D Toolkit is a collection of helper classes and controls for WPF3D.
 
-License:       Ms-PL
+License:       The MIT License (MIT)
 Project page:  http://helixToolkit.codeplex.com
 Source:        https://hg.codeplex.com/helixtoolkit
 

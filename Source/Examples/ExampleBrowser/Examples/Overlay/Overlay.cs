@@ -1,4 +1,4 @@
-namespace OverlayDemo
+﻿namespace OverlayDemo
 {
     using System.Windows;
     using System.Windows.Media.Media3D;
@@ -8,17 +8,11 @@ namespace OverlayDemo
     /// </summary>
     public class Overlay : DependencyObject
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The position 3 d property.
         /// </summary>
         public static readonly DependencyProperty Position3DProperty = DependencyProperty.RegisterAttached(
             "Position3D", typeof(Point3D), typeof(Overlay));
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// The get position 3 d.
@@ -46,8 +40,6 @@ namespace OverlayDemo
         {
             obj.SetValue(Position3DProperty, value);
         }
-
-        #endregion
 
         // Using a DependencyProperty as the backing store for Position3D.  This enables animation, styling, binding, etc...
     }

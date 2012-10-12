@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AnaglyphMethod.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,53 +12,53 @@ namespace HelixToolkit.Wpf
     public enum AnaglyphMethod
     {
         /// <summary>
-        ///   True anaglyph.
+        /// True anaglyph.
         /// </summary>
         /// <remarks>
-        ///   Dark image
-        ///   No color reproduction
-        ///   Little ghosting
+        /// Dark image
+        /// No color reproduction
+        /// Little ghosting
         /// </remarks>
-        True = 0, 
+        True = 0,
 
         /// <summary>
-        ///   Grayscale anaglyph.
+        /// Grayscale anaglyph.
         /// </summary>
         /// <remarks>
-        ///   No color reproduction
-        ///   More ghosting than true anaglyphs
+        /// No color reproduction
+        /// More ghosting than true anaglyphs
         /// </remarks>
-        Gray = 1, 
+        Gray = 1,
 
         /// <summary>
-        ///   Color anaglyph.
+        /// Color anaglyph.
         /// </summary>
         /// <remarks>
-        ///   Partial color reproduction
-        ///   Retinal rivalry
+        /// Partial color reproduction
+        /// Retinal rivalry
         /// </remarks>
-        Color = 2, 
+        Color = 2,
 
         /// <summary>
-        ///   Half-color anaglyph.
+        /// Half-color anaglyph.
         /// </summary>
         /// <remarks>
-        ///   Partial color reproduction (but not as good as color anaglyphs)
-        ///   Less retinal rivalry than color anaglyphs
+        /// Partial color reproduction (but not as good as color anaglyphs)
+        /// Less retinal rivalry than color anaglyphs
         /// </remarks>
-        HalfColor = 3, 
+        HalfColor = 3,
 
         /// <summary>
-        ///   Optimized anaglyph.
+        /// Optimized anaglyph.
         /// </summary>
         /// <remarks>
-        ///   Partial color reproduction (but not of red shades)
-        ///   Almost no retinal rivalry
+        /// Partial color reproduction (but not of red shades)
+        /// Almost no retinal rivalry
         /// </remarks>
-        Optimized = 4, 
+        Optimized = 4,
 
         /// <summary>
-        ///   Dubois anaglyph.
+        /// Dubois anaglyph.
         /// </summary>
         Dubois = 5
     }

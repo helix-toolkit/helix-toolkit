@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GridLinesVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class GridLinesVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The center property.
         /// </summary>
@@ -35,9 +33,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty LengthDirectionProperty =
             DependencyProperty.Register(
-                "LengthDirection", 
-                typeof(Vector3D), 
-                typeof(GridLinesVisual3D), 
+                "LengthDirection",
+                typeof(Vector3D),
+                typeof(GridLinesVisual3D),
                 new UIPropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
 
         /// <summary>
@@ -56,9 +54,9 @@ namespace HelixToolkit.Wpf
         /// The normal property.
         /// </summary>
         public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
-            "Normal", 
-            typeof(Vector3D), 
-            typeof(GridLinesVisual3D), 
+            "Normal",
+            typeof(Vector3D),
+            typeof(GridLinesVisual3D),
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
@@ -83,24 +81,16 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private Vector3D widthDirection;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "GridLinesVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "GridLinesVisual3D" /> class.
         /// </summary>
         public GridLinesVisual3D()
         {
             this.Fill = Brushes.Gray;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the center of the grid.
+        /// Gets or sets the center of the grid.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -117,7 +107,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length of the grid area.
+        /// Gets or sets the length of the grid area.
         /// </summary>
         /// <value>The length.</value>
         public double Length
@@ -134,7 +124,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length direction of the grid.
+        /// Gets or sets the length direction of the grid.
         /// </summary>
         /// <value>The length direction.</value>
         public Vector3D LengthDirection
@@ -151,7 +141,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the distance between major grid lines.
+        /// Gets or sets the distance between major grid lines.
         /// </summary>
         /// <value>The distance.</value>
         public double MajorDistance
@@ -168,7 +158,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the distance between minor grid lines.
+        /// Gets or sets the distance between minor grid lines.
         /// </summary>
         /// <value>The distance.</value>
         public double MinorDistance
@@ -185,7 +175,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the normal vector of the grid plane.
+        /// Gets or sets the normal vector of the grid plane.
         /// </summary>
         /// <value>The normal.</value>
         public Vector3D Normal
@@ -202,7 +192,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the thickness of the grid lines.
+        /// Gets or sets the thickness of the grid lines.
         /// </summary>
         /// <value>The thickness.</value>
         public double Thickness
@@ -219,7 +209,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the width of the grid area (perpendicular to the length direction).
+        /// Gets or sets the width of the grid area (perpendicular to the length direction).
         /// </summary>
         /// <value>The width.</value>
         public double Width
@@ -234,10 +224,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(WidthProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
@@ -397,6 +383,5 @@ namespace HelixToolkit.Wpf
             return this.Center + this.widthDirection * x + this.lengthDirection * y;
         }
 
-        #endregion
     }
 }

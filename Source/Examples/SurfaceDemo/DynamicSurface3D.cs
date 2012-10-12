@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DynamicSurface3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -100,10 +100,10 @@ namespace SurfaceDemo
             parameters[2] = _w;
             object result = _codeType.InvokeMember("Evaluate", BindingFlags.InvokeMethod, null, _codeInstance, parameters);
             var p = (Point4D)result;
-            
+
             // todo: why doesn't this work??
             //            texCoord = new Point(p.W, 0); // (double)parameters[2], 0);
-            texCoord = new Point(u, v); 
+            texCoord = new Point(u, v);
             return new Point3D(p.X, p.Y, p.Z);
         }
 
@@ -128,8 +128,8 @@ double x=0,y=0,z=0;
 double color=u;
 #code#
 return new System.Windows.Media.Media3D.Point4D(x,y,z,color);
-}   
-}    
+}
+}
 }";
 
     }

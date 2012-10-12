@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FileModelVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,10 +16,8 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class FileModelVisual3D : UIElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The source property.
+        /// The source property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof(string), typeof(FileModelVisual3D), new UIPropertyMetadata(null, SourceChanged));
@@ -30,12 +28,8 @@ namespace HelixToolkit.Wpf
         private static readonly RoutedEvent ModelLoadedEvent = EventManager.RegisterRoutedEvent(
             "ModelLoaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileModelVisual3D));
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
-        ///   Occurs when the model has been loaded.
+        /// Occurs when the model has been loaded.
         /// </summary>
         public event RoutedEventHandler ModelLoaded
         {
@@ -50,12 +44,8 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the source.
+        /// Gets or sets the source.
         /// </summary>
         /// <value> The source. </value>
         public string Source
@@ -71,18 +61,14 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The source changed.
         /// </summary>
         /// <param name="obj">
-        /// The obj. 
+        /// The obj.
         /// </param>
         /// <param name="args">
-        /// The args. 
+        /// The args.
         /// </param>
         protected static void SourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
@@ -107,6 +93,5 @@ namespace HelixToolkit.Wpf
             this.OnModelLoaded();
         }
 
-        #endregion
     }
 }

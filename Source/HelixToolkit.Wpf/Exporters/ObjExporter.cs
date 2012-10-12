@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ObjExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,8 +18,8 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/Obj
-    ///   http://www.martinreddy.net/gfx/3d/OBJ.spec
-    ///   http://www.eg-models.de/formats/Format_Obj.html
+    /// http://www.martinreddy.net/gfx/3d/OBJ.spec
+    /// http://www.eg-models.de/formats/Format_Obj.html
     /// </remarks>
     public class ObjExporter : Exporter
     {
@@ -33,10 +33,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public bool UseDissolveForTransparency { get; set; }
 
-        #region Constants and Fields
-
         /// <summary>
-        ///   The directory.
+        /// The directory.
         /// </summary>
         private readonly string directory;
 
@@ -46,48 +44,44 @@ namespace HelixToolkit.Wpf
         private readonly Dictionary<Material, string> exportedMaterials = new Dictionary<Material, string>();
 
         /// <summary>
-        ///   The mwriter.
+        /// The mwriter.
         /// </summary>
         private readonly StreamWriter mwriter;
 
         /// <summary>
-        ///   The writer.
+        /// The writer.
         /// </summary>
         private readonly StreamWriter writer;
 
         /// <summary>
-        ///   The group no.
+        /// The group no.
         /// </summary>
         private int groupNo = 1;
 
         /// <summary>
-        ///   The mat no.
+        /// The mat no.
         /// </summary>
         private int matNo = 1;
 
         /// <summary>
-        ///   Normal index counter.
+        /// Normal index counter.
         /// </summary>
         private int normalIndex = 1;
 
         /// <summary>
-        ///   The object no.
+        /// The object no.
         /// </summary>
         private int objectNo = 1;
 
         /// <summary>
-        ///   Texture index counter.
+        /// Texture index counter.
         /// </summary>
         private int textureIndex = 1;
 
         /// <summary>
-        ///   Vertex index counter.
+        /// Vertex index counter.
         /// </summary>
         private int vertexIndex = 1;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjExporter"/> class.
@@ -130,18 +124,10 @@ namespace HelixToolkit.Wpf
             this.writer.WriteLine("mtllib ./" + mtlFilename);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets a value indicating whether to switch Y and Z coordinates.
         /// </summary>
         public bool SwitchYZ { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Closes this exporter.
@@ -262,10 +248,6 @@ namespace HelixToolkit.Wpf
             this.writer.WriteLine();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The export model.
         /// </summary>
@@ -349,7 +331,7 @@ namespace HelixToolkit.Wpf
                     }
                     else
                     {
-                        // Transparency 
+                        // Transparency
                         this.mwriter.WriteLine(
                             string.Format(CultureInfo.InvariantCulture, "Tr {0:F4}", scb.Color.A / 255.0));
                     }
@@ -366,8 +348,8 @@ namespace HelixToolkit.Wpf
             }
 
             // Illumination model 1
-            // This is a diffuse illumination model using Lambertian shading. The 
-            // color includes an ambient constant term and a diffuse shading term for 
+            // This is a diffuse illumination model using Lambertian shading. The
+            // color includes an ambient constant term and a diffuse shading term for
             // each light source.  The formula is
             // color = KaIa + Kd { SUM j=1..ls, (N * Lj)Ij }
             int illum = 1; // Lambertian
@@ -380,10 +362,10 @@ namespace HelixToolkit.Wpf
                         "Ks {0}", this.ToColorString(scb != null ? scb.Color : Color.FromScRgb(1.0f, 0.2f, 0.2f, 0.2f))));
 
                 // Illumination model 2
-                // This is a diffuse and specular illumination model using Lambertian 
-                // shading and Blinn's interpretation of Phong's specular illumination 
-                // model (BLIN77).  The color includes an ambient constant term, and a 
-                // diffuse and specular shading term for each light source.  The formula 
+                // This is a diffuse and specular illumination model using Lambertian
+                // shading and Blinn's interpretation of Phong's specular illumination
+                // model (BLIN77).  The color includes an ambient constant term, and a
+                // diffuse and specular shading term for each light source.  The formula
                 // is: color = KaIa + Kd { SUM j=1..ls, (N*Lj)Ij } + Ks { SUM j=1..ls, ((H*Hj)^Ns)Ij }
                 illum = 2;
 
@@ -402,7 +384,7 @@ namespace HelixToolkit.Wpf
             this.mwriter.WriteLine(string.Format("Tf {0} {1} {2}", 1, 1, 1));
 
             // Illumination model
-            // Illumination    Properties that are turned on in the 
+            // Illumination    Properties that are turned on in the
             // model           Property Editor
             // 0		Color on and Ambient off
             // 1		Color on and Ambient on
@@ -437,6 +419,5 @@ namespace HelixToolkit.Wpf
                 CultureInfo.InvariantCulture, "{0:F4} {1:F4} {2:F4}", color.R / 255.0, color.G / 255.0, color.B / 255.0);
         }
 
-        #endregion
     }
 }

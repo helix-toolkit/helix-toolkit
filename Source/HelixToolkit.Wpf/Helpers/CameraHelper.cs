@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CameraHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,8 +19,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class CameraHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Animates the camera position and directions.
         /// </summary>
@@ -62,7 +60,7 @@ namespace HelixToolkit.Wpf
                         AccelerationRatio = 0.3,
                         DecelerationRatio = 0.5,
                         FillBehavior = FillBehavior.Stop
-                        
+
                     };
                 a1.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.PositionProperty, null); };
                 camera.BeginAnimation(ProjectionCamera.PositionProperty, a1);
@@ -647,6 +645,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BoundingSphere.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,34 +15,28 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/Sphere
-    ///   http://en.wikipedia.org/wiki/Bounding_sphere
-    ///   http://msdn.microsoft.com/en-us/library/microsoft.xna.framework.boundingsphere_members(v=xnagamestudio.10).aspx
-    ///   http://www.ep.liu.se/ecp/034/009/ecp083409.pdf
-    ///   http://blogs.agi.com/insight3d/index.php/2008/02/04/a-bounding/
-    ///   http://realtimecollisiondetection.net/blog/?p=20
-    ///   http://www.gamedev.net/page/resources/_/technical/graphics-programming-and-theory/welzl-r2484
-    ///   http://softsurfer.com/Archive/algorithm_0107/algorithm_0107.htm#Bounding Ball
+    /// http://en.wikipedia.org/wiki/Bounding_sphere
+    /// http://msdn.microsoft.com/en-us/library/microsoft.xna.framework.boundingsphere_members(v=xnagamestudio.10).aspx
+    /// http://www.ep.liu.se/ecp/034/009/ecp083409.pdf
+    /// http://blogs.agi.com/insight3d/index.php/2008/02/04/a-bounding/
+    /// http://realtimecollisiondetection.net/blog/?p=20
+    /// http://www.gamedev.net/page/resources/_/technical/graphics-programming-and-theory/welzl-r2484
+    /// http://softsurfer.com/Archive/algorithm_0107/algorithm_0107.htm#Bounding Ball
     /// </remarks>
     public class BoundingSphere
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The center.
+        /// The center.
         /// </summary>
         private Point3D center;
 
         /// <summary>
-        ///   The radius.
+        /// The radius.
         /// </summary>
         private double radius;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "BoundingSphere" /> class.
+        /// Initializes a new instance of the <see cref = "BoundingSphere" /> class.
         /// </summary>
         public BoundingSphere()
         {
@@ -63,12 +57,8 @@ namespace HelixToolkit.Wpf
             this.radius = diameter / 2;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the center of the sphere.
+        /// Gets or sets the center of the sphere.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -85,7 +75,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the radius of the sphere.
+        /// Gets or sets the radius of the sphere.
         /// </summary>
         /// <value>The diameter.</value>
         public double Radius
@@ -100,10 +90,6 @@ namespace HelixToolkit.Wpf
                 this.radius = value;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates a bounding sphere from a collection of points.
@@ -132,7 +118,7 @@ namespace HelixToolkit.Wpf
         {
             return new BoundingSphere
                 {
-                    Center = new Point3D(rect.X + rect.SizeX / 2, rect.Y + rect.SizeY / 2, rect.Z + rect.SizeZ / 2), 
+                    Center = new Point3D(rect.X + rect.SizeX / 2, rect.Y + rect.SizeY / 2, rect.Z + rect.SizeZ / 2),
                     Radius = 0.5 * Math.Sqrt(rect.SizeX * rect.SizeX + rect.SizeY * rect.SizeY + rect.SizeZ * rect.SizeZ)
                 };
         }
@@ -234,6 +220,5 @@ namespace HelixToolkit.Wpf
             // http://www.devmaster.net/wiki/Ray-sphere_intersection
         }
 
-        #endregion
     }
 }

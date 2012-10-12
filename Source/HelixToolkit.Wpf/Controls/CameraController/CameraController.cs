@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CameraController.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
 //   A control that manipulates the camera by mouse and keyboard gestures.
@@ -24,14 +24,14 @@ namespace HelixToolkit.Wpf
     public class CameraController : Grid
     {
         /// <summary>
-        ///   The minimum fov property.
+        /// The minimum fov property.
         /// </summary>
         public static readonly DependencyProperty MinimumFieldOfViewProperty =
             DependencyProperty.Register(
                 "MinimumFieldOfView", typeof(double), typeof(CameraController), new UIPropertyMetadata(5.0));
 
         /// <summary>
-        ///   Gets or sets the maximum field of view.
+        /// Gets or sets the maximum field of view.
         /// </summary>
         /// <value> The maximum fov. </value>
         public double MaximumFieldOfView
@@ -48,21 +48,21 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The maximum fov property.
+        /// The maximum fov property.
         /// </summary>
         public static readonly DependencyProperty MaximumFieldOfViewProperty =
             DependencyProperty.Register(
                 "MaximumFieldOfView", typeof(double), typeof(CameraController), new UIPropertyMetadata(160.0));
 
         /// <summary>
-        ///   The rotation sensitivity property.
+        /// The rotation sensitivity property.
         /// </summary>
         public static readonly DependencyProperty RotationSensitivityProperty =
             DependencyProperty.Register(
                 "RotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   The camera property.
+        /// The camera property.
         /// </summary>
         public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
             "Camera",
@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, CameraChanged));
 
         /// <summary>
-        ///   Gets or sets the default camera (used when resetting the view).
+        /// Gets or sets the default camera (used when resetting the view).
         /// </summary>
         /// <value> The default camera. </value>
         public ProjectionCamera DefaultCamera
@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The default camera property.
+        /// The default camera property.
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
             "DefaultCamera", typeof(ProjectionCamera), typeof(CameraController), new UIPropertyMetadata(null));
@@ -97,10 +97,10 @@ namespace HelixToolkit.Wpf
         /// The camera changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void CameraChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -117,32 +117,32 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The fixed mouse down point property.
+        /// The fixed mouse down point property.
         /// </summary>
         public static readonly DependencyProperty RotateAroundMouseDownPointProperty =
             DependencyProperty.Register(
                 "RotateAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The inertia factor property.
+        /// The inertia factor property.
         /// </summary>
         public static readonly DependencyProperty InertiaFactorProperty = DependencyProperty.Register(
             "InertiaFactor", typeof(double), typeof(CameraController), new UIPropertyMetadata(0.9));
 
         /// <summary>
-        ///   The infinite spin property.
+        /// The infinite spin property.
         /// </summary>
         public static readonly DependencyProperty InfiniteSpinProperty = DependencyProperty.Register(
             "InfiniteSpin", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The is pan enabled property.
+        /// The is pan enabled property.
         /// </summary>
         public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
             "IsPanEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   Gets or sets a value indicating whether field of view can be changed.
+        /// Gets or sets a value indicating whether field of view can be changed.
         /// </summary>
         public bool IsChangeFieldOfViewEnabled
         {
@@ -158,40 +158,40 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The is change fov enabled property.
+        /// The is change fov enabled property.
         /// </summary>
         public static readonly DependencyProperty IsChangeFieldOfViewEnabledProperty =
             DependencyProperty.Register(
                 "IsChangeFieldOfViewEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The is zoom enabled property.
+        /// The is zoom enabled property.
         /// </summary>
         public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
             "IsZoomEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The show camera target property.
+        /// The show camera target property.
         /// </summary>
         public static readonly DependencyProperty ShowCameraTargetProperty =
             DependencyProperty.Register(
                 "ShowCameraTarget", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The spin release time property.
+        /// The spin release time property.
         /// </summary>
         public static readonly DependencyProperty SpinReleaseTimeProperty =
             DependencyProperty.Register(
                 "SpinReleaseTime", typeof(int), typeof(CameraController), new UIPropertyMetadata(200));
 
         /// <summary>
-        ///   The camera mode property.
+        /// The camera mode property.
         /// </summary>
         public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
             "CameraMode", typeof(CameraMode), typeof(CameraController), new UIPropertyMetadata(CameraMode.Inspect));
 
         /// <summary>
-        ///   The camera rotation mode property.
+        /// The camera rotation mode property.
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty =
             DependencyProperty.Register(
@@ -201,19 +201,19 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(CameraRotationMode.Turntable));
 
         /// <summary>
-        ///   The enabled property.
+        /// The enabled property.
         /// </summary>
         public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register(
             "Enabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The viewport property.
+        /// The viewport property.
         /// </summary>
         public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(
             "Viewport", typeof(Viewport3D), typeof(CameraController), new PropertyMetadata(null, ViewportChanged));
 
         /// <summary>
-        ///   The up direction property.
+        /// The up direction property.
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
             "ModelUpDirection",
@@ -222,7 +222,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1)));
 
         /// <summary>
-        ///   Gets or sets the rotate cursor.
+        /// Gets or sets the rotate cursor.
         /// </summary>
         /// <value> The rotate cursor. </value>
         public Cursor RotateCursor
@@ -239,13 +239,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The rotate cursor property.
+        /// The rotate cursor property.
         /// </summary>
         public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
             "RotateCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeAll));
 
         /// <summary>
-        ///   Gets or sets the zoom cursor.
+        /// Gets or sets the zoom cursor.
         /// </summary>
         /// <value> The zoom cursor. </value>
         public Cursor ZoomCursor
@@ -262,13 +262,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The zoom cursor property.
+        /// The zoom cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
             "ZoomCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
-        ///   Gets or sets the zoom rectangle cursor.
+        /// Gets or sets the zoom rectangle cursor.
         /// </summary>
         /// <value> The zoom rectangle cursor. </value>
         public Cursor ZoomRectangleCursor
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The zoom rectangle cursor property.
+        /// The zoom rectangle cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleCursorProperty =
             DependencyProperty.Register(
@@ -295,7 +295,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(Cursors.ScrollSE));
 
         /// <summary>
-        ///   Gets or sets the change fov cursor.
+        /// Gets or sets the change fov cursor.
         /// </summary>
         /// <value> The change fov cursor. </value>
         public Cursor ChangeFieldOfViewCursor
@@ -312,7 +312,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
+        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
         /// </summary>
         /// <value> <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . </value>
         public bool IsTouchZoomEnabled
@@ -329,14 +329,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The is touch zoom enabled property.
+        /// The is touch zoom enabled property.
         /// </summary>
         public static readonly DependencyProperty IsTouchZoomEnabledProperty =
             DependencyProperty.Register(
                 "IsTouchZoomEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The change fov cursor property.
+        /// The change fov cursor property.
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewCursorProperty =
             DependencyProperty.Register(
@@ -346,7 +346,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(Cursors.ScrollNS));
 
         /// <summary>
-        ///   Gets or sets the pan cursor.
+        /// Gets or sets the pan cursor.
         /// </summary>
         /// <value> The pan cursor. </value>
         public Cursor PanCursor
@@ -363,28 +363,28 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The pan cursor property.
+        /// The pan cursor property.
         /// </summary>
         public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
             "PanCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.Hand));
 
         /// <summary>
-        ///   The 3D rotation point.
+        /// The 3D rotation point.
         /// </summary>
         private Point3D rotationPoint3D;
 
         /// <summary>
-        ///   The is spinning flag.
+        /// The is spinning flag.
         /// </summary>
         private bool isSpinning;
 
         /// <summary>
-        ///   The last tick.
+        /// The last tick.
         /// </summary>
         private long lastTick;
 
         /// <summary>
-        ///   The pan speed.
+        /// The pan speed.
         /// </summary>
         private Vector3D panSpeed;
 
@@ -394,33 +394,33 @@ namespace HelixToolkit.Wpf
         private Vector3D moveSpeed;
 
         /// <summary>
-        ///   The rotation speed.
+        /// The rotation speed.
         /// </summary>
         private Vector rotationSpeed;
 
         /// <summary>
-        ///   The spinning speed.
+        /// The spinning speed.
         /// </summary>
         private Vector spinningSpeed;
 
         /// <summary>
-        ///   The target adorner.
+        /// The target adorner.
         /// </summary>
         private Adorner targetAdorner;
 
         /// <summary>
-        ///   The rectangle adorner.
+        /// The rectangle adorner.
         /// </summary>
         private RectangleAdorner rectangleAdorner;
 
         /// <summary>
-        ///   The zoom speed.
+        /// The zoom speed.
         /// </summary>
         private double zoomSpeed;
 
         /// <summary>
-        /// Initializes static members of the <see cref="CameraController"/> class. 
-        ///   Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class.
+        /// Initializes static members of the <see cref="CameraController"/> class.
+        /// Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class. Initializes static members of the <see cref="CameraController"/> class.
         /// </summary>
         static CameraController()
         {
@@ -430,78 +430,77 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The zoom rectangle command.
+        /// The zoom rectangle command.
         /// </summary>
         public static RoutedCommand ZoomRectangleCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The zoom extents command.
+        /// The zoom extents command.
         /// </summary>
         public static RoutedCommand ZoomExtentsCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The rotate command.
+        /// The rotate command.
         /// </summary>
         public static RoutedCommand RotateCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The pan command.
+        /// The pan command.
         /// </summary>
         public static RoutedCommand PanCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The zoom command.
+        /// The zoom command.
         /// </summary>
         public static RoutedCommand ZoomCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The change fov command.
+        /// The change fov command.
         /// </summary>
         public static RoutedCommand ChangeFieldOfViewCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The reset camera command.
+        /// The reset camera command.
         /// </summary>
         public static RoutedCommand ResetCameraCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The change look at command.
+        /// The change look at command.
         /// </summary>
         public static RoutedCommand ChangeLookAtCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The top view command.
+        /// The top view command.
         /// </summary>
         public static RoutedCommand TopViewCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The bottom view command.
+        /// The bottom view command.
         /// </summary>
         public static RoutedCommand BottomViewCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The left view command.
+        /// The left view command.
         /// </summary>
         public static RoutedCommand LeftViewCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The right view command.
+        /// The right view command.
         /// </summary>
         public static RoutedCommand RightViewCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The front view command.
+        /// The front view command.
         /// </summary>
         public static RoutedCommand FrontViewCommand = new RoutedCommand();
 
         /// <summary>
-        ///   The back view command.
+        /// The back view command.
         /// </summary>
         public static RoutedCommand BackViewCommand = new RoutedCommand();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CameraController"/> class. 
-        ///   Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class. Initializes a new instance of the <see cref="CameraController"/> class.
+        /// Initializes a new instance of the <see cref="CameraController"/> class.
         /// </summary>
         public CameraController()
         {
@@ -519,7 +518,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the minimum field of view.
+        /// Gets or sets the minimum field of view.
         /// </summary>
         /// <value> The minimum fov. </value>
         public double MinimumFieldOfView
@@ -539,7 +538,7 @@ namespace HelixToolkit.Wpf
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
@@ -553,7 +552,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the touch mode.
+        /// Gets or sets the touch mode.
         /// </summary>
         /// <value> The touch mode. </value>
         public TouchMode TouchMode
@@ -570,13 +569,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The touch mode property.
+        /// The touch mode property.
         /// </summary>
         public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
             "TouchMode", typeof(TouchMode), typeof(CameraController), new UIPropertyMetadata(TouchMode.Panning));
 
         /// <summary>
-        ///   The touch down point.
+        /// The touch down point.
         /// </summary>
         private Point touchDownPoint;
 
@@ -584,7 +583,7 @@ namespace HelixToolkit.Wpf
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
@@ -622,7 +621,7 @@ namespace HelixToolkit.Wpf
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
@@ -655,7 +654,7 @@ namespace HelixToolkit.Wpf
         /// Invoked when an unhandled StylusSystemGesture attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.StylusSystemGestureEventArgs"/> that contains the event data. 
+        /// The <see cref="T:System.Windows.Input.StylusSystemGestureEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnStylusSystemGesture(StylusSystemGestureEventArgs e)
         {
@@ -708,32 +707,32 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The change look at event handler.
+        /// The change look at event handler.
         /// </summary>
         private RotateHandler changeLookAtHandler;
 
         /// <summary>
-        ///   The rotation event handler.
+        /// The rotation event handler.
         /// </summary>
         private RotateHandler rotateHandler;
 
         /// <summary>
-        ///   The zoom rectangle event handler.
+        /// The zoom rectangle event handler.
         /// </summary>
         private ZoomRectangleHandler zoomRectangleHandler;
 
         /// <summary>
-        ///   The zoom event handler.
+        /// The zoom event handler.
         /// </summary>
         private ZoomHandler zoomHandler;
 
         /// <summary>
-        ///   The change field of view event handler.
+        /// The change field of view event handler.
         /// </summary>
         private ZoomHandler changeFieldOfViewHandler;
 
         /// <summary>
-        ///   The pan event handler.
+        /// The pan event handler.
         /// </summary>
         private PanHandler panHandler;
 
@@ -741,10 +740,10 @@ namespace HelixToolkit.Wpf
         /// The top view event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void TopViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -755,10 +754,10 @@ namespace HelixToolkit.Wpf
         /// The bottom view event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void BottomViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -769,10 +768,10 @@ namespace HelixToolkit.Wpf
         /// The left view event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void LeftViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -783,10 +782,10 @@ namespace HelixToolkit.Wpf
         /// The right view event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void RightViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -797,10 +796,10 @@ namespace HelixToolkit.Wpf
         /// The front view event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void FrontViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -811,10 +810,10 @@ namespace HelixToolkit.Wpf
         /// The back view event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void BackViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -825,13 +824,13 @@ namespace HelixToolkit.Wpf
         /// Changes the direction of the camera.
         /// </summary>
         /// <param name="lookDir">
-        /// The look dir. 
+        /// The look dir.
         /// </param>
         /// <param name="upDir">
-        /// Up dir. 
+        /// Up dir.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void ChangeDirection(Vector3D lookDir, Vector3D upDir, double animationTime = 500)
         {
@@ -844,10 +843,10 @@ namespace HelixToolkit.Wpf
         /// Changes the direction of the camera.
         /// </summary>
         /// <param name="lookDir">
-        /// The look dir. 
+        /// The look dir.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void ChangeDirection(Vector3D lookDir, double animationTime = 500)
         {
@@ -860,10 +859,10 @@ namespace HelixToolkit.Wpf
         /// Called when the CameraController is unloaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void CameraControllerUnloaded(object sender, RoutedEventArgs e)
         {
@@ -874,10 +873,10 @@ namespace HelixToolkit.Wpf
         /// The camera controller_ loaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void CameraControllerLoaded(object sender, RoutedEventArgs e)
         {
@@ -888,10 +887,10 @@ namespace HelixToolkit.Wpf
         /// The Zoom extents event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ZoomExtentsHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -913,7 +912,7 @@ namespace HelixToolkit.Wpf
         /// Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state. 
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -929,10 +928,10 @@ namespace HelixToolkit.Wpf
         /// The reset camera event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ResetCameraHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -944,7 +943,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ModelUpDirection.
+        /// Gets or sets ModelUpDirection.
         /// </summary>
         public Vector3D ModelUpDirection
         {
@@ -960,11 +959,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sensitivity for rotation by the left and right keys.
+        /// Gets or sets the sensitivity for rotation by the left and right keys.
         /// </summary>
         /// <value> The rotation sensitivity. </value>
         /// <remarks>
-        ///   Use -1 to invert the rotation direction.
+        /// Use -1 to invert the rotation direction.
         /// </remarks>
         public double LeftRightRotationSensitivity
         {
@@ -980,18 +979,18 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The left right rotation sensitivity property.
+        /// The left right rotation sensitivity property.
         /// </summary>
         public static readonly DependencyProperty LeftRightRotationSensitivityProperty =
             DependencyProperty.Register(
                 "LeftRightRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   Gets or sets the sensitivity for rotation by the up and down keys.
+        /// Gets or sets the sensitivity for rotation by the up and down keys.
         /// </summary>
         /// <value> The rotation sensitivity. </value>
         /// <remarks>
-        ///   Use -1 to invert the rotation direction.
+        /// Use -1 to invert the rotation direction.
         /// </remarks>
         public double UpDownRotationSensitivity
         {
@@ -1007,18 +1006,18 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The up down rotation sensitivity property.
+        /// The up down rotation sensitivity property.
         /// </summary>
         public static readonly DependencyProperty UpDownRotationSensitivityProperty =
             DependencyProperty.Register(
                 "UpDownRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   Gets or sets the sensitivity for pan by the left and right keys.
+        /// Gets or sets the sensitivity for pan by the left and right keys.
         /// </summary>
         /// <value> The pan sensitivity. </value>
         /// <remarks>
-        ///   Use -1 to invert the pan direction.
+        /// Use -1 to invert the pan direction.
         /// </remarks>
         public double LeftRightPanSensitivity
         {
@@ -1034,7 +1033,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The left right pan sensitivity property.
+        /// The left right pan sensitivity property.
         /// </summary>
         public static readonly DependencyProperty LeftRightPanSensitivityProperty =
             DependencyProperty.Register(
@@ -1053,13 +1052,12 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty MoveSensitivityProperty =
             DependencyProperty.Register("MoveSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
-
         /// <summary>
-        ///   Gets or sets the sensitivity for pan by the up and down keys.
+        /// Gets or sets the sensitivity for pan by the up and down keys.
         /// </summary>
         /// <value> The pan sensitivity. </value>
         /// <remarks>
-        ///   Use -1 to invert the pan direction.
+        /// Use -1 to invert the pan direction.
         /// </remarks>
         public double UpDownPanSensitivity
         {
@@ -1075,18 +1073,18 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The up down Pan sensitivity property.
+        /// The up down Pan sensitivity property.
         /// </summary>
         public static readonly DependencyProperty UpDownPanSensitivityProperty =
             DependencyProperty.Register(
                 "UpDownPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   Gets or sets the sensitivity for zoom by the pageup and pagedown keys.
+        /// Gets or sets the sensitivity for zoom by the pageup and pagedown keys.
         /// </summary>
         /// <value> The zoom sensitivity. </value>
         /// <remarks>
-        ///   Use -1 to invert the zoom direction.
+        /// Use -1 to invert the zoom direction.
         /// </remarks>
         public double PageUpDownZoomSensitivity
         {
@@ -1102,14 +1100,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The page up down zoom sensitivity property.
+        /// The page up down zoom sensitivity property.
         /// </summary>
         public static readonly DependencyProperty PageUpDownZoomSensitivityProperty =
             DependencyProperty.Register(
                 "PageUpDownZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   Gets or sets the rotation sensitivity (degrees/pixel).
+        /// Gets or sets the rotation sensitivity (degrees/pixel).
         /// </summary>
         /// <value> The rotation sensitivity. </value>
         public double RotationSensitivity
@@ -1125,9 +1123,8 @@ namespace HelixToolkit.Wpf
             }
         }
 
-
         /// <summary>
-        ///   Gets or sets InertiaFactor.
+        /// Gets or sets InertiaFactor.
         /// </summary>
         public double InertiaFactor
         {
@@ -1143,10 +1140,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Max duration of mouse drag to activate spin
+        /// Max duration of mouse drag to activate spin
         /// </summary>
         /// <remarks>
-        ///   If the time between mouse down and mouse up is less than this value, spin is activated.
+        /// If the time between mouse down and mouse up is less than this value, spin is activated.
         /// </remarks>
         public int SpinReleaseTime
         {
@@ -1162,7 +1159,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether InfiniteSpin.
+        /// Gets or sets a value indicating whether InfiniteSpin.
         /// </summary>
         public bool InfiniteSpin
         {
@@ -1178,7 +1175,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsRotationEnabled.
+        /// Gets or sets a value indicating whether IsRotationEnabled.
         /// </summary>
         public bool IsRotationEnabled
         {
@@ -1194,7 +1191,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The is rotation enabled property.
+        /// The is rotation enabled property.
         /// </summary>
         public static readonly DependencyProperty IsRotationEnabledProperty =
             DependencyProperty.Register(
@@ -1215,9 +1212,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty IsMoveEnabledProperty =
             DependencyProperty.Register("IsMoveEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
-
         /// <summary>
-        ///   Gets or sets a value indicating whether pan is enabled.
+        /// Gets or sets a value indicating whether pan is enabled.
         /// </summary>
         public bool IsPanEnabled
         {
@@ -1233,7 +1229,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsZoomEnabled.
+        /// Gets or sets a value indicating whether IsZoomEnabled.
         /// </summary>
         public bool IsZoomEnabled
         {
@@ -1249,7 +1245,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Show a target adorner when manipulating the camera.
+        /// Show a target adorner when manipulating the camera.
         /// </summary>
         public bool ShowCameraTarget
         {
@@ -1265,7 +1261,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to rotate around the mouse down point.
+        /// Gets or sets a value indicating whether to rotate around the mouse down point.
         /// </summary>
         /// <value> <c>true</c> if rotatation around the mouse down point is enabled; otherwise, <c>false</c> . </value>
         public bool RotateAroundMouseDownPoint
@@ -1282,7 +1278,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to zoom around mouse down point.
+        /// Gets or sets a value indicating whether to zoom around mouse down point.
         /// </summary>
         /// <value> <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . </value>
         public bool ZoomAroundMouseDownPoint
@@ -1299,14 +1295,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Zoom around the mouse down point property.
+        /// Zoom around the mouse down point property.
         /// </summary>
         public static readonly DependencyProperty ZoomAroundMouseDownPointProperty =
             DependencyProperty.Register(
                 "ZoomAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   Gets a value indicating whether IsPerspectiveCamera.
+        /// Gets a value indicating whether IsPerspectiveCamera.
         /// </summary>
         protected bool IsPerspectiveCamera
         {
@@ -1317,7 +1313,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets a value indicating whether IsOrthographicCamera.
+        /// Gets a value indicating whether IsOrthographicCamera.
         /// </summary>
         protected bool IsOrthographicCamera
         {
@@ -1328,7 +1324,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets PerspectiveCamera.
+        /// Gets PerspectiveCamera.
         /// </summary>
         protected PerspectiveCamera PerspectiveCamera
         {
@@ -1339,7 +1335,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets OrthographicCamera.
+        /// Gets OrthographicCamera.
         /// </summary>
         protected OrthographicCamera OrthographicCamera
         {
@@ -1350,7 +1346,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Camera.
+        /// Gets or sets Camera.
         /// </summary>
         public ProjectionCamera Camera
         {
@@ -1366,7 +1362,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets CameraLookDirection.
+        /// Gets or sets CameraLookDirection.
         /// </summary>
         public Vector3D CameraLookDirection
         {
@@ -1382,7 +1378,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets CameraUpDirection.
+        /// Gets or sets CameraUpDirection.
         /// </summary>
         public Vector3D CameraUpDirection
         {
@@ -1398,7 +1394,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets CameraPosition.
+        /// Gets or sets CameraPosition.
         /// </summary>
         public Point3D CameraPosition
         {
@@ -1414,7 +1410,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets CameraTarget.
+        /// Gets or sets CameraTarget.
         /// </summary>
         public Point3D CameraTarget
         {
@@ -1430,7 +1426,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ZoomSensitivity.
+        /// Gets or sets ZoomSensitivity.
         /// </summary>
         public double ZoomSensitivity
         {
@@ -1446,14 +1442,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The zoom sensitivity property.
+        /// The zoom sensitivity property.
         /// </summary>
         public static readonly DependencyProperty ZoomSensitivityProperty =
             DependencyProperty.Register(
                 "ZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   Gets or sets CameraRotationMode.
+        /// Gets or sets CameraRotationMode.
         /// </summary>
         public CameraRotationMode CameraRotationMode
         {
@@ -1469,7 +1465,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets CameraMode.
+        /// Gets or sets CameraMode.
         /// </summary>
         public CameraMode CameraMode
         {
@@ -1485,7 +1481,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Viewport.
+        /// Gets or sets Viewport.
         /// </summary>
         public Viewport3D Viewport
         {
@@ -1501,7 +1497,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether Enabled.
+        /// Gets or sets a value indicating whether Enabled.
         /// </summary>
         public bool Enabled
         {
@@ -1517,7 +1513,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets a value indicating whether IsActive.
+        /// Gets a value indicating whether IsActive.
         /// </summary>
         public bool IsActive
         {
@@ -1531,10 +1527,10 @@ namespace HelixToolkit.Wpf
         /// The viewport changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void ViewportChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1549,7 +1545,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets ActualCamera.
+        /// Gets ActualCamera.
         /// </summary>
         public ProjectionCamera ActualCamera
         {
@@ -1570,7 +1566,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The rendering event listener.
+        /// The rendering event listener.
         /// </summary>
         private readonly RenderingEventListener renderingEventListener;
 
@@ -1598,10 +1594,10 @@ namespace HelixToolkit.Wpf
         /// The rendering event handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
@@ -1620,7 +1616,7 @@ namespace HelixToolkit.Wpf
         /// The on time step.
         /// </summary>
         /// <param name="time">
-        /// The time. 
+        /// The time.
         /// </param>
         private void OnTimeStep(double time)
         {
@@ -1669,16 +1665,16 @@ namespace HelixToolkit.Wpf
         /// The clamp.
         /// </summary>
         /// <param name="factor">
-        /// The factor. 
+        /// The factor.
         /// </param>
         /// <param name="min">
-        /// The min. 
+        /// The min.
         /// </param>
         /// <param name="max">
-        /// The max. 
+        /// The max.
         /// </param>
         /// <returns>
-        /// The clamp. 
+        /// The clamp.
         /// </returns>
         private double Clamp(double factor, double min, double max)
         {
@@ -1696,10 +1692,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The camera history stack.
+        /// The camera history stack.
         /// </summary>
         /// <remarks>
-        ///   Implemented as a list since we want to remove items at the bottom of the stack.
+        /// Implemented as a list since we want to remove items at the bottom of the stack.
         /// </remarks>
         private readonly List<CameraSetting> cameraHistory = new List<CameraSetting>();
 
@@ -1719,7 +1715,7 @@ namespace HelixToolkit.Wpf
         /// Restores the most recent camera setting from the internal stack.
         /// </summary>
         /// <returns>
-        /// The restore camera setting. 
+        /// The restore camera setting.
         /// </returns>
         public bool RestoreCameraSetting()
         {
@@ -1738,10 +1734,10 @@ namespace HelixToolkit.Wpf
         /// Called when a key is pressed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data.
         /// </param>
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
@@ -1838,12 +1834,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The 3D point to spin around.
+        /// The 3D point to spin around.
         /// </summary>
         private Point3D spinningPoint3D;
 
         /// <summary>
-        ///   The spinning position.
+        /// The spinning position.
         /// </summary>
         private Point spinningPosition;
 
@@ -1859,13 +1855,13 @@ namespace HelixToolkit.Wpf
         /// Starts the spin.
         /// </summary>
         /// <param name="speed">
-        /// The speed. 
+        /// The speed.
         /// </param>
         /// <param name="position">
-        /// The position. 
+        /// The position.
         /// </param>
         /// <param name="aroundPoint">
-        /// The spin around point. 
+        /// The spin around point.
         /// </param>
         public void StartSpin(Vector speed, Point position, Point3D aroundPoint)
         {
@@ -1879,10 +1875,10 @@ namespace HelixToolkit.Wpf
         /// Called when the mouse wheel is moved.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseWheelEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.Input.MouseWheelEventArgs"/> instance containing the event data.
         /// </param>
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -1935,7 +1931,7 @@ namespace HelixToolkit.Wpf
         /// The Zoom extents.
         /// </summary>
         /// <param name="animationTime">
-        /// The animation time (milliseconds). 
+        /// The animation time (milliseconds).
         /// </param>
         public void ZoomExtents(double animationTime = 200)
         {
@@ -1952,10 +1948,10 @@ namespace HelixToolkit.Wpf
         /// The add pan force.
         /// </summary>
         /// <param name="dx">
-        /// The dx. 
+        /// The dx.
         /// </param>
         /// <param name="dy">
-        /// The dy. 
+        /// The dy.
         /// </param>
         public void AddPanForce(double dx, double dy)
         {
@@ -1966,10 +1962,10 @@ namespace HelixToolkit.Wpf
         /// The find pan vector.
         /// </summary>
         /// <param name="dx">
-        /// The dx. 
+        /// The dx.
         /// </param>
         /// <param name="dy">
-        /// The dy. 
+        /// The dy.
         /// </param>
         /// <returns>
         /// </returns>
@@ -1983,7 +1979,7 @@ namespace HelixToolkit.Wpf
             double f = l * 0.001;
             Vector3D move = -axis1 * f * dx + axis2 * f * dy;
 
-            // this should be dependent on distance to target?           
+            // this should be dependent on distance to target?
             return move;
         }
 
@@ -1991,7 +1987,7 @@ namespace HelixToolkit.Wpf
         /// The add pan force.
         /// </summary>
         /// <param name="pan">
-        /// The pan. 
+        /// The pan.
         /// </param>
         public void AddPanForce(Vector3D pan)
         {
@@ -2021,7 +2017,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The rotation position.
+        /// The rotation position.
         /// </summary>
         private Point rotationPosition;
 
@@ -2029,10 +2025,10 @@ namespace HelixToolkit.Wpf
         /// The add rotate force.
         /// </summary>
         /// <param name="dx">
-        /// The dx. 
+        /// The dx.
         /// </param>
         /// <param name="dy">
-        /// The dy. 
+        /// The dy.
         /// </param>
         public void AddRotateForce(double dx, double dy)
         {
@@ -2049,7 +2045,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   The point to zoom around.
+        /// The point to zoom around.
         /// </summary>
         private Point3D zoomPoint3D;
 
@@ -2057,7 +2053,7 @@ namespace HelixToolkit.Wpf
         /// Adds the zoom force.
         /// </summary>
         /// <param name="dx">
-        /// The dx. 
+        /// The dx.
         /// </param>
         public void AddZoomForce(double dx)
         {
@@ -2068,10 +2064,10 @@ namespace HelixToolkit.Wpf
         /// Adds the zoom force.
         /// </summary>
         /// <param name="dx">
-        /// The dx. 
+        /// The dx.
         /// </param>
         /// <param name="zoomOrigin">
-        /// The zoom origin. 
+        /// The zoom origin.
         /// </param>
         public void AddZoomForce(double dx, Point3D zoomOrigin)
         {
@@ -2089,7 +2085,7 @@ namespace HelixToolkit.Wpf
         /// Shows the target adorner.
         /// </summary>
         /// <param name="position">
-        /// The position. 
+        /// The position.
         /// </param>
         public void ShowTargetAdorner(Point position)
         {
@@ -2183,13 +2179,13 @@ namespace HelixToolkit.Wpf
         /// Shows the rectangle.
         /// </summary>
         /// <param name="rect">
-        /// The rect. 
+        /// The rect.
         /// </param>
         /// <param name="color1">
-        /// The color 1. 
+        /// The color 1.
         /// </param>
         /// <param name="color2">
-        /// The color 2. 
+        /// The color 2.
         /// </param>
         public void ShowRectangle(Rect rect, Color color1, Color color2)
         {
@@ -2208,7 +2204,7 @@ namespace HelixToolkit.Wpf
         /// Updates the rectangle.
         /// </summary>
         /// <param name="rect">
-        /// The rectangle. 
+        /// The rectangle.
         /// </param>
         public void UpdateRectangle(Rect rect)
         {
@@ -2243,10 +2239,10 @@ namespace HelixToolkit.Wpf
         /// Change the "look-at" point.
         /// </summary>
         /// <param name="target">
-        /// The target. 
+        /// The target.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         [Obsolete]
         public void LookAt(Point3D target, double animationTime)
@@ -2272,7 +2268,7 @@ namespace HelixToolkit.Wpf
         /// Zooms by the specified delta value.
         /// </summary>
         /// <param name="delta">
-        /// The delta value. 
+        /// The delta value.
         /// </param>
         public void Zoom(double delta)
         {

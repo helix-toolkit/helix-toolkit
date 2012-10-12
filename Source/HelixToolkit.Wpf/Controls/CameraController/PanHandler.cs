@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PanHandler.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,16 +15,10 @@ namespace HelixToolkit.Wpf
     /// </summary>
     internal class PanHandler : MouseGestureHandler
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The 3D pan origin.
+        /// The 3D pan origin.
         /// </summary>
         private Point3D panPoint3D;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PanHandler"/> class.
@@ -37,9 +31,6 @@ namespace HelixToolkit.Wpf
         {
         }
 
-        #endregion
-
-        #region Public Methods
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
@@ -123,10 +114,6 @@ namespace HelixToolkit.Wpf
             this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Controller.CameraLookDirection);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Occurs when the command associated with this handler initiates a check to determine whether the command can be executed on the command target.
         /// </summary>
@@ -161,6 +148,5 @@ namespace HelixToolkit.Wpf
             this.Controller.AddPanForce(speed.X, speed.Y);
         }
 
-        #endregion
     }
 }

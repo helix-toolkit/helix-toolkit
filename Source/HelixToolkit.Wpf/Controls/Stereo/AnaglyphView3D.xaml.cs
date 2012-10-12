@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AnaglyphView3D.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,26 +15,24 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// Petzold's anaglyph space station (using opacity)
-    ///   http://www.charlespetzold.com/3D/ 
-    ///   Greg Schechter multi input shader effects (for the AnaglyphEffect)
-    ///   http://blogs.msdn.com/greg_schechter/archive/2008/09/27/a-more-useful-multi-input-effect.aspx
-    ///   Barcinski and Jean-Jean: Making of Part III - Anaglyph
-    ///   http://blog.barcinski-jeanjean.com/2008/10/17/making-of-part-iii-anaglyph/
+    /// http://www.charlespetzold.com/3D/
+    /// Greg Schechter multi input shader effects (for the AnaglyphEffect)
+    /// http://blogs.msdn.com/greg_schechter/archive/2008/09/27/a-more-useful-multi-input-effect.aspx
+    /// Barcinski and Jean-Jean: Making of Part III - Anaglyph
+    /// http://blog.barcinski-jeanjean.com/2008/10/17/making-of-part-iii-anaglyph/
     /// </remarks>
     [ContentProperty("Children")]
     [Localizability(LocalizationCategory.NeverLocalize)]
     public partial class AnaglyphView3D : StereoControl
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The horizontal offset property.
         /// </summary>
         public static readonly DependencyProperty HorizontalOffsetProperty =
             DependencyProperty.Register(
-                "HorizontalOffset", 
-                typeof(double), 
-                typeof(AnaglyphView3D), 
+                "HorizontalOffset",
+                typeof(double),
+                typeof(AnaglyphView3D),
                 new UIPropertyMetadata(0.0, HorizontalOffsetChanged));
 
         /// <summary>
@@ -43,12 +41,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty MethodProperty = DependencyProperty.Register(
             "Method", typeof(AnaglyphMethod), typeof(AnaglyphView3D), new UIPropertyMetadata(AnaglyphMethod.Gray));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "AnaglyphView3D" /> class.
+        /// Initializes a new instance of the <see cref = "AnaglyphView3D" /> class.
         /// </summary>
         public AnaglyphView3D()
         {
@@ -56,12 +50,8 @@ namespace HelixToolkit.Wpf
             this.BindViewports(this.LeftView, this.RightView);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the horizontal offset.
+        /// Gets or sets the horizontal offset.
         /// </summary>
         /// <value>The horizontal offset.</value>
         public double HorizontalOffset
@@ -78,7 +68,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the method.
+        /// Gets or sets the method.
         /// </summary>
         /// <value>The method.</value>
         public AnaglyphMethod Method
@@ -93,10 +83,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(MethodProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.KeyDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
@@ -152,6 +138,5 @@ namespace HelixToolkit.Wpf
             // RightView.Margin=new Thickness(HorizontalOffset,0,-HorizontalOffset,0);
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Vector3DExtensions.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,8 +13,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class Vector3DExtensions
     {
-        #region Public Methods
-
         /// <summary>
         /// Find a <see cref="Vector3D"/> that is perpendicular to the given <see cref="Vector3D"/>.
         /// </summary>
@@ -55,13 +53,12 @@ namespace HelixToolkit.Wpf
         /// The input vector.
         /// </param>
         /// <returns>
-        /// A point. 
+        /// A point.
         /// </returns>
         public static Point3D ToPoint3D(this Vector3D n)
         {
             return new Point3D(n.X, n.Y, n.Z);
         }
-       
-        #endregion
+
     }
 }

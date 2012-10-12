@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ArrowVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class ArrowVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The diameter property.
         /// </summary>
@@ -52,12 +50,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(ArrowVisual3D), new UIPropertyMetadata(36, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the diameter.
+        /// Gets or sets the diameter.
         /// </summary>
         /// <value>The diameter.</value>
         public double Diameter
@@ -74,7 +68,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the direction.
+        /// Gets or sets the direction.
         /// </summary>
         /// <value>The direction.</value>
         public Vector3D Direction
@@ -91,7 +85,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length of the head.
+        /// Gets or sets the length of the head.
         /// </summary>
         /// <value>The length of the head.</value>
         public double HeadLength
@@ -108,7 +102,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the origin.
+        /// Gets or sets the origin.
         /// </summary>
         /// <value>The origin.</value>
         public Point3D Origin
@@ -125,7 +119,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the start point of the arrow.
+        /// Gets or sets the start point of the arrow.
         /// </summary>
         /// <value>The start point.</value>
         public Point3D Point1
@@ -142,7 +136,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the end point of the arrow.
+        /// Gets or sets the end point of the arrow.
         /// </summary>
         /// <value>The end point.</value>
         public Point3D Point2
@@ -159,7 +153,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of divisions around the arrow.
+        /// Gets or sets the number of divisions around the arrow.
         /// </summary>
         /// <value>The number of divisions.</value>
         public int ThetaDiv
@@ -174,10 +168,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ThetaDivProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
@@ -195,6 +185,5 @@ namespace HelixToolkit.Wpf
             return builder.ToMesh();
         }
 
-        #endregion
     }
 }

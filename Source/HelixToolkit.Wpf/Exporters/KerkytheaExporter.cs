@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="KerkytheaExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -25,31 +25,25 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class KerkytheaExporter : Exporter
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   Dictionary of registered materials.
+        /// Dictionary of registered materials.
         /// </summary>
         public Dictionary<Material, XmlDocument> RegisteredMaterials = new Dictionary<Material, XmlDocument>();
 
         /// <summary>
-        ///   The names.
+        /// The names.
         /// </summary>
         private readonly HashSet<string> names = new HashSet<string>();
 
         /// <summary>
-        ///   Texture bitmaps are reused. This dictionary contains a map from brush to filename
+        /// Texture bitmaps are reused. This dictionary contains a map from brush to filename
         /// </summary>
         private readonly Dictionary<Brush, string> textureFiles = new Dictionary<Brush, string>();
 
         /// <summary>
-        ///   The writer.
+        /// The writer.
         /// </summary>
         private readonly XmlWriter writer;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KerkytheaExporter"/> class.
@@ -86,152 +80,140 @@ namespace HelixToolkit.Wpf
             this.writer = XmlWriter.Create(outputFileName, settings);
         }
 
-        #endregion
-
-        #region Enums
-
         /// <summary>
         /// Render settings.
         /// </summary>
         public enum RenderSettings
         {
             /// <summary>
-            ///   Use RayTracer.
+            /// Use RayTracer.
             /// </summary>
             RayTracer,
 
             /// <summary>
-            ///   Use PhotonMap.
+            /// Use PhotonMap.
             /// </summary>
             PhotonMap,
 
             /// <summary>
-            ///   Use MetropolisLightTransport.
+            /// Use MetropolisLightTransport.
             /// </summary>
             MetropolisLightTransport
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the aperture.
+        /// Gets or sets the aperture.
         /// </summary>
         /// <value>The aperture.</value>
         public string Aperture { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the background.
+        /// Gets or sets the color of the background.
         /// </summary>
         /// <value>The color of the background.</value>
         public Color BackgroundColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the length of the focal.
+        /// Gets or sets the length of the focal.
         /// </summary>
         /// <value>The length of the focal.</value>
         public double FocalLength { get; set; }
 
         /// <summary>
-        ///   Gets or sets the focus distance.
+        /// Gets or sets the focus distance.
         /// </summary>
         /// <value>The focus distance.</value>
         public double FocusDistance { get; set; }
 
         /// <summary>
-        ///   Gets or sets the height.
+        /// Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
         public int Height { get; set; }
 
         /// <summary>
-        ///   Gets or sets the lens samples.
+        /// Gets or sets the lens samples.
         /// </summary>
         /// <value>The lens samples.</value>
         public int LensSamples { get; set; }
 
         /// <summary>
-        ///   Gets or sets the light multiplier.
+        /// Gets or sets the light multiplier.
         /// </summary>
         /// <value>The light multiplier.</value>
         public double LightMultiplier { get; set; }
 
         /// <summary>
-        ///   Gets or sets the name.
+        /// Gets or sets the name.
         /// </summary>
         /// <value>The name.</value>
         public string Name { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the reflection.
+        /// Gets or sets the color of the reflection.
         /// </summary>
         /// <value>The color of the reflection.</value>
         public Color ReflectionColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this <see cref = "KerkytheaExporter" /> is reflections.
+        /// Gets or sets a value indicating whether this <see cref = "KerkytheaExporter" /> is reflections.
         /// </summary>
         /// <value><c>true</c> if reflections; otherwise, <c>false</c>.</value>
         public bool Reflections { get; set; }
 
         /// <summary>
-        ///   Gets or sets the render setting.
+        /// Gets or sets the render setting.
         /// </summary>
         /// <value>The render setting.</value>
         public RenderSettings RenderSetting { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the shadow.
+        /// Gets or sets the color of the shadow.
         /// </summary>
         /// <value>The color of the shadow.</value>
         public Color ShadowColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this <see cref = "KerkytheaExporter" /> is shadows.
+        /// Gets or sets a value indicating whether this <see cref = "KerkytheaExporter" /> is shadows.
         /// </summary>
         /// <value><c>true</c> if shadows; otherwise, <c>false</c>.</value>
         public bool Shadows { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [soft shadows].
+        /// Gets or sets a value indicating whether [soft shadows].
         /// </summary>
         /// <value><c>true</c> if [soft shadows]; otherwise, <c>false</c>.</value>
         public bool SoftShadows { get; set; }
 
         /// <summary>
-        ///   Gets or sets the height of the texture.
+        /// Gets or sets the height of the texture.
         /// </summary>
         /// <value>The height of the texture.</value>
         public int TextureHeight { get; set; }
 
         /// <summary>
-        ///   Gets or sets the texture path.
+        /// Gets or sets the texture path.
         /// </summary>
         /// <value>The texture path.</value>
         public string TexturePath { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width of the texture.
+        /// Gets or sets the width of the texture.
         /// </summary>
         /// <value>The width of the texture.</value>
         public int TextureWidth { get; set; }
 
         /// <summary>
-        ///   Gets or sets the threads.
+        /// Gets or sets the threads.
         /// </summary>
         /// <value>The threads.</value>
         public int Threads { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
         public int Width { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Closes this exporter.
@@ -473,10 +455,6 @@ namespace HelixToolkit.Wpf
 
             this.WriteParameter(name, "Transform", value);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Exports the camera.
@@ -1608,6 +1586,5 @@ namespace HelixToolkit.Wpf
             this.WriteEndObject();
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LinesVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,40 +13,30 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class LinesVisual3D : ScreenSpaceVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The thickness property.
+        /// The thickness property.
         /// </summary>
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness", typeof(double), typeof(LinesVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        ///   The builder.
+        /// The builder.
         /// </summary>
         private readonly LineGeometryBuilder builder;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LinesVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "LinesVisual3D" /> class.
         /// </summary>
         public LinesVisual3D()
         {
             this.builder = new LineGeometryBuilder(this);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the thickness of the lines.
+        /// Gets or sets the thickness of the lines.
         /// </summary>
         /// <value>
-        ///   The thickness.
+        /// The thickness.
         /// </value>
         public double Thickness
         {
@@ -60,10 +50,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ThicknessProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Updates the geometry.
@@ -97,6 +83,5 @@ namespace HelixToolkit.Wpf
             return this.builder.UpdateTransforms();
         }
 
-        #endregion
     }
 }

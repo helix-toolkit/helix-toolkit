@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CohenSutherlandClipping.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,56 +12,50 @@ namespace HelixToolkit.Wpf
     public class CohenSutherlandClipping
     {
         // http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
-        #region Constants and Fields
-
         /// <summary>
-        ///   The bottom.
+        /// The bottom.
         /// </summary>
         private const int BOTTOM = 4; // 0100
 
         /// <summary>
-        ///   The inside.
+        /// The inside.
         /// </summary>
         private const int INSIDE = 0; // 0000
 
         /// <summary>
-        ///   The left.
+        /// The left.
         /// </summary>
         private const int LEFT = 1; // 0001
 
         /// <summary>
-        ///   The right.
+        /// The right.
         /// </summary>
         private const int RIGHT = 2; // 0010
 
         /// <summary>
-        ///   The top.
+        /// The top.
         /// </summary>
         private const int TOP = 8; // 1000
 
         /// <summary>
-        ///   The xmax.
+        /// The xmax.
         /// </summary>
         private readonly double xmax;
 
         /// <summary>
-        ///   The xmin.
+        /// The xmin.
         /// </summary>
         private readonly double xmin;
 
         /// <summary>
-        ///   The ymax.
+        /// The ymax.
         /// </summary>
         private readonly double ymax;
 
         /// <summary>
-        ///   The ymin.
+        /// The ymin.
         /// </summary>
         private readonly double ymin;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CohenSutherlandClipping"/> class.
@@ -86,12 +80,8 @@ namespace HelixToolkit.Wpf
             this.ymax = ymax;
         }
 
-        #endregion
-
         // Compute the bit code for a point (x, y) using the clip rectangle
         // bounded diagonally by (xmin, ymin), and (xmax, ymax)
-        #region Public Methods
-
         /// <summary>
         /// Cohen–Sutherland clipping algorithm clips a line against a rectangle.
         /// </summary>
@@ -198,10 +188,6 @@ namespace HelixToolkit.Wpf
             return this.ComputeOutCode(x, y) == INSIDE;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The compute out code.
         /// </summary>
@@ -243,6 +229,5 @@ namespace HelixToolkit.Wpf
             return code;
         }
 
-        #endregion
     }
 }

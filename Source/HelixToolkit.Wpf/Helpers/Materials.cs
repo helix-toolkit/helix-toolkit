@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Materials.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class Materials
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The black.
         /// </summary>
@@ -81,6 +79,5 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static Material Brown = MaterialHelper.CreateMaterial(Brushes.Brown);
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PointsVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,8 +13,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class PointsVisual3D : ScreenSpaceVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The width property.
         /// </summary>
@@ -26,27 +24,19 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly PointGeometryBuilder builder;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PointsVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "PointsVisual3D" /> class.
         /// </summary>
         public PointsVisual3D()
         {
             this.builder = new PointGeometryBuilder(this);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the size of the points.
+        /// Gets or sets the size of the points.
         /// </summary>
         /// <value>
-        ///   The size.
+        /// The size.
         /// </value>
         public double Size
         {
@@ -60,10 +50,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(WidthProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Updates the geometry.
@@ -99,6 +85,5 @@ namespace HelixToolkit.Wpf
             return this.builder.UpdateTransforms();
         }
 
-        #endregion
     }
 }

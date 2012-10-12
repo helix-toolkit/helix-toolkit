@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BoxVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,12 +14,10 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// The box is aligned with the local X, Y and Z coordinate system
-    ///   Use a transform to orient the box in other directions.
+    /// Use a transform to orient the box in other directions.
     /// </remarks>
     public class BoxVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The bottom face property.
         /// </summary>
@@ -56,12 +54,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(BoxVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether to include the bottom face.
+        /// Gets or sets a value indicating whether to include the bottom face.
         /// </summary>
         public bool BottomFace
         {
@@ -77,7 +71,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the center of the box.
+        /// Gets or sets the center of the box.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -94,7 +88,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the height (along local z-axis).
+        /// Gets or sets the height (along local z-axis).
         /// </summary>
         /// <value>The height.</value>
         public double Height
@@ -111,7 +105,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the length of the box (along local x-axis).
+        /// Gets or sets the length of the box (along local x-axis).
         /// </summary>
         /// <value>The length.</value>
         public double Length
@@ -128,7 +122,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to include the top face.
+        /// Gets or sets a value indicating whether to include the top face.
         /// </summary>
         public bool TopFace
         {
@@ -144,7 +138,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the width of the box (along local y-axis).
+        /// Gets or sets the width of the box (along local y-axis).
         /// </summary>
         /// <value>The width.</value>
         public double Width
@@ -159,10 +153,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(WidthProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
@@ -194,6 +184,5 @@ namespace HelixToolkit.Wpf
             return b.ToMesh();
         }
 
-        #endregion
     }
 }

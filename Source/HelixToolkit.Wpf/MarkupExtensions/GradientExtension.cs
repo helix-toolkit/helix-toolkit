@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GradientExtension.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,20 +15,14 @@ namespace HelixToolkit.Wpf
     /// <example>
     /// <code>
     /// Material={helix:Gradient Rainbow}
-    ///   </code>
+    ///  </code>
     /// </example>
     public class GradientExtension : MarkupExtension
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The type.
         /// </summary>
         private readonly GradientBrushType type;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GradientExtension"/> class.
@@ -41,29 +35,21 @@ namespace HelixToolkit.Wpf
             this.type = type;
         }
 
-        #endregion
-
-        #region Enums
-
         /// <summary>
         /// Gradient brush types
         /// </summary>
         public enum GradientBrushType
         {
             /// <summary>
-            ///   Hue gradient
+            /// Hue gradient
             /// </summary>
-            Hue, 
+            Hue,
 
             /// <summary>
-            ///   Rainbow gradient
+            /// Rainbow gradient
             /// </summary>
             Rainbow
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Returns the gradient brush of the specified type.
@@ -87,6 +73,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

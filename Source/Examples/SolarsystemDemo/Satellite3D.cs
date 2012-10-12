@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Satellite3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +36,6 @@ namespace SolarsystemDemo
         public SolarSystem3D SolarSystem { get; set; }
         TubeVisual3D orbit;
 
-
         public Satellite3D()
         {
             orbit = new TubeVisual3D() { Diameter = 0.3, ThetaDiv = 12 };
@@ -44,7 +43,6 @@ namespace SolarsystemDemo
 
             Children.Add(orbit);
         }
-
 
         public Point3D CalculatePosition(double angle, double scale)
         {
@@ -75,7 +73,7 @@ namespace SolarsystemDemo
                 var path = new Point3DCollection();
                 for (int i = 0; i < n; i++)
                     path.Add(CalculatePosition((double)i / (n - 1) * Math.PI * 2, Planet.DistanceScale));
-                
+
                 orbit.Path = path;
                 orbit.UpdateModel();
             }

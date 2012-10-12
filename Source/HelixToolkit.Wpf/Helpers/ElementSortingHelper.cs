@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ElementSortingHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,11 +17,9 @@ namespace HelixToolkit.Wpf
     public static class ElementSortingHelper
     {
         // http://blogs.msdn.com/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-04-01-86-12/SceneSortingHelper_2E00_cs
-        #region Public Methods
-
         /// <summary>
         /// Sort Modelgroups in Farthest to Closest order, to enable transparency
-        ///   Should be applied whenever the scene is significantly re-oriented
+        /// Should be applied whenever the scene is significantly re-oriented
         /// </summary>
         /// <param name="cameraPosition">
         /// The camera Position.
@@ -269,6 +267,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

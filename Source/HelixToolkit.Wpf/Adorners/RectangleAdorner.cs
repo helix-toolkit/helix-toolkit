@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RectangleAdorner.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class RectangleAdorner : Adorner
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The cross hair size.
         /// </summary>
@@ -31,10 +29,6 @@ namespace HelixToolkit.Wpf
         /// The pen 2.
         /// </summary>
         private readonly Pen pen2;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleAdorner"/> class.
@@ -61,12 +55,12 @@ namespace HelixToolkit.Wpf
         /// Size of the cross hair.
         /// </param>
         public RectangleAdorner(
-            UIElement adornedElement, 
-            Rect rectangle, 
-            Color color1, 
-            Color color2, 
-            double thickness1 = 1.0, 
-            double thickness2 = 1.0, 
+            UIElement adornedElement,
+            Rect rectangle,
+            Color color1,
+            Color color2,
+            double thickness1 = 1.0,
+            double thickness2 = 1.0,
             double crossHairSize = 10)
             : this(adornedElement, rectangle, color1, color2, thickness1, thickness2, crossHairSize, DashStyles.Dash)
         {
@@ -100,13 +94,13 @@ namespace HelixToolkit.Wpf
         /// The dash style2.
         /// </param>
         public RectangleAdorner(
-            UIElement adornedElement, 
-            Rect rectangle, 
-            Color color1, 
-            Color color2, 
-            double thickness1, 
-            double thickness2, 
-            double crossHairSize, 
+            UIElement adornedElement,
+            Rect rectangle,
+            Color color1,
+            Color color2,
+            double thickness1,
+            double thickness2,
+            double crossHairSize,
             DashStyle dashStyle2)
             : base(adornedElement)
         {
@@ -122,18 +116,10 @@ namespace HelixToolkit.Wpf
             this.crossHairSize = crossHairSize;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets Rectangle.
         /// </summary>
         public Rect Rectangle { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Called when rendering.
@@ -151,9 +137,9 @@ namespace HelixToolkit.Wpf
             my = (int)my + halfPenWidth;
 
             var rect = new Rect(
-                (int)this.Rectangle.Left + halfPenWidth, 
-                (int)this.Rectangle.Top + halfPenWidth, 
-                (int)this.Rectangle.Width, 
+                (int)this.Rectangle.Left + halfPenWidth,
+                (int)this.Rectangle.Top + halfPenWidth,
+                (int)this.Rectangle.Width,
                 (int)this.Rectangle.Height);
 
             // Create a guidelines set
@@ -164,7 +150,7 @@ namespace HelixToolkit.Wpf
             guidelines.GuidelinesY.Add(rect.Bottom + halfPenWidth);
             guidelines.GuidelinesX.Add(mx + halfPenWidth);
             guidelines.GuidelinesY.Add(my + halfPenWidth);
-            
+
             dc.PushGuidelineSet(guidelines);*/
             dc.DrawRectangle(null, this.pen, rect);
             dc.DrawRectangle(null, this.pen2, rect);
@@ -180,6 +166,5 @@ namespace HelixToolkit.Wpf
             // dc.Pop();
         }
 
-        #endregion
     }
 }

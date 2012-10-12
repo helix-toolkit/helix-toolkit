@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TerrainTexture.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,35 +14,25 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public abstract class TerrainTexture
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TerrainTexture" /> class.
+        /// Initializes a new instance of the <see cref = "TerrainTexture" /> class.
         /// </summary>
         public TerrainTexture()
         {
             this.Material = Materials.Green;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the material.
+        /// Gets or sets the material.
         /// </summary>
         /// <value>The material.</value>
         public Material Material { get; set; }
 
         /// <summary>
-        ///   Gets or sets the texture coordinates.
+        /// Gets or sets the texture coordinates.
         /// </summary>
         /// <value>The texture coordinates.</value>
         public PointCollection TextureCoordinates { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Calculates the texture of the specified model.
@@ -57,6 +47,5 @@ namespace HelixToolkit.Wpf
         {
         }
 
-        #endregion
     }
 }

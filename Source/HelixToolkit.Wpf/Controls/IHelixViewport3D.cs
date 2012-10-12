@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IHelixViewport3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,35 +14,29 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public interface IHelixViewport3D
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the camera.
+        /// Gets the camera.
         /// </summary>
         /// <value>The camera.</value>
         ProjectionCamera Camera { get; }
 
         /// <summary>
-        ///   Gets the camera controller.
+        /// Gets the camera controller.
         /// </summary>
         /// <value>The camera controller.</value>
         CameraController CameraController { get; }
 
         /// <summary>
-        ///   Gets the lights.
+        /// Gets the lights.
         /// </summary>
         /// <value>The lights.</value>
         Model3DGroup Lights { get; }
 
         /// <summary>
-        ///   Gets the viewport.
+        /// Gets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
         Viewport3D Viewport { get; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Copies the view to the clipboard.
@@ -70,6 +64,5 @@ namespace HelixToolkit.Wpf
         /// </param>
         void ZoomExtents(double animationTime);
 
-        #endregion
     }
 }

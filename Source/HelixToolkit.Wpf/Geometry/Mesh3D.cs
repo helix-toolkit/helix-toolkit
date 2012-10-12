@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Mesh3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,10 +19,8 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class Mesh3D : ICloneable
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="Mesh3D"/> class. 
+        /// Initializes a new instance of the <see cref="Mesh3D"/> class.
         /// </summary>
         public Mesh3D()
         {
@@ -32,13 +30,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Mesh3D"/> class. 
+        /// Initializes a new instance of the <see cref="Mesh3D"/> class.
         /// </summary>
         /// <param name="positions">
-        /// The positions. 
+        /// The positions.
         /// </param>
         /// <param name="triangleIndices">
-        /// The triangle indices. 
+        /// The triangle indices.
         /// </param>
         public Mesh3D(IEnumerable<Point3D> positions, IEnumerable<int> triangleIndices)
             : this(positions, null, triangleIndices)
@@ -46,16 +44,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Mesh3D"/> class. 
+        /// Initializes a new instance of the <see cref="Mesh3D"/> class.
         /// </summary>
         /// <param name="positions">
-        /// The positions. 
+        /// The positions.
         /// </param>
         /// <param name="textureCoordinates">
         /// The texture Coordinates.
         /// </param>
         /// <param name="triangleIndices">
-        /// The triangle indices. 
+        /// The triangle indices.
         /// </param>
         public Mesh3D(IEnumerable<Point3D> positions, IEnumerable<Point> textureCoordinates, IEnumerable<int> triangleIndices)
         {
@@ -83,43 +81,35 @@ namespace HelixToolkit.Wpf
             this.UpdateEdges();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the edges.
+        /// Gets the edges.
         /// </summary>
         /// <value> The edges. </value>
         public IList<int[]> Edges { get; private set; }
 
         /// <summary>
-        ///   Gets the faces.
+        /// Gets the faces.
         /// </summary>
         /// <value> The faces. </value>
         public IList<int[]> Faces { get; private set; }
 
         /// <summary>
-        ///   Gets the texture coordinates.
+        /// Gets the texture coordinates.
         /// </summary>
         /// <value> The texture coordinates. </value>
         public IList<Point> TextureCoordinates { get; private set; }
 
         /// <summary>
-        ///   Gets the vertices.
+        /// Gets the vertices.
         /// </summary>
         /// <value> The vertices. </value>
         public IList<Point3D> Vertices { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Adds a face.
         /// </summary>
         /// <param name="vertexIndices">
-        /// The vertx indices of the face. 
+        /// The vertx indices of the face.
         /// </param>
         public void AddFace(params int[] vertexIndices)
         {
@@ -130,7 +120,7 @@ namespace HelixToolkit.Wpf
         /// Creates a new object that is a copy of the current instance.
         /// </summary>
         /// <returns>
-        /// A new object that is a copy of this instance. 
+        /// A new object that is a copy of this instance.
         /// </returns>
         public object Clone()
         {
@@ -146,10 +136,10 @@ namespace HelixToolkit.Wpf
         /// Finds the centroid of the specified face.
         /// </summary>
         /// <param name="faceIndex">
-        /// Index of the face. 
+        /// Index of the face.
         /// </param>
         /// <returns>
-        /// The centroid. 
+        /// The centroid.
         /// </returns>
         public Point3D FindCentroid(int faceIndex)
         {
@@ -178,13 +168,13 @@ namespace HelixToolkit.Wpf
         /// Finds the face from edge.
         /// </summary>
         /// <param name="v0">
-        /// The v0. 
+        /// The v0.
         /// </param>
         /// <param name="v1">
-        /// The v1. 
+        /// The v1.
         /// </param>
         /// <returns>
-        /// The face index. 
+        /// The face index.
         /// </returns>
         public int FindFaceFromEdge(int v0, int v1)
         {
@@ -224,10 +214,10 @@ namespace HelixToolkit.Wpf
         /// Gets the face normal (averaged).
         /// </summary>
         /// <param name="faceIndex">
-        /// Index of the face. 
+        /// Index of the face.
         /// </param>
         /// <returns>
-        /// The face normal. 
+        /// The face normal.
         /// </returns>
         public Vector3D GetFaceNormal(int faceIndex)
         {
@@ -253,7 +243,7 @@ namespace HelixToolkit.Wpf
         /// Gets the neighbour vertices.
         /// </summary>
         /// <param name="vertexIndex">
-        /// Index of the vertex. 
+        /// Index of the vertex.
         /// </param>
         /// <returns>
         /// The neighbour vertices.
@@ -267,7 +257,7 @@ namespace HelixToolkit.Wpf
         /// Determines whether the mesh contains quadrilateral faces only.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if the mesh is quadrilateral; otherwise, <c>false</c> . 
+        /// <c>true</c> if the mesh is quadrilateral; otherwise, <c>false</c> .
         /// </returns>
         public bool IsQuadrilateralMesh()
         {
@@ -286,7 +276,7 @@ namespace HelixToolkit.Wpf
         /// Determines whether the mesh contains triangular faces only.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if the mesh is triangular; otherwise, <c>false</c> . 
+        /// <c>true</c> if the mesh is triangular; otherwise, <c>false</c> .
         /// </returns>
         public bool IsTriangularMesh()
         {
@@ -348,13 +338,13 @@ namespace HelixToolkit.Wpf
         /// Converts the mesh to a MeshGeometry3D.
         /// </summary>
         /// <param name="sharedVertices">
-        /// Allow shared vertices (smooth shading) if set to <c>true</c> . 
+        /// Allow shared vertices (smooth shading) if set to <c>true</c> .
         /// </param>
         /// <param name="shrinkFactor">
-        /// The shrink factor. 
+        /// The shrink factor.
         /// </param>
         /// <param name="faceIndices">
-        /// The face indices. 
+        /// The face indices.
         /// </param>
         /// <returns>
         /// A mesh geometry.
@@ -451,7 +441,7 @@ namespace HelixToolkit.Wpf
         /// Triangulates the specified mesh.
         /// </summary>
         /// <param name="barycentric">
-        /// Use barycentric subdivision if set to <c>true</c> . 
+        /// Use barycentric subdivision if set to <c>true</c> .
         /// </param>
         public void Triangulate(bool barycentric)
         {
@@ -540,21 +530,17 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Finds the midpoint of the specified edge.
         /// </summary>
         /// <param name="v0">
-        /// The first vertex index. 
+        /// The first vertex index.
         /// </param>
         /// <param name="v1">
-        /// The second vertex index. 
+        /// The second vertex index.
         /// </param>
         /// <returns>
-        /// The midpoint. 
+        /// The midpoint.
         /// </returns>
         private Point3D FindMidpoint(int v0, int v1)
         {
@@ -564,6 +550,5 @@ namespace HelixToolkit.Wpf
                 (this.Vertices[v0].Z + this.Vertices[v1].Z) * 0.5);
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,6 @@ namespace SubdivisionDemo
     /// </remarks>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        #region PropertyChanged Block
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -50,8 +49,6 @@ namespace SubdivisionDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        #endregion
-
         OffReader off;
 
         int levels;

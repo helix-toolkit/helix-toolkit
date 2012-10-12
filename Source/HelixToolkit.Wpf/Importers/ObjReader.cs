@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ObjReader.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -47,10 +47,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private int currentLineNo;
 
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ObjReader" /> class.
+        /// Initializes a new instance of the <see cref = "ObjReader" /> class.
         /// </summary>
         public ObjReader()
         {
@@ -70,10 +68,6 @@ namespace HelixToolkit.Wpf
 
             this.smoothingGroupMaps = new Dictionary<int, Dictionary<int, int>>();
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the default color.
@@ -121,26 +115,22 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the groups of the file.
+        /// Gets the groups of the file.
         /// </summary>
         /// <value>The groups.</value>
         public IList<Group> Groups { get; private set; }
 
         /// <summary>
-        ///   Gets the materials in the imported material files.
+        /// Gets the materials in the imported material files.
         /// </summary>
         /// <value>The materials.</value>
         public Dictionary<string, MaterialDefinition> Materials { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the path to the textures.
+        /// Gets or sets the path to the textures.
         /// </summary>
         /// <value>The texture path.</value>
         public string TexturePath { get; set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the current group.
@@ -177,10 +167,6 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the texture coordinates.
         /// </summary>
         private IList<Point> TextureCoordinates { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Reads the model from the specified path.
@@ -246,7 +232,7 @@ namespace HelixToolkit.Wpf
                             break;
                         case "vp": // parameter space vertices
                         case "cstype": // rational or non-rational forms of curve or surface type: basis matrix, Bezier, B-spline, Cardinal, Taylor
-                        case "degree": // degree 
+                        case "degree": // degree
                         case "bmat": // basis matrix
                         case "step": // step size
                             // not supported
@@ -306,10 +292,10 @@ namespace HelixToolkit.Wpf
 
                             break;
                         case "bevel": // bevel interpolation
-                        case "c_interp": // color interpolation 
+                        case "c_interp": // color interpolation
                         case "d_interp": // dissolve interpolation
                         case "lod": // level of detail
-                        case "shadow_obj": // shadow casting 
+                        case "shadow_obj": // shadow casting
                         case "trace_obj": // ray tracing
                         case "ctech": // curve approximation technique
                         case "stech": // surface approximation technique
@@ -344,10 +330,6 @@ namespace HelixToolkit.Wpf
                 return this.Read(deflateStream);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Parses a color string.
@@ -485,11 +467,11 @@ namespace HelixToolkit.Wpf
         /// The input values.
         /// </param>
         /// <remarks>
-        /// Adds a polygonal face. The numbers are indexes into the arrays of vertex positions, 
-        /// texture coordinates, and normals respectively. A number may be omitted if, 
+        /// Adds a polygonal face. The numbers are indexes into the arrays of vertex positions,
+        /// texture coordinates, and normals respectively. A number may be omitted if,
         /// for example, texture coordinates are not being defined in the model.
-        /// There is no maximum number of vertices that a single polygon may contain. 
-        /// The .obj file specification says that each face must be flat and convex. 
+        /// There is no maximum number of vertices that a single polygon may contain.
+        /// The .obj file specification says that each face must be flat and convex.
         /// </remarks>
         private void AddFace(string values)
         {
@@ -869,8 +851,6 @@ namespace HelixToolkit.Wpf
             this.CurrentGroup.Material = this.GetMaterial(materialName);
         }
 
-        #endregion
-
         /// <summary>
         /// Represents a group in the obj file.
         /// </summary>
@@ -886,8 +866,6 @@ namespace HelixToolkit.Wpf
             /// </summary>
             private readonly IList<Material> materials;
 
-            #region Constructors and Destructors
-
             /// <summary>
             /// Initializes a new instance of the <see cref="Group"/> class.
             /// </summary>
@@ -902,12 +880,8 @@ namespace HelixToolkit.Wpf
                 this.AddMesh();
             }
 
-            #endregion
-
-            #region Public Properties
-
             /// <summary>
-            ///   Sets the material.
+            /// Sets the material.
             /// </summary>
             /// <value>The material.</value>
             public Material Material
@@ -919,7 +893,7 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets the mesh builder for the current mesh.
+            /// Gets the mesh builder for the current mesh.
             /// </summary>
             /// <value>The mesh builder.</value>
             public MeshBuilder MeshBuilder
@@ -931,12 +905,10 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the group name.
+            /// Gets or sets the group name.
             /// </summary>
             /// <value>The name.</value>
             public string Name { get; set; }
-
-            #endregion
 
             /// <summary>
             /// Adds a mesh.
@@ -983,46 +955,44 @@ namespace HelixToolkit.Wpf
                 this.Dissolved = 1.0;
             }
 
-            #region Public Properties
-
             /// <summary>
-            ///   Gets or sets the alpha map.
+            /// Gets or sets the alpha map.
             /// </summary>
             /// <value>The alpha map.</value>
             public string AlphaMap { get; set; }
 
             /// <summary>
-            ///   Gets or sets the ambient color.
+            /// Gets or sets the ambient color.
             /// </summary>
             /// <value>The ambient.</value>
             public Color Ambient { get; set; }
 
             /// <summary>
-            ///   Gets or sets the ambient map.
+            /// Gets or sets the ambient map.
             /// </summary>
             /// <value>The ambient map.</value>
             public string AmbientMap { get; set; }
 
             /// <summary>
-            ///   Gets or sets the bump map.
+            /// Gets or sets the bump map.
             /// </summary>
             /// <value>The bump map.</value>
             public string BumpMap { get; set; }
 
             /// <summary>
-            ///   Gets or sets the diffuse color.
+            /// Gets or sets the diffuse color.
             /// </summary>
             /// <value>The diffuse.</value>
             public Color Diffuse { get; set; }
 
             /// <summary>
-            ///   Gets or sets the diffuse map.
+            /// Gets or sets the diffuse map.
             /// </summary>
             /// <value>The diffuse map.</value>
             public string DiffuseMap { get; set; }
 
             /// <summary>
-            ///   Gets or sets the opacity value.
+            /// Gets or sets the opacity value.
             /// </summary>
             /// <value>The opacity.</value>
             /// <remarks>
@@ -1031,25 +1001,25 @@ namespace HelixToolkit.Wpf
             public double Dissolved { get; set; }
 
             /// <summary>
-            ///   Gets or sets the illumination.
+            /// Gets or sets the illumination.
             /// </summary>
             /// <value>The illumination.</value>
             public int Illumination { get; set; }
 
             /// <summary>
-            ///   Gets or sets the specular color.
+            /// Gets or sets the specular color.
             /// </summary>
             /// <value>The specular color.</value>
             public Color Specular { get; set; }
 
             /// <summary>
-            ///   Gets or sets the specular coefficient.
+            /// Gets or sets the specular coefficient.
             /// </summary>
             /// <value>The specular coefficient.</value>
             public double SpecularCoefficient { get; set; }
 
             /// <summary>
-            ///   Gets or sets the specular map.
+            /// Gets or sets the specular map.
             /// </summary>
             /// <value>The specular map.</value>
             public string SpecularMap { get; set; }
@@ -1059,10 +1029,6 @@ namespace HelixToolkit.Wpf
             /// </summary>
             /// <value>The material.</value>
             public Material Material { get; set; }
-
-            #endregion
-
-            #region Public Methods
 
             /// <summary>
             /// Gets the material from the specified path.
@@ -1143,7 +1109,6 @@ namespace HelixToolkit.Wpf
                 return textureBrush;
             }
 
-            #endregion
         }
     }
 }

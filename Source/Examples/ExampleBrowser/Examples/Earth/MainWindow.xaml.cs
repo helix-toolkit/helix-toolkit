@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,8 +33,6 @@ namespace EarthDemo
         // http://en.wikipedia.org/wiki/DirectDraw_Surface
         // http://www.celestiamotherlode.net/catalog/earth.php
         // http://www.oera.net/How2/TextureMaps2.htm
-        #region Constants and Fields
-
         /// <summary>
         /// The clouds property.
         /// </summary>
@@ -47,10 +45,6 @@ namespace EarthDemo
         public static readonly DependencyProperty SunlightDirectionProperty =
             DependencyProperty.Register(
                 "SunlightDirection", typeof(Vector3D), typeof(MainWindow), new UIPropertyMetadata(new Vector3D()));
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -92,10 +86,6 @@ namespace EarthDemo
             this.DataContext = this;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets Clouds.
         /// </summary>
@@ -128,10 +118,6 @@ namespace EarthDemo
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The load image.
         /// </summary>
@@ -161,6 +147,5 @@ namespace EarthDemo
             client.DownloadDataAsync(new Uri(url));
         }
 
-        #endregion
     }
 }

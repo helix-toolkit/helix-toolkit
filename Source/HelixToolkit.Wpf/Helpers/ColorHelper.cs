@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,16 +15,10 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class ColorHelper
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The undefined color #00000000.
+        /// The undefined color #00000000.
         /// </summary>
         public static Color UndefinedColor = Color.FromArgb(0, 0, 0, 0);
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Change the alpha value of a color
@@ -361,7 +355,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Convert from HSV to <see cref="Color"/>
-        ///   http://en.wikipedia.org/wiki/HSL_color_space
+        /// http://en.wikipedia.org/wiki/HSL_color_space
         /// </summary>
         /// <param name="hue">
         /// Hue [0,1]
@@ -504,6 +498,5 @@ namespace HelixToolkit.Wpf
             return Color.FromArgb(a, r, g, b);
         }
 
-        #endregion
     }
 }

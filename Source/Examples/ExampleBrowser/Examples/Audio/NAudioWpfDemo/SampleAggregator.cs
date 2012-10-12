@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SampleAggregator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,10 +21,10 @@ namespace NAudioWpfDemo
         private float minValue;
         public int NotificationCount { get; set; }
         int count;
-        
+
         // FFT
         public event EventHandler<FftEventArgs> FftCalculated;
-        public bool PerformFFT { get; set; }        
+        public bool PerformFFT { get; set; }
         private Complex[] fftBuffer;
         private FftEventArgs fftArgs;
         private int fftPos;
@@ -70,7 +70,7 @@ namespace NAudioWpfDemo
                     MaximumCalculated(this, new MaxSampleEventArgs(minValue, maxValue));
                 }
                 Reset();
-            }            
+            }
         }
     }
 

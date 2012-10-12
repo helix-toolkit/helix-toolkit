@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plant.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -96,7 +96,6 @@ namespace FractalDemo
             double angle = GetAngleBetween(direction, UpVector);
             bool isStem = angle < 10;
 
-
             double h = isStem ? 2.5 : 2;
             double r = (Level+1-p)*0.1;
 
@@ -111,7 +110,7 @@ namespace FractalDemo
                 var rightVector=direction.FindAnyPerpendicular();
                 var t0 = new RotateTransform3D(new AxisAngleRotation3D(rightVector, GetRandom(3)));
                 AddBranch(mesh, p1, t0.Transform(direction), p + 1);
-                
+
                 var t1 = new RotateTransform3D(new AxisAngleRotation3D(rightVector, 95 + GetRandom(5)));
                 var d1 = t1.Transform(direction);
                 int nBranches = 5+GetRandom(2);
@@ -130,7 +129,7 @@ namespace FractalDemo
                 var d1 = t1.Transform(direction);
                 AddBranch(mesh, p1, d1, p + 1);
                 AddBranch(mesh, p1, t2.Transform(d1), p + 1);
-                AddBranch(mesh, p1, t3.Transform(d1), p + 1);                
+                AddBranch(mesh, p1, t3.Transform(d1), p + 1);
             }
         }
 

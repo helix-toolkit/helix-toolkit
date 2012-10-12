@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CuttingEarsTriangulator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,23 +15,17 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// Based on http://www.flipcode.com/archives/Efficient_Polygon_Triangulation.shtml
-    ///   References
-    ///   http://en.wikipedia.org/wiki/Polygon_triangulation
-    ///   http://computacion.cs.cinvestav.mx/~anzures/geom/triangulation.php
-    ///   http://www.codeproject.com/KB/recipes/cspolygontriangulation.aspx
+    /// References
+    /// http://en.wikipedia.org/wiki/Polygon_triangulation
+    /// http://computacion.cs.cinvestav.mx/~anzures/geom/triangulation.php
+    /// http://www.codeproject.com/KB/recipes/cspolygontriangulation.aspx
     /// </remarks>
     public static class CuttingEarsTriangulator
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The epsilon.
         /// </summary>
         private const double Epsilon = 1e-10;
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Triangulate a polygon using the cutting ears algorithm.
@@ -47,7 +41,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static Int32Collection Triangulate(IList<Point> contour)
         {
-            // allocate and initialize list of indices in polygon 
+            // allocate and initialize list of indices in polygon
             var result = new Int32Collection();
 
             int n = contour.Count;
@@ -58,7 +52,7 @@ namespace HelixToolkit.Wpf
 
             var V = new int[n];
 
-            // we want a counter-clockwise polygon in V 
+            // we want a counter-clockwise polygon in V
             if (Area(contour) > 0)
             {
                 for (int v = 0; v < n; v++)
@@ -76,54 +70,54 @@ namespace HelixToolkit.Wpf
 
             int nv = n;
 
-            // remove nv-2 Vertices, creating 1 triangle every time 
-            int count = 2 * nv; // error detection 
+            // remove nv-2 Vertices, creating 1 triangle every time
+            int count = 2 * nv; // error detection
 
             for (int m = 0, v = nv - 1; nv > 2;)
             {
-                // if we loop, it is probably a non-simple polygon 
+                // if we loop, it is probably a non-simple polygon
                 if (0 >= (count--))
                 {
                     // ERROR - probable bad polygon!
                     return null;
                 }
 
-                // three consecutive vertices in current polygon, <u,v,w> 
+                // three consecutive vertices in current polygon, <u,v,w>
                 int u = v;
                 if (nv <= u)
                 {
-                    u = 0; // previous 
+                    u = 0; // previous
                 }
 
                 v = u + 1;
                 if (nv <= v)
                 {
-                    v = 0; // new v    
+                    v = 0; // new v
                 }
 
                 int w = v + 1;
                 if (nv <= w)
                 {
-                    w = 0; // next     
+                    w = 0; // next
                 }
 
                 if (Snip(contour, u, v, w, nv, V))
                 {
                     int s, t;
 
-                    // true names of the vertices 
+                    // true names of the vertices
                     int a = V[u];
                     int b = V[v];
                     int c = V[w];
 
-                    // output Triangle 
+                    // output Triangle
                     result.Add(a);
                     result.Add(b);
                     result.Add(c);
 
                     m++;
 
-                    // remove v from remaining polygon 
+                    // remove v from remaining polygon
                     for (s = v, t = v + 1; t < nv; s++, t++)
                     {
                         V[s] = V[t];
@@ -131,7 +125,7 @@ namespace HelixToolkit.Wpf
 
                     nv--;
 
-                    // resest error detection counter 
+                    // resest error detection counter
                     count = 2 * nv;
                 }
             }
@@ -139,11 +133,7 @@ namespace HelixToolkit.Wpf
             return result;
         }
 
-        #endregion
-
         // compute area of a contour/polygon
-        #region Methods
-
         /// <summary>
         /// Calculates the area.
         /// </summary>
@@ -264,6 +254,5 @@ namespace HelixToolkit.Wpf
             return true;
         }
 
-        #endregion
     }
 }

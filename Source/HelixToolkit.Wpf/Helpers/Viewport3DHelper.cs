@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Viewport3DHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -23,12 +23,10 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// See Charles Petzold's book "3D programming for Windows" and Eric Sink's "Twelve Days of WPF 3D"
-    ///   http://www.ericsink.com/wpf3d/index.html
+    /// http://www.ericsink.com/wpf3d/index.html
     /// </remarks>
     public static class Viewport3DHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Copies the specified viewport to the clipboard.
         /// </summary>
@@ -714,7 +712,7 @@ namespace HelixToolkit.Wpf
                 return false;
             }
 
-            matrixViewport.Invert();            
+            matrixViewport.Invert();
             matrixCamera.Invert();
 
             var pointNormalized = matrixViewport.Transform(pointIn3D);
@@ -979,10 +977,6 @@ namespace HelixToolkit.Wpf
                 });
             return count;
         }
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Copies the bitmap.
         /// </summary>
@@ -1201,8 +1195,6 @@ namespace HelixToolkit.Wpf
             return null;
         }
 
-        #endregion
-
         /// <summary>
         /// Recursive search for an object of a given type
         /// </summary>
@@ -1271,16 +1263,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public class HitResult
         {
-            #region Public Properties
-
             /// <summary>
-            ///   Gets or sets the distance.
+            /// Gets or sets the distance.
             /// </summary>
             /// <value>The distance.</value>
             public double Distance { get; set; }
 
             /// <summary>
-            ///   Gets the mesh.
+            /// Gets the mesh.
             /// </summary>
             /// <value>The mesh.</value>
             public MeshGeometry3D Mesh
@@ -1292,7 +1282,7 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets the model.
+            /// Gets the model.
             /// </summary>
             /// <value>The model.</value>
             public Model3D Model
@@ -1304,25 +1294,25 @@ namespace HelixToolkit.Wpf
             }
 
             /// <summary>
-            ///   Gets or sets the normal.
+            /// Gets or sets the normal.
             /// </summary>
             /// <value>The normal.</value>
             public Vector3D Normal { get; set; }
 
             /// <summary>
-            ///   Gets or sets the position.
+            /// Gets or sets the position.
             /// </summary>
             /// <value>The position.</value>
             public Point3D Position { get; set; }
 
             /// <summary>
-            ///   Gets or sets the ray hit.
+            /// Gets or sets the ray hit.
             /// </summary>
             /// <value>The ray hit.</value>
             public RayMeshGeometry3DHitTestResult RayHit { get; set; }
 
             /// <summary>
-            ///   Gets the visual.
+            /// Gets the visual.
             /// </summary>
             /// <value>The visual.</value>
             public Visual3D Visual
@@ -1333,7 +1323,6 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            #endregion
         }
     }
 }

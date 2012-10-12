@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EnumToBooleanConverter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,13 +16,11 @@ namespace HelixToolkit.Wpf
     /// <example>
     /// <code>
     /// IsChecked="{Binding MyProperty, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Param1}"
-    ///   </code>
+    ///  </code>
     /// </example>
     [ValueConversion(typeof(Enum), typeof(bool))]
     public class EnumToBooleanConverter : IValueConverter
     {
-        #region Public Methods
-
         /// <summary>
         /// Converts a value.
         /// </summary>
@@ -97,6 +95,5 @@ namespace HelixToolkit.Wpf
             return Binding.DoNothing;
         }
 
-        #endregion
     }
 }

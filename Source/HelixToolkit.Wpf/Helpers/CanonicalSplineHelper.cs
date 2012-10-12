@@ -1,4 +1,4 @@
-namespace HelixToolkit.Wpf
+﻿namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
@@ -11,8 +11,6 @@ namespace HelixToolkit.Wpf
     {
         // CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
         // www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
-        #region Methods
-
         /// <summary>
         /// Creates a spline of points.
         /// </summary>
@@ -153,7 +151,7 @@ namespace HelixToolkit.Wpf
             double t2,
             double tolerance)
         {
-            // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or 
+            // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or
             // Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
             // for derivation of the following formulas:
             double sx1 = t1 * (pt2.X - pt0.X);
@@ -191,6 +189,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

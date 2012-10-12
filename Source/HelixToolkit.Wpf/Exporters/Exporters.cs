@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Exporters.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,22 +14,16 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class Exporters
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   Default file export extension.
+        /// Default file export extension.
         /// </summary>
         public static readonly string DefaultExtension = ".png";
 
         /// <summary>
-        ///   File filter for all the supported exporters.
+        /// File filter for all the supported exporters.
         /// </summary>
         public static readonly string Filter =
             "Bitmap Files (*.png;*.jpg)|*.png;*.jpg|XAML Files (*.xaml)|*.xml|Kerkythea Files (*.xml)|*.xml|Wavefront Files (*.obj)|*.obj|Wavefront Files zipped (*.objz)|*.objz|Extensible 3D Graphics Files (*.x3d)|*.x3d|Collada Files (*.dae)|*.dae";
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates an exporter based on the extension of the specified path.
@@ -72,6 +66,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

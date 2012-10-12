@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Teapot.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,38 +15,32 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Teapot : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The position property.
+        /// The position property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof(Point3D), typeof(Teapot), new UIPropertyMetadata(new Point3D(0, 0, 1), TransformChanged));
 
         /// <summary>
-        ///   The spout direction property.
+        /// The spout direction property.
         /// </summary>
         public static readonly DependencyProperty SpoutDirectionProperty = DependencyProperty.Register(
-            "SpoutDirection", 
-            typeof(Vector3D), 
-            typeof(Teapot), 
+            "SpoutDirection",
+            typeof(Vector3D),
+            typeof(Teapot),
             new UIPropertyMetadata(new Vector3D(1, 0, 0), TransformChanged));
 
         /// <summary>
-        ///   The up direction property.
+        /// The up direction property.
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
-            "UpDirection", 
-            typeof(Vector3D), 
-            typeof(Teapot), 
+            "UpDirection",
+            typeof(Vector3D),
+            typeof(Teapot),
             new UIPropertyMetadata(new Vector3D(0, 0, 1), TransformChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the position.
+        /// Gets or sets the position.
         /// </summary>
         /// <value>The position.</value>
         public Point3D Position
@@ -63,7 +57,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the spout direction.
+        /// Gets or sets the spout direction.
         /// </summary>
         /// <value>The spout direction.</value>
         public Vector3D SpoutDirection
@@ -80,7 +74,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets up direction.
+        /// Gets or sets up direction.
         /// </summary>
         /// <value>Up direction.</value>
         public Vector3D UpDirection
@@ -95,10 +89,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(UpDirectionProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
@@ -141,24 +131,23 @@ namespace HelixToolkit.Wpf
             this.Transform =
                 new MatrixTransform3D(
                     new Matrix3D(
-                        right.X, 
-                        right.Y, 
-                        right.Z, 
-                        0, 
-                        up.X, 
-                        up.Y, 
-                        up.Z, 
-                        0, 
-                        back.X, 
-                        back.Y, 
-                        back.Z, 
-                        0, 
-                        this.Position.X, 
-                        this.Position.Y, 
-                        this.Position.Z, 
+                        right.X,
+                        right.Y,
+                        right.Z,
+                        0,
+                        up.X,
+                        up.Y,
+                        up.Z,
+                        0,
+                        back.X,
+                        back.Y,
+                        back.Z,
+                        0,
+                        this.Position.X,
+                        this.Position.Y,
+                        this.Position.Z,
                         1));
         }
 
-        #endregion
     }
 }

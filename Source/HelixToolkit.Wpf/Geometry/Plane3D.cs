@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plane3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,8 +13,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Plane3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The normal.
         /// </summary>
@@ -25,12 +23,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         internal Point3D position;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Plane3D" /> class.
+        /// Initializes a new instance of the <see cref = "Plane3D" /> class.
         /// </summary>
         public Plane3D()
         {
@@ -53,12 +47,8 @@ namespace HelixToolkit.Wpf
             this.Normal = n;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the normal.
+        /// Gets or sets the normal.
         /// </summary>
         /// <value>The normal.</value>
         public Vector3D Normal
@@ -75,7 +65,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the position.
+        /// Gets or sets the position.
         /// </summary>
         /// <value>The position.</value>
         public Point3D Position
@@ -90,10 +80,6 @@ namespace HelixToolkit.Wpf
                 this.position = value;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Finds the intersection between the plane and the line (la,lb).
@@ -125,8 +111,6 @@ namespace HelixToolkit.Wpf
 
             return la + (a / b) * l;
         }
-
-        #endregion
 
         // public void SetYZ(double x, int dir)
         // {
