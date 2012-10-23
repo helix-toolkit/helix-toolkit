@@ -3,24 +3,20 @@
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
     using System;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
-    using System.Windows.Data;
 
     /// <summary>
-    /// A visual element containing a manipulator that can rotate around an axis.
+    ///   A visual element containing a manipulator that can rotate around an axis.
     /// </summary>
     public class BindableRotateManipulator : Manipulator
     {
-        protected Point3D InternalPivotPoint = new Point3D();
-
         /// <summary>
-        /// The axis property.
+        ///   The axis property.
         /// </summary>
         public static readonly DependencyProperty AxisProperty = DependencyProperty.Register(
             "Axis",
@@ -29,48 +25,52 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        /// The diameter property.
+        ///   The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(BindableRotateManipulator), new UIPropertyMetadata(3.0, GeometryChanged));
 
         /// <summary>
-        /// The inner diameter property.
+        ///   The inner diameter property.
         /// </summary>
         public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
-            "InnerDiameter", typeof(double), typeof(BindableRotateManipulator), new UIPropertyMetadata(2.5, GeometryChanged));
+            "InnerDiameter",
+            typeof(double),
+            typeof(BindableRotateManipulator),
+            new UIPropertyMetadata(2.5, GeometryChanged));
 
         /// <summary>
-        /// The length property.
+        ///   The length property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(BindableRotateManipulator), new UIPropertyMetadata(0.1, GeometryChanged));
 
         /// <summary>
-        /// The pivot point property.
+        ///   The pivot point property.
         /// </summary>
         public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
             "Pivot", typeof(Point3D), typeof(BindableRotateManipulator), new PropertyMetadata(new Point3D()));
 
         /// <summary>
-        /// The last point.
+        ///   The last point.
         /// </summary>
         private Point3D lastPoint;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "RotateManipulator" /> class.
+        ///   Initializes a new instance of the <see cref="BindableRotateManipulator" /> class. 
         /// </summary>
         public BindableRotateManipulator()
         {
             this.Model = new GeometryModel3D();
             this.Visual3DModel = this.Model;
+            this.InternalPivotPoint = new Point3D();
             this.OnGeometryChanged();
         }
 
         /// <summary>
-        /// Gets or sets the rotation axis.
+        ///   Gets or sets the rotation axis.
         /// </summary>
-        /// <value>The axis.</value>
+        /// <value> The axis. </value>
         public Vector3D Axis
         {
             get
@@ -85,9 +85,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the diameter.
+        ///   Gets or sets the diameter.
         /// </summary>
-        /// <value>The diameter.</value>
+        /// <value> The diameter. </value>
         public double Diameter
         {
             get
@@ -102,9 +102,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the inner diameter.
+        ///   Gets or sets the inner diameter.
         /// </summary>
-        /// <value>The inner diameter.</value>
+        /// <value> The inner diameter. </value>
         public double InnerDiameter
         {
             get
@@ -119,9 +119,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the length of the cylinder.
+        ///   Gets or sets the length of the cylinder.
         /// </summary>
-        /// <value>The length.</value>
+        /// <value> The length. </value>
         public double Length
         {
             get
@@ -136,7 +136,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the pivot point of the manipulator.
+        ///   Gets or sets the pivot point of the manipulator.
         /// </summary>
         /// <value> The position. </value>
         public Point3D Pivot
@@ -153,7 +153,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on geometry changed.
+        ///   Gets or sets the internal pivot point.
+        /// </summary>
+        protected Point3D InternalPivotPoint { get; set; }
+
+        /// <summary>
+        /// Called when the geometry changed.
         /// </summary>
         protected override void OnGeometryChanged()
         {
@@ -171,7 +176,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse down.
         /// </summary>
         /// <param name="e">
-        /// The event arguments.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -191,7 +196,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse move.
         /// </summary>
         /// <param name="e">
-        /// The event arguments.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -228,30 +233,41 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        // Updates the target transform by the change in rotation value
-        protected override void OnValueChanged(DependencyPropertyChangedEventArgs e)
-        {
-            var oldValue = (double)e.OldValue;
-            var newValue = (double)e.NewValue;
-            var theta = newValue - oldValue;
-            var rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(this.Axis, theta), InternalPivotPoint);
-            this.Transform = Transform3DHelper.CombineTransform(rotateTransform, this.Transform);
-
-            if (this.TargetTransform != null)
-            {
-                var targetRotateTransform = new RotateTransform3D(new AxisAngleRotation3D(this.Axis, theta), Pivot);
-                this.TargetTransform = Transform3DHelper.CombineTransform(targetRotateTransform, this.TargetTransform);
-            }
-        }
-
+        /// <summary>
+        /// Called when position is changed.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// </param>
         protected override void OnPositionChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPositionChanged(e);
             var oldValue = (Point3D)e.OldValue;
             var newValue = (Point3D)e.NewValue;
             var delta = newValue - oldValue;
-            Pivot += delta;
+            this.Pivot += delta;
         }
 
+        /// <summary>
+        /// Updates the target transform by the change in rotation value.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// </param>
+        protected override void OnValueChanged(DependencyPropertyChangedEventArgs e)
+        {
+            var oldValue = (double)e.OldValue;
+            var newValue = (double)e.NewValue;
+            var theta = newValue - oldValue;
+            var rotateTransform = new RotateTransform3D(
+                new AxisAngleRotation3D(this.Axis, theta), this.InternalPivotPoint);
+            this.Transform = Transform3DHelper.CombineTransform(rotateTransform, this.Transform);
+
+            if (this.TargetTransform != null)
+            {
+                var targetRotateTransform = new RotateTransform3D(new AxisAngleRotation3D(this.Axis, theta), this.Pivot);
+                this.TargetTransform = Transform3DHelper.CombineTransform(targetRotateTransform, this.TargetTransform);
+            }
+        }
     }
 }
