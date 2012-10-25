@@ -27,7 +27,15 @@
                            IsHeadLightEnabled="True"
                            InfoBackground="Transparent"
                            InfoForeground="White"
-                           CameraRotationMode="Trackball">
+                           CameraRotationMode="Trackball"
+                           ShowCoordinateSystem="True"
+                           CoordinateSystemLabelForeground="White"
+                           CoordinateSystemLabelX="x"
+                           CoordinateSystemLabelY="y"
+                           CoordinateSystemLabelZ="z"
+                           Title="Double helix"
+                           SubTitle="Colored with a 'rainbow' brush" 
+                           TextBrush="White">
             <ModelVisual3D x:Name="model">
                 <ModelVisual3D.Transform>
                     <TranslateTransform3D OffsetZ="-15"/>
