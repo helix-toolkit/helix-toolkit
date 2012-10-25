@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{39740654-F5F1-4936-B4EA-9BC97D4CDE37}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HelixToolkit.SharpDX.Wpf</RootNamespace>
+    <AssemblyName>HelixToolkit.SharpDX.Wpf</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\NET40\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SharpDX, Version=2.3.1.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.2.3.1\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler, Version=2.3.1.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.D3DCompiler.2.3.1\lib\net40\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D10, Version=2.3.1.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.Direct3D10.2.3.1\lib\net40\SharpDX.Direct3D10.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11, Version=2.3.1.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.Direct3D11.2.3.1\lib\net40\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=2.3.1.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.Direct3D9.2.3.1\lib\net40\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=2.3.1.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.DXGI.2.3.1\lib\net40\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\CameraExtensions.cs" />
+    <Compile Include="Controls\Element3DCollection.cs" />
+    <Compile Include="Controls\FpsCounter.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
+    <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\PanHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\RotateHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\TouchMode.cs" />
+    <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
+    <Compile Include="Controls\RenderContext.cs" />
+    <Compile Include="Controls\Trackball.cs" />
+    <Compile Include="Controls\Viewport3DX.Properties.cs" />
+    <Compile Include="Controls\ViewportExtensions.cs" />
+    <Compile Include="Controls\ViewportCommands.cs" />
+    <Compile Include="Core\HelixToolkitException.cs" />
+    <Compile Include="Core\Ray3.cs" />
+    <Compile Include="Core\Ray3D.cs" />
+    <Compile Include="Model\GroupElement3D.cs" />
+    <Compile Include="Model\MatrixCamera.cs" />
+    <Compile Include="Core\Vector3DExtensions.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BoxFaces.cs" />
+    <Compile Include="Utilities\LineBuilder.cs" />
+    <Compile Include="Utilities\MeshBuilder.cs" />
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Model\Camera.cs" />
+    <Compile Include="Controls\DPFCanvas.cs" />
+    <Compile Include="Controls\DX10ImageSource.cs" />
+    <Compile Include="Controls\IRenderable.cs" />
+    <Compile Include="Controls\IRenderHost.cs" />
+    <Compile Include="Model\DiffuseMaterial.cs" />
+    <Compile Include="Model\DirectionalLight.cs" />
+    <Compile Include="Model\Element3D.cs" />
+    <Compile Include="Model\Geometry3D.cs" />
+    <Compile Include="Model\MeshGeometryModel3D.cs" />
+    <Compile Include="Model\Light.cs" />
+    <Compile Include="Model\LineGeometryModel3D.cs" />
+    <Compile Include="Model\LineGeometry3D.cs" />
+    <Compile Include="Model\Material.cs" />
+    <Compile Include="Model\MeshGeometry3D.cs" />
+    <Compile Include="Model\Model3D.cs" />
+    <Compile Include="Controls\Viewport3DX.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\OrthographicCamera.cs" />
+    <Compile Include="Model\PerspectiveCamera.cs" />
+    <Compile Include="Model\PointLight.cs" />
+    <Compile Include="Model\ProjectionCamera.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Model\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shaders\Texture.fx" />
+    <None Include="Textures\seafloor.dds" />
+    <None Include="Textures\Seamless_wall_texture_06_by_Caym.jpg" />
+    <None Include="Shaders\Default.fx" />
+    <Content Include="Shaders\Lighting.fx" />
+    <Content Include="Shaders\Simple.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj">
+      <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
+      <Name>HelixToolkit.Wpf_NET40</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(SolutionDir)..\Tools\Pepita\PepitaGet.dll" />
+  <Target Name="BeforeBuild">
+    <PepitaGet.RestorePackagesTask />
+  </Target>
+</Project>

@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf
         private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
+        ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
         /// </summary>
         public ViewCubeVisual3D()
         {
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the back text.
+        ///   Gets or sets the back text.
         /// </summary>
         /// <value>The back text.</value>
         public string BackText
@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the bottom text.
+        ///   Gets or sets the bottom text.
         /// </summary>
         /// <value>The bottom text.</value>
         public string BottomText
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the center.
+        ///   Gets or sets the center.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -155,7 +155,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the front text.
+        ///   Gets or sets the front text.
         /// </summary>
         /// <value>The front text.</value>
         public string FrontText
@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the left text.
+        ///   Gets or sets the left text.
         /// </summary>
         /// <value>The left text.</value>
         public string LeftText
@@ -189,7 +189,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the model up direction.
+        ///   Gets or sets the model up direction.
         /// </summary>
         /// <value>The model up direction.</value>
         public Vector3D ModelUpDirection
@@ -206,7 +206,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the right text.
+        ///   Gets or sets the right text.
         /// </summary>
         /// <value>The right text.</value>
         public string RightText
@@ -223,7 +223,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the size.
+        ///   Gets or sets the size.
         /// </summary>
         /// <value>The size.</value>
         public double Size
@@ -240,7 +240,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the top text.
+        ///   Gets or sets the top text.
         /// </summary>
         /// <value>The top text.</value>
         public string TopText
@@ -257,7 +257,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the viewport.
+        ///   Gets or sets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
         public Viewport3D Viewport
@@ -421,7 +421,7 @@ namespace HelixToolkit.Wpf
             var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
             bmp.Render(grid);
 
-            Material material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
+            var material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
 
             double a = this.Size;
 
@@ -443,6 +443,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Occurs when a face has been clicked on.
+        /// </summary>
+        public event EventHandler<ClickedEventArgs> Clicked;
+
+        /// <summary>
         /// Called when mouse left button is clicked on a face.
         /// </summary>
         /// <param name="sender">
@@ -455,34 +460,49 @@ namespace HelixToolkit.Wpf
         {
             var faceNormal = this.faceNormals[sender];
             var faceUp = this.faceUpVectors[sender];
-
-            var camera = this.Viewport.Camera as ProjectionCamera;
-            if (camera == null)
-            {
-                return;
-            }
-
-            var target = camera.Position + camera.LookDirection;
-            double dist = camera.LookDirection.Length;
-
-            var lookdir = -faceNormal;
-            lookdir.Normalize();
-            lookdir = lookdir * dist;
-            var updir = faceUp;
+            var lookDirection = -faceNormal;
+            var upDirection = faceUp;
+            lookDirection.Normalize();
+            upDirection.Normalize();
 
             if (e.ClickCount == 2)
             {
-                lookdir *= -1;
-                if (updir != this.ModelUpDirection)
+                lookDirection *= -1;
+                if (upDirection != this.ModelUpDirection)
                 {
-                    updir *= -1;
+                    upDirection *= -1;
                 }
             }
 
-            var pos = target - lookdir;
-            updir.Normalize();
+            if (this.Viewport != null)
+            {
+                var camera = this.Viewport.Camera as ProjectionCamera;
+                if (camera != null)
+                {
+                    var target = camera.Position + camera.LookDirection;
+                    double distance = camera.LookDirection.Length;
+                    lookDirection *= distance;
+                    var newPosition = target - lookDirection;
+                    CameraHelper.AnimateTo(camera, newPosition, lookDirection, upDirection, 500);
+                }
+            }
 
-            CameraHelper.AnimateTo(camera, pos, lookdir, updir, 500);
+            this.OnClicked(lookDirection, upDirection);
+        }
+
+        protected virtual void OnClicked(Vector3D lookDirection, Vector3D upDirection)
+        {
+            var clicked = this.Clicked;
+            if (clicked != null)
+            {
+                clicked(this, new ClickedEventArgs { LookDirection = lookDirection, UpDirection = upDirection });
+            }
+        }
+
+        public class ClickedEventArgs : EventArgs
+        {
+            public Vector3D LookDirection { get; set; }
+            public Vector3D UpDirection { get; set; }
         }
 
     }

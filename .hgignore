@@ -26,6 +26,7 @@ syntax: glob
 *.sbr
 *.scc
 *.nupkg
+*.nuspec
 *.pidb
 *.userprefs
 
