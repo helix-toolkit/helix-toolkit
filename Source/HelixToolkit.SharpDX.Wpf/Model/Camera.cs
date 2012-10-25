@@ -1,47 +1,26 @@
 namespace HelixToolkit.SharpDX
 {
     using System.Windows;
-    using System.Windows.Media.Media3D;
+    using System.Windows.Media.Animation;
+
     using global::SharpDX;
 
     /// <summary>
-    /// Provides a base class for cameras.
+    /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
     /// </summary>
-    public abstract class Camera : DependencyObject
+    public abstract class Camera : Animatable
     {
         /// <summary>
-        /// 
-        /// </summary>        
+        /// Creates the view matrix.
+        /// </summary>
+        /// <returns>A <see cref="Matrix" />.</returns>
         public abstract Matrix CreateViewMatrix();
 
         /// <summary>
-        /// 
+        /// Creates the projection matrix.
         /// </summary>
+        /// <param name="aspectRatio">The aspect ratio.</param>
+        /// <returns>A <see cref="Matrix" />.</returns>
         public abstract Matrix CreateProjectionMatrix(double aspectRatio);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty TransformProperty = DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Camera), new PropertyMetadata(Transform3D.Identity, TransformChanged));
-                           
-        /// <summary>
-        /// 
-        /// </summary>
-        protected static void TransformChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
-            ((Camera)obj).OnTransformChanged(args);           
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>        
-        protected virtual void OnTransformChanged(DependencyPropertyChangedEventArgs args)
-        { }
-
-        /// <summary>
-        /// Gets or sets the Transform3D applied to the camera.
-        /// Returns: Transform3D applied to the camera.
-        /// </summary>
-        public Transform3D Transform { get { return (Transform3D)GetValue(TransformProperty); } set { SetValue(TransformProperty, value); } }
     }
 }

@@ -1,86 +1,234 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ProjectionCamera.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   An abstract base class for perspective and orthographic projection cameras.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.SharpDX
 {
     using System.Windows;
     using System.Windows.Media.Media3D;
-    using global::SharpDX;
 
-    using Vector3D = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;
-    
-
+    /// <summary>
+    /// An abstract base class for perspective and orthographic projection cameras.
+    /// </summary>
     public abstract class ProjectionCamera : Camera
     {
-        protected ProjectionCamera()
+        /// <summary>
+        /// The create left hand system property
+        /// </summary>
+        public static readonly DependencyProperty CreateLeftHandSystemProperty =
+            DependencyProperty.Register(
+                "CreateLeftHandSystem", typeof(bool), typeof(ProjectionCamera), new PropertyMetadata(false, CameraChanged));
+
+        /// <summary>
+        /// The far plane distance property.
+        /// </summary>
+        public static readonly DependencyProperty FarPlaneDistanceProperty =
+            DependencyProperty.Register(
+                "FarPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e3, CameraChanged));
+
+        /// <summary>
+        /// The look direction property
+        /// </summary>
+        public static readonly DependencyProperty LookDirectionProperty = DependencyProperty.Register(
+            "LookDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(10, 10, 10), CameraChanged));
+
+        /// <summary>
+        /// The near plane distance property
+        /// </summary>
+        public static readonly DependencyProperty NearPlaneDistanceProperty =
+            DependencyProperty.Register(
+                "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e-2, CameraChanged));
+
+        /// <summary>
+        /// The position property
+        /// </summary>
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
+            "Position", 
+            typeof(Point3D), 
+            typeof(ProjectionCamera), 
+            new PropertyMetadata(new Point3D(0, 0, -5), CameraChanged));
+
+        /// <summary>
+        /// Up direction property
+        /// </summary>
+        public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
+            "UpDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 0, 1), CameraChanged));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to create a left hand system.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if creating a left hand system; otherwise, <c>false</c>.
+        /// </value>
+        public bool CreateLeftHandSystem
         {
-            this.NearPlaneDistance = 1e-2;
-            this.FarPlaneDistance = 1e3;
-            this.CreateLeftHandSystem = true;
+            get
+            {
+                return (bool)this.GetValue(CreateLeftHandSystemProperty);
+            }
+
+            set
+            {
+                this.SetValue(CreateLeftHandSystemProperty, value);
+            }
         }
 
+        /// <summary>
+        /// Gets or sets the far plane distance.
+        /// </summary>
+        /// <value>
+        /// The far plane distance.
+        /// </value>
+        public double FarPlaneDistance
+        {
+            get
+            {
+                return (double)this.GetValue(FarPlaneDistanceProperty);
+            }
+
+            set
+            {
+                this.SetValue(FarPlaneDistanceProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the look direction.
+        /// </summary>
+        /// <value>
+        /// The look direction.
+        /// </value>
+        public Vector3D LookDirection
+        {
+            get
+            {
+                return (Vector3D)this.GetValue(LookDirectionProperty);
+            }
+
+            set
+            {
+                this.SetValue(LookDirectionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the near plane distance.
+        /// </summary>
+        /// <value>
+        /// The near plane distance.
+        /// </value>
+        public double NearPlaneDistance
+        {
+            get
+            {
+                return (double)this.GetValue(NearPlaneDistanceProperty);
+            }
+
+            set
+            {
+                this.SetValue(NearPlaneDistanceProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
         public Point3D Position
         {
-            get { return (Point3D)this.GetValue(PositionProperty); }
-            set { this.SetValue(PositionProperty, value); }
+            get
+            {
+                return (Point3D)this.GetValue(PositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(PositionProperty, value);
+            }
         }
 
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(Point3D), typeof(ProjectionCamera), new PropertyMetadata(new Point3D(0, 0, -5), PositionChanged));
+        /// <summary>
+        /// Gets the target position.
+        /// </summary>
+        /// <value>
+        /// The target.
+        /// </value>
+        public Point3D Target
+        {
+            get
+            {
+                return this.Position + this.LookDirection;
+            }
+        }
 
-        public Vector3D LookDirection { get; set; }
-        public Vector3D UpDirection { get; set; }
-        public double NearPlaneDistance { get; set; }
-        public double FarPlaneDistance { get; set; }
-        public bool CreateLeftHandSystem { get; set; }
-        
-        private ScaleTransform3D m_scale = new ScaleTransform3D();
-        private RotateTransform3D m_rotation = new RotateTransform3D();
-        private TranslateTransform3D m_translate = new TranslateTransform3D();
-        private Transform3DGroup m_transform = new Transform3DGroup();
+        /// <summary>
+        /// Gets or sets up direction.
+        /// </summary>
+        /// <value>
+        /// Up direction.
+        /// </value>
+        public Vector3D UpDirection
+        {
+            get
+            {
+                return (Vector3D)this.GetValue(UpDirectionProperty);
+            }
 
-        public override Matrix CreateViewMatrix()
+            set
+            {
+                this.SetValue(UpDirectionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Creates the view matrix.
+        /// </summary>
+        /// <returns>
+        /// A Matrix.
+        /// </returns>
+        public override global::SharpDX.Matrix CreateViewMatrix()
         {
             if (this.CreateLeftHandSystem)
             {
-                //return Matrix.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection);
-                var m = m_transform.Value;
-                return new Matrix(
-                    (float)m.M11, (float)m.M12, (float)m.M13, (float)m.M14,
-                    (float)m.M21, (float)m.M22, (float)m.M23, (float)m.M24,
-                    (float)m.M31, (float)m.M32, (float)m.M33, (float)m.M34,
-                    -(float)m.OffsetX, -(float)m.OffsetY, +5f, (float)m.M44);  
+                return global::SharpDX.Matrix.LookAtLH(
+                    this.Position.ToVector3(), 
+                    (this.Position + this.LookDirection).ToVector3(), 
+                    this.UpDirection.ToVector3());
             }
-            else
-            {
-                //return Matrix.LookAtRH(this.Position, this.Position + this.LookDirection, this.UpDirection);
-                var m = m_transform.Value;
-                return new Matrix(
-                    (float)m.M11, (float)m.M12, (float)m.M13, (float)m.M14,
-                    (float)m.M21, (float)m.M22, (float)m.M23, (float)m.M24,
-                    (float)m.M31, (float)m.M32, (float)m.M33, (float)m.M34,
-                    (float)m.OffsetX, (float)m.OffsetY, (float)m.OffsetZ, (float)m.M44);  
-            }              
+
+            return global::SharpDX.Matrix.LookAtRH(
+                this.Position.ToVector3(), 
+                (this.Position + this.LookDirection).ToVector3(), 
+                this.UpDirection.ToVector3());
         }
 
-        protected override void OnTransformChanged(DependencyPropertyChangedEventArgs args)
+        /// <summary>
+        /// Handles camera changes.
+        /// </summary>
+        /// <param name="obj">
+        /// The sender.
+        /// </param>
+        /// <param name="args">
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// </param>
+        protected static void CameraChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            m_transform = args.NewValue as Transform3DGroup;
-            var trafo = args.NewValue as Transform3DGroup;
-            if (m_transform != null)
-            {
-                m_scale = trafo.Children[0] as ScaleTransform3D;
-                m_rotation = trafo.Children[1] as RotateTransform3D;
-                m_translate = trafo.Children[2] as TranslateTransform3D;
-            }           
+            ((ProjectionCamera)obj).CameraChanged(args);
         }
 
-        protected static void PositionChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        /// <summary>
+        /// The camera changed.
+        /// </summary>
+        /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+        protected void CameraChanged(DependencyPropertyChangedEventArgs args)
         {
-            ((ProjectionCamera)obj).OnPositionChanged(args);  
         }
-        protected void OnPositionChanged(DependencyPropertyChangedEventArgs args)
-        {
-            var pos = (Point3D)args.NewValue;
-            m_transform.Children[2] = new TranslateTransform3D(pos.X, pos.Y, pos.Z);
-        }
-
     }
 }
