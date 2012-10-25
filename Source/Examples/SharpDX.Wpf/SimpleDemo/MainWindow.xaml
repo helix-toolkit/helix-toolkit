@@ -23,6 +23,7 @@
             SubTitle="{Binding SubTitle}"
             TextBrush="White"
             ShowCoordinateSystem="True"
+            CoordinateSystemLabelForeground="White"
             ModelUpDirection="0,1,0" 
             UseDefaultGestures="False">
             <htx:Viewport3DX.InputBindings>
