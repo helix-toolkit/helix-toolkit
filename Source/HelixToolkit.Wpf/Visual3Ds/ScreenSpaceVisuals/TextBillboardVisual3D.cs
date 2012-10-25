@@ -2,12 +2,16 @@
 // <copyright file="TextBillboardVisual3D.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   A visual element that contains a text billboard.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
 {
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Documents;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -33,13 +37,22 @@ namespace HelixToolkit.Wpf
         /// The font weight property.
         /// </summary>
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
-            "FontWeight", typeof(FontWeight), typeof(TextBillboardVisual3D), new UIPropertyMetadata(FontWeights.Normal, TextChanged));
+            "FontWeight", 
+            typeof(FontWeight), 
+            typeof(TextBillboardVisual3D), 
+            new UIPropertyMetadata(FontWeights.Normal, TextChanged));
 
         /// <summary>
         /// The foreground property.
         /// </summary>
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
-            "Foreground", typeof(Brush), typeof(TextBillboardVisual3D), new UIPropertyMetadata(null, TextChanged));
+            "Foreground", typeof(Brush), typeof(TextBillboardVisual3D), new UIPropertyMetadata(Brushes.Black));
+
+        /// <summary>
+        /// The height factor property
+        /// </summary>
+        public static readonly DependencyProperty HeightFactorProperty = DependencyProperty.Register(
+            "HeightFactor", typeof(double), typeof(TextBillboardVisual3D), new PropertyMetadata(1.0));
 
         /// <summary>
         /// The text property.
@@ -116,6 +129,25 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the height factor.
+        /// </summary>
+        /// <value>
+        /// The height factor.
+        /// </value>
+        public double HeightFactor
+        {
+            get
+            {
+                return (double)this.GetValue(HeightFactorProperty);
+            }
+
+            set
+            {
+                this.SetValue(HeightFactorProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the text.
         /// </summary>
         /// <value>The text.</value>
@@ -151,30 +183,26 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private void OnTextChanged()
         {
-            var tb = new TextBlock(new Run(this.Text));
-            if (this.Foreground != null)
-            {
-                tb.Foreground = this.Foreground;
-            }
+            var textBlock = new TextBlock(new Run(this.Text));
+            textBlock.SetBinding(TextBlock.ForegroundProperty, new Binding("Foreground") { Source = this });
 
             if (this.FontFamily != null)
             {
-                tb.FontFamily = this.FontFamily;
+                textBlock.FontFamily = this.FontFamily;
             }
 
-            tb.FontWeight = this.FontWeight;
+            textBlock.FontWeight = this.FontWeight;
 
             if (this.FontSize > 0)
             {
-                tb.FontSize = this.FontSize;
+                textBlock.FontSize = this.FontSize;
             }
 
-            this.Material = new DiffuseMaterial(new VisualBrush(tb));
+            this.Material = new DiffuseMaterial(new VisualBrush(textBlock));
 
-            tb.Measure(new Size(1000, 1000));
-            this.Width = tb.DesiredSize.Width;
-            this.Height = tb.DesiredSize.Height;
+            textBlock.Measure(new Size(1000, 1000));
+            this.Width = textBlock.DesiredSize.Width;
+            this.Height = textBlock.DesiredSize.Height * this.HeightFactor;
         }
-
     }
 }

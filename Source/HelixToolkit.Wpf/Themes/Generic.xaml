@@ -89,9 +89,9 @@
                                 <local:ArrowVisual3D Point2="0 8 0" Fill="#4B964B" />
                                 <local:ArrowVisual3D Point2="0 0 8" Fill="#4B4B96" />
 
-                                <local:TextBillboardVisual3D Position="10 0 0" Text="X" Height="10" />
-                                <local:TextBillboardVisual3D Position="0 10 0" Text="Y" Height="10" />
-                                <local:TextBillboardVisual3D Position="0 0 10" Text="Z" Height="10" />
+                                <local:TextBillboardVisual3D Position="10 0 0" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelX, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6" />
+                                <local:TextBillboardVisual3D Position="0 10 0" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelY, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6"  />
+                                <local:TextBillboardVisual3D Position="0 0 10" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelZ, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6"  />
 
                                 <!--<local:PieSliceVisual3D Normal="1,0,0" UpVector="0,0,1" InnerRadius="3" OuterRadius="6"  Fill="#80ff0000"/>
                                 <local:PieSliceVisual3D Normal="0,1,0" UpVector="1,0,0" InnerRadius="3" OuterRadius="6"  Fill="#8000ff00"/>
