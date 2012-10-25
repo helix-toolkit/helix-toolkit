@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EllipsoidVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class EllipsoidVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The phi div property.
         /// </summary>
@@ -46,12 +44,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(SphereVisual3D), new PropertyMetadata(60, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the number of divisions in the phi direction (from "top" to "bottom").
+        /// Gets or sets the number of divisions in the phi direction (from "top" to "bottom").
         /// </summary>
         /// <value>The number of divisions.</value>
         public int PhiDiv
@@ -68,7 +62,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the X equatorial radius of the ellipsoid.
+        /// Gets or sets the X equatorial radius of the ellipsoid.
         /// </summary>
         /// <value>The radius.</value>
         public double RadiusX
@@ -85,7 +79,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the Y equatorial radius of the ellipsoid.
+        /// Gets or sets the Y equatorial radius of the ellipsoid.
         /// </summary>
         /// <value>The radius.</value>
         public double RadiusY
@@ -102,7 +96,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the polar radius of the ellipsoid.
+        /// Gets or sets the polar radius of the ellipsoid.
         /// </summary>
         /// <value>The radius.</value>
         public double RadiusZ
@@ -119,7 +113,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of divisions in the theta direction (around the sphere).
+        /// Gets or sets the number of divisions in the theta direction (around the sphere).
         /// </summary>
         /// <value>The number of divisions.</value>
         public int ThetaDiv
@@ -135,10 +129,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The tessellate.
         /// </summary>
@@ -151,6 +141,5 @@ namespace HelixToolkit.Wpf
             return builder.ToMesh();
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ContourHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class ContourHelper
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The a.
         /// </summary>
@@ -44,10 +42,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly double[] side = new double[3];
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ContourHelper"/> class.
         /// </summary>
@@ -69,10 +63,6 @@ namespace HelixToolkit.Wpf
             this.D = -(planeNormal.X * planeOrigin.X + planeNormal.Y * planeOrigin.Y + planeNormal.Z * planeOrigin.Z);
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Create a contour slice through a 3 vertex facet "p"
         /// </summary>
@@ -93,10 +83,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         /// <returns>
         /// -1 if the contour plane is above the facet
-        ///   -2 if the contour plane is below the facet
-        ///   0 if it does cut the facet, and p0 is above the contour plane
-        ///   10 if it does cut the facet, and p0 is below the contour plane
-        ///   -3 for an unexpected occurence
+        /// -2 if the contour plane is below the facet
+        /// 0 if it does cut the facet, and p0 is above the contour plane
+        /// 10 if it does cut the facet, and p0 is below the contour plane
+        /// -3 for an unexpected occurence
         /// </returns>
         public int ContourFacet(Point3D p0, Point3D p1, Point3D p2, out Point3D s0, out Point3D s1)
         {
@@ -122,16 +112,16 @@ namespace HelixToolkit.Wpf
                 return -2;
             }
 
-            // Is p0 the only point on a side by itself 
+            // Is p0 the only point on a side by itself
             if ((this.side[0] * this.side[1] < 0) && (this.side[0] * this.side[2] < 0))
             {
                 s0 = new Point3D(
-                    p0.X - this.side[0] * (p2.X - p0.X) / (this.side[2] - this.side[0]), 
-                    p0.Y - this.side[0] * (p2.Y - p0.Y) / (this.side[2] - this.side[0]), 
+                    p0.X - this.side[0] * (p2.X - p0.X) / (this.side[2] - this.side[0]),
+                    p0.Y - this.side[0] * (p2.Y - p0.Y) / (this.side[2] - this.side[0]),
                     p0.Z - this.side[0] * (p2.Z - p0.Z) / (this.side[2] - this.side[0]));
                 s1 = new Point3D(
-                    p0.X - this.side[0] * (p1.X - p0.X) / (this.side[1] - this.side[0]), 
-                    p0.Y - this.side[0] * (p1.Y - p0.Y) / (this.side[1] - this.side[0]), 
+                    p0.X - this.side[0] * (p1.X - p0.X) / (this.side[1] - this.side[0]),
+                    p0.Y - this.side[0] * (p1.Y - p0.Y) / (this.side[1] - this.side[0]),
                     p0.Z - this.side[0] * (p1.Z - p0.Z) / (this.side[1] - this.side[0]));
                 return this.side[0] > 0 ? 0 : 10;
             }
@@ -140,12 +130,12 @@ namespace HelixToolkit.Wpf
             if ((this.side[1] * this.side[0] < 0) && (this.side[1] * this.side[2] < 0))
             {
                 s0 = new Point3D(
-                    p1.X - this.side[1] * (p2.X - p1.X) / (this.side[2] - this.side[1]), 
-                    p1.Y - this.side[1] * (p2.Y - p1.Y) / (this.side[2] - this.side[1]), 
+                    p1.X - this.side[1] * (p2.X - p1.X) / (this.side[2] - this.side[1]),
+                    p1.Y - this.side[1] * (p2.Y - p1.Y) / (this.side[2] - this.side[1]),
                     p1.Z - this.side[1] * (p2.Z - p1.Z) / (this.side[2] - this.side[1]));
                 s1 = new Point3D(
-                    p1.X - this.side[1] * (p0.X - p1.X) / (this.side[0] - this.side[1]), 
-                    p1.Y - this.side[1] * (p0.Y - p1.Y) / (this.side[0] - this.side[1]), 
+                    p1.X - this.side[1] * (p0.X - p1.X) / (this.side[0] - this.side[1]),
+                    p1.Y - this.side[1] * (p0.Y - p1.Y) / (this.side[0] - this.side[1]),
                     p1.Z - this.side[1] * (p0.Z - p1.Z) / (this.side[0] - this.side[1]));
                 return this.side[1] > 0 ? 1 : 11;
             }
@@ -154,12 +144,12 @@ namespace HelixToolkit.Wpf
             if ((this.side[2] * this.side[0] < 0) && (this.side[2] * this.side[1] < 0))
             {
                 s0 = new Point3D(
-                    p2.X - this.side[2] * (p0.X - p2.X) / (this.side[0] - this.side[2]), 
-                    p2.Y - this.side[2] * (p0.Y - p2.Y) / (this.side[0] - this.side[2]), 
+                    p2.X - this.side[2] * (p0.X - p2.X) / (this.side[0] - this.side[2]),
+                    p2.Y - this.side[2] * (p0.Y - p2.Y) / (this.side[0] - this.side[2]),
                     p2.Z - this.side[2] * (p0.Z - p2.Z) / (this.side[0] - this.side[2]));
                 s1 = new Point3D(
-                    p2.X - this.side[2] * (p1.X - p2.X) / (this.side[1] - this.side[2]), 
-                    p2.Y - this.side[2] * (p1.Y - p2.Y) / (this.side[1] - this.side[2]), 
+                    p2.X - this.side[2] * (p1.X - p2.X) / (this.side[1] - this.side[2]),
+                    p2.Y - this.side[2] * (p1.Y - p2.Y) / (this.side[1] - this.side[2]),
                     p2.Z - this.side[2] * (p1.Z - p2.Z) / (this.side[1] - this.side[2]));
                 return this.side[2] > 0 ? 2 : 12;
             }
@@ -171,6 +161,5 @@ namespace HelixToolkit.Wpf
             // throw new InvalidOperationException("Shouldn't get here.");
         }
 
-        #endregion
     }
 }

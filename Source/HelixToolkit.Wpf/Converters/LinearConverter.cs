@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LinearConverter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,23 +15,17 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class LinearConverter : IValueConverter
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the B.
+        /// Gets or sets the B.
         /// </summary>
         /// <value>The B.</value>
         public double B { get; set; }
 
         /// <summary>
-        ///   Gets or sets the M.
+        /// Gets or sets the M.
         /// </summary>
         /// <value>The M.</value>
         public double M { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Converts a value.
@@ -83,10 +77,6 @@ namespace HelixToolkit.Wpf
             return (v - this.B) / m;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Gets the double value.
         /// </summary>
@@ -121,6 +111,5 @@ namespace HelixToolkit.Wpf
             return a;
         }
 
-        #endregion
     }
 }

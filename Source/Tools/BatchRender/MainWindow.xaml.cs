@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -130,8 +130,6 @@ namespace BatchRender
 
         public ObservableCollection<Job> Jobs { get; set; }
 
-        #region PropertyChanged Block
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -142,10 +140,6 @@ namespace BatchRender
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
-        #endregion
-
-        #region IDataErrorInfo Members
 
         public string this[string columnName]
         {
@@ -170,8 +164,6 @@ namespace BatchRender
                 return null;
             }
         }
-
-        #endregion
 
         public void Search(string dir)
         {

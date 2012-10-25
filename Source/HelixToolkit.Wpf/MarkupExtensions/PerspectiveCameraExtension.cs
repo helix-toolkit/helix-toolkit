@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PerspectiveCameraExtension.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,12 +16,10 @@ namespace HelixToolkit.Wpf
     /// <example>
     /// <code>
     /// Camera={ht:PerspectiveCamera 10,10,20}
-    ///   </code>
+    ///  </code>
     /// </example>
     public class PerspectiveCameraExtension : MarkupExtension
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PerspectiveCameraExtension"/> class.
         /// </summary>
@@ -68,37 +66,29 @@ namespace HelixToolkit.Wpf
             this.FieldOfView = 60;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the field of view.
+        /// Gets or sets the field of view.
         /// </summary>
         /// <value>The field of view.</value>
         public double FieldOfView { get; set; }
 
         /// <summary>
-        ///   Gets or sets the look direction.
+        /// Gets or sets the look direction.
         /// </summary>
         /// <value>The look direction.</value>
         public Vector3D LookDirection { get; set; }
 
         /// <summary>
-        ///   Gets or sets the position.
+        /// Gets or sets the position.
         /// </summary>
         /// <value>The position.</value>
         public Point3D Position { get; set; }
 
         /// <summary>
-        ///   Gets or sets up direction.
+        /// Gets or sets up direction.
         /// </summary>
         /// <value>Up direction.</value>
         public Vector3D UpDirection { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
@@ -114,6 +104,5 @@ namespace HelixToolkit.Wpf
             return new PerspectiveCamera(this.Position, this.LookDirection, this.UpDirection, this.FieldOfView);
         }
 
-        #endregion
     }
 }

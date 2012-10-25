@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StereoHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class StereoHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Calculate the stereo base using the full Bercovitz formula
         /// </summary>
@@ -47,8 +45,8 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Calculate the stereo base using the full Bercovitz formula
-        ///   B = P(LN/(L-N)) (1/F - (L+N)/2LN)
-        ///   http://nzphoto.tripod.com/stereo/3dtake/fbercowitz.htm
+        /// B = P(LN/(L-N)) (1/F - (L+N)/2LN)
+        /// http://nzphoto.tripod.com/stereo/3dtake/fbercowitz.htm
         /// </summary>
         /// <param name="P">
         /// Parallax aimed for, in mm on the film
@@ -128,7 +126,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Find the focal length given the field of view and the format
-        ///   http://en.wikipedia.org/wiki/Angle_of_view
+        /// http://en.wikipedia.org/wiki/Angle_of_view
         /// </summary>
         /// <param name="fov">
         /// field of view (degrees)
@@ -169,12 +167,12 @@ namespace HelixToolkit.Wpf
         /// use the same LookDirection for both cameras
         /// </param>
         public static void UpdateStereoCameras(
-            PerspectiveCamera centerCamera, 
-            PerspectiveCamera leftCamera, 
-            PerspectiveCamera rightCamera, 
-            double stereoBase, 
-            bool crossViewing, 
-            bool sameUpDirection, 
+            PerspectiveCamera centerCamera,
+            PerspectiveCamera leftCamera,
+            PerspectiveCamera rightCamera,
+            double stereoBase,
+            bool crossViewing,
+            bool sameUpDirection,
             bool sameDirection)
         {
             if (centerCamera == null || leftCamera == null || rightCamera == null)
@@ -233,6 +231,5 @@ namespace HelixToolkit.Wpf
             rightCamera.FarPlaneDistance = centerCamera.FarPlaneDistance;
         }
 
-        #endregion
     }
 }

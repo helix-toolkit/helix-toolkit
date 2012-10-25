@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -54,14 +54,14 @@ namespace SurfaceDemo
                 OnPropertyChanged("MeshSizeV");
             }
         }
-        
-        double _ParameterW = 1;        
+
+        double _ParameterW = 1;
         public double ParameterW
         {
             get { return _ParameterW; }
             set
             {
-                _ParameterW = value; 
+                _ParameterW = value;
                 OnPropertyChanged("ParameterW");
             }
         }

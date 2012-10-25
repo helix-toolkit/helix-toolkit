@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultLights.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class DefaultLights : LightSetup
     {
-        #region Methods
-
         /// <summary>
         /// Adds the lights to the element.
         /// </summary>
@@ -39,6 +37,5 @@ namespace HelixToolkit.Wpf
             lightGroup.Children.Add(new AmbientLight(Color.FromRgb(30, 30, 30)));
         }
 
-        #endregion
     }
 }

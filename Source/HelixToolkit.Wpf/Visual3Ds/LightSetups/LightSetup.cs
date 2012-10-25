@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LightSetup.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,30 +15,24 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public abstract class LightSetup : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The show lights property.
+        /// The show lights property.
         /// </summary>
         public static readonly DependencyProperty ShowLightsProperty = DependencyProperty.Register(
             "ShowLights", typeof(bool), typeof(LightSetup), new UIPropertyMetadata(false, ShowLightsChanged));
 
         /// <summary>
-        ///   The light group.
+        /// The light group.
         /// </summary>
         private readonly Model3DGroup lightGroup = new Model3DGroup();
 
         /// <summary>
-        ///   The lights visual.
+        /// The lights visual.
         /// </summary>
         private readonly ModelVisual3D lightsVisual = new ModelVisual3D();
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LightSetup" /> class.
+        /// Initializes a new instance of the <see cref = "LightSetup" /> class.
         /// </summary>
         protected LightSetup()
         {
@@ -48,12 +42,8 @@ namespace HelixToolkit.Wpf
             this.OnShowLightsChanged();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether to show light visuals.
+        /// Gets or sets a value indicating whether to show light visuals.
         /// </summary>
         public bool ShowLights
         {
@@ -67,10 +57,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ShowLightsProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The setup changed.
@@ -138,7 +124,7 @@ namespace HelixToolkit.Wpf
                         var sphere = new SphereVisual3D();
                         sphere.BeginEdit();
                         sphere.Center = source;
-                        sphere.Radius = 1.0; 
+                        sphere.Radius = 1.0;
                         sphere.Fill = new SolidColorBrush(dl.Color);
                         sphere.EndEdit();
                         this.lightsVisual.Children.Add(sphere);
@@ -178,6 +164,5 @@ namespace HelixToolkit.Wpf
             ((LightSetup)d).OnShowLightsChanged();
         }
 
-        #endregion
     }
 }

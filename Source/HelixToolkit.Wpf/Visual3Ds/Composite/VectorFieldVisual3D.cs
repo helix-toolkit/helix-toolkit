@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="VectorFieldVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class VectorFieldVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The model.
         /// </summary>
@@ -32,12 +30,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private MeshGeometry3D head;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "VectorFieldVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "VectorFieldVisual3D" /> class.
         /// </summary>
         public VectorFieldVisual3D()
         {
@@ -52,24 +46,20 @@ namespace HelixToolkit.Wpf
             this.Children.Add(this.model);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the diameter.
+        /// Gets or sets the diameter.
         /// </summary>
         /// <value>The diameter.</value>
         public double Diameter { get; set; }
 
         /// <summary>
-        ///   Gets or sets the directions.
+        /// Gets or sets the directions.
         /// </summary>
         /// <value>The directions.</value>
         public Vector3DCollection Directions { get; set; }
 
         /// <summary>
-        ///   Gets or sets the fill.
+        /// Gets or sets the fill.
         /// </summary>
         /// <value>The fill.</value>
         public Brush Fill { get; set; }
@@ -81,20 +71,16 @@ namespace HelixToolkit.Wpf
         public double HeadLength { get; set; }
 
         /// <summary>
-        ///   Gets or sets the positions.
+        /// Gets or sets the positions.
         /// </summary>
         /// <value>The positions.</value>
         public Point3DCollection Positions { get; set; }
 
         /// <summary>
-        ///   Gets or sets the number of divisions of the arrows.
+        /// Gets or sets the number of divisions of the arrows.
         /// </summary>
         /// <value>The theta div.</value>
         public int ThetaDiv { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Updates the model.
@@ -131,10 +117,6 @@ namespace HelixToolkit.Wpf
 
             this.model.Content = c;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The create body transform.
@@ -208,6 +190,5 @@ namespace HelixToolkit.Wpf
             this.body.Freeze();
         }
 
-        #endregion
     }
 }

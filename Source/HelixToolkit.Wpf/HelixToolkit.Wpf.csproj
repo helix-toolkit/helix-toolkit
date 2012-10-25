@@ -137,6 +137,8 @@
     <Compile Include="Visual3Ds\LightSetups\LightSetup.cs" />
     <Compile Include="Visual3Ds\LightSetups\SunLight.cs" />
     <Compile Include="Visual3Ds\LightSetups\ThreePointLights.cs" />
+    <Compile Include="Visual3Ds\Manipulators\BindableRotateManipulator.cs" />
+    <Compile Include="Visual3Ds\Manipulators\BindableTranslateManipulator.cs" />
     <Compile Include="Visual3Ds\Manipulators\CombinedManipulator.cs" />
     <Compile Include="Visual3Ds\Manipulators\RotateManipulator.cs" />
     <Compile Include="Visual3Ds\Manipulators\Manipulator.cs" />

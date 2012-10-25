@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AudioCapture.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -142,8 +142,6 @@ namespace NAudioWpfDemo
 
         public double RecordVolume { get; set; }
 
-        #region IDisposable Members
-
         public void Dispose()
         {
             if (captureDevice != null)
@@ -153,6 +151,5 @@ namespace NAudioWpfDemo
             }
         }
 
-        #endregion
     }
 }

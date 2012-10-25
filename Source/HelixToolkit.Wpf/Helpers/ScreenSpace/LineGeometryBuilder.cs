@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineGeometryBuilder.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class LineGeometryBuilder : ScreenGeometryBuilder
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LineGeometryBuilder"/> class.
         /// </summary>
@@ -28,10 +26,6 @@ namespace HelixToolkit.Wpf
             : base(visual)
         {
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates the triangle indices.
@@ -80,9 +74,9 @@ namespace HelixToolkit.Wpf
         /// The positions collection.
         /// </returns>
         public Point3DCollection CreatePositions(
-            IList<Point3D> points, 
-            double thickness = 1.0, 
-            double depthOffset = 0.0, 
+            IList<Point3D> points,
+            double thickness = 1.0,
+            double depthOffset = 0.0,
             CohenSutherlandClipping clipping = null)
         {
             double halfThickness = thickness * 0.5;
@@ -173,6 +167,5 @@ namespace HelixToolkit.Wpf
             return positions;
         }
 
-        #endregion
     }
 }

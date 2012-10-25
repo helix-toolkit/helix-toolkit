@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Window1.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -171,7 +171,7 @@ namespace SurfaceDemo
 
             Invalidate();
 
-            // todo: binding didn't work            
+            // todo: binding didn't work
             view1.Title = _viewModel.ModelTitle;
             if (!String.IsNullOrEmpty(_viewModel.ModelTitle))
                 Title = "Parametric surfaces - " + _viewModel.ModelTitle;
@@ -226,9 +226,8 @@ namespace SurfaceDemo
             _isUpdating = false;
         }
 
-
         //Brush currentBrush = CreateDrawingBrush(0.06,0.03);
-        
+
         private void UpdateSurface(DynamicCodeSurface3D surface1, string src)
         {
             surface1.Source = null;

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,16 +16,10 @@ namespace FractalDemo
 {
     public class MainViewModel : Observable
     {
-        #region Constructor
-
         public MainViewModel()
         {
             Level = 2;
         }
-
-        #endregion
-
-        #region Properties
 
         public FractalBase Fractal { get; set; }
         public GeometryModel3D Model { get; set; }
@@ -92,8 +86,6 @@ namespace FractalDemo
             RaisePropertyChanged("TriangleCount");
             IsBusy = false;
         }
-
-        #endregion
 
         public static FractalBase FractalFactory(FractalType type)
         {

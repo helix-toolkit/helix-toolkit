@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="X3DExporterTests.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ namespace HelixToolkitTests
 
             // Add the schema to the collection.
             string dir = @"..\..\..\..\Schemas\x3d\";
-            sc.Add("http://www.web3d.org/specifications/x3d-3.1.xsd", dir + "x3d-3.1.xsd");            
+            sc.Add("http://www.web3d.org/specifications/x3d-3.1.xsd", dir + "x3d-3.1.xsd");
             //// sc.Add("http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPublic.xsd", dir + "x3d-3.1-Web3dExtensionsPublic.xsd");
             //// sc.Add("http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPrivate.xsd", dir + "x3d-3.1-Web3dExtensionsPrivate.xsd");
 

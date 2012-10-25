@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StereoControl.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,9 +21,7 @@ namespace HelixToolkit.Wpf
     [ContentProperty("Content")]
     public class StereoControl : ContentControl
     {
-        // todo: keyboard shortcut 'x' to change cross/parallel viewing   
-        #region Constants and Fields
-
+        // todo: keyboard shortcut 'x' to change cross/parallel viewing
         /// <summary>
         /// The camera property.
         /// </summary>
@@ -35,9 +33,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty =
             DependencyProperty.Register(
-                "CameraRotationMode", 
-                typeof(CameraRotationMode), 
-                typeof(StereoControl), 
+                "CameraRotationMode",
+                typeof(CameraRotationMode),
+                typeof(StereoControl),
                 new UIPropertyMetadata(CameraRotationMode.Turntable));
 
         /// <summary>
@@ -45,9 +43,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CopyDirectionVectorProperty =
             DependencyProperty.Register(
-                "CopyDirectionVector", 
-                typeof(bool), 
-                typeof(StereoControl), 
+                "CopyDirectionVector",
+                typeof(bool),
+                typeof(StereoControl),
                 new UIPropertyMetadata(true, StereoViewChanged));
 
         /// <summary>
@@ -68,10 +66,6 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty StereoBaseProperty = DependencyProperty.Register(
             "StereoBase", typeof(double), typeof(StereoControl), new UIPropertyMetadata(0.12, StereoViewChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes static members of the <see cref="StereoControl"/> class.
         /// </summary>
@@ -91,8 +85,6 @@ namespace HelixToolkit.Wpf
             this.Children = new ObservableCollection<Visual3D>();
         }
 
-        #endregion
-
         /*        void StereoControl_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.X)
@@ -101,10 +93,8 @@ namespace HelixToolkit.Wpf
             }
         }
         */
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the camera.
+        /// Gets or sets the camera.
         /// </summary>
         /// <value>The camera.</value>
         public PerspectiveCamera Camera
@@ -121,7 +111,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the camera rotation mode.
+        /// Gets or sets the camera rotation mode.
         /// </summary>
         /// <value>The camera rotation mode.</value>
         public CameraRotationMode CameraRotationMode
@@ -138,13 +128,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the children.
+        /// Gets the children.
         /// </summary>
         /// <value>The children.</value>
         public ObservableCollection<Visual3D> Children { get; private set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [copy direction vector].
+        /// Gets or sets a value indicating whether [copy direction vector].
         /// </summary>
         /// <value><c>true</c> if [copy direction vector]; otherwise, <c>false</c>.</value>
         public bool CopyDirectionVector
@@ -161,7 +151,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [copy up vector].
+        /// Gets or sets a value indicating whether [copy up vector].
         /// </summary>
         /// <value><c>true</c> if [copy up vector]; otherwise, <c>false</c>.</value>
         public bool CopyUpVector
@@ -178,7 +168,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether the cameras are set up for cross viewing.
+        /// Gets or sets a value indicating whether the cameras are set up for cross viewing.
         /// </summary>
         /// <value><c>true</c> if [cross viewing]; otherwise, <c>false</c>.</value>
         public bool CrossViewing
@@ -195,31 +185,31 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the left camera.
+        /// Gets or sets the left camera.
         /// </summary>
         /// <value>The left camera.</value>
         public PerspectiveCamera LeftCamera { get; set; }
 
         /// <summary>
-        ///   Gets or sets the left viewport.
+        /// Gets or sets the left viewport.
         /// </summary>
         /// <value>The left viewport.</value>
         public Viewport3D LeftViewport { get; set; }
 
         /// <summary>
-        ///   Gets or sets the right camera.
+        /// Gets or sets the right camera.
         /// </summary>
         /// <value>The right camera.</value>
         public PerspectiveCamera RightCamera { get; set; }
 
         /// <summary>
-        ///   Gets or sets the right viewport.
+        /// Gets or sets the right viewport.
         /// </summary>
         /// <value>The right viewport.</value>
         public Viewport3D RightViewport { get; set; }
 
         /// <summary>
-        ///   Gets or sets the stereo base.
+        /// Gets or sets the stereo base.
         /// </summary>
         /// <value>The stereo base.</value>
         public double StereoBase
@@ -234,10 +224,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(StereoBaseProperty, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Binds the viewports.
@@ -390,18 +376,14 @@ namespace HelixToolkit.Wpf
         public void UpdateCameras()
         {
             StereoHelper.UpdateStereoCameras(
-                this.Camera, 
-                this.LeftCamera, 
-                this.RightCamera, 
-                this.StereoBase, 
-                this.CrossViewing, 
-                this.CopyUpVector, 
+                this.Camera,
+                this.LeftCamera,
+                this.RightCamera,
+                this.StereoBase,
+                this.CrossViewing,
+                this.CopyUpVector,
                 this.CopyDirectionVector);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The stereo view changed.
@@ -446,6 +428,5 @@ namespace HelixToolkit.Wpf
             // todo: update left and right collections here
         }
 
-        #endregion
     }
 }

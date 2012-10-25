@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MandelbrotSolver.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace FractalDemo
     /// </summary>
     public class MandelbrotSolver
     {
-        // Frame coordinates : Rectangle(X0,Y0,X1,Y1) 
+        // Frame coordinates : Rectangle(X0,Y0,X1,Y1)
         public double X0 { get; set; }
         public double Y0 { get; set; }
         public double X1 { get; set; }
@@ -120,7 +120,6 @@ namespace FractalDemo
             Y1 += h * dv;
         }
 
-
     }
-   
+
 }

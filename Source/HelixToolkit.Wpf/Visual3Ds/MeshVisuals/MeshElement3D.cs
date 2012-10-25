@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MeshElement3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,22 +20,20 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public abstract class MeshElement3D : ModelVisual3D, IEditableObject
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The back material property.
+        /// The back material property.
         /// </summary>
         public static readonly DependencyProperty BackMaterialProperty = DependencyProperty.Register(
             "BackMaterial", typeof(Material), typeof(MeshElement3D), new UIPropertyMetadata(MaterialHelper.CreateMaterial(Brushes.LightBlue), MaterialChanged));
 
         /// <summary>
-        ///   The fill property.
+        /// The fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Brush), typeof(MeshElement3D), new UIPropertyMetadata(null, FillChanged));
 
         /// <summary>
-        ///   The material property.
+        /// The material property.
         /// </summary>
         public static readonly DependencyProperty MaterialProperty = DependencyProperty.Register(
             "Material",
@@ -58,25 +56,17 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private bool isMaterialChanged;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "MeshElement3D" /> class.
+        /// Initializes a new instance of the <see cref = "MeshElement3D" /> class.
         /// </summary>
         protected MeshElement3D()
         {
             this.Content = new GeometryModel3D();
             this.UpdateModel();
         }
-        
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the back material.
+        /// Gets or sets the back material.
         /// </summary>
         /// <value>The back material.</value>
         public Material BackMaterial
@@ -93,7 +83,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the fill brush. This brush will be used for both the Material and BackMaterial.
+        /// Gets or sets the fill brush. This brush will be used for both the Material and BackMaterial.
         /// </summary>
         /// <value>The fill brush.</value>
         public Brush Fill
@@ -110,7 +100,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the material.
+        /// Gets or sets the material.
         /// </summary>
         /// <value>The material.</value>
         public Material Material
@@ -127,7 +117,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets the geometry model.
+        /// Gets the geometry model.
         /// </summary>
         /// <value>The geometry model.</value>
         public GeometryModel3D Model
@@ -137,10 +127,6 @@ namespace HelixToolkit.Wpf
                 return this.Content as GeometryModel3D;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Begins an edit on an object.
@@ -185,10 +171,6 @@ namespace HelixToolkit.Wpf
             this.OnGeometryChanged();
             this.OnMaterialChanged();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The geometry changed.
@@ -281,6 +263,5 @@ namespace HelixToolkit.Wpf
             ((MeshElement3D)d).OnFillChanged();
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PovRayExporter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,16 +19,10 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class PovRayExporter : Exporter
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The writer.
+        /// The writer.
         /// </summary>
         private readonly StreamWriter writer;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PovRayExporter"/> class.
@@ -41,10 +35,6 @@ namespace HelixToolkit.Wpf
             this.writer = new StreamWriter(path, false, Encoding.UTF8);
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Closes this exporter.
         /// </summary>
@@ -53,10 +43,6 @@ namespace HelixToolkit.Wpf
             this.writer.Close();
             base.Close();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Exports the camera.
@@ -129,10 +115,10 @@ namespace HelixToolkit.Wpf
             {
                 this.writer.WriteLine(
                     string.Format(
-                        CultureInfo.InvariantCulture, 
-                        "    {0} {1} {2},", 
-                        mesh.TriangleIndices[i], 
-                        mesh.TriangleIndices[i + 1], 
+                        CultureInfo.InvariantCulture,
+                        "    {0} {1} {2},",
+                        mesh.TriangleIndices[i],
+                        mesh.TriangleIndices[i + 1],
                         mesh.TriangleIndices[i + 2]));
             }
 
@@ -143,6 +129,5 @@ namespace HelixToolkit.Wpf
             this.writer.WriteLine("}"); // mesh2
         }
 
-        #endregion
     }
 }

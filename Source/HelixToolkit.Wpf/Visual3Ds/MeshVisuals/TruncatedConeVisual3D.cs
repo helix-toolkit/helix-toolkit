@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TruncatedConeVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class TruncatedConeVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The base cap property.
         /// </summary>
@@ -38,18 +36,18 @@ namespace HelixToolkit.Wpf
         /// The normal property.
         /// </summary>
         public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
-            "Normal", 
-            typeof(Vector3D), 
-            typeof(TruncatedConeVisual3D), 
+            "Normal",
+            typeof(Vector3D),
+            typeof(TruncatedConeVisual3D),
             new PropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
         /// The origin property.
         /// </summary>
         public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
-            "Origin", 
-            typeof(Point3D), 
-            typeof(TruncatedConeVisual3D), 
+            "Origin",
+            typeof(Point3D),
+            typeof(TruncatedConeVisual3D),
             new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
@@ -70,12 +68,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty TopRadiusProperty = DependencyProperty.Register(
             "TopRadius", typeof(double), typeof(TruncatedConeVisual3D), new PropertyMetadata(0.0, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether to include a base cap.
+        /// Gets or sets a value indicating whether to include a base cap.
         /// </summary>
         public bool BaseCap
         {
@@ -91,7 +85,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the base radius.
+        /// Gets or sets the base radius.
         /// </summary>
         /// <value>The base radius.</value>
         public double BaseRadius
@@ -108,7 +102,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the height.
+        /// Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
         public double Height
@@ -125,7 +119,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the normal.
+        /// Gets or sets the normal.
         /// </summary>
         /// <value>The normal.</value>
         public Vector3D Normal
@@ -142,7 +136,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the origin.
+        /// Gets or sets the origin.
         /// </summary>
         /// <value>The origin.</value>
         public Point3D Origin
@@ -159,7 +153,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the theta div.
+        /// Gets or sets the theta div.
         /// </summary>
         /// <value>The theta div.</value>
         public int ThetaDiv
@@ -176,7 +170,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to include a top cap.
+        /// Gets or sets a value indicating whether to include a top cap.
         /// </summary>
         public bool TopCap
         {
@@ -192,7 +186,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the top radius.
+        /// Gets or sets the top radius.
         /// </summary>
         /// <value>The top radius.</value>
         public double TopRadius
@@ -208,10 +202,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
@@ -220,17 +210,16 @@ namespace HelixToolkit.Wpf
         {
             var builder = new MeshBuilder(false,false);
             builder.AddCone(
-                this.Origin, 
-                this.Normal, 
-                this.BaseRadius, 
-                this.TopRadius, 
-                this.Height, 
-                this.BaseCap, 
-                this.TopCap, 
+                this.Origin,
+                this.Normal,
+                this.BaseRadius,
+                this.TopRadius,
+                this.Height,
+                this.BaseCap,
+                this.TopCap,
                 this.ThetaDiv);
             return builder.ToMesh();
         }
 
-        #endregion
     }
 }

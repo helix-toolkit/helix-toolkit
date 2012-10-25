@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ThreePointLights.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,8 +19,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class ThreePointLights : LightSetup
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The distance property.
         /// </summary>
@@ -38,18 +36,18 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty FillLightSideAngleProperty =
             DependencyProperty.Register(
-                "FillLightSideAngle", 
-                typeof(double), 
-                typeof(ThreePointLights), 
+                "FillLightSideAngle",
+                typeof(double),
+                typeof(ThreePointLights),
                 new UIPropertyMetadata(-20.0, SetupChanged));
 
         /// <summary>
         /// The front direction property.
         /// </summary>
         public static readonly DependencyProperty FrontDirectionProperty = DependencyProperty.Register(
-            "FrontDirection", 
-            typeof(Vector3D), 
-            typeof(ThreePointLights), 
+            "FrontDirection",
+            typeof(Vector3D),
+            typeof(ThreePointLights),
             new UIPropertyMetadata(new Vector3D(0, 1, 0), SetupChanged));
 
         /// <summary>
@@ -63,9 +61,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty KeyLightBrightnessProperty =
             DependencyProperty.Register(
-                "KeyLightBrightness", 
-                typeof(double), 
-                typeof(ThreePointLights), 
+                "KeyLightBrightness",
+                typeof(double),
+                typeof(ThreePointLights),
                 new UIPropertyMetadata(1.0, SetupChanged));
 
         /// <summary>
@@ -73,9 +71,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty KeyLightSideAngleProperty =
             DependencyProperty.Register(
-                "KeyLightSideAngle", 
-                typeof(double), 
-                typeof(ThreePointLights), 
+                "KeyLightSideAngle",
+                typeof(double),
+                typeof(ThreePointLights),
                 new UIPropertyMetadata(45.0, SetupChanged));
 
         /// <summary>
@@ -83,9 +81,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty KeyToFillLightRatioProperty =
             DependencyProperty.Register(
-                "KeyToFillLightRatio", 
-                typeof(double), 
-                typeof(ThreePointLights), 
+                "KeyToFillLightRatio",
+                typeof(double),
+                typeof(ThreePointLights),
                 new UIPropertyMetadata(2.0, SetupChanged));
 
         /// <summary>
@@ -93,9 +91,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty KeyToRimLightRatioProperty =
             DependencyProperty.Register(
-                "KeyToRimLightRatio", 
-                typeof(double), 
-                typeof(ThreePointLights), 
+                "KeyToRimLightRatio",
+                typeof(double),
+                typeof(ThreePointLights),
                 new UIPropertyMetadata(1.0, SetupChanged));
 
         /// <summary>
@@ -108,26 +106,22 @@ namespace HelixToolkit.Wpf
         /// The target property.
         /// </summary>
         public static readonly DependencyProperty TargetProperty = DependencyProperty.Register(
-            "Target", 
-            typeof(Point3D), 
-            typeof(ThreePointLights), 
+            "Target",
+            typeof(Point3D),
+            typeof(ThreePointLights),
             new UIPropertyMetadata(new Point3D(0, 0, 0), SetupChanged));
 
         /// <summary>
         /// The up direction property.
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
-            "UpDirection", 
-            typeof(Vector3D), 
-            typeof(ThreePointLights), 
+            "UpDirection",
+            typeof(Vector3D),
+            typeof(ThreePointLights),
             new UIPropertyMetadata(new Vector3D(0, 0, 1), SetupChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the distance.
+        /// Gets or sets the distance.
         /// </summary>
         /// <value>The distance.</value>
         public double Distance
@@ -144,7 +138,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the fill light angle.
+        /// Gets or sets the fill light angle.
         /// </summary>
         /// <value>The fill light angle.</value>
         public double FillLightAngle
@@ -161,7 +155,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the fill light side angle.
+        /// Gets or sets the fill light side angle.
         /// </summary>
         /// <value>The fill light side angle.</value>
         public double FillLightSideAngle
@@ -178,7 +172,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the front direction.
+        /// Gets or sets the front direction.
         /// </summary>
         /// <value>The front direction.</value>
         public Vector3D FrontDirection
@@ -195,7 +189,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the key light angle.
+        /// Gets or sets the key light angle.
         /// </summary>
         /// <value>The key light angle.</value>
         public double KeyLightAngle
@@ -212,7 +206,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the key light brightness.
+        /// Gets or sets the key light brightness.
         /// </summary>
         /// <value>The key light brightness.</value>
         public double KeyLightBrightness
@@ -229,7 +223,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the key light side angle.
+        /// Gets or sets the key light side angle.
         /// </summary>
         /// <value>The key light side angle.</value>
         public double KeyLightSideAngle
@@ -246,7 +240,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the key to fill light ratio.
+        /// Gets or sets the key to fill light ratio.
         /// </summary>
         /// <value>The key to fill light ratio.</value>
         public double KeyToFillLightRatio
@@ -263,7 +257,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the key to rim light ratio.
+        /// Gets or sets the key to rim light ratio.
         /// </summary>
         /// <value>The key to rim light ratio.</value>
         public double KeyToRimLightRatio
@@ -280,7 +274,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the rim light angle.
+        /// Gets or sets the rim light angle.
         /// </summary>
         /// <value>The rim light angle.</value>
         public double RimLightAngle
@@ -297,7 +291,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the target.
+        /// Gets or sets the target.
         /// </summary>
         /// <value>The target.</value>
         public Point3D Target
@@ -314,7 +308,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets up direction.
+        /// Gets or sets up direction.
         /// </summary>
         /// <value>Up direction.</value>
         public Vector3D UpDirection
@@ -329,10 +323,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(UpDirectionProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Adds the lights to the element.
@@ -350,20 +340,20 @@ namespace HelixToolkit.Wpf
 
             // http://www.3drender.com/light/3point.html
 
-            // 1. Start in Darkness. Make sure there are no default lights, and there's no global ambience. 
+            // 1. Start in Darkness. Make sure there are no default lights, and there's no global ambience.
             // When you add your first light, there should be no other light in the scene.
 
-            // 2. Add your Key Light. The Key Light creates the subject's main illumination, and defines the most visible 
-            // lighting and shadows. Your Key Light represents the dominant light source, such as the sun, a window, or 
+            // 2. Add your Key Light. The Key Light creates the subject's main illumination, and defines the most visible
+            // lighting and shadows. Your Key Light represents the dominant light source, such as the sun, a window, or
             // ceiling light - although the Key does not have to be positioned exactly at this source.
-            // Create a spot light to serve as the Key. From the top view, offset the Key Light 15 to 45 degrees to the side 
-            // (to the left or right) of the camera. From a side view, raise the Key Light above the camera, so that it hits 
+            // Create a spot light to serve as the Key. From the top view, offset the Key Light 15 to 45 degrees to the side
+            // (to the left or right) of the camera. From a side view, raise the Key Light above the camera, so that it hits
             // your subject from about 15 to 45 degrees higher than the camera angle.
-            // The key light is brighter than any other light illuminating the front of the subject, is the main shadow-caster 
+            // The key light is brighter than any other light illuminating the front of the subject, is the main shadow-caster
             // in your scene, and casts the darkest shadows. Specular highlights are triggered by the Key Light.
-            // NOTE: Be sure to stop and do test-renders here. Your "one light" scene (with just the key light) should have a 
-            // nice balance and contrast between light and dark, and shading that uses all of the grays in between. Your 
-            // "one light" should look almost like the final rendering, except that the shadows are pitch black and it has 
+            // NOTE: Be sure to stop and do test-renders here. Your "one light" scene (with just the key light) should have a
+            // nice balance and contrast between light and dark, and shading that uses all of the grays in between. Your
+            // "one light" should look almost like the final rendering, except that the shadows are pitch black and it has
             // very harsh contrast - see the GIF animation at the top of this page, while it only has the Key light visible.
             var tKey1 = new RotateTransform3D(new AxisAngleRotation3D(up, this.KeyLightSideAngle));
             var tKey2 = new RotateTransform3D(new AxisAngleRotation3D(right, this.KeyLightAngle));
@@ -373,19 +363,19 @@ namespace HelixToolkit.Wpf
             var i = (byte)(255 * this.KeyLightBrightness);
             lightGroup.Children.Add(new PointLight(Color.FromRgb(i, i, i), this.Target - keyLightDirection));
 
-            // 3. Add your Fill Light(s). The Fill Light softens and extends the illumination provided by the key light, 
-            // and makes more of the subject visible. Fill Light can simulate light from the sky (other than the sun), 
-            // secondary light sources such as table lamps, or reflected and bounced light in your scene. With several 
-            // functions for Fill Lights, you may add several of them to a scene. Spot lights are the most useful, but 
+            // 3. Add your Fill Light(s). The Fill Light softens and extends the illumination provided by the key light,
+            // and makes more of the subject visible. Fill Light can simulate light from the sky (other than the sun),
+            // secondary light sources such as table lamps, or reflected and bounced light in your scene. With several
+            // functions for Fill Lights, you may add several of them to a scene. Spot lights are the most useful, but
             // point lights may be used.
-            // From the top view, a Fill Light should come from a generally opposite angle than the Key - if the Key is 
-            // on the left, the Fill should be on the right - but don't make all of your lighting 100% symmetrical! The 
+            // From the top view, a Fill Light should come from a generally opposite angle than the Key - if the Key is
+            // on the left, the Fill should be on the right - but don't make all of your lighting 100% symmetrical! The
             // Fill can be raised to the subject's height, but should be lower than the Key.
-            // At most, Fill Lights can be about half as bright as your Key (a Key-to-Fill ratio of 2:1). For more shadowy 
-            // environments, use only 1/8th the Key's brightness (a Key-to-Fill ratio of 8:1). If multiple Fills overlap, 
+            // At most, Fill Lights can be about half as bright as your Key (a Key-to-Fill ratio of 2:1). For more shadowy
+            // environments, use only 1/8th the Key's brightness (a Key-to-Fill ratio of 8:1). If multiple Fills overlap,
             // their sum still shouldn't compete with the Key.
-            // Shadows from a Fill Light are optional, and often skipped. To simulate reflected light, tint the Fill color 
-            // to match colors from the environment. Fill Lights are sometimes set to be Diffuse-only (set not to cast 
+            // Shadows from a Fill Light are optional, and often skipped. To simulate reflected light, tint the Fill color
+            // to match colors from the environment. Fill Lights are sometimes set to be Diffuse-only (set not to cast
             // specular highlights.)
             var tFill1 = new RotateTransform3D(new AxisAngleRotation3D(up, this.FillLightSideAngle));
             var tFill2 = new RotateTransform3D(new AxisAngleRotation3D(right, this.FillLightAngle));
@@ -395,14 +385,14 @@ namespace HelixToolkit.Wpf
             var fi = (byte)Math.Round(i / this.KeyToFillLightRatio);
             lightGroup.Children.Add(new PointLight(Color.FromRgb(fi, fi, fi), this.Target - fillLightDirection));
 
-            // 4. Add Rim Light. The Rim Light (also called Back Light) creates a bright line around the edge of the 
+            // 4. Add Rim Light. The Rim Light (also called Back Light) creates a bright line around the edge of the
             // object, to help visually separate the object from the background.
-            // From the top view, add a spot light, and position it behind your subject, opposite from the camera.  
+            // From the top view, add a spot light, and position it behind your subject, opposite from the camera.
             // From the right view, position the Back Light above your subject.
-            // Adjust the Rim Light until it gives you a clear, bright outline that highlights the top or side edge 
-            // for your subject.  Rim Lights can be as bright as necessary to achieve the glints you want around the 
-            // hair or sides of your subject. A Rim Light usually needs to cast shadows. Often you will need to use 
-            // light linking to link rim lights only with the main subject being lit, so that it creates a rim of light 
+            // Adjust the Rim Light until it gives you a clear, bright outline that highlights the top or side edge
+            // for your subject.  Rim Lights can be as bright as necessary to achieve the glints you want around the
+            // hair or sides of your subject. A Rim Light usually needs to cast shadows. Often you will need to use
+            // light linking to link rim lights only with the main subject being lit, so that it creates a rim of light
             // around the top or side of your subject, without affecting the background:
             var tRim2 = new RotateTransform3D(new AxisAngleRotation3D(right, -this.RimLightAngle));
             var rimLightDirection = -front * this.Distance;
@@ -411,6 +401,5 @@ namespace HelixToolkit.Wpf
             lightGroup.Children.Add(new PointLight(Color.FromRgb(ri, ri, ri), this.Target - rimLightDirection));
         }
 
-        #endregion
     }
 }

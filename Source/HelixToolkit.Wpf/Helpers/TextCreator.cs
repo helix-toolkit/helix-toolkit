@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextCreator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,8 +20,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public static class TextCreator
     {
-        #region Public Methods
-
         /// <summary>
         /// Creates a Visual3D element containing a text label.
         /// </summary>
@@ -143,6 +141,5 @@ namespace HelixToolkit.Wpf
             return new GeometryModel3D(mg, mat);
         }
 
-        #endregion
     }
 }

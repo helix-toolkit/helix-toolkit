@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ParametricSurface3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public abstract class ParametricSurface3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The mesh size u property.
         /// </summary>
@@ -31,12 +29,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty MeshSizeVProperty = DependencyProperty.Register(
             "MeshSizeV", typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the mesh size in u-direction.
+        /// Gets or sets the mesh size in u-direction.
         /// </summary>
         /// <value>The mesh size U.</value>
         public int MeshSizeU
@@ -53,7 +47,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the mesh size in v-direction.
+        /// Gets or sets the mesh size in v-direction.
         /// </summary>
         /// <value>The mesh size V.</value>
         public int MeshSizeV
@@ -68,10 +62,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(MeshSizeVProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Evaluates the surface on the specified u,v position.
@@ -201,6 +191,5 @@ namespace HelixToolkit.Wpf
             return !double.IsNaN(point.X) && !double.IsNaN(point.Y) && !double.IsNaN(point.Z);
         }
 
-        #endregion
     }
 }

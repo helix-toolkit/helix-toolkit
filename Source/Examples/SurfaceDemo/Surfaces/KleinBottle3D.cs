@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="KleinBottle3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ namespace SurfaceDemo
             double sinv = Math.Sin(v);
             double cos2u = Math.Cos(2 * u);
 
-            /*   
+            /*
                double fu = f(u);
                double gu = g(u);
                double x = (sqrt2 * fu * cosu * cosv * (3 * cosu * cosu - 1) - 2 * cos2u) / (80 * pi * pi * pi * gu) - (3 * cosu - 3) / 4;

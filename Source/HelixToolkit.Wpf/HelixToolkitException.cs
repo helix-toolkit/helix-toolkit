@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HelixToolkitException.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
 //   Represents errors that occurs in the Helix 3D Toolkit.
@@ -17,22 +17,19 @@ namespace HelixToolkit.Wpf
     [Serializable]
     public class HelixToolkitException : Exception
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="HelixToolkitException"/> class. 
+        /// Initializes a new instance of the <see cref="HelixToolkitException"/> class.
         /// </summary>
         /// <param name="formatString">
-        /// The format string. 
+        /// The format string.
         /// </param>
         /// <param name="args">
-        /// The args. 
+        /// The args.
         /// </param>
         public HelixToolkitException(string formatString, params object[] args)
             : base(string.Format(formatString, args))
         {
         }
 
-        #endregion
     }
 }

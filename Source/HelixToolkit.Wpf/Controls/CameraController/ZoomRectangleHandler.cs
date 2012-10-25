@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ZoomRectangleHandler.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,16 +16,10 @@ namespace HelixToolkit.Wpf
     /// </summary>
     internal class ZoomRectangleHandler : MouseGestureHandler
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The zoom rectangle.
+        /// The zoom rectangle.
         /// </summary>
         private Rect zoomRectangle;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomRectangleHandler"/> class.
@@ -37,10 +31,6 @@ namespace HelixToolkit.Wpf
             : base(controller)
         {
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Occurs when the manipulation is completed.
@@ -110,10 +100,6 @@ namespace HelixToolkit.Wpf
             CameraHelper.ZoomToRectangle(this.Camera, this.Viewport, rectangle);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Occurs when the command associated with this handler initiates a check to determine whether the command can be executed on the command target.
         /// </summary>
@@ -132,6 +118,5 @@ namespace HelixToolkit.Wpf
             return this.Controller.ZoomRectangleCursor;
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AudioPlayback.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,16 +16,16 @@ namespace NAudioWpfDemo
     {
         private IWavePlayer playbackDevice;
         private WaveChannel32 inputStream;
-        
+
         public event EventHandler<SampleEventArgs> OnSample;
-        
+
         public AudioPlayback()
         {
         }
 
         public void Load(string fileName)
         {
-            Stop();            
+            Stop();
             EnsureDeviceCreated();
             CloseFile();
             OpenFile(fileName);

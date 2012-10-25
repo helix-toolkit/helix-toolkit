@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RelayCommand{T}.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,8 +20,6 @@ namespace MvvmFoundation.Wpf
     /// <typeparam name="T">The type.</typeparam>
     public class RelayCommand<T> : ICommand
     {
-        #region Fields
-
         /// <summary>
         /// The execute action.
         /// </summary>
@@ -31,10 +29,6 @@ namespace MvvmFoundation.Wpf
         /// The can execute function.
         /// </summary>
         private readonly Predicate<T> canExecute;
-
-        #endregion // Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand&lt;T&gt;"/> class.
@@ -60,10 +54,6 @@ namespace MvvmFoundation.Wpf
             this.execute = execute;
             this.canExecute = canExecute;
         }
-
-        #endregion // Constructors
-
-        #region ICommand Members
 
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
@@ -109,6 +99,5 @@ namespace MvvmFoundation.Wpf
             this.execute((T)parameter);
         }
 
-        #endregion // ICommand Members
     }
 }

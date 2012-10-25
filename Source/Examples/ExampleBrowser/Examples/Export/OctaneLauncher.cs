@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OctaneStarter.cs" company="">
-//   
+//
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace ExportDemo
     /// </summary>
     public class OctaneLauncher
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="OctaneLauncher"/> class.
         /// </summary>
@@ -42,149 +40,141 @@ namespace ExportDemo
             this.Link = true;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the aperture.
+        /// Gets or sets the aperture.
         /// </summary>
         /// <value>The aperture.</value>
         public double Aperture { get; set; }
 
         /// <summary>
-        ///   Gets or sets the cam motion pos.
+        /// Gets or sets the cam motion pos.
         /// </summary>
         /// <value>The cam motion pos.</value>
         public Point3D CamMotionPos { get; set; }
 
         /// <summary>
-        ///   Gets or sets the cam motion target.
+        /// Gets or sets the cam motion target.
         /// </summary>
         /// <value>The cam motion target.</value>
         public Point3D CamMotionTarget { get; set; }
 
         /// <summary>
-        ///   Gets or sets the cam motion up.
+        /// Gets or sets the cam motion up.
         /// </summary>
         /// <value>The cam motion up.</value>
         public Vector3D CamMotionUp { get; set; }
 
         /// <summary>
-        ///   Gets or sets the camera position.
+        /// Gets or sets the camera position.
         /// </summary>
         public Point3D CamPos { get; set; }
 
         /// <summary>
-        ///   Gets or sets the camera target position.
+        /// Gets or sets the camera target position.
         /// </summary>
         public Point3D CamTarget { get; set; }
 
         /// <summary>
-        ///   Gets or sets the camera up direction.
+        /// Gets or sets the camera up direction.
         /// </summary>
         public Vector3D CamUp { get; set; }
 
         /// <summary>
-        ///   Gets or sets the daylight sun direction.
+        /// Gets or sets the daylight sun direction.
         /// </summary>
         public Vector3D DaylightSunDir { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to exit after MaxSamples is reached.
+        /// Gets or sets a value indicating whether to exit after MaxSamples is reached.
         /// </summary>
         public bool Exit { get; set; }
 
         /// <summary>
-        ///   Gets or sets the field of view (degrees).
+        /// Gets or sets the field of view (degrees).
         /// </summary>
         /// <value>The field of view.</value>
         public double FieldOfView { get; set; }
 
         /// <summary>
-        ///   Gets or sets the height of the film.
+        /// Gets or sets the height of the film.
         /// </summary>
         /// <value>The height of the film.</value>
         public int FilmHeight { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width of the film.
+        /// Gets or sets the width of the film.
         /// </summary>
         /// <value>The width of the film.</value>
         public int FilmWidth { get; set; }
 
         /// <summary>
-        ///   Gets or sets the focal depth.
+        /// Gets or sets the focal depth.
         /// </summary>
         /// <value>The focal depth.</value>
         public double FocalDepth { get; set; }
 
         /// <summary>
-        ///   Gets or sets the imager exposure.
+        /// Gets or sets the imager exposure.
         /// </summary>
         /// <value>The imager exposure.</value>
         public double ImagerExposure { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is new project.
+        /// Gets or sets a value indicating whether this instance is new project.
         /// </summary>
         public bool IsNewProject { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to link the mesh after startup.
+        /// Gets or sets a value indicating whether to link the mesh after startup.
         /// </summary>
         /// <value><c>true</c> if link; otherwise, <c>false</c>.</value>
         public bool Link { get; set; }
 
         /// <summary>
-        ///   Gets or sets the max samples.
+        /// Gets or sets the max samples.
         /// </summary>
         /// <value>The max samples.</value>
         public int MaxSamples { get; set; }
 
         /// <summary>
-        ///   Gets or sets the mesh file (.obj).
+        /// Gets or sets the mesh file (.obj).
         /// </summary>
         /// <value>The mesh file.</value>
         public string MeshFile { get; set; }
 
         /// <summary>
-        ///   Gets or sets the mesh node.
+        /// Gets or sets the mesh node.
         /// </summary>
         /// <value>The mesh node.</value>
         public string MeshNode { get; set; }
 
         /// <summary>
-        ///   Gets or sets the path to the Octane executable.
+        /// Gets or sets the path to the Octane executable.
         /// </summary>
         /// <value>The octane executable.</value>
         public string OctaneExecutable { get; set; }
 
         /// <summary>
-        ///   Gets or sets the output file (.png).
+        /// Gets or sets the output file (.png).
         /// </summary>
         /// <value>The output file.</value>
         public string OutputFile { get; set; }
 
         /// <summary>
-        ///   Gets or sets the project file (.ocs).
+        /// Gets or sets the project file (.ocs).
         /// </summary>
         /// <value>The project file.</value>
         public string ProjectFile { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to use quiet mode.
+        /// Gets or sets a value indicating whether to use quiet mode.
         /// </summary>
         public bool Quiet { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to relink the mesh.
+        /// Gets or sets a value indicating whether to relink the mesh.
         /// </summary>
         public bool Relink { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Sets the camera.
@@ -310,10 +300,6 @@ namespace ExportDemo
             return Process.Start(psi);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Switches the YZ coordinates of the specified point.
         /// </summary>
@@ -324,6 +310,5 @@ namespace ExportDemo
             return new Point3D(p.X, p.Z, -p.Y);
         }
 
-        #endregion
     }
 }

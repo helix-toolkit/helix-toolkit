@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SunLight.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class SunLight : LightSetup
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The altitude property.
         /// </summary>
@@ -51,12 +49,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly Vector3D AzimuthAxis = new Vector3D(0, 0, 1);
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the altitude angle (degrees).
+        /// Gets or sets the altitude angle (degrees).
         /// </summary>
         /// <value>The altitude.</value>
         public double Altitude
@@ -73,7 +67,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the ambient lightness.
+        /// Gets or sets the ambient lightness.
         /// </summary>
         /// <value>The ambient.</value>
         public double Ambient
@@ -90,7 +84,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the azimuth angle (degrees).
+        /// Gets or sets the azimuth angle (degrees).
         /// </summary>
         /// <value>The azimuth.</value>
         public double Azimuth
@@ -107,7 +101,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the brightness.
+        /// Gets or sets the brightness.
         /// </summary>
         /// <value>The brightness.</value>
         public double Brightness
@@ -122,10 +116,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(BrightnessProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Adds the lights to the element.
@@ -146,6 +136,5 @@ namespace HelixToolkit.Wpf
             lightGroup.Children.Add(new AmbientLight(Color.FromRgb(ai, ai, ai)));
         }
 
-        #endregion
     }
 }

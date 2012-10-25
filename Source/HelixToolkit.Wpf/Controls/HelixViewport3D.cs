@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HelixViewport3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
 //   A control that contains a Viewport3D and a CameraController.
@@ -33,8 +33,6 @@ namespace HelixToolkit.Wpf
     [Localizability(LocalizationCategory.NeverLocalize)]
     public class HelixViewport3D : ItemsControl, IHelixViewport3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The coordinate system width property.
         /// </summary>
@@ -854,10 +852,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private Viewport3D viewCubeViewport;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes static members of the <see cref="HelixViewport3D"/> class. Initializes static members of the <see cref="HelixViewport3D"/> class.
         /// </summary>
@@ -908,7 +902,7 @@ namespace HelixToolkit.Wpf
 #if DEBUG
 
         // <summary>
-        // Finalizes an instance of the <see cref="HelixViewport3D"/> class. 
+        // Finalizes an instance of the <see cref="HelixViewport3D"/> class.
         // </summary>
         ~HelixViewport3D()
         {
@@ -916,10 +910,6 @@ namespace HelixToolkit.Wpf
         }
 
 #endif
-
-        #endregion
-
-        #region Public Events
 
         /// <summary>
         /// Event when a property has been changed
@@ -937,10 +927,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets the command that toggles between orthographic and perspective camera.
         /// </summary>
@@ -950,7 +936,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the width of the coordinate system viewport.
         /// </summary>
         /// <value>
-        /// The width of the coordinate system viewport. 
+        /// The width of the coordinate system viewport.
         /// </value>
         public double CoordinateSystemWidth
         {
@@ -969,7 +955,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the height of the coordinate system viewport.
         /// </summary>
         /// <value>
-        /// The height of the coordinate system viewport. 
+        /// The height of the coordinate system viewport.
         /// </value>
         public double CoordinateSystemHeight
         {
@@ -988,7 +974,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the horizontal position of the coordinate system viewport.
         /// </summary>
         /// <value>
-        /// The horizontal position. 
+        /// The horizontal position.
         /// </value>
         public HorizontalAlignment CoordinateSystemHorizontalPosition
         {
@@ -1007,7 +993,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the vertical position of the coordinate system viewport.
         /// </summary>
         /// <value>
-        /// The vertical position. 
+        /// The vertical position.
         /// </value>
         public VerticalAlignment CoordinateSystemVerticalPosition
         {
@@ -1026,7 +1012,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the width of the view cube viewport.
         /// </summary>
         /// <value>
-        /// The width of the view cube viewport. 
+        /// The width of the view cube viewport.
         /// </value>
         public double ViewCubeWidth
         {
@@ -1045,7 +1031,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the height of the view cube viewport.
         /// </summary>
         /// <value>
-        /// The height of the view cube viewport. 
+        /// The height of the view cube viewport.
         /// </value>
         public double ViewCubeHeight
         {
@@ -1064,7 +1050,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the horizontal position of the view cube viewport.
         /// </summary>
         /// <value>
-        /// The horizontal position. 
+        /// The horizontal position.
         /// </value>
         public HorizontalAlignment ViewCubeHorizontalPosition
         {
@@ -1083,7 +1069,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the vertical position of view cube viewport.
         /// </summary>
         /// <value>
-        /// The vertical position. 
+        /// The vertical position.
         /// </value>
         public VerticalAlignment ViewCubeVerticalPosition
         {
@@ -1102,7 +1088,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the sensitivity for pan by the left and right keys.
         /// </summary>
         /// <value>
-        /// The pan sensitivity. 
+        /// The pan sensitivity.
         /// </value>
         /// <remarks>
         /// Use -1 to invert the pan direction.
@@ -1124,7 +1110,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the sensitivity for pan by the up and down keys.
         /// </summary>
         /// <value>
-        /// The pan sensitivity. 
+        /// The pan sensitivity.
         /// </value>
         /// <remarks>
         /// Use -1 to invert the pan direction.
@@ -1146,7 +1132,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the sensitivity for zoom by the pageup and pagedown keys.
         /// </summary>
         /// <value>
-        /// The zoom sensitivity. 
+        /// The zoom sensitivity.
         /// </value>
         /// <remarks>
         /// Use -1 to invert the zoom direction.
@@ -1168,7 +1154,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the sensitivity for rotation by the up and down keys.
         /// </summary>
         /// <value>
-        /// The rotation sensitivity. 
+        /// The rotation sensitivity.
         /// </value>
         /// <remarks>
         /// Use -1 to invert the rotation direction.
@@ -1190,7 +1176,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the sensitivity for rotation by the left and right keys.
         /// </summary>
         /// <value>
-        /// The rotation sensitivity. 
+        /// The rotation sensitivity.
         /// </value>
         /// <remarks>
         /// Use -1 to invert the rotation direction.
@@ -1212,7 +1198,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the touch mode.
         /// </summary>
         /// <value>
-        /// The touch mode. 
+        /// The touch mode.
         /// </value>
         public TouchMode TouchMode
         {
@@ -1231,7 +1217,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
         /// </summary>
         /// <value>
-        /// <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . 
+        /// <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> .
         /// </value>
         public bool IsTouchZoomEnabled
         {
@@ -1250,7 +1236,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the back view gesture.
         /// </summary>
         /// <value>
-        /// The back view gesture. 
+        /// The back view gesture.
         /// </value>
         public InputGesture BackViewGesture
         {
@@ -1269,7 +1255,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the bottom view gesture.
         /// </summary>
         /// <value>
-        /// The bottom view gesture. 
+        /// The bottom view gesture.
         /// </value>
         public InputGesture BottomViewGesture
         {
@@ -1288,7 +1274,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the camera.
         /// </summary>
         /// <value>
-        /// The camera. 
+        /// The camera.
         /// </value>
         public ProjectionCamera Camera
         {
@@ -1326,7 +1312,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the camera inertia factor.
         /// </summary>
         /// <value>
-        /// The camera inertia factor. 
+        /// The camera inertia factor.
         /// </value>
         public double CameraInertiaFactor
         {
@@ -1345,7 +1331,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the camera info.
         /// </summary>
         /// <value>
-        /// The camera info. 
+        /// The camera info.
         /// </value>
         public string CameraInfo
         {
@@ -1396,7 +1382,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the change fov cursor.
         /// </summary>
         /// <value>
-        /// The change fov cursor. 
+        /// The change fov cursor.
         /// </value>
         public Cursor ChangeFieldOfViewCursor
         {
@@ -1415,7 +1401,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the default camera.
         /// </summary>
         /// <value>
-        /// The default camera. 
+        /// The default camera.
         /// </value>
         public ProjectionCamera DefaultCamera
         {
@@ -1434,7 +1420,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the change field of view gesture.
         /// </summary>
         /// <value>
-        /// The change field of view gesture. 
+        /// The change field of view gesture.
         /// </value>
         public MouseGesture ChangeFieldOfViewGesture
         {
@@ -1453,7 +1439,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the change lookat view gesture.
         /// </summary>
         /// <value>
-        /// The change lookat gesture. 
+        /// The change lookat gesture.
         /// </value>
         public MouseGesture ChangeLookAtGesture
         {
@@ -1472,7 +1458,7 @@ namespace HelixToolkit.Wpf
         /// Gets the children.
         /// </summary>
         /// <value>
-        /// The children. 
+        /// The children.
         /// </value>
         public Visual3DCollection Children
         {
@@ -1486,7 +1472,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
         /// </summary>
         /// <value>
-        /// <c>true</c> if calculation is enabled; otherwise, <c>false</c> . 
+        /// <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
         /// </value>
         public bool EnableCurrentPosition
         {
@@ -1505,7 +1491,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the current position.
         /// </summary>
         /// <value>
-        /// The current position. 
+        /// The current position.
         /// </value>
         /// <remarks>
         /// The <see cref="EnableCurrentPosition"/> property must be set to true to enable updating of this property.
@@ -1527,7 +1513,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the debug info text.
         /// </summary>
         /// <value>
-        /// The debug info text. 
+        /// The debug info text.
         /// </value>
         public string DebugInfo
         {
@@ -1546,7 +1532,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the field of view text.
         /// </summary>
         /// <value>
-        /// The field of view text. 
+        /// The field of view text.
         /// </value>
         public string FieldOfViewText
         {
@@ -1565,7 +1551,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the frame rate.
         /// </summary>
         /// <value>
-        /// The frame rate. 
+        /// The frame rate.
         /// </value>
         public int FrameRate
         {
@@ -1584,7 +1570,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the frame rate text.
         /// </summary>
         /// <value>
-        /// The frame rate text. 
+        /// The frame rate text.
         /// </value>
         public string FrameRateText
         {
@@ -1603,7 +1589,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the front view gesture.
         /// </summary>
         /// <value>
-        /// The front view gesture. 
+        /// The front view gesture.
         /// </value>
         public InputGesture FrontViewGesture
         {
@@ -1622,7 +1608,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether [infinite spin].
         /// </summary>
         /// <value>
-        /// <c>true</c> if [infinite spin]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [infinite spin]; otherwise, <c>false</c> .
         /// </value>
         public bool InfiniteSpin
         {
@@ -1641,7 +1627,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the background brush for the CameraInfo and TriangleCount fields.
         /// </summary>
         /// <value>
-        /// The info background. 
+        /// The info background.
         /// </value>
         public Brush InfoBackground
         {
@@ -1660,7 +1646,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the foreground brush for informational text.
         /// </summary>
         /// <value>
-        /// The foreground brush. 
+        /// The foreground brush.
         /// </value>
         public Brush InfoForeground
         {
@@ -1695,7 +1681,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether this instance is head light enabled.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance is head light enabled; otherwise, <c>false</c> . 
+        /// <c>true</c> if this instance is head light enabled; otherwise, <c>false</c> .
         /// </value>
         public bool IsHeadLightEnabled
         {
@@ -1762,7 +1748,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the left view gesture.
         /// </summary>
         /// <value>
-        /// The left view gesture. 
+        /// The left view gesture.
         /// </value>
         public InputGesture LeftViewGesture
         {
@@ -1781,7 +1767,7 @@ namespace HelixToolkit.Wpf
         /// Gets the lights.
         /// </summary>
         /// <value>
-        /// The lights. 
+        /// The lights.
         /// </value>
         public Model3DGroup Lights
         {
@@ -1795,7 +1781,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the maximum field of view.
         /// </summary>
         /// <value>
-        /// The maximum field of view. 
+        /// The maximum field of view.
         /// </value>
         public double MaximumFieldOfView
         {
@@ -1814,7 +1800,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the minimum field of view.
         /// </summary>
         /// <value>
-        /// The minimum field of view. 
+        /// The minimum field of view.
         /// </value>
         public double MinimumFieldOfView
         {
@@ -1833,7 +1819,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the up direction of the model. This is used by the view cube.
         /// </summary>
         /// <value>
-        /// The model up direction. 
+        /// The model up direction.
         /// </value>
         public Vector3D ModelUpDirection
         {
@@ -1852,7 +1838,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether this <see cref="HelixViewport3D"/> is orthographic.
         /// </summary>
         /// <value>
-        /// <c>true</c> if orthographic; otherwise, <c>false</c> . 
+        /// <c>true</c> if orthographic; otherwise, <c>false</c> .
         /// </value>
         public bool Orthographic
         {
@@ -1871,7 +1857,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the orthographic toggle gesture.
         /// </summary>
         /// <value>
-        /// The orthographic toggle gesture. 
+        /// The orthographic toggle gesture.
         /// </value>
         public InputGesture OrthographicToggleGesture
         {
@@ -1890,7 +1876,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the pan cursor.
         /// </summary>
         /// <value>
-        /// The pan cursor. 
+        /// The pan cursor.
         /// </value>
         public Cursor PanCursor
         {
@@ -1909,7 +1895,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the pan gesture.
         /// </summary>
         /// <value>
-        /// The pan gesture. 
+        /// The pan gesture.
         /// </value>
         public MouseGesture PanGesture
         {
@@ -1928,7 +1914,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the alternative pan gesture.
         /// </summary>
         /// <value>
-        /// The alternative pan gesture. 
+        /// The alternative pan gesture.
         /// </value>
         public MouseGesture PanGesture2
         {
@@ -1947,7 +1933,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the alternative zoom gesture.
         /// </summary>
         /// <value>
-        /// The alternative zoom gesture. 
+        /// The alternative zoom gesture.
         /// </value>
         public MouseGesture ZoomGesture2
         {
@@ -1966,7 +1952,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the alternative rotate gesture.
         /// </summary>
         /// <value>
-        /// The alternative rotate gesture. 
+        /// The alternative rotate gesture.
         /// </value>
         public MouseGesture RotateGesture2
         {
@@ -2001,7 +1987,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the reset camera key gesture.
         /// </summary>
         /// <value>
-        /// The reset camera key gesture. 
+        /// The reset camera key gesture.
         /// </value>
         public KeyGesture ResetCameraKeyGesture
         {
@@ -2020,7 +2006,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the right view gesture.
         /// </summary>
         /// <value>
-        /// The right view gesture. 
+        /// The right view gesture.
         /// </value>
         public InputGesture RightViewGesture
         {
@@ -2039,7 +2025,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to rotate around the mouse down point.
         /// </summary>
         /// <value>
-        /// <c>true</c> if rotatation around the mouse down point is enabled; otherwise, <c>false</c> . 
+        /// <c>true</c> if rotatation around the mouse down point is enabled; otherwise, <c>false</c> .
         /// </value>
         public bool RotateAroundMouseDownPoint
         {
@@ -2058,7 +2044,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the rotate cursor.
         /// </summary>
         /// <value>
-        /// The rotate cursor. 
+        /// The rotate cursor.
         /// </value>
         public Cursor RotateCursor
         {
@@ -2077,7 +2063,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the rotate gesture.
         /// </summary>
         /// <value>
-        /// The rotate gesture. 
+        /// The rotate gesture.
         /// </value>
         public MouseGesture RotateGesture
         {
@@ -2096,7 +2082,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the rotation sensitivity.
         /// </summary>
         /// <value>
-        /// The rotation sensitivity. 
+        /// The rotation sensitivity.
         /// </value>
         public double RotationSensitivity
         {
@@ -2115,7 +2101,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to show camera info.
         /// </summary>
         /// <value>
-        /// <c>true</c> if [show camera info]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [show camera info]; otherwise, <c>false</c> .
         /// </value>
         public bool ShowCameraInfo
         {
@@ -2134,7 +2120,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to show the camera target adorner.
         /// </summary>
         /// <value>
-        /// <c>true</c> if [show camera target]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [show camera target]; otherwise, <c>false</c> .
         /// </value>
         public bool ShowCameraTarget
         {
@@ -2153,7 +2139,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether [show coordinate system].
         /// </summary>
         /// <value>
-        /// <c>true</c> if [show coordinate system]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [show coordinate system]; otherwise, <c>false</c> .
         /// </value>
         public bool ShowCoordinateSystem
         {
@@ -2172,7 +2158,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to show field of view.
         /// </summary>
         /// <value>
-        /// <c>true</c> if [show field of view]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [show field of view]; otherwise, <c>false</c> .
         /// </value>
         public bool ShowFieldOfView
         {
@@ -2191,7 +2177,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to show frame rate.
         /// </summary>
         /// <value>
-        /// <c>true</c> if [show frame rate]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [show frame rate]; otherwise, <c>false</c> .
         /// </value>
         public bool ShowFrameRate
         {
@@ -2226,7 +2212,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether [show view cube].
         /// </summary>
         /// <value>
-        /// <c>true</c> if [show view cube]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [show view cube]; otherwise, <c>false</c> .
         /// </value>
         public bool ShowViewCube
         {
@@ -2245,7 +2231,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the status.
         /// </summary>
         /// <value>
-        /// The status. 
+        /// The status.
         /// </value>
         public string Status
         {
@@ -2264,7 +2250,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the sub title.
         /// </summary>
         /// <value>
-        /// The sub title. 
+        /// The sub title.
         /// </value>
         public string SubTitle
         {
@@ -2283,7 +2269,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the size of the sub title.
         /// </summary>
         /// <value>
-        /// The size of the sub title. 
+        /// The size of the sub title.
         /// </value>
         public double SubTitleSize
         {
@@ -2302,7 +2288,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the text brush.
         /// </summary>
         /// <value>
-        /// The text brush. 
+        /// The text brush.
         /// </value>
         public Brush TextBrush
         {
@@ -2321,7 +2307,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the title.
         /// </summary>
         /// <value>
-        /// The title. 
+        /// The title.
         /// </value>
         public string Title
         {
@@ -2340,7 +2326,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the title background brush.
         /// </summary>
         /// <value>
-        /// The title background. 
+        /// The title background.
         /// </value>
         public Brush TitleBackground
         {
@@ -2359,7 +2345,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the title font family.
         /// </summary>
         /// <value>
-        /// The title font family. 
+        /// The title font family.
         /// </value>
         public FontFamily TitleFontFamily
         {
@@ -2378,7 +2364,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the size of the title.
         /// </summary>
         /// <value>
-        /// The size of the title. 
+        /// The size of the title.
         /// </value>
         public double TitleSize
         {
@@ -2397,7 +2383,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the top view gesture.
         /// </summary>
         /// <value>
-        /// The top view gesture. 
+        /// The top view gesture.
         /// </value>
         public InputGesture TopViewGesture
         {
@@ -2432,7 +2418,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the view cube back text.
         /// </summary>
         /// <value>
-        /// The view cube back text. 
+        /// The view cube back text.
         /// </value>
         public string ViewCubeBackText
         {
@@ -2451,7 +2437,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the view cube bottom text.
         /// </summary>
         /// <value>
-        /// The view cube bottom text. 
+        /// The view cube bottom text.
         /// </value>
         public string ViewCubeBottomText
         {
@@ -2470,7 +2456,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the view cube front text.
         /// </summary>
         /// <value>
-        /// The view cube front text. 
+        /// The view cube front text.
         /// </value>
         public string ViewCubeFrontText
         {
@@ -2489,7 +2475,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the view cube left text.
         /// </summary>
         /// <value>
-        /// The view cube left text. 
+        /// The view cube left text.
         /// </value>
         public string ViewCubeLeftText
         {
@@ -2524,7 +2510,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the view cube right text.
         /// </summary>
         /// <value>
-        /// The view cube right text. 
+        /// The view cube right text.
         /// </value>
         public string ViewCubeRightText
         {
@@ -2543,7 +2529,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the view cube top text.
         /// </summary>
         /// <value>
-        /// The view cube top text. 
+        /// The view cube top text.
         /// </value>
         public string ViewCubeTopText
         {
@@ -2562,7 +2548,7 @@ namespace HelixToolkit.Wpf
         /// Gets the viewport.
         /// </summary>
         /// <value>
-        /// The viewport. 
+        /// The viewport.
         /// </value>
         public Viewport3D Viewport
         {
@@ -2576,7 +2562,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to zoom around mouse down point.
         /// </summary>
         /// <value>
-        /// <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . 
+        /// <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> .
         /// </value>
         public bool ZoomAroundMouseDownPoint
         {
@@ -2595,7 +2581,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the zoom cursor.
         /// </summary>
         /// <value>
-        /// The zoom cursor. 
+        /// The zoom cursor.
         /// </value>
         public Cursor ZoomCursor
         {
@@ -2646,7 +2632,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the zoom gesture.
         /// </summary>
         /// <value>
-        /// The zoom gesture. 
+        /// The zoom gesture.
         /// </value>
         public MouseGesture ZoomGesture
         {
@@ -2665,7 +2651,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the zoom rectangle cursor.
         /// </summary>
         /// <value>
-        /// The zoom rectangle cursor. 
+        /// The zoom rectangle cursor.
         /// </value>
         public Cursor ZoomRectangleCursor
         {
@@ -2684,7 +2670,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the zoom rectangle gesture.
         /// </summary>
         /// <value>
-        /// The zoom rectangle gesture. 
+        /// The zoom rectangle gesture.
         /// </value>
         public MouseGesture ZoomRectangleGesture
         {
@@ -2703,7 +2689,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the zoom sensitivity.
         /// </summary>
         /// <value>
-        /// The zoom sensitivity. 
+        /// The zoom sensitivity.
         /// </value>
         public double ZoomSensitivity
         {
@@ -2718,18 +2704,14 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Changes the camera direction.
         /// </summary>
         /// <param name="newDirection">
-        /// The new direction. 
+        /// The new direction.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void ChangeCameraDirection(Vector3D newDirection, double animationTime = 0)
         {
@@ -2763,7 +2745,7 @@ namespace HelixToolkit.Wpf
         /// Exporters.Filter contains all supported export file types.
         /// </remarks>
         /// <param name="fileName">
-        /// Name of the file. 
+        /// Name of the file.
         /// </param>
         public void Export(string fileName)
         {
@@ -2774,19 +2756,19 @@ namespace HelixToolkit.Wpf
         /// Finds the nearest object.
         /// </summary>
         /// <param name="pt">
-        /// The pt. 
+        /// The pt.
         /// </param>
         /// <param name="pos">
-        /// The pos. 
+        /// The pos.
         /// </param>
         /// <param name="normal">
-        /// The normal. 
+        /// The normal.
         /// </param>
         /// <param name="obj">
-        /// The obj. 
+        /// The obj.
         /// </param>
         /// <returns>
-        /// The find nearest. 
+        /// The find nearest.
         /// </returns>
         public bool FindNearest(Point pt, out Point3D pos, out Vector3D normal, out DependencyObject obj)
         {
@@ -2797,10 +2779,10 @@ namespace HelixToolkit.Wpf
         /// Finds the nearest point.
         /// </summary>
         /// <param name="pt">
-        /// The pt. 
+        /// The pt.
         /// </param>
         /// <returns>
-        /// A point. 
+        /// A point.
         /// </returns>
         public Point3D? FindNearestPoint(Point pt)
         {
@@ -2811,10 +2793,10 @@ namespace HelixToolkit.Wpf
         /// Finds the nearest visual.
         /// </summary>
         /// <param name="pt">
-        /// The pt. 
+        /// The pt.
         /// </param>
         /// <returns>
-        /// A visual. 
+        /// A visual.
         /// </returns>
         public Visual3D FindNearestVisual(Point pt)
         {
@@ -2825,7 +2807,7 @@ namespace HelixToolkit.Wpf
         /// Change the camera to look at the specified point.
         /// </summary>
         /// <param name="p">
-        /// The point. 
+        /// The point.
         /// </param>
         public void LookAt(Point3D p)
         {
@@ -2836,10 +2818,10 @@ namespace HelixToolkit.Wpf
         /// Change the camera to look at the specified point.
         /// </summary>
         /// <param name="p">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void LookAt(Point3D p, double animationTime)
         {
@@ -2850,13 +2832,13 @@ namespace HelixToolkit.Wpf
         /// Change the camera to look at the specified point.
         /// </summary>
         /// <param name="p">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="distance">
-        /// The distance. 
+        /// The distance.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void LookAt(Point3D p, double distance, double animationTime)
         {
@@ -2867,13 +2849,13 @@ namespace HelixToolkit.Wpf
         /// Change the camera to look at the specified point.
         /// </summary>
         /// <param name="p">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="direction">
-        /// The direction. 
+        /// The direction.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void LookAt(Point3D p, Vector3D direction, double animationTime)
         {
@@ -2979,16 +2961,16 @@ namespace HelixToolkit.Wpf
         /// Change the camera position and directions.
         /// </summary>
         /// <param name="newPosition">
-        /// The new camera position. 
+        /// The new camera position.
         /// </param>
         /// <param name="newDirection">
-        /// The new camera look direction. 
+        /// The new camera look direction.
         /// </param>
         /// <param name="newUpDirection">
-        /// The new camera up direction. 
+        /// The new camera up direction.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void SetView(Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
         {
@@ -2999,7 +2981,7 @@ namespace HelixToolkit.Wpf
         /// Zooms to the extents of the sceen.
         /// </summary>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void ZoomExtents(double animationTime = 0)
         {
@@ -3013,19 +2995,15 @@ namespace HelixToolkit.Wpf
         /// Zooms to the extents of the specified bounding box.
         /// </summary>
         /// <param name="bounds">
-        /// The bounding box. 
+        /// The bounding box.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         public void ZoomExtents(Rect3D bounds, double animationTime = 0)
         {
             CameraHelper.ZoomExtents(this.Camera, this.Viewport, bounds, animationTime);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Called when the camera is changed.
@@ -3094,7 +3072,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-
         /// <summary>
         /// Removes the specified items.
         /// </summary>
@@ -3132,7 +3109,7 @@ namespace HelixToolkit.Wpf
                 }
             }
         }
-        
+
         /// <summary>
         /// Called when the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property changes.
         /// </summary>
@@ -3148,7 +3125,7 @@ namespace HelixToolkit.Wpf
         /// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
         /// </summary>
         /// <param name="e">
-        /// Information about the change. 
+        /// Information about the change.
         /// </param>
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {
@@ -3176,7 +3153,7 @@ namespace HelixToolkit.Wpf
         /// Invoked when an unhandled MouseMove attached event reaches an element in its route that is derived from this class.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data. 
+        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -3215,13 +3192,13 @@ namespace HelixToolkit.Wpf
         /// The animate opacity.
         /// </summary>
         /// <param name="obj">
-        /// The obj. 
+        /// The obj.
         /// </param>
         /// <param name="toOpacity">
-        /// The to opacity. 
+        /// The to opacity.
         /// </param>
         /// <param name="animationTime">
-        /// The animation time. 
+        /// The animation time.
         /// </param>
         private static void AnimateOpacity(UIElement obj, double toOpacity, double animationTime)
         {
@@ -3237,10 +3214,10 @@ namespace HelixToolkit.Wpf
         /// The camera rotation mode changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         private static void CameraRotationModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -3251,10 +3228,10 @@ namespace HelixToolkit.Wpf
         /// The headlight changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void HeadlightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -3265,10 +3242,10 @@ namespace HelixToolkit.Wpf
         /// The orthographic changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void OrthographicChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -3279,10 +3256,10 @@ namespace HelixToolkit.Wpf
         /// Called when the ShowCameraInfo is changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void ShowCameraInfoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -3293,10 +3270,10 @@ namespace HelixToolkit.Wpf
         /// Called when ShowFieldOfView is changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void ShowFieldOfViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -3362,10 +3339,10 @@ namespace HelixToolkit.Wpf
         /// The camera_ changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void CameraPropertyChanged(object sender, EventArgs e)
         {
@@ -3380,10 +3357,10 @@ namespace HelixToolkit.Wpf
         /// Handles the Rendering event of the CompositionTarget control.
         /// </summary>
         /// <param name="sender">
-        /// The source of the event. 
+        /// The source of the event.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data. 
+        /// The <see cref="System.EventArgs"/> instance containing the event data.
         /// </param>
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
@@ -3412,10 +3389,10 @@ namespace HelixToolkit.Wpf
         /// The copy command handler.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void CopyHandler(object sender, ExecutedRoutedEventArgs e)
         {
@@ -3436,10 +3413,10 @@ namespace HelixToolkit.Wpf
         /// Called when the control is loaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void OnControlLoaded(object sender, RoutedEventArgs e)
         {
@@ -3465,10 +3442,10 @@ namespace HelixToolkit.Wpf
         /// Called when the control is unloaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void OnControlUnloaded(object sender, RoutedEventArgs e)
         {
@@ -3508,10 +3485,10 @@ namespace HelixToolkit.Wpf
         /// The orthographic toggle.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         private void OrthographicToggle(object sender, ExecutedRoutedEventArgs e)
         {
@@ -3539,10 +3516,10 @@ namespace HelixToolkit.Wpf
         /// Called when the mouse enters the view cube.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ViewCubeViewportMouseEnter(object sender, MouseEventArgs e)
         {
@@ -3553,16 +3530,15 @@ namespace HelixToolkit.Wpf
         /// Called when the mouse leaves the view cube.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ViewCubeViewportMouseLeave(object sender, MouseEventArgs e)
         {
             AnimateOpacity(this.viewCubeViewport, this.ViewCubeOpacity, 200);
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Observable.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -10,7 +10,6 @@ namespace FractalDemo
 {
     public class Observable : INotifyPropertyChanged
     {
-        #region PropertyChanged Block
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -21,8 +20,6 @@ namespace FractalDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        #endregion
-
 
     }
 }

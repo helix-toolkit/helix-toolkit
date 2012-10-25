@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ZoomHandler.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,26 +16,20 @@ namespace HelixToolkit.Wpf
     /// </summary>
     internal class ZoomHandler : MouseGestureHandler
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The change field of view.
+        /// The change field of view.
         /// </summary>
         private readonly bool changeFieldOfView;
 
         /// <summary>
-        ///   The zoom point.
+        /// The zoom point.
         /// </summary>
         private Point zoomPoint;
 
         /// <summary>
-        ///   The zoom point 3 d.
+        /// The zoom point 3 d.
         /// </summary>
         private Point3D zoomPoint3D;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomHandler"/> class.
@@ -51,10 +45,6 @@ namespace HelixToolkit.Wpf
         {
             this.changeFieldOfView = changeFieldOfView;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Changes the camera position.
@@ -295,10 +285,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Occurs when the command associated with this handler initiates a check to determine whether the command can be executed on the command target.
         /// </summary>
@@ -326,6 +312,5 @@ namespace HelixToolkit.Wpf
             return this.Controller.ZoomCursor;
         }
 
-        #endregion
     }
 }

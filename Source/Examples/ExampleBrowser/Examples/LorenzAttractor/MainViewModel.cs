@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -107,8 +107,6 @@ namespace LorenzAttractorDemo
             }
         }
 
-        #region PropertyChanged Block
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -119,8 +117,6 @@ namespace LorenzAttractorDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
-        #endregion
 
         private void UpdateModel()
         {
@@ -189,7 +185,7 @@ namespace LorenzAttractorDemo
         {
             // http://math.fullerton.edu/mathews/n2003/RungeKuttaFehlbergMod.html
             // http://www.trentfguidry.net/post/2009/10/09/Runge-Kutta-Fehlberg.aspx
-            
+
             throw new NotImplementedException();
         }
     }

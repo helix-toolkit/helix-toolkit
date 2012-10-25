@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpaceNavigatorDecorator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,27 +19,27 @@ namespace HelixToolkit.Wpf.Input
     public enum SpaceNavigatorType
     {
         /// <summary>
-        ///   Is a unknown device.
+        /// Is a unknown device.
         /// </summary>
-        UnknownDevice = 0, 
+        UnknownDevice = 0,
 
         /// <summary>
-        ///   Is a SpaceNavigator.
+        /// Is a SpaceNavigator.
         /// </summary>
-        SpaceNavigator = 6, 
+        SpaceNavigator = 6,
 
         /// <summary>
-        ///   Is a SpaceExplorer.
+        /// Is a SpaceExplorer.
         /// </summary>
-        SpaceExplorer = 4, 
+        SpaceExplorer = 4,
 
         /// <summary>
-        ///   Is a SpaceTraveler.
+        /// Is a SpaceTraveler.
         /// </summary>
-        SpaceTraveler = 25, 
+        SpaceTraveler = 25,
 
         /// <summary>
-        ///   Is a SpacePilot.
+        /// Is a SpacePilot.
         /// </summary>
         SpacePilot = 29
     }
@@ -50,12 +50,12 @@ namespace HelixToolkit.Wpf.Input
     public enum SpaceNavigatorZoomMode
     {
         /// <summary>
-        ///   In and out.
+        /// In and out.
         /// </summary>
-        InOut, 
+        InOut,
 
         /// <summary>
-        ///   Up and down.
+        /// Up and down.
         /// </summary>
         UpDown
     }
@@ -65,8 +65,6 @@ namespace HelixToolkit.Wpf.Input
     /// </summary>
     public class SpaceNavigatorDecorator : Decorator
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The camera control property.
         /// </summary>
@@ -95,9 +93,9 @@ namespace HelixToolkit.Wpf.Input
         /// The my property property.
         /// </summary>
         public static readonly DependencyProperty MyPropertyProperty = DependencyProperty.Register(
-            "Type", 
-            typeof(SpaceNavigatorType), 
-            typeof(SpaceNavigatorDecorator), 
+            "Type",
+            typeof(SpaceNavigatorType),
+            typeof(SpaceNavigatorDecorator),
             new UIPropertyMetadata(SpaceNavigatorType.UnknownDevice));
 
         /// <summary>
@@ -116,9 +114,9 @@ namespace HelixToolkit.Wpf.Input
         /// The zoom mode property.
         /// </summary>
         public static readonly DependencyProperty ZoomModeProperty = DependencyProperty.Register(
-            "ZoomMode", 
-            typeof(SpaceNavigatorZoomMode), 
-            typeof(SpaceNavigatorDecorator), 
+            "ZoomMode",
+            typeof(SpaceNavigatorZoomMode),
+            typeof(SpaceNavigatorDecorator),
             new UIPropertyMetadata(SpaceNavigatorZoomMode.UpDown));
 
         /// <summary>
@@ -137,12 +135,8 @@ namespace HelixToolkit.Wpf.Input
         /// </summary>
         private Sensor _sensor;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "SpaceNavigatorDecorator" /> class.
+        /// Initializes a new instance of the <see cref = "SpaceNavigatorDecorator" /> class.
         /// </summary>
         public SpaceNavigatorDecorator()
         {
@@ -159,12 +153,8 @@ namespace HelixToolkit.Wpf.Input
                         }*/
         }
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
-        ///   Event when a property has been changed
+        /// Event when a property has been changed
         /// </summary>
         public event RoutedEventHandler ConnectionChanged
         {
@@ -179,12 +169,8 @@ namespace HelixToolkit.Wpf.Input
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the camera controller.
+        /// Gets or sets the camera controller.
         /// </summary>
         /// <value>The camera controller.</value>
         public CameraController CameraController
@@ -201,10 +187,10 @@ namespace HelixToolkit.Wpf.Input
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is connected.
+        /// Gets or sets a value indicating whether this instance is connected.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is connected; otherwise, <c>false</c>.
+        ///  <c>true</c> if this instance is connected; otherwise, <c>false</c>.
         /// </value>
         public bool IsConnected
         {
@@ -220,7 +206,7 @@ namespace HelixToolkit.Wpf.Input
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether pan is enabled.
+        /// Gets or sets a value indicating whether pan is enabled.
         /// </summary>
         public bool IsPanEnabled
         {
@@ -236,7 +222,7 @@ namespace HelixToolkit.Wpf.Input
         }
 
         /// <summary>
-        ///   Gets or sets the name of the navigator.
+        /// Gets or sets the name of the navigator.
         /// </summary>
         /// <value>The name of the navigator.</value>
         public string NavigatorName
@@ -253,7 +239,7 @@ namespace HelixToolkit.Wpf.Input
         }
 
         /// <summary>
-        ///   Gets or sets the sensitivity.
+        /// Gets or sets the sensitivity.
         /// </summary>
         /// <value>The sensitivity.</value>
         public double Sensitivity
@@ -270,7 +256,7 @@ namespace HelixToolkit.Wpf.Input
         }
 
         /// <summary>
-        ///   Gets or sets the type.
+        /// Gets or sets the type.
         /// </summary>
         /// <value>The type.</value>
         public SpaceNavigatorType Type
@@ -287,7 +273,7 @@ namespace HelixToolkit.Wpf.Input
         }
 
         /// <summary>
-        ///   Gets or sets the zoom mode.
+        /// Gets or sets the zoom mode.
         /// </summary>
         /// <value>The zoom mode.</value>
         public SpaceNavigatorZoomMode ZoomMode
@@ -304,7 +290,7 @@ namespace HelixToolkit.Wpf.Input
         }
 
         /// <summary>
-        ///   Gets or sets the zoom sensitivity.
+        /// Gets or sets the zoom sensitivity.
         /// </summary>
         /// <value>The zoom sensitivity.</value>
         public double ZoomSensitivity
@@ -320,12 +306,8 @@ namespace HelixToolkit.Wpf.Input
             }
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets the controller.
+        /// Gets the controller.
         /// </summary>
         /// <value>The controller.</value>
         private CameraController Controller
@@ -344,10 +326,6 @@ namespace HelixToolkit.Wpf.Input
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Disconnects this instance.
         /// </summary>
@@ -361,10 +339,6 @@ namespace HelixToolkit.Wpf.Input
             this._input = null;
             this.IsConnected = false;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The raise connection changed.
@@ -439,7 +413,7 @@ namespace HelixToolkit.Wpf.Input
                 if (this.IsPanEnabled)
                 {
                     this.Controller.AddPanForce(
-                        this.Sensitivity * 0.03 * this._sensor.Translation.X, 
+                        this.Sensitivity * 0.03 * this._sensor.Translation.X,
                         this.Sensitivity * 0.03 * this._sensor.Translation.Z);
                 }
             }
@@ -459,6 +433,5 @@ namespace HelixToolkit.Wpf.Input
             this.RaiseConnectionChanged();
         }
 
-        #endregion
     }
 }

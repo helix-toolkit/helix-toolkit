@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BoolToVisibilityConverter.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,28 +17,18 @@ namespace HelixToolkit.Wpf
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public class BoolToVisibilityConverter : IValueConverter
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "BoolToVisibilityConverter" /> class.
+        /// Initializes a new instance of the <see cref = "BoolToVisibilityConverter" /> class.
         /// </summary>
         public BoolToVisibilityConverter()
         {
             this.Inverted = false;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether this converter is inverted.
+        /// Gets or sets a value indicating whether this converter is inverted.
         /// </summary>
         public bool Inverted { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Converts a value.
@@ -112,6 +102,5 @@ namespace HelixToolkit.Wpf
             throw new NotImplementedException();
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DrawingContextExtensions.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class DrawingContextExtensions
     {
-        #region Public Methods
-
         /// <summary>
         /// Draws the arc.
         /// </summary>
@@ -48,13 +46,13 @@ namespace HelixToolkit.Wpf
         /// http://blogs.vertigo.com/personal/ralph/Blog/archive/2007/02/09/wpf-drawing-arcs.aspx
         /// </remarks>
         public static void DrawArc(
-            this DrawingContext dc, 
-            Brush brush, 
-            Pen pen, 
-            Point start, 
-            Point end, 
-            SweepDirection direction, 
-            double radiusX, 
+            this DrawingContext dc,
+            Brush brush,
+            Pen pen,
+            Point start,
+            Point end,
+            SweepDirection direction,
+            double radiusX,
             double radiusY)
         {
             // setup the geometry object
@@ -101,14 +99,14 @@ namespace HelixToolkit.Wpf
         /// The radius Y.
         /// </param>
         public static void DrawArc(
-            this DrawingContext dc, 
-            Brush brush, 
-            Pen pen, 
-            Point position, 
-            double startAngle, 
-            double endAngle, 
-            SweepDirection direction, 
-            double radiusX, 
+            this DrawingContext dc,
+            Brush brush,
+            Pen pen,
+            Point position,
+            double startAngle,
+            double endAngle,
+            SweepDirection direction,
+            double radiusX,
             double radiusY)
         {
             double startRadians = startAngle / 180 * Math.PI;
@@ -146,18 +144,17 @@ namespace HelixToolkit.Wpf
         /// The radius Y.
         /// </param>
         public static void DrawArc(
-            this DrawingContext dc, 
-            Brush brush, 
-            Pen pen, 
-            Point position, 
-            double startAngle, 
-            double endAngle, 
-            double radiusX, 
+            this DrawingContext dc,
+            Brush brush,
+            Pen pen,
+            Point position,
+            double startAngle,
+            double endAngle,
+            double radiusX,
             double radiusY)
         {
             DrawArc(dc, brush, pen, position, startAngle, endAngle, SweepDirection.Counterclockwise, radiusX, radiusY);
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -94,7 +94,6 @@ namespace WiiDemo
             }
         }
 
-
         public double Heave
         {
             get { return heave; }
@@ -115,7 +114,6 @@ namespace WiiDemo
                 ValidateTrimHeel();
             }
         }
-
 
         public bool Led1
         {
@@ -168,8 +166,6 @@ namespace WiiDemo
             }
         }
 
-        #region PropertyChanged Block
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -180,8 +176,6 @@ namespace WiiDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
-        #endregion
 
         public void OnLoaded()
         {
@@ -302,7 +296,7 @@ namespace WiiDemo
             }
 
             buttonUp = e.WiimoteState.ButtonState.Up;
- 
+
             buttonOne = e.WiimoteState.ButtonState.One;
             buttonTwo = e.WiimoteState.ButtonState.Two;
             buttonA = e.WiimoteState.ButtonState.A;
@@ -320,7 +314,7 @@ namespace WiiDemo
             //{
             //    relativePosition = wiimoteState.IRState.Midpoint;
             //}
-            //else 
+            //else
             if (wiimoteState.IRState.IRSensors[0].Found)
             {
                 relativePosition = wiimoteState.IRState.IRSensors[0].Position;

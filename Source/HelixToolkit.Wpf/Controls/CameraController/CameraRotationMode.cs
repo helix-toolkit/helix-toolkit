@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CameraRotationMode.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,17 +12,17 @@ namespace HelixToolkit.Wpf
     public enum CameraRotationMode
     {
         /// <summary>
-        ///   Turntable is constrained to two axes of rotation (model up and right direction)
+        /// Turntable is constrained to two axes of rotation (model up and right direction)
         /// </summary>
-        Turntable, 
+        Turntable,
 
         /// <summary>
-        ///   Turntable using three axes (look direction, right direction and up direction (on the left/right edges)).
+        /// Turntable using three axes (look direction, right direction and up direction (on the left/right edges)).
         /// </summary>
-        Turnball, 
+        Turnball,
 
         /// <summary>
-        ///   Using a virtual trackball.
+        /// Using a virtual trackball.
         /// </summary>
         Trackball
     }

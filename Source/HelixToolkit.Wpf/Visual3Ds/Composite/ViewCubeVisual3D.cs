@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ViewCubeVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,8 +21,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class ViewCubeVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The back text property.
         /// </summary>
@@ -97,10 +95,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
         /// </summary>
@@ -108,10 +102,6 @@ namespace HelixToolkit.Wpf
         {
             this.UpdateVisuals();
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         ///   Gets or sets the back text.
@@ -282,10 +272,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ViewportProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The viewport changed.
@@ -518,6 +504,6 @@ namespace HelixToolkit.Wpf
             public Vector3D LookDirection { get; set; }
             public Vector3D UpDirection { get; set; }
         }
-        #endregion
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MaterialExtension.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,20 +16,14 @@ namespace HelixToolkit.Wpf
     /// <example>
     /// <code>
     /// Material={helix:Material Blue, Opacity=0.5}
-    ///   </code>
+    ///  </code>
     /// </example>
     public class MaterialExtension : MarkupExtension
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The color.
         /// </summary>
         private readonly Color color;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialExtension"/> class.
@@ -45,31 +39,23 @@ namespace HelixToolkit.Wpf
             this.Opacity = 1;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the opacity.
+        /// Gets or sets the opacity.
         /// </summary>
         /// <value>The opacity.</value>
         public double Opacity { get; set; }
 
         /// <summary>
-        ///   Gets or sets the specular intensity.
+        /// Gets or sets the specular intensity.
         /// </summary>
         /// <value>The specular intensity.</value>
         public double SpecularIntensity { get; set; }
 
         /// <summary>
-        ///   Gets or sets the specular power.
+        /// Gets or sets the specular power.
         /// </summary>
         /// <value>The specular power.</value>
         public double SpecularPower { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
@@ -87,6 +73,5 @@ namespace HelixToolkit.Wpf
             return MaterialHelper.CreateMaterial(diffuse, null, specular, this.Opacity, this.SpecularPower);
         }
 
-        #endregion
     }
 }

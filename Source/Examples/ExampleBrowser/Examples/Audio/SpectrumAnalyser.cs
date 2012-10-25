@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpectrumAnalyser.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -44,7 +44,6 @@ namespace AudioDemo
         public static readonly DependencyProperty TimeColumnsProperty =
             DependencyProperty.Register("TimeColumns", typeof(int), typeof(SpectrumAnalyser), new UIPropertyMetadata(16));
 
-
         private GeometryModel3D[,] Models;
         private ScaleTransform3D[,] ScaleTransforms;
 
@@ -82,8 +81,6 @@ namespace AudioDemo
             get { return (bool)GetValue(ScaleHeightOnlyProperty); }
             set { SetValue(ScaleHeightOnlyProperty, value); }
         }
-
-        #region ISpectrumAnalyser Members
 
         private int updateCount = 0;
 
@@ -126,13 +123,10 @@ namespace AudioDemo
             }
         }
 
-        #endregion
-
         private static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((SpectrumAnalyser)d).UpdateModels();
         }
-
 
         private static Geometry3D GetDefaultGeometry()
         {
@@ -174,7 +168,7 @@ namespace AudioDemo
             var group = new Model3DGroup();
             Models = new GeometryModel3D[FrequencyColumns, TimeColumns];
             ScaleTransforms = new ScaleTransform3D[FrequencyColumns, TimeColumns];
-            
+
             for (int j = 0; j < TimeColumns; j++)
             {
                 for (int i = 0; i < FrequencyColumns; i++)

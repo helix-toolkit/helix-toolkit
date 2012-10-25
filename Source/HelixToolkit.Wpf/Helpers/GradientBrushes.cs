@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GradientBrushes.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,41 +12,38 @@ namespace HelixToolkit.Wpf
     /// Contains a set of predefined gradient brushes.
     /// </summary>
     /// <example>
-    /// Usage in XAML: 
-    ///   <code>
+    /// Usage in XAML:
+    ///  <code>
     /// Fill="{x:Static helix:GradientBrushes.Hue}"
-    ///   </code>
+    ///  </code>
     /// </example>
     public static class GradientBrushes
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   A blue-white-red gradient brush.
+        /// A blue-white-red gradient brush.
         /// </summary>
         public static LinearGradientBrush BlueWhiteRed = BrushHelper.CreateGradientBrush(
             Colors.Blue, Colors.White, Colors.Red);
 
         /// <summary>
-        ///   A hue gradient brush.
+        /// A hue gradient brush.
         /// </summary>
         public static LinearGradientBrush Hue = BrushHelper.CreateHsvBrush(1.0);
 
         /// <summary>
-        ///   A hue gradient brush with 12 stripes.
+        /// A hue gradient brush with 12 stripes.
         /// </summary>
         public static LinearGradientBrush HueStripes = BrushHelper.CreateSteppedGradientBrush(Hue, 12);
 
         /// <summary>
-        ///   A rainbow gradient brush.
+        /// A rainbow gradient brush.
         /// </summary>
         public static LinearGradientBrush Rainbow = BrushHelper.CreateRainbowBrush();
 
         /// <summary>
-        ///   A rainbow brush with 12 stripes.
+        /// A rainbow brush with 12 stripes.
         /// </summary>
         public static LinearGradientBrush RainbowStripes = BrushHelper.CreateSteppedGradientBrush(Rainbow, 12);
 
-        #endregion
     }
 }

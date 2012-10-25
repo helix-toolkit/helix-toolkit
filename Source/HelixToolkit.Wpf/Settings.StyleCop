@@ -6,5 +6,12 @@
         <StringProperty Name="Copyright">http://helixtoolkit.codeplex.com, license: MIT</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
+      <AnalyzerSettings>
+        <CollectionProperty Name="Hungarian">
+          <Value>up</Value>
+        </CollectionProperty>
+      </AnalyzerSettings>
+    </Analyzer>
   </Analyzers>
 </StyleCopSettings>

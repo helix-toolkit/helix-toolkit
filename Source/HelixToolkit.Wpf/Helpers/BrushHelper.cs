@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BrushHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class BrushHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Creates a copy of a brush with the specified opacity.
         /// </summary>
@@ -86,7 +84,7 @@ namespace HelixToolkit.Wpf
             return new SolidColorBrush(Color.FromArgb(255, b, b, b));
         }
 
-        // http://en.wikipedia.org/wiki/HSL_and_HSV 
+        // http://en.wikipedia.org/wiki/HSL_and_HSV
         /// <summary>
         /// Creates a HSV brush.
         /// </summary>
@@ -236,6 +234,5 @@ namespace HelixToolkit.Wpf
             return CreateSteppedGradientBrush(colors);
         }
 
-        #endregion
     }
 }

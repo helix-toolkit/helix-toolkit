@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ClonedVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,20 +17,14 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class ClonedVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The source property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof(ModelVisual3D), typeof(ClonedVisual3D), new UIPropertyMetadata(null, SourceChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the source.
+        /// Gets or sets the source.
         /// </summary>
         /// <value>The source.</value>
         public ModelVisual3D Source
@@ -45,10 +39,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(SourceProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The source changed.
@@ -79,6 +69,5 @@ namespace HelixToolkit.Wpf
             this.Content = clonedModel;
         }
 
-        #endregion
     }
 }

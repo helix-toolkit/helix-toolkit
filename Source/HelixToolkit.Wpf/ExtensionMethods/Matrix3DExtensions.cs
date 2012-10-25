@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Matrix3DExtensions.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,14 +16,12 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// Note that the Matrix3D contains row vectors.
-    ///   http://steve.hollasch.net/cgindex/math/matrix/column-vec.html
-    ///   http://en.wikipedia.org/wiki/Row_vector
-    ///   http://en.wikipedia.org/wiki/Column_vector
+    /// http://steve.hollasch.net/cgindex/math/matrix/column-vec.html
+    /// http://en.wikipedia.org/wiki/Row_vector
+    /// http://en.wikipedia.org/wiki/Column_vector
     /// </remarks>
     public static class Matrix3DExtensions
     {
-        #region Public Methods
-
         /// <summary>
         /// Convert the <see cref="Matrix3D"/> to a two-dimensional <see cref="Array"/>.
         /// </summary>
@@ -122,19 +120,15 @@ namespace HelixToolkit.Wpf
         /// A string.
         /// </returns>
         public static string ToString(
-            this Matrix3D matrix, 
-            string format, 
-            string columnSeparator, 
-            string lineSeparator, 
-            int columnWidth, 
+            this Matrix3D matrix,
+            string format,
+            string columnSeparator,
+            string lineSeparator,
+            int columnWidth,
             CultureInfo provider)
         {
             return matrix.ConvertToString(format, columnSeparator, lineSeparator, columnWidth, provider);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Converts to string using the specified format and the invariant culture
@@ -182,11 +176,11 @@ namespace HelixToolkit.Wpf
         /// A string.
         /// </returns>
         internal static string ConvertToString(
-            this Matrix3D matrix, 
-            string format, 
-            string columnSeparator, 
-            string lineSeparator, 
-            int columnWidth, 
+            this Matrix3D matrix,
+            string format,
+            string columnSeparator,
+            string lineSeparator,
+            int columnWidth,
             CultureInfo provider)
         {
             double[,] m = matrix.ToArray();
@@ -214,6 +208,5 @@ namespace HelixToolkit.Wpf
             return sb.ToString();
         }
 
-        #endregion
     }
 }

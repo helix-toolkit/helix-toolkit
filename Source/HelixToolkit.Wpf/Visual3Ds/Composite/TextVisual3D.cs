@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class TextVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The center property.
         /// </summary>
@@ -58,12 +56,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
             "UpDirection", typeof(Vector3D), typeof(TextVisual3D), new UIPropertyMetadata(new Vector3D(0, 0, 1), VisualChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the center of the text.
+        /// Gets or sets the center of the text.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -80,7 +74,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the text direction.
+        /// Gets or sets the text direction.
         /// </summary>
         /// <value>The direction.</value>
         public Vector3D TextDirection
@@ -97,7 +91,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the fill brush.
+        /// Gets or sets the fill brush.
         /// </summary>
         /// <value>The fill brush.</value>
         public Brush Fill
@@ -114,7 +108,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the height of the text.
+        /// Gets or sets the height of the text.
         /// </summary>
         /// <value>The text height.</value>
         public double Height
@@ -131,7 +125,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the text.
+        /// Gets or sets the text.
         /// </summary>
         /// <value>The text.</value>
         public string Text
@@ -163,10 +157,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(UpDirectionProperty, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates a ModelVisual3D containing a text label.
@@ -271,10 +261,6 @@ namespace HelixToolkit.Wpf
             return new GeometryModel3D(mg, mat);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The visual changed.
         /// </summary>
@@ -304,8 +290,6 @@ namespace HelixToolkit.Wpf
                     this.Text, this.Fill, true, this.Height, this.Center, this.TextDirection, this.UpDirection);
             }
         }
-
-        #endregion
 
         // http://www.ericsink.com/wpf3d/4_Text.html
     }

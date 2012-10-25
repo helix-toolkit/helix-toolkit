@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CameraHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,8 +19,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class CameraHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Animates the camera position and directions.
         /// </summary>
@@ -62,7 +60,9 @@ namespace HelixToolkit.Wpf
                         AccelerationRatio = 0.3,
                         DecelerationRatio = 0.5,
                         FillBehavior = FillBehavior.Stop
+
                     };
+                a1.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.PositionProperty, null); };
                 camera.BeginAnimation(ProjectionCamera.PositionProperty, a1);
 
                 var a2 = new Vector3DAnimation(
@@ -72,6 +72,7 @@ namespace HelixToolkit.Wpf
                         DecelerationRatio = 0.5,
                         FillBehavior = FillBehavior.Stop
                     };
+                a2.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null); };
                 camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, a2);
 
                 var a3 = new Vector3DAnimation(
@@ -81,6 +82,7 @@ namespace HelixToolkit.Wpf
                         DecelerationRatio = 0.5,
                         FillBehavior = FillBehavior.Stop
                     };
+                a3.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, null); };
                 camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, a3);
             }
         }
@@ -643,6 +645,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

@@ -1,4 +1,4 @@
-# Mercurial .hgignore file for C# / .NET / VisualStudio 2010
+# Mercurial .hgignore file for C# / .NET / Visual Studio / Resharper / StyleCop
 # http://stackoverflow.com/questions/34784/mercurial-hgignore-for-visual-studio-2008-projects
 
 # use glob syntax
@@ -19,7 +19,7 @@ syntax: glob
 *.tlb
 *.tlh
 *.bak
-*.cache
+*.[Cc]ache
 *.ilk
 *.log
 *.lib
@@ -27,6 +27,8 @@ syntax: glob
 *.scc
 *.nupkg
 *.nuspec
+*.pidb
+*.userprefs
 
 [Bb]in
 [Dd]ebug*/
@@ -36,8 +38,11 @@ Output/
 ClientBin/
 lib/
 
+Tools/    # Add manually
+
 _ReSharper*/
 _TeamCity*/
+packages/
 *.dotCover
 
 [Tt]est[Rr]esult*

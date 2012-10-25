@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ControlPanelViewModel.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -107,20 +107,12 @@ namespace NAudioWpfDemo
             }
         }
 
-        #region IDisposable Members
-
         public void Dispose()
         {
             audioGraph.Dispose();
         }
 
-        #endregion
-
-        #region INotifyPropertyChanged Members
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
 
         private void audioGraph_FftCalculated(object sender, FftEventArgs e)
         {

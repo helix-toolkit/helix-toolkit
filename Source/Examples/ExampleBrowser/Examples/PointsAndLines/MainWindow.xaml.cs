@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ namespace PointsAndLinesDemo
         public bool ShowLinesVisual3D { get; set; }
         public bool ShowPointsVisual3D { get; set; }
         public bool ShowScreenSpaceLines3D { get; set; }
-        public bool ShowWireLines { get; set; }        
+        public bool ShowWireLines { get; set; }
         public Point3DCollection Points { get; set; }
         private int n;
         public int N
@@ -43,7 +43,6 @@ namespace PointsAndLinesDemo
         private ScreenSpaceLines3D screenSpaceLines;
         private WireLines wireLines;
 
-        #region PropertyChanged Block
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
@@ -54,8 +53,6 @@ namespace PointsAndLinesDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        #endregion
-
 
         public MainWindow()
         {
@@ -73,7 +70,7 @@ namespace PointsAndLinesDemo
             if (ShowLinesVisual3D && lines==null)
             {
                 lines = new LinesVisual3D { Color = Colors.Blue };
-                view1.Children.Add(lines);                
+                view1.Children.Add(lines);
             }
             if (!ShowLinesVisual3D && lines!=null)
             {
@@ -112,7 +109,6 @@ namespace PointsAndLinesDemo
                 view1.Children.Remove(wireLines);
                 wireLines = null;
             }
-
 
             if (Points==null || Points.Count != N || isAnimating)
             {

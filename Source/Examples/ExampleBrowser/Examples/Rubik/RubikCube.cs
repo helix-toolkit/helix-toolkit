@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RubikCube.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ using HelixToolkit.Wpf;
 namespace RubikDemo
 {
     /// <summary>
-    /// A rubik's cube - demo of building a geometry with Helix Toolkit's MeshBuilder 
+    /// A rubik's cube - demo of building a geometry with Helix Toolkit's MeshBuilder
     /// and using animated transforms to do the rotations
     /// http://en.wikipedia.org/wiki/Rubik's_Cube
     /// http://www.rubiks.com/
@@ -32,12 +32,12 @@ namespace RubikDemo
                                                       Colors.White, Colors.Red, Colors.Blue,
                                                       Colors.Orange, Colors.Green, Colors.Yellow
                                                   };
-        // The indices of the faces are 
-        // 0:Bottom 
-        // 1:Front 
-        // 2:Left 
-        // 3:Right 
-        // 4:Down 
+        // The indices of the faces are
+        // 0:Bottom
+        // 1:Front
+        // 2:Left
+        // 3:Right
+        // 4:Down
         // 5:Up
 
         private double spacing = 0.06;
@@ -114,7 +114,6 @@ namespace RubikDemo
             CreateCubelets();
         }
 
-
         private void CreateCubelets()
         {
             Children.Clear();
@@ -126,7 +125,7 @@ namespace RubikDemo
             {
                 faceBrushes[i] = CreateFaceBrush(faceColors[i], null);
                 // SolidColorBrush is much faster
-                // faceBrushes[i] = new SolidColorBrush(faceColors[i]);                
+                // faceBrushes[i] = new SolidColorBrush(faceColors[i]);
             }
 
             var brush011 = CreateFaceBrush(Colors.White, "RUBIK");
@@ -298,10 +297,10 @@ namespace RubikDemo
             // turning face 0: (fix,*,*)
 
             //  2,0 2,1 2,2      2,2 1,2 0,2
-            //  1,0 1,1 1,2  =>  2,1 1,1 0,1 
+            //  1,0 1,1 1,2  =>  2,1 1,1 0,1
             //  0,0 0,1 0,2      2,0 1,0 0,0
 
-            // if angle is negative we need to rotate 
+            // if angle is negative we need to rotate
             // the cubelets the other way
 
             int n = Size - 1;

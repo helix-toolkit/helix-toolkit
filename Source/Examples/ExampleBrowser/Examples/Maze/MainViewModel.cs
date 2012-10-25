@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix 3D Toolkit examples">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,8 +18,6 @@ namespace MazeDemo
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The camera position.
         /// </summary>
@@ -60,10 +58,6 @@ namespace MazeDemo
         /// </summary>
         private MeshGeometry3D wallsGeometry;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
@@ -72,18 +66,10 @@ namespace MazeDemo
             this.CreateMaze();
         }
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
         /// The property changed.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets CameraPosition.
@@ -106,7 +92,7 @@ namespace MazeDemo
         /// Gets or sets the ground geometry.
         /// </summary>
         /// <value>
-        /// The ground. 
+        /// The ground.
         /// </value>
         public MeshGeometry3D GroundGeometry
         {
@@ -126,7 +112,7 @@ namespace MazeDemo
         /// Gets or sets the solution geometry.
         /// </summary>
         /// <value>
-        /// The solution. 
+        /// The solution.
         /// </value>
         public MeshGeometry3D SolutionGeometry
         {
@@ -146,7 +132,7 @@ namespace MazeDemo
         /// Gets or sets the walls geometry.
         /// </summary>
         /// <value>
-        /// The walls. 
+        /// The walls.
         /// </value>
         public MeshGeometry3D WallsGeometry
         {
@@ -162,18 +148,14 @@ namespace MazeDemo
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         /// Coerces the specified position.
         /// </summary>
         /// <param name="position">
-        /// The position. 
+        /// The position.
         /// </param>
         /// <returns>
-        /// Null or the coerced position. 
+        /// Null or the coerced position.
         /// </returns>
         public Point3D? CoercePosition(Point3D position)
         {
@@ -200,15 +182,11 @@ namespace MazeDemo
             return null;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The raise property changed.
         /// </summary>
         /// <param name="property">
-        /// The property. 
+        /// The property.
         /// </param>
         protected void RaisePropertyChanged(string property)
         {
@@ -223,16 +201,16 @@ namespace MazeDemo
         /// Creates the ground geometry.
         /// </summary>
         /// <param name="themaze">
-        /// The maze. 
+        /// The maze.
         /// </param>
         /// <param name="padding">
-        /// The padding. 
+        /// The padding.
         /// </param>
         /// <param name="z">
-        /// The z. 
+        /// The z.
         /// </param>
         /// <returns>
-        /// The geometry. 
+        /// The geometry.
         /// </returns>
         private MeshGeometry3D CreateGroundGeometry(bool[,] themaze, int padding = 0, double z = 0)
         {
@@ -276,16 +254,16 @@ namespace MazeDemo
         /// Creates the maze geometry.
         /// </summary>
         /// <param name="themaze">
-        /// The maze. 
+        /// The maze.
         /// </param>
         /// <param name="height">
-        /// The height of the blocks. 
+        /// The height of the blocks.
         /// </param>
         /// <param name="size">
-        /// The size of the blocks. 
+        /// The size of the blocks.
         /// </param>
         /// <returns>
-        /// The geometry. 
+        /// The geometry.
         /// </returns>
         private MeshGeometry3D CreateMazeGeometry(bool[,] themaze, double height = 2, double size = 0.995)
         {
@@ -360,6 +338,5 @@ namespace MazeDemo
             return this.GetPosition(cell.I, cell.J, z);
         }
 
-        #endregion
     }
 }

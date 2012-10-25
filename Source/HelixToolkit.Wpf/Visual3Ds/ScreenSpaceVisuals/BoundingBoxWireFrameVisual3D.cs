@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BoundingBoxWireFrameVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,20 +15,14 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class BoundingBoxWireFrameVisual3D : LinesVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The bounding box property.
+        /// The bounding box property.
         /// </summary>
         public static readonly DependencyProperty BoundingBoxProperty = DependencyProperty.Register(
             "BoundingBox", typeof(Rect3D), typeof(BoundingBoxWireFrameVisual3D), new UIPropertyMetadata(new Rect3D(), BoxChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the bounding box.
+        /// Gets or sets the bounding box.
         /// </summary>
         /// <value> The bounding box. </value>
         public Rect3D BoundingBox
@@ -43,10 +37,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(BoundingBoxProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Updates the box.
@@ -96,15 +86,14 @@ namespace HelixToolkit.Wpf
         /// Called when the box dimensions changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void BoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((BoundingBoxWireFrameVisual3D)d).OnBoxChanged();
         }
-        #endregion
     }
 }

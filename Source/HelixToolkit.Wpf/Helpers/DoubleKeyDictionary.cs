@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DoubleKeyDictionary.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -24,46 +24,31 @@ namespace HelixToolkit.Wpf
     /// </typeparam>
     /// <remarks>
     /// See http://noocyte.wordpress.com/2008/02/18/double-key-dictionary/
-    ///   A Remove method was added.
+    /// A Remove method was added.
     /// </remarks>
-    public class DoubleKeyDictionary<K, T, V> : IEnumerable<DoubleKeyPairValue<K, T, V>>, 
+    public class DoubleKeyDictionary<K, T, V> : IEnumerable<DoubleKeyPairValue<K, T, V>>,
                                                 IEquatable<DoubleKeyDictionary<K, T, V>>
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The m_inner dictionary.
         /// </summary>
         private Dictionary<T, V> m_innerDictionary;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DoubleKeyDictionary{K,T,V}"/> class. 
-        ///   Initializes a new instance of the <see cref="DoubleKeyDictionary&lt;K, T, V&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DoubleKeyDictionary{K,T,V}"/> class.
         /// </summary>
         public DoubleKeyDictionary()
         {
             this.OuterDictionary = new Dictionary<K, Dictionary<T, V>>();
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets OuterDictionary.
         /// </summary>
         private Dictionary<K, Dictionary<T, V>> OuterDictionary { get; set; }
 
-        #endregion
-
-        #region Public Indexers
-
         /// <summary>
-        ///   Gets or sets the value with the specified indices.
+        /// Gets or sets the value with the specified indices.
         /// </summary>
         /// <value></value>
         public V this[K index1, T index2]
@@ -78,10 +63,6 @@ namespace HelixToolkit.Wpf
                 this.Add(index1, index2, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Clears this dictionary.
@@ -185,7 +166,7 @@ namespace HelixToolkit.Wpf
                     break;
                 }
 
-                // here we can be sure that the key is in both lists, 
+                // here we can be sure that the key is in both lists,
                 // but we need to check the contents of the inner dictionary
                 Dictionary<T, V> otherInnerDictionary = other.OuterDictionary[innerItems.Key];
                 foreach (var innerValue in innerItems.Value)
@@ -244,10 +225,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Explicit Interface Methods
-
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
@@ -259,7 +236,6 @@ namespace HelixToolkit.Wpf
             return this.GetEnumerator();
         }
 
-        #endregion
     }
 
     /// <summary>
@@ -276,10 +252,8 @@ namespace HelixToolkit.Wpf
     /// </typeparam>
     public class DoubleKeyPairValue<K, T, V>
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DoubleKeyPairValue{K,T,V}"/> class. 
+        /// Initializes a new instance of the <see cref="DoubleKeyPairValue{K,T,V}"/> class.
         /// </summary>
         /// <param name="key1">
         /// The key1.
@@ -297,31 +271,23 @@ namespace HelixToolkit.Wpf
             this.Value = value;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the key1.
+        /// Gets or sets the key1.
         /// </summary>
         /// <value>The key1.</value>
         public K Key1 { get; set; }
 
         /// <summary>
-        ///   Gets or sets the key2.
+        /// Gets or sets the key2.
         /// </summary>
         /// <value>The key2.</value>
         public T Key2 { get; set; }
 
         /// <summary>
-        ///   Gets or sets the value.
+        /// Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
         public V Value { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -334,6 +300,5 @@ namespace HelixToolkit.Wpf
             return this.Key1 + " - " + this.Key2 + " - " + this.Value;
         }
 
-        #endregion
     }
 }

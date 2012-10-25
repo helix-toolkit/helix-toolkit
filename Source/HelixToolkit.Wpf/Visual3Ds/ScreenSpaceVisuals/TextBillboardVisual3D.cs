@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextBillboardVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,8 +17,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class TextBillboardVisual3D : BillboardVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The font family property.
         /// </summary>
@@ -49,12 +47,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             "Text", typeof(string), typeof(TextBillboardVisual3D), new UIPropertyMetadata(null, TextChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the font family.
+        /// Gets or sets the font family.
         /// </summary>
         /// <value>The font family.</value>
         public FontFamily FontFamily
@@ -71,7 +65,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the size of the font.
+        /// Gets or sets the size of the font.
         /// </summary>
         /// <value>The size of the font.</value>
         public double FontSize
@@ -88,7 +82,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the font weight.
+        /// Gets or sets the font weight.
         /// </summary>
         /// <value>The font weight.</value>
         public FontWeight FontWeight
@@ -105,7 +99,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the foreground brush.
+        /// Gets or sets the foreground brush.
         /// </summary>
         /// <value>The foreground.</value>
         public Brush Foreground
@@ -122,7 +116,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the text.
+        /// Gets or sets the text.
         /// </summary>
         /// <value>The text.</value>
         public string Text
@@ -137,10 +131,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(TextProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The text changed.
@@ -186,6 +176,5 @@ namespace HelixToolkit.Wpf
             this.Height = tb.DesiredSize.Height;
         }
 
-        #endregion
     }
 }

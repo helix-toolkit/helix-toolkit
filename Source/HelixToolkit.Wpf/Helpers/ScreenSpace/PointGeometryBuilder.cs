@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PointGeometryBuilder.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,8 +18,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class PointGeometryBuilder : ScreenGeometryBuilder
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PointGeometryBuilder"/> class.
         /// </summary>
@@ -30,10 +28,6 @@ namespace HelixToolkit.Wpf
             : base(visual)
         {
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates the triangle indices.
@@ -85,7 +79,7 @@ namespace HelixToolkit.Wpf
 
             var outline = new[]
                 {
-                    new Vector(-halfSize, halfSize), new Vector(-halfSize, -halfSize), new Vector(halfSize, halfSize), 
+                    new Vector(-halfSize, halfSize), new Vector(-halfSize, -halfSize), new Vector(halfSize, halfSize),
                     new Vector(halfSize, -halfSize)
                 };
 
@@ -133,7 +127,7 @@ namespace HelixToolkit.Wpf
 
             var outline = new[]
                 {
-                    new Vector(-halfWidth, halfHeight), new Vector(-halfWidth, -halfHeight), new Vector(halfWidth, halfHeight), 
+                    new Vector(-halfWidth, halfHeight), new Vector(-halfWidth, -halfHeight), new Vector(halfWidth, halfHeight),
                     new Vector(halfWidth, -halfHeight)
                 };
 
@@ -158,11 +152,9 @@ namespace HelixToolkit.Wpf
                         positions.Add(new Point3D(p.X, p.Y, p.Z));
                     }
                 }
-            
 
             positions.Freeze();
             return positions;
         }
-        #endregion
     }
 }

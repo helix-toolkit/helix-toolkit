@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="KerkytheaLauncher.cs" company="">
-//   
+//
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,8 +14,6 @@ namespace ExportDemo
     /// </summary>
     public class KerkytheaLauncher
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="KerkytheaLauncher"/> class.
         /// </summary>
@@ -32,31 +30,23 @@ namespace ExportDemo
             this.Executable = executable;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the path to the Kerkythea executable.
+        /// Gets or sets the path to the Kerkythea executable.
         /// </summary>
         /// <value>The executable.</value>
         public string Executable { get; set; }
 
         /// <summary>
-        ///   Gets or sets the input file (.xml).
+        /// Gets or sets the input file (.xml).
         /// </summary>
         /// <value>The input file.</value>
         public string InputFile { get; set; }
 
         /// <summary>
-        ///   Gets or sets the output file (.png).
+        /// Gets or sets the output file (.png).
         /// </summary>
         /// <value>The output file.</value>
         public string OutputFile { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Starts Kerkythea.
@@ -74,12 +64,11 @@ namespace ExportDemo
 
             var psi = new ProcessStartInfo(this.Executable)
                 {
-                   WorkingDirectory = Path.GetDirectoryName(fullPath), Arguments = input + " -o " + output 
+                   WorkingDirectory = Path.GetDirectoryName(fullPath), Arguments = input + " -o " + output
                 };
 
             return Process.Start(psi);
         }
 
-        #endregion
     }
 }

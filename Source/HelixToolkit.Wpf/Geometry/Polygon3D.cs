@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Polygon3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,19 +17,13 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Polygon3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The points.
         /// </summary>
         internal IList<Point3D> points;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Polygon3D" /> class.
+        /// Initializes a new instance of the <see cref = "Polygon3D" /> class.
         /// </summary>
         public Polygon3D()
         {
@@ -47,12 +41,8 @@ namespace HelixToolkit.Wpf
             this.points = pts;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the points.
+        /// Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
         public IList<Point3D> Points
@@ -68,14 +58,10 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
         // http://en.wikipedia.org/wiki/Polygon_triangulation
         // http://en.wikipedia.org/wiki/Monotone_polygon
         // http://www.codeproject.com/KB/recipes/hgrd.aspx LGPL
         // http://www.springerlink.com/content/g805787811vr1v9v/
-        #region Public Methods
-
         /// <summary>
         /// Flattens this polygon.
         /// </summary>
@@ -163,6 +149,5 @@ namespace HelixToolkit.Wpf
             return true;
         }
 
-        #endregion
     }
 }

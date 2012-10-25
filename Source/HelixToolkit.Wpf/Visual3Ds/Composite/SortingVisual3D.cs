@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SortingVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,17 +19,17 @@ namespace HelixToolkit.Wpf
     public enum SortingMethod
     {
         /// <summary>
-        ///   Sort on the distance from camera to bounding box center.
+        /// Sort on the distance from camera to bounding box center.
         /// </summary>
-        BoundingBoxCenter, 
+        BoundingBoxCenter,
 
         /// <summary>
-        ///   Sort on the minimum distance from camera to bounding box corners.
+        /// Sort on the minimum distance from camera to bounding box corners.
         /// </summary>
-        BoundingBoxCorners, 
+        BoundingBoxCorners,
 
         /// <summary>
-        ///   Sort on the minimum distance from camera to bounding sphere surface.
+        /// Sort on the minimum distance from camera to bounding sphere surface.
         /// </summary>
         BoundingSphereSurface
     }
@@ -42,32 +42,30 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class SortingVisual3D : RenderingModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The check for opaque visuals property.
+        /// The check for opaque visuals property.
         /// </summary>
         public static readonly DependencyProperty CheckForOpaqueVisualsProperty =
             DependencyProperty.Register(
                 "CheckForOpaqueVisuals", typeof(bool), typeof(SortingVisual3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The is sorting property.
+        /// The is sorting property.
         /// </summary>
         public static readonly DependencyProperty IsSortingProperty = DependencyProperty.Register(
             "IsSorting", typeof(bool), typeof(SortingVisual3D), new UIPropertyMetadata(false, IsSortingChanged));
 
         /// <summary>
-        ///   The method property.
+        /// The method property.
         /// </summary>
         public static readonly DependencyProperty MethodProperty = DependencyProperty.Register(
-            "Method", 
-            typeof(SortingMethod), 
-            typeof(SortingVisual3D), 
+            "Method",
+            typeof(SortingMethod),
+            typeof(SortingVisual3D),
             new UIPropertyMetadata(SortingMethod.BoundingBoxCorners));
 
         /// <summary>
-        ///   The sorting frequency property.
+        /// The sorting frequency property.
         /// </summary>
         public static readonly DependencyProperty SortingFrequencyProperty =
             DependencyProperty.Register(
@@ -78,24 +76,16 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private long startTick;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref="SortingVisual3D" /> class.
+        /// Initializes a new instance of the <see cref="SortingVisual3D" /> class.
         /// </summary>
         public SortingVisual3D()
         {
             this.IsSorting = true;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether to check if there are opaque child visuals.
+        /// Gets or sets a value indicating whether to check if there are opaque child visuals.
         /// </summary>
         public bool CheckForOpaqueVisuals
         {
@@ -111,7 +101,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is being sorted. When the visual is removed from the Viewport3D, this property should be set to false to unsubscribe the rendering event.
+        /// Gets or sets a value indicating whether this instance is being sorted. When the visual is removed from the Viewport3D, this property should be set to false to unsubscribe the rendering event.
         /// </summary>
         public bool IsSorting
         {
@@ -127,7 +117,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sorting method.
+        /// Gets or sets the sorting method.
         /// </summary>
         /// <value> The method. </value>
         public SortingMethod Method
@@ -144,7 +134,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the sorting frequency (Hz).
+        /// Gets or sets the sorting frequency (Hz).
         /// </summary>
         /// <value> The sorting frequency. </value>
         public double SortingFrequency
@@ -160,18 +150,14 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The composition target_ rendering.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
@@ -192,10 +178,10 @@ namespace HelixToolkit.Wpf
         /// The is sorting changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void IsSortingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -206,16 +192,16 @@ namespace HelixToolkit.Wpf
         /// Gets the distance from the camera for the specified visual.
         /// </summary>
         /// <param name="c">
-        /// The visual. 
+        /// The visual.
         /// </param>
         /// <param name="cameraPos">
-        /// The camera position. 
+        /// The camera position.
         /// </param>
         /// <param name="transform">
-        /// The total transform of the visual. 
+        /// The total transform of the visual.
         /// </param>
         /// <returns>
-        /// The camera distance. 
+        /// The camera distance.
         /// </returns>
         private double GetCameraDistance(Visual3D c, Point3D cameraPos, Transform3D transform)
         {
@@ -237,7 +223,7 @@ namespace HelixToolkit.Wpf
                     d = Math.Min(
                         d, cameraPos.DistanceTo(new Point3D(bounds.X + bounds.SizeX, bounds.Y, bounds.Z + bounds.SizeZ)));
                     d = Math.Min(
-                        d, 
+                        d,
                         cameraPos.DistanceTo(
                             new Point3D(bounds.X + bounds.SizeX, bounds.Y + bounds.SizeY, bounds.Z + bounds.SizeZ)));
                     d = Math.Min(
@@ -253,10 +239,10 @@ namespace HelixToolkit.Wpf
         /// Determines if the specified visual is transparent.
         /// </summary>
         /// <param name="visual">
-        /// The visual. 
+        /// The visual.
         /// </param>
         /// <returns>
-        /// True if the visual is transparent. 
+        /// True if the visual is transparent.
         /// </returns>
         private bool IsVisualTransparent(Visual3D visual)
         {
@@ -339,6 +325,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Point3DExtensions.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,8 +13,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public static class Point3DExtensions
     {
-        #region Public Methods
-
         /// <summary>
         /// Calculates the distance from p1 to p2.
         /// </summary>
@@ -104,6 +102,5 @@ namespace HelixToolkit.Wpf
             return new Point3D(x, y, z);
         }
 
-        #endregion
     }
 }

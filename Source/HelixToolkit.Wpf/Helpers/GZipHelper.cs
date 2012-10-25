@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GZipHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,11 +14,9 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class GZipHelper
     {
-        #region Public Methods
-
         /// <summary>
-        /// Compresses a file using standard zlib compression. 
-        ///   A "z" is added to the extension for the compressed file.
+        /// Compresses a file using standard zlib compression.
+        /// A "z" is added to the extension for the compressed file.
         /// </summary>
         /// <param name="source">
         /// The source.
@@ -41,6 +39,5 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
     }
 }

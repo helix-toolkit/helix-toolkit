@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LightVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,20 +15,14 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class LightVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The light property.
         /// </summary>
         public static readonly DependencyProperty LightProperty = DependencyProperty.Register(
             "Light", typeof(Light), typeof(LightVisual3D), new UIPropertyMetadata(null, LightChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the light.
+        /// Gets or sets the light.
         /// </summary>
         /// <value>The light.</value>
         public Light Light
@@ -43,10 +37,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(LightProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The light changed.
@@ -121,6 +111,5 @@ namespace HelixToolkit.Wpf
             var al = this.Light as AmbientLight;
         }
 
-        #endregion
     }
 }

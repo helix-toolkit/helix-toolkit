@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScreenSpaceVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,22 +17,20 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public abstract class ScreenSpaceVisual3D : RenderingModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The color property.
+        /// The color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(Colors.Black, ColorChanged));
 
         /// <summary>
-        ///   The depth offset property.
+        /// The depth offset property.
         /// </summary>
         public static readonly DependencyProperty DepthOffsetProperty = DependencyProperty.Register(
             "DepthOffset", typeof(double), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
 
         /// <summary>
-        ///   The points property.
+        /// The points property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
             "Points",
@@ -41,26 +39,24 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
-        ///   The clipping object.
+        /// The clipping object.
         /// </summary>
         protected CohenSutherlandClipping Clipping;
 
         /// <summary>
-        ///   The mesh.
+        /// The mesh.
         /// </summary>
         protected MeshGeometry3D Mesh;
 
         /// <summary>
-        ///   The model.
+        /// The model.
         /// </summary>
         protected GeometryModel3D Model;
 
         /// <summary>
-        ///   The is rendering flag.
+        /// The is rendering flag.
         /// </summary>
         private bool isRendering;
-
-        #endregion
 
         /// <summary>
         /// Called when the parent of the 3-D visual object is changed.
@@ -73,10 +69,8 @@ namespace HelixToolkit.Wpf
             this.IsRendering = parent != null;
         }
 
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ScreenSpaceVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "ScreenSpaceVisual3D" /> class.
         /// </summary>
         protected ScreenSpaceVisual3D()
         {
@@ -87,15 +81,11 @@ namespace HelixToolkit.Wpf
             this.OnColorChanged();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color.
+        /// Gets or sets the color.
         /// </summary>
         /// <value>
-        ///   The color.
+        /// The color.
         /// </value>
         public Color Color
         {
@@ -111,11 +101,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the depth offset.
-        ///   A small positive number (0.0001) will move the visual slightly in front of other objects.
+        /// Gets or sets the depth offset.
+        /// A small positive number (0.0001) will move the visual slightly in front of other objects.
         /// </summary>
         /// <value>
-        ///   The depth offset.
+        /// The depth offset.
         /// </value>
         public double DepthOffset
         {
@@ -131,8 +121,8 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is being rendered.
-        ///   When the visual is removed from the visual tree, this property should be set to false.
+        /// Gets or sets a value indicating whether this instance is being rendered.
+        /// When the visual is removed from the visual tree, this property should be set to false.
         /// </summary>
         public bool IsRendering
         {
@@ -159,10 +149,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the points collection.
+        /// Gets or sets the points collection.
         /// </summary>
         /// <value>
-        ///   The points collection.
+        /// The points collection.
         /// </value>
         public IList<Point3D> Points
         {
@@ -176,10 +166,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(PointsProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The geometry changed.
@@ -280,9 +266,6 @@ namespace HelixToolkit.Wpf
 
             this.Clipping = new CohenSutherlandClipping(10, vp.ActualWidth - 20, 10, vp.ActualHeight - 20);
         }
-
-        #endregion
-
 
     }
 }

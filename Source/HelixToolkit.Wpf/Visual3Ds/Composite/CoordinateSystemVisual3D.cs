@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CoordinateSystemVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class CoordinateSystemVisual3D : ModelVisual3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The arrow lengths property.
         /// </summary>
@@ -53,24 +51,16 @@ namespace HelixToolkit.Wpf
             typeof(CoordinateSystemVisual3D),
             new UIPropertyMetadata(Color.FromRgb(75, 75, 150)));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "CoordinateSystemVisual3D" /> class.
+        /// Initializes a new instance of the <see cref = "CoordinateSystemVisual3D" /> class.
         /// </summary>
         public CoordinateSystemVisual3D()
         {
             this.OnGeometryChanged();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the arrow lengths.
+        /// Gets or sets the arrow lengths.
         /// </summary>
         /// <value>The arrow lengths.</value>
         public double ArrowLengths
@@ -87,7 +77,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the color of the X axis.
+        /// Gets or sets the color of the X axis.
         /// </summary>
         /// <value>The color of the X axis.</value>
         public Color XAxisColor
@@ -104,7 +94,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the color of the Y axis.
+        /// Gets or sets the color of the Y axis.
         /// </summary>
         /// <value>The color of the Y axis.</value>
         public Color YAxisColor
@@ -121,7 +111,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the color of the Z axis.
+        /// Gets or sets the color of the Z axis.
         /// </summary>
         /// <value>The color of the Z axis.</value>
         public Color ZAxisColor
@@ -136,10 +126,6 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ZAxisColorProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The geometry changed.
@@ -191,6 +177,5 @@ namespace HelixToolkit.Wpf
             this.Children.Add(new CubeVisual3D { SideLength = d, Fill = Brushes.Black });
         }
 
-        #endregion
     }
 }

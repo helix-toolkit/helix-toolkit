@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SphereVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,15 +14,13 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class SphereVisual3D : MeshElement3D
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The center property.
         /// </summary>
         public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
-            "Center", 
-            typeof(Point3D), 
-            typeof(SphereVisual3D), 
+            "Center",
+            typeof(Point3D),
+            typeof(SphereVisual3D),
             new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
@@ -43,12 +41,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(SphereVisual3D), new PropertyMetadata(60, GeometryChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the center of the sphere.
+        /// Gets or sets the center of the sphere.
         /// </summary>
         /// <value>The center.</value>
         public Point3D Center
@@ -65,7 +59,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of divisions in the phi direction (from "top" to "bottom").
+        /// Gets or sets the number of divisions in the phi direction (from "top" to "bottom").
         /// </summary>
         /// <value>The phi div.</value>
         public int PhiDiv
@@ -82,7 +76,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the radius of the sphere.
+        /// Gets or sets the radius of the sphere.
         /// </summary>
         /// <value>The radius.</value>
         public double Radius
@@ -99,7 +93,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the number of divisions in the theta direction (around the sphere).
+        /// Gets or sets the number of divisions in the theta direction (around the sphere).
         /// </summary>
         /// <value>The theta div.</value>
         public int ThetaDiv
@@ -115,10 +109,6 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
@@ -130,6 +120,5 @@ namespace HelixToolkit.Wpf
             return builder.ToMesh();
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StereoView3D.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: Ms-PL
+//   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,8 +11,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public partial class StereoView3D : StereoControl
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="StereoView3D"/> class.
         /// </summary>
@@ -22,6 +20,5 @@ namespace HelixToolkit.Wpf
             this.BindViewports(this.LeftView, this.RightView);
         }
 
-        #endregion
     }
 }
