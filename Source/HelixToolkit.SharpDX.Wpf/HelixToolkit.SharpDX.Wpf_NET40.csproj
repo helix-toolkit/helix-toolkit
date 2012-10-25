@@ -75,10 +75,30 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CameraExtensions.cs" />
+    <Compile Include="Controls\Element3DCollection.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
+    <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\PanHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\RotateHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\TouchMode.cs" />
+    <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
     <Compile Include="Controls\RenderContext.cs" />
     <Compile Include="Controls\Trackball.cs" />
+    <Compile Include="Controls\Viewport3DX.Properties.cs" />
+    <Compile Include="Controls\ViewportExtensions.cs" />
+    <Compile Include="Controls\ViewportCommands.cs" />
+    <Compile Include="Core\HelixToolkitException.cs" />
+    <Compile Include="Core\Ray3.cs" />
+    <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Model\GroupElement3D.cs" />
+    <Compile Include="Model\MatrixCamera.cs" />
+    <Compile Include="Core\Vector3DExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -147,6 +167,12 @@
     <None Include="Shaders\Default.fx" />
     <Content Include="Shaders\Lighting.fx" />
     <Content Include="Shaders\Simple.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj">
+      <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
+      <Name>HelixToolkit.Wpf_NET40</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(SolutionDir)..\Tools\Pepita\PepitaGet.dll" />
