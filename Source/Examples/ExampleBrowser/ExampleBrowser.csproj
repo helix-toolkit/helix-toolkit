@@ -63,26 +63,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="3DTools">
       <HintPath>..\..\..\Components\3DTools.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NAudio, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NAudio.1.5\lib\NAudio.dll</HintPath>
+      <HintPath>..\..\packages\NAudio.1.6\lib\net20\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
-    <Reference Include="PropertyTools, Version=2012.4.8.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+    <Reference Include="PropertyTools, Version=2012.4.12.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\PropertyTools.Wpf.2012.4.8.1\lib\NET45\PropertyTools.dll</HintPath>
+      <HintPath>..\..\packages\PropertyTools.Wpf.2012.4.12.1\lib\NET45\PropertyTools.dll</HintPath>
     </Reference>
-    <Reference Include="PropertyTools.Wpf, Version=2012.4.8.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+    <Reference Include="PropertyTools.Wpf, Version=2012.4.12.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\PropertyTools.Wpf.2012.4.8.1\lib\NET45\PropertyTools.Wpf.dll</HintPath>
+      <HintPath>..\..\packages\PropertyTools.Wpf.2012.4.12.1\lib\NET45\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
