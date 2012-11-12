@@ -62,6 +62,7 @@ namespace ExampleBrowser
             this.Examples.Add(new Example(typeof(VoxelDemo.MainWindow), null, "Edit a voxel scene by clicking the sides of the voxels."));
             this.Examples.Add(new Example(typeof(WiiDemo.MainWindow), null, "Change the transformation of a model by the Wii remote."));
             this.Examples.Add(new Example(typeof(WindDemo.MainWindow), null, "Head tracking by the Wii remote."));
+            this.Examples.Add(new Example(typeof(DataTemplateDemo.MainWindow), null, "Creating Visual3Ds by a template."));
         }
 
         /// <summary>
