@@ -252,9 +252,16 @@
         /// <summary>
         /// Updates the visuals.
         /// </summary>
-        protected virtual void UpdateVisuals()
+        protected void UpdateVisuals()
         {
             this.canvas.Children.Clear();
+            this.AddVisuals();
+        }
+
+        /// <summary>
+        /// Adds the visuals.
+        /// </summary>
+        protected virtual void AddVisuals() {
             switch (this.Position)
             {
                 case ColorAxisPosition.Left:

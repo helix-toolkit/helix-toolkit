@@ -181,9 +181,15 @@
         /// <summary>
         /// Updates the visuals.
         /// </summary>
-        protected override void UpdateVisuals()
+        protected override void AddVisuals()
         {
-            base.UpdateVisuals();
+            if (this.Maximum <= this.Minimum || this.Step <= 0 || this.ColorScheme == null)
+            {
+                return;
+            }
+
+            base.AddVisuals();
+
 
             double miny = this.ColorArea.Bottom - this.MinimumTextureCoordinate * this.ColorArea.Height;
             double maxy = this.ColorArea.Bottom - this.MaximumTextureCoordinate * this.ColorArea.Height;
@@ -228,18 +234,18 @@
                                 SnapsToDevicePixels = true
                             };
                 canvas.Children.Add(l);
-                
+
                 double h = tb.DesiredSize.Height * 0.7;
                 if (v < this.Maximum && Math.Abs(y - ymax) < h)
                 {
                     continue;
                 }
-                
+
                 if (Math.Abs(y - p) < h)
                 {
                     continue;
                 }
-            
+
                 Canvas.SetLeft(tb, p2.X);
                 Canvas.SetTop(tb, p2.Y);
                 canvas.Children.Add(tb);
