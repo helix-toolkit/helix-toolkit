@@ -51,15 +51,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Creates a gradient brush from a list of colors.
         /// </summary>
-        /// <param name="colors">
-        /// The colors.
-        /// </param>
-        /// <returns>
-        /// A LinearGradientBrush.
-        /// </returns>
-        public static LinearGradientBrush CreateGradientBrush(IList<Color> colors)
+        /// <param name="colors">The colors.</param>
+        /// <param name="horizontal">if set to <c>true</c> [horizontal].</param>
+        /// <returns>A LinearGradientBrush.</returns>
+        public static LinearGradientBrush CreateGradientBrush(IList<Color> colors, bool horizontal = true)
         {
-            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
+            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = horizontal ? new Point(1, 0) : new Point(0, 1) };
             int n = colors.Count;
             for (int i = 0; i < n; i++)
             {
@@ -88,15 +85,13 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Creates a HSV brush.
         /// </summary>
-        /// <param name="alpha">
-        /// The opacity (0-1).
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static LinearGradientBrush CreateHsvBrush(double alpha)
+        /// <param name="alpha">The opacity (0-1).</param>
+        /// <param name="horizontal">if set to <c>true</c> [horizontal].</param>
+        /// <returns>LinearGradientBrush.</returns>
+        public static LinearGradientBrush CreateHsvBrush(double alpha = 1, bool horizontal = true)
         {
             var a = (byte)(alpha * 255);
-            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
+            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = horizontal ? new Point(1, 0) : new Point(0, 1) };
             brush.GradientStops.Add(new GradientStop(Color.FromArgb(a, 0xff, 0x00, 0x00), 0.00));
             brush.GradientStops.Add(new GradientStop(Color.FromArgb(a, 0xff, 0xff, 0x00), 0.17));
             brush.GradientStops.Add(new GradientStop(Color.FromArgb(a, 0x00, 0xff, 0x00), 0.33));
@@ -113,9 +108,9 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A rainbow brush.
         /// </returns>
-        public static LinearGradientBrush CreateRainbowBrush()
+        public static LinearGradientBrush CreateRainbowBrush(bool horizontal = true)
         {
-            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
+            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = horizontal ? new Point(1, 0) : new Point(0, 1) };
             brush.GradientStops.Add(new GradientStop(Colors.Red, 0.00));
             brush.GradientStops.Add(new GradientStop(Colors.Orange, 0.17));
             brush.GradientStops.Add(new GradientStop(Colors.Yellow, 0.33));
@@ -129,15 +124,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Creates a 'stepped' gradient brush from a list of colors.
         /// </summary>
-        /// <param name="colors">
-        /// The colors.
-        /// </param>
-        /// <returns>
-        /// A gradientbrush.
-        /// </returns>
-        public static LinearGradientBrush CreateSteppedGradientBrush(IList<Color> colors)
+        /// <param name="colors">The colors.</param>
+        /// <param name="horizontal">if set to <c>true</c> [horizontal].</param>
+        /// <returns>A gradientbrush.</returns>
+        public static LinearGradientBrush CreateSteppedGradientBrush(IList<Color> colors, bool horizontal = true)
         {
-            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
+            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = horizontal ? new Point(1, 0) : new Point(0, 1) };
             int n = colors.Count;
             for (int i = 0; i < n; i++)
             {
