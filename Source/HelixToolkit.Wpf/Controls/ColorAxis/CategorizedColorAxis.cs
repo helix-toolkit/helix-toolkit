@@ -52,13 +52,14 @@
         /// <summary>
         /// Updates the visuals.
         /// </summary>
-        protected override void UpdateVisuals()
+        protected override void AddVisuals()
         {
-            base.UpdateVisuals();
-            if (this.Categories == null)
+            if (this.Categories == null || this.Categories.Count == 0 || this.ColorScheme == null)
             {
                 return;
             }
+
+            base.AddVisuals();
 
             for (int i = 0; i < this.Categories.Count; i++)
             {
