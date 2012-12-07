@@ -146,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\DataTemplate\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\Dna\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -327,6 +331,12 @@
     <Compile Include="Examples\CuttingPlanes\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\DataTemplate\DataTemplate3D.cs" />
+    <Compile Include="Examples\DataTemplate\Element.cs" />
+    <Compile Include="Examples\DataTemplate\ItemsVisual3D.cs" />
+    <Compile Include="Examples\DataTemplate\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\Dna\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -489,6 +499,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\DataTemplateDemo_small.png" />
     <Resource Include="Images\ColorAxisDemo_small.png" />
     <Resource Include="Images\TextDemo_small.png" />
     <Resource Include="Images\MazeDemo_small.png" />
