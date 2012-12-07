@@ -490,6 +490,11 @@ namespace HelixToolkit.Wpf
             this.OnClicked(lookDirection, upDirection);
         }
 
+        /// <summary>
+        /// Called when a face was clicked.
+        /// </summary>
+        /// <param name="lookDirection">The look direction.</param>
+        /// <param name="upDirection">Up direction.</param>
         protected virtual void OnClicked(Vector3D lookDirection, Vector3D upDirection)
         {
             var clicked = this.Clicked;
@@ -499,9 +504,21 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Class ClickedEventArgs
+        /// </summary>
         public class ClickedEventArgs : EventArgs
         {
+            /// <summary>
+            /// Gets or sets the look direction.
+            /// </summary>
+            /// <value>The look direction.</value>
             public Vector3D LookDirection { get; set; }
+
+            /// <summary>
+            /// Gets or sets up direction.
+            /// </summary>
+            /// <value>Up direction.</value>
             public Vector3D UpDirection { get; set; }
         }
 

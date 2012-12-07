@@ -6,9 +6,7 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -88,23 +86,24 @@ namespace HelixToolkit.Wpf
             for (int i = 0; i < numPoints; i++)
             {
                 var screenPoint = (Point4D)points[i] * this.visualToScreen;
+
+                double spx = screenPoint.X;
+                double spy = screenPoint.Y;
+                double spz = screenPoint.Z;
+                double spw = screenPoint.W;
+
+                if (!depthOffset.Equals(0))
+                {
+                    spz -= depthOffset * spw;
+                }
+
+                var p0 = new Point4D(spx, spy, spz, spw) * this.screenToVisual;
+                double pwinverse = 1 / p0.W;
+
                 foreach (var v in outline)
                 {
-                    var p = screenPoint;
-                    p.X += v.X * p.W;
-                    p.Y += v.Y * p.W;
-                    if (depthOffset != 0)
-                    {
-                        p.Z -= depthOffset * p.W;
-                        p *= this.screenToVisual;
-                        positions.Add(new Point3D(p.X / p.W, p.Y / p.W, p.Z / p.W));
-                    }
-                    else
-                    {
-                        p *= this.screenToVisual;
-                        Debug.Assert(Math.Abs(p.W - 1) < 1e-6, "Something wrong with the homogeneous coordinates.");
-                        positions.Add(new Point3D(p.X, p.Y, p.Z));
-                    }
+                    var p = new Point4D(spx + v.X * spw, spy + v.Y * spw, spz, spw) * this.screenToVisual;
+                    positions.Add(new Point3D(p.X * pwinverse, p.Y * pwinverse, p.Z * pwinverse));
                 }
             }
 
@@ -118,40 +117,54 @@ namespace HelixToolkit.Wpf
         /// <param name="position">The position (centre).</param>
         /// <param name="width">The width of the billboard.</param>
         /// <param name="height">The height of the billboard.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         /// <param name="depthOffset">The depth offset.</param>
         /// <returns>The points of the billboard.</returns>
-        public Point3DCollection CreateBillboard(Point3D position, double width = 1.0, double height = 1.0, double depthOffset = 0.0)
+        public Point3DCollection CreateBillboard(Point3D position, double width = 1.0, double height = 1.0, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, VerticalAlignment verticalAlignment = VerticalAlignment.Center, double depthOffset = 0.0)
         {
-            double halfWidth = width / 2.0;
-            double halfHeight = height / 2.0;
+            // Set horizontal alignment factor
+            var xa = -0.5;
+            if (horizontalAlignment == HorizontalAlignment.Left) xa = 0;
+            if (horizontalAlignment == HorizontalAlignment.Right) xa = -1;
+
+            // Set vertical alignment factor
+            var ya = -0.5;
+            if (verticalAlignment == VerticalAlignment.Top) ya = 0;
+            if (verticalAlignment == VerticalAlignment.Bottom) ya = -1;
+
+            double x0 = xa * width;
+            double x1 = x0 + width;
+            double y0 = ya * height;
+            double y1 = y0 + height;
 
             var outline = new[]
                 {
-                    new Vector(-halfWidth, halfHeight), new Vector(-halfWidth, -halfHeight), new Vector(halfWidth, halfHeight),
-                    new Vector(halfWidth, -halfHeight)
+                    new Vector(x0, y1), new Vector(x0, y0), new Vector(x1, y1), new Vector(x1, y0)
                 };
 
             var positions = new Point3DCollection(4);
 
-                var screenPoint = (Point4D)position * this.visualToScreen;
-                foreach (var v in outline)
-                {
-                    var p = screenPoint;
-                    p.X += v.X * p.W;
-                    p.Y += v.Y * p.W;
-                    if (depthOffset != 0)
-                    {
-                        p.Z -= depthOffset * p.W;
-                        p *= this.screenToVisual;
-                        positions.Add(new Point3D(p.X / p.W, p.Y / p.W, p.Z / p.W));
-                    }
-                    else
-                    {
-                        p *= this.screenToVisual;
-                        Debug.Assert(Math.Abs(p.W - 1) < 1e-6, "Something wrong with the homogeneous coordinates.");
-                        positions.Add(new Point3D(p.X, p.Y, p.Z));
-                    }
-                }
+            var screenPoint = (Point4D)position * this.visualToScreen;
+            double spx = screenPoint.X;
+            double spy = screenPoint.Y;
+            double spz = screenPoint.Z;
+            double spw = screenPoint.W;
+
+            if (!depthOffset.Equals(0))
+            {
+                spz -= depthOffset * spw;
+            }
+
+            var p0 = new Point4D(spx, spy, spz, spw) * this.screenToVisual;
+            double pwinverse = 1 / p0.W;
+
+            foreach (var v in outline)
+            {
+                var p = new Point4D(spx + v.X * spw, spy + v.Y * spw, spz, spw) * this.screenToVisual;
+                // Debug.Assert(Math.Abs(p.W - 1) < 1e-6, "Something wrong with the homogeneous coordinates.");
+                positions.Add(new Point3D(p.X * pwinverse, p.Y * pwinverse, p.Z * pwinverse));
+            }
 
             positions.Freeze();
             return positions;

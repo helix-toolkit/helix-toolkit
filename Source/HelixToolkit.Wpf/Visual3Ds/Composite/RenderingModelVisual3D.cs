@@ -1,12 +1,14 @@
 namespace HelixToolkit.Wpf
 {
-    using System.Diagnostics;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     /// <summary>
     /// Provides an abstract base class for ModelVisual3D objects that listens to the CompositionTarget.Rendering event.
     /// </summary>
+    /// <remarks>
+    /// The RenderingEventManager is used to ensure a weak reference to CompositionTargetRendering.
+    /// </remarks>
     public abstract class RenderingModelVisual3D : ModelVisual3D
     {
         private readonly RenderingEventListener renderingEventListener;
@@ -22,7 +24,7 @@ namespace HelixToolkit.Wpf
 #if DEBUG
         ~RenderingModelVisual3D()
         {
-            Debug.WriteLine(this.GetType() + " finalized.");
+            System.Diagnostics.Debug.WriteLine(this.GetType() + " finalized.");
         }
 #endif
 

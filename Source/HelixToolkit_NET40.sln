@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.Input_NET4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf_NET40", "HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj", "{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{3C7DCAEE-CBFD-420F-9344-1812F1AA7169}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser_NET40", "Examples\ExampleBrowser\ExampleBrowser_NET40.csproj", "{991A4C2B-D830-41CB-A810-047ADCF69219}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,8 +39,21 @@ Global
 		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x86.ActiveCfg = Release|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{991A4C2B-D830-41CB-A810-047ADCF69219} = {3C7DCAEE-CBFD-420F-9344-1812F1AA7169}
 	EndGlobalSection
 EndGlobal
