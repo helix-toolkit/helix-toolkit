@@ -12,6 +12,21 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type local:ColorAxis}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ColorAxis}">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <Canvas Name="PART_Canvas" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <local:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
 

@@ -29,6 +29,7 @@ namespace ExampleBrowser
             this.Examples.Add(new Example(typeof(CameraControlDemo.MainWindow), null, "Shows the camera options in the HelixViewport3D."));
             this.Examples.Add(new Example(typeof(ChamferDemo.MainWindow), null, "Chamfers the corner of a cube by the MeshBuilder.ChamferCorner method."));
             this.Examples.Add(new Example(typeof(ClothDemo.MainWindow), null, "Simulates cloth physics."));
+            this.Examples.Add(new Example(typeof(ColorAxisDemo.MainWindow), null, "Displays color axes (defined by gradient brushes) over the 3D view."));
             this.Examples.Add(new Example(typeof(ContourDemo.MainWindow), null, "Calculates the contours of an imported model by the MeshGeometryHelper."));
             this.Examples.Add(new Example(typeof(CuttingPlanesDemo.MainWindow), null, "Applies cutting planes to a model."));
             this.Examples.Add(new Example(typeof(DnaDemo.MainWindow), null, "Shows a double helix, the first exmaple of this library :)"));
