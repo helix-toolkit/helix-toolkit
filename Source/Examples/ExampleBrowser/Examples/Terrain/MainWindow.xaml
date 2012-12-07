@@ -1,0 +1,12 @@
+﻿<Window x:Class="TerrainDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="TerrainDemo" Height="480" Width="640">
+    <Grid>
+        <t:HelixViewport3D x:Name="view1">
+            <t:DefaultLights/>
+            <t:TerrainVisual3D Source="Examples/Terrain/Models/crater_0513.btz"/>
+            <t:CubeVisual3D/>
+        </t:HelixViewport3D>
+    </Grid>
+</Window>

@@ -1,0 +1,9 @@
+﻿// http://en.wikipedia.org/wiki/Klein_bottle
+
+u *= 2 * pi;
+v *= 2 * pi;
+double r = 2;
+
+x = (r + cos(0.5 * u) * sin(v) - sin(0.5 * u) * sin(2 * v)) * cos(u);
+y = (r + cos(0.5 * u) * sin(v) - sin(0.5 * u) * sin(2 * v)) * sin(u);
+z = sin(0.5 * u) * sin(v) + cos(0.5 * u) * sin(2 * v);

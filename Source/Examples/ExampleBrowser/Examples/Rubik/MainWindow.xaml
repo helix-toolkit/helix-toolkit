@@ -1,0 +1,17 @@
+﻿<Window x:Class="RubikDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" xmlns:local="clr-namespace:RubikDemo" 
+        Title="RubikDemo" 
+        Height="480" Width="640" PreviewKeyDown="HandleKeyDown">
+    <Grid >
+        <t:HelixViewport3D x:Name="view1" Background="Black">
+            <t:DefaultLights/>
+            <local:RubikCube x:Name="cube1" Size="3"/>
+        </t:HelixViewport3D>
+        <TextBlock x:Name="info" HorizontalAlignment="Center"  VerticalAlignment="Bottom" 
+                   Margin="4" 
+                   FontSize="16"
+                   Foreground="#80FFFFFF"
+                   Text="Keys: L,R,U,D,B,T (rotate), Space (random move), Backspace (undo), +/- change size"/>
+    </Grid>
+</Window>
