@@ -18,31 +18,31 @@ namespace HelixToolkit.Wpf
         /// The phi div property.
         /// </summary>
         public static readonly DependencyProperty PhiDivProperty = DependencyProperty.Register(
-            "PhiDiv", typeof(int), typeof(SphereVisual3D), new PropertyMetadata(30, GeometryChanged));
+            "PhiDiv", typeof(int), typeof(EllipsoidVisual3D), new PropertyMetadata(30, GeometryChanged));
 
         /// <summary>
         /// The x radius property.
         /// </summary>
         public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register(
-            "RadiusX", typeof(double), typeof(SphereVisual3D), new PropertyMetadata(1.0, GeometryChanged));
+            "RadiusX", typeof(double), typeof(EllipsoidVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
         /// The y radius property.
         /// </summary>
         public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register(
-            "RadiusY", typeof(double), typeof(SphereVisual3D), new PropertyMetadata(1.0, GeometryChanged));
+            "RadiusY", typeof(double), typeof(EllipsoidVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
         /// The z radius property.
         /// </summary>
         public static readonly DependencyProperty RadiusZProperty = DependencyProperty.Register(
-            "RadiusZ", typeof(double), typeof(SphereVisual3D), new PropertyMetadata(1.0, GeometryChanged));
+            "RadiusZ", typeof(double), typeof(EllipsoidVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
         /// The theta div property.
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
-            "ThetaDiv", typeof(int), typeof(SphereVisual3D), new PropertyMetadata(60, GeometryChanged));
+            "ThetaDiv", typeof(int), typeof(EllipsoidVisual3D), new PropertyMetadata(60, GeometryChanged));
 
         /// <summary>
         /// Gets or sets the number of divisions in the phi direction (from "top" to "bottom").
