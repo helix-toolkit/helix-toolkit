@@ -546,7 +546,7 @@ namespace HelixToolkit.Wpf
 
             if (name != null)
             {
-                this.materials.Add(name, mg);
+                this.materials[name] = mg;
             }
         }
 
