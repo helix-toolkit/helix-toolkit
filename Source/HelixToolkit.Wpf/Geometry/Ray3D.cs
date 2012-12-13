@@ -2,11 +2,12 @@
 // <copyright file="Ray3D.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   Represents a 3D ray.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
-    using System.Diagnostics;
     using System.Windows.Media.Media3D;
 
     /// <summary>
@@ -14,6 +15,16 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Ray3D
     {
+        /// <summary>
+        /// The direction
+        /// </summary>
+        private Vector3D direction;
+
+        /// <summary>
+        /// The origin
+        /// </summary>
+        private Point3D origin;
+
         /// <summary>
         /// Initializes a new instance of the <see cref = "Ray3D" /> class.
         /// </summary>
@@ -55,13 +66,35 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the direction.
         /// </summary>
         /// <value>The direction.</value>
-        public Vector3D Direction { get; set; }
+        public Vector3D Direction
+        {
+            get
+            {
+                return this.direction;
+            }
+
+            set
+            {
+                this.direction = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the origin.
         /// </summary>
         /// <value>The origin.</value>
-        public Point3D Origin { get; set; }
+        public Point3D Origin
+        {
+            get
+            {
+                return this.origin;
+            }
+
+            set
+            {
+                this.origin = value;
+            }
+        }
 
         /// <summary>
         /// Gets the point on the ray that is nearest the specified point.
@@ -70,34 +103,60 @@ namespace HelixToolkit.Wpf
         /// The point.
         /// </param>
         /// <returns>
+        /// The nearest point on the ray.
         /// </returns>
         public Point3D GetNearest(Point3D p3)
         {
-            double l = this.Direction.LengthSquared;
-            Debug.Assert(l != 0);
-            double u = ((p3.X - this.Origin.X) * this.Direction.X + (p3.Y - this.Origin.Y) * this.Direction.Y
-                        + (p3.Z - this.Origin.Z) * this.Direction.Z) / l;
-            return this.Origin + u * this.Direction;
+            return this.origin
+                   + (Vector3D.DotProduct(p3 - this.origin, this.direction) / this.direction.LengthSquared
+                      * this.direction);
         }
 
         /// <summary>
         /// Finds the intersection with a plane.
         /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="normal">The normal.</param>
-        /// <returns>The intersection point.</returns>
+        /// <param name="position">
+        /// A point on the plane.
+        /// </param>
+        /// <param name="normal">
+        /// The normal of the plane.
+        /// </param>
+        /// <returns>
+        /// The intersection point.
+        /// </returns>
         public Point3D? PlaneIntersection(Point3D position, Vector3D normal)
+        {
+            Point3D intersection;
+            if (this.PlaneIntersection(position, normal, out intersection))
+            {
+                return intersection;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the intersection with a plane.
+        /// </summary>
+        /// <param name="position">A point on the plane.</param>
+        /// <param name="normal">The normal of the plane.</param>
+        /// <param name="intersection">The intersection point.</param>
+        /// <returns>
+        /// True if a intersection was found.
+        /// </returns>
+        public bool PlaneIntersection(Point3D position, Vector3D normal, out Point3D intersection)
         {
             // http://paulbourke.net/geometry/planeline/
             double dn = Vector3D.DotProduct(normal, this.Direction);
-            if (dn == 0)
+            if (dn.Equals(0))
             {
-                return null;
+                intersection = default(Point3D);
+                return false;
             }
 
-            double u = Vector3D.DotProduct(normal, position - this.Origin) / dn;
-            return this.Origin + u * this.Direction;
+            double u = Vector3D.DotProduct(normal, position - this.origin) / dn;
+            intersection = this.Origin + (u * this.direction);
+            return true;
         }
-
     }
 }

@@ -636,11 +636,11 @@ namespace HelixToolkit.Wpf
                 orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
                 var oldTarget = camera.Position + camera.LookDirection;
                 var distance = camera.LookDirection.Length;
-                var newTarget = centerRay.PlaneIntersection(oldTarget, w);
-                if (newTarget != null)
+                Point3D newTarget;
+                if (centerRay.PlaneIntersection(oldTarget, w, out newTarget))
                 {
                     orthographicCamera.LookDirection = w * distance;
-                    orthographicCamera.Position = newTarget.Value - orthographicCamera.LookDirection;
+                    orthographicCamera.Position = newTarget - orthographicCamera.LookDirection;
                 }
             }
         }
