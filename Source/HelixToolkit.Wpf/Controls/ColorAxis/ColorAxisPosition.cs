@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ColorAxisPosition.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: MIT
+// </copyright>
+// <summary>
+//   Defines the position of a color axis.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf
 {
     /// <summary>
     /// Defines the position of a color axis.
