@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ColorAxis.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: MIT
+// </copyright>
+// <summary>
+//   The base class for color axes.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -21,22 +30,10 @@
             "BarWidth", typeof(double), typeof(ColorAxis), new UIPropertyMetadata(20.0));
 
         /// <summary>
-        /// The border brush property
-        /// </summary>
-        public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(ColorAxis), new UIPropertyMetadata(Brushes.Black));
-
-        /// <summary>
         /// The color scheme property
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty = DependencyProperty.Register(
             "ColorScheme", typeof(Brush), typeof(ColorAxis), new UIPropertyMetadata(null, PropertyChanged));
-
-        /// <summary>
-        /// The padding property
-        /// </summary>
-        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
-            "Padding", typeof(Thickness), typeof(ColorAxis), new UIPropertyMetadata(new Thickness(8)));
 
         /// <summary>
         /// The position property
@@ -55,16 +52,6 @@
         /// </summary>
         public static readonly DependencyProperty TickLengthProperty = DependencyProperty.Register(
             "TickLength", typeof(double), typeof(ColorAxis), new UIPropertyMetadata(3.0));
-
-        /// <summary>
-        /// The color rectangle area.
-        /// </summary>
-        protected Rect ColorArea;
-
-        /// <summary>
-        /// The canvas
-        /// </summary>
-        protected Canvas canvas;
 
         /// <summary>
         /// Initializes static members of the <see cref="ColorAxis" /> class.
@@ -94,25 +81,10 @@
             {
                 return (double)this.GetValue(BarWidthProperty);
             }
+
             set
             {
                 this.SetValue(BarWidthProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the border brush.
-        /// </summary>
-        /// <value>The border brush.</value>
-        public Brush BorderBrush
-        {
-            get
-            {
-                return (Brush)this.GetValue(BorderBrushProperty);
-            }
-            set
-            {
-                this.SetValue(BorderBrushProperty, value);
             }
         }
 
@@ -126,25 +98,10 @@
             {
                 return (Brush)this.GetValue(ColorSchemeProperty);
             }
+
             set
             {
                 this.SetValue(ColorSchemeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the padding.
-        /// </summary>
-        /// <value>The padding.</value>
-        public Thickness Padding
-        {
-            get
-            {
-                return (Thickness)this.GetValue(PaddingProperty);
-            }
-            set
-            {
-                this.SetValue(PaddingProperty, value);
             }
         }
 
@@ -158,6 +115,7 @@
             {
                 return (ColorAxisPosition)this.GetValue(PositionProperty);
             }
+
             set
             {
                 this.SetValue(PositionProperty, value);
@@ -174,6 +132,7 @@
             {
                 return (double)this.GetValue(TextMarginProperty);
             }
+
             set
             {
                 this.SetValue(TextMarginProperty, value);
@@ -190,11 +149,22 @@
             {
                 return (double)this.GetValue(TickLengthProperty);
             }
+
             set
             {
                 this.SetValue(TickLengthProperty, value);
             }
         }
+
+        /// <summary>
+        /// Gets the canvas.
+        /// </summary>
+        protected Canvas Canvas { get; private set; }
+
+        /// <summary>
+        /// Gets the color rectangle area.
+        /// </summary>
+        protected Rect ColorArea { get; private set; }
 
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call
@@ -205,44 +175,108 @@
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.canvas = (Canvas)this.GetTemplateChild("PART_Canvas");
+            this.Canvas = (Canvas)this.GetTemplateChild("PART_Canvas");
         }
 
         /// <summary>
         /// Handles changes in properties.
         /// </summary>
-        /// <param name="d">The sender.</param>
-        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+        /// <param name="d">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// </param>
         protected static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((ColorAxis)d).UpdateVisuals();
         }
 
         /// <summary>
+        /// Adds the visuals.
+        /// </summary>
+        protected virtual void AddVisuals()
+        {
+            switch (this.Position)
+            {
+                case ColorAxisPosition.Left:
+                    this.ColorArea = new Rect(
+                        this.Padding.Left, 
+                        this.Padding.Top, 
+                        this.BarWidth, 
+                        this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
+                    break;
+                case ColorAxisPosition.Right:
+                    this.ColorArea = new Rect(
+                        this.ActualWidth - this.Padding.Right - this.BarWidth, 
+                        this.Padding.Top, 
+                        this.BarWidth, 
+                        this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
+                    break;
+            }
+
+            var r = new Rectangle
+                        {
+                            Fill = this.ColorScheme, 
+                            Width = this.ColorArea.Width, 
+                            Height = this.ColorArea.Height
+                        };
+            Canvas.SetLeft(r, this.ColorArea.Left);
+            Canvas.SetTop(r, this.ColorArea.Top);
+            this.Canvas.Children.Add(r);
+
+            this.Canvas.Children.Add(
+                new Line
+                    {
+                        Stroke = this.Foreground, 
+                        StrokeThickness = 1, 
+                        SnapsToDevicePixels = true, 
+                        X1 = this.ColorArea.Left, 
+                        Y1 = this.ColorArea.Top, 
+                        X2 = this.ColorArea.Left, 
+                        Y2 = this.ColorArea.Bottom
+                    });
+            this.Canvas.Children.Add(
+                new Line
+                    {
+                        Stroke = this.Foreground, 
+                        StrokeThickness = 1, 
+                        SnapsToDevicePixels = true, 
+                        X1 = this.ColorArea.Right, 
+                        Y1 = this.ColorArea.Top, 
+                        X2 = this.ColorArea.Right, 
+                        Y2 = this.ColorArea.Bottom
+                    });
+        }
+
+        /// <summary>
         /// Gets the tick labels.
         /// </summary>
-        /// <returns>IEnumerable{System.String}.</returns>
+        /// <returns>The labels.</returns>
         protected abstract IEnumerable<string> GetTickLabels();
 
         /// <summary>
-        /// Measures the child elements of a <see cref="T:System.Windows.Controls.Canvas" /> in anticipation of arranging them during the
-        ///     <see
-        ///         cref="M:System.Windows.Controls.Canvas.ArrangeOverride(System.Windows.Size)" />
+        /// Measures the child elements of a <see cref="T:System.Windows.Controls.Canvas"/> in anticipation of arranging them during the
+        ///     <see cref="M:System.Windows.Controls.Canvas.ArrangeOverride(System.Windows.Size)"/>
         /// pass.
         /// </summary>
-        /// <param name="constraint">An upper limit <see cref="T:System.Windows.Size" /> that should not be exceeded.</param>
-        /// <returns>A <see cref="T:System.Windows.Size" /> that represents the size that is required to arrange child content.</returns>
+        /// <param name="constraint">
+        /// An upper limit <see cref="T:System.Windows.Size"/> that should not be exceeded.
+        /// </param>
+        /// <returns>
+        /// A <see cref="T:System.Windows.Size"/> that represents the size that is required to arrange child content.
+        /// </returns>
         protected override Size MeasureOverride(Size constraint)
         {
             var size = base.MeasureOverride(constraint);
 
             var maxWidth = this.GetTickLabels().Max(
                 c =>
-                {
-                    var tb = new TextBlock(new Run(c));
-                    tb.Measure(constraint);
-                    return tb.DesiredSize.Width;
-                });
+                    {
+                        var tb = new TextBlock(new Run(c));
+                        tb.Measure(constraint);
+                        return tb.DesiredSize.Width;
+                    });
             size.Width = maxWidth + this.BarWidth + this.TickLength + this.Padding.Left + this.Padding.Right
                          + this.TextMargin;
 
@@ -254,62 +288,8 @@
         /// </summary>
         protected void UpdateVisuals()
         {
-            this.canvas.Children.Clear();
+            this.Canvas.Children.Clear();
             this.AddVisuals();
-        }
-
-        /// <summary>
-        /// Adds the visuals.
-        /// </summary>
-        protected virtual void AddVisuals() {
-            switch (this.Position)
-            {
-                case ColorAxisPosition.Left:
-                    this.ColorArea = new Rect(
-                        this.Padding.Left,
-                        this.Padding.Top,
-                        this.BarWidth,
-                        this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
-                    break;
-                case ColorAxisPosition.Right:
-                    this.ColorArea = new Rect(
-                        this.ActualWidth - this.Padding.Right - this.BarWidth,
-                        this.Padding.Top,
-                        this.BarWidth,
-                        this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
-                    break;
-            }
-
-            var r = new Rectangle
-                        {
-                            Fill = this.ColorScheme,
-                            Width = this.ColorArea.Width,
-                            Height = this.ColorArea.Height
-                        };
-            Canvas.SetLeft(r, this.ColorArea.Left);
-            Canvas.SetTop(r, this.ColorArea.Top);
-            this.canvas.Children.Add(r);
-
-            this.canvas.Children.Add(new Line
-                         {
-                             Stroke = this.Foreground,
-                             StrokeThickness = 1,
-                             SnapsToDevicePixels = true,
-                             X1 = this.ColorArea.Left,
-                             Y1 = this.ColorArea.Top,
-                             X2 = this.ColorArea.Left,
-                             Y2 = this.ColorArea.Bottom
-                         });
-            this.canvas.Children.Add(new Line
-             {
-                 Stroke = this.Foreground,
-                 StrokeThickness = 1,
-                 SnapsToDevicePixels = true,
-                 X1 = this.ColorArea.Right,
-                 Y1 = this.ColorArea.Top,
-                 X2 = this.ColorArea.Right,
-                 Y2 = this.ColorArea.Bottom
-             });
         }
     }
 }

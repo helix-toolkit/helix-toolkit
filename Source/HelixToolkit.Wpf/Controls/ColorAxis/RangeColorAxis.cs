@@ -1,4 +1,12 @@
-﻿namespace HelixToolkit.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RangeColorAxis.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: MIT
+// </copyright>
+// <summary>
+//   Provides a color axis for a numeric value range.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +17,7 @@
     using System.Windows.Shapes;
 
     /// <summary>
-    /// Class RangeColorAxis
+    /// Provides a color axis for a numeric value range.
     /// </summary>
     public class RangeColorAxis : ColorAxis
     {
@@ -67,6 +75,7 @@
             {
                 return (IFormatProvider)this.GetValue(FormatProviderProperty);
             }
+
             set
             {
                 this.SetValue(FormatProviderProperty, value);
@@ -83,6 +92,7 @@
             {
                 return (string)this.GetValue(FormatStringProperty);
             }
+
             set
             {
                 this.SetValue(FormatStringProperty, value);
@@ -99,6 +109,7 @@
             {
                 return (double)this.GetValue(MaximumProperty);
             }
+
             set
             {
                 this.SetValue(MaximumProperty, value);
@@ -115,6 +126,7 @@
             {
                 return (double)this.GetValue(MaximumTextureCoordinateProperty);
             }
+
             set
             {
                 this.SetValue(MaximumTextureCoordinateProperty, value);
@@ -131,6 +143,7 @@
             {
                 return (double)this.GetValue(MinimumProperty);
             }
+
             set
             {
                 this.SetValue(MinimumProperty, value);
@@ -147,6 +160,7 @@
             {
                 return (double)this.GetValue(MinimumTextureCoordinateProperty);
             }
+
             set
             {
                 this.SetValue(MinimumTextureCoordinateProperty, value);
@@ -163,19 +177,11 @@
             {
                 return (double)this.GetValue(StepProperty);
             }
+
             set
             {
                 this.SetValue(StepProperty, value);
             }
-        }
-
-        /// <summary>
-        /// Gets the tick labels.
-        /// </summary>
-        /// <returns>IEnumerable{System.String}.</returns>
-        protected override IEnumerable<string> GetTickLabels()
-        {
-            return this.GetTickValues().Select(v => v.ToString(this.FormatString, this.FormatProvider));
         }
 
         /// <summary>
@@ -190,10 +196,10 @@
 
             base.AddVisuals();
 
-
-            double miny = this.ColorArea.Bottom - this.MinimumTextureCoordinate * this.ColorArea.Height;
-            double maxy = this.ColorArea.Bottom - this.MaximumTextureCoordinate * this.ColorArea.Height;
-            Func<double, double> transform = v => miny + (v - this.Minimum) / (this.Maximum - this.Minimum) * (maxy - miny);
+            double miny = this.ColorArea.Bottom - (this.MinimumTextureCoordinate * this.ColorArea.Height);
+            double maxy = this.ColorArea.Bottom - (this.MaximumTextureCoordinate * this.ColorArea.Height);
+            Func<double, double> transform =
+                v => miny + ((v - this.Minimum) / (this.Maximum - this.Minimum) * (maxy - miny));
 
             double p = double.MinValue;
             double ymax = transform(this.Maximum);
@@ -212,28 +218,28 @@
                         p0 = new Point(this.ColorArea.Right, y);
                         p1 = new Point(this.ColorArea.Left - this.TickLength, y);
                         p2 = new Point(
-                            this.ColorArea.Left - this.TickLength - this.TextMargin - tb.DesiredSize.Width,
-                            y - tb.DesiredSize.Height / 2);
+                            this.ColorArea.Left - this.TickLength - this.TextMargin - tb.DesiredSize.Width, 
+                            y - (tb.DesiredSize.Height / 2));
                         break;
                     default:
                         p0 = new Point(this.ColorArea.Left, y);
                         p1 = new Point(this.ColorArea.Right + this.TickLength, y);
                         p2 = new Point(
-                            this.ColorArea.Right + this.TickLength + this.TextMargin, y - tb.DesiredSize.Height / 2);
+                            this.ColorArea.Right + this.TickLength + this.TextMargin, y - (tb.DesiredSize.Height / 2));
                         break;
                 }
 
                 var l = new Line
                             {
-                                X1 = p0.X,
-                                X2 = p1.X,
-                                Y1 = p0.Y,
-                                Y2 = p1.Y,
-                                Stroke = this.Foreground,
-                                StrokeThickness = 1,
+                                X1 = p0.X, 
+                                X2 = p1.X, 
+                                Y1 = p0.Y, 
+                                Y2 = p1.Y, 
+                                Stroke = this.Foreground, 
+                                StrokeThickness = 1, 
                                 SnapsToDevicePixels = true
                             };
-                canvas.Children.Add(l);
+                this.Canvas.Children.Add(l);
 
                 double h = tb.DesiredSize.Height * 0.7;
                 if (v < this.Maximum && Math.Abs(y - ymax) < h)
@@ -248,16 +254,26 @@
 
                 Canvas.SetLeft(tb, p2.X);
                 Canvas.SetTop(tb, p2.Y);
-                canvas.Children.Add(tb);
+                this.Canvas.Children.Add(tb);
                 p = y;
-
             }
+        }
+
+        /// <summary>
+        /// Gets the tick labels.
+        /// </summary>
+        /// <returns>
+        /// The labels.
+        /// </returns>
+        protected override IEnumerable<string> GetTickLabels()
+        {
+            return this.GetTickValues().Select(v => v.ToString(this.FormatString, this.FormatProvider));
         }
 
         /// <summary>
         /// Gets the tick values.
         /// </summary>
-        /// <returns>IEnumerable{System.Double}.</returns>
+        /// <returns>The tick values</returns>
         private IEnumerable<double> GetTickValues()
         {
             yield return this.Minimum;
@@ -268,8 +284,10 @@
                 {
                     yield return x;
                 }
+
                 x += this.Step;
             }
+
             yield return this.Maximum;
         }
     }
