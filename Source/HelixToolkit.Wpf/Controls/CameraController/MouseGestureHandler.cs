@@ -314,16 +314,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Unproject a point from the screen (2D) to a point on plane (3D)
+        /// Un projects a point from the screen (2D) to a point on plane (3D)
         /// </summary>
         /// <param name="p">
         /// The 2D point.
         /// </param>
         /// <param name="position">
-        /// plane position
+        /// A point on the plane .
         /// </param>
         /// <param name="normal">
-        /// plane normal
+        /// The plane normal.
         /// </param>
         /// <returns>
         /// A 3D point.
@@ -336,11 +336,12 @@ namespace HelixToolkit.Wpf
                 return null;
             }
 
-            return ray.PlaneIntersection(position, normal);
+            Point3D i;
+            return ray.PlaneIntersection(position, normal, out i) ? (Point3D?)i : null;
         }
 
         /// <summary>
-        /// Unproject a point from the screen (2D) to a point on the plane trough the camera target point.
+        /// Un projects a point from the screen (2D) to a point on the plane trough the camera target point.
         /// </summary>
         /// <param name="p">
         /// The 2D point.

@@ -903,7 +903,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Unproject a point from the screen (2D) to a point on plane (3D)
+        /// Un projects a point from the screen (2D) to a point on plane (3D)
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -912,30 +912,31 @@ namespace HelixToolkit.Wpf
         /// The 2D point.
         /// </param>
         /// <param name="position">
-        /// plane position
+        /// A point in the plane.
         /// </param>
         /// <param name="normal">
-        /// plane normal
+        /// The plane normal.
         /// </param>
         /// <returns>
         /// A 3D point.
         /// </returns>
         /// <remarks>
-        /// Map window coordinates to object coordinates like gluUnProject.
+        /// Maps window coordinates to object coordinates like gluUnProject.
         /// </remarks>
         public static Point3D? UnProject(Viewport3D viewport, Point p, Point3D position, Vector3D normal)
         {
-            Ray3D ray = GetRay(viewport, p);
+            var ray = GetRay(viewport, p);
             if (ray == null)
             {
                 return null;
             }
 
-            return ray.PlaneIntersection(position, normal);
+            Point3D i;
+            return ray.PlaneIntersection(position, normal, out i) ? (Point3D?)i : null;
         }
 
         /// <summary>
-        /// Unproject a point from the screen (2D) to a point on the plane trough the camera target point.
+        /// Un projects a point from the screen (2D) to a point on the plane trough the camera target point.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.

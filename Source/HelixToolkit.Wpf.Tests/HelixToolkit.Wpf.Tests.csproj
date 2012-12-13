@@ -88,6 +88,8 @@
     <Compile Include="Exporters\ExporterTests.cs" />
     <Compile Include="Exporters\X3DExporterTests.cs" />
     <Compile Include="ExtensionMethods\StringExtensionsTests.cs" />
+    <Compile Include="Geometry\BoundingSphereTests.cs" />
+    <Compile Include="Geometry\Ray3DTests.cs" />
     <Compile Include="Helpers\Vector3DExtensionsTests.cs" />
     <Compile Include="Helpers\MeshBuilderTests.cs" />
     <Compile Include="Importers\ModelImporterTests.cs" />
