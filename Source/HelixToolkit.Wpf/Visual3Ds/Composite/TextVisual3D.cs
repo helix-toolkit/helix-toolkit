@@ -40,6 +40,25 @@ namespace HelixToolkit.Wpf
             DependencyProperty.Register(
                 "BorderThickness", typeof(Thickness), typeof(TextVisual3D), new UIPropertyMetadata(new Thickness(1), VisualChanged));
 
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the text should be flipped (mirrored horizontally).
+        /// </summary>
+        /// <remarks>
+        /// This may be useful when using a mirror transform on the text visual.
+        /// </remarks>
+        /// <value>
+        ///   <c>true</c> if text is flipped; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsFlipped
+        {
+            get { return (bool)GetValue(IsFlippedProperty); }
+            set { SetValue(IsFlippedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsFlippedProperty =
+            DependencyProperty.Register("IsFlipped", typeof(bool), typeof(TextVisual3D), new PropertyMetadata(false, VisualChanged));
+
         /// <summary>
         /// The font family property.
         /// </summary>
@@ -537,19 +556,22 @@ namespace HelixToolkit.Wpf
                 mg.TriangleIndices.Add(6);
             }
 
+            double u0 = this.IsFlipped ? 1 : 0;
+            double u1 = this.IsFlipped ? 0 : 1;
+
             // These texture coordinates basically stretch the
             // TextBox brush to cover the full side of the label.
-            mg.TextureCoordinates.Add(new Point(0, 1));
-            mg.TextureCoordinates.Add(new Point(0, 0));
-            mg.TextureCoordinates.Add(new Point(1, 1));
-            mg.TextureCoordinates.Add(new Point(1, 0));
+            mg.TextureCoordinates.Add(new Point(u0, 1));
+            mg.TextureCoordinates.Add(new Point(u0, 0));
+            mg.TextureCoordinates.Add(new Point(u1, 1));
+            mg.TextureCoordinates.Add(new Point(u1, 0));
 
             if (isDoubleSided)
             {
-                mg.TextureCoordinates.Add(new Point(1, 1));
-                mg.TextureCoordinates.Add(new Point(1, 0));
-                mg.TextureCoordinates.Add(new Point(0, 1));
-                mg.TextureCoordinates.Add(new Point(0, 0));
+                mg.TextureCoordinates.Add(new Point(u1, 1));
+                mg.TextureCoordinates.Add(new Point(u1, 0));
+                mg.TextureCoordinates.Add(new Point(u0, 1));
+                mg.TextureCoordinates.Add(new Point(u0, 0));
             }
 
             this.Content = new GeometryModel3D(mg, material);
