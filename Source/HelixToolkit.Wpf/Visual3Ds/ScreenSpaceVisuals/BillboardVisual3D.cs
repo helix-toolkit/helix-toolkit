@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The builder.
         /// </summary>
-        private readonly PointGeometryBuilder builder;
+        private readonly BillboardGeometryBuilder builder;
 
         /// <summary>
         /// The is rendering flag.
@@ -96,17 +96,17 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public BillboardVisual3D()
         {
-            this.builder = new PointGeometryBuilder(this);
+            this.builder = new BillboardGeometryBuilder(this);
             this.Mesh = new MeshGeometry3D
                             {
-                                TriangleIndices = this.builder.CreateIndices(1),
+                                TriangleIndices = BillboardGeometryBuilder.CreateIndices(1),
                                 TextureCoordinates =
                                     new PointCollection
                                         {
                                             new Point(0, 1),
-                                            new Point(0, 0),
                                             new Point(1, 1),
-                                            new Point(1, 0)
+                                            new Point(1, 0),
+                                            new Point(0, 0)
                                         }
                             };
 
@@ -332,13 +332,15 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected void UpdateGeometry()
         {
-            this.Mesh.Positions = this.builder.CreateBillboard(
+            var bb = new Billboard(
                 this.Position,
                 this.Width,
                 this.Height,
                 this.HorizontalAlignment,
                 this.VerticalAlignment,
                 this.DepthOffset);
+
+            this.Mesh.Positions = this.builder.GetPositions(new[] { bb });
         }
 
         /// <summary>

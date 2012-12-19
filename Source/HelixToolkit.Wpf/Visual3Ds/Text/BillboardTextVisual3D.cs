@@ -19,19 +19,19 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// A visual element that contains a text billboard.
     /// </summary>
-    public class TextBillboardVisual3D : BillboardVisual3D
+    public class BillboardTextVisual3D : BillboardVisual3D
     {
         /// <summary>
         /// The background property
         /// </summary>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(TextBillboardVisual3D), new UIPropertyMetadata(null, VisualChanged));
+            "Background", typeof(Brush), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
         /// The border brush property
         /// </summary>
         public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(TextBillboardVisual3D), new UIPropertyMetadata(null, VisualChanged));
+            "BorderBrush", typeof(Brush), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
         /// The border thickness property
@@ -40,20 +40,20 @@ namespace HelixToolkit.Wpf
             DependencyProperty.Register(
                 "BorderThickness",
                 typeof(Thickness),
-                typeof(TextBillboardVisual3D),
+                typeof(BillboardTextVisual3D),
                 new UIPropertyMetadata(new Thickness(1), VisualChanged));
 
         /// <summary>
         /// The font family property.
         /// </summary>
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
-            "FontFamily", typeof(FontFamily), typeof(TextBillboardVisual3D), new UIPropertyMetadata(null, VisualChanged));
+            "FontFamily", typeof(FontFamily), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
         /// The font size property.
         /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
-            "FontSize", typeof(double), typeof(TextBillboardVisual3D), new UIPropertyMetadata(0.0, VisualChanged));
+            "FontSize", typeof(double), typeof(BillboardTextVisual3D), new UIPropertyMetadata(0.0, VisualChanged));
 
         /// <summary>
         /// The font weight property.
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
             "FontWeight",
             typeof(FontWeight),
-            typeof(TextBillboardVisual3D),
+            typeof(BillboardTextVisual3D),
             new UIPropertyMetadata(FontWeights.Normal, VisualChanged));
 
         /// <summary>
@@ -70,14 +70,14 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
             "Foreground",
             typeof(Brush),
-            typeof(TextBillboardVisual3D),
+            typeof(BillboardTextVisual3D),
             new UIPropertyMetadata(Brushes.Black, VisualChanged));
 
         /// <summary>
         /// The height factor property
         /// </summary>
         public static readonly DependencyProperty HeightFactorProperty = DependencyProperty.Register(
-            "HeightFactor", typeof(double), typeof(TextBillboardVisual3D), new PropertyMetadata(1.0, VisualChanged));
+            "HeightFactor", typeof(double), typeof(BillboardTextVisual3D), new PropertyMetadata(1.0, VisualChanged));
 
         /// <summary>
         /// The padding property
@@ -85,14 +85,14 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
             "Padding",
             typeof(Thickness),
-            typeof(TextBillboardVisual3D),
+            typeof(BillboardTextVisual3D),
             new UIPropertyMetadata(new Thickness(0), VisualChanged));
 
         /// <summary>
         /// The text property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text", typeof(string), typeof(TextBillboardVisual3D), new UIPropertyMetadata(null, VisualChanged));
+            "Text", typeof(string), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
         /// Gets or sets the background.
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((TextBillboardVisual3D)d).VisualChanged();
+            ((BillboardTextVisual3D)d).VisualChanged();
         }
 
         /// <summary>
