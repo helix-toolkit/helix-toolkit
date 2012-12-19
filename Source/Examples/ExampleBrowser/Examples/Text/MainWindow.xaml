@@ -21,19 +21,21 @@
         </h:TextVisual3D>
         <h:SphereVisual3D Center="2,1,0" Radius="0.1"></h:SphereVisual3D>
 
-        <h:TextBillboardVisual3D 
+        <h:BillboardTextVisual3D 
                 Foreground="Black" 
                 Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="2" Padding="2" FontFamily="Arial" FontWeight="Normal"
                 Position="-1,1,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="TextBillboardVisual3D">
-        </h:TextBillboardVisual3D>
+        </h:BillboardTextVisual3D>
         <h:SphereVisual3D Center="-1,1,0" Radius="0.1"></h:SphereVisual3D>
 
-        <h:TextBillboardVisual3D 
+        <h:BillboardTextVisual3D 
                 Foreground="Black" 
                 Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="2" Padding="2" FontFamily="Arial" FontWeight="Normal"
-                Position="-2,1,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="TextBillboardVisual3D with DepthOffset" DepthOffset="0.05">
-        </h:TextBillboardVisual3D>
+                Position="-2,1,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="TextBillboardVisual3D with DepthOffset" DepthOffset="1e-3">
+        </h:BillboardTextVisual3D>
         <h:SphereVisual3D Center="-2,1,0" Radius="0.1"></h:SphereVisual3D>
 
+        <h:TextGroupVisual3D Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="0.95" FontSize="32" Padding="2" Items="{Binding TextItems}"/>
+        <h:BillboardTextGroupVisual3D Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="1" FontSize="10" Padding="2" Items="{Binding TextItems2}" />
     </h:HelixViewport3D>
 </Window>

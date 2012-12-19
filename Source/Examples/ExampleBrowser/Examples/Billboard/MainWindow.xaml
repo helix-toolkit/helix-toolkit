@@ -38,10 +38,10 @@
             <ht:TruncatedConeVisual3D Origin="6,50,0" Height="3" BaseRadius="0.1" TopRadius="0.1" Material="{ht:Material LightGray}"/>
 
             <!-- Text billboards, always facing camera-->
-            <ht:TextBillboardVisual3D Position="5,0,0" Text="5,0,0" DepthOffset="0.01"/>
-            <ht:TextBillboardVisual3D Position="-5,0,0" Text="-5,0,0" DepthOffset="0.01"/>
-            <ht:TextBillboardVisual3D Position="5,60,0" Text="5,60,0" DepthOffset="0.01"/>
-            <ht:TextBillboardVisual3D Position="-5,60,0" Text="-5,60,0" DepthOffset="0.01"/>
+            <ht:BillboardTextVisual3D Position="5,0,0" Text="5,0,0" DepthOffset="0.01"/>
+            <ht:BillboardTextVisual3D Position="-5,0,0" Text="-5,0,0" DepthOffset="0.01"/>
+            <ht:BillboardTextVisual3D Position="5,60,0" Text="5,60,0" DepthOffset="0.01"/>
+            <ht:BillboardTextVisual3D Position="-5,60,0" Text="-5,60,0" DepthOffset="0.01"/>
 
         </ht:HelixViewport3D>
     </Grid>
