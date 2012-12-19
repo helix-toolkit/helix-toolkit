@@ -479,6 +479,7 @@ namespace HelixToolkit.Wpf
                 var rtb = new RenderTargetBitmap(
                     (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
                 rtb.Render(element);
+                rtb.Freeze();
                 material = new DiffuseMaterial(new ImageBrush(rtb));
             }
             else
