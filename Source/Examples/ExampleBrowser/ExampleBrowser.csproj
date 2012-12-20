@@ -118,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\BackgroundUpdate\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Examples\Billboard\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -309,6 +313,9 @@
     <Compile Include="Examples\Audio\NAudioWpfDemo\RelayCommand.cs" />
     <Compile Include="Examples\Audio\NAudioWpfDemo\SampleAggregator.cs" />
     <Compile Include="Examples\Audio\SpectrumAnalyser.cs" />
+    <Compile Include="Examples\BackgroundUpdate\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\Billboard\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -499,6 +506,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\BackgroundUpdateDemo_small.png" />
     <Resource Include="Images\DataTemplateDemo_small.png" />
     <Resource Include="Images\ColorAxisDemo_small.png" />
     <Resource Include="Images\TextDemo_small.png" />
