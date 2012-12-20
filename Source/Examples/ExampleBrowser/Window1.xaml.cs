@@ -25,6 +25,7 @@ namespace ExampleBrowser
             this.Examples = new List<Example>();
             this.Examples.Add(new Example(typeof(AnaglyphDemo.MainWindow), null, "Showing a stereo view using the AnaglyphView3D control."));
             this.Examples.Add(new Example(typeof(AudioDemo.MainWindow), null, "Showing a spectrogram from NAudio using Transform3Ds."));
+            this.Examples.Add(new Example(typeof(BackgroundUpdateDemo.MainWindow), null, "Updates the visual model in a background thread."));
             this.Examples.Add(new Example(typeof(BillboardDemo.MainWindow), null, "Showing billboards using the BillboardVisual3D."));
             this.Examples.Add(new Example(typeof(CameraControlDemo.MainWindow), null, "Shows the camera options in the HelixViewport3D."));
             this.Examples.Add(new Example(typeof(ChamferDemo.MainWindow), null, "Chamfers the corner of a cube by the MeshBuilder.ChamferCorner method."));
