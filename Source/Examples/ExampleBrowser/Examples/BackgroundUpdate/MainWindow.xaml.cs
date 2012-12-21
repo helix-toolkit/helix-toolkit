@@ -28,6 +28,7 @@ namespace BackgroundUpdateDemo
             this.AddPoints = true;
             this.AddFrozenGeometry = true;
             this.AddFrozenModel = true;
+            this.AddToModelGroup = true;
         }
 
         public bool AddPoints { get; set; }
@@ -35,6 +36,8 @@ namespace BackgroundUpdateDemo
         public bool AddFrozenGeometry { get; set; }
 
         public bool AddFrozenModel { get; set; }
+
+        public bool AddToModelGroup { get; set; }
 
         public int Count1
         {
@@ -75,6 +78,18 @@ namespace BackgroundUpdateDemo
             }
         }
 
+        public int Count4
+        {
+            get
+            {
+                return this.count4;
+            }
+            set
+            {
+                this.count4 = value;
+                this.OnPropertyChanged("Count4");
+            }
+        }
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             this.source.Cancel();
@@ -88,14 +103,16 @@ namespace BackgroundUpdateDemo
             Task.Factory.StartNew(this.Worker1, this.Dispatcher, source.Token);
             Task.Factory.StartNew(this.Worker2, this.Dispatcher, source.Token);
             Task.Factory.StartNew(this.Worker3, this.Dispatcher, source.Token);
+            Task.Factory.StartNew(this.Worker4, this.Dispatcher, source.Token);
         }
 
         private void Worker1(object d)
         {
             var dispatcher = (Dispatcher)d;
+            Interlocked.Increment(ref this.runningWorkers);
             while (!this.source.IsCancellationRequested)
             {
-                if (!this.AddPoints)
+                if (!this.AddPoints || this.runningWorkers < 4)
                 {
                     Thread.Yield();
                     continue;
@@ -122,9 +139,10 @@ namespace BackgroundUpdateDemo
         private void Worker2(object d)
         {
             var dispatcher = (Dispatcher)d;
+            Interlocked.Increment(ref this.runningWorkers);
             while (!this.source.IsCancellationRequested)
             {
-                if (!this.AddFrozenGeometry)
+                if (!this.AddFrozenGeometry || this.runningWorkers < 4)
                 {
                     Thread.Yield();
                     continue;
@@ -154,17 +172,20 @@ namespace BackgroundUpdateDemo
 
         private int count1;
 
+        private int count2;
+
         private int count3;
 
-        private int count2;
+        private int count4;
 
         private void Worker3(object d)
         {
             var dispatcher = (Dispatcher)d;
             var m = MaterialHelper.CreateMaterial(Colors.Green);
+            Interlocked.Increment(ref this.runningWorkers);
             while (!this.source.IsCancellationRequested)
             {
-                if (!this.AddFrozenModel)
+                if (!this.AddFrozenModel || this.runningWorkers < 4)
                 {
                     Thread.Yield();
                     continue;
@@ -189,6 +210,45 @@ namespace BackgroundUpdateDemo
 
                 this.Count3++;
                 dispatcher.Invoke(new Action<ModelVisual3D>(this.Clear), model3);
+            }
+        }
+
+        private int runningWorkers = 0;
+        private void Worker4(object d)
+        {
+            var dispatcher = (Dispatcher)d;
+            var m = MaterialHelper.CreateMaterial(Colors.Gold);
+            Model3DGroup mg = null;
+            dispatcher.Invoke(new Action(() => this.model4.Content = mg = new Model3DGroup()));
+
+            Interlocked.Increment(ref this.runningWorkers);
+
+            while (!this.source.IsCancellationRequested)
+            {
+                if (!this.AddToModelGroup || this.runningWorkers < 4)
+                {
+                    Thread.Yield();
+                    continue;
+                }
+
+                for (int i = 1; i <= n; i++)
+                {
+                    var b = new MeshBuilder();
+                    for (int j = 1; j <= n; j++)
+                    {
+                        for (int k = 1; k <= n; k++)
+                        {
+                            b.AddBox(new Point3D(-i, j, -k), 0.8, 0.8, 0.8);
+                        }
+                    }
+
+                    var box = new GeometryModel3D { Geometry = b.ToMesh(false), Material = m };
+                    box.Freeze();
+                    dispatcher.Invoke(new Action(() => mg.Children.Add(box)));
+                }
+
+                this.Count4++;
+                dispatcher.Invoke(new Action(() => mg.Children.Clear()));
             }
         }
 
