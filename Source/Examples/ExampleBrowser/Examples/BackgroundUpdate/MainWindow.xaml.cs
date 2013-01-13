@@ -145,7 +145,7 @@ namespace BackgroundUpdateDemo
                     }
                 }
 
-                dispatcher.Invoke(() => this.Count1++);
+                dispatcher.Invoke((Action)(() => this.Count1++));
                 dispatcher.Invoke(new Action<ModelVisual3D>(this.Clear), this.model1);
             }
         }
@@ -176,7 +176,7 @@ namespace BackgroundUpdateDemo
                     dispatcher.Invoke(new Action<MeshGeometry3D, Material, ModelVisual3D>(this.Add), b.ToMesh(true), mat2, model2);
                 }
 
-                dispatcher.Invoke(() => this.Count2++);
+                dispatcher.Invoke((Action)(() => this.Count2++));
 
                 dispatcher.Invoke(new Action<ModelVisual3D>(this.Clear), this.model2);
             }
@@ -212,7 +212,7 @@ namespace BackgroundUpdateDemo
                     dispatcher.Invoke(new Action<Model3D, ModelVisual3D>(this.Add), box, this.model3);
                 }
 
-                dispatcher.Invoke(() => this.Count3++);
+                dispatcher.Invoke((Action)(() => this.Count3++));
                 dispatcher.Invoke(new Action<ModelVisual3D>(this.Clear), model3);
             }
         }
@@ -249,9 +249,8 @@ namespace BackgroundUpdateDemo
                     box.Freeze();
                     dispatcher.Invoke(new Action(() => mg.Children.Add(box)));
                 }
-
-                dispatcher.Invoke(() => this.Count4++);
-                dispatcher.Invoke(() => mg.Children.Clear());
+                dispatcher.Invoke((Action)(() => this.Count4++));
+                dispatcher.Invoke((Action)(() => mg.Children.Clear()));
             }
         }
 
