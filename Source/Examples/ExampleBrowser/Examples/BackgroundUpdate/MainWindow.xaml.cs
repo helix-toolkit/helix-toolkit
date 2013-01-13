@@ -5,6 +5,7 @@ using System.Windows.Media;
 namespace BackgroundUpdateDemo
 {
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Media.Media3D;
@@ -19,12 +20,27 @@ namespace BackgroundUpdateDemo
     {
         private CancellationTokenSource source;
 
+        Material mat2 = MaterialHelper.CreateMaterial(Colors.Red);
+
+        int n = 10;
+
+        private int count1;
+
+        private int count2;
+
+        private int count3;
+
+        private int count4;
+
+        private int runningWorkers;
+
+        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         public MainWindow()
         {
             this.InitializeComponent();
             this.DataContext = this;
-            this.Loaded += MainWindow_Loaded;
-            this.Closing += MainWindow_Closing;
+            this.Loaded += this.MainWindowLoaded;
+            this.Closing += this.MainWindowClosing;
             this.AddPoints = true;
             this.AddFrozenGeometry = true;
             this.AddFrozenModel = true;
@@ -90,12 +106,12 @@ namespace BackgroundUpdateDemo
                 this.OnPropertyChanged("Count4");
             }
         }
-        void MainWindow_Closing(object sender, CancelEventArgs e)
+        void MainWindowClosing(object sender, CancelEventArgs e)
         {
             this.source.Cancel();
         }
 
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             Materials.Gold.Freeze();
 
@@ -129,12 +145,10 @@ namespace BackgroundUpdateDemo
                     }
                 }
 
-                this.Count1++;
+                dispatcher.Invoke(() => this.Count1++);
                 dispatcher.Invoke(new Action<ModelVisual3D>(this.Clear), this.model1);
             }
         }
-
-        Material mat2 = MaterialHelper.CreateMaterial(Colors.Red);
 
         private void Worker2(object d)
         {
@@ -162,21 +176,11 @@ namespace BackgroundUpdateDemo
                     dispatcher.Invoke(new Action<MeshGeometry3D, Material, ModelVisual3D>(this.Add), b.ToMesh(true), mat2, model2);
                 }
 
-                this.Count2++;
+                dispatcher.Invoke(() => this.Count2++);
 
                 dispatcher.Invoke(new Action<ModelVisual3D>(this.Clear), this.model2);
             }
         }
-
-        int n = 10;
-
-        private int count1;
-
-        private int count2;
-
-        private int count3;
-
-        private int count4;
 
         private void Worker3(object d)
         {
@@ -208,12 +212,11 @@ namespace BackgroundUpdateDemo
                     dispatcher.Invoke(new Action<Model3D, ModelVisual3D>(this.Add), box, this.model3);
                 }
 
-                this.Count3++;
+                dispatcher.Invoke(() => this.Count3++);
                 dispatcher.Invoke(new Action<ModelVisual3D>(this.Clear), model3);
             }
         }
 
-        private int runningWorkers = 0;
         private void Worker4(object d)
         {
             var dispatcher = (Dispatcher)d;
@@ -247,8 +250,8 @@ namespace BackgroundUpdateDemo
                     dispatcher.Invoke(new Action(() => mg.Children.Add(box)));
                 }
 
-                this.Count4++;
-                dispatcher.Invoke(new Action(() => mg.Children.Clear()));
+                dispatcher.Invoke(() => this.Count4++);
+                dispatcher.Invoke(() => mg.Children.Clear());
             }
         }
 
