@@ -82,6 +82,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CrossThreadTestRunner.cs" />
     <Compile Include="Exporters\ColladaExporterTests.cs" />
     <Compile Include="Exporters\ObjExporterTests.cs" />

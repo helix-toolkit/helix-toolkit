@@ -53,6 +53,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Adorners\DrawingContextExtensions.cs" />
     <Compile Include="Controls\CameraController\TouchMode.cs" />
     <Compile Include="Controls\CameraController\CameraMode.cs" />
@@ -63,6 +66,11 @@
     <Compile Include="Controls\CameraController\RotateHandler.cs" />
     <Compile Include="Controls\CameraController\ZoomHandler.cs" />
     <Compile Include="Controls\CameraController\ZoomRectangleHandler.cs" />
+    <Compile Include="Controls\ColorAxis\CategorizedColorAxis.cs" />
+    <Compile Include="Controls\ColorAxis\ColorAxis.cs" />
+    <Compile Include="Controls\ColorAxis\ColorAxisPosition.cs" />
+    <Compile Include="Controls\ColorAxis\RangeColorAxis.cs" />
+    <Compile Include="HelixToolkitException.cs" />
     <Compile Include="Controls\HelixViewport3D.cs" />
     <Compile Include="Controls\CameraController\MouseGestureHandler.cs" />
     <Compile Include="Controls\IHelixViewport3D.cs" />
@@ -71,7 +79,9 @@
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\StringToBooleanConverter.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="Exporters\BitmapExporter.cs" />
     <Compile Include="Exporters\ColladaExporter.cs" />
+    <Compile Include="Exporters\RenderManExporter.cs" />
     <Compile Include="Exporters\Exporter.cs" />
     <Compile Include="Exporters\Exporters.cs" />
     <Compile Include="Exporters\IExporter.cs" />
@@ -80,12 +90,18 @@
     <Compile Include="Exporters\VrmlExporter.cs" />
     <Compile Include="Exporters\PovRayExporter.cs" />
     <Compile Include="Exporters\XamlExporter.cs" />
+    <Compile Include="ExtensionMethods\Point3DExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Geometry\CuttingEarsTriangulator.cs" />
     <Compile Include="Geometry\Polygon3D.cs" />
     <Compile Include="Geometry\Mesh3D.cs" />
+    <Compile Include="Geometry\BoundingSphere.cs" />
+    <Compile Include="Helpers\CanonicalSplineHelper.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ContourHelper.cs" />
+    <Compile Include="Helpers\ScreenSpace\BillboardGeometryBuilder.cs" />
+    <Compile Include="Helpers\WeakEventManagers\RenderingEventManager.cs" />
+    <Compile Include="Helpers\WeakEventManagers\WeakEventManagerBase{TManager}.cs" />
     <Compile Include="Helpers\LoopSubdivision.cs" />
     <Compile Include="Helpers\DoubleKeyDictionary.cs" />
     <Compile Include="Controls\CameraController\CameraController.cs" />
@@ -110,19 +126,28 @@
     <Compile Include="Adorners\RectangleAdorner.cs" />
     <Compile Include="Helpers\ScreenSpace\CohenSutherlandClipping.cs" />
     <Compile Include="Helpers\ScreenSpace\LineGeometryBuilder.cs" />
+    <Compile Include="Importers\Importers.cs" />
     <Compile Include="Importers\OffReader.cs" />
     <Compile Include="MarkupExtensions\KeyGestureExtension.cs" />
     <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />
     <Compile Include="MarkupExtensions\PerspectiveCameraExtension.cs" />
     <Compile Include="MarkupExtensions\TranslateExtension.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
+    <Compile Include="Visual3Ds\Text\BillboardTextItem.cs" />
+    <Compile Include="Visual3Ds\Text\SpatialTextItem.cs" />
+    <Compile Include="Visual3Ds\Text\TextGroupVisual3D.cs" />
     <Compile Include="Visual3Ds\Composite\MeshVisual3D.cs" />
     <Compile Include="Visual3Ds\Composite\CuttingPlaneGroup.cs" />
     <Compile Include="Visual3Ds\Composite\Exploder3D.cs" />
     <Compile Include="Visual3Ds\Composite\FileModelVisual3D.cs" />
+    <Compile Include="Helpers\WeakEventListeners\RenderingEventListener.cs" />
+    <Compile Include="Visual3Ds\Composite\RenderingModelVisual3D.cs" />
+    <Compile Include="Helpers\WeakEventListeners\WeakEventListener{TEventManager,TEventArgs}.cs" />
     <Compile Include="Visual3Ds\LightSetups\LightSetup.cs" />
     <Compile Include="Visual3Ds\LightSetups\SunLight.cs" />
     <Compile Include="Visual3Ds\LightSetups\ThreePointLights.cs" />
+    <Compile Include="Visual3Ds\Manipulators\BindableRotateManipulator.cs" />
+    <Compile Include="Visual3Ds\Manipulators\BindableTranslateManipulator.cs" />
     <Compile Include="Visual3Ds\Manipulators\CombinedManipulator.cs" />
     <Compile Include="Visual3Ds\Manipulators\RotateManipulator.cs" />
     <Compile Include="Visual3Ds\Manipulators\Manipulator.cs" />
@@ -132,6 +157,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Visual3Ds\MeshVisuals\TestModels\Teapot.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\BillboardVisual3D.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\BoundingBoxWireFrameVisual3D.cs" />
+    <Compile Include="Visual3Ds\Text\BillboardTextGroupVisual3D.cs" />
+    <Compile Include="Visual3Ds\Text\BillboardTextVisual3D.cs" />
     <Compile Include="Visual3Ds\ScreenSpaceVisuals\LinesVisual3D.cs" />
     <Compile Include="Helpers\ScreenSpace\PointGeometryBuilder.cs" />
     <Compile Include="Visual3Ds\ScreenSpaceVisuals\PointsVisual3D.cs" />
@@ -169,7 +198,8 @@
     <Compile Include="Visual3Ds\Terrain\TerrainModel.cs" />
     <Compile Include="Visual3Ds\Terrain\Textures\TerrainTexture.cs" />
     <Compile Include="Visual3Ds\Terrain\TerrainVisual3D.cs" />
-    <Compile Include="Visual3Ds\Composite\TextVisual3D.cs" />
+    <Compile Include="Visual3Ds\Text\TextItem.cs" />
+    <Compile Include="Visual3Ds\Text\TextVisual3D.cs" />
     <Compile Include="Visual3Ds\Composite\ViewCubeVisual3D.cs" />
     <Compile Include="Visual3Ds\LightSetups\DefaultLights.cs" />
     <Compile Include="Helpers\MaterialHelper.cs" />
