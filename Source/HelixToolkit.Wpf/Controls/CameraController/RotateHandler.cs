@@ -94,6 +94,8 @@ namespace HelixToolkit.Wpf
             }
 
             CameraHelper.LookAt(this.Camera, target, animationTime);
+
+            this.Controller.OnLookAtChanged();
         }
 
         /// <summary>
