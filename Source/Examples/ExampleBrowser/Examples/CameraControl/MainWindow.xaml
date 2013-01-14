@@ -5,6 +5,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="View">
+                <MenuItem IsCheckable="True" Header="ShowCoordinateSystem" IsChecked="{Binding ShowCoordinateSystem, ElementName=view1}"/>
+                <MenuItem IsCheckable="True" Header="ShowViewCube" IsChecked="{Binding ShowViewCube, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="ShowCameraInfo" IsChecked="{Binding ShowCameraInfo, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="ShowTriangleCountInfo" IsChecked="{Binding ShowTriangleCountInfo, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="ShowFieldOfView" IsChecked="{Binding ShowFieldOfView, ElementName=view1}"/>
@@ -22,6 +24,7 @@
                 <MenuItem IsCheckable="True" Header="ZoomAroundMouseDownPoint" IsChecked="{Binding ZoomAroundMouseDownPoint, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="Orthographic" IsChecked="{Binding Orthographic, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="InfiniteSpin" IsChecked="{Binding InfiniteSpin, ElementName=view1}"/>
+                <MenuItem IsCheckable="True" Header="IsInertiaEnabled" IsChecked="{Binding IsInertiaEnabled, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="IsPanEnabled" IsChecked="{Binding IsPanEnabled, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="IsRotationEnabled" IsChecked="{Binding IsRotationEnabled, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="IsZoomEnabled" IsChecked="{Binding IsZoomEnabled, ElementName=view1}"/>

@@ -9,7 +9,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Represents camera settings.
+    /// Represents a camera state.
     /// </summary>
     public class CameraSetting
     {
@@ -40,45 +40,45 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FarPlaneDistance.
+        /// Gets or sets the far plane distance.
         /// </summary>
         public double FarPlaneDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets FieldOfView.
+        /// Gets or sets the field of view.
         /// </summary>
         public double FieldOfView { get; set; }
 
         /// <summary>
-        /// Gets or sets LookDirection.
+        /// Gets or sets the look direction.
         /// </summary>
         public Vector3D LookDirection { get; set; }
 
         /// <summary>
-        /// Gets or sets NearPlaneDistance.
+        /// Gets or sets the near plane distance.
         /// </summary>
         public double NearPlaneDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets Position.
+        /// Gets or sets the position.
         /// </summary>
         public Point3D Position { get; set; }
 
         /// <summary>
-        /// Gets or sets UpDirection.
+        /// Gets or sets the up direction.
         /// </summary>
         public Vector3D UpDirection { get; set; }
 
         /// <summary>
-        /// Gets or sets Width.
+        /// Gets or sets the width of an orthographic camera.
         /// </summary>
         public double Width { get; set; }
 
         /// <summary>
-        /// The update camera.
+        /// Updates the camera to this state.
         /// </summary>
         /// <param name="camera">
-        /// The camera.
+        /// The camera to update.
         /// </param>
         public void UpdateCamera(ProjectionCamera camera)
         {
@@ -99,6 +99,5 @@ namespace HelixToolkit.Wpf
                 ocamera.Width = this.Width;
             }
         }
-
     }
 }

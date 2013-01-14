@@ -20,6 +20,22 @@ namespace HelixToolkit.Wpf
     public class CameraController : Grid
     {
         /// <summary>
+        /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
+        /// </summary>
+        /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
+        public bool IsInertiaEnabled
+        {
+            get { return (bool)GetValue(IsInertiaEnabledProperty); }
+            set { SetValue(IsInertiaEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsInertiaEnabledProperty =
+            DependencyProperty.Register("IsInertiaEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+
+        /// <summary>
         ///   The CameraMode property.
         /// </summary>
         public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
@@ -1283,7 +1299,14 @@ namespace HelixToolkit.Wpf
             }
 
             this.PushCameraSetting();
-            this.panSpeed += pan * 40;
+            if (this.IsInertiaEnabled)
+            {
+                this.panSpeed += pan * 40;
+            }
+            else
+            {
+                this.panHandler.Pan(pan);
+            }
         }
 
         /// <summary>
@@ -1303,33 +1326,42 @@ namespace HelixToolkit.Wpf
             }
 
             this.PushCameraSetting();
-            this.rotationPoint3D = this.CameraTarget;
-            this.rotationPosition = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
-            this.rotationSpeed.X += dx * 40;
-            this.rotationSpeed.Y += dy * 40;
+            if (this.IsInertiaEnabled)
+            {
+                this.rotationPoint3D = this.CameraTarget;
+                this.rotationPosition = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
+                this.rotationSpeed.X += dx * 40;
+                this.rotationSpeed.Y += dy * 40;
+            }
+            else
+            {
+                this.rotationPosition = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
+                this.rotateHandler.Rotate(this.rotationPosition, this.rotationPosition + new Vector(dx, dy), this.CameraTarget);
+                // this.rotateHandler.Rotate(new Vector(dx,dy));
+            }
         }
 
         /// <summary>
         /// Adds the zoom force.
         /// </summary>
-        /// <param name="dx">
+        /// <param name="delta">
         /// The delta. 
         /// </param>
-        public void AddZoomForce(double dx)
+        public void AddZoomForce(double delta)
         {
-            this.AddZoomForce(dx, this.CameraTarget);
+            this.AddZoomForce(delta, this.CameraTarget);
         }
 
         /// <summary>
         /// Adds the zoom force.
         /// </summary>
-        /// <param name="dx">
+        /// <param name="delta">
         /// The delta. 
         /// </param>
         /// <param name="zoomOrigin">
         /// The zoom origin. 
         /// </param>
-        public void AddZoomForce(double dx, Point3D zoomOrigin)
+        public void AddZoomForce(double delta, Point3D zoomOrigin)
         {
             if (!this.IsZoomEnabled)
             {
@@ -1337,8 +1369,16 @@ namespace HelixToolkit.Wpf
             }
 
             this.PushCameraSetting();
-            this.zoomPoint3D = zoomOrigin;
-            this.zoomSpeed += dx * 8;
+
+            if (this.IsInertiaEnabled)
+            {
+                this.zoomPoint3D = zoomOrigin;
+                this.zoomSpeed += delta * 8;
+            }
+            else
+            {
+                this.zoomHandler.Zoom(delta, zoomOrigin);
+            }
         }
 
         /// <summary>
@@ -2115,7 +2155,7 @@ namespace HelixToolkit.Wpf
         private void OnTimeStep(double time)
         {
             // should be independent of time
-            double factor = Math.Pow(this.InertiaFactor, time / 0.012);
+            double factor = IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
             factor = this.Clamp(factor, 0.2, 1);
 
             if (this.isSpinning && this.spinningSpeed.LengthSquared > 0)
