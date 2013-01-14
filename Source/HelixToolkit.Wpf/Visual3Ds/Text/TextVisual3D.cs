@@ -55,6 +55,9 @@ namespace HelixToolkit.Wpf
             set { SetValue(IsFlippedProperty, value); }
         }
 
+        /// <summary>
+        /// Identifies the <see cref="IsFlipped"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty IsFlippedProperty =
             DependencyProperty.Register("IsFlipped", typeof(bool), typeof(TextVisual3D), new PropertyMetadata(false, VisualChanged));
 
