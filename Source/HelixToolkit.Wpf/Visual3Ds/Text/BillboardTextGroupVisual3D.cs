@@ -117,6 +117,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private bool isRendering;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardTextGroupVisual3D" /> class.
+        /// </summary>
         public BillboardTextGroupVisual3D()
         {
             this.builder = new BillboardGeometryBuilder(this);
@@ -317,6 +320,11 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Handles the CompositionTarget.Rendering event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs" /> instance containing the event data.</param>
         protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
         {
             if (this.isRendering)

@@ -85,9 +85,15 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty IsDoubleSidedProperty = DependencyProperty.Register(
             "IsDoubleSided", typeof(bool), typeof(TextGroupVisual3D), new UIPropertyMetadata(false, VisualChanged));
 
+        /// <summary>
+        /// Identifies the <see cref="IsFlipped"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty IsFlippedProperty = DependencyProperty.Register(
             "IsFlipped", typeof(bool), typeof(TextGroupVisual3D), new PropertyMetadata(false, VisualChanged));
 
+        /// <summary>
+        /// Identifies the <see cref="Items"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
             "Items",
             typeof(IList<SpatialTextItem>),
@@ -304,6 +310,15 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Creates the text material.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="createElement">The create element.</param>
+        /// <param name="background">The background.</param>
+        /// <param name="elementMap">The element map.</param>
+        /// <param name="elementPositions">The element positions.</param>
+        /// <returns>Material.</returns>
         public static Material CreateTextMaterial(
             IEnumerable<TextItem> items,
             Func<string, FrameworkElement> createElement,

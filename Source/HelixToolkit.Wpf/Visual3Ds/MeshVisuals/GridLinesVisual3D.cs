@@ -23,9 +23,9 @@ namespace HelixToolkit.Wpf
             "Center", typeof(Point3D), typeof(GridLinesVisual3D), new UIPropertyMetadata(new Point3D(), GeometryChanged));
 
         /// <summary>
-        /// Identifies the <see cref="Distance"/> dependency property.
+        /// Identifies the <see cref="MinorDistance"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty MinorDistanceProperty = DependencyProperty.Register(
             "MinorDistance", typeof(double), typeof(GridLinesVisual3D), new PropertyMetadata(2.5, GeometryChanged));
 
         /// <summary>
@@ -165,12 +165,12 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return (double)this.GetValue(DistanceProperty);
+                return (double)this.GetValue(MinorDistanceProperty);
             }
 
             set
             {
-                this.SetValue(DistanceProperty, value);
+                this.SetValue(MinorDistanceProperty, value);
             }
         }
 
