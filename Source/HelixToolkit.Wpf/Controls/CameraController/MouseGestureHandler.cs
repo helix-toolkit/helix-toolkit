@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
@@ -30,7 +31,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets Origin.
+        /// Gets the origin.
         /// </summary>
         public Point3D Origin
         {

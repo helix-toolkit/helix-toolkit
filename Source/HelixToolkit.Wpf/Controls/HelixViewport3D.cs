@@ -35,6 +35,23 @@ namespace HelixToolkit.Wpf
     {
         #region Constants and Fields
 
+
+        /// <summary>
+        /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
+        /// </summary>
+        /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
+        public bool IsInertiaEnabled
+        {
+            get { return (bool)GetValue(IsInertiaEnabledProperty); }
+            set { SetValue(IsInertiaEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the IsInertiaEnabled dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsInertiaEnabledProperty =
+            DependencyProperty.Register("IsInertiaEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
         /// <summary>
         /// The back view gesture property.
         /// </summary>

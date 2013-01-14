@@ -59,6 +59,7 @@
                                                     IsPanEnabled="{TemplateBinding IsPanEnabled}" 
                                                     IsZoomEnabled="{TemplateBinding IsZoomEnabled}" 
                                                     IsRotationEnabled="{TemplateBinding IsRotationEnabled}" 
+                                                    IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}" 
                                                     IsChangeFieldOfViewEnabled="{TemplateBinding IsChangeFieldOfViewEnabled}"
                                                     TouchMode="{TemplateBinding TouchMode}"
                                                     IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
@@ -97,6 +98,7 @@
 
                             <!-- Coordinate system -->
                             <Viewport3D x:Name="PART_CoordinateView" 
+                                        IsHitTestVisible="False"
                                         Width="{TemplateBinding CoordinateSystemWidth}" Height="{TemplateBinding CoordinateSystemHeight}" Margin="0" 
                                         HorizontalAlignment="{TemplateBinding CoordinateSystemHorizontalPosition}" VerticalAlignment="{TemplateBinding CoordinateSystemVerticalPosition}" 
                                         ClipToBounds="False" Visibility="{TemplateBinding ShowCoordinateSystem, Converter={StaticResource BoolToVisibilityConverter}}">
