@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf
     public class CoordinateSystemVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The arrow lengths property.
+        /// Identifies the <see cref="ArrowLengths"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ArrowLengthsProperty = DependencyProperty.Register(
             "ArrowLengths",
@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The x axis color property.
+        /// Identifies the <see cref="XAxisColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty XAxisColorProperty = DependencyProperty.Register(
             "XAxisColor",
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(Color.FromRgb(150, 75, 75)));
 
         /// <summary>
-        /// The y axis color property.
+        /// Identifies the <see cref="YAxisColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty YAxisColorProperty = DependencyProperty.Register(
             "YAxisColor",
@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(Color.FromRgb(75, 150, 75)));
 
         /// <summary>
-        /// The z axis color property.
+        /// Identifies the <see cref="ZAxisColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZAxisColorProperty = DependencyProperty.Register(
             "ZAxisColor",

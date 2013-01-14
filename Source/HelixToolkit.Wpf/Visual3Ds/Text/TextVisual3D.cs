@@ -22,24 +22,23 @@ namespace HelixToolkit.Wpf
     public class TextVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The background property
+        /// Identifies the <see cref="Background"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(TextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The border brush property
+        /// Identifies the <see cref="BorderBrush"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(TextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The border thickness property
+        /// Identifies the <see cref="BorderThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderThicknessProperty =
             DependencyProperty.Register(
                 "BorderThickness", typeof(Thickness), typeof(TextVisual3D), new UIPropertyMetadata(new Thickness(1), VisualChanged));
-
 
         /// <summary>
         /// Gets or sets a value indicating whether the text should be flipped (mirrored horizontally).
@@ -60,37 +59,37 @@ namespace HelixToolkit.Wpf
             DependencyProperty.Register("IsFlipped", typeof(bool), typeof(TextVisual3D), new PropertyMetadata(false, VisualChanged));
 
         /// <summary>
-        /// The font family property.
+        /// Identifies the <see cref="FontFamily"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
             "FontFamily", typeof(FontFamily), typeof(TextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The font size property
+        /// Identifies the <see cref="FontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
             "FontSize", typeof(double), typeof(TextVisual3D), new UIPropertyMetadata(0.0, VisualChanged));
 
         /// <summary>
-        /// The font weight property.
+        /// Identifies the <see cref="FontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
             "FontWeight", typeof(FontWeight), typeof(TextVisual3D), new UIPropertyMetadata(FontWeights.Normal, VisualChanged));
 
         /// <summary>
-        /// The Foreground property.
+        /// Identifies the <see cref="Foreground"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
             "Foreground", typeof(Brush), typeof(TextVisual3D), new UIPropertyMetadata(Brushes.Black, VisualChanged));
 
         /// <summary>
-        /// The height property.
+        /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register(
             "Height", typeof(double), typeof(TextVisual3D), new UIPropertyMetadata(11.0, VisualChanged));
 
         /// <summary>
-        /// The horizontal alignment property
+        /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HorizontalAlignmentProperty =
             DependencyProperty.Register(
@@ -100,19 +99,19 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(HorizontalAlignment.Center, VisualChanged));
 
         /// <summary>
-        /// The is double sided property
+        /// Identifies the <see cref="IsDoubleSided"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsDoubleSidedProperty = DependencyProperty.Register(
             "IsDoubleSided", typeof(bool), typeof(TextVisual3D), new UIPropertyMetadata(true, VisualChanged));
 
         /// <summary>
-        /// The padding property
+        /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
             "Padding", typeof(Thickness), typeof(TextVisual3D), new UIPropertyMetadata(new Thickness(0), VisualChanged));
 
         /// <summary>
-        /// The position property.
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position",
@@ -121,7 +120,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(0, 0, 0), VisualChanged));
 
         /// <summary>
-        /// The direction property.
+        /// Identifies the <see cref="TextDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextDirectionProperty = DependencyProperty.Register(
             "TextDirection",
@@ -130,13 +129,13 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(1, 0, 0), VisualChanged));
 
         /// <summary>
-        /// The text property.
+        /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             "Text", typeof(string), typeof(TextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The up property.
+        /// Identifies the <see cref="UpDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
             "UpDirection",
@@ -145,7 +144,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1), VisualChanged));
 
         /// <summary>
-        /// The vertical alignment property
+        /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VerticalAlignmentProperty =
             DependencyProperty.Register(

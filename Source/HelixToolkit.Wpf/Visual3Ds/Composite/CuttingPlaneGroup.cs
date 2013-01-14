@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf
     public class CuttingPlaneGroup : RenderingModelVisual3D
     {
         /// <summary>
-        /// The is enabled property.
+        /// Identifies the <see cref="IsEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
             "IsEnabled", typeof(bool), typeof(CuttingPlaneGroup), new UIPropertyMetadata(false, IsEnabledChanged));

@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf
     public abstract class LightSetup : ModelVisual3D
     {
         /// <summary>
-        /// The show lights property.
+        /// Identifies the <see cref="ShowLights"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShowLightsProperty = DependencyProperty.Register(
             "ShowLights", typeof(bool), typeof(LightSetup), new UIPropertyMetadata(false, ShowLightsChanged));

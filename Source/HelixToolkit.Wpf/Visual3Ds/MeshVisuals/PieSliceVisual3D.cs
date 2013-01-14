@@ -17,49 +17,49 @@ namespace HelixToolkit.Wpf
     public class PieSliceVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The center property.
+        /// Identifies the <see cref="Center"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
             "Center", typeof(Point3D), typeof(PieSliceVisual3D), new UIPropertyMetadata(new Point3D(), GeometryChanged));
 
         /// <summary>
-        /// The end angle property.
+        /// Identifies the <see cref="EndAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EndAngleProperty = DependencyProperty.Register(
             "EndAngle", typeof(double), typeof(PieSliceVisual3D), new UIPropertyMetadata(90.0, GeometryChanged));
 
         /// <summary>
-        /// The inner radius property.
+        /// Identifies the <see cref="InnerRadius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
             "InnerRadius", typeof(double), typeof(PieSliceVisual3D), new UIPropertyMetadata(0.5, GeometryChanged));
 
         /// <summary>
-        /// The normal property.
+        /// Identifies the <see cref="Normal"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
             "Normal", typeof(Vector3D), typeof(PieSliceVisual3D), new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        /// The outer radius property.
+        /// Identifies the <see cref="OuterRadius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OuterRadiusProperty = DependencyProperty.Register(
             "OuterRadius", typeof(double), typeof(PieSliceVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The start angle property.
+        /// Identifies the <see cref="StartAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StartAngleProperty = DependencyProperty.Register(
             "StartAngle", typeof(double), typeof(PieSliceVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
 
         /// <summary>
-        /// The theta div property.
+        /// Identifies the <see cref="ThetaDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(PieSliceVisual3D), new UIPropertyMetadata(20, GeometryChanged));
 
         /// <summary>
-        /// The up vector property.
+        /// Identifies the <see cref="UpVector"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpVectorProperty = DependencyProperty.Register(
             "UpVector", typeof(Vector3D), typeof(PieSliceVisual3D), new UIPropertyMetadata(new Vector3D(0, 1, 0), GeometryChanged));

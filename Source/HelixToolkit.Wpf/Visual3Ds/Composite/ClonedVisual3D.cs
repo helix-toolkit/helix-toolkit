@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf
     public class ClonedVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The source property.
+        /// Identifies the <see cref="Source"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof(ModelVisual3D), typeof(ClonedVisual3D), new UIPropertyMetadata(null, SourceChanged));

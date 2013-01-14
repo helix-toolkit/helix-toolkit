@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf
     public class BindableRotateManipulator : Manipulator
     {
         /// <summary>
-        ///   The axis property.
+        /// Identifies the <see cref="Axis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxisProperty = DependencyProperty.Register(
             "Axis",
@@ -25,13 +25,13 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        ///   The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(BindableRotateManipulator), new UIPropertyMetadata(3.0, GeometryChanged));
 
         /// <summary>
-        ///   The inner diameter property.
+        /// Identifies the <see cref="InnerDiameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
             "InnerDiameter",
@@ -40,13 +40,13 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(2.5, GeometryChanged));
 
         /// <summary>
-        ///   The length property.
+        /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(BindableRotateManipulator), new UIPropertyMetadata(0.1, GeometryChanged));
 
         /// <summary>
-        ///   The pivot point property.
+        /// Identifies the <see cref="Pivot"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
             "Pivot", typeof(Point3D), typeof(BindableRotateManipulator), new PropertyMetadata(new Point3D()));
@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf
         private Point3D lastPoint;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="BindableRotateManipulator" /> class. 
+        ///   Initializes a new instance of the <see cref="BindableRotateManipulator" /> class.
         /// </summary>
         public BindableRotateManipulator()
         {
@@ -176,7 +176,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse down.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -196,7 +196,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse move.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -237,7 +237,7 @@ namespace HelixToolkit.Wpf
         /// Called when position is changed.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         protected override void OnPositionChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -252,7 +252,7 @@ namespace HelixToolkit.Wpf
         /// Updates the target transform by the change in rotation value.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         protected override void OnValueChanged(DependencyPropertyChangedEventArgs e)
         {

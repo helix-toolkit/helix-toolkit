@@ -16,25 +16,25 @@ namespace HelixToolkit.Wpf
     public class SunLight : LightSetup
     {
         /// <summary>
-        /// The altitude property.
+        /// Identifies the <see cref="Altitude"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AltitudeProperty = DependencyProperty.Register(
             "Altitude", typeof(double), typeof(SunLight), new UIPropertyMetadata(60.0, SetupChanged));
 
         /// <summary>
-        /// The ambient property.
+        /// Identifies the <see cref="Ambient"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AmbientProperty = DependencyProperty.Register(
             "Ambient", typeof(double), typeof(SunLight), new UIPropertyMetadata(0.4, SetupChanged));
 
         /// <summary>
-        /// The azimuth property.
+        /// Identifies the <see cref="Azimuth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AzimuthProperty = DependencyProperty.Register(
             "Azimuth", typeof(double), typeof(SunLight), new UIPropertyMetadata(130.0, SetupChanged));
 
         /// <summary>
-        /// The brightness property.
+        /// Identifies the <see cref="Brightness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
             "Brightness", typeof(double), typeof(SunLight), new UIPropertyMetadata(0.6, SetupChanged));

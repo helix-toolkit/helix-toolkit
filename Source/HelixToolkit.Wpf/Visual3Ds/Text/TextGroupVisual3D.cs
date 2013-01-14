@@ -25,19 +25,19 @@ namespace HelixToolkit.Wpf
     public class TextGroupVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The background property
+        /// Identifies the <see cref="Background"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(TextGroupVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The border brush property
+        /// Identifies the <see cref="BorderBrush"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(TextGroupVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The border thickness property
+        /// Identifies the <see cref="BorderThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderThicknessProperty =
             DependencyProperty.Register(
@@ -47,19 +47,19 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(new Thickness(1), VisualChanged));
 
         /// <summary>
-        /// The font family property.
+        /// Identifies the <see cref="FontFamily"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
             "FontFamily", typeof(FontFamily), typeof(TextGroupVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The font size property
+        /// Identifies the <see cref="FontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
             "FontSize", typeof(double), typeof(TextGroupVisual3D), new UIPropertyMetadata(10.0, VisualChanged));
 
         /// <summary>
-        /// The font weight property.
+        /// Identifies the <see cref="FontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
             "FontWeight",
@@ -68,19 +68,19 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(FontWeights.Normal, VisualChanged));
 
         /// <summary>
-        /// The Foreground property.
+        /// Identifies the <see cref="Foreground"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
             "Foreground", typeof(Brush), typeof(TextGroupVisual3D), new UIPropertyMetadata(Brushes.Black, VisualChanged));
 
         /// <summary>
-        /// The height property.
+        /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register(
             "Height", typeof(double), typeof(TextGroupVisual3D), new UIPropertyMetadata(1.0, VisualChanged));
 
         /// <summary>
-        /// The is double sided property
+        /// Identifies the <see cref="IsDoubleSided"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsDoubleSidedProperty = DependencyProperty.Register(
             "IsDoubleSided", typeof(bool), typeof(TextGroupVisual3D), new UIPropertyMetadata(false, VisualChanged));
@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The padding property
+        /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
             "Padding",

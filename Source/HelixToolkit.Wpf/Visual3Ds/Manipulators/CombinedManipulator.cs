@@ -20,49 +20,49 @@ namespace HelixToolkit.Wpf
     public class CombinedManipulator : ModelVisual3D
     {
         /// <summary>
-        /// The can rotate x property.
+        /// Identifies the <see cref="CanRotateX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanRotateXProperty = DependencyProperty.Register(
             "CanRotateX", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        /// The can rotate y property.
+        /// Identifies the <see cref="CanRotateY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanRotateYProperty = DependencyProperty.Register(
             "CanRotateY", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        /// The can rotate z property.
+        /// Identifies the <see cref="CanRotateZ"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanRotateZProperty = DependencyProperty.Register(
             "CanRotateZ", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        /// The can translate x property.
+        /// Identifies the <see cref="CanTranslateX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateXProperty = DependencyProperty.Register(
             "CanTranslateX", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        /// The can translate y property.
+        /// Identifies the <see cref="CanTranslateY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateYProperty = DependencyProperty.Register(
             "CanTranslateY", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        /// The can translate z property.
+        /// Identifies the <see cref="CanTranslateZ"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateZProperty = DependencyProperty.Register(
             "CanTranslateZ", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
 
         /// <summary>
-        /// The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(CombinedManipulator), new UIPropertyMetadata(2.0, DiameterChanged));
 
         /// <summary>
-        /// The target transform property.
+        /// Identifies the <see cref="TargetTransform"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty =
             DependencyProperty.Register(

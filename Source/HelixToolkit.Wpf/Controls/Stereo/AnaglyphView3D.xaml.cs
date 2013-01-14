@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf
     public partial class AnaglyphView3D : StereoControl
     {
         /// <summary>
-        /// The horizontal offset property.
+        /// Identifies the <see cref="HorizontalOffset"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HorizontalOffsetProperty =
             DependencyProperty.Register(
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(0.0, HorizontalOffsetChanged));
 
         /// <summary>
-        /// The method property.
+        /// Identifies the <see cref="Method"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MethodProperty = DependencyProperty.Register(
             "Method", typeof(AnaglyphMethod), typeof(AnaglyphView3D), new UIPropertyMetadata(AnaglyphMethod.Gray));

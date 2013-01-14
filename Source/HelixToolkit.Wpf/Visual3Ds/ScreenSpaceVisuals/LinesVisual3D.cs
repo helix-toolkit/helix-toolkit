@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf
     public class LinesVisual3D : ScreenSpaceVisual3D
     {
         /// <summary>
-        /// The thickness property.
+        /// Identifies the <see cref="Thickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness", typeof(double), typeof(LinesVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));

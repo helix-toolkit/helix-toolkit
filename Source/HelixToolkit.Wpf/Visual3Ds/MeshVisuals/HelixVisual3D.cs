@@ -25,31 +25,31 @@ namespace HelixToolkit.Wpf
     public class HelixVisual3D : ParametricSurface3D
     {
         /// <summary>
-        /// The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(0.5, GeometryChanged));
 
         /// <summary>
-        /// The length property.
+        /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The phase property.
+        /// Identifies the <see cref="Phase"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PhaseProperty = DependencyProperty.Register(
             "Phase", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
 
         /// <summary>
-        /// The radius property.
+        /// Identifies the <see cref="Radius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
             "Radius", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The turns property.
+        /// Identifies the <see cref="Turns"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TurnsProperty = DependencyProperty.Register(
             "Turns", typeof(double), typeof(HelixVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));

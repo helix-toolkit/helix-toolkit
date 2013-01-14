@@ -15,19 +15,19 @@ namespace HelixToolkit.Wpf
     public class PipeVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(PipeVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The inner diameter property.
+        /// Identifies the <see cref="InnerDiameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
             "InnerDiameter", typeof(double), typeof(PipeVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
 
         /// <summary>
-        /// The point 1 property.
+        /// Identifies the <see cref="Point1"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
             "Point1",
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The point 2 property.
+        /// Identifies the <see cref="Point2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
             "Point2",
@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(0, 0, 10), GeometryChanged));
 
         /// <summary>
-        /// The theta div property.
+        /// Identifies the <see cref="ThetaDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(PipeVisual3D), new UIPropertyMetadata(36, GeometryChanged));

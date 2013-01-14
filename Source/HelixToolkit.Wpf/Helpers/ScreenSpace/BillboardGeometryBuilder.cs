@@ -98,7 +98,6 @@ namespace HelixToolkit.Wpf
         }
     }
 
-
     public class Billboard
     {
         internal Point3D Position;

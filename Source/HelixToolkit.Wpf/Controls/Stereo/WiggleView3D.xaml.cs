@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf
     public partial class WiggleView3D : StereoControl
     {
         /// <summary>
-        /// The wiggle rate property.
+        /// Identifies the <see cref="WiggleRate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WiggleRateProperty = DependencyProperty.Register(
             "WiggleRate", typeof(double), typeof(WiggleView3D), new UIPropertyMetadata(5.0, WiggleRateChanged));

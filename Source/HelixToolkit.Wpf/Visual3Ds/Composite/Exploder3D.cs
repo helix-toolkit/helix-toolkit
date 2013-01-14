@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf
     public class Exploder3D : ModelVisual3D
     {
         /// <summary>
-        /// The is exploding property.
+        /// Identifies the <see cref="IsExploding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsExplodingProperty = DependencyProperty.Register(
             "IsExploding", typeof(bool), typeof(Exploder3D), new UIPropertyMetadata(false, IsExplodingChanged));

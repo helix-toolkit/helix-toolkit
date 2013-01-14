@@ -23,13 +23,13 @@ namespace HelixToolkit.Wpf
     {
         // todo: keyboard shortcut 'x' to change cross/parallel viewing
         /// <summary>
-        /// The camera property.
+        /// Identifies the <see cref="Camera"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
             "Camera", typeof(PerspectiveCamera), typeof(StereoControl), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The camera rotation mode property.
+        /// Identifies the <see cref="CameraRotationMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty =
             DependencyProperty.Register(
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(CameraRotationMode.Turntable));
 
         /// <summary>
-        /// The copy direction vector property.
+        /// Identifies the <see cref="CopyDirectionVector"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CopyDirectionVectorProperty =
             DependencyProperty.Register(
@@ -49,19 +49,19 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(true, StereoViewChanged));
 
         /// <summary>
-        /// The copy up vector property.
+        /// Identifies the <see cref="CopyUpVector"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CopyUpVectorProperty = DependencyProperty.Register(
             "CopyUpVector", typeof(bool), typeof(StereoControl), new UIPropertyMetadata(false, StereoViewChanged));
 
         /// <summary>
-        /// The cross viewing property.
+        /// Identifies the <see cref="CrossViewing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CrossViewingProperty = DependencyProperty.Register(
             "CrossViewing", typeof(bool), typeof(StereoControl), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// The stereo base property.
+        /// Identifies the <see cref="StereoBase"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StereoBaseProperty = DependencyProperty.Register(
             "StereoBase", typeof(double), typeof(StereoControl), new UIPropertyMetadata(0.12, StereoViewChanged));

@@ -17,19 +17,19 @@ namespace HelixToolkit.Wpf
     public class GridLinesVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The center property.
+        /// Identifies the <see cref="Center"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
             "Center", typeof(Point3D), typeof(GridLinesVisual3D), new UIPropertyMetadata(new Point3D(), GeometryChanged));
 
         /// <summary>
-        /// The distance property.
+        /// Identifies the <see cref="Distance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
             "MinorDistance", typeof(double), typeof(GridLinesVisual3D), new PropertyMetadata(2.5, GeometryChanged));
 
         /// <summary>
-        /// The length direction property.
+        /// Identifies the <see cref="LengthDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthDirectionProperty =
             DependencyProperty.Register(
@@ -39,19 +39,19 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The length property.
+        /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(GridLinesVisual3D), new PropertyMetadata(200.0, GeometryChanged));
 
         /// <summary>
-        /// The major distance property.
+        /// Identifies the <see cref="MajorDistance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MajorDistanceProperty = DependencyProperty.Register(
             "MajorDistance", typeof(double), typeof(GridLinesVisual3D), new PropertyMetadata(10.0, GeometryChanged));
 
         /// <summary>
-        /// The normal property.
+        /// Identifies the <see cref="Normal"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
             "Normal",
@@ -60,13 +60,13 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        /// The thickness property.
+        /// Identifies the <see cref="Thickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness", typeof(double), typeof(GridLinesVisual3D), new PropertyMetadata(0.08, GeometryChanged));
 
         /// <summary>
-        /// The width property.
+        /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(GridLinesVisual3D), new PropertyMetadata(200.0, GeometryChanged));

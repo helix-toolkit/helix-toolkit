@@ -16,62 +16,62 @@ namespace HelixToolkit.Wpf
     public class MeshVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The edge diameter property.
+        /// Identifies the <see cref="EdgeDiameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EdgeDiameterProperty = DependencyProperty.Register(
             "EdgeDiameter", typeof(double), typeof(MeshVisual3D), new UIPropertyMetadata(0.03, MeshChanged));
 
         /// <summary>
-        /// The edge material property.
+        /// Identifies the <see cref="EdgeMaterial"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EdgeMaterialProperty = DependencyProperty.Register(
             "EdgeMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Gray));
 
         /// <summary>
-        /// The face back material property.
+        /// Identifies the <see cref="FaceBackMaterial"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FaceBackMaterialProperty =
             DependencyProperty.Register(
                 "FaceBackMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Gray));
 
         /// <summary>
-        /// The face material property.
+        /// Identifies the <see cref="FaceMaterial"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FaceMaterialProperty = DependencyProperty.Register(
             "FaceMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Blue));
 
         /// <summary>
-        /// The mesh property.
+        /// Identifies the <see cref="Mesh"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MeshProperty = DependencyProperty.Register(
             "Mesh", typeof(Mesh3D), typeof(MeshVisual3D), new UIPropertyMetadata(null, MeshChanged));
 
         /// <summary>
-        /// The shared vertices property.
+        /// Identifies the <see cref="SharedVertices"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SharedVerticesProperty = DependencyProperty.Register(
             "SharedVertices", typeof(bool), typeof(MeshVisual3D), new UIPropertyMetadata(false, MeshChanged));
 
         /// <summary>
-        /// The shrink factor property.
+        /// Identifies the <see cref="ShrinkFactor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShrinkFactorProperty = DependencyProperty.Register(
             "ShrinkFactor", typeof(double), typeof(MeshVisual3D), new UIPropertyMetadata(0.0, MeshChanged));
 
         /// <summary>
-        /// The vertex material property.
+        /// Identifies the <see cref="VertexMaterial"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VertexMaterialProperty = DependencyProperty.Register(
             "VertexMaterial", typeof(Material), typeof(MeshVisual3D), new UIPropertyMetadata(Materials.Gold));
 
         /// <summary>
-        /// The vertex radius property.
+        /// Identifies the <see cref="VertexRadius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VertexRadiusProperty = DependencyProperty.Register(
             "VertexRadius", typeof(double), typeof(MeshVisual3D), new UIPropertyMetadata(0.05, MeshChanged));
 
         /// <summary>
-        /// The vertex resolution property.
+        /// Identifies the <see cref="VertexResolution"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VertexResolutionProperty =
             DependencyProperty.Register(

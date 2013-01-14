@@ -19,13 +19,13 @@ namespace HelixToolkit.Wpf
     public class TranslateManipulator : Manipulator
     {
         /// <summary>
-        /// The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(TranslateManipulator), new UIPropertyMetadata(0.2, GeometryChanged));
 
         /// <summary>
-        /// The direction property.
+        /// Identifies the <see cref="Direction"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
             "Direction",
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        /// The length property.
+        /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(TranslateManipulator), new UIPropertyMetadata(2.0, GeometryChanged));

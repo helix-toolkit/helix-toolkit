@@ -19,37 +19,37 @@ namespace HelixToolkit.Wpf
     public class BoxVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The bottom face property.
+        /// Identifies the <see cref="BottomFace"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BottomFaceProperty = DependencyProperty.Register(
             "BottomFace", typeof(bool), typeof(BoxVisual3D), new UIPropertyMetadata(true, GeometryChanged));
 
         /// <summary>
-        /// The center property.
+        /// Identifies the <see cref="Center"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
             "Center", typeof(Point3D), typeof(BoxVisual3D), new UIPropertyMetadata(new Point3D(), GeometryChanged));
 
         /// <summary>
-        /// The height property.
+        /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register(
             "Height", typeof(double), typeof(BoxVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The length property.
+        /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(BoxVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The top face property.
+        /// Identifies the <see cref="TopFace"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TopFaceProperty = DependencyProperty.Register(
             "TopFace", typeof(bool), typeof(BoxVisual3D), new UIPropertyMetadata(true, GeometryChanged));
 
         /// <summary>
-        /// The width property.
+        /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(BoxVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));

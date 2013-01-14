@@ -43,20 +43,20 @@ namespace HelixToolkit.Wpf
     public class SortingVisual3D : RenderingModelVisual3D
     {
         /// <summary>
-        /// The check for opaque visuals property.
+        /// Identifies the <see cref="CheckForOpaqueVisuals"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CheckForOpaqueVisualsProperty =
             DependencyProperty.Register(
                 "CheckForOpaqueVisuals", typeof(bool), typeof(SortingVisual3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// The is sorting property.
+        /// Identifies the <see cref="IsSorting"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsSortingProperty = DependencyProperty.Register(
             "IsSorting", typeof(bool), typeof(SortingVisual3D), new UIPropertyMetadata(false, IsSortingChanged));
 
         /// <summary>
-        /// The method property.
+        /// Identifies the <see cref="Method"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MethodProperty = DependencyProperty.Register(
             "Method",
@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(SortingMethod.BoundingBoxCorners));
 
         /// <summary>
-        /// The sorting frequency property.
+        /// Identifies the <see cref="SortingFrequency"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SortingFrequencyProperty =
             DependencyProperty.Register(

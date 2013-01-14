@@ -18,13 +18,13 @@ namespace HelixToolkit.Wpf
     public class Expander3D : ModelVisual3D
     {
         /// <summary>
-        /// The expand origin property.
+        /// Identifies the <see cref="ExpandOrigin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExpandOriginProperty = DependencyProperty.Register(
             "ExpandOrigin", typeof(Point3D?), typeof(Expander3D), new UIPropertyMetadata(null, ExpansionChanged));
 
         /// <summary>
-        /// The expansion property.
+        /// Identifies the <see cref="Expansion"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExpansionProperty = DependencyProperty.Register(
             "Expansion", typeof(double), typeof(Expander3D), new UIPropertyMetadata(2.0, ExpansionChanged));

@@ -22,45 +22,45 @@ namespace HelixToolkit.Wpf
     public class RangeColorAxis : ColorAxis
     {
         /// <summary>
-        /// The format provider property
+        /// Identifies the <see cref="FormatProvider"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
             "FormatProvider", typeof(IFormatProvider), typeof(RangeColorAxis), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The format string property
+        /// Identifies the <see cref="FormatString"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FormatStringProperty = DependencyProperty.Register(
             "FormatString", typeof(string), typeof(RangeColorAxis), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The maximum property
+        /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
             "Maximum", typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(100.0));
 
         /// <summary>
-        /// The maximum texture coordinate property
+        /// Identifies the <see cref="MaximumTextureCoordinate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumTextureCoordinateProperty =
             DependencyProperty.Register(
                 "MaximumTextureCoordinate", typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The minimum property
+        /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
             "Minimum", typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        /// The minimum texture coordinate property
+        /// Identifies the <see cref="MinimumTextureCoordinate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumTextureCoordinateProperty =
             DependencyProperty.Register(
                 "MinimumTextureCoordinate", typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        /// The step property
+        /// Identifies the <see cref="Step"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(10.0));
@@ -218,7 +218,7 @@ namespace HelixToolkit.Wpf
                         p0 = new Point(this.ColorArea.Right, y);
                         p1 = new Point(this.ColorArea.Left - this.TickLength, y);
                         p2 = new Point(
-                            this.ColorArea.Left - this.TickLength - this.TextMargin - tb.DesiredSize.Width, 
+                            this.ColorArea.Left - this.TickLength - this.TextMargin - tb.DesiredSize.Width,
                             y - (tb.DesiredSize.Height / 2));
                         break;
                     default:
@@ -231,12 +231,12 @@ namespace HelixToolkit.Wpf
 
                 var l = new Line
                             {
-                                X1 = p0.X, 
-                                X2 = p1.X, 
-                                Y1 = p0.Y, 
-                                Y2 = p1.Y, 
-                                Stroke = this.Foreground, 
-                                StrokeThickness = 1, 
+                                X1 = p0.X,
+                                X2 = p1.X,
+                                Y1 = p0.Y,
+                                Y2 = p1.Y,
+                                Stroke = this.Foreground,
+                                StrokeThickness = 1,
                                 SnapsToDevicePixels = true
                             };
                 this.Canvas.Children.Add(l);

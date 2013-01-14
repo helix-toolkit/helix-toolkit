@@ -23,32 +23,32 @@ namespace HelixToolkit.Wpf
         // http://linas.org/gle/
         // http://sharpmap.codeplex.com/Thread/View.aspx?ThreadId=18864
         /// <summary>
-        /// The diameters property.
+        /// Identifies the <see cref="Diameters"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiametersProperty = DependencyProperty.Register(
             "Diameters", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The is path closed property.
+        /// Identifies the <see cref="IsPathClosed"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsPathClosedProperty = DependencyProperty.Register(
             "IsPathClosed", typeof(bool), typeof(ExtrudedVisual3D), new UIPropertyMetadata(false, GeometryChanged));
 
         /// <summary>
-        /// The is section closed property.
+        /// Identifies the <see cref="IsSectionClosed"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsSectionClosedProperty =
             DependencyProperty.Register(
                 "IsSectionClosed", typeof(bool), typeof(PipeVisual3D), new UIPropertyMetadata(true, GeometryChanged));
 
         /// <summary>
-        /// The path property.
+        /// Identifies the <see cref="Path"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
             "Path", typeof(Point3DCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
-        /// The section property.
+        /// Identifies the <see cref="Section"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SectionProperty = DependencyProperty.Register(
             "Section",
@@ -57,14 +57,14 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new PointCollection(), GeometryChanged));
 
         /// <summary>
-        /// The texture coordinates property.
+        /// Identifies the <see cref="TextureCoordinates"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextureCoordinatesProperty =
             DependencyProperty.Register(
                 "TextureCoordinates", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The up vector property.
+        /// Identifies the <see cref="UpVector"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpVectorProperty = DependencyProperty.Register(
             "UpVector",

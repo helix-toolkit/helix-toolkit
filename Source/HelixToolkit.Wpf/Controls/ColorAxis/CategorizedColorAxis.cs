@@ -21,12 +21,12 @@ namespace HelixToolkit.Wpf
     public class CategorizedColorAxis : ColorAxis
     {
         /// <summary>
-        /// The categories property
+        /// Identifies the <see cref="Categories"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CategoriesProperty = DependencyProperty.Register(
-            "Categories", 
-            typeof(IList<string>), 
-            typeof(CategorizedColorAxis), 
+            "Categories",
+            typeof(IList<string>),
+            typeof(CategorizedColorAxis),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, PropertyChanged));
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf
                         p0 = new Point(this.ColorArea.Right, y);
                         p1 = new Point(this.ColorArea.Left - this.TickLength, y);
                         p2 = new Point(
-                            this.ColorArea.Left - this.TickLength - this.TextMargin - tb.DesiredSize.Width, 
+                            this.ColorArea.Left - this.TickLength - this.TextMargin - tb.DesiredSize.Width,
                             y1 - (tb.DesiredSize.Height / 2));
                         p3 = new Point(this.ColorArea.Right, y2);
                         p4 = new Point(this.ColorArea.Left - this.TickLength, y2);
@@ -92,12 +92,12 @@ namespace HelixToolkit.Wpf
 
                 var l = new Line
                             {
-                                X1 = p0.X, 
-                                X2 = p1.X, 
-                                Y1 = p0.Y, 
-                                Y2 = p1.Y, 
-                                Stroke = this.Foreground, 
-                                StrokeThickness = 1, 
+                                X1 = p0.X,
+                                X2 = p1.X,
+                                Y1 = p0.Y,
+                                Y2 = p1.Y,
+                                Stroke = this.Foreground,
+                                StrokeThickness = 1,
                                 SnapsToDevicePixels = true
                             };
 
@@ -106,12 +106,12 @@ namespace HelixToolkit.Wpf
                 {
                     var l2 = new Line
                                  {
-                                     X1 = p3.X, 
-                                     X2 = p4.X, 
-                                     Y1 = p3.Y, 
-                                     Y2 = p4.Y, 
-                                     Stroke = this.BorderBrush, 
-                                     StrokeThickness = 1, 
+                                     X1 = p3.X,
+                                     X2 = p4.X,
+                                     Y1 = p3.Y,
+                                     Y2 = p4.Y,
+                                     Stroke = this.BorderBrush,
+                                     StrokeThickness = 1,
                                      SnapsToDevicePixels = true
                                  };
                     this.Canvas.Children.Add(l2);

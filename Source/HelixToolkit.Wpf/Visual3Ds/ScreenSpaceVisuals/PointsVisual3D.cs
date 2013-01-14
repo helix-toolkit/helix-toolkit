@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf
     public class PointsVisual3D : ScreenSpaceVisual3D
     {
         /// <summary>
-        /// The width property.
+        /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Size", typeof(double), typeof(PointsVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));

@@ -18,13 +18,13 @@ namespace HelixToolkit.Wpf
     public abstract class ParametricSurface3D : MeshElement3D
     {
         /// <summary>
-        /// The mesh size u property.
+        /// Identifies the <see cref="MeshSizeU"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MeshSizeUProperty = DependencyProperty.Register(
             "MeshSizeU", typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
 
         /// <summary>
-        /// The mesh size v property.
+        /// Identifies the <see cref="MeshSizeV"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MeshSizeVProperty = DependencyProperty.Register(
             "MeshSizeV", typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));

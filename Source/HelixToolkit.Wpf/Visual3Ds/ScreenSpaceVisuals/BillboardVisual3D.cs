@@ -16,19 +16,19 @@ namespace HelixToolkit.Wpf
     public class BillboardVisual3D : RenderingModelVisual3D
     {
         /// <summary>
-        /// The depth offset property.
+        /// Identifies the <see cref="DepthOffset"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DepthOffsetProperty = DependencyProperty.Register(
             "DepthOffset", typeof(double), typeof(BillboardVisual3D), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        /// The height property.
+        /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register(
             "Height", typeof(double), typeof(BillboardVisual3D), new UIPropertyMetadata(10.0, GeometryChanged));
 
         /// <summary>
-        /// The horizontal alignment property
+        /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HorizontalAlignmentProperty =
             DependencyProperty.Register(
@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(HorizontalAlignment.Center));
 
         /// <summary>
-        /// The material property.
+        /// Identifies the <see cref="Material"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaterialProperty = DependencyProperty.Register(
             "Material",
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(Materials.Red, MaterialChanged));
 
         /// <summary>
-        /// The position property.
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position",
@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(), GeometryChanged));
 
         /// <summary>
-        /// The vertical alignment property
+        /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VerticalAlignmentProperty =
             DependencyProperty.Register(
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(VerticalAlignment.Center));
 
         /// <summary>
-        /// The width property.
+        /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(BillboardVisual3D), new UIPropertyMetadata(10.0, GeometryChanged));

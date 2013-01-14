@@ -21,19 +21,19 @@ namespace HelixToolkit.Wpf
     public abstract class MeshElement3D : ModelVisual3D, IEditableObject
     {
         /// <summary>
-        /// The back material property.
+        /// Identifies the <see cref="BackMaterial"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackMaterialProperty = DependencyProperty.Register(
             "BackMaterial", typeof(Material), typeof(MeshElement3D), new UIPropertyMetadata(MaterialHelper.CreateMaterial(Brushes.LightBlue), MaterialChanged));
 
         /// <summary>
-        /// The fill property.
+        /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Brush), typeof(MeshElement3D), new UIPropertyMetadata(null, FillChanged));
 
         /// <summary>
-        /// The material property.
+        /// Identifies the <see cref="Material"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaterialProperty = DependencyProperty.Register(
             "Material",
