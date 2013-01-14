@@ -21,13 +21,13 @@ namespace HelixToolkit.Wpf
     public class CameraController : Grid
     {
         /// <summary>
-        /// Identifies the <see cref="CameraMode" /> dependency property.
+        /// Identifies the <see cref="CameraMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
             "CameraMode", typeof(CameraMode), typeof(CameraController), new UIPropertyMetadata(CameraMode.Inspect));
 
         /// <summary>
-        /// Identifies the <see cref="Camera" /> dependency property.
+        /// Identifies the <see cref="Camera"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
             "Camera",
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, CameraChanged));
 
         /// <summary>
-        /// Identifies the <see cref="CameraRotationMode" /> dependency property.
+        /// Identifies the <see cref="CameraRotationMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty =
             DependencyProperty.Register(
@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(CameraRotationMode.Turntable));
 
         /// <summary>
-        /// Identifies the <see cref="ChangeFieldOfViewCursor" /> dependency property.
+        /// Identifies the <see cref="ChangeFieldOfViewCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewCursorProperty =
             DependencyProperty.Register(
@@ -56,165 +56,165 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(Cursors.ScrollNS));
 
         /// <summary>
-        /// Identifies the <see cref="DefaultCamera" /> dependency property.
+        /// Identifies the <see cref="DefaultCamera"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
             "DefaultCamera", typeof(ProjectionCamera), typeof(CameraController), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref="Enabled" /> dependency property.
+        /// Identifies the <see cref="Enabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register(
             "Enabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="InertiaFactor" /> dependency property.
+        /// Identifies the <see cref="InertiaFactor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InertiaFactorProperty = DependencyProperty.Register(
             "InertiaFactor", typeof(double), typeof(CameraController), new UIPropertyMetadata(0.9));
 
         /// <summary>
-        /// Identifies the <see cref="InfiniteSpin" /> dependency property.
+        /// Identifies the <see cref="InfiniteSpin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InfiniteSpinProperty = DependencyProperty.Register(
             "InfiniteSpin", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="IsChangeFieldOfViewEnabled" /> dependency property.
+        /// Identifies the <see cref="IsChangeFieldOfViewEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsChangeFieldOfViewEnabledProperty =
             DependencyProperty.Register(
                 "IsChangeFieldOfViewEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="IsInertiaEnabled" /> dependency property.
+        /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsInertiaEnabledProperty =
             DependencyProperty.Register(
                 "IsInertiaEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="IsMoveEnabled" /> dependency property.
+        /// Identifies the <see cref="IsMoveEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
             "IsMoveEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="IsPanEnabled" /> dependency property.
+        /// Identifies the <see cref="IsPanEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
             "IsPanEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="IsRotationEnabled" /> dependency property.
+        /// Identifies the <see cref="IsRotationEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsRotationEnabledProperty =
             DependencyProperty.Register(
                 "IsRotationEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="IsTouchZoomEnabled" /> dependency property.
+        /// Identifies the <see cref="IsTouchZoomEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsTouchZoomEnabledProperty =
             DependencyProperty.Register(
                 "IsTouchZoomEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="IsZoomEnabled" /> dependency property.
+        /// Identifies the <see cref="IsZoomEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
             "IsZoomEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="LeftRightPanSensitivity" /> dependency property.
+        /// Identifies the <see cref="LeftRightPanSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftRightPanSensitivityProperty =
             DependencyProperty.Register(
                 "LeftRightPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// Identifies the <see cref="LeftRightRotationSensitivity" /> dependency property.
+        /// Identifies the <see cref="LeftRightRotationSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftRightRotationSensitivityProperty =
             DependencyProperty.Register(
                 "LeftRightRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// Identifies the <see cref="MaximumFieldOfView" /> dependency property.
+        /// Identifies the <see cref="MaximumFieldOfView"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumFieldOfViewProperty =
             DependencyProperty.Register(
                 "MaximumFieldOfView", typeof(double), typeof(CameraController), new UIPropertyMetadata(160.0));
 
         /// <summary>
-        /// Identifies the <see cref="MinimumFieldOfView" /> dependency property.
+        /// Identifies the <see cref="MinimumFieldOfView"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumFieldOfViewProperty =
             DependencyProperty.Register(
                 "MinimumFieldOfView", typeof(double), typeof(CameraController), new UIPropertyMetadata(5.0));
 
         /// <summary>
-        /// Identifies the <see cref="MoveSensitivity" /> dependency property.
+        /// Identifies the <see cref="MoveSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MoveSensitivityProperty =
             DependencyProperty.Register(
                 "MoveSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// Identifies the <see cref="PageUpDownZoomSensitivity" /> dependency property.
+        /// Identifies the <see cref="PageUpDownZoomSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PageUpDownZoomSensitivityProperty =
             DependencyProperty.Register(
                 "PageUpDownZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// Identifies the <see cref="PanCursor" /> dependency property.
+        /// Identifies the <see cref="PanCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
             "PanCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.Hand));
 
         /// <summary>
-        /// Identifies the <see cref="RotateAroundMouseDownPoint" /> dependency property.
+        /// Identifies the <see cref="RotateAroundMouseDownPoint"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotateAroundMouseDownPointProperty =
             DependencyProperty.Register(
                 "RotateAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="RotateCursor" /> dependency property.
+        /// Identifies the <see cref="RotateCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
             "RotateCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeAll));
 
         /// <summary>
-        /// Identifies the <see cref="RotationSensitivity" /> dependency property.
+        /// Identifies the <see cref="RotationSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotationSensitivityProperty =
             DependencyProperty.Register(
                 "RotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// Identifies the <see cref="ShowCameraTarget" /> dependency property.
+        /// Identifies the <see cref="ShowCameraTarget"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShowCameraTargetProperty =
             DependencyProperty.Register(
                 "ShowCameraTarget", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="SpinReleaseTime" /> dependency property.
+        /// Identifies the <see cref="SpinReleaseTime"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SpinReleaseTimeProperty =
             DependencyProperty.Register(
                 "SpinReleaseTime", typeof(int), typeof(CameraController), new UIPropertyMetadata(200));
 
         /// <summary>
-        /// Identifies the <see cref="TouchMode" /> dependency property.
+        /// Identifies the <see cref="TouchMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
             "TouchMode", typeof(TouchMode), typeof(CameraController), new UIPropertyMetadata(TouchMode.Panning));
 
         /// <summary>
-        /// Identifies the <see cref="ModelUpDirection" /> dependency property.
+        /// Identifies the <see cref="ModelUpDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ModelUpDirectionProperty = DependencyProperty.Register(
             "ModelUpDirection",
@@ -223,40 +223,40 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1)));
 
         /// <summary>
-        /// Identifies the <see cref="UpDownPanSensitivity" /> dependency property.
+        /// Identifies the <see cref="UpDownPanSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDownPanSensitivityProperty =
             DependencyProperty.Register(
                 "UpDownPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// Identifies the <see cref="UpDownRotationSensitivity" /> dependency property.
+        /// Identifies the <see cref="UpDownRotationSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDownRotationSensitivityProperty =
             DependencyProperty.Register(
                 "UpDownRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// Identifies the <see cref="Viewport" /> dependency property.
+        /// Identifies the <see cref="Viewport"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(
             "Viewport", typeof(Viewport3D), typeof(CameraController), new PropertyMetadata(null, ViewportChanged));
 
         /// <summary>
-        /// Identifies the <see cref="ZoomAroundMouseDownPoint" /> dependency property.
+        /// Identifies the <see cref="ZoomAroundMouseDownPoint"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomAroundMouseDownPointProperty =
             DependencyProperty.Register(
                 "ZoomAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="ZoomCursor" /> dependency property.
+        /// Identifies the <see cref="ZoomCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
             "ZoomCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
-        /// Identifies the <see cref="ZoomRectangleCursor" /> dependency property.
+        /// Identifies the <see cref="ZoomRectangleCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleCursorProperty =
             DependencyProperty.Register(
@@ -266,7 +266,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(Cursors.ScrollSE));
 
         /// <summary>
-        /// Identifies the <see cref="ZoomSensitivity" /> dependency property.
+        /// Identifies the <see cref="ZoomSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomSensitivityProperty =
             DependencyProperty.Register(
