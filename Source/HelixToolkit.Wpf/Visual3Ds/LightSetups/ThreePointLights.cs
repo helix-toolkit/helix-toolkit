@@ -20,19 +20,19 @@ namespace HelixToolkit.Wpf
     public class ThreePointLights : LightSetup
     {
         /// <summary>
-        /// The distance property.
+        /// Identifies the <see cref="Distance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
             "Distance", typeof(double), typeof(ThreePointLights), new UIPropertyMetadata(10.0, SetupChanged));
 
         /// <summary>
-        /// The fill light angle property.
+        /// Identifies the <see cref="FillLightAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillLightAngleProperty = DependencyProperty.Register(
             "FillLightAngle", typeof(double), typeof(ThreePointLights), new UIPropertyMetadata(45.0, SetupChanged));
 
         /// <summary>
-        /// The fill light side angle property.
+        /// Identifies the <see cref="FillLightSideAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillLightSideAngleProperty =
             DependencyProperty.Register(
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(-20.0, SetupChanged));
 
         /// <summary>
-        /// The front direction property.
+        /// Identifies the <see cref="FrontDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FrontDirectionProperty = DependencyProperty.Register(
             "FrontDirection",
@@ -51,13 +51,13 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 1, 0), SetupChanged));
 
         /// <summary>
-        /// The key light angle property.
+        /// Identifies the <see cref="KeyLightAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty KeyLightAngleProperty = DependencyProperty.Register(
             "KeyLightAngle", typeof(double), typeof(ThreePointLights), new UIPropertyMetadata(30.0, SetupChanged));
 
         /// <summary>
-        /// The key light brightness property.
+        /// Identifies the <see cref="KeyLightBrightness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty KeyLightBrightnessProperty =
             DependencyProperty.Register(
@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(1.0, SetupChanged));
 
         /// <summary>
-        /// The key light side angle property.
+        /// Identifies the <see cref="KeyLightSideAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty KeyLightSideAngleProperty =
             DependencyProperty.Register(
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(45.0, SetupChanged));
 
         /// <summary>
-        /// The key to fill light ratio property.
+        /// Identifies the <see cref="KeyToFillLightRatio"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty KeyToFillLightRatioProperty =
             DependencyProperty.Register(
@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(2.0, SetupChanged));
 
         /// <summary>
-        /// The key to rim light ratio property.
+        /// Identifies the <see cref="KeyToRimLightRatio"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty KeyToRimLightRatioProperty =
             DependencyProperty.Register(
@@ -97,13 +97,13 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(1.0, SetupChanged));
 
         /// <summary>
-        /// The rim light angle property.
+        /// Identifies the <see cref="RimLightAngle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RimLightAngleProperty = DependencyProperty.Register(
             "RimLightAngle", typeof(double), typeof(ThreePointLights), new UIPropertyMetadata(20.0, SetupChanged));
 
         /// <summary>
-        /// The target property.
+        /// Identifies the <see cref="Target"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TargetProperty = DependencyProperty.Register(
             "Target",
@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(0, 0, 0), SetupChanged));
 
         /// <summary>
-        /// The up direction property.
+        /// Identifies the <see cref="UpDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
             "UpDirection",

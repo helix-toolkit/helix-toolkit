@@ -15,31 +15,31 @@ namespace HelixToolkit.Wpf
     public class EllipsoidVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The phi div property.
+        /// Identifies the <see cref="PhiDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PhiDivProperty = DependencyProperty.Register(
             "PhiDiv", typeof(int), typeof(EllipsoidVisual3D), new PropertyMetadata(30, GeometryChanged));
 
         /// <summary>
-        /// The x radius property.
+        /// Identifies the <see cref="RadiusX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register(
             "RadiusX", typeof(double), typeof(EllipsoidVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The y radius property.
+        /// Identifies the <see cref="RadiusY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register(
             "RadiusY", typeof(double), typeof(EllipsoidVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The z radius property.
+        /// Identifies the <see cref="RadiusZ"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RadiusZProperty = DependencyProperty.Register(
             "RadiusZ", typeof(double), typeof(EllipsoidVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The theta div property.
+        /// Identifies the <see cref="ThetaDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(EllipsoidVisual3D), new PropertyMetadata(60, GeometryChanged));

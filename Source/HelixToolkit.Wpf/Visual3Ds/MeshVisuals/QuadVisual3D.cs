@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf
         // +---------------+
         // (0,1)          (1,1)
         /// <summary>
-        /// The point 1 property.
+        /// Identifies the <see cref="Point1"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
             "Point1",
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The point 2 property.
+        /// Identifies the <see cref="Point2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
             "Point2",
@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(1, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The point 3 property.
+        /// Identifies the <see cref="Point3"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Point3Property = DependencyProperty.Register(
             "Point3",
@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Point3D(1, 1, 0), GeometryChanged));
 
         /// <summary>
-        /// The point 4 property.
+        /// Identifies the <see cref="Point4"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Point4Property = DependencyProperty.Register(
             "Point4",

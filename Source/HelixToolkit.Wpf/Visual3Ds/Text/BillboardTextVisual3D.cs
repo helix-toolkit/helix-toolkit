@@ -22,19 +22,19 @@ namespace HelixToolkit.Wpf
     public class BillboardTextVisual3D : BillboardVisual3D
     {
         /// <summary>
-        /// The background property
+        /// Identifies the <see cref="Background"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The border brush property
+        /// Identifies the <see cref="BorderBrush"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The border thickness property
+        /// Identifies the <see cref="BorderThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderThicknessProperty =
             DependencyProperty.Register(
@@ -44,19 +44,19 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(new Thickness(1), VisualChanged));
 
         /// <summary>
-        /// The font family property.
+        /// Identifies the <see cref="FontFamily"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register(
             "FontFamily", typeof(FontFamily), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
-        /// The font size property.
+        /// Identifies the <see cref="FontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
             "FontSize", typeof(double), typeof(BillboardTextVisual3D), new UIPropertyMetadata(0.0, VisualChanged));
 
         /// <summary>
-        /// The font weight property.
+        /// Identifies the <see cref="FontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
             "FontWeight",
@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(FontWeights.Normal, VisualChanged));
 
         /// <summary>
-        /// The foreground property.
+        /// Identifies the <see cref="Foreground"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
             "Foreground",
@@ -74,13 +74,13 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(Brushes.Black, VisualChanged));
 
         /// <summary>
-        /// The height factor property
+        /// Identifies the <see cref="HeightFactor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightFactorProperty = DependencyProperty.Register(
             "HeightFactor", typeof(double), typeof(BillboardTextVisual3D), new PropertyMetadata(1.0, VisualChanged));
 
         /// <summary>
-        /// The padding property
+        /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
             "Padding",
@@ -89,7 +89,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Thickness(0), VisualChanged));
 
         /// <summary>
-        /// The text property.
+        /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             "Text", typeof(string), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));

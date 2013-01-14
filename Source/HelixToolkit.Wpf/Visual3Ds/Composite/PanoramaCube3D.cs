@@ -19,25 +19,25 @@ namespace HelixToolkit.Wpf
     public class PanoramaCube3D : ModelVisual3D
     {
         /// <summary>
-        /// The auto center property.
+        /// Identifies the <see cref="AutoCenter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AutoCenterProperty = DependencyProperty.Register(
             "AutoCenter", typeof(bool), typeof(PanoramaCube3D), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The show seams property.
+        /// Identifies the <see cref="ShowSeams"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShowSeamsProperty = DependencyProperty.Register(
             "ShowSeams", typeof(bool), typeof(PanoramaCube3D), new UIPropertyMetadata(false, GeometryChanged));
 
         /// <summary>
-        /// The size property.
+        /// Identifies the <see cref="Size"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SizeProperty = DependencyProperty.Register(
             "Size", typeof(double), typeof(PanoramaCube3D), new UIPropertyMetadata(100.0, GeometryChanged));
 
         /// <summary>
-        /// The source property.
+        /// Identifies the <see cref="Source"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof(string), typeof(PanoramaCube3D), new UIPropertyMetadata(null, SourceChanged));

@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf
     public class RotateManipulator : Manipulator
     {
         /// <summary>
-        /// The axis property.
+        /// Identifies the <see cref="Axis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxisProperty = DependencyProperty.Register(
             "Axis",
@@ -26,25 +26,25 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        /// The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(RotateManipulator), new UIPropertyMetadata(3.0, GeometryChanged));
 
         /// <summary>
-        /// The inner diameter property.
+        /// Identifies the <see cref="InnerDiameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
             "InnerDiameter", typeof(double), typeof(RotateManipulator), new UIPropertyMetadata(2.5, GeometryChanged));
 
         /// <summary>
-        /// The length property.
+        /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(RotateManipulator), new UIPropertyMetadata(0.1, GeometryChanged));
 
         /// <summary>
-        /// The pivot point property.
+        /// Identifies the <see cref="Pivot"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
             "Pivot", typeof(Point3D), typeof(Manipulator), new PropertyMetadata(new Point3D()));

@@ -27,13 +27,13 @@ namespace HelixToolkit.Wpf
         // This helper sets "ImplicitInput" as the default, meaning the default
         // sampler is whatever the rendering of the element it's being applied to is.
         /// <summary>
-        /// The left input property.
+        /// Identifies the <see cref="LeftInput"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftInputProperty = RegisterPixelShaderSamplerProperty(
             "LeftInput", typeof(AnaglyphEffect), 0);
 
         /// <summary>
-        /// The method property.
+        /// Identifies the <see cref="Method"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MethodProperty = DependencyProperty.Register(
             "Method",
@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf
         // This helper sets "ImplicitInput" as the default, meaning the default
         // sampler is whatever the rendering of the element it's being applied to is.
         /// <summary>
-        /// The right input property.
+        /// Identifies the <see cref="RightInput"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RightInputProperty = RegisterPixelShaderSamplerProperty(
             "RightInput", typeof(AnaglyphEffect), 1);

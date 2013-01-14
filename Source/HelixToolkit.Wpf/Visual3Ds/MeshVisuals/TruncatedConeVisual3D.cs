@@ -15,25 +15,25 @@ namespace HelixToolkit.Wpf
     public class TruncatedConeVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The base cap property.
+        /// Identifies the <see cref="BaseCap"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BaseCapProperty = DependencyProperty.Register(
             "BaseCap", typeof(bool), typeof(TruncatedConeVisual3D), new UIPropertyMetadata(true, GeometryChanged));
 
         /// <summary>
-        /// The base radius property.
+        /// Identifies the <see cref="BaseRadius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BaseRadiusProperty = DependencyProperty.Register(
             "BaseRadius", typeof(double), typeof(TruncatedConeVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The height property.
+        /// Identifies the <see cref="Height"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register(
             "Height", typeof(double), typeof(TruncatedConeVisual3D), new PropertyMetadata(2.0, GeometryChanged));
 
         /// <summary>
-        /// The normal property.
+        /// Identifies the <see cref="Normal"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
             "Normal",
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf
             new PropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        /// The origin property.
+        /// Identifies the <see cref="Origin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
             "Origin",
@@ -51,19 +51,19 @@ namespace HelixToolkit.Wpf
             new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The theta div property.
+        /// Identifies the <see cref="ThetaDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(TruncatedConeVisual3D), new PropertyMetadata(35, GeometryChanged));
 
         /// <summary>
-        /// The top cap property.
+        /// Identifies the <see cref="TopCap"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TopCapProperty = DependencyProperty.Register(
             "TopCap", typeof(bool), typeof(TruncatedConeVisual3D), new UIPropertyMetadata(true, GeometryChanged));
 
         /// <summary>
-        /// The top radius property.
+        /// Identifies the <see cref="TopRadius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TopRadiusProperty = DependencyProperty.Register(
             "TopRadius", typeof(double), typeof(TruncatedConeVisual3D), new PropertyMetadata(0.0, GeometryChanged));

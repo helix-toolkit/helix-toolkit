@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf
     public class BoundingBoxWireFrameVisual3D : LinesVisual3D
     {
         /// <summary>
-        /// The bounding box property.
+        /// Identifies the <see cref="BoundingBox"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BoundingBoxProperty = DependencyProperty.Register(
             "BoundingBox", typeof(Rect3D), typeof(BoundingBoxWireFrameVisual3D), new UIPropertyMetadata(new Rect3D(), BoxChanged));

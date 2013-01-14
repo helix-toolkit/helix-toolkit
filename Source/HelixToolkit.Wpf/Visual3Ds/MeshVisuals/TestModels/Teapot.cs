@@ -16,13 +16,13 @@ namespace HelixToolkit.Wpf
     public class Teapot : MeshElement3D
     {
         /// <summary>
-        /// The position property.
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof(Point3D), typeof(Teapot), new UIPropertyMetadata(new Point3D(0, 0, 1), TransformChanged));
 
         /// <summary>
-        /// The spout direction property.
+        /// Identifies the <see cref="SpoutDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SpoutDirectionProperty = DependencyProperty.Register(
             "SpoutDirection",
@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new Vector3D(1, 0, 0), TransformChanged));
 
         /// <summary>
-        /// The up direction property.
+        /// Identifies the <see cref="UpDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
             "UpDirection",

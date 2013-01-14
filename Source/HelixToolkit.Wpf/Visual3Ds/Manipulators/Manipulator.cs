@@ -18,48 +18,48 @@ namespace HelixToolkit.Wpf
     public abstract class Manipulator : UIElement3D
     {
         /// <summary>
-        ///   The color property.
+        /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(Manipulator), new UIPropertyMetadata(ColorChanged));
 
         /// <summary>
-        ///   The offset property.
+        /// Identifies the <see cref="Offset"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
-            "Offset", 
-            typeof(Vector3D), 
-            typeof(Manipulator), 
+            "Offset",
+            typeof(Vector3D),
+            typeof(Manipulator),
             new FrameworkPropertyMetadata(
                 new Vector3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PositionChanged));
 
         /// <summary>
-        ///   The position property.
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", 
-            typeof(Point3D), 
-            typeof(Manipulator), 
+            "Position",
+            typeof(Point3D),
+            typeof(Manipulator),
             new FrameworkPropertyMetadata(
                 new Point3D(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PositionChanged));
 
         /// <summary>
-        ///   The target transform property.
+        /// Identifies the <see cref="TargetTransform"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty =
             DependencyProperty.Register(
-                "TargetTransform", 
-                typeof(Transform3D), 
-                typeof(Manipulator), 
+                "TargetTransform",
+                typeof(Transform3D),
+                typeof(Manipulator),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The value property.
+        /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", 
-            typeof(double), 
-            typeof(Manipulator), 
+            "Value",
+            typeof(double),
+            typeof(Manipulator),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace HelixToolkit.Wpf
         /// Binds this manipulator to a given Visual3D.
         /// </summary>
         /// <param name="source">
-        /// Source Visual3D which receives the manipulator transforms. 
+        /// Source Visual3D which receives the manipulator transforms.
         /// </param>
         public virtual void Bind(ModelVisual3D source)
         {
@@ -200,10 +200,10 @@ namespace HelixToolkit.Wpf
         /// Called when Geometry is changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -214,16 +214,16 @@ namespace HelixToolkit.Wpf
         /// Projects the point on the hit plane.
         /// </summary>
         /// <param name="p">
-        /// The p. 
+        /// The p.
         /// </param>
         /// <param name="hitPlaneOrigin">
-        /// The hit Plane Origin. 
+        /// The hit Plane Origin.
         /// </param>
         /// <param name="hitPlaneNormal">
-        /// The hit plane normal (world coordinate system). 
+        /// The hit plane normal (world coordinate system).
         /// </param>
         /// <returns>
-        /// The point in world coordinates. 
+        /// The point in world coordinates.
         /// </returns>
         protected virtual Point3D? GetHitPlanePoint(Point p, Point3D hitPlaneOrigin, Vector3D hitPlaneNormal)
         {
@@ -239,7 +239,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse down.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -259,7 +259,7 @@ namespace HelixToolkit.Wpf
         /// The on mouse up.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
@@ -293,10 +293,10 @@ namespace HelixToolkit.Wpf
         /// Transforms from world to local coordinates.
         /// </summary>
         /// <param name="worldPoint">
-        /// The point (world coordinates). 
+        /// The point (world coordinates).
         /// </param>
         /// <returns>
-        /// Transformed vector (local coordinates). 
+        /// Transformed vector (local coordinates).
         /// </returns>
         protected Point3D ToLocal(Point3D worldPoint)
         {
@@ -310,10 +310,10 @@ namespace HelixToolkit.Wpf
         /// Transforms from local to world coordinates.
         /// </summary>
         /// <param name="point">
-        /// The point (local coordinates). 
+        /// The point (local coordinates).
         /// </param>
         /// <returns>
-        /// Transformed point (world coordinates). 
+        /// Transformed point (world coordinates).
         /// </returns>
         protected Point3D ToWorld(Point3D point)
         {
@@ -326,10 +326,10 @@ namespace HelixToolkit.Wpf
         /// Transforms from local to world coordinates.
         /// </summary>
         /// <param name="vector">
-        /// The vector (local coordinates). 
+        /// The vector (local coordinates).
         /// </param>
         /// <returns>
-        /// Transformed vector (world coordinates). 
+        /// Transformed vector (world coordinates).
         /// </returns>
         protected Vector3D ToWorld(Vector3D vector)
         {
@@ -342,10 +342,10 @@ namespace HelixToolkit.Wpf
         /// The color changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -356,10 +356,10 @@ namespace HelixToolkit.Wpf
         /// Called when position has been changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void PositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -370,10 +370,10 @@ namespace HelixToolkit.Wpf
         /// Called when value has been changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

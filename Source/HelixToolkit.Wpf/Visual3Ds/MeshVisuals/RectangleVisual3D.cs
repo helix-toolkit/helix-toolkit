@@ -16,19 +16,19 @@ namespace HelixToolkit.Wpf
     public class RectangleVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The div length property.
+        /// Identifies the <see cref="DivLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DivLengthProperty = DependencyProperty.Register(
             "DivLength", typeof(int), typeof(RectangleVisual3D), new UIPropertyMetadata(10, GeometryChanged));
 
         /// <summary>
-        /// The div width property.
+        /// Identifies the <see cref="DivWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DivWidthProperty = DependencyProperty.Register(
             "DivWidth", typeof(int), typeof(RectangleVisual3D), new UIPropertyMetadata(10, GeometryChanged));
 
         /// <summary>
-        /// The length direction property.
+        /// Identifies the <see cref="LengthDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthDirectionProperty =
             DependencyProperty.Register(
@@ -38,13 +38,13 @@ namespace HelixToolkit.Wpf
                 new PropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The length property.
+        /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length", typeof(double), typeof(RectangleVisual3D), new PropertyMetadata(10.0, GeometryChanged));
 
         /// <summary>
-        /// The normal property.
+        /// Identifies the <see cref="Normal"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty NormalProperty = DependencyProperty.Register(
             "Normal",
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf
             new PropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
-        /// The origin property.
+        /// Identifies the <see cref="Origin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
             "Origin",
@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf
             new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The width property.
+        /// Identifies the <see cref="Width"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(RectangleVisual3D), new PropertyMetadata(10.0, GeometryChanged));

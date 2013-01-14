@@ -24,31 +24,31 @@ namespace HelixToolkit.Wpf
     public abstract class ColorAxis : Control
     {
         /// <summary>
-        /// The bar width property
+        /// Identifies the <see cref="BarWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
             "BarWidth", typeof(double), typeof(ColorAxis), new UIPropertyMetadata(20.0));
 
         /// <summary>
-        /// The color scheme property
+        /// Identifies the <see cref="ColorScheme"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty = DependencyProperty.Register(
             "ColorScheme", typeof(Brush), typeof(ColorAxis), new UIPropertyMetadata(null, PropertyChanged));
 
         /// <summary>
-        /// The position property
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof(ColorAxisPosition), typeof(ColorAxis), new UIPropertyMetadata(ColorAxisPosition.Left));
 
         /// <summary>
-        /// The text margin property
+        /// Identifies the <see cref="TextMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextMarginProperty = DependencyProperty.Register(
             "TextMargin", typeof(double), typeof(ColorAxis), new UIPropertyMetadata(2.0));
 
         /// <summary>
-        /// The tick length property
+        /// Identifies the <see cref="TickLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TickLengthProperty = DependencyProperty.Register(
             "TickLength", typeof(double), typeof(ColorAxis), new UIPropertyMetadata(3.0));
@@ -201,24 +201,24 @@ namespace HelixToolkit.Wpf
             {
                 case ColorAxisPosition.Left:
                     this.ColorArea = new Rect(
-                        this.Padding.Left, 
-                        this.Padding.Top, 
-                        this.BarWidth, 
+                        this.Padding.Left,
+                        this.Padding.Top,
+                        this.BarWidth,
                         this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
                     break;
                 case ColorAxisPosition.Right:
                     this.ColorArea = new Rect(
-                        this.ActualWidth - this.Padding.Right - this.BarWidth, 
-                        this.Padding.Top, 
-                        this.BarWidth, 
+                        this.ActualWidth - this.Padding.Right - this.BarWidth,
+                        this.Padding.Top,
+                        this.BarWidth,
                         this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
                     break;
             }
 
             var r = new Rectangle
                         {
-                            Fill = this.ColorScheme, 
-                            Width = this.ColorArea.Width, 
+                            Fill = this.ColorScheme,
+                            Width = this.ColorArea.Width,
                             Height = this.ColorArea.Height
                         };
             Canvas.SetLeft(r, this.ColorArea.Left);
@@ -228,23 +228,23 @@ namespace HelixToolkit.Wpf
             this.Canvas.Children.Add(
                 new Line
                     {
-                        Stroke = this.Foreground, 
-                        StrokeThickness = 1, 
-                        SnapsToDevicePixels = true, 
-                        X1 = this.ColorArea.Left, 
-                        Y1 = this.ColorArea.Top, 
-                        X2 = this.ColorArea.Left, 
+                        Stroke = this.Foreground,
+                        StrokeThickness = 1,
+                        SnapsToDevicePixels = true,
+                        X1 = this.ColorArea.Left,
+                        Y1 = this.ColorArea.Top,
+                        X2 = this.ColorArea.Left,
                         Y2 = this.ColorArea.Bottom
                     });
             this.Canvas.Children.Add(
                 new Line
                     {
-                        Stroke = this.Foreground, 
-                        StrokeThickness = 1, 
-                        SnapsToDevicePixels = true, 
-                        X1 = this.ColorArea.Right, 
-                        Y1 = this.ColorArea.Top, 
-                        X2 = this.ColorArea.Right, 
+                        Stroke = this.Foreground,
+                        StrokeThickness = 1,
+                        SnapsToDevicePixels = true,
+                        X1 = this.ColorArea.Right,
+                        Y1 = this.ColorArea.Top,
+                        X2 = this.ColorArea.Right,
                         Y2 = this.ColorArea.Bottom
                     });
         }

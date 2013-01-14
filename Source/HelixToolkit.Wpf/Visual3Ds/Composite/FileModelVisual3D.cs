@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf
     public class FileModelVisual3D : UIElement3D
     {
         /// <summary>
-        /// The source property.
+        /// Identifies the <see cref="Source"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", typeof(string), typeof(FileModelVisual3D), new UIPropertyMetadata(null, SourceChanged));

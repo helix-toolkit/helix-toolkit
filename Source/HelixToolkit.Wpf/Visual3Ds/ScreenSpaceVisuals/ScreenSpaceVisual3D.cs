@@ -18,19 +18,19 @@ namespace HelixToolkit.Wpf
     public abstract class ScreenSpaceVisual3D : RenderingModelVisual3D
     {
         /// <summary>
-        /// The color property.
+        /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(Colors.Black, ColorChanged));
 
         /// <summary>
-        /// The depth offset property.
+        /// Identifies the <see cref="DepthOffset"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DepthOffsetProperty = DependencyProperty.Register(
             "DepthOffset", typeof(double), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
 
         /// <summary>
-        /// The points property.
+        /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
             "Points",

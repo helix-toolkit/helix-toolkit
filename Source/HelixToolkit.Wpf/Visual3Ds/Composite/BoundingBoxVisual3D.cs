@@ -16,19 +16,19 @@ namespace HelixToolkit.Wpf
     public class BoundingBoxVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The bounding box property.
+        /// Identifies the <see cref="BoundingBox"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BoundingBoxProperty = DependencyProperty.Register(
             "BoundingBox", typeof(Rect3D), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(new Rect3D(), BoxChanged));
 
         /// <summary>
-        /// The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(0.1, BoxChanged));
 
         /// <summary>
-        /// The fill property.
+        /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Brush), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(Brushes.Yellow, FillChanged));

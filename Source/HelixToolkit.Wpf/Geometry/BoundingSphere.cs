@@ -226,7 +226,7 @@ namespace HelixToolkit.Wpf
             double b = (2 * dx * (x1 - cx)) + (2 * dy * (y1 - cy)) + (2 * dz * (z1 - cz));
             double c = (x1 * x1) + (y1 * y1) + (z1 * z1) + (cx * cx) + (cz * cz) + (cy * cy) - (2 * ((cy * y1) + (cz * z1) + (cx * x1))) - (r * r);
 
-            // Discriminant 
+            // Discriminant
             double q = (b * b) - (4 * a * c);
 
             // We have at least one possible intersection

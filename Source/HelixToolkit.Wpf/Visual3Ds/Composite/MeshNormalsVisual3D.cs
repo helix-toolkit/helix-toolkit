@@ -16,19 +16,19 @@ namespace HelixToolkit.Wpf
     public class MeshNormalsVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The color property.
+        /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(MeshNormalsVisual3D), new UIPropertyMetadata(Colors.Blue, MeshChanged));
 
         /// <summary>
-        /// The diameter property.
+        /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
             "Diameter", typeof(double), typeof(MeshNormalsVisual3D), new UIPropertyMetadata(0.1, MeshChanged));
 
         /// <summary>
-        /// The mesh property.
+        /// Identifies the <see cref="Mesh"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MeshProperty = DependencyProperty.Register(
             "Mesh", typeof(MeshGeometry3D), typeof(MeshNormalsVisual3D), new UIPropertyMetadata(null, MeshChanged));

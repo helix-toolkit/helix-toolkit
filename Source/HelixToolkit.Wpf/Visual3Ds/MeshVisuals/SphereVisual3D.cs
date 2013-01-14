@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf
     public class SphereVisual3D : MeshElement3D
     {
         /// <summary>
-        /// The center property.
+        /// Identifies the <see cref="Center"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
             "Center",
@@ -24,19 +24,19 @@ namespace HelixToolkit.Wpf
             new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
         /// <summary>
-        /// The phi div property.
+        /// Identifies the <see cref="PhiDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PhiDivProperty = DependencyProperty.Register(
             "PhiDiv", typeof(int), typeof(SphereVisual3D), new PropertyMetadata(30, GeometryChanged));
 
         /// <summary>
-        /// The radius property.
+        /// Identifies the <see cref="Radius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
             "Radius", typeof(double), typeof(SphereVisual3D), new PropertyMetadata(1.0, GeometryChanged));
 
         /// <summary>
-        /// The theta div property.
+        /// Identifies the <see cref="ThetaDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(SphereVisual3D), new PropertyMetadata(60, GeometryChanged));

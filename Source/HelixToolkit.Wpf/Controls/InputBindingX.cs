@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InputBindingX.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The gesture property.
+        /// Identifies the <see cref="Gezture"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty GeztureProperty =
             DependencyProperty.Register("Gezture", typeof(InputGesture), typeof(InputBindingX), new UIPropertyMetadata(null, GeztureChanged));

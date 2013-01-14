@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf
     public class CubeVisual3D : BoxVisual3D
     {
         /// <summary>
-        /// The side length property.
+        /// Identifies the <see cref="SideLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SideLengthProperty = DependencyProperty.Register(
             "SideLength", typeof(double), typeof(CubeVisual3D), new UIPropertyMetadata(1.0, SideLengthChanged));

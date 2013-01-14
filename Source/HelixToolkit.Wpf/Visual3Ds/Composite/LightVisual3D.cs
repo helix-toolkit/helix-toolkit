@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf
     public class LightVisual3D : ModelVisual3D
     {
         /// <summary>
-        /// The light property.
+        /// Identifies the <see cref="Light"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LightProperty = DependencyProperty.Register(
             "Light", typeof(Light), typeof(LightVisual3D), new UIPropertyMetadata(null, LightChanged));
