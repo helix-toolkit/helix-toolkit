@@ -98,6 +98,7 @@ namespace HelixToolkit.Wpf
             }
 
             CameraHelper.ZoomToRectangle(this.Camera, this.Viewport, rectangle);
+            this.Controller.OnZoomedByRectangle();
         }
 
         /// <summary>

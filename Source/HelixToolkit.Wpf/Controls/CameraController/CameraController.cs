@@ -2326,5 +2326,70 @@ namespace HelixToolkit.Wpf
             this.StopAnimations();
             this.ZoomExtents();
         }
+
+
+        /// <summary>
+        /// The look at (target) point changed event
+        /// </summary>
+        public static readonly RoutedEvent LookAtChangedEvent = EventManager.RegisterRoutedEvent(
+            "LookAtChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
+
+        /// <summary>
+        /// Occurs when the look at/target point changed.
+        /// </summary>
+        public event RoutedEventHandler LookAtChanged
+        {
+            add
+            {
+                this.AddHandler(LookAtChangedEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(LookAtChangedEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Raises the LookAtChanged event.
+        /// </summary>
+        internal protected virtual void OnLookAtChanged()
+        {
+            var args = new RoutedEventArgs(LookAtChangedEvent);
+            this.RaiseEvent(args);
+
+        }
+
+        /// <summary>
+        /// The zoomed by rectangle event
+        /// </summary>
+        public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
+        "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
+
+        /// <summary>
+        /// Occurs when the view is zoomed by rectangle.
+        /// </summary>
+        public event RoutedEventHandler ZoomedByRectangle
+        {
+            add
+            {
+                this.AddHandler(ZoomedByRectangleEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(ZoomedByRectangleEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Raises the ZoomedByRectangle event.
+        /// </summary>
+        internal protected virtual void OnZoomedByRectangle()
+        {
+            var args = new RoutedEventArgs(ZoomedByRectangleEvent);
+            this.RaiseEvent(args);
+
+        }
     }
 }

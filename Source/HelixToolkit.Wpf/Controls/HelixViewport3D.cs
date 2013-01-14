@@ -3014,6 +3014,8 @@ namespace HelixToolkit.Wpf
                 if (this.cameraController != null)
                 {
                     this.cameraController.Viewport = this.Viewport;
+                    this.cameraController.LookAtChanged += (s, e) => this.OnLookAtChanged();
+                    this.cameraController.ZoomedByRectangle += (s, e) => this.OnZoomedByRectangle();
                 }
             }
 
@@ -3280,20 +3282,83 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The animate opacity.
+        /// The look at (target) point changed event
+        /// </summary>
+        public static readonly RoutedEvent LookAtChangedEvent = EventManager.RegisterRoutedEvent(
+            "LookAtChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
+
+        /// <summary>
+        /// Occurs when the look at/target point changed.
+        /// </summary>
+        public event RoutedEventHandler LookAtChanged
+        {
+            add
+            {
+                this.AddHandler(LookAtChangedEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(LookAtChangedEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Raises the LookAtChanged event.
+        /// </summary>
+        internal protected virtual void OnLookAtChanged()
+        {
+            var args = new RoutedEventArgs(LookAtChangedEvent);
+            this.RaiseEvent(args);
+
+        }
+
+        /// <summary>
+        /// The zoomed by rectangle event
+        /// </summary>
+        public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
+        "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
+
+        /// <summary>
+        /// Occurs when the view is zoomed by rectangle.
+        /// </summary>
+        public event RoutedEventHandler ZoomedByRectangle
+        {
+            add
+            {
+                this.AddHandler(ZoomedByRectangleEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(ZoomedByRectangleEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Raises the ZoomedByRectangle event.
+        /// </summary>
+        internal protected virtual void OnZoomedByRectangle()
+        {
+            var args = new RoutedEventArgs(ZoomedByRectangleEvent);
+            this.RaiseEvent(args);
+
+        }
+        /// <summary>
+        /// Animates the opacity of the specified animatable object.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The animatable object.
         /// </param>
-        /// <param name="toOpacity">
-        /// The to opacity.
+        /// <param name="targetOpacity">
+        /// The target opacity.
         /// </param>
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        private static void AnimateOpacity(UIElement obj, double toOpacity, double animationTime)
+        private static void AnimateOpacity(IAnimatable obj, double targetOpacity, double animationTime)
         {
-            var a = new DoubleAnimation(toOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+            var a = new DoubleAnimation(targetOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
                         {
                             AccelerationRatio
                                 = 0.3,

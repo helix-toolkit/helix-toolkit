@@ -298,6 +298,8 @@ namespace HelixToolkit.Wpf
             this.Controller.Focus();
             this.Controller.CaptureMouse();
             this.Controller.PushCameraSetting();
+
+            e.Handled = true;
         }
 
         /// <summary>
