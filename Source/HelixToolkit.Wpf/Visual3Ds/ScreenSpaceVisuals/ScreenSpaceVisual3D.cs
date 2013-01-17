@@ -2,13 +2,14 @@
 // <copyright file="ScreenSpaceVisual3D.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   An abstract base class for visuals that use screen space dimensions when rendering.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
     using System.Collections.Generic;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
@@ -33,41 +34,12 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-            "Points",
-            typeof(IList<Point3D>),
-            typeof(ScreenSpaceVisual3D),
-            new UIPropertyMetadata(null, GeometryChanged));
-
-        /// <summary>
-        /// The clipping object.
-        /// </summary>
-        protected CohenSutherlandClipping Clipping;
-
-        /// <summary>
-        /// The mesh.
-        /// </summary>
-        protected MeshGeometry3D Mesh;
-
-        /// <summary>
-        /// The model.
-        /// </summary>
-        protected GeometryModel3D Model;
+            "Points", typeof(IList<Point3D>), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         /// The is rendering flag.
         /// </summary>
         private bool isRendering;
-
-        /// <summary>
-        /// Called when the parent of the 3-D visual object is changed.
-        /// </summary>
-        /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.</param>
-        protected override void OnVisualParentChanged(DependencyObject oldParent)
-        {
-            base.OnVisualParentChanged(oldParent);
-            var parent = VisualTreeHelper.GetParent(this);
-            this.IsRendering = parent != null;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "ScreenSpaceVisual3D" /> class.
@@ -78,7 +50,7 @@ namespace HelixToolkit.Wpf
             this.Model = new GeometryModel3D { Geometry = this.Mesh };
             this.Content = this.Model;
             this.Points = new List<Point3D>();
-            this.OnColorChanged();
+            this.ColorChanged();
         }
 
         /// <summary>
@@ -168,44 +140,32 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The geometry changed.
+        /// Gets or sets the clipping object.
         /// </summary>
-        /// <param name="d">
+        protected CohenSutherlandClipping Clipping { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mesh.
+        /// </summary>
+        protected MeshGeometry3D Mesh { get; set; }
+
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
+        protected GeometryModel3D Model { get; set; }
+
+        /// <summary>
+        /// Called when geometry properties have changed.
+        /// </summary>
+        /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments.
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
-        protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected static void GeometryChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ((ScreenSpaceVisual3D)d).OnGeometryChanged();
-        }
-
-        /// <summary>
-        /// Updates the geometry.
-        /// </summary>
-        protected abstract void UpdateGeometry();
-
-        /// <summary>
-        /// Updates the transforms.
-        /// </summary>
-        /// <returns>
-        /// True if the transform is updated.
-        /// </returns>
-        protected abstract bool UpdateTransforms();
-
-        /// <summary>
-        /// The color changed.
-        /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((ScreenSpaceVisual3D)d).OnColorChanged();
+            ((ScreenSpaceVisual3D)sender).UpdateGeometry();
         }
 
         /// <summary>
@@ -235,30 +195,63 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Called when the parent of the 3-D visual object is changed.
+        /// </summary>
+        /// <param name="oldParent">
+        /// A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.
+        /// </param>
+        protected override void OnVisualParentChanged(DependencyObject oldParent)
+        {
+            base.OnVisualParentChanged(oldParent);
+            var parent = VisualTreeHelper.GetParent(this);
+            this.IsRendering = parent != null;
+        }
+
+        /// <summary>
+        /// Updates the geometry.
+        /// </summary>
+        protected abstract void UpdateGeometry();
+
+        /// <summary>
+        /// Updates the transforms.
+        /// </summary>
+        /// <returns>
+        /// True if the transform is updated.
+        /// </returns>
+        protected abstract bool UpdateTransforms();
+
+        /// <summary>
         /// Changes the material when the color changed.
         /// </summary>
-        private void OnColorChanged()
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// </param>
+        private static void ColorChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ((ScreenSpaceVisual3D)sender).ColorChanged();
+        }
+
+        /// <summary>
+        /// Changes the material when the color changed.
+        /// </summary>
+        private void ColorChanged()
         {
             var mg = new MaterialGroup();
             mg.Children.Add(new DiffuseMaterial(Brushes.Black));
-            mg.Children.Add(new EmissiveMaterial(new SolidColorBrush(this.Color)) { Color = Colors.White });
+            mg.Children.Add(new EmissiveMaterial(new SolidColorBrush(this.Color) { Color = Colors.White }));
+            mg.Freeze();
             this.Model.Material = mg;
         }
 
         /// <summary>
-        /// Called when geometry properties have changed.
-        /// </summary>
-        private void OnGeometryChanged()
-        {
-            this.UpdateGeometry();
-        }
-
-        /// <summary>
-        /// The update clipping.
+        /// Updates the clipping object.
         /// </summary>
         private void UpdateClipping()
         {
-            Viewport3D vp = Visual3DHelper.GetViewport3D(this);
+            var vp = Visual3DHelper.GetViewport3D(this);
             if (vp == null)
             {
                 return;
@@ -266,6 +259,5 @@ namespace HelixToolkit.Wpf
 
             this.Clipping = new CohenSutherlandClipping(10, vp.ActualWidth - 20, 10, vp.ActualHeight - 20);
         }
-
     }
 }
