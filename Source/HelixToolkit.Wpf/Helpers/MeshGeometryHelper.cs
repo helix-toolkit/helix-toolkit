@@ -99,13 +99,13 @@ namespace HelixToolkit.Wpf
         // }
 
         /// <summary>
-        /// Find edges that are only connected to one triangle
+        /// Finds edges that are only connected to one triangle.
         /// </summary>
         /// <param name="mesh">
-        /// a mesh
+        /// A mesh geometry.
         /// </param>
         /// <returns>
-        /// edge indices
+        /// The edge indices for the edges that are only used by one triangle.
         /// </returns>
         public static Int32Collection FindBorderEdges(MeshGeometry3D mesh)
         {
@@ -117,17 +117,17 @@ namespace HelixToolkit.Wpf
                 for (int j = 0; j < 3; j++)
                 {
                     int index0 = mesh.TriangleIndices[i0 + j];
-                    int index1 = mesh.TriangleIndices[i0 + (j + 1) % 3];
+                    int index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
                     int minIndex = Math.Min(index0, index1);
                     int maxIndex = Math.Max(index1, index0);
-                    ulong key = CreateKey((UInt32)minIndex, (UInt32)maxIndex);
+                    ulong key = CreateKey((uint)minIndex, (uint)maxIndex);
                     if (dict.ContainsKey(key))
                     {
                         dict[key] = dict[key] + 1;
                     }
                     else
                     {
-                        dict.Add(key, 0);
+                        dict.Add(key, 1);
                     }
                 }
             }
