@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf
     /// Builds MeshGeometry3D objects.
     /// </summary>
     /// <remarks>
-    /// Performance tips for MeshGeometry3D (http://msdn.microsoft.com/en-us/library/bb613553.aspx)
+    /// Performance tips for MeshGeometry3D (See <a href="http://msdn.microsoft.com/en-us/library/bb613553.aspx">MSDN</a>)
     /// <para>
     /// High impact:
     /// Mesh animation—changing the individual vertices of a mesh on a per-frame basis—is not always efficient in
@@ -53,9 +53,9 @@ namespace HelixToolkit.Wpf
             "All curves should have the same number of points";
 
         /// <summary>
-        /// 'Source mesh normals should not be null' exception message.
+        /// 'Source mesh normal vectors should not be null' exception message.
         /// </summary>
-        private const string SourceMeshNormalsShouldNotBeNull = "Source mesh normals should not be null.";
+        private const string SourceMeshNormalsShouldNotBeNull = "Source mesh normal vectors should not be null.";
 
         /// <summary>
         /// 'Source mesh texture coordinates should not be null' exception message.
@@ -74,9 +74,9 @@ namespace HelixToolkit.Wpf
         private const string WrongNumberOfPositions = "Wrong number of positions.";
 
         /// <summary>
-        /// 'Wrong number of normals' exception message.
+        /// 'Wrong number of normal vectors' exception message.
         /// </summary>
-        private const string WrongNumberOfNormals = "Wrong number of normals.";
+        private const string WrongNumberOfNormals = "Wrong number of normal vectors.";
 
         /// <summary>
         /// 'Wrong number of texture coordinates' exception message.
@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf
         private static readonly Dictionary<int, MeshGeometry3D> UnitSphereCache = new Dictionary<int, MeshGeometry3D>();
 
         /// <summary>
-        /// The normals.
+        /// The normal vectors.
         /// </summary>
         private Vector3DCollection normals;
 
@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf
         /// Initializes a new instance of the <see cref="MeshBuilder"/> class.
         /// </summary>
         /// <param name="generateNormals">
-        /// Generate normals.
+        /// Generate normal vectors.
         /// </param>
         /// <param name="generateTextureCoordinates">
         /// Generate texture coordinates.
@@ -192,9 +192,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the normals of the mesh.
+        /// Gets the normal vectors of the mesh.
         /// </summary>
-        /// <value>The normals.</value>
+        /// <value>The normal vectors.</value>
         public Vector3DCollection Normals
         {
             get
@@ -240,10 +240,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to create normals.
+        /// Gets or sets a value indicating whether to create normal vectors.
         /// </summary>
         /// <value>
-        /// <c>true</c> if normals should be created; otherwise, <c>false</c>.
+        /// <c>true</c> if normal vectors should be created; otherwise, <c>false</c>.
         /// </value>
         public bool CreateNormals
         {
@@ -430,7 +430,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a box with the specifed faces, aligned with the X, Y and Z axes.
+        /// Adds a box with the specified faces, aligned with the X, Y and Z axes.
         /// </summary>
         /// <param name="center">
         /// The center point of the box.
@@ -565,7 +565,7 @@ namespace HelixToolkit.Wpf
         /// The up vector for the face.
         /// </param>
         /// <param name="dist">
-        /// The dist from the center of the cube to the face.
+        /// The distance from the center of the cube to the face.
         /// </param>
         /// <param name="width">
         /// The width of the face.
@@ -1039,7 +1039,7 @@ namespace HelixToolkit.Wpf
         /// The points.
         /// </param>
         /// <param name="quadNormals">
-        /// The normals.
+        /// The normal vectors.
         /// </param>
         /// <param name="quadTextureCoordinates">
         /// The texture coordinates.
@@ -1147,7 +1147,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a rectangular mesh defined by a two-dimensional arrary of points.
+        /// Adds a rectangular mesh defined by a two-dimensional array of points.
         /// </summary>
         /// <param name="points">
         /// The points.
@@ -1156,10 +1156,10 @@ namespace HelixToolkit.Wpf
         /// The texture coordinates (optional).
         /// </param>
         /// <param name="closed0">
-        /// set to <c>true</c> if the mesh is closed in the 1st dimension.
+        /// set to <c>true</c> if the mesh is closed in the first dimension.
         /// </param>
         /// <param name="closed1">
-        /// set to <c>true</c> if the mesh is closed in the 2nd dimension.
+        /// set to <c>true</c> if the mesh is closed in the second dimension.
         /// </param>
         public void AddRectangularMesh(
             Point3D[,] points, Point[,] texCoords = null, bool closed0 = false, bool closed1 = false)
@@ -1216,10 +1216,10 @@ namespace HelixToolkit.Wpf
         /// The radius.
         /// </param>
         /// <param name="shareVertices">
-        /// share vertices if set to <c>true</c> .
+        /// Share vertices if set to <c>true</c> .
         /// </param>
         /// <remarks>
-        /// See http://en.wikipedia.org/wiki/Icosahedron and http://www.gamedev.net/community/forums/topic.asp?topic_id=283350.
+        /// See <a href="http://en.wikipedia.org/wiki/Icosahedron">Wikipedia</a> and <a href="http://www.gamedev.net/community/forums/topic.asp?topic_id=283350">link</a>.
         /// </remarks>
         public void AddRegularIcosahedron(Point3D center, double radius, bool shareVertices)
         {
@@ -1354,7 +1354,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a sphere (by subdiving a regular icosahedron).
+        /// Adds a sphere (by subdividing a regular icosahedron).
         /// </summary>
         /// <param name="center">
         /// The center of the sphere.
@@ -1366,7 +1366,7 @@ namespace HelixToolkit.Wpf
         /// The number of triangular subdivisions of the original icosahedron.
         /// </param>
         /// <remarks>
-        /// See http://www.fho-emden.de/~hoffmann/ikos27042002.pdf.
+        /// See <a href="http://www.fho-emden.de/~hoffmann/ikos27042002.pdf">link</a>.
         /// </remarks>
         public void AddSubdivisionSphere(Point3D center, double radius, int subdivisions)
         {
@@ -1528,7 +1528,7 @@ namespace HelixToolkit.Wpf
         /// The points of the triangle fan.
         /// </param>
         /// <param name="fanNormals">
-        /// The normals of the triangle fan.
+        /// The normal vectors of the triangle fan.
         /// </param>
         /// <param name="fanTextureCoordinates">
         /// The texture coordinates of the triangle fan.
@@ -1589,7 +1589,7 @@ namespace HelixToolkit.Wpf
         /// The points of the triangle strip.
         /// </param>
         /// <param name="stripNormals">
-        /// The normals of the triangle strip.
+        /// The normal vectors of the triangle strip.
         /// </param>
         /// <param name="stripTextureCoordinates">
         /// The texture coordinates of the triangle strip.
@@ -1704,7 +1704,7 @@ namespace HelixToolkit.Wpf
         /// The points (the number of points must be a multiple of 3).
         /// </param>
         /// <param name="triangleNormals">
-        /// The normals (corresponding to the points).
+        /// The normal vectors (corresponding to the points).
         /// </param>
         /// <param name="triangleTextureCoordinates">
         /// The texture coordinates (corresponding to the points).
@@ -1948,7 +1948,7 @@ namespace HelixToolkit.Wpf
         /// The triangle indices to append.
         /// </param>
         /// <param name="normalsToAppend">
-        /// The normals to append.
+        /// The normal vectors to append.
         /// </param>
         /// <param name="textureCoordinatesToAppend">
         /// The texture coordinates to append.
@@ -2134,10 +2134,10 @@ namespace HelixToolkit.Wpf
         /// Checks the performance limits.
         /// </summary>
         /// <remarks>
-        /// See http://msdn.microsoft.com/en-us/library/bb613553.aspx.
+        /// See <a href="http://msdn.microsoft.com/en-us/library/bb613553.aspx">MSDN</a>.
         /// Try to keep mesh sizes under these limits:
-        /// Positions : 20,001 Point3D instances
-        /// TriangleIndices : 60,003 Int32 instances
+        /// Positions : 20,001 point instances
+        /// TriangleIndices : 60,003 integer instances
         /// </remarks>
         public void CheckPerformanceLimits()
         {
@@ -2153,7 +2153,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Scales the positions (and normals).
+        /// Scales the positions (and normal vectors).
         /// </summary>
         /// <param name="scaleX">
         /// The X scale factor.
@@ -2273,7 +2273,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds normals for a rectangular mesh.
+        /// Adds normal vectors for a rectangular mesh.
         /// </summary>
         /// <param name="index0">
         /// The index 0.
@@ -2557,7 +2557,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Subdivides each triangle into four subtriangles.
+        /// Subdivides each triangle into four sub-triangles.
         /// </summary>
         private void Subdivide4()
         {
@@ -2721,6 +2721,5 @@ namespace HelixToolkit.Wpf
                 im += 4;
             }
         }
-
     }
 }

@@ -2,8 +2,10 @@
 // <copyright file="MeshGeometryHelper.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   Provides helper methods for mesh geometries.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -22,13 +24,13 @@ namespace HelixToolkit.Wpf
         // - Remember to disconnect collections from the MeshGeometry when changing it
 
         /// <summary>
-        /// Calculates the normals.
+        /// Calculates the normal vectors.
         /// </summary>
         /// <param name="mesh">
         /// The mesh.
         /// </param>
         /// <returns>
-        /// Collection of normals.
+        /// Collection of normal vectors.
         /// </returns>
         public static Vector3DCollection CalculateNormals(MeshGeometry3D mesh)
         {
@@ -36,7 +38,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Calculates the normals.
+        /// Calculates the normal vectors.
         /// </summary>
         /// <param name="positions">
         /// The positions.
@@ -45,7 +47,7 @@ namespace HelixToolkit.Wpf
         /// The triangle indices.
         /// </param>
         /// <returns>
-        /// Collection of normals.
+        /// Collection of normal vectors.
         /// </returns>
         public static Vector3DCollection CalculateNormals(IList<Point3D> positions, IList<int> triangleIndices)
         {
@@ -149,13 +151,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Find all edges in the mesh (each edge is only inclued once)
+        /// Finds all edges in the mesh (each edge is only included once).
         /// </summary>
         /// <param name="mesh">
-        /// a mesh
+        /// A mesh geometry.
         /// </param>
         /// <returns>
-        /// edge indices (minium index first)
+        /// The edge indices (minimum index first).
         /// </returns>
         public static Int32Collection FindEdges(MeshGeometry3D mesh)
         {
@@ -168,10 +170,10 @@ namespace HelixToolkit.Wpf
                 for (int j = 0; j < 3; j++)
                 {
                     int index0 = mesh.TriangleIndices[i0 + j];
-                    int index1 = mesh.TriangleIndices[i0 + (j + 1) % 3];
+                    int index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
                     int minIndex = Math.Min(index0, index1);
                     int maxIndex = Math.Max(index1, index0);
-                    ulong key = CreateKey((UInt32)minIndex, (UInt32)maxIndex);
+                    ulong key = CreateKey((uint)minIndex, (uint)maxIndex);
                     if (!dict.Contains(key))
                     {
                         edges.Add(minIndex);
@@ -185,17 +187,17 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Finds all edges where the angle between adjacent triangle normals
+        /// Finds all edges where the angle between adjacent triangle normal vectors.
         /// is larger than minimumAngle
         /// </summary>
         /// <param name="mesh">
-        /// a mesh
+        /// A mesh geometry.
         /// </param>
         /// <param name="minimumAngle">
-        /// the minimum angle between the normals of two adjacent triangles (degrees)
+        /// The minimum angle between the normal vectors of two adjacent triangles (degrees).
         /// </param>
         /// <returns>
-        /// edge indices
+        /// The edge indices.
         /// </returns>
         public static Int32Collection FindSharpEdges(MeshGeometry3D mesh, double minimumAngle)
         {
@@ -212,10 +214,10 @@ namespace HelixToolkit.Wpf
                 for (int j = 0; j < 3; j++)
                 {
                     int index0 = mesh.TriangleIndices[i0 + j];
-                    int index1 = mesh.TriangleIndices[i0 + (j + 1) % 3];
+                    int index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
                     int minIndex = Math.Min(index0, index1);
                     int maxIndex = Math.Max(index0, index1);
-                    ulong key = CreateKey((UInt32)minIndex, (UInt32)maxIndex);
+                    ulong key = CreateKey((uint)minIndex, (uint)maxIndex);
                     if (dict.ContainsKey(key))
                     {
                         Vector3D n2 = dict[key];
@@ -345,23 +347,13 @@ namespace HelixToolkit.Wpf
             }
 
             // Update triangle indices
-            for (int i = 0; i < mesh.TriangleIndices.Count; i++)
+            foreach (int index in mesh.TriangleIndices)
             {
-                int index = mesh.TriangleIndices[i];
                 int j;
-                if (dict.TryGetValue(index, out j))
-                {
-                    ti.Add(newIndex[j]);
-                }
-                else
-                {
-                    ti.Add(newIndex[index]);
-                }
+                ti.Add(dict.TryGetValue(index, out j) ? newIndex[j] : newIndex[index]);
             }
 
-            var result = new MeshGeometry3D();
-            result.Positions = p;
-            result.TriangleIndices = ti;
+            var result = new MeshGeometry3D { Positions = p, TriangleIndices = ti };
             return result;
         }
 
@@ -375,7 +367,7 @@ namespace HelixToolkit.Wpf
         {
             if (mesh.Normals != null && mesh.Normals.Count != 0 && mesh.Normals.Count != mesh.Positions.Count)
             {
-                Debug.WriteLine("Wrong number of normals");
+                Debug.WriteLine("Wrong number of normal vectors");
             }
 
             if (mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count != 0
@@ -393,59 +385,35 @@ namespace HelixToolkit.Wpf
             {
                 int index = mesh.TriangleIndices[i];
                 Debug.Assert(
-                    index >= 0 || index < mesh.Positions.Count,
-                    "Wrong index " + index + " in triangle " + i / 3 + " vertex " + i % 3);
+                    index >= 0 || index < mesh.Positions.Count, 
+                    string.Format("Wrong index {0} in triangle {1} vertex {2}", index, i / 3, i % 3));
             }
-        }
-
-        /// <summary>
-        /// Create a 64-bit key from two 32-bit indices
-        /// </summary>
-        /// <param name="i0">
-        /// The i 0.
-        /// </param>
-        /// <param name="i1">
-        /// The i 1.
-        /// </param>
-        /// <returns>
-        /// The create key.
-        /// </returns>
-        private static ulong CreateKey(uint i0, uint i1)
-        {
-            return ((UInt64)i0 << 32) + i1;
-        }
-
-        /// <summary>
-        /// Extract two 32-bit indices from the 64-bit key
-        /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="i0">
-        /// The i 0.
-        /// </param>
-        /// <param name="i1">
-        /// The i 1.
-        /// </param>
-        private static void ReverseKey(ulong key, out uint i0, out uint i1)
-        {
-            i0 = (UInt32)(key >> 32);
-            i1 = (UInt32)((key << 32) >> 32);
         }
 
         /// <summary>
         /// Cuts the mesh with the specified plane.
         /// </summary>
-        /// <param name="mesh">The mesh.</param>
-        /// <param name="p">The plane origin.</param>
-        /// <param name="n">The plane normal.</param>
-        /// <returns></returns>
+        /// <param name="mesh">
+        /// The mesh.
+        /// </param>
+        /// <param name="p">
+        /// The plane origin.
+        /// </param>
+        /// <param name="n">
+        /// The plane normal.
+        /// </param>
+        /// <returns>
+        /// The <see cref="MeshGeometry3D"/>.
+        /// </returns>
         public static MeshGeometry3D Cut(MeshGeometry3D mesh, Point3D p, Vector3D n)
         {
             var ch = new ContourHelper(p, n);
             var mb = new MeshBuilder(false, false);
             foreach (var pos in mesh.Positions)
+            {
                 mb.Positions.Add(pos);
+            }
+
             int j = mb.Positions.Count;
             for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
@@ -463,7 +431,6 @@ namespace HelixToolkit.Wpf
                         mb.TriangleIndices.Add(i0);
                         mb.TriangleIndices.Add(i1);
                         mb.TriangleIndices.Add(i2);
-                        //mb.AddTriangle(p0, p1, p2);
                         break;
                     case 0:
                         mb.Positions.Add(s1);
@@ -471,7 +438,6 @@ namespace HelixToolkit.Wpf
                         mb.TriangleIndices.Add(i0);
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(j++);
-                        //mb.AddTriangle(p0, s1, s0);
                         break;
                     case 1:
                         mb.Positions.Add(s0);
@@ -479,7 +445,6 @@ namespace HelixToolkit.Wpf
                         mb.TriangleIndices.Add(i1);
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(j++);
-                        //mb.AddTriangle(p1, s0, s1);
                         break;
                     case 2:
                         mb.Positions.Add(s0);
@@ -487,7 +452,6 @@ namespace HelixToolkit.Wpf
                         mb.TriangleIndices.Add(i2);
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(j++);
-                        // mb.AddTriangle(p2, s0, s1);
                         break;
                     case 10:
                         mb.Positions.Add(s0);
@@ -498,9 +462,6 @@ namespace HelixToolkit.Wpf
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(i1);
-
-                        // mb.AddTriangle(p1, p2, s0);
-                        // mb.AddTriangle(s0, s1, p1);
                         break;
                     case 11:
                         mb.Positions.Add(s1);
@@ -511,9 +472,6 @@ namespace HelixToolkit.Wpf
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(i2);
-
-                        // mb.AddTriangle(p2, p0, s1);
-                        // mb.AddTriangle(s1, s0, p2);
                         break;
                     case 12:
                         mb.Positions.Add(s1);
@@ -524,21 +482,28 @@ namespace HelixToolkit.Wpf
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(j++);
                         mb.TriangleIndices.Add(i0);
-                        // mb.AddTriangle(p0, p1, s1);
-                        // mb.AddTriangle(s1, s0, p0);
                         break;
                 }
             }
+
             return mb.ToMesh();
         }
 
         /// <summary>
         /// Gets the contour segments.
         /// </summary>
-        /// <param name="mesh">The mesh.</param>
-        /// <param name="p">The plane origin.</param>
-        /// <param name="n">The plane normal.</param>
-        /// <returns></returns>
+        /// <param name="mesh">
+        /// The mesh.
+        /// </param>
+        /// <param name="p">
+        /// The plane origin.
+        /// </param>
+        /// <param name="n">
+        /// The plane normal.
+        /// </param>
+        /// <returns>
+        /// The segments of the contour.
+        /// </returns>
         public static IList<Point3D> GetContourSegments(MeshGeometry3D mesh, Point3D p, Vector3D n)
         {
             var segments = new List<Point3D>();
@@ -556,15 +521,22 @@ namespace HelixToolkit.Wpf
                     segments.Add(s1);
                 }
             }
+
             return segments;
         }
 
         /// <summary>
         /// Combines the segments.
         /// </summary>
-        /// <param name="segments">The segments.</param>
-        /// <param name="eps">The eps.</param>
-        /// <returns>Enumerated connected contour curves.</returns>
+        /// <param name="segments">
+        /// The segments.
+        /// </param>
+        /// <param name="eps">
+        /// The tolerance.
+        /// </param>
+        /// <returns>
+        /// Enumerated connected contour curves.
+        /// </returns>
         public static IEnumerable<IList<Point3D>> CombineSegments(IList<Point3D> segments, double eps)
         {
             // This is a simple, slow, naïve method - should be improved:
@@ -594,6 +566,7 @@ namespace HelixToolkit.Wpf
                             segments.RemoveAt(segment1);
                             segments.RemoveAt(segment1);
                         }
+
                         curveCount++;
                         segmentCount -= 2;
                     }
@@ -614,6 +587,7 @@ namespace HelixToolkit.Wpf
                             segments.RemoveAt(segment2);
                             segments.RemoveAt(segment2);
                         }
+
                         curveCount++;
                         segmentCount -= 2;
                     }
@@ -639,16 +613,58 @@ namespace HelixToolkit.Wpf
                     }
                 }
             }
-
         }
 
         /// <summary>
+        /// Create a 64-bit key from two 32-bit indices
+        /// </summary>
+        /// <param name="i0">
+        /// The i 0.
+        /// </param>
+        /// <param name="i1">
+        /// The i 1.
+        /// </param>
+        /// <returns>
+        /// The create key.
+        /// </returns>
+        private static ulong CreateKey(uint i0, uint i1)
+        {
+            return ((ulong)i0 << 32) + i1;
+        }
+
+        /// <summary>
+        /// Extract two 32-bit indices from the 64-bit key
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="i0">
+        /// The i 0.
+        /// </param>
+        /// <param name="i1">
+        /// The i 1.
+        /// </param>
+        private static void ReverseKey(ulong key, out uint i0, out uint i1)
+        {
+            i0 = (uint)(key >> 32);
+            i1 = (uint)((key << 32) >> 32);
+        }
+        
+        /// <summary>
         /// Finds the nearest connected segment to the specified point.
         /// </summary>
-        /// <param name="segments">The segments.</param>
-        /// <param name="point">The point.</param>
-        /// <param name="eps">The tolerance.</param>
-        /// <returns>The index of the nearest point.</returns>
+        /// <param name="segments">
+        /// The segments.
+        /// </param>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="eps">
+        /// The tolerance.
+        /// </param>
+        /// <returns>
+        /// The index of the nearest point.
+        /// </returns>
         private static int FindConnectedSegment(IList<Point3D> segments, Point3D point, double eps)
         {
             double best = eps;
