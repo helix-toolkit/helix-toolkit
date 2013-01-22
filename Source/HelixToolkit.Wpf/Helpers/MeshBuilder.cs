@@ -954,8 +954,8 @@ namespace HelixToolkit.Wpf
             //// p0               p1
             var uv0 = new Point(0, 0);
             var uv1 = new Point(1, 0);
-            var uv2 = new Point(0, 1);
-            var uv3 = new Point(1, 1);
+            var uv2 = new Point(1, 1);
+            var uv3 = new Point(0, 1);
             this.AddQuad(p0, p1, p2, p3, uv0, uv1, uv2, uv3);
         }
 
