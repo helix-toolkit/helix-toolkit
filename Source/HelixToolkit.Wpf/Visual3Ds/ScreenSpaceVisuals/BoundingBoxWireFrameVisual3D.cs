@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf
                 return;
             }
 
-            Rect3D bb = this.BoundingBox;
+            var bb = this.BoundingBox;
 
             var p0 = new Point3D(bb.X, bb.Y, bb.Z);
             var p1 = new Point3D(bb.X, bb.Y + bb.SizeY, bb.Z);
@@ -60,26 +60,26 @@ namespace HelixToolkit.Wpf
             var p6 = new Point3D(bb.X + bb.SizeX, bb.Y + bb.SizeY, bb.Z + bb.SizeZ);
             var p7 = new Point3D(bb.X + bb.SizeX, bb.Y, bb.Z + bb.SizeZ);
 
-            Action<Point3D, Point3D> AddEdge = (p, q) =>
+            Action<Point3D, Point3D> addEdge = (p, q) =>
             {
                 this.Points.Add(p);
                 this.Points.Add(q);
             };
 
-            AddEdge(p0, p1);
-            AddEdge(p1, p2);
-            AddEdge(p2, p3);
-            AddEdge(p3, p0);
+            addEdge(p0, p1);
+            addEdge(p1, p2);
+            addEdge(p2, p3);
+            addEdge(p3, p0);
 
-            AddEdge(p4, p5);
-            AddEdge(p5, p6);
-            AddEdge(p6, p7);
-            AddEdge(p7, p4);
+            addEdge(p4, p5);
+            addEdge(p5, p6);
+            addEdge(p6, p7);
+            addEdge(p7, p4);
 
-            AddEdge(p0, p4);
-            AddEdge(p1, p5);
-            AddEdge(p2, p6);
-            AddEdge(p3, p7);
+            addEdge(p0, p4);
+            addEdge(p1, p5);
+            addEdge(p2, p6);
+            addEdge(p3, p7);
         }
 
         /// <summary>

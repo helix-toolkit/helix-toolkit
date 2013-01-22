@@ -56,19 +56,25 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected override void UpdateGeometry()
         {
-            this.Mesh.Positions = null;
-            if (this.Points != null)
+            if (this.Points == null)
             {
-                int n = this.Points.Count;
-                if (n > 0)
-                {
-                    if (this.Mesh.TriangleIndices.Count != n * 3)
-                    {
-                        this.Mesh.TriangleIndices = this.builder.CreateIndices(n);
-                    }
+                this.Mesh.Positions = null;
+                return;
+            }
 
-                    this.Mesh.Positions = this.builder.CreatePositions(this.Points, this.Thickness, this.DepthOffset);
+            int n = this.Points.Count;
+            if (n > 0)
+            {
+                if (this.Mesh.TriangleIndices.Count != n * 3)
+                {
+                    this.Mesh.TriangleIndices = this.builder.CreateIndices(n);
                 }
+
+                this.Mesh.Positions = this.builder.CreatePositions(this.Points, this.Thickness, this.DepthOffset);
+            }
+            else
+            {
+                this.Mesh.Positions = null;
             }
         }
 
@@ -82,6 +88,5 @@ namespace HelixToolkit.Wpf
         {
             return this.builder.UpdateTransforms();
         }
-
     }
 }

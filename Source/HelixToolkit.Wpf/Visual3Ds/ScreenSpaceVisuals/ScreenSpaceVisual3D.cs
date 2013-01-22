@@ -241,7 +241,7 @@ namespace HelixToolkit.Wpf
         {
             var mg = new MaterialGroup();
             mg.Children.Add(new DiffuseMaterial(Brushes.Black));
-            mg.Children.Add(new EmissiveMaterial(new SolidColorBrush(this.Color) { Color = Colors.White }));
+            mg.Children.Add(new EmissiveMaterial(new SolidColorBrush(this.Color)));
             mg.Freeze();
             this.Model.Material = mg;
         }
