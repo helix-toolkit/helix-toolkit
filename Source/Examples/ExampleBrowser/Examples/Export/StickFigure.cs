@@ -58,11 +58,11 @@ namespace ExportDemo
 
             Model3DGroup body = Group("body", new Vector3D(0, 0, 0), BodyAngle, 0, 0);
             figure.Children.Add(body);
-            body.Children.Add(Box(0.2, PelvisWidth, h*0.25));
+            body.Children.Add(Box(PelvisWidth, 0.2, h*0.25));
 
             Model3DGroup upperBody = Group("upperBody", new Vector3D(0, 0, h*0.25), 0, 0, 0);
             body.Children.Add(upperBody);
-            upperBody.Children.Add(Box(0.2, ShoulderWidth, h*0.25));
+            upperBody.Children.Add(Box(ShoulderWidth, 0.2, h*0.25));
 
             Model3DGroup neck = Group("neck", new Vector3D(0, 0, h*0.5), NeckAngle, NeckSideAngle, 0);
             body.Children.Add(neck);
@@ -71,7 +71,7 @@ namespace ExportDemo
 
             Model3DGroup head = Group("head", new Vector3D(0, 0, h*0.05), 0, 0, 0);
             neck.Children.Add(head);
-            head.Children.Add(Box(0.25, 0.2, 0.35));
+            head.Children.Add(Box(0.2, 0.25, 0.35));
 
             Model3DGroup nose = Group("nose", new Vector3D(0, 0.1, 0.175), 0, 0, 0);
             head.Children.Add(nose);
@@ -88,7 +88,7 @@ namespace ExportDemo
 
             Model3DGroup leftHand = Group("leftHand", new Vector3D(0, 0, h*0.2), LeftHandAngle, 0, 0);
             leftForeArm.Children.Add(leftHand);
-            leftHand.Children.Add(Box(0.08, 0.03, h*0.05));
+            leftHand.Children.Add(Box(0.03, 0.08, h*0.05));
 
             Model3DGroup rightArm = Group("rightArm", new Vector3D(ShoulderWidth/2, 0, h*0.5), RightArmAngle,
                                           -RightArmOutAngle, 0);
@@ -101,7 +101,7 @@ namespace ExportDemo
 
             Model3DGroup rightHand = Group("rightHand", new Vector3D(0, 0, h*0.2), RightHandAngle, 0, 0);
             rightForeArm.Children.Add(rightHand);
-            rightHand.Children.Add(Box(0.08, 0.03, h*0.05));
+            rightHand.Children.Add(Box(0.03, 0.08, h*0.05));
 
             Model3DGroup leftThigh = Group("leftThigh", new Vector3D(-PelvisWidth/2, 0, 0), 180 - LeftThighAngle,
                                            -LeftThighOutAngle, 0);
