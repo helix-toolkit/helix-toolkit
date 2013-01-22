@@ -72,16 +72,6 @@ namespace HelixToolkit.Wpf
             "Width", typeof(double), typeof(BillboardVisual3D), new UIPropertyMetadata(10.0, GeometryChanged));
 
         /// <summary>
-        /// The mesh.
-        /// </summary>
-        protected MeshGeometry3D Mesh;
-
-        /// <summary>
-        /// The model.
-        /// </summary>
-        protected GeometryModel3D Model;
-
-        /// <summary>
         /// The builder.
         /// </summary>
         private readonly BillboardGeometryBuilder builder;
@@ -160,6 +150,7 @@ namespace HelixToolkit.Wpf
             {
                 return (HorizontalAlignment)this.GetValue(HorizontalAlignmentProperty);
             }
+
             set
             {
                 this.SetValue(HorizontalAlignmentProperty, value);
@@ -238,6 +229,7 @@ namespace HelixToolkit.Wpf
             {
                 return (VerticalAlignment)this.GetValue(VerticalAlignmentProperty);
             }
+
             set
             {
                 this.SetValue(VerticalAlignmentProperty, value);
@@ -260,6 +252,16 @@ namespace HelixToolkit.Wpf
                 this.SetValue(WidthProperty, value);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the mesh.
+        /// </summary>
+        protected MeshGeometry3D Mesh { get; set; }
+
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
+        protected GeometryModel3D Model { get; set; }
 
         /// <summary>
         /// The on material changed.
