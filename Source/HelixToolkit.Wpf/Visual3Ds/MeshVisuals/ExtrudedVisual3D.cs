@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Diameters"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiametersProperty = DependencyProperty.Register(
-            "Diameters", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null));
+            "Diameters", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsPathClosed"/> dependency property.
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty TextureCoordinatesProperty =
             DependencyProperty.Register(
-                "TextureCoordinates", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null));
+                "TextureCoordinates", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="UpVector"/> dependency property.
