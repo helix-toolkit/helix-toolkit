@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf
             "Direction",
             typeof(Vector3D),
             typeof(TranslateManipulator),
-            new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
+            new UIPropertyMetadata(GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="Length"/> dependency property.
