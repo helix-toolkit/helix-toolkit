@@ -2,8 +2,10 @@
 // <copyright file="StLReader.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   Provides an importer for StereoLithography .StL files.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -15,19 +17,22 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// A StereoLithography .StL file reader.
+    /// Provides an importer for StereoLithography .StL files.
     /// </summary>
+    /// <remarks>
+    /// The format is documented on <a href="http://en.wikipedia.org/wiki/STL_(file_format)">Wikipedia</a>.
+    /// </remarks>
     public class StLReader : IModelReader
     {
         /// <summary>
-        /// The normal regex.
+        /// The regular expression used to parse normal vectors.
         /// </summary>
-        private readonly Regex normalRegex = new Regex(@"normal\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
+        private static readonly Regex NormalRegex = new Regex(@"normal\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
         /// <summary>
-        /// The vertex regex.
+        /// The regular expression used to parse vertices.
         /// </summary>
-        private readonly Regex vertexRegex = new Regex(@"vertex\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
+        private static readonly Regex VertexRegex = new Regex(@"vertex\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
         /// <summary>
         /// The index.
@@ -35,9 +40,9 @@ namespace HelixToolkit.Wpf
         private int index;
 
         /// <summary>
-        /// The last.
+        /// The last color.
         /// </summary>
-        private Color last;
+        private Color lastColor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StLReader"/> class.
@@ -46,7 +51,24 @@ namespace HelixToolkit.Wpf
         {
             this.Meshes = new List<MeshBuilder>();
             this.Materials = new List<Material>();
+            this.DefaultMaterial = MaterialHelper.CreateMaterial(Brushes.Blue);
         }
+
+        /// <summary>
+        /// Gets or sets the default material.
+        /// </summary>
+        /// <value>
+        /// The default material.
+        /// </value>
+        public Material DefaultMaterial { get; set; }
+
+        /// <summary>
+        /// Gets the file header.
+        /// </summary>
+        /// <value>
+        /// The header.
+        /// </value>
+        public string Header { get; private set; }
 
         /// <summary>
         /// Gets the materials.
@@ -61,17 +83,6 @@ namespace HelixToolkit.Wpf
         public IList<MeshBuilder> Meshes { get; private set; }
 
         /// <summary>
-        /// Gets or sets the ascii reader.
-        /// </summary>
-        /// <value> The ascii reader. </value>
-        private StreamReader AsciiReader { get; set; }
-
-        /// <summary>
-        /// Gets or sets binaryReader.
-        /// </summary>
-        private BinaryReader BinaryReader { get; set; }
-
-        /// <summary>
         /// Reads the model from the specified path.
         /// </summary>
         /// <param name="path">
@@ -82,123 +93,69 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public Model3DGroup Read(string path)
         {
-            Model3DGroup result;
             using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                result = this.Read(s);
+                return this.Read(s);
             }
-
-            return result;
         }
 
         /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
-        /// <param name="s">
+        /// <param name="stream">
         /// The stream.
         /// </param>
         /// <returns>
         /// The model.
         /// </returns>
-        public Model3DGroup Read(Stream s)
+        public Model3DGroup Read(Stream stream)
         {
-            this.BinaryReader = new BinaryReader(s);
-
-            long length = this.BinaryReader.BaseStream.Length;
-
-            if (length < 84)
+            // Try to read in BINARY format
+            var success = this.TryReadBinary(stream);
+            if (!success)
             {
-                throw new FileFormatException("Incomplete file");
+                // Reset position of stream
+                stream.Position = 0;
+
+                // Read in ASCII format
+                success = this.TryReadAscii(stream);
             }
 
-            string header = this.ReadHeaderB();
-            uint numberTriangles = this.ReadNumberTrianglesB();
-
-            s.Position = 0;
-
-            if (length - 84 != numberTriangles * 50)
+            if (success)
             {
-                this.ReadA(s);
-            }
-            else
-            {
-                this.ReadB(s);
+                return this.ToModel3D();
             }
 
-            return this.BuildModel();
+            return null;
         }
 
         /// <summary>
-        /// Reads ascii.
+        /// Builds the model.
         /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
-        public void ReadA(Stream s)
+        /// <returns>
+        /// The model.
+        /// </returns>
+        public Model3DGroup ToModel3D()
         {
-            this.AsciiReader = new StreamReader(s);
-
-            this.Meshes.Add(new MeshBuilder(true, true));
-            this.Materials.Add(MaterialHelper.CreateMaterial(Brushes.Blue));
-
-            while (!this.AsciiReader.EndOfStream)
+            var modelGroup = new Model3DGroup();
+            int i = 0;
+            foreach (var mesh in this.Meshes)
             {
-                var line = this.AsciiReader.ReadLine().Trim();
-                if (line.Length == 0 || line.StartsWith("\0") || line.StartsWith("#") || line.StartsWith("!")
-                    || line.StartsWith("$"))
+                var gm = new GeometryModel3D
                 {
-                    continue;
-                }
-
-                string id, values;
-                SplitLine(line, out id, out values);
-                switch (id)
-                {
-                    case "solid":
-                        break;
-                    case "facet":
-                        this.ReadFacetA(values);
-                        break;
-                    case "endsolid":
-                        break;
-                }
+                    Geometry = mesh.ToMesh(),
+                    Material = this.Materials[i],
+                    BackMaterial = this.Materials[i]
+                };
+                modelGroup.Children.Add(gm);
+                i++;
             }
 
-            this.AsciiReader.Close();
+            return modelGroup;
         }
 
         /// <summary>
-        /// Reads a binary stream.
-        /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
-        public void ReadB(Stream s)
-        {
-            long length = this.BinaryReader.BaseStream.Length;
-
-            if (length < 84)
-            {
-                throw new FileFormatException("Incomplete file");
-            }
-
-            string header = this.ReadHeaderB();
-            uint numberTriangles = this.ReadNumberTrianglesB();
-
-            this.index = 0;
-            this.Meshes.Add(new MeshBuilder(true, true));
-            this.Materials.Add(MaterialHelper.CreateMaterial(Brushes.Blue));
-
-            for (int i = 0; i < numberTriangles; i++)
-            {
-                this.ReadTriangleB();
-            }
-
-            this.BinaryReader.Close();
-        }
-
-        /// <summary>
-        /// The split line.
+        /// Parses the ID and values from the specified line.
         /// </summary>
         /// <param name="line">
         /// The line.
@@ -209,8 +166,9 @@ namespace HelixToolkit.Wpf
         /// <param name="values">
         /// The values.
         /// </param>
-        private static void SplitLine(string line, out string id, out string values)
+        private static void ParseLine(string line, out string id, out string values)
         {
+            line = line.Trim();
             int idx = line.IndexOf(' ');
             if (idx == -1)
             {
@@ -225,40 +183,17 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The build model.
+        /// Parses a normal string.
         /// </summary>
-        /// <returns>
-        /// </returns>
-        private Model3DGroup BuildModel()
-        {
-            var modelGroup = new Model3DGroup();
-            int index = 0;
-            foreach (var mesh in this.Meshes)
-            {
-                var gm = new GeometryModel3D();
-                gm.Geometry = mesh.ToMesh();
-                gm.Material = this.Materials[index];
-                gm.BackMaterial = gm.Material;
-                modelGroup.Children.Add(gm);
-                index++;
-            }
-
-            return modelGroup;
-        }
-
-        /// <summary>
-        /// The parse normal a.
-        /// </summary>
-        /// <param name="normal">
-        /// The normal.
+        /// <param name="input">
+        /// The input string.
         /// </param>
         /// <returns>
+        /// The normal vector.
         /// </returns>
-        /// <exception cref="FileFormatException">
-        /// </exception>
-        private Vector3D ParseNormalA(string normal)
+        private static Vector3D ParseNormal(string input)
         {
-            var match = this.normalRegex.Match(normal);
+            var match = NormalRegex.Match(input);
             if (!match.Success)
             {
                 throw new FileFormatException("Unexpected line.");
@@ -272,28 +207,136 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The read triangle a.
+        /// Reads a float (4 byte)
         /// </summary>
-        /// <param name="normal">
-        /// The normal.
+        /// <param name="reader">
+        /// The reader.
         /// </param>
-        private void ReadFacetA(string normal)
+        /// <returns>
+        /// The float.
+        /// </returns>
+        private static float ReadFloat(BinaryReader reader)
         {
-            Vector3D n = this.ParseNormalA(normal);
+            var bytes = reader.ReadBytes(4);
+            return BitConverter.ToSingle(bytes, 0);
+        }
+
+        /// <summary>
+        /// Reads a line from the stream reader.
+        /// </summary>
+        /// <param name="reader">
+        /// The stream reader.
+        /// </param>
+        /// <param name="token">
+        /// The expected token ID.
+        /// </param>
+        /// <exception cref="FileFormatException">
+        /// The expected token ID was not matched.
+        /// </exception>
+        private static void ReadLine(StreamReader reader, string token)
+        {
+            if (token == null)
+            {
+                throw new ArgumentNullException("token");
+            }
+
+            var line = reader.ReadLine();
+            string id, values;
+            ParseLine(line, out id, out values);
+
+            if (!string.Equals(token, id, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new FileFormatException("Unexpected line.");
+            }
+        }
+
+        /// <summary>
+        /// Reads a 16-bit unsigned integer.
+        /// </summary>
+        /// <param name="reader">
+        /// The reader.
+        /// </param>
+        /// <returns>
+        /// The unsigned integer.
+        /// </returns>
+        private static ushort ReadUInt16(BinaryReader reader)
+        {
+            var bytes = reader.ReadBytes(2);
+            return BitConverter.ToUInt16(bytes, 0);
+        }
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer.
+        /// </summary>
+        /// <param name="reader">
+        /// The reader.
+        /// </param>
+        /// <returns>
+        /// The unsigned integer.
+        /// </returns>
+        private static uint ReadUInt32(BinaryReader reader)
+        {
+            var bytes = reader.ReadBytes(4);
+            return BitConverter.ToUInt32(bytes, 0);
+        }
+
+        /// <summary>
+        /// Tries to parse a vertex from a string.
+        /// </summary>
+        /// <param name="line">
+        /// The input string.
+        /// </param>
+        /// <param name="point">
+        /// The vertex point.
+        /// </param>
+        /// <returns>
+        /// True if parsing was successful.
+        /// </returns>
+        private static bool TryParseVertex(string line, out Point3D point)
+        {
+            var match = VertexRegex.Match(line);
+            if (!match.Success)
+            {
+                point = new Point3D();
+                return false;
+            }
+
+            double x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+            double y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+            double z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+
+            point = new Point3D(x, y, z);
+            return true;
+        }
+
+        /// <summary>
+        /// Reads a facet.
+        /// </summary>
+        /// <param name="reader">
+        /// The stream reader.
+        /// </param>
+        /// <param name="normal">
+        /// The normal. 
+        /// </param>
+        private void ReadFacet(StreamReader reader, string normal)
+        {
+#pragma warning disable 168
+            var n = ParseNormal(normal);
+#pragma warning restore 168
             var points = new List<Point3D>();
-            this.ReadLineA("outer");
+            ReadLine(reader, "outer");
             while (true)
             {
-                var line = this.ReadLineA();
+                var line = reader.ReadLine();
                 Point3D point;
-                if (this.TryParseVertex(line, out point))
+                if (TryParseVertex(line, out point))
                 {
                     points.Add(point);
                     continue;
                 }
 
                 string id, values;
-                SplitLine(line, out id, out values);
+                ParseLine(line, out id, out values);
 
                 if (id == "endloop")
                 {
@@ -301,11 +344,11 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            this.ReadLineA("endfacet");
+            ReadLine(reader, "endfacet");
 
             if (this.Materials.Count < this.index + 1)
             {
-                this.Materials.Add(MaterialHelper.CreateMaterial(Brushes.Blue));
+                this.Materials.Add(this.DefaultMaterial);
             }
 
             if (this.Meshes.Count < this.index + 1)
@@ -319,110 +362,38 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read float (4 byte)
+        /// Reads a triangle from a binary STL file.
         /// </summary>
-        /// <returns>
-        /// The read float b.
-        /// </returns>
-        private float ReadFloatB()
-        {
-            var bytes = this.BinaryReader.ReadBytes(4);
-            return BitConverter.ToSingle(bytes, 0);
-        }
-
-        /// <summary>
-        /// The read header b.
-        /// </summary>
-        /// <returns>
-        /// The read header b.
-        /// </returns>
-        private string ReadHeaderB()
-        {
-            var chars = this.BinaryReader.ReadChars(80);
-            return new string(chars);
-        }
-
-        /// <summary>
-        /// The read line a.
-        /// </summary>
-        /// <param name="token">
-        /// The token.
+        /// <param name="reader">
+        /// The reader.
         /// </param>
-        /// <exception cref="FileFormatException">
-        /// </exception>
-        private void ReadLineA(string token)
+        private void ReadTriangle(BinaryReader reader)
         {
-            var line = this.AsciiReader.ReadLine().Trim();
-            int idx = line.IndexOf(' ');
-            string id, values;
-            SplitLine(line, out id, out values);
+            float ni = ReadFloat(reader);
+            float nj = ReadFloat(reader);
+            float nk = ReadFloat(reader);
 
-            if (!string.Equals(token, id, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new FileFormatException("Unexpected line.");
-            }
-        }
-
-        /// <summary>
-        /// Reads a line from the asciiReader.
-        /// </summary>
-        /// <returns>
-        /// The line
-        /// </returns>
-        private string ReadLineA()
-        {
-            var line = this.AsciiReader.ReadLine();
-            if (line != null)
-            {
-                line = line.Trim();
-            }
-
-            return line;
-        }
-
-        /// <summary>
-        /// The read number triangles b.
-        /// </summary>
-        /// <returns>
-        /// The read number triangles b.
-        /// </returns>
-        private uint ReadNumberTrianglesB()
-        {
-            return this.ReadUInt32B();
-        }
-
-        /// <summary>
-        /// The read triangle b.
-        /// </summary>
-        private void ReadTriangleB()
-        {
-            Color current;
-            bool hasColor = false;
-            bool sameColor = true;
-
-            float ni = this.ReadFloatB();
-            float nj = this.ReadFloatB();
-            float nk = this.ReadFloatB();
+#pragma warning disable 168
             var n = new Vector3D(ni, nj, nk);
+#pragma warning restore 168
 
-            float v1x = this.ReadFloatB();
-            float v1y = this.ReadFloatB();
-            float v1z = this.ReadFloatB();
-            var v1 = new Point3D(v1x, v1y, v1z);
+            float x1 = ReadFloat(reader);
+            float y1 = ReadFloat(reader);
+            float z1 = ReadFloat(reader);
+            var v1 = new Point3D(x1, y1, z1);
 
-            float v2x = this.ReadFloatB();
-            float v2y = this.ReadFloatB();
-            float v2z = this.ReadFloatB();
-            var v2 = new Point3D(v2x, v2y, v2z);
+            float x2 = ReadFloat(reader);
+            float y2 = ReadFloat(reader);
+            float z2 = ReadFloat(reader);
+            var v2 = new Point3D(x2, y2, z2);
 
-            float v3x = this.ReadFloatB();
-            float v3y = this.ReadFloatB();
-            float v3z = this.ReadFloatB();
-            var v3 = new Point3D(v3x, v3y, v3z);
+            float x3 = ReadFloat(reader);
+            float y3 = ReadFloat(reader);
+            float z3 = ReadFloat(reader);
+            var v3 = new Point3D(x3, y3, z3);
 
-            // UInt16 attrib = ReadUInt16();
-            var attrib = Convert.ToString(this.ReadUInt16B(), 2).PadLeft(16, '0').ToCharArray();
-            hasColor = attrib[0].Equals('1');
+            var attrib = Convert.ToString(ReadUInt16(reader), 2).PadLeft(16, '0').ToCharArray();
+            var hasColor = attrib[0].Equals('1');
 
             if (hasColor)
             {
@@ -447,25 +418,24 @@ namespace HelixToolkit.Wpf
                 red = attrib[1].Equals('1') ? red + 16 : red;
                 int r = red * 8;
 
-                current = Color.FromRgb(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
-                sameColor = Color.Equals(this.last, current);
+                var currentColor = Color.FromRgb(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
 
-                if (!sameColor)
+                if (!Color.Equals(this.lastColor, currentColor))
                 {
-                    this.last = current;
+                    this.lastColor = currentColor;
                     this.index++;
                 }
 
                 if (this.Materials.Count < this.index + 1)
                 {
-                    this.Materials.Add(MaterialHelper.CreateMaterial(current));
+                    this.Materials.Add(MaterialHelper.CreateMaterial(currentColor));
                 }
             }
             else
             {
                 if (this.Materials.Count < this.index + 1)
                 {
-                    this.Materials.Add(MaterialHelper.CreateMaterial(Brushes.Blue));
+                    this.Materials.Add(this.DefaultMaterial);
                 }
             }
 
@@ -475,60 +445,98 @@ namespace HelixToolkit.Wpf
             }
 
             this.Meshes[this.index].AddTriangle(v1, v2, v3);
+
+            // todo: add normal
         }
 
         /// <summary>
-        /// Read UInt16.
+        /// Reads the model in ASCII format from the specified stream.
         /// </summary>
-        /// <returns>
-        /// The read u int 16 b.
-        /// </returns>
-        private ushort ReadUInt16B()
-        {
-            var bytes = this.BinaryReader.ReadBytes(2);
-            return BitConverter.ToUInt16(bytes, 0);
-        }
-
-        /// <summary>
-        /// Read UInt32.
-        /// </summary>
-        /// <returns>
-        /// The read u int 32 b.
-        /// </returns>
-        private uint ReadUInt32B()
-        {
-            var bytes = this.BinaryReader.ReadBytes(4);
-            return BitConverter.ToUInt32(bytes, 0);
-        }
-
-        /// <summary>
-        /// Tries to parse a vertex from a string.
-        /// </summary>
-        /// <param name="line">
-        /// The input string.
-        /// </param>
-        /// <param name="point">
-        /// The vertex point.
+        /// <param name="stream">
+        /// The stream.
         /// </param>
         /// <returns>
-        /// True if parsing was successful.
+        /// True if the model was loaded successfully.
         /// </returns>
-        private bool TryParseVertex(string line, out Point3D point)
+        private bool TryReadAscii(Stream stream)
         {
-            var match = this.vertexRegex.Match(line);
-            if (!match.Success)
+            var reader = new StreamReader(stream);
+            this.Meshes.Add(new MeshBuilder(true, true));
+            this.Materials.Add(this.DefaultMaterial);
+
+            while (!reader.EndOfStream)
             {
-                point = new Point3D();
-                return false;
+                var line = reader.ReadLine();
+                if (line == null)
+                {
+                    continue;
+                }
+
+                line = line.Trim();
+                if (line.Length == 0 || line.StartsWith("\0") || line.StartsWith("#") || line.StartsWith("!")
+                    || line.StartsWith("$"))
+                {
+                    continue;
+                }
+
+                string id, values;
+                ParseLine(line, out id, out values);
+                switch (id)
+                {
+                    case "solid":
+                        this.Header = values.Trim();
+                        break;
+                    case "facet":
+                        this.ReadFacet(reader, values);
+                        break;
+                    case "endsolid":
+                        break;
+                }
             }
 
-            double x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-            double y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
-            double z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
-
-            point = new Point3D(x, y, z);
             return true;
         }
 
+        /// <summary>
+        /// Reads the model from the specified binary stream.
+        /// </summary>
+        /// <param name="stream">
+        /// The stream.
+        /// </param>
+        /// <returns>
+        /// True if the file was read successfully.
+        /// </returns>
+        /// <exception cref="System.IO.FileFormatException">
+        /// Incomplete file
+        /// </exception>
+        private bool TryReadBinary(Stream stream)
+        {
+            long length = stream.Length;
+            if (length < 84)
+            {
+                throw new FileFormatException("Incomplete file");
+            }
+
+            var reader = new BinaryReader(stream);
+            var chars = reader.ReadChars(80);
+            this.Header = new string(chars).Trim();
+            uint numberTriangles = ReadUInt32(reader);
+
+            if (length - 84 != numberTriangles * 50)
+            {
+                return false;
+            }
+
+            this.index = 0;
+            this.Meshes.Add(new MeshBuilder(true, true));
+            this.Materials.Add(this.DefaultMaterial);
+
+            for (int i = 0; i < numberTriangles; i++)
+            {
+                this.ReadTriangle(reader);
+            }
+
+            return true;
+        }
     }
 }

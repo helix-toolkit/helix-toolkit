@@ -8,6 +8,7 @@ namespace HelixToolkitTests
 {
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
@@ -25,6 +26,32 @@ namespace HelixToolkitTests
         {
             var r = new StLReader();
             var model = r.Read(@"Models\stl\bottle.stl");
+            Assert.AreEqual("FLIRIS", r.Header);
+            Assert.AreEqual(1, model.Children.Count);
+            var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
+            Assert.AreEqual(1240, m0.TriangleIndices.Count / 3);
+        }
+
+        [Test]
+        public void Read_Bottle_DefaultMaterialChanged()
+        {
+            var r = new StLReader();
+            r.DefaultMaterial = MaterialHelper.CreateMaterial(Colors.Aqua);
+            var model = r.Read(@"Models\stl\bottle.stl");
+            Assert.AreEqual(1, model.Children.Count);
+            var gm0 = (GeometryModel3D)model.Children[0];
+            var m0 = (MaterialGroup)gm0.Material;
+            var dm = (DiffuseMaterial)m0.Children[0];
+            Assert.AreEqual(Colors.Aqua, ((SolidColorBrush)dm.Brush).Color);
+        }
+
+        [Test]
+        public void Read_BinaryBottle_ValidModel()
+        {
+            // ASCII format converted to BINARY by MeshLab
+            var r = new StLReader();
+            var model = r.Read(@"Models\stl\binary\bottle.stl");
+            Assert.AreEqual("VCG", r.Header);
             Assert.AreEqual(1, model.Children.Count);
             var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
             Assert.AreEqual(1240, m0.TriangleIndices.Count / 3);
