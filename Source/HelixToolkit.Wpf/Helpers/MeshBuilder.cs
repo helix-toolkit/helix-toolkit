@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -86,12 +87,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The circle cache.
         /// </summary>
-        private static readonly Dictionary<int, IList<Point>> CircleCache = new Dictionary<int, IList<Point>>();
+        private static readonly ThreadLocal<Dictionary<int, IList<Point>>> CircleCache = new ThreadLocal<Dictionary<int, IList<Point>>>(() => new Dictionary<int, IList<Point>>());
 
         /// <summary>
         /// The unit sphere cache.
         /// </summary>
-        private static readonly Dictionary<int, MeshGeometry3D> UnitSphereCache = new Dictionary<int, MeshGeometry3D>();
+        private static readonly ThreadLocal<Dictionary<int, MeshGeometry3D>> UnitSphereCache = new ThreadLocal<Dictionary<int, MeshGeometry3D>>(() => new Dictionary<int, MeshGeometry3D>());
 
         /// <summary>
         /// The normal vectors.
@@ -305,10 +306,10 @@ namespace HelixToolkit.Wpf
         public static IList<Point> GetCircle(int thetaDiv)
         {
             IList<Point> circle;
-            if (!CircleCache.TryGetValue(thetaDiv, out circle))
+            if (!CircleCache.Value.TryGetValue(thetaDiv, out circle))
             {
                 circle = new PointCollection();
-                CircleCache.Add(thetaDiv, circle);
+                CircleCache.Value.Add(thetaDiv, circle);
                 for (int i = 0; i < thetaDiv; i++)
                 {
                     double theta = Math.PI * 2 * ((double)i / (thetaDiv - 1));
@@ -2248,9 +2249,9 @@ namespace HelixToolkit.Wpf
         /// </returns>
         private static MeshGeometry3D GetUnitSphere(int subdivisions)
         {
-            if (UnitSphereCache.ContainsKey(subdivisions))
+            if (UnitSphereCache.Value.ContainsKey(subdivisions))
             {
-                return UnitSphereCache[subdivisions];
+                return UnitSphereCache.Value[subdivisions];
             }
 
             var mb = new MeshBuilder(false, false);
@@ -2268,7 +2269,7 @@ namespace HelixToolkit.Wpf
             }
 
             var mesh = mb.ToMesh();
-            UnitSphereCache[subdivisions] = mesh;
+            UnitSphereCache.Value[subdivisions] = mesh;
             return mesh;
         }
 
