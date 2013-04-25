@@ -1,0 +1,34 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CanvasSourceExtension.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: MIT
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace RhinoDemo
+{
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Markup;
+    using System.Windows.Media;
+
+    public class CanvasSourceExtension : MarkupExtension
+    {
+        public string Path { get; set; }
+
+        public double Height { get; set; }
+        public CanvasSourceExtension(string path, double height)
+        {
+            Path = path;
+            Height = height;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            var canvas = Application.LoadComponent(new Uri(Path, UriKind.Relative)) as Canvas;
+            double scale = Height / canvas.Height;
+            canvas.LayoutTransform = new ScaleTransform(scale, scale);
+            return canvas;
+        }
+    }
+}

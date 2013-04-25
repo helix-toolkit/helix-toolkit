@@ -1,0 +1,12 @@
+﻿<Window x:Class="VoxelDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="VoxelDemo" Height="480" Width="640">
+    <Grid>
+        <t:HelixViewport3D x:Name="view1" MouseDown="view1_MouseDown" MouseMove="view1_MouseMove" MouseUp="view1_MouseUp" KeyDown="view1_KeyDown" KeyUp="view1_KeyUp">
+            <t:DefaultLights/>
+            <t:GridLinesVisual3D Center="-0.5,-0.5,-0.5" Width="20" Length="20" MinorDistance="1" MajorDistance="10" Thickness="0.04" Fill="Black"/>
+            <ModelVisual3D Content="{Binding Model}"/>
+        </t:HelixViewport3D>
+    </Grid>
+</Window>

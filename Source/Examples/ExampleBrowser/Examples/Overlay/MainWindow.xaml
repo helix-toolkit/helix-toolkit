@@ -1,0 +1,12 @@
+﻿<Window x:Class="OverlayDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="OverlayDemo" Height="480" Width="640">
+    <Grid>
+        <h:HelixViewport3D x:Name="view1" ZoomExtentsWhenLoaded="True">
+            <h:SunLight/>
+            <h:TruncatedConeVisual3D Origin="0,0,0" Normal="0,0,1" Height="10" BaseRadius="3" TopRadius="0"/>
+        </h:HelixViewport3D>
+        <Canvas Name="overlay1" IsHitTestVisible="False" ClipToBounds="False"/>
+    </Grid>
+</Window>

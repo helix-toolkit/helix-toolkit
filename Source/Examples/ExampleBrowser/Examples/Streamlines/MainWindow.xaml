@@ -1,0 +1,12 @@
+﻿<Window x:Class="StreamlinesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="StreamlinesDemo" Height="480" Width="640">
+    <Grid>
+        <t:HelixViewport3D x:Name="view1">
+            <t:DefaultLights/>
+            <t:TruncatedConeVisual3D Origin="0,0,-3" BaseRadius="1" TopRadius="1" Height="6" Fill="Gray"/>
+            <ModelVisual3D Content="{Binding StreamLinesModel}"/>
+        </t:HelixViewport3D>
+    </Grid>
+</Window>

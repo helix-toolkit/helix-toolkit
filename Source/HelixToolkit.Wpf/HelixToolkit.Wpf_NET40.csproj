@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HelixToolkit.Wpf</RootNamespace>
+    <AssemblyName>HelixToolkit.Wpf</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\NET40\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\NET40\HelixToolkit.Wpf.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Adorners\DrawingContextExtensions.cs" />
+    <Compile Include="Controls\CameraController\TouchMode.cs" />
+    <Compile Include="Controls\CameraController\CameraMode.cs" />
+    <Compile Include="Controls\CameraController\CameraRotationMode.cs" />
+    <Compile Include="Controls\CameraController\CameraSetting.cs" />
+    <Compile Include="Controls\CameraController\ManipulationEventArgs.cs" />
+    <Compile Include="Controls\CameraController\PanHandler.cs" />
+    <Compile Include="Controls\CameraController\RotateHandler.cs" />
+    <Compile Include="Controls\CameraController\ZoomHandler.cs" />
+    <Compile Include="Controls\CameraController\ZoomRectangleHandler.cs" />
+    <Compile Include="Controls\ColorAxis\CategorizedColorAxis.cs" />
+    <Compile Include="Controls\ColorAxis\ColorAxis.cs" />
+    <Compile Include="Controls\ColorAxis\ColorAxisPosition.cs" />
+    <Compile Include="Controls\ColorAxis\RangeColorAxis.cs" />
+    <Compile Include="HelixToolkitException.cs" />
+    <Compile Include="Controls\HelixViewport3D.cs" />
+    <Compile Include="Controls\CameraController\MouseGestureHandler.cs" />
+    <Compile Include="Controls\IHelixViewport3D.cs" />
+    <Compile Include="Controls\InputBindingX.cs" />
+    <Compile Include="Converters\LinearConverter.cs" />
+    <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringToBooleanConverter.cs" />
+    <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="Exporters\BitmapExporter.cs" />
+    <Compile Include="Exporters\ColladaExporter.cs" />
+    <Compile Include="Exporters\RenderManExporter.cs" />
+    <Compile Include="Exporters\Exporter.cs" />
+    <Compile Include="Exporters\Exporters.cs" />
+    <Compile Include="Exporters\IExporter.cs" />
+    <Compile Include="Exporters\ObjExporter.cs" />
+    <Compile Include="Exporters\X3DExporter.cs" />
+    <Compile Include="Exporters\VrmlExporter.cs" />
+    <Compile Include="Exporters\PovRayExporter.cs" />
+    <Compile Include="Exporters\XamlExporter.cs" />
+    <Compile Include="ExtensionMethods\Point3DExtensions.cs" />
+    <Compile Include="ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="Geometry\CuttingEarsTriangulator.cs" />
+    <Compile Include="Geometry\Polygon3D.cs" />
+    <Compile Include="Geometry\Mesh3D.cs" />
+    <Compile Include="Geometry\BoundingSphere.cs" />
+    <Compile Include="Helpers\CanonicalSplineHelper.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Helpers\ContourHelper.cs" />
+    <Compile Include="Helpers\ScreenSpace\BillboardGeometryBuilder.cs" />
+    <Compile Include="Helpers\WeakEventManagers\RenderingEventManager.cs" />
+    <Compile Include="Helpers\WeakEventManagers\WeakEventManagerBase{TManager}.cs" />
+    <Compile Include="Helpers\LoopSubdivision.cs" />
+    <Compile Include="Helpers\DoubleKeyDictionary.cs" />
+    <Compile Include="Controls\CameraController\CameraController.cs" />
+    <Compile Include="Controls\Stereo\AnaglyphView3D.xaml.cs">
+      <DependentUpon>AnaglyphView3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Stereo\StereoControl.cs" />
+    <Compile Include="Controls\Stereo\StereoView3D.xaml.cs">
+      <DependentUpon>StereoView3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Stereo\WiggleView3D.xaml.cs">
+      <DependentUpon>WiggleView3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\SelfProvider.cs" />
+    <Compile Include="Exporters\KerkytheaExporter.cs" />
+    <Compile Include="ExtensionMethods\Matrix3DExtensions.cs" />
+    <Compile Include="ExtensionMethods\Vector3DExtensions.cs" />
+    <Compile Include="Geometry\Plane3D.cs" />
+    <Compile Include="Geometry\Polygon.cs" />
+    <Compile Include="Geometry\Ray3D.cs" />
+    <Compile Include="Adorners\RectangleAdorner.cs" />
+    <Compile Include="Helpers\ScreenSpace\CohenSutherlandClipping.cs" />
+    <Compile Include="Helpers\ScreenSpace\LineGeometryBuilder.cs" />
+    <Compile Include="Importers\Importers.cs" />
+    <Compile Include="Importers\OffReader.cs" />
+    <Compile Include="MarkupExtensions\KeyGestureExtension.cs" />
+    <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />
+    <Compile Include="MarkupExtensions\PerspectiveCameraExtension.cs" />
+    <Compile Include="MarkupExtensions\TranslateExtension.cs" />
+    <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
+    <Compile Include="Visual3Ds\Text\BillboardTextItem.cs" />
+    <Compile Include="Visual3Ds\Text\SpatialTextItem.cs" />
+    <Compile Include="Visual3Ds\Text\TextGroupVisual3D.cs" />
+    <Compile Include="Visual3Ds\Composite\MeshVisual3D.cs" />
+    <Compile Include="Visual3Ds\Composite\CuttingPlaneGroup.cs" />
+    <Compile Include="Visual3Ds\Composite\Exploder3D.cs" />
+    <Compile Include="Visual3Ds\Composite\FileModelVisual3D.cs" />
+    <Compile Include="Helpers\WeakEventListeners\RenderingEventListener.cs" />
+    <Compile Include="Visual3Ds\Composite\RenderingModelVisual3D.cs" />
+    <Compile Include="Helpers\WeakEventListeners\WeakEventListener{TEventManager,TEventArgs}.cs" />
+    <Compile Include="Visual3Ds\LightSetups\LightSetup.cs" />
+    <Compile Include="Visual3Ds\LightSetups\SunLight.cs" />
+    <Compile Include="Visual3Ds\LightSetups\ThreePointLights.cs" />
+    <Compile Include="Visual3Ds\Manipulators\BindableRotateManipulator.cs" />
+    <Compile Include="Visual3Ds\Manipulators\BindableTranslateManipulator.cs" />
+    <Compile Include="Visual3Ds\Manipulators\CombinedManipulator.cs" />
+    <Compile Include="Visual3Ds\Manipulators\RotateManipulator.cs" />
+    <Compile Include="Visual3Ds\Manipulators\Manipulator.cs" />
+    <Compile Include="Visual3Ds\Manipulators\TranslateManipulator.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\EllipsoidVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\HelixVisual3D.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Visual3Ds\MeshVisuals\TestModels\Teapot.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\BillboardVisual3D.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\BoundingBoxWireFrameVisual3D.cs" />
+    <Compile Include="Visual3Ds\Text\BillboardTextGroupVisual3D.cs" />
+    <Compile Include="Visual3Ds\Text\BillboardTextVisual3D.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\LinesVisual3D.cs" />
+    <Compile Include="Helpers\ScreenSpace\PointGeometryBuilder.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\PointsVisual3D.cs" />
+    <Compile Include="Helpers\ScreenSpace\ScreenGeometryBuilder.cs" />
+    <Compile Include="Visual3Ds\ScreenSpaceVisuals\ScreenSpaceVisual3D.cs" />
+    <None Include="Class diagrams\Helix.CompositeVisuals.cd" />
+    <None Include="Class diagrams\Media3D\LightsDiagram.cd" />
+    <None Include="Class diagrams\Helix.ViewControls.cd" />
+    <None Include="Class diagrams\Media3D\CameraDiagram.cd" />
+    <None Include="Class diagrams\Media3D\VisualDiagram.cd" />
+    <None Include="Class diagrams\Helix.MeshVisuals.cd" />
+    <Compile Include="Helpers\CameraHelper.cs" />
+    <Compile Include="Helpers\BrushHelper.cs" />
+    <Compile Include="Helpers\GradientBrushes.cs" />
+    <Compile Include="Physics\VerletIntegrator.cs" />
+    <Compile Include="Importers\IModelReader.cs" />
+    <Compile Include="MarkupExtensions\GradientExtension.cs" />
+    <Compile Include="MarkupExtensions\ImageBrushExtension.cs" />
+    <Compile Include="MarkupExtensions\ImageMaterialExtension.cs" />
+    <Compile Include="Helpers\Transform3DHelper.cs" />
+    <Compile Include="Helpers\XamlHelper.cs" />
+    <Compile Include="Importers\ModelImporter.cs" />
+    <Compile Include="Importers\ObjReader.cs" />
+    <Compile Include="Importers\LwoReader.cs" />
+    <Compile Include="Importers\StLReader.cs" />
+    <Compile Include="MarkupExtensions\MaterialExtension.cs" />
+    <Compile Include="Helpers\MeshBuilder.cs" />
+    <Compile Include="Visual3Ds\Composite\ClonedVisual3D.cs" />
+    <Compile Include="Helpers\GZipHelper.cs" />
+    <Compile Include="Visual3Ds\Composite\PanoramaCube3D.cs" />
+    <Compile Include="Visual3Ds\Composite\Expander3D.cs" />
+    <Compile Include="Visual3Ds\Terrain\Textures\MapTexture.cs" />
+    <Compile Include="Visual3Ds\Terrain\Textures\SlopeDirectionTexture.cs" />
+    <Compile Include="Visual3Ds\Terrain\Textures\SlopeTexture.cs" />
+    <Compile Include="Visual3Ds\Terrain\TerrainModel.cs" />
+    <Compile Include="Visual3Ds\Terrain\Textures\TerrainTexture.cs" />
+    <Compile Include="Visual3Ds\Terrain\TerrainVisual3D.cs" />
+    <Compile Include="Visual3Ds\Text\TextItem.cs" />
+    <Compile Include="Visual3Ds\Text\TextVisual3D.cs" />
+    <Compile Include="Visual3Ds\Composite\ViewCubeVisual3D.cs" />
+    <Compile Include="Visual3Ds\LightSetups\DefaultLights.cs" />
+    <Compile Include="Helpers\MaterialHelper.cs" />
+    <Compile Include="Helpers\Materials.cs" />
+    <Compile Include="Helpers\MeshGeometryHelper.cs" />
+    <Compile Include="Helpers\ElementSortingHelper.cs" />
+    <Compile Include="Helpers\StereoHelper.cs" />
+    <Compile Include="Adorners\TargetSymbolAdorner.cs" />
+    <Compile Include="Helpers\TextCreator.cs" />
+    <Compile Include="Helpers\Viewport3DHelper.cs" />
+    <Compile Include="Helpers\Visual3DHelper.cs" />
+    <Compile Include="Importers\StudioReader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ShaderEffects\AnaglyphEffect.cs" />
+    <Compile Include="Visual3Ds\Composite\CoordinateSystemVisual3D.cs" />
+    <Compile Include="Visual3Ds\Composite\VectorFieldVisual3D.cs" />
+    <Compile Include="Visual3Ds\Composite\SortingVisual3D.cs" />
+    <Compile Include="Visual3Ds\Composite\LightVisual3D.cs" />
+    <Compile Include="Visual3Ds\Composite\MeshNormalsVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\ArrowVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\BoxVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\QuadVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\PieSliceVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\ExtrudedVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\TubeVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\CubeVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\GridLinesVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\ParametricSurface3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\RectangleVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\SphereVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\MeshElement3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\TruncatedConeVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\PipeVisual3D.cs" />
+    <None Include="Class diagrams\Media3D\MaterialDiagram.cd" />
+    <None Include="Class diagrams\Media3D\ModelDiagram.cd" />
+    <None Include="HelixToolkit.snk" />
+    <None Include="ShaderEffects\AnaglyphEffect.fx" />
+    <Resource Include="ShaderEffects\AnaglyphEffect.ps" />
+    <None Include="ShaderEffects\compileEffects.cmd" />
+    <None Include="Class diagrams\Media3D\ViewportDiagram.cd" />
+    <Compile Include="Visual3Ds\Composite\BoundingBoxVisual3D.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\Stereo\AnaglyphView3D.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Stereo\StereoView3D.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Stereo\WiggleView3D.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\TeapotGeometry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

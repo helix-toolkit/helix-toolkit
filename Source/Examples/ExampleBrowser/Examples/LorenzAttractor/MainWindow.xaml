@@ -1,0 +1,38 @@
+﻿<Window x:Class="LorenzAttractorDemo.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="LorenzAttractorDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Export" IsEnabled="False" />
+                <Separator />
+                <MenuItem Header="Exit" Click="FileExit_Click" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Direction arrows" IsChecked="{Binding DirectionArrows}" IsCheckable="True" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="See wikipedia article" Click="Help_Click" />
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <h:HelixViewport3D ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True">
+                <h:HelixViewport3D.Camera>
+                    <PerspectiveCamera LookDirection="-10,12,-3" UpDirection="0,0,1"/>
+                </h:HelixViewport3D.Camera>
+                <ModelVisual3D Content="{Binding Model}" />
+                <h:CoordinateSystemVisual3D ArrowLengths="20" />
+            </h:HelixViewport3D>
+            <StackPanel Orientation="Horizontal" Background="#80FFFFFF" VerticalAlignment="Top">
+                <TextBlock Text="{Binding Rho, StringFormat='Rho: {0:0.00}'}" Margin="0 8 0 8"  />
+                <Slider Value="{Binding Rho}" Minimum="1" Maximum="100" Width="100" Margin="0 8 0 8" ToolTip="For small values of ρ, the system is stable and evolves to one of two fixed point attractors. When ρ is larger than 24.28, the fixed points become repulsors and the trajectory is repelled by them in a very complex way, evolving without ever crossing itself." />
+                <TextBlock Text="{Binding Sigma, StringFormat='Sigma: {0:0.00}'}" Margin="10 8 0 8" />
+                <Slider Value="{Binding Sigma}" Minimum="1" Maximum="100" Width="100" Margin="0 8 0 8"  />
+                <TextBlock Text="{Binding Beta, StringFormat='Beta: {0:0.00}'}" Margin="10 8 0 8" />
+                <Slider Value="{Binding Beta}" Minimum="1" Maximum="100" Margin="0 8 0 8"  Width="100" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,41 @@
+<!--
+#
+# X3D Web3D Extensions Private Schema:
+#
+#	http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPrivate.xsd
+#
+#	current version:  3.1.0
+#
+#	created:          14 September 2004
+#
+#	revised:          2 October 2004
+#
+#	Maintainer:       Don Brutzman
+#
+# Purpose: support Web3D Consortium extensions to the X3D tagset.
+# The primary Extensible 3D (X3D) Schema
+# x3d-3.1.xsd is augmented by node definitions in
+# x3d-3.1-Web3dExtensionsPublic.xsd and
+# x3d-3.1-Web3dExtensionsPrivate.xsd
+#
+# X3D Specification Schemas:
+#	http://www.web3d.org/specifications/x3d-3.1.xsd
+#	http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPublic.xsd
+#	http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPrivate.xsd
+#
+# changelog:
+#	http://www.web3d.org/specifications/x3d-schema-changelog.txt
+#
+-->
+
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.1.0">
+
+<!-- construction note:  unlike xs:element, xs:attributeGroup constructs from parent schema not referencable -->
+
+<!-- ================================================================= -->
+
+	<!-- Local/user schema extensions for elements and attributes are added here. -->
+
+<!-- ================================================================= -->
+
+</xs:schema>
