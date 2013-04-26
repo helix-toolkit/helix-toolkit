@@ -15,6 +15,15 @@ namespace HelixToolkit.Wpf
     public class EllipsoidVisual3D : MeshElement3D
     {
         /// <summary>
+        /// Identifies the <see cref="Center"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
+            "Center",
+            typeof(Point3D),
+            typeof(EllipsoidVisual3D),
+            new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
+
+        /// <summary>
         /// Identifies the <see cref="PhiDiv"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PhiDivProperty = DependencyProperty.Register(
@@ -43,6 +52,23 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(EllipsoidVisual3D), new PropertyMetadata(60, GeometryChanged));
+
+        /// <summary>
+        /// Gets or sets the center of the ellipsoid (this will set the transform of the element).
+        /// </summary>
+        /// <value>The center.</value>
+        public Point3D Center
+        {
+            get
+            {
+                return (Point3D)this.GetValue(CenterProperty);
+            }
+
+            set
+            {
+                this.SetValue(CenterProperty, value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the number of divisions in the phi direction (from "top" to "bottom").
@@ -130,16 +156,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The tessellate.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D" />.
         /// </summary>
-        /// <returns>The mesh.</returns>
+        /// <returns>
+        /// A triangular mesh geometry.
+        /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
             var builder = new MeshBuilder(false, true);
-            builder.AddSphere(new Point3D(0, 0, 0), 1.0, this.ThetaDiv, this.PhiDiv);
-            builder.Scale(this.RadiusX, this.RadiusY, this.RadiusZ);
+            builder.AddEllipsoid(this.Center, this.RadiusX, this.RadiusY, this.RadiusZ, this.ThetaDiv, this.PhiDiv);
             return builder.ToMesh();
         }
-
     }
 }

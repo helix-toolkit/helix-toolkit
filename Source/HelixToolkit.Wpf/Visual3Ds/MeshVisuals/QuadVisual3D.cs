@@ -24,6 +24,7 @@ namespace HelixToolkit.Wpf
         // |               |
         // +---------------+
         // Point1          Point2
+
         // The texture coordinates are
         // (0,0)           (1,0)
         // +---------------+
@@ -31,6 +32,7 @@ namespace HelixToolkit.Wpf
         // |               |
         // +---------------+
         // (0,1)          (1,1)
+
         /// <summary>
         /// Identifies the <see cref="Point1"/> dependency property.
         /// </summary>
@@ -136,12 +138,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
         /// <returns>A triangular mesh geometry.</returns>
         protected override MeshGeometry3D Tessellate()
         {
-            var builder = new MeshBuilder(false,true);
+            var builder = new MeshBuilder(false, true);
             builder.AddQuad(
                 this.Point1,
                 this.Point2,
@@ -153,6 +155,5 @@ namespace HelixToolkit.Wpf
                 new Point(0, 0));
             return builder.ToMesh();
         }
-
     }
 }

@@ -91,9 +91,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D" />.
         /// </summary>
         /// <returns>
+        /// A triangular mesh geometry.
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
@@ -101,6 +102,11 @@ namespace HelixToolkit.Wpf
                 Application.LoadComponent(
                     new Uri("HelixToolkit.Wpf;component/Resources/TeapotGeometry.xaml", UriKind.Relative)) as
                 ResourceDictionary;
+            if (rd == null)
+            {
+                return null;
+            }
+
             this.OnTransformChanged();
             return rd["TeapotGeometry"] as MeshGeometry3D;
         }
@@ -148,6 +154,5 @@ namespace HelixToolkit.Wpf
                         this.Position.Z,
                         1));
         }
-
     }
 }

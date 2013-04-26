@@ -226,9 +226,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D" />.
         /// </summary>
         /// <returns>
+        /// A triangular mesh geometry.
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
@@ -314,10 +315,10 @@ namespace HelixToolkit.Wpf
         private void AddLineX(MeshBuilder mesh, double x, double minY, double maxY, double thickness)
         {
             int i0 = mesh.Positions.Count;
-            mesh.Positions.Add(this.GetPoint(x - thickness / 2, minY));
-            mesh.Positions.Add(this.GetPoint(x - thickness / 2, maxY));
-            mesh.Positions.Add(this.GetPoint(x + thickness / 2, maxY));
-            mesh.Positions.Add(this.GetPoint(x + thickness / 2, minY));
+            mesh.Positions.Add(this.GetPoint(x - (thickness / 2), minY));
+            mesh.Positions.Add(this.GetPoint(x - (thickness / 2), maxY));
+            mesh.Positions.Add(this.GetPoint(x + (thickness / 2), maxY));
+            mesh.Positions.Add(this.GetPoint(x + (thickness / 2), minY));
             mesh.Normals.Add(this.Normal);
             mesh.Normals.Add(this.Normal);
             mesh.Normals.Add(this.Normal);
@@ -351,10 +352,10 @@ namespace HelixToolkit.Wpf
         private void AddLineY(MeshBuilder mesh, double y, double minX, double maxX, double thickness)
         {
             int i0 = mesh.Positions.Count;
-            mesh.Positions.Add(this.GetPoint(minX, y + thickness / 2));
-            mesh.Positions.Add(this.GetPoint(maxX, y + thickness / 2));
-            mesh.Positions.Add(this.GetPoint(maxX, y - thickness / 2));
-            mesh.Positions.Add(this.GetPoint(minX, y - thickness / 2));
+            mesh.Positions.Add(this.GetPoint(minX, y + (thickness / 2)));
+            mesh.Positions.Add(this.GetPoint(maxX, y + (thickness / 2)));
+            mesh.Positions.Add(this.GetPoint(maxX, y - (thickness / 2)));
+            mesh.Positions.Add(this.GetPoint(minX, y - (thickness / 2)));
             mesh.Normals.Add(this.Normal);
             mesh.Normals.Add(this.Normal);
             mesh.Normals.Add(this.Normal);
@@ -370,18 +371,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets a point on the plane.
         /// </summary>
-        /// <param name="x">
-        /// The x coordinate.
-        /// </param>
-        /// <param name="y">
-        /// The y coordinate.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <returns>A <see cref="Point3D"/>.</returns>
         private Point3D GetPoint(double x, double y)
         {
-            return this.Center + this.widthDirection * x + this.lengthDirection * y;
+            return this.Center + (this.widthDirection * x) + (this.lengthDirection * y);
         }
-
     }
 }

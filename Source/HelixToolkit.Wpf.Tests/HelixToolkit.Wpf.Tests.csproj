@@ -103,6 +103,7 @@
     <Compile Include="Polygon3DTests.cs" />
     <Compile Include="StereoHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\CubeVisual3DTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

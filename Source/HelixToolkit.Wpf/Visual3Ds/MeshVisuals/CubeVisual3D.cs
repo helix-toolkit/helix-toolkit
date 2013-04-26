@@ -2,22 +2,48 @@
 // <copyright file="CubeVisual3D.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   A visual element that displays a cube.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
     using System.Windows;
+    using System.Windows.Media.Media3D;
 
     /// <summary>
     /// A visual element that displays a cube.
     /// </summary>
-    public class CubeVisual3D : BoxVisual3D
+    public class CubeVisual3D : MeshElement3D
     {
+        /// <summary>
+        /// Identifies the <see cref="Center"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
+            "Center", typeof(Point3D), typeof(CubeVisual3D), new UIPropertyMetadata(new Point3D(), GeometryChanged));
+
         /// <summary>
         /// Identifies the <see cref="SideLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SideLengthProperty = DependencyProperty.Register(
-            "SideLength", typeof(double), typeof(CubeVisual3D), new UIPropertyMetadata(1.0, SideLengthChanged));
+            "SideLength", typeof(double), typeof(CubeVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
+
+        /// <summary>
+        /// Gets or sets the center of the cube.
+        /// </summary>
+        /// <value>The center.</value>
+        public Point3D Center
+        {
+            get
+            {
+                return (Point3D)this.GetValue(CenterProperty);
+            }
+
+            set
+            {
+                this.SetValue(CenterProperty, value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the length of the cube sides.
@@ -37,28 +63,56 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The side length changed.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void SideLengthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        /// <returns>The mesh geometry.</returns>
+        protected override MeshGeometry3D Tessellate()
         {
-            ((CubeVisual3D)d).OnSideLengthChanged();
-        }
+            var b = new MeshBuilder(false, true);
+            b.AddCubeFace(
+                this.Center, 
+                new Vector3D(-1, 0, 0), 
+                new Vector3D(0, 0, 1), 
+                this.SideLength, 
+                this.SideLength, 
+                this.SideLength);
+            b.AddCubeFace(
+                this.Center, 
+                new Vector3D(1, 0, 0), 
+                new Vector3D(0, 0, -1), 
+                this.SideLength, 
+                this.SideLength, 
+                this.SideLength);
+            b.AddCubeFace(
+                this.Center, 
+                new Vector3D(0, -1, 0), 
+                new Vector3D(0, 0, 1), 
+                this.SideLength, 
+                this.SideLength, 
+                this.SideLength);
+            b.AddCubeFace(
+                this.Center, 
+                new Vector3D(0, 1, 0), 
+                new Vector3D(0, 0, -1), 
+                this.SideLength, 
+                this.SideLength, 
+                this.SideLength);
+            b.AddCubeFace(
+                this.Center, 
+                new Vector3D(0, 0, 1), 
+                new Vector3D(0, -1, 0), 
+                this.SideLength, 
+                this.SideLength, 
+                this.SideLength);
+            b.AddCubeFace(
+                this.Center, 
+                new Vector3D(0, 0, -1), 
+                new Vector3D(0, 1, 0), 
+                this.SideLength, 
+                this.SideLength, 
+                this.SideLength);
 
-        /// <summary>
-        /// The on side length changed.
-        /// </summary>
-        private void OnSideLengthChanged()
-        {
-            this.BeginEdit();
-            this.Length = this.Height = this.Width = this.SideLength;
-            this.EndEdit();
+            return b.ToMesh();
         }
-
     }
 }

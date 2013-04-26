@@ -85,9 +85,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the length of the head.
+        /// Gets or sets the length of the head (relative to diameter of the arrow cylinder).
         /// </summary>
-        /// <value>The length of the head.</value>
+        /// <value>The length of the head relative to the diameter.</value>
         public double HeadLength
         {
             get
@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
         /// <returns>A triangular mesh geometry.</returns>
         protected override MeshGeometry3D Tessellate()
@@ -184,6 +184,5 @@ namespace HelixToolkit.Wpf
             builder.AddArrow(this.Point1, this.Point2, this.Diameter, this.HeadLength, this.ThetaDiv);
             return builder.ToMesh();
         }
-
     }
 }

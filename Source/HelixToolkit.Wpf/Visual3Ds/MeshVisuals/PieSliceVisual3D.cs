@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
         /// <returns>A triangular mesh geometry.</returns>
         protected override MeshGeometry3D Tessellate()
@@ -210,17 +210,16 @@ namespace HelixToolkit.Wpf
             var right = Vector3D.CrossProduct(this.UpVector, this.Normal);
             for (int i = 0; i < this.ThetaDiv; i++)
             {
-                double angle = this.StartAngle + (this.EndAngle - this.StartAngle) * i / (this.ThetaDiv - 1);
+                double angle = this.StartAngle + ((this.EndAngle - this.StartAngle) * i / (this.ThetaDiv - 1));
                 double angleRad = angle / 180 * Math.PI;
-                Vector3D dir = right * Math.Cos(angleRad) + this.UpVector * Math.Sin(angleRad);
-                pts.Add(this.Center + dir * this.InnerRadius);
-                pts.Add(this.Center + dir * this.OuterRadius);
+                var dir = (right * Math.Cos(angleRad)) + (this.UpVector * Math.Sin(angleRad));
+                pts.Add(this.Center + (dir * this.InnerRadius));
+                pts.Add(this.Center + (dir * this.OuterRadius));
             }
 
             var b = new MeshBuilder(false, false);
             b.AddTriangleStrip(pts);
             return b.ToMesh();
         }
-
     }
 }

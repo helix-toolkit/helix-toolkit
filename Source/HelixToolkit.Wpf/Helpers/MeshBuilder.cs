@@ -1396,6 +1396,32 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void AddSphere(Point3D center, double radius, int thetaDiv = 20, int phiDiv = 10)
         {
+            this.AddEllipsoid(center, radius, radius, radius, thetaDiv, phiDiv);
+        }
+
+        /// <summary>
+        /// Adds an ellipsoid.
+        /// </summary>
+        /// <param name="center">
+        /// The center of the ellipsoid.
+        /// </param>
+        /// <param name="radiusx">
+        /// The x radius of the ellipsoid.
+        /// </param>
+        /// <param name="radiusy">
+        /// The y radius of the ellipsoid.
+        /// </param>
+        /// <param name="radiusz">
+        /// The z radius of the ellipsoid.
+        /// </param>
+        /// <param name="thetaDiv">
+        /// The number of divisions around the ellipsoid.
+        /// </param>
+        /// <param name="phiDiv">
+        /// The number of divisions from top to bottom of the ellipsoid.
+        /// </param>
+        public void AddEllipsoid(Point3D center, double radiusx, double radiusy, double radiusz, int thetaDiv = 20, int phiDiv = 10)
+        {
             int index0 = this.Positions.Count;
             double dt = 2 * Math.PI / thetaDiv;
             double dp = Math.PI / phiDiv;
@@ -1415,7 +1441,7 @@ namespace HelixToolkit.Wpf
                     double y = Math.Sin(theta) * Math.Sin(phi);
                     double z = Math.Cos(phi);
 
-                    var p = new Point3D(center.X + (radius * x), center.Y + (radius * y), center.Z + (radius * z));
+                    var p = new Point3D(center.X + (radiusx * x), center.Y + (radiusy * y), center.Z + (radiusz * z));
                     this.positions.Add(p);
 
                     if (this.normals != null)
