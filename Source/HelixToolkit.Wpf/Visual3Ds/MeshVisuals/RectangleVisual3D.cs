@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
         /// <returns>A triangular mesh geometry.</returns>
         protected override MeshGeometry3D Tessellate()
@@ -207,19 +207,18 @@ namespace HelixToolkit.Wpf
             var pts = new List<Point3D>();
             for (int i = 0; i < this.DivLength; i++)
             {
-                double fi = -0.5 + (double)i / (this.DivLength - 1);
+                double fi = -0.5 + ((double)i / (this.DivLength - 1));
                 for (int j = 0; j < this.DivWidth; j++)
                 {
-                    double fj = -0.5 + (double)j / (this.DivWidth - 1);
-                    pts.Add(this.Origin + u * le * fi + v * wi * fj);
+                    double fj = -0.5 + ((double)j / (this.DivWidth - 1));
+                    pts.Add(this.Origin + (u * le * fi) + (v * wi * fj));
                 }
             }
 
-            var builder = new MeshBuilder(false,true);
+            var builder = new MeshBuilder(false, true);
             builder.AddRectangularMesh(pts, this.DivWidth);
 
             return builder.ToMesh();
         }
-
     }
 }

@@ -19,9 +19,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class ExtrudedVisual3D : MeshElement3D
     {
-        // See also "The GLE Tubing and Extrusion Library":
-        // http://linas.org/gle/
-        // http://sharpmap.codeplex.com/Thread/View.aspx?ThreadId=18864
         /// <summary>
         /// Identifies the <see cref="Diameters"/> dependency property.
         /// </summary>
@@ -198,7 +195,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/> .
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/> .
         /// </summary>
         /// <returns>
         /// A triangular mesh geometry.
@@ -210,6 +207,9 @@ namespace HelixToolkit.Wpf
                 return null;
             }
 
+            // See also "The GLE Tubing and Extrusion Library":
+            // http://linas.org/gle/
+            // http://sharpmap.codeplex.com/Thread/View.aspx?ThreadId=18864
             var builder = new MeshBuilder(false, this.TextureCoordinates != null);
             builder.AddTube(
                 this.Path,
@@ -220,6 +220,5 @@ namespace HelixToolkit.Wpf
                 this.IsSectionClosed);
             return builder.ToMesh();
         }
-
     }
 }

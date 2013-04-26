@@ -136,15 +136,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
         /// <returns>A triangular mesh geometry.</returns>
         protected override MeshGeometry3D Tessellate()
         {
-            var builder = new MeshBuilder(false,false);
+            var builder = new MeshBuilder(false, false);
             builder.AddPipe(this.Point1, this.Point2, this.InnerDiameter, this.Diameter, this.ThetaDiv);
             return builder.ToMesh();
         }
-
     }
 }

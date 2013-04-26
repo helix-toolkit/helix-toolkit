@@ -25,6 +25,33 @@ namespace HelixToolkit.Wpf
     public class HelixVisual3D : ParametricSurface3D
     {
         /// <summary>
+        /// Gets or sets the origin.
+        /// </summary>
+        /// <value>The origin.</value>
+        public Point3D Origin
+        {
+            get
+            {
+                return (Point3D)this.GetValue(OriginProperty);
+            }
+
+            set
+            {
+                this.SetValue(OriginProperty, value);
+            }
+        }
+
+
+        /// <summary>
+        /// Identifies the <see cref="Origin"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
+            "Origin",
+            typeof(Point3D),
+            typeof(HelixVisual3D),
+            new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
+
+        /// <summary>
         /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
@@ -143,15 +170,16 @@ namespace HelixToolkit.Wpf
         /// Evaluates the surface.
         /// </summary>
         /// <param name="u">
-        /// The u.
+        /// The u parameter.
         /// </param>
         /// <param name="v">
-        /// The v.
+        /// The v parameter.
         /// </param>
         /// <param name="texCoord">
-        /// The tex coord.
+        /// The texture coordinate.
         /// </param>
         /// <returns>
+        /// The evaluated <see cref="Point3D"/>.
         /// </returns>
         protected override Point3D Evaluate(double u, double v, out Point texCoord)
         {
@@ -160,16 +188,16 @@ namespace HelixToolkit.Wpf
 
             double b = this.Turns * 2 * Math.PI;
             double r = this.Radius / 2;
-            double r1 = this.Diameter / r;
+            double d = this.Diameter;
+            double dr = this.Diameter / r;
             double p = this.Phase / 180 * Math.PI;
 
-            double x = r * Math.Cos(b * u + p) * (2 + r1 * Math.Cos(v));
-            double y = r * Math.Sin(b * u + p) * (2 + r1 * Math.Cos(v));
-            double z = u * this.Length + r1 * Math.Sin(v);
+            double x = r * Math.Cos((b * u) + p) * (2 + (dr * Math.Cos(v)));
+            double y = r * Math.Sin((b * u) + p) * (2 + (dr * Math.Cos(v)));
+            double z = (u * this.Length) + (d * Math.Sin(v));
 
             texCoord = new Point(color, 0);
-            return new Point3D(x, y, z);
+            return this.Origin + new Vector3D(x, y, z);
         }
-
     }
 }

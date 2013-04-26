@@ -7,7 +7,6 @@
 namespace HelixToolkit.Wpf
 {
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -16,7 +15,7 @@ namespace HelixToolkit.Wpf
     /// Represents a base class for elements that contain one <see cref="GeometryModel3D"/> and front and back <see cref="Material"/>s.
     /// </summary>
     /// <remarks>
-    /// Derived classes should override the Tesselate() method to generate the geometry.
+    /// Derived classes should override the Tessellate method to generate the geometry.
     /// </remarks>
     public abstract class MeshElement3D : ModelVisual3D, IEditableObject
     {
@@ -42,22 +41,31 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(MaterialHelper.CreateMaterial(Brushes.Blue), MaterialChanged));
 
         /// <summary>
-        /// The is editing.
+        ///   The visibility property.
+        /// </summary>
+        public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register(
+            "Visible",
+            typeof(bool),
+            typeof(MeshElement3D),
+            new UIPropertyMetadata(true, VisibleChanged));
+
+        /// <summary>
+        /// A flag that is set when the element is in editing mode (<see cref="IEditableObject"/>, <see cref="M:System.ComponentModel.IEditableObject.BeginEdit"/> and <see cref="M:System.ComponentModel.IEditableObject.EndEdit"/>).
         /// </summary>
         private bool isEditing;
 
         /// <summary>
-        /// The is geometry changed.
+        /// A flag that is set when the geometry is changed.
         /// </summary>
         private bool isGeometryChanged;
 
         /// <summary>
-        /// The is material changed.
+        /// A flag that is set when the material is changed.
         /// </summary>
         private bool isMaterialChanged;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "MeshElement3D" /> class.
+        ///   Initializes a new instance of the <see cref = "MeshElement3D" /> class.
         /// </summary>
         protected MeshElement3D()
         {
@@ -117,7 +125,26 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the geometry model.
+        /// Gets or sets a value indicating whether this <see cref="MeshElement3D"/> is visible.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the element is visible; otherwise, <c>false</c>.
+        /// </value>
+        public bool Visible
+        {
+            get
+            {
+                return (bool)this.GetValue(VisibleProperty);
+            }
+
+            set
+            {
+                this.SetValue(VisibleProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets the geometry model.
         /// </summary>
         /// <value>The geometry model.</value>
         public GeometryModel3D Model
@@ -129,7 +156,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Begins an edit on an object.
+        /// Begins an edit on the object.
         /// </summary>
         public void BeginEdit()
         {
@@ -164,7 +191,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Forces an update to the geometry model and materials
+        /// Forces an update of the geometry and materials.
         /// </summary>
         public void UpdateModel()
         {
@@ -173,7 +200,21 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The geometry changed.
+        /// The visible flag changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The event arguments.
+        /// </param>
+        protected static void VisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((MeshElement3D)d).OnGeometryChanged();
+        }        
+        
+        /// <summary>
+        /// The geometry was changed.
         /// </summary>
         /// <param name="d">
         /// The d.
@@ -187,7 +228,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The material changed.
+        /// The Material or BackMaterial property was changed.
         /// </summary>
         /// <param name="d">
         /// The d.
@@ -201,7 +242,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on fill changed.
+        /// The Fill property was changed.
         /// </summary>
         protected virtual void OnFillChanged()
         {
@@ -210,23 +251,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The geometry changed.
+        /// Handles changes in geometry or visible state.
         /// </summary>
         protected virtual void OnGeometryChanged()
         {
             if (!this.isEditing)
             {
-                // Debug.WriteLine("{0} geometry changed. Tesselating.", GetType());
-                this.Model.Geometry = this.Tessellate();
+                this.Model.Geometry = this.Visible ? this.Tessellate() : null;
             }
             else
             {
+                // flag the geometry as changed, the geometry will be updated when the <see cref="M:System.ComponentModel.IEditableObject.EndEdit"/> is called.
                 this.isGeometryChanged = true;
             }
         }
 
         /// <summary>
-        /// The material changed.
+        /// Handles changes in material/back material.
         /// </summary>
         protected virtual void OnMaterialChanged()
         {
@@ -242,7 +283,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
         /// <returns>
         /// A triangular mesh geometry.
@@ -262,6 +303,5 @@ namespace HelixToolkit.Wpf
         {
             ((MeshElement3D)d).OnFillChanged();
         }
-
     }
 }

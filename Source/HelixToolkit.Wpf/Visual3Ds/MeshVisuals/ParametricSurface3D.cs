@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// A base class for parametric surfaces evaluated on a rectangular mesh.
+    /// Provides a base class for parametric surfaces evaluated on a rectangular mesh.
     /// </summary>
     /// <remarks>
     /// Override the Evaluate method to define the points.
@@ -64,24 +64,24 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Evaluates the surface on the specified u,v position.
+        /// Evaluates the surface at the specified u,v parameters.
         /// </summary>
         /// <param name="u">
-        /// The u coordinate.
+        /// The u parameter.
         /// </param>
         /// <param name="v">
-        /// The v coordinate.
+        /// The v parameter.
         /// </param>
         /// <param name="textureCoord">
         /// The texture coordinates.
         /// </param>
         /// <returns>
-        /// The surface point.
+        /// The evaluated <see cref="Point3D"/>.
         /// </returns>
         protected abstract Point3D Evaluate(double u, double v, out Point textureCoord);
 
         /// <summary>
-        /// Do the tesselation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
         /// </summary>
         /// <returns>A triangular mesh geometry.</returns>
         protected override MeshGeometry3D Tessellate()
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf
                 for (int j = 0; j < m; j++)
                 {
                     double v = 1.0 * j / (m - 1);
-                    int ij = i * m + j;
+                    int ij = (i * m) + j;
                     p[ij] = this.Evaluate(u, v, out tc[ij]);
                 }
             }
@@ -190,6 +190,5 @@ namespace HelixToolkit.Wpf
         {
             return !double.IsNaN(point.X) && !double.IsNaN(point.Y) && !double.IsNaN(point.Z);
         }
-
     }
 }

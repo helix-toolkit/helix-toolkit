@@ -55,9 +55,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the number of divsions around the tube.
+        /// Gets or sets the number of divisions around the tube.
         /// </summary>
-        /// <value>The theta div.</value>
+        /// <value>The number of divisions.</value>
         public int ThetaDiv
         {
             get
@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Updates the section.
         /// </summary>
-        protected virtual void OnSectionChanged()
+        protected void OnSectionChanged()
         {
             var pc = new PointCollection();
             var circle = MeshBuilder.GetCircle(this.ThetaDiv);
@@ -102,6 +102,5 @@ namespace HelixToolkit.Wpf
 
             this.OnGeometryChanged();
         }
-
     }
 }
