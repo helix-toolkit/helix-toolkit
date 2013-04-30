@@ -314,6 +314,9 @@ namespace HelixToolkit.Wpf
                     double theta = Math.PI * 2 * ((double)i / (thetaDiv - 1));
                     circle.Add(new Point(Math.Cos(theta), -Math.Sin(theta)));
                 }
+
+                // PointCollection is not thread safe unless frozen
+                ((PointCollection)circle).Freeze();
             }
 
             return circle;
