@@ -11,14 +11,14 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// A cutting ears triangulator for simple polygons with no holes. O(n^2)
+    /// Provides a cutting ears triangulation algorithm for simple polygons with no holes. O(n^2)
     /// </summary>
     /// <remarks>
-    /// Based on http://www.flipcode.com/archives/Efficient_Polygon_Triangulation.shtml
+    /// Based on <a href="http://www.flipcode.com/archives/Efficient_Polygon_Triangulation.shtml">code</a>
     /// References
-    /// http://en.wikipedia.org/wiki/Polygon_triangulation
-    /// http://computacion.cs.cinvestav.mx/~anzures/geom/triangulation.php
-    /// http://www.codeproject.com/KB/recipes/cspolygontriangulation.aspx
+    /// <a href="http://en.wikipedia.org/wiki/Polygon_triangulation"></a>
+    /// <a href="http://computacion.cs.cinvestav.mx/~anzures/geom/triangulation.php"></a>
+    /// <a href="http://www.codeproject.com/KB/recipes/cspolygontriangulation.aspx"></a>
     /// </remarks>
     public static class CuttingEarsTriangulator
     {
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf
             // remove nv-2 Vertices, creating 1 triangle every time
             int count = 2 * nv; // error detection
 
-            for (int m = 0, v = nv - 1; nv > 2;)
+            for (int v = nv - 1; nv > 2; )
             {
                 // if we loop, it is probably a non-simple polygon
                 if (0 >= (count--))
@@ -115,8 +115,6 @@ namespace HelixToolkit.Wpf
                     result.Add(b);
                     result.Add(c);
 
-                    m++;
-
                     // remove v from remaining polygon
                     for (s = v, t = v + 1; t < nv; s++, t++)
                     {
@@ -133,7 +131,6 @@ namespace HelixToolkit.Wpf
             return result;
         }
 
-        // compute area of a contour/polygon
         /// <summary>
         /// Calculates the area.
         /// </summary>
@@ -142,13 +139,13 @@ namespace HelixToolkit.Wpf
         private static double Area(IList<Point> contour)
         {
             int n = contour.Count;
-            double A = 0.0;
+            double area = 0.0;
             for (int p = n - 1, q = 0; q < n; p = q++)
             {
-                A += contour[p].X * contour[q].Y - contour[q].X * contour[p].Y;
+                area += (contour[p].X * contour[q].Y) - (contour[q].X * contour[p].Y);
             }
 
-            return A * 0.5f;
+            return area * 0.5f;
         }
 
         /// <summary>
@@ -181,8 +178,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The inside triangle.
         /// </returns>
-        private static bool InsideTriangle(
-            double Ax, double Ay, double Bx, double By, double Cx, double Cy, double Px, double Py)
+        private static bool InsideTriangle(double Ax, double Ay, double Bx, double By, double Cx, double Cy, double Px, double Py)
         {
             double ax, ay, bx, by, cx, cy, apx, apy, bpx, bpy, cpx, cpy;
             double cCROSSap, bCROSScp, aCROSSbp;
@@ -204,7 +200,9 @@ namespace HelixToolkit.Wpf
             cCROSSap = cx * apy - cy * apx;
             bCROSScp = bx * cpy - by * cpx;
 
-            return (aCROSSbp >= 0.0f) && (bCROSScp >= 0.0f) && (cCROSSap >= 0.0f);
+            // use an absolute tolerance when comparing floating point values
+            const double EPSILON = -1e-10;
+            return (aCROSSbp > EPSILON) && (bCROSScp > EPSILON) && (cCROSSap > EPSILON);
         }
 
         /// <summary>
@@ -253,6 +251,5 @@ namespace HelixToolkit.Wpf
 
             return true;
         }
-
     }
 }
