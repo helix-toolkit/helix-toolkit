@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace RhinoDemo
+namespace HippoDemo
 {
     using System;
     using System.Windows;

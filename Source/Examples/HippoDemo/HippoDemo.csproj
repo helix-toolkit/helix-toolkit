@@ -8,8 +8,8 @@
     <ProjectGuid>{9DE53816-61FC-4D59-9351-B23D166CEAB4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RhinoDemo</RootNamespace>
-    <AssemblyName>RhinoDemo</AssemblyName>
+    <RootNamespace>HippoDemo</RootNamespace>
+    <AssemblyName>HippoDemo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -121,71 +121,71 @@
     <Resource Include="Cursors\PanCursor.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Rhino\101.png" />
-    <Resource Include="Icons\Rhino\102.png" />
-    <Resource Include="Icons\Rhino\103.png" />
-    <Resource Include="Icons\Rhino\104.png" />
-    <Resource Include="Icons\Rhino\105.png" />
-    <Resource Include="Icons\Rhino\106.png" />
-    <Resource Include="Icons\Rhino\107.png" />
-    <Resource Include="Icons\Rhino\108.png" />
-    <Resource Include="Icons\Rhino\109.png" />
-    <Resource Include="Icons\Rhino\110.png" />
-    <Resource Include="Icons\Rhino\111.png" />
-    <Resource Include="Icons\Rhino\112.png" />
-    <Resource Include="Icons\Rhino\113.png" />
-    <Resource Include="Icons\Rhino\114.png" />
-    <Resource Include="Icons\Rhino\115.png" />
-    <Resource Include="Icons\Rhino\116.png" />
-    <Resource Include="Icons\Rhino\117.png" />
-    <Resource Include="Icons\Rhino\118.png" />
-    <Resource Include="Icons\Rhino\119.png" />
-    <Resource Include="Icons\Rhino\120.png" />
-    <Resource Include="Icons\Rhino\121.png" />
-    <Resource Include="Icons\Rhino\122.png" />
-    <Resource Include="Icons\Rhino\123.png" />
-    <Resource Include="Icons\Rhino\124.png" />
-    <Resource Include="Icons\Rhino\125.png" />
-    <Resource Include="Icons\Rhino\126.png" />
-    <Resource Include="Icons\Rhino\127.png" />
-    <Resource Include="Icons\Rhino\128.png" />
-    <Resource Include="Icons\Rhino\129.png" />
-    <Resource Include="Icons\Rhino\130.png" />
-    <Resource Include="Icons\Rhino\131.png" />
-    <Resource Include="Icons\Rhino\132.png" />
-    <Resource Include="Icons\Rhino\201.png" />
-    <Resource Include="Icons\Rhino\202.png" />
-    <Resource Include="Icons\Rhino\203.png" />
-    <Resource Include="Icons\Rhino\204.png" />
-    <Resource Include="Icons\Rhino\205.png" />
-    <Resource Include="Icons\Rhino\206.png" />
-    <Resource Include="Icons\Rhino\207.png" />
-    <Resource Include="Icons\Rhino\208.png" />
-    <Resource Include="Icons\Rhino\209.png" />
-    <Resource Include="Icons\Rhino\210.png" />
-    <Resource Include="Icons\Rhino\211.png" />
-    <Resource Include="Icons\Rhino\212.png" />
-    <Resource Include="Icons\Rhino\213.png" />
-    <Resource Include="Icons\Rhino\214.png" />
-    <Resource Include="Icons\Rhino\215.png" />
-    <Resource Include="Icons\Rhino\216.png" />
-    <Resource Include="Icons\Rhino\217.png" />
-    <Resource Include="Icons\Rhino\218.png" />
-    <Resource Include="Icons\Rhino\219.png" />
-    <Resource Include="Icons\Rhino\220.png" />
-    <Resource Include="Icons\Rhino\221.png" />
-    <Resource Include="Icons\Rhino\222.png" />
-    <Resource Include="Icons\Rhino\223.png" />
-    <Resource Include="Icons\Rhino\224.png" />
-    <Resource Include="Icons\Rhino\225.png" />
-    <Resource Include="Icons\Rhino\226.png" />
-    <Resource Include="Icons\Rhino\227.png" />
-    <Resource Include="Icons\Rhino\228.png" />
-    <Resource Include="Icons\Rhino\229.png" />
-    <Resource Include="Icons\Rhino\230.png" />
+    <Resource Include="Icons\Toolbars\101.png" />
+    <Resource Include="Icons\Toolbars\102.png" />
+    <Resource Include="Icons\Toolbars\103.png" />
+    <Resource Include="Icons\Toolbars\104.png" />
+    <Resource Include="Icons\Toolbars\105.png" />
+    <Resource Include="Icons\Toolbars\106.png" />
+    <Resource Include="Icons\Toolbars\107.png" />
+    <Resource Include="Icons\Toolbars\108.png" />
+    <Resource Include="Icons\Toolbars\109.png" />
+    <Resource Include="Icons\Toolbars\110.png" />
+    <Resource Include="Icons\Toolbars\111.png" />
+    <Resource Include="Icons\Toolbars\112.png" />
+    <Resource Include="Icons\Toolbars\113.png" />
+    <Resource Include="Icons\Toolbars\114.png" />
+    <Resource Include="Icons\Toolbars\115.png" />
+    <Resource Include="Icons\Toolbars\116.png" />
+    <Resource Include="Icons\Toolbars\117.png" />
+    <Resource Include="Icons\Toolbars\118.png" />
+    <Resource Include="Icons\Toolbars\119.png" />
+    <Resource Include="Icons\Toolbars\120.png" />
+    <Resource Include="Icons\Toolbars\121.png" />
+    <Resource Include="Icons\Toolbars\122.png" />
+    <Resource Include="Icons\Toolbars\123.png" />
+    <Resource Include="Icons\Toolbars\124.png" />
+    <Resource Include="Icons\Toolbars\125.png" />
+    <Resource Include="Icons\Toolbars\126.png" />
+    <Resource Include="Icons\Toolbars\127.png" />
+    <Resource Include="Icons\Toolbars\128.png" />
+    <Resource Include="Icons\Toolbars\129.png" />
+    <Resource Include="Icons\Toolbars\130.png" />
+    <Resource Include="Icons\Toolbars\131.png" />
+    <Resource Include="Icons\Toolbars\132.png" />
+    <Resource Include="Icons\Toolbars\201.png" />
+    <Resource Include="Icons\Toolbars\202.png" />
+    <Resource Include="Icons\Toolbars\203.png" />
+    <Resource Include="Icons\Toolbars\204.png" />
+    <Resource Include="Icons\Toolbars\205.png" />
+    <Resource Include="Icons\Toolbars\206.png" />
+    <Resource Include="Icons\Toolbars\207.png" />
+    <Resource Include="Icons\Toolbars\208.png" />
+    <Resource Include="Icons\Toolbars\209.png" />
+    <Resource Include="Icons\Toolbars\210.png" />
+    <Resource Include="Icons\Toolbars\211.png" />
+    <Resource Include="Icons\Toolbars\212.png" />
+    <Resource Include="Icons\Toolbars\213.png" />
+    <Resource Include="Icons\Toolbars\214.png" />
+    <Resource Include="Icons\Toolbars\215.png" />
+    <Resource Include="Icons\Toolbars\216.png" />
+    <Resource Include="Icons\Toolbars\217.png" />
+    <Resource Include="Icons\Toolbars\218.png" />
+    <Resource Include="Icons\Toolbars\219.png" />
+    <Resource Include="Icons\Toolbars\220.png" />
+    <Resource Include="Icons\Toolbars\221.png" />
+    <Resource Include="Icons\Toolbars\222.png" />
+    <Resource Include="Icons\Toolbars\223.png" />
+    <Resource Include="Icons\Toolbars\224.png" />
+    <Resource Include="Icons\Toolbars\225.png" />
+    <Resource Include="Icons\Toolbars\226.png" />
+    <Resource Include="Icons\Toolbars\227.png" />
+    <Resource Include="Icons\Toolbars\228.png" />
+    <Resource Include="Icons\Toolbars\229.png" />
+    <Resource Include="Icons\Toolbars\230.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Rhino.ico" />
+    <Resource Include="Application.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,7 +11,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace RhinoDemo
+namespace HippoDemo
 {
     /// <summary>
     /// Interaction logic for App.xaml

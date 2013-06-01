@@ -6,7 +6,7 @@
 
 using System.Windows;
 
-namespace RhinoDemo
+namespace HippoDemo
 {
     using System.ComponentModel;
     using System.Windows.Media.Media3D;
@@ -21,6 +21,7 @@ namespace RhinoDemo
             InitializeComponent();
             DataContext = this;
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
