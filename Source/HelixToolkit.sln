@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{A710CED9-33A6-42F1-8A09-55FEC57B6460}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\SimpleDemo\SimpleDemo.csproj", "{B262B3C4-B4F7-4CD0-9055-62B271856078}"
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchRender", "Tools\BatchR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmDemo", "Examples\MvvmDemo\MvvmDemo.csproj", "{47FC8A4C-86B6-4D9D-BE10-EE74F8B992BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhinoDemo", "Examples\RhinoDemo\RhinoDemo.csproj", "{9DE53816-61FC-4D59-9351-B23D166CEAB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HippoDemo", "Examples\HippoDemo\HippoDemo.csproj", "{9DE53816-61FC-4D59-9351-B23D166CEAB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelViewer", "Examples\ModelViewer\ModelViewer.csproj", "{AB6A4302-6B39-4606-874C-53CE263BB2A2}"
 EndProject

@@ -7,7 +7,7 @@
 using System.Reflection;
 using System.Windows;
 
-[assembly: AssemblyTitle("Helix 3D Toolkit Rhino demo")]
+[assembly: AssemblyTitle("Helix 3D Toolkit Hippo demo")]
 [assembly: AssemblyDescription("")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
