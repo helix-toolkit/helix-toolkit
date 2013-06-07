@@ -35,6 +35,5 @@ namespace HelixToolkit.Wpf
         /// The model.
         /// </returns>
         Model3DGroup Read(Stream s);
-
     }
 }

@@ -19,20 +19,13 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// A Wavefront .obj file reader.
     /// </summary>
-    /// <remarks>
-    /// See the file format specifications at
-    /// http://en.wikipedia.org/wiki/Obj
-    /// http://en.wikipedia.org/wiki/Material_Template_Library
-    /// http://www.martinreddy.net/gfx/3d/OBJ.spec
-    /// http://www.eg-models.de/formats/Format_Obj.html
-    /// </remarks>
     public class ObjReader : IModelReader
     {
         /// <summary>
         /// The smoothing group maps.
         /// </summary>
         /// <remarks>
-        /// The outer dictionary maps from a smoothing group number to a Dictionary&lt;int,int&gt;.
+        /// The outer dictionary maps from a smoothing group number to a dictionary.
         /// The inner dictionary maps from an obj file vertex index to a vertex index in the current group.
         /// </remarks>
         private readonly Dictionary<int, Dictionary<int, int>> smoothingGroupMaps;
@@ -57,7 +50,7 @@ namespace HelixToolkit.Wpf
             this.IsSmoothingDefault = true;
             this.SkipTransparencyValues = true;
 
-            this.DefaultColor = Colors.Gold;
+            this.DefaultMaterial = Wpf.Materials.Gold;
 
             this.Points = new List<Point3D>();
             this.TextureCoordinates = new List<Point>();
@@ -67,16 +60,21 @@ namespace HelixToolkit.Wpf
             this.Materials = new Dictionary<string, MaterialDefinition>();
 
             this.smoothingGroupMaps = new Dictionary<int, Dictionary<int, int>>();
+
+            // File format specifications
+            // http://en.wikipedia.org/wiki/Obj
+            // http://en.wikipedia.org/wiki/Material_Template_Library
+            // http://www.martinreddy.net/gfx/3d/OBJ.spec
+            // http://www.eg-models.de/formats/Format_Obj.html
         }
 
         /// <summary>
-        /// Gets or sets the default color.
+        /// Gets or sets the default material.
         /// </summary>
-        /// <value>The default color.</value>
-        /// <remarks>
-        /// The default value is Colors.Gold.
-        /// </remarks>
-        public Color DefaultColor { get; set; }
+        /// <value>
+        /// The default material.
+        /// </value>
+        public Material DefaultMaterial { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to ignore errors.
@@ -88,15 +86,15 @@ namespace HelixToolkit.Wpf
         public bool IgnoreErrors { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to skip transparency values ("Tr") in the material files.
+        /// Gets or sets a value indicating whether to skip transparency values in the material files.
         /// </summary>
         /// <value>
         /// <c>true</c> if transparency values should be skipped; otherwise, <c>false</c>.
         /// </value>
         /// <remarks>
-        /// This option is added to allow disabling the "Tr" values in files where it has been defined incorrectly.
-        /// The transparency values ("Tr") are interpreted as 0 = transparent, 1 = opaque.
-        /// The dissolve values ("d") are interpreted as 0 = transparent, 1=opaque.
+        /// This option is added to allow disabling the <code>Tr</code> values in files where it has been defined incorrectly.
+        /// The transparency values (<code>Tr</code>) are interpreted as 0 = transparent, 1 = opaque.
+        /// The dissolve values (<code>d</code>) are interpreted as 0 = transparent, 1 = opaque.
         /// </remarks>
         public bool SkipTransparencyValues { get; set; }
 
@@ -149,7 +147,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the normals.
+        /// Gets or sets the normal vectors.
         /// </summary>
         private IList<Vector3D> Normals { get; set; }
 
@@ -468,7 +466,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         /// <remarks>
         /// Adds a polygonal face. The numbers are indexes into the arrays of vertex positions,
-        /// texture coordinates, and normals respectively. A number may be omitted if,
+        /// texture coordinates, and normal vectors respectively. A number may be omitted if,
         /// for example, texture coordinates are not being defined in the model.
         /// There is no maximum number of vertices that a single polygon may contain.
         /// The .obj file specification says that each face must be flat and convex.
@@ -701,14 +699,14 @@ namespace HelixToolkit.Wpf
                 return mat.GetMaterial(this.TexturePath);
             }
 
-            return MaterialHelper.CreateMaterial(new SolidColorBrush(this.DefaultColor));
+            return this.DefaultMaterial; 
         }
 
         /// <summary>
         /// Loads a material library.
         /// </summary>
         /// <param name="mtlFile">
-        /// The mtl file.
+        /// The material file name.
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
@@ -917,7 +915,7 @@ namespace HelixToolkit.Wpf
             {
                 var meshBuilder = new MeshBuilder(true, true);
                 this.meshBuilders.Add(meshBuilder);
-                this.materials.Add(HelixToolkit.Wpf.Materials.Green);
+                this.materials.Add(Wpf.Materials.Green);
             }
 
             /// <summary>
@@ -1108,7 +1106,6 @@ namespace HelixToolkit.Wpf
                 var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
                 return textureBrush;
             }
-
         }
     }
 }

@@ -13,26 +13,46 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Imports a model from a file.
     /// </summary>
-    public static class ModelImporter
+    public class ModelImporter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelImporter"/> class.
+        /// </summary>
+        public ModelImporter()
+        {
+            this.DefaultMaterial = Materials.Blue;
+        }
+
+        /// <summary>
+        /// Gets or sets the default material.
+        /// </summary>
+        /// <value>
+        /// The default material.
+        /// </value>
+        public Material DefaultMaterial { get; set; }
+
         /// <summary>
         /// Loads a model from the specified path.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
+        /// <param name="path">The path.</param>
         /// <returns>
         /// A model.
         /// </returns>
-        public static Model3DGroup Load(string path)
+        /// <exception cref="System.InvalidOperationException">File format not supported.</exception>
+        public Model3DGroup Load(string path)
         {
             if (path == null)
             {
                 return null;
             }
 
-            Model3DGroup model = null;
-            string ext = Path.GetExtension(path).ToLower();
+            Model3DGroup model;
+            var ext = Path.GetExtension(path);
+            if (ext != null)
+            {
+                ext = ext.ToLower();
+            }
+
             switch (ext)
             {
                 case ".3ds":
@@ -44,7 +64,7 @@ namespace HelixToolkit.Wpf
 
                 case ".lwo":
                     {
-                        var r = new LwoReader();
+                        var r = new LwoReader { DefaultMaterial = this.DefaultMaterial };
                         model = r.Read(path);
 
                         break;
@@ -52,28 +72,28 @@ namespace HelixToolkit.Wpf
 
                 case ".obj":
                     {
-                        var r = new ObjReader();
+                        var r = new ObjReader { DefaultMaterial = this.DefaultMaterial };
                         model = r.Read(path);
                         break;
                     }
 
                 case ".objz":
                     {
-                        var r = new ObjReader();
+                        var r = new ObjReader { DefaultMaterial = this.DefaultMaterial };
                         model = r.ReadZ(path);
                         break;
                     }
 
                 case ".stl":
                     {
-                        var r = new StLReader();
+                        var r = new StLReader { DefaultMaterial = this.DefaultMaterial };
                         model = r.Read(path);
                         break;
                     }
 
                 case ".off":
                     {
-                        var r = new OffReader();
+                        var r = new OffReader { DefaultMaterial = this.DefaultMaterial };
                         model = r.Read(path);
                         break;
                     }
@@ -84,6 +104,5 @@ namespace HelixToolkit.Wpf
 
             return model;
         }
-
     }
 }

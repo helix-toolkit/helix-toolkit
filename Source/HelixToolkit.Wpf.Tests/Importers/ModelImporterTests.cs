@@ -20,7 +20,8 @@ namespace HelixToolkitTests
         [Test]
         public void Load_TestObj_ValidNumberOfVertices()
         {
-            var model = ModelImporter.Load(@"Models\obj\test.obj");
+            var importer = new ModelImporter();
+            var model = importer.Load(@"Models\obj\test.obj");
             int countVertices = 0;
             Visual3DHelper.TraverseModel<GeometryModel3D>(
                 model,
@@ -32,5 +33,5 @@ namespace HelixToolkitTests
 
             Assert.AreEqual(8, countVertices);
         }
-   }
+    }
 }

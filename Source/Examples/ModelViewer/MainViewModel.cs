@@ -237,7 +237,8 @@ namespace StudioDemo
             try
             {
 #endif
-            CurrentModel = ModelImporter.Load(CurrentModelPath);
+            var importer = new ModelImporter();
+            CurrentModel = importer.Load(CurrentModelPath);
             ApplicationTitle = String.Format(TitleFormatString, CurrentModelPath);
             HelixView.ZoomExtents(0);
 #if !DEBUG

@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public OffReader()
         {
+            this.DefaultMaterial = Materials.Blue;
             this.Vertices = new List<Point3D>();
 
             // this.VertexColors = new List<Color>();
@@ -39,6 +40,14 @@ namespace HelixToolkit.Wpf
             // this.Normals = new Vector3DCollection();
             this.Faces = new List<int[]>();
         }
+
+        /// <summary>
+        /// Gets or sets the default material.
+        /// </summary>
+        /// <value>
+        /// The default material.
+        /// </value>
+        public Material DefaultMaterial { get; set; }
 
         /// <summary>
         /// Gets the faces.
@@ -109,7 +118,7 @@ namespace HelixToolkit.Wpf
         {
             var modelGroup = new Model3DGroup();
             var g = this.CreateMeshGeometry3D();
-            var gm = new GeometryModel3D { Geometry = g, Material = Materials.Blue };
+            var gm = new GeometryModel3D { Geometry = g, Material = this.DefaultMaterial };
             gm.BackMaterial = gm.Material;
             modelGroup.Children.Add(gm);
             return modelGroup;
@@ -299,13 +308,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets int values from a string.
+        /// Parses integer values from a string.
         /// </summary>
         /// <param name="input">
         /// The input string.
         /// </param>
         /// <returns>
-        /// Array of int values.
+        /// Array of integer values.
         /// </returns>
         private static int[] GetIntValues(string input)
         {
@@ -320,13 +329,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets double values from a string.
+        /// Parses double values from a string.
         /// </summary>
         /// <param name="input">
         /// The input string.
         /// </param>
         /// <returns>
-        /// Array of int values.
+        /// Array of double values.
         /// </returns>
         private static double[] GetValues(string input)
         {
@@ -359,6 +368,5 @@ namespace HelixToolkit.Wpf
 
             return input;
         }
-
     }
 }
