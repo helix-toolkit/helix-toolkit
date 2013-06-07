@@ -4,12 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkitTests
+namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Windows.Media.Media3D;
 
-    using HelixToolkit.Wpf;
     using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming

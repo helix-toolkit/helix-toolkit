@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkitTests
+namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Windows.Media.Media3D;

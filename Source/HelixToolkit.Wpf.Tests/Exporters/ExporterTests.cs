@@ -4,18 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Threading;
-using System.Windows.Controls;
-using System.Xml;
-using System.Xml.Schema;
-using HelixToolkit.Wpf;
-
-using NUnitHelpers;
-
-namespace HelixToolkitTests
+namespace HelixToolkit.Wpf.Tests
 {
+    using System;
+    using System.IO;
+    using System.Threading;
+    using System.Windows.Controls;
+    using System.Xml;
+    using System.Xml.Schema;
+
+    using NUnitHelpers;
+
     public class ExporterTests
     {
         protected void ExportSimpleModel(Exporter e)

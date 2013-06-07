@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkitTests
+namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Xml.Schema;
@@ -22,7 +22,7 @@ namespace HelixToolkitTests
             string path = "temp.x3d";
             using (var e = new X3DExporter(path))
             {
-                ExportSimpleModel(e);
+                this.ExportSimpleModel(e);
             }
 
             var result = this.Validate(path);
@@ -39,7 +39,7 @@ namespace HelixToolkitTests
             //// sc.Add("http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPublic.xsd", dir + "x3d-3.1-Web3dExtensionsPublic.xsd");
             //// sc.Add("http://www.web3d.org/specifications/x3d-3.1-Web3dExtensionsPrivate.xsd", dir + "x3d-3.1-Web3dExtensionsPrivate.xsd");
 
-            return Validate(path, sc);
+            return this.Validate(path, sc);
         }
     }
 }

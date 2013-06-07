@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkitTests
+namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Xml.Schema;
@@ -22,7 +22,7 @@ namespace HelixToolkitTests
             string path = "temp.dae";
             using (var e = new ColladaExporter(path))
             {
-                ExportSimpleModel(e);
+                this.ExportSimpleModel(e);
             }
 
             var result = this.Validate(path);
@@ -34,7 +34,7 @@ namespace HelixToolkitTests
             var sc = new XmlSchemaSet();
             string dir = @"..\..\..\..\Schemas\Collada\";
             sc.Add("http://www.collada.org/2008/03/COLLADASchema", dir + "collada_schema_1_5.xsd");
-            return Validate(path, sc);
+            return this.Validate(path, sc);
         }
     }
 }
