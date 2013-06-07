@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkitTests
+namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using HelixToolkit.Wpf;
@@ -21,7 +21,7 @@ namespace HelixToolkitTests
             string path = "temp.obj";
             using (var e = new ObjExporter(path))
             {
-                ExportSimpleModel(e);
+                this.ExportSimpleModel(e);
             }
         }
     }
