@@ -131,14 +131,15 @@ namespace AudioDemo
         private static Geometry3D GetDefaultGeometry()
         {
             // The default geometry is a box
-            var mb = new MeshBuilder(false,false);
+            var mb = new MeshBuilder(false, false);
             mb.AddBox(new Point3D(0, 0, 0.5), 0.8, 0.8, 1);
             return mb.ToMesh();
         }
 
         public void LoadModel(string path, bool transformYup, double scale)
         {
-            var mod = ModelImporter.Load(path);
+            var importer = new ModelImporter();
+            var mod = importer.Load(path);
 
             if (mod == null || mod.Children.Count == 0)
                 return;

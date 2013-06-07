@@ -10,20 +10,38 @@ namespace HelixToolkit.Wpf
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-    using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     /// <summary>
     /// LWO (Lightwave object) file reader
     /// </summary>
     /// <remarks>
-    /// See http://www.martinreddy.net/gfx/3d/LWOB.txt
-    /// http://www.modwiki.net/wiki/LWO_(file_format)
-    /// http://www.newtek.com/lightwave/developers.php
-    /// http://home.comcast.net/~erniew/lwsdk/docs/filefmts/lwo2.html
+    /// LWO2 is currently not supported.
     /// </remarks>
     public class LwoReader : IModelReader
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LwoReader"/> class.
+        /// </summary>
+        public LwoReader()
+        {
+            this.DefaultMaterial = Wpf.Materials.Blue;
+
+            // http://www.martinreddy.net/gfx/3d/LWOB.txt
+            // http://www.modwiki.net/wiki/LWO_(file_format)
+            // http://www.wotsit.org/list.asp?fc=2
+            // https://www.lightwave3d.com/lightwave_sdk/
+            // http://home.comcast.net/~erniew/lwsdk/docs/filefmts/lwo2.html (TODO!)
+        }
+
+        /// <summary>
+        /// Gets or sets the default material.
+        /// </summary>
+        /// <value>
+        /// The default material.
+        /// </value>
+        public Material DefaultMaterial { get; set; }
+
         /// <summary>
         /// Gets the materials.
         /// </summary>
@@ -87,8 +105,8 @@ namespace HelixToolkit.Wpf
             {
                 long length = reader.BaseStream.Length;
 
-                string headerID = this.ReadChunkId(reader);
-                if (headerID != "FORM")
+                string headerId = this.ReadChunkId(reader);
+                if (headerId != "FORM")
                 {
                     throw new FileFormatException("Unknown file");
                 }
@@ -101,9 +119,14 @@ namespace HelixToolkit.Wpf
                 }
 
                 string header2 = this.ReadChunkId(reader);
-                if (header2 != "LWOB")
+                switch (header2)
                 {
-                    throw new FileFormatException("Unknown file format (" + header2 + ").");
+                    case "LWOB":
+                        break;
+                    case "LWO2":
+                        throw new FileFormatException("LWO2 is not yet supported.");
+                    default:
+                        throw new FileFormatException("Unknown file format (" + header2 + ").");
                 }
 
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
@@ -122,9 +145,9 @@ namespace HelixToolkit.Wpf
                         case "POLS":
                             this.ReadPolygons(reader, size);
                             break;
-                            // ReSharper disable RedundantCaseLabel
+                        // ReSharper disable RedundantCaseLabel
                         case "SURF":
-                            // ReSharper restore RedundantCaseLabel
+                        // ReSharper restore RedundantCaseLabel
                         default:
                             // download the whole chunk
                             // ReSharper disable UnusedVariable
@@ -184,7 +207,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read the data block of a chunk.
+        /// Reads the data block of a chunk.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="size">Excluding header size</param>
@@ -197,7 +220,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read big-endian float.
+        /// Reads a big-endian float.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>
@@ -210,11 +233,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read big-endian int.
+        /// Reads a big-endian integer.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>
-        /// The read int.
+        /// The integer.
         /// </returns>
         private int ReadInt(BinaryReader reader)
         {
@@ -223,7 +246,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read points.
+        /// Reads points.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="size">The size of the points array.</param>
@@ -241,7 +264,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read polygons.
+        /// Reads polygons.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="size">The size.</param>
@@ -270,11 +293,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read big-endian short.
+        /// Reads a big-endian short.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>
-        /// The read short int.
+        /// The short integer.
         /// </returns>
         private short ReadShortInt(BinaryReader reader)
         {
@@ -283,7 +306,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read a string.
+        /// Reads a string.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="size">The size.</param>
@@ -316,7 +339,7 @@ namespace HelixToolkit.Wpf
                 string n = names[i];
                 this.Surfaces.Add(n);
                 this.Meshes.Add(new MeshBuilder(false, false));
-                this.Materials.Add(MaterialHelper.CreateMaterial(Brushes.Blue));
+                this.Materials.Add(this.DefaultMaterial);
 
                 // If the length of the string (including the null) is odd, an extra null byte is added.
                 // Then skip the next empty string.
@@ -326,6 +349,5 @@ namespace HelixToolkit.Wpf
                 }
             }
         }
-
     }
 }

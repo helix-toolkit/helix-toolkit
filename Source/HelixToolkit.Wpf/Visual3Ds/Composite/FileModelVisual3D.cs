@@ -2,11 +2,15 @@
 // <copyright file="FileModelVisual3D.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   A visual element that shows a model loaded from a file.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
 {
     using System.Windows;
+    using System.Windows.Media.Media3D;
 
     /// <summary>
     /// A visual element that shows a model loaded from a file.
@@ -16,6 +20,13 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class FileModelVisual3D : UIElement3D
     {
+        /// <summary>
+        /// The default material property.
+        /// </summary>
+        public static readonly DependencyProperty DefaultMaterialProperty =
+            DependencyProperty.Register(
+                "DefaultMaterial", typeof(Material), typeof(FileModelVisual3D), new PropertyMetadata(null));
+
         /// <summary>
         /// Identifies the <see cref="Source"/> dependency property.
         /// </summary>
@@ -45,6 +56,25 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the default material.
+        /// </summary>
+        /// <value>
+        /// The default material.
+        /// </value>
+        public Material DefaultMaterial
+        {
+            get
+            {
+                return (Material)this.GetValue(DefaultMaterialProperty);
+            }
+
+            set
+            {
+                this.SetValue(DefaultMaterialProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the source.
         /// </summary>
         /// <value> The source. </value>
@@ -65,7 +95,7 @@ namespace HelixToolkit.Wpf
         /// The source changed.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The sender.
         /// </param>
         /// <param name="args">
         /// The args.
@@ -89,9 +119,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected virtual void OnSourceChanged()
         {
-            this.Visual3DModel = this.Source != null ? ModelImporter.Load(this.Source) : null;
+            var importer = new ModelImporter { DefaultMaterial = this.DefaultMaterial };
+            this.Visual3DModel = this.Source != null ? importer.Load(this.Source) : null;
             this.OnModelLoaded();
         }
-
     }
 }

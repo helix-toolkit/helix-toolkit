@@ -1,4 +1,11 @@
 <StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>Lightwave</Value>
+      <Value>obj</Value>
+      <Value>Wavefront</Value>
+    </CollectionProperty>
+  </GlobalSettings>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <AnalyzerSettings>
