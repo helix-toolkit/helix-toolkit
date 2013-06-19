@@ -16,16 +16,16 @@ namespace HelixToolkit.Wpf
     /// A visual element that shows a model loaded from a file.
     /// </summary>
     /// <remarks>
-    /// Supported file formats are: .3ds .obj .lwo .stl .off
+    /// Supported file formats: .3ds .obj .lwo .stl .off
     /// </remarks>
     public class FileModelVisual3D : UIElement3D
     {
         /// <summary>
-        /// The default material property.
+        /// Identifies the <see cref="DefaultMaterial"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultMaterialProperty =
             DependencyProperty.Register(
-                "DefaultMaterial", typeof(Material), typeof(FileModelVisual3D), new PropertyMetadata(null));
+                "DefaultMaterial", typeof(Material), typeof(FileModelVisual3D), new PropertyMetadata(null, SourceChanged));
 
         /// <summary>
         /// Identifies the <see cref="Source"/> dependency property.
@@ -75,9 +75,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the source.
+        /// Gets or sets the source file name.
         /// </summary>
-        /// <value> The source. </value>
+        /// <value> The source file name. </value>
         public string Source
         {
             get
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         protected static void SourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            ((FileModelVisual3D)obj).OnSourceChanged();
+            ((FileModelVisual3D)obj).SourceChanged();
         }
 
         /// <summary>
@@ -115,9 +115,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the source changed.
+        /// Called when the source or default material changed.
         /// </summary>
-        protected virtual void OnSourceChanged()
+        protected virtual void SourceChanged()
         {
             var importer = new ModelImporter { DefaultMaterial = this.DefaultMaterial };
             this.Visual3DModel = this.Source != null ? importer.Load(this.Source) : null;
