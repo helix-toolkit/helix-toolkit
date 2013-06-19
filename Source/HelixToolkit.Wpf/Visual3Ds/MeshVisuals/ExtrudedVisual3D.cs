@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Diameters"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiametersProperty = DependencyProperty.Register(
-            "Diameters", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
+            "Diameters", typeof(DoubleCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsPathClosed"/> dependency property.
@@ -81,11 +81,11 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the diameters along the path.
         /// </summary>
         /// <value> The diameters. </value>
-        public IList<double> Diameters
+        public DoubleCollection Diameters
         {
             get
             {
-                return (IList<double>)this.GetValue(DiametersProperty);
+                return (DoubleCollection)this.GetValue(DiametersProperty);
             }
 
             set
@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
-            if (this.Path == null)
+            if (this.Path == null || this.Path.Count == 0)
             {
                 return null;
             }
