@@ -30,6 +30,14 @@ namespace HelixToolkit.Wpf
             "ThetaDiv", typeof(int), typeof(TubeVisual3D), new UIPropertyMetadata(36, SectionChanged));
 
         /// <summary>
+        /// Initializes static members of the <see cref="TubeVisual3D"/> class.
+        /// </summary>
+        static TubeVisual3D()
+        {
+            DiametersProperty.OverrideMetadata(typeof(TubeVisual3D), new UIPropertyMetadata(null, SectionChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref = "TubeVisual3D" /> class.
         /// </summary>
         public TubeVisual3D()
@@ -92,7 +100,10 @@ namespace HelixToolkit.Wpf
         {
             var pc = new PointCollection();
             var circle = MeshBuilder.GetCircle(this.ThetaDiv);
-            double r = this.Diameter / 2;
+
+            // If Diameters is set, create a unit circle
+            // otherwise, create a circle with the specified diameter
+            double r = this.Diameters != null ? 1 : this.Diameter / 2;
             for (int j = 0; j < this.ThetaDiv; j++)
             {
                 pc.Add(new Point(circle[j].X * r, circle[j].Y * r));
