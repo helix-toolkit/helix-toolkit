@@ -18,12 +18,25 @@ namespace HelixToolkit.Wpf
     /// The implementation will not work well if there are sharp bends in the path.
     /// </remarks>
     public class ExtrudedVisual3D : MeshElement3D
+    
     {
         /// <summary>
         /// Identifies the <see cref="Diameters"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiametersProperty = DependencyProperty.Register(
             "Diameters", typeof(DoubleCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="SectionXAxis"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SectionXAxisProperty = DependencyProperty.Register(
+            "SectionXAxis", typeof(Vector3D), typeof(ExtrudedVisual3D), new UIPropertyMetadata(new Vector3D(1,0,0), GeometryChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Angles"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty AnglesProperty = DependencyProperty.Register(
+            "Angles", typeof(DoubleCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsPathClosed"/> dependency property.
@@ -36,7 +49,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty IsSectionClosedProperty =
             DependencyProperty.Register(
-                "IsSectionClosed", typeof(bool), typeof(PipeVisual3D), new UIPropertyMetadata(true, GeometryChanged));
+                "IsSectionClosed", typeof(bool), typeof(ExtrudedVisual3D), new UIPropertyMetadata(true, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="Path"/> dependency property.
@@ -66,7 +79,7 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty UpVectorProperty = DependencyProperty.Register(
             "UpVector",
             typeof(Vector3D),
-            typeof(PipeVisual3D),
+            typeof(ExtrudedVisual3D),
             new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
 
         /// <summary>
@@ -91,6 +104,23 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(DiametersProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the diameters along the path.
+        /// </summary>
+        /// <value> The diameters. </value>
+        public DoubleCollection Angles
+        {
+            get
+            {
+                return (DoubleCollection)this.GetValue(AnglesProperty);
+            }
+
+            set
+            {
+                this.SetValue(AnglesProperty, value);
             }
         }
 
@@ -161,6 +191,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the section.
+        /// </summary>
+        /// <value> The section. </value>
+        public Vector3D SectionXAxis
+        {
+            get
+            {
+                return (Vector3D)this.GetValue(SectionXAxisProperty);
+            }
+
+            set
+            {
+                this.SetValue(SectionXAxisProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the texture coordinates along the path (X only).
         /// </summary>
         /// <value> The texture coordinates. </value>
@@ -213,12 +260,15 @@ namespace HelixToolkit.Wpf
             var builder = new MeshBuilder(false, this.TextureCoordinates != null);
             builder.AddTube(
                 this.Path,
+                this.Angles,
                 this.TextureCoordinates,
                 this.Diameters,
                 this.Section,
+                this.SectionXAxis,
                 this.IsPathClosed,
                 this.IsSectionClosed);
             return builder.ToMesh();
         }
     }
+
 }
