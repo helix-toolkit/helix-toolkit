@@ -2241,6 +2241,17 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public MeshGeometry3D ToMesh(bool freeze = false)
         {
+            if (this.triangleIndices.Count == 0)
+            {
+                var emptyGeometry = new MeshGeometry3D();
+                if (freeze)
+                {
+                    emptyGeometry.Freeze();
+                }
+            
+                return emptyGeometry;
+            }
+
             if (this.normals != null && this.positions.Count != this.normals.Count)
             {
                 throw new InvalidOperationException(WrongNumberOfNormals);
