@@ -1,0 +1,9 @@
+﻿<Window x:Class="WindDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="WindDemo" Height="480" Width="640">
+    <Grid>
+        <h:HelixViewport3D x:Name="view1" ZoomExtentsWhenLoaded="True">
+            <h:DefaultLights/>
+        </h:HelixViewport3D>
+    </Grid>
+</Window>

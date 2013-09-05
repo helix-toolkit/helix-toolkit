@@ -1,0 +1,1 @@
+..\Tools\Lynx\WikiDoc.exe /Output=..\output\Wiki ..\Output\HelixToolkit.Wpf.dll > UpdateWikiDocumentation.log

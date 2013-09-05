@@ -1,0 +1,18 @@
+﻿<Window x:Class="UIElementDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        xmlns:local="clr-namespace:UIElementDemo" Title="UIElementDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Zoom extents" Click="ZoomExtents_Click"/>
+        </Menu>
+        <h:HelixViewport3D x:Name="view1">
+            <h:SunLight/>
+            <local:DemoElement3D>
+                <local:DemoElement3D.Transform>
+                    <TranslateTransform3D OffsetX="-5" OffsetY="0" OffsetZ="0"/>
+                </local:DemoElement3D.Transform>
+            </local:DemoElement3D>
+        </h:HelixViewport3D>
+    </DockPanel>
+</Window>

@@ -1,0 +1,65 @@
+﻿<Window x:Class="FractalDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        xmlns:local="clr-namespace:FractalDemo" xmlns:System="clr-namespace:System;assembly=mscorlib" 
+        Title="{Binding Type, StringFormat=FractalDemo - {0}}" Height="480" Width="640"
+        Cursor="{Binding CurrentCursor}"
+        >
+    <Window.Resources>
+        <local:ValueToBoolConverter x:Key="ValueToBoolConverter"/>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Export..." Click="Export_Click"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Fractal">
+
+                <!-- todo: would like to use an itemsource, but can't get it to work properly -->
+                <!--ItemsSource="{Binding FractalTypes}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Setter Property="IsCheckable" Value="True"/>
+                       
+                        <Setter Property="IsChecked">
+                            <Setter.Value>
+                                <MultiBinding Mode="TwoWay" Converter="{StaticResource ValueToBoolConverter}">
+                                    <Binding Mode="TwoWay" Path="DataContext.Type" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type MenuItem}}"/>
+                                    <Binding Mode="OneWay"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter> 
+                        <Setter Property="ToolTip" Value="{Binding }"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type MenuItem}},Path=DataContext.Type}" Value="{Binding }">
+                                <Setter Property="IsChecked" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.ItemContainerStyle>-->
+                <!-- http://www.julmar.com/blog/mark/2009/04/29/MenusAndMVVM2.aspx -->
+
+                <MenuItem Header="Mandelbrot set" IsCheckable="True" IsChecked="{Binding Type, Mode=TwoWay, Converter={StaticResource ValueToBoolConverter}, ConverterParameter={x:Static local:FractalType.MandelbrotMountain}}"/>
+                <MenuItem Header="Menger sponge" IsCheckable="True" IsChecked="{Binding Type, Mode=TwoWay, Converter={StaticResource ValueToBoolConverter}, ConverterParameter={x:Static local:FractalType.MengerSponge}}"/>
+                <MenuItem Header="Sierpinski pyramid" IsCheckable="True" IsChecked="{Binding Type, Mode=TwoWay, Converter={StaticResource ValueToBoolConverter}, ConverterParameter={x:Static local:FractalType.SierpinskiPyramid}}"/>
+                <MenuItem Header="Plant" IsCheckable="True" IsChecked="{Binding Type, Mode=TwoWay, Converter={StaticResource ValueToBoolConverter}, ConverterParameter={x:Static local:FractalType.Plant}}"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Zoom extents" Click="ZoomExtents_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <helix:HelixViewport3D x:Name="view1" Background="Black">
+                <helix:DefaultLights/>
+                <!--   <helix:PlaneVisual3D Origin="0 0 -0.55" Width="20" Length="20"  Normal="0 0 1" Fill="Black"/> -->
+                <ModelVisual3D Content="{Binding Model}"/>
+            </helix:HelixViewport3D>
+            <ComboBox ItemsSource="{Binding Levels}" SelectedItem="{Binding Level}" Width="100" ToolTip="Level" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Opacity="0.5"/>
+            <TextBlock Text="{Binding TriangleCount, StringFormat=Triangles: {0}}" Margin="10"
+                       Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        </Grid>
+    </DockPanel>
+</Window>

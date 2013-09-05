@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HelixToolkit.AnimatedModelVisual3D" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAABAQAAAAAAAAgAAAAAAABQAgAAEKAQ=</HashCode>
+      <FileName>Visual3Ds\Composite\AnimatedVisual3D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HelixToolkit.CoordinateSystemVisual3D">
+    <Position X="18.5" Y="5" Width="2" />
+    <Members>
+      <Field Name="ArrowLengthsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQACAAAAAAAEgACAAAABQAAAAARAAAABAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\CoordinateSystemVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.LightVisual3D">
+    <Position X="26.75" Y="5" Width="2" />
+    <Members>
+      <Field Name="LightProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAABgAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\LightVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.MeshNormals3D">
+    <Position X="29.5" Y="5" Width="2" />
+    <Members>
+      <Field Name="MeshProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAQAAAAQAAgAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\MeshNormalsVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.SegmentCollectionVisual3D">
+    <Position X="32.25" Y="5" Width="2" />
+    <Members>
+      <Field Name="_element" Hidden="true" />
+      <Field Name="_tube" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAIAABAABAAQCAAgAAAAAAAAACAACAAACgABAAAABAA=</HashCode>
+      <FileName>Visual3Ds\Composite\SegmentCollectionVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.SphereCollectionVisual3D">
+    <Position X="35" Y="5" Width="2" />
+    <Members>
+      <Field Name="_element" Hidden="true" />
+      <Field Name="_sphere" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBAAAAAAgIAAAAAAAAAAACAAACgABAAAABAA=</HashCode>
+      <FileName>Visual3Ds\Composite\SphereCollectionVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.StudioVisual3D">
+    <Position X="37.75" Y="5" Width="2" />
+    <Members>
+      <Field Name="SourceProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAgAAAAAAAAAEAAAAAAAAIAAACAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\StudioVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.Target3D">
+    <Position X="40.5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\TargetVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.VectorFieldVisual3D">
+    <Position X="46" Y="5" Width="2" />
+    <Members>
+      <Field Name="_body" Hidden="true" />
+      <Field Name="_element" Hidden="true" />
+      <Field Name="_head" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAABAAAAAAgQQAAAAAAAAAACAAADgABAAABFAA=</HashCode>
+      <FileName>Visual3Ds\Composite\VectorFieldVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.ModelVisual3D" Collapsed="true">
+    <Position X="12" Y="3.5" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Visual3D" Collapsed="true">
+    <Position X="12" Y="2" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.DependencyObject" Collapsed="true">
+    <Position X="12" Y="0.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="HelixToolkit.ClonedElement3D" Collapsed="true">
+    <Position X="48.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAgAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\ClonedElement3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.DefaultLightsVisual3D" Collapsed="true">
+    <Position X="51" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\LightSetups\DefaultLightsVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.ViewCubeVisual3D" Collapsed="true">
+    <Position X="53.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAACAACAEEwAE6ACSQBACAEAAAQCAIRCAABAAIYIA=</HashCode>
+      <FileName>Visual3Ds\Composite\ViewCubeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.MeshElement3D" Collapsed="true">
+    <Position X="55.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gFAQkAAAAAAAAABQIABEAAAAAAAASAAACAwCAAAQABA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\MeshElement3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

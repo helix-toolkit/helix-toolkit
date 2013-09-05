@@ -1,0 +1,35 @@
+﻿<Window x:Class="DepthSensorDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="DepthSensorDemo" Height="600" Width="900">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Export mesh..." Command="{Binding ExportCommand}" IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Command="{Binding ExitCommand}" IsEnabled="False"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                
+            </MenuItem>
+            <MenuItem Header="DepthSensor">
+                <MenuItem Header="Enabled" IsCheckable="True" IsChecked="{Binding IsDepthStreamUpdating}"/>
+                <Separator/>
+                <MenuItem Header="640x480" Command="{Binding SetDepthFormatCommand}" CommandParameter="640x480" IsEnabled="False"/>
+                <MenuItem Header="320x240" Command="{Binding SetDepthFormatCommand}" CommandParameter="640x480" IsEnabled="False"/>
+                <MenuItem Header="80x60" Command="{Binding SetDepthFormatCommand}" CommandParameter="640x480" IsEnabled="False"/>
+            </MenuItem>
+            <MenuItem Header="ColorSensor">
+                <MenuItem Header="Enabled" IsCheckable="True" IsChecked="{Binding IsColorStreamUpdating}"/>
+            </MenuItem>
+        </Menu>
+        
+        <h:HelixViewport3D CameraRotationMode="Trackball">
+            <h:HelixViewport3D.Camera>
+                <PerspectiveCamera Position="0,-4,0" LookDirection="0,6,0" UpDirection="0,0,1" NearPlaneDistance="0.01" FarPlaneDistance="1000" FieldOfView="57"/>
+            </h:HelixViewport3D.Camera>
+            <h:SunLight/>
+            <ModelVisual3D Content="{Binding Model}"/>
+        </h:HelixViewport3D>
+    </DockPanel>
+</Window>
