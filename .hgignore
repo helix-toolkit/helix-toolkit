@@ -44,6 +44,7 @@ _ReSharper*/
 _TeamCity*/
 packages/
 *.dotCover
+*.GhostDoc.xml
 
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*
