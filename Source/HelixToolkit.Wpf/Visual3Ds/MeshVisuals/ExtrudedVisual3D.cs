@@ -18,7 +18,6 @@ namespace HelixToolkit.Wpf
     /// The implementation will not work well if there are sharp bends in the path.
     /// </remarks>
     public class ExtrudedVisual3D : MeshElement3D
-    
     {
         /// <summary>
         /// Identifies the <see cref="Diameters"/> dependency property.
@@ -30,7 +29,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="SectionXAxis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SectionXAxisProperty = DependencyProperty.Register(
-            "SectionXAxis", typeof(Vector3D), typeof(ExtrudedVisual3D), new UIPropertyMetadata(new Vector3D(1,0,0), GeometryChanged));
+            "SectionXAxis", typeof(Vector3D), typeof(ExtrudedVisual3D), new UIPropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="Angles"/> dependency property.
@@ -270,5 +269,4 @@ namespace HelixToolkit.Wpf
             return builder.ToMesh();
         }
     }
-
 }
