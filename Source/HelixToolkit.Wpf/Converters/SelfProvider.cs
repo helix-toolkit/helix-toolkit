@@ -30,6 +30,5 @@ namespace HelixToolkit.Wpf
         {
             return this;
         }
-
     }
 }

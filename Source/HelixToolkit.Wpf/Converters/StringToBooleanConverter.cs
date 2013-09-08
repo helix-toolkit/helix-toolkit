@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// A string to bool value converter.
+    /// A string to boolean value converter.
     /// </summary>
     /// <remarks>
     /// Returns true if the string equals the parameter.
@@ -82,6 +82,5 @@ namespace HelixToolkit.Wpf
 
             return Binding.DoNothing;
         }
-
     }
 }

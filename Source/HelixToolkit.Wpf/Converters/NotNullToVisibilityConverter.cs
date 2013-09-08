@@ -86,6 +86,5 @@ namespace HelixToolkit.Wpf
         {
             throw new NotImplementedException();
         }
-
     }
 }

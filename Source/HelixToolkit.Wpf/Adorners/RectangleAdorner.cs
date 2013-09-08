@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Windows;
     using System.Windows.Documents;
     using System.Windows.Media;
@@ -104,10 +105,27 @@ namespace HelixToolkit.Wpf
             DashStyle dashStyle2)
             : base(adornedElement)
         {
+            if (adornedElement == null)
+            {
+                throw new ArgumentNullException("adornedElement");
+            }
+
             this.Rectangle = rectangle;
 
             // http://www.wpftutorial.net/DrawOnPhysicalDevicePixels.html
-            var m = PresentationSource.FromVisual(adornedElement).CompositionTarget.TransformToDevice;
+            var ps = PresentationSource.FromVisual(adornedElement);
+            if (ps == null)
+            {
+                return;
+            }
+
+            var ct = ps.CompositionTarget;
+            if (ct == null)
+            {
+                return;
+            }
+
+            var m = ct.TransformToDevice;
             double dpiFactor = 1 / m.M11;
 
             this.pen = new Pen(new SolidColorBrush(color1), thickness1 * dpiFactor);
@@ -155,7 +173,7 @@ namespace HelixToolkit.Wpf
             dc.DrawRectangle(null, this.pen, rect);
             dc.DrawRectangle(null, this.pen2, rect);
 
-            if (this.crossHairSize != 0)
+            if (this.crossHairSize > 0)
             {
                 dc.DrawLine(this.pen, new Point(mx, my - this.crossHairSize), new Point(mx, my + this.crossHairSize));
                 dc.DrawLine(this.pen, new Point(mx - this.crossHairSize, my), new Point(mx + this.crossHairSize, my));
@@ -165,6 +183,5 @@ namespace HelixToolkit.Wpf
 
             // dc.Pop();
         }
-
     }
 }

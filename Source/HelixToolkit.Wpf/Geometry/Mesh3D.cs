@@ -14,11 +14,10 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Represents a 3D mesh for polygon models containing faces with any number of vertices.
     /// </summary>
-    /// <remarks>
-    /// Todo: should implement a better data structure. http://en.wikipedia.org/wiki/Winged_edge
-    /// </remarks>
     public class Mesh3D : ICloneable
     {
+        //// TODO: should implement a better data structure. http://en.wikipedia.org/wiki/Winged_edge
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Mesh3D"/> class.
         /// </summary>
@@ -109,7 +108,7 @@ namespace HelixToolkit.Wpf
         /// Adds a face.
         /// </summary>
         /// <param name="vertexIndices">
-        /// The vertx indices of the face.
+        /// The vertex indices of the face.
         /// </param>
         public void AddFace(params int[] vertexIndices)
         {
@@ -292,7 +291,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Quadrangulates this instance.
+        /// Converts the mesh to a mesh of quadrilaterals.
         /// </summary>
         public void Quadrangulate()
         {
@@ -320,7 +319,7 @@ namespace HelixToolkit.Wpf
                     var quad = new int[4];
                     quad[0] = ci + 1 + j;
                     quad[1] = this.Faces[i][(j + 1) % m];
-                    quad[2] = ci + 1 + (j + 1) % m;
+                    quad[2] = ci + 1 + ((j + 1) % m);
                     quad[3] = ci;
                     if (j == m - 1)
                     {
@@ -549,6 +548,5 @@ namespace HelixToolkit.Wpf
                 (this.Vertices[v0].Y + this.Vertices[v1].Y) * 0.5,
                 (this.Vertices[v0].Z + this.Vertices[v1].Z) * 0.5);
         }
-
     }
 }

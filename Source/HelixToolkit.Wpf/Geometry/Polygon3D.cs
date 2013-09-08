@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The points.
         /// </summary>
-        internal IList<Point3D> points;
+        private IList<Point3D> points;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "Polygon3D" /> class.
@@ -58,10 +58,11 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        // http://en.wikipedia.org/wiki/Polygon_triangulation
-        // http://en.wikipedia.org/wiki/Monotone_polygon
-        // http://www.codeproject.com/KB/recipes/hgrd.aspx LGPL
-        // http://www.springerlink.com/content/g805787811vr1v9v/
+        //// http://en.wikipedia.org/wiki/Polygon_triangulation
+        //// http://en.wikipedia.org/wiki/Monotone_polygon
+        //// http://www.codeproject.com/KB/recipes/hgrd.aspx LGPL
+        //// http://www.springerlink.com/content/g805787811vr1v9v/
+        
         /// <summary>
         /// Flattens this polygon.
         /// </summary>
@@ -148,6 +149,5 @@ namespace HelixToolkit.Wpf
 
             return true;
         }
-
     }
 }

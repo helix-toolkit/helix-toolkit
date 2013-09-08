@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// A bool to Visibility value converter.
+    /// A boolean to Visibility value converter.
     /// </summary>
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public class BoolToVisibilityConverter : IValueConverter
@@ -96,11 +96,11 @@ namespace HelixToolkit.Wpf
                 {
                     return !this.Inverted;
                 }
+
                 return this.Inverted;
             }
 
             throw new NotImplementedException();
         }
-
     }
 }
