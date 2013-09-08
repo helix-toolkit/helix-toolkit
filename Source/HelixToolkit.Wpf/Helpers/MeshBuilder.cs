@@ -40,7 +40,7 @@ namespace HelixToolkit.Wpf
     /// <para>
     /// Low impact:
     /// To minimize the construction time of large collections in Windows Presentation Foundation (WPF),
-    /// such as a MeshGeometry3D’s Positions, Normals, TextureCoordinates, and TriangleIndices, pre-size
+    /// such as a MeshGeometry3D’s Positions, Normal vectors, TextureCoordinates, and TriangleIndices, pre-size
     /// the collections before value population. If possible, pass the collections’ constructors prepopulated
     /// data structures such as arrays or Lists.
     /// </para>
@@ -1321,7 +1321,7 @@ namespace HelixToolkit.Wpf
                     var q1 = origin + (direction * points[j].X) + (w * points[j].Y);
                     var q2 = origin + (direction * points[j + 1].X) + (w * points[j + 1].Y);
 
-                    // todo:should not add segment if q1==q2 (corner point)
+                    // TODO: should not add segment if q1==q2 (corner point)
                     // const double eps = 1e-6;
                     // if (Point3D.Subtract(q1, q2).LengthSquared < eps)
                     // continue;
@@ -1944,31 +1944,15 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds a tube with a custom section.
         /// </summary>
-        /// <param name="path">
-        /// A list of points defining the centers of the tube.
-        /// </param>
-        /// <param name="values">
-        /// The texture coordinate X values (optional).
-        /// </param>
-        /// <param name="diameters">
-        /// The diameters (optional).
-        /// </param>
-        /// <param name="section">
-        /// The section to extrude along the tube path.
-        /// </param>
-        /// <param name="sectionXAxis">
-        /// The initial alignment of the xaxis of the section into the
-        /// 3D viewport
-        /// </param>
-        /// <param name="angles">
-        /// The rotation of the section as it moves along the path
-        /// </param>
-        /// <param name="isTubeClosed">
-        /// If the tube is closed set to <c>true</c> .
-        /// </param>
-        /// <param name="isSectionClosed">
-        /// if set to <c>true</c> [is section closed].
-        /// </param>
+        /// <param name="path">A list of points defining the centers of the tube.</param>
+        /// <param name="angles">The rotation of the section as it moves along the path</param>
+        /// <param name="values">The texture coordinate X values (optional).</param>
+        /// <param name="diameters">The diameters (optional).</param>
+        /// <param name="section">The section to extrude along the tube path.</param>
+        /// <param name="sectionXAxis">The initial alignment of the x-axis of the section into the
+        /// 3D viewport</param>
+        /// <param name="isTubeClosed">If the tube is closed set to <c>true</c> .</param>
+        /// <param name="isSectionClosed">if set to <c>true</c> [is section closed].</param>
         public void AddTube(
             IList<Point3D> path,
             IList<double> angles,
@@ -1993,7 +1977,6 @@ namespace HelixToolkit.Wpf
             {
                 throw new InvalidOperationException(WrongNumberOfAngles);
             }
-
 
             int index0 = this.positions.Count;
             int pathLength = path.Count;
@@ -2031,8 +2014,8 @@ namespace HelixToolkit.Wpf
                 right.Normalize();
                 for (int j = 0; j < sectionLength; j++)
                 {
-                    var x = section[j].X * ct - section[j].Y * st ;
-                    var y = section[j].X * st + section[j].Y * ct;
+                    var x = (section[j].X * ct) - (section[j].Y * st);
+                    var y = (section[j].X * st) + (section[j].Y * ct);
 
                     var w = (x * right * radius) + (y * up * radius);
                     var q = path[i] + w;
@@ -2055,6 +2038,7 @@ namespace HelixToolkit.Wpf
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
         }
+
         /// <summary>
         /// Appends the specified mesh.
         /// </summary>
@@ -2336,7 +2320,7 @@ namespace HelixToolkit.Wpf
         /// Performs a linear subdivision of the mesh.
         /// </summary>
         /// <param name="barycentric">
-        /// Barycentric(?) if set to <c>true</c> .
+        /// Add a vertex in the center if set to <c>true</c> .
         /// </param>
         public void SubdivideLinear(bool barycentric = false)
         {
@@ -2368,7 +2352,7 @@ namespace HelixToolkit.Wpf
                 {
                     emptyGeometry.Freeze();
                 }
-            
+
                 return emptyGeometry;
             }
 
@@ -2793,7 +2777,7 @@ namespace HelixToolkit.Wpf
         /// Subdivides each triangle into six triangles. Adds a vertex at the midpoint of each triangle.
         /// </summary>
         /// <remarks>
-        /// See http://en.wikipedia.org/wiki/Barycentric_subdivision
+        /// See <a href="http://en.wikipedia.org/wiki/Barycentric_subdivision">wikipedia</a>.
         /// </remarks>
         private void SubdivideBarycentric()
         {
