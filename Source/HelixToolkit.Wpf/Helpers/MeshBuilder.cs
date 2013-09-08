@@ -70,6 +70,11 @@ namespace HelixToolkit.Wpf
         private const string WrongNumberOfDiameters = "Wrong number of diameters.";
 
         /// <summary>
+        /// 'Wrong number of angles' exception message.
+        /// </summary>
+        private const string WrongNumberOfAngles = "Wrong number of angles.";
+
+        /// <summary>
         /// 'Wrong number of positions' exception message.
         /// </summary>
         private const string WrongNumberOfPositions = "Wrong number of positions.";
@@ -1936,6 +1941,120 @@ namespace HelixToolkit.Wpf
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
         }
 
+        /// <summary>
+        /// Adds a tube with a custom section.
+        /// </summary>
+        /// <param name="path">
+        /// A list of points defining the centers of the tube.
+        /// </param>
+        /// <param name="values">
+        /// The texture coordinate X values (optional).
+        /// </param>
+        /// <param name="diameters">
+        /// The diameters (optional).
+        /// </param>
+        /// <param name="section">
+        /// The section to extrude along the tube path.
+        /// </param>
+        /// <param name="sectionXAxis">
+        /// The initial alignment of the xaxis of the section into the
+        /// 3D viewport
+        /// </param>
+        /// <param name="angles">
+        /// The rotation of the section as it moves along the path
+        /// </param>
+        /// <param name="isTubeClosed">
+        /// If the tube is closed set to <c>true</c> .
+        /// </param>
+        /// <param name="isSectionClosed">
+        /// if set to <c>true</c> [is section closed].
+        /// </param>
+        public void AddTube(
+            IList<Point3D> path,
+            IList<double> angles,
+            IList<double> values,
+            IList<double> diameters,
+            IList<Point> section,
+            Vector3D sectionXAxis,
+            bool isTubeClosed,
+            bool isSectionClosed)
+        {
+            if (values != null && values.Count == 0)
+            {
+                throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
+            }
+
+            if (diameters != null && diameters.Count == 0)
+            {
+                throw new InvalidOperationException(WrongNumberOfDiameters);
+            }
+
+            if (angles != null && angles.Count == 0)
+            {
+                throw new InvalidOperationException(WrongNumberOfAngles);
+            }
+
+
+            int index0 = this.positions.Count;
+            int pathLength = path.Count;
+            int sectionLength = section.Count;
+            if (pathLength < 2 || sectionLength < 2)
+            {
+                return;
+            }
+
+            var forward = path[1] - path[0];
+            var right = sectionXAxis;
+            var up = Vector3D.CrossProduct(forward, right);
+            up.Normalize();
+            right.Normalize();
+
+            int diametersCount = diameters != null ? diameters.Count : 0;
+            int valuesCount = values != null ? values.Count : 0;
+            int anglesCount = angles != null ? angles.Count : 0;
+
+            for (int i = 0; i < pathLength; i++)
+            {
+                double radius = diameters != null ? diameters[i % diametersCount] / 2 : 1;
+                double theta = angles != null ? angles[i % anglesCount] : 0.0;
+
+                double ct = Math.Cos(theta);
+                double st = Math.Sin(theta);
+
+                int i0 = i > 0 ? i - 1 : i;
+                int i1 = i + 1 < pathLength ? i + 1 : i;
+
+                forward = path[i1] - path[i0];
+                right = Vector3D.CrossProduct(up, forward);
+                up = Vector3D.CrossProduct(forward, right);
+                up.Normalize();
+                right.Normalize();
+                for (int j = 0; j < sectionLength; j++)
+                {
+                    var x = section[j].X * ct - section[j].Y * st ;
+                    var y = section[j].X * st + section[j].Y * ct;
+
+                    var w = (x * right * radius) + (y * up * radius);
+                    var q = path[i] + w;
+                    this.positions.Add(q);
+                    if (this.normals != null)
+                    {
+                        w.Normalize();
+                        this.normals.Add(w);
+                    }
+
+                    if (this.textureCoordinates != null)
+                    {
+                        this.textureCoordinates.Add(
+                            values != null
+                                ? new Point(values[i % valuesCount], (double)j / (sectionLength - 1))
+                                : new Point());
+                    }
+                }
+            }
+
+            this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
+        }
         /// <summary>
         /// Appends the specified mesh.
         /// </summary>
