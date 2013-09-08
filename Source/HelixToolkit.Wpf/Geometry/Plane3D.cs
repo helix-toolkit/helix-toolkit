@@ -16,12 +16,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The normal.
         /// </summary>
-        internal Vector3D normal;
+        private Vector3D normal;
 
         /// <summary>
         /// The position.
         /// </summary>
-        internal Point3D position;
+        private Point3D position;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "Plane3D" /> class.
@@ -82,13 +82,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Finds the intersection between the plane and the line (la,lb).
+        /// Finds the intersection between the plane and a line.
         /// </summary>
         /// <param name="la">
-        /// The la.
+        /// The first point defining the line.
         /// </param>
         /// <param name="lb">
-        /// The lb.
+        /// The second point defining the line.
         /// </param>
         /// <returns>
         /// The intersection point.
@@ -99,17 +99,17 @@ namespace HelixToolkit.Wpf
             var l = lb - la;
             double a = Vector3D.DotProduct(this.position - la, this.normal);
             double b = Vector3D.DotProduct(l, this.normal);
-            if (a == 0 && b == 0)
+            if (a.Equals(0) && b.Equals(0))
             {
                 return null;
             }
 
-            if (b == 0)
+            if (b.Equals(0))
             {
                 return null;
             }
 
-            return la + (a / b) * l;
+            return la + ((a / b) * l);
         }
 
         // public void SetYZ(double x, int dir)

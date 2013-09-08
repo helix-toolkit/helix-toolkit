@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// An Enum to bool converter.
+    /// An enumerate to boolean converter.
     /// </summary>
     /// <example>
     /// <code>
@@ -94,6 +94,5 @@ namespace HelixToolkit.Wpf
             // Ignore, just return DoNothing.
             return Binding.DoNothing;
         }
-
     }
 }

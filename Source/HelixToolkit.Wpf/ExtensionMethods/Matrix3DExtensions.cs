@@ -16,9 +16,6 @@ namespace HelixToolkit.Wpf
     /// </summary>
     /// <remarks>
     /// Note that the Matrix3D contains row vectors.
-    /// http://steve.hollasch.net/cgindex/math/matrix/column-vec.html
-    /// http://en.wikipedia.org/wiki/Row_vector
-    /// http://en.wikipedia.org/wiki/Column_vector
     /// </remarks>
     public static class Matrix3DExtensions
     {
@@ -33,6 +30,10 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static double[,] ToArray(this Matrix3D matrix)
         {
+            //// http://steve.hollasch.net/cgindex/math/matrix/column-vec.html
+            //// http://en.wikipedia.org/wiki/Row_vector
+            //// http://en.wikipedia.org/wiki/Column_vector
+
             var m = new double[4, 4];
             m[0, 0] = matrix.M11;
             m[0, 1] = matrix.M12;
@@ -207,6 +208,5 @@ namespace HelixToolkit.Wpf
 
             return sb.ToString();
         }
-
     }
 }

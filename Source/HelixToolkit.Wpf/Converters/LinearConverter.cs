@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf
         {
             double m = this.GetDoubleValue(parameter, this.M);
             double v = this.GetDoubleValue(value, 0.0);
-            return m * v + this.B;
+            return (m * v) + this.B;
         }
 
         /// <summary>
@@ -110,6 +110,5 @@ namespace HelixToolkit.Wpf
 
             return a;
         }
-
     }
 }

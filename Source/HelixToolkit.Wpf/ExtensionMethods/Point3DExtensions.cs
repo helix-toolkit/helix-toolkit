@@ -101,6 +101,5 @@ namespace HelixToolkit.Wpf
 
             return new Point3D(x, y, z);
         }
-
     }
 }

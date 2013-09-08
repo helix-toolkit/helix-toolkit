@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf
             // remove nv-2 Vertices, creating 1 triangle every time
             int count = 2 * nv; // error detection
 
-            for (int v = nv - 1; nv > 2; )
+            for (int v = nv - 1; nv > 2;)
             {
                 // if we loop, it is probably a non-simple polygon
                 if (0 >= (count--))

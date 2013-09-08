@@ -18,33 +18,14 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Draws the arc.
         /// </summary>
-        /// <param name="dc">
-        /// The dc.
-        /// </param>
-        /// <param name="brush">
-        /// The brush.
-        /// </param>
-        /// <param name="pen">
-        /// The pen.
-        /// </param>
-        /// <param name="start">
-        /// The start.
-        /// </param>
-        /// <param name="end">
-        /// The end.
-        /// </param>
-        /// <param name="direction">
-        /// The direction.
-        /// </param>
-        /// <param name="radiusX">
-        /// The radius X.
-        /// </param>
-        /// <param name="radiusY">
-        /// The radius Y.
-        /// </param>
-        /// <remarks>
-        /// http://blogs.vertigo.com/personal/ralph/Blog/archive/2007/02/09/wpf-drawing-arcs.aspx
-        /// </remarks>
+        /// <param name="dc">The dc.</param>
+        /// <param name="brush">The brush.</param>
+        /// <param name="pen">The pen.</param>
+        /// <param name="start">The start.</param>
+        /// <param name="end">The end.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="radiusX">The radius X.</param>
+        /// <param name="radiusY">The radius Y.</param>
         public static void DrawArc(
             this DrawingContext dc,
             Brush brush,
@@ -55,6 +36,7 @@ namespace HelixToolkit.Wpf
             double radiusX,
             double radiusY)
         {
+            // http://blogs.vertigo.com/personal/ralph/Blog/archive/2007/02/09/wpf-drawing-arcs.aspx
             // setup the geometry object
             var geometry = new PathGeometry();
             var figure = new PathFigure();
@@ -155,6 +137,5 @@ namespace HelixToolkit.Wpf
         {
             DrawArc(dc, brush, pen, position, startAngle, endAngle, SweepDirection.Counterclockwise, radiusX, radiusY);
         }
-
     }
 }

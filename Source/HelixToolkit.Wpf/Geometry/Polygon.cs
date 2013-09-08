@@ -13,11 +13,12 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class Polygon
     {
-        // http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm
+        //// http://softsurfer.com/Archive/algorithm_0101/algorithm_0101.htm
+
         /// <summary>
         /// The points.
         /// </summary>
-        internal PointCollection points;
+        private PointCollection points;
 
         /// <summary>
         /// Gets or sets the points.
@@ -44,6 +45,5 @@ namespace HelixToolkit.Wpf
         {
             return CuttingEarsTriangulator.Triangulate(this.points);
         }
-
     }
 }

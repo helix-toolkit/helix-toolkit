@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Windows;
     using System.Windows.Documents;
     using System.Windows.Media;
@@ -45,6 +46,7 @@ namespace HelixToolkit.Wpf
         /// <param name="dc">
         /// The drawing context.
         /// </param>
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1407:ArithmeticExpressionsMustDeclarePrecedence", Justification = "Reviewed. Suppression is OK here.")]
         protected override void OnRender(DrawingContext dc)
         {
             var lightBrush = new SolidColorBrush(Colors.LightGray);
@@ -58,7 +60,7 @@ namespace HelixToolkit.Wpf
             double l = 10; // length of segments
             double r = 20.0; // radius of light circle
 
-            double r1 = r - (t1 + t2) / 2;
+            var r1 = r - (t1 + t2) / 2;
             double r2 = r + l;
             double r3 = r + t2 / 2 + d;
             double r4 = (r + r2) / 2;
@@ -90,6 +92,5 @@ namespace HelixToolkit.Wpf
                 new Point(this.Position.X + r2, this.Position.Y),
                 new Point(this.Position.X + r3, this.Position.Y));
         }
-
     }
 }
