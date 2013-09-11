@@ -59,8 +59,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Adorners\DrawingContextExtensions.cs" />
-    <Compile Include="AttachedProperties\Model3DProperties.cs" />
-    <Compile Include="AttachedProperties\Visual3DProperties.cs" />
+    <Compile Include="Helpers\AttachedProperties.cs" />
     <Compile Include="Controls\CameraController\TouchMode.cs" />
     <Compile Include="Controls\CameraController\CameraMode.cs" />
     <Compile Include="Controls\CameraController\CameraRotationMode.cs" />
