@@ -699,7 +699,7 @@ namespace HelixToolkit.Wpf
                 return mat.GetMaterial(this.TexturePath);
             }
 
-            return this.DefaultMaterial; 
+            return this.DefaultMaterial;
         }
 
         /// <summary>
@@ -743,7 +743,7 @@ namespace HelixToolkit.Wpf
                         case "newmtl":
                             if (value != null)
                             {
-                                currentMaterial = new MaterialDefinition();
+                                currentMaterial = new MaterialDefinition(value);
                                 this.Materials.Add(value, currentMaterial);
                             }
 
@@ -946,10 +946,12 @@ namespace HelixToolkit.Wpf
         public class MaterialDefinition
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="MaterialDefinition"/> class.
+            /// Initializes a new instance of the <see cref="MaterialDefinition" /> class.
             /// </summary>
-            public MaterialDefinition()
+            /// <param name="name">The name.</param>
+            public MaterialDefinition(string name)
             {
+                this.Name = name;
                 this.Dissolved = 1.0;
             }
 
@@ -1005,6 +1007,14 @@ namespace HelixToolkit.Wpf
             public int Illumination { get; set; }
 
             /// <summary>
+            /// Gets or sets the name of the material.
+            /// </summary>
+            /// <value>
+            /// The name.
+            /// </value>
+            public string Name { get; set; }
+
+            /// <summary>
             /// Gets or sets the specular color.
             /// </summary>
             /// <value>The specular color.</value>
@@ -1056,6 +1066,7 @@ namespace HelixToolkit.Wpf
             private Material CreateMaterial(string texturePath)
             {
                 var mg = new MaterialGroup();
+                mg.SetName(this.Name);
 
                 // add the diffuse component
                 if (this.DiffuseMap == null)
