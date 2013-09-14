@@ -1,0 +1,19 @@
+﻿<Window x:Class="ContourDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="ContourDemo" Height="480" Width="640">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ht:HelixViewport3D x:Name="view1" Camera="{ht:PerspectiveCamera 5.3,-12.3,3.3,-6.3,11,-6.6}" CameraChanged="view1_cameraChanged" ShowCameraInfo="True">
+            <ht:SunLight/>
+            <ht:FileModelVisual3D x:Name="model1" Source="Examples/Contour/vwbus.3ds"/>
+        </ht:HelixViewport3D>
+        <ht:HelixViewport3D Grid.Column="1" x:Name="view2" Camera="{ht:PerspectiveCamera 5.3,-12.3,3.3,-6.3,11,-6.6}" CameraChanged="view2_cameraChanged">
+            <ht:SunLight/>
+        </ht:HelixViewport3D>
+    </Grid>
+</Window>
