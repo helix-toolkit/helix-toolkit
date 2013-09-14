@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// A visual element that shows translation and rotation manipulators.
+    /// Represents a visual element that shows translation and rotation manipulators.
     /// </summary>
     public class CombinedManipulator : ModelVisual3D
     {
@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Diameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-            "Diameter", typeof(double), typeof(CombinedManipulator), new UIPropertyMetadata(2.0, DiameterChanged));
+            "Diameter", typeof(double), typeof(CombinedManipulator), new UIPropertyMetadata(2.0));
 
         /// <summary>
         /// Identifies the <see cref="TargetTransform"/> dependency property.
@@ -156,7 +156,7 @@ namespace HelixToolkit.Wpf
                 Manipulator.TargetTransformProperty,
                 new Binding("TargetTransform") { Source = this });
 
-            this.OnChildrenChanged();
+            this.UpdateChildren();
         }
 
         /// <summary>
@@ -313,9 +313,6 @@ namespace HelixToolkit.Wpf
 
             set
             {
-                //this.translateXManipulator.Pivot = value;
-                //this.translateYManipulator.Pivot = value;
-                //this.translateZManipulator.Pivot = value;
                 this.rotateXManipulator.Pivot = value;
                 this.rotateYManipulator.Pivot = value;
                 this.rotateZManipulator.Pivot = value;
@@ -383,9 +380,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on children changed.
+        /// Updates the child visuals.
         /// </summary>
-        protected virtual void OnChildrenChanged()
+        protected void UpdateChildren()
         {
             this.Children.Clear();
             if (this.CanTranslateX)
@@ -420,14 +417,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on diameter changed.
-        /// </summary>
-        protected virtual void OnDiameterChanged()
-        {
-        }
-
-        /// <summary>
-        /// The children changed.
+        /// Handles changes in properties related to the child visuals.
         /// </summary>
         /// <param name="d">
         /// The d.
@@ -437,22 +427,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ChildrenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((CombinedManipulator)d).OnChildrenChanged();
+            ((CombinedManipulator)d).UpdateChildren();
         }
-
-        /// <summary>
-        /// The diameter changed.
-        /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void DiameterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((CombinedManipulator)d).OnDiameterChanged();
-        }
-
     }
 }

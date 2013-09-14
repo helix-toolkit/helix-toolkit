@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    ///   An abstract base class for manipulators.
+    ///   Provides an abstract base class for manipulators.
     /// </summary>
     public abstract class Manipulator : UIElement3D
     {
@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof(Color), typeof(Manipulator), new UIPropertyMetadata(ColorChanged));
+            "Color", typeof(Color), typeof(Manipulator), new UIPropertyMetadata((s, e) => ((Manipulator)s).ColorChanged()));
 
         /// <summary>
         /// Identifies the <see cref="Offset"/> dependency property.
@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf
             typeof(Vector3D),
             typeof(Manipulator),
             new FrameworkPropertyMetadata(
-                new Vector3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PositionChanged));
+                new Vector3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (s, e) => ((Manipulator)s).PositionChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="Position"/> dependency property.
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf
             typeof(Point3D),
             typeof(Manipulator),
             new FrameworkPropertyMetadata(
-                new Point3D(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PositionChanged));
+                new Point3D(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (s, e) => ((Manipulator)s).PositionChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="TargetTransform"/> dependency property.
@@ -60,7 +60,19 @@ namespace HelixToolkit.Wpf
             "Value",
             typeof(double),
             typeof(Manipulator),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
+            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (s, e) => ((Manipulator)s).ValueChanged(e)));
+
+        /// <summary>
+        /// Identifies the <see cref="Material"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaterialProperty =
+            DependencyProperty.Register("Material", typeof(Material), typeof(Manipulator), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Identifies the <see cref="BackMaterial"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty BackMaterialProperty =
+            DependencyProperty.Register("BackMaterial", typeof(Material), typeof(Manipulator), new PropertyMetadata(null));
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="Manipulator" /> class.
@@ -68,6 +80,8 @@ namespace HelixToolkit.Wpf
         protected Manipulator()
         {
             this.Model = new GeometryModel3D();
+            BindingOperations.SetBinding(this.Model, GeometryModel3D.MaterialProperty, new Binding("Material") { Source = this });
+            BindingOperations.SetBinding(this.Model, GeometryModel3D.BackMaterialProperty, new Binding("BackMaterial") { Source = this });
             this.Visual3DModel = this.Model;
         }
 
@@ -86,6 +100,24 @@ namespace HelixToolkit.Wpf
             {
                 this.SetValue(ColorProperty, value);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the material of the manipulator.
+        /// </summary>
+        public Material Material
+        {
+            get { return (Material)this.GetValue(MaterialProperty); }
+            set { this.SetValue(MaterialProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the back material of the manipulator.
+        /// </summary>
+        public Material BackMaterial
+        {
+            get { return (Material)this.GetValue(BackMaterialProperty); }
+            set { this.SetValue(BackMaterialProperty, value); }
         }
 
         /// <summary>
@@ -123,7 +155,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets TargetTransform.
+        ///   Gets or sets the target transform.
         /// </summary>
         public Transform3D TargetTransform
         {
@@ -197,7 +229,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when Geometry is changed.
+        /// Called when a property related to the geometry is changed.
         /// </summary>
         /// <param name="d">
         /// The sender.
@@ -205,9 +237,9 @@ namespace HelixToolkit.Wpf
         /// <param name="e">
         /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
-        protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected static void UpdateGeometry(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Manipulator)d).OnGeometryChanged();
+            ((Manipulator)d).UpdateGeometry();
         }
 
         /// <summary>
@@ -231,16 +263,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Called when the geometry changed.
+        /// Updates the geometry.
         /// </summary>
-        protected abstract void OnGeometryChanged();
+        protected abstract void UpdateGeometry();
 
         /// <summary>
-        /// The on mouse down.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -256,11 +286,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on mouse up.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseUp" /> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. The event data reports that the mouse button was released.</param>
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
@@ -268,24 +296,20 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when position is changed.
+        /// Handles changes in the Position property.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected virtual void OnPositionChanged(DependencyPropertyChangedEventArgs e)
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        protected virtual void PositionChanged(DependencyPropertyChangedEventArgs e)
         {
             this.Transform = new TranslateTransform3D(
                 this.Position.X + this.Offset.X, this.Position.Y + this.Offset.Y, this.Position.Z + this.Offset.Z);
         }
 
         /// <summary>
-        /// Called when value is changed.
+        /// Handles changes in the Value property.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        protected virtual void ValueChanged(DependencyPropertyChangedEventArgs e)
         {
         }
 
@@ -339,54 +363,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The color changed.
+        ///   Handles changes in the Color property (this will override the materials).
         /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void ColorChanged()
         {
-            ((Manipulator)d).OnColorChanged();
-        }
-
-        /// <summary>
-        /// Called when position has been changed.
-        /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        private static void PositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Manipulator)d).OnPositionChanged(e);
-        }
-
-        /// <summary>
-        /// Called when value has been changed.
-        /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Manipulator)d).OnValueChanged(e);
-        }
-
-        /// <summary>
-        ///   The on color changed.
-        /// </summary>
-        private void OnColorChanged()
-        {
-            this.Model.Material = MaterialHelper.CreateMaterial(this.Color);
-            this.Model.BackMaterial = this.Model.Material;
+            this.Material = MaterialHelper.CreateMaterial(this.Color);
+            this.BackMaterial = this.Material;
         }
     }
 }

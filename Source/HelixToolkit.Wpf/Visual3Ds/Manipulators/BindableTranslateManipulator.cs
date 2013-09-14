@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    ///   A visual element that contains a manipulator that can translate along an axis.
+    ///   Represeents a visual element that contains a manipulator that can translate along an axis.
     /// </summary>
     public class BindableTranslateManipulator : Manipulator
     {
@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf
             "Diameter",
             typeof(double),
             typeof(BindableTranslateManipulator),
-            new UIPropertyMetadata(0.2, GeometryChanged));
+            new UIPropertyMetadata(0.2, UpdateGeometry));
 
         /// <summary>
         /// Identifies the <see cref="Direction"/> dependency property.
@@ -30,13 +30,13 @@ namespace HelixToolkit.Wpf
             "Direction",
             typeof(Vector3D),
             typeof(BindableTranslateManipulator),
-            new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
+            new UIPropertyMetadata(new Vector3D(0, 0, 1), UpdateGeometry));
 
         /// <summary>
         /// Identifies the <see cref="Length"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
-            "Length", typeof(double), typeof(BindableTranslateManipulator), new UIPropertyMetadata(2.0, GeometryChanged));
+            "Length", typeof(double), typeof(BindableTranslateManipulator), new UIPropertyMetadata(2.0, UpdateGeometry));
 
         /// <summary>
         ///   The last point.
@@ -95,9 +95,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Called when geometry has been changed.
+        /// Updates the geometry.
         /// </summary>
-        protected override void OnGeometryChanged()
+        protected override void UpdateGeometry()
         {
             var mb = new MeshBuilder(false, false);
             var p0 = new Point3D(0, 0, 0);
@@ -109,11 +109,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on mouse down.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -137,11 +135,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on mouse move.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -167,14 +163,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Updates the TargetTransform in addition to updating position.
+        /// Updates the position and the TargetTransform.
         /// </summary>
         /// <param name="e">
         /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
-        protected override void OnPositionChanged(DependencyPropertyChangedEventArgs e)
+        protected override void PositionChanged(DependencyPropertyChangedEventArgs e)
         {
-            base.OnPositionChanged(e);
+            base.PositionChanged(e);
             if (this.TargetTransform != null)
             {
                 var delta = (Point3D)e.NewValue - (Point3D)e.OldValue;
@@ -184,12 +180,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Moves the Manipulator position  by the change in value along the direction vector.
+        /// Moves the Manipulator position by the change in value along the direction vector.
         /// </summary>
         /// <param name="e">
         /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
-        protected override void OnValueChanged(DependencyPropertyChangedEventArgs e)
+        protected override void ValueChanged(DependencyPropertyChangedEventArgs e)
         {
             var oldValue = (double)e.OldValue;
             var newValue = (double)e.NewValue;
