@@ -73,15 +73,6 @@ namespace HelixToolkit.Wpf
                 "TextureCoordinates", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
-        /// Identifies the <see cref="UpVector"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty UpVectorProperty = DependencyProperty.Register(
-            "UpVector",
-            typeof(Vector3D),
-            typeof(ExtrudedVisual3D),
-            new UIPropertyMetadata(new Vector3D(0, 0, 1), GeometryChanged));
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ExtrudedVisual3D" /> class.
         /// </summary>
         public ExtrudedVisual3D()
@@ -190,7 +181,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the section.
+        /// Gets or sets the initial alignment of the x-axis of the section into the 3D viewport.
         /// </summary>
         /// <value> The section. </value>
         public Vector3D SectionXAxis
@@ -220,23 +211,6 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(TextureCoordinatesProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the up vector.
-        /// </summary>
-        /// <value> The up vector. </value>
-        public Vector3D UpVector
-        {
-            get
-            {
-                return (Vector3D)this.GetValue(UpVectorProperty);
-            }
-
-            set
-            {
-                this.SetValue(UpVectorProperty, value);
             }
         }
 
