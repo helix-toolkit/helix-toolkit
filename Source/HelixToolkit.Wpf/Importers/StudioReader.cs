@@ -533,7 +533,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    Debug.WriteLine(string.Format("Texture not found: {0}", Path.GetFullPath(path)));
+                    // Debug.WriteLine(string.Format("Texture not found: {0}", Path.GetFullPath(path)));
                     mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(diffuse)));
                 }
             }
