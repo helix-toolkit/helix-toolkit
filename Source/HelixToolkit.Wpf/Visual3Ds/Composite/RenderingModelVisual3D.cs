@@ -11,6 +11,9 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public abstract class RenderingModelVisual3D : ModelVisual3D
     {
+        /// <summary>
+        /// The rendering event listener
+        /// </summary>
         private readonly RenderingEventListener renderingEventListener;
 
         /// <summary>
@@ -20,13 +23,6 @@ namespace HelixToolkit.Wpf
         {
             renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
         }
-
-#if DEBUG
-        ~RenderingModelVisual3D()
-        {
-            System.Diagnostics.Debug.WriteLine(this.GetType() + " finalized.");
-        }
-#endif
 
         /// <summary>
         /// Subscribes to CompositionTarget.Rendering event.

@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+    using System.Text;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
@@ -360,34 +360,38 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Validates the specified mesh.
         /// </summary>
-        /// <param name="mesh">
-        /// The mesh.
-        /// </param>
-        public static void Validate(MeshGeometry3D mesh)
+        /// <param name="mesh">The mesh.</param>
+        /// <returns>Validation report or null if no issues were found.</returns>
+        public static string Validate(MeshGeometry3D mesh)
         {
+            var sb = new StringBuilder();
             if (mesh.Normals != null && mesh.Normals.Count != 0 && mesh.Normals.Count != mesh.Positions.Count)
             {
-                Debug.WriteLine("Wrong number of normal vectors");
+                sb.AppendLine("Wrong number of normal vectors");
             }
 
             if (mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count != 0
                 && mesh.TextureCoordinates.Count != mesh.Positions.Count)
             {
-                Debug.WriteLine("Wrong number of TextureCoordinates");
+                sb.AppendLine("Wrong number of TextureCoordinates");
             }
 
             if (mesh.TriangleIndices.Count % 3 != 0)
             {
-                Debug.WriteLine("TriangleIndices not complete");
+                sb.AppendLine("TriangleIndices not complete");
             }
 
             for (int i = 0; i < mesh.TriangleIndices.Count; i++)
             {
                 int index = mesh.TriangleIndices[i];
-                Debug.Assert(
-                    index >= 0 || index < mesh.Positions.Count, 
-                    string.Format("Wrong index {0} in triangle {1} vertex {2}", index, i / 3, i % 3));
+                if (index < 0 || index >= mesh.Positions.Count)
+                {
+                    sb.AppendFormat("Wrong index {0} in triangle {1} vertex {2}", index, i / 3, i % 3);
+                    sb.AppendLine();
+                }
             }
+
+            return sb.Length > 0 ? sb.ToString() : null;
         }
 
         /// <summary>
@@ -649,7 +653,7 @@ namespace HelixToolkit.Wpf
             i0 = (uint)(key >> 32);
             i1 = (uint)((key << 32) >> 32);
         }
-        
+
         /// <summary>
         /// Finds the nearest connected segment to the specified point.
         /// </summary>
