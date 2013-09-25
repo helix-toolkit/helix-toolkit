@@ -9,6 +9,7 @@ namespace HelixToolkit.Wpf
     using System;
     using System.IO;
     using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Imports a model from a file.
@@ -35,15 +36,20 @@ namespace HelixToolkit.Wpf
         /// Loads a model from the specified path.
         /// </summary>
         /// <param name="path">The path.</param>
-        /// <returns>
-        /// A model.
-        /// </returns>
+        /// <param name="dispatcher">The dispatcher used to create the model.</param>
+        /// <param name="freeze">Freeze the model if set to <c>true</c>.</param>
+        /// <returns>A model.</returns>
         /// <exception cref="System.InvalidOperationException">File format not supported.</exception>
-        public Model3DGroup Load(string path)
+        public Model3DGroup Load(string path, Dispatcher dispatcher = null, bool freeze = false)
         {
             if (path == null)
             {
                 return null;
+            }
+
+            if (dispatcher == null)
+            {
+                dispatcher = Dispatcher.CurrentDispatcher;
             }
 
             Model3DGroup model;
@@ -57,14 +63,14 @@ namespace HelixToolkit.Wpf
             {
                 case ".3ds":
                     {
-                        var r = new StudioReader();
+                        var r = new StudioReader(dispatcher) { DefaultMaterial = this.DefaultMaterial, Freeze = freeze };
                         model = r.Read(path);
                         break;
                     }
 
                 case ".lwo":
                     {
-                        var r = new LwoReader { DefaultMaterial = this.DefaultMaterial };
+                        var r = new LwoReader(dispatcher) { DefaultMaterial = this.DefaultMaterial, Freeze = freeze };
                         model = r.Read(path);
 
                         break;
@@ -72,28 +78,28 @@ namespace HelixToolkit.Wpf
 
                 case ".obj":
                     {
-                        var r = new ObjReader { DefaultMaterial = this.DefaultMaterial };
+                        var r = new ObjReader(dispatcher) { DefaultMaterial = this.DefaultMaterial, Freeze = freeze };
                         model = r.Read(path);
                         break;
                     }
 
                 case ".objz":
                     {
-                        var r = new ObjReader { DefaultMaterial = this.DefaultMaterial };
+                        var r = new ObjReader(dispatcher) { DefaultMaterial = this.DefaultMaterial, Freeze = freeze };
                         model = r.ReadZ(path);
                         break;
                     }
 
                 case ".stl":
                     {
-                        var r = new StLReader { DefaultMaterial = this.DefaultMaterial };
+                        var r = new StLReader(dispatcher) { DefaultMaterial = this.DefaultMaterial, Freeze = freeze };
                         model = r.Read(path);
                         break;
                     }
 
                 case ".off":
                     {
-                        var r = new OffReader { DefaultMaterial = this.DefaultMaterial };
+                        var r = new OffReader(dispatcher) { DefaultMaterial = this.DefaultMaterial, Freeze = freeze };
                         model = r.Read(path);
                         break;
                     }
@@ -101,6 +107,11 @@ namespace HelixToolkit.Wpf
                 default:
                     throw new InvalidOperationException("File format not supported.");
             }
+
+            //if (!freeze)
+            //{
+            //    dispatcher.Invoke(new Action(() => model.SetName(Path.GetFileName(path))));
+            //}
 
             return model;
         }

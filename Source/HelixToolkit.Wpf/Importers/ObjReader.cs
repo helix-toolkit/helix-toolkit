@@ -15,11 +15,12 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
 
     /// <summary>
     /// A Wavefront .obj file reader.
     /// </summary>
-    public class ObjReader : IModelReader
+    public class ObjReader : ModelReader
     {
         /// <summary>
         /// The smoothing group maps.
@@ -41,16 +42,16 @@ namespace HelixToolkit.Wpf
         private int currentLineNo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "ObjReader" /> class.
+        /// Initializes a new instance of the <see cref="ObjReader" /> class.
         /// </summary>
-        public ObjReader()
+        /// <param name="dispatcher">The dispatcher.</param>
+        public ObjReader(Dispatcher dispatcher = null)
+            : base(dispatcher)
         {
             this.IgnoreErrors = false;
 
             this.IsSmoothingDefault = true;
             this.SkipTransparencyValues = true;
-
-            this.DefaultMaterial = Wpf.Materials.Gold;
 
             this.Points = new List<Point3D>();
             this.TextureCoordinates = new List<Point>();
@@ -67,14 +68,6 @@ namespace HelixToolkit.Wpf
             // http://www.martinreddy.net/gfx/3d/OBJ.spec
             // http://www.eg-models.de/formats/Format_Obj.html
         }
-
-        /// <summary>
-        /// Gets or sets the default material.
-        /// </summary>
-        /// <value>
-        /// The default material.
-        /// </value>
-        public Material DefaultMaterial { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to ignore errors.
@@ -125,12 +118,6 @@ namespace HelixToolkit.Wpf
         public Dictionary<string, MaterialDefinition> Materials { get; private set; }
 
         /// <summary>
-        /// Gets or sets the path to the textures.
-        /// </summary>
-        /// <value>The texture path.</value>
-        public string TexturePath { get; set; }
-
-        /// <summary>
         /// Gets the current group.
         /// </summary>
         private Group CurrentGroup
@@ -169,13 +156,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Reads the model from the specified path.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(string path)
+        /// <param name="path">The path.</param>
+        /// <returns>The model.</returns>
+        public override Model3DGroup Read(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
             using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -187,13 +170,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
-        /// <param name="s">
-        /// The stream.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(Stream s)
+        /// <param name="s">The stream.</param>
+        /// <returns>The model.</returns>
+        public override Model3DGroup Read(Stream s)
         {
             using (this.Reader = new StreamReader(s))
             {
@@ -309,16 +288,10 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Reads a GZipStream compressed OBJ file.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// A Model3D object containing the model.
-        /// </returns>
-        /// <remarks>
-        /// This is a file format used by Helix Toolkit only.
-        /// Use the GZipHelper class to compress an .obj file.
-        /// </remarks>
+        /// <param name="path">The path.</param>
+        /// <returns>A Model3D object containing the model.</returns>
+        /// <remarks>This is a file format used by Helix Toolkit only.
+        /// Use the GZipHelper class to compress an .obj file.</remarks>
         public Model3DGroup ReadZ(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
@@ -665,20 +638,31 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Builds the model.
         /// </summary>
-        /// <returns>
-        /// A Model3D object.
-        /// </returns>
+        /// <returns>A Model3D object.</returns>
         private Model3DGroup BuildModel()
         {
-            var modelGroup = new Model3DGroup();
-            foreach (var g in this.Groups)
-            {
-                foreach (var gm in g.CreateModels())
+            Model3DGroup modelGroup = null;
+            this.Dispatch(() =>
                 {
-                    modelGroup.Children.Add(gm);
-                }
-            }
+                    modelGroup = new Model3DGroup();
+                    foreach (var g in this.Groups)
+                    {
+                        foreach (var gm in g.CreateModels())
+                        {
+                            if (this.Freeze)
+                            {
+                                gm.Freeze();
+                            }
 
+                            modelGroup.Children.Add(gm);
+                        }
+                    }
+
+                    if (this.Freeze)
+                    {
+                        modelGroup.Freeze();
+                    }
+                });
             return modelGroup;
         }
 
@@ -696,7 +680,12 @@ namespace HelixToolkit.Wpf
             MaterialDefinition mat;
             if (!string.IsNullOrEmpty(materialName) && this.Materials.TryGetValue(materialName, out mat))
             {
-                return mat.GetMaterial(this.TexturePath);
+                Material m = null;
+                this.Dispatch(() =>
+                    {
+                        m = mat.GetMaterial(this.TexturePath);
+                    });
+                return m;
             }
 
             return this.DefaultMaterial;
@@ -716,13 +705,13 @@ namespace HelixToolkit.Wpf
                 return;
             }
 
-            using (var mreader = new StreamReader(path))
+            using (var materialReader = new StreamReader(path))
             {
                 MaterialDefinition currentMaterial = null;
 
-                while (!mreader.EndOfStream)
+                while (!materialReader.EndOfStream)
                 {
-                    var line = mreader.ReadLine();
+                    var line = materialReader.ReadLine();
                     if (line == null)
                     {
                         break;
@@ -857,12 +846,12 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// List of mesh builders.
             /// </summary>
-            private readonly IList<MeshBuilder> meshBuilders;
+            private readonly List<MeshBuilder> meshBuilders;
 
             /// <summary>
             /// List of materials.
             /// </summary>
-            private readonly IList<Material> materials;
+            private readonly List<Material> materials;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Group"/> class.
@@ -926,13 +915,10 @@ namespace HelixToolkit.Wpf
             {
                 for (int i = 0; i < this.meshBuilders.Count; i++)
                 {
-                    yield return
-                        new GeometryModel3D
-                            {
-                                Geometry = this.meshBuilders[i].ToMesh(),
-                                Material = this.materials[i],
-                                BackMaterial = this.materials[i]
-                            };
+                    var material = this.materials[i];
+                    var mesh = this.meshBuilders[i].ToMesh();
+                    var model = new GeometryModel3D { Geometry = mesh, Material = material, BackMaterial = material };
+                    yield return model;
                 }
             }
         }
@@ -1052,7 +1038,6 @@ namespace HelixToolkit.Wpf
                 if (this.Material == null)
                 {
                     this.Material = this.CreateMaterial(texturePath);
-                    this.Material.Freeze();
                 }
 
                 return this.Material;

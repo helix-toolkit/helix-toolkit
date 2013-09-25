@@ -130,6 +130,7 @@
     <Compile Include="Helpers\ScreenSpace\CohenSutherlandClipping.cs" />
     <Compile Include="Helpers\ScreenSpace\LineGeometryBuilder.cs" />
     <Compile Include="Importers\Importers.cs" />
+    <Compile Include="Importers\ModelReader.cs" />
     <Compile Include="Importers\OffReader.cs" />
     <Compile Include="MarkupExtensions\KeyGestureExtension.cs" />
     <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />

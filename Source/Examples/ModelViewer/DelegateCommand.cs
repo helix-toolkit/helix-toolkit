@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Windows.Input;
-
-namespace StudioDemo
+namespace ModelViewer
 {
+    using System;
+    using System.Windows.Input;
+
     public class DelegateCommand : ICommand
     {
         private readonly Action execute;
@@ -49,6 +49,7 @@ namespace StudioDemo
                 }
             }
         }
+
         public void RaiseCanExecuteChanged()
         {
             CommandManager.InvalidateRequerySuggested();

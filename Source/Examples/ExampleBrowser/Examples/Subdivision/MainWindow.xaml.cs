@@ -49,6 +49,7 @@ namespace SubdivisionDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
+
         OffReader off;
 
         int levels;
@@ -98,7 +99,7 @@ namespace SubdivisionDemo
             var d = new OpenFileDialog() { Filter = "OFF files (*.off)|*.off", InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), @"Examples\Subdivision\Models\") };
             if (d.ShowDialog().Value)
             {
-                Load(d.FileName);
+                this.Load(d.FileName);
             }
         }
 
@@ -106,9 +107,13 @@ namespace SubdivisionDemo
         {
 
             this.off = new OffReader();
-            this.off.Load(fileName);
-            Levels = 1;
-            UpdateModel();
+            using (var s = File.OpenRead(fileName))
+            {
+                this.off.Load(s);
+            }
+
+            this.Levels = 1;
+            this.UpdateModel();
             view1.ZoomExtents();
         }
 

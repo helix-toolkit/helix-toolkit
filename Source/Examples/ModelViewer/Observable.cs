@@ -6,7 +6,7 @@
 
 using System.ComponentModel;
 
-namespace StudioDemo
+namespace ModelViewer
 {
     public class Observable : INotifyPropertyChanged
     {
