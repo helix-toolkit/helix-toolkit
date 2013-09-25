@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    ///   Represeents a visual element that contains a manipulator that can translate along an axis.
+    ///   Represents a visual element that contains a manipulator that can translate along an axis.
     /// </summary>
     public class BindableTranslateManipulator : Manipulator
     {
