@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextBillboardVisual3D.cs" company="Helix 3D Toolkit">
+// <copyright file="BillboardTextVisual3D.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
@@ -15,6 +15,22 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Media.Media3D;
+
+    /// <summary>
+    /// Defines the type of material.
+    /// </summary>
+    public enum MaterialType
+    {
+        /// <summary>
+        /// A diffuse material.
+        /// </summary>
+        Diffuse,
+
+        /// <summary>
+        /// An emissive material.
+        /// </summary>
+        Emissive
+    }
 
     /// <summary>
     /// A visual element that contains a text billboard.
@@ -95,6 +111,13 @@ namespace HelixToolkit.Wpf
             "Text", typeof(string), typeof(BillboardTextVisual3D), new UIPropertyMetadata(null, VisualChanged));
 
         /// <summary>
+        /// Identifies the <see cref="MaterialType"/> dependency property.
+        /// </summary>        
+        public static readonly DependencyProperty MaterialTypeProperty =
+            DependencyProperty.Register("MaterialType", typeof(MaterialType), typeof(BillboardTextVisual3D), new PropertyMetadata(MaterialType.Diffuse));
+
+
+        /// <summary>
         /// Gets or sets the background.
         /// </summary>
         /// <value>The background.</value>
@@ -104,6 +127,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Brush)this.GetValue(BackgroundProperty);
             }
+
             set
             {
                 this.SetValue(BackgroundProperty, value);
@@ -120,6 +144,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Brush)this.GetValue(BorderBrushProperty);
             }
+
             set
             {
                 this.SetValue(BorderBrushProperty, value);
@@ -136,6 +161,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Thickness)this.GetValue(BorderThicknessProperty);
             }
+
             set
             {
                 this.SetValue(BorderThicknessProperty, value);
@@ -230,6 +256,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the type of the material.
+        /// </summary>
+        /// <value>The type of the material.</value>
+        public MaterialType MaterialType
+        {
+            get
+            {
+                return (MaterialType)this.GetValue(MaterialTypeProperty);
+            }
+
+            set
+            {
+                this.SetValue(MaterialTypeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the padding.
         /// </summary>
         /// <value>The padding.</value>
@@ -239,6 +282,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Thickness)this.GetValue(PaddingProperty);
             }
+
             set
             {
                 this.SetValue(PaddingProperty, value);
@@ -317,7 +361,19 @@ namespace HelixToolkit.Wpf
             var rtb = new RenderTargetBitmap(
                 (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(element);
-            this.Material = new DiffuseMaterial(new ImageBrush(rtb));
+
+            var brush = new ImageBrush(rtb);
+
+            if (this.MaterialType == MaterialType.Diffuse)
+            {
+                this.Material = new DiffuseMaterial(brush);
+            }
+
+            if (this.MaterialType == MaterialType.Emissive)
+            {
+                this.Material = new EmissiveMaterial(brush);
+            }
+
             this.Width = element.ActualWidth;
             this.Height = element.ActualHeight * this.HeightFactor;
         }
