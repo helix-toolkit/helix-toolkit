@@ -20,9 +20,15 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Camera">
+                <MenuItem IsCheckable="True" Header="Orthographic" IsChecked="{Binding Orthographic, ElementName=view1}"/>
+                <MenuItem Header="NearPlaneDistance">
+                    <TextBox Text="{Binding Camera.NearPlaneDistance, ElementName=view1}"></TextBox>
+                </MenuItem>
+                <MenuItem Header="FarPlaneDistance">
+                    <TextBox Text="{Binding Camera.FarPlaneDistance, ElementName=view1}"></TextBox>
+                </MenuItem>
                 <MenuItem IsCheckable="True" Header="RotateAroundMouseDownPoint" IsChecked="{Binding RotateAroundMouseDownPoint, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="ZoomAroundMouseDownPoint" IsChecked="{Binding ZoomAroundMouseDownPoint, ElementName=view1}"/>
-                <MenuItem IsCheckable="True" Header="Orthographic" IsChecked="{Binding Orthographic, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="InfiniteSpin" IsChecked="{Binding InfiniteSpin, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="IsInertiaEnabled" IsChecked="{Binding IsInertiaEnabled, ElementName=view1}"/>
                 <MenuItem IsCheckable="True" Header="IsPanEnabled" IsChecked="{Binding IsPanEnabled, ElementName=view1}"/>
@@ -53,7 +59,7 @@
         </Menu>
         <helix:HelixViewport3D x:Name="view1">
             <helix:HelixViewport3D.DefaultCamera>
-                <PerspectiveCamera Position="100,100,100" LookDirection="-100,-100,-100" UpDirection="0,0,1" FieldOfView="61"/>
+                <PerspectiveCamera Position="100,100,100" LookDirection="-100,-100,-100" UpDirection="0,0,1" FieldOfView="61" NearPlaneDistance="0.001"/>
             </helix:HelixViewport3D.DefaultCamera>
             <helix:SunLight/>
             <helix:SphereVisual3D Radius="5"/>
