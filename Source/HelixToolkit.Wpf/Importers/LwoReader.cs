@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf
     using System.IO;
     using System.Text;
     using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
 
     /// <summary>
     /// LWO (Lightwave object) file reader
@@ -18,29 +19,21 @@ namespace HelixToolkit.Wpf
     /// <remarks>
     /// LWO2 is currently not supported.
     /// </remarks>
-    public class LwoReader : IModelReader
+    public class LwoReader : ModelReader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LwoReader"/> class.
+        /// Initializes a new instance of the <see cref="LwoReader" /> class.
         /// </summary>
-        public LwoReader()
+        /// <param name="dispatcher">The dispatcher.</param>
+        public LwoReader(Dispatcher dispatcher = null) :
+            base(dispatcher)
         {
-            this.DefaultMaterial = Wpf.Materials.Blue;
-
             // http://www.martinreddy.net/gfx/3d/LWOB.txt
             // http://www.modwiki.net/wiki/LWO_(file_format)
             // http://www.wotsit.org/list.asp?fc=2
             // https://www.lightwave3d.com/lightwave_sdk/
             // http://home.comcast.net/~erniew/lwsdk/docs/filefmts/lwo2.html (TODO!)
         }
-
-        /// <summary>
-        /// Gets or sets the default material.
-        /// </summary>
-        /// <value>
-        /// The default material.
-        /// </value>
-        public Material DefaultMaterial { get; set; }
 
         /// <summary>
         /// Gets the materials.
@@ -61,45 +54,16 @@ namespace HelixToolkit.Wpf
         public IList<string> Surfaces { get; private set; }
 
         /// <summary>
-        /// Gets or sets the texture path.
-        /// </summary>
-        /// <value>The texture path.</value>
-        public string TexturePath { get; set; }
-
-        /// <summary>
         /// Gets or sets Points.
         /// </summary>
         private IList<Point3D> Points { get; set; }
 
         /// <summary>
-        /// Reads the model from the specified path.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// A Model3D.
-        /// </returns>
-        public Model3DGroup Read(string path)
-        {
-            var texturePath = Path.GetDirectoryName(path);
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                this.TexturePath = texturePath;
-                return this.Read(s);
-            }
-        }
-
-        /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
-        /// <param name="s">
-        /// The stream.
-        /// </param>
-        /// <returns>
-        /// A Model3D.
-        /// </returns>
-        public Model3DGroup Read(Stream s)
+        /// <param name="s">The stream.</param>
+        /// <returns>A Model3D.</returns>
+        public override Model3DGroup Read(Stream s)
         {
             using (var reader = new BinaryReader(s))
             {
@@ -164,20 +128,37 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Builds the model.
         /// </summary>
-        /// <returns>
-        /// A Model3D.
-        /// </returns>
+        /// <returns>A Model3D.</returns>
         private Model3DGroup BuildModel()
         {
-            var modelGroup = new Model3DGroup();
-            int index = 0;
-            foreach (var mesh in this.Meshes)
-            {
-                var gm = new GeometryModel3D { Geometry = mesh.ToMesh(), Material = this.Materials[index], BackMaterial = this.Materials[index] };
-                modelGroup.Children.Add(gm);
-                index++;
-            }
+            Model3DGroup modelGroup = null;
+            this.Dispatch(
+                () =>
+                {
+                    modelGroup = new Model3DGroup();
+                    int index = 0;
+                    foreach (var mesh in this.Meshes)
+                    {
+                        var gm = new GeometryModel3D
+                                     {
+                                         Geometry = mesh.ToMesh(),
+                                         Material = this.Materials[index],
+                                         BackMaterial = this.Materials[index]
+                                     };
+                        if (this.Freeze)
+                        {
+                            gm.Freeze();
+                        }
 
+                        modelGroup.Children.Add(gm);
+                        index++;
+                    }
+
+                    if (this.Freeze)
+                    {
+                        modelGroup.Freeze();
+                    }
+                });
             return modelGroup;
         }
 

@@ -4,283 +4,187 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
-using Microsoft.Win32;
-
-namespace StudioDemo
+namespace ModelViewer
 {
+    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Windows.Media;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
 
-    public class VisualElement
-    {
-        public IEnumerable<VisualElement> Children
-        {
-            get
-            {
-                var mv = element as ModelVisual3D;
-                if (mv != null)
-                {
-                    if (mv.Content!=null)
-                        yield return new VisualElement(mv.Content);
-                    foreach (var mc in mv.Children)
-                        yield return new VisualElement(mc);
-                }
+    using HelixToolkit.Wpf;
 
-                var mg = element as Model3DGroup;
-                if (mg != null)
-                    foreach (var mc in mg.Children) yield return new VisualElement(mc);
-
-                var gm = element as GeometryModel3D;
-                if (gm != null)
-                {
-                    yield return new VisualElement(gm.Geometry);
-                }
-
-                //int n = VisualTreeHelper.GetChildrenCount(element);
-                //for (int i = 0; i < n; i++)
-                //    yield return new VisualElement(VisualTreeHelper.GetChild(element, i));
-                foreach (DependencyObject c in LogicalTreeHelper.GetChildren(element))
-                    yield return new VisualElement(c);
-            }
-        }
-
-        public string TypeName
-        {
-            get
-            {
-                return element.GetType().Name;
-            }
-        }
-        public Brush Brush
-        {
-            get
-            {
-                if (element.GetType() == typeof(ModelVisual3D))
-                    return Brushes.Orange;
-                if (element.GetType() == typeof(GeometryModel3D))
-                    return Brushes.Green;
-                if (element.GetType() == typeof(Model3DGroup))
-                    return Brushes.Blue;
-                if (element.GetType() == typeof(Visual3D))
-                    return Brushes.Gray;
-                if (element.GetType() == typeof(Model3D))
-                    return Brushes.Black;
-                return null;
-            }
-        }
-        public override string ToString()
-        {
-            return element.GetType().ToString();
-        }
-
-        private DependencyObject element;
-
-        public VisualElement(DependencyObject e)
-        {
-            element = e;
-        }
-
-    }
-
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class MainViewModel : Observable
     {
-        public ICommand FileOpenCommand { get; set; }
-        public ICommand FileExportCommand { get; set; }
-        public ICommand FileExitCommand { get; set; }
-        public ICommand HelpAboutCommand { get; set; }
-        public ICommand ViewZoomExtentsCommand { get; set; }
-        public ICommand EditCopyXamlCommand { get; set; }
-
         private const string OpenFileFilter = "3D model files (*.3ds;*.obj;*.lwo;*.stl)|*.3ds;*.obj;*.objz;*.lwo;*.stl";
+
         private const string TitleFormatString = "3D model viewer - {0}";
 
-        private string _currentModelPath;
-        public string CurrentModelPath
-        {
-            get { return _currentModelPath; }
-            set { _currentModelPath = value; RaisePropertyChanged("CurrentModelPath"); }
-        }
+        private readonly IFileDialogService fileDialogService;
 
-        private string _applicationTitle;
-        public string ApplicationTitle
-        {
-            get { return _applicationTitle; }
-            set { _applicationTitle = value; RaisePropertyChanged("ApplicationTitle"); }
-        }
+        private readonly IHelixViewport3D viewport;
+
+        private readonly Dispatcher dispatcher;
+
+        private string currentModelPath;
+
+        private string applicationTitle;
 
         private double expansion;
 
-        public double Expansion
+        private Model3D currentModel;
+
+        public MainViewModel(IFileDialogService fds, HelixViewport3D viewport)
         {
-            get { return expansion; }
+            if (viewport == null)
+            {
+                throw new ArgumentNullException("viewport");
+            }
+
+            this.dispatcher = Dispatcher.CurrentDispatcher;
+            this.Expansion = 1;
+            this.fileDialogService = fds;
+            this.viewport = viewport;
+            this.FileOpenCommand = new DelegateCommand(this.FileOpen);
+            this.FileExportCommand = new DelegateCommand(this.FileExport);
+            this.FileExitCommand = new DelegateCommand(FileExit);
+            this.ViewZoomExtentsCommand = new DelegateCommand(this.ViewZoomExtents);
+            this.EditCopyXamlCommand = new DelegateCommand(this.CopyXaml);
+            this.ApplicationTitle = "3D Model viewer";
+            this.Elements = new List<VisualViewModel>();
+            foreach (var c in viewport.Children)
+            {
+                this.Elements.Add(new VisualViewModel(c));
+            }
+        }
+
+        public string CurrentModelPath
+        {
+            get
+            {
+                return this.currentModelPath;
+            }
+
             set
             {
-                if (expansion != value)
+                this.currentModelPath = value;
+                this.RaisePropertyChanged("CurrentModelPath");
+            }
+        }
+
+        public string ApplicationTitle
+        {
+            get
+            {
+                return this.applicationTitle;
+            }
+
+            set
+            {
+                this.applicationTitle = value;
+                this.RaisePropertyChanged("ApplicationTitle");
+            }
+        }
+
+        public List<VisualViewModel> Elements { get; set; }
+
+        public double Expansion
+        {
+            get
+            {
+                return this.expansion;
+            }
+
+            set
+            {
+                if (!this.expansion.Equals(value))
                 {
-                    expansion = value;
-                    RaisePropertyChanged("Expansion");
+                    this.expansion = value;
+                    this.RaisePropertyChanged("Expansion");
                 }
             }
         }
 
-        private IFileDialogService FileDialogService;
-        public IHelixViewport3D HelixView { get; set; }
-
-        private Model3D _currentModel;
-
         public Model3D CurrentModel
         {
-            get { return _currentModel; }
-            set { _currentModel = value; RaisePropertyChanged("CurrentModel"); }
+            get
+            {
+                return this.currentModel;
+            }
+
+            set
+            {
+                this.currentModel = value;
+                this.RaisePropertyChanged("CurrentModel");
+            }
         }
 
-        public List<VisualElement> Elements { get; set; }
+        public ICommand FileOpenCommand { get; set; }
 
-        public MainViewModel(IFileDialogService fds, HelixViewport3D hv)
+        public ICommand FileExportCommand { get; set; }
+
+        public ICommand FileExitCommand { get; set; }
+
+        public ICommand HelpAboutCommand { get; set; }
+
+        public ICommand ViewZoomExtentsCommand { get; set; }
+
+        public ICommand EditCopyXamlCommand { get; set; }
+
+        private static void FileExit()
         {
-            Expansion = 1;
-            FileDialogService = fds;
-            HelixView = hv;
-            FileOpenCommand = new DelegateCommand(FileOpen);
-            FileExportCommand = new DelegateCommand(FileExport);
-            FileExitCommand = new DelegateCommand(FileExit);
-            ViewZoomExtentsCommand = new DelegateCommand(ViewZoomExtents);
-            EditCopyXamlCommand = new DelegateCommand(CopyXaml);
-            ApplicationTitle = "3D Model viewer";
-            Elements = new List<VisualElement>();
-            foreach (var c in hv.Children) Elements.Add(new VisualElement(c));
-
-        }
-
-        private void FileExit()
-        {
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         private void FileExport()
         {
-            var path = FileDialogService.SaveFileDialog(null, null, Exporters.Filter, ".png");
+            var path = this.fileDialogService.SaveFileDialog(null, null, Exporters.Filter, ".png");
             if (path == null)
+            {
                 return;
-            HelixView.Export(path);
-            /*
-                        var ext = Path.GetExtension(path).ToLowerInvariant();
-                        switch (ext)
-                        {
-                            case ".png":
-                            case ".jpg":
-                                HelixView.Export(path);
-                                break;
-                            case ".xaml":
-                                {
-                                    var e = new XamlExporter(path);
-                                    e.Export(CurrentModel);
-                                    e.Close();
-                                    break;
-                                }
+            }
 
-                            case ".xml":
-                                {
-                                    var e = new KerkytheaExporter(path);
-                                    e.Export(HelixView.Viewport);
-                                    e.Close();
-                                    break;
-                                }
-                            case ".obj":
-                                {
-                                    var e = new ObjExporter(path);
-                                    e.Export(CurrentModel);
-                                    e.Close();
-                                    break;
-                                }
-                            case ".objz":
-                                {
-                                    var tmpPath = Path.ChangeExtension(path, ".obj");
-                                     var e = new ObjExporter(tmpPath);
-                                     e.Export(CurrentModel);
-                                     e.Close();
-                                    GZipHelper.Compress(tmpPath);
-                                    break;
-                                }
-                            case ".x3d":
-                                {
-                                    var e = new X3DExporter(path);
-                                    e.Export(CurrentModel);
-                                    e.Close();
-                                    break;
-                                }
-                        }*/
+            this.viewport.Export(path);
         }
 
         private void CopyXaml()
         {
-            var rd = XamlExporter.WrapInResourceDictionary(CurrentModel);
+            var rd = XamlExporter.WrapInResourceDictionary(this.CurrentModel);
             Clipboard.SetText(XamlHelper.GetXaml(rd));
         }
 
         private void ViewZoomExtents()
         {
-            HelixView.ZoomExtents(500);
+            this.viewport.ZoomExtents(500);
         }
 
-        private void FileOpen()
+        private async void FileOpen()
         {
-            CurrentModelPath = FileDialogService.OpenFileDialog("models", null, OpenFileFilter, ".3ds");
-#if !DEBUG
-            try
+            this.CurrentModelPath = this.fileDialogService.OpenFileDialog("models", null, OpenFileFilter, ".3ds");
+            this.CurrentModel = await this.LoadAsync(this.CurrentModelPath, false);
+            this.ApplicationTitle = string.Format(TitleFormatString, this.CurrentModelPath);
+            this.viewport.ZoomExtents(0);
+        }
+
+        private async Task<Model3DGroup> LoadAsync(string model3DPath, bool freeze)
+        {
+            return await Task.Factory.StartNew(() =>
             {
-#endif
-            var importer = new ModelImporter();
-            CurrentModel = importer.Load(CurrentModelPath);
-            ApplicationTitle = String.Format(TitleFormatString, CurrentModelPath);
-            HelixView.ZoomExtents(0);
-#if !DEBUG
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-#endif
-        }
-    }
+                var mi = new ModelImporter();
+                
+                if (freeze)
+                {
+                    // Alt 1. - freeze the model 
+                    return mi.Load(model3DPath, null, true);
+                }
 
-    public interface IFileDialogService
-    {
-        string OpenFileDialog(string initialDirectory, string defaultPath, string filter, string defaultExtension);
-        string SaveFileDialog(string initialDirectory, string defaultPath, string filter, string defaultExtension);
-    }
-
-    public class FileDialogService : IFileDialogService
-    {
-        public string OpenFileDialog(string initialDirectory, string defaultPath, string filter, string defaultExtension)
-        {
-            var d = new OpenFileDialog();
-            d.InitialDirectory = initialDirectory;
-            d.FileName = defaultPath;
-            d.Filter = filter;
-            d.DefaultExt = defaultExtension;
-            if (!d.ShowDialog().Value)
-                return null;
-            return d.FileName;
-        }
-
-        public string SaveFileDialog(string initialDirectory, string defaultPath, string filter, string defaultExtension)
-        {
-            var d = new SaveFileDialog();
-            d.InitialDirectory = initialDirectory;
-            d.FileName = defaultPath;
-            d.Filter = filter;
-            d.DefaultExt = defaultExtension;
-            if (!d.ShowDialog().Value)
-                return null;
-            return d.FileName;
+                // Alt. 2 - create the model on the UI dispatcher
+                return mi.Load(model3DPath, this.dispatcher);
+            });
         }
     }
 }

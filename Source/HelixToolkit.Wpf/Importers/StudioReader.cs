@@ -19,11 +19,12 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
 
     /// <summary>
     /// A 3D Studio file reader.
     /// </summary>
-    public class StudioReader : IModelReader
+    public class StudioReader : ModelReader
     {
         //// http://faydoc.tripod.com/formats/3ds.htm
         //// http://www.gametutorials.com
@@ -34,6 +35,11 @@ namespace HelixToolkit.Wpf
         /// The materials.
         /// </summary>
         private readonly Dictionary<string, Material> materials = new Dictionary<string, Material>();
+
+        /// <summary>
+        /// The meshes.
+        /// </summary>
+        private readonly List<Mesh> meshes = new List<Mesh>();
 
         /// <summary>
         /// The chunk id.
@@ -144,44 +150,20 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the texture path.
+        /// Initializes a new instance of the <see cref="StudioReader" /> class.
         /// </summary>
-        /// <value> The texture path. </value>
-        public string TexturePath { get; set; }
-
-        /// <summary>
-        /// Gets or sets Model.
-        /// </summary>
-        private Model3DGroup Model { get; set; }
-
-        /// <summary>
-        /// Reads the model from the specified path.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(string path)
+        /// <param name="dispatcher">The dispatcher.</param>
+        public StudioReader(Dispatcher dispatcher = null)
+            : base(dispatcher)
         {
-            this.TexturePath = Path.GetDirectoryName(path);
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                return this.Read(s);
-            }
         }
 
         /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
-        /// <param name="s">
-        /// The stream.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(Stream s)
+        /// <param name="s">The stream.</param>
+        /// <returns>The model.</returns>
+        public override Model3DGroup Read(Stream s)
         {
             using (var reader = new BinaryReader(s))
             {
@@ -201,8 +183,6 @@ namespace HelixToolkit.Wpf
                 {
                     throw new FileFormatException("Incomplete file (file length does not match header)");
                 }
-
-                this.Model = new Model3DGroup();
 
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
                 {
@@ -233,7 +213,28 @@ namespace HelixToolkit.Wpf
                     }
                 }
 
-                return this.Model;
+                Model3DGroup mg = null;
+                this.Dispatch(
+                    () =>
+                    {
+                        mg = new Model3DGroup();
+                        foreach (var m in this.meshes)
+                        {
+                            var model = m.CreateModel();
+                            if (this.Freeze)
+                            {
+                                model.Freeze();
+                            }
+
+                            mg.Children.Add(model);
+                        }
+
+                        if (this.Freeze)
+                        {
+                            mg.Freeze();
+                        }
+                    });
+                return mg;
             }
         }
 
@@ -340,10 +341,10 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The face list.
         /// </returns>
-        private Int32Collection ReadFaceList(BinaryReader reader)
+        private List<int> ReadFaceList(BinaryReader reader)
         {
             int size = reader.ReadUInt16();
-            var faces = new Int32Collection(size * 3);
+            var faces = new List<int>(size * 3);
             for (int i = 0; i < size; i++)
             {
                 faces.Add(reader.ReadUInt16());
@@ -356,22 +357,22 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read face materials.
+        /// Reads face sets.
         /// </summary>
         /// <param name="reader">
         /// The reader.
         /// </param>
-        /// <param name="msize">
-        /// The msize.
+        /// <param name="chunkSize">
+        /// The chunk size.
         /// </param>
         /// <returns>
-        /// The materials.
+        /// A list of face sets.
         /// </returns>
-        private List<FaceMaterial> ReadFaceMaterials(BinaryReader reader, int msize)
+        private List<FaceSet> ReadFaceSets(BinaryReader reader, int chunkSize)
         {
             int total = 6;
-            var list = new List<FaceMaterial>();
-            while (total < msize)
+            var list = new List<FaceSet>();
+            while (total < chunkSize)
             {
                 var id = this.ReadChunkId(reader);
                 int size = this.ReadChunkSize(reader);
@@ -382,13 +383,13 @@ namespace HelixToolkit.Wpf
                         {
                             string name = this.ReadString(reader);
                             int n = reader.ReadUInt16();
-                            var c = new Int32Collection();
+                            var c = new List<int>();
                             for (int i = 0; i < n; i++)
                             {
                                 c.Add(reader.ReadUInt16());
                             }
 
-                            var fm = new FaceMaterial { Name = name, Faces = c };
+                            var fm = new FaceSet { Name = name, Faces = c };
                             list.Add(fm);
                             break;
                         }
@@ -411,7 +412,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read a mat map.
+        /// Reads a material map.
         /// </summary>
         /// <param name="reader">
         /// The reader.
@@ -440,13 +441,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Read a material.
         /// </summary>
-        /// <param name="reader">
-        /// The reader.
-        /// </param>
-        /// <param name="msize">
-        /// The size.
-        /// </param>
-        private void ReadMaterial(BinaryReader reader, int msize)
+        /// <param name="reader">The reader.</param>
+        /// <param name="chunkSize">The chunk size.</param>
+        private void ReadMaterial(BinaryReader reader, int chunkSize)
         {
             int total = 6;
             string name = null;
@@ -457,7 +454,7 @@ namespace HelixToolkit.Wpf
             var shininess = Colors.Transparent;
             string texture = null;
 
-            while (total < msize)
+            while (total < chunkSize)
             {
                 ChunkID id = this.ReadChunkId(reader);
                 int size = this.ReadChunkSize(reader);
@@ -506,67 +503,76 @@ namespace HelixToolkit.Wpf
             }
 
             int specularPower = 100;
-            var mg = new MaterialGroup();
 
-            // mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(luminance)));
-            if (texture != null)
-            {
-                string ext = Path.GetExtension(texture);
-                if (ext != null)
-                {
-                    ext = ext.ToLower();
-                }
+            this.Dispatcher.Invoke(
+                new Action(() =>
+                    {
+                        var mg = new MaterialGroup();
 
-                // TGA not supported - convert textures to .png!
-                if (ext == ".tga")
-                {
-                    texture = Path.ChangeExtension(texture, ".png");
-                }
+                        // mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(luminance)));
+                        if (texture != null)
+                        {
+                            string ext = Path.GetExtension(texture);
+                            if (ext != null)
+                            {
+                                ext = ext.ToLower();
+                            }
 
-                var actualTexturePath = this.TexturePath ?? string.Empty;
-                string path = Path.Combine(actualTexturePath, texture);
-                if (File.Exists(path))
-                {
-                    var img = new BitmapImage(new Uri(path, UriKind.Relative));
-                    var textureBrush = new ImageBrush(img) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
-                    mg.Children.Add(new DiffuseMaterial(textureBrush));
-                }
-                else
-                {
-                    // Debug.WriteLine(string.Format("Texture not found: {0}", Path.GetFullPath(path)));
-                    mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(diffuse)));
-                }
-            }
-            else
-            {
-                mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(diffuse)));
-            }
+                            // TGA not supported - convert textures to .png!
+                            if (ext == ".tga")
+                            {
+                                texture = Path.ChangeExtension(texture, ".png");
+                            }
 
-            mg.Children.Add(new SpecularMaterial(new SolidColorBrush(specular), specularPower));
+                            var actualTexturePath = this.TexturePath ?? string.Empty;
+                            string path = Path.Combine(actualTexturePath, texture);
+                            if (File.Exists(path))
+                            {
+                                var img = new BitmapImage(new Uri(path, UriKind.Relative));
+                                var textureBrush = new ImageBrush(img)
+                                                       {
+                                                           ViewportUnits = BrushMappingMode.Absolute,
+                                                           TileMode = TileMode.Tile
+                                                       };
+                                mg.Children.Add(new DiffuseMaterial(textureBrush));
+                            }
+                            else
+                            {
+                                // Debug.WriteLine(string.Format("Texture not found: {0}", Path.GetFullPath(path)));
+                                mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(diffuse)));
+                            }
+                        }
+                        else
+                        {
+                            mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(diffuse)));
+                        }
 
-            if (name != null)
-            {
-                this.materials[name] = mg;
-            }
+                        mg.Children.Add(new SpecularMaterial(new SolidColorBrush(specular), specularPower));
+
+                        if (name != null)
+                        {
+                            this.materials[name] = mg;
+                        }
+                    }));
         }
 
         /// <summary>
-        /// Read an object.
+        /// Reads an object.
         /// </summary>
         /// <param name="reader">
         /// The reader.
         /// </param>
-        /// <param name="msize">
-        /// The size.
+        /// <param name="chunkSize">
+        /// The chunk size.
         /// </param>
-        private void ReadObject(BinaryReader reader, int msize)
+        private void ReadObject(BinaryReader reader, int chunkSize)
         {
             int total = 6;
 
             string objectName = this.ReadString(reader);
             total += objectName.Length + 1;
 
-            while (total < msize)
+            while (total < chunkSize)
             {
                 var id = this.ReadChunkId(reader);
                 int size = this.ReadChunkSize(reader);
@@ -588,7 +594,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read a string.
+        /// Reads a string.
         /// </summary>
         /// <param name="reader">
         /// The reader.
@@ -614,18 +620,18 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read tex coords.
+        /// Reads texture coordinates.
         /// </summary>
         /// <param name="reader">
         /// The reader.
         /// </param>
         /// <returns>
-        /// The tex coords.
+        /// The texture coordinates.
         /// </returns>
-        private PointCollection ReadTexCoords(BinaryReader reader)
+        private List<Point> ReadTexCoords(BinaryReader reader)
         {
             int size = reader.ReadUInt16();
-            var pts = new PointCollection(size);
+            var pts = new List<Point>(size);
             for (int i = 0; i < size; i++)
             {
                 float x = reader.ReadSingle();
@@ -637,7 +643,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read a transformation.
+        /// Reads a transformation.
         /// </summary>
         /// <param name="reader">
         /// The reader.
@@ -647,39 +653,36 @@ namespace HelixToolkit.Wpf
         /// </returns>
         private Matrix3D ReadTransformation(BinaryReader reader)
         {
-            Vector3D localx = this.ReadVector(reader);
-            Vector3D localy = this.ReadVector(reader);
-            Vector3D localz = this.ReadVector(reader);
-            Vector3D origin = this.ReadVector(reader);
+            var localx = this.ReadVector(reader);
+            var localy = this.ReadVector(reader);
+            var localz = this.ReadVector(reader);
+            var origin = this.ReadVector(reader);
 
-            var matrix = new Matrix3D();
-
-            matrix.M11 = localx.X;
-            matrix.M21 = localx.Y;
-            matrix.M31 = localx.Z;
-
-            matrix.M12 = localy.X;
-            matrix.M22 = localy.Y;
-            matrix.M32 = localy.Z;
-
-            matrix.M13 = localz.X;
-            matrix.M23 = localz.Y;
-            matrix.M33 = localz.Z;
-
-            matrix.OffsetX = origin.X;
-            matrix.OffsetY = origin.Y;
-            matrix.OffsetZ = origin.Z;
-
-            matrix.M14 = 0;
-            matrix.M24 = 0;
-            matrix.M34 = 0;
-            matrix.M44 = 1;
+            var matrix = new Matrix3D
+                             {
+                                 M11 = localx.X,
+                                 M21 = localx.Y,
+                                 M31 = localx.Z,
+                                 M12 = localy.X,
+                                 M22 = localy.Y,
+                                 M32 = localy.Z,
+                                 M13 = localz.X,
+                                 M23 = localz.Y,
+                                 M33 = localz.Z,
+                                 OffsetX = origin.X,
+                                 OffsetY = origin.Y,
+                                 OffsetZ = origin.Z,
+                                 M14 = 0,
+                                 M24 = 0,
+                                 M34 = 0,
+                                 M44 = 1
+                             };
 
             return matrix;
         }
 
         /// <summary>
-        /// The read triangular mesh.
+        /// Reads a triangular mesh.
         /// </summary>
         /// <param name="reader">
         /// The reader.
@@ -690,10 +693,10 @@ namespace HelixToolkit.Wpf
         private void ReadTriangularMesh(BinaryReader reader, int chunkSize)
         {
             int bytesRead = 6;
-            Point3DCollection vertices = null;
-            Int32Collection faces = null;
-            PointCollection texcoords = null;
-            List<FaceMaterial> facemat = null;
+            List<Point3D> positions = null;
+            List<int> faces = null;
+            List<Point> textureCoordinates = null;
+            List<FaceSet> faceSets = null;
 
             while (bytesRead < chunkSize)
             {
@@ -703,15 +706,15 @@ namespace HelixToolkit.Wpf
                 switch (id)
                 {
                     case ChunkID.TRI_VERTEXL:
-                        vertices = this.ReadVertexList(reader);
+                        positions = this.ReadVertexList(reader);
                         break;
                     case ChunkID.TRI_FACEL1:
                         faces = this.ReadFaceList(reader);
                         size -= (faces.Count / 3 * 8) + 2;
-                        facemat = this.ReadFaceMaterials(reader, size - 6);
+                        faceSets = this.ReadFaceSets(reader, size - 6);
                         break;
                     case ChunkID.TRI_TEXCOORD:
-                        texcoords = this.ReadTexCoords(reader);
+                        textureCoordinates = this.ReadTexCoords(reader);
                         break;
                     case ChunkID.TRI_LOCAL:
                         this.ReadTransformation(reader);
@@ -723,43 +726,82 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            if (facemat == null)
-            {
-                return;
-            }
-
+            // TODO: apply transforms
             // if (!matrix.IsIdentity)
             /*                for (int i = 0; i < vertices.Count; i++)
                             {
-                                vertices[i] = DoTransform(matrix, vertices[i]);
+                                positions[i] = Transform(matrix, positions[i]);
                             }*/
 
-            foreach (var fm in facemat)
+            if (faceSets == null || faceSets.Count == 0)
             {
-                var m = new MeshGeometry3D { Positions = vertices };
-                var faces2 = new Int32Collection(fm.Faces.Count * 3);
-                foreach (int f in fm.Faces)
+                // add mesh without material defined (e.g. the example Suzanne 3ds model)
+                this.meshes.Add(new Mesh
                 {
-                    faces2.Add(faces[f * 3]);
-                    faces2.Add(faces[(f * 3) + 1]);
-                    faces2.Add(faces[(f * 3) + 2]);
-                }
+                    Positions = positions,
+                    TriangleIndices = ConvertFaceIndices(faces, faces),
+                    TextureCoordinates = textureCoordinates,
+                    Material = this.DefaultMaterial,
+                    BackMaterial = this.DefaultMaterial
+                });
+                return;
+            }
 
-                m.TriangleIndices = faces2;
-                m.TextureCoordinates = texcoords;
-                var model = new GeometryModel3D { Geometry = m };
+
+            foreach (var fm in faceSets)
+            {
+                var triangleIndices = ConvertFaceIndices(fm.Faces, faces);
+
+                Material mat = null;
                 if (this.materials.ContainsKey(fm.Name))
                 {
-                    model.Material = this.materials[fm.Name];
-                    model.BackMaterial = model.Material;
+                    mat = this.materials[fm.Name];
                 }
 
-                this.Model.Children.Add(model);
+                this.meshes.Add(new Mesh { Positions = positions, TriangleIndices = triangleIndices, TextureCoordinates = textureCoordinates, Material = mat, BackMaterial = mat });
+            }
+        }
+
+        private static List<int> ConvertFaceIndices(List<int> subFaces, List<int> faces)
+        {
+            var triangleIndices = new List<int>(subFaces.Count * 3);
+            foreach (int f in subFaces)
+            {
+                triangleIndices.Add(faces[f * 3]);
+                triangleIndices.Add(faces[(f * 3) + 1]);
+                triangleIndices.Add(faces[(f * 3) + 2]);
+            }
+
+            return triangleIndices;
+        }
+
+        private class Mesh
+        {
+            public List<Point3D> Positions { get; set; }
+            public List<int> TriangleIndices { get; set; }
+            public List<Point> TextureCoordinates { get; set; }
+
+            public Material Material { get; set; }
+            public Material BackMaterial { get; set; }
+
+            public Model3D CreateModel()
+            {
+                var geometry = new MeshGeometry3D
+                                   {
+                                       Positions = new Point3DCollection(this.Positions),
+                                       TriangleIndices = new Int32Collection(this.TriangleIndices)
+                                   };
+                if (this.TextureCoordinates != null)
+                {
+                    geometry.TextureCoordinates = new PointCollection(this.TextureCoordinates);
+                }
+
+                return new GeometryModel3D(geometry, this.Material) { BackMaterial = this.BackMaterial };
             }
         }
 
         /// <summary>
-        /// Read a vector.
+        /// Reads a vector.
         /// </summary>
         /// <param name="reader">
         /// The reader.
@@ -773,7 +815,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Read a vertex list.
+        /// Reads a vertex list.
         /// </summary>
         /// <param name="reader">
         /// The reader.
@@ -781,10 +823,10 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A vertex list.
         /// </returns>
-        private Point3DCollection ReadVertexList(BinaryReader reader)
+        private List<Point3D> ReadVertexList(BinaryReader reader)
         {
             int size = reader.ReadUInt16();
-            var pts = new Point3DCollection(size);
+            var pts = new List<Point3D>(size);
             for (int i = 0; i < size; i++)
             {
                 float x = reader.ReadSingle();
@@ -797,20 +839,19 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The face material.
+        /// Represents a set of faces that belongs to the same material.
         /// </summary>
-        private class FaceMaterial
+        private class FaceSet
         {
             /// <summary>
             /// Gets or sets Faces.
             /// </summary>
-            public Int32Collection Faces { get; set; }
+            public List<int> Faces { get; set; }
 
             /// <summary>
-            /// Gets or sets Name.
+            /// Gets or sets the name of the material.
             /// </summary>
             public string Name { get; set; }
-
         }
     }
 }

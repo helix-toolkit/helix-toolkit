@@ -102,22 +102,22 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The normal vectors.
         /// </summary>
-        private Vector3DCollection normals;
+        private IList<Vector3D> normals;
 
         /// <summary>
         /// The positions.
         /// </summary>
-        private Point3DCollection positions;
+        private IList<Point3D> positions;
 
         /// <summary>
         /// The texture coordinates.
         /// </summary>
-        private PointCollection textureCoordinates;
+        private IList<Point> textureCoordinates;
 
         /// <summary>
         /// The triangle indices.
         /// </summary>
-        private Int32Collection triangleIndices;
+        private IList<int> triangleIndices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshBuilder"/> class.
@@ -141,17 +141,17 @@ namespace HelixToolkit.Wpf
         /// </param>
         public MeshBuilder(bool generateNormals, bool generateTextureCoordinates)
         {
-            this.positions = new Point3DCollection();
-            this.triangleIndices = new Int32Collection();
+            this.positions = new List<Point3D>();
+            this.triangleIndices = new List<int>();
 
             if (generateNormals)
             {
-                this.normals = new Vector3DCollection();
+                this.normals = new List<Vector3D>();
             }
 
             if (generateTextureCoordinates)
             {
-                this.textureCoordinates = new PointCollection();
+                this.textureCoordinates = new List<Point>();
             }
         }
 
@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf
         /// Gets the normal vectors of the mesh.
         /// </summary>
         /// <value>The normal vectors.</value>
-        public Vector3DCollection Normals
+        public IList<Vector3D> Normals
         {
             get
             {
@@ -213,7 +213,7 @@ namespace HelixToolkit.Wpf
         /// Gets the positions collection of the mesh.
         /// </summary>
         /// <value> The positions. </value>
-        public Point3DCollection Positions
+        public IList<Point3D> Positions
         {
             get
             {
@@ -225,7 +225,7 @@ namespace HelixToolkit.Wpf
         /// Gets the texture coordinates of the mesh.
         /// </summary>
         /// <value>The texture coordinates.</value>
-        public PointCollection TextureCoordinates
+        public IList<Point> TextureCoordinates
         {
             get
             {
@@ -237,7 +237,7 @@ namespace HelixToolkit.Wpf
         /// Gets the triangle indices.
         /// </summary>
         /// <value>The triangle indices.</value>
-        public Int32Collection TriangleIndices
+        public IList<int> TriangleIndices
         {
             get
             {
@@ -2367,12 +2367,20 @@ namespace HelixToolkit.Wpf
             }
 
             var mg = new MeshGeometry3D
-                {
-                    Positions = this.positions,
-                    TriangleIndices = this.triangleIndices,
-                    Normals = this.normals,
-                    TextureCoordinates = this.textureCoordinates
-                };
+                         {
+                             Positions = new Point3DCollection(this.positions),
+                             TriangleIndices = new Int32Collection(this.triangleIndices)
+                         };
+            if (this.normals != null)
+            {
+                mg.Normals = new Vector3DCollection(this.normals);
+            }
+
+            if (this.textureCoordinates != null)
+            {
+                mg.TextureCoordinates = new PointCollection(this.textureCoordinates);
+            }
+
             if (freeze)
             {
                 mg.Freeze();

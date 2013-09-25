@@ -157,6 +157,7 @@ namespace HelixToolkit.Wpf
                 mg.Children.Add(new SpecularMaterial(Brushes.White, specularPower));
             }
 
+            mg.Freeze();
             return mg;
         }
 

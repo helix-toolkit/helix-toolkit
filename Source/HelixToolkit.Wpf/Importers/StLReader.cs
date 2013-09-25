@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf
     using System.Text.RegularExpressions;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Provides an importer for StereoLithography .StL files.
@@ -22,7 +23,7 @@ namespace HelixToolkit.Wpf
     /// <remarks>
     /// The format is documented on <a href="http://en.wikipedia.org/wiki/STL_(file_format)">Wikipedia</a>.
     /// </remarks>
-    public class StLReader : IModelReader
+    public class StLReader : ModelReader
     {
         /// <summary>
         /// The regular expression used to parse normal vectors.
@@ -45,22 +46,15 @@ namespace HelixToolkit.Wpf
         private Color lastColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StLReader"/> class.
+        /// Initializes a new instance of the <see cref="StLReader" /> class.
         /// </summary>
-        public StLReader()
+        /// <param name="dispatcher">The dispatcher.</param>
+        public StLReader(Dispatcher dispatcher = null)
+            : base(dispatcher)
         {
             this.Meshes = new List<MeshBuilder>();
             this.Materials = new List<Material>();
-            this.DefaultMaterial = MaterialHelper.CreateMaterial(Brushes.Blue);
         }
-
-        /// <summary>
-        /// Gets or sets the default material.
-        /// </summary>
-        /// <value>
-        /// The default material.
-        /// </value>
-        public Material DefaultMaterial { get; set; }
 
         /// <summary>
         /// Gets the file header.
@@ -83,32 +77,11 @@ namespace HelixToolkit.Wpf
         public IList<MeshBuilder> Meshes { get; private set; }
 
         /// <summary>
-        /// Reads the model from the specified path.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(string path)
-        {
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                return this.Read(s);
-            }
-        }
-
-        /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
-        /// <param name="stream">
-        /// The stream.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(Stream stream)
+        /// <param name="stream">The stream.</param>
+        /// <returns>The model.</returns>
+        public override Model3DGroup Read(Stream stream)
         {
             // Try to read in BINARY format
             var success = this.TryReadBinary(stream);
@@ -132,25 +105,37 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Builds the model.
         /// </summary>
-        /// <returns>
-        /// The model.
-        /// </returns>
+        /// <returns>The model.</returns>
         public Model3DGroup ToModel3D()
         {
-            var modelGroup = new Model3DGroup();
-            int i = 0;
-            foreach (var mesh in this.Meshes)
-            {
-                var gm = new GeometryModel3D
+            Model3DGroup modelGroup = null;
+            this.Dispatch(
+                () =>
                 {
-                    Geometry = mesh.ToMesh(),
-                    Material = this.Materials[i],
-                    BackMaterial = this.Materials[i]
-                };
-                modelGroup.Children.Add(gm);
-                i++;
-            }
+                    modelGroup = new Model3DGroup();
+                    int i = 0;
+                    foreach (var mesh in this.Meshes)
+                    {
+                        var gm = new GeometryModel3D
+                                     {
+                                         Geometry = mesh.ToMesh(),
+                                         Material = this.Materials[i],
+                                         BackMaterial = this.Materials[i]
+                                     };
+                        if (this.Freeze)
+                        {
+                            gm.Freeze();
+                        }
 
+                        modelGroup.Children.Add(gm);
+                        i++;
+                    }
+
+                    if (this.Freeze)
+                    {
+                        modelGroup.Freeze();
+                    }
+                });
             return modelGroup;
         }
 

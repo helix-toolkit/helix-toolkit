@@ -6,10 +6,12 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
 
     /// <summary>
     /// A Geomview Object File Format (OFF) reader.
@@ -25,14 +27,15 @@ namespace HelixToolkit.Wpf
     /// http://segeval.cs.princeton.edu/public/off_format.html
     /// http://paulbourke.net/dataformats/off/
     /// </remarks>
-    public class OffReader : IModelReader
+    public class OffReader : ModelReader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "OffReader" /> class.
+        /// Initializes a new instance of the <see cref="OffReader" /> class.
         /// </summary>
-        public OffReader()
+        /// <param name="dispatcher">The dispatcher.</param>
+        public OffReader(Dispatcher dispatcher = null)
+            : base(dispatcher)
         {
-            this.DefaultMaterial = Materials.Blue;
             this.Vertices = new List<Point3D>();
 
             // this.VertexColors = new List<Color>();
@@ -40,14 +43,6 @@ namespace HelixToolkit.Wpf
             // this.Normals = new Vector3DCollection();
             this.Faces = new List<int[]>();
         }
-
-        /// <summary>
-        /// Gets or sets the default material.
-        /// </summary>
-        /// <value>
-        /// The default material.
-        /// </value>
-        public Material DefaultMaterial { get; set; }
 
         /// <summary>
         /// Gets the faces.
@@ -111,31 +106,30 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Creates a Model3D object from the loaded file.
         /// </summary>
-        /// <returns>
-        /// A Model3D group.
-        /// </returns>
+        /// <returns>A Model3D group.</returns>
         public Model3DGroup CreateModel3D()
         {
-            var modelGroup = new Model3DGroup();
-            var g = this.CreateMeshGeometry3D();
-            var gm = new GeometryModel3D { Geometry = g, Material = this.DefaultMaterial };
-            gm.BackMaterial = gm.Material;
-            modelGroup.Children.Add(gm);
-            return modelGroup;
-        }
+            Model3DGroup modelGroup = null;
+            this.Dispatch(
+                () =>
+                {
+                    modelGroup = new Model3DGroup();
+                    var g = this.CreateMeshGeometry3D();
+                    var gm = new GeometryModel3D { Geometry = g, Material = this.DefaultMaterial };
+                    gm.BackMaterial = gm.Material;
+                    if (this.Freeze)
+                    {
+                        gm.Freeze();
+                    }
 
-        /// <summary>
-        /// Loads the model from a file at the specified path.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        public void Load(string path)
-        {
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                this.Load(s);
-            }
+                    modelGroup.Children.Add(gm);
+                    if (this.Freeze)
+                    {
+                        modelGroup.Freeze();
+                    }
+                });
+
+            return modelGroup;
         }
 
         /// <summary>
@@ -278,30 +272,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Reads the model from the specified path.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(string path)
-        {
-            this.Load(path);
-            return this.CreateModel3D();
-        }
-
-        /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
-        /// <param name="s">
-        /// The stream.
-        /// </param>
-        /// <returns>
-        /// The model.
-        /// </returns>
-        public Model3DGroup Read(Stream s)
+        /// <param name="s">The stream.</param>
+        /// <returns>The model.</returns>
+        public override Model3DGroup Read(Stream s)
         {
             this.Load(s);
             return this.CreateModel3D();
