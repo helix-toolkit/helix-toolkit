@@ -504,8 +504,7 @@ namespace HelixToolkit.Wpf
 
             int specularPower = 100;
 
-            this.Dispatcher.Invoke(
-                new Action(() =>
+            this.Dispatch(() =>
                     {
                         var mg = new MaterialGroup();
 
@@ -553,7 +552,7 @@ namespace HelixToolkit.Wpf
                         {
                             this.materials[name] = mg;
                         }
-                    }));
+                    });
         }
 
         /// <summary>
