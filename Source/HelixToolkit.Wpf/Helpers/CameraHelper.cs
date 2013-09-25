@@ -60,9 +60,8 @@ namespace HelixToolkit.Wpf
                         AccelerationRatio = 0.3,
                         DecelerationRatio = 0.5,
                         FillBehavior = FillBehavior.Stop
-
                     };
-                a1.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.PositionProperty, null); };
+                a1.Completed += (s, a) => camera.BeginAnimation(ProjectionCamera.PositionProperty, null);
                 camera.BeginAnimation(ProjectionCamera.PositionProperty, a1);
 
                 var a2 = new Vector3DAnimation(
@@ -72,7 +71,7 @@ namespace HelixToolkit.Wpf
                         DecelerationRatio = 0.5,
                         FillBehavior = FillBehavior.Stop
                     };
-                a2.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null); };
+                a2.Completed += (s, a) => camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null);
                 camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, a2);
 
                 var a3 = new Vector3DAnimation(
@@ -82,7 +81,7 @@ namespace HelixToolkit.Wpf
                         DecelerationRatio = 0.5,
                         FillBehavior = FillBehavior.Stop
                     };
-                a3.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, null); };
+                a3.Completed += (s, a) => camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, null);
                 camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, a3);
             }
         }
@@ -91,7 +90,7 @@ namespace HelixToolkit.Wpf
         /// Animates the orthographic width.
         /// </summary>
         /// <param name="camera">
-        /// An ortographic camera.
+        /// An orthographic camera.
         /// </param>
         /// <param name="newWidth">
         /// The width to animate to.
@@ -124,8 +123,8 @@ namespace HelixToolkit.Wpf
         /// <param name="camera">
         /// The camera.
         /// </param>
-        /// <param name="newLookDir">
-        /// The new look dir.
+        /// <param name="newLookDirection">
+        /// The new look direction.
         /// </param>
         /// <param name="newUpDirection">
         /// The new up direction.
@@ -133,25 +132,21 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void ChangeDirection(
-            ProjectionCamera camera, Vector3D newLookDir, Vector3D newUpDirection, double animationTime)
+        public static void ChangeDirection(ProjectionCamera camera, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
         {
             var target = camera.Position + camera.LookDirection;
-            double length = camera.LookDirection.Length;
-            newLookDir.Normalize();
-            LookAt(camera, target, newLookDir * length, newUpDirection, animationTime);
+            var length = camera.LookDirection.Length;
+            newLookDirection.Normalize();
+            LookAt(camera, target, newLookDirection * length, newUpDirection, animationTime);
         }
 
         /// <summary>
-        /// Copies the specified camera, converts field of view/width if neccessary.
+        /// Copies the specified camera, converts field of view/width if necessary.
         /// </summary>
-        /// <param name="source">
-        /// The source camera.
-        /// </param>
-        /// <param name="dest">
-        /// The destination camera.
-        /// </param>
-        public static void Copy(ProjectionCamera source, ProjectionCamera dest)
+        /// <param name="source">The source camera.</param>
+        /// <param name="dest">The destination camera.</param>
+        /// <param name="copyNearFarPlaneDistances">Copy near and far plane distances if set to <c>true</c>.</param>
+        public static void Copy(ProjectionCamera source, ProjectionCamera dest, bool copyNearFarPlaneDistances = true)
         {
             if (source == null || dest == null)
             {
@@ -161,8 +156,13 @@ namespace HelixToolkit.Wpf
             dest.LookDirection = source.LookDirection;
             dest.Position = source.Position;
             dest.UpDirection = source.UpDirection;
-            dest.NearPlaneDistance = source.NearPlaneDistance;
-            dest.FarPlaneDistance = source.FarPlaneDistance;
+            
+            if (copyNearFarPlaneDistances)
+            {
+                dest.NearPlaneDistance = source.NearPlaneDistance;
+                dest.FarPlaneDistance = source.FarPlaneDistance;
+            }
+
             var psrc = source as PerspectiveCamera;
             var osrc = source as OrthographicCamera;
             var pdest = dest as PerspectiveCamera;
@@ -456,7 +456,7 @@ namespace HelixToolkit.Wpf
             camera.UpDirection = new Vector3D(0, 0, 1);
             camera.FieldOfView = 45;
             camera.NearPlaneDistance = 0.1;
-            camera.FarPlaneDistance = 100000;
+            camera.FarPlaneDistance = double.PositiveInfinity;
         }
 
         /// <summary>
@@ -477,13 +477,13 @@ namespace HelixToolkit.Wpf
             camera.UpDirection = new Vector3D(0, 0, 1);
             camera.Width = 40;
             camera.NearPlaneDistance = 0.1;
-            camera.FarPlaneDistance = 100000;
+            camera.FarPlaneDistance = double.PositiveInfinity;
         }
 
         /// <summary>
         /// Zooms to fit the extents of the specified viewport.
         /// </summary>
-        /// <param name="actualCamera">
+        /// <param name="camera">
         /// The actual camera.
         /// </param>
         /// <param name="viewport">
@@ -492,24 +492,24 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void ZoomExtents(ProjectionCamera actualCamera, Viewport3D viewport, double animationTime = 0)
+        public static void ZoomExtents(ProjectionCamera camera, Viewport3D viewport, double animationTime = 0)
         {
             var bounds = Visual3DHelper.FindBounds(viewport.Children);
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
 
-            if (bounds.IsEmpty || diagonal.LengthSquared == 0)
+            if (bounds.IsEmpty || diagonal.LengthSquared < double.Epsilon)
             {
                 return;
             }
 
-            ZoomExtents(actualCamera, viewport, bounds, animationTime);
+            ZoomExtents(camera, viewport, bounds, animationTime);
         }
 
         /// <summary>
         /// Zooms to fit the specified bounding rectangle.
         /// </summary>
-        /// <param name="actualCamera">
-        /// The actual camera.
+        /// <param name="camera">
+        /// The camera to change.
         /// </param>
         /// <param name="viewport">
         /// The viewport.
@@ -520,20 +520,19 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void ZoomExtents(
-            ProjectionCamera actualCamera, Viewport3D viewport, Rect3D bounds, double animationTime = 0)
+        public static void ZoomExtents(ProjectionCamera camera, Viewport3D viewport, Rect3D bounds, double animationTime = 0)
         {
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
-            var center = bounds.Location + diagonal * 0.5;
+            var center = bounds.Location + (diagonal * 0.5);
             double radius = diagonal.Length * 0.5;
-            ZoomExtents(actualCamera, viewport, center, radius, animationTime);
+            ZoomExtents(camera, viewport, center, radius, animationTime);
         }
 
         /// <summary>
         /// Zooms to fit the specified sphere.
         /// </summary>
         /// <param name="camera">
-        /// The camera.
+        /// The camera to change.
         /// </param>
         /// <param name="viewport">
         /// The viewport.
@@ -547,8 +546,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void ZoomExtents(
-            ProjectionCamera camera, Viewport3D viewport, Point3D center, double radius, double animationTime = 0)
+        public static void ZoomExtents(ProjectionCamera camera, Viewport3D viewport, Point3D center, double radius, double animationTime = 0)
         {
             // var target = Camera.Position + Camera.LookDirection;
             if (camera is PerspectiveCamera)
@@ -619,7 +617,7 @@ namespace HelixToolkit.Wpf
                 // option 1: change distance
                 var newDistance = distance * zoomRectangle.Width / viewport.ActualWidth;
                 var newLookDirection = newDistance * w;
-                var newPosition = perspectiveCamera.Position + (distance - newDistance) * w;
+                var newPosition = perspectiveCamera.Position + ((distance - newDistance) * w);
                 var newTarget = newPosition + newLookDirection;
                 LookAt(camera, newTarget, newLookDirection, 200);
 
@@ -644,6 +642,5 @@ namespace HelixToolkit.Wpf
                 }
             }
         }
-
     }
 }

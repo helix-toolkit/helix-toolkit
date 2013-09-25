@@ -239,7 +239,7 @@ namespace HelixToolkit.Wpf
                 "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="IsHeadlightEnabled"/> dependency property.
+        /// Identifies the <see cref="IsHeadLightEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsHeadlightEnabledProperty =
             DependencyProperty.Register(
@@ -3600,7 +3600,7 @@ namespace HelixToolkit.Wpf
                 this.Camera = this.perspectiveCamera;
             }
 
-            CameraHelper.Copy(oldCamera, this.Camera);
+            CameraHelper.Copy(oldCamera, this.Camera, false);
         }
 
         /// <summary>
