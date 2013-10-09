@@ -3342,30 +3342,6 @@ namespace HelixToolkit.Wpf
         {
             var args = new RoutedEventArgs(ZoomedByRectangleEvent);
             this.RaiseEvent(args);
-
-        }
-        /// <summary>
-        /// Animates the opacity of the specified animatable object.
-        /// </summary>
-        /// <param name="obj">
-        /// The animatable object.
-        /// </param>
-        /// <param name="targetOpacity">
-        /// The target opacity.
-        /// </param>
-        /// <param name="animationTime">
-        /// The animation time.
-        /// </param>
-        private static void AnimateOpacity(IAnimatable obj, double targetOpacity, double animationTime)
-        {
-            var a = new DoubleAnimation(targetOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
-                        {
-                            AccelerationRatio
-                                = 0.3,
-                            DecelerationRatio
-                                = 0.5
-                        };
-            obj.BeginAnimation(OpacityProperty, a);
         }
 
         /// <summary>
@@ -3719,7 +3695,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void ViewCubeViewportMouseEnter(object sender, MouseEventArgs e)
         {
-            AnimateOpacity(this.viewCubeViewport, 1.0, 200);
+            this.viewCubeViewport.AnimateOpacity(1.0, 200);
         }
 
         /// <summary>
@@ -3733,7 +3709,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void ViewCubeViewportMouseLeave(object sender, MouseEventArgs e)
         {
-            AnimateOpacity(this.viewCubeViewport, this.ViewCubeOpacity, 200);
+            this.viewCubeViewport.AnimateOpacity(this.ViewCubeOpacity, 200);
         }
     }
 }

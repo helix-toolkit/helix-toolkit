@@ -12,7 +12,6 @@ namespace HelixToolkit.Wpf
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
-    using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
     using System.Windows.Media.Media3D;
 
@@ -83,7 +82,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Viewport"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(
-            "Viewport", typeof(Viewport3D), typeof(ViewCubeVisual3D), new PropertyMetadata(null, ViewportChanged));
+            "Viewport", typeof(Viewport3D), typeof(ViewCubeVisual3D), new PropertyMetadata(null));
 
         /// <summary>
         /// The normal vectors.
@@ -102,6 +101,11 @@ namespace HelixToolkit.Wpf
         {
             this.UpdateVisuals();
         }
+
+        /// <summary>
+        /// Occurs when a face has been clicked on.
+        /// </summary>
+        public event EventHandler<ClickedEventArgs> Clicked;
 
         /// <summary>
         ///   Gets or sets the back text.
@@ -257,7 +261,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the viewport.
+        ///   Gets or sets the viewport that is being controlled by the view cube.
         /// </summary>
         /// <value>The viewport.</value>
         public Viewport3D Viewport
@@ -274,24 +278,24 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The viewport changed.
+        /// Raises the Clicked event.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void ViewportChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        /// <param name="lookDirection">The look direction.</param>
+        /// <param name="upDirection">Up direction.</param>
+        protected virtual void OnClicked(Vector3D lookDirection, Vector3D upDirection)
         {
-            ((ViewCubeVisual3D)d).OnViewportChanged();
+            var clicked = this.Clicked;
+            if (clicked != null)
+            {
+                clicked(this, new ClickedEventArgs { LookDirection = lookDirection, UpDirection = upDirection });
+            }
         }
 
         /// <summary>
-        /// The visual model changed.
+        /// The VisualModel property changed.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The sender.
         /// </param>
         /// <param name="e">
         /// The event arguments.
@@ -302,39 +306,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The animate opacity.
-        /// </summary>
-        /// <param name="obj">
-        /// The obj.
-        /// </param>
-        /// <param name="toOpacity">
-        /// The to opacity.
-        /// </param>
-        /// <param name="animationTime">
-        /// The animation time.
-        /// </param>
-        private void AnimateOpacity(Animatable obj, double toOpacity, double animationTime)
-        {
-            var animation = new DoubleAnimation(toOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
-                {
-                    AccelerationRatio = 0.3,
-                    DecelerationRatio = 0.5
-                };
-            animation.Completed += this.AnimationCompleted;
-            obj.BeginAnimation(UIElement.OpacityProperty, animation);
-        }
-
-        /// <summary>
-        /// The on viewport changed.
-        /// </summary>
-        private void OnViewportChanged()
-        {
-            // if (Camera == null && Viewport != null)
-            // Camera = Viewport.Camera as PerspectiveCamera;
-        }
-
-        /// <summary>
-        /// The update visuals.
+        /// Updates the visuals.
         /// </summary>
         private void UpdateVisuals()
         {
@@ -344,7 +316,7 @@ namespace HelixToolkit.Wpf
             var upColor = Brushes.Blue;
             var up = this.ModelUpDirection;
             var right = new Vector3D(0, 1, 0);
-            if (up.Z != 1)
+            if (up.Z < 1)
             {
                 right = new Vector3D(0, 0, 1);
                 rightColor = Brushes.Blue;
@@ -353,12 +325,12 @@ namespace HelixToolkit.Wpf
 
             var front = Vector3D.CrossProduct(right, up);
 
-            this.AddFace(front, up, frontColor, this.FrontText);
-            this.AddFace(-front, up, frontColor, this.BackText);
-            this.AddFace(right, up, rightColor, this.RightText);
-            this.AddFace(-right, up, rightColor, this.LeftText);
-            this.AddFace(up, right, upColor, this.TopText);
-            this.AddFace(-up, -right, upColor, this.BottomText);
+            this.AddCubeFace(front, up, frontColor, this.FrontText);
+            this.AddCubeFace(-front, up, frontColor, this.BackText);
+            this.AddCubeFace(right, up, rightColor, this.RightText);
+            this.AddCubeFace(-right, up, rightColor, this.LeftText);
+            this.AddCubeFace(up, right, upColor, this.TopText);
+            this.AddCubeFace(-up, -right, upColor, this.BottomText);
 
             var circle = new PieSliceVisual3D();
             circle.BeginEdit();
@@ -377,34 +349,21 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the animation completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private void AnimationCompleted(object sender, EventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Adds a face.
+        /// Adds a cube face.
         /// </summary>
         /// <param name="normal">
         /// The normal.
         /// </param>
         /// <param name="up">
-        /// The up.
+        /// The up vector.
         /// </param>
         /// <param name="b">
-        /// The b.
+        /// The brush.
         /// </param>
         /// <param name="text">
         /// The text.
         /// </param>
-        private void AddFace(Vector3D normal, Vector3D up, Brush b, string text)
+        private void AddCubeFace(Vector3D normal, Vector3D up, Brush b, string text)
         {
             var grid = new Grid { Width = 20, Height = 20, Background = b };
             grid.Children.Add(
@@ -434,8 +393,6 @@ namespace HelixToolkit.Wpf
             var element = new ModelUIElement3D { Model = model };
             element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
 
-            // element.MouseEnter += face_MouseEnter;
-            // element.MouseLeave += face_MouseLeave;
             this.faceNormals.Add(element, normal);
             this.faceUpVectors.Add(element, up);
 
@@ -443,12 +400,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Occurs when a face has been clicked on.
-        /// </summary>
-        public event EventHandler<ClickedEventArgs> Clicked;
-
-        /// <summary>
-        /// Called when mouse left button is clicked on a face.
+        /// Handles left clicks on the view cube.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -460,11 +412,13 @@ namespace HelixToolkit.Wpf
         {
             var faceNormal = this.faceNormals[sender];
             var faceUp = this.faceUpVectors[sender];
+
             var lookDirection = -faceNormal;
             var upDirection = faceUp;
             lookDirection.Normalize();
             upDirection.Normalize();
 
+            // Double-click reverses the look direction
             if (e.ClickCount == 2)
             {
                 lookDirection *= -1;
@@ -487,25 +441,12 @@ namespace HelixToolkit.Wpf
                 }
             }
 
+            e.Handled = true;
             this.OnClicked(lookDirection, upDirection);
         }
 
         /// <summary>
-        /// Called when a face was clicked.
-        /// </summary>
-        /// <param name="lookDirection">The look direction.</param>
-        /// <param name="upDirection">Up direction.</param>
-        protected virtual void OnClicked(Vector3D lookDirection, Vector3D upDirection)
-        {
-            var clicked = this.Clicked;
-            if (clicked != null)
-            {
-                clicked(this, new ClickedEventArgs { LookDirection = lookDirection, UpDirection = upDirection });
-            }
-        }
-
-        /// <summary>
-        /// Class ClickedEventArgs
+        /// Provides event data for the Clicked event.
         /// </summary>
         public class ClickedEventArgs : EventArgs
         {
@@ -521,6 +462,5 @@ namespace HelixToolkit.Wpf
             /// <value>Up direction.</value>
             public Vector3D UpDirection { get; set; }
         }
-
     }
 }
