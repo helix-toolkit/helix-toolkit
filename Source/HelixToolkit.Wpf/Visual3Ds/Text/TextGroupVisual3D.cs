@@ -328,18 +328,22 @@ namespace HelixToolkit.Wpf
         {
             var panel = new WrapPanel();
             elementMap = new Dictionary<string, FrameworkElement>();
+            double maxWidth = 16;
             foreach (var item in items)
             {
                 if (elementMap.ContainsKey(item.Text))
                 {
                     continue;
                 }
+
                 var e = createElement(item.Text);
+                e.Measure(new Size(2048, 2048));
+                maxWidth = Math.Max(maxWidth, e.DesiredSize.Width);
                 elementMap[item.Text] = e;
                 panel.Children.Add(e);
             }
 
-            int pw = OptimizeSize(panel, 1024);
+            var pw = (int)OptimizeSize(panel, maxWidth, 1024);
             var ph = (int)Math.Min(pw, panel.ActualHeight);
 
             elementPositions = new Dictionary<FrameworkElement, Rect>();
@@ -380,11 +384,12 @@ namespace HelixToolkit.Wpf
             return new DiffuseMaterial(ib) { Color = Colors.White };
         }
 
-        private static int OptimizeSize(UIElement panel, int maxWidth)
+        private static double OptimizeSize(UIElement panel, double minWidth, double maxWidth)
         {
-            int width;
+            double width;
+
             // optimize size
-            for (width = 16; width < maxWidth; width = width * 2)
+            for (width = minWidth; width < maxWidth; width += 50)
             {
                 panel.Measure(new Size(width, width + 1));
                 if (panel.DesiredSize.Height <= width)
