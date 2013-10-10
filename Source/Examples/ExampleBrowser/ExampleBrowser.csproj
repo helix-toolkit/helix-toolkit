@@ -146,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\ViewMatrix\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\CuttingPlanes\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -342,6 +346,10 @@
     <Compile Include="Examples\Contour\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ViewMatrix\MainViewModel.cs" />
+    <Compile Include="Examples\ViewMatrix\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\CuttingPlanes\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -479,6 +487,7 @@
     <Compile Include="Examples\UpDirection\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ViewMatrix\MatrixConverter.cs" />
     <Compile Include="Examples\ViewportFeatures\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -516,6 +525,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\ViewMatrixDemo_small.png" />
     <Resource Include="Images\MeshVisualsDemo_small.png" />
     <Resource Include="Images\BackgroundUpdateDemo_small.png" />
     <Resource Include="Images\DataTemplateDemo_small.png" />
