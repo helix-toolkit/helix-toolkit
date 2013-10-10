@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Provides helper methods related to Media3D.Camera.
+    /// Provides extension methods for <see cref="Camera"/> derived classes.
     /// </summary>
     public static class CameraHelper
     {
@@ -37,12 +37,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// Animation time in milliseconds.
         /// </param>
-        public static void AnimateTo(
-            ProjectionCamera camera,
-            Point3D newPosition,
-            Vector3D newDirection,
-            Vector3D newUpDirection,
-            double animationTime)
+        public static void AnimateTo(this ProjectionCamera camera, Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
         {
             var fromPosition = camera.Position;
             var fromDirection = camera.LookDirection;
@@ -98,7 +93,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// Animation time in milliseconds
         /// </param>
-        public static void AnimateWidth(OrthographicCamera camera, double newWidth, double animationTime)
+        public static void AnimateWidth(this OrthographicCamera camera, double newWidth, double animationTime)
         {
             double fromWidth = camera.Width;
 
@@ -132,7 +127,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void ChangeDirection(ProjectionCamera camera, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
+        public static void ChangeDirection(this ProjectionCamera camera, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
         {
             var target = camera.Position + camera.LookDirection;
             var length = camera.LookDirection.Length;
@@ -146,7 +141,7 @@ namespace HelixToolkit.Wpf
         /// <param name="source">The source camera.</param>
         /// <param name="dest">The destination camera.</param>
         /// <param name="copyNearFarPlaneDistances">Copy near and far plane distances if set to <c>true</c>.</param>
-        public static void Copy(ProjectionCamera source, ProjectionCamera dest, bool copyNearFarPlaneDistances = true)
+        public static void Copy(this ProjectionCamera source, ProjectionCamera dest, bool copyNearFarPlaneDistances = true)
         {
             if (source == null || dest == null)
             {
@@ -156,7 +151,7 @@ namespace HelixToolkit.Wpf
             dest.LookDirection = source.LookDirection;
             dest.Position = source.Position;
             dest.UpDirection = source.UpDirection;
-            
+
             if (copyNearFarPlaneDistances)
             {
                 dest.NearPlaneDistance = source.NearPlaneDistance;
@@ -214,7 +209,7 @@ namespace HelixToolkit.Wpf
         /// <param name="distance">
         /// New length of the LookDirection vector.
         /// </param>
-        public static void CopyDirectionOnly(ProjectionCamera source, ProjectionCamera dest, double distance)
+        public static void CopyDirectionOnly(this ProjectionCamera source, ProjectionCamera dest, double distance)
         {
             if (source == null || dest == null)
             {
@@ -250,7 +245,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The get info.
         /// </returns>
-        public static string GetInfo(Camera camera)
+        public static string GetInfo(this Camera camera)
         {
             var matrixCamera = camera as MatrixCamera;
             var perspectiveCamera = camera as PerspectiveCamera;
@@ -331,7 +326,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void LookAt(ProjectionCamera camera, Point3D target, double animationTime)
+        public static void LookAt(this ProjectionCamera camera, Point3D target, double animationTime)
         {
             LookAt(camera, target, camera.LookDirection, animationTime);
         }
@@ -351,8 +346,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void LookAt(
-            ProjectionCamera camera, Point3D target, Vector3D newLookDirection, double animationTime)
+        public static void LookAt(this ProjectionCamera camera, Point3D target, Vector3D newLookDirection, double animationTime)
         {
             LookAt(camera, target, newLookDirection, camera.UpDirection, animationTime);
         }
@@ -375,12 +369,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void LookAt(
-            ProjectionCamera camera,
-            Point3D target,
-            Vector3D newLookDirection,
-            Vector3D newUpDirection,
-            double animationTime)
+        public static void LookAt(this ProjectionCamera camera, Point3D target, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
         {
             Point3D newPosition = target - newLookDirection;
 
@@ -410,7 +399,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void LookAt(ProjectionCamera camera, Point3D target, double distance, double animationTime)
+        public static void LookAt(this ProjectionCamera camera, Point3D target, double distance, double animationTime)
         {
             Vector3D d = camera.LookDirection;
             d.Normalize();
@@ -423,7 +412,7 @@ namespace HelixToolkit.Wpf
         /// <param name="camera">
         /// The camera.
         /// </param>
-        public static void Reset(Camera camera)
+        public static void Reset(this Camera camera)
         {
             var pcamera = camera as PerspectiveCamera;
             if (pcamera != null)
@@ -444,7 +433,7 @@ namespace HelixToolkit.Wpf
         /// <param name="camera">
         /// The camera.
         /// </param>
-        public static void Reset(PerspectiveCamera camera)
+        public static void Reset(this PerspectiveCamera camera)
         {
             if (camera == null)
             {
@@ -465,7 +454,7 @@ namespace HelixToolkit.Wpf
         /// <param name="camera">
         /// The camera.
         /// </param>
-        public static void Reset(OrthographicCamera camera)
+        public static void Reset(this OrthographicCamera camera)
         {
             if (camera == null)
             {
@@ -481,6 +470,177 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Obtains the view transform matrix for a camera. (see page 327)
+        /// </summary>
+        /// <param name="camera">
+        /// Camera to obtain the ViewMatrix for
+        /// </param>
+        /// <returns>
+        /// A Matrix3D object with the camera view transform matrix, or a Matrix3D with all zeros if the "camera" is null.
+        /// </returns>
+        public static Matrix3D GetViewMatrix(this Camera camera)
+        {
+            if (camera == null)
+            {
+                throw new ArgumentNullException("camera");
+            }
+
+            if (camera is MatrixCamera)
+            {
+                return (camera as MatrixCamera).ViewMatrix;
+            }
+
+            if (camera is ProjectionCamera)
+            {
+                // Reflector on: ProjectionCamera.CreateViewMatrix
+                var projectionCamera = camera as ProjectionCamera;
+
+                var zaxis = -projectionCamera.LookDirection;
+                zaxis.Normalize();
+
+                var xaxis = Vector3D.CrossProduct(projectionCamera.UpDirection, zaxis);
+                xaxis.Normalize();
+
+                var yaxis = Vector3D.CrossProduct(zaxis, xaxis);
+                var pos = (Vector3D)projectionCamera.Position;
+
+                return new Matrix3D(
+                    xaxis.X,
+                    yaxis.X,
+                    zaxis.X,
+                    0,
+                    xaxis.Y,
+                    yaxis.Y,
+                    zaxis.Y,
+                    0,
+                    xaxis.Z,
+                    yaxis.Z,
+                    zaxis.Z,
+                    0,
+                    -Vector3D.DotProduct(xaxis, pos),
+                    -Vector3D.DotProduct(yaxis, pos),
+                    -Vector3D.DotProduct(zaxis, pos),
+                    1);
+            }
+
+            throw new HelixToolkitException("Unknown camera type.");
+        }
+
+        /// <summary>
+        /// Gets the projection matrix for the specified camera.
+        /// </summary>
+        /// <param name="camera">The camera.</param>
+        /// <param name="aspectRatio">The aspect ratio.</param>
+        /// <returns>The projection matrix.</returns>
+        public static Matrix3D GetProjectionMatrix(this Camera camera, double aspectRatio)
+        {
+            if (camera == null)
+            {
+                throw new ArgumentNullException("camera");
+            }
+
+            var perspectiveCamera = camera as PerspectiveCamera;
+            if (perspectiveCamera != null)
+            {
+                // The angle-to-radian formula is a little off because only
+                // half the angle enters the calculation.
+                double xscale = 1 / Math.Tan(Math.PI * perspectiveCamera.FieldOfView / 360);
+                double yscale = xscale * aspectRatio;
+                double znear = perspectiveCamera.NearPlaneDistance;
+                double zfar = perspectiveCamera.FarPlaneDistance;
+                double zscale = double.IsPositiveInfinity(zfar) ? -1 : (zfar / (znear - zfar));
+                double zoffset = znear * zscale;
+
+                return new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, zscale, -1, 0, 0, zoffset, 0);
+            }
+
+            var orthographicCamera = camera as OrthographicCamera;
+            if (orthographicCamera != null)
+            {
+                double xscale = 2.0 / orthographicCamera.Width;
+                double yscale = xscale * aspectRatio;
+                double znear = orthographicCamera.NearPlaneDistance;
+                double zfar = orthographicCamera.FarPlaneDistance;
+
+                if (double.IsPositiveInfinity(zfar))
+                {
+                    zfar = znear * 1e5;
+                }
+
+                double dzinv = 1.0 / (znear - zfar);
+
+                var m = new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, dzinv, 0, 0, 0, znear * dzinv, 1);
+                return m;
+            }
+
+            var matrixCamera = camera as MatrixCamera;
+            if (matrixCamera != null)
+            {
+                return matrixCamera.ProjectionMatrix;
+            }
+
+            throw new HelixToolkitException("Unknown camera type.");
+        }
+
+        /// <summary>
+        /// Get the combined view and projection transform.
+        /// </summary>
+        /// <param name="camera">The camera.</param>
+        /// <param name="aspectRatio">The aspect ratio.</param>
+        /// <returns>The total view and projection transform.</returns>
+        public static Matrix3D GetTotalTransform(this Camera camera, double aspectRatio)
+        {
+            var m = Matrix3D.Identity;
+
+            if (camera == null)
+            {
+                throw new ArgumentNullException("camera");
+            }
+
+            if (camera.Transform != null)
+            {
+                var cameraTransform = camera.Transform.Value;
+
+                if (!cameraTransform.HasInverse)
+                {
+                    throw new HelixToolkitException("Camera transform has no inverse.");
+                }
+
+                cameraTransform.Invert();
+                m.Append(cameraTransform);
+            }
+
+            m.Append(GetViewMatrix(camera));
+            m.Append(GetProjectionMatrix(camera, aspectRatio));
+            return m;
+        }
+
+        /// <summary>
+        /// Gets the inverse camera transform.
+        /// </summary>
+        /// <param name="camera">
+        /// The camera.
+        /// </param>
+        /// <param name="aspectRatio">
+        /// The aspect ratio.
+        /// </param>
+        /// <returns>
+        /// The inverse transform.
+        /// </returns>
+        public static Matrix3D GetInverseTransform(this Camera camera, double aspectRatio)
+        {
+            var m = GetTotalTransform(camera, aspectRatio);
+
+            if (!m.HasInverse)
+            {
+                throw new HelixToolkitException("Camera transform has no inverse.");
+            }
+
+            m.Invert();
+            return m;
+        }
+
+        /// <summary>
         /// Zooms to fit the extents of the specified viewport.
         /// </summary>
         /// <param name="camera">
@@ -492,7 +652,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void ZoomExtents(ProjectionCamera camera, Viewport3D viewport, double animationTime = 0)
+        public static void ZoomExtents(this ProjectionCamera camera, Viewport3D viewport, double animationTime = 0)
         {
             var bounds = Visual3DHelper.FindBounds(viewport.Children);
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
@@ -520,7 +680,7 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void ZoomExtents(ProjectionCamera camera, Viewport3D viewport, Rect3D bounds, double animationTime = 0)
+        public static void ZoomExtents(this ProjectionCamera camera, Viewport3D viewport, Rect3D bounds, double animationTime = 0)
         {
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
             var center = bounds.Location + (diagonal * 0.5);
@@ -588,7 +748,7 @@ namespace HelixToolkit.Wpf
         /// <param name="zoomRectangle">
         /// The zoom rectangle.
         /// </param>
-        public static void ZoomToRectangle(ProjectionCamera camera, Viewport3D viewport, Rect zoomRectangle)
+        public static void ZoomToRectangle(this ProjectionCamera camera, Viewport3D viewport, Rect zoomRectangle)
         {
             var topLeftRay = Viewport3DHelper.Point2DtoRay3D(viewport, zoomRectangle.TopLeft);
             var topRightRay = Viewport3DHelper.Point2DtoRay3D(viewport, zoomRectangle.TopRight);

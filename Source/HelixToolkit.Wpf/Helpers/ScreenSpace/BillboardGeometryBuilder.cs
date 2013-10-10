@@ -42,14 +42,14 @@ namespace HelixToolkit.Wpf
             for (int i = 0; i < n; i++)
             {
                 // bottom right triangle
-                indices.Add(i * 4 + 0);
-                indices.Add(i * 4 + 1);
-                indices.Add(i * 4 + 2);
+                indices.Add((i * 4) + 0);
+                indices.Add((i * 4) + 1);
+                indices.Add((i * 4) + 2);
 
                 // top left triangle
-                indices.Add(i * 4 + 2);
-                indices.Add(i * 4 + 3);
-                indices.Add(i * 4 + 0);
+                indices.Add((i * 4) + 2);
+                indices.Add((i * 4) + 3);
+                indices.Add((i * 4) + 0);
             }
 
             indices.Freeze();
@@ -59,127 +59,106 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets the billboard positions with the current screen transform.
         /// </summary>
+        /// <param name="billboards">The billboards.</param>
+        /// <param name="offset">The offset.</param>
         /// <returns>The positions.</returns>
-        public Point3DCollection GetPositions(IList<Billboard> billboards)
+        public Point3DCollection GetPositions(IList<Billboard> billboards, Vector offset)
         {
             var positions = new Point3DCollection(billboards.Count * 4);
+
             foreach (var bb in billboards)
             {
-                var screenPoint = (Point4D)bb.Position * this.visualToScreen;
-
-                double spx = screenPoint.X;
-                double spy = screenPoint.Y;
-                double spz = screenPoint.Z;
-                double spw = screenPoint.W;
-
-                if (!bb.DepthOffset.Equals(0))
+                Point4D screenPoint;
+                if (!bb.WorldDepthOffset.Equals(0))
                 {
-                    spz -= bb.DepthOffset * spw;
+                    var viewPoint = (Point4D)bb.Position * this.visualToProjection;
+                    screenPoint = new Point4D(viewPoint.X, viewPoint.Y, viewPoint.Z + bb.WorldDepthOffset, viewPoint.W) * this.projectionToScreen;
+                }
+                else
+                {
+                    screenPoint = (Point4D)bb.Position * this.visualToScreen;
                 }
 
-                var p0 = new Point4D(spx, spy, spz, spw) * this.screenToVisual;
-                double pwinverse = 1 / p0.W;
+                double spw = screenPoint.W;
+                double spx = screenPoint.X;
+                double spy = screenPoint.Y;
+                double spz = screenPoint.Z - (bb.DepthOffset * spw);
 
-                var p1 = new Point4D(spx + bb.Left * spw, spy + bb.Bottom * spw, spz, spw) * this.screenToVisual;
-                positions.Add(new Point3D(p1.X * pwinverse, p1.Y * pwinverse, p1.Z * pwinverse));
+                // Convert bottom-left corner to visual space
+                var p = new Point4D(spx + ((bb.Left + offset.X) * spw), spy + ((bb.Bottom + offset.Y) * spw), spz, spw) * this.screenToVisual;
+                double wi = 1 / p.W;
+                positions.Add(new Point3D(p.X * wi, p.Y * wi, p.Z * wi));
 
-                var p2 = new Point4D(spx + bb.Right * spw, spy + bb.Bottom * spw, spz, spw) * this.screenToVisual;
-                positions.Add(new Point3D(p2.X * pwinverse, p2.Y * pwinverse, p2.Z * pwinverse));
+                // Convert bottom-right corner to visual space
+                p = new Point4D(spx + ((bb.Right + offset.X) * spw), spy + ((bb.Bottom + offset.Y) * spw), spz, spw) * this.screenToVisual;
+                wi = 1 / p.W;
+                positions.Add(new Point3D(p.X * wi, p.Y * wi, p.Z * wi));
 
-                var p3 = new Point4D(spx + bb.Right * spw, spy + bb.Top * spw, spz, spw) * this.screenToVisual;
-                positions.Add(new Point3D(p3.X * pwinverse, p3.Y * pwinverse, p3.Z * pwinverse));
+                // Convert top-right corner to visual space
+                p = new Point4D(spx + ((bb.Right + offset.X) * spw), spy + ((bb.Top + offset.Y) * spw), spz, spw) * this.screenToVisual;
+                wi = 1 / p.W;
+                positions.Add(new Point3D(p.X * wi, p.Y * wi, p.Z * wi));
 
-                var p4 = new Point4D(spx + bb.Left * spw, spy + bb.Top * spw, spz, spw) * this.screenToVisual;
-                positions.Add(new Point3D(p4.X * pwinverse, p4.Y * pwinverse, p4.Z * pwinverse));
+                // Convert top-left corner to visual space
+                p = new Point4D(spx + ((bb.Left + offset.X) * spw), spy + ((bb.Top + offset.Y) * spw), spz, spw) * this.screenToVisual;
+                wi = 1 / p.W;
+                positions.Add(new Point3D(p.X * wi, p.Y * wi, p.Z * wi));
             }
 
             positions.Freeze();
             return positions;
         }
-    }
-
-    /// <summary>
-    /// Represents a billboard.
-    /// </summary>
-    public class Billboard
-    {
-        /// <summary>
-        /// The position
-        /// </summary>
-        internal Point3D Position;
 
         /// <summary>
-        /// The relative left position (screen coordinates).
+        /// Gets the billboard positions with the current screen transform.
         /// </summary>
-        internal double Left;
-
-        /// <summary>
-        /// The relative right position (screen coordinates).
-        /// </summary>
-        internal double Right;
-
-        /// <summary>
-        /// The relative top position (screen coordinates).
-        /// </summary>
-        internal double Top;
-
-        /// <summary>
-        /// The relative bottom position (screen coordinates).
-        /// </summary>
-        internal double Bottom;
-
-        /// <summary>
-        /// The depth offset
-        /// </summary>
-        internal double DepthOffset;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Billboard" /> class.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="size">The size.</param>
-        /// <param name="depthOffset">The depth offset.</param>
-        public Billboard(Point3D position, double size, double depthOffset)
+        /// <param name="billboards">The billboards.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="pinWidth">Width of the pins.</param>
+        /// <returns>The mesh vertices.</returns>
+        public Point3DCollection GetPinPositions(IList<Billboard> billboards, Vector offset, double pinWidth)
         {
-            double halfSize = size / 2.0;
-            Position = position;
-            this.Left = -halfSize;
-            this.Right = halfSize;
-            this.Top = -halfSize;
-            this.Bottom = halfSize;
-            DepthOffset = depthOffset;
-        }
+            var pinStart = new Point(0, 0);
+            var pinEnd = pinStart + (offset * (1 + (2 * pinWidth / offset.Length)));
+            var pinNormal = new Vector(pinEnd.Y, -pinEnd.X);
+            pinNormal.Normalize();
+            pinNormal *= pinWidth * 0.5;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Billboard" /> class.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="horizontalAlignment">The horizontal alignment.</param>
-        /// <param name="verticalAlignment">The vertical alignment.</param>
-        /// <param name="depthOffset">The depth offset.</param>
-        public Billboard(Point3D position, double width = 1.0, double height = 1.0, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, VerticalAlignment verticalAlignment = VerticalAlignment.Center, double depthOffset = 0.0)
-        {
-            // Set horizontal alignment factor
-            var xa = -0.5;
-            if (horizontalAlignment == HorizontalAlignment.Left) xa = 0;
-            if (horizontalAlignment == HorizontalAlignment.Right) xa = -1;
+            var pinPoints = new Point[4];
+            pinPoints[0] = new Point(0, 0) + (pinNormal * 0.5);
+            pinPoints[1] = new Point(0, 0) - (pinNormal * 0.5);
+            pinPoints[2] = pinEnd - pinNormal;
+            pinPoints[3] = pinEnd + pinNormal;
 
-            // Set vertical alignment factor
-            var ya = -0.5;
-            if (verticalAlignment == VerticalAlignment.Top) ya = 0;
-            if (verticalAlignment == VerticalAlignment.Bottom) ya = -1;
+            var positions = new Point3DCollection(billboards.Count * 4);
+            foreach (var bb in billboards)
+            {
+                Point4D screenPoint;
+                if (!bb.WorldDepthOffset.Equals(0))
+                {
+                    var viewPoint = (Point4D)bb.Position * this.visualToProjection;
+                    screenPoint = new Point4D(viewPoint.X, viewPoint.Y, viewPoint.Z + bb.WorldDepthOffset, viewPoint.W) * this.projectionToScreen;
+                }
+                else
+                {
+                    screenPoint = (Point4D)bb.Position * this.visualToScreen;
+                }
 
-            double left = xa * width;
-            double top = ya * height;
+                double spw = screenPoint.W;
+                double spx = screenPoint.X;
+                double spy = screenPoint.Y;
+                double spz = screenPoint.Z - ((bb.DepthOffset - 1e-5) * spw);
 
-            Position = position;
-            this.Left = left;
-            this.Right = left + width;
-            this.Top = top;
-            this.Bottom = top + height;
-            DepthOffset = depthOffset;
+                foreach (var pinPoint in pinPoints)
+                {
+                    var p = new Point4D(spx + (pinPoint.X * spw), spy + (pinPoint.Y * spw), spz, spw) * this.screenToVisual;
+                    double wi = 1 / p.W;
+                    positions.Add(new Point3D(p.X * wi, p.Y * wi, p.Z * wi));
+                }
+            }
+
+            positions.Freeze();
+            return positions;
         }
     }
 }

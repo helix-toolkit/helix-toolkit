@@ -101,13 +101,13 @@ namespace HelixToolkit.Wpf
             this.ExportViewport(viewport);
 
             // Export objects
-            Visual3DHelper.Traverse<GeometryModel3D>(viewport.Children, this.ExportModel);
+            viewport.Children.Traverse<GeometryModel3D>(this.ExportModel);
 
             // Export camera
             this.ExportCamera(viewport.Camera);
 
             // Export lights
-            Visual3DHelper.Traverse<Light>(viewport.Children, this.ExportLight);
+            viewport.Children.Traverse<Light>(this.ExportLight);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace HelixToolkit.Wpf
         public void Export(Visual3D visual)
         {
             this.ExportHeader();
-            Visual3DHelper.Traverse<GeometryModel3D>(visual, this.ExportModel);
+            visual.Traverse<GeometryModel3D>(this.ExportModel);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf
         public void Export(Model3D model)
         {
             this.ExportHeader();
-            Visual3DHelper.TraverseModel<GeometryModel3D>(model, this.ExportModel);
+            model.Traverse<GeometryModel3D>(this.ExportModel);
         }
 
         /// <summary>

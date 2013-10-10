@@ -8,7 +8,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -19,20 +18,19 @@ namespace HelixToolkit.Wpf
     using System.Windows.Shapes;
 
     /// <summary>
-    /// Helper methods for Viewport3D.
+    /// Provides extension methods for <see cref="Viewport3D"/>.
     /// </summary>
     /// <remarks>
-    /// See Charles Petzold's book "3D programming for Windows" and Eric Sink's "Twelve Days of WPF 3D"
-    /// http://www.ericsink.com/wpf3d/index.html
+    /// See Charles Petzold's book "3D programming for Windows" and Eric Sink's <a hef="http://www.ericsink.com/wpf3d/index.html">Twelve Days of WPF 3D</a>.
     /// </remarks>
     public static class Viewport3DHelper
     {
         /// <summary>
         /// Copies the specified viewport to the clipboard.
         /// </summary>
-        /// <param name="view">The view.</param>
+        /// <param name="view">The viewport.</param>
         /// <param name="m">The oversampling multiplier.</param>
-        public static void Copy(Viewport3D view, int m = 1)
+        public static void Copy(this Viewport3D view, int m = 1)
         {
             Clipboard.SetImage(RenderBitmap(view, Brushes.White, m));
         }
@@ -40,34 +38,34 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Copies the specified viewport to the clipboard.
         /// </summary>
-        /// <param name="view">The view.</param>
+        /// <param name="view">The viewport.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="background">The background.</param>
         /// <param name="m">The oversampling multiplier.</param>
-        public static void Copy(Viewport3D view, double width, double height, Brush background, int m = 1)
+        public static void Copy(this Viewport3D view, double width, double height, Brush background, int m = 1)
         {
             Clipboard.SetImage(RenderBitmap(view, width, height, background));
         }
 
         /// <summary>
-        /// Copies the viewport as xaml to the clipboard.
+        /// Copies the viewport as <code>xaml</code> to the clipboard.
         /// </summary>
-        /// <param name="view">
-        /// The view.
+        /// <param name="viewport">
+        /// The viewport.
         /// </param>
-        public static void CopyXaml(Viewport3D view)
+        public static void CopyXaml(this Viewport3D viewport)
         {
-            Clipboard.SetText(XamlWriter.Save(view));
+            Clipboard.SetText(XamlWriter.Save(viewport));
         }
 
         /// <summary>
-        /// Exports the specified view.
+        /// Exports the specified viewport.
         /// </summary>
-        /// <param name="view">The view.</param>
+        /// <param name="viewport">The viewport.</param>
         /// <param name="fileName">Name of the file.</param>
-        /// <param name="background">The background.</param>
-        public static void Export(Viewport3D view, string fileName, Brush background = null)
+        /// <param name="background">The background brush.</param>
+        public static void Export(this Viewport3D viewport, string fileName, Brush background = null)
         {
             string ext = System.IO.Path.GetExtension(fileName);
             if (ext != null)
@@ -79,22 +77,22 @@ namespace HelixToolkit.Wpf
             {
                 case ".jpg":
                 case ".png":
-                    SaveBitmap(view, fileName, background, 2);
+                    SaveBitmap(viewport, fileName, background, 2);
                     break;
                 case ".xaml":
-                    ExportXaml(view, fileName);
+                    ExportXaml(viewport, fileName);
                     break;
                 case ".xml":
-                    ExportKerkythea(view, fileName, background);
+                    ExportKerkythea(viewport, fileName, background);
                     break;
                 case ".obj":
-                    ExportObj(view, fileName);
+                    ExportObj(viewport, fileName);
                     break;
                 case ".x3d":
-                    ExportX3D(view, fileName);
+                    ExportX3D(viewport, fileName);
                     break;
                 case ".dae":
-                    ExportCollada(view, fileName);
+                    ExportCollada(viewport, fileName);
                     break;
                 default:
                     throw new HelixToolkitException("Not supported file format.");
@@ -102,7 +100,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Finds the hits for a given 2D viewport position.
+        /// Finds the hits for the specified position.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -113,7 +111,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// List of hits, sorted with the nearest hit first.
         /// </returns>
-        public static IList<HitResult> FindHits(Viewport3D viewport, Point position)
+        public static IList<HitResult> FindHits(this Viewport3D viewport, Point position)
         {
             var camera = viewport.Camera as ProjectionCamera;
             if (camera == null)
@@ -147,14 +145,14 @@ namespace HelixToolkit.Wpf
                     return HitTestResultBehavior.Continue;
                 };
 
-            var hitParams = new PointHitTestParameters(position);
-            VisualTreeHelper.HitTest(viewport, null, callback, hitParams);
+            var htp = new PointHitTestParameters(position);
+            VisualTreeHelper.HitTest(viewport, null, callback, htp);
 
             return result.OrderBy(k => k.Distance).ToList();
         }
 
         /// <summary>
-        /// Finds the nearest point and its normal.
+        /// Finds the nearest visual, hit point and its normal.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -174,8 +172,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The find nearest.
         /// </returns>
-        public static bool FindNearest(
-            Viewport3D viewport, Point position, out Point3D point, out Vector3D normal, out DependencyObject visual)
+        public static bool FindNearest(this Viewport3D viewport, Point position, out Point3D point, out Vector3D normal, out DependencyObject visual)
         {
             var camera = viewport.Camera as ProjectionCamera;
             if (camera == null)
@@ -186,7 +183,7 @@ namespace HelixToolkit.Wpf
                 return false;
             }
 
-            var hitParams = new PointHitTestParameters(position);
+            var htp = new PointHitTestParameters(position);
 
             double minimumDistance = double.MaxValue;
             var nearestPoint = new Point3D();
@@ -207,12 +204,9 @@ namespace HelixToolkit.Wpf
                             var p1 = mesh.Positions[rayHit.VertexIndex1];
                             var p2 = mesh.Positions[rayHit.VertexIndex2];
                             var p3 = mesh.Positions[rayHit.VertexIndex3];
-                            double x = p1.X * rayHit.VertexWeight1 + p2.X * rayHit.VertexWeight2
-                                       + p3.X * rayHit.VertexWeight3;
-                            double y = p1.Y * rayHit.VertexWeight1 + p2.Y * rayHit.VertexWeight2
-                                       + p3.Y * rayHit.VertexWeight3;
-                            double z = p1.Z * rayHit.VertexWeight1 + p2.Z * rayHit.VertexWeight2
-                                       + p3.Z * rayHit.VertexWeight3;
+                            double x = (p1.X * rayHit.VertexWeight1) + (p2.X * rayHit.VertexWeight2) + (p3.X * rayHit.VertexWeight3);
+                            double y = (p1.Y * rayHit.VertexWeight1) + (p2.Y * rayHit.VertexWeight2) + (p3.Y * rayHit.VertexWeight3);
+                            double z = (p1.Z * rayHit.VertexWeight1) + (p2.Z * rayHit.VertexWeight2) + (p3.Z * rayHit.VertexWeight3);
 
                             // point in local coordinates
                             var p = new Point3D(x, y, z);
@@ -220,7 +214,7 @@ namespace HelixToolkit.Wpf
                             // transform to global coordinates
 
                             // first transform the Model3D hierarchy
-                            var t2 = GetTransform(rayHit.VisualHit, rayHit.ModelHit);
+                            var t2 = rayHit.VisualHit.GetTransformTo(rayHit.ModelHit);
                             if (t2 != null)
                             {
                                 p = t2.Transform(p);
@@ -246,7 +240,7 @@ namespace HelixToolkit.Wpf
 
                     return HitTestResultBehavior.Continue;
                 },
-                hitParams);
+                htp);
 
             point = nearestPoint;
             visual = nearestObject;
@@ -262,12 +256,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Find the coordinates of the nearest point given a 2D position in the viewport
+        /// Finds the coordinates of the nearest point at the specified position.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
         /// <param name="position">The position.</param>
         /// <returns>The nearest point, or null if no point was found.</returns>
-        public static Point3D? FindNearestPoint(Viewport3D viewport, Point position)
+        public static Point3D? FindNearestPoint(this Viewport3D viewport, Point position)
         {
             Point3D p;
             Vector3D n;
@@ -281,14 +275,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Find the Visual3D that is nearest given a 2D position in the viewport
+        /// Finds the Visual3D that is nearest the specified position.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
         /// <param name="position">The position.</param>
         /// <returns>
-        /// The nearest visual, or null if no visual was found.
+        /// The nearest visual, or <c>null</c> if no visual was found.
         /// </returns>
-        public static Visual3D FindNearestVisual(Viewport3D viewport, Point position)
+        public static Visual3D FindNearestVisual(this Viewport3D viewport, Point position)
         {
             Point3D p;
             Vector3D n;
@@ -306,119 +300,38 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="viewport3DVisual">The viewport visual.</param>
         /// <returns>The camera transform.</returns>
-        public static Matrix3D GetCameraTransform(Viewport3DVisual viewport3DVisual)
+        public static Matrix3D GetCameraTransform(this Viewport3DVisual viewport3DVisual)
         {
-            return GetTotalTransform(viewport3DVisual.Camera, viewport3DVisual.Viewport.Size.Width / viewport3DVisual.Viewport.Size.Height);
+            return viewport3DVisual.Camera.GetTotalTransform(viewport3DVisual.Viewport.Size.Width / viewport3DVisual.Viewport.Size.Height);
         }
 
         /// <summary>
-        /// Gets the camera transform.
+        /// Gets the camera transform (viewport and projection).
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
         /// </param>
         /// <returns>
-        /// The camera transform.
+        /// A <see cref="Matrix3D"/>.
         /// </returns>
-        public static Matrix3D GetCameraTransform(Viewport3D viewport)
+        public static Matrix3D GetCameraTransform(this Viewport3D viewport)
         {
-            return GetTotalTransform(viewport.Camera, viewport.ActualWidth / viewport.ActualHeight);
+            return viewport.Camera.GetTotalTransform(viewport.ActualWidth / viewport.ActualHeight);
         }
 
         /// <summary>
-        /// Gets the inverse camera transform.
-        /// </summary>
-        /// <param name="camera">
-        /// The camera.
-        /// </param>
-        /// <param name="aspectRatio">
-        /// The aspect ratio.
-        /// </param>
-        /// <returns>
-        /// The inverse transform.
-        /// </returns>
-        public static Matrix3D GetInverseTransform(Camera camera, double aspectRatio)
-        {
-            var m = GetTotalTransform(camera, aspectRatio);
-
-            if (!m.HasInverse)
-            {
-                throw new HelixToolkitException("Camera transform has no inverse.");
-            }
-
-            m.Invert();
-            return m;
-        }
-
-        /// <summary>
-        /// Get all lights in the Viewport3D.
+        /// Gets all lights.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <returns>The lights.</returns>
-        public static IEnumerable<Light> GetLights(Viewport3D viewport)
+        /// <returns>A sequence of <see cref="Light"/> objects.</returns>
+        public static IEnumerable<Light> GetLights(this Viewport3D viewport)
         {
             var models = SearchFor<Light>(viewport.Children);
             return models.Select(m => m as Light);
         }
 
         /// <summary>
-        /// Gets the projection matrix for the specified camera.
-        /// </summary>
-        /// <param name="camera">The camera.</param>
-        /// <param name="aspectRatio">The aspect ratio.</param>
-        /// <returns>The projection matrix.</returns>
-        public static Matrix3D GetProjectionMatrix(Camera camera, double aspectRatio)
-        {
-            if (camera == null)
-            {
-                throw new ArgumentNullException("camera");
-            }
-
-            var perspectiveCamera = camera as PerspectiveCamera;
-            if (perspectiveCamera != null)
-            {
-                // The angle-to-radian formula is a little off because only
-                // half the angle enters the calculation.
-                double xscale = 1 / Math.Tan(Math.PI * perspectiveCamera.FieldOfView / 360);
-                double yscale = xscale * aspectRatio;
-                double znear = perspectiveCamera.NearPlaneDistance;
-                double zfar = perspectiveCamera.FarPlaneDistance;
-                double zscale = double.IsPositiveInfinity(zfar) ? -1 : (zfar / (znear - zfar));
-                double zoffset = znear * zscale;
-
-                return new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, zscale, -1, 0, 0, zoffset, 0);
-            }
-
-            var orthographicCamera = camera as OrthographicCamera;
-            if (orthographicCamera != null)
-            {
-                double xscale = 2.0 / orthographicCamera.Width;
-                double yscale = xscale * aspectRatio;
-                double znear = orthographicCamera.NearPlaneDistance;
-                double zfar = orthographicCamera.FarPlaneDistance;
-
-                if (double.IsPositiveInfinity(zfar))
-                {
-                    zfar = znear * 1e5;
-                }
-
-                double dzinv = 1.0 / (znear - zfar);
-
-                var m = new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, dzinv, 0, 0, 0, znear * dzinv, 1);
-                return m;
-            }
-
-            var matrixCamera = camera as MatrixCamera;
-            if (matrixCamera != null)
-            {
-                return matrixCamera.ProjectionMatrix;
-            }
-
-            throw new HelixToolkitException("Unknown camera type.");
-        }
-
-        /// <summary>
-        /// Get the ray into the view volume given by the position in 2D (screen coordinates).
+        /// Gets the ray at the specified position.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -427,9 +340,9 @@ namespace HelixToolkit.Wpf
         /// A 2D point.
         /// </param>
         /// <returns>
-        /// The ray.
+        /// A <see cref="Ray3D"/>.
         /// </returns>
-        public static Ray3D GetRay(Viewport3D viewport, Point position)
+        public static Ray3D GetRay(this Viewport3D viewport, Point position)
         {
             Point3D point1, point2;
             bool ok = Point2DtoPoint3D(viewport, position, out point1, out point2);
@@ -442,44 +355,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Get the combined view and projection transform
+        /// Gets the total transform (camera and viewport).
         /// </summary>
-        /// <param name="camera">The camera.</param>
-        /// <param name="aspectRatio">The aspect ratio.</param>
-        /// <returns>The total view and projection transform.</returns>
-        public static Matrix3D GetTotalTransform(Camera camera, double aspectRatio)
-        {
-            var m = Matrix3D.Identity;
-
-            if (camera == null)
-            {
-                throw new ArgumentNullException("camera");
-            }
-
-            if (camera.Transform != null)
-            {
-                var cameraTransform = camera.Transform.Value;
-
-                if (!cameraTransform.HasInverse)
-                {
-                    throw new HelixToolkitException("Camera transform has no inverse.");
-                }
-
-                cameraTransform.Invert();
-                m.Append(cameraTransform);
-            }
-
-            m.Append(GetViewMatrix(camera));
-            m.Append(GetProjectionMatrix(camera, aspectRatio));
-            return m;
-        }
-
-        /// <summary>
-        /// Gets the total transform.
-        /// </summary>
-        /// <param name="viewport3DVisual">The viewport3DVisual.</param>
+        /// <param name="viewport3DVisual">The viewport visual.</param>
         /// <returns>The total transform.</returns>
-        public static Matrix3D GetTotalTransform(Viewport3DVisual viewport3DVisual)
+        public static Matrix3D GetTotalTransform(this Viewport3DVisual viewport3DVisual)
         {
             var m = GetCameraTransform(viewport3DVisual);
             m.Append(GetViewportTransform(viewport3DVisual));
@@ -487,24 +367,24 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the total transform for a Viewport3D.
+        /// Gets the total transform (camera and viewport).
         /// </summary>
         /// <param name="viewport">The viewport.</param>
         /// <returns>The total transform.</returns>
-        public static Matrix3D GetTotalTransform(Viewport3D viewport)
+        public static Matrix3D GetTotalTransform(this Viewport3D viewport)
         {
-            var matx = GetCameraTransform(viewport);
-            matx.Append(GetViewportTransform(viewport));
-            return matx;
+            var transform = GetCameraTransform(viewport);
+            transform.Append(GetViewportTransform(viewport));
+            return transform;
         }
 
         /// <summary>
-        /// Get the total transform of a Visual3D
+        /// Gets the total transform of the specified visual.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
         /// <param name="visual">The visual.</param>
         /// <returns>The transform.</returns>
-        public static GeneralTransform3D GetTransform(Viewport3D viewport, Visual3D visual)
+        public static GeneralTransform3D GetTransform(this Viewport3D viewport, Visual3D visual)
         {
             if (visual == null)
             {
@@ -535,123 +415,47 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the transform from the specified Visual3D to the Model3D.
+        /// Gets the view matrix.
         /// </summary>
-        /// <param name="visual">The source visual.</param>
-        /// <param name="model">The target model.</param>
-        /// <returns>The transform.</returns>
-        public static GeneralTransform3D GetTransform(Visual3D visual, Model3D model)
+        /// <param name="viewport">The viewport.</param>
+        /// <returns>A <see cref="Matrix3D"/>.</returns>
+        public static Matrix3D GetViewMatrix(this Viewport3D viewport)
         {
-            var mv = visual as ModelVisual3D;
-            if (mv != null)
-            {
-                return GetTransform(mv.Content, model, Transform3D.Identity);
-            }
-
-            return null;
+            return viewport.Camera.GetViewMatrix();
         }
 
         /// <summary>
-        /// Obtains the view transform matrix for a camera. (see page 327)
+        /// Gets the projection matrix.
         /// </summary>
-        /// <param name="camera">
-        /// Camera to obtain the ViewMatrix for
-        /// </param>
-        /// <returns>
-        /// A Matrix3D object with the camera view transform matrix, or a Matrix3D with all zeros if the "camera" is null.
-        /// </returns>
-        public static Matrix3D GetViewMatrix(Camera camera)
+        /// <param name="viewport">The viewport.</param>
+        /// <returns>A <see cref="Matrix3D"/>.</returns>
+        public static Matrix3D GetProjectionMatrix(this Viewport3D viewport)
         {
-            if (camera == null)
-            {
-                throw new ArgumentNullException("camera");
-            }
-
-            if (camera is MatrixCamera)
-            {
-                return (camera as MatrixCamera).ViewMatrix;
-            }
-
-            if (camera is ProjectionCamera)
-            {
-                // Reflector on: ProjectionCamera.CreateViewMatrix
-                var projcam = camera as ProjectionCamera;
-
-                var zaxis = -projcam.LookDirection;
-                zaxis.Normalize();
-
-                var xaxis = Vector3D.CrossProduct(projcam.UpDirection, zaxis);
-                xaxis.Normalize();
-
-                var yaxis = Vector3D.CrossProduct(zaxis, xaxis);
-                var pos = (Vector3D)projcam.Position;
-
-                return new Matrix3D(
-                    xaxis.X,
-                    yaxis.X,
-                    zaxis.X,
-                    0,
-                    xaxis.Y,
-                    yaxis.Y,
-                    zaxis.Y,
-                    0,
-                    xaxis.Z,
-                    yaxis.Z,
-                    zaxis.Z,
-                    0,
-                    -Vector3D.DotProduct(xaxis, pos),
-                    -Vector3D.DotProduct(yaxis, pos),
-                    -Vector3D.DotProduct(zaxis, pos),
-                    1);
-            }
-
-            throw new HelixToolkitException("Unknown camera type.");
-        }
-
-        /// <summary>
-        /// Gets the viewport for the specified visual.
-        /// </summary>
-        /// <param name="visual">The visual.</param>
-        /// <returns>The parent viewport.</returns>
-        public static Viewport3D GetViewport(Visual3D visual)
-        {
-            DependencyObject parent = visual;
-            while (parent != null)
-            {
-                var vp = parent as Viewport3DVisual;
-                if (vp != null)
-                {
-                    return vp.Parent as Viewport3D;
-                }
-
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-
-            return null;
+            return viewport.Camera.GetProjectionMatrix(viewport.ActualHeight / viewport.ActualWidth);
         }
 
         /// <summary>
         /// Gets the viewport transform.
         /// </summary>
-        /// <param name="vis">The viewport3DVisual.</param>
+        /// <param name="viewport3DVisual">The viewport3DVisual.</param>
         /// <returns>The transform.</returns>
-        public static Matrix3D GetViewportTransform(Viewport3DVisual vis)
+        public static Matrix3D GetViewportTransform(this Viewport3DVisual viewport3DVisual)
         {
             return new Matrix3D(
-                vis.Viewport.Width / 2,
+                viewport3DVisual.Viewport.Width / 2,
                 0,
                 0,
                 0,
                 0,
-                -vis.Viewport.Height / 2,
+                -viewport3DVisual.Viewport.Height / 2,
                 0,
                 0,
                 0,
                 0,
                 1,
                 0,
-                vis.Viewport.X + vis.Viewport.Width / 2,
-                vis.Viewport.Y + vis.Viewport.Height / 2,
+                viewport3DVisual.Viewport.X + (viewport3DVisual.Viewport.Width / 2),
+                viewport3DVisual.Viewport.Y + (viewport3DVisual.Viewport.Height / 2),
                 0,
                 1);
         }
@@ -662,9 +466,8 @@ namespace HelixToolkit.Wpf
         /// <param name="viewport">
         /// The viewport.
         /// </param>
-        /// <returns>The transform.
-        /// </returns>
-        public static Matrix3D GetViewportTransform(Viewport3D viewport)
+        /// <returns>The transform.</returns>
+        public static Matrix3D GetViewportTransform(this Viewport3D viewport)
         {
             return new Matrix3D(
                 viewport.ActualWidth / 2,
@@ -686,14 +489,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Transforms a Point2D to a Point3D.
+        /// Transforms a position to Point3D at the near and far clipping planes.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="pointIn">The pt in.</param>
-        /// <param name="pointNear">The point near.</param>
-        /// <param name="pointFar">The point far.</param>
-        /// <returns>The point 2 dto point 3 d.</returns>
-        public static bool Point2DtoPoint3D(Viewport3D viewport, Point pointIn, out Point3D pointNear, out Point3D pointFar)
+        /// <param name="pointIn">The point to transform.</param>
+        /// <param name="pointNear">The point at the near clipping plane.</param>
+        /// <param name="pointFar">The point at the far clipping plane.</param>
+        /// <returns>True if points were found.</returns>
+        public static bool Point2DtoPoint3D(this Viewport3D viewport, Point pointIn, out Point3D pointNear, out Point3D pointFar)
         {
             pointNear = new Point3D();
             pointFar = new Point3D();
@@ -730,7 +533,7 @@ namespace HelixToolkit.Wpf
         /// <param name="viewport">The viewport.</param>
         /// <param name="pointIn">The point.</param>
         /// <returns>The ray.</returns>
-        public static Ray3D Point2DtoRay3D(Viewport3D viewport, Point pointIn)
+        public static Ray3D Point2DtoRay3D(this Viewport3D viewport, Point pointIn)
         {
             Point3D pointNear, pointFar;
             if (!Point2DtoPoint3D(viewport, pointIn, out pointNear, out pointFar))
@@ -747,7 +550,7 @@ namespace HelixToolkit.Wpf
         /// <param name="viewport">The viewport.</param>
         /// <param name="point">The 3D point.</param>
         /// <returns>The point.</returns>
-        public static Point Point3DtoPoint2D(Viewport3D viewport, Point3D point)
+        public static Point Point3DtoPoint2D(this Viewport3D viewport, Point3D point)
         {
             var matrix = GetTotalTransform(viewport);
             var pointTransformed = matrix.Transform(point);
@@ -764,7 +567,7 @@ namespace HelixToolkit.Wpf
         /// <param name="description">
         /// The description.
         /// </param>
-        public static void Print(Viewport3D vp, string description)
+        public static void Print(this Viewport3D vp, string description)
         {
             var dlg = new PrintDialog();
             if (dlg.ShowDialog().GetValueOrDefault())
@@ -780,12 +583,12 @@ namespace HelixToolkit.Wpf
         /// <param name="background">The background.</param>
         /// <param name="m">The oversampling multiplier.</param>
         /// <returns>A bitmap.</returns>
-        public static BitmapSource RenderBitmap(Viewport3D view, Brush background, int m = 1)
+        public static BitmapSource RenderBitmap(this Viewport3D view, Brush background, int m = 1)
         {
             var target = new WriteableBitmap((int)view.ActualWidth * m, (int)view.ActualHeight * m, 96, 96, PixelFormats.Pbgra32, null);
 
             var originalCamera = view.Camera;
-            var vm = GetViewMatrix(originalCamera);
+            var vm = originalCamera.GetViewMatrix();
             double ar = view.ActualWidth / view.ActualHeight;
 
             for (int i = 0; i < m; i++)
@@ -793,17 +596,17 @@ namespace HelixToolkit.Wpf
                 for (int j = 0; j < m; j++)
                 {
                     // change the camera viewport and scaling
-                    var pm = GetProjectionMatrix(originalCamera, ar);
+                    var pm = originalCamera.GetProjectionMatrix(ar);
                     if (originalCamera is OrthographicCamera)
                     {
-                        pm.OffsetX = m - 1 - i * 2;
-                        pm.OffsetY = -(m - 1 - j * 2);
+                        pm.OffsetX = m - 1 - (i * 2);
+                        pm.OffsetY = -(m - 1 - (j * 2));
                     }
 
                     if (originalCamera is PerspectiveCamera)
                     {
-                        pm.M31 = -(m - 1 - i * 2);
-                        pm.M32 = m - 1 - j * 2;
+                        pm.M31 = -(m - 1 - (i * 2));
+                        pm.M32 = m - 1 - (j * 2);
                     }
 
                     pm.M11 *= m;
@@ -841,7 +644,7 @@ namespace HelixToolkit.Wpf
         /// <param name="background">The background.</param>
         /// <param name="m">The oversampling multiplier.</param>
         /// <returns>A bitmap.</returns>
-        public static BitmapSource RenderBitmap(Viewport3D view, double width, double height, Brush background, int m = 1)
+        public static BitmapSource RenderBitmap(this Viewport3D view, double width, double height, Brush background, int m = 1)
         {
             double w = view.Width;
             double h = view.Height;
@@ -855,7 +658,7 @@ namespace HelixToolkit.Wpf
         /// Resizes and arranges the viewport.
         /// </summary>
         /// <param name="view">
-        /// The view.
+        /// The viewport.
         /// </param>
         /// <param name="width">
         /// The width.
@@ -863,7 +666,7 @@ namespace HelixToolkit.Wpf
         /// <param name="height">
         /// The height.
         /// </param>
-        public static void ResizeAndArrange(Viewport3D view, double width, double height)
+        public static void ResizeAndArrange(this Viewport3D view, double width, double height)
         {
             view.Width = width;
             view.Height = height;
@@ -879,11 +682,11 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Saves the viewport to a file.
         /// </summary>
-        /// <param name="view">The view.</param>
+        /// <param name="view">The viewport.</param>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="background">The background brush.</param>
         /// <param name="m">The oversampling multiplier.</param>
-        public static void SaveBitmap(Viewport3D view, string fileName, Brush background = null, int m = 1)
+        public static void SaveBitmap(this Viewport3D view, string fileName, Brush background = null, int m = 1)
         {
             var exporter = new BitmapExporter(fileName) { Background = background, OversamplingMultiplier = m };
             exporter.Export(view);
@@ -895,7 +698,7 @@ namespace HelixToolkit.Wpf
         /// <typeparam name="T">The type to search for.</typeparam>
         /// <param name="collection">The collection.</param>
         /// <returns>A list of models.</returns>
-        public static IList<Model3D> SearchFor<T>(IEnumerable<Visual3D> collection)
+        public static IList<Model3D> SearchFor<T>(this IEnumerable<Visual3D> collection)
         {
             var output = new List<Model3D>();
             SearchFor(collection, typeof(T), output);
@@ -903,7 +706,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Un projects a point from the screen (2D) to a point on plane (3D)
+        /// Transforms a point from the screen (2D) to a point on plane (3D)
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -921,9 +724,9 @@ namespace HelixToolkit.Wpf
         /// A 3D point.
         /// </returns>
         /// <remarks>
-        /// Maps window coordinates to object coordinates like gluUnProject.
+        /// Maps window coordinates to object coordinates like <code>gluUnProject</code>.
         /// </remarks>
-        public static Point3D? UnProject(Viewport3D viewport, Point p, Point3D position, Vector3D normal)
+        public static Point3D? UnProject(this Viewport3D viewport, Point p, Point3D position, Vector3D normal)
         {
             var ray = GetRay(viewport, p);
             if (ray == null)
@@ -936,7 +739,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Un projects a point from the screen (2D) to a point on the plane trough the camera target point.
+        /// Transforms a point from the screen (2D) to a point on the plane trough the camera target point.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -947,7 +750,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A 3D point.
         /// </returns>
-        public static Point3D? UnProject(Viewport3D viewport, Point p)
+        public static Point3D? UnProject(this Viewport3D viewport, Point p)
         {
             var pc = viewport.Camera as ProjectionCamera;
             if (pc == null)
@@ -963,12 +766,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="viewport">The viewport.</param>
         /// <returns>The total number of triangles</returns>
-        public static int GetTotalNumberOfTriangles(Viewport3D viewport)
+        public static int GetTotalNumberOfTriangles(this Viewport3D viewport)
         {
             int count = 0;
-            Visual3DHelper.Traverse<GeometryModel3D>(
-                viewport.Children,
-                (m, t) =>
+            viewport.Children.Traverse<GeometryModel3D>((m, t) =>
                 {
                     var geometry = m.Geometry as MeshGeometry3D;
                     if (geometry != null && geometry.TriangleIndices != null)
@@ -978,14 +779,15 @@ namespace HelixToolkit.Wpf
                 });
             return count;
         }
+
         /// <summary>
         /// Copies the bitmap.
         /// </summary>
         /// <param name="source">The source bitmap.</param>
         /// <param name="target">The target bitmap.</param>
-        /// <param name="offsetx">The x offset.</param>
-        /// <param name="offsety">The y offset.</param>
-        private static void CopyBitmap(BitmapSource source, WriteableBitmap target, int offsetx, int offsety)
+        /// <param name="x">The x offset.</param>
+        /// <param name="y">The y offset.</param>
+        private static void CopyBitmap(BitmapSource source, WriteableBitmap target, int x, int y)
         {
             // Calculate stride of source
             int stride = source.PixelWidth * (source.Format.BitsPerPixel / 8);
@@ -996,26 +798,26 @@ namespace HelixToolkit.Wpf
             // Copy source image pixels to the data array
             source.CopyPixels(data, stride, 0);
 
-            // Write the pixel data to the WriteableBitmap.
-            target.WritePixels(new Int32Rect(offsetx, offsety, source.PixelWidth, source.PixelHeight), data, stride, 0);
+            // Write the pixel data to the bitmap.
+            target.WritePixels(new Int32Rect(x, y, source.PixelWidth, source.PixelHeight), data, stride, 0);
         }
 
         /// <summary>
-        /// Exports to kerkythea.
+        /// Exports the model to a Kerkythea file.
         /// </summary>
-        /// <param name="view">The view.</param>
+        /// <param name="view">The viewport.</param>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="background">The background.</param>
-        private static void ExportKerkythea(Viewport3D view, string fileName, Brush background)
+        private static void ExportKerkythea(this Viewport3D view, string fileName, Brush background)
         {
             ExportKerkythea(view, fileName, background, (int)view.ActualWidth, (int)view.ActualHeight);
         }
 
         /// <summary>
-        /// Exports to kerkythea.
+        /// Exports the model to a Kerkythea file.
         /// </summary>
         /// <param name="view">
-        /// The view.
+        /// The viewport.
         /// </param>
         /// <param name="fileName">
         /// Name of the file.
@@ -1029,7 +831,7 @@ namespace HelixToolkit.Wpf
         /// <param name="height">
         /// The height.
         /// </param>
-        private static void ExportKerkythea(Viewport3D view, string fileName, Brush background, int width, int height)
+        private static void ExportKerkythea(this Viewport3D view, string fileName, Brush background, int width, int height)
         {
             var scb = background as SolidColorBrush;
             var backgroundColor = scb != null ? scb.Color : Colors.White;
@@ -1040,15 +842,15 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Exports to obj.
+        /// Exports to an obj file.
         /// </summary>
         /// <param name="view">
-        /// The view.
+        /// The viewport.
         /// </param>
         /// <param name="fileName">
         /// Name of the file.
         /// </param>
-        private static void ExportObj(Viewport3D view, string fileName)
+        private static void ExportObj(this Viewport3D view, string fileName)
         {
             using (var e = new ObjExporter(fileName))
             {
@@ -1057,15 +859,15 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Exports to X3D.
+        /// Exports to an X3D file.
         /// </summary>
         /// <param name="view">
-        /// The view.
+        /// The viewport.
         /// </param>
         /// <param name="fileName">
         /// Name of the file.
         /// </param>
-        private static void ExportX3D(Viewport3D view, string fileName)
+        private static void ExportX3D(this Viewport3D view, string fileName)
         {
             using (var e = new X3DExporter(fileName))
             {
@@ -1074,11 +876,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Exports to COLLADA.
+        /// Exports to a COLLADA file.
         /// </summary>
-        /// <param name="view">The view.</param>
+        /// <param name="view">The viewport.</param>
         /// <param name="fileName">Name of the file.</param>
-        private static void ExportCollada(Viewport3D view, string fileName)
+        private static void ExportCollada(this Viewport3D view, string fileName)
         {
             using (var e = new ColladaExporter(fileName))
             {
@@ -1090,12 +892,12 @@ namespace HelixToolkit.Wpf
         /// Exports to xaml.
         /// </summary>
         /// <param name="view">
-        /// The view.
+        /// The viewport.
         /// </param>
         /// <param name="fileName">
         /// Name of the file.
         /// </param>
-        private static void ExportXaml(Viewport3D view, string fileName)
+        private static void ExportXaml(this Viewport3D view, string fileName)
         {
             using (var e = new XamlExporter(fileName))
             {
@@ -1115,12 +917,12 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The 3D position of the hit.
         /// </returns>
-        private static Point3D GetGlobalHitPosition(RayMeshGeometry3DHitTestResult rayHit, Viewport3D viewport)
+        private static Point3D GetGlobalHitPosition(RayHitTestResult rayHit, Viewport3D viewport)
         {
             var p = rayHit.PointHit;
 
             // first transform the Model3D hierarchy
-            var t2 = GetTransform(rayHit.VisualHit, rayHit.ModelHit);
+            var t2 = rayHit.VisualHit.GetTransformTo(rayHit.ModelHit);
             if (t2 != null)
             {
                 p = t2.Transform(p);
@@ -1152,48 +954,9 @@ namespace HelixToolkit.Wpf
                 return null;
             }
 
-            return rayHit.MeshHit.Normals[rayHit.VertexIndex1] * rayHit.VertexWeight1
-                   + rayHit.MeshHit.Normals[rayHit.VertexIndex2] * rayHit.VertexWeight2
-                   + rayHit.MeshHit.Normals[rayHit.VertexIndex3] * rayHit.VertexWeight3;
-        }
-
-        /// <summary>
-        /// Gets the transform.
-        /// </summary>
-        /// <param name="current">
-        /// The current.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="parentTransform">
-        /// The parent transform.
-        /// </param>
-        /// <returns>
-        /// The transform.
-        /// </returns>
-        private static GeneralTransform3D GetTransform(Model3D current, Model3D model, Transform3D parentTransform)
-        {
-            var currentTransform = Transform3DHelper.CombineTransform(current.Transform, parentTransform);
-            if (current == model)
-            {
-                return currentTransform;
-            }
-
-            var mg = current as Model3DGroup;
-            if (mg != null)
-            {
-                foreach (var m in mg.Children)
-                {
-                    var result = GetTransform(m, model, currentTransform);
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                }
-            }
-
-            return null;
+            return (rayHit.MeshHit.Normals[rayHit.VertexIndex1] * rayHit.VertexWeight1)
+                   + (rayHit.MeshHit.Normals[rayHit.VertexIndex2] * rayHit.VertexWeight2)
+                   + (rayHit.MeshHit.Normals[rayHit.VertexIndex3] * rayHit.VertexWeight3);
         }
 
         /// <summary>
@@ -1204,6 +967,7 @@ namespace HelixToolkit.Wpf
         /// <param name="output">The output.</param>
         private static void SearchFor(IEnumerable<Visual3D> collection, Type type, IList<Model3D> output)
         {
+            // TODO: change to use Stack/Queue
             foreach (var visual in collection)
             {
                 var modelVisual = visual as ModelVisual3D;
@@ -1323,7 +1087,6 @@ namespace HelixToolkit.Wpf
                     return this.RayHit.VisualHit;
                 }
             }
-
         }
     }
 }
