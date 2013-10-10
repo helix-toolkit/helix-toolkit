@@ -103,6 +103,8 @@
     <Compile Include="Helpers\CanonicalSplineHelper.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ContourHelper.cs" />
+    <Compile Include="Helpers\Model3DHelper.cs" />
+    <Compile Include="Helpers\ScreenSpace\Billboard.cs" />
     <Compile Include="Helpers\ScreenSpace\BillboardGeometryBuilder.cs" />
     <Compile Include="Helpers\WeakEventManagers\RenderingEventManager.cs" />
     <Compile Include="Helpers\WeakEventManagers\WeakEventManagerBase{TManager}.cs" />

@@ -342,7 +342,7 @@ namespace HelixToolkit.Wpf
                 this.VerticalAlignment,
                 this.DepthOffset);
 
-            this.Mesh.Positions = this.builder.GetPositions(new[] { bb });
+            this.Mesh.Positions = this.builder.GetPositions(new[] { bb },new Vector());
         }
 
         /// <summary>

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextGroupBillboardVisual3D.cs" company="Helix 3D Toolkit">
+// <copyright file="BillboardTextGroupVisual3D.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
-//   A visual element that contains a text billboard.
+//   A visual element that contains a collection of text billboard.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,12 +14,14 @@ namespace HelixToolkit.Wpf
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
+    using System.Windows.Markup;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     /// <summary>
     /// A visual element that contains a collection of text billboards.
     /// </summary>
+    [ContentProperty("Items")]
     public class BillboardTextGroupVisual3D : RenderingModelVisual3D
     {
         /// <summary>
@@ -91,7 +93,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
             "Items",
-            typeof(IList<BillboardTextItem>),
+            typeof(List<BillboardTextItem>),
             typeof(BillboardTextGroupVisual3D),
             new UIPropertyMetadata(null, VisualChanged));
 
@@ -104,13 +106,44 @@ namespace HelixToolkit.Wpf
             typeof(BillboardTextGroupVisual3D),
             new UIPropertyMetadata(new Thickness(0), VisualChanged));
 
+        /// <summary>
+        /// Identifies the <see cref="Offset"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OffsetProperty =
+            DependencyProperty.Register("Offset", typeof(Vector), typeof(BillboardTextGroupVisual3D), new PropertyMetadata(new Vector(0, 0), VisualChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="PinWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PinWidthProperty =
+            DependencyProperty.Register("PinWidth", typeof(double), typeof(BillboardTextGroupVisual3D), new PropertyMetadata(4d));
+
+        /// <summary>
+        /// Identifies the <see cref="PinBrush"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PinBrushProperty =
+            DependencyProperty.Register("PinBrush", typeof(Brush), typeof(BillboardTextGroupVisual3D), new PropertyMetadata(Brushes.Black, VisualChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsEnabledProperty =
+            DependencyProperty.Register("IsEnabled", typeof(bool), typeof(BillboardTextGroupVisual3D), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The geometry builder.
+        /// </summary>
         private readonly BillboardGeometryBuilder builder;
 
         /// <summary>
-        /// The builder.
+        /// The billboard meshes.
         /// </summary>
-        private readonly Dictionary<MeshGeometry3D, IList<Billboard>> meshes =
-            new Dictionary<MeshGeometry3D, IList<Billboard>>();
+        private readonly Dictionary<MeshGeometry3D, IList<Billboard>> meshes = new Dictionary<MeshGeometry3D, IList<Billboard>>();
+
+        /// <summary>
+        /// The pin meshes
+        /// </summary>
+        private readonly Dictionary<MeshGeometry3D, IList<Billboard>> pinMeshes = new Dictionary<MeshGeometry3D, IList<Billboard>>();
 
         /// <summary>
         /// The is rendering flag.
@@ -135,6 +168,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Brush)this.GetValue(BackgroundProperty);
             }
+
             set
             {
                 this.SetValue(BackgroundProperty, value);
@@ -151,9 +185,64 @@ namespace HelixToolkit.Wpf
             {
                 return (Brush)this.GetValue(BorderBrushProperty);
             }
+
             set
             {
                 this.SetValue(BorderBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether updating of this object is enabled.
+        /// </summary>
+        /// <value><c>true</c> if this object is enabled; otherwise, <c>false</c>.</value>
+        public bool IsEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the pin brush.
+        /// </summary>
+        /// <value>The pin brush.</value>
+        public Brush PinBrush
+        {
+            get
+            {
+                return (Brush)this.GetValue(PinBrushProperty);
+            }
+
+            set
+            {
+                this.SetValue(PinBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the width of the 'pin'.
+        /// </summary>
+        /// <value>The width of the pin.</value>
+        /// <remarks>
+        /// You must set the Offset property for the pin to show up.
+        /// </remarks>
+        public double PinWidth
+        {
+            get
+            {
+                return (double)this.GetValue(PinWidthProperty);
+            }
+
+            set
+            {
+                this.SetValue(PinWidthProperty, value);
             }
         }
 
@@ -167,6 +256,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Thickness)this.GetValue(BorderThicknessProperty);
             }
+
             set
             {
                 this.SetValue(BorderThicknessProperty, value);
@@ -292,12 +382,13 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the items.
         /// </summary>
         /// <value>The items.</value>
-        public IList<BillboardTextItem> Items
+        public List<BillboardTextItem> Items
         {
             get
             {
-                return (IList<BillboardTextItem>)this.GetValue(ItemsProperty);
+                return (List<BillboardTextItem>)this.GetValue(ItemsProperty);
             }
+
             set
             {
                 this.SetValue(ItemsProperty, value);
@@ -314,9 +405,27 @@ namespace HelixToolkit.Wpf
             {
                 return (Thickness)this.GetValue(PaddingProperty);
             }
+
             set
             {
                 this.SetValue(PaddingProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the offset of the billboard text (in screen coordinates).
+        /// </summary>
+        /// <value>The offset.</value>
+        public Vector Offset
+        {
+            get
+            {
+                return (Vector)this.GetValue(OffsetProperty);
+            }
+
+            set
+            {
+                this.SetValue(OffsetProperty, value);
             }
         }
 
@@ -327,9 +436,9 @@ namespace HelixToolkit.Wpf
         /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs" /> instance containing the event data.</param>
         protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
         {
-            if (this.isRendering)
+            if (this.isRendering && this.IsEnabled)
             {
-                if (!Visual3DHelper.IsAttachedToViewport3D(this))
+                if (!this.IsAttachedToViewport3D())
                 {
                     return;
                 }
@@ -367,7 +476,12 @@ namespace HelixToolkit.Wpf
         {
             foreach (var m in this.meshes)
             {
-                m.Key.Positions = this.builder.GetPositions(m.Value);
+                m.Key.Positions = this.builder.GetPositions(m.Value, this.Offset);
+            }
+
+            foreach (var m in this.pinMeshes)
+            {
+                m.Key.Positions = this.builder.GetPinPositions(m.Value, this.Offset, this.PinWidth);
             }
         }
 
@@ -392,6 +506,11 @@ namespace HelixToolkit.Wpf
             ((BillboardTextGroupVisual3D)d).VisualChanged();
         }
 
+        /// <summary>
+        /// Creates the element for the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>A FrameworkElement.</returns>
         private FrameworkElement CreateElement(string text)
         {
             var textBlock = new TextBlock(new Run(text))
@@ -418,27 +537,28 @@ namespace HelixToolkit.Wpf
                            {
                                BorderBrush = this.BorderBrush,
                                BorderThickness = this.BorderThickness,
-                               Child = textBlock,
-                               //  Margin = new Thickness(1),
+                               Child = textBlock
                            };
             }
 
-            //   textBlock.Margin = new Thickness(1);
             return textBlock;
         }
 
         /// <summary>
-        /// Updates the text block when the visual appearance changed.
+        /// Updates the visual appearance (texture and geometry).
         /// </summary>
         private void VisualChanged()
         {
             this.meshes.Clear();
+            this.pinMeshes.Clear();
 
             if (this.Items == null)
             {
                 this.Content = null;
                 return;
             }
+
+            var pinMaterial = new DiffuseMaterial(this.PinBrush);
 
             var items = this.Items.Where(i => !string.IsNullOrEmpty(i.Text)).ToList();
             var group = new Model3DGroup();
@@ -469,7 +589,8 @@ namespace HelixToolkit.Wpf
                             element.ActualHeight,
                             item.HorizontalAlignment,
                             item.VerticalAlignment,
-                            item.DepthOffset));
+                            item.DepthOffset,
+                            item.WorldDepthOffset));
                     textureCoordinates.Add(new Point(r.Left, r.Bottom));
                     textureCoordinates.Add(new Point(r.Right, r.Bottom));
                     textureCoordinates.Add(new Point(r.Right, r.Top));
@@ -478,14 +599,29 @@ namespace HelixToolkit.Wpf
                     addedChildren.Add(item);
                 }
 
+                var triangleIndices = BillboardGeometryBuilder.CreateIndices(billboards.Count);
+                triangleIndices.Freeze();
+
                 var g = new MeshGeometry3D
                             {
-                                TriangleIndices = BillboardGeometryBuilder.CreateIndices(billboards.Count),
+                                TriangleIndices = triangleIndices,
                                 TextureCoordinates = textureCoordinates,
-                                Positions = this.builder.GetPositions(billboards)
+                                Positions = this.builder.GetPositions(billboards, this.Offset)
                             };
                 group.Children.Add(new GeometryModel3D(g, material));
                 this.meshes.Add(g, billboards);
+
+                if (this.Offset.Length > 0)
+                {
+                    var pinGeometry = new MeshGeometry3D
+                                          {
+                                              TriangleIndices = triangleIndices,
+                                              Positions = this.builder.GetPinPositions(billboards, this.Offset, this.PinWidth)
+                                          };
+                    group.Children.Add(new GeometryModel3D(pinGeometry, pinMaterial));
+                    this.pinMeshes.Add(pinGeometry, billboards);
+                }
+
                 foreach (var c in addedChildren)
                 {
                     items.Remove(c);

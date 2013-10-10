@@ -23,9 +23,7 @@ namespace HelixToolkit.Wpf.Tests
             var importer = new ModelImporter();
             var model = importer.Load(@"Models\obj\test.obj");
             int countVertices = 0;
-            Visual3DHelper.TraverseModel<GeometryModel3D>(
-                model,
-                (geometryModel, transform) =>
+            model.Traverse<GeometryModel3D>((geometryModel, transform) =>
                 {
                     var mesh = (MeshGeometry3D)geometryModel.Geometry;
                     countVertices += mesh.Positions.Count;

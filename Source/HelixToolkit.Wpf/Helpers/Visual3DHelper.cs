@@ -16,29 +16,30 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Helper methods for <see cref="Visual3D"/> objects.
+    /// Provides extension methods for <see cref="Visual3D"/> objects.
     /// </summary>
     public static class Visual3DHelper
     {
         /// <summary>
-        /// The visual 3 d model property info.
+        /// The Visual3DModel property.
         /// </summary>
-        private static readonly PropertyInfo Visual3DModelPropertyInfo = typeof(Visual3D).GetProperty(
-            "Visual3DModel", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly PropertyInfo Visual3DModelPropertyInfo = typeof(Visual3D).GetProperty("Visual3DModel", BindingFlags.Instance | BindingFlags.NonPublic);
 
         /// <summary>
-        /// Finds a child of the specified type.
+        /// Finds the first child of the specified type.
         /// </summary>
         /// <typeparam name="T">
+        /// The type.
         /// </typeparam>
         /// <param name="parent">
         /// The parent.
         /// </param>
         /// <returns>
+        /// The first child of the specified type.
         /// </returns>
         public static T Find<T>(DependencyObject parent) where T : DependencyObject
         {
-            // todo: this should be improved
+            // todo: use queue/stack, not recursion
             foreach (DependencyObject d in LogicalTreeHelper.GetChildren(parent))
             {
                 var a = Find<T>(d);
@@ -51,10 +52,10 @@ namespace HelixToolkit.Wpf
             var model = parent as ModelVisual3D;
             if (model != null)
             {
-                var modelgroup = model.Content as Model3DGroup;
-                if (modelgroup != null)
+                var modelGroup = model.Content as Model3DGroup;
+                if (modelGroup != null)
                 {
-                    return modelgroup.Children.OfType<T>().FirstOrDefault();
+                    return modelGroup.Children.OfType<T>().FirstOrDefault();
                 }
             }
 
@@ -68,8 +69,9 @@ namespace HelixToolkit.Wpf
         /// The children.
         /// </param>
         /// <returns>
+        /// A <see cref="Rect3D"/>.
         /// </returns>
-        public static Rect3D FindBounds(Visual3DCollection children)
+        public static Rect3D FindBounds(this Visual3DCollection children)
         {
             var bounds = Rect3D.Empty;
             foreach (var visual in children)
@@ -88,11 +90,12 @@ namespace HelixToolkit.Wpf
         /// The visual.
         /// </param>
         /// <param name="transform">
-        /// The transform of visual.
+        /// The transform of the visual.
         /// </param>
         /// <returns>
+        /// A <see cref="Rect3D"/>.
         /// </returns>
-        public static Rect3D FindBounds(Visual3D visual, Transform3D transform)
+        public static Rect3D FindBounds(this Visual3D visual, Transform3D transform)
         {
             var bounds = Rect3D.Empty;
             var childTransform = Transform3DHelper.CombineTransform(visual.Transform, transform);
@@ -117,14 +120,15 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the transform for the specified visual.
+        /// Gets the total transform for the specified visual.
         /// </summary>
         /// <param name="visual">
         /// The visual.
         /// </param>
         /// <returns>
+        /// A <see cref="Matrix3D"/>.
         /// </returns>
-        public static Matrix3D GetTransform(Visual3D visual)
+        public static Matrix3D GetTransform(this Visual3D visual)
         {
             var totalTransform = Matrix3D.Identity;
 
@@ -153,7 +157,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the Viewport3D from the specified visual.
+        /// Gets the parent <see cref="Viewport3D"/> from the specified visual.
         /// </summary>
         /// <param name="visual">
         /// The visual.
@@ -161,7 +165,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The Viewport3D
         /// </returns>
-        public static Viewport3D GetViewport3D(Visual3D visual)
+        public static Viewport3D GetViewport3D(this Visual3D visual)
         {
             DependencyObject obj = visual;
             while (obj != null)
@@ -187,7 +191,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A transformation matrix.
         /// </returns>
-        public static Matrix3D GetViewportTransform(Visual3D visual)
+        public static Matrix3D GetViewportTransform(this Visual3D visual)
         {
             var totalTransform = Matrix3D.Identity;
 
@@ -197,8 +201,8 @@ namespace HelixToolkit.Wpf
                 var viewport3DVisual = obj as Viewport3DVisual;
                 if (viewport3DVisual != null)
                 {
-                    var matxViewport = Viewport3DHelper.GetTotalTransform(viewport3DVisual);
-                    totalTransform.Append(matxViewport);
+                    var viewportTotalTransform = viewport3DVisual.GetTotalTransform();
+                    totalTransform.Append(viewportTotalTransform);
                     return totalTransform;
                 }
 
@@ -228,7 +232,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The is attached to viewport 3 d.
         /// </returns>
-        public static bool IsAttachedToViewport3D(Visual3D visual)
+        public static bool IsAttachedToViewport3D(this Visual3D visual)
         {
             DependencyObject obj = visual;
             while (obj != null)
@@ -246,9 +250,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree. Run the specified action for each Model3D.
+        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
+        /// The type filter.
         /// </typeparam>
         /// <param name="visuals">
         /// The visuals.
@@ -256,7 +261,7 @@ namespace HelixToolkit.Wpf
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(Visual3DCollection visuals, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Visual3DCollection visuals, Action<T, Transform3D> action) where T : Model3D
         {
             foreach (var child in visuals)
             {
@@ -265,9 +270,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree. Run the specified action for each Model3D.
+        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
+        /// The type filter.
         /// </typeparam>
         /// <param name="visual">
         /// The visual.
@@ -275,76 +281,65 @@ namespace HelixToolkit.Wpf
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(Visual3D visual, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Visual3D visual, Action<T, Transform3D> action) where T : Model3D
         {
             Traverse(visual, Transform3D.Identity, action);
         }
 
         /// <summary>
-        /// Traverses the Model3D tree. Run the specified action for each Model3D.
+        /// Gets the transform from the specified Visual3D to the specified Model3D.
         /// </summary>
-        /// <typeparam name="T">
-        /// </typeparam>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="action">
-        /// The action.
-        /// </param>
-        public static void TraverseModel<T>(Model3D model, Action<T, Transform3D> action) where T : Model3D
+        /// <param name="visual">The source visual.</param>
+        /// <param name="model">The target model.</param>
+        /// <returns>The transform.</returns>
+        public static GeneralTransform3D GetTransformTo(this Visual3D visual, Model3D model)
         {
-            TraverseModel(model, Transform3D.Identity, action);
+            var mv = visual as ModelVisual3D;
+            if (mv != null)
+            {
+                return mv.Content.GetTransform(model, Transform3D.Identity);
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Traverses the Model3D tree. Run the specified action for each Model3D.
+        /// Gets the viewport for the specified visual.
         /// </summary>
-        /// <typeparam name="T">
-        /// </typeparam>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        /// <param name="action">
-        /// The action.
-        /// </param>
-        public static void TraverseModel<T>(Model3D model, Transform3D transform, Action<T, Transform3D> action)
-            where T : Model3D
+        /// <param name="visual">The visual.</param>
+        /// <returns>The parent <see cref="Viewport3D"/>.</returns>
+        public static Viewport3D GetViewport(this Visual3D visual)
         {
-            var mg = model as Model3DGroup;
-            if (mg != null)
+            DependencyObject parent = visual;
+            while (parent != null)
             {
-                var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
-                foreach (var m in mg.Children)
+                var vp = parent as Viewport3DVisual;
+                if (vp != null)
                 {
-                    TraverseModel(m, childTransform, action);
+                    return (Viewport3D)vp.Parent;
                 }
+
+                parent = VisualTreeHelper.GetParent(parent);
             }
 
-            var gm = model as T;
-            if (gm != null)
-            {
-                var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
-                action(gm, childTransform);
-            }
+            return null;
         }
 
         /// <summary>
         /// Gets the children.
         /// </summary>
-        /// <param name="visual">
-        /// The visual.
+        /// <param name="parent">
+        /// The parent visual.
         /// </param>
         /// <returns>
+        /// A sequence of <see cref="Visual3D"/> objects.
         /// </returns>
-        private static IEnumerable<Visual3D> GetChildren(Visual3D visual)
+        private static IEnumerable<Visual3D> GetChildren(this Visual3D parent)
         {
-            int n = VisualTreeHelper.GetChildrenCount(visual);
+            int n = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < n; i++)
             {
-                var child = VisualTreeHelper.GetChild(visual, i) as Visual3D;
+                var child = VisualTreeHelper.GetChild(parent, i) as Visual3D;
                 if (child == null)
                 {
                     continue;
@@ -361,8 +356,9 @@ namespace HelixToolkit.Wpf
         /// The visual.
         /// </param>
         /// <returns>
+        /// A <see cref="Model3D"/>.
         /// </returns>
-        private static Model3D GetModel(Visual3D visual)
+        private static Model3D GetModel(this Visual3D visual)
         {
             Model3D model;
             var mv = visual as ModelVisual3D;
@@ -379,9 +375,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Traverses the specified visual.
+        /// Traverses the visual tree and invokes the specified action on each object of the specified type.
         /// </summary>
         /// <typeparam name="T">
+        /// The type filter.
         /// </typeparam>
         /// <param name="visual">
         /// The visual.
@@ -399,7 +396,7 @@ namespace HelixToolkit.Wpf
             var model = GetModel(visual);
             if (model != null)
             {
-                TraverseModel(model, childTransform, action);
+                model.Traverse(childTransform, action);
             }
 
             foreach (var child in GetChildren(visual))
@@ -407,6 +404,5 @@ namespace HelixToolkit.Wpf
                 Traverse(child, childTransform, action);
             }
         }
-
     }
 }

@@ -1,3 +1,12 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BillboardTextItem.cs" company="Helix 3D Toolkit">
+//   http://helixtoolkit.codeplex.com, license: MIT
+// </copyright>
+// <summary>
+//   Represents a billboard text item.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     /// <summary>
@@ -10,5 +19,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <value>The depth offset.</value>
         public double DepthOffset { get; set; }
+
+        /// <summary>
+        /// Gets or sets the depth offset in world coordinates.
+        /// </summary>
+        /// <value>The depth offset.</value>
+        public double WorldDepthOffset { get; set; }
     }
 }

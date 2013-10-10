@@ -122,7 +122,7 @@ namespace HelixToolkit.Wpf
                 this.actualExpandOrigin = this.ExpandOrigin.Value;
             }
 
-            Visual3DHelper.TraverseModel<GeometryModel3D>(this.Content, this.Expand);
+            Model3DHelper.Traverse<GeometryModel3D>(this.Content, this.Expand);
         }
 
         /// <summary>

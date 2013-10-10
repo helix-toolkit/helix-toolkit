@@ -12,13 +12,24 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Extension methods for Matrix3D.
+    /// Provides extension methods for <see cref="Matrix3D"/>.
     /// </summary>
     /// <remarks>
     /// Note that the Matrix3D contains row vectors.
     /// </remarks>
     public static class Matrix3DExtensions
     {
+        /// <summary>
+        /// Returns the inverted matrix.
+        /// </summary>
+        /// <param name="m">The matrix to invert.</param>
+        /// <returns>The inverted <see cref="Matrix3D"/>.</returns>
+        public static Matrix3D Inverse(this Matrix3D m)
+        {
+            m.Invert();
+            return m;
+        }
+
         /// <summary>
         /// Convert the <see cref="Matrix3D"/> to a two-dimensional <see cref="Array"/>.
         /// </summary>
@@ -184,6 +195,7 @@ namespace HelixToolkit.Wpf
             int columnWidth,
             CultureInfo provider)
         {
+            var formatString = "{0:" + format + "}";
             double[,] m = matrix.ToArray();
 
             // indexing: m[row,column]
@@ -192,7 +204,7 @@ namespace HelixToolkit.Wpf
             {
                 for (int j = 0; j < m.GetLength(1); j++)
                 {
-                    string s = string.Format(provider, "{0:" + format + "}", m[i, j]).PadLeft(columnWidth);
+                    string s = string.Format(provider, formatString, m[i, j]).PadLeft(columnWidth);
                     sb.Append(s);
                     if (j < 3)
                     {

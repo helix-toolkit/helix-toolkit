@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System.Windows.Controls;
     using System.Windows.Media.Media3D;
 
     /// <summary>
@@ -29,6 +30,21 @@ namespace HelixToolkit.Wpf
         protected Matrix3D visualToScreen;
 
         /// <summary>
+        /// The visual to projection transformation matrix.
+        /// </summary>
+        protected Matrix3D visualToProjection;
+
+        /// <summary>
+        /// The projection to screen transformation matrix.
+        /// </summary>
+        protected Matrix3D projectionToScreen;
+
+        /// <summary>
+        /// The viewport
+        /// </summary>
+        private Viewport3D viewport;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ScreenGeometryBuilder"/> class.
         /// </summary>
         /// <param name="visual">
@@ -47,7 +63,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public bool UpdateTransforms()
         {
-            var newTransform = Visual3DHelper.GetViewportTransform(this.visual);
+            var newTransform = this.visual.GetViewportTransform();
 
             if (double.IsNaN(newTransform.M11))
             {
@@ -64,11 +80,18 @@ namespace HelixToolkit.Wpf
                 return false;
             }
 
-            this.visualToScreen = this.screenToVisual = newTransform;
-            this.screenToVisual.Invert();
+            this.visualToScreen = newTransform;
+            this.screenToVisual = newTransform.Inverse();
+
+            if (this.viewport == null)
+            {
+                this.viewport = this.visual.GetViewport3D();
+            }
+
+            this.projectionToScreen = this.viewport.GetProjectionMatrix() * this.viewport.GetViewportTransform();
+            this.visualToProjection = this.visualToScreen * this.projectionToScreen.Inverse();
 
             return true;
         }
-
     }
 }
