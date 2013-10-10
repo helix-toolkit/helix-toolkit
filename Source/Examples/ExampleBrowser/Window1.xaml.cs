@@ -63,6 +63,7 @@ namespace ExampleBrowser
             this.Examples.Add(new Example(typeof(UIElementDemo.MainWindow), null, "Test of UIElement3D in HelixViewport3D."));
             this.Examples.Add(new Example(typeof(UpDirectionDemo.MainWindow), null, "Test of y-up in HelixViewport3D."));
             this.Examples.Add(new Example(typeof(ViewportFeaturesDemo.MainWindow), null, "Demonstrates features of the HelixViewport3D."));
+            this.Examples.Add(new Example(typeof(ViewMatrixDemo.MainWindow), null, "Visualization of view and projection matrices (under construction)."));
             this.Examples.Add(new Example(typeof(VoxelDemo.MainWindow), null, "Edit a voxel scene by clicking the sides of the voxels."));
             this.Examples.Add(new Example(typeof(WiiDemo.MainWindow), null, "Change the transformation of a model by the Wii remote."));
             this.Examples.Add(new Example(typeof(WindDemo.MainWindow), null, "Head tracking by the Wii remote."));
