@@ -17,8 +17,8 @@
             <h:SunLight/>
             <h:BoxVisual3D/>
         </h:HelixViewport3D>
-        <h:CategorizedColorAxis Grid.Row="1" Margin="4" Categories="{Binding Categories}" ColorScheme="{Binding ColorScheme2}" Position="Left" Background="#80FFFFFF" 
+        <h:CategorizedColorAxis Grid.Row="1" Margin="4" Padding="4 4 8 8" Categories="{Binding Categories}" ColorScheme="{Binding ColorScheme2}" Position="Left" Background="#80FFFFFF" 
                                 BorderBrush="Black" BorderThickness="1"/>
-        <h:RangeColorAxis Grid.Row="1" Grid.Column="2" Minimum="4" Maximum="104" Step="10" Margin="4" ColorScheme="{Binding ColorScheme}" Background="#80FFFFFF" Position="Right"/>
+        <h:RangeColorAxis Grid.Row="1" Grid.Column="2" Minimum="4" Maximum="104" Step="10" Margin="8" Padding="4 8 4 8" ColorScheme="{Binding ColorScheme}" Background="#80FFFFFF" Position="Right"/>
     </Grid>
 </Window>

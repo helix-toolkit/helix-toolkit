@@ -72,9 +72,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the width of the bar.
+        /// Gets or sets the width of the color bar rectangle.
         /// </summary>
-        /// <value>The width of the bar.</value>
+        /// <value>The width.</value>
         public double BarWidth
         {
             get
