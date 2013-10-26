@@ -2068,7 +2068,7 @@ namespace HelixToolkit.Wpf
                 throw new ArgumentNullException("mesh");
             }
 
-            this.Append(mesh.Positions, mesh.TriangleIndices, mesh.Normals, mesh.TextureCoordinates);
+            this.Append(mesh.Positions, mesh.TriangleIndices, this.normals != null ? mesh.Normals : null, this.textureCoordinates != null ? mesh.TextureCoordinates : null);
         }
 
         /// <summary>
