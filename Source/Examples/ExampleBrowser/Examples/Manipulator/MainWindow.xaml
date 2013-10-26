@@ -14,7 +14,7 @@
             <ht:SunLight/>
 
             <ht:SphereVisual3D x:Name="sphere1" Center="-4,0,0" Fill="Orange"/>
-            <ht:TranslateManipulator Color="Black" Position="-4,0,0" Offset="0,0,1" Length="1" Value="{Binding Radius, ElementName=sphere1}" Direction="0,0,1"/>
+            <ht:TranslateManipulator Material="{ht:Material Gold}" Position="-4,0,0" Offset="0,0,1" Length="1" Value="{Binding Radius, ElementName=sphere1}" Direction="0,0,1"/>
 
             <ht:BoxVisual3D x:Name="box1" Center="-8,0,0" Fill="Orange"/>
             <ht:TranslateManipulator Color="Black" Position="-8,0,0" Offset="0,0,0.5" Length="1" Value="{Binding Height, ElementName=box1, Converter={StaticResource Multiplier}}" Direction="0,0,1"/>
@@ -35,7 +35,7 @@
             <ht:CubeVisual3D x:Name="cube3" Transform="{ht:Translate 4,4,1}" Fill="#cd7f32"/>
             <ht:CombinedManipulator CanRotateX="False" CanRotateY="False" CanRotateZ="False" TargetTransform="{Binding Transform, ElementName=cube3}"/>
 
-            <ht:RectangleVisual3D Fill="#800000FF"/>            
+            <ht:RectangleVisual3D Fill="#800000FF" DivLength="40" DivWidth="40"/>            
         </ht:HelixViewport3D>
     </DockPanel>
 </Window>
