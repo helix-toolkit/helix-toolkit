@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -206,12 +207,6 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty SpinReleaseTimeProperty =
             DependencyProperty.Register(
                 "SpinReleaseTime", typeof(int), typeof(CameraController), new UIPropertyMetadata(200));
-
-        /// <summary>
-        /// Identifies the <see cref="TouchMode"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
-            "TouchMode", typeof(TouchMode), typeof(CameraController), new UIPropertyMetadata(TouchMode.Panning));
 
         /// <summary>
         /// Identifies the <see cref="ModelUpDirection"/> dependency property.
@@ -439,6 +434,16 @@ namespace HelixToolkit.Wpf
         /// The touch down point.
         /// </summary>
         private Point touchDownPoint;
+
+        /// <summary>
+        /// The touch point in the last touch delta event
+        /// </summary>
+        private Point touchPreviousPoint;
+
+        /// <summary>
+        /// The number of touch manipulators (fingers) in the last touch delta event
+        /// </summary>
+        private int manipulatorCount;
 
         /// <summary>
         /// The zoom event handler.
@@ -1066,23 +1071,6 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the touch mode.
-        /// </summary>
-        /// <value> The touch mode. </value>
-        public TouchMode TouchMode
-        {
-            get
-            {
-                return (TouchMode)this.GetValue(TouchModeProperty);
-            }
-
-            set
-            {
-                this.SetValue(TouchModeProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the sensitivity for pan by the up and down keys.
         /// </summary>
         /// <value> The pan sensitivity. </value>
@@ -1672,25 +1660,17 @@ namespace HelixToolkit.Wpf
         protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
             base.OnManipulationCompleted(e);
-            var p = this.touchDownPoint + e.TotalManipulation.Translation;
+            var p = e.ManipulationOrigin + e.TotalManipulation.Translation;
 
-            switch (this.TouchMode)
+            if (this.manipulatorCount == 1)
             {
-                case TouchMode.Panning:
-                    this.panHandler.Completed(new ManipulationEventArgs(p));
-                    break;
-                case TouchMode.Rotating:
-                    this.rotateHandler.Completed(new ManipulationEventArgs(p));
-                    break;
+                this.rotateHandler.Completed(new ManipulationEventArgs(p));
             }
 
-            this.zoomHandler.Completed(new ManipulationEventArgs(p));
-
-            // Tap
-            double l = e.TotalManipulation.Translation.Length;
-            if (l < 4 && this.TouchMode != TouchMode.None)
+            if (this.manipulatorCount == 2)
             {
-                this.TouchMode = this.TouchMode == TouchMode.Panning ? TouchMode.Rotating : TouchMode.Panning;
+                this.panHandler.Completed(new ManipulationEventArgs(p));
+                this.zoomHandler.Completed(new ManipulationEventArgs(p));
             }
 
             e.Handled = true;
@@ -1706,22 +1686,61 @@ namespace HelixToolkit.Wpf
         {
             base.OnManipulationDelta(e);
 
+            // number of manipulators (fingers)
+            int n = e.Manipulators.Count();
+            var position = this.touchPreviousPoint + e.DeltaManipulation.Translation;
+            this.touchPreviousPoint = position;
+
             // http://msdn.microsoft.com/en-us/library/system.windows.uielement.manipulationdelta.aspx
 
-            // Debug.WriteLine("OnManipulationDelta: T={0}, S={1}, R={2}, O={3}", e.DeltaManipulation.Translation, e.DeltaManipulation.Scale, e.DeltaManipulation.Rotation, e.ManipulationOrigin);
-            Point position = this.touchDownPoint + e.CumulativeManipulation.Translation;
+            //// System.Diagnostics.Debug.WriteLine("OnManipulationDelta: T={0}, S={1}, R={2}, O={3}", e.DeltaManipulation.Translation, e.DeltaManipulation.Scale, e.DeltaManipulation.Rotation, e.ManipulationOrigin);
+            //// System.Diagnostics.Debug.WriteLine(n + " Delta:" + e.DeltaManipulation.Translation + " Origin:" + e.ManipulationOrigin + " pos:" + position);
 
-            switch (this.TouchMode)
+            if (this.manipulatorCount != n)
             {
-                case TouchMode.Panning:
-                    this.panHandler.Delta(new ManipulationEventArgs(position));
-                    break;
-                case TouchMode.Rotating:
-                    this.rotateHandler.Delta(new ManipulationEventArgs(position));
-                    break;
+                // the number of manipulators has changed
+                if (this.manipulatorCount == 1)
+                {
+                    this.rotateHandler.Completed(new ManipulationEventArgs(position));
+                }
+
+                if (this.manipulatorCount == 2)
+                {
+                    this.panHandler.Completed(new ManipulationEventArgs(position));
+                    this.zoomHandler.Completed(new ManipulationEventArgs(position));
+                }
+
+                if (n == 2)
+                {
+                    this.panHandler.Started(new ManipulationEventArgs(position));
+                    this.zoomHandler.Started(new ManipulationEventArgs(e.ManipulationOrigin));
+                }
+                else
+                {
+                    this.rotateHandler.Started(new ManipulationEventArgs(position));
+                }
+
+                this.touchDownPoint = position;
+
+                // skip this event, the origin may have changed
+                this.manipulatorCount = n;
+                e.Handled = true;
+                return;
             }
 
-            if (this.IsTouchZoomEnabled)
+            if (n == 1)
+            {
+                // one finger rotates
+                this.rotateHandler.Delta(new ManipulationEventArgs(position));
+            }
+
+            if (n == 2)
+            {
+                // two fingers pans
+                this.panHandler.Delta(new ManipulationEventArgs(position));
+            }
+
+            if (this.IsTouchZoomEnabled && n == 2)
             {
                 var zoomAroundPoint = this.zoomHandler.UnProject(
                     e.ManipulationOrigin, this.zoomHandler.Origin, this.CameraLookDirection);
@@ -1745,9 +1764,9 @@ namespace HelixToolkit.Wpf
             base.OnManipulationStarted(e);
             this.Focus();
             this.touchDownPoint = e.ManipulationOrigin;
-            this.panHandler.Started(new ManipulationEventArgs(this.touchDownPoint));
-            this.rotateHandler.Started(new ManipulationEventArgs(this.touchDownPoint));
-            this.zoomHandler.Started(new ManipulationEventArgs(this.touchDownPoint));
+            this.touchPreviousPoint = e.ManipulationOrigin;
+            this.manipulatorCount = 0;
+
             e.Handled = true;
         }
 
