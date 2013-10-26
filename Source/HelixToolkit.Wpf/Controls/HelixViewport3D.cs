@@ -618,12 +618,6 @@ namespace HelixToolkit.Wpf
             new UIPropertyMetadata(new KeyGesture(Key.U, ModifierKeys.Control)));
 
         /// <summary>
-        /// Identifies the <see cref="TouchMode"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
-            "TouchMode", typeof(TouchMode), typeof(HelixViewport3D), new UIPropertyMetadata(TouchMode.Panning));
-
-        /// <summary>
         /// Identifies the <see cref="TriangleCountInfo"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TriangleCountInfoProperty =
@@ -2361,25 +2355,6 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(TopViewGestureProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the touch mode.
-        /// </summary>
-        /// <value>
-        /// The touch mode.
-        /// </value>
-        public TouchMode TouchMode
-        {
-            get
-            {
-                return (TouchMode)this.GetValue(TouchModeProperty);
-            }
-
-            set
-            {
-                this.SetValue(TouchModeProperty, value);
             }
         }
 

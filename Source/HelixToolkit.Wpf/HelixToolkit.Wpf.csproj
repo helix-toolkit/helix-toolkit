@@ -61,7 +61,6 @@
     <Compile Include="Adorners\DrawingContextExtensions.cs" />
     <Compile Include="ExtensionMethods\AnimationExtensions.cs" />
     <Compile Include="Helpers\AttachedProperties.cs" />
-    <Compile Include="Controls\CameraController\TouchMode.cs" />
     <Compile Include="Controls\CameraController\CameraMode.cs" />
     <Compile Include="Controls\CameraController\CameraRotationMode.cs" />
     <Compile Include="Controls\CameraController\CameraSetting.cs" />

@@ -61,7 +61,6 @@
                                                     IsRotationEnabled="{TemplateBinding IsRotationEnabled}" 
                                                     IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}" 
                                                     IsChangeFieldOfViewEnabled="{TemplateBinding IsChangeFieldOfViewEnabled}"
-                                                    TouchMode="{TemplateBinding TouchMode}"
                                                     IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
                                                     LeftRightRotationSensitivity="{TemplateBinding LeftRightRotationSensitivity}"
                                                     UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
