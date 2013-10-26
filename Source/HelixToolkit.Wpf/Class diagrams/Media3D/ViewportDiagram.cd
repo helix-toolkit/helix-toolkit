@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Windows.Media.Media3D.Viewport3DVisual">
+    <Position X="6" Y="2.75" Width="3.25" />
+    <Members>
+      <Field Name="CameraProperty" Hidden="true" />
+      <Field Name="ViewportProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Controls.Viewport3D">
+    <Position X="1.25" Y="6" Width="3.5" />
+    <Members>
+      <Field Name="CameraProperty" Hidden="true" />
+      <Field Name="ChildrenProperty" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="System.Windows.FrameworkElement" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="5.191" />
+        <Point X="3" Y="6" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.UIElement" Collapsed="true">
+    <Position X="1.25" Y="2.75" Width="3.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Visual" Collapsed="true">
+    <Position X="1.25" Y="0.75" Width="3.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.FrameworkElement" Collapsed="true">
+    <Position X="1.25" Y="4.5" Width="3.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

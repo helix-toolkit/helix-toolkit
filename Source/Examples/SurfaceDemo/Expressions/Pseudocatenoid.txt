@@ -1,0 +1,10 @@
+﻿// http://paulbourke.net/geometry/pseudocatenoid/
+u-=Math.PI;
+v-=Math.PI;
+
+x = cos(u)*(2 + cos(v));
+y = sin(u)*(2 + cos(v));
+
+double tanv=Math.Tan(v);
+
+z = x*x - y*y + 2*x*y*tanv*tanv;

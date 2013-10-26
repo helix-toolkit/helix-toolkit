@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Windows.Media.Media3D.Camera">
+    <Position X="3" Y="0.5" Width="3.5" />
+    <Members>
+      <Field Name="TransformProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.OrthographicCamera">
+    <Position X="0.5" Y="7.5" Width="3.5" />
+    <Members>
+      <Field Name="WidthProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.PerspectiveCamera">
+    <Position X="5.25" Y="7.5" Width="3.5" />
+    <Members>
+      <Field Name="FieldOfViewProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.ProjectionCamera">
+    <Position X="3" Y="3.25" Width="3.5" />
+    <Members>
+      <Field Name="FarPlaneDistanceProperty" Hidden="true" />
+      <Field Name="LookDirectionProperty" Hidden="true" />
+      <Field Name="NearPlaneDistanceProperty" Hidden="true" />
+      <Field Name="PositionProperty" Hidden="true" />
+      <Field Name="UpDirectionProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

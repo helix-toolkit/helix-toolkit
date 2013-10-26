@@ -1,0 +1,48 @@
+﻿<Window x:Class="BillboardDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="BillboardDemo" Height="480" Width="640">
+    <Grid>
+        <ht:HelixViewport3D ZoomExtentsWhenLoaded="True">
+            <!-- Remember to add some lights -->
+            <ht:SunLight/>
+            
+            <!-- Road -->
+            <ht:RectangleVisual3D Width="10" Length="60" Origin="0,30,0" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material Gray}"/>
+            
+            <!-- Yellow lines -->
+            <ht:RectangleVisual3D Width="0.1" Length="60" Origin="0.1,30,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material Yellow}"/>
+            <ht:RectangleVisual3D Width="0.1" Length="60" Origin="-0.1,30,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material Yellow}"/>
+
+            <!-- A Zebra crossing by copy/paste :) -->
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="4.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="3.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="2.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="1.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="0.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="-0.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="-1.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="-2.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="-3.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+            <ht:RectangleVisual3D Width="0.5" Length="5" Origin="-4.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
+
+            <!-- Signs, not looking good, but shows how the billboards work -->
+            <ht:BillboardVisual3D Position="6,10,3" Width="40" Height="40" Material="{ht:ImageMaterial Examples/Billboard/roadsign.png, IsEmissive=true}"/>
+            <ht:BillboardVisual3D Position="6,30,3" Width="40" Height="40" Material="{ht:ImageMaterial Examples/Billboard/roadsign.png, IsEmissive=true}"/>
+            <ht:BillboardVisual3D Position="6,50,3" Width="40" Height="40" Material="{ht:ImageMaterial Examples/Billboard/roadsign.png, IsEmissive=true}"/>
+ 
+            <!-- Sign poles -->
+            <ht:TruncatedConeVisual3D Origin="6,10,0" Height="3" BaseRadius="0.1" TopRadius="0.1" Material="{ht:Material LightGray}"/>
+            <ht:TruncatedConeVisual3D Origin="6,30,0" Height="3" BaseRadius="0.1" TopRadius="0.1" Material="{ht:Material LightGray}"/>
+            <ht:TruncatedConeVisual3D Origin="6,50,0" Height="3" BaseRadius="0.1" TopRadius="0.1" Material="{ht:Material LightGray}"/>
+
+            <!-- Text billboards, always facing camera-->
+            <ht:BillboardTextVisual3D Position="5,0,0" Text="5,0,0" DepthOffset="0.01"/>
+            <ht:BillboardTextVisual3D Position="-5,0,0" Text="-5,0,0" DepthOffset="0.01"/>
+            <ht:BillboardTextVisual3D Position="5,60,0" Text="5,60,0" DepthOffset="0.01"/>
+            <ht:BillboardTextVisual3D Position="-5,60,0" Text="-5,60,0" DepthOffset="0.01"/>
+
+        </ht:HelixViewport3D>
+    </Grid>
+</Window>
