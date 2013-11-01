@@ -14,6 +14,8 @@ using System.Windows.Media.Media3D;
 
 namespace FractalDemo
 {
+    using System.Windows;
+
     public class MainViewModel : Observable
     {
         public MainViewModel()
@@ -111,7 +113,7 @@ namespace FractalDemo
         SierpinskiPyramid,
         Plant,
         MandelbrotMountain
-    } ;
+    }
 
     public static class Enum<T>
     {
@@ -139,14 +141,22 @@ namespace FractalDemo
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return parameter == null;
+            }
+
             return value.Equals(parameter);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if ((bool)value)
+            {
                 return parameter;
-            return Binding.DoNothing;
+            }
+
+            return DependencyProperty.UnsetValue;
         }
     }
 
@@ -160,10 +170,12 @@ namespace FractalDemo
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             if ((bool)value)
+            {
                 return new object[] { 2 };
+            }
+
             return null;
         }
-
     }
 
     // http://www.scottlogic.co.uk/blog/colin/2010/07/a-universal-value-converter-for-wpf/
@@ -171,7 +183,7 @@ namespace FractalDemo
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // obtain the conveter for the target type
+            // obtain the converter for the target type
             TypeConverter converter = TypeDescriptor.GetConverter(targetType);
 
             try
@@ -190,9 +202,8 @@ namespace FractalDemo
             }
             catch (Exception)
             {
-                return value;
+                return DependencyProperty.UnsetValue;
             }
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
