@@ -935,6 +935,33 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Adds a pyramid.
+        /// </summary>
+        /// <param name="center">The center.</param>
+        /// <param name="normal">The normal vector.</param>
+        /// <param name="up">The 'up' vector.</param>
+        /// <param name="sideLength">Length of the sides of the pyramid.</param>
+        /// <param name="height">The height of the pyramid.</param>
+        public void AddPyramid(Point3D center, Vector3D normal, Vector3D up, double sideLength, double height)
+        {
+            var right = Vector3D.CrossProduct(normal, up);
+            var n = normal * sideLength / 2;
+            up *= height / 2;
+            right *= sideLength / 2;
+
+            var p1 = center - n - up - right;
+            var p2 = center - n - up + right;
+            var p3 = center + n - up + right;
+            var p4 = center + n - up - right;
+            var p5 = center + up;
+
+            this.AddTriangle(p1, p2, p5);
+            this.AddTriangle(p2, p3, p5);
+            this.AddTriangle(p3, p4, p5);
+            this.AddTriangle(p4, p1, p5);
+        }
+
+        /// <summary>
         /// Adds a quadrilateral polygon.
         /// </summary>
         /// <param name="p0">
