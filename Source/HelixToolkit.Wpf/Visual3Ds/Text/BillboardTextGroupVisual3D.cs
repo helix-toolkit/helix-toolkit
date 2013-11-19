@@ -93,7 +93,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
             "Items",
-            typeof(List<BillboardTextItem>),
+            typeof(IList<BillboardTextItem>),
             typeof(BillboardTextGroupVisual3D),
             new UIPropertyMetadata(null, VisualChanged));
 
@@ -382,11 +382,11 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the items.
         /// </summary>
         /// <value>The items.</value>
-        public List<BillboardTextItem> Items
+        public IList<BillboardTextItem> Items
         {
             get
             {
-                return (List<BillboardTextItem>)this.GetValue(ItemsProperty);
+                return (IList<BillboardTextItem>)this.GetValue(ItemsProperty);
             }
 
             set
