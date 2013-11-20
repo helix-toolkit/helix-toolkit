@@ -7,6 +7,7 @@
 namespace HelixToolkit.Wpf
 {
     using System;
+    using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Media.Media3D;
 
@@ -43,11 +44,13 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected virtual void OnBoxChanged()
         {
-            this.Points.Clear();
             if (this.BoundingBox.IsEmpty)
             {
+                this.Points = null;
                 return;
             }
+
+            var points = new List<Point3D>();
 
             var bb = this.BoundingBox;
 
@@ -62,8 +65,8 @@ namespace HelixToolkit.Wpf
 
             Action<Point3D, Point3D> addEdge = (p, q) =>
             {
-                this.Points.Add(p);
-                this.Points.Add(q);
+                points.Add(p);
+                points.Add(q);
             };
 
             addEdge(p0, p1);
@@ -80,6 +83,8 @@ namespace HelixToolkit.Wpf
             addEdge(p1, p5);
             addEdge(p2, p6);
             addEdge(p3, p7);
+
+            this.Points = points;
         }
 
         /// <summary>
