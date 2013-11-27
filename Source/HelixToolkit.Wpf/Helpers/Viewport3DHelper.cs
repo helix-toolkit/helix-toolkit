@@ -919,16 +919,10 @@ namespace HelixToolkit.Wpf
         /// </returns>
         private static Point3D GetGlobalHitPosition(RayHitTestResult rayHit, Viewport3D viewport)
         {
+            // PointHit is in Visual3D space
             var p = rayHit.PointHit;
-
-            // first transform the Model3D hierarchy
-            var t2 = rayHit.VisualHit.GetTransformTo(rayHit.ModelHit);
-            if (t2 != null)
-            {
-                p = t2.Transform(p);
-            }
-
-            // then transform the Visual3D hierarchy up to the Viewport3D ancestor
+            
+            // transform the Visual3D hierarchy up to the Viewport3D ancestor
             var t = GetTransform(viewport, rayHit.VisualHit);
             if (t != null)
             {
