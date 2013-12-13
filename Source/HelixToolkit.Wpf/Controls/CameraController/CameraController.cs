@@ -2,8 +2,10 @@
 // <copyright file="CameraController.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
+// <summary>
+//   Provides a control that manipulates the camera by mouse and keyboard gestures.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -1408,6 +1410,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void ChangeDirection(Vector3D lookDir, Vector3D upDir, double animationTime = 500)
         {
+            if (!this.IsRotationEnabled)
+            {
+                return;
+            }
+
             this.StopAnimations();
             this.PushCameraSetting();
             CameraHelper.ChangeDirection(this.ActualCamera, lookDir, upDir, animationTime);
@@ -1424,6 +1431,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void ChangeDirection(Vector3D lookDir, double animationTime = 500)
         {
+            if (!this.IsRotationEnabled)
+            {
+                return;
+            }
+
             this.StopAnimations();
             this.PushCameraSetting();
             CameraHelper.ChangeDirection(this.ActualCamera, lookDir, this.ActualCamera.UpDirection, animationTime);

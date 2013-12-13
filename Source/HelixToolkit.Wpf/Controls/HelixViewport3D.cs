@@ -319,6 +319,12 @@ namespace HelixToolkit.Wpf
             "IsPanEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="IsMoveEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
+            "IsMoveEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="IsRotationEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsRotationEnabledProperty =
@@ -1609,6 +1615,22 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(IsPanEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether move (by AWSD keys) is enabled.
+        /// </summary>
+        public bool IsMoveEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsMoveEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsMoveEnabledProperty, value);
             }
         }
 
