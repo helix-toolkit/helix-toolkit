@@ -57,6 +57,7 @@
                                                     PanCursor="{TemplateBinding PanCursor}" 
                                                     ChangeFieldOfViewCursor="{TemplateBinding ChangeFieldOfViewCursor}" 
                                                     IsPanEnabled="{TemplateBinding IsPanEnabled}" 
+                                                    IsMoveEnabled="{TemplateBinding IsMoveEnabled}" 
                                                     IsZoomEnabled="{TemplateBinding IsZoomEnabled}" 
                                                     IsRotationEnabled="{TemplateBinding IsRotationEnabled}" 
                                                     IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}" 
@@ -147,6 +148,7 @@
                                         HorizontalAlignment="{TemplateBinding ViewCubeHorizontalPosition}" VerticalAlignment="{TemplateBinding ViewCubeVerticalPosition}" 
                                         Opacity="0.5" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <local:ViewCubeVisual3D x:Name="PART_ViewCube" 
+                                                        IsEnabled="{Binding IsRotationEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                                         ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}" 
                                                         TopText="{Binding ViewCubeTopText, RelativeSource={RelativeSource TemplatedParent}}"
                                                         BottomText="{Binding ViewCubeBottomText, RelativeSource={RelativeSource TemplatedParent}}"

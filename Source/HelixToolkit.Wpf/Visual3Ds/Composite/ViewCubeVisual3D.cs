@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -49,6 +50,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty LeftTextProperty = DependencyProperty.Register(
             "LeftText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("L", VisualModelChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="LeftText"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
+            "IsEnabled", typeof(bool), typeof(ViewCubeVisual3D), new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="ModelUpDirection"/> dependency property.
@@ -261,9 +268,26 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        ///   Gets or sets a value indicating whether the view cube is enabled.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the viewport that is being controlled by the view cube.
         /// </summary>
         /// <value>The viewport.</value>
+        [Browsable(false)]
         public Viewport3D Viewport
         {
             get
@@ -410,6 +434,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void FaceMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
             var faceNormal = this.faceNormals[sender];
             var faceUp = this.faceUpVectors[sender];
 
