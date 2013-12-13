@@ -6,6 +6,7 @@
 //   Provides a control that manipulates the camera by mouse and keyboard gestures.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -142,6 +143,12 @@ namespace HelixToolkit.Wpf
                 "LeftRightRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
+        /// The look at (target) point changed event
+        /// </summary>
+        public static readonly RoutedEvent LookAtChangedEvent = EventManager.RegisterRoutedEvent(
+            "LookAtChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
+
+        /// <summary>
         /// Identifies the <see cref="MaximumFieldOfView"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumFieldOfViewProperty =
@@ -154,6 +161,16 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty MinimumFieldOfViewProperty =
             DependencyProperty.Register(
                 "MinimumFieldOfView", typeof(double), typeof(CameraController), new UIPropertyMetadata(5.0));
+
+        /// <summary>
+        /// Identifies the <see cref="ModelUpDirection"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ModelUpDirectionProperty =
+            DependencyProperty.Register(
+                "ModelUpDirection",
+                typeof(Vector3D),
+                typeof(CameraController),
+                new UIPropertyMetadata(new Vector3D(0, 0, 1)));
 
         /// <summary>
         /// Identifies the <see cref="MoveSensitivity"/> dependency property.
@@ -216,15 +233,6 @@ namespace HelixToolkit.Wpf
             "TouchMode", typeof(TouchMode), typeof(CameraController), new UIPropertyMetadata(TouchMode.Panning));
 
         /// <summary>
-        /// Identifies the <see cref="ModelUpDirection"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ModelUpDirectionProperty = DependencyProperty.Register(
-            "ModelUpDirection",
-            typeof(Vector3D),
-            typeof(CameraController),
-            new UIPropertyMetadata(new Vector3D(0, 0, 1)));
-
-        /// <summary>
         /// Identifies the <see cref="UpDownPanSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDownPanSensitivityProperty =
@@ -275,74 +283,10 @@ namespace HelixToolkit.Wpf
                 "ZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The back view command.
+        /// The zoomed by rectangle event
         /// </summary>
-        public static RoutedCommand BackViewCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The bottom view command.
-        /// </summary>
-        public static RoutedCommand BottomViewCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The change fov command.
-        /// </summary>
-        public static RoutedCommand ChangeFieldOfViewCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The change look at command.
-        /// </summary>
-        public static RoutedCommand ChangeLookAtCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The front view command.
-        /// </summary>
-        public static RoutedCommand FrontViewCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The left view command.
-        /// </summary>
-        public static RoutedCommand LeftViewCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The pan command.
-        /// </summary>
-        public static RoutedCommand PanCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The reset camera command.
-        /// </summary>
-        public static RoutedCommand ResetCameraCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The right view command.
-        /// </summary>
-        public static RoutedCommand RightViewCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The rotate command.
-        /// </summary>
-        public static RoutedCommand RotateCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The top view command.
-        /// </summary>
-        public static RoutedCommand TopViewCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The zoom command.
-        /// </summary>
-        public static RoutedCommand ZoomCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The zoom extents command.
-        /// </summary>
-        public static RoutedCommand ZoomExtentsCommand = new RoutedCommand();
-
-        /// <summary>
-        /// The zoom rectangle command.
-        /// </summary>
-        public static RoutedCommand ZoomRectangleCommand = new RoutedCommand();
+        public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
+            "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
 
         /// <summary>
         /// The camera history stack.
@@ -464,19 +408,25 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
-        /// Initializes static members of the <see cref="CameraController" /> class. Initializes static members of the
-        ///     <see
-        ///         cref="CameraController" />
-        /// class. Initializes static members of the <see cref="CameraController" /> class. Initializes static members of the
-        ///     <see
-        ///         cref="CameraController" />
-        /// class.
         /// </summary>
         static CameraController()
         {
-            BackgroundProperty.OverrideMetadata(
-                typeof(CameraController), new FrameworkPropertyMetadata(Brushes.Transparent));
+            BackgroundProperty.OverrideMetadata(typeof(CameraController), new FrameworkPropertyMetadata(Brushes.Transparent));
             FocusVisualStyleProperty.OverrideMetadata(typeof(CameraController), new FrameworkPropertyMetadata(null));
+            BackViewCommand = new RoutedCommand();
+            BottomViewCommand = new RoutedCommand();
+            ChangeFieldOfViewCommand = new RoutedCommand();
+            ChangeLookAtCommand = new RoutedCommand();
+            FrontViewCommand = new RoutedCommand();
+            LeftViewCommand = new RoutedCommand();
+            PanCommand = new RoutedCommand();
+            ResetCameraCommand = new RoutedCommand();
+            RightViewCommand = new RoutedCommand();
+            RotateCommand = new RoutedCommand();
+            TopViewCommand = new RoutedCommand();
+            ZoomCommand = new RoutedCommand();
+            ZoomExtentsCommand = new RoutedCommand();
+            ZoomRectangleCommand = new RoutedCommand();
         }
 
         /// <summary>
@@ -496,6 +446,108 @@ namespace HelixToolkit.Wpf
             this.InitializeBindings();
             this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
         }
+
+        /// <summary>
+        /// Occurs when the look at/target point changed.
+        /// </summary>
+        public event RoutedEventHandler LookAtChanged
+        {
+            add
+            {
+                this.AddHandler(LookAtChangedEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(LookAtChangedEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the view is zoomed by rectangle.
+        /// </summary>
+        public event RoutedEventHandler ZoomedByRectangle
+        {
+            add
+            {
+                this.AddHandler(ZoomedByRectangleEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(ZoomedByRectangleEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the back view command.
+        /// </summary>
+        public static RoutedCommand BackViewCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the bottom view command.
+        /// </summary>
+        public static RoutedCommand BottomViewCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the change field-of-view command.
+        /// </summary>
+        public static RoutedCommand ChangeFieldOfViewCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the change look at command.
+        /// </summary>
+        public static RoutedCommand ChangeLookAtCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the front view command.
+        /// </summary>
+        public static RoutedCommand FrontViewCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the left view command.
+        /// </summary>
+        public static RoutedCommand LeftViewCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the pan command.
+        /// </summary>
+        public static RoutedCommand PanCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the reset camera command.
+        /// </summary>
+        public static RoutedCommand ResetCameraCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the right view command.
+        /// </summary>
+        public static RoutedCommand RightViewCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the rotate command.
+        /// </summary>
+        public static RoutedCommand RotateCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the top view command.
+        /// </summary>
+        public static RoutedCommand TopViewCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the zoom command.
+        /// </summary>
+        public static RoutedCommand ZoomCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the zoom extents command.
+        /// </summary>
+        public static RoutedCommand ZoomExtentsCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the zoom rectangle command.
+        /// </summary>
+        public static RoutedCommand ZoomRectangleCommand { get; private set; }
 
         /// <summary>
         /// Gets ActualCamera.
@@ -749,6 +801,7 @@ namespace HelixToolkit.Wpf
             {
                 return (bool)this.GetValue(IsInertiaEnabledProperty);
             }
+
             set
             {
                 this.SetValue(IsInertiaEnabledProperty, value);
@@ -1352,7 +1405,6 @@ namespace HelixToolkit.Wpf
                 this.rotationPosition = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
                 this.rotateHandler.Rotate(
                     this.rotationPosition, this.rotationPosition + new Vector(dx, dy), this.CameraTarget);
-                // this.rotateHandler.Rotate(new Vector(dx,dy));
             }
         }
 
@@ -1417,7 +1469,7 @@ namespace HelixToolkit.Wpf
 
             this.StopAnimations();
             this.PushCameraSetting();
-            CameraHelper.ChangeDirection(this.ActualCamera, lookDir, upDir, animationTime);
+            this.ActualCamera.ChangeDirection(lookDir, upDir, animationTime);
         }
 
         /// <summary>
@@ -1438,7 +1490,7 @@ namespace HelixToolkit.Wpf
 
             this.StopAnimations();
             this.PushCameraSetting();
-            CameraHelper.ChangeDirection(this.ActualCamera, lookDir, this.ActualCamera.UpDirection, animationTime);
+            this.ActualCamera.ChangeDirection(lookDir, this.ActualCamera.UpDirection, animationTime);
         }
 
         /// <summary>
@@ -1446,7 +1498,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void HideRectangle()
         {
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -1462,7 +1514,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void HideTargetAdorner()
         {
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
             if (this.targetAdorner != null)
             {
                 myAdornerLayer.Remove(this.targetAdorner);
@@ -1492,7 +1544,7 @@ namespace HelixToolkit.Wpf
             }
 
             this.PushCameraSetting();
-            CameraHelper.LookAt(this.Camera, target, animationTime);
+            this.Camera.LookAt(target, animationTime);
         }
 
         /// <summary>
@@ -1520,12 +1572,12 @@ namespace HelixToolkit.Wpf
             this.PushCameraSetting();
             if (this.DefaultCamera != null)
             {
-                CameraHelper.Copy(this.DefaultCamera, this.ActualCamera);
+                this.DefaultCamera.Copy(this.ActualCamera);
             }
             else
             {
-                CameraHelper.Reset(this.ActualCamera);
-                CameraHelper.ZoomExtents(this.ActualCamera, this.Viewport);
+                this.ActualCamera.Reset();
+                this.ActualCamera.ZoomExtents(this.Viewport);
             }
         }
 
@@ -1545,7 +1597,7 @@ namespace HelixToolkit.Wpf
         {
             if (this.cameraHistory.Count > 0)
             {
-                CameraSetting cs = this.cameraHistory[this.cameraHistory.Count - 1];
+                var cs = this.cameraHistory[this.cameraHistory.Count - 1];
                 this.cameraHistory.RemoveAt(this.cameraHistory.Count - 1);
                 cs.UpdateCamera(this.ActualCamera);
                 return true;
@@ -1597,7 +1649,7 @@ namespace HelixToolkit.Wpf
                 return;
             }
 
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
             this.targetAdorner = new TargetSymbolAdorner(this.Viewport, position);
             myAdornerLayer.Add(this.targetAdorner);
         }
@@ -1672,11 +1724,29 @@ namespace HelixToolkit.Wpf
             }
 
             this.PushCameraSetting();
-            CameraHelper.ZoomExtents(this.ActualCamera, this.Viewport, animationTime);
+            this.ActualCamera.ZoomExtents(this.Viewport, animationTime);
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted" /> event occurs.
+        /// Raises the LookAtChanged event.
+        /// </summary>
+        protected internal virtual void OnLookAtChanged()
+        {
+            var args = new RoutedEventArgs(LookAtChangedEvent);
+            this.RaiseEvent(args);
+        }
+
+        /// <summary>
+        /// Raises the ZoomedByRectangle event.
+        /// </summary>
+        protected internal virtual void OnZoomedByRectangle()
+        {
+            var args = new RoutedEventArgs(ZoomedByRectangleEvent);
+            this.RaiseEvent(args);
+        }
+
+        /// <summary>
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
@@ -1699,7 +1769,7 @@ namespace HelixToolkit.Wpf
             this.zoomHandler.Completed(new ManipulationEventArgs(p));
 
             // Tap
-            double l = e.TotalManipulation.Translation.Length;
+            var l = e.TotalManipulation.Translation.Length;
             if (l < 4 && this.TouchMode != TouchMode.None)
             {
                 this.TouchMode = this.TouchMode == TouchMode.Panning ? TouchMode.Rotating : TouchMode.Panning;
@@ -1709,7 +1779,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta" /> event occurs.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
@@ -1721,7 +1791,7 @@ namespace HelixToolkit.Wpf
             // http://msdn.microsoft.com/en-us/library/system.windows.uielement.manipulationdelta.aspx
 
             // Debug.WriteLine("OnManipulationDelta: T={0}, S={1}, R={2}, O={3}", e.DeltaManipulation.Translation, e.DeltaManipulation.Scale, e.DeltaManipulation.Rotation, e.ManipulationOrigin);
-            Point position = this.touchDownPoint + e.CumulativeManipulation.Translation;
+            var position = this.touchDownPoint + e.CumulativeManipulation.Translation;
 
             switch (this.TouchMode)
             {
@@ -1747,7 +1817,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted" /> event occurs.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
@@ -1767,7 +1837,7 @@ namespace HelixToolkit.Wpf
         /// Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -1783,7 +1853,7 @@ namespace HelixToolkit.Wpf
         /// Invoked when an unhandled StylusSystemGesture attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.StylusSystemGestureEventArgs" /> that contains the event data.
+        /// The <see cref="T:System.Windows.Input.StylusSystemGestureEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnStylusSystemGesture(StylusSystemGestureEventArgs e)
         {
@@ -1792,7 +1862,7 @@ namespace HelixToolkit.Wpf
             // Debug.WriteLine("OnStylusSystemGesture: " + e.SystemGesture);
             if (e.SystemGesture == SystemGesture.HoldEnter)
             {
-                Point p = e.GetPosition(this);
+                var p = e.GetPosition(this);
                 this.changeLookAtHandler.Started(new ManipulationEventArgs(p));
                 this.changeLookAtHandler.Completed(new ManipulationEventArgs(p));
                 e.Handled = true;
@@ -1929,7 +1999,7 @@ namespace HelixToolkit.Wpf
         /// The delta y.
         /// </param>
         /// <returns>
-        /// The <see cref="Vector3D" /> .
+        /// The <see cref="Vector3D"/> .
         /// </returns>
         private Vector3D FindPanVector(double dx, double dy)
         {
@@ -1937,8 +2007,8 @@ namespace HelixToolkit.Wpf
             var axis2 = Vector3D.CrossProduct(axis1, this.CameraLookDirection);
             axis1.Normalize();
             axis2.Normalize();
-            double l = this.CameraLookDirection.Length;
-            double f = l * 0.001;
+            var l = this.CameraLookDirection.Length;
+            var f = l * 0.001;
             var move = (-axis1 * f * dx) + (axis2 * f * dy);
 
             // this should be dependent on distance to target?
@@ -2024,7 +2094,7 @@ namespace HelixToolkit.Wpf
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
             var ticks = e.RenderingTime.Ticks;
-            double time = 100e-9 * (ticks - this.lastTick);
+            var time = 100e-9 * (ticks - this.lastTick);
 
             if (this.lastTick != 0)
             {
@@ -2041,14 +2111,14 @@ namespace HelixToolkit.Wpf
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.KeyEventArgs" /> instance containing the event data.
+        /// The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data.
         /// </param>
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             this.OnKeyDown(e);
-            bool shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            bool control = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-            double f = control ? 0.25 : 1;
+            var shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var control = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            var f = control ? 0.25 : 1;
 
             if (!shift)
             {
@@ -2144,7 +2214,7 @@ namespace HelixToolkit.Wpf
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseWheelEventArgs" /> instance containing the event data.
+        /// The <see cref="System.Windows.Input.MouseWheelEventArgs"/> instance containing the event data.
         /// </param>
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -2155,11 +2225,11 @@ namespace HelixToolkit.Wpf
 
             if (this.ZoomAroundMouseDownPoint)
             {
-                Point point = e.GetPosition(this);
+                var point = e.GetPosition(this);
                 Point3D nearestPoint;
                 Vector3D normal;
                 DependencyObject visual;
-                if (Viewport3DHelper.FindNearest(this.Viewport, point, out nearestPoint, out normal, out visual))
+                if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint);
                     e.Handled = true;
@@ -2180,7 +2250,7 @@ namespace HelixToolkit.Wpf
         private void OnTimeStep(double time)
         {
             // should be independent of time
-            double factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
+            var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
             factor = this.Clamp(factor, 0.2, 1);
 
             if (this.isSpinning && this.spinningSpeed.LengthSquared > 0)
@@ -2237,7 +2307,7 @@ namespace HelixToolkit.Wpf
             // var mg = new ModelVisual3D { Content = new AmbientLight(Colors.White) };
             // Viewport.Children.Add(mg);
             // Viewport.Children.Remove(mg);
-            Camera c = this.Viewport.Camera;
+            var c = this.Viewport.Camera;
             this.Viewport.Camera = null;
             this.Viewport.Camera = c;
 
@@ -2337,71 +2407,6 @@ namespace HelixToolkit.Wpf
         {
             this.StopAnimations();
             this.ZoomExtents();
-        }
-
-
-        /// <summary>
-        /// The look at (target) point changed event
-        /// </summary>
-        public static readonly RoutedEvent LookAtChangedEvent = EventManager.RegisterRoutedEvent(
-            "LookAtChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
-
-        /// <summary>
-        /// Occurs when the look at/target point changed.
-        /// </summary>
-        public event RoutedEventHandler LookAtChanged
-        {
-            add
-            {
-                this.AddHandler(LookAtChangedEvent, value);
-            }
-
-            remove
-            {
-                this.RemoveHandler(LookAtChangedEvent, value);
-            }
-        }
-
-        /// <summary>
-        /// Raises the LookAtChanged event.
-        /// </summary>
-        internal protected virtual void OnLookAtChanged()
-        {
-            var args = new RoutedEventArgs(LookAtChangedEvent);
-            this.RaiseEvent(args);
-
-        }
-
-        /// <summary>
-        /// The zoomed by rectangle event
-        /// </summary>
-        public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
-        "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
-
-        /// <summary>
-        /// Occurs when the view is zoomed by rectangle.
-        /// </summary>
-        public event RoutedEventHandler ZoomedByRectangle
-        {
-            add
-            {
-                this.AddHandler(ZoomedByRectangleEvent, value);
-            }
-
-            remove
-            {
-                this.RemoveHandler(ZoomedByRectangleEvent, value);
-            }
-        }
-
-        /// <summary>
-        /// Raises the ZoomedByRectangle event.
-        /// </summary>
-        internal protected virtual void OnZoomedByRectangle()
-        {
-            var args = new RoutedEventArgs(ZoomedByRectangleEvent);
-            this.RaiseEvent(args);
-
         }
     }
 }
