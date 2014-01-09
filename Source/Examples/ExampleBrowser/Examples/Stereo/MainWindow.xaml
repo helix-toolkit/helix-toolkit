@@ -32,6 +32,11 @@
                                 StereoBase="{Binding Value, ElementName=stereoBase}" 
                                 CopyDirectionVector="{Binding IsChecked, ElementName=dirVector}"/>
             </TabItem>
+            <TabItem Header="Interlaced">
+                <h:InterlacedView3D x:Name="interlacedView1" Background="White" 
+                                StereoBase="{Binding Value, ElementName=stereoBase}" 
+                                CopyDirectionVector="{Binding IsChecked, ElementName=dirVector}"/>
+            </TabItem>
             <TabItem Header="Wiggle">
                 <h:WiggleView3D x:Name="wiggleView1"
                                 StereoBase="{Binding Value, ElementName=stereoBase}" 
