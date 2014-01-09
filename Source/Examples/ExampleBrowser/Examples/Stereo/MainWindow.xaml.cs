@@ -24,6 +24,7 @@ namespace StereoDemo
             InitializeComponent();
             AddCube(stereoView1.Children);
             AddCube(anaglyphView1.Children);
+            AddCube(interlacedView1.Children);
             AddCube(wiggleView1.Children);
 
             Loaded += this.WindowLoaded;
@@ -80,6 +81,7 @@ namespace StereoDemo
         void WindowLoaded(object sender, RoutedEventArgs e)
         {
             anaglyphView1.SynchronizeStereoModel();
+            interlacedView1.SynchronizeStereoModel();
             stereoView1.SynchronizeStereoModel();
             wiggleView1.SynchronizeStereoModel();
         }
