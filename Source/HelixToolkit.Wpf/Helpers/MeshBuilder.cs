@@ -1331,7 +1331,7 @@ namespace HelixToolkit.Wpf
         /// Adds a surface of revolution.
         /// </summary>
         /// <param name="points">
-        /// The points (x coordinates are radius, y coordinates are distance from the origin along the axis of revolution)
+        /// The points (x coordinates are distance from the origin along the axis of revolution, y coordinates are radius, )
         /// </param>
         /// <param name="origin">
         /// The origin of the revolution axis.
