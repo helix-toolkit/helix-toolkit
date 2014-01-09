@@ -3,10 +3,9 @@
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
-//   A control that contains a <see cref="Viewport3D" /> and a <see cref="CameraController" /> .
+//   A control that contains a Viewport3D and a CameraController.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -19,11 +18,10 @@ namespace HelixToolkit.Wpf
     using System.Windows.Input;
     using System.Windows.Markup;
     using System.Windows.Media;
-    using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// A control that contains a <see cref="Viewport3D" /> and a <see cref="CameraController" /> .
+    /// A control that contains a <see cref="Viewport3D" /> and a <see cref="CameraController" />.
     /// </summary>
     [ContentProperty("Children")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
@@ -33,31 +31,6 @@ namespace HelixToolkit.Wpf
     [Localizability(LocalizationCategory.NeverLocalize)]
     public class HelixViewport3D : ItemsControl, IHelixViewport3D
     {
-        /// <summary>
-        /// The adorner layer name.
-        /// </summary>
-        private const string PartAdornerLayer = "PART_AdornerLayer";
-
-        /// <summary>
-        /// The camera controller name.
-        /// </summary>
-        private const string PartCameraController = "PART_CameraController";
-
-        /// <summary>
-        /// The coordinate view name.
-        /// </summary>
-        private const string PartCoordinateView = "PART_CoordinateView";
-
-        /// <summary>
-        /// The view cube name.
-        /// </summary>
-        private const string PartViewCube = "PART_ViewCube";
-
-        /// <summary>
-        /// The view cube viewport name.
-        /// </summary>
-        private const string PartViewCubeViewport = "PART_ViewCubeViewport";
-
         /// <summary>
         /// Identifies the <see cref="BackViewGesture"/> dependency property.
         /// </summary>
@@ -239,16 +212,6 @@ namespace HelixToolkit.Wpf
                 "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="IsHeadLightEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsHeadlightEnabledProperty =
-            DependencyProperty.Register(
-                "IsHeadLightEnabled",
-                typeof(bool),
-                typeof(HelixViewport3D),
-                new UIPropertyMetadata(false, HeadlightChanged));
-
-        /// <summary>
         /// Identifies the <see cref="FieldOfViewText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FieldOfViewTextProperty =
@@ -306,6 +269,16 @@ namespace HelixToolkit.Wpf
                 "IsChangeFieldOfViewEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="IsHeadLightEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsHeadlightEnabledProperty =
+            DependencyProperty.Register(
+                "IsHeadLightEnabled",
+                typeof(bool),
+                typeof(HelixViewport3D),
+                new UIPropertyMetadata(false, HeadlightChanged));
+
+        /// <summary>
         /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsInertiaEnabledProperty =
@@ -317,6 +290,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
             "IsPanEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <see cref="IsMoveEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
+            "IsMoveEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsRotationEnabled"/> dependency property.
@@ -361,6 +340,12 @@ namespace HelixToolkit.Wpf
                 typeof(InputGesture),
                 typeof(HelixViewport3D),
                 new UIPropertyMetadata(new KeyGesture(Key.L, ModifierKeys.Control)));
+
+        /// <summary>
+        /// The look at (target) point changed event
+        /// </summary>
+        public static readonly RoutedEvent LookAtChangedEvent = EventManager.RegisterRoutedEvent(
+            "LookAtChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
 
         /// <summary>
         /// Identifies the <see cref="MaximumFieldOfView"/> dependency property.
@@ -790,7 +775,38 @@ namespace HelixToolkit.Wpf
                 "ZoomSensitivity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The framerate stopwatch.
+        /// The zoomed by rectangle event
+        /// </summary>
+        public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
+            "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
+
+        /// <summary>
+        /// The adorner layer name.
+        /// </summary>
+        private const string PartAdornerLayer = "PART_AdornerLayer";
+
+        /// <summary>
+        /// The camera controller name.
+        /// </summary>
+        private const string PartCameraController = "PART_CameraController";
+
+        /// <summary>
+        /// The coordinate view name.
+        /// </summary>
+        private const string PartCoordinateView = "PART_CoordinateView";
+
+        /// <summary>
+        /// The view cube name.
+        /// </summary>
+        private const string PartViewCube = "PART_ViewCube";
+
+        /// <summary>
+        /// The view cube viewport name.
+        /// </summary>
+        private const string PartViewCubeViewport = "PART_ViewCubeViewport";
+
+        /// <summary>
+        /// The frame rate stopwatch.
         /// </summary>
         private readonly Stopwatch fpsWatch = new Stopwatch();
 
@@ -918,8 +934,8 @@ namespace HelixToolkit.Wpf
 
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
-            CameraHelper.Reset(this.perspectiveCamera);
-            CameraHelper.Reset(this.orthographicCamera);
+            this.perspectiveCamera.Reset();
+            this.orthographicCamera.Reset();
 
             this.Camera = this.Orthographic ? (ProjectionCamera)this.orthographicCamera : this.perspectiveCamera;
 
@@ -950,6 +966,38 @@ namespace HelixToolkit.Wpf
             remove
             {
                 this.RemoveHandler(CameraChangedEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the look at/target point changed.
+        /// </summary>
+        public event RoutedEventHandler LookAtChanged
+        {
+            add
+            {
+                this.AddHandler(LookAtChangedEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(LookAtChangedEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the view is zoomed by rectangle.
+        /// </summary>
+        public event RoutedEventHandler ZoomedByRectangle
+        {
+            add
+            {
+                this.AddHandler(ZoomedByRectangleEvent, value);
+            }
+
+            remove
+            {
+                this.RemoveHandler(ZoomedByRectangleEvent, value);
             }
         }
 
@@ -1105,10 +1153,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the change fov cursor.
+        /// Gets or sets the cursor used when changing field of view.
         /// </summary>
         /// <value>
-        /// The change fov cursor.
+        /// A <see cref="Cursor"/>.
         /// </value>
         public Cursor ChangeFieldOfViewCursor
         {
@@ -1143,10 +1191,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the change lookat view gesture.
+        /// Gets or sets the change look-at view gesture.
         /// </summary>
         /// <value>
-        /// The change lookat gesture.
+        /// The change look-at gesture.
         /// </value>
         public MouseGesture ChangeLookAtGesture
         {
@@ -1540,7 +1588,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether change of fov is enabled.
+        /// Gets or sets a value indicating whether change of field-of-view is enabled.
         /// </summary>
         public bool IsChangeFieldOfViewEnabled
         {
@@ -1584,6 +1632,7 @@ namespace HelixToolkit.Wpf
             {
                 return (bool)this.GetValue(IsInertiaEnabledProperty);
             }
+
             set
             {
                 this.SetValue(IsInertiaEnabledProperty, value);
@@ -1603,6 +1652,22 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(IsPanEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether move (by AWSD keys) is enabled.
+        /// </summary>
+        public bool IsMoveEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsMoveEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsMoveEnabledProperty, value);
             }
         }
 
@@ -1830,7 +1895,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the sensitivity for zoom by the pageup and pagedown keys.
+        /// Gets or sets the sensitivity for zoom by the page up and page down keys.
         /// </summary>
         /// <value>
         /// The zoom sensitivity.
@@ -1966,7 +2031,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to rotate around the mouse down point.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if rotatation around the mouse down point is enabled; otherwise, <c>false</c> .
+        ///     <c>true</c> if rotation around the mouse down point is enabled; otherwise, <c>false</c> .
         /// </value>
         public bool RotateAroundMouseDownPoint
         {
@@ -2825,12 +2890,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void Copy()
         {
-            Viewport3DHelper.Copy(
-                this.Viewport, this.Viewport.ActualWidth * 2, this.Viewport.ActualHeight * 2, Brushes.White, 2);
+            this.Viewport.Copy(this.Viewport.ActualWidth * 2, this.Viewport.ActualHeight * 2, Brushes.White, 2);
         }
 
         /// <summary>
-        /// Copies the view to the clipboard as xaml.
+        /// Copies the view to the clipboard as <c>xaml</c>.
         /// </summary>
         public void CopyXaml()
         {
@@ -2848,69 +2912,58 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void Export(string fileName)
         {
-            Viewport3DHelper.Export(this.Viewport, fileName, this.Background);
+            this.Viewport.Export(fileName, this.Background);
         }
 
         /// <summary>
         /// Finds the nearest object.
         /// </summary>
         /// <param name="pt">
-        /// The pt.
+        /// The 3D position.
         /// </param>
         /// <param name="pos">
-        /// The pos.
+        /// The 2D position.
         /// </param>
         /// <param name="normal">
-        /// The normal.
+        /// The normal at the hit point.
         /// </param>
         /// <param name="obj">
-        /// The obj.
+        /// The object that was hit.
         /// </param>
         /// <returns>
-        /// The find nearest.
+        /// <c>True</c> if an object was hit.
         /// </returns>
         public bool FindNearest(Point pt, out Point3D pos, out Vector3D normal, out DependencyObject obj)
         {
-            return Viewport3DHelper.FindNearest(this.Viewport, pt, out pos, out normal, out obj);
+            return this.Viewport.FindNearest(pt, out pos, out normal, out obj);
         }
 
         /// <summary>
         /// Finds the nearest point.
         /// </summary>
         /// <param name="pt">
-        /// The pt.
+        /// The point.
         /// </param>
         /// <returns>
         /// A point.
         /// </returns>
         public Point3D? FindNearestPoint(Point pt)
         {
-            return Viewport3DHelper.FindNearestPoint(this.Viewport, pt);
+            return this.Viewport.FindNearestPoint(pt);
         }
 
         /// <summary>
-        /// Finds the nearest visual.
+        /// Finds the nearest <see cref="Visual3D" />.
         /// </summary>
         /// <param name="pt">
-        /// The pt.
+        /// The point.
         /// </param>
         /// <returns>
-        /// A visual.
+        /// The nearest <see cref="Visual3D" /> or <c>null</c> if no visual was hit.
         /// </returns>
         public Visual3D FindNearestVisual(Point pt)
         {
-            return Viewport3DHelper.FindNearestVisual(this.Viewport, pt);
-        }
-
-        /// <summary>
-        /// Change the camera to look at the specified point.
-        /// </summary>
-        /// <param name="p">
-        /// The point.
-        /// </param>
-        public void LookAt(Point3D p)
-        {
-            this.LookAt(p, 0);
+            return this.Viewport.FindNearestVisual(pt);
         }
 
         /// <summary>
@@ -2922,9 +2975,9 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void LookAt(Point3D p, double animationTime)
+        public void LookAt(Point3D p, double animationTime = 0)
         {
-            CameraHelper.LookAt(this.Camera, p, animationTime);
+            this.Camera.LookAt(p, animationTime);
         }
 
         /// <summary>
@@ -2941,7 +2994,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void LookAt(Point3D p, double distance, double animationTime)
         {
-            CameraHelper.LookAt(this.Camera, p, distance, animationTime);
+            this.Camera.LookAt(p, distance, animationTime);
         }
 
         /// <summary>
@@ -2958,7 +3011,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void LookAt(Point3D p, Vector3D direction, double animationTime)
         {
-            CameraHelper.LookAt(this.Camera, p, direction, animationTime);
+            this.Camera.LookAt(p, direction, animationTime);
         }
 
         /// <summary>
@@ -3078,11 +3131,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void SetView(Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
         {
-            CameraHelper.AnimateTo(this.Camera, newPosition, newDirection, newUpDirection, animationTime);
+            this.Camera.AnimateTo(newPosition, newDirection, newUpDirection, animationTime);
         }
 
         /// <summary>
-        /// Zooms to the extents of the sceen.
+        /// Zooms to the extents of the screen.
         /// </summary>
         /// <param name="animationTime">
         /// The animation time.
@@ -3106,7 +3159,25 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void ZoomExtents(Rect3D bounds, double animationTime = 0)
         {
-            CameraHelper.ZoomExtents(this.Camera, this.Viewport, bounds, animationTime);
+            this.Camera.ZoomExtents(this.Viewport, bounds, animationTime);
+        }
+
+        /// <summary>
+        /// Raises the LookAtChanged event.
+        /// </summary>
+        protected internal virtual void OnLookAtChanged()
+        {
+            var args = new RoutedEventArgs(LookAtChangedEvent);
+            this.RaiseEvent(args);
+        }
+
+        /// <summary>
+        /// Raises the ZoomedByRectangle event.
+        /// </summary>
+        protected internal virtual void OnZoomedByRectangle()
+        {
+            var args = new RoutedEventArgs(ZoomedByRectangleEvent);
+            this.RaiseEvent(args);
         }
 
         /// <summary>
@@ -3117,13 +3188,13 @@ namespace HelixToolkit.Wpf
             // update the camera of the coordinate system
             if (this.coordinateView != null)
             {
-                CameraHelper.CopyDirectionOnly(this.Camera, this.coordinateView.Camera as PerspectiveCamera, 30);
+                this.Camera.CopyDirectionOnly(this.coordinateView.Camera as PerspectiveCamera, 30);
             }
 
             // update the camera of the view cube
             if (this.viewCubeViewport != null)
             {
-                CameraHelper.CopyDirectionOnly(this.Camera, this.viewCubeViewport.Camera as PerspectiveCamera, 20);
+                this.Camera.CopyDirectionOnly(this.viewCubeViewport.Camera as PerspectiveCamera, 20);
             }
 
             // update the headlight and coordinate system light
@@ -3177,7 +3248,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> property changes.
+        /// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
         /// </summary>
         /// <param name="e">
         /// Information about the change.
@@ -3190,14 +3261,12 @@ namespace HelixToolkit.Wpf
                     this.AddItems(e.NewItems);
                     break;
                 case NotifyCollectionChangedAction.Move:
-
                     // todo
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     this.RemoveItems(e.OldItems);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-
                     // todo
                     break;
                 case NotifyCollectionChangedAction.Reset:
@@ -3207,10 +3276,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource" /> property changes.
+        /// Called when the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property changes.
         /// </summary>
-        /// <param name="oldValue">Old value of the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource" /> property.</param>
-        /// <param name="newValue">New value of the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource" /> property.</param>
+        /// <param name="oldValue">
+        /// Old value of the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property.
+        /// </param>
+        /// <param name="newValue">
+        /// New value of the <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property.
+        /// </param>
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             this.RemoveItems(oldValue);
@@ -3221,7 +3294,7 @@ namespace HelixToolkit.Wpf
         /// Invoked when an unhandled MouseMove attached event reaches an element in its route that is derived from this class.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.
+        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -3237,7 +3310,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    var p = Viewport3DHelper.UnProject(this.Viewport, pt);
+                    var p = this.Viewport.UnProject(pt);
                     if (p != null)
                     {
                         this.CurrentPosition = p.Value;
@@ -3253,69 +3326,6 @@ namespace HelixToolkit.Wpf
         {
             // e.Handled = true;
             var args = new RoutedEventArgs(CameraChangedEvent);
-            this.RaiseEvent(args);
-        }
-
-        /// <summary>
-        /// The look at (target) point changed event
-        /// </summary>
-        public static readonly RoutedEvent LookAtChangedEvent = EventManager.RegisterRoutedEvent(
-            "LookAtChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
-
-        /// <summary>
-        /// Occurs when the look at/target point changed.
-        /// </summary>
-        public event RoutedEventHandler LookAtChanged
-        {
-            add
-            {
-                this.AddHandler(LookAtChangedEvent, value);
-            }
-
-            remove
-            {
-                this.RemoveHandler(LookAtChangedEvent, value);
-            }
-        }
-
-        /// <summary>
-        /// Raises the LookAtChanged event.
-        /// </summary>
-        internal protected virtual void OnLookAtChanged()
-        {
-            var args = new RoutedEventArgs(LookAtChangedEvent);
-            this.RaiseEvent(args);
-
-        }
-
-        /// <summary>
-        /// The zoomed by rectangle event
-        /// </summary>
-        public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
-        "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
-
-        /// <summary>
-        /// Occurs when the view is zoomed by rectangle.
-        /// </summary>
-        public event RoutedEventHandler ZoomedByRectangle
-        {
-            add
-            {
-                this.AddHandler(ZoomedByRectangleEvent, value);
-            }
-
-            remove
-            {
-                this.RemoveHandler(ZoomedByRectangleEvent, value);
-            }
-        }
-
-        /// <summary>
-        /// Raises the ZoomedByRectangle event.
-        /// </summary>
-        internal protected virtual void OnZoomedByRectangle()
-        {
-            var args = new RoutedEventArgs(ZoomedByRectangleEvent);
             this.RaiseEvent(args);
         }
 
@@ -3368,7 +3378,7 @@ namespace HelixToolkit.Wpf
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void ShowCameraInfoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -3382,7 +3392,7 @@ namespace HelixToolkit.Wpf
         /// The d.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void ShowFieldOfViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -3392,7 +3402,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds the specified items.
         /// </summary>
-        /// <param name="newValue">The items to add.</param>
+        /// <param name="newValue">
+        /// The items to add.
+        /// </param>
         private void AddItems(IEnumerable newValue)
         {
             if (newValue != null)
@@ -3433,7 +3445,7 @@ namespace HelixToolkit.Wpf
         /// The source of the event.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.EventArgs" /> instance containing the event data.
+        /// The <see cref="System.EventArgs"/> instance containing the event data.
         /// </param>
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
@@ -3452,7 +3464,7 @@ namespace HelixToolkit.Wpf
             this.infoFrameCounter++;
             if (this.ShowTriangleCountInfo && this.infoFrameCounter > 100)
             {
-                int count = Viewport3DHelper.GetTotalNumberOfTriangles(this.viewport);
+                var count = this.viewport.GetTotalNumberOfTriangles();
                 this.TriangleCountInfo = string.Format("Triangles: {0}", count);
                 this.infoFrameCounter = 0;
             }
@@ -3508,8 +3520,8 @@ namespace HelixToolkit.Wpf
             {
                 if (this.DefaultCamera != null)
                 {
-                    CameraHelper.Copy(this.DefaultCamera, this.perspectiveCamera);
-                    CameraHelper.Copy(this.DefaultCamera, this.orthographicCamera);
+                    this.DefaultCamera.Copy(this.perspectiveCamera);
+                    this.DefaultCamera.Copy(this.orthographicCamera);
                 }
 
                 this.hasBeenLoadedBefore = true;
@@ -3551,7 +3563,7 @@ namespace HelixToolkit.Wpf
                 this.Camera = this.perspectiveCamera;
             }
 
-            CameraHelper.Copy(oldCamera, this.Camera, false);
+            oldCamera.Copy(this.Camera, false);
         }
 
         /// <summary>
@@ -3587,7 +3599,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Removes the specified items.
         /// </summary>
-        /// <param name="oldValue">The items to remove.</param>
+        /// <param name="oldValue">
+        /// The items to remove.
+        /// </param>
         private void RemoveItems(IEnumerable oldValue)
         {
             if (oldValue != null)
@@ -3632,7 +3646,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private void UpdateCameraInfo()
         {
-            this.CameraInfo = CameraHelper.GetInfo(this.Camera);
+            this.CameraInfo = this.Camera.GetInfo();
         }
 
         /// <summary>

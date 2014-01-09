@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     /// <summary>
@@ -43,7 +44,7 @@ namespace HelixToolkit.Wpf
         {
             if (value == null || parameter == null)
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             string checkValue = value.ToString();
@@ -73,7 +74,7 @@ namespace HelixToolkit.Wpf
         {
             if (value == null || parameter == null)
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             try
@@ -91,8 +92,7 @@ namespace HelixToolkit.Wpf
             {
             }
 
-            // Ignore, just return DoNothing.
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
     }
 }
