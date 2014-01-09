@@ -60,6 +60,9 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Adorners\DrawingContextExtensions.cs" />
+    <Compile Include="Controls\Stereo\InterlacedView3D.xaml.cs">
+      <DependentUpon>InterlacedView3D.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExtensionMethods\AnimationExtensions.cs" />
     <Compile Include="Helpers\AttachedProperties.cs" />
     <Compile Include="Controls\CameraController\CameraMode.cs" />
@@ -139,6 +142,7 @@
     <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />
     <Compile Include="MarkupExtensions\PerspectiveCameraExtension.cs" />
     <Compile Include="MarkupExtensions\TranslateExtension.cs" />
+    <Compile Include="ShaderEffects\InterlacedEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
     <Compile Include="Visual3Ds\Text\BillboardTextItem.cs" />
     <Compile Include="Visual3Ds\Text\SpatialTextItem.cs" />
@@ -255,6 +259,7 @@
     <None Include="Class diagrams\Media3D\MaterialDiagram.cd" />
     <None Include="Class diagrams\Media3D\ModelDiagram.cd" />
     <None Include="HelixToolkit.snk" />
+    <Resource Include="ShaderEffects\InterlacedEffect.ps" />
     <None Include="ShaderEffects\AnaglyphEffect.fx" />
     <Resource Include="ShaderEffects\AnaglyphEffect.ps" />
     <None Include="ShaderEffects\compileEffects.cmd" />
@@ -272,6 +277,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Stereo\InterlacedView3D.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Stereo\AnaglyphView3D.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -301,7 +310,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ShaderEffects\InterlacedEffect.fx" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
