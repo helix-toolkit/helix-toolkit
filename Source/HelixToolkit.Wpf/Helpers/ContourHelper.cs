@@ -7,40 +7,79 @@
 namespace HelixToolkit.Wpf
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows;
     using System.Windows.Media.Media3D;
 
     /// <summary>
     /// Contour helper.
     /// </summary>
     /// <remarks>
-    /// http://paulbourke.net/papers/conrec/
+    /// See http://paulbourke.net/papers/conrec/ for further information.
     /// </remarks>
-    public class ContourHelper
+    internal class ContourHelper
     {
+        private static readonly IDictionary<ContourFacetResult, int[,]> ResultIndices
+            = new Dictionary<ContourFacetResult, int[,]>
+        {
+            { ContourFacetResult.ZeroOnly, new[,] { { 0, 1 }, { 0, 2 } } },
+            { ContourFacetResult.OneAndTwo, new[,] { { 0, 2 }, { 0, 1 } } },
+            { ContourFacetResult.OneOnly, new[,] { { 1, 2 }, { 1, 0 } } },
+            { ContourFacetResult.ZeroAndTwo, new[,] { { 1, 0 }, { 1, 2 } } },
+            { ContourFacetResult.TwoOnly, new[,] { { 2, 0 }, { 2, 1 } } },
+            { ContourFacetResult.ZeroAndOne, new[,] { { 2, 1 }, { 2, 0 } } },
+        };
+
+        /// <summary>
+        /// The original mesh.
+        /// </summary>
+        private readonly MeshGeometry3D originalMesh;
+
         /// <summary>
         /// The a.
         /// </summary>
-        private readonly double A;
+        private readonly double a;
 
         /// <summary>
         /// The b.
         /// </summary>
-        private readonly double B;
+        private readonly double b;
 
         /// <summary>
         /// The c.
         /// </summary>
-        private readonly double C;
+        private readonly double c;
 
         /// <summary>
         /// The d.
         /// </summary>
-        private readonly double D;
+        private readonly double d;
 
         /// <summary>
-        /// The side.
+        /// The sides.
         /// </summary>
-        private readonly double[] side = new double[3];
+        private readonly double[] sides = new double[3];
+
+        /// <summary>
+        /// The indices.
+        /// </summary>
+        private readonly int[] indices = new int[3];
+
+        /// <summary>
+        /// The points.
+        /// </summary>
+        private readonly Point3D[] points = new Point3D[3];
+
+        /// <summary>
+        /// The textures.
+        /// </summary>
+        private readonly Point[] textures = new Point[3];
+
+        /// <summary>
+        /// The position count.
+        /// </summary>
+        private int positionCount;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContourHelper"/> class.
@@ -51,115 +90,235 @@ namespace HelixToolkit.Wpf
         /// <param name="planeNormal">
         /// The plane normal.
         /// </param>
-        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal)
+        /// <param name="originalMesh">
+        /// The orginal mesh.
+        /// </param>
+        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh)
         {
+            this.originalMesh = originalMesh;
+            positionCount = originalMesh.Positions.Count;
             // Determine the equation of the plane as
             // Ax + By + Cz + D = 0
-            double l =
-                Math.Sqrt(planeNormal.X * planeNormal.X + planeNormal.Y * planeNormal.Y + planeNormal.Z * planeNormal.Z);
-            this.A = planeNormal.X / l;
-            this.B = planeNormal.Y / l;
-            this.C = planeNormal.Z / l;
-            this.D = -(planeNormal.X * planeOrigin.X + planeNormal.Y * planeOrigin.Y + planeNormal.Z * planeOrigin.Z);
+            var l = Math.Sqrt(planeNormal.X * planeNormal.X + planeNormal.Y * planeNormal.Y + planeNormal.Z * planeNormal.Z);
+            a = planeNormal.X / l;
+            b = planeNormal.Y / l;
+            c = planeNormal.Z / l;
+            d = -(planeNormal.X * planeOrigin.X + planeNormal.Y * planeOrigin.Y + planeNormal.Z * planeOrigin.Z);
         }
 
         /// <summary>
-        /// Create a contour slice through a 3 vertex facet "p"
+        /// The contour facet result.
         /// </summary>
-        /// <param name="p0">
-        /// The facet p0.
-        /// </param>
-        /// <param name="p1">
-        /// The facet p1.
-        /// </param>
-        /// <param name="p2">
-        /// The facet p2.
-        /// </param>
-        /// <param name="s0">
-        /// The first output point.
-        /// </param>
-        /// <param name="s1">
-        /// The second output point.
-        /// </param>
-        /// <returns>
-        /// -1 if the contour plane is above the facet
-        /// -2 if the contour plane is below the facet
-        /// 0 if it does cut the facet, and p0 is above the contour plane
-        /// 10 if it does cut the facet, and p0 is below the contour plane
-        /// -3 for an unexpected occurence
-        /// </returns>
-        public int ContourFacet(Point3D p0, Point3D p1, Point3D p2, out Point3D s0, out Point3D s1)
+        private enum ContourFacetResult
         {
-            // Evaluate the equation of the plane for each vertex
-            // If side < 0 then it is on the side to be retained
-            // else it is to be clipped
-            this.side[0] = this.A * p0.X + this.B * p0.Y + this.C * p0.Z + this.D;
-            this.side[1] = this.A * p1.X + this.B * p1.Y + this.C * p1.Z + this.D;
-            this.side[2] = this.A * p2.X + this.B * p2.Y + this.C * p2.Z + this.D;
+            /// <summary>
+            /// All of the points fall above the contour plane.
+            /// </summary>
+            None,
 
-            // Are all the vertices on the same side?
-            if (this.side[0] >= 0 && this.side[1] >= 0 && this.side[2] >= 0)
-            {
-                s0 = new Point3D();
-                s1 = new Point3D();
-                return -1;
-            }
+            /// <summary>
+            /// Only the 0th point falls below the contour plane.
+            /// </summary>
+            ZeroOnly,
 
-            if (this.side[0] <= 0 && this.side[1] <= 0 && this.side[2] <= 0)
-            {
-                s0 = new Point3D();
-                s1 = new Point3D();
-                return -2;
-            }
+            /// <summary>
+            /// The 1st and 2nd points fall below the contour plane.
+            /// </summary>
+            OneAndTwo,
 
-            // Is p0 the only point on a side by itself
-            if ((this.side[0] * this.side[1] < 0) && (this.side[0] * this.side[2] < 0))
-            {
-                s0 = new Point3D(
-                    p0.X - this.side[0] * (p2.X - p0.X) / (this.side[2] - this.side[0]),
-                    p0.Y - this.side[0] * (p2.Y - p0.Y) / (this.side[2] - this.side[0]),
-                    p0.Z - this.side[0] * (p2.Z - p0.Z) / (this.side[2] - this.side[0]));
-                s1 = new Point3D(
-                    p0.X - this.side[0] * (p1.X - p0.X) / (this.side[1] - this.side[0]),
-                    p0.Y - this.side[0] * (p1.Y - p0.Y) / (this.side[1] - this.side[0]),
-                    p0.Z - this.side[0] * (p1.Z - p0.Z) / (this.side[1] - this.side[0]));
-                return this.side[0] > 0 ? 0 : 10;
-            }
+            /// <summary>
+            /// Only the 1st point falls below the contour plane.
+            /// </summary>
+            OneOnly,
 
-            // Is p1 the only point on a side by itself
-            if ((this.side[1] * this.side[0] < 0) && (this.side[1] * this.side[2] < 0))
-            {
-                s0 = new Point3D(
-                    p1.X - this.side[1] * (p2.X - p1.X) / (this.side[2] - this.side[1]),
-                    p1.Y - this.side[1] * (p2.Y - p1.Y) / (this.side[2] - this.side[1]),
-                    p1.Z - this.side[1] * (p2.Z - p1.Z) / (this.side[2] - this.side[1]));
-                s1 = new Point3D(
-                    p1.X - this.side[1] * (p0.X - p1.X) / (this.side[0] - this.side[1]),
-                    p1.Y - this.side[1] * (p0.Y - p1.Y) / (this.side[0] - this.side[1]),
-                    p1.Z - this.side[1] * (p0.Z - p1.Z) / (this.side[0] - this.side[1]));
-                return this.side[1] > 0 ? 1 : 11;
-            }
+            /// <summary>
+            /// The 0th and 2nd points fall below the contour plane.
+            /// </summary>
+            ZeroAndTwo,
 
-            /* Is p2 the only point on a side by itself */
-            if ((this.side[2] * this.side[0] < 0) && (this.side[2] * this.side[1] < 0))
-            {
-                s0 = new Point3D(
-                    p2.X - this.side[2] * (p0.X - p2.X) / (this.side[0] - this.side[2]),
-                    p2.Y - this.side[2] * (p0.Y - p2.Y) / (this.side[0] - this.side[2]),
-                    p2.Z - this.side[2] * (p0.Z - p2.Z) / (this.side[0] - this.side[2]));
-                s1 = new Point3D(
-                    p2.X - this.side[2] * (p1.X - p2.X) / (this.side[1] - this.side[2]),
-                    p2.Y - this.side[2] * (p1.Y - p2.Y) / (this.side[1] - this.side[2]),
-                    p2.Z - this.side[2] * (p1.Z - p2.Z) / (this.side[1] - this.side[2]));
-                return this.side[2] > 0 ? 2 : 12;
-            }
+            /// <summary>
+            /// Only the second point falls below the contour plane.
+            /// </summary>
+            TwoOnly,
 
-            s0 = new Point3D();
-            s1 = new Point3D();
-            return -10;
+            /// <summary>
+            /// The 0th and 1st points fall below the contour plane.
+            /// </summary>
+            ZeroAndOne,
 
-            // throw new InvalidOperationException("Shouldn't get here.");
+            /// <summary>
+            /// All of the points fall below the contour plane.
+            /// </summary>
+            All
         }
 
+        private bool HasTextureCoordinates
+        {
+            get
+            {
+                return originalMesh.TextureCoordinates != null && originalMesh.TextureCoordinates.Any();
+            }
+        }
+
+        /// <summary>
+        /// Create a contour slice through a 3 vertex facet.
+        /// </summary>
+        /// <param name="index0">
+        /// The 0th point index.
+        /// </param>
+        /// <param name="index1">
+        /// The 1st point index.
+        /// </param>
+        /// <param name="index2">
+        /// The 2nd point index.
+        /// </param>
+        /// <param name="positions">
+        /// Any new positions that are created, when the contour plane slices through the vertex.
+        /// </param>
+        /// <param name="textureCoordinates">
+        /// Any new texture coordinates that are created, when the contour plane slices through the vertex.
+        /// </param>
+        /// <param name="triangleIndices">
+        /// All triangle indices that are created, when 1 or more points fall below the contour plane.
+        /// </param>
+        public void ContourFacet(int index0, int index1, int index2,
+            out List<Point3D> positions, out List<Point> textureCoordinates,
+            out List<int> triangleIndices)
+        {
+            this.SetData(index0, index1, index2);
+
+            positions = new List<Point3D>();
+            textureCoordinates = new List<Point>();
+            triangleIndices = new List<int>();
+
+            var facetResult = this.GetContourFacet();
+            switch (facetResult)
+            {
+                case ContourFacetResult.All:
+                    triangleIndices = new List<int> { index0, index1, index2 };
+                    return;
+                case ContourFacetResult.None:
+                    return;
+                case ContourFacetResult.ZeroOnly:
+                    triangleIndices = new List<int> { index0, positionCount++, positionCount++ };
+                    break;
+                case ContourFacetResult.OneAndTwo:
+                    triangleIndices = new List<int> { index1, index2, positionCount, positionCount++, positionCount++, index1 };
+                    break;
+                case ContourFacetResult.OneOnly:
+                    triangleIndices = new List<int> { index1, positionCount++, positionCount++ };
+                    break;
+                case ContourFacetResult.ZeroAndTwo:
+                    triangleIndices = new List<int> { index2, index0, positionCount, positionCount++, positionCount++, index2 };
+                    break;
+                case ContourFacetResult.TwoOnly:
+                    triangleIndices = new List<int> { index2, positionCount++, positionCount++ };
+                    break;
+                case ContourFacetResult.ZeroAndOne:
+                    triangleIndices = new List<int> { index0, index1, positionCount, positionCount++, positionCount++, index0 };
+                    break;
+            }
+            var facetIndices = ResultIndices[facetResult];
+            positions = new List<Point3D>
+            {
+                CreateNewPosition(facetIndices[0,0], facetIndices[0, 1]),
+                CreateNewPosition(facetIndices[1,0], facetIndices[1, 1])
+            };
+            if (HasTextureCoordinates)
+            {
+                textureCoordinates = new List<Point>
+                {
+                    CreateNewTexture(facetIndices[0, 0], facetIndices[0, 1]),
+                    CreateNewTexture(facetIndices[1, 0], facetIndices[1, 1])
+                };
+            }
+        }
+
+        private ContourFacetResult GetContourFacet()
+        {
+            if (IsSideAlone(0))
+            {
+                return sides[0] > 0 ? ContourFacetResult.ZeroOnly : ContourFacetResult.OneAndTwo;
+            }
+            if (IsSideAlone(1))
+            {
+                return sides[1] > 0 ? ContourFacetResult.OneOnly : ContourFacetResult.ZeroAndTwo;
+            }
+            if (IsSideAlone(2))
+            {
+                return sides[2] > 0 ? ContourFacetResult.TwoOnly : ContourFacetResult.ZeroAndOne;
+            }
+            if (AllSidesBelowContour())
+            {
+                return ContourFacetResult.All;
+            }
+            return ContourFacetResult.None;
+        }
+
+        private void SetData(int index0, int index1, int index2)
+        {
+            indices[0] = index0;
+            indices[1] = index1;
+            indices[2] = index2;
+
+            points[0] = originalMesh.Positions[index0];
+            points[1] = originalMesh.Positions[index1];
+            points[2] = originalMesh.Positions[index2];
+
+            if (originalMesh.TextureCoordinates != null && originalMesh.TextureCoordinates.Any())
+            {
+                textures[0] = originalMesh.TextureCoordinates[index0];
+                textures[1] = originalMesh.TextureCoordinates[index1];
+                textures[2] = originalMesh.TextureCoordinates[index2];
+            }
+
+            sides[0] = a * points[0].X + b * points[0].Y + c * points[0].Z + d;
+            sides[1] = a * points[1].X + b * points[1].Y + c * points[1].Z + d;
+            sides[2] = a * points[2].X + b * points[2].Y + c * points[2].Z + d;
+        }
+
+        private Point3D CreateNewPosition(int index0, int index1)
+        {
+            var firstPoint = points[index0];
+            var secondPoint = points[index1];
+            var firstSide = sides[index0];
+            var secondSide = sides[index1];
+            return new Point3D(
+                firstPoint.X - (firstSide * (secondPoint.X - firstPoint.X) / (secondSide - firstSide)),
+                firstPoint.Y - (firstSide * (secondPoint.Y - firstPoint.Y) / (secondSide - firstSide)),
+                firstPoint.Z - (firstSide * (secondPoint.Z - firstPoint.Z) / (secondSide - firstSide)));
+        }
+
+        private Point CreateNewTexture(int index0, int index1)
+        {
+            if (originalMesh.TextureCoordinates == null)
+            {
+                return new Point(0, 0);
+            }
+            var firstTexture = textures[index0];
+            var secondTexture = textures[index1];
+            var firstSide = sides[index0];
+            var secondSide = sides[index1];
+            return new Point(
+                firstTexture.X - (firstSide * (secondTexture.X - firstTexture.X) / (secondSide - firstSide)),
+                firstTexture.Y - (firstSide * (secondTexture.Y - firstTexture.Y) / (secondSide - firstSide)));
+        }
+
+        private bool IsSideAlone(int index)
+        {
+            Func<int, int> getNext = i => i + 1 > 2 ? 0 : i + 1;
+
+            var firstSideIndex = getNext(index);
+            var secondSideIndex = getNext(firstSideIndex);
+            return sides[index] * sides[firstSideIndex] < 0
+                && sides[index] * sides[secondSideIndex] < 0;
+        }
+
+        private bool AllSidesBelowContour()
+        {
+            return sides[0] >= 0
+                && sides[1] >= 0
+                && sides[2] >= 0;
+        }
     }
 }
