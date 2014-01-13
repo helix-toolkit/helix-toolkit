@@ -10,7 +10,9 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
+    using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
@@ -400,97 +402,49 @@ namespace HelixToolkit.Wpf
         /// <param name="mesh">
         /// The mesh.
         /// </param>
-        /// <param name="p">
+        /// <param name="plane">
         /// The plane origin.
         /// </param>
-        /// <param name="n">
+        /// <param name="normal">
         /// The plane normal.
         /// </param>
         /// <returns>
         /// The <see cref="MeshGeometry3D"/>.
         /// </returns>
-        public static MeshGeometry3D Cut(MeshGeometry3D mesh, Point3D p, Vector3D n)
+        public static MeshGeometry3D Cut(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
-            var ch = new ContourHelper(p, n);
-            var mb = new MeshBuilder(false, false);
+            var contourHelper = new ContourHelper(plane, normal, mesh);
+            var includeTextures = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Any();
+            var meshBuilder = new MeshBuilder(false, includeTextures);
             foreach (var pos in mesh.Positions)
             {
-                mb.Positions.Add(pos);
+                meshBuilder.Positions.Add(pos);
             }
-
-            int j = mb.Positions.Count;
-            for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
+            if (includeTextures)
             {
-                int i0 = mesh.TriangleIndices[i];
-                int i1 = mesh.TriangleIndices[i + 1];
-                int i2 = mesh.TriangleIndices[i + 2];
-                var p0 = mesh.Positions[i0];
-                var p1 = mesh.Positions[i1];
-                var p2 = mesh.Positions[i2];
-                Point3D s0, s1;
-                int r = ch.ContourFacet(p0, p1, p2, out s0, out s1);
-                switch (r)
+                foreach (var textureCoordinate in mesh.TextureCoordinates)
                 {
-                    case -1:
-                        mb.TriangleIndices.Add(i0);
-                        mb.TriangleIndices.Add(i1);
-                        mb.TriangleIndices.Add(i2);
-                        break;
-                    case 0:
-                        mb.Positions.Add(s1);
-                        mb.Positions.Add(s0);
-                        mb.TriangleIndices.Add(i0);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(j++);
-                        break;
-                    case 1:
-                        mb.Positions.Add(s0);
-                        mb.Positions.Add(s1);
-                        mb.TriangleIndices.Add(i1);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(j++);
-                        break;
-                    case 2:
-                        mb.Positions.Add(s0);
-                        mb.Positions.Add(s1);
-                        mb.TriangleIndices.Add(i2);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(j++);
-                        break;
-                    case 10:
-                        mb.Positions.Add(s0);
-                        mb.Positions.Add(s1);
-                        mb.TriangleIndices.Add(i1);
-                        mb.TriangleIndices.Add(i2);
-                        mb.TriangleIndices.Add(j);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(i1);
-                        break;
-                    case 11:
-                        mb.Positions.Add(s1);
-                        mb.Positions.Add(s0);
-                        mb.TriangleIndices.Add(i2);
-                        mb.TriangleIndices.Add(i0);
-                        mb.TriangleIndices.Add(j);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(i2);
-                        break;
-                    case 12:
-                        mb.Positions.Add(s1);
-                        mb.Positions.Add(s0);
-                        mb.TriangleIndices.Add(i0);
-                        mb.TriangleIndices.Add(i1);
-                        mb.TriangleIndices.Add(j);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(j++);
-                        mb.TriangleIndices.Add(i0);
-                        break;
+                    meshBuilder.TextureCoordinates.Add(textureCoordinate);
                 }
             }
 
-            return mb.ToMesh();
+            for (var i = 0; i < mesh.TriangleIndices.Count; i += 3)
+            {
+                var index0 = mesh.TriangleIndices[i];
+                var index1 = mesh.TriangleIndices[i + 1];
+                var index2 = mesh.TriangleIndices[i + 2];
+
+                List<Point3D> positions;
+                List<Point> textureCoordinates;
+                List<int> triangleIndices;
+
+                contourHelper.ContourFacet(index0, index1, index2, out positions, out textureCoordinates, out triangleIndices);
+
+                positions.ForEach(meshBuilder.Positions.Add);
+                textureCoordinates.ForEach(meshBuilder.TextureCoordinates.Add);
+                triangleIndices.ForEach(meshBuilder.TriangleIndices.Add);
+            }
+            return meshBuilder.ToMesh();
         }
 
         /// <summary>
@@ -499,33 +453,29 @@ namespace HelixToolkit.Wpf
         /// <param name="mesh">
         /// The mesh.
         /// </param>
-        /// <param name="p">
+        /// <param name="plane">
         /// The plane origin.
         /// </param>
-        /// <param name="n">
+        /// <param name="normal">
         /// The plane normal.
         /// </param>
         /// <returns>
         /// The segments of the contour.
         /// </returns>
-        public static IList<Point3D> GetContourSegments(MeshGeometry3D mesh, Point3D p, Vector3D n)
+        public static IList<Point3D> GetContourSegments(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
             var segments = new List<Point3D>();
-            var ch = new ContourHelper(p, n);
+            var contourHelper = new ContourHelper(plane, normal, mesh);
             for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
-                var p0 = mesh.Positions[mesh.TriangleIndices[i]];
-                var p1 = mesh.Positions[mesh.TriangleIndices[i + 1]];
-                var p2 = mesh.Positions[mesh.TriangleIndices[i + 2]];
-                Point3D s0, s1;
-                int r = ch.ContourFacet(p0, p1, p2, out s0, out s1);
-                if (r >= 0)
-                {
-                    segments.Add(s0);
-                    segments.Add(s1);
-                }
-            }
+                List<Point3D> positions;
+                List<Point> textureCoordinates;
+                List<int> triangleIndices;
 
+                contourHelper.ContourFacet(mesh.TriangleIndices[i], mesh.TriangleIndices[i + 1], mesh.TriangleIndices[i + 2],
+                    out positions, out textureCoordinates, out triangleIndices);
+                segments.AddRange(positions);
+            }
             return segments;
         }
 
