@@ -478,7 +478,7 @@ namespace HelixToolkit.Wpf
             }
             return segments;
         }
-
+        
         /// <summary>
         /// Combines the segments.
         /// </summary>
