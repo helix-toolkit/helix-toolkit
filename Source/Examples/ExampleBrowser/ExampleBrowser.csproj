@@ -146,6 +146,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\EarthCuttingPlanes\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\SurfacePlotCuttingPlanes\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Examples\ViewMatrix\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -346,6 +354,12 @@
     <Compile Include="Examples\Contour\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\EarthCuttingPlanes\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\SurfacePlotCuttingPlanes\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ViewMatrix\MainViewModel.cs" />
     <Compile Include="Examples\ViewMatrix\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -525,6 +539,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\EarthCuttingPlanesDemo_small.png" />
+    <Resource Include="Images\SurfacePlotCuttingPlanesDemo_small.png" />
     <Resource Include="Images\ViewMatrixDemo_small.png" />
     <Resource Include="Images\MeshVisualsDemo_small.png" />
     <Resource Include="Images\BackgroundUpdateDemo_small.png" />
