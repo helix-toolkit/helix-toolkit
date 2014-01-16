@@ -4,8 +4,11 @@
       <Value>3ds</Value>
       <Value>Lightwave</Value>
       <Value>lwo</Value>
+      <Value>nd</Value>
       <Value>obj</Value>
+      <Value>st</Value>
       <Value>stl</Value>
+      <Value>th</Value>
       <Value>Wavefront</Value>
     </CollectionProperty>
   </GlobalSettings>

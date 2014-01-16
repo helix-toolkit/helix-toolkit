@@ -86,22 +86,6 @@ namespace HelixToolkit.Wpf
             return normals;
         }
 
-        // public static void ChamferVertex(MeshGeometry3D mesh, int index)
-        // {
-        // throw new NotImplementedException();
-        // }
-
-        // public static void ChamferEdge(MeshGeometry3D mesh, int index0, int index1)
-        // {
-        // throw new NotImplementedException();
-
-        // }
-
-        // public static void Split(MeshGeometry3D mesh, Plane3D plane, out MeshGeometry3D above, out MeshGeometry3D below)
-        // {
-        // throw new NotImplementedException();
-        // }
-
         /// <summary>
         /// Finds edges that are only connected to one triangle.
         /// </summary>
@@ -203,15 +187,18 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static Int32Collection FindSharpEdges(MeshGeometry3D mesh, double minimumAngle)
         {
-            var coll = new Int32Collection();
-            var dict = new Dictionary<ulong, Vector3D>();
+            var edgeIndices = new Int32Collection();
+
+            // the keys of the dictionary are created from the triangle indices of the edge
+            var edgeNormals = new Dictionary<ulong, Vector3D>();
+
             for (int i = 0; i < mesh.TriangleIndices.Count / 3; i++)
             {
                 int i0 = i * 3;
-                Point3D p0 = mesh.Positions[mesh.TriangleIndices[i0]];
-                Point3D p1 = mesh.Positions[mesh.TriangleIndices[i0 + 1]];
-                Point3D p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
-                Vector3D n = Vector3D.CrossProduct(p1 - p0, p2 - p0);
+                var p0 = mesh.Positions[mesh.TriangleIndices[i0]];
+                var p1 = mesh.Positions[mesh.TriangleIndices[i0 + 1]];
+                var p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
+                var n = Vector3D.CrossProduct(p1 - p0, p2 - p0);
                 n.Normalize();
                 for (int j = 0; j < 3; j++)
                 {
@@ -220,25 +207,26 @@ namespace HelixToolkit.Wpf
                     int minIndex = Math.Min(index0, index1);
                     int maxIndex = Math.Max(index0, index1);
                     ulong key = CreateKey((uint)minIndex, (uint)maxIndex);
-                    if (dict.ContainsKey(key))
+                    Vector3D value;
+                    if (edgeNormals.TryGetValue(key, out value))
                     {
-                        Vector3D n2 = dict[key];
+                        var n2 = value;
                         n2.Normalize();
                         double angle = 180 / Math.PI * Math.Acos(Vector3D.DotProduct(n, n2));
                         if (angle > minimumAngle)
                         {
-                            coll.Add(minIndex);
-                            coll.Add(maxIndex);
+                            edgeIndices.Add(minIndex);
+                            edgeIndices.Add(maxIndex);
                         }
                     }
                     else
                     {
-                        dict.Add(key, n);
+                        edgeNormals.Add(key, n);
                     }
                 }
             }
 
-            return coll;
+            return edgeIndices;
         }
 
         /// <summary>
@@ -416,10 +404,11 @@ namespace HelixToolkit.Wpf
             var contourHelper = new ContourHelper(plane, normal, mesh);
             var includeTextures = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Any();
             var meshBuilder = new MeshBuilder(false, includeTextures);
-            foreach (var pos in mesh.Positions)
+            foreach (var position in mesh.Positions)
             {
-                meshBuilder.Positions.Add(pos);
+                meshBuilder.Positions.Add(position);
             }
+
             if (includeTextures)
             {
                 foreach (var textureCoordinate in mesh.TextureCoordinates)
@@ -444,6 +433,7 @@ namespace HelixToolkit.Wpf
                 textureCoordinates.ForEach(meshBuilder.TextureCoordinates.Add);
                 triangleIndices.ForEach(meshBuilder.TriangleIndices.Add);
             }
+
             return meshBuilder.ToMesh();
         }
 
@@ -472,13 +462,19 @@ namespace HelixToolkit.Wpf
                 List<Point> textureCoordinates;
                 List<int> triangleIndices;
 
-                contourHelper.ContourFacet(mesh.TriangleIndices[i], mesh.TriangleIndices[i + 1], mesh.TriangleIndices[i + 2],
-                    out positions, out textureCoordinates, out triangleIndices);
+                contourHelper.ContourFacet(
+                    mesh.TriangleIndices[i],
+                    mesh.TriangleIndices[i + 1],
+                    mesh.TriangleIndices[i + 2],
+                    out positions,
+                    out textureCoordinates,
+                    out triangleIndices);
                 segments.AddRange(positions);
             }
+
             return segments;
         }
-        
+
         /// <summary>
         /// Combines the segments.
         /// </summary>
