@@ -1,0 +1,59 @@
+﻿<Window x:Class="MaterialDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="MaterialDemo" Height="480" Width="640">
+    <TabControl>
+        <TabItem Header="Specular intensity">
+            <helix:HelixViewport3D>
+                <helix:DefaultLights/>
+                <helix:SphereVisual3D Center="-6,0,0" Radius="1" Material="{helix:Material Black, SpecularIntensity=0.4}"/>
+                <helix:SphereVisual3D Center="-3,0,0" Radius="1" Material="{helix:Material Black, SpecularIntensity=0.6}"/>
+                <helix:SphereVisual3D Center="0,0,0" Radius="1" Material="{helix:Material Black, SpecularIntensity=0.8}"/>
+                <helix:SphereVisual3D Center="3,0,0" Radius="1" Material="{helix:Material Black, SpecularIntensity=0.9}"/>
+                <helix:SphereVisual3D Center="6,0,0" Radius="1" Material="{helix:Material Black, SpecularIntensity=1.00}"/>
+                <helix:TextVisual3D Position="-6,0,1.5" Height="0.2" Text="0.4"/>
+                <helix:TextVisual3D Position="-3,0,1.5" Height="0.2" Text="0.6"/>
+                <helix:TextVisual3D Position="0,0,1.5" Height="0.2" Text="0.8"/>
+                <helix:TextVisual3D Position="3,0,1.5" Height="0.2" Text="0.9"/>
+                <helix:TextVisual3D Position="6,0,1.5" Height="0.2" Text="1.0"/>
+            </helix:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Specular power">
+            <helix:HelixViewport3D>
+                <helix:DefaultLights/>
+                <helix:SphereVisual3D Center="-6,0,0" Radius="1" Material="{helix:Material Black, SpecularPower=25}"/>
+                <helix:SphereVisual3D Center="-3,0,0" Radius="1" Material="{helix:Material Black, SpecularPower=50}"/>
+                <helix:SphereVisual3D Center="0,0,0" Radius="1" Material="{helix:Material Black, SpecularPower=100}"/>
+                <helix:SphereVisual3D Center="3,0,0" Radius="1" Material="{helix:Material Black, SpecularPower=150}"/>
+                <helix:SphereVisual3D Center="6,0,0" Radius="1" Material="{helix:Material Black, SpecularPower=200}"/>
+                <helix:TextVisual3D Position="-6,0,1.5" Height="0.2" Text="25"/>
+                <helix:TextVisual3D Position="-3,0,1.5" Height="0.2" Text="50"/>
+                <helix:TextVisual3D Position="0,0,1.5" Height="0.2" Text="100"/>
+                <helix:TextVisual3D Position="3,0,1.5" Height="0.2" Text="150"/>
+                <helix:TextVisual3D Position="6,0,1.5" Height="0.2" Text="200"/>
+            </helix:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Opacity">
+            <helix:HelixViewport3D>
+                <helix:DefaultLights/>
+                <helix:SphereVisual3D Center="-6,0,0" Radius="1" Material="{helix:Material Black}"/>
+                <helix:SphereVisual3D Center="-3,0,0" Radius="1" Material="{helix:Material Black}"/>
+                <helix:SphereVisual3D Center="0,0,0" Radius="1" Material="{helix:Material Black}"/>
+                <helix:SphereVisual3D Center="3,0,0" Radius="1" Material="{helix:Material Black}"/>
+                <helix:SphereVisual3D Center="6,0,0" Radius="1" Material="{helix:Material Black}"/>
+
+                <helix:CubeVisual3D Center="-6,0,0" SideLength="2.5" Material="{helix:Material Red, Opacity=0.05}"/>
+                <helix:CubeVisual3D Center="-3,0,0" SideLength="2.5" Material="{helix:Material Red, Opacity=0.25}"/>
+                <helix:CubeVisual3D Center="0,0,0" SideLength="2.5" Material="{helix:Material Red, Opacity=0.5}"/>
+                <helix:CubeVisual3D Center="3,0,0" SideLength="2.5" Material="{helix:Material Red, Opacity=0.75}"/>
+                <helix:CubeVisual3D Center="6,0,0" SideLength="2.5" Material="{helix:Material Red, Opacity=0.95}"/>
+
+                <helix:TextVisual3D Position="-6,0,1.5" Height="0.2" Text="0.05"/>
+                <helix:TextVisual3D Position="-3,0,1.5" Height="0.2" Text="0.25"/>
+                <helix:TextVisual3D Position="0,0,1.5" Height="0.2" Text="0.50"/>
+                <helix:TextVisual3D Position="3,0,1.5" Height="0.2" Text="0.75"/>
+                <helix:TextVisual3D Position="6,0,1.5" Height="0.2" Text="0.95"/>
+            </helix:HelixViewport3D>
+        </TabItem>
+    </TabControl>
+</Window>

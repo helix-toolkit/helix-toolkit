@@ -1,0 +1,15 @@
+﻿u *= pi;
+v *= pi;
+
+double c1 = Math.Sqrt(2);
+double c2 = sin(u);
+double c3 = cos(u);
+double c4 = sin(v);
+double c5 = cos(v);
+double c6 = sin(2*u);
+double c7 = sin(2*v);
+double c8 = (2.0 / 3) * c3 / (c1 - c6 * sin(3 * v));
+
+x = c8 * (c3 * cos(2*v) + c1 * c2 * c5);
+y = c8 * (c3 * c7 - c1 * c2 * c4);
+z = c1 * c3 *c3 / (c1 - c6 * c7);

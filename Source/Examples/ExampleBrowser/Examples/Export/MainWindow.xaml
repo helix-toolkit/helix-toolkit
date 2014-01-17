@@ -1,0 +1,101 @@
+﻿<Window x:Class="ExportDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        xmlns:local="clr-namespace:ExportDemo" Title="ExportDemo" Height="480" Width="640">
+    <Window.Resources>
+        <SolidColorBrush x:Key="b1" Color="#800000a0"/>
+        <SolidColorBrush x:Key="b2" Color="IndianRed"/>
+        <SolidColorBrush x:Key="b2g" Color="Gold"/>
+        
+        <!-- This drawingBrush seems to hurt the performance... -->
+        <DrawingBrush x:Key="b3" Viewport="0,0,0.25,0.25" ViewportUnits="Absolute" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="White">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,1,1" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+
+                    <GeometryDrawing Brush="Black">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,0.50,0.50" />
+                                <RectangleGeometry Rect="0.50,0.50,0.50,0.50" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        <DiffuseMaterial x:Key="m1" Brush="{StaticResource b1}"/>
+        <DiffuseMaterial x:Key="m2" Brush="Gold"/>
+        <DiffuseMaterial x:Key="m3" Brush="{StaticResource b3}"/>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Export..." Click="Export_Click"/>
+                <MenuItem Header="Open in Octane..." Click="OpenOctane_Click"/>
+                <MenuItem Header="Render in Kerkythea..." Click="OpenKerkythea_Click"/>
+                <Separator/>
+                <MenuItem Header="Print..." Click="Print_Click"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Zoom extents" Click="ZoomExtents_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <ht:HelixViewport3D x:Name="view1" Background="Black" MouseDown="view1_MouseDown">
+                <ht:DefaultLights/>
+                <ht:CoordinateSystemVisual3D/>
+
+                <!-- testing drawing texture export -->
+                <ht:RectangleVisual3D Origin="0,0,-1"  Width="20" Length="20" Fill="{StaticResource b3}"/>
+                <ht:RectangleVisual3D Origin="0,-10,9" Normal="0,1,0" Width="20" Length="20" Fill="{StaticResource b3}"/>
+
+                <!-- testing image texture export -->
+                <ht:SphereVisual3D Center="1.5,0,1.2" Material="{ht:ImageMaterial 'pack://application:,,,/Examples/Export/Textures/earth.jpg'}" ThetaDiv="180" PhiDiv="90" />
+
+                <!-- solid colors -->
+                <ht:TruncatedConeVisual3D Origin="-1.5,0,0.2" BaseRadius="1" TopRadius="0" Height="3" Fill="{StaticResource b2}"/>
+                <ht:SphereVisual3D Center="-1.5,0,3.2" Radius="0.7" Fill="{StaticResource b2g}"/>
+
+                <!-- The stick figure is for testing transforms -->
+                <ModelVisual3D>
+                    <ModelVisual3D.Transform>
+                        <Transform3DGroup>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D Axis="0,0,1" Angle="25"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <TranslateTransform3D OffsetX="1" OffsetZ="0.5"/>
+                        </Transform3DGroup>
+                    </ModelVisual3D.Transform>
+                    <local:StickFigure>
+                        <local:StickFigure.Transform>
+                            <Transform3DGroup>
+                                <ScaleTransform3D ScaleX="1.5" ScaleY="1.5" ScaleZ="1.5"/>
+                                <RotateTransform3D>
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D Axis="0,0,1" Angle="45"/>
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                                <TranslateTransform3D OffsetX="5" OffsetZ="2"/>
+                            </Transform3DGroup>
+                        </local:StickFigure.Transform>
+                    </local:StickFigure>
+                </ModelVisual3D>
+                
+                <!-- A partly transparent plane
+                     An external kerkythea material is assigned to the m1 material (see code-behind) -->
+                <ht:RectangleVisual3D Width="20" Length="20"  Material="{StaticResource m1}" BackMaterial="{StaticResource m1}"/>
+            </ht:HelixViewport3D>
+        </Grid>
+    </DockPanel>
+
+</Window>
