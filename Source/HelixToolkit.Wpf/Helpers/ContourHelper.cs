@@ -8,7 +8,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Media.Media3D;
 
@@ -81,6 +80,8 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private int positionCount;
 
+        private readonly bool hasTextureCoordinates;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ContourHelper"/> class.
         /// </summary>
@@ -93,9 +94,10 @@ namespace HelixToolkit.Wpf
         /// <param name="originalMesh">
         /// The orginal mesh.
         /// </param>
-        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh)
+        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh, bool hasTextureCoordinates = false)
         {
             this.originalMesh = originalMesh;
+            this.hasTextureCoordinates = hasTextureCoordinates;
             positionCount = originalMesh.Positions.Count;
             // Determine the equation of the plane as
             // Ax + By + Cz + D = 0
@@ -152,14 +154,6 @@ namespace HelixToolkit.Wpf
             All
         }
 
-        private bool HasTextureCoordinates
-        {
-            get
-            {
-                return originalMesh.TextureCoordinates != null && originalMesh.TextureCoordinates.Any();
-            }
-        }
-
         /// <summary>
         /// Create a contour slice through a 3 vertex facet.
         /// </summary>
@@ -182,55 +176,61 @@ namespace HelixToolkit.Wpf
         /// All triangle indices that are created, when 1 or more points fall below the contour plane.
         /// </param>
         public void ContourFacet(int index0, int index1, int index2,
-            out List<Point3D> positions, out List<Point> textureCoordinates,
-            out List<int> triangleIndices)
+            out Point3D[] positions, out Point[] textureCoordinates,
+            out int[] triangleIndices)
         {
             this.SetData(index0, index1, index2);
-
-            positions = new List<Point3D>();
-            textureCoordinates = new List<Point>();
-            triangleIndices = new List<int>();
 
             var facetResult = this.GetContourFacet();
             switch (facetResult)
             {
-                case ContourFacetResult.All:
-                    triangleIndices = new List<int> { index0, index1, index2 };
-                    return;
-                case ContourFacetResult.None:
-                    return;
                 case ContourFacetResult.ZeroOnly:
-                    triangleIndices = new List<int> { index0, positionCount++, positionCount++ };
+                    triangleIndices = new [] { index0, positionCount++, positionCount++ };
                     break;
                 case ContourFacetResult.OneAndTwo:
-                    triangleIndices = new List<int> { index1, index2, positionCount, positionCount++, positionCount++, index1 };
+                    triangleIndices = new[] { index1, index2, positionCount, positionCount++, positionCount++, index1 };
                     break;
                 case ContourFacetResult.OneOnly:
-                    triangleIndices = new List<int> { index1, positionCount++, positionCount++ };
+                    triangleIndices = new [] { index1, positionCount++, positionCount++ };
                     break;
                 case ContourFacetResult.ZeroAndTwo:
-                    triangleIndices = new List<int> { index2, index0, positionCount, positionCount++, positionCount++, index2 };
+                    triangleIndices = new[] { index2, index0, positionCount, positionCount++, positionCount++, index2 };
                     break;
                 case ContourFacetResult.TwoOnly:
-                    triangleIndices = new List<int> { index2, positionCount++, positionCount++ };
+                    triangleIndices = new [] { index2, positionCount++, positionCount++ };
                     break;
                 case ContourFacetResult.ZeroAndOne:
-                    triangleIndices = new List<int> { index0, index1, positionCount, positionCount++, positionCount++, index0 };
+                    triangleIndices = new [] { index0, index1, positionCount, positionCount++, positionCount++, index0 };
                     break;
+                case ContourFacetResult.All:
+                    positions = new Point3D[0];
+                    textureCoordinates = new Point[0];
+                    triangleIndices = new[] { index0, index1, index2 };
+                    return;
+                case ContourFacetResult.None:
+                default:
+                    positions = new Point3D[0];
+                    textureCoordinates = new Point[0];
+                    triangleIndices = new int[0];
+                    return;
             }
             var facetIndices = ResultIndices[facetResult];
-            positions = new List<Point3D>
+            positions = new []
             {
                 CreateNewPosition(facetIndices[0,0], facetIndices[0, 1]),
                 CreateNewPosition(facetIndices[1,0], facetIndices[1, 1])
             };
-            if (HasTextureCoordinates)
+            if (hasTextureCoordinates)
             {
-                textureCoordinates = new List<Point>
+                textureCoordinates = new []
                 {
                     CreateNewTexture(facetIndices[0, 0], facetIndices[0, 1]),
                     CreateNewTexture(facetIndices[1, 0], facetIndices[1, 1])
                 };
+            }
+            else
+            {
+                textureCoordinates = new Point[0];
             }
         }
 
@@ -265,7 +265,7 @@ namespace HelixToolkit.Wpf
             points[1] = originalMesh.Positions[index1];
             points[2] = originalMesh.Positions[index2];
 
-            if (originalMesh.TextureCoordinates != null && originalMesh.TextureCoordinates.Any())
+            if (hasTextureCoordinates)
             {
                 textures[0] = originalMesh.TextureCoordinates[index0];
                 textures[1] = originalMesh.TextureCoordinates[index1];
@@ -284,24 +284,25 @@ namespace HelixToolkit.Wpf
             var firstSide = sides[index0];
             var secondSide = sides[index1];
             return new Point3D(
-                firstPoint.X - (firstSide * (secondPoint.X - firstPoint.X) / (secondSide - firstSide)),
-                firstPoint.Y - (firstSide * (secondPoint.Y - firstPoint.Y) / (secondSide - firstSide)),
-                firstPoint.Z - (firstSide * (secondPoint.Z - firstPoint.Z) / (secondSide - firstSide)));
+                CalculatePoint(firstPoint.X, secondPoint.X, firstSide, secondSide),
+                CalculatePoint(firstPoint.Y, secondPoint.Y, firstSide, secondSide),
+                CalculatePoint(firstPoint.Z, secondPoint.Z, firstSide, secondSide));
         }
 
         private Point CreateNewTexture(int index0, int index1)
         {
-            if (originalMesh.TextureCoordinates == null)
-            {
-                return new Point(0, 0);
-            }
             var firstTexture = textures[index0];
             var secondTexture = textures[index1];
             var firstSide = sides[index0];
             var secondSide = sides[index1];
             return new Point(
-                firstTexture.X - (firstSide * (secondTexture.X - firstTexture.X) / (secondSide - firstSide)),
-                firstTexture.Y - (firstSide * (secondTexture.Y - firstTexture.Y) / (secondSide - firstSide)));
+                CalculatePoint(firstTexture.X, secondTexture.X, firstSide, secondSide),
+                CalculatePoint(firstTexture.Y, secondTexture.Y, firstSide, secondSide));
+        }
+
+        private static double CalculatePoint(double firstPoint, double secondPoint, double firstSide, double secondSide)
+        {
+            return firstPoint - (firstSide * (secondPoint - firstPoint) / (secondSide - firstSide));
         }
 
         private bool IsSideAlone(int index)

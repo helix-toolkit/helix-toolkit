@@ -6,6 +6,7 @@
 //   Provides helper methods for mesh geometries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -413,14 +414,14 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static MeshGeometry3D Cut(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
-            var contourHelper = new ContourHelper(plane, normal, mesh);
-            var includeTextures = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Any();
-            var meshBuilder = new MeshBuilder(false, includeTextures);
+            var hasTextureCoordinates = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0;
+            var meshBuilder = new MeshBuilder(false, hasTextureCoordinates);
+            var contourHelper = new ContourHelper(plane, normal, mesh, hasTextureCoordinates);
             foreach (var pos in mesh.Positions)
             {
                 meshBuilder.Positions.Add(pos);
             }
-            if (includeTextures)
+            if (hasTextureCoordinates)
             {
                 foreach (var textureCoordinate in mesh.TextureCoordinates)
                 {
@@ -434,15 +435,24 @@ namespace HelixToolkit.Wpf
                 var index1 = mesh.TriangleIndices[i + 1];
                 var index2 = mesh.TriangleIndices[i + 2];
 
-                List<Point3D> positions;
-                List<Point> textureCoordinates;
-                List<int> triangleIndices;
+                Point3D[] positions;
+                Point[] textureCoordinates;
+                int[] triangleIndices;
 
                 contourHelper.ContourFacet(index0, index1, index2, out positions, out textureCoordinates, out triangleIndices);
 
-                positions.ForEach(meshBuilder.Positions.Add);
-                textureCoordinates.ForEach(meshBuilder.TextureCoordinates.Add);
-                triangleIndices.ForEach(meshBuilder.TriangleIndices.Add);
+                for (var index = 0; index < positions.Length; index++)
+                {
+                    meshBuilder.Positions.Add(positions[index]);
+                }
+                for (var index = 0; index < textureCoordinates.Length; index++)
+                {
+                    meshBuilder.TextureCoordinates.Add(textureCoordinates[index]);
+                }
+                for (var index = 0; index < triangleIndices.Length; index++)
+                {
+                    meshBuilder.TriangleIndices.Add(triangleIndices[index]);
+                }
             }
             return meshBuilder.ToMesh();
         }
@@ -468,9 +478,9 @@ namespace HelixToolkit.Wpf
             var contourHelper = new ContourHelper(plane, normal, mesh);
             for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
-                List<Point3D> positions;
-                List<Point> textureCoordinates;
-                List<int> triangleIndices;
+                Point3D[] positions;
+                Point[] textureCoordinates;
+                int[] triangleIndices;
 
                 contourHelper.ContourFacet(mesh.TriangleIndices[i], mesh.TriangleIndices[i + 1], mesh.TriangleIndices[i + 2],
                     out positions, out textureCoordinates, out triangleIndices);
@@ -478,7 +488,7 @@ namespace HelixToolkit.Wpf
             }
             return segments;
         }
-        
+
         /// <summary>
         /// Combines the segments.
         /// </summary>
