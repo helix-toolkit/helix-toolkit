@@ -16,9 +16,6 @@ Defined under "Parameters" in the TeamCity project.
 
 Environment variables:
 NUGET_ACCESS_KEY = ####
-OXYPLOT_FTP_SERVER = ftp.oxyplot.org
-OXYPLOT_FTP_USER = ####
-OXYPLOT_FTP_PWD = ####
 EnableNuGetPackageRestore = true
 
 HelixToolkit :: Build Configuration
