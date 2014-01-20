@@ -1,0 +1,110 @@
+Helix Toolkit build system
+===========================================
+
+Running in a VirtualBox virtual machine on Windows 8.1.
+
+=== Installed software
+
+- TeamCity 8.0.5
+- Visual Studio 2013
+- Mercurial
+- 7-Zip in default folder
+
+=== Build parameters
+
+Defined under "Parameters" in the TeamCity project.
+
+Environment variables:
+NUGET_ACCESS_KEY = ####
+OXYPLOT_FTP_SERVER = ftp.oxyplot.org
+OXYPLOT_FTP_USER = ####
+OXYPLOT_FTP_PWD = ####
+EnableNuGetPackageRestore = true
+
+HelixToolkit :: Build Configuration
+-------------------------------------------
+
+Build number format: 
+2014.1.{build.counter}.1
+
+Artifact paths:
+build/**/*.* => Build.zip
+output/**/*.zip => Output.zip
+packages/**/*.* => Packages.zip
+tools/**/*.* => Tools.zip
+
+VCS
+Pull changes from:
+https://hg.codeplex.com/helixtoolkit 
+Clean all files before build
+
+Build steps
+
+Update version number
+Tools\Lynx
+VersionUpdater.exe
+/Version=%build.number% /Directory=..\..
+
+Create changeset ID file
+mkdir Output
+echo %build.vcs.number%> Output\changeset.id
+
+Build .NET 4.0 solution
+Source\HelixToolkit_NET40.sln
+
+Build .NET 4.5 solution
+Source\HelixToolkit.sln
+
+Run unit tests
+NUnit runner: 
+NUnit 2.6.3
+.NET Runtime: 
+Version v4.0
+Run tests from:
+Source\HelixToolkit.Wpf.Tests\bin\Release\*.Tests.dll
+.NET Coverage tool: JetBrains dotCover
+Filters:
++:HelixToolkit*
+-:*.Tests*
+
+Pack NuGet
+build
+pack.cmd
+
+Delete pdb files
+Output\NET45\Examples
+del /S *.pdb
+
+Create release
+Build
+ZipRelease.cmd %build.number%
+
+Build triggers: 
+VCS Trigger
+
+HelixToolkit :: Upload Configuration
+-------------------------------------------
+
+Build number format:
+%dep.HelixToolkit_Build.build.number%
+
+Build steps
+
+Push NuGet
+build
+push.cmd
+
+Upload release
+Build
+UploadRelease.cmd %build.number%
+
+Build triggers
+Finish build trigger: HelixToolkit :: Build
+
+Dependencies
+Artifact dependency
+Build.zip!** => Build
+Output.zip!** => Output
+Packages.zip!** => Packages
+Tools.zip!** => Tools
+Clean destination paths before downloading artifacts
