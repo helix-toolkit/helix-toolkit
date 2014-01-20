@@ -65,21 +65,6 @@ namespace HelixToolkit.Wpf
         private readonly int[] indices = new int[3];
 
         /// <summary>
-        /// The points.
-        /// </summary>
-        private readonly Point3D[] points = new Point3D[3];
-
-        /// <summary>
-        /// The textures.
-        /// </summary>
-        private readonly Point[] textures = new Point[3];
-
-        /// <summary>
-        /// The position count.
-        /// </summary>
-        private int positionCount;
-
-        /// <summary>
         /// Indicates whether the mesh uses texture coordinates.
         /// </summary>
         private readonly bool hasTextureCoordinates;
@@ -93,6 +78,21 @@ namespace HelixToolkit.Wpf
         /// The original mesh texture coordinates.
         /// </summary>
         private readonly Point[] meshTextureCoordinates;
+
+        /// <summary>
+        /// The points.
+        /// </summary>
+        private readonly Point3D[] points = new Point3D[3];
+
+        /// <summary>
+        /// The textures.
+        /// </summary>
+        private readonly Point[] textures = new Point[3];
+
+        /// <summary>
+        /// The position count.
+        /// </summary>
+        private int positionCount;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContourHelper"/> class.
@@ -193,8 +193,13 @@ namespace HelixToolkit.Wpf
         /// <param name="triangleIndices">
         /// All triangle indices that are created, when 1 or more points fall below the contour plane.
         /// </param>
-        public void ContourFacet(int index0, int index1, int index2,
-            out Point3D[] positions, out Point[] textureCoordinates, out int[] triangleIndices)
+        public void ContourFacet(
+            int index0,
+            int index1,
+            int index2,
+            out Point3D[] positions,
+            out Point[] textureCoordinates,
+            out int[] triangleIndices)
         {
             this.SetData(index0, index1, index2);
 
@@ -202,29 +207,28 @@ namespace HelixToolkit.Wpf
             switch (facetResult)
             {
                 case ContourFacetResult.ZeroOnly:
-                    triangleIndices = new[] { index0, positionCount++, positionCount++ };
+                    triangleIndices = new[] { index0, this.positionCount++, this.positionCount++ };
                     break;
                 case ContourFacetResult.OneAndTwo:
-                    triangleIndices = new[] { index1, index2, positionCount, positionCount++, positionCount++, index1 };
+                    triangleIndices = new[] { index1, index2, this.positionCount, this.positionCount++, this.positionCount++, index1 };
                     break;
                 case ContourFacetResult.OneOnly:
-                    triangleIndices = new[] { index1, positionCount++, positionCount++ };
+                    triangleIndices = new[] { index1, this.positionCount++, this.positionCount++ };
                     break;
                 case ContourFacetResult.ZeroAndTwo:
-                    triangleIndices = new[] { index2, index0, positionCount, positionCount++, positionCount++, index2 };
+                    triangleIndices = new[] { index2, index0, this.positionCount, this.positionCount++, this.positionCount++, index2 };
                     break;
                 case ContourFacetResult.TwoOnly:
-                    triangleIndices = new[] { index2, positionCount++, positionCount++ };
+                    triangleIndices = new[] { index2, this.positionCount++, this.positionCount++ };
                     break;
                 case ContourFacetResult.ZeroAndOne:
-                    triangleIndices = new[] { index0, index1, positionCount, positionCount++, positionCount++, index0 };
+                    triangleIndices = new[] { index0, index1, this.positionCount, this.positionCount++, this.positionCount++, index0 };
                     break;
                 case ContourFacetResult.All:
                     positions = new Point3D[0];
                     textureCoordinates = new Point[0];
                     triangleIndices = new[] { index0, index1, index2 };
                     return;
-                case ContourFacetResult.None:
                 default:
                     positions = new Point3D[0];
                     textureCoordinates = new Point[0];
@@ -250,6 +254,27 @@ namespace HelixToolkit.Wpf
             {
                 textureCoordinates = new Point[0];
             }
+        }
+
+        /// <summary>
+        /// Calculates a new point coordinate.
+        /// </summary>
+        /// <param name="firstPoint">
+        /// The first point coordinate.
+        /// </param>
+        /// <param name="secondPoint">
+        /// The second point coordinate.
+        /// </param>
+        /// <param name="firstSide">
+        /// The first side.
+        /// </param>
+        /// <param name="secondSide">
+        /// The second side.
+        /// </param>
+        /// <returns>The new coordinate.</returns>
+        private static double CalculatePoint(double firstPoint, double secondPoint, double firstSide, double secondSide)
+        {
+            return firstPoint - (firstSide * (secondPoint - firstPoint) / (secondSide - firstSide));
         }
 
         /// <summary>
@@ -343,27 +368,6 @@ namespace HelixToolkit.Wpf
             return new Point(
                 CalculatePoint(firstTexture.X, secondTexture.X, firstSide, secondSide),
                 CalculatePoint(firstTexture.Y, secondTexture.Y, firstSide, secondSide));
-        }
-
-        /// <summary>
-        /// Calculates a new point coordinate.
-        /// </summary>
-        /// <param name="firstPoint">
-        /// The first point coordinate.
-        /// </param>
-        /// <param name="secondPoint">
-        /// The second point coordinate.
-        /// </param>
-        /// <param name="firstSide">
-        /// The first side.
-        /// </param>
-        /// <param name="secondSide">
-        /// The second side.
-        /// </param>
-        /// <returns></returns>
-        private static double CalculatePoint(double firstPoint, double secondPoint, double firstSide, double secondSide)
-        {
-            return firstPoint - (firstSide * (secondPoint - firstPoint) / (secondSide - firstSide));
         }
 
         /// <summary>
