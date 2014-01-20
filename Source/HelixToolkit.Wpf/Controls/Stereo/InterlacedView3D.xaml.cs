@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(0.0, HorizontalOffsetChanged));
 
         /// <summary>
-        /// Identifies the <see cref="Method"/> dependency property.
+        /// Identifies the <see cref="EvenLeft"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EvenLeftProperty = DependencyProperty.Register(
             "EvenLeft", typeof(bool), typeof(InterlacedView3D), new UIPropertyMetadata(true));
@@ -67,6 +67,9 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Updates the <see cref="EvenLeft"/> property based on the vertical position of the control.
+        /// </summary>
         public void UpdateEvenLeft()
         {
             if (this.IsLoaded)
