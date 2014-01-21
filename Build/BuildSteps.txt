@@ -15,24 +15,28 @@ Running in a VirtualBox virtual machine on Windows 8.1.
 Defined under "Parameters" in the TeamCity project.
 
 Environment variables:
-NUGET_ACCESS_KEY = ####
+CODEPLEX_USERNAME = ####
+CODEPLEX_PASSWORD = ####
 EnableNuGetPackageRestore = true
+NUGET_ACCESS_KEY = ####
+YEAR = 2014
 
 HelixToolkit :: Build Configuration
 -------------------------------------------
 
 Build number format: 
-2014.1.{build.counter}.1
+%env.YEAR%.1.%build.counter%.1
 
 Artifact paths:
-build/**/*.* => Build.zip
-output/**/*.zip => Output.zip
-packages/**/*.* => Packages.zip
-tools/**/*.* => Tools.zip
+build/**/*.* => Output.zip!/build/
+output/**/*.zip => Output.zip!/output/
+packages/**/*.* => Output.zip!/packages/
+tools/**/*.* => Output.zip!/tools/
 
 VCS
 Pull changes from:
 https://hg.codeplex.com/helixtoolkit 
+Automatically on agent
 Clean all files before build
 
 Build steps
@@ -44,7 +48,8 @@ VersionUpdater.exe
 
 Create changeset ID file
 mkdir Output
-echo %build.vcs.number%> Output\changeset.id
+echo %build.vcs.number% > Output\changeset.id
+hg log > Output\changesets.log
 
 Build .NET 4.0 solution
 Source\HelixToolkit_NET40.sln
@@ -100,8 +105,5 @@ Finish build trigger: HelixToolkit :: Build
 
 Dependencies
 Artifact dependency
-Build.zip!** => Build
-Output.zip!** => Output
-Packages.zip!** => Packages
-Tools.zip!** => Tools
+Output.zip!** => .
 Clean destination paths before downloading artifacts
