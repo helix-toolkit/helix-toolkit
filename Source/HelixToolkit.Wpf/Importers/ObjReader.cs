@@ -118,6 +118,11 @@ namespace HelixToolkit.Wpf
         public Dictionary<string, MaterialDefinition> Materials { get; private set; }
 
         /// <summary>
+        /// Gets or sets the current material.
+        /// </summary>
+        private Material CurrentMaterial { get; set; }
+
+        /// <summary>
         /// Gets the current group.
         /// </summary>
         private Group CurrentGroup
@@ -385,7 +390,7 @@ namespace HelixToolkit.Wpf
         /// <param name="name">The name.</param>
         private void AddGroup(string name)
         {
-            this.Groups.Add(new Group(name));
+            this.Groups.Add(new Group(name, this.CurrentMaterial ?? this.DefaultMaterial));
             this.smoothingGroupMaps.Clear();
         }
 
@@ -396,7 +401,7 @@ namespace HelixToolkit.Wpf
         {
             if (this.CurrentGroup.MeshBuilder.TriangleIndices.Count != 0)
             {
-                this.CurrentGroup.AddMesh();
+                this.CurrentGroup.AddMesh(this.CurrentMaterial ?? this.DefaultMaterial);
                 this.smoothingGroupMaps.Clear();
             }
         }
@@ -835,7 +840,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void SetMaterial(string materialName)
         {
-            this.CurrentGroup.Material = this.GetMaterial(materialName);
+            this.CurrentGroup.Material = this.CurrentMaterial = this.GetMaterial(materialName);
         }
 
         /// <summary>
@@ -859,12 +864,13 @@ namespace HelixToolkit.Wpf
             /// <param name="name">
             /// The name of the group.
             /// </param>
-            public Group(string name)
+            /// <param name="material">The material of the group.</param>
+            public Group(string name, Material material)
             {
                 this.Name = name;
                 this.meshBuilders = new List<MeshBuilder>();
                 this.materials = new List<Material>();
-                this.AddMesh();
+                this.AddMesh(material);
             }
 
             /// <summary>
@@ -900,11 +906,12 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// Adds a mesh.
             /// </summary>
-            public void AddMesh()
+            /// <param name="material">The material of the group.</param>
+            public void AddMesh(Material material)
             {
                 var meshBuilder = new MeshBuilder(true, true);
                 this.meshBuilders.Add(meshBuilder);
-                this.materials.Add(Wpf.Materials.Green);
+                this.materials.Add(material);
             }
 
             /// <summary>
