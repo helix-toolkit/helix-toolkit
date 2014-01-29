@@ -408,13 +408,6 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
-        /// Initializes static members of the <see cref="CameraController" /> class. Initializes static members of the
-        ///     <see
-        ///         cref="CameraController" />
-        /// class. Initializes static members of the <see cref="CameraController" /> class. Initializes static members of the
-        ///     <see
-        ///         cref="CameraController" />
-        /// class.
         /// </summary>
         static CameraController()
         {

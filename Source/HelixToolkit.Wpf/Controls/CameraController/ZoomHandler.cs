@@ -74,6 +74,10 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Changes the camera position by the specified vector.
+        /// </summary>
+        /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
         public void MoveCameraPosition(Vector3D delta)
         {
             var z = this.CameraLookDirection;
@@ -88,7 +92,7 @@ namespace HelixToolkit.Wpf
             {
                 case CameraMode.Inspect:
                 case CameraMode.WalkAround:
-                    this.CameraPosition += x * delta.X + y * delta.Y + z * delta.Z;
+                    this.CameraPosition += (x * delta.X) + (y * delta.Y) + (z * delta.Z);
                     break;
             }
         }
@@ -128,34 +132,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Changes the camera distance.
-        /// </summary>
-        /// <param name="delta">The delta.</param>
-        /// <param name="zoomAround">The zoom around point.</param>
-        private void ChangeCameraDistance(double delta, Point3D zoomAround)
-        {
-            // Handle the 'zoomAround' point
-            var target = this.CameraPosition + this.CameraLookDirection;
-            var relativeTarget = zoomAround - target;
-            var relativePosition = zoomAround - this.CameraPosition;
-
-            var f = Math.Pow(2.5, delta);
-            var newRelativePosition = relativePosition * f;
-            var newRelativeTarget = relativeTarget * f;
-
-            var newTarget = zoomAround - newRelativeTarget;
-            var newPosition = zoomAround - newRelativePosition;
-            var newLookDirection = newTarget - newPosition;
-
-            this.CameraLookDirection = newLookDirection;
-            this.CameraPosition = newPosition;
-        }
-
-        /// <summary>
         /// Changes the field of view and tries to keep the scale fixed.
         /// </summary>
         /// <param name="delta">
-        /// The relative change in fov.
+        /// The relative change in field of view (degrees).
         /// </param>
         public void ZoomByChangingFieldOfView(double delta)
         {
@@ -313,5 +293,28 @@ namespace HelixToolkit.Wpf
             return this.Controller.ZoomCursor;
         }
 
+        /// <summary>
+        /// Changes the camera distance.
+        /// </summary>
+        /// <param name="delta">The delta.</param>
+        /// <param name="zoomAround">The zoom around point.</param>
+        private void ChangeCameraDistance(double delta, Point3D zoomAround)
+        {
+            // Handle the 'zoomAround' point
+            var target = this.CameraPosition + this.CameraLookDirection;
+            var relativeTarget = zoomAround - target;
+            var relativePosition = zoomAround - this.CameraPosition;
+
+            var f = Math.Pow(2.5, delta);
+            var newRelativePosition = relativePosition * f;
+            var newRelativeTarget = relativeTarget * f;
+
+            var newTarget = zoomAround - newRelativeTarget;
+            var newPosition = zoomAround - newRelativePosition;
+            var newLookDirection = newTarget - newPosition;
+
+            this.CameraLookDirection = newLookDirection;
+            this.CameraPosition = newPosition;
+        }
     }
 }
