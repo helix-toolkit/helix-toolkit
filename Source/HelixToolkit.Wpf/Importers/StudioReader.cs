@@ -732,6 +732,12 @@ namespace HelixToolkit.Wpf
                                 positions[i] = Transform(matrix, positions[i]);
                             }*/
 
+            if (faces == null)
+            {
+                // face list not specified?
+                return;
+            }
+
             if (faceSets == null || faceSets.Count == 0)
             {
                 // add mesh without material defined (e.g. the example Suzanne 3ds model)
