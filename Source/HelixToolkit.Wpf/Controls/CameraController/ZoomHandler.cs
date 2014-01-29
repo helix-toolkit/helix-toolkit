@@ -139,8 +139,9 @@ namespace HelixToolkit.Wpf
             var relativeTarget = zoomAround - target;
             var relativePosition = zoomAround - this.CameraPosition;
 
-            var newRelativePosition = relativePosition * (1 + delta);
-            var newRelativeTarget = relativeTarget * (1 + delta);
+            var f = Math.Pow(2.5, delta);
+            var newRelativePosition = relativePosition * f;
+            var newRelativeTarget = relativeTarget * f;
 
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
