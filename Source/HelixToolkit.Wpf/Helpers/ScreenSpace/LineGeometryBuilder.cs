@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineGeometryBuilder.cs" company="Helix 3D Toolkit">
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
@@ -114,7 +114,7 @@ namespace HelixToolkit.Wpf
 
                 double lx = s1.X / s1.W - s0.X / s0.W;
                 double ly = s1.Y / s1.W - s0.Y / s0.W;
-                double m = halfThickness / Math.Sqrt(lx * lx + ly * ly);
+                double m = halfThickness / Math.Sqrt(lx * lx + ly * ly );
 
                 double dx = -ly * m;
                 double dy = lx * m;
@@ -123,15 +123,27 @@ namespace HelixToolkit.Wpf
                 var p01 = s0;
                 var p10 = s1;
                 var p11 = s1;
+                if (lx == 0 && ly == 0)
+                {
+                    double lz = s1.Z / s1.W - s0.Z / s0.W;
+                    double dz = lz * halfThickness / Math.Sqrt(lz * lz);
+                    p00.Y += dz * p00.W;
+                    p01.Y -= dz * p01.W;
+                    p10.Y += dz * p10.W;
+                    p11.Y -= dz * p11.W;
 
-                p00.X += dx * p00.W;
-                p00.Y += dy * p00.W;
-                p01.X -= dx * p01.W;
-                p01.Y -= dy * p01.W;
-                p10.X += dx * p10.W;
-                p10.Y += dy * p10.W;
-                p11.X -= dx * p11.W;
-                p11.Y -= dy * p11.W;
+                }
+                else
+                {
+                    p00.X += dx * p00.W;
+                    p00.Y += dy * p00.W;
+                    p01.X -= dx * p01.W;
+                    p01.Y -= dy * p01.W;
+                    p10.X += dx * p10.W;
+                    p10.Y += dy * p10.W;
+                    p11.X -= dx * p11.W;
+                    p11.Y -= dy * p11.W;
+                }
                 if (depthOffset != 0)
                 {
                     p00.Z -= depthOffset;
