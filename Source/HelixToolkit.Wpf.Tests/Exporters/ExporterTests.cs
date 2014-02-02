@@ -19,9 +19,8 @@ namespace HelixToolkit.Wpf.Tests
     {
         protected void ExportSimpleModel(Exporter e)
         {
-            var runner = new CrossThreadTestRunner();
-            runner.RunInSTA(
-                delegate
+            CrossThreadTestRunner.RunInSTA(
+                () =>
                 {
                     Console.WriteLine(Thread.CurrentThread.GetApartmentState());
 
