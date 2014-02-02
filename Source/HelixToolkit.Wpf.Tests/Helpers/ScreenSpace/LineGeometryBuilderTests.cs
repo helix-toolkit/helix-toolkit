@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.Tests
             }
         }
 
-        [Test, Ignore]
+        [Test]
         public void CreatePositions_CoincidingPoints_ShouldNotReturnNaN()
         {
             Point3DCollection result = null;

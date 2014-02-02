@@ -42,13 +42,14 @@ namespace HelixToolkit.Wpf
 
             for (int i = 0; i < n / 2; i++)
             {
-                indices.Add(i * 4 + 2);
-                indices.Add(i * 4 + 1);
-                indices.Add(i * 4 + 0);
+                var i4 = i * 4;
+                indices.Add(i4 + 2);
+                indices.Add(i4 + 1);
+                indices.Add(i4 + 0);
 
-                indices.Add(i * 4 + 2);
-                indices.Add(i * 4 + 3);
-                indices.Add(i * 4 + 1);
+                indices.Add(i4 + 2);
+                indices.Add(i4 + 3);
+                indices.Add(i4 + 1);
             }
 
             indices.Freeze();
@@ -79,8 +80,8 @@ namespace HelixToolkit.Wpf
             double depthOffset = 0.0,
             CohenSutherlandClipping clipping = null)
         {
-            double halfThickness = thickness * 0.5;
-            int segmentCount = points.Count / 2;
+            var halfThickness = thickness * 0.5;
+            var segmentCount = points.Count / 2;
 
             var positions = new Point3DCollection(segmentCount * 4);
 
@@ -88,18 +89,20 @@ namespace HelixToolkit.Wpf
             {
                 int startIndex = i * 2;
 
-                Point3D startPoint = points[startIndex];
-                Point3D endPoint = points[startIndex + 1];
+                var startPoint = points[startIndex];
+                var endPoint = points[startIndex + 1];
 
+                // Transform the start and end points to screen space
                 var s0 = (Point4D)startPoint * this.visualToScreen;
                 var s1 = (Point4D)endPoint * this.visualToScreen;
 
                 if (clipping != null)
                 {
-                    double x0 = s0.X / s0.W;
-                    double y0 = s0.Y / s0.W;
-                    double x1 = s1.X / s1.W;
-                    double y1 = s1.Y / s1.W;
+                    // Apply a clipping rectangle
+                    var x0 = s0.X / s0.W;
+                    var y0 = s0.Y / s0.W;
+                    var x1 = s1.X / s1.W;
+                    var y1 = s1.Y / s1.W;
 
                     if (!clipping.ClipLine(ref x0, ref y0, ref x1, ref y1))
                     {
@@ -112,45 +115,63 @@ namespace HelixToolkit.Wpf
                     s1.Y = y1 * s1.W;
                 }
 
-                double lx = s1.X / s1.W - s0.X / s0.W;
-                double ly = s1.Y / s1.W - s0.Y / s0.W;
-                double m = halfThickness / Math.Sqrt(lx * lx + ly * ly );
-
-                double dx = -ly * m;
-                double dy = lx * m;
+                var lx = (s1.X / s1.W) - (s0.X / s0.W);
+                var ly = (s1.Y / s1.W) - (s0.Y / s0.W);
+                var l2 = (lx * lx) + (ly * ly);
 
                 var p00 = s0;
                 var p01 = s0;
                 var p10 = s1;
                 var p11 = s1;
-                if (lx == 0 && ly == 0)
-                {
-                    double lz = s1.Z / s1.W - s0.Z / s0.W;
-                    double dz = lz * halfThickness / Math.Sqrt(lz * lz);
-                    p00.Y += dz * p00.W;
-                    p01.Y -= dz * p01.W;
-                    p10.Y += dz * p10.W;
-                    p11.Y -= dz * p11.W;
 
+                if (l2.Equals(0))
+                {
+                    // coinciding points (in world space or screen space)
+                    var dz = halfThickness;
+
+                    // TODO: make a square with the thickness as side length
+                    p00.X -= dz * p00.W;
+                    p00.Y -= dz * p00.W;
+                    
+                    p01.X -= dz * p01.W;
+                    p01.Y += dz * p01.W;
+                    
+                    p10.X += dz * p10.W;
+                    p10.Y -= dz * p10.W;
+                    
+                    p11.X += dz * p11.W;                    
+                    p11.Y += dz * p11.W;
                 }
                 else
                 {
+                    var m = halfThickness / Math.Sqrt(l2);
+
+                    // the normal (dx,dy)
+                    var dx = -ly * m;
+                    var dy = lx * m;
+                    
+                    // segment start points
                     p00.X += dx * p00.W;
                     p00.Y += dy * p00.W;
                     p01.X -= dx * p01.W;
                     p01.Y -= dy * p01.W;
+
+                    // segment end points
                     p10.X += dx * p10.W;
                     p10.Y += dy * p10.W;
                     p11.X -= dx * p11.W;
                     p11.Y -= dy * p11.W;
                 }
-                if (depthOffset != 0)
+
+                if (!depthOffset.Equals(0))
                 {
+                    // Adjust the z-coordinate by the depth offset
                     p00.Z -= depthOffset;
                     p01.Z -= depthOffset;
                     p10.Z -= depthOffset;
                     p11.Z -= depthOffset;
 
+                    // Transform from screen space to world space
                     p00 *= this.screenToVisual;
                     p01 *= this.screenToVisual;
                     p10 *= this.screenToVisual;
@@ -163,6 +184,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
+                    // Transform from screen space to world space
                     p00 *= this.screenToVisual;
                     p01 *= this.screenToVisual;
                     p10 *= this.screenToVisual;
@@ -178,6 +200,5 @@ namespace HelixToolkit.Wpf
             positions.Freeze();
             return positions;
         }
-
     }
 }
