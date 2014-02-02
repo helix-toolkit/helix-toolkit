@@ -2,14 +2,18 @@
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
       <Value>3ds</Value>
+      <Value>jpeg</Value>
+      <Value>jpg</Value>
       <Value>Lightwave</Value>
       <Value>lwo</Value>
       <Value>nd</Value>
       <Value>obj</Value>
+      <Value>png</Value>
       <Value>st</Value>
       <Value>stl</Value>
       <Value>th</Value>
       <Value>Wavefront</Value>
+      <Value>YZ</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>
