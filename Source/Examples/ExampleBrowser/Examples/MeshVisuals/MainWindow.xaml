@@ -8,22 +8,27 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ToolBar>
-            <CheckBox Name="ArrowVisible" Content="Arrow" IsChecked="True"/>
-            <CheckBox Name="BoxVisible" Content="Box" IsChecked="True"/>
-            <CheckBox Name="CubeVisible" Content="Cube" IsChecked="True"/>
-            <CheckBox Name="EllipsoidVisible" Content="Ellipsoid" IsChecked="True"/>
-            <CheckBox Name="ExtrudedVisible" Content="Extruded" IsChecked="True"/>
-            <CheckBox Name="HelixVisible" Content="Helix" IsChecked="True"/>
-            <CheckBox Name="PieSliceVisible" Content="PieSlice" IsChecked="True"/>
-            <CheckBox Name="PipeVisible" Content="Pipe" IsChecked="True"/>
-            <CheckBox Name="QuadVisible" Content="Quad" IsChecked="True"/>
-            <CheckBox Name="RectangleVisible" Content="Rectangle" IsChecked="True"/>
-            <CheckBox Name="SphereVisible" Content="Sphere" IsChecked="True"/>
-            <CheckBox Name="TruncatedConeVisible" Content="TruncatedCone" IsChecked="True"/>
-            <CheckBox Name="TubeVisible" Content="Tube" IsChecked="True"/>
-            <CheckBox Name="GridLinesVisible" Content="GridLines" IsChecked="True"/>
-        </ToolBar>
+        <ToolBarPanel>
+            <ToolBar>
+                <CheckBox Name="ArrowVisible" Content="Arrow" IsChecked="True"/>
+                <CheckBox Name="BoxVisible" Content="Box" IsChecked="True"/>
+                <CheckBox Name="CubeVisible" Content="Cube" IsChecked="True"/>
+                <CheckBox Name="EllipsoidVisible" Content="Ellipsoid" IsChecked="True"/>
+                <CheckBox Name="ExtrudedVisible" Content="Extruded" IsChecked="True"/>
+                <CheckBox Name="HelixVisible" Content="Helix" IsChecked="True"/>
+                <CheckBox Name="PieSliceVisible" Content="PieSlice" IsChecked="True"/>
+                <CheckBox Name="PipeVisible" Content="Pipe" IsChecked="True"/>
+                <CheckBox Name="QuadVisible" Content="Quad" IsChecked="True"/>
+                <CheckBox Name="RectangleVisible" Content="Rectangle" IsChecked="True"/>
+                <CheckBox Name="SphereVisible" Content="Sphere" IsChecked="True"/>
+                <CheckBox Name="TruncatedConeVisible" Content="TruncatedCone" IsChecked="True"/>
+                <CheckBox Name="TubeVisible" Content="Tube" IsChecked="True"/>
+                <CheckBox Name="GridLinesVisible" Content="GridLines" IsChecked="True"/>
+            </ToolBar>
+            <ToolBar>
+                <CheckBox Name="MeshVisible" Content="MeshGeometry" IsChecked="True"/>
+            </ToolBar>
+        </ToolBarPanel>
         <helix:HelixViewport3D Grid.Row="1">
             <helix:DefaultLights/>
 
@@ -42,6 +47,7 @@
             <helix:SphereVisual3D Center="-5 0 0" Fill="Gold" Radius="0.45" Visible="{Binding IsChecked, ElementName=SphereVisible}"/>
             <helix:TruncatedConeVisual3D Origin="-6 0 -0.45" Height="0.9" BaseRadius="0.45" TopRadius="0.05" Fill="IndianRed" Visible="{Binding IsChecked, ElementName=TruncatedConeVisible}"/>
             <helix:TubeVisual3D Path="-7 0 -0.45 -7 0.1 0 -7 0 0.45" Diameter="0.1" Fill="HotPink" Visible="{Binding IsChecked, ElementName=TubeVisible}"/>
+            <helix:MeshGeometryVisual3D Transform="{helix:Translate 6,0,-0.5}" MeshGeometry="{Binding GlassGeometry}" Fill="White" Visible="{Binding IsChecked, ElementName=MeshVisible}"/>
         </helix:HelixViewport3D>
     </Grid>
 </Window>

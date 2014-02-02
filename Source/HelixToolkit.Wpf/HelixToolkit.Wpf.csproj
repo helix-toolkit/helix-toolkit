@@ -143,6 +143,7 @@
     <Compile Include="MarkupExtensions\TranslateExtension.cs" />
     <Compile Include="ShaderEffects\InterlacedEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\MeshGeometryVisual3D.cs" />
     <Compile Include="Visual3Ds\Text\BillboardTextItem.cs" />
     <Compile Include="Visual3Ds\Text\SpatialTextItem.cs" />
     <Compile Include="Visual3Ds\Text\TextGroupVisual3D.cs" />
