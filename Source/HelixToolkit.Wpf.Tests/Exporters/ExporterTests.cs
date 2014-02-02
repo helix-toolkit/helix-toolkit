@@ -10,6 +10,7 @@ namespace HelixToolkit.Wpf.Tests
     using System.IO;
     using System.Threading;
     using System.Windows.Controls;
+    using System.Windows.Media.Media3D;
     using System.Xml;
     using System.Xml.Schema;
 
@@ -30,6 +31,20 @@ namespace HelixToolkit.Wpf.Tests
                     box.UpdateModel();
                     vp.Children.Add(box);
 
+                    e.Export(vp);
+                });
+        }
+
+        protected void ExportModel(Exporter e, Func<Visual3D> visual)
+        {
+            CrossThreadTestRunner.RunInSTA(
+                () =>
+                {
+                    Console.WriteLine(Thread.CurrentThread.GetApartmentState());
+
+                    var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
+                    vp.Children.Add(new DefaultLights());
+                    vp.Children.Add(visual());
                     e.Export(vp);
                 });
         }

@@ -105,6 +105,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         public ObjExporter(string outputFileName, string comment)
         {
+            this.TextureExtension = ".png";
+            this.TextureSize = 1024;
+            this.TextureQualityLevel = 90;
+
             this.SwitchYZ = true;
             this.ExportNormals = false;
 
@@ -129,6 +133,31 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public bool SwitchYZ { get; set; }
 
+        /// <summary>
+        /// Gets or sets the texture extension (.png or .jpg).
+        /// </summary>
+        /// <value>
+        /// The default value is ".png".
+        /// </value>
+        public string TextureExtension { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture size.
+        /// </summary>
+        /// <value>
+        /// The default value is 1024.
+        /// </value>
+        public int TextureSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture quality level (for JPEG encoding).
+        /// </summary>
+        /// <value>
+        /// The quality level of the JPEG image. The value range is 1 (lowest quality) to 100 (highest quality) inclusive. 
+        /// The default value is 90.
+        /// </value>
+        public int TextureQualityLevel { get; set; }
+        
         /// <summary>
         /// Closes this exporter.
         /// </summary>
@@ -338,11 +367,11 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    var textureFilename = matName + ".png";
+                    var textureFilename = matName + this.TextureExtension;
                     var texturePath = Path.Combine(this.directory, textureFilename);
 
                     // create .png bitmap file for the brush
-                    RenderBrush(texturePath, dm.Brush, 1024, 1024);
+                    Exporter.RenderBrush(texturePath, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
                     this.mwriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
                 }
             }
@@ -418,6 +447,5 @@ namespace HelixToolkit.Wpf
             return string.Format(
                 CultureInfo.InvariantCulture, "{0:F4} {1:F4} {2:F4}", color.R / 255.0, color.G / 255.0, color.B / 255.0);
         }
-
     }
 }

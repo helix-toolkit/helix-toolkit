@@ -25,21 +25,25 @@ namespace HelixToolkit.Wpf
         private bool disposed;
 
         /// <summary>
-        /// Renders the brush.
+        /// Renders the brush to an image.
         /// </summary>
         /// <param name="path">
-        /// The path.
+        /// The output path. If the path extension is .png, a PNG image is generated, otherwise a JPEG image.
         /// </param>
         /// <param name="brush">
-        /// The brush.
+        /// The brush to render.
         /// </param>
         /// <param name="w">
-        /// The w.
+        /// The width of the output image.
         /// </param>
         /// <param name="h">
-        /// The h.
+        /// The height of the output image.
         /// </param>
-        public static void RenderBrush(string path, Brush brush, int w, int h)
+        /// <param name="qualityLevel">
+        /// The quality level of the image (only used if an JPEG image is exported). 
+        /// The value range is 1 (lowest quality) to 100 (highest quality). 
+        /// </param>
+        public static void RenderBrush(string path, Brush brush, int w, int h, int qualityLevel = 90)
         {
             var ib = brush as ImageBrush;
             if (ib != null)
@@ -63,7 +67,18 @@ namespace HelixToolkit.Wpf
             rect.Arrange(new Rect(0, 0, w, h));
             bmp.Render(rect);
 
-            var encoder = new PngBitmapEncoder();
+            var ext = (Path.GetExtension(path) ?? string.Empty).ToLower();
+
+            BitmapEncoder encoder;
+            if (ext == ".png")
+            {
+                encoder = new PngBitmapEncoder();
+            }
+            else
+            {
+                encoder = new JpegBitmapEncoder { QualityLevel = qualityLevel };
+            }
+
             encoder.Frames.Add(BitmapFrame.Create(bmp));
 
             using (Stream stm = File.Create(path))
