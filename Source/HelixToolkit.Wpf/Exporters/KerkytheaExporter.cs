@@ -8,7 +8,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Windows;
@@ -18,40 +17,19 @@ namespace HelixToolkit.Wpf
     using System.Xml;
 
     /// <summary>
-    /// Exports the 3D visual tree to a Kerkythea xml file.
+    /// Exports the 3D visual tree to a <a href="http://www.kerkythea.net/joomla">Kerkythea</a> input file.
     /// </summary>
-    /// <remarks>
-    /// Kerkythea: http://www.kerkythea.net/joomla
-    /// </remarks>
-    public class KerkytheaExporter : Exporter
+    public class KerkytheaExporter : Exporter<KerkytheaExporter.KerkytheaWriter>
     {
         /// <summary>
         /// Dictionary of registered materials.
         /// </summary>
-        public Dictionary<Material, XmlDocument> RegisteredMaterials = new Dictionary<Material, XmlDocument>();
-
-        /// <summary>
-        /// The names.
-        /// </summary>
-        private readonly HashSet<string> names = new HashSet<string>();
-
-        /// <summary>
-        /// Texture bitmaps are reused. This dictionary contains a map from brush to filename
-        /// </summary>
-        private readonly Dictionary<Brush, string> textureFiles = new Dictionary<Brush, string>();
-
-        /// <summary>
-        /// The writer.
-        /// </summary>
-        private readonly XmlWriter writer;
+        private readonly Dictionary<Material, XmlDocument> registeredMaterials = new Dictionary<Material, XmlDocument>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KerkytheaExporter"/> class.
         /// </summary>
-        /// <param name="outputFileName">
-        /// Name of the output file.
-        /// </param>
-        public KerkytheaExporter(string outputFileName)
+        public KerkytheaExporter()
         {
             this.Name = "My Scene";
             this.BackgroundColor = Colors.Black;
@@ -71,13 +49,8 @@ namespace HelixToolkit.Wpf
             this.Width = 500;
             this.Height = 500;
 
-            this.TexturePath = Path.GetDirectoryName(outputFileName);
             this.TextureWidth = 1024;
             this.TextureHeight = 1024;
-
-            var settings = new XmlWriterSettings { Indent = true, };
-
-            this.writer = XmlWriter.Create(outputFileName, settings);
         }
 
         /// <summary>
@@ -216,59 +189,28 @@ namespace HelixToolkit.Wpf
         public int Width { get; set; }
 
         /// <summary>
-        /// Closes this exporter.
-        /// </summary>
-        public override void Close()
-        {
-            // end of scene description.
-            this.writer.WriteFullEndElement();
-
-            // it is necessary to describe the primary/active modules as there might exist more than one!
-            this.WriteParameter("Mip Mapping", true);
-            this.WriteParameter("./Interfaces/Active", "Null Interface");
-            this.WriteParameter("./Modellers/Active", "XML Modeller");
-            this.WriteParameter("./Image Handlers/Active", "Free Image Support");
-
-            this.WriteParameter("./Ray Tracers/Active", "Threaded Ray Tracer");
-            this.WriteParameter("./Irradiance Estimators/Active", "Null Irradiance Estimator");
-            this.WriteParameter("./Direct Light Estimators/Active", "Refraction Enhanced");
-            this.WriteParameter("./Environments/Active", "Octree Environment");
-            this.WriteParameter("./Filters/Active", "Simple Tone Mapping");
-            this.WriteParameter("./Scenes/Active", this.Name);
-            this.WriteParameter("./Libraries/Active", "Material Librarian");
-
-            // end of root element
-            this.writer.WriteFullEndElement();
-
-            this.writer.WriteEndDocument();
-            this.writer.Close();
-            base.Close();
-        }
-
-        /// <summary>
         /// Exports the mesh.
         /// </summary>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        public void ExportMesh(MeshGeometry3D m)
+        /// <param name="writer">The writer.</param>
+        /// <param name="m">The mesh.</param>
+        public void ExportMesh(KerkytheaWriter writer, MeshGeometry3D m)
         {
-            this.WriteStartObject("Triangular Mesh", "Triangular Mesh", string.Empty, "Surface");
+            writer.WriteStartObject("Triangular Mesh", "Triangular Mesh", string.Empty, "Surface");
 
-            this.writer.WriteStartElement("Parameter");
+            writer.WriteStartElement("Parameter");
             {
-                this.writer.WriteAttributeString("Name", "Vertex List");
-                this.writer.WriteAttributeString("Type", "Point3D List");
-                this.writer.WriteAttributeString("Value", m.Positions.Count.ToString());
+                writer.WriteAttributeString("Name", "Vertex List");
+                writer.WriteAttributeString("Type", "Point3D List");
+                writer.WriteAttributeString("Value", m.Positions.Count.ToString());
                 foreach (var p in m.Positions)
                 {
-                    this.writer.WriteStartElement("P");
-                    this.writer.WriteAttributeString("xyz", ToKerkytheaString(p));
-                    this.writer.WriteEndElement();
+                    writer.WriteStartElement("P");
+                    writer.WriteAttributeString("xyz", ToKerkytheaString(p));
+                    writer.WriteEndElement();
                 }
             }
 
-            this.writer.WriteFullEndElement();
+            writer.WriteFullEndElement();
 
             int triangles = m.TriangleIndices.Count / 3;
 
@@ -276,11 +218,11 @@ namespace HelixToolkit.Wpf
             // todo: write normal list per vertex instead of per triangle index
             if (m.Normals != null && m.Normals.Count > 0)
             {
-                this.writer.WriteStartElement("Parameter");
+                writer.WriteStartElement("Parameter");
                 {
-                    this.writer.WriteAttributeString("Name", "Normal List");
-                    this.writer.WriteAttributeString("Type", "Point3D List");
-                    this.writer.WriteAttributeString("Value", m.TriangleIndices.Count.ToString());
+                    writer.WriteAttributeString("Name", "Normal List");
+                    writer.WriteAttributeString("Type", "Point3D List");
+                    writer.WriteAttributeString("Value", m.TriangleIndices.Count.ToString());
                     foreach (int index in m.TriangleIndices)
                     {
                         if (index >= m.Normals.Count)
@@ -289,180 +231,156 @@ namespace HelixToolkit.Wpf
                         }
 
                         var n = m.Normals[index];
-                        this.writer.WriteStartElement("P");
-                        this.writer.WriteAttributeString("xyz", ToKerkytheaString(n));
-                        this.writer.WriteEndElement();
+                        writer.WriteStartElement("P");
+                        writer.WriteAttributeString("xyz", ToKerkytheaString(n));
+                        writer.WriteEndElement();
                     }
                 }
 
-                this.writer.WriteFullEndElement();
+                writer.WriteFullEndElement();
             }
 
             // TRIANGLE INDICES
-            this.writer.WriteStartElement("Parameter");
+            writer.WriteStartElement("Parameter");
             {
-                this.writer.WriteAttributeString("Name", "Index List");
-                this.writer.WriteAttributeString("Type", "Triangle Index List");
-                this.writer.WriteAttributeString("Value", triangles.ToString());
+                writer.WriteAttributeString("Name", "Index List");
+                writer.WriteAttributeString("Type", "Triangle Index List");
+                writer.WriteAttributeString("Value", triangles.ToString());
                 for (int a = 0; a < triangles; a++)
                 {
-                    int i = m.TriangleIndices[a * 3];
-                    int j = m.TriangleIndices[a * 3 + 1];
-                    int k = m.TriangleIndices[a * 3 + 2];
-                    this.writer.WriteStartElement("F");
-                    this.writer.WriteAttributeString("ijk", string.Format("{0} {1} {2}", i, j, k));
-                    this.writer.WriteEndElement();
+                    int a3 = a * 3;
+                    int i = m.TriangleIndices[a3];
+                    int j = m.TriangleIndices[a3 + 1];
+                    int k = m.TriangleIndices[a3 + 2];
+                    writer.WriteStartElement("F");
+                    writer.WriteAttributeString("ijk", string.Format("{0} {1} {2}", i, j, k));
+                    writer.WriteEndElement();
                 }
             }
 
-            this.writer.WriteFullEndElement();
+            writer.WriteFullEndElement();
 
-            this.WriteParameter("Smooth", true);
-            this.WriteParameter("AA Tolerance", 15.0);
+            writer.WriteParameter("Smooth", true);
+            writer.WriteParameter("AA Tolerance", 15.0);
 
-            this.WriteEndObject();
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Registers the material.
+        /// Registers a material.
         /// </summary>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        /// <param name="filename">
-        /// The filename.
-        /// </param>
-        public void RegisterMaterial(Material m, string filename)
+        /// <param name="m">The material to register.</param>
+        /// <param name="stream">The material stream.</param>
+        public void RegisterMaterial(Material m, Stream stream)
         {
             var doc = new XmlDocument();
-            doc.Load(filename);
-            this.RegisteredMaterials.Add(m, doc);
+            doc.Load(stream);
+            this.registeredMaterials.Add(m, doc);
         }
 
         /// <summary>
-        /// Writes the metropolis light transport.
+        /// Writes the Metropolis Light Transport properties.
         /// </summary>
         /// <param name="name">
-        /// The name.
+        /// The name of the MLP ray tracer.
         /// </param>
-        public void WriteMetropolisLightTransport(string name)
+        public void WriteMetropolisLightTransport(KerkytheaWriter writer, string name)
         {
-            this.WriteStartObject("./Ray Tracers/" + name, "Metropolis Light Transport", name, "Ray Tracer");
-            this.WriteParameter("Max Ray Tracing Depth", 100);
-            this.WriteParameter("Max Iterations", 10000);
-            this.WriteParameter("Linear Lightflow", true);
-            this.WriteParameter("Seed Paths", 50000);
-            this.WriteParameter("Large Step Probability", 0.2);
-            this.WriteParameter("Max Mutation Distance", 0.02);
-            this.WriteParameter("Live Probability", 0.7);
-            this.WriteParameter("Max Consecutive Rejections", 200);
-            this.WriteParameter("Bidirectional", true);
-            this.WriteParameter("Super Sampling", "3x3");
-            this.WriteParameter("Image Filename", "temp.jpg");
-            this.WriteParameter("Random Seed", "Automatic");
-            this.WriteEndObject();
+            writer.WriteStartObject("./Ray Tracers/" + name, "Metropolis Light Transport", name, "Ray Tracer");
+            writer.WriteParameter("Max Ray Tracing Depth", 100);
+            writer.WriteParameter("Max Iterations", 10000);
+            writer.WriteParameter("Linear Lightflow", true);
+            writer.WriteParameter("Seed Paths", 50000);
+            writer.WriteParameter("Large Step Probability", 0.2);
+            writer.WriteParameter("Max Mutation Distance", 0.02);
+            writer.WriteParameter("Live Probability", 0.7);
+            writer.WriteParameter("Max Consecutive Rejections", 200);
+            writer.WriteParameter("Bidirectional", true);
+            writer.WriteParameter("Super Sampling", "3x3");
+            writer.WriteParameter("Image Filename", "temp.jpg");
+            writer.WriteParameter("Random Seed", "Automatic");
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Writes the standard ray tracer.
+        /// Writes the standard ray tracer properties.
         /// </summary>
         /// <param name="name">
-        /// The name.
+        /// The name of the ray tracer.
         /// </param>
-        public void WriteStandardRayTracer(string name)
+        public void WriteStandardRayTracer(KerkytheaWriter writer, string name)
         {
-            this.WriteStartObject("./Ray Tracers/" + name, "Standard Ray Tracer", name, "Ray Tracer");
-            this.WriteParameter("Rasterization", "Auto");
+            writer.WriteStartObject("./Ray Tracers/" + name, "Standard Ray Tracer", name, "Ray Tracer");
+            writer.WriteParameter("Rasterization", "Auto");
 
             // WriteParameter("Antialiasing", "Extra Pass 3x3");
-            this.WriteParameter("Antialiasing", "Production AA");
-            this.WriteParameter("Antialiasing Filter", "Mitchell-Netravali 0.5 0.8");
-            this.WriteParameter("Antialiasing Threshold", 0.3);
-            this.WriteParameter("Texture Filtering", true);
-            this.WriteParameter("Ambient Lighting", true);
-            this.WriteParameter("Direct Lighting", true);
-            this.WriteParameter("Sky Lighting", true);
-            this.WriteParameter("Brightness Threshold", 0.002);
-            this.WriteParameter("Max Ray Tracing Depth", 5);
-            this.WriteParameter("Max Scatter Bounces", 5);
-            this.WriteParameter("Max Dirac Bounces", 5);
-            this.WriteParameter("Irradiance Precomputation", 4);
-            this.WriteParameter("Irradiance Scale", Colors.White);
-            this.WriteParameter("Linear Lightflow", true);
-            this.WriteParameter("Max Iterations", 5);
-            this.WriteParameter("Super Sampling", "None");
-            this.WriteParameter("Image Filename", "temp.jpg");
-            this.WriteParameter("./Sampling Criteria/Diffuse Samples", 1024);
-            this.WriteParameter("./Sampling Criteria/Specular Samples", 32);
-            this.WriteParameter("./Sampling Criteria/Dispersion Samples", true);
-            this.WriteParameter("./Sampling Criteria/Trace Diffusers", false);
-            this.WriteParameter("./Sampling Criteria/Trace Translucencies", false);
-            this.WriteParameter("./Sampling Criteria/Trace Fuzzy Reflections", true);
-            this.WriteParameter("./Sampling Criteria/Trace Fuzzy Refractions", true);
-            this.WriteParameter("./Sampling Criteria/Trace Reflections", true);
-            this.WriteParameter("./Sampling Criteria/Trace Refractions", true);
-            this.WriteParameter("./Sampling Criteria/Random Generator", "Pure");
-            this.WriteEndObject();
+            writer.WriteParameter("Antialiasing", "Production AA");
+            writer.WriteParameter("Antialiasing Filter", "Mitchell-Netravali 0.5 0.8");
+            writer.WriteParameter("Antialiasing Threshold", 0.3);
+            writer.WriteParameter("Texture Filtering", true);
+            writer.WriteParameter("Ambient Lighting", true);
+            writer.WriteParameter("Direct Lighting", true);
+            writer.WriteParameter("Sky Lighting", true);
+            writer.WriteParameter("Brightness Threshold", 0.002);
+            writer.WriteParameter("Max Ray Tracing Depth", 5);
+            writer.WriteParameter("Max Scatter Bounces", 5);
+            writer.WriteParameter("Max Dirac Bounces", 5);
+            writer.WriteParameter("Irradiance Precomputation", 4);
+            writer.WriteParameter("Irradiance Scale", Colors.White);
+            writer.WriteParameter("Linear Lightflow", true);
+            writer.WriteParameter("Max Iterations", 5);
+            writer.WriteParameter("Super Sampling", "None");
+            writer.WriteParameter("Image Filename", "temp.jpg");
+            writer.WriteParameter("./Sampling Criteria/Diffuse Samples", 1024);
+            writer.WriteParameter("./Sampling Criteria/Specular Samples", 32);
+            writer.WriteParameter("./Sampling Criteria/Dispersion Samples", true);
+            writer.WriteParameter("./Sampling Criteria/Trace Diffusers", false);
+            writer.WriteParameter("./Sampling Criteria/Trace Translucencies", false);
+            writer.WriteParameter("./Sampling Criteria/Trace Fuzzy Reflections", true);
+            writer.WriteParameter("./Sampling Criteria/Trace Fuzzy Refractions", true);
+            writer.WriteParameter("./Sampling Criteria/Trace Reflections", true);
+            writer.WriteParameter("./Sampling Criteria/Trace Refractions", true);
+            writer.WriteParameter("./Sampling Criteria/Random Generator", "Pure");
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Writes the threaded raytracer.
+        /// Writes the threaded ray tracer properties.
         /// </summary>
         /// <param name="threads">
-        /// The threads.
+        /// The number of threads.
         /// </param>
-        public void WriteThreadedRaytracer(int threads)
+        public void WriteThreadedRaytracer(KerkytheaWriter writer, int threads)
         {
-            this.WriteStartObject(
-                "./Ray Tracers/Threaded Ray Tracer", "Threaded Ray Tracer", "Threaded Ray Tracer", "Ray Tracer");
+            writer.WriteStartObject("./Ray Tracers/Threaded Ray Tracer", "Threaded Ray Tracer", "Threaded Ray Tracer", "Ray Tracer");
             for (int i = 0; i < threads; i++)
             {
-                this.WriteParameter("Thread #" + i, "#" + i);
+                writer.WriteParameter("Thread #" + i, "#" + i);
             }
 
-            this.WriteParameter("Network Mode", "None");
-            this.WriteParameter("Listening Port", 6200);
-            this.WriteParameter("Host", "127.0.0.1");
-            this.WriteEndObject();
+            writer.WriteParameter("Network Mode", "None");
+            writer.WriteParameter("Listening Port", 6200);
+            writer.WriteParameter("Host", "127.0.0.1");
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Writes the transform.
+        /// Creates the writer for the specified stream.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        public void WriteTransform(string name, Matrix3D m)
+        /// <param name="stream">The stream.</param>
+        /// <returns>The writer.</returns>
+        protected override KerkytheaWriter Create(Stream stream)
         {
-            string value = string.Format(
-                CultureInfo.InvariantCulture,
-                "{0:0.######} {1:0.######} {2:0.######} {3:0.######} {4:0.######} {5:0.######} {6:0.######} {7:0.######} {8:0.######} {9:0.######} {10:0.######} {11:0.######}",
-                m.M11,
-                m.M12,
-                m.M13,
-                m.OffsetX,
-                m.M21,
-                m.M22,
-                m.M23,
-                m.OffsetY,
-                m.M31,
-                m.M32,
-                m.M33,
-                m.OffsetZ);
-
-            this.WriteParameter(name, "Transform", value);
+            return new KerkytheaWriter(stream);
         }
 
         /// <summary>
         /// Exports the camera.
         /// </summary>
-        /// <param name="c">
-        /// The c.
-        /// </param>
-        protected override void ExportCamera(Camera c)
+        /// <param name="writer">The writer.</param>
+        /// <param name="c">The camera.</param>
+        /// <exception cref="System.InvalidOperationException">Only perspective cameras are supported.</exception>
+        protected override void ExportCamera(KerkytheaWriter writer, Camera c)
         {
             var pc = c as PerspectiveCamera;
             if (pc == null)
@@ -471,7 +389,7 @@ namespace HelixToolkit.Wpf
             }
 
             const string name = "Camera #1";
-            this.WriteStartObject("./Cameras/" + name, "Pinhole Camera", name, "Camera");
+            writer.WriteStartObject("./Cameras/" + name, "Pinhole Camera", name, "Camera");
 
             // FOV = 2 arctan (x / (2 f)), x is diagonal, f is focal length
             // f = x / 2 / Tan(FOV/2)
@@ -484,118 +402,109 @@ namespace HelixToolkit.Wpf
             const double x = 40;
             double f = 0.5 * ratio * x / Math.Tan(0.5 * pc.FieldOfView / 180.0 * Math.PI);
 
-            WriteParameter("Focal Length (mm)", f);
-            WriteParameter("Film Height (mm)", x);
-            this.WriteParameter(
-                "Resolution", string.Format(CultureInfo.InvariantCulture, "{0}x{1}", this.Width, this.Height));
+            writer.WriteParameter("Focal Length (mm)", f);
+            writer.WriteParameter("Film Height (mm)", x);
+            writer.WriteParameter("Resolution", string.Format(CultureInfo.InvariantCulture, "{0}x{1}", this.Width, this.Height));
 
             var t = CreateTransform(pc.Position, pc.LookDirection, pc.UpDirection);
-            this.WriteTransform("Frame", t);
+            writer.WriteTransform("Frame", t);
 
-            this.WriteParameter("Focus Distance", this.FocusDistance);
-            this.WriteParameter("f-number", this.Aperture);
-            this.WriteParameter("Lens Samples", this.LensSamples);
-            this.WriteParameter("Blades", 6);
-            this.WriteParameter("Diaphragm", "Circular");
-            this.WriteParameter("Projection", "Planar");
+            writer.WriteParameter("Focus Distance", this.FocusDistance);
+            writer.WriteParameter("f-number", this.Aperture);
+            writer.WriteParameter("Lens Samples", this.LensSamples);
+            writer.WriteParameter("Blades", 6);
+            writer.WriteParameter("Diaphragm", "Circular");
+            writer.WriteParameter("Projection", "Planar");
 
-            this.WriteEndObject();
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Exports the header.
+        /// Exports the document header.
         /// </summary>
-        protected override void ExportHeader()
+        /// <param name="writer">The writer.</param>
+        protected override void ExportHeader(KerkytheaWriter writer)
         {
-            this.writer.WriteStartDocument();
+            writer.WriteStartDocument();
 
-            this.writer.WriteStartElement("Root");
-            this.writer.WriteAttributeString("Label", "Default Kernel");
-            this.writer.WriteAttributeString("Name", string.Empty);
-            this.writer.WriteAttributeString("Type", "Kernel");
+            writer.WriteStartElement("Root");
+            writer.WriteAttributeString("Label", "Default Kernel");
+            writer.WriteAttributeString("Name", string.Empty);
+            writer.WriteAttributeString("Type", "Kernel");
 
-            this.WriteStartObject("./Modellers/XML Modeller", "XML Modeller", "XML Modeller", "Modeller");
-            this.WriteEndObject();
+            writer.WriteStartObject("./Modellers/XML Modeller", "XML Modeller", "XML Modeller", "Modeller");
+            writer.WriteEndObject();
 
-            this.WriteStartObject(
-                "./Image Handlers/Free Image Support", "Free Image Support", "Free Image Support", "Image Handler");
-            this.WriteParameter("Tone Mapping", "External");
-            this.WriteParameter("Jpeg Quality", "Higher");
-            this.WriteEndObject();
+            writer.WriteStartObject("./Image Handlers/Free Image Support", "Free Image Support", "Free Image Support", "Image Handler");
+            writer.WriteParameter("Tone Mapping", "External");
+            writer.WriteParameter("Jpeg Quality", "Higher");
+            writer.WriteEndObject();
 
-            this.WriteStartObject(
-                "./Direct Light Estimators/Refraction Enhanced",
-                "Refraction Enhanced",
-                "Refraction Enhanced",
-                "Direct Light Estimator");
-            this.WriteParameter("Enabled", "Boolean", "1");
-            this.WriteParameter("PseudoCaustics", "Boolean", "0");
-            this.WriteParameter("PseudoTranslucencies", "Boolean", "0");
-            this.WriteParameter("Area Light Evaluation", "Boolean", "1");
-            this.WriteParameter("Optimized Area Lights", "Boolean", "1");
-            this.WriteParameter("Accurate Soft Shadows", "Boolean", "0");
-            this.WriteParameter("Antialiasing", "String", "High");
-            this.WriteParameter("./Evaluation/Diffuse", "Boolean", "1");
-            this.WriteParameter("./Evaluation/Specular", "Boolean", "1");
-            this.WriteParameter("./Evaluation/Translucent", "Boolean", "1");
-            this.WriteParameter("./Evaluation/Transmitted", "Boolean", "1");
-            this.WriteEndObject();
+            writer.WriteStartObject("./Direct Light Estimators/Refraction Enhanced", "Refraction Enhanced", "Refraction Enhanced", "Direct Light Estimator");
+            writer.WriteParameter("Enabled", "Boolean", "1");
+            writer.WriteParameter("PseudoCaustics", "Boolean", "0");
+            writer.WriteParameter("PseudoTranslucencies", "Boolean", "0");
+            writer.WriteParameter("Area Light Evaluation", "Boolean", "1");
+            writer.WriteParameter("Optimized Area Lights", "Boolean", "1");
+            writer.WriteParameter("Accurate Soft Shadows", "Boolean", "0");
+            writer.WriteParameter("Antialiasing", "String", "High");
+            writer.WriteParameter("./Evaluation/Diffuse", "Boolean", "1");
+            writer.WriteParameter("./Evaluation/Specular", "Boolean", "1");
+            writer.WriteParameter("./Evaluation/Translucent", "Boolean", "1");
+            writer.WriteParameter("./Evaluation/Transmitted", "Boolean", "1");
+            writer.WriteEndObject();
 
             // add ray tracer module.
             for (int i = 0; i < this.Threads; i++)
             {
-                this.WriteStandardRayTracer("#" + i);
+                this.WriteStandardRayTracer(writer, "#" + i);
             }
 
-            this.WriteThreadedRaytracer(this.Threads);
+            this.WriteThreadedRaytracer(writer, this.Threads);
 
             // add spatial subdivision module.
-            this.WriteStartObject(
-                "./Environments/Octree Environment", "Octree Environment", "Octree Environment", "Environment");
-            this.WriteParameter("Max Objects per Cell", 20);
-            this.WriteParameter("Instancing Switch", 1000000);
-            this.WriteParameter("Caching Switch", 6000000);
-            this.WriteEndObject();
+            writer.WriteStartObject("./Environments/Octree Environment", "Octree Environment", "Octree Environment", "Environment");
+            writer.WriteParameter("Max Objects per Cell", 20);
+            writer.WriteParameter("Instancing Switch", 1000000);
+            writer.WriteParameter("Caching Switch", 6000000);
+            writer.WriteEndObject();
 
             // add basic post filtering / tone mapping.
-            this.WriteStartObject("./Filters/Simple Tone Mapping", "Simple Tone Mapping", string.Empty, "Filter");
-            this.WriteParameter("Enabled", true);
-            this.WriteParameter("Method", "Simple");
-            this.WriteParameter("Exposure", 1.0);
-            this.WriteParameter("Gamma", 1.0);
-            this.WriteParameter("Dark Multiplier", 1.0);
-            this.WriteParameter("Bright Multiplier", 1.0);
-            this.WriteParameter("Reverse Correction", true);
-            this.WriteParameter("Reverse Gamma", 2.2);
-            this.WriteEndObject();
+            writer.WriteStartObject("./Filters/Simple Tone Mapping", "Simple Tone Mapping", string.Empty, "Filter");
+            writer.WriteParameter("Enabled", true);
+            writer.WriteParameter("Method", "Simple");
+            writer.WriteParameter("Exposure", 1.0);
+            writer.WriteParameter("Gamma", 1.0);
+            writer.WriteParameter("Dark Multiplier", 1.0);
+            writer.WriteParameter("Bright Multiplier", 1.0);
+            writer.WriteParameter("Reverse Correction", true);
+            writer.WriteParameter("Reverse Gamma", 2.2);
+            writer.WriteEndObject();
 
             // start of scene description.
-            this.WriteStartObject("./Scenes/" + this.Name, "Default Scene", this.Name, "Scene");
+            writer.WriteStartObject("./Scenes/" + this.Name, "Default Scene", this.Name, "Scene");
         }
 
         /// <summary>
         /// Exports the light.
         /// </summary>
-        /// <param name="l">
-        /// The l.
-        /// </param>
-        /// <param name="t">
-        /// The t.
-        /// </param>
-        protected override void ExportLight(Light l, Transform3D t)
+        /// <param name="writer">The writer.</param>
+        /// <param name="l">The light.</param>
+        /// <param name="t">The transform.</param>
+        protected override void ExportLight(KerkytheaWriter writer, Light l, Transform3D t)
         {
             if (l is AmbientLight)
             {
                 return;
             }
 
-            string name = this.GetUniqueName(l, l.GetType().Name);
+            string name = this.GetUniqueName(writer, l, l.GetType().Name);
 
             var d = l as DirectionalLight;
             var s = l as SpotLight;
             var p = l as PointLight;
 
-            this.WriteStartObject("./Lights/" + name, "Default Light", name, "Light");
+            writer.WriteStartObject("./Lights/" + name, "Default Light", name, "Light");
             {
                 string stype = "Projector Light";
                 if (s != null)
@@ -608,17 +517,17 @@ namespace HelixToolkit.Wpf
                     stype = "Omni Light";
                 }
 
-                this.WriteStartObject(stype, stype, string.Empty, "Emittance");
+                writer.WriteStartObject(stype, stype, string.Empty, "Emittance");
 
                 // emitter Radiance
-                this.WriteStartObject("./Radiance/Constant Texture", "Constant Texture", string.Empty, "Texture");
+                writer.WriteStartObject("./Radiance/Constant Texture", "Constant Texture", string.Empty, "Texture");
                 var c = Colors.White;
-                WriteParameter("Color", c);
-                this.WriteEndObject();
+                writer.WriteParameter("Color", c);
+                writer.WriteEndObject();
 
                 // var v = new Vector3D(l.Color.R, l.Color.G, l.Color.B);
                 // double lum = v.Length;
-                this.WriteParameter("Attenuation", "None");
+                writer.WriteParameter("Attenuation", "None");
 
                 // SpotLight (Spot Light)
                 if (s != null)
@@ -627,80 +536,80 @@ namespace HelixToolkit.Wpf
                     // s.ConstantAttenuation
                     // s.LinearAttenuation
                     // s.QuadraticAttenuation
-                    WriteParameter("Fall Off", s.OuterConeAngle);
-                    WriteParameter("Hot Spot", s.InnerConeAngle);
+                    writer.WriteParameter("Fall Off", s.OuterConeAngle);
+                    writer.WriteParameter("Hot Spot", s.InnerConeAngle);
                 }
 
                 // DirectionalLight (Projector Light)
                 if (d != null)
                 {
-                    this.WriteParameter("Width", 2.0);
-                    this.WriteParameter("Height", 2.0);
+                    writer.WriteParameter("Width", 2.0);
+                    writer.WriteParameter("Height", 2.0);
                 }
 
                 // PointLight (Omni light)
                 if (p != null)
                 {
                     // todo: export pointlight parameters
-                    // p.ConstantAttenuation
-                    // p.LinearAttenuation
-                    // p.QuadraticAttenuation
-                    // p.Range // distance beyond which the light has no effect
+                    // name.ConstantAttenuation
+                    // name.LinearAttenuation
+                    // name.QuadraticAttenuation
+                    // name.Range // distance beyond which the light has no effect
                 }
 
-                this.WriteParameter("Focal Length", 1.0);
+                writer.WriteParameter("Focal Length", 1.0);
 
-                this.WriteEndObject(); // stype
+                writer.WriteEndObject(); // stype
 
-                this.WriteParameter("Enabled", true);
-                this.WriteParameter("Shadow", this.Shadows);
-                this.WriteParameter("Soft Shadow", this.SoftShadows);
+                writer.WriteParameter("Enabled", true);
+                writer.WriteParameter("Shadow", this.Shadows);
+                writer.WriteParameter("Soft Shadow", this.SoftShadows);
 
-                this.WriteParameter("Negative Light", false);
-                this.WriteParameter("Global Photons", true);
-                this.WriteParameter("Caustic Photons", true);
-                this.WriteParameter("Multiplier", this.LightMultiplier);
+                writer.WriteParameter("Negative Light", false);
+                writer.WriteParameter("Global Photons", true);
+                writer.WriteParameter("Caustic Photons", true);
+                writer.WriteParameter("Multiplier", this.LightMultiplier);
 
                 Matrix3D transform;
                 var upVector = new Vector3D(0, 0, 1);
                 if (s != null)
                 {
                     transform = CreateTransform(s.Position, s.Direction, upVector);
-                    this.WriteTransform("Frame", transform);
+                    writer.WriteTransform("Frame", transform);
                 }
 
                 if (d != null)
                 {
                     var origin = new Point3D(-1000 * d.Direction.X, -1000 * d.Direction.Y, -1000 * d.Direction.Z);
                     transform = CreateTransform(origin, d.Direction, upVector);
-                    this.WriteTransform("Frame", transform);
+                    writer.WriteTransform("Frame", transform);
                 }
 
                 if (p != null)
                 {
                     var direction = new Vector3D(-p.Position.X, -p.Position.Y, -p.Position.Z);
                     transform = CreateTransform(p.Position, direction, upVector);
-                    this.WriteTransform("Frame", transform);
+                    writer.WriteTransform("Frame", transform);
                 }
 
-                this.WriteParameter("Focus Distance", 4.0);
-                this.WriteParameter("Radius", 0.2);
-                this.WriteParameter("Shadow Color", this.ShadowColor);
+                writer.WriteParameter("Focus Distance", 4.0);
+                writer.WriteParameter("Radius", 0.2);
+                writer.WriteParameter("Shadow Color", this.ShadowColor);
             }
 
-            this.WriteEndObject();
+            writer.WriteEndObject();
         }
 
         /// <summary>
         /// Exports the model.
         /// </summary>
         /// <param name="g">
-        /// The g.
+        /// The model geometry.
         /// </param>
         /// <param name="transform">
         /// The transform.
         /// </param>
-        protected override void ExportModel(GeometryModel3D g, Transform3D transform)
+        protected override void ExportModel(KerkytheaWriter writer, GeometryModel3D g, Transform3D transform)
         {
             var mesh = g.Geometry as MeshGeometry3D;
             if (mesh == null)
@@ -708,14 +617,14 @@ namespace HelixToolkit.Wpf
                 return;
             }
 
-            string name = this.GetUniqueName(g, g.GetType().Name);
-            this.WriteStartObject("./Models/" + name, "Default Model", name, "Model");
+            string name = this.GetUniqueName(writer, g, g.GetType().Name);
+            writer.WriteStartObject("./Models/" + name, "Default Model", name, "Model");
 
-            this.ExportMesh(mesh);
+            this.ExportMesh(writer, mesh);
 
             if (g.Material != null)
             {
-                this.ExportMaterial(g.Material);
+                this.ExportMaterial(writer, g.Material);
             }
 
             var tg = new Transform3DGroup();
@@ -724,151 +633,109 @@ namespace HelixToolkit.Wpf
 
             if (mesh.TextureCoordinates != null)
             {
-                this.ExportMapChannel(mesh);
+                this.ExportMapChannel(writer, mesh);
             }
 
-            this.WriteTransform("Frame", tg.Value);
+            writer.WriteTransform("Frame", tg.Value);
 
-            this.WriteParameter("Enabled", true);
-            this.WriteParameter("Visible", true);
-            this.WriteParameter("Shadow Caster", true);
-            this.WriteParameter("Shadow Receiver", true);
-            this.WriteParameter("Caustics Transmitter", true);
-            this.WriteParameter("Caustics Receiver", true);
-            this.WriteParameter("Exit Blocker", false);
+            writer.WriteParameter("Enabled", true);
+            writer.WriteParameter("Visible", true);
+            writer.WriteParameter("Shadow Caster", true);
+            writer.WriteParameter("Shadow Receiver", true);
+            writer.WriteParameter("Caustics Transmitter", true);
+            writer.WriteParameter("Caustics Receiver", true);
+            writer.WriteParameter("Exit Blocker", false);
 
-            this.WriteEndObject();
+            writer.WriteEndObject();
         }
 
-        // Viewport3D
-        // ModelVisual3D : Visual3D
-        // GeometryModel3D
-        // DirectionalLight
-        // AmbientLight
-        // PointLight
-        // SpotLight
-        // Model3DGroup
-        // Model3DCollection
-        // GeometryModel3D
-        // Model3DGroup
-        // ModelUIElement3D : UIElement3D : Visual3D
-
         /// <summary>
-        /// Exports the viewport.
+        /// Exports the specified viewport.
         /// </summary>
-        /// <param name="v">
-        /// The v.
-        /// </param>
-        protected override void ExportViewport(Viewport3D v)
+        /// <param name="writer">The writer.</param>
+        /// <param name="v">The viewport to export.</param>
+        protected override void ExportViewport(KerkytheaWriter writer, Viewport3D v)
         {
             var ambient = Visual3DHelper.Find<AmbientLight>(v);
 
             // default global settings
-            this.WriteStartObject("Default Global Settings", "Default Global Settings", string.Empty, "Global Settings");
+            writer.WriteStartObject("Default Global Settings", "Default Global Settings", string.Empty, "Global Settings");
             if (ambient != null)
             {
-                WriteParameter("Ambient Light", ambient.Color);
+                writer.WriteParameter("Ambient Light", ambient.Color);
             }
 
-            this.WriteParameter("Background Color", this.BackgroundColor);
-            this.WriteParameter("Compute Volume Transfer", false);
-            this.WriteParameter("Transfer Recursion Depth", 1);
-            this.WriteParameter("Background Type", "Sky Color");
-            this.WriteParameter("Sky Intensity", 1.0);
-            this.WriteParameter("Sky Frame", "Transform", "1 0 0 0 0 1 0 0 0 0 1 0 ");
-            this.WriteParameter("Sun Direction", "0 0 1");
-            this.WriteParameter("Sky Turbidity", 2.0);
-            this.WriteParameter("Sky Luminance Gamma", 1.2);
-            this.WriteParameter("Sky Chromaticity Gamma", 1.8);
-            this.WriteParameter("Linear Lightflow", true);
-            this.WriteParameter("Index of Refraction", 1.0);
-            this.WriteParameter("Scatter Density", 0.1);
-            this.WriteParameter("./Location/Latitude", 0.0);
-            this.WriteParameter("./Location/Longitude", 0.0);
-            this.WriteParameter("./Location/Timezone", 0);
-            this.WriteParameter("./Location/Date", "0/0/2007");
-            this.WriteParameter("./Location/Time", "12:0:0");
-            this.WriteParameter("./Background Image/Filename", "[No Bitmap]");
-            this.WriteParameter("./Background Image/Projection", "UV");
-            this.WriteParameter("./Background Image/Offset X", 0.0);
-            this.WriteParameter("./Background Image/Offset Y", 0.0);
-            this.WriteParameter("./Background Image/Scale X", 1.0);
-            this.WriteParameter("./Background Image/Scale Y", 1.0);
-            this.WriteParameter("./Background Image/Rotation", 0.0);
-            this.WriteParameter("./Background Image/Smooth", true);
-            this.WriteParameter("./Background Image/Inverted", false);
-            this.WriteParameter("./Background Image/Alpha Channel", false);
-            this.WriteEndObject();
+            writer.WriteParameter("Background Color", this.BackgroundColor);
+            writer.WriteParameter("Compute Volume Transfer", false);
+            writer.WriteParameter("Transfer Recursion Depth", 1);
+            writer.WriteParameter("Background Type", "Sky Color");
+            writer.WriteParameter("Sky Intensity", 1.0);
+            writer.WriteParameter("Sky Frame", "Transform", "1 0 0 0 0 1 0 0 0 0 1 0 ");
+            writer.WriteParameter("Sun Direction", "0 0 1");
+            writer.WriteParameter("Sky Turbidity", 2.0);
+            writer.WriteParameter("Sky Luminance Gamma", 1.2);
+            writer.WriteParameter("Sky Chromaticity Gamma", 1.8);
+            writer.WriteParameter("Linear Lightflow", true);
+            writer.WriteParameter("Index of Refraction", 1.0);
+            writer.WriteParameter("Scatter Density", 0.1);
+            writer.WriteParameter("./Location/Latitude", 0.0);
+            writer.WriteParameter("./Location/Longitude", 0.0);
+            writer.WriteParameter("./Location/Timezone", 0);
+            writer.WriteParameter("./Location/Date", "0/0/2007");
+            writer.WriteParameter("./Location/Time", "12:0:0");
+            writer.WriteParameter("./Background Image/Filename", "[No Bitmap]");
+            writer.WriteParameter("./Background Image/Projection", "UV");
+            writer.WriteParameter("./Background Image/Offset X", 0.0);
+            writer.WriteParameter("./Background Image/Offset Y", 0.0);
+            writer.WriteParameter("./Background Image/Scale X", 1.0);
+            writer.WriteParameter("./Background Image/Scale Y", 1.0);
+            writer.WriteParameter("./Background Image/Rotation", 0.0);
+            writer.WriteParameter("./Background Image/Smooth", true);
+            writer.WriteParameter("./Background Image/Inverted", false);
+            writer.WriteParameter("./Background Image/Alpha Channel", false);
+            writer.WriteEndObject();
 
             // Visual3DHelper.Traverse<Light>(v.Children, ExportLight);
             // Visual3DHelper.Traverse<GeometryModel3D>(v.Children, ExportGeometryModel3D);
         }
 
         /// <summary>
-        /// Writes the end object.
+        /// Closes this exporter.
         /// </summary>
-        protected void WriteEndObject()
+        /// <param name="writer">The writer.</param>
+        protected override void Close(KerkytheaWriter writer)
         {
-            this.writer.WriteFullEndElement();
+            // end of scene description.
+            writer.WriteFullEndElement();
+
+            // it is necessary to describe the primary/active modules as there might exist more than one!
+            writer.WriteParameter("Mip Mapping", true);
+            writer.WriteParameter("./Interfaces/Active", "Null Interface");
+            writer.WriteParameter("./Modellers/Active", "XML Modeller");
+            writer.WriteParameter("./Image Handlers/Active", "Free Image Support");
+
+            writer.WriteParameter("./Ray Tracers/Active", "Threaded Ray Tracer");
+            writer.WriteParameter("./Irradiance Estimators/Active", "Null Irradiance Estimator");
+            writer.WriteParameter("./Direct Light Estimators/Active", "Refraction Enhanced");
+            writer.WriteParameter("./Environments/Active", "Octree Environment");
+            writer.WriteParameter("./Filters/Active", "Simple Tone Mapping");
+            writer.WriteParameter("./Scenes/Active", this.Name);
+            writer.WriteParameter("./Libraries/Active", "Material Librarian");
+
+            // end of root element
+            writer.WriteFullEndElement();
+
+            writer.WriteEndDocument();
+            writer.Close();
         }
 
         /// <summary>
-        /// Writes the object.
+        /// Creates a transform from the original coordinate system to the system defined by translation origin
         /// </summary>
-        /// <param name="identifier">
-        /// The identifier.
-        /// </param>
-        /// <param name="label">
-        /// The label.
-        /// </param>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="type">
-        /// The type.
-        /// </param>
-        protected void WriteObject(string identifier, string label, string name, string type)
-        {
-            this.WriteStartObject(identifier, label, name, type);
-            this.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Writes the start object.
-        /// </summary>
-        /// <param name="identifier">
-        /// The identifier.
-        /// </param>
-        /// <param name="label">
-        /// The label.
-        /// </param>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="type">
-        /// The type.
-        /// </param>
-        protected void WriteStartObject(string identifier, string label, string name, string type)
-        {
-            this.writer.WriteStartElement("Object");
-            this.writer.WriteAttributeString("Identifier", identifier);
-            this.writer.WriteAttributeString("Label", label);
-            this.writer.WriteAttributeString("Name", name);
-            this.writer.WriteAttributeString("Type", type);
-        }
-
-        /// <summary>
-        /// Create transform from the original coordinate system to the system defined by translation origin
-        /// </summary>
-        /// <param name="origin">
-        /// The origin.
-        /// </param>
-        /// <param name="direction">
-        /// The direction.
-        /// </param>
-        /// <param name="up">
-        /// The up.
-        /// </param>
+        /// <param name="origin">The origin.</param>
+        /// <param name="direction">The direction vector.</param>
+        /// <param name="up">The up vector.</param>
+        /// <returns>A transformation matrix.</returns>
         private static Matrix3D CreateTransform(Point3D origin, Vector3D direction, Vector3D up)
         {
             var z = direction;
@@ -885,35 +752,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The not na n.
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="defaultValue">
-        /// The default value.
-        /// </param>
-        /// <returns>
-        /// The not na n.
-        /// </returns>
-        private static double NotNaN(double value, double defaultValue)
-        {
-            if (double.IsNaN(value))
-            {
-                return defaultValue;
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        /// The to kerkythea string.
+        /// Converts a <see cref="Point"/> to a string formatted for Kerkythea.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The point.
         /// </param>
         /// <returns>
-        /// The to kerkythea string.
+        /// A string representing the point.
         /// </returns>
         private static string ToKerkytheaString(Point p)
         {
@@ -921,51 +766,51 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Converts a point to a kerkythea string.
+        /// Converts a <see cref="Point3D"/> to a string formatted for Kerkythea.
         /// </summary>
         /// <param name="point">
         /// The vector.
         /// </param>
         /// <returns>
-        /// A string.
+        /// A string representing the point.
         /// </returns>
         private static string ToKerkytheaString(Point3D point)
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0:0.######} {1:0.######} {2:0.######}",
-                NotNaN(point.X, 1),
-                NotNaN(point.Y, 0),
-                NotNaN(point.Z, 0));
+                ValueOrDefault(point.X, 1),
+                ValueOrDefault(point.Y, 0),
+                ValueOrDefault(point.Z, 0));
         }
 
         /// <summary>
-        /// Converts a vector to a kerkythea string.
+        /// Converts a <see cref="Vector3D"/> to a string formatted for Kerkythea.
         /// </summary>
         /// <param name="vector">
         /// The vector.
         /// </param>
         /// <returns>
-        /// A string.
+        /// A string representing the vector.
         /// </returns>
         private static string ToKerkytheaString(Vector3D vector)
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0:0.######} {1:0.######} {2:0.######}",
-                NotNaN(vector.X, 1),
-                NotNaN(vector.Y, 0),
-                NotNaN(vector.Z, 0));
+                ValueOrDefault(vector.X, 1),
+                ValueOrDefault(vector.Y, 0),
+                ValueOrDefault(vector.Z, 0));
         }
 
         /// <summary>
-        /// The to kerkythea string.
+        /// Converts a <see cref="Color"/> to a string formatted for Kerkythea.
         /// </summary>
         /// <param name="c">
-        /// The c.
+        /// The color.
         /// </param>
         /// <returns>
-        /// The to kerkythea string.
+        /// A string representing the color.
         /// </returns>
         private static string ToKerkytheaString(Color c)
         {
@@ -978,19 +823,18 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The export map channel.
+        /// Exports the map channel (texture coordinates) from the specified mesh.
         /// </summary>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        private void ExportMapChannel(MeshGeometry3D m)
+        /// <param name="writer">The writer.</param>
+        /// <param name="m">The mesh.</param>
+        private void ExportMapChannel(KerkytheaWriter writer, MeshGeometry3D m)
         {
-            this.writer.WriteStartElement("Parameter");
+            writer.WriteStartElement("Parameter");
             {
-                this.writer.WriteAttributeString("Name", "Map Channel");
-                this.writer.WriteAttributeString("Type", "Point2D List");
+                writer.WriteAttributeString("Name", "Map Channel");
+                writer.WriteAttributeString("Type", "Point2D List");
                 int n = m.TriangleIndices.Count;
-                this.writer.WriteAttributeString("Value", n.ToString());
+                writer.WriteAttributeString("Value", n.ToString());
                 foreach (int index in m.TriangleIndices)
                 {
                     if (index >= m.TextureCoordinates.Count)
@@ -999,20 +843,20 @@ namespace HelixToolkit.Wpf
                     }
 
                     var uv = m.TextureCoordinates[index];
-                    this.writer.WriteStartElement("P");
-                    this.writer.WriteAttributeString("xy", ToKerkytheaString(uv));
-                    this.writer.WriteEndElement();
+                    writer.WriteStartElement("P");
+                    writer.WriteAttributeString("xy", ToKerkytheaString(uv));
+                    writer.WriteEndElement();
                 }
             }
 
-            this.writer.WriteFullEndElement();
+            writer.WriteFullEndElement();
         }
 
         /// <summary>
-        /// The export material.
+        /// Exports a material.
         /// </summary>
         /// <param name="name">
-        /// The name.
+        /// The name of the material.
         /// </param>
         /// <param name="material">
         /// The material.
@@ -1020,14 +864,14 @@ namespace HelixToolkit.Wpf
         /// <param name="weights">
         /// The weights.
         /// </param>
-        private void ExportMaterial(string name, Material material, IList<double> weights)
+        private void ExportMaterial(KerkytheaWriter writer, string name, Material material, IList<double> weights)
         {
             var g = material as MaterialGroup;
             if (g != null)
             {
                 foreach (var m in g.Children)
                 {
-                    this.ExportMaterial(name, m, weights);
+                    this.ExportMaterial(writer, name, m, weights);
                 }
             }
 
@@ -1044,19 +888,19 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    texture = this.GetTexture(d.Brush, name);
+                    texture = this.GetTexture(writer, d.Brush, name);
                 }
 
                 if (alpha > 0)
                 {
-                    this.WriteWhittedMaterial(string.Format("#{0}", weights.Count), texture, color, null, null);
+                    this.WriteWhittedMaterial(writer, string.Format("#{0}", weights.Count), texture, color, null, null);
                     weights.Add(alpha);
                 }
 
                 // The refractive part
                 if (alpha < 1)
                 {
-                    this.WriteWhittedMaterial(string.Format("#{0}", weights.Count), null, null, null, Colors.White);
+                    this.WriteWhittedMaterial(writer, string.Format("#{0}", weights.Count), null, null, null, Colors.White);
                     weights.Add(1 - alpha);
                 }
             }
@@ -1067,8 +911,7 @@ namespace HelixToolkit.Wpf
                 var color = this.GetSolidColor(s.Brush, s.Color);
 
                 // color = Color.FromArgb((byte)(color.A * factor), (byte)(color.R * factor), (byte)(color.G * factor), (byte)(color.B * factor));
-                this.WriteWhittedMaterial(
-                    string.Format("#{0}", weights.Count), null, null, color, null, s.SpecularPower * 0.5);
+                this.WriteWhittedMaterial(writer, string.Format("#{0}", weights.Count), null, null, color, null, s.SpecularPower * 0.5);
                 double weight = color.A / 255.0;
                 weight *= 0.01;
                 weights.Add(weight);
@@ -1077,7 +920,8 @@ namespace HelixToolkit.Wpf
             var e = material as EmissiveMaterial;
             if (e != null)
             {
-                Trace.WriteLine("KerkytheaExporter: Emissive materials are not yet supported.");
+                // TODO
+                System.Diagnostics.Debug.WriteLine("KerkytheaExporter: Emissive materials are not yet supported.");
 
                 // Color color = GetSolidColor(e.Brush, d.Color);
                 // WriteWhittedMaterial(string.Format("#{0}", weights.Count + 1), color, null, null);
@@ -1088,34 +932,33 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The export material.
+        /// Exports the specified material.
         /// </summary>
-        /// <param name="material">
-        /// The material.
-        /// </param>
-        private void ExportMaterial(Material material)
+        /// <param name="writer">The writer.</param>
+        /// <param name="material">The material.</param>
+        private void ExportMaterial(KerkytheaWriter writer, Material material)
         {
             // If the material is registered, simply output the xml
-            if (this.RegisteredMaterials.ContainsKey(material))
+            if (this.registeredMaterials.ContainsKey(material))
             {
-                var doc = this.RegisteredMaterials[material];
+                var doc = this.registeredMaterials[material];
                 if (doc != null && doc.DocumentElement != null)
                 {
                     foreach (XmlNode e in doc.DocumentElement.ChildNodes)
                     {
-                        e.WriteTo(this.writer);
+                        writer.Write(e);
                     }
                 }
 
                 return;
             }
 
-            string name = this.GetUniqueName(material, "Material");
-            this.WriteStartObject(name, "Layered Material", name, "Material");
+            string name = this.GetUniqueName(writer, material, "Material");
+            writer.WriteStartObject(name, "Layered Material", name, "Material");
 
             var weights = new List<double>();
 
-            this.ExportMaterial(name, material, weights);
+            this.ExportMaterial(writer, name, material, weights);
 
             // if (Reflections)
             // {
@@ -1123,44 +966,45 @@ namespace HelixToolkit.Wpf
             // }
             for (int i = 0; i < weights.Count; i++)
             {
-                this.WriteWeight("Weight #" + i, weights[i]);
+                this.WriteWeight(writer, "Weight #" + i, weights[i]);
             }
 
             /*
              switch (MaterialType)
              {
                  case MaterialTypes.Ashikhmin:
-                     WriteParameter("Rotation", 0.0);
-                     WriteParameter("Attenuation", "Schlick");
-                     WriteParameter("Index of Refraction", 1.0);
-                     WriteParameter("N-K File", "");
+                     this.WriteParameter("Rotation", 0.0);
+                     this.WriteParameter("Attenuation", "Schlick");
+                     this.WriteParameter("Index of Refraction", 1.0);
+                     this.WriteParameter("N-K File", "");
                      break;
                  case MaterialTypes.Diffusive: // Whitted material
-                     WriteParameter("Shininess", 60.0);
-                     WriteParameter("Transmitted Shininess", 128.0);
-                     WriteParameter("Index of Refraction", 1.0);
-                     WriteParameter("Specular Sampling", true);
-                     WriteParameter("Transmitted Sampling", false);
-                     WriteParameter("Specular Attenuation", "Cosine");
-                     WriteParameter("Transmitted Attenuation", "Cosine");
+                     this.WriteParameter("Shininess", 60.0);
+                     this.WriteParameter("Transmitted Shininess", 128.0);
+                     this.WriteParameter("Index of Refraction", 1.0);
+                     this.WriteParameter("Specular Sampling", true);
+                     this.WriteParameter("Transmitted Sampling", false);
+                     this.WriteParameter("Specular Attenuation", "Cosine");
+                     this.WriteParameter("Transmitted Attenuation", "Cosine");
                      break;
              }
              */
-            this.WriteEndObject();
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// The get solid color.
+        /// Gets the solid color from a brush.
         /// </summary>
         /// <param name="brush">
         /// The brush.
         /// </param>
-        /// <param name="fallbackColor">
-        /// The fallback color.
+        /// <param name="defaultColor">
+        /// The default color (used if the specified brush is not a <see cref="SolidColorBrush"/>).
         /// </param>
         /// <returns>
+        /// The color.
         /// </returns>
-        private Color GetSolidColor(Brush brush, Color fallbackColor)
+        private Color GetSolidColor(Brush brush, Color defaultColor)
         {
             var scb = brush as SolidColorBrush;
             if (scb != null)
@@ -1168,74 +1012,53 @@ namespace HelixToolkit.Wpf
                 return scb.Color;
             }
 
-            return fallbackColor;
+            return defaultColor;
         }
 
         /// <summary>
-        /// The get texture.
+        /// Gets the texture for a brush.
         /// </summary>
         /// <param name="brush">
         /// The brush.
         /// </param>
         /// <param name="name">
-        /// The name.
+        /// The name of the material.
         /// </param>
         /// <returns>
-        /// The get texture.
+        /// The texture filename.
         /// </returns>
-        private string GetTexture(Brush brush, string name)
+        private string GetTexture(KerkytheaWriter writer, Brush brush, string name)
         {
             // reuse textures
-            if (this.textureFiles.ContainsKey(brush))
+            string textureFile;
+            if (writer.TryGetTexture(brush, out textureFile))
             {
-                return this.textureFiles[brush];
+                return textureFile;
             }
 
             string filename = name + ".png";
             string path = Path.Combine(this.TexturePath, filename);
-            RenderBrush(path, brush, this.TextureWidth, this.TextureHeight);
+            this.RenderBrush(path, brush, this.TextureWidth, this.TextureHeight);
 
-            this.textureFiles.Add(brush, filename);
+            writer.AddTexture(brush, filename);
             return filename;
         }
 
         /// <summary>
-        /// The get unique name.
+        /// Gets a unique name.
         /// </summary>
-        /// <param name="o">
-        /// The o.
-        /// </param>
-        /// <param name="defaultName">
-        /// The default name.
-        /// </param>
-        /// <returns>
-        /// The get unique name.
-        /// </returns>
-        private string GetUniqueName(DependencyObject o, string defaultName)
+        /// <param name="writer">The writer.</param>
+        /// <param name="o">The object.</param>
+        /// <param name="defaultName">The default name.</param>
+        /// <returns>A unique name.</returns>
+        private string GetUniqueName(KerkytheaWriter writer, DependencyObject o, string defaultName)
         {
             var name = o.GetValue(FrameworkElement.NameProperty) as string;
-            if (string.IsNullOrEmpty(name))
-            {
-                int n = 1;
-                while (true)
-                {
-                    // name = defaultName + " #" + n;
-                    name = defaultName + n;
-                    if (!this.names.Contains(name))
-                    {
-                        break;
-                    }
-
-                    n++;
-                }
-            }
-
-            this.names.Add(name);
-            return name;
+            return writer.GetUniqueName(name, defaultName);
         }
 
         /// <summary>
-        /// The write ashikhmin material.
+        /// Writes a ashikhmin material.
         /// </summary>
         /// <param name="identifier">
         /// The identifier.
@@ -1270,7 +1093,7 @@ namespace HelixToolkit.Wpf
         /// <param name="nkfile">
         /// The nkfile.
         /// </param>
-        private void WriteAshikhminMaterial(
+        private void WriteAshikhminMaterial(KerkytheaWriter writer,
             string identifier,
             Color? diffuse,
             Color? specular,
@@ -1283,44 +1106,44 @@ namespace HelixToolkit.Wpf
             double indexOfRefraction = 1.0,
             string nkfile = null)
         {
-            this.WriteStartObject(identifier, "Ashikhmin Material", identifier, "Material");
+            writer.WriteStartObject(identifier, "Ashikhmin Material", identifier, "Material");
 
             if (diffuse.HasValue)
             {
-                this.WriteConstantTexture("Diffuse", diffuse.Value);
+                this.WriteConstantTexture(writer, "Diffuse", diffuse.Value);
             }
 
             if (specular.HasValue)
             {
-                this.WriteConstantTexture("Specular", specular.Value);
+                this.WriteConstantTexture(writer, "Specular", specular.Value);
             }
 
             if (shininessXMap.HasValue)
             {
-                this.WriteConstantTexture("Shininess X Map", shininessXMap.Value);
+                this.WriteConstantTexture(writer, "Shininess X Map", shininessXMap.Value);
             }
 
             if (shininessYMap.HasValue)
             {
-                this.WriteConstantTexture("Shininess Y Map", shininessYMap.Value);
+                this.WriteConstantTexture(writer, "Shininess Y Map", shininessYMap.Value);
             }
 
             if (rotationMap.HasValue)
             {
-                this.WriteConstantTexture("RotationMap", rotationMap.Value);
+                this.WriteConstantTexture(writer, "RotationMap", rotationMap.Value);
             }
 
-            WriteParameter("Shininess X", shininessX);
-            WriteParameter("Shininess Y", shininessY);
-            WriteParameter("Rotation", rotation);
-            this.WriteParameter("Attenuation", "Schlick");
-            WriteParameter("Index of Refraction", indexOfRefraction);
-            WriteParameter("N-K File", nkfile);
-            this.WriteEndObject();
+            writer.WriteParameter("Shininess X", shininessX);
+            writer.WriteParameter("Shininess Y", shininessY);
+            writer.WriteParameter("Rotation", rotation);
+            writer.WriteParameter("Attenuation", "Schlick");
+            writer.WriteParameter("Index of Refraction", indexOfRefraction);
+            writer.WriteParameter("N-K File", nkfile);
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// The write bitmap texture.
+        /// Writes a bitmap texture.
         /// </summary>
         /// <param name="name">
         /// The name.
@@ -1328,27 +1151,27 @@ namespace HelixToolkit.Wpf
         /// <param name="filename">
         /// The filename.
         /// </param>
-        private void WriteBitmapTexture(string name, string filename)
+        private void WriteBitmapTexture(KerkytheaWriter writer, string name, string filename)
         {
             if (!string.IsNullOrEmpty(filename))
             {
-                this.WriteStartObject("./" + name + "/Bitmap Texture", "Bitmap Texture", string.Empty, "Texture");
-                WriteParameter("Filename", filename);
-                this.WriteParameter("Projection", "UV");
-                this.WriteParameter("Offset X", 0.0);
-                this.WriteParameter("Offset Y", 0.0);
-                this.WriteParameter("Scale X", 1.0);
-                this.WriteParameter("Scale Y", 1.0);
-                this.WriteParameter("Rotation", 0.0);
-                this.WriteParameter("Smooth", true);
-                this.WriteParameter("Inverted", false);
-                this.WriteParameter("Alpha Channel", false);
-                this.WriteEndObject();
+                writer.WriteStartObject("./" + name + "/Bitmap Texture", "Bitmap Texture", string.Empty, "Texture");
+                writer.WriteParameter("Filename", filename);
+                writer.WriteParameter("Projection", "UV");
+                writer.WriteParameter("Offset X", 0.0);
+                writer.WriteParameter("Offset Y", 0.0);
+                writer.WriteParameter("Scale X", 1.0);
+                writer.WriteParameter("Scale Y", 1.0);
+                writer.WriteParameter("Rotation", 0.0);
+                writer.WriteParameter("Smooth", true);
+                writer.WriteParameter("Inverted", false);
+                writer.WriteParameter("Alpha Channel", false);
+                writer.WriteEndObject();
             }
         }
 
         /// <summary>
-        /// The write constant texture.
+        /// Writes a constant texture.
         /// </summary>
         /// <param name="name">
         /// The name.
@@ -1356,15 +1179,15 @@ namespace HelixToolkit.Wpf
         /// <param name="color">
         /// The color.
         /// </param>
-        private void WriteConstantTexture(string name, Color color)
+        private void WriteConstantTexture(KerkytheaWriter writer, string name, Color color)
         {
-            this.WriteStartObject("./" + name + "/Constant Texture", "Constant Texture", string.Empty, "Texture");
-            WriteParameter("Color", color);
-            this.WriteEndObject();
+            writer.WriteStartObject("./" + name + "/Constant Texture", "Constant Texture", string.Empty, "Texture");
+            writer.WriteParameter("Color", color);
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// The write dielectric material.
+        /// Writes a dielectric material.
         /// </summary>
         /// <param name="identifier">
         /// The identifier.
@@ -1384,7 +1207,7 @@ namespace HelixToolkit.Wpf
         /// <param name="nkfile">
         /// The nkfile.
         /// </param>
-        private void WriteDielectricMaterial(
+        private void WriteDielectricMaterial(KerkytheaWriter writer,
             string identifier,
             Color? reflection,
             Color? refraction,
@@ -1392,117 +1215,26 @@ namespace HelixToolkit.Wpf
             double dispersion = 0.0,
             string nkfile = null)
         {
-            this.WriteStartObject(identifier, "Ashikhmin Material", identifier, "Material");
+            writer.WriteStartObject(identifier, "Ashikhmin Material", identifier, "Material");
 
             if (reflection.HasValue)
             {
-                this.WriteConstantTexture("Reflection", reflection.Value);
+                this.WriteConstantTexture(writer, "Reflection", reflection.Value);
             }
 
             if (refraction.HasValue)
             {
-                this.WriteConstantTexture("Refraction", refraction.Value);
+                this.WriteConstantTexture(writer, "Refraction", refraction.Value);
             }
 
-            WriteParameter("Index of Refraction", indexOfRefraction);
-            WriteParameter("Dispersion", dispersion);
-            this.WriteParameter("N-K File", string.Empty);
-            this.WriteEndObject();
+            writer.WriteParameter("Index of Refraction", indexOfRefraction);
+            writer.WriteParameter("Dispersion", dispersion);
+            writer.WriteParameter("N-K File", string.Empty);
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// The write parameter.
-        /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="type">
-        /// The type.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        private void WriteParameter(string name, string type, string value)
-        {
-            this.writer.WriteStartElement("Parameter");
-            this.writer.WriteAttributeString("Name", name);
-            this.writer.WriteAttributeString("Type", type);
-            this.writer.WriteAttributeString("Value", value);
-            this.writer.WriteEndElement();
-        }
-
-        /// <summary>
-        /// The write parameter.
-        /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        private void WriteParameter(string p, string value)
-        {
-            this.WriteParameter(p, "String", value);
-        }
-
-        /// <summary>
-        /// The write parameter.
-        /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        private void WriteParameter(string p, Color color)
-        {
-            this.WriteParameter(p, "RGB", ToKerkytheaString(color));
-        }
-
-        /// <summary>
-        /// The write parameter.
-        /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="flag">
-        /// The flag.
-        /// </param>
-        private void WriteParameter(string p, bool flag)
-        {
-            this.WriteParameter(p, "Boolean", flag ? "1" : "0");
-        }
-
-        /// <summary>
-        /// The write parameter.
-        /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        private void WriteParameter(string p, double value)
-        {
-            this.WriteParameter(p, "Real", value.ToString(CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
-        /// The write parameter.
-        /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        private void WriteParameter(string p, int value)
-        {
-            this.WriteParameter(p, "Integer", value.ToString(CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
-        /// The write weight.
+        /// Writes a weight.
         /// </summary>
         /// <param name="identifier">
         /// The identifier.
@@ -1510,18 +1242,18 @@ namespace HelixToolkit.Wpf
         /// <param name="weight">
         /// The weight.
         /// </param>
-        private void WriteWeight(string identifier, double weight)
+        private void WriteWeight(KerkytheaWriter writer, string identifier, double weight)
         {
-            this.WriteStartObject(identifier, "Weighted Texture", identifier, "Texture");
-            this.WriteStartObject("Constant Texture", "Constant Texture", string.Empty, "Texture");
-            this.WriteParameter("Color", Colors.White);
-            this.WriteEndObject();
-            WriteParameter("Weight #0", weight);
-            this.WriteEndObject();
+            writer.WriteStartObject(identifier, "Weighted Texture", identifier, "Texture");
+            writer.WriteStartObject("Constant Texture", "Constant Texture", string.Empty, "Texture");
+            writer.WriteParameter("Color", Colors.White);
+            writer.WriteEndObject();
+            writer.WriteParameter("Weight #0", weight);
+            writer.WriteEndObject();
         }
 
         /// <summary>
-        /// The write whitted material.
+        /// Writes a whitted material.
         /// </summary>
         /// <param name="identifier">
         /// The identifier.
@@ -1544,7 +1276,7 @@ namespace HelixToolkit.Wpf
         /// <param name="indexOfRefraction">
         /// The index of refraction.
         /// </param>
-        private void WriteWhittedMaterial(
+        private void WriteWhittedMaterial(KerkytheaWriter writer,
             string identifier,
             string texture,
             Color? diffuse,
@@ -1553,38 +1285,327 @@ namespace HelixToolkit.Wpf
             double shininess = 128.0,
             double indexOfRefraction = 1.0)
         {
-            this.WriteStartObject(identifier, "Whitted Material", identifier, "Material");
+            writer.WriteStartObject(identifier, "Whitted Material", identifier, "Material");
 
             if (texture != null)
             {
-                this.WriteBitmapTexture("Diffuse", texture);
+                this.WriteBitmapTexture(writer, "Diffuse", texture);
             }
 
             if (diffuse.HasValue)
             {
-                this.WriteConstantTexture("Diffuse", diffuse.Value);
+                this.WriteConstantTexture(writer, "Diffuse", diffuse.Value);
             }
 
             if (specular.HasValue)
             {
-                this.WriteConstantTexture("Specular", specular.Value);
+                this.WriteConstantTexture(writer, "Specular", specular.Value);
             }
 
             if (refraction.HasValue)
             {
-                this.WriteConstantTexture("Refraction", refraction.Value);
+                this.WriteConstantTexture(writer, "Refraction", refraction.Value);
             }
 
-            WriteParameter("Shininess", shininess);
-            this.WriteParameter("Transmitted Shininess", 128.0);
-            WriteParameter("Index of Refraction", indexOfRefraction);
-            this.WriteParameter("Specular Sampling", false);
-            this.WriteParameter("Transmitted Sampling", false);
-            this.WriteParameter("Specular Attenuation", "Cosine");
-            this.WriteParameter("Transmitted Attenuation", "Cosine");
+            writer.WriteParameter("Shininess", shininess);
+            writer.WriteParameter("Transmitted Shininess", 128.0);
+            writer.WriteParameter("Index of Refraction", indexOfRefraction);
+            writer.WriteParameter("Specular Sampling", false);
+            writer.WriteParameter("Transmitted Sampling", false);
+            writer.WriteParameter("Specular Attenuation", "Cosine");
+            writer.WriteParameter("Transmitted Attenuation", "Cosine");
 
-            this.WriteEndObject();
+            writer.WriteEndObject();
         }
 
+        /// <summary>
+        /// Returns the <paramref name="value"/> or the <paramref name="defaultValue"/> if the <paramref name="value"/> is NaN.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="defaultValue">
+        /// The default value.
+        /// </param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        public static double ValueOrDefault(double value, double defaultValue)
+        {
+            if (double.IsNaN(value))
+            {
+                return defaultValue;
+            }
+
+            return value;
+        }
+
+        public class KerkytheaWriter
+        {
+            private readonly XmlWriter writer;
+
+            /// <summary>
+            /// The names.
+            /// </summary>
+            private readonly HashSet<string> names = new HashSet<string>();
+
+            /// <summary>
+            /// Texture bitmaps are reused. This dictionary contains a map from brush to filename
+            /// </summary>
+            private readonly Dictionary<Brush, string> textureFiles = new Dictionary<Brush, string>();
+
+            public KerkytheaWriter(Stream stream)
+            {
+                var settings = new XmlWriterSettings { Indent = true };
+                this.writer = XmlWriter.Create(stream, settings);
+            }
+
+            public void WriteStartElement(string localName)
+            {
+                this.writer.WriteStartElement(localName);
+            }
+
+            public void WriteAttributeString(string name, string value)
+            {
+                this.writer.WriteAttributeString(name, value);
+            }
+
+            public void WriteEndElement()
+            {
+                this.writer.WriteEndElement();
+            }
+
+            public void WriteFullEndElement()
+            {
+                this.writer.WriteFullEndElement();
+            }
+
+            public void WriteStartDocument()
+            {
+                this.writer.WriteStartDocument();
+            }
+
+            public void Close()
+            {
+                this.writer.Close();
+            }
+
+
+            /// <summary>
+            /// Writes a parameter.
+            /// </summary>
+            /// <param name="name">
+            /// The name.
+            /// </param>
+            /// <param name="type">
+            /// The type.
+            /// </param>
+            /// <param name="value">
+            /// The value.
+            /// </param>
+            public void WriteParameter(string name, string type, string value)
+            {
+                this.writer.WriteStartElement("Parameter");
+                this.writer.WriteAttributeString("Name", name);
+                this.writer.WriteAttributeString("Type", type);
+                this.writer.WriteAttributeString("Value", value);
+                this.writer.WriteEndElement();
+            }
+
+            /// <summary>
+            /// Writes a string parameter.
+            /// </summary>
+            /// <param name="name">
+            /// The name.
+            /// </param>
+            /// <param name="value">
+            /// The value.
+            /// </param>
+            public void WriteParameter(string name, string value)
+            {
+                this.WriteParameter(name, "String", value);
+            }
+
+            /// <summary>
+            /// Writes a color parameter.
+            /// </summary>
+            /// <param name="name">
+            /// The name.
+            /// </param>
+            /// <param name="color">
+            /// The color.
+            /// </param>
+            public void WriteParameter(string name, Color color)
+            {
+                this.WriteParameter(name, "RGB", ToKerkytheaString(color));
+            }
+
+            /// <summary>
+            /// Writes a boolean parameter.
+            /// </summary>
+            /// <param name="name">
+            /// The name.
+            /// </param>
+            /// <param name="flag">
+            /// The flag.
+            /// </param>
+            public void WriteParameter(string name, bool flag)
+            {
+                this.WriteParameter(name, "Boolean", flag ? "1" : "0");
+            }
+
+            /// <summary>
+            /// Writes a double parameter.
+            /// </summary>
+            /// <param name="name">
+            /// The name.
+            /// </param>
+            /// <param name="value">
+            /// The value.
+            /// </param>
+            public void WriteParameter(string name, double value)
+            {
+                this.WriteParameter(name, "Real", value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            /// <summary>
+            /// Writes an integer parameter.
+            /// </summary>
+            /// <param name="name">
+            /// The parameter name.
+            /// </param>
+            /// <param name="value">
+            /// The value.
+            /// </param>
+            public void WriteParameter(string name, int value)
+            {
+                this.WriteParameter(name, "Integer", value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            /// <summary>
+            /// Writes a transformation matrix.
+            /// </summary>
+            /// <param name="name">
+            /// The name of the matrix.
+            /// </param>
+            /// <param name="m">
+            /// The matrix.
+            /// </param>
+            public void WriteTransform(string name, Matrix3D m)
+            {
+                string value = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0:0.######} {1:0.######} {2:0.######} {3:0.######} {4:0.######} {5:0.######} {6:0.######} {7:0.######} {8:0.######} {9:0.######} {10:0.######} {11:0.######}",
+                    m.M11,
+                    m.M12,
+                    m.M13,
+                    m.OffsetX,
+                    m.M21,
+                    m.M22,
+                    m.M23,
+                    m.OffsetY,
+                    m.M31,
+                    m.M32,
+                    m.M33,
+                    m.OffsetZ);
+
+                this.WriteParameter(name, "Transform", value);
+            }
+
+            /// <summary>
+            /// Writes the end object.
+            /// </summary>
+            public void WriteEndObject()
+            {
+                this.writer.WriteFullEndElement();
+            }
+
+            /// <summary>
+            /// Writes the object.
+            /// </summary>
+            /// <param name="identifier">
+            /// The identifier.
+            /// </param>
+            /// <param name="label">
+            /// The label.
+            /// </param>
+            /// <param name="name">
+            /// The name.
+            /// </param>
+            /// <param name="type">
+            /// The type.
+            /// </param>
+            public void WriteObject(string identifier, string label, string name, string type)
+            {
+                this.WriteStartObject(identifier, label, name, type);
+                this.WriteEndObject();
+            }
+
+            /// <summary>
+            /// Writes the start object.
+            /// </summary>
+            /// <param name="identifier">
+            /// The identifier.
+            /// </param>
+            /// <param name="label">
+            /// The label.
+            /// </param>
+            /// <param name="name">
+            /// The name.
+            /// </param>
+            /// <param name="type">
+            /// The type.
+            /// </param>
+            public void WriteStartObject(string identifier, string label, string name, string type)
+            {
+                this.writer.WriteStartElement("Object");
+                this.writer.WriteAttributeString("Identifier", identifier);
+                this.writer.WriteAttributeString("Label", label);
+                this.writer.WriteAttributeString("Name", name);
+                this.writer.WriteAttributeString("Type", type);
+            }
+
+            public void WriteEndDocument()
+            {
+                this.writer.WriteEndDocument();
+            }
+
+            public void Write(XmlNode xmlNode)
+            {
+                xmlNode.WriteTo(this.writer);
+            }
+
+            public bool TryGetTexture(Brush brush, out string textureFile)
+            {
+                return this.textureFiles.TryGetValue(brush, out textureFile);
+            }
+
+            public void AddTexture(Brush brush, string filename)
+            {
+                this.textureFiles.Add(brush, filename);
+            }
+
+            public string GetUniqueName(string name, string defaultName)
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    int n = 1;
+                    while (true)
+                    {
+                        // name = defaultName + " #" + n;
+                        name = defaultName + n;
+                        if (!this.names.Contains(name))
+                        {
+                            break;
+                        }
+
+                        n++;
+                    }
+                }
+
+                this.names.Add(name);
+                return name;
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@
 namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
 
     using HelixToolkit.Wpf;
     using NUnit.Framework;
@@ -20,27 +21,32 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_SimpleModel_ValidOutput()
         {
             string path = "temp.obj";
-            using (var e = new ObjExporter(path))
+            var e = new ObjExporter();
+            using (var stream = File.Create(path))
             {
-                this.ExportSimpleModel(e);
+                this.ExportSimpleModel(e, stream);
             }
         }
 
         [Test]
         public void Export_BoxWithGradientTexture_TextureExportedAsPng()
         {
-            using (var e = new ObjExporter("box_gradient_png.obj"))
+            var path = "box_gradient_png.obj";
+            var e = new ObjExporter();
+            using (var stream = File.Create(path))
             {
-                this.ExportModel(e, () => new BoxVisual3D { Material = Materials.Rainbow });
+                this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
             }
         }
 
         [Test]
         public void Export_BoxWithGradientTexture_TextureExportedAsJpg()
         {
-            using (var e = new ObjExporter("box_gradient_jpg.obj") { TextureExtension = ".jpg" })
+            var path = "box_gradient_jpg.obj";
+            var e = new ObjExporter { TextureExtension = ".jpg" };
+            using (var stream = File.Create(path))
             {
-                this.ExportModel(e, () => new BoxVisual3D { Material = Materials.Rainbow });
+                this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
             }
         }
     }

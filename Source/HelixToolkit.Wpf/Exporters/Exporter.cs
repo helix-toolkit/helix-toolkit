@@ -15,14 +15,24 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// An abstract base class providing common functionality for exporters.
+    /// Provides a base class providing common functionality for exporters.
     /// </summary>
-    public abstract class Exporter : IExporter, IDisposable
+    /// <typeparam name="T">The type of the output writer.</typeparam>
+    public abstract class Exporter<T> : IExporter
     {
         /// <summary>
-        /// The disposed flag.
+        /// Initializes a new instance of the <see cref="Exporter{T}"/> class.
         /// </summary>
-        private bool disposed;
+        protected Exporter()
+        {
+            this.FileCreator = File.Create;
+        }
+
+        /// <summary>
+        /// Gets or sets the file creator.
+        /// </summary>
+        /// <value>The file creator.</value>
+        public Func<string, Stream> FileCreator { get; set; }
 
         /// <summary>
         /// Renders the brush to an image.
@@ -43,7 +53,7 @@ namespace HelixToolkit.Wpf
         /// The quality level of the image (only used if an JPEG image is exported). 
         /// The value range is 1 (lowest quality) to 100 (highest quality). 
         /// </param>
-        public static void RenderBrush(string path, Brush brush, int w, int h, int qualityLevel = 90)
+        public void RenderBrush(string path, Brush brush, int w, int h, int qualityLevel = 90)
         {
             var ib = brush as ImageBrush;
             if (ib != null)
@@ -81,142 +91,120 @@ namespace HelixToolkit.Wpf
 
             encoder.Frames.Add(BitmapFrame.Create(bmp));
 
-            using (Stream stm = File.Create(path))
+            using (var stm = this.FileCreator(path))
             {
                 encoder.Save(stm);
             }
         }
 
         /// <summary>
-        /// Closes this exporter.
-        /// </summary>
-        public virtual void Close()
-        {
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Exports the specified viewport.
-        /// Exports model, camera and lights.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        public virtual void Export(Viewport3D viewport)
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="stream">The output stream.</param>
+        public virtual void Export(Viewport3D viewport, Stream stream)
         {
-            this.ExportHeader();
-            this.ExportViewport(viewport);
+            var writer = this.Create(stream);
+            this.ExportHeader(writer);
+            this.ExportViewport(writer, viewport);
 
             // Export objects
-            viewport.Children.Traverse<GeometryModel3D>(this.ExportModel);
+            viewport.Children.Traverse<GeometryModel3D>((m, t) => this.ExportModel(writer, m, t));
 
             // Export camera
-            this.ExportCamera(viewport.Camera);
+            this.ExportCamera(writer, viewport.Camera);
 
             // Export lights
-            viewport.Children.Traverse<Light>(this.ExportLight);
+            viewport.Children.Traverse<Light>((m, t) => this.ExportLight(writer, m, t));
+
+            this.Close(writer);
         }
 
         /// <summary>
         /// Exports the specified visual.
         /// </summary>
-        /// <param name="visual">
-        /// The visual.
-        /// </param>
-        public void Export(Visual3D visual)
+        /// <param name="visual">The visual.</param>
+        /// <param name="stream">The output stream.</param>
+        public virtual void Export(Visual3D visual, Stream stream)
         {
-            this.ExportHeader();
-            visual.Traverse<GeometryModel3D>(this.ExportModel);
+            var writer = this.Create(stream);
+            this.ExportHeader(writer);
+            visual.Traverse<GeometryModel3D>((m, t) => this.ExportModel(writer, m, t));
+            this.Close(writer);
         }
 
         /// <summary>
         /// Exports the specified model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        public void Export(Model3D model)
+        /// <param name="model">The model.</param>
+        /// <param name="stream">The output stream.</param>
+        public virtual void Export(Model3D model, Stream stream)
         {
-            this.ExportHeader();
-            model.Traverse<GeometryModel3D>(this.ExportModel);
+            var writer = this.Create(stream);
+            this.ExportHeader(writer);
+            model.Traverse<GeometryModel3D>((m, t) => this.ExportModel(writer, m, t));
+            this.Close(writer);
+        }
+
+        /// <summary>
+        /// Creates the writer for the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>The writer.</returns>
+        protected abstract T Create(Stream stream);
+
+        /// <summary>
+        /// Closes the export writer.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        protected virtual void Close(T writer)
+        {
         }
 
         /// <summary>
         /// Exports the camera.
         /// </summary>
-        /// <param name="camera">
-        /// The camera.
-        /// </param>
-        protected virtual void ExportCamera(Camera camera)
+        /// <param name="writer">The writer.</param>
+        /// <param name="camera">The camera.</param>
+        protected virtual void ExportCamera(T writer, Camera camera)
         {
         }
 
         /// <summary>
         /// Exports the header.
         /// </summary>
-        protected virtual void ExportHeader()
+        /// <param name="writer">The writer.</param>
+        protected virtual void ExportHeader(T writer)
         {
         }
 
         /// <summary>
         /// Exports the light.
         /// </summary>
-        /// <param name="light">
-        /// The light.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
-        protected virtual void ExportLight(Light light, Transform3D inheritedTransform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="light">The light.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
+        protected virtual void ExportLight(T writer, Light light, Transform3D inheritedTransform)
         {
         }
 
         /// <summary>
         /// Exports the model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
-        protected virtual void ExportModel(GeometryModel3D model, Transform3D inheritedTransform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
+        protected virtual void ExportModel(T writer, GeometryModel3D model, Transform3D inheritedTransform)
         {
         }
 
         /// <summary>
         /// Exports the viewport.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        protected virtual void ExportViewport(Viewport3D viewport)
+        /// <param name="writer">The writer.</param>
+        /// <param name="viewport">The viewport.</param>
+        protected virtual void ExportViewport(T writer, Viewport3D viewport)
         {
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.Close();
-                }
-            }
-
-            this.disposed = true;
         }
     }
 }

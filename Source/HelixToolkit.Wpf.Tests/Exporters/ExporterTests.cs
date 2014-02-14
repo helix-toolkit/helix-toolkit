@@ -16,9 +16,17 @@ namespace HelixToolkit.Wpf.Tests
 
     using NUnitHelpers;
 
+    /// <summary>
+    /// Provides a base class for Exporter test classes.
+    /// </summary>
     public class ExporterTests
     {
-        protected void ExportSimpleModel(Exporter e)
+        /// <summary>
+        /// Exports a simple model in a STA.
+        /// </summary>
+        /// <param name="e">The exporter.</param>
+        /// <param name="stream">The stream.</param>
+        protected void ExportSimpleModel(IExporter e, Stream stream)
         {
             CrossThreadTestRunner.RunInSTA(
                 () =>
@@ -31,11 +39,17 @@ namespace HelixToolkit.Wpf.Tests
                     box.UpdateModel();
                     vp.Children.Add(box);
 
-                    e.Export(vp);
+                    e.Export(vp, stream);
                 });
         }
 
-        protected void ExportModel(Exporter e, Func<Visual3D> visual)
+        /// <summary>
+        /// Exports the model in a STA.
+        /// </summary>
+        /// <param name="e">The exporter.</param>
+        /// <param name="stream">The output stream.</param>
+        /// <param name="visual">The visual to export.</param>
+        protected void ExportModel(IExporter e, Stream stream, Func<Visual3D> visual)
         {
             CrossThreadTestRunner.RunInSTA(
                 () =>
@@ -45,7 +59,7 @@ namespace HelixToolkit.Wpf.Tests
                     var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
                     vp.Children.Add(new DefaultLights());
                     vp.Children.Add(visual());
-                    e.Export(vp);
+                    e.Export(vp, stream);
                 });
         }
 
@@ -97,7 +111,7 @@ namespace HelixToolkit.Wpf.Tests
                         return null;
                     }
 
-                    return String.Format("Errors: {0}, Warnings: {1}", errors, warnings);
+                    return string.Format("Errors: {0}, Warnings: {1}", errors, warnings);
                     /*
                     catch (XmlSchemaException e)
                     {

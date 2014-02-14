@@ -9,6 +9,7 @@ namespace HelixToolkit.Wpf
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Reflection;
     using System.Text;
     using System.Windows.Controls;
@@ -19,15 +20,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Exports the 3D visual tree to a Collada 1.5.0 file.
     /// </summary>
-    /// <remarks>
-    /// http://en.wikipedia.org/wiki/COLLADA
-    /// http://www.khronos.org/collada/
-    /// https://collada.org/mediawiki/index.php/COLLADA_-_Digital_Asset_and_FX_Exchange_Schema
-    /// https://collada.org/mediawiki/index.php/COLLADA.net
-    /// http://www.mogware.com/index.php?page=collada.NET
-    /// http://www.okino.com/conv/exp_collada.htm
-    /// </remarks>
-    public class ColladaExporter : Exporter
+    public class ColladaExporter : Exporter<XmlWriter>
     {
         /// <summary>
         /// The effect dictionary.
@@ -55,26 +48,6 @@ namespace HelixToolkit.Wpf
         private readonly Dictionary<Model3D, string> nodes = new Dictionary<Model3D, string>();
 
         /// <summary>
-        /// The writer.
-        /// </summary>
-        private readonly XmlTextWriter writer;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColladaExporter"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        public ColladaExporter(string path)
-        {
-            this.writer = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented };
-            this.writer.WriteStartDocument(false);
-            this.writer.WriteStartElement("COLLADA");
-            this.writer.WriteAttributeString("xmlns", "http://www.collada.org/2008/03/COLLADASchema");
-            this.writer.WriteAttributeString("version", "1.5.0");
-        }
-
-        /// <summary>
         /// Gets or sets the author.
         /// </summary>
         /// <value>The author.</value>
@@ -93,39 +66,35 @@ namespace HelixToolkit.Wpf
         public string Copyright { get; set; }
 
         /// <summary>
-        /// Closes this exporter.
-        /// </summary>
-        public override void Close()
-        {
-            this.writer.WriteEndElement(); // COLLADA
-            this.writer.WriteEndDocument();
-            this.writer.Close();
-            base.Close();
-        }
-
-        /// <summary>
         /// Exports the specified viewport.
         /// Exports model, camera and lights.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        public override void Export(Viewport3D viewport)
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="stream">The output stream.</param>
+        public override void Export(Viewport3D viewport, Stream stream)
         {
-            this.ExportViewport(viewport);
+            //// http://en.wikipedia.org/wiki/COLLADA
+            //// http://www.khronos.org/collada/
+            //// https://collada.org/mediawiki/index.php/COLLADA_-_Digital_Asset_and_FX_Exchange_Schema
+            //// https://collada.org/mediawiki/index.php/COLLADA.net
+            //// http://www.mogware.com/index.php?page=collada.NET
+            //// http://www.okino.com/conv/exp_collada.htm
+
+            var writer = this.Create(stream);
+            this.WriteAssets(writer, viewport);
 
             // Export camera
 
             // Export lights
-            Visual3DHelper.Traverse<Light>(viewport.Children, this.ExportLight);
+            viewport.Children.Traverse<Light>((l, t) => base.ExportLight(writer, l, t));
 
-            this.writer.WriteStartElement("library_materials");
-            Visual3DHelper.Traverse<GeometryModel3D>(viewport.Children, this.ExportMaterial);
-            this.writer.WriteEndElement();
+            writer.WriteStartElement("library_materials");
+            viewport.Children.Traverse<GeometryModel3D>((gm, t) => this.ExportMaterial(writer, gm));
+            writer.WriteEndElement();
 
-            this.writer.WriteStartElement("library_effects");
-            Visual3DHelper.Traverse<GeometryModel3D>(viewport.Children, this.ExportEffect);
-            this.writer.WriteEndElement();
+            writer.WriteStartElement("library_effects");
+            viewport.Children.Traverse<GeometryModel3D>((gm, t) => this.ExportEffect(writer, gm));
+            writer.WriteEndElement();
 
             // writer.WriteStartElement("library_cameras");
             // this.ExportCamera(viewport.Camera);
@@ -134,41 +103,66 @@ namespace HelixToolkit.Wpf
             // writer.WriteStartElement("library_lights");
             // Visual3DHelper.Traverse<Light>(viewport.Children, this.ExportLight);
             // writer.WriteEndElement();
-            this.writer.WriteStartElement("library_geometries");
-            Visual3DHelper.Traverse<GeometryModel3D>(viewport.Children, this.ExportGeometry);
-            this.writer.WriteEndElement();
+            writer.WriteStartElement("library_geometries");
+            viewport.Children.Traverse<GeometryModel3D>((gm, t) => this.ExportGeometry(writer, gm, t));
+            writer.WriteEndElement();
 
-            this.writer.WriteStartElement("library_nodes");
-            Visual3DHelper.Traverse<GeometryModel3D>(viewport.Children, this.ExportNode);
-            this.writer.WriteEndElement();
+            writer.WriteStartElement("library_nodes");
+            viewport.Children.Traverse<GeometryModel3D>((gm, t) => this.ExportNode(writer, gm, t));
+            writer.WriteEndElement();
 
-            this.writer.WriteStartElement("library_visual_scenes");
-            this.writer.WriteStartElement("visual_scene");
-            this.writer.WriteAttributeString("id", "RootNode");
-            this.writer.WriteAttributeString("name", "RootNode");
+            writer.WriteStartElement("library_visual_scenes");
+            writer.WriteStartElement("visual_scene");
+            writer.WriteAttributeString("id", "RootNode");
+            writer.WriteAttributeString("name", "RootNode");
 
             // this.ExportCameraNode(viewport.Camera);
-            Visual3DHelper.Traverse<GeometryModel3D>(viewport.Children, this.ExportSceneNode);
-            this.writer.WriteEndElement();
-            this.writer.WriteEndElement();
+            viewport.Children.Traverse<GeometryModel3D>((gm, t) => this.ExportSceneNode(writer, gm, t));
+            writer.WriteEndElement();
+            writer.WriteEndElement();
 
-            this.writer.WriteStartElement("scene");
-            this.writer.WriteStartElement("instance_visual_scene");
-            this.writer.WriteAttributeString("url", "#RootNode");
-            this.writer.WriteEndElement();
-            this.writer.WriteEndElement();
+            writer.WriteStartElement("scene");
+            writer.WriteStartElement("instance_visual_scene");
+            writer.WriteAttributeString("url", "#RootNode");
+            writer.WriteEndElement();
+            writer.WriteEndElement();
+
+            this.Close(writer);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="XmlWriter" /> on the specified stream.
+        /// </summary>
+        /// <param name="stream">The output stream.</param>
+        /// <returns>A <see cref="XmlWriter"/>.</returns>
+        protected override XmlWriter Create(Stream stream)
+        {
+            var writer = new XmlTextWriter(stream, Encoding.UTF8) { Formatting = Formatting.Indented };
+            writer.WriteStartDocument(false);
+            writer.WriteStartElement("COLLADA");
+            writer.WriteAttributeString("xmlns", "http://www.collada.org/2008/03/COLLADASchema");
+            writer.WriteAttributeString("version", "1.5.0");
+            return writer;
+        }
+
+        /// <summary>
+        /// Closes this exporter.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        protected override void Close(XmlWriter writer)
+        {
+            writer.WriteEndElement(); // COLLADA
+            writer.WriteEndDocument();
+            writer.Close();
         }
 
         /// <summary>
         /// Exports the model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
-        protected override void ExportModel(GeometryModel3D model, Transform3D inheritedTransform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
+        protected override void ExportModel(XmlWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
         {
             // var mesh = model.Geometry as MeshGeometry3D;
             // var indices = new StringBuilder();
@@ -183,136 +177,122 @@ namespace HelixToolkit.Wpf
             // points.AppendFormat(CultureInfo.InvariantCulture, "{0} {1} {2} ", pt.X, pt.Y, pt.Z);
             // }
 
-            // this.writer.WriteStartElement("Transform");
-            // this.writer.WriteStartElement("Shape");
-            // this.writer.WriteStartElement("IndexedFaceSet");
-            // this.writer.WriteAttributeString("coordIndex", indices.ToString());
-            // this.writer.WriteStartElement("Coordinate");
-            // this.writer.WriteAttributeString("point", points.ToString());
-            // this.writer.WriteEndElement();
-            // this.writer.WriteEndElement(); // IndexedFaceSet
-            // this.writer.WriteStartElement("Appearance");
+            // writer.WriteStartElement("Transform");
+            // writer.WriteStartElement("Shape");
+            // writer.WriteStartElement("IndexedFaceSet");
+            // writer.WriteAttributeString("coordIndex", indices.ToString());
+            // writer.WriteStartElement("Coordinate");
+            // writer.WriteAttributeString("point", points.ToString());
+            // writer.WriteEndElement();
+            // writer.WriteEndElement(); // IndexedFaceSet
+            // writer.WriteStartElement("Appearance");
 
-            // this.writer.WriteStartElement("Material");
-            // this.writer.WriteAttributeString("diffuseColor", "0.8 0.8 0.2");
-            // this.writer.WriteAttributeString("specularColor", "0.5 0.5 0.5");
-            // this.writer.WriteEndElement();
-            // this.writer.WriteEndElement(); // Appearance
+            // writer.WriteStartElement("Material");
+            // writer.WriteAttributeString("diffuseColor", "0.8 0.8 0.2");
+            // writer.WriteAttributeString("specularColor", "0.5 0.5 0.5");
+            // writer.WriteEndElement();
+            // writer.WriteEndElement(); // Appearance
 
-            // this.writer.WriteEndElement(); // Shape
-            // this.writer.WriteEndElement(); // Transform
+            // writer.WriteEndElement(); // Shape
+            // writer.WriteEndElement(); // Transform
         }
 
         /// <summary>
-        /// Exports the viewport.
+        /// Writes the file assets.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        protected override void ExportViewport(Viewport3D viewport)
+        /// <param name="writer">The writer.</param>
+        /// <param name="viewport">The viewport.</param>
+        private void WriteAssets(XmlWriter writer, Viewport3D viewport)
         {
-            base.ExportViewport(viewport);
-            var assembly = Assembly.GetEntryAssembly();
-            if (assembly == null)
-            {
-                assembly = Assembly.GetExecutingAssembly();
-            }
+            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
 
             var assemblyName = assembly.GetName();
             var authoringTool = string.Format("{0} {1}", assemblyName.Name, assemblyName.Version.ToString(3));
 
             var created = DateTime.Now;
             var createdString = created.ToString("u").Replace(' ', 'T');
-            var upaxis = "Z_UP";
-            var pcamera = viewport.Camera as ProjectionCamera;
-            if (pcamera != null && pcamera.UpDirection.Y > pcamera.UpDirection.Z)
+            var projectionCamera = viewport.Camera as ProjectionCamera;
+            var upAxis = "Z_UP";
+            if (projectionCamera != null && projectionCamera.UpDirection.Y > projectionCamera.UpDirection.Z)
             {
-                upaxis = "Y_UP";
+                upAxis = "Y_UP";
             }
 
-            this.writer.WriteStartElement("asset");
+            writer.WriteStartElement("asset");
 
-            this.writer.WriteStartElement("contributor");
+            writer.WriteStartElement("contributor");
             if (this.Author != null)
             {
-                this.writer.WriteElementString("author", this.Author);
+                writer.WriteElementString("author", this.Author);
             }
 
             if (this.Copyright != null)
             {
-                this.writer.WriteElementString("copyright", this.Copyright);
+                writer.WriteElementString("copyright", this.Copyright);
             }
 
             if (this.Comments != null)
             {
-                this.writer.WriteElementString("comments", this.Comments);
+                writer.WriteElementString("comments", this.Comments);
             }
 
-            this.writer.WriteElementString("authoring_tool", authoringTool);
-            this.writer.WriteEndElement(); // contributor
+            writer.WriteElementString("authoring_tool", authoringTool);
+            writer.WriteEndElement(); // contributor
 
-            this.writer.WriteElementString("created", createdString);
-            this.writer.WriteElementString("modified", createdString);
+            writer.WriteElementString("created", createdString);
+            writer.WriteElementString("modified", createdString);
 
-            // this.writer.WriteStartElement("unit");
+            // writer.WriteStartElement("unit");
             // writer.WriteAttributeString("meter", "1.0");
             // writer.WriteAttributeString("name", "meter");
-            // this.writer.WriteEndElement(); // unit
-            this.writer.WriteElementString("up_axis", upaxis);
-            this.writer.WriteEndElement(); // asset
+            // writer.WriteEndElement(); // unit
+            writer.WriteElementString("up_axis", upAxis);
+            writer.WriteEndElement(); // asset
         }
 
         /// <summary>
-        /// The bind material.
+        /// Binds the specified geometry and material.
         /// </summary>
-        /// <param name="geometryId">
-        /// The geometry id.
-        /// </param>
-        /// <param name="materialId">
-        /// The material id.
-        /// </param>
-        private void BindMaterial(string geometryId, string materialId)
+        /// <param name="writer">The writer.</param>
+        /// <param name="geometryId">The geometry identifier.</param>
+        /// <param name="materialId">The material identifier.</param>
+        private void BindMaterial(XmlWriter writer, string geometryId, string materialId)
         {
-            this.writer.WriteStartElement("instance_geometry");
-            this.writer.WriteAttributeString("url", "#" + geometryId);
-            this.writer.WriteStartElement("bind_material");
-            this.writer.WriteStartElement("technique_common");
-            this.writer.WriteStartElement("instance_material");
-            this.writer.WriteAttributeString("symbol", "Material2");
-            this.writer.WriteAttributeString("target", "#" + materialId);
-            this.writer.WriteStartElement("bind_vertex_input");
-            this.writer.WriteAttributeString("semantic", "UVSET0");
-            this.writer.WriteAttributeString("input_semantic", "TEXCOORD");
-            this.writer.WriteAttributeString("input_set", "0");
-            this.writer.WriteEndElement(); // bind_vertex_input
-            this.writer.WriteEndElement(); // instance_material
-            this.writer.WriteEndElement(); // technique_common
-            this.writer.WriteEndElement(); // bind_material
-            this.writer.WriteEndElement(); // instance_geometry
+            writer.WriteStartElement("instance_geometry");
+            writer.WriteAttributeString("url", "#" + geometryId);
+            writer.WriteStartElement("bind_material");
+            writer.WriteStartElement("technique_common");
+            writer.WriteStartElement("instance_material");
+            writer.WriteAttributeString("symbol", "Material2");
+            writer.WriteAttributeString("target", "#" + materialId);
+            writer.WriteStartElement("bind_vertex_input");
+            writer.WriteAttributeString("semantic", "UVSET0");
+            writer.WriteAttributeString("input_semantic", "TEXCOORD");
+            writer.WriteAttributeString("input_set", "0");
+            writer.WriteEndElement(); // bind_vertex_input
+            writer.WriteEndElement(); // instance_material
+            writer.WriteEndElement(); // technique_common
+            writer.WriteEndElement(); // bind_material
+            writer.WriteEndElement(); // instance_geometry
         }
 
         /// <summary>
-        /// The export effect.
+        /// Exports the effect of the specified model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        private void ExportEffect(GeometryModel3D model, Transform3D transform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        private void ExportEffect(XmlWriter writer, GeometryModel3D model)
         {
-            this.ExportEffect(model.Material);
-            this.ExportEffect(model.BackMaterial);
+            this.ExportEffect(writer, model.Material);
+            this.ExportEffect(writer, model.BackMaterial);
         }
 
         /// <summary>
-        /// The export effect.
+        /// Exports the effect of the specified material.
         /// </summary>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        private void ExportEffect(Material m)
+        /// <param name="writer">The writer.</param>
+        /// <param name="m">The material.</param>
+        private void ExportEffect(XmlWriter writer, Material m)
         {
             if (m == null)
             {
@@ -320,48 +300,47 @@ namespace HelixToolkit.Wpf
             }
 
             string id = this.effects[m];
-            this.writer.WriteStartElement("effect");
-            this.writer.WriteAttributeString("id", id);
-            this.writer.WriteAttributeString("name", id);
-            this.writer.WriteStartElement("profile_COMMON");
-            this.writer.WriteStartElement("technique");
-            this.writer.WriteAttributeString("sid", "common");
-            this.writer.WriteStartElement("phong");
+            writer.WriteStartElement("effect");
+            writer.WriteAttributeString("id", id);
+            writer.WriteAttributeString("name", id);
+            writer.WriteStartElement("profile_COMMON");
+            writer.WriteStartElement("technique");
+            writer.WriteAttributeString("sid", "common");
+            writer.WriteStartElement("phong");
 
-            var diffuse = MaterialHelper.GetFirst<DiffuseMaterial>(m);
-            var specular = MaterialHelper.GetFirst<SpecularMaterial>(m);
-            var emissive = MaterialHelper.GetFirst<EmissiveMaterial>(m);
-            if (emissive != null)
+            var emissiveMaterial = MaterialHelper.GetFirst<EmissiveMaterial>(m);
+            if (emissiveMaterial != null)
             {
-                this.WritePhongMaterial("emission", emissive.Color);
+                this.WritePhongMaterial(writer, "emission", emissiveMaterial.Color);
             }
 
-            if (diffuse != null)
+            var diffuseMaterial = MaterialHelper.GetFirst<DiffuseMaterial>(m);
+            if (diffuseMaterial != null)
             {
-                this.WritePhongMaterial("diffuse", diffuse.Color);
+                this.WritePhongMaterial(writer, "diffuse", diffuseMaterial.Color);
             }
 
-            if (specular != null)
+            var specularMaterial = MaterialHelper.GetFirst<SpecularMaterial>(m);
+            if (specularMaterial != null)
             {
-                this.WritePhongMaterial("specular", specular.Color);
+                this.WritePhongMaterial(writer, "specular", specularMaterial.Color);
             }
 
-            this.writer.WriteEndElement(); // phong
-            this.writer.WriteEndElement(); // technique
-            this.writer.WriteEndElement(); // profile_COMMON
-            this.writer.WriteEndElement(); // effect
+            writer.WriteEndElement(); // phong
+            writer.WriteEndElement(); // technique
+            writer.WriteEndElement(); // profile_COMMON
+            writer.WriteEndElement(); // effect
         }
 
         /// <summary>
-        /// The export geometry.
+        /// Exports the geometry of the specified model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        private void ExportGeometry(GeometryModel3D model, Transform3D transform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="transform">The transform.</param>
+        /// <exception cref="System.InvalidOperationException">Model is not a MeshGeometry3D.</exception>
+        // ReSharper disable once UnusedParameter.Local
+        private void ExportGeometry(XmlWriter writer, GeometryModel3D model, Transform3D transform)
         {
             var mg = model.Geometry as MeshGeometry3D;
             if (mg == null)
@@ -369,95 +348,94 @@ namespace HelixToolkit.Wpf
                 throw new InvalidOperationException("Model is not a MeshGeometry3D.");
             }
 
-            this.writer.WriteStartElement("geometry");
-            this.writer.WriteStartElement("mesh");
+            writer.WriteStartElement("geometry");
+            writer.WriteStartElement("mesh");
 
             // write positions
             int id = this.geometries.Count;
             string meshId = "mesh" + id;
             this.geometries.Add(mg, meshId);
 
-            this.writer.WriteStartElement("source");
+            writer.WriteStartElement("source");
             string positionsId = "p" + id;
-            this.writer.WriteAttributeString("id", positionsId);
-            this.writer.WriteStartElement("float_array");
+            writer.WriteAttributeString("id", positionsId);
+            writer.WriteStartElement("float_array");
             string positionsArrayId = positionsId + "-array";
-            this.writer.WriteAttributeString("id", positionsArrayId);
-            this.writer.WriteAttributeString("count", (mg.Positions.Count * 3).ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("id", positionsArrayId);
+            writer.WriteAttributeString("count", (mg.Positions.Count * 3).ToString(CultureInfo.InvariantCulture));
             var psb = new StringBuilder();
             foreach (var p in mg.Positions)
             {
                 psb.AppendFormat(CultureInfo.InvariantCulture, "{0} {1} {2} ", p.X, p.Y, p.Z);
             }
 
-            this.writer.WriteRaw(psb.ToString());
-            this.writer.WriteEndElement(); // float array
+            writer.WriteRaw(psb.ToString());
+            writer.WriteEndElement(); // float array
 
-            this.writer.WriteStartElement("technique_common");
-            this.writer.WriteStartElement("accessor");
-            this.writer.WriteAttributeString("source", "#" + positionsArrayId);
-            this.writer.WriteAttributeString("count", mg.Positions.Count.ToString(CultureInfo.InvariantCulture));
-            this.writer.WriteAttributeString("stride", "3");
-            this.writer.WriteStartElement("param");
-            this.writer.WriteAttributeString("name", "X");
-            this.writer.WriteAttributeString("type", "float");
-            this.writer.WriteEndElement(); // param
-            this.writer.WriteStartElement("param");
-            this.writer.WriteAttributeString("name", "Y");
-            this.writer.WriteAttributeString("type", "float");
-            this.writer.WriteEndElement(); // param
-            this.writer.WriteStartElement("param");
-            this.writer.WriteAttributeString("name", "Z");
-            this.writer.WriteAttributeString("type", "float");
-            this.writer.WriteEndElement(); // param
-            this.writer.WriteEndElement(); // accessor
-            this.writer.WriteEndElement(); // technique_common
+            writer.WriteStartElement("technique_common");
+            writer.WriteStartElement("accessor");
+            writer.WriteAttributeString("source", "#" + positionsArrayId);
+            writer.WriteAttributeString("count", mg.Positions.Count.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("stride", "3");
+            writer.WriteStartElement("param");
+            writer.WriteAttributeString("name", "X");
+            writer.WriteAttributeString("type", "float");
+            writer.WriteEndElement(); // param
+            writer.WriteStartElement("param");
+            writer.WriteAttributeString("name", "Y");
+            writer.WriteAttributeString("type", "float");
+            writer.WriteEndElement(); // param
+            writer.WriteStartElement("param");
+            writer.WriteAttributeString("name", "Z");
+            writer.WriteAttributeString("type", "float");
+            writer.WriteEndElement(); // param
+            writer.WriteEndElement(); // accessor
+            writer.WriteEndElement(); // technique_common
 
-            this.writer.WriteEndElement(); // source
+            writer.WriteEndElement(); // source
 
-            this.writer.WriteStartElement("vertices");
+            writer.WriteStartElement("vertices");
             string verticesId = "v" + id;
-            this.writer.WriteAttributeString("id", verticesId);
+            writer.WriteAttributeString("id", verticesId);
 
-            this.writer.WriteStartElement("input");
-            this.writer.WriteAttributeString("semantic", "POSITION");
-            this.writer.WriteAttributeString("source", "#" + positionsId);
-            this.writer.WriteEndElement(); // input
+            writer.WriteStartElement("input");
+            writer.WriteAttributeString("semantic", "POSITION");
+            writer.WriteAttributeString("source", "#" + positionsId);
+            writer.WriteEndElement(); // input
 
             // writer.WriteStartElement("input");
             // writer.WriteAttributeString("semantic", "NORMAL");
             // writer.WriteAttributeString("source", normalsId);
             // writer.WriteEndElement(); // input
-            this.writer.WriteEndElement(); // vertices
+            writer.WriteEndElement(); // vertices
 
-            this.writer.WriteStartElement("triangles");
-            this.writer.WriteAttributeString("count", mg.TriangleIndices.Count.ToString(CultureInfo.InvariantCulture));
-            this.writer.WriteAttributeString("material", "xx");
-            this.writer.WriteStartElement("input");
-            this.writer.WriteAttributeString("offset", "0");
-            this.writer.WriteAttributeString("semantic", "VERTEX");
-            this.writer.WriteAttributeString("source", "#" + verticesId);
-            this.writer.WriteEndElement(); // input
+            writer.WriteStartElement("triangles");
+            writer.WriteAttributeString("count", mg.TriangleIndices.Count.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("material", "xx");
+            writer.WriteStartElement("input");
+            writer.WriteAttributeString("offset", "0");
+            writer.WriteAttributeString("semantic", "VERTEX");
+            writer.WriteAttributeString("source", "#" + verticesId);
+            writer.WriteEndElement(); // input
             var sb = new StringBuilder();
             foreach (var i in mg.TriangleIndices)
             {
                 sb.Append(i + " ");
             }
 
-            this.writer.WriteElementString("p", sb.ToString());
-            this.writer.WriteEndElement(); // triangles
+            writer.WriteElementString("p", sb.ToString());
+            writer.WriteEndElement(); // triangles
 
-            this.writer.WriteEndElement(); // mesh
-            this.writer.WriteEndElement(); // geometry
+            writer.WriteEndElement(); // mesh
+            writer.WriteEndElement(); // geometry
         }
 
         /// <summary>
-        /// The export light.
+        /// Exports the specified light.
         /// </summary>
-        /// <param name="light">
-        /// The light.
-        /// </param>
-        private void ExportLight(Light light)
+        /// <param name="writer">The writer.</param>
+        /// <param name="light">The light.</param>
+        private void ExportLight(XmlWriter writer, Light light)
         {
             if (light == null || this.lights.ContainsKey(light))
             {
@@ -466,78 +444,73 @@ namespace HelixToolkit.Wpf
 
             string id = "light_" + this.lights.Count;
             this.lights.Add(light, id);
-            this.writer.WriteStartElement("light");
-            this.writer.WriteAttributeString("id", id);
-            this.writer.WriteAttributeString("name", id);
-            this.writer.WriteStartElement("technique_common");
+            writer.WriteStartElement("light");
+            writer.WriteAttributeString("id", id);
+            writer.WriteAttributeString("name", id);
+            writer.WriteStartElement("technique_common");
 
             var al = light as AmbientLight;
             if (al != null)
             {
-                this.writer.WriteStartElement("ambient");
-                this.WriteColor(al.Color);
-                this.writer.WriteEndElement();
+                writer.WriteStartElement("ambient");
+                this.WriteColor(writer, al.Color);
+                writer.WriteEndElement();
             }
 
             var dl = light as DirectionalLight;
             if (dl != null)
             {
-                this.writer.WriteStartElement("directional");
-                this.WriteColor(dl.Color);
-                this.writer.WriteEndElement();
+                writer.WriteStartElement("directional");
+                this.WriteColor(writer, dl.Color);
+                writer.WriteEndElement();
             }
 
             var pl = light as PointLight;
             if (pl != null)
             {
-                this.writer.WriteStartElement("point");
-                this.WriteColor(pl.Color);
-                this.WriteDouble("constant_attenuation", pl.ConstantAttenuation);
-                this.WriteDouble("linear_attenuation", pl.LinearAttenuation);
-                this.WriteDouble("quadratic_attenuation", pl.QuadraticAttenuation);
-                this.writer.WriteEndElement();
+                writer.WriteStartElement("point");
+                this.WriteColor(writer, pl.Color);
+                this.WriteDouble(writer, "constant_attenuation", pl.ConstantAttenuation);
+                this.WriteDouble(writer, "linear_attenuation", pl.LinearAttenuation);
+                this.WriteDouble(writer, "quadratic_attenuation", pl.QuadraticAttenuation);
+                writer.WriteEndElement();
             }
 
             var sl = light as SpotLight;
             if (sl != null)
             {
-                this.writer.WriteStartElement("spot");
-                this.WriteColor(sl.Color);
-                this.WriteDouble("constant_attenuation", sl.ConstantAttenuation);
-                this.WriteDouble("linear_attenuation", sl.LinearAttenuation);
-                this.WriteDouble("quadratic_attenuation", sl.QuadraticAttenuation);
-                this.WriteDouble("falloff_angle", sl.InnerConeAngle);
+                writer.WriteStartElement("spot");
+                this.WriteColor(writer, sl.Color);
+                this.WriteDouble(writer, "constant_attenuation", sl.ConstantAttenuation);
+                this.WriteDouble(writer, "linear_attenuation", sl.LinearAttenuation);
+                this.WriteDouble(writer, "quadratic_attenuation", sl.QuadraticAttenuation);
+                this.WriteDouble(writer, "falloff_angle", sl.InnerConeAngle);
 
                 // writer.WriteElementString("falloff_exponent",sl.xxx.ToString(CultureInfo.InvariantCulture));
-                this.writer.WriteEndElement();
+                writer.WriteEndElement();
             }
 
-            this.writer.WriteEndElement(); // technique_common
-            this.writer.WriteEndElement(); // light
+            writer.WriteEndElement(); // technique_common
+            writer.WriteEndElement(); // light
         }
 
         /// <summary>
-        /// The export material.
+        /// Exports the material in the specified model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        private void ExportMaterial(GeometryModel3D model, Transform3D transform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        private void ExportMaterial(XmlWriter writer, GeometryModel3D model)
         {
-            this.ExportMaterial(model.Material);
-            this.ExportMaterial(model.BackMaterial);
+            this.ExportMaterial(writer, model.Material);
+            this.ExportMaterial(writer, model.BackMaterial);
         }
 
         /// <summary>
-        /// The export material.
+        /// Exports the specified material.
         /// </summary>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        private void ExportMaterial(Material m)
+        /// <param name="writer">The writer.</param>
+        /// <param name="m">The material.</param>
+        private void ExportMaterial(XmlWriter writer, Material m)
         {
             if (m == null || this.materials.ContainsKey(m))
             {
@@ -548,25 +521,24 @@ namespace HelixToolkit.Wpf
             string effectid = "effect_" + this.materials.Count;
             this.materials.Add(m, id);
             this.effects.Add(m, effectid);
-            this.writer.WriteStartElement("material");
-            this.writer.WriteAttributeString("id", id);
-            this.writer.WriteAttributeString("name", id);
-            this.writer.WriteStartElement("instance_effect");
-            this.writer.WriteAttributeString("url", "#" + effectid);
-            this.writer.WriteEndElement();
-            this.writer.WriteEndElement();
+            writer.WriteStartElement("material");
+            writer.WriteAttributeString("id", id);
+            writer.WriteAttributeString("name", id);
+            writer.WriteStartElement("instance_effect");
+            writer.WriteAttributeString("url", "#" + effectid);
+            writer.WriteEndElement();
+            writer.WriteEndElement();
         }
 
         /// <summary>
-        /// The export node.
+        /// Exports the specified model as a node.
         /// </summary>
-        /// <param name="gm">
-        /// The gm.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        private void ExportNode(GeometryModel3D gm, Transform3D transform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="gm">The model.</param>
+        /// <param name="transform">The transform.</param>
+        /// <exception cref="System.InvalidOperationException">Model is not a MeshGeometry3D.</exception>
+        // ReSharper disable once UnusedParameter.Local
+        private void ExportNode(XmlWriter writer, GeometryModel3D gm, Transform3D transform)
         {
             var mg = gm.Geometry as MeshGeometry3D;
             if (mg == null)
@@ -577,86 +549,73 @@ namespace HelixToolkit.Wpf
             string geometryId = this.geometries[mg];
             string nodeId = geometryId + "-node";
             this.nodes.Add(gm, nodeId);
-            this.writer.WriteStartElement("node");
-            this.writer.WriteAttributeString("id", nodeId);
-            this.writer.WriteAttributeString("name", nodeId);
+            writer.WriteStartElement("node");
+            writer.WriteAttributeString("id", nodeId);
+            writer.WriteAttributeString("name", nodeId);
             string frontMaterialId;
             string backMaterialId;
             if (gm.Material != null && this.materials.TryGetValue(gm.Material, out frontMaterialId))
             {
-                this.BindMaterial(geometryId, frontMaterialId);
+                this.BindMaterial(writer, geometryId, frontMaterialId);
             }
 
             if (gm.BackMaterial != null && this.materials.TryGetValue(gm.BackMaterial, out backMaterialId))
             {
-                this.BindMaterial(geometryId, backMaterialId);
+                this.BindMaterial(writer, geometryId, backMaterialId);
             }
 
-            this.writer.WriteEndElement(); // node
+            writer.WriteEndElement(); // node
         }
 
         /// <summary>
-        /// The export scene node.
+        /// Exports the specified model as a scene node.
         /// </summary>
-        /// <param name="gm">
-        /// The gm.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        private void ExportSceneNode(Model3D gm, Transform3D transform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="gm">The model.</param>
+        /// <param name="transform">The transform.</param>
+        private void ExportSceneNode(XmlWriter writer, Model3D gm, Transform3D transform)
         {
             string nodeId = this.nodes[gm];
             string instanceId = nodeId + "-instance";
-            this.writer.WriteStartElement("node");
-            this.writer.WriteAttributeString("id", instanceId);
-            this.writer.WriteAttributeString("name", instanceId);
+            writer.WriteStartElement("node");
+            writer.WriteAttributeString("id", instanceId);
+            writer.WriteAttributeString("name", instanceId);
             var totalTransform = Transform3DHelper.CombineTransform(transform, gm.Transform);
-            this.WriteMatrix("matrix", totalTransform.Value);
-            this.writer.WriteStartElement("instance_node");
-            this.writer.WriteAttributeString("url", "#" + nodeId);
-            this.writer.WriteEndElement(); // instance node
-            this.writer.WriteEndElement(); // node
+            this.WriteMatrix(writer, "matrix", totalTransform.Value);
+            writer.WriteStartElement("instance_node");
+            writer.WriteAttributeString("url", "#" + nodeId);
+            writer.WriteEndElement(); // instance node
+            writer.WriteEndElement(); // node
         }
 
         /// <summary>
-        /// The write color.
+        /// Writes the specified color.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        private void WriteColor(Color color)
+        /// <param name="writer">The writer.</param>
+        /// <param name="color">The color.</param>
+        private void WriteColor(XmlWriter writer, Color color)
         {
-            // this.writer.WriteElementString("color", string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", color.R / 255.0, color.G / 255.0, color.B / 255.0));
-            this.writer.WriteElementString(
-                "color",
-                string.Format(CultureInfo.InvariantCulture, "{0} {1} {2} {3}", color.R / 255.0, color.G / 255.0, color.B / 255.0, color.A / 255.0));
+            writer.WriteElementString("color", string.Format(CultureInfo.InvariantCulture, "{0} {1} {2} {3}", color.R / 255.0, color.G / 255.0, color.B / 255.0, color.A / 255.0));
         }
 
         /// <summary>
-        /// The write double.
+        /// Writes the specified element value.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        private void WriteDouble(string name, double value)
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name of the element.</param>
+        /// <param name="value">The value.</param>
+        private void WriteDouble(XmlWriter writer, string name, double value)
         {
-            this.writer.WriteElementString(name, value.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString(name, value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
-        /// The write matrix.
+        /// Writes the specified element matrix.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        private void WriteMatrix(string name, Matrix3D m)
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name of the element.</param>
+        /// <param name="m">The matrix.</param>
+        private void WriteMatrix(XmlWriter writer, string name, Matrix3D m)
         {
             string value = string.Format(
                 CultureInfo.InvariantCulture,
@@ -678,24 +637,20 @@ namespace HelixToolkit.Wpf
                 0,
                 1);
 
-            this.writer.WriteElementString(name, value);
+            writer.WriteElementString(name, value);
         }
 
         /// <summary>
-        /// The write phong material.
+        /// Writes a phong material.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        private void WritePhongMaterial(string name, Color color)
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="color">The color.</param>
+        private void WritePhongMaterial(XmlWriter writer, string name, Color color)
         {
-            this.writer.WriteStartElement(name);
-            this.WriteColor(color);
-            this.writer.WriteEndElement();
+            writer.WriteStartElement(name);
+            this.WriteColor(writer, color);
+            writer.WriteEndElement();
         }
-
     }
 }
