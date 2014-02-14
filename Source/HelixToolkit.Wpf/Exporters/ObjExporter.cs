@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf
     using System.IO;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
+    using System.Xml;
 
     /// <summary>
     /// Export the 3D visual tree to a Wavefront OBJ file
@@ -21,8 +22,14 @@ namespace HelixToolkit.Wpf
     /// http://www.martinreddy.net/gfx/3d/OBJ.spec
     /// http://www.eg-models.de/formats/Format_Obj.html
     /// </remarks>
-    public class ObjExporter : Exporter
+    public class ObjExporter : Exporter<ObjExporter.ObjWriters>
     {
+        public class ObjWriters
+        {
+            public StreamWriter ObjWriter { get; set; }
+            public StreamWriter MaterialsWriter { get; set; }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether to export normals.
         /// </summary>
@@ -34,11 +41,6 @@ namespace HelixToolkit.Wpf
         public bool UseDissolveForTransparency { get; set; }
 
         /// <summary>
-        /// The directory.
-        /// </summary>
-        private readonly string directory;
-
-        /// <summary>
         /// The exported materials.
         /// </summary>
         private readonly Dictionary<Material, string> exportedMaterials = new Dictionary<Material, string>();
@@ -46,12 +48,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The mwriter.
         /// </summary>
-        private readonly StreamWriter mwriter;
-
-        /// <summary>
-        /// The writer.
-        /// </summary>
-        private readonly StreamWriter writer;
+        private StreamWriter mwriter;
 
         /// <summary>
         /// The group no.
@@ -84,26 +81,9 @@ namespace HelixToolkit.Wpf
         private int vertexIndex = 1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObjExporter"/> class.
+        /// Initializes a new instance of the <see cref="ObjExporter" /> class.
         /// </summary>
-        /// <param name="outputFileName">
-        /// Name of the output file.
-        /// </param>
-        public ObjExporter(string outputFileName)
-            : this(outputFileName, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjExporter"/> class.
-        /// </summary>
-        /// <param name="outputFileName">
-        /// Name of the output file.
-        /// </param>
-        /// <param name="comment">
-        /// The comment.
-        /// </param>
-        public ObjExporter(string outputFileName, string comment)
+        public ObjExporter()
         {
             this.TextureExtension = ".png";
             this.TextureSize = 1024;
@@ -111,27 +91,46 @@ namespace HelixToolkit.Wpf
 
             this.SwitchYZ = true;
             this.ExportNormals = false;
+        }
 
-            var fullPath = Path.GetFullPath(outputFileName);
-            var mtlPath = Path.ChangeExtension(outputFileName, ".mtl");
-            string mtlFilename = Path.GetFileName(mtlPath);
-            this.directory = Path.GetDirectoryName(fullPath);
+        /// <summary>
+        /// Creates the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>StreamWriter.</returns>
+        protected override ObjWriters Create(Stream stream)
+        {
+            var writer = new StreamWriter(stream);
 
-            this.writer = new StreamWriter(outputFileName);
-            this.mwriter = new StreamWriter(mtlPath);
-
-            if (!string.IsNullOrEmpty(comment))
+            if (!string.IsNullOrEmpty(this.Comment))
             {
-                this.writer.WriteLine(string.Format("# {0}", comment));
+                writer.WriteLine("# {0}", this.Comment);
             }
 
-            this.writer.WriteLine("mtllib ./" + mtlFilename);
+            writer.WriteLine("mtllib ./" + this.MaterialsFile);
+
+            var materialStream = this.FileCreator(this.MaterialsFile);
+            var materialWriter = new StreamWriter(materialStream);
+
+            return new ObjWriters { ObjWriter = writer, MaterialsWriter = materialWriter };
         }
+
+        protected override void Close(ObjWriters writer)
+        {
+            writer.ObjWriter.Close();
+            writer.MaterialsWriter.Close();
+        }
+
+        public string Comment { get; set; }
+
+        public string MaterialsFile { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to switch Y and Z coordinates.
         /// </summary>
         public bool SwitchYZ { get; set; }
+
+        public string TextureFolder { get; set; }
 
         /// <summary>
         /// Gets or sets the texture extension (.png or .jpg).
@@ -157,27 +156,8 @@ namespace HelixToolkit.Wpf
         /// The default value is 90.
         /// </value>
         public int TextureQualityLevel { get; set; }
-        
-        /// <summary>
-        /// Closes this exporter.
-        /// </summary>
-        public override void Close()
-        {
-            this.writer.Close();
-            this.mwriter.Close();
-            base.Close();
-        }
 
-        /// <summary>
-        /// The export mesh.
-        /// </summary>
-        /// <param name="m">
-        /// The m.
-        /// </param>
-        /// <param name="t">
-        /// The t.
-        /// </param>
-        public void ExportMesh(MeshGeometry3D m, Transform3D t)
+        public void ExportMesh(StreamWriter writer, MeshGeometry3D m, Transform3D t)
         {
             if (m == null)
             {
@@ -201,7 +181,7 @@ namespace HelixToolkit.Wpf
                 {
                     vertexIndexMap.Add(index++, this.vertexIndex++);
                     var p = t.Transform(v);
-                    this.writer.WriteLine(
+                    writer.WriteLine(
                         string.Format(
                             CultureInfo.InvariantCulture,
                             "v {0} {1} {2}",
@@ -210,7 +190,7 @@ namespace HelixToolkit.Wpf
                             this.SwitchYZ ? -p.Y : p.Z));
                 }
 
-                this.writer.WriteLine(string.Format("# {0} vertices", index));
+                writer.WriteLine(string.Format("# {0} vertices", index));
             }
 
             if (m.TextureCoordinates != null)
@@ -219,10 +199,10 @@ namespace HelixToolkit.Wpf
                 foreach (var vt in m.TextureCoordinates)
                 {
                     textureIndexMap.Add(index++, this.textureIndex++);
-                    this.writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "vt {0} {1}", vt.X, 1 - vt.Y));
+                    writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "vt {0} {1}", vt.X, 1 - vt.Y));
                 }
 
-                this.writer.WriteLine(string.Format("# {0} texture coordinates", index));
+                writer.WriteLine(string.Format("# {0} texture coordinates", index));
             }
 
             if (m.Normals != null && ExportNormals)
@@ -231,11 +211,11 @@ namespace HelixToolkit.Wpf
                 foreach (var vn in m.Normals)
                 {
                     normalIndexMap.Add(index++, this.normalIndex++);
-                    this.writer.WriteLine(
+                    writer.WriteLine(
                         string.Format(CultureInfo.InvariantCulture, "vn {0} {1} {2}", vn.X, vn.Y, vn.Z));
                 }
 
-                this.writer.WriteLine(string.Format("# {0} normals", index));
+                writer.WriteLine(string.Format("# {0} normals", index));
             }
 
             Func<int, string> formatIndices = i0 =>
@@ -268,13 +248,13 @@ namespace HelixToolkit.Wpf
                     int i1 = m.TriangleIndices[i + 1];
                     int i2 = m.TriangleIndices[i + 2];
 
-                    this.writer.WriteLine("f {0} {1} {2}", formatIndices(i0), formatIndices(i1), formatIndices(i2));
+                    writer.WriteLine("f {0} {1} {2}", formatIndices(i0), formatIndices(i1), formatIndices(i2));
                 }
 
-                this.writer.WriteLine(string.Format("# {0} faces", m.TriangleIndices.Count / 3));
+                writer.WriteLine(string.Format("# {0} faces", m.TriangleIndices.Count / 3));
             }
 
-            this.writer.WriteLine();
+            writer.WriteLine();
         }
 
         /// <summary>
@@ -286,26 +266,26 @@ namespace HelixToolkit.Wpf
         /// <param name="transform">
         /// The transform.
         /// </param>
-        protected override void ExportModel(GeometryModel3D model, Transform3D transform)
+        protected override void ExportModel(ObjWriters writer, GeometryModel3D model, Transform3D transform)
         {
-            this.writer.WriteLine(string.Format("o object{0}", this.objectNo++));
-            this.writer.WriteLine(string.Format("g group{0}", this.groupNo++));
+            writer.ObjWriter.WriteLine("o object{0}", this.objectNo++);
+            writer.ObjWriter.WriteLine("g group{0}", this.groupNo++);
 
             if (this.exportedMaterials.ContainsKey(model.Material))
             {
                 string matName = this.exportedMaterials[model.Material];
-                this.writer.WriteLine(string.Format("usemtl {0}", matName));
+                writer.ObjWriter.WriteLine("usemtl {0}", matName);
             }
             else
             {
                 string matName = string.Format("mat{0}", this.matNo++);
-                this.writer.WriteLine(string.Format("usemtl {0}", matName));
-                this.ExportMaterial(matName, model.Material, model.BackMaterial);
+                writer.ObjWriter.WriteLine("usemtl {0}", matName);
+                this.ExportMaterial(writer.MaterialsWriter, matName, model.Material, model.BackMaterial);
                 this.exportedMaterials.Add(model.Material, matName);
             }
 
             var mesh = model.Geometry as MeshGeometry3D;
-            this.ExportMesh(mesh, Transform3DHelper.CombineTransform(transform, model.Transform));
+            this.ExportMesh(writer.ObjWriter, mesh, Transform3DHelper.CombineTransform(transform, model.Transform));
         }
 
         /// <summary>
@@ -320,9 +300,9 @@ namespace HelixToolkit.Wpf
         /// <param name="backMaterial">
         /// The back material.
         /// </param>
-        private void ExportMaterial(string matName, Material material, Material backMaterial)
+        private void ExportMaterial(StreamWriter materialWriter, string matName, Material material, Material backMaterial)
         {
-            this.mwriter.WriteLine(string.Format("newmtl {0}", matName));
+            materialWriter.WriteLine("newmtl {0}", matName);
             var dm = material as DiffuseMaterial;
             var sm = material as SpecularMaterial;
             var mg = material as MaterialGroup;
@@ -346,33 +326,33 @@ namespace HelixToolkit.Wpf
             {
                 var adjustedAmbientColor = dm.AmbientColor.ChangeIntensity(0.2);
 
-                // this.mwriter.WriteLine(string.Format("Ka {0}", this.ToColorString(adjustedAmbientColor)));
+                // materialWriter.WriteLine(string.Format("Ka {0}", this.ToColorString(adjustedAmbientColor)));
                 var scb = dm.Brush as SolidColorBrush;
                 if (scb != null)
                 {
-                    this.mwriter.WriteLine(string.Format("Kd {0}", this.ToColorString(scb.Color)));
+                    materialWriter.WriteLine(string.Format("Kd {0}", this.ToColorString(scb.Color)));
 
                     if (this.UseDissolveForTransparency)
                     {
                         // Dissolve factor
-                        this.mwriter.WriteLine(
+                        materialWriter.WriteLine(
                             string.Format(CultureInfo.InvariantCulture, "d {0:F4}", scb.Color.A / 255.0));
                     }
                     else
                     {
                         // Transparency
-                        this.mwriter.WriteLine(
+                        materialWriter.WriteLine(
                             string.Format(CultureInfo.InvariantCulture, "Tr {0:F4}", scb.Color.A / 255.0));
                     }
                 }
                 else
                 {
                     var textureFilename = matName + this.TextureExtension;
-                    var texturePath = Path.Combine(this.directory, textureFilename);
+                    var texturePath = Path.Combine(this.TextureFolder, textureFilename);
 
                     // create .png bitmap file for the brush
-                    Exporter.RenderBrush(texturePath, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
-                    this.mwriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
+                    this.RenderBrush(texturePath, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
+                    materialWriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
                 }
             }
 
@@ -386,7 +366,7 @@ namespace HelixToolkit.Wpf
             if (sm != null)
             {
                 var scb = sm.Brush as SolidColorBrush;
-                this.mwriter.WriteLine(
+                materialWriter.WriteLine(
                     string.Format(
                         "Ks {0}", this.ToColorString(scb != null ? scb.Color : Color.FromScRgb(1.0f, 0.2f, 0.2f, 0.2f))));
 
@@ -400,17 +380,17 @@ namespace HelixToolkit.Wpf
 
                 // Specifies the specular exponent for the current material.  This defines the focus of the specular highlight.
                 // "exponent" is the value for the specular exponent.  A high exponent results in a tight, concentrated highlight.  Ns values normally range from 0 to 1000.
-                this.mwriter.WriteLine(string.Format(CultureInfo.InvariantCulture, "Ns {0:F4}", sm.SpecularPower));
+                materialWriter.WriteLine(string.Format(CultureInfo.InvariantCulture, "Ns {0:F4}", sm.SpecularPower));
             }
 
             // roughness
-            this.mwriter.WriteLine(string.Format("Ns {0}", 2));
+            materialWriter.WriteLine(string.Format("Ns {0}", 2));
 
             // Optical density (index of refraction)
-            this.mwriter.WriteLine(string.Format("Ni {0}", 1));
+            materialWriter.WriteLine(string.Format("Ni {0}", 1));
 
             // Transmission filter
-            this.mwriter.WriteLine(string.Format("Tf {0} {1} {2}", 1, 1, 1));
+            materialWriter.WriteLine(string.Format("Tf {0} {1} {2}", 1, 1, 1));
 
             // Illumination model
             // Illumination    Properties that are turned on in the
@@ -430,7 +410,7 @@ namespace HelixToolkit.Wpf
             // 9		Transparency: Glass on
             // Reflection: Ray trace off
             // 10		Casts shadows onto invisible surfaces
-            this.mwriter.WriteLine(string.Format("illum {0}", illum));
+            materialWriter.WriteLine("illum {0}", illum);
         }
 
         /// <summary>
@@ -444,8 +424,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         private string ToColorString(Color color)
         {
-            return string.Format(
-                CultureInfo.InvariantCulture, "{0:F4} {1:F4} {2:F4}", color.R / 255.0, color.G / 255.0, color.B / 255.0);
+            return string.Format(CultureInfo.InvariantCulture, "{0:F4} {1:F4} {2:F4}", color.R / 255.0, color.G / 255.0, color.B / 255.0);
         }
     }
 }

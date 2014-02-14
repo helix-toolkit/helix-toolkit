@@ -8,6 +8,8 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
+    using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -688,8 +690,16 @@ namespace HelixToolkit.Wpf
         /// <param name="m">The oversampling multiplier.</param>
         public static void SaveBitmap(this Viewport3D view, string fileName, Brush background = null, int m = 1)
         {
-            var exporter = new BitmapExporter(fileName) { Background = background, OversamplingMultiplier = m };
-            exporter.Export(view);
+            using (var stream = File.Create(fileName))
+            {
+                SaveBitmap(view, stream, background, m);
+            }
+        }
+
+        public static void SaveBitmap(this Viewport3D view, Stream stream, Brush background = null, int m = 1)
+        {
+            var exporter = new BitmapExporter { Background = background, OversamplingMultiplier = m };
+            exporter.Export(view, stream);
         }
 
         /// <summary>
@@ -835,9 +845,15 @@ namespace HelixToolkit.Wpf
         {
             var scb = background as SolidColorBrush;
             var backgroundColor = scb != null ? scb.Color : Colors.White;
-            using (var e = new KerkytheaExporter(fileName) { Width = width, Height = height, BackgroundColor = backgroundColor })
+            var e = new KerkytheaExporter
+                        {
+                            Width = width,
+                            Height = height,
+                            BackgroundColor = backgroundColor
+                        };
+            using (var stream = File.Create(fileName))
             {
-                e.Export(view);
+                e.Export(view, stream);
             }
         }
 
@@ -852,9 +868,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ExportObj(this Viewport3D view, string fileName)
         {
-            using (var e = new ObjExporter(fileName))
+            var e = new ObjExporter();
+            using (var stream = File.Create(fileName))
             {
-                e.Export(view);
+                e.Export(view, stream);
             }
         }
 
@@ -869,9 +886,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ExportX3D(this Viewport3D view, string fileName)
         {
-            using (var e = new X3DExporter(fileName))
+            var e = new X3DExporter();
+            using (var stream = File.Create(fileName))
             {
-                e.Export(view);
+                e.Export(view, stream);
             }
         }
 
@@ -882,9 +900,10 @@ namespace HelixToolkit.Wpf
         /// <param name="fileName">Name of the file.</param>
         private static void ExportCollada(this Viewport3D view, string fileName)
         {
-            using (var e = new ColladaExporter(fileName))
+            var e = new ColladaExporter();
+            using (var stream = File.Create(fileName))
             {
-                e.Export(view);
+                e.Export(view, stream);
             }
         }
 
@@ -899,9 +918,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ExportXaml(this Viewport3D view, string fileName)
         {
-            using (var e = new XamlExporter(fileName))
+            var e = new XamlExporter();
+            using (var stream = File.Create(fileName))
             {
-                e.Export(view);
+                e.Export(view, stream);
             }
         }
 
@@ -921,7 +941,7 @@ namespace HelixToolkit.Wpf
         {
             // PointHit is in Visual3D space
             var p = rayHit.PointHit;
-            
+
             // transform the Visual3D hierarchy up to the Viewport3D ancestor
             var t = GetTransform(viewport, rayHit.VisualHit);
             if (t != null)

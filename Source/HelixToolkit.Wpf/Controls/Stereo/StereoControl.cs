@@ -9,6 +9,7 @@ namespace HelixToolkit.Wpf
     using System;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using System.IO;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Markup;
@@ -314,34 +315,36 @@ namespace HelixToolkit.Wpf
         {
             var scb = this.Background as SolidColorBrush;
 
-            using (var leftExporter = new KerkytheaExporter(leftFileName))
+            var leftExporter = new KerkytheaExporter();
+            if (scb != null)
             {
-                if (scb != null)
-                {
-                    leftExporter.BackgroundColor = scb.Color;
-                }
-
-                leftExporter.Reflections = true;
-                leftExporter.Shadows = true;
-                leftExporter.SoftShadows = true;
-                leftExporter.Width = (int)this.LeftViewport.ActualWidth;
-                leftExporter.Height = (int)this.LeftViewport.ActualHeight;
-                leftExporter.Export(this.LeftViewport);
+                leftExporter.BackgroundColor = scb.Color;
             }
 
-            using (var rightExporter = new KerkytheaExporter(rightFileName))
+            leftExporter.Reflections = true;
+            leftExporter.Shadows = true;
+            leftExporter.SoftShadows = true;
+            leftExporter.Width = (int)this.LeftViewport.ActualWidth;
+            leftExporter.Height = (int)this.LeftViewport.ActualHeight;
+            using (var stream = File.Create(leftFileName))
             {
-                if (scb != null)
-                {
-                    rightExporter.BackgroundColor = scb.Color;
-                }
+                leftExporter.Export(this.LeftViewport, stream);
+            }
 
-                rightExporter.Reflections = true;
-                rightExporter.Shadows = true;
-                rightExporter.SoftShadows = true;
-                rightExporter.Width = (int)this.RightViewport.ActualWidth;
-                rightExporter.Height = (int)this.RightViewport.ActualHeight;
-                rightExporter.Export(this.RightViewport);
+            var rightExporter = new KerkytheaExporter();
+            if (scb != null)
+            {
+                rightExporter.BackgroundColor = scb.Color;
+            }
+
+            rightExporter.Reflections = true;
+            rightExporter.Shadows = true;
+            rightExporter.SoftShadows = true;
+            rightExporter.Width = (int)this.RightViewport.ActualWidth;
+            rightExporter.Height = (int)this.RightViewport.ActualHeight;
+            using (var stream = File.Create(rightFileName))
+            {
+                rightExporter.Export(this.RightViewport, stream);
             }
         }
 

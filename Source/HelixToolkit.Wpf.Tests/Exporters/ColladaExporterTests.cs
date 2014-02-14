@@ -7,6 +7,7 @@
 namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Xml.Schema;
     using HelixToolkit.Wpf;
     using NUnit.Framework;
@@ -20,9 +21,10 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_SimpleModel_ValidOutput()
         {
             string path = "temp.dae";
-            using (var e = new ColladaExporter(path))
+            var e = new ColladaExporter();
+            using (var stream = File.Create(path))
             {
-                this.ExportSimpleModel(e);
+                this.ExportSimpleModel(e, stream);
             }
 
             var result = this.Validate(path);

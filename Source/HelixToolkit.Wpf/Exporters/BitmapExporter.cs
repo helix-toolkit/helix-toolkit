@@ -14,19 +14,15 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Exports a Viewport3D to a .bmp or .png file.
+    /// Exports a <see cref="Viewport3D"/> to a .bmp, .png or .jpg file.
     /// </summary>
     public class BitmapExporter : IExporter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BitmapExporter"/> class.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        public BitmapExporter(string path)
+        public BitmapExporter()
         {
-            this.FileName = path;
             this.OversamplingMultiplier = 2;
         }
 
@@ -51,51 +47,42 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the specified viewport.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        public void Export(Viewport3D viewport)
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="stream">The output stream.</param>
+        /// <exception cref="System.InvalidOperationException">Not supported file format.</exception>
+        public void Export(Viewport3D viewport, Stream stream)
         {
-            int m = this.OversamplingMultiplier;
+            var background = this.Background ?? Brushes.Transparent;
 
-            var background = this.Background;
-            if (background == null)
-            {
-                background = Brushes.Transparent;
-            }
-
-            var bmp = Viewport3DHelper.RenderBitmap(viewport, background, m);
+            var bmp = viewport.RenderBitmap(background, this.OversamplingMultiplier);
             BitmapEncoder encoder;
-            string ext = Path.GetExtension(this.FileName);
+            string ext = Path.GetExtension(this.FileName) ?? string.Empty;
             switch (ext.ToLower())
             {
                 case ".jpg":
-                    var jpg = new JpegBitmapEncoder();
-                    jpg.Frames.Add(BitmapFrame.Create(bmp));
-                    encoder = jpg;
+                    encoder = new JpegBitmapEncoder();
+                    break;
+                case ".bmp":
+                    encoder = new BmpBitmapEncoder();
                     break;
                 case ".png":
-                    var png = new PngBitmapEncoder();
-                    png.Frames.Add(BitmapFrame.Create(bmp));
-                    encoder = png;
+                    encoder = new PngBitmapEncoder();
                     break;
                 default:
                     throw new InvalidOperationException("Not supported file format.");
             }
 
-            using (Stream stm = File.Create(this.FileName))
-            {
-                encoder.Save(stm);
-            }
+            encoder.Frames.Add(BitmapFrame.Create(bmp));
+            encoder.Save(stream);
         }
 
         /// <summary>
         /// Exports the specified visual.
         /// </summary>
-        /// <param name="visual">
-        /// The visual.
-        /// </param>
-        public void Export(Visual3D visual)
+        /// <param name="visual">The visual.</param>
+        /// <param name="stream">The output stream.</param>
+        /// <exception cref="System.NotImplementedException">Cannot export a visual to a bitmap.</exception>
+        public void Export(Visual3D visual, Stream stream)
         {
             throw new NotImplementedException();
         }
@@ -103,13 +90,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the specified model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        public void Export(Model3D model)
+        /// <param name="model">The model.</param>
+        /// <param name="stream">The output stream.</param>
+        /// <exception cref="System.NotImplementedException">Cannot export a model to a bitmap.</exception>
+        public void Export(Model3D model, Stream stream)
         {
             throw new NotImplementedException();
         }
-
     }
 }

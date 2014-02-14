@@ -15,58 +15,51 @@ namespace HelixToolkit.Wpf
     /// Exports the 3D visual tree to a VRML97 (2.0) file.
     /// </summary>
     /// <remarks>
-    /// http://en.wikipedia.org/wiki/Vrml
-    /// http://en.wikipedia.org/wiki/Web3D
-    /// VRML plugin/browser detector:
-    /// http://cic.nist.gov/vrml/vbdetect.html
-    /// Links
-    /// http://openvrml.org/
+    /// See <a href="http://en.wikipedia.org/wiki/Vrml">Wikipedia</a>, <a href="http://en.wikipedia.org/wiki/Web3D">Web3D</a>,
+    /// <a href="http://cic.nist.gov/vrml/vbdetect.html">VRML plugin/browser detector</a>,
+    /// and <a href="http://openvrml.org/">openvrml.org</a>.
     /// </remarks>
-    public class VrmlExporter : Exporter
+    public class VrmlExporter : Exporter<StreamWriter>
     {
         /// <summary>
-        /// The writer.
+        /// Gets or sets the title.
         /// </summary>
-        private readonly StreamWriter writer;
+        /// <value>The title.</value>
+        public string Title { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VrmlExporter"/> class.
+        /// Creates the writer for the specified stream.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        public VrmlExporter(string path, string title = null)
+        /// <param name="stream">The stream.</param>
+        /// <returns>The writer.</returns>
+        protected override StreamWriter Create(Stream stream)
         {
-            this.writer = new StreamWriter(path, false, Encoding.UTF8);
-            this.writer.WriteLine("# VRML V2.0 utf8");
-            if (title != null)
+            var writer = new StreamWriter(stream, Encoding.UTF8);
+            writer.WriteLine("# VRML V2.0 utf8");
+            if (this.Title != null)
             {
-                this.writer.WriteLine("# " + title);
+                writer.WriteLine("# " + this.Title);
             }
+
+            return writer;
         }
 
         /// <summary>
-        /// Closes this exporter.
+        /// Closes the export writer.
         /// </summary>
-        public override void Close()
+        /// <param name="writer">The writer.</param>
+        protected override void Close(StreamWriter writer)
         {
-            this.writer.Close();
-            base.Close();
+            writer.Close();
         }
 
         /// <summary>
         /// Exports the model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
-        protected override void ExportModel(GeometryModel3D model, Transform3D inheritedTransform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
+        protected override void ExportModel(StreamWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
         {
             var mesh = model.Geometry as MeshGeometry3D;
             if (mesh == null)
@@ -76,33 +69,33 @@ namespace HelixToolkit.Wpf
 
             // writer.WriteLine("Transform {");
             // todo: add transform from model.Transform and inheritedTransform
-            this.writer.WriteLine("Shape {");
+            writer.WriteLine("Shape {");
 
-            this.writer.WriteLine("  appearance Appearance {");
+            writer.WriteLine("  appearance Appearance {");
 
             // todo: set material properties from model.Material
-            this.writer.WriteLine("    material Material {");
-            this.writer.WriteLine("      diffuseColor 0.8 0.8 0.2");
-            this.writer.WriteLine("      specularColor 0.5 0.5 0.5");
-            this.writer.WriteLine("    }");
-            this.writer.WriteLine("  }"); // Appearance
+            writer.WriteLine("    material Material {");
+            writer.WriteLine("      diffuseColor 0.8 0.8 0.2");
+            writer.WriteLine("      specularColor 0.5 0.5 0.5");
+            writer.WriteLine("    }");
+            writer.WriteLine("  }"); // Appearance
 
-            this.writer.WriteLine("  geometry IndexedFaceSet {");
-            this.writer.WriteLine("    coord Coordinate {");
-            this.writer.WriteLine("      point [");
+            writer.WriteLine("  geometry IndexedFaceSet {");
+            writer.WriteLine("    coord Coordinate {");
+            writer.WriteLine("      point [");
 
             foreach (var pt in mesh.Positions)
             {
-                this.writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0} {1} {2},", pt.X, pt.Y, pt.Z));
+                writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0} {1} {2},", pt.X, pt.Y, pt.Z));
             }
 
-            this.writer.WriteLine("      ]");
-            this.writer.WriteLine("    }");
+            writer.WriteLine("      ]");
+            writer.WriteLine("    }");
 
-            this.writer.WriteLine("    coordIndex [");
+            writer.WriteLine("    coordIndex [");
             for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
-                this.writer.WriteLine(
+                writer.WriteLine(
                     string.Format(
                         CultureInfo.InvariantCulture,
                         "{0} {1} {2},",
@@ -111,13 +104,12 @@ namespace HelixToolkit.Wpf
                         mesh.TriangleIndices[i + 2]));
             }
 
-            this.writer.WriteLine("    ]");
-            this.writer.WriteLine("  }"); // IndexedFaceSet
+            writer.WriteLine("    ]");
+            writer.WriteLine("  }"); // IndexedFaceSet
 
-            this.writer.WriteLine("}"); // Shape
+            writer.WriteLine("}"); // Shape
 
             // writer.WriteLine("}"); // Transform
         }
-
     }
 }

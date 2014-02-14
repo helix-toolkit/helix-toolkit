@@ -6,8 +6,8 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System;
     using System.Collections;
+    using System.IO;
     using System.Text;
     using System.Windows;
     using System.Windows.Controls;
@@ -18,28 +18,14 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Exports a Viewport3D or 3D model to XAML.
     /// </summary>
-    public class XamlExporter : IExporter, IDisposable
+    public class XamlExporter : Exporter<XmlWriter>
     {
         /// <summary>
-        /// The xw.
+        /// Initializes a new instance of the <see cref="XamlExporter" /> class.
         /// </summary>
-        private readonly XmlTextWriter writer;
-
-        /// <summary>
-        /// The disposed flag.
-        /// </summary>
-        private bool disposed;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XamlExporter"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        public XamlExporter(string path)
+        public XamlExporter()
         {
             this.CreateResourceDictionary = true;
-            this.writer = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented };
         }
 
         /// <summary>
@@ -81,88 +67,76 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Closes this exporter.
-        /// </summary>
-        public void Close()
-        {
-            this.writer.Close();
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Exports the specified viewport.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        public void Export(Viewport3D viewport)
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="stream">The stream.</param>
+        public override void Export(Viewport3D viewport, Stream stream)
         {
+            var writer = this.Create(stream);
             object obj = viewport;
             if (this.CreateResourceDictionary)
             {
                 obj = WrapInResourceDictionary(obj);
             }
 
-            XamlWriter.Save(obj, this.writer);
+            XamlWriter.Save(obj, writer);
+            this.Close(writer);
         }
 
         /// <summary>
         /// Exports the specified visual.
         /// </summary>
-        /// <param name="visual">
-        /// The visual.
-        /// </param>
-        public void Export(Visual3D visual)
+        /// <param name="visual">The visual.</param>
+        /// <param name="stream">The stream.</param>
+        public override void Export(Visual3D visual, Stream stream)
         {
+            var writer = this.Create(stream);
             object obj = visual;
             if (this.CreateResourceDictionary)
             {
                 obj = WrapInResourceDictionary(obj);
             }
 
-            XamlWriter.Save(obj, this.writer);
+            XamlWriter.Save(obj, writer);
+            this.Close(writer);
         }
 
         /// <summary>
         /// Exports the specified model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        public void Export(Model3D model)
+        /// <param name="model">The model.</param>
+        /// <param name="stream">The stream.</param>
+        public override void Export(Model3D model, Stream stream)
         {
+            var writer = this.Create(stream);
             object obj = model;
             if (this.CreateResourceDictionary)
             {
                 obj = WrapInResourceDictionary(obj);
             }
 
-            XamlWriter.Save(obj, this.writer);
+            XamlWriter.Save(obj, writer);
+            this.Close(writer);
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        /// Creates a new <see cref="XmlWriter" /> on the specified stream.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        private void Dispose(bool disposing)
+        /// <param name="stream">The output stream.</param>
+        /// <returns>A <see cref="XmlWriter"/>.</returns>
+        protected override XmlWriter Create(Stream stream)
         {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.Close();
-                }
-            }
+            return new XmlTextWriter(stream, Encoding.UTF8) { Formatting = Formatting.Indented };
+        }
 
-            this.disposed = true;
+        /// <summary>
+        /// Closes this exporter.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        protected override void Close(XmlWriter writer)
+        {
+            writer.Close();
         }
     }
 }

@@ -15,44 +15,37 @@ namespace HelixToolkit.Wpf
     /// Exports the 3D visual tree to a PovRay input file.
     /// </summary>
     /// <remarks>
-    /// See http://www.povray.org
+    /// See <a href="http://www.povray.org">povray.org</a>.
     /// </remarks>
-    public class PovRayExporter : Exporter
+    public class PovRayExporter : Exporter<StreamWriter>
     {
         /// <summary>
-        /// The writer.
+        /// Creates the specified stream.
         /// </summary>
-        private readonly StreamWriter writer;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PovRayExporter"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        public PovRayExporter(string path)
+        /// <param name="stream">The stream.</param>
+        /// <returns>StreamWriter.</returns>
+        protected override StreamWriter Create(Stream stream)
         {
-            this.writer = new StreamWriter(path, false, Encoding.UTF8);
+            return new StreamWriter(stream, Encoding.UTF8);
         }
 
         /// <summary>
         /// Closes this exporter.
         /// </summary>
-        public override void Close()
+        /// <param name="writer">The writer.</param>
+        protected override void Close(StreamWriter writer)
         {
-            this.writer.Close();
-            base.Close();
+            writer.Close();
         }
 
         /// <summary>
         /// Exports the camera.
         /// </summary>
-        /// <param name="camera">
-        /// The camera.
-        /// </param>
-        protected override void ExportCamera(Camera camera)
+        /// <param name="writer">The writer.</param>
+        /// <param name="camera">The camera.</param>
+        protected override void ExportCamera(StreamWriter writer, Camera camera)
         {
-            base.ExportCamera(camera);
+            base.ExportCamera(writer, camera);
 
             // todo...
             // http://www.povray.org/documentation/view/3.6.1/17/
@@ -61,15 +54,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the light.
         /// </summary>
-        /// <param name="light">
-        /// The light.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
-        protected override void ExportLight(Light light, Transform3D inheritedTransform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="light">The light.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
+        protected override void ExportLight(StreamWriter writer, Light light, Transform3D inheritedTransform)
         {
-            base.ExportLight(light, inheritedTransform);
+            base.ExportLight(writer, light, inheritedTransform);
 
             // todo...
             // http://www.povray.org/documentation/view/3.6.1/34/
@@ -78,13 +68,10 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
-        protected override void ExportModel(GeometryModel3D model, Transform3D inheritedTransform)
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
+        protected override void ExportModel(StreamWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
         {
             var mesh = model.Geometry as MeshGeometry3D;
             if (mesh == null)
@@ -95,25 +82,25 @@ namespace HelixToolkit.Wpf
             // http://www.povray.org/documentation/view/3.6.1/293/
 
             // todo: create textures/material properties from model.Material
-            this.writer.WriteLine("mesh2 {");
+            writer.WriteLine("mesh2 {");
 
-            this.writer.WriteLine("  vertex_vectors");
-            this.writer.WriteLine("  {");
-            this.writer.WriteLine("    " + mesh.Positions.Count + ",");
+            writer.WriteLine("  vertex_vectors");
+            writer.WriteLine("  {");
+            writer.WriteLine("    " + mesh.Positions.Count + ",");
 
             foreach (var pt in mesh.Positions)
             {
-                this.writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "    {0} {1} {2},", pt.X, pt.Y, pt.Z));
+                writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "    {0} {1} {2},", pt.X, pt.Y, pt.Z));
             }
 
-            this.writer.WriteLine("  }");
+            writer.WriteLine("  }");
 
-            this.writer.WriteLine("  face_indices");
-            this.writer.WriteLine("  {");
-            this.writer.WriteLine("    " + mesh.TriangleIndices.Count / 3 + ",");
+            writer.WriteLine("  face_indices");
+            writer.WriteLine("  {");
+            writer.WriteLine("    " + (mesh.TriangleIndices.Count / 3) + ",");
             for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
-                this.writer.WriteLine(
+                writer.WriteLine(
                     string.Format(
                         CultureInfo.InvariantCulture,
                         "    {0} {1} {2},",
@@ -122,12 +109,11 @@ namespace HelixToolkit.Wpf
                         mesh.TriangleIndices[i + 2]));
             }
 
-            this.writer.WriteLine("  }");
+            writer.WriteLine("  }");
 
             // todo: add transform from model.Transform and inheritedTransform
             // http://www.povray.org/documentation/view/3.6.1/49/
-            this.writer.WriteLine("}"); // mesh2
+            writer.WriteLine("}"); // mesh2
         }
-
     }
 }
