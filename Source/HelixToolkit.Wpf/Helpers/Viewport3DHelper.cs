@@ -696,6 +696,13 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Saves the bitmap.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="stream">The stream.</param>
+        /// <param name="background">The background.</param>
+        /// <param name="m">The oversampling multiplier.</param>
         public static void SaveBitmap(this Viewport3D view, Stream stream, Brush background = null, int m = 1)
         {
             var exporter = new BitmapExporter { Background = background, OversamplingMultiplier = m };
