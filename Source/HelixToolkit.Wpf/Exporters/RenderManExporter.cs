@@ -40,9 +40,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the camera.
         /// </summary>
-        /// <param name="camera">
-        /// The camera.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="camera">The camera.</param>
         protected override void ExportCamera(StreamWriter writer, Camera camera)
         {
             base.ExportCamera(writer, camera);
@@ -53,12 +52,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the light.
         /// </summary>
-        /// <param name="light">
-        /// The light.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="light">The light.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
         protected override void ExportLight(StreamWriter writer, Light light, Transform3D inheritedTransform)
         {
             base.ExportLight(writer, light, inheritedTransform);
@@ -69,12 +65,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="inheritedTransform">
-        /// The inherited transform.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="inheritedTransform">The inherited transform.</param>
         protected override void ExportModel(StreamWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
         {
             var mesh = model.Geometry as MeshGeometry3D;

@@ -24,12 +24,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class ObjExporter : Exporter<ObjExporter.ObjWriters>
     {
-        public class ObjWriters
-        {
-            public StreamWriter ObjWriter { get; set; }
-            public StreamWriter MaterialsWriter { get; set; }
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether to export normals.
         /// </summary>
@@ -44,11 +38,6 @@ namespace HelixToolkit.Wpf
         /// The exported materials.
         /// </summary>
         private readonly Dictionary<Material, string> exportedMaterials = new Dictionary<Material, string>();
-
-        /// <summary>
-        /// The mwriter.
-        /// </summary>
-        private StreamWriter mwriter;
 
         /// <summary>
         /// The group no.
@@ -94,35 +83,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Creates the specified stream.
+        /// Gets or sets the comment.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>StreamWriter.</returns>
-        protected override ObjWriters Create(Stream stream)
-        {
-            var writer = new StreamWriter(stream);
-
-            if (!string.IsNullOrEmpty(this.Comment))
-            {
-                writer.WriteLine("# {0}", this.Comment);
-            }
-
-            writer.WriteLine("mtllib ./" + this.MaterialsFile);
-
-            var materialStream = this.FileCreator(this.MaterialsFile);
-            var materialWriter = new StreamWriter(materialStream);
-
-            return new ObjWriters { ObjWriter = writer, MaterialsWriter = materialWriter };
-        }
-
-        protected override void Close(ObjWriters writer)
-        {
-            writer.ObjWriter.Close();
-            writer.MaterialsWriter.Close();
-        }
-
         public string Comment { get; set; }
 
+        /// <summary>
+        /// Gets or sets the materials file.
+        /// </summary>
+        /// <value>
+        /// The materials file.
+        /// </value>
         public string MaterialsFile { get; set; }
 
         /// <summary>
@@ -130,6 +100,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public bool SwitchYZ { get; set; }
 
+        /// <summary>
+        /// Gets or sets the texture folder.
+        /// </summary>
         public string TextureFolder { get; set; }
 
         /// <summary>
@@ -157,6 +130,12 @@ namespace HelixToolkit.Wpf
         /// </value>
         public int TextureQualityLevel { get; set; }
 
+        /// <summary>
+        /// Exports the mesh.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        /// <param name="m">The mesh geometry.</param>
+        /// <param name="t">The transform.</param>
         public void ExportMesh(StreamWriter writer, MeshGeometry3D m, Transform3D t)
         {
             if (m == null)
@@ -258,14 +237,43 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Creates the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>StreamWriter.</returns>
+        protected override ObjWriters Create(Stream stream)
+        {
+            var writer = new StreamWriter(stream);
+
+            if (!string.IsNullOrEmpty(this.Comment))
+            {
+                writer.WriteLine("# {0}", this.Comment);
+            }
+
+            writer.WriteLine("mtllib ./" + this.MaterialsFile);
+
+            var materialStream = this.FileCreator(this.MaterialsFile);
+            var materialWriter = new StreamWriter(materialStream);
+
+            return new ObjWriters { ObjWriter = writer, MaterialsWriter = materialWriter };
+        }
+
+        /// <summary>
+        /// Closes the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        protected override void Close(ObjWriters writer)
+        {
+            writer.ObjWriter.Close();
+            writer.MaterialsWriter.Close();
+        }
+
+        /// <summary>
         /// The export model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="transform">The transform.</param>
         protected override void ExportModel(ObjWriters writer, GeometryModel3D model, Transform3D transform)
         {
             writer.ObjWriter.WriteLine("o object{0}", this.objectNo++);
@@ -291,15 +299,10 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The export material.
         /// </summary>
-        /// <param name="matName">
-        /// The mat name.
-        /// </param>
-        /// <param name="material">
-        /// The material.
-        /// </param>
-        /// <param name="backMaterial">
-        /// The back material.
-        /// </param>
+        /// <param name="materialWriter">The material writer.</param>
+        /// <param name="matName">The mat name.</param>
+        /// <param name="material">The material.</param>
+        /// <param name="backMaterial">The back material.</param>
         private void ExportMaterial(StreamWriter materialWriter, string matName, Material material, Material backMaterial)
         {
             materialWriter.WriteLine("newmtl {0}", matName);
@@ -425,6 +428,22 @@ namespace HelixToolkit.Wpf
         private string ToColorString(Color color)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0:F4} {1:F4} {2:F4}", color.R / 255.0, color.G / 255.0, color.B / 255.0);
+        }
+
+        /// <summary>
+        /// Represents the stream writers for the <see cref="ObjExporter"/>.
+        /// </summary>
+        public class ObjWriters
+        {
+            /// <summary>
+            /// Gets or sets the object file writer.
+            /// </summary>
+            public StreamWriter ObjWriter { get; set; }
+
+            /// <summary>
+            /// Gets or sets the material file writer.
+            /// </summary>
+            public StreamWriter MaterialsWriter { get; set; }
         }
     }
 }

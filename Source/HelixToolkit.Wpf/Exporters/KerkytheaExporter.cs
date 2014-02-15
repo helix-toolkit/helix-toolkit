@@ -281,9 +281,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes the Metropolis Light Transport properties.
         /// </summary>
-        /// <param name="name">
-        /// The name of the MLP ray tracer.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name of the MLP ray tracer.</param>
         public void WriteMetropolisLightTransport(KerkytheaWriter writer, string name)
         {
             writer.WriteStartObject("./Ray Tracers/" + name, "Metropolis Light Transport", name, "Ray Tracer");
@@ -305,9 +304,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes the standard ray tracer properties.
         /// </summary>
-        /// <param name="name">
-        /// The name of the ray tracer.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name of the ray tracer.</param>
         public void WriteStandardRayTracer(KerkytheaWriter writer, string name)
         {
             writer.WriteStartObject("./Ray Tracers/" + name, "Standard Ray Tracer", name, "Ray Tracer");
@@ -347,9 +345,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes the threaded ray tracer properties.
         /// </summary>
-        /// <param name="threads">
-        /// The number of threads.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="threads">The number of threads.</param>
         public void WriteThreadedRaytracer(KerkytheaWriter writer, int threads)
         {
             writer.WriteStartObject("./Ray Tracers/Threaded Ray Tracer", "Threaded Ray Tracer", "Threaded Ray Tracer", "Ray Tracer");
@@ -603,12 +600,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports the model.
         /// </summary>
-        /// <param name="g">
-        /// The model geometry.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="g">The model geometry.</param>
+        /// <param name="transform">The transform.</param>
         protected override void ExportModel(KerkytheaWriter writer, GeometryModel3D g, Transform3D transform)
         {
             var mesh = g.Geometry as MeshGeometry3D;
@@ -855,15 +849,10 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Exports a material.
         /// </summary>
-        /// <param name="name">
-        /// The name of the material.
-        /// </param>
-        /// <param name="material">
-        /// The material.
-        /// </param>
-        /// <param name="weights">
-        /// The weights.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name of the material.</param>
+        /// <param name="material">The material.</param>
+        /// <param name="weights">The weights.</param>
         private void ExportMaterial(KerkytheaWriter writer, string name, Material material, IList<double> weights)
         {
             var g = material as MaterialGroup;
@@ -1018,12 +1007,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets the texture for a brush.
         /// </summary>
-        /// <param name="brush">
-        /// The brush.
-        /// </param>
-        /// <param name="name">
-        /// The name of the material.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="brush">The brush.</param>
+        /// <param name="name">The name of the material.</param>
         /// <returns>
         /// The texture filename.
         /// </returns>
@@ -1060,39 +1046,18 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes a ashikhmin material.
         /// </summary>
-        /// <param name="identifier">
-        /// The identifier.
-        /// </param>
-        /// <param name="diffuse">
-        /// The diffuse.
-        /// </param>
-        /// <param name="specular">
-        /// The specular.
-        /// </param>
-        /// <param name="shininessXMap">
-        /// The shininess x map.
-        /// </param>
-        /// <param name="shininessYMap">
-        /// The shininess y map.
-        /// </param>
-        /// <param name="rotationMap">
-        /// The rotation map.
-        /// </param>
-        /// <param name="shininessX">
-        /// The shininess x.
-        /// </param>
-        /// <param name="shininessY">
-        /// The shininess y.
-        /// </param>
-        /// <param name="rotation">
-        /// The rotation.
-        /// </param>
-        /// <param name="indexOfRefraction">
-        /// The index of refraction.
-        /// </param>
-        /// <param name="nkfile">
-        /// The nkfile.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="diffuse">The diffuse.</param>
+        /// <param name="specular">The specular.</param>
+        /// <param name="shininessXMap">The shininess x map.</param>
+        /// <param name="shininessYMap">The shininess y map.</param>
+        /// <param name="rotationMap">The rotation map.</param>
+        /// <param name="shininessX">The shininess x.</param>
+        /// <param name="shininessY">The shininess y.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <param name="indexOfRefraction">The index of refraction.</param>
+        /// <param name="nkfile">The nkfile.</param>
         private void WriteAshikhminMaterial(KerkytheaWriter writer,
             string identifier,
             Color? diffuse,
@@ -1145,12 +1110,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes a bitmap texture.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="filename">
-        /// The filename.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="filename">The filename.</param>
         private void WriteBitmapTexture(KerkytheaWriter writer, string name, string filename)
         {
             if (!string.IsNullOrEmpty(filename))
@@ -1173,12 +1135,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes a constant texture.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="color">
-        /// The color.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="color">The color.</param>
         private void WriteConstantTexture(KerkytheaWriter writer, string name, Color color)
         {
             writer.WriteStartObject("./" + name + "/Constant Texture", "Constant Texture", string.Empty, "Texture");
@@ -1189,24 +1148,13 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes a dielectric material.
         /// </summary>
-        /// <param name="identifier">
-        /// The identifier.
-        /// </param>
-        /// <param name="reflection">
-        /// The reflection.
-        /// </param>
-        /// <param name="refraction">
-        /// The refraction.
-        /// </param>
-        /// <param name="indexOfRefraction">
-        /// The index of refraction.
-        /// </param>
-        /// <param name="dispersion">
-        /// The dispersion.
-        /// </param>
-        /// <param name="nkfile">
-        /// The nkfile.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="reflection">The reflection.</param>
+        /// <param name="refraction">The refraction.</param>
+        /// <param name="indexOfRefraction">The index of refraction.</param>
+        /// <param name="dispersion">The dispersion.</param>
+        /// <param name="nkfile">The nkfile.</param>
         private void WriteDielectricMaterial(KerkytheaWriter writer,
             string identifier,
             Color? reflection,
@@ -1236,12 +1184,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes a weight.
         /// </summary>
-        /// <param name="identifier">
-        /// The identifier.
-        /// </param>
-        /// <param name="weight">
-        /// The weight.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="weight">The weight.</param>
         private void WriteWeight(KerkytheaWriter writer, string identifier, double weight)
         {
             writer.WriteStartObject(identifier, "Weighted Texture", identifier, "Texture");
@@ -1255,27 +1200,14 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Writes a whitted material.
         /// </summary>
-        /// <param name="identifier">
-        /// The identifier.
-        /// </param>
-        /// <param name="texture">
-        /// The texture.
-        /// </param>
-        /// <param name="diffuse">
-        /// The diffuse.
-        /// </param>
-        /// <param name="specular">
-        /// The specular.
-        /// </param>
-        /// <param name="refraction">
-        /// The refraction.
-        /// </param>
-        /// <param name="shininess">
-        /// The shininess.
-        /// </param>
-        /// <param name="indexOfRefraction">
-        /// The index of refraction.
-        /// </param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="diffuse">The diffuse.</param>
+        /// <param name="specular">The specular.</param>
+        /// <param name="refraction">The refraction.</param>
+        /// <param name="shininess">The shininess.</param>
+        /// <param name="indexOfRefraction">The index of refraction.</param>
         private void WriteWhittedMaterial(KerkytheaWriter writer,
             string identifier,
             string texture,
@@ -1340,8 +1272,14 @@ namespace HelixToolkit.Wpf
             return value;
         }
 
+        /// <summary>
+        /// Represents the output writer for the <see cref="KerkytheaExporter"/>.
+        /// </summary>
         public class KerkytheaWriter
         {
+            /// <summary>
+            /// The writer
+            /// </summary>
             private readonly XmlWriter writer;
 
             /// <summary>
@@ -1354,42 +1292,66 @@ namespace HelixToolkit.Wpf
             /// </summary>
             private readonly Dictionary<Brush, string> textureFiles = new Dictionary<Brush, string>();
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="KerkytheaWriter"/> class.
+            /// </summary>
+            /// <param name="stream">The stream.</param>
             public KerkytheaWriter(Stream stream)
             {
                 var settings = new XmlWriterSettings { Indent = true };
                 this.writer = XmlWriter.Create(stream, settings);
             }
 
+            /// <summary>
+            /// Writes the start element.
+            /// </summary>
+            /// <param name="localName">Name of the element.</param>
             public void WriteStartElement(string localName)
             {
                 this.writer.WriteStartElement(localName);
             }
 
+            /// <summary>
+            /// Writes the attribute string.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            /// <param name="value">The value.</param>
             public void WriteAttributeString(string name, string value)
             {
                 this.writer.WriteAttributeString(name, value);
             }
 
+            /// <summary>
+            /// Writes the end element.
+            /// </summary>
             public void WriteEndElement()
             {
                 this.writer.WriteEndElement();
             }
 
+            /// <summary>
+            /// Writes the full end element.
+            /// </summary>
             public void WriteFullEndElement()
             {
                 this.writer.WriteFullEndElement();
             }
 
+            /// <summary>
+            /// Writes the start document.
+            /// </summary>
             public void WriteStartDocument()
             {
                 this.writer.WriteStartDocument();
             }
 
+            /// <summary>
+            /// Closes this instance.
+            /// </summary>
             public void Close()
             {
                 this.writer.Close();
             }
-
 
             /// <summary>
             /// Writes a parameter.
@@ -1565,26 +1527,50 @@ namespace HelixToolkit.Wpf
                 this.writer.WriteAttributeString("Type", type);
             }
 
+            /// <summary>
+            /// Writes the end document.
+            /// </summary>
             public void WriteEndDocument()
             {
                 this.writer.WriteEndDocument();
             }
 
+            /// <summary>
+            /// Writes the specified XML node.
+            /// </summary>
+            /// <param name="xmlNode">The XML node.</param>
             public void Write(XmlNode xmlNode)
             {
                 xmlNode.WriteTo(this.writer);
             }
 
+            /// <summary>
+            /// Tries to get the texture for the specified brush.
+            /// </summary>
+            /// <param name="brush">The brush.</param>
+            /// <param name="textureFile">The texture file.</param>
+            /// <returns><c>true</c> if the texture was found.</returns>
             public bool TryGetTexture(Brush brush, out string textureFile)
             {
                 return this.textureFiles.TryGetValue(brush, out textureFile);
             }
 
+            /// <summary>
+            /// Adds the specified texture.
+            /// </summary>
+            /// <param name="brush">The brush.</param>
+            /// <param name="filename">The filename.</param>
             public void AddTexture(Brush brush, string filename)
             {
                 this.textureFiles.Add(brush, filename);
             }
 
+            /// <summary>
+            /// Gets a unique name.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            /// <param name="defaultName">The default name.</param>
+            /// <returns></returns>
             public string GetUniqueName(string name, string defaultName)
             {
                 if (string.IsNullOrEmpty(name))
