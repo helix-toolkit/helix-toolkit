@@ -5,9 +5,6 @@
 syntax: glob
 
 # Ignore Visual Studio files
-*.obj
-*.exe
-*.pdb
 *.user
 *.aps
 *.pch
@@ -29,19 +26,18 @@ syntax: glob
 *.pidb
 *.userprefs
 
-[Bb]in
-[Dd]ebug*/
+[Bb]in/
 [Oo]bj/
-[Rr]elease*/
+[Dd]ebug/
+[Rr]elease/
 Output/
 ClientBin/
 lib/
 
-Tools/    # Add manually
-
 _ReSharper*/
 _TeamCity*/
-[Pp]ackages/
+packages/
+Packages/*/license.txt
 *.dotCover
 *.GhostDoc.xml
 
