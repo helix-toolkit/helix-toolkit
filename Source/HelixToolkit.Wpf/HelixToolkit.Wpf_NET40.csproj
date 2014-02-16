@@ -124,7 +124,6 @@
     <Compile Include="Controls\Stereo\WiggleView3D.xaml.cs">
       <DependentUpon>WiggleView3D.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\SelfProvider.cs" />
     <Compile Include="Exporters\KerkytheaExporter.cs" />
     <Compile Include="ExtensionMethods\Matrix3DExtensions.cs" />
