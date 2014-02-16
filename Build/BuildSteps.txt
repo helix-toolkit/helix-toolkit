@@ -51,11 +51,17 @@ mkdir Output
 echo %build.vcs.number% > Output\changeset.id
 hg log > Output\changesets.log
 
-Build .NET 4.0 solution
-Source\HelixToolkit_NET40.sln
+Build WPF .NET 4.0 solution
+Source\HelixToolkit.Wpf_NET40.sln
 
-Build .NET 4.5 solution
-Source\HelixToolkit.sln
+Build WPF .NET 4.5 solution
+Source\HelixToolkit.Wpf.sln
+
+Build WPF/SharpDX .NET 4.0 solution
+Source\HelixToolkit.Wpf.SharpDX_NET40.sln
+
+Build WPF/SharpDX .NET 4.5 solution
+Source\HelixToolkit.Wpf.SharpDX.sln
 
 Run unit tests
 NUnit runner: 
@@ -63,7 +69,9 @@ NUnit 2.6.3
 .NET Runtime: 
 Version v4.0
 Run tests from:
-Source\HelixToolkit.Wpf.Tests\bin\Release\*.Tests.dll
+Source\HelixToolkit.Tests\bin\Release\HelixToolkit.Tests.dll
+Source\HelixToolkit.Wpf.Tests\bin\Release\HelixToolkit.Wpf.Tests.dll
+Source\HelixToolkit.Wpf.SharpDX.Tests\bin\Release\HelixToolkit.Wpf.SharpDX.Tests.dll
 .NET Coverage tool: JetBrains dotCover
 Filters:
 +:HelixToolkit*

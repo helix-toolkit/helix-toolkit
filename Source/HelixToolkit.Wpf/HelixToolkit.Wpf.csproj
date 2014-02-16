@@ -24,6 +24,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Output\NET45\HelixToolkit.Wpf.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -230,11 +232,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="ShaderEffects\AnaglyphEffect.cs" />
     <Compile Include="Visual3Ds\Composite\CoordinateSystemVisual3D.cs" />
     <Compile Include="Visual3Ds\Composite\VectorFieldVisual3D.cs" />
@@ -257,8 +254,8 @@
     <Compile Include="Visual3Ds\MeshVisuals\PipeVisual3D.cs" />
     <None Include="Class diagrams\Media3D\MaterialDiagram.cd" />
     <None Include="Class diagrams\Media3D\ModelDiagram.cd" />
-    <None Include="HelixToolkit.snk" />
     <Resource Include="ShaderEffects\InterlacedEffect.ps" />
+    <None Include="HelixToolkit.snk" />
     <None Include="ShaderEffects\AnaglyphEffect.fx" />
     <Resource Include="ShaderEffects\AnaglyphEffect.ps" />
     <None Include="ShaderEffects\compileEffects.cmd" />
@@ -269,10 +266,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +304,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ShaderEffects\InterlacedEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

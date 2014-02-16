@@ -5,7 +5,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("Helix Toolkit")]
@@ -14,7 +13,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: ComVisible(false)]
-
-[assembly: AssemblyVersion("2014.1.1.1")]
-[assembly: AssemblyFileVersion("2014.1.1.1")]
+[assembly: AssemblyVersion("2014.2.1.1")]
+[assembly: AssemblyFileVersion("2014.2.1.1")]

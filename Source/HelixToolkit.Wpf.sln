@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{A710CED9-33A6-42F1-8A09-55FEC57B6460}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\SimpleDemo\SimpleDemo.csproj", "{B262B3C4-B4F7-4CD0-9055-62B271856078}"
@@ -36,6 +38,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmManipulatorDemo", "Examples\MvvmManipulatorDemo\MvvmManipulatorDemo.csproj", "{6C9BF028-EDF1-49AC-B441-B886DD807E04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmCameraDemo", "Examples\MvvmCameraDemo\MvvmCameraDemo.csproj", "{090771E2-3B20-4644-94F3-D128D8D41797}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -201,6 +205,16 @@ Global
 		{090771E2-3B20-4644-94F3-D128D8D41797}.Release|Mixed Platforms.Build.0 = Release|x86
 		{090771E2-3B20-4644-94F3-D128D8D41797}.Release|x86.ActiveCfg = Release|x86
 		{090771E2-3B20-4644-94F3-D128D8D41797}.Release|x86.Build.0 = Release|x86
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

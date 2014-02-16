@@ -1,1 +1,1 @@
-"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe" ..\Source\HelixToolkit_NET40.sln /p:Configuration=Release
+"C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe" ..\Source\HelixToolkit.Wpf_NET40.sln /p:Configuration=Release
