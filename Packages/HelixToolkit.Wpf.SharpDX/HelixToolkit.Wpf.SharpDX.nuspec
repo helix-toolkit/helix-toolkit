@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>HelixToolkit.Wpf.SharpDX</id>
+    <version>2014.2.1.1</version>
+    <title>Helix 3D Toolkit for WPF (SharpDX) ALPHA version</title>
+    <authors>objo</authors>
+    <licenseUrl>http://helixtoolkit.codeplex.com/license</licenseUrl>
+    <projectUrl>http://helixtoolkit.codeplex.com/</projectUrl>
+    <iconUrl>http://www.objo.net/codeplex/icons/helixtoolkit.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains custom controls for WPF based on SharpDX.</description>
+    <tags>wpf SharpDX 3d</tags>
+    <dependencies>
+      <dependency id="HelixToolkit" version="2014.2" />
+      <dependency id="HelixToolkit.Wpf" version="2014.2" />
+      <dependency id="SharpDX" version="2.5.0" />
+      <dependency id="SharpDX.D3DCompiler" version="2.5.0" />
+      <dependency id="SharpDX.Direct2D1" version="2.5.0" />
+      <dependency id="SharpDX.Direct3D11" version="2.5.0" />
+      <dependency id="SharpDX.Direct3D11.Effects" version="2.5.0" />
+      <dependency id="SharpDX.Direct3D9" version="2.5.0" />
+      <dependency id="SharpDX.DXGI" version="2.5.0" />
+      <dependency id="SharpDX.Toolkit" version="2.5.0" />
+      <dependency id="SharpDX.Toolkit.Graphics" version="2.5.0" />
+    </dependencies>
+  </metadata>
+</package>
