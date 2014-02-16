@@ -145,68 +145,48 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Updates the left and right camera based on a center camera.
         /// </summary>
-        /// <param name="centerCamera">
-        /// Center camera (input)
-        /// </param>
-        /// <param name="leftCamera">
-        /// Left camera (is updated)
-        /// </param>
-        /// <param name="rightCamera">
-        /// Right camera (is updated)
-        /// </param>
-        /// <param name="stereoBase">
-        /// Stereo base
-        /// </param>
-        /// <param name="crossViewing">
-        /// true for cross-viewingm false for parallel-viewing
-        /// </param>
-        /// <param name="sameUpDirection">
-        /// use the same UpDirection for both cameras
-        /// </param>
-        /// <param name="sameDirection">
-        /// use the same LookDirection for both cameras
-        /// </param>
+        /// <param name="centerCamera">Center camera (input)</param>
+        /// <param name="leftCamera">Left camera (is updated)</param>
+        /// <param name="rightCamera">Right camera (is updated)</param>
+        /// <param name="stereoBase">Stereo base</param>
+        /// <param name="crossViewing">true for cross-viewing, false for parallel-viewing (default is <c>false</c>)</param>
+        /// <param name="sameUpDirection">use the same UpDirection for both cameras (default is <c>true</c>)</param>
+        /// <param name="sameDirection">use the same LookDirection for both cameras (default is <c>true</c>)</param>
         public static void UpdateStereoCameras(
             PerspectiveCamera centerCamera,
             PerspectiveCamera leftCamera,
             PerspectiveCamera rightCamera,
             double stereoBase,
-            bool crossViewing,
-            bool sameUpDirection,
-            bool sameDirection)
+            bool crossViewing = false,
+            bool sameUpDirection = true,
+            bool sameDirection = true)
         {
             if (centerCamera == null || leftCamera == null || rightCamera == null)
             {
                 return;
             }
 
-            double sb = stereoBase;
             if (crossViewing)
             {
-                sb *= -1;
+                stereoBase *= -1;
             }
 
             var lookAt = centerCamera.Position + centerCamera.LookDirection;
             var right = Vector3D.CrossProduct(centerCamera.LookDirection, centerCamera.UpDirection);
             right.Normalize();
 
-            leftCamera.Position = centerCamera.Position - right * sb / 2;
+            leftCamera.Position = centerCamera.Position - (right * stereoBase / 2);
+            rightCamera.Position = centerCamera.Position + (right * stereoBase / 2);
+
             if (sameDirection)
             {
                 leftCamera.LookDirection = centerCamera.LookDirection;
-            }
-            else
-            {
-                leftCamera.LookDirection = lookAt - leftCamera.Position;
-            }
-
-            rightCamera.Position = centerCamera.Position + right * sb / 2;
-            if (sameDirection)
-            {
                 rightCamera.LookDirection = centerCamera.LookDirection;
             }
             else
             {
+                // both cameras looking towards the lookAt point
+                leftCamera.LookDirection = lookAt - leftCamera.Position;
                 rightCamera.LookDirection = lookAt - rightCamera.Position;
             }
 
@@ -230,6 +210,5 @@ namespace HelixToolkit.Wpf
             rightCamera.NearPlaneDistance = centerCamera.NearPlaneDistance;
             rightCamera.FarPlaneDistance = centerCamera.FarPlaneDistance;
         }
-
     }
 }

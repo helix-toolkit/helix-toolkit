@@ -16,6 +16,7 @@
                 <MenuItem Header="Save as..." IsEnabled="False"/>
                 <Separator/>
                 <MenuItem Header="Export..." Click="Export_Click"/>
+                <MenuItem Header="Export stereo..." Click="ExportStereo_Click"/>
                 <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
