@@ -27,7 +27,7 @@
         </Setter>
     </Style>
     
-    <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <local:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
 
     <Style TargetType="{x:Type local:HelixViewport3D}">
@@ -101,7 +101,7 @@
                                         IsHitTestVisible="False"
                                         Width="{TemplateBinding CoordinateSystemWidth}" Height="{TemplateBinding CoordinateSystemHeight}" Margin="0" 
                                         HorizontalAlignment="{TemplateBinding CoordinateSystemHorizontalPosition}" VerticalAlignment="{TemplateBinding CoordinateSystemVerticalPosition}" 
-                                        ClipToBounds="False" Visibility="{TemplateBinding ShowCoordinateSystem, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        ClipToBounds="False" Visibility="{TemplateBinding ShowCoordinateSystem, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <local:ArrowVisual3D Point2="8 0 0" Fill="#964B4B" />
                                 <local:ArrowVisual3D Point2="0 8 0" Fill="#4B964B" />
                                 <local:ArrowVisual3D Point2="0 0 8" Fill="#4B4B96" />
@@ -130,14 +130,14 @@
                                 </StackPanel>
 
                                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6" Background="{TemplateBinding InfoBackground}">
-                                    <TextBlock HorizontalAlignment="Right" Padding="4" Text="{TemplateBinding FrameRateText}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowFrameRate, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock HorizontalAlignment="Right" Padding="4" Text="{TemplateBinding FieldOfViewText}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowFieldOfView, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock HorizontalAlignment="Right" Padding="4" Text="{TemplateBinding FrameRateText}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowFrameRate, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    <TextBlock HorizontalAlignment="Right" Padding="4" Text="{TemplateBinding FieldOfViewText}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowFieldOfView, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     <TextBlock HorizontalAlignment="Right" Text="{TemplateBinding Status}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding Status, Converter={StaticResource NotNullToVisibilityConverter}}"/>
                                 </StackPanel>
 
                                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6" Background="{TemplateBinding InfoBackground}">
-                                    <TextBlock Text="{TemplateBinding CameraInfo}" Padding="4" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowCameraInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock Text="{TemplateBinding TriangleCountInfo}" Padding="4" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowTriangleCountInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock Text="{TemplateBinding CameraInfo}" Padding="4" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowCameraInfo, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    <TextBlock Text="{TemplateBinding TriangleCountInfo}" Padding="4" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowTriangleCountInfo, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     <TextBlock Text="{TemplateBinding DebugInfo}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding DebugInfo, Converter={StaticResource NotNullToVisibilityConverter}}"/>
                                 </StackPanel>
                             </Grid>
@@ -145,7 +145,7 @@
                             <Viewport3D x:Name="PART_ViewCubeViewport" 
                                         Width="{TemplateBinding ViewCubeWidth}" Height="{TemplateBinding ViewCubeHeight}" Margin="0" 
                                         HorizontalAlignment="{TemplateBinding ViewCubeHorizontalPosition}" VerticalAlignment="{TemplateBinding ViewCubeVerticalPosition}" 
-                                        Opacity="0.5" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Opacity="0.5" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <local:ViewCubeVisual3D x:Name="PART_ViewCube" 
                                                         IsEnabled="{Binding IsRotationEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                                         ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}" 
