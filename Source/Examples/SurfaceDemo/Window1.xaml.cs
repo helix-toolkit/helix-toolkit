@@ -380,6 +380,26 @@ namespace SurfaceDemo
             }
         }
 
+        private void ExportStereo_Click(object sender, RoutedEventArgs e)
+        {
+            var d = new SaveFileDialog
+                        {
+                            Title = "Export stereo image(s)",
+                            Filter = Exporters.Filter,
+                            DefaultExt = "Left/right bitmap files (*.png;*.jpg)|*.png;*.jpg|MPO files (*.mpo)|*.mpo"
+                        };
+
+            if (true == d.ShowDialog())
+            {
+                view1.ExportStereo(d.FileName, _viewModel.StereoBase);
+                var directory = Path.GetDirectoryName(d.FileName);
+                if (directory != null)
+                {
+                    Process.Start(directory);
+                }
+            }
+        }
+
         private void ResetCamera_Click(object sender, RoutedEventArgs e)
         {
             view1.CameraController.ResetCamera();

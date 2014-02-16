@@ -2916,6 +2916,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Exports the view to a stereo image with the specified file name.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="stereoBase">The stereo base.</param>
+        public void ExportStereo(string fileName, double stereoBase)
+        {
+            this.Viewport.ExportStereo(fileName, stereoBase, this.Background);
+        }
+
+        /// <summary>
         /// Finds the nearest object.
         /// </summary>
         /// <param name="pt">

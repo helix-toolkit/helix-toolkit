@@ -8,7 +8,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Dynamic;
     using System.IO;
     using System.Linq;
     using System.Windows;
@@ -23,7 +22,7 @@ namespace HelixToolkit.Wpf
     /// Provides extension methods for <see cref="Viewport3D"/>.
     /// </summary>
     /// <remarks>
-    /// See Charles Petzold's book "3D programming for Windows" and Eric Sink's <a hef="http://www.ericsink.com/wpf3d/index.html">Twelve Days of WPF 3D</a>.
+    /// See "3D programming for Windows" (Charles Petzold book) and <a hef="http://www.ericsink.com/wpf3d/index.html">Twelve Days of WPF 3D</a>.
     /// </remarks>
     public static class Viewport3DHelper
     {
@@ -96,6 +95,35 @@ namespace HelixToolkit.Wpf
                 case ".dae":
                     ExportCollada(viewport, fileName);
                     break;
+                default:
+                    throw new HelixToolkitException("Not supported file format.");
+            }
+        }
+
+        /// <summary>
+        /// Exports the specified viewport.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="stereoBase">The stereo base.</param>
+        /// <param name="background">The background brush.</param>
+        /// <exception cref="HelixToolkitException">Not supported file format.</exception>
+        public static void ExportStereo(this Viewport3D viewport, string fileName, double stereoBase, Brush background = null)
+        {
+            string ext = System.IO.Path.GetExtension(fileName);
+            if (ext != null)
+            {
+                ext = ext.ToLower();
+            }
+
+            switch (ext)
+            {
+                case ".jpg":
+                case ".png":
+                    SaveStereoBitmap(viewport, fileName, stereoBase, background, 2);
+                    break;
+                case ".mpo":
+                    throw new HelixToolkitException("MPO is not yet supported.");
                 default:
                     throw new HelixToolkitException("Not supported file format.");
             }
@@ -688,24 +716,65 @@ namespace HelixToolkit.Wpf
         /// <param name="fileName">Name of the file.</param>
         /// <param name="background">The background brush.</param>
         /// <param name="m">The oversampling multiplier.</param>
-        public static void SaveBitmap(this Viewport3D view, string fileName, Brush background = null, int m = 1)
+        /// <param name="format">The output format.</param>
+        public static void SaveBitmap(this Viewport3D view, string fileName, Brush background = null, int m = 1, BitmapExporter.OutputFormat format = BitmapExporter.OutputFormat.Png)
         {
             using (var stream = File.Create(fileName))
             {
-                SaveBitmap(view, stream, background, m);
+                SaveBitmap(view, stream, background, m, format);
             }
         }
 
         /// <summary>
-        /// Saves the bitmap.
+        /// Saves the <see cref="Viewport3D"/> to left/right bitmap files.
+        /// </summary>
+        /// <param name="view">The viewport.</param>
+        /// <param name="fileName">Name of the file. "_L" and "_R" will be appended to the file name.</param>
+        /// <param name="stereoBase">The stereo base.</param>
+        /// <param name="background">The background brush.</param>
+        /// <param name="m">The oversampling multiplier.</param>
+        public static void SaveStereoBitmap(this Viewport3D view, string fileName, double stereoBase, Brush background = null, int m = 1)
+        {
+            var extension = System.IO.Path.GetExtension(fileName);
+            var directory = System.IO.Path.GetDirectoryName(fileName) ?? string.Empty;
+            var name = System.IO.Path.GetFileNameWithoutExtension(fileName) ?? string.Empty;
+            var leftFileName = System.IO.Path.Combine(directory, name) + "_L" + extension;
+            var rightFileName = System.IO.Path.Combine(directory, name) + "_R" + extension;
+
+            var centerCamera = view.Camera as PerspectiveCamera;
+            var leftCamera = new PerspectiveCamera();
+            var rightCamera = new PerspectiveCamera();
+            StereoHelper.UpdateStereoCameras(centerCamera, leftCamera, rightCamera, stereoBase);
+
+            // save the left image
+            using (var stream = File.Create(leftFileName))
+            {
+                view.Camera = leftCamera;
+                view.SaveBitmap(stream, background, m);
+            }
+
+            // save the right image
+            using (var stream = File.Create(rightFileName))
+            {
+                view.Camera = rightCamera;
+                view.SaveBitmap(stream, background, m);
+            }
+
+            // restore original camera
+            view.Camera = centerCamera;
+        }
+
+        /// <summary>
+        /// Saves the <see cref="Viewport3D" /> to a bitmap.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <param name="stream">The stream.</param>
-        /// <param name="background">The background.</param>
+        /// <param name="stream">The output stream.</param>
+        /// <param name="background">The background brush.</param>
         /// <param name="m">The oversampling multiplier.</param>
-        public static void SaveBitmap(this Viewport3D view, Stream stream, Brush background = null, int m = 1)
+        /// <param name="format">The output format.</param>
+        public static void SaveBitmap(this Viewport3D view, Stream stream, Brush background = null, int m = 1, BitmapExporter.OutputFormat format = BitmapExporter.OutputFormat.Png)
         {
-            var exporter = new BitmapExporter { Background = background, OversamplingMultiplier = m };
+            var exporter = new BitmapExporter { Background = background, OversamplingMultiplier = m, Format = format };
             exporter.Export(view, stream);
         }
 
@@ -810,7 +879,7 @@ namespace HelixToolkit.Wpf
             int stride = source.PixelWidth * (source.Format.BitsPerPixel / 8);
 
             // Create data array to hold source pixel data
-            byte[] data = new byte[stride * source.PixelHeight];
+            var data = new byte[stride * source.PixelHeight];
 
             // Copy source image pixels to the data array
             source.CopyPixels(data, stride, 0);
@@ -856,7 +925,8 @@ namespace HelixToolkit.Wpf
                         {
                             Width = width,
                             Height = height,
-                            BackgroundColor = backgroundColor
+                            BackgroundColor = backgroundColor,
+                            TexturePath = System.IO.Path.GetDirectoryName(fileName)
                         };
             using (var stream = File.Create(fileName))
             {
@@ -875,7 +945,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void ExportObj(this Viewport3D view, string fileName)
         {
-            var e = new ObjExporter();
+            var e = new ObjExporter { TextureFolder = System.IO.Path.GetDirectoryName(fileName) };
             using (var stream = File.Create(fileName))
             {
                 e.Export(view, stream);

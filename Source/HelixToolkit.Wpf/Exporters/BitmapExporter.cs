@@ -24,6 +24,28 @@ namespace HelixToolkit.Wpf
         public BitmapExporter()
         {
             this.OversamplingMultiplier = 2;
+            this.Format = OutputFormat.Png;
+        }
+
+        /// <summary>
+        /// Specifies the output format.
+        /// </summary>
+        public enum OutputFormat
+        {
+            /// <summary>
+            /// Output to PNG.
+            /// </summary>
+            Png,
+
+            /// <summary>
+            /// Output to JPEG.
+            /// </summary>
+            Jpg,
+
+            /// <summary>
+            /// Output to Bitmap.
+            /// </summary>
+            Bmp
         }
 
         /// <summary>
@@ -36,7 +58,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the name of the file.
         /// </summary>
         /// <value>The name of the file.</value>
-        public string FileName { get; set; }
+        public OutputFormat Format { get; set; }
 
         /// <summary>
         /// Gets or sets the oversampling multiplier.
@@ -56,16 +78,15 @@ namespace HelixToolkit.Wpf
 
             var bmp = viewport.RenderBitmap(background, this.OversamplingMultiplier);
             BitmapEncoder encoder;
-            string ext = Path.GetExtension(this.FileName) ?? string.Empty;
-            switch (ext.ToLower())
+            switch (this.Format)
             {
-                case ".jpg":
+                case OutputFormat.Jpg:
                     encoder = new JpegBitmapEncoder();
                     break;
-                case ".bmp":
+                case OutputFormat.Bmp:
                     encoder = new BmpBitmapEncoder();
                     break;
-                case ".png":
+                case OutputFormat.Png:
                     encoder = new PngBitmapEncoder();
                     break;
                 default:

@@ -4,15 +4,18 @@
       <Value>3ds</Value>
       <Value>jpeg</Value>
       <Value>jpg</Value>
+      <Value>Kerkythea</Value>
       <Value>Lightwave</Value>
       <Value>lwo</Value>
       <Value>nd</Value>
       <Value>obj</Value>
+      <Value>Petzold</Value>
       <Value>png</Value>
       <Value>st</Value>
       <Value>stl</Value>
       <Value>th</Value>
       <Value>Wavefront</Value>
+      <Value>xaml</Value>
       <Value>YZ</Value>
     </CollectionProperty>
   </GlobalSettings>
