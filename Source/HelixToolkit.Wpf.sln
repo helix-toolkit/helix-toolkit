@@ -5,9 +5,9 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{A710CED9-33A6-42F1-8A09-55FEC57B6460}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\SimpleDemo\SimpleDemo.csproj", "{B262B3C4-B4F7-4CD0-9055-62B271856078}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\WPF\SimpleDemo\SimpleDemo.csproj", "{B262B3C4-B4F7-4CD0-9055-62B271856078}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurfaceDemo", "Examples\SurfaceDemo\SurfaceDemo.csproj", "{CD249FE2-999C-4AC3-810D-C53ACB2A7DF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurfaceDemo", "Examples\WPF\SurfaceDemo\SurfaceDemo.csproj", "{CD249FE2-999C-4AC3-810D-C53ACB2A7DF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.Tests", "HelixToolkit.Wpf.Tests\HelixToolkit.Wpf.Tests.csproj", "{F8082D12-91E7-403F-9294-9A7C2040B049}"
 EndProject
@@ -15,31 +15,33 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.Input", "H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf", "HelixToolkit.Wpf\HelixToolkit.Wpf.csproj", "{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanoramaDemo", "Examples\PanoramaDemo\PanoramaDemo.csproj", "{E68C0BD5-316A-4546-9FFC-9722350E4467}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanoramaDemo", "Examples\WPF\PanoramaDemo\PanoramaDemo.csproj", "{E68C0BD5-316A-4546-9FFC-9722350E4467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolarsystemDemo", "Examples\SolarsystemDemo\SolarsystemDemo.csproj", "{DFE51472-60CD-4F9C-8E52-47B250F58850}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolarsystemDemo", "Examples\WPF\SolarsystemDemo\SolarsystemDemo.csproj", "{DFE51472-60CD-4F9C-8E52-47B250F58850}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{4EC16C60-5AFA-4854-82D9-FB1BF92C3812}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchRender", "Tools\BatchRender\BatchRender.csproj", "{0DA2D747-B3FB-40A6-B8FF-0F8949A3E1BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmDemo", "Examples\MvvmDemo\MvvmDemo.csproj", "{47FC8A4C-86B6-4D9D-BE10-EE74F8B992BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmDemo", "Examples\WPF\MvvmDemo\MvvmDemo.csproj", "{47FC8A4C-86B6-4D9D-BE10-EE74F8B992BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HippoDemo", "Examples\HippoDemo\HippoDemo.csproj", "{9DE53816-61FC-4D59-9351-B23D166CEAB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HippoDemo", "Examples\WPF\HippoDemo\HippoDemo.csproj", "{9DE53816-61FC-4D59-9351-B23D166CEAB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelViewer", "Examples\ModelViewer\ModelViewer.csproj", "{AB6A4302-6B39-4606-874C-53CE263BB2A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelViewer", "Examples\WPF\ModelViewer\ModelViewer.csproj", "{AB6A4302-6B39-4606-874C-53CE263BB2A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryLeakTest", "Examples\MemoryLeakTest\MemoryLeakTest.csproj", "{8F52688E-5255-46C8-9506-CCC8E817C1E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryLeakTest", "Examples\WPF\MemoryLeakTest\MemoryLeakTest.csproj", "{8F52688E-5255-46C8-9506-CCC8E817C1E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\ExampleBrowser\ExampleBrowser.csproj", "{991A4C2B-D830-41CB-A810-047ADCF69219}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\WPF\ExampleBrowser\ExampleBrowser.csproj", "{991A4C2B-D830-41CB-A810-047ADCF69219}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wpf", "Wpf", "{848BE1AD-560A-4419-BD41-994A1A1CCF1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmManipulatorDemo", "Examples\MvvmManipulatorDemo\MvvmManipulatorDemo.csproj", "{6C9BF028-EDF1-49AC-B441-B886DD807E04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmManipulatorDemo", "Examples\WPF\MvvmManipulatorDemo\MvvmManipulatorDemo.csproj", "{6C9BF028-EDF1-49AC-B441-B886DD807E04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmCameraDemo", "Examples\MvvmCameraDemo\MvvmCameraDemo.csproj", "{090771E2-3B20-4644-94F3-D128D8D41797}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmCameraDemo", "Examples\WPF\MvvmCameraDemo\MvvmCameraDemo.csproj", "{090771E2-3B20-4644-94F3-D128D8D41797}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Tests", "HelixToolkit.Tests\HelixToolkit.Tests.csproj", "{E86BB7C0-A453-4923-916C-1AA32FF068F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -215,6 +217,16 @@ Global
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x86.ActiveCfg = Release|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
