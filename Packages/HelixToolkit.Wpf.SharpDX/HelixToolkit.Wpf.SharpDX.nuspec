@@ -9,7 +9,7 @@
     <projectUrl>http://helixtoolkit.codeplex.com/</projectUrl>
     <iconUrl>http://www.objo.net/codeplex/icons/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Provides custom controls and a scene graph for WPF based on SharpDX.</description>
+    <description>Provides custom controls for WPF and a scene graph based on SharpDX.</description>
     <tags>wpf SharpDX 3D</tags>
     <dependencies>
       <dependency id="HelixToolkit" version="2014.2" />
