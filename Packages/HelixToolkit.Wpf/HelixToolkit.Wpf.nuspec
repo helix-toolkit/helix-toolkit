@@ -3,14 +3,14 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>HelixToolkit.Wpf</id>
     <version>2014.2.1.1</version>
-    <title>Helix 3D Toolkit for WPF (WPF3D)</title>
+    <title>HelixToolkit.Wpf</title>
     <authors>objo</authors>
     <licenseUrl>http://helixtoolkit.codeplex.com/license</licenseUrl>
     <projectUrl>http://helixtoolkit.codeplex.com/</projectUrl>
     <iconUrl>http://www.objo.net/codeplex/icons/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Helix 3D Toolkit is a collection of custom controls and extensions for WPF 3D.</description>
-    <tags>wpf wpf3d 3d</tags>
+    <description>Provides custom controls and extensions for WPF 3D.</description>
+    <tags>wpf wpf3d 3D</tags>
     <dependencies>
       <dependency id="HelixToolkit" version="2014.2" />
     </dependencies>
