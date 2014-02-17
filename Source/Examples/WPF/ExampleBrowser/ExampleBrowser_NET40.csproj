@@ -57,7 +57,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Output\NET40\Examples\ExampleBrowser\</OutputPath>
+    <OutputPath>..\..\..\..\Output\NET40\Examples\WPF\ExampleBrowser\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -66,20 +66,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="3DTools">
-      <HintPath>..\..\..\Components\3DTools.dll</HintPath>
+      <HintPath>..\..\..\..\Components\3DTools.dll</HintPath>
     </Reference>
     <Reference Include="NAudio, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NAudio.1.6\lib\net20\NAudio.dll</HintPath>
+      <HintPath>..\..\..\packages\NAudio.1.6\lib\net20\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Petzold.Media3D">
-      <HintPath>..\..\..\Components\Petzold.Media3D.dll</HintPath>
+      <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools">
-      <HintPath>..\..\packages\PropertyTools.Wpf.2012.4.22.1\lib\NET40\PropertyTools.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2012.4.22.1\lib\NET40\PropertyTools.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\packages\PropertyTools.Wpf.2012.4.22.1\lib\NET40\PropertyTools.Wpf.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2012.4.22.1\lib\NET40\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -96,7 +96,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WiimoteLib">
-      <HintPath>..\..\..\Components\WiimoteLib.dll</HintPath>
+      <HintPath>..\..\..\..\Components\WiimoteLib.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -307,7 +307,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+    <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -674,6 +674,16 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.Input\HelixToolkit.Wpf.Input_NET40.csproj">
+      <Project>{20A2B996-7124-4783-AF5E-907EF7167881}</Project>
+      <Name>HelixToolkit.Wpf.Input_NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj">
+      <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
+      <Name>HelixToolkit.Wpf_NET40</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -689,16 +699,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\HelixToolkit.Wpf.Input\HelixToolkit.Wpf.Input_NET40.csproj">
-      <Project>{20A2B996-7124-4783-AF5E-907EF7167881}</Project>
-      <Name>HelixToolkit.Wpf.Input_NET40</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj">
-      <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
-      <Name>HelixToolkit.Wpf_NET40</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
