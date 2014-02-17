@@ -1,0 +1,114 @@
+﻿<Window x:Class="LineShadingDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
+        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
+        xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        mc:Ignorable="d"         
+        Title="Line Shading Demo (HelixToolkitDX)" Height="600" Width="900">
+    <Window.Resources>
+        <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>            
+            <RowDefinition/>
+            <!--<RowDefinition Height="Auto"/>-->
+        </Grid.RowDefinitions>
+        <htx:Viewport3DX 
+            Grid.Row="1" 
+            x:Name="view1" 
+            Camera="{Binding Camera}"
+            Title="{Binding Title}"
+            SubTitle="{Binding SubTitle}"
+            TextBrush="Black"           
+            ShowCoordinateSystem="True"
+            CoordinateSystemLabelForeground="White"
+            UseDefaultGestures="False"            
+            RenderTechnique="{Binding RenderTechnique}"
+            >
+            <htx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="htx:ViewportCommands.BackView"/>
+                <KeyBinding Key="F" Command="htx:ViewportCommands.FrontView"/>
+                <KeyBinding Key="U" Command="htx:ViewportCommands.TopView"/>
+                <KeyBinding Key="D" Command="htx:ViewportCommands.BottomView"/>
+                <KeyBinding Key="L" Command="htx:ViewportCommands.LeftView"/>
+                <KeyBinding Key="R" Command="htx:ViewportCommands.RightView"/>
+                <KeyBinding Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="LeftClick" Command="htx:ViewportCommands.Pan"/>
+            </htx:Viewport3DX.InputBindings>
+            <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
+            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
+
+            <htx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding Material1}"   />
+            <htx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding Material2}" />
+            <htx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding Material3}"  />
+
+            <htx:LineGeometryModel3D x:Name="lines1" Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Blue}"    Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
+            <htx:LineGeometryModel3D x:Name="lines2" Geometry="{Binding Lines}" Transform = "{Binding Model2Transform}" Color="{x:Static sdx:Color.Yellow}"  Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
+            <htx:LineGeometryModel3D x:Name="lines3" Geometry="{Binding Lines}" Transform = "{Binding Model3Transform}" Color="{x:Static sdx:Color.White}"   Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
+
+            <htx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"  Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}" IsRendering="{Binding GridEnabled}"/>
+        </htx:Viewport3DX>
+        <StackPanel Grid.Row="1" >
+            <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="200" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
+                </Expander.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3"/>
+                </Grid>
+            </Expander>
+            <Expander Header="Line Drawing" x:Name="linesPanel" HorizontalAlignment="Right" Width="200" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
+                </Expander.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <CheckBox  Grid.Row="0" Margin="3" IsChecked="{Binding GridEnabled}">Enable Grid</CheckBox>
+                    <CheckBox  Grid.Row="1" Margin="3" IsChecked="{Binding LinesEnabled}">Enable Lines</CheckBox>
+                    <TextBlock Grid.Row="2" Margin="3">Line Thickness</TextBlock>
+                    <Slider    Grid.Row="3" Margin="3" Value="{Binding LineThickness}" Minimum="0" Maximum="10"/>
+                    <TextBlock Grid.Row="4" Margin="3">Line Smoothness</TextBlock>
+                    <Slider    Grid.Row="5" Margin="3" Value="{Binding LineSmoothness}" Minimum="0" Maximum="20"/>
+                </Grid>
+            </Expander>
+        </StackPanel>
+        <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
+            <StatusBar.Background>
+                <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
+            </StatusBar.Background>
+            <StatusBarItem>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.Position, StringFormat=Position: \{0:0.0\}}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.LookDirection, StringFormat=LookDirection: \{0:0.0\}}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.UpDirection, StringFormat=UpDirection: \{0:0.0\}}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
