@@ -58,7 +58,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Output\NET45\Examples\ModelViewer\</OutputPath>
+    <OutputPath>..\..\..\..\Output\NET45\Examples\WPF\ModelViewer\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -94,7 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+    <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -168,7 +168,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HelixToolkit.Wpf\HelixToolkit.Wpf.csproj">
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf\HelixToolkit.Wpf.csproj">
       <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
       <Name>HelixToolkit.Wpf</Name>
     </ProjectReference>
