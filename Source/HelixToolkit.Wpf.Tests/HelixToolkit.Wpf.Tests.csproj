@@ -98,6 +98,7 @@
     <Compile Include="Helpers\MeshBuilderTests.cs" />
     <Compile Include="Helpers\ScreenSpace\LineGeometryBuilderTests.cs" />
     <Compile Include="Importers\ModelImporterTests.cs" />
+    <Compile Include="Importers\OffReaderTests.cs" />
     <Compile Include="Importers\StudioReaderTests.cs" />
     <Compile Include="Importers\StlReaderTests.cs" />
     <Compile Include="Importers\ObjReaderTests.cs" />
@@ -200,8 +201,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Models\off\BadIntValues.off">
+      <Link>Models\off\BadIntValues.off</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\off\boxcube.off">
+      <Link>Models\off\boxcube.off</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
