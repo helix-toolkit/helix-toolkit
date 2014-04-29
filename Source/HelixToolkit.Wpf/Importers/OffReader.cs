@@ -6,7 +6,6 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -14,18 +13,12 @@ namespace HelixToolkit.Wpf
     using System.Windows.Threading;
 
     /// <summary>
-    /// A Geomview Object File Format (OFF) reader.
+    /// Provides an Object File Format (OFF) reader.
     /// </summary>
     /// <remarks>
-    /// The reader does not parse colors, normals and texture coordinates.
+    /// The reader does not parse colors, normal vectors and texture coordinates.
     /// Only 3 dimensional vertices are supported.
     /// Homogeneous coordinates are not supported.
-    /// See the following links for information about the file format:
-    /// http://www.geomview.org/
-    /// http://people.sc.fsu.edu/~jburkardt/data/off/off.html
-    /// http://people.sc.fsu.edu/~jburkardt/html/off_format.html
-    /// http://segeval.cs.princeton.edu/public/off_format.html
-    /// http://paulbourke.net/dataformats/off/
     /// </remarks>
     public class OffReader : ModelReader
     {
@@ -36,6 +29,12 @@ namespace HelixToolkit.Wpf
         public OffReader(Dispatcher dispatcher = null)
             : base(dispatcher)
         {
+            //// http://www.geomview.org/
+            //// http://people.sc.fsu.edu/~jburkardt/data/off/off.html
+            //// http://people.sc.fsu.edu/~jburkardt/html/off_format.html
+            //// http://segeval.cs.princeton.edu/public/off_format.html
+            //// http://paulbourke.net/dataformats/off/
+
             this.Vertices = new List<Point3D>();
 
             // this.VertexColors = new List<Color>();
@@ -49,11 +48,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public IList<int[]> Faces { get; private set; }
 
-        // public IList<Color> FaceColors { get; set; }
-        // public IList<Color> VertexColors { get; set; }
-        // public IList<Vector3D> Normals { get; set; }
-        // public IList<Point> TexCoords { get; set; }
-
         /// <summary>
         /// Gets the vertices.
         /// </summary>
@@ -63,7 +57,7 @@ namespace HelixToolkit.Wpf
         /// Creates a mesh from the loaded file.
         /// </summary>
         /// <returns>
-        /// A mesh.
+        /// A <see cref="Mesh3D" />.
         /// </returns>
         public Mesh3D CreateMesh()
         {
@@ -82,10 +76,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Creates a MeshGeometry3D object from the loaded file. Polygons are triangulated using triangle fans.
+        /// Creates a <see cref="MeshGeometry3D" /> object from the loaded file. Polygons are triangulated using triangle fans.
         /// </summary>
         /// <returns>
-        /// A MeshGeometry3D.
+        /// A <see cref="MeshGeometry3D" />.
         /// </returns>
         public MeshGeometry3D CreateMeshGeometry3D()
         {
@@ -104,9 +98,9 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Creates a Model3D object from the loaded file.
+        /// Creates a <see cref="Model3DGroup" /> from the loaded file.
         /// </summary>
-        /// <returns>A Model3D group.</returns>
+        /// <returns>A <see cref="Model3DGroup" />.</returns>
         public Model3DGroup CreateModel3D()
         {
             Model3DGroup modelGroup = null;
@@ -151,7 +145,6 @@ namespace HelixToolkit.Wpf
                 bool nextLineContainsNumberOfVertices = false;
                 int numberOfVertices = 0;
                 int numberOfFaces = 0;
-                // int numberOfEdges = 0;
 
                 while (!reader.EndOfStream)
                 {
@@ -217,11 +210,15 @@ namespace HelixToolkit.Wpf
 
                         var n = new double[vertexDimension];
                         var uv = new double[2];
+
+#pragma warning disable 219
                         double w = 0;
                         if (containsHomogeneousCoordinates)
                         {
+                            // ReSharper disable once RedundantAssignment
                             w = values[i++];
                         }
+#pragma warning restore 219
 
                         if (containsNormals)
                         {
@@ -265,7 +262,6 @@ namespace HelixToolkit.Wpf
                         }
 
                         this.Faces.Add(vertices);
-                        continue;
                     }
                 }
             }
@@ -275,7 +271,7 @@ namespace HelixToolkit.Wpf
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
-        /// <returns>The model.</returns>
+        /// <returns>A <see cref="Model3DGroup" />.</returns>
         public override Model3DGroup Read(Stream s)
         {
             this.Load(s);
@@ -297,7 +293,7 @@ namespace HelixToolkit.Wpf
             var result = new int[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
-                result[i] = int.Parse(fields[i]);
+                result[i] = (int)double.Parse(fields[i], CultureInfo.InvariantCulture);
             }
 
             return result;
