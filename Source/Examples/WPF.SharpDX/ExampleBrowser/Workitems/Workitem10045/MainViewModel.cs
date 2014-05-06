@@ -1,4 +1,4 @@
-﻿ namespace SimpleDemo
+﻿ namespace Workitem10045
 {
     using System.Linq;
 
