@@ -4,22 +4,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
-using _3DTools;
-using Petzold.Media3D;
-
 namespace PointsAndLinesDemo
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
+    using Petzold.Media3D;
+
+    using _3DTools;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Renders text and lines.")]
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public bool ShowLinesVisual3D { get; set; }
@@ -31,7 +36,7 @@ namespace PointsAndLinesDemo
         public int N
         {
             get { return n; }
-            set { n = value; RaisePropertyChanged("N");}
+            set { n = value; RaisePropertyChanged("N"); }
         }
 
         Stopwatch watch = new Stopwatch();
@@ -67,12 +72,12 @@ namespace PointsAndLinesDemo
 
         void OnCompositionTargetRendering(object sender, EventArgs e)
         {
-            if (ShowLinesVisual3D && lines==null)
+            if (ShowLinesVisual3D && lines == null)
             {
                 lines = new LinesVisual3D { Color = Colors.Blue };
                 view1.Children.Add(lines);
             }
-            if (!ShowLinesVisual3D && lines!=null)
+            if (!ShowLinesVisual3D && lines != null)
             {
                 lines.IsRendering = false;
                 view1.Children.Remove(lines);
@@ -80,7 +85,7 @@ namespace PointsAndLinesDemo
             }
             if (ShowPointsVisual3D && points == null)
             {
-                points = new PointsVisual3D { Color = Colors.Red, Size=6 };
+                points = new PointsVisual3D { Color = Colors.Red, Size = 6 };
                 view1.Children.Add(points);
             }
             if (!ShowPointsVisual3D && points != null)
@@ -110,9 +115,9 @@ namespace PointsAndLinesDemo
                 wireLines = null;
             }
 
-            if (Points==null || Points.Count != N || isAnimating)
+            if (Points == null || Points.Count != N || isAnimating)
             {
-                Points = GeneratePoints(N, watch.ElapsedMilliseconds*0.001);
+                Points = GeneratePoints(N, watch.ElapsedMilliseconds * 0.001);
                 RaisePropertyChanged("Points");
             }
 

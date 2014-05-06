@@ -4,18 +4,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-
 namespace ManipulatorDemo
 {
+    using System.Windows;
+
+    using ExampleBrowser;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Adding manipulators to the model.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

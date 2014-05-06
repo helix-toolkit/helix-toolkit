@@ -4,34 +4,34 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
-
 namespace VoxelDemo
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Edit a voxel scene by clicking the sides of the voxels.")]
     public partial class MainWindow : Window
     {
         private readonly MainViewModel vm = new MainViewModel();
 
         public MainWindow()
         {
-            InitializeComponent();
-            vm.TryLoad("MyModel.xml");
-            DataContext = vm;
-            Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            this.InitializeComponent();
+            this.vm.TryLoad("MyModel.xml");
+            this.DataContext = vm;
+            this.Loaded += this.MainWindowLoaded;
         }
 
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             view1.ZoomExtents(500);
             view1.Focus();
@@ -39,7 +39,7 @@ namespace VoxelDemo
 
         protected override void OnClosed(EventArgs e)
         {
-            vm.Save("MyModel.xml");
+            this.vm.Save("MyModel.xml");
             base.OnClosed(e);
         }
 
@@ -72,6 +72,7 @@ namespace VoxelDemo
                 normal = h.Normal;
                 return h.Model;
             }
+
             normal = new Vector3D();
             return null;
         }

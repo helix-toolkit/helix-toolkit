@@ -1,23 +1,25 @@
-﻿using System.Windows;
-using System.Windows.Input;
-
-namespace HalfEdgeMeshDemo
+﻿namespace HalfEdgeMeshDemo
 {
+    using System.Windows;
     using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
 
     using HelixToolkit.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Example on a half-edge mesh geometry.")]
     public partial class MainWindow : Window
     {
         public HalfEdgeMesh Mesh { get; set; }
+        
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = this;
-            this.Mesh = CreateUnitCubeMesh();
+            this.InitializeComponent();
+            this.DataContext = this;
+            this.Mesh = this.CreateUnitCubeMesh();
         }
 
         private HalfEdgeMesh CreateUnitCubeMesh()
@@ -35,11 +37,6 @@ namespace HalfEdgeMeshDemo
             mesh.AddFace(2, 3, 7, 6);
             mesh.AddFace(3, 0, 4, 7);
             return mesh;
-        }
-
-        private void HelixViewport3D_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
     }
 }

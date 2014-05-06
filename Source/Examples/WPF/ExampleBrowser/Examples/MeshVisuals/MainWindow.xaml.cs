@@ -6,16 +6,17 @@
 
 namespace MeshVisualsDemo
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
 
     using HelixToolkit.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Demonstrates the mesh based visual elements.")]
     public partial class MainWindow : Window
     {
         public MainWindow()

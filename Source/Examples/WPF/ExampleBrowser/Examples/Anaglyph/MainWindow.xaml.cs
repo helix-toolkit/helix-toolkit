@@ -4,27 +4,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using HelixToolkit.Wpf;
 
 namespace AnaglyphDemo
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Showing a stereo view using the AnaglyphView3D control.")]
     public partial class MainWindow : Window
     {
         public MainWindow()

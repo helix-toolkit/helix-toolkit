@@ -4,15 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.ComponentModel;
-using System.Windows;
-using NAudioWpfDemo;
-
 namespace AudioDemo
 {
+    using System.ComponentModel;
+    using System.Windows;
+
+    using ExampleBrowser;
+    using NAudioWpfDemo;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Showing a spectrogram from NAudio using Transform3Ds.")]
     public partial class MainWindow : Window
     {
         // NAudio still not supporting 64bit

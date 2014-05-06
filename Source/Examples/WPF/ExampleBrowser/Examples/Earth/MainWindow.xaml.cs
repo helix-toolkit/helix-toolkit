@@ -14,11 +14,14 @@ namespace EarthDemo
     using System.Windows.Media.Imaging;
     using System.Windows.Media.Media3D;
 
+    using ExampleBrowser;
+
     using HelixToolkit.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Shows the earth with textures.")]
     public partial class MainWindow : Window
     {
         // Clouds

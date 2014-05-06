@@ -4,34 +4,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 namespace TerrainDemo
 {
+    using System.Windows;
+
+    using ExampleBrowser;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Rendering a terrain loaded from a .bt file.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
-            Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            this.InitializeComponent();
+            this.Loaded += this.MainWindowLoaded;
         }
 
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             view1.ZoomExtents();
         }

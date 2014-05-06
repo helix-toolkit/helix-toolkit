@@ -9,6 +9,8 @@ namespace MazeDemo
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
 
+    using ExampleBrowser;
+
     using HelixToolkit.Wpf;
 
     using Microsoft.Win32;
@@ -16,6 +18,7 @@ namespace MazeDemo
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Generates a simple maze. Using 'WalkAround' camera mode.")]
     public partial class MainWindow
     {
         /// <summary>

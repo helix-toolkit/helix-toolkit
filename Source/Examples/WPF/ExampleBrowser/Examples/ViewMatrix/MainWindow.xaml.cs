@@ -4,16 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics;
-using System.Windows;
-
-using HelixToolkit.Wpf;
-
 namespace ViewMatrixDemo
 {
+    using System.Windows;
+
+    using HelixToolkit.Wpf;
+
+    using ExampleBrowser;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Visualization of view and projection matrices (under construction).")]
     public partial class MainWindow : Window
     {
         private MainViewModel vm;

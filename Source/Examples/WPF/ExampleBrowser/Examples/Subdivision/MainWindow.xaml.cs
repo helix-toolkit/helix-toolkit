@@ -4,28 +4,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using HelixToolkit.Wpf;
-using System.Windows.Media.Media3D;
-using System.Diagnostics;
-using System.ComponentModel;
-
 namespace SubdivisionDemo
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
     using System.IO;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
+    using Microsoft.Win32;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -37,6 +30,7 @@ namespace SubdivisionDemo
     /// http://en.wikipedia.org/wiki/Barycentric_subdivision
     /// http://www.subdivision.org/
     /// </remarks>
+    [Example(null, "Surface subdivision by Loop's algorithm.")]
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

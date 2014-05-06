@@ -4,18 +4,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-
 namespace ClothDemo
 {
+    using System;
+    using System.Diagnostics;
+    using System.Threading;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Simulates cloth physics.")]
     public partial class MainWindow : Window
     {
         public GeometryModel3D FlagModel { get; set; }

@@ -4,18 +4,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using HelixToolkit.Wpf;
-using Microsoft.Win32;
-
 namespace FractalDemo
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
+    using Microsoft.Win32;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Performance test on self-similar geometries.")]
     public partial class MainWindow
     {
         public MainWindow()

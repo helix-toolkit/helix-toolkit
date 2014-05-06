@@ -4,17 +4,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
-
 namespace PyramidDemo
 {
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Performance test showing a pyramid.")]
     public partial class MainWindow : Window
     {
         // testing performance on big model...

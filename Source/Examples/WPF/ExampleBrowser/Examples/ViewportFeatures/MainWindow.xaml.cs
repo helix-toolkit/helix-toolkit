@@ -4,16 +4,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
-
 namespace ViewportFeaturesDemo
 {
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Demonstrates features of the HelixViewport3D.")]
     public partial class MainWindow : Window
     {
         private bool _firstTime2 = true;
@@ -22,9 +26,9 @@ namespace ViewportFeaturesDemo
 
         public MainWindow()
         {
-            InitializeComponent();
-            view2.Loaded += View2Loaded;
-            view7.Loaded += View7Loaded;
+            this.InitializeComponent();
+            view2.Loaded += this.View2Loaded;
+            view7.Loaded += this.View7Loaded;
         }
 
         private void View2Loaded(object sender, RoutedEventArgs e)

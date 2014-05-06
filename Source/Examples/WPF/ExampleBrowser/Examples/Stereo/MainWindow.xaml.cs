@@ -4,19 +4,23 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
-using HelixToolkit.Wpf;
-
 namespace StereoDemo
 {
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+    using System.Windows.Shapes;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Stereo view")]
     public partial class MainWindow : Window
     {
         public MainWindow()

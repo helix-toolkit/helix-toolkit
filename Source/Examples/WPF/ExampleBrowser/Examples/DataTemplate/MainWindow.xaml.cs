@@ -10,11 +10,14 @@ namespace DataTemplateDemo
     using System.Windows;
     using System.Windows.Media.Media3D;
 
+    using ExampleBrowser;
+
     using HelixToolkit.Wpf;
 
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Creating Visual3Ds by a template.")]
     public partial class MainWindow : Window
     {
         /// <summary>
