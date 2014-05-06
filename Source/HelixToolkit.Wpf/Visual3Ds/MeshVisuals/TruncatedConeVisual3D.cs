@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf
         /// <returns>A triangular mesh geometry.</returns>
         protected override MeshGeometry3D Tessellate()
         {
-            var builder = new MeshBuilder(false, false);
+            var builder = new MeshBuilder(false, true);
             builder.AddCone(
                 this.Origin,
                 this.Normal,

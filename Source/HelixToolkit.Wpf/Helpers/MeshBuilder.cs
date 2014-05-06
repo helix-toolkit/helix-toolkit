@@ -361,7 +361,7 @@ namespace HelixToolkit.Wpf
                     new Point(length, 0)
                 };
 
-            this.AddRevolvedGeometry(pc, point1, dir, thetaDiv);
+            this.AddRevolvedGeometry(pc, null, point1, dir, thetaDiv);
         }
 
         /// <summary>
@@ -530,19 +530,24 @@ namespace HelixToolkit.Wpf
             int thetaDiv)
         {
             var pc = new PointCollection();
+            var tc = new List<double>();
             if (baseCap)
             {
                 pc.Add(new Point(0, 0));
+                tc.Add(0);
             }
 
             pc.Add(new Point(0, baseRadius));
+            tc.Add(1);
             pc.Add(new Point(height, topRadius));
+            tc.Add(0);
             if (topCap)
             {
                 pc.Add(new Point(height, 0));
+                tc.Add(1);
             }
 
-            this.AddRevolvedGeometry(pc, origin, direction, thetaDiv);
+            this.AddRevolvedGeometry(pc, tc, origin, direction, thetaDiv);
         }
 
         /// <summary>
@@ -872,13 +877,16 @@ namespace HelixToolkit.Wpf
                     new Point(height, innerDiameter / 2)
                 };
 
+            var tc = new List<double> { 1, 0, 1, 0 };
+
             if (innerDiameter > 0)
             {
                 // Add the inner surface
                 pc.Add(new Point(0, innerDiameter / 2));
+                tc.Add(1);
             }
 
-            this.AddRevolvedGeometry(pc, point1, dir, thetaDiv);
+            this.AddRevolvedGeometry(pc, tc, point1, dir, thetaDiv);
         }
 
         /// <summary>
@@ -1330,22 +1338,15 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds a surface of revolution.
         /// </summary>
-        /// <param name="points">
-        /// The points (x coordinates are distance from the origin along the axis of revolution, y coordinates are radius, )
-        /// </param>
-        /// <param name="origin">
-        /// The origin of the revolution axis.
-        /// </param>
-        /// <param name="direction">
-        /// The direction of the revolution axis.
-        /// </param>
-        /// <param name="thetaDiv">
-        /// The number of divisions around the mesh.
-        /// </param>
+        /// <param name="points">The points (x coordinates are distance from the origin along the axis of revolution, y coordinates are radius, )</param>
+        /// <param name="textureValues">The v texture coordinates, one for each point in the <paramref name="points" /> list.</param>
+        /// <param name="origin">The origin of the revolution axis.</param>
+        /// <param name="direction">The direction of the revolution axis.</param>
+        /// <param name="thetaDiv">The number of divisions around the mesh.</param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Surface_of_revolution.
         /// </remarks>
-        public void AddRevolvedGeometry(IList<Point> points, Point3D origin, Vector3D direction, int thetaDiv)
+        public void AddRevolvedGeometry(IList<Point> points, IList<double> textureValues, Point3D origin, Vector3D direction, int thetaDiv)
         {
             direction.Normalize();
 
@@ -1395,8 +1396,8 @@ namespace HelixToolkit.Wpf
 
                     if (this.textureCoordinates != null)
                     {
-                        this.textureCoordinates.Add(new Point((double)i / (thetaDiv - 1), (double)j / (n - 1)));
-                        this.textureCoordinates.Add(new Point((double)i / (thetaDiv - 1), (double)(j + 1) / (n - 1)));
+                        this.textureCoordinates.Add(new Point((double)i / (thetaDiv - 1), textureValues == null ? (double)j / (n - 1) : textureValues[j]));
+                        this.textureCoordinates.Add(new Point((double)i / (thetaDiv - 1), textureValues == null ? (double)(j + 1) / (n - 1) : textureValues[j + 1]));
                     }
 
                     int i0 = index0 + (i * rowNodes) + (j * 2);

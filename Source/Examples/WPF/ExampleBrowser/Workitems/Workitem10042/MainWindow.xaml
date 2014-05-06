@@ -9,7 +9,10 @@
             <ht:CubeVisual3D Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
             <ht:EllipsoidVisual3D Center="2,0,0" Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
             <ht:RectangleVisual3D Origin="4,0,0" Width="1" Length="1" Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
-            <ht:PipeVisual3D Point1="6,0,0" Point2="6,0,10" InnerDiameter="0.8" Diameter="1" Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
+            <ht:PipeVisual3D Point1="6,0,10" Point2="6,0,0" InnerDiameter="0.8" Diameter="1" Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
+            <ht:PipeVisual3D Point1="8,0,10" Point2="8,0,0" InnerDiameter="0" Diameter="1" Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
+            <ht:TruncatedConeVisual3D Origin="10,0,0" Normal="0,0,1" Height="10" BaseRadius="1" TopRadius="0.3" Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
+            <ht:TruncatedConeVisual3D Origin="12,0,0" Normal="0,0,1" Height="10" BaseRadius="1" TopRadius="0" Material="{ht:ImageMaterial 'pack://application:,,,/Workitems/Workitem10042/TextureTestImage.png'}"/>
         </ht:HelixViewport3D>
     </Grid>
 </Window>
