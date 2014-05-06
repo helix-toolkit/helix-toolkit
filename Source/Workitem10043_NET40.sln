@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workitem10043_NET40", "Examples\WPF.SharpDX\Workitem10043\Workitem10043_NET40.csproj", "{467C5E3B-0FC9-4454-A277-7350D0C10ADB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCore _NET40", "Examples\WPF.SharpDX\DemoCore\DemoCore _NET40.csproj", "{2788327A-7E25-4119-A9EB-06FF1CEA01E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,14 @@ Global
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB}.Release|x64.ActiveCfg = Release|Any CPU
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB}.Release|x86.ActiveCfg = Release|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Release|x64.ActiveCfg = Release|Any CPU
+		{2788327A-7E25-4119-A9EB-06FF1CEA01E8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
