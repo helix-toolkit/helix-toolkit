@@ -146,8 +146,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Workitem10043_small.png" />
+    <Resource Include="Images\Workitem10045_small.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="ReadMe.txt" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

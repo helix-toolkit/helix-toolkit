@@ -147,8 +147,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Workitem10043_small.png" />
+    <Resource Include="Images\Workitem10045_small.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="ReadMe.txt" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -177,9 +179,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Workitem10045_small.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
