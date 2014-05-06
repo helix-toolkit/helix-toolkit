@@ -124,12 +124,20 @@
     <Compile Include="ExampleAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Workitems\Workitem10043\MainViewModel.cs" />
     <Page Include="Workitems\Workitem10043\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Workitems\Workitem10043\MainViewModel.cs" />
     <Compile Include="Workitems\Workitem10043\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Workitems\Workitem10045\MainViewModel.cs" />
+    <Page Include="Workitems\Workitem10045\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Workitems\Workitem10045\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
