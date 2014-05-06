@@ -1,9 +1,8 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Media;
-
-namespace BackgroundUpdateDemo
+﻿namespace BackgroundUpdateDemo
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Media;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading;
@@ -11,11 +10,14 @@ namespace BackgroundUpdateDemo
     using System.Windows.Media.Media3D;
     using System.Windows.Threading;
 
+    using ExampleBrowser;
+
     using HelixToolkit.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Updates the visual model in a background thread.")]
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private CancellationTokenSource source;

@@ -4,18 +4,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media.Media3D;
-using System.Windows.Threading;
-using HelixToolkit.Wpf;
-
 namespace ChamferDemo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Media.Media3D;
+    using System.Windows.Threading;
+
+    using ExampleBrowser;
+    using HelixToolkit.Wpf;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Chamfers the corner of a cube by the MeshBuilder.ChamferCorner method.")]
     public partial class MainWindow : Window
     {
         private readonly DispatcherTimer dt;

@@ -4,13 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-
 namespace TransparencyDemo
 {
+    using System.Windows;
+
+    using ExampleBrowser;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Uses 'depth sorting' to show a transparent model. The sorting frequency is reduced to show what is going on.")]
     public partial class MainWindow : Window
     {
         public MainWindow()

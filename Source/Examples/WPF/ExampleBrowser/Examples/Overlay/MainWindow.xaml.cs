@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="">
-//
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace OverlayDemo
+﻿namespace OverlayDemo
 {
     using System;
     using System.Windows;
@@ -13,11 +7,14 @@ namespace OverlayDemo
     using System.Windows.Media.Media3D;
     using System.Windows.Shapes;
 
+    using ExampleBrowser;
+
     using HelixToolkit.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Overlays 2D text and geometry on the 3D model.")]
     public partial class MainWindow : Window
     {
         /// <summary>

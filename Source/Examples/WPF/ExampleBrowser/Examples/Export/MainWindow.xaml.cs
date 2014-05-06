@@ -4,7 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace ExportDemo
 {
     using System.Diagnostics;
@@ -13,12 +12,16 @@ namespace ExportDemo
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
     using HelixToolkit.Wpf;
     using Microsoft.Win32;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Exports a model to Kerkythea or Octane (.obj).")]
     public partial class MainWindow : Window
     {
         public MainWindow()

@@ -4,18 +4,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
-
 namespace UIElementDemo
 {
-    using System;
+    using System.Windows;
     using System.Windows.Input;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
+    using HelixToolkit.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Test of UIElement3D in HelixViewport3D.")]
     public partial class MainWindow : Window
     {
         public MainWindow()

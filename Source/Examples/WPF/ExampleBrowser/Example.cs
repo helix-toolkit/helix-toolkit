@@ -12,6 +12,13 @@ namespace ExampleBrowser
         public string Description { get; set; }
         private Type MainWindowType { get; set; }
         public ImageSource Thumbnail { get; set; }
+        public string ThumbnailFileName
+        {
+            get
+            {
+                return this.MainWindowType.Namespace + "_small.png";
+            }
+        }
 
         public Example(Type mainWindowType, string title = null, string description = null)
         {
@@ -21,7 +28,7 @@ namespace ExampleBrowser
             try
             {
                 this.Thumbnail =
-                    new BitmapImage(new Uri("pack://application:,,,/Images/" + mainWindowType.Namespace + "_small.png"));
+                    new BitmapImage(new Uri("pack://application:,,,/Images/" + this.ThumbnailFileName));
             }
             catch (Exception e)
             {

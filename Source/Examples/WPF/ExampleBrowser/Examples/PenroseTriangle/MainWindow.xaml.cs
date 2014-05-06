@@ -8,6 +8,8 @@ namespace PenroseTriangleDemo
 {
     using System.Windows.Input;
 
+    using ExampleBrowser;
+
     using HelixToolkit.Wpf;
 
     using Microsoft.Win32;
@@ -15,6 +17,7 @@ namespace PenroseTriangleDemo
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Shows a Penrose triangle in 3D.")]
     public partial class MainWindow
     {
         /// <summary>

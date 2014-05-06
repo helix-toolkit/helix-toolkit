@@ -4,15 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Windows;
-using System.Windows.Media.Media3D;
-
 namespace TubeDemo
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Media.Media3D;
+
+    using ExampleBrowser;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Example(null, "Shows Borromean rings using the TubeVisual3D.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
