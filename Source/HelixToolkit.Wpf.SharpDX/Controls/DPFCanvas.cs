@@ -517,17 +517,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="sizeInfo"></param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            if (this.RenderTechnique == Techniques.RenderDeferred)
+            if (this.surfaceD3D != null)
             {
-                this.deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
-            }
-            if (this.RenderTechnique == Techniques.RenderGBuffer)
-            {
-                this.deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                if (this.RenderTechnique == Techniques.RenderDeferred)
+                {
+                    this.deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                }
+                if (this.RenderTechnique == Techniques.RenderGBuffer)
+                {
+                    this.deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                }
+            
+                this.CreateAndBindTargets();
+                this.SetDefaultRenderTargets();              
             }
 
-            this.CreateAndBindTargets();            
-            this.SetDefaultRenderTargets();
             base.OnRenderSizeChanged(sizeInfo);
         }
 
