@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets the (outer) diameter.
         /// </summary>
-        /// <value>The diameter.</value>
+        /// <value>The diameter. The default value is <c>1</c>.</value>
         public double Diameter
         {
             get
@@ -70,7 +70,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets the inner diameter.
         /// </summary>
-        /// <value>The inner diameter.</value>
+        /// <value>The inner diameter. The default value is <c>0</c>.</value>
         public double InnerDiameter
         {
             get
@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets the start point.
         /// </summary>
-        /// <value>The start point.</value>
+        /// <value>The start point. The default value is <c>0,0,0</c>.</value>
         public Point3D Point1
         {
             get
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets the end point.
         /// </summary>
-        /// <value>The end point.</value>
+        /// <value>The end point. The default value is <c>0,0,10</c>.</value>
         public Point3D Point2
         {
             get
@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets the theta div.
         /// </summary>
-        /// <value>The theta div.</value>
+        /// <value>The theta div. The default value is <c>36</c>.</value>
         public int ThetaDiv
         {
             get
@@ -136,9 +136,11 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
+        /// Do the tessellation and return the <see cref="MeshGeometry3D" />.
         /// </summary>
-        /// <returns>A triangular mesh geometry.</returns>
+        /// <returns>
+        /// A triangular mesh geometry.
+        /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
             var builder = new MeshBuilder(false, true);
