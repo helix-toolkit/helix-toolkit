@@ -112,6 +112,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Workitems\Workitem10042\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem10046\FaceTheCameraBillboard.cs" />
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -413,6 +416,10 @@
     </Compile>
     <Compile Include="Examples\Fractal\Observable.cs" />
     <Compile Include="Examples\HalfEdgeMesh\HalfEdgeMesh.cs" />
+    <Page Include="Workitems\Workitem10042\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Workitems\Workitem10046\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -549,6 +556,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Workitems\Workitem10042\TextureTestImage.png" />
     <Resource Include="Images\Workitem10046_small.png" />
     <Resource Include="ReadMe.txt" />
     <Resource Include="Images\EarthCuttingPlanesDemo_small.png" />
