@@ -177,7 +177,7 @@ namespace HelixToolkit.Wpf
             var pc = new PointCollection { new Point(-l, r), new Point(-l, r * 2), new Point(0, 0) };
 
             var headBuilder = new MeshBuilder(false, false);
-            headBuilder.AddRevolvedGeometry(pc, new Point3D(0, 0, 0), new Vector3D(0, 0, 1), this.ThetaDiv);
+            headBuilder.AddRevolvedGeometry(pc, null, new Point3D(0, 0, 0), new Vector3D(0, 0, 1), this.ThetaDiv);
             this.head = headBuilder.ToMesh();
             this.head.Freeze();
 
@@ -185,7 +185,7 @@ namespace HelixToolkit.Wpf
             pc = new PointCollection { new Point(0, 0), new Point(0, r), new Point(1, r) };
 
             var bodyBuilder = new MeshBuilder(false, false);
-            bodyBuilder.AddRevolvedGeometry(pc, new Point3D(0, 0, 0), new Vector3D(0, 0, 1), this.ThetaDiv);
+            bodyBuilder.AddRevolvedGeometry(pc, null, new Point3D(0, 0, 0), new Vector3D(0, 0, 1), this.ThetaDiv);
             this.body = bodyBuilder.ToMesh();
             this.body.Freeze();
         }
