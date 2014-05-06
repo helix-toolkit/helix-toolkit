@@ -9,12 +9,14 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using System.Windows.Markup;
 
     using global::SharpDX;
 
     /// <summary>
     ///     Represents a composite Model3D.
     /// </summary>
+    [ContentProperty("Children")]
     public class CompositeModel3D : GeometryModel3D
     {
         private ObservableCollection<Element3D> children;

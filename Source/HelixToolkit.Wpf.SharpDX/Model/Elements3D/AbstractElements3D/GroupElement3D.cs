@@ -1,7 +1,9 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
+    using System.Windows.Markup;
 
+    [ContentProperty("Children")]
     public abstract class GroupElement3D : Element3D //, IElement3DCollection
     {
 
