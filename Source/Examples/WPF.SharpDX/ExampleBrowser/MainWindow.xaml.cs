@@ -91,7 +91,7 @@ namespace ExampleBrowser
         {
             foreach (var type in assembly.GetTypes())
             {
-                var ea = type.GetCustomAttribute<ExampleAttribute>();
+                var ea = type.GetCustomAttributes(typeof(ExampleAttribute), false).FirstOrDefault() as ExampleAttribute;
                 if (ea != null)
                 {
                     yield return new Example(type, ea.Title, ea.Description);
