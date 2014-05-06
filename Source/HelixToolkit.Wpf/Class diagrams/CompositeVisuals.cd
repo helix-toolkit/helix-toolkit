@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HelixToolkit.AnimatedModelVisual3D" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="animationWatch" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAABABAAAAAAAAAAAAAAAAAABAAAAAACAA=</HashCode>
+      <FileName>Visual3Ds\Composite\AnimatedVisual3D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HelixToolkit.CoordinateSystemVisual3D">
+    <Position X="2.75" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="ArrowLengthsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAARAAAABAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\CoordinateSystemVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.EnvironmentCubeVisual3D">
+    <Position X="5.25" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="ImagePrefixProperty" Hidden="true" />
+      <Field Name="SizeProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAEIAAAAgAAAAgAAAAAAAAAAQAAAAAQABAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\EnvironmentCubeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.LegoVisual3D">
+    <Position X="7.5" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="ColumnsProperty" Hidden="true" />
+      <Field Name="FillProperty" Hidden="true" />
+      <Field Name="HeightProperty" Hidden="true" />
+      <Field Name="RowsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAABAAAAEAAAABAABAAAAAASAAAAAQAAAiAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\LegoVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.LightVisual3D">
+    <Position X="9.75" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="LightProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAABgAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\LightVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.MeshNormals3D">
+    <Position X="12" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="MeshProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAQAAAAQAAgAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\MeshNormalsVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.SegmentCollectionVisual3D">
+    <Position X="14.25" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="_element" Hidden="true" />
+      <Field Name="_tube" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAIAABAABAAQCAAgAAAAAAAAACAACAAACgABAAAABAA=</HashCode>
+      <FileName>Visual3Ds\Composite\SegmentCollectionVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.SphereCollectionVisual3D">
+    <Position X="16.5" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="_element" Hidden="true" />
+      <Field Name="_sphere" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBAAAAAAgIAAAAAAAAAAACAAACgABAAAABAA=</HashCode>
+      <FileName>Visual3Ds\Composite\SphereCollectionVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.StudioVisual3D">
+    <Position X="18.75" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="SourceProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAgAAAAAAAAAAAAAAAAAAIAAACAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\StudioVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.Target3D">
+    <Position X="21" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\Composite\TargetVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.TriangularPolyhedronVisual3D">
+    <Position X="23.25" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="_edges" Hidden="true" />
+      <Field Name="_faces" Hidden="true" />
+      <Field Name="_nodes" Hidden="true" />
+      <Field Name="_normals" Hidden="true" />
+      <Field Name="PolyhedronProperty" Hidden="true" />
+      <Field Name="ShowEdgesProperty" Hidden="true" />
+      <Field Name="ShowFacesProperty" Hidden="true" />
+      <Field Name="ShowNodesProperty" Hidden="true" />
+      <Field Name="ShowNormalsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EAACYBCQAwAIAAIAQABAAAOEAAMCIQgAgARAAoIAgAA=</HashCode>
+      <FileName>Visual3Ds\Composite\TriangularPolyhedronVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelixToolkit.VectorFieldVisual3D">
+    <Position X="25.5" Y="5.25" Width="2" />
+    <Members>
+      <Field Name="_body" Hidden="true" />
+      <Field Name="_element" Hidden="true" />
+      <Field Name="_head" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAABAAAAAAgQQAAAAAAAAAACAAADgABAAABFAA=</HashCode>
+      <FileName>Visual3Ds\Composite\VectorFieldVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.ModelVisual3D" Collapsed="true">
+    <Position X="12" Y="3.5" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Visual3D" Collapsed="true">
+    <Position X="12" Y="2" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.DependencyObject" Collapsed="true">
+    <Position X="12" Y="0.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

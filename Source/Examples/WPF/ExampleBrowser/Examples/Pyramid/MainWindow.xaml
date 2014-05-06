@@ -1,0 +1,11 @@
+﻿<Window x:Class="PyramidDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+    Title="PyramidDemo" Height="480" Width="640">
+    <Grid>
+        <helix:HelixViewport3D x:Name="view1">
+            <helix:DefaultLights/>
+        </helix:HelixViewport3D>
+    </Grid>
+</Window>

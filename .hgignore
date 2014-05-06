@@ -1,0 +1,47 @@
+# Mercurial .hgignore file for C# / .NET / Visual Studio / Resharper / StyleCop
+# http://stackoverflow.com/questions/34784/mercurial-hgignore-for-visual-studio-2008-projects
+
+# use glob syntax
+syntax: glob
+
+# Ignore Visual Studio files
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.nupkg
+*.pidb
+*.userprefs
+
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+Output/
+ClientBin/
+lib/
+
+_ReSharper*/
+_TeamCity*/
+packages/
+Packages/*/license.txt
+*.dotCover
+*.GhostDoc.xml
+
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+[Tt]humbs.db

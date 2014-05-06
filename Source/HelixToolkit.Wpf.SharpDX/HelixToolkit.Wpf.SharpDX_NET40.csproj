@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{39740654-F5F1-4936-B4EA-9BC97D4CDE37}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HelixToolkit.Wpf.SharpDX</RootNamespace>
+    <AssemblyName>HelixToolkit.Wpf.SharpDX</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DX11 PRECOMPILED_SHADERS TESSELATION_</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\NET40\</OutputPath>
+    <DefineConstants>TRACE;DX11 PRECOMPILED_SHADERS TESSELATION_</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DX11</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;DX11</DefineConstants>
+    <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Wpf.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DX11</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;DX11</DefineConstants>
+    <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Wpf.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.2.5.0\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.D3DCompiler.2.5.0\lib\net40\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.Direct3D11.2.5.0\lib\net40\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11.Effects, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.Direct3D11.Effects.2.5.0\lib\net40\SharpDX.Direct3D11.Effects.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.Direct3D9.2.5.0\lib\net40\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.DXGI.2.5.0\lib\net40\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Toolkit.Graphics, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpDX.Toolkit.Graphics.2.5.0\lib\net40\SharpDX.Toolkit.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Controls\DeferredRenderer.cs" />
+    <Compile Include="Controls\Disposer.cs" />
+    <Compile Include="Controls\DPFCanvas.cs" />
+    <Compile Include="Controls\IRenderable.cs" />
+    <Compile Include="Controls\IRenderHost.cs" />
+    <Compile Include="Controls\Trackball.cs" />
+    <Compile Include="Controls\Viewport3DX.cs" />
+    <Compile Include="Core\Box3D.cs" />
+    <Compile Include="Core\CuttingEarsTriangulator.cs" />
+    <Compile Include="Core\Polygon.cs" />
+    <Compile Include="Core\Polygon3D.cs" />
+    <Compile Include="Core\HelixToolkitException.cs" />
+    <Compile Include="Core\Ray3.cs" />
+    <Compile Include="Core\Ray3D.cs" />
+    <Compile Include="Controls\CameraExtensions.cs" />
+    <Compile Include="Controls\DX11ImageSource.cs" />
+    <Compile Include="Controls\Effects.cs" />
+    <Compile Include="Controls\HitTestResult.cs" />
+    <Compile Include="Controls\FpsCounter.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
+    <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
+    <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\PanHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\RotateHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\TouchMode.cs" />
+    <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
+    <Compile Include="Controls\RenderContext.cs" />
+    <Compile Include="Controls\RenderUtil.cs" />
+    <Compile Include="Controls\Viewport3DX.Properties.cs" />
+    <Compile Include="Controls\ViewportExtensions.cs" />
+    <Compile Include="Controls\ViewportCommands.cs" />
+    <Compile Include="Extensions\Matrix3DExtensions.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\ValueConverter.cs" />
+    <Compile Include="Extensions\Vector3DExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Model\Camera\Camera.cs" />
+    <Compile Include="Model\Camera\MatrixCamera.cs" />
+    <Compile Include="Model\Camera\OrthographicCamera.cs" />
+    <Compile Include="Model\Camera\PerspectiveCamera.cs" />
+    <Compile Include="Model\Camera\ProjectionCamera.cs" />
+    <Compile Include="Model\Elements3D\CompositeModel3D.cs" />
+    <Compile Include="Model\Elements3D\DraggableGeometryModel3D.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Elements3D\EnvironmentMapModel3D.cs" />
+    <Compile Include="Model\Elements3D\GroupModel3D.cs" />
+    <Compile Include="Model\Elements3D\Items3DControl.cs" />
+    <Compile Include="Model\Elements3D\ItemsModel3D.cs" />
+    <Compile Include="Model\Elements3D\Light3DCollection.cs" />
+    <Compile Include="Model\Elements3D\MeshGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\Element3DCollection.cs" />
+    <Compile Include="Model\Elements3D\AbstractElements3D\MaterialGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\PNPatchGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\TransformableItems3DControl.cs" />
+    <Compile Include="Model\Elements3D\UICompositeManipulator3D.cs" />
+    <Compile Include="Model\Elements3D\UIManipulator3D.cs" />
+    <Compile Include="Model\Elements3D\UIResizeManipulator3D.cs" />
+    <Compile Include="Model\Elements3D\UIRotateManipulator3D.cs" />
+    <Compile Include="Model\Elements3D\UITranslateManipulator3D.cs" />
+    <Compile Include="Model\Lights3D\AmbientLight3D.cs" />
+    <Compile Include="Model\Lights3D\DirectionalLight3D.cs" />
+    <Compile Include="Model\Elements3D\AbstractElements3D\Element3D.cs" />
+    <Compile Include="Model\Elements3D\AbstractElements3D\GeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\AbstractElements3D\GroupElement3D.cs" />
+    <Compile Include="Model\Lights3D\Light3D.cs" />
+    <Compile Include="Model\Elements3D\LineGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\AbstractElements3D\Model3D.cs" />
+    <Compile Include="Model\Lights3D\PointLight3D.cs" />
+    <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
+    <Compile Include="Model\Lights3D\SpotLight3D.cs" />
+    <Compile Include="Model\Elements3D\AbstractElements3D\UIElement3D.cs" />
+    <Compile Include="Model\Geometry\Geometry3D.cs" />
+    <Compile Include="Model\Geometry\LineGeometry3D.cs" />
+    <Compile Include="Model\Geometry\MeshGeometry3D.cs" />
+    <Compile Include="Model\Interfaces.cs" />
+    <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
+    <Compile Include="Model\Materials\Material.cs" />
+    <Compile Include="Model\Materials\PhongMaterial.cs" />
+    <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
+    <Compile Include="Utilities\Exporter.cs" />
+    <Compile Include="Utilities\IExporter.cs" />
+    <Compile Include="Utilities\IModelReader.cs" />
+    <Compile Include="Utilities\LineBuilder.cs" />
+    <Compile Include="Utilities\MeshBuilder.cs" />
+    <Compile Include="Utilities\ObjExporter.cs" />
+    <Compile Include="Utilities\ObjReader.cs" />
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Model\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Shaders\Common.fx" />
+    <EmbeddedResource Include="Shaders\Deferred.fx" />
+    <EmbeddedResource Include="Shaders\DeferredLighting.fx" />
+    <EmbeddedResource Include="Shaders\Material.fx" />
+    <EmbeddedResource Include="Shaders\Tessellation.fx" />
+    <EmbeddedResource Include="Shaders\Lines.fx" />
+    <EmbeddedResource Include="Shaders\_compile_instructions.txt" />
+    <Content Include="..\packages\SharpDX.Direct3D11.Effects.2.5.0\Content\sharpdx_direct3d11_effects_x64.dll">
+      <Link>sharpdx_direct3d11_effects_x64.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\packages\SharpDX.Direct3D11.Effects.2.5.0\Content\sharpdx_direct3d11_effects_x86.dll">
+      <Link>sharpdx_direct3d11_effects_x86.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Textures\random4x4_dot3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Textures\random_dot3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\_default.bfx" />
+    <None Include="Resources\_deferred.bfx" />
+    <EmbeddedResource Include="Shaders\Default.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj">
+      <Project>{3f3b4548-a9db-4874-86f7-e7c4fec8a351}</Project>
+      <Name>HelixToolkit.Wpf_NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+</Project>
