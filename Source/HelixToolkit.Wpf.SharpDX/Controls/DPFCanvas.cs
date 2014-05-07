@@ -203,6 +203,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderRenderable.Detach();
                 this.sceneAttached = false;
             }
+            
+            if (this.surfaceD3D == null)
+            {
+                return;
+            }
 
             this.surfaceD3D.IsFrontBufferAvailableChanged -= this.OnIsFrontBufferAvailableChanged;
             this.Source = null;
