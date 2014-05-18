@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                for (int i = 0; i < Indices.Length; i += 2)
+                for (int i = 0; i < Indices.Count; i += 2)
                 {
                     yield return new Line { P0 = Positions[Indices[i]], P1 = Positions[Indices[i + 1]], };
                 }

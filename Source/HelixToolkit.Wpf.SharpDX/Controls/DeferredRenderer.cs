@@ -705,15 +705,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var b1 = new MeshBuilder();
             b1.AddSphere(new Vector3(0, 0, 0), 1.0);
             MeshGeometry3D meshGeometry = b1.ToMeshGeometry3D();
-
             var vertices = meshGeometry.Positions.Select(p => new Vector4(p, 1.0f)).ToArray();
-            int[] indices = meshGeometry.Indices;
 
             this.screenSphere = new LightGeometryData()
             {
-                IndexBuffer = this.device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), indices),
+                IndexBuffer = this.device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), meshGeometry.Indices.Array),
                 VertexBuffer = this.device.CreateBuffer(BindFlags.VertexBuffer, Vector4.SizeInBytes, vertices),
-                IndexCount = meshGeometry.Indices.Length,
+                IndexCount = meshGeometry.Indices.Count,
             };
         }
 

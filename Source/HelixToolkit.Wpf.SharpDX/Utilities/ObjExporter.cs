@@ -218,7 +218,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (m.Indices != null)
             {
-                for (int i = 0; i < m.Indices.Length; i += 3)
+                for (int i = 0; i < m.Indices.Count; i += 3)
                 {
                     int i0 = m.Indices[i];
                     int i1 = m.Indices[i + 1];
@@ -227,7 +227,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.writer.WriteLine("f {0} {1} {2}", formatIndices(i0), formatIndices(i1), formatIndices(i2));
                 }
 
-                this.writer.WriteLine(string.Format("# {0} faces", m.Indices.Length / 3));
+                this.writer.WriteLine(string.Format("# {0} faces", m.Indices.Count / 3));
             }
 
             this.writer.WriteLine();

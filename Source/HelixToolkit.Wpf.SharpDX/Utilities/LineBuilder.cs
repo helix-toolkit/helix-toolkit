@@ -1,7 +1,8 @@
 ﻿namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
-    using System.Collections.Generic;
+
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     using Vector3D = global::SharpDX.Vector3;
     using Vector3 = global::SharpDX.Vector3;
@@ -10,14 +11,14 @@
 
     public class LineBuilder
     {
-        private List<Point3D> positions;
-        private List<int> lineListIndices;
+        private Vector3Collection positions;
+        private IntCollection lineListIndices;
 
         public LineBuilder()
         {
-            positions = new List<Point3D>();
+            positions = new Vector3Collection();
             // textureCoordinates = new List<Point>();
-            lineListIndices = new List<int>();
+            lineListIndices = new IntCollection();
         }
 
         public void Add(bool isClosed, params Point3D[] points)
@@ -91,7 +92,7 @@
 
         public LineGeometry3D ToLineGeometry3D()
         {
-            return new LineGeometry3D { Positions = this.positions.ToArray(), Indices = this.lineListIndices.ToArray() };
+            return new LineGeometry3D { Positions = this.positions, Indices = this.lineListIndices };
         }
                
         /// <summary>
@@ -193,7 +194,7 @@
         /// <returns></returns>
         public static LineGeometry3D GenerateBoundingBox(Geometry3D mesh)
         {
-            var bb = global::SharpDX.BoundingBox.FromPoints(mesh.Positions);
+            var bb = global::SharpDX.BoundingBox.FromPoints(mesh.Positions.Array);
             return GenerateBoundingBox(bb);
         }
 

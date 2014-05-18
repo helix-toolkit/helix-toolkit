@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             //var m = this.Transform.ToMatrix();
             //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
-            var b = BoundingBox.FromPoints(this.Geometry.Positions);
+            var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
             
             //var b = BoundingBox.FromPoints(this.Geometry.Positions);
             //b.Minimum = Vector3.TransformCoordinate(b.Minimum, m);
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Geometry != null)
             {                
                 //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
-                var b = BoundingBox.FromPoints(this.Geometry.Positions);
+                var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
                 this.Bounds = b;
                 //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
             }
