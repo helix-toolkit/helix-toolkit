@@ -3,16 +3,15 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using Vector3D = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;
-    using Point = global::SharpDX.Vector2;
+
+    using global::SharpDX;
+
+    using HelixToolkit.Wpf.SharpDX.Core;
+
     using Plane3D = global::SharpDX.Plane;
     using Ray3D = global::SharpDX.Ray;
     using Ray = global::SharpDX.Ray;
     using Rect3D = System.Windows.Media.Media3D.Rect3D;
-    using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
-    using Point3DCollection = System.Collections.Generic.List<global::SharpDX.Vector3>;
-    using Int32Collection = System.Collections.Generic.List<int>;
 
     // TODO
     //[Flags]
@@ -134,31 +133,31 @@
         /// <summary>
         /// The circle cache.
         /// </summary>
-        private static readonly Dictionary<int, IList<Point>> CircleCache = new Dictionary<int, IList<Point>>();
+        private static readonly Dictionary<int, IList<Vector2>> CircleCache = new Dictionary<int, IList<Vector2>>();
 
         /// <summary>
         /// The unit sphere cache.
         /// </summary>
         private static readonly Dictionary<int, MeshGeometry3D> UnitSphereCache = new Dictionary<int, MeshGeometry3D>();
 
-        private List<Point3D> positions;
-        private List<Vector3D> normals;
-        private List<Vector3D> tangents;
-        private List<Vector3D> bitangents;
-        private List<Point> textureCoordinates;
-        private List<int> triangleIndices;
+        private Vector3Collection positions;
+        private Vector3Collection normals;
+        private Vector3Collection tangents;
+        private Vector3Collection bitangents;
+        private Vector2Collection textureCoordinates;
+        private IntCollection triangleIndices;
 
-        public Point3DCollection Positions { get { return this.positions; } }
+        public Vector3Collection Positions { get { return this.positions; } }
 
-        public Point3DCollection Normals { get { return this.normals; } set { this.normals = value; } }
+        public Vector3Collection Normals { get { return this.normals; } set { this.normals = value; } }
 
-        public Point3DCollection Tangents { get { return this.tangents; } set { this.tangents = value; } }
+        public Vector3Collection Tangents { get { return this.tangents; } set { this.tangents = value; } }
 
-        public Point3DCollection BiTangents { get { return this.bitangents; } set { this.bitangents = value; } }
+        public Vector3Collection BiTangents { get { return this.bitangents; } set { this.bitangents = value; } }
 
-        public PointCollection TextureCoordinates { get { return this.textureCoordinates; } set { this.textureCoordinates = value; } }
+        public Vector2Collection TextureCoordinates { get { return this.textureCoordinates; } set { this.textureCoordinates = value; } }
 
-        public Int32Collection TriangleIndices { get { return this.triangleIndices;} }
+        public IntCollection TriangleIndices { get { return this.triangleIndices;} }
 
         public bool HasNormals { get { return this.normals != null; } }
         
@@ -174,23 +173,23 @@
         /// </remarks>
         public MeshBuilder(bool generateNormals = true, bool generateTexCoords = true, bool tangentSpace = false)
         {
-            this.positions = new List<Point3D>();
-            this.triangleIndices = new List<int>();
+            this.positions = new Vector3Collection();
+            this.triangleIndices = new IntCollection();
 
             if (generateNormals)
             {
-                this.normals = new List<Vector3D>();
+                this.normals = new Vector3Collection();
             }
 
             if (generateTexCoords)
             {
-                this.textureCoordinates = new List<Point>();
+                this.textureCoordinates = new Vector2Collection();
             }
 
             if (tangentSpace)
             {
-                this.tangents = new List<Point3D>();
-                this.bitangents = new List<Point3D>();
+                this.tangents = new Vector3Collection();
+                this.bitangents = new Vector3Collection();
             }
         }
 
@@ -198,9 +197,7 @@
         {
             if (!this.HasNormals & this.positions != null & this.triangleIndices != null)
             {
-                Vector3D[] n;
-                ComputeNormals(this.positions, this.triangleIndices, out n);
-                this.normals = n.ToList();
+                ComputeNormals(this.positions, this.triangleIndices, out this.normals);
             }
 
             switch (meshFaces)
@@ -208,7 +205,7 @@
                 case MeshFaces.Default:
                     if (tangents & this.HasNormals & this.textureCoordinates != null)
                     {
-                        Point3DCollection t1, t2;
+                        Vector3Collection t1, t2;
                         ComputeTangents(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out t1, out t2);
                         this.tangents = t1;
                         this.bitangents = t2;
@@ -217,7 +214,7 @@
                 case MeshFaces.QuadPatches:
                     if (tangents & this.HasNormals & this.textureCoordinates != null)
                     {
-                        Point3DCollection t1, t2;
+                        Vector3Collection t1, t2;
                         ComputeTangentsQuads(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out t1, out t2);
                         this.tangents = t1;
                         this.bitangents = t2;
@@ -235,7 +232,7 @@
                 case MeshFaces.Default:
                     if (this.positions != null & this.triangleIndices != null & this.normals != null & this.textureCoordinates != null)
                     {
-                        Point3DCollection t1, t2;
+                        Vector3Collection t1, t2;
                         ComputeTangents(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out t1, out t2);
                         this.tangents = t1;
                         this.bitangents = t2;
@@ -244,7 +241,7 @@
                 case MeshFaces.QuadPatches:
                     if (this.positions != null & this.triangleIndices != null & this.normals != null & this.textureCoordinates != null)
                     {
-                        Point3DCollection t1, t2;
+                        Vector3Collection t1, t2;
                         ComputeTangentsQuads(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out t1, out t2);
                         this.tangents = t1;
                         this.bitangents = t2;
@@ -256,10 +253,9 @@
 
         }
 
-        private static void ComputeNormals(List<Vector3D> positions, List<int> triangleIndices, out Vector3D[] normals)
+        private static void ComputeNormals(Vector3Collection positions, IntCollection triangleIndices, out Vector3Collection normals)
         {
-            //var normals = new List<Vector3D>(positions.Count);
-            normals = new Point3D[positions.Count];
+            normals = new Vector3Collection(positions.Count);
             for (int t = 0; t < triangleIndices.Count; t += 3)
             {
                 var i1 = triangleIndices[t];
@@ -272,17 +268,18 @@
 
                 var p1 = v2 - v1;
                 var p2 = v3 - v1;
-                var n = Vector3D.Cross(p1, p2);
+                var n = Vector3.Cross(p1, p2);
                 // angle
                 p1.Normalize();
                 p2.Normalize();
-                var a = (float)Math.Acos(Vector3D.Dot(p1, p2));
+                var a = (float)Math.Acos(Vector3.Dot(p1, p2));
                 n.Normalize();
                 normals[i1] += (a * n);
                 normals[i2] += (a * n);
                 normals[i3] += (a * n);
             }
-            for (int i = 0; i < normals.Length; i++)
+
+            for (int i = 0; i < normals.Count; i++)
             {
                 normals[i].Normalize();
             }
@@ -293,12 +290,12 @@
         /// Based on:
         /// http://www.terathon.com/code/tangent.html
         /// </summary>
-        public static void ComputeTangents(IList<Point3D> positions, IList<Point3D> normals, IList<Point> textureCoordinates, IList<int> triangleIndices,
-            out List<Point3D> tangents, out List<Point3D> bitangents)
+        public static void ComputeTangents(IList<Vector3> positions, IList<Vector3> normals, IList<Vector2> textureCoordinates, IList<int> triangleIndices,
+            out Vector3Collection tangents, out Vector3Collection bitangents)
         {
 
-            var tan1 = new Point3D[positions.Count];
-            //var tan2 = new Point3D[positions.Count];
+            var tan1 = new Vector3[positions.Count];
+            //var tan2 = new Vector3[positions.Count];
             for (int t = 0; t < triangleIndices.Count; t += 3)
             {
                 var i1 = triangleIndices[t];
@@ -326,8 +323,8 @@
                 float t2 = w3.Y - w1.Y;
 
                 float r = 1.0f / (s1 * t2 - s2 * t1);
-                var udir = new Vector3D((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
-                //var vdir = new Vector3D((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
+                var udir = new Vector3((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
+                //var vdir = new Vector3((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
 
                 tan1[i1] += udir;
                 tan1[i2] += udir;
@@ -338,25 +335,25 @@
                 //tan2[i3] += vdir;
             }
 
-            tangents = new List<Point3D>(positions.Count);
-            bitangents = new List<Point3D>(positions.Count);
+            tangents = new Vector3Collection(positions.Count);
+            bitangents = new Vector3Collection(positions.Count);
             for (int i = 0; i < positions.Count; i++)
             {
                 var n = normals[i];
                 var t = tan1[i];
-                t = (t - n * Vector3D.Dot(n, t));
+                t = (t - n * Vector3.Dot(n, t));
                 t.Normalize();
-                var b = Vector3D.Cross(n, t);
+                var b = Vector3.Cross(n, t);
                 tangents.Add(t);
                 bitangents.Add(b);
             }
         }
 
-        public static void ComputeTangentsQuads(IList<Point3D> positions, IList<Point3D> normals, IList<Point> textureCoordinates, IList<int> indices,
-            out List<Point3D> tangents, out List<Point3D> bitangents)
+        public static void ComputeTangentsQuads(IList<Vector3> positions, IList<Vector3> normals, IList<Vector2> textureCoordinates, IList<int> indices,
+            out Vector3Collection tangents, out Vector3Collection bitangents)
         {
 
-            var tan1 = new Point3D[positions.Count];
+            var tan1 = new Vector3[positions.Count];
             
             for (int t = 0; t < indices.Count; t += 4)
             {
@@ -388,8 +385,8 @@
                 float t2 = w4.Y - w1.Y;
 
                 float r = 1.0f / (s1 * t2 - s2 * t1);
-                var udir = new Vector3D((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
-                //var vdir = new Vector3D((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
+                var udir = new Vector3((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
+                //var vdir = new Vector3((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
 
                 tan1[i1] += udir;
                 tan1[i2] += udir;
@@ -401,15 +398,15 @@
                 //tan2[i3] += vdir;
             }
 
-            tangents = new List<Point3D>(positions.Count);
-            bitangents = new List<Point3D>(positions.Count);
+            tangents = new Vector3Collection(positions.Count);
+            bitangents = new Vector3Collection(positions.Count);
             for (int i = 0; i < positions.Count; i++)
             {
                 var n = normals[i];
                 var t = tan1[i];
-                t = (t - n * Vector3D.Dot(n, t));
+                t = (t - n * Vector3.Dot(n, t));
                 t.Normalize();
-                var b = Vector3D.Cross(n, t);
+                var b = Vector3.Cross(n, t);
                 tangents.Add(t);
                 bitangents.Add(b);
             }
@@ -417,10 +414,10 @@
 
         public static void ComputeTangents(MeshGeometry3D meshGeometry)
         {
-            List<Point3D> t1, t2;
+            Vector3Collection t1, t2;
             ComputeTangents(meshGeometry.Positions, meshGeometry.Normals, meshGeometry.TextureCoordinates, meshGeometry.Indices, out t1, out t2);
-            meshGeometry.Tangents = t1.ToArray();
-            meshGeometry.BiTangents = t2.ToArray();
+            meshGeometry.Tangents = t1;
+            meshGeometry.BiTangents = t2;
         }
 
         /// <summary>
@@ -430,7 +427,7 @@
         {
             if (this.HasTangents)
             {
-                List<Point3D> tan, bitan;
+                Vector3Collection tan, bitan;
                 ComputeTangents(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out tan, out bitan);
                 this.tangents.AddRange(tan);
                 this.bitangents.AddRange(bitan);
@@ -438,28 +435,28 @@
 
             return new MeshGeometry3D()
             {
-                Positions = this.positions.ToArray(),
-                Indices = this.triangleIndices.ToArray(),
-                Normals = (this.HasNormals) ? this.normals.ToArray() : null,
-                TextureCoordinates = (this.HasTexCoords) ? this.textureCoordinates.ToArray() : null,
-                Tangents = (this.HasTangents) ? this.tangents.ToArray() : null,
-                BiTangents = (this.HasTangents) ? this.bitangents.ToArray() : null,
+                Positions = this.positions,
+                Indices = this.triangleIndices,
+                Normals = (this.HasNormals) ? this.normals : null,
+                TextureCoordinates = (this.HasTexCoords) ? this.textureCoordinates : null,
+                Tangents = (this.HasTangents) ? this.tangents : null,
+                BiTangents = (this.HasTangents) ? this.bitangents : null,
             };
         }
 #if Sphere
 
                 
-        private static Point3D GetPosition(double theta, double phi, double radius)
+        private static Vector3 GetPosition(double theta, double phi, double radius)
         {
             double x = radius * Math.Sin(theta) * Math.Sin(phi);
             double y = radius * Math.Cos(phi);
             double z = radius * Math.Cos(theta) * Math.Sin(phi);
-            return new Point3D((float)x, (float)y, (float)z);
+            return new Vector3((float)x, (float)y, (float)z);
         }
 
-        private static Vector3D GetNormal(double theta, double phi)
+        private static Vector3 GetNormal(double theta, double phi)
         {
-            return (Vector3D)GetPosition(theta, phi, 1.0);
+            return (Vector3)GetPosition(theta, phi, 1.0);
         }
 
         private static double DegToRad(double degrees)
@@ -467,20 +464,20 @@
             return (degrees / 180.0) * Math.PI;
         }
 
-        private static Point GetTextureCoordinate(double theta, double phi)
+        private static Vector2 GetTextureCoordinate(double theta, double phi)
         {
-            return new Point((float)(theta / (2 * Math.PI)), (float)(phi / (Math.PI)));
+            return new Vector2((float)(theta / (2 * Math.PI)), (float)(phi / (Math.PI)));
         }
 
         /// <summary>
         /// Tesselates the element and returns a MeshGeometry3D representing the 
         /// tessellation based on the parameters given 
         /// </summary>        
-        public void AppendSphere(Point3D center, double radius = 1, int thetaSteps = 64, int phiSteps = 64)
+        public void AppendSphere(Vector3 center, double radius = 1, int thetaSteps = 64, int phiSteps = 64)
         {
-            List<Point3D> pos, nor;
-            List<Point> tcoord;
-            List<int> tind;
+            Vector3Collection pos, nor;
+            Vector2Collection tcoord;
+            IntCollection tind;
 
             AppendSphere(center, radius, thetaSteps, phiSteps, out pos, out nor, out tcoord, out tind);
 
@@ -491,13 +488,13 @@
             this.triangleIndices.AddRange(tind.Select(x => x + i0));
         }
 
-        private static void AppendSphere(Point3D center, double radius, int thetaSteps, int phiSteps,
-            out List<Point3D> positions, out List<Point3D> normals, out List<Point> textureCoordinates, out List<int> triangleIndices)
+        private static void AppendSphere(Vector3 center, double radius, int thetaSteps, int phiSteps,
+            out Vector3Collection positions, out Vector3Collection normals, out Vector2Collection textureCoordinates, out IntCollection triangleIndices)
         {
-            positions = new List<Point3D>();
-            normals = new List<Point3D>();
-            textureCoordinates = new List<Point>();
-            triangleIndices = new List<int>();
+            positions = new Vector3Collection();
+            normals = new Vector3Collection();
+            textureCoordinates = new Vector2Collection();
+            triangleIndices = new IntCollection();
 
             double dt = DegToRad(360.0) / thetaSteps;
             double dp = DegToRad(180.0) / phiSteps;
@@ -554,17 +551,17 @@
         /// <returns>
         /// A circle.
         /// </returns>
-        public static IList<Point> GetCircle(int thetaDiv)
+        public static IList<Vector2> GetCircle(int thetaDiv)
         {
-            IList<Point> circle;
+            IList<Vector2> circle;
             if (!CircleCache.TryGetValue(thetaDiv, out circle))
             {
-                circle = new PointCollection();
+                circle = new Vector2Collection();
                 CircleCache.Add(thetaDiv, circle);
                 for (int i = 0; i < thetaDiv; i++)
                 {
                     double theta = Math.PI * 2 * ((double)i / (thetaDiv - 1));
-                    circle.Add(new Point((float)Math.Cos(theta), -(float)Math.Sin(theta)));
+                    circle.Add(new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta)));
                 }
             }
 
@@ -589,19 +586,19 @@
         /// <param name="thetaDiv">
         /// The number of divisions around the arrow.
         /// </param>
-        public void AddArrow(Point3D point1, Point3D point2, double diameter, double headLength = 3, int thetaDiv = 18)
+        public void AddArrow(Vector3 point1, Vector3 point2, double diameter, double headLength = 3, int thetaDiv = 18)
         {
             var dir = point2 - point1;
             var length = dir.Length();
             var r = (float)diameter / 2;
 
-            var pc = new PointCollection
+            var pc = new Vector2Collection
                 {
-                    new Point(0, 0),
-                    new Point(0, r),
-                    new Point(length - (float)(diameter * headLength), r),
-                    new Point(length - (float)(diameter * headLength), r * 2),
-                    new Point(length, 0)
+                    new Vector2(0, 0),
+                    new Vector2(0, r),
+                    new Vector2(length - (float)(diameter * headLength), r),
+                    new Vector2(length - (float)(diameter * headLength), r * 2),
+                    new Vector2(length, 0)
                 };
 
             this.AddRevolvedGeometry(pc, point1, dir, thetaDiv);
@@ -618,16 +615,16 @@
         /// </param>
         public void AddBoundingBox(System.Windows.Media.Media3D.Rect3D boundingBox, double diameter)
         {
-            var p0 = new Point3D((float)boundingBox.X, (float)boundingBox.Y, (float)boundingBox.Z);
-            var p1 = new Point3D((float)boundingBox.X, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z);
-            var p2 = new Point3D((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z);
-            var p3 = new Point3D((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y, (float)boundingBox.Z);
-            var p4 = new Point3D((float)boundingBox.X, (float)boundingBox.Y, (float)boundingBox.Z + (float)boundingBox.SizeZ);
-            var p5 = new Point3D((float)boundingBox.X, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z + (float)boundingBox.SizeZ);
-            var p6 = new Point3D((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z + (float)boundingBox.SizeZ);
-            var p7 = new Point3D((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y, (float)boundingBox.Z + (float)boundingBox.SizeZ);
+            var p0 = new Vector3((float)boundingBox.X, (float)boundingBox.Y, (float)boundingBox.Z);
+            var p1 = new Vector3((float)boundingBox.X, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z);
+            var p2 = new Vector3((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z);
+            var p3 = new Vector3((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y, (float)boundingBox.Z);
+            var p4 = new Vector3((float)boundingBox.X, (float)boundingBox.Y, (float)boundingBox.Z + (float)boundingBox.SizeZ);
+            var p5 = new Vector3((float)boundingBox.X, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z + (float)boundingBox.SizeZ);
+            var p6 = new Vector3((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y + (float)boundingBox.SizeY, (float)boundingBox.Z + (float)boundingBox.SizeZ);
+            var p7 = new Vector3((float)boundingBox.X + (float)boundingBox.SizeX, (float)boundingBox.Y, (float)boundingBox.Z + (float)boundingBox.SizeZ);
 
-            Action<Point3D, Point3D> addEdge = (c1, c2) => this.AddCylinder(c1, c2, diameter, 10);
+            Action<Vector3, Vector3> addEdge = (c1, c2) => this.AddCylinder(c1, c2, diameter, 10);
 
             addEdge(p0, p1);
             addEdge(p1, p2);
@@ -663,36 +660,36 @@
         /// <param name="faces">
         /// The faces to include.
         /// </param>
-        public void AddBox(Point3D center, double xlength, double ylength, double zlength, BoxFaces faces = BoxFaces.All)
+        public void AddBox(Vector3 center, double xlength, double ylength, double zlength, BoxFaces faces = BoxFaces.All)
         {
             if ((faces & BoxFaces.PositiveX) == BoxFaces.PositiveX)
             {
-                this.AddCubeFace(center, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
+                this.AddCubeFace(center, new Vector3(1, 0, 0), new Vector3(0, 0, 1), xlength, ylength, zlength);
             }
 
             if ((faces & BoxFaces.NegativeX) == BoxFaces.NegativeX)
             {
-                this.AddCubeFace(center, new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
+                this.AddCubeFace(center, new Vector3(-1, 0, 0), new Vector3(0, 0, 1), xlength, ylength, zlength);
             }
 
             if ((faces & BoxFaces.NegativeY) == BoxFaces.NegativeY)
             {
-                this.AddCubeFace(center, new Vector3D(0, -1, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
+                this.AddCubeFace(center, new Vector3(0, -1, 0), new Vector3(0, 0, 1), ylength, xlength, zlength);
             }
 
             if ((faces & BoxFaces.PositiveY) == BoxFaces.PositiveY)
             {
-                this.AddCubeFace(center, new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
+                this.AddCubeFace(center, new Vector3(0, 1, 0), new Vector3(0, 0, 1), ylength, xlength, zlength);
             }
 
             if ((faces & BoxFaces.PositiveZ) == BoxFaces.PositiveZ)
             {
-                this.AddCubeFace(center, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), zlength, xlength, ylength);
+                this.AddCubeFace(center, new Vector3(0, 0, 1), new Vector3(0, 1, 0), zlength, xlength, ylength);
             }
 
             if ((faces & BoxFaces.NegativeZ) == BoxFaces.NegativeZ)
             {
-                this.AddCubeFace(center, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), zlength, xlength, ylength);
+                this.AddCubeFace(center, new Vector3(0, 0, -1), new Vector3(0, 1, 0), zlength, xlength, ylength);
             }
         }
 
@@ -711,7 +708,7 @@
         /// <param name="zlength">
         /// The length of the box along the Z axis.
         /// </param>
-        public void AddBox(Point3D center, double xlength, double ylength, double zlength)
+        public void AddBox(Vector3 center, double xlength, double ylength, double zlength)
         {
             this.AddBox(center, (float)xlength, (float)ylength, (float)zlength, BoxFaces.All);
         }
@@ -725,7 +722,7 @@
         public void AddBox(Rect3D rectangle, BoxFaces faces = BoxFaces.All)
         {
             this.AddBox(
-                new Point3D((float)rectangle.X + (float)(rectangle.SizeX * 0.5), (float)rectangle.Y + (float)(rectangle.SizeY * 0.5), (float)rectangle.Z + (float)(rectangle.SizeZ * 0.5)),
+                new Vector3((float)rectangle.X + (float)(rectangle.SizeX * 0.5), (float)rectangle.Y + (float)(rectangle.SizeY * 0.5), (float)rectangle.Z + (float)(rectangle.SizeZ * 0.5)),
                 rectangle.SizeX,
                 rectangle.SizeY,
                 rectangle.SizeZ,
@@ -768,19 +765,19 @@
 
         public void AddFacePZ()
         {
-            var positions = new Vector3D[]
+            var positions = new Vector3[]
             {
-                new Vector3D(0,0,1),
-                new Vector3D(0,1,1),
-                new Vector3D(1,1,1),
-                new Vector3D(1,0,1),
+                new Vector3(0,0,1),
+                new Vector3(0,1,1),
+                new Vector3(1,1,1),
+                new Vector3(1,0,1),
             };
-            var normals = new Vector3D[]
+            var normals = new Vector3[]
             {
-                Vector3D.UnitZ,
-                Vector3D.UnitZ,
-                Vector3D.UnitZ,
-                Vector3D.UnitZ,
+                Vector3.UnitZ,
+                Vector3.UnitZ,
+                Vector3.UnitZ,
+                Vector3.UnitZ,
             };
 
 
@@ -790,12 +787,12 @@
                 i0+0,i0+3,i0+2,
                 i0+0,i0+2,i0+1,
             };
-            var texcoords = new Point[]
+            var texcoords = new Vector2[]
             {
-                new Point(0,1),
-                new Point(1,1),
-                new Point(1,0),
-                new Point(0,0),
+                new Vector2(0,1),
+                new Vector2(1,1),
+                new Vector2(1,0),
+                new Vector2(0,0),
             };
 
             this.positions.AddRange(positions);
@@ -806,19 +803,19 @@
 
         public void AddFaceNZ()
         {
-            var positions = new Vector3D[]
+            var positions = new Vector3[]
             {                
-                new Vector3D(0,1,0), //p1
-                new Vector3D(0,0,0), //p0                
-                new Vector3D(1,0,0), //p3
-                new Vector3D(1,1,0), //p2
+                new Vector3(0,1,0), //p1
+                new Vector3(0,0,0), //p0                
+                new Vector3(1,0,0), //p3
+                new Vector3(1,1,0), //p2
             };
-            var normals = new Vector3D[]
+            var normals = new Vector3[]
             {
-                -Vector3D.UnitZ,
-                -Vector3D.UnitZ,
-                -Vector3D.UnitZ,
-                -Vector3D.UnitZ,
+                -Vector3.UnitZ,
+                -Vector3.UnitZ,
+                -Vector3.UnitZ,
+                -Vector3.UnitZ,
             };
 
             int i0 = this.positions.Count;
@@ -827,12 +824,12 @@
                 i0+0,i0+3,i0+2,
                 i0+0,i0+2,i0+1,
             };
-            var texcoords = new Point[]
+            var texcoords = new Vector2[]
             {
-                new Point(0,1),
-                new Point(1,1),
-                new Point(1,0),
-                new Point(0,0),
+                new Vector2(0,1),
+                new Vector2(1,1),
+                new Vector2(1,0),
+                new Vector2(0,0),
             };
 
             this.positions.AddRange(positions);
@@ -843,19 +840,19 @@
 
         public void AddFacePX()
         {
-            var positions = new Vector3D[]
+            var positions = new Vector3[]
             {
-                new Vector3D(1,0,0), //p0
-                new Vector3D(1,0,1), //p1
-                new Vector3D(1,1,1), //p2   
-                new Vector3D(1,1,0), //p3                             
+                new Vector3(1,0,0), //p0
+                new Vector3(1,0,1), //p1
+                new Vector3(1,1,1), //p2   
+                new Vector3(1,1,0), //p3                             
             };
-            var normals = new Vector3D[]
+            var normals = new Vector3[]
             {
-                Vector3D.UnitX,
-                Vector3D.UnitX,
-                Vector3D.UnitX,
-                Vector3D.UnitX,
+                Vector3.UnitX,
+                Vector3.UnitX,
+                Vector3.UnitX,
+                Vector3.UnitX,
             };
 
 
@@ -865,12 +862,12 @@
                 i0+0,i0+3,i0+2,
                 i0+0,i0+2,i0+1,
             };
-            var texcoords = new Point[]
+            var texcoords = new Vector2[]
             {
-                new Point(0,1),
-                new Point(1,1),
-                new Point(1,0),
-                new Point(0,0),
+                new Vector2(0,1),
+                new Vector2(1,1),
+                new Vector2(1,0),
+                new Vector2(0,0),
             };
 
             this.positions.AddRange(positions);
@@ -881,19 +878,19 @@
 
         public void AddFaceNX()
         {
-            var positions = new Vector3D[]
+            var positions = new Vector3[]
             {                
-                new Vector3D(0,0,1), //p1
-                new Vector3D(0,0,0), //p0                
-                new Vector3D(0,1,0), //p3 
-                new Vector3D(0,1,1), //p2               
+                new Vector3(0,0,1), //p1
+                new Vector3(0,0,0), //p0                
+                new Vector3(0,1,0), //p3 
+                new Vector3(0,1,1), //p2               
             };
-            var normals = new Vector3D[]
+            var normals = new Vector3[]
             {
-                -Vector3D.UnitX,
-                -Vector3D.UnitX,
-                -Vector3D.UnitX,
-                -Vector3D.UnitX,
+                -Vector3.UnitX,
+                -Vector3.UnitX,
+                -Vector3.UnitX,
+                -Vector3.UnitX,
             };
 
 
@@ -903,12 +900,12 @@
                 i0+0,i0+3,i0+2,
                 i0+0,i0+2,i0+1,
             };
-            var texcoords = new Point[]
+            var texcoords = new Vector2[]
             {
-                new Point(0,1),
-                new Point(1,1),
-                new Point(1,0),
-                new Point(0,0),
+                new Vector2(0,1),
+                new Vector2(1,1),
+                new Vector2(1,0),
+                new Vector2(0,0),
             };
 
             this.positions.AddRange(positions);
@@ -919,19 +916,19 @@
 
         public void AddFacePY()
         {
-            var positions = new Vector3D[]
+            var positions = new Vector3[]
             {                                                 
-                new Vector3D(1,1,0), //p3  
-                new Vector3D(1,1,1), //p2  
-                new Vector3D(0,1,1), //p1
-                new Vector3D(0,1,0), //p0
+                new Vector3(1,1,0), //p3  
+                new Vector3(1,1,1), //p2  
+                new Vector3(0,1,1), //p1
+                new Vector3(0,1,0), //p0
             };
-            var normals = new Vector3D[]
+            var normals = new Vector3[]
             {
-                Vector3D.UnitY,
-                Vector3D.UnitY,
-                Vector3D.UnitY,
-                Vector3D.UnitY,
+                Vector3.UnitY,
+                Vector3.UnitY,
+                Vector3.UnitY,
+                Vector3.UnitY,
             };
 
 
@@ -941,12 +938,12 @@
                 i0+0,i0+3,i0+2,
                 i0+0,i0+2,i0+1,
             };
-            var texcoords = new Point[]
+            var texcoords = new Vector2[]
             {
-                new Point(0,1),
-                new Point(1,1),
-                new Point(1,0),
-                new Point(0,0),
+                new Vector2(0,1),
+                new Vector2(1,1),
+                new Vector2(1,0),
+                new Vector2(0,0),
             };
 
             this.positions.AddRange(positions);
@@ -957,19 +954,19 @@
 
         public void AddFaceNY()
         {
-            var positions = new Vector3D[]
+            var positions = new Vector3[]
             {                                                                                                  
-                new Vector3D(0,0,0), //p0
-                new Vector3D(0,0,1), //p1
-                new Vector3D(1,0,1), //p2
-                new Vector3D(1,0,0), //p3
+                new Vector3(0,0,0), //p0
+                new Vector3(0,0,1), //p1
+                new Vector3(1,0,1), //p2
+                new Vector3(1,0,0), //p3
             };
-            var normals = new Vector3D[]
+            var normals = new Vector3[]
             {
-                -Vector3D.UnitY,
-                -Vector3D.UnitY,
-                -Vector3D.UnitY,
-                -Vector3D.UnitY,
+                -Vector3.UnitY,
+                -Vector3.UnitY,
+                -Vector3.UnitY,
+                -Vector3.UnitY,
             };
 
 
@@ -979,12 +976,12 @@
                 i0+0,i0+3,i0+2,
                 i0+0,i0+2,i0+1,
             };
-            var texcoords = new Point[]
+            var texcoords = new Vector2[]
             {
-                new Point(0,1),
-                new Point(1,1),
-                new Point(1,0),
-                new Point(0,0),
+                new Vector2(0,1),
+                new Vector2(1,1),
+                new Vector2(1,0),
+                new Vector2(0,0),
             };
 
             this.positions.AddRange(positions);
@@ -1016,9 +1013,9 @@
         /// <param name="height">
         /// The height of the face.
         /// </param>
-        private void AddCubeFace(Point3D center, Vector3D normal, Vector3D up, double dist, double width, double height)
+        private void AddCubeFace(Vector3 center, Vector3 normal, Vector3 up, double dist, double width, double height)
         {
-            var right = Vector3D.Cross(normal, up);
+            var right = Vector3.Cross(normal, up);
             var n = normal * (float)dist / 2;
             up *= (float)height / 2f;
             right *= (float)width / 2f;
@@ -1043,10 +1040,10 @@
 
             if (this.textureCoordinates != null)
             {
-                this.textureCoordinates.Add(new Point(1, 1));
-                this.textureCoordinates.Add(new Point(0, 1));
-                this.textureCoordinates.Add(new Point(0, 0));
-                this.textureCoordinates.Add(new Point(1, 0));
+                this.textureCoordinates.Add(new Vector2(1, 1));
+                this.textureCoordinates.Add(new Vector2(0, 1));
+                this.textureCoordinates.Add(new Vector2(0, 0));
+                this.textureCoordinates.Add(new Vector2(1, 0));
             }
 
             this.triangleIndices.Add(i0 + 2);
@@ -1089,8 +1086,8 @@
         /// See http://en.wikipedia.org/wiki/Cone_(geometry).
         /// </remarks>
         public void AddCone(
-            Point3D origin,
-            Vector3D direction,
+            Vector3 origin,
+            Vector3 direction,
             double baseRadius,
             double topRadius,
             double height,
@@ -1098,17 +1095,17 @@
             bool topCap,
             int thetaDiv)
         {
-            var pc = new PointCollection();
+            var pc = new Vector2Collection();
             if (baseCap)
             {
-                pc.Add(new Point(0, 0));
+                pc.Add(new Vector2(0, 0));
             }
 
-            pc.Add(new Point(0, (float)baseRadius));
-            pc.Add(new Point((float)height, (float)topRadius));
+            pc.Add(new Vector2(0, (float)baseRadius));
+            pc.Add(new Vector2((float)height, (float)topRadius));
             if (topCap)
             {
-                pc.Add(new Point((float)height, 0));
+                pc.Add(new Vector2((float)height, 0));
             }
 
             this.AddRevolvedGeometry(pc, origin, direction, thetaDiv);
@@ -1124,7 +1121,7 @@
         /// Include a base cap if set to <c>true</c> .
         /// </param>
         /// <param name="thetaDiv">The theta div.</param>
-        public void AddCone(Point3D origin, Point3D apex, double baseRadius, bool baseCap, int thetaDiv)
+        public void AddCone(Vector3 origin, Vector3 apex, double baseRadius, bool baseCap, int thetaDiv)
         {
             var dir = apex - origin;
             this.AddCone(origin, dir, (float)baseRadius, 0, (float)dir.Length(), baseCap, false, thetaDiv);
@@ -1148,9 +1145,9 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Cylinder_(geometry).
         /// </remarks>
-        public void AddCylinder(Point3D p1, Point3D p2, double radius = 1, int thetaDiv = 32, bool cap1 = true, bool cap2 = true)
+        public void AddCylinder(Vector3 p1, Vector3 p2, double radius = 1, int thetaDiv = 32, bool cap1 = true, bool cap2 = true)
         {
-            Vector3D n = p2 - p1;
+            Vector3 n = p2 - p1;
             double l = n.Length();
             n.Normalize();
             this.AddCone(p1, n, radius, radius, l, cap1, cap2, thetaDiv);
@@ -1171,7 +1168,7 @@
         /// <param name="thetaDiv">
         /// The number of divisions around the cylinders.
         /// </param>
-        public void AddPipes(IList<Point3D> points, IList<int> edges, double diameter = 1, int thetaDiv = 32)
+        public void AddPipes(IList<Vector3> points, IList<int> edges, double diameter = 1, int thetaDiv = 32)
         {
             for (int i = 0; i < edges.Count - 1; i += 2)
             {
@@ -1197,9 +1194,9 @@
         /// <remarks>
         /// The y-axis is determined by the cross product between the specified x-axis and the p1-p0 vector.
         /// </remarks>
-        public void AddExtrudedGeometry(IList<Point> points, Vector3D xaxis, Point3D p0, Point3D p1)
+        public void AddExtrudedGeometry(IList<Vector2> points, Vector3 xaxis, Vector3 p0, Vector3 p1)
         {
-            var ydirection = Vector3D.Cross(p1 - p0, xaxis);
+            var ydirection = Vector3.Cross(p1 - p0, xaxis);
             ydirection.Normalize();
             xaxis.Normalize();
 
@@ -1234,7 +1231,7 @@
             {
                 for (int i = 0; i < np; i++)
                 {
-                    this.textureCoordinates.Add(new Point());
+                    this.textureCoordinates.Add(new Vector2());
                 }
             }
 
@@ -1242,14 +1239,14 @@
             //{                
             //    if (this.normals != null)
             //    {                    
-            //        //this.normals.Add(Vector3D.UnitZ);
-            //        //this.normals.Add(Vector3D.UnitZ);
+            //        //this.normals.Add(Vector3.UnitZ);
+            //        //this.normals.Add(Vector3.UnitZ);
             //    }
 
             //    if (this.textureCoordinates != null)
             //    {
-            //        this.textureCoordinates.Add(new Point(0, 0));
-            //        this.textureCoordinates.Add(new Point(1, 0));
+            //        this.textureCoordinates.Add(new Vector2(0, 0));
+            //        this.textureCoordinates.Add(new Vector2(1, 0));
             //    }
 
             //    int i1 = index0 + 1;
@@ -1265,9 +1262,7 @@
             //    this.triangleIndices.Add(i2);
             //}
 
-            Vector3D[] normals;
-            ComputeNormals(this.positions, this.triangleIndices, out normals);
-            this.normals = normals.ToList();
+            ComputeNormals(this.positions, this.triangleIndices, out this.normals);
         }
 
         /// <summary>
@@ -1285,7 +1280,7 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Loft_(3D).
         /// </remarks>
-        public void AddLoftedGeometry(IList<IList<Point3D>> positionsList, IList<IList<Vector3D>> normalList, IList<IList<Point>> textureCoordinateList)
+        public void AddLoftedGeometry(IList<IList<Vector3>> positionsList, IList<IList<Vector3>> normalList, IList<IList<Vector2>> textureCoordinateList)
         {
             int index0 = this.positions.Count;
             int n = -1;
@@ -1362,7 +1357,7 @@
         /// <param name="textureCoordinate">
         /// The texture coordinate.
         /// </param>
-        public void AddNode(Point3D position, Vector3D normal, Point textureCoordinate)
+        public void AddNode(Vector3 position, Vector3 normal, Vector2 textureCoordinate)
         {
             this.positions.Add(position);
 
@@ -1395,25 +1390,25 @@
         /// <param name="thetaDiv">
         /// The number of divisions around the pipe.
         /// </param>
-        public void AddPipe(Point3D point1, Point3D point2, double innerDiameter, double diameter, int thetaDiv)
+        public void AddPipe(Vector3 point1, Vector3 point2, double innerDiameter, double diameter, int thetaDiv)
         {
             var dir = point2 - point1;
 
             double height = dir.Length();
             dir.Normalize();
 
-            var pc = new PointCollection
+            var pc = new Vector2Collection
                 {
-                    new Point(0, (float)innerDiameter / 2),
-                    new Point(0, (float)diameter / 2),
-                    new Point((float)height, (float)diameter / 2),
-                    new Point((float)height, (float)innerDiameter / 2)
+                    new Vector2(0, (float)innerDiameter / 2),
+                    new Vector2(0, (float)diameter / 2),
+                    new Vector2((float)height, (float)diameter / 2),
+                    new Vector2((float)height, (float)innerDiameter / 2)
                 };
 
             if (innerDiameter > 0)
             {
                 // Add the inner surface
-                pc.Add(new Point(0, (float)innerDiameter / 2));
+                pc.Add(new Vector2(0, (float)innerDiameter / 2));
             }
 
             this.AddRevolvedGeometry(pc, point1, dir, thetaDiv);
@@ -1428,7 +1423,7 @@
         /// <remarks>
         /// If the number of points is greater than 4, a triangle fan is used.
         /// </remarks>
-        public void AddPolygon(IList<Point3D> points)
+        public void AddPolygon(IList<Vector3> points)
         {
             switch (points.Count)
             {
@@ -1459,13 +1454,13 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Pyramid_(geometry).
         /// </remarks>
-        public void AddPyramid(Point3D center, double sideLength, double height)
+        public void AddPyramid(Vector3 center, double sideLength, double height)
         {
-            var p1 = new Point3D(center.X - (float)(sideLength * 0.5), center.Y - (float)(sideLength * 0.5), center.Z);
-            var p2 = new Point3D(center.X + (float)(sideLength * 0.5), center.Y - (float)(sideLength * 0.5), center.Z);
-            var p3 = new Point3D(center.X + (float)(sideLength * 0.5), center.Y + (float)(sideLength * 0.5), center.Z);
-            var p4 = new Point3D(center.X - (float)(sideLength * 0.5), center.Y + (float)(sideLength * 0.5), center.Z);
-            var p5 = new Point3D(center.X, center.Y, center.Z + (float)height);
+            var p1 = new Vector3(center.X - (float)(sideLength * 0.5), center.Y - (float)(sideLength * 0.5), center.Z);
+            var p2 = new Vector3(center.X + (float)(sideLength * 0.5), center.Y - (float)(sideLength * 0.5), center.Z);
+            var p3 = new Vector3(center.X + (float)(sideLength * 0.5), center.Y + (float)(sideLength * 0.5), center.Z);
+            var p4 = new Vector3(center.X - (float)(sideLength * 0.5), center.Y + (float)(sideLength * 0.5), center.Z);
+            var p5 = new Vector3(center.X, center.Y, center.Z + (float)height);
             this.AddTriangle(p1, p2, p5);
             this.AddTriangle(p2, p3, p5);
             this.AddTriangle(p3, p4, p5);
@@ -1490,7 +1485,7 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Quadrilateral.
         /// </remarks>
-        public void AddQuad(Point3D p0, Point3D p1, Point3D p2, Point3D p3)
+        public void AddQuad(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
         {
             //// The nodes are arranged in counter-clockwise order
             //// p3               p2
@@ -1499,10 +1494,10 @@
             //// |               |
             //// +---------------+
             //// p0               p1
-            var uv0 = new Point(0, 0);
-            var uv1 = new Point(1, 0);
-            var uv2 = new Point(0, 1);
-            var uv3 = new Point(1, 1);
+            var uv0 = new Vector2(0, 0);
+            var uv1 = new Vector2(1, 0);
+            var uv2 = new Vector2(0, 1);
+            var uv3 = new Vector2(1, 1);
             this.AddQuad(p0, p1, p2, p3, uv0, uv1, uv2, uv3);
         }
 
@@ -1536,7 +1531,7 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Quadrilateral.
         /// </remarks>
-        public void AddQuad(Point3D p0, Point3D p1, Point3D p2, Point3D p3, Point uv0, Point uv1, Point uv2, Point uv3)
+        public void AddQuad(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Vector2 uv0, Vector2 uv1, Vector2 uv2, Vector2 uv3)
         {
             //// The nodes are arranged in counter-clockwise order
             //// p3               p2
@@ -1562,7 +1557,7 @@
 
             if (this.normals != null)
             {
-                var w = Vector3D.Cross(p3 - p0, p1 - p0);
+                var w = Vector3.Cross(p3 - p0, p1 - p0);
                 w.Normalize();
                 this.normals.Add(w);
                 this.normals.Add(w);
@@ -1591,7 +1586,7 @@
         /// <param name="quadTextureCoordinates">
         /// The texture coordinates.
         /// </param>
-        public void AddQuads(IList<Point3D> quadPositions, IList<Vector3D> quadNormals, IList<Point> quadTextureCoordinates)
+        public void AddQuads(IList<Vector3> quadPositions, IList<Vector3> quadNormals, IList<Vector2> quadTextureCoordinates)
         {
             if (quadPositions == null)
             {
@@ -1664,7 +1659,7 @@
         /// <param name="columns">
         /// The number of columns in the rectangular mesh.
         /// </param>
-        public void AddRectangularMesh(IList<Point3D> points, int columns, bool flipTriangles = false)
+        public void AddRectangularMesh(IList<Vector3> points, int columns, bool flipTriangles = false)
         {
             if (points == null)
             {
@@ -1715,7 +1710,7 @@
         /// <param name="closed1">
         /// set to <c>true</c> if the mesh is closed in the 2nd dimension.
         /// </param>
-        public void AddRectangularMesh(Point3D[,] points, Point[,] texCoords = null, bool closed0 = false, bool closed1 = false)
+        public void AddRectangularMesh(Vector3[,] points, Vector2[,] texCoords = null, bool closed0 = false, bool closed1 = false)
         {
             if (points == null)
             {
@@ -1794,7 +1789,7 @@
             {
                 for (int x = 0; x < columns; x++)
                 {
-                    this.positions.Add(new Vector3D(x * stepx, y * stepy, 0));
+                    this.positions.Add(new Vector3(x * stepx, y * stepy, 0));
                 }
             }
 
@@ -1837,7 +1832,7 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Icosahedron and http://www.gamedev.net/community/forums/topic.asp?topic_id=283350.
         /// </remarks>
-        public void AddRegularIcosahedron(Point3D center, double radius, bool shareVertices)
+        public void AddRegularIcosahedron(Vector3 center, double radius, bool shareVertices)
         {
             float a = (float)Math.Sqrt(2.0 / (5.0 + Math.Sqrt(5.0)));
 
@@ -1851,9 +1846,9 @@
 
             var icosahedronVertices = new[]
                 {
-                    new Vector3D(-a, 0, b), new Vector3D(a, 0, b), new Vector3D(-a, 0, -b), new Vector3D(a, 0, -b),
-                    new Vector3D(0, b, a), new Vector3D(0, b, -a), new Vector3D(0, -b, a), new Vector3D(0, -b, -a),
-                    new Vector3D(b, a, 0), new Vector3D(-b, a, 0), new Vector3D(b, -a, 0), new Vector3D(-b, -a, 0)
+                    new Vector3(-a, 0, b), new Vector3(a, 0, b), new Vector3(-a, 0, -b), new Vector3(a, 0, -b),
+                    new Vector3(0, b, a), new Vector3(0, b, -a), new Vector3(0, -b, a), new Vector3(0, -b, -a),
+                    new Vector3(b, a, 0), new Vector3(-b, a, 0), new Vector3(b, -a, 0), new Vector3(-b, -a, 0)
                 };
 
             if (shareVertices)
@@ -1899,13 +1894,13 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Surface_of_revolution.
         /// </remarks>
-        public void AddRevolvedGeometry(IList<Point> points, Point3D origin, Vector3D direction, int thetaDiv)
+        public void AddRevolvedGeometry(IList<Vector2> points, Vector3 origin, Vector3 direction, int thetaDiv)
         {
             direction.Normalize();
 
             // Find two unit vectors orthogonal to the specified direction
             var u = direction.FindAnyPerpendicular();
-            var v = Vector3D.Cross(direction, u);
+            var v = Vector3.Cross(direction, u);
 
             u.Normalize();
             v.Normalize();
@@ -1930,7 +1925,7 @@
 
                     // todo:should not add segment if q1==q2 (corner point)
                     // const double eps = 1e-6;
-                    // if (Point3D.Subtract(q1, q2).LengthSquared < eps)
+                    // if (Vector3.Subtract(q1, q2).LengthSquared < eps)
                     // continue;
                     float tx = points[j + 1].X - points[j].X;
                     float ty = points[j + 1].Y - points[j].Y;
@@ -1949,8 +1944,8 @@
 
                     if (this.textureCoordinates != null)
                     {
-                        this.textureCoordinates.Add(new Point((float)i / (thetaDiv - 1), (float)j / (n - 1)));
-                        this.textureCoordinates.Add(new Point((float)i / (thetaDiv - 1), (float)(j + 1) / (n - 1)));
+                        this.textureCoordinates.Add(new Vector2((float)i / (thetaDiv - 1), (float)j / (n - 1)));
+                        this.textureCoordinates.Add(new Vector2((float)i / (thetaDiv - 1), (float)(j + 1) / (n - 1)));
                     }
 
                     int i0 = index0 + (i * rowNodes) + (j * 2);
@@ -1984,7 +1979,7 @@
         /// <remarks>
         /// See http://www.fho-emden.de/~hoffmann/ikos27042002.pdf.
         /// </remarks>
-        public void AddSubdivisionSphere(Point3D center, double radius, int subdivisions)
+        public void AddSubdivisionSphere(Vector3 center, double radius, int subdivisions)
         {
             int p0 = this.positions.Count;
             this.Append(GetUnitSphere(subdivisions));
@@ -2010,7 +2005,7 @@
         /// <param name="phiDiv">
         /// The number of divisions from top to bottom of the sphere.
         /// </param>
-        public void AddSphere(Point3D center, double radius = 1, int thetaDiv = 32, int phiDiv = 32)
+        public void AddSphere(Vector3 center, double radius = 1, int thetaDiv = 32, int phiDiv = 32)
         {
             int index0 = this.positions.Count;
             float dt = (float)(2 * Math.PI / thetaDiv);
@@ -2035,18 +2030,18 @@
                     float y = (float)(Math.Cos(phi));
                     float z = (float)(Math.Cos(theta) * Math.Sin(phi));
 
-                    var p = new Point3D(center.X + ((float)radius * x), center.Y + ((float)radius * y), center.Z + ((float)radius * z));
+                    var p = new Vector3(center.X + ((float)radius * x), center.Y + ((float)radius * y), center.Z + ((float)radius * z));
                     this.positions.Add(p);
 
                     if (this.normals != null)
                     {
-                        var n = new Vector3D(x, y, z);
+                        var n = new Vector3(x, y, z);
                         this.normals.Add(n);
                     }
 
                     if (this.textureCoordinates != null)
                     {
-                        var uv = new Point((float)(theta / (2 * Math.PI)), (float)(phi / Math.PI));
+                        var uv = new Vector2((float)(theta / (2 * Math.PI)), (float)(phi / Math.PI));
                         this.textureCoordinates.Add(uv);
                     }
                 }
@@ -2067,11 +2062,11 @@
         /// <param name="p2">
         /// The third point.
         /// </param>
-        public void AddTriangle(Point3D p0, Point3D p1, Point3D p2)
+        public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2)
         {           
-            var uv0 = new Point(0, 0);
-            var uv1 = new Point(1, 0);
-            var uv2 = new Point(0, 1);
+            var uv0 = new Vector2(0, 0);
+            var uv1 = new Vector2(1, 0);
+            var uv2 = new Vector2(0, 1);
             this.AddTriangle(p0, p1, p2, uv0, uv1, uv2);
         }
 
@@ -2096,7 +2091,7 @@
         /// <param name="uv2">
         /// The third texture coordinate.
         /// </param>
-        public void AddTriangle(Point3D p0, Point3D p1, Point3D p2, Point uv0, Point uv1, Point uv2)
+        public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2, Vector2 uv0, Vector2 uv1, Vector2 uv2)
         {
             int i0 = this.positions.Count;
 
@@ -2113,7 +2108,7 @@
 
             if (this.normals != null)
             {
-                var w = Vector3D.Cross(p1 - p0, p2 - p0);
+                var w = Vector3.Cross(p1 - p0, p2 - p0);
                 w.Normalize();
                 this.normals.Add(w);
                 this.normals.Add(w);
@@ -2153,7 +2148,7 @@
         /// <param name="fanTextureCoordinates">
         /// The texture coordinates of the triangle fan.
         /// </param>
-        public void AddTriangleFan(IList<Point3D> fanPositions, IList<Vector3D> fanNormals = null, IList<Point> fanTextureCoordinates = null)
+        public void AddTriangleFan(IList<Vector3> fanPositions, IList<Vector3> fanNormals = null, IList<Vector2> fanTextureCoordinates = null)
         {
             if (this.positions == null)
             {
@@ -2216,7 +2211,7 @@
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Triangle_strip.
         /// </remarks>
-        public void AddTriangleStrip(IList<Point3D> stripPositions, IList<Vector3D> stripNormals = null, IList<Point> stripTextureCoordinates = null)
+        public void AddTriangleStrip(IList<Vector3> stripPositions, IList<Vector3> stripNormals = null, IList<Vector2> stripTextureCoordinates = null)
         {
             if (stripPositions == null)
             {
@@ -2334,7 +2329,7 @@
         /// <param name="triangleTextureCoordinates">
         /// The texture coordinates (corresponding to the points).
         /// </param>
-        public void AddTriangles(IList<Point3D> trianglePositions, IList<Vector3D> triangleNormals = null, IList<Point> triangleTextureCoordinates = null)
+        public void AddTriangles(IList<Vector3> trianglePositions, IList<Vector3> triangleNormals = null, IList<Vector2> triangleTextureCoordinates = null)
         {
             if (trianglePositions == null)
             {
@@ -2413,7 +2408,7 @@
         /// <param name="isTubeClosed">
         /// Set to true if the tube path is closed.
         /// </param>
-        public void AddTube(IList<Point3D> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed)
+        public void AddTube(IList<Vector3> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed)
         {
             var circle = GetCircle(thetaDiv);
             this.AddTube(path, values, diameters, circle, isTubeClosed, true);
@@ -2434,7 +2429,7 @@
         /// <param name="isTubeClosed">
         /// Set to true if the tube path is closed.
         /// </param>
-        public void AddTube(IList<Point3D> path, double diameter, int thetaDiv, bool isTubeClosed)
+        public void AddTube(IList<Vector3> path, double diameter, int thetaDiv, bool isTubeClosed)
         {
             this.AddTube(path, null, new[] { diameter }, thetaDiv, isTubeClosed);
         }
@@ -2461,10 +2456,10 @@
         /// if set to <c>true</c> [is section closed].
         /// </param>
         public void AddTube(
-            IList<Point3D> path,
+            IList<Vector3> path,
             IList<double> values,
             IList<double> diameters,
-            IList<Point> section,
+            IList<Vector2> section,
             bool isTubeClosed,
             bool isSectionClosed)
         {
@@ -2498,8 +2493,8 @@
                 int i1 = i + 1 < pathLength ? i + 1 : i;
 
                 var forward = path[i1] - path[i0];
-                var right = Vector3D.Cross(up, forward);
-                up = Vector3D.Cross(forward, right);
+                var right = Vector3.Cross(up, forward);
+                up = Vector3.Cross(forward, right);
                 up.Normalize();
                 right.Normalize();
                 var u = right;
@@ -2519,8 +2514,8 @@
                     {
                         this.textureCoordinates.Add(
                             values != null
-                                ? new Point((float)values[i % valuesCount], (float)(j / (sectionLength - 1)))
-                                : new Point());
+                                ? new Vector2((float)values[i % valuesCount], (float)(j / (sectionLength - 1)))
+                                : new Vector2());
                     }
                 }
             }
@@ -2576,10 +2571,10 @@
         /// The texture coordinates to append.
         /// </param>
         public void Append(
-            IList<Point3D> positionsToAppend,
+            IList<Vector3> positionsToAppend,
             IList<int> triangleIndicesToAppend,
-            IList<Vector3D> normalsToAppend = null,
-            IList<Point> textureCoordinatesToAppend = null)
+            IList<Vector3> normalsToAppend = null,
+            IList<Vector2> textureCoordinatesToAppend = null)
         {
             if (positionsToAppend == null)
             {
@@ -2649,7 +2644,7 @@
         /// <param name="chamferPoints">
         /// If this parameter is provided, the collection will be filled with the generated chamfer points.
         /// </param>
-        public void ChamferCorner(Point3D p, double d, double eps = 1e-6, IList<Point3D> chamferPoints = null)
+        public void ChamferCorner(Vector3 p, double d, double eps = 1e-6, IList<Vector3> chamferPoints = null)
         {
             this.NoSharedVertices();
 
@@ -2705,7 +2700,7 @@
                 // find the intersections between the chamfer plane and the two edges connected to the corner
                 var line1 = new Ray(p0, p1 - p0);
                 var line2 = new Ray(p0, p2 - p0);
-                Point3D p01, p02;
+                Vector3 p01, p02;
 
                 if (!plane.Intersects(ref line1, out p01))
                 {
@@ -2759,7 +2754,7 @@
         /// <remarks>
         /// See http://msdn.microsoft.com/en-us/library/bb613553.aspx.
         /// Try to keep mesh sizes under these limits:
-        /// Positions : 20,001 Point3D instances
+        /// Positions : 20,001 Vector3 instances
         /// TriangleIndices : 60,003 Int32 instances
         /// </remarks>
         public void CheckPerformanceLimits()
@@ -2791,7 +2786,7 @@
         {
             for (int i = 0; i < this.positions.Count; i++)
             {
-                this.positions[i] = new Point3D(
+                this.positions[i] = new Vector3(
                     this.positions[i].X * scaleX, this.positions[i].Y * scaleY, this.positions[i].Z * scaleZ);
             }
 
@@ -2799,7 +2794,7 @@
             {
                 for (int i = 0; i < this.normals.Count; i++)
                 {
-                    this.normals[i] = new Vector3D(
+                    this.normals[i] = new Vector3(
                         this.normals[i].X * scaleX, this.normals[i].Y * scaleY, this.normals[i].Z * scaleZ);
                     this.normals[i].Normalize();
                 }
@@ -2843,7 +2838,7 @@
             }
 
             var mb = new MeshBuilder(false, false);
-            mb.AddRegularIcosahedron(new Point3D(), 1, false);
+            mb.AddRegularIcosahedron(new Vector3(), 1, false);
             for (int i = 0; i < subdivisions; i++)
             {
                 mb.SubdivideLinear();
@@ -2893,11 +2888,11 @@
                     }
 
                     int j0 = j1 - 1;
-                    var u = Point3D.Subtract(
+                    var u = Vector3.Subtract(
                         this.positions[index0 + (i1 * columns) + j0], this.positions[index0 + (i0 * columns) + j0]);
-                    var v = Point3D.Subtract(
+                    var v = Vector3.Subtract(
                         this.positions[index0 + (i0 * columns) + j1], this.positions[index0 + (i0 * columns) + j0]);
-                    var normal = Vector3D.Cross(u, v);
+                    var normal = Vector3.Cross(u, v);
                     normal.Normalize();
                     this.normals.Add(normal);
                 }
@@ -2922,7 +2917,7 @@
                 for (int j = 0; j < columns; j++)
                 {
                     float u = flipColumnsAxis ? (1 - (float)j / (columns - 1)) : (float)j / (columns - 1);
-                    this.textureCoordinates.Add(new Point(u, v));
+                    this.textureCoordinates.Add(new Vector2(u, v));
                 }
             }
         }
@@ -3068,11 +3063,11 @@
         /// <returns>
         /// The normal.
         /// </returns>
-        private Vector3D FindCornerNormal(Point3D p, double eps)
+        private Vector3 FindCornerNormal(Vector3 p, double eps)
         {
-            var sum = new Vector3D();
+            var sum = new Vector3();
             int count = 0;
-            var addedNormals = new HashSet<Vector3D>();
+            var addedNormals = new HashSet<Vector3>();
             for (int i = 0; i < this.triangleIndices.Count; i += 3)
             {
                 int i0 = i;
@@ -3093,7 +3088,7 @@
                 }
 
                 // calculate the triangle normal and check if this face is already added
-                var normal = Vector3D.Cross(p1 - p0, p2 - p0);
+                var normal = Vector3.Cross(p1 - p0, p2 - p0);
                 normal.Normalize();
 
                 // todo: need to use the epsilon value to compare the normals?
@@ -3106,7 +3101,7 @@
                 // double dp = 1;
                 // foreach (var n in addedNormals)
                 // {
-                // dp = Math.Abs(Vector3D.DotProduct(n, normal) - 1);
+                // dp = Math.Abs(Vector3.DotProduct(n, normal) - 1);
                 // if (dp < eps)
                 // continue;
                 // }
@@ -3121,7 +3116,7 @@
 
             if (count == 0)
             {
-                return new Vector3D();
+                return new Vector3();
             }
 
             return sum * (1.0f / count);
@@ -3132,18 +3127,18 @@
         /// </summary>
         private void NoSharedVertices()
         {
-            var p = new Point3DCollection();
-            var ti = new Int32Collection();
-            Point3DCollection n = null;
+            var p = new Vector3Collection();
+            var ti = new IntCollection();
+            Vector3Collection n = null;
             if (this.normals != null)
             {
-                n = new Point3DCollection();
+                n = new Vector3Collection();
             }
 
-            PointCollection tc = null;
+            Vector2Collection tc = null;
             if (this.textureCoordinates != null)
             {
-                tc = new PointCollection();
+                tc = new Vector2Collection();
             }
 
             for (int i = 0; i < this.triangleIndices.Count; i += 3)
@@ -3284,7 +3279,7 @@
                 var p01 = p0 + (v01 * 0.5f);
                 var p12 = p1 + (v12 * 0.5f);
                 var p20 = p2 + (v20 * 0.5f);
-                var m = new Point3D((p0.X + p1.X + p2.X) / 3, (p0.Y + p1.Y + p2.Y) / 3, (p0.Z + p1.Z + p2.Z) / 3);
+                var m = new Vector3((p0.X + p1.X + p2.X) / 3, (p0.Y + p1.Y + p2.Y) / 3, (p0.Z + p1.Z + p2.Z) / 3);
 
                 int i01 = im + 1;
                 int i12 = im + 2;
@@ -3315,7 +3310,7 @@
                     var u01 = uv0 + (t01 * 0.5f);
                     var u12 = uv1 + (t12 * 0.5f);
                     var u20 = uv2 + (t20 * 0.5f);
-                    var uvm = new Point((uv0.X + uv1.X) * 0.5f, (uv0.Y + uv1.Y) * 0.5f);
+                    var uvm = new Vector2((uv0.X + uv1.X) * 0.5f, (uv0.Y + uv1.Y) * 0.5f);
                     this.textureCoordinates.Add(uvm);
                     this.textureCoordinates.Add(u01);
                     this.textureCoordinates.Add(u12);

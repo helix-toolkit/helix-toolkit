@@ -35,7 +35,7 @@
                 if (model != null)
                 {
                     if (model.Visibility == Visibility.Visible)
-                        count += model.Geometry.Indices.Length / 3;
+                        count += model.Geometry.Indices.Count / 3;
                 }
             }
             return count;

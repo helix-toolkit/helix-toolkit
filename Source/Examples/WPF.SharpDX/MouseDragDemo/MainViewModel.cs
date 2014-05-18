@@ -7,6 +7,7 @@
     using DemoCore;
 
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     using SharpDX;
 
@@ -69,7 +70,7 @@
             b1.AddSphere(new Vector3(0, 0, 0), 0.65);
             b1.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
             var meshGeometry = b1.ToMeshGeometry3D();
-            meshGeometry.Colors = meshGeometry.TextureCoordinates.Select(x => x.ToColor4()).ToArray();
+            meshGeometry.Colors = new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
             this.MeshGeometry = meshGeometry;
             this.Model1Instances = new List<Matrix>();
             for (int i = 0; i < 5; i++)
