@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Windows.Media.Media3D.Visual3D">
+    <Position X="5" Y="1" Width="3.5" />
+    <Members>
+      <Field Name="TransformProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Viewport2DVisual3D">
+    <Position X="12.5" Y="6.5" Width="3" />
+    <Members>
+      <Field Name="GeometryProperty" Hidden="true" />
+      <Field Name="IsVisualHostMaterialProperty" Hidden="true" />
+      <Field Name="MaterialProperty" Hidden="true" />
+      <Field Name="VisualProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.ModelVisual3D">
+    <Position X="8.5" Y="6.5" Width="2.5" />
+    <Members>
+      <Field Name="ContentProperty" Hidden="true" />
+      <Field Name="TransformProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.ModelUIElement3D">
+    <Position X="1.5" Y="8" Width="2.5" />
+    <Members>
+      <Field Name="ModelProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Visual3DCollection" Collapsed="true">
+    <Position X="9.5" Y="2" Width="2.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.ContainerUIElement3D">
+    <Position X="4.5" Y="8" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.UIElement3D" Collapsed="true">
+    <Position X="3" Y="6.5" Width="2.5" />
+    <Members>
+      <Field Name="AllowDropProperty" Hidden="true" />
+      <Field Name="DragEnterEvent" Hidden="true" />
+      <Field Name="DragLeaveEvent" Hidden="true" />
+      <Field Name="DragOverEvent" Hidden="true" />
+      <Field Name="DropEvent" Hidden="true" />
+      <Field Name="FocusableProperty" Hidden="true" />
+      <Field Name="GiveFeedbackEvent" Hidden="true" />
+      <Field Name="GotFocusEvent" Hidden="true" />
+      <Field Name="GotKeyboardFocusEvent" Hidden="true" />
+      <Field Name="GotMouseCaptureEvent" Hidden="true" />
+      <Field Name="GotStylusCaptureEvent" Hidden="true" />
+      <Field Name="IsEnabledProperty" Hidden="true" />
+      <Field Name="IsFocusedProperty" Hidden="true" />
+      <Field Name="IsHitTestVisibleProperty" Hidden="true" />
+      <Field Name="IsKeyboardFocusedProperty" Hidden="true" />
+      <Field Name="IsKeyboardFocusWithinProperty" Hidden="true" />
+      <Field Name="IsMouseCapturedProperty" Hidden="true" />
+      <Field Name="IsMouseCaptureWithinProperty" Hidden="true" />
+      <Field Name="IsMouseDirectlyOverProperty" Hidden="true" />
+      <Field Name="IsMouseOverProperty" Hidden="true" />
+      <Field Name="IsStylusCapturedProperty" Hidden="true" />
+      <Field Name="IsStylusCaptureWithinProperty" Hidden="true" />
+      <Field Name="IsStylusDirectlyOverProperty" Hidden="true" />
+      <Field Name="IsStylusOverProperty" Hidden="true" />
+      <Field Name="IsVisibleProperty" Hidden="true" />
+      <Field Name="KeyDownEvent" Hidden="true" />
+      <Field Name="KeyUpEvent" Hidden="true" />
+      <Field Name="LostFocusEvent" Hidden="true" />
+      <Field Name="LostKeyboardFocusEvent" Hidden="true" />
+      <Field Name="LostMouseCaptureEvent" Hidden="true" />
+      <Field Name="LostStylusCaptureEvent" Hidden="true" />
+      <Field Name="MouseDownEvent" Hidden="true" />
+      <Field Name="MouseEnterEvent" Hidden="true" />
+      <Field Name="MouseLeaveEvent" Hidden="true" />
+      <Field Name="MouseLeftButtonDownEvent" Hidden="true" />
+      <Field Name="MouseLeftButtonUpEvent" Hidden="true" />
+      <Field Name="MouseMoveEvent" Hidden="true" />
+      <Field Name="MouseRightButtonDownEvent" Hidden="true" />
+      <Field Name="MouseRightButtonUpEvent" Hidden="true" />
+      <Field Name="MouseUpEvent" Hidden="true" />
+      <Field Name="MouseWheelEvent" Hidden="true" />
+      <Field Name="PreviewDragEnterEvent" Hidden="true" />
+      <Field Name="PreviewDragLeaveEvent" Hidden="true" />
+      <Field Name="PreviewDragOverEvent" Hidden="true" />
+      <Field Name="PreviewDropEvent" Hidden="true" />
+      <Field Name="PreviewGiveFeedbackEvent" Hidden="true" />
+      <Field Name="PreviewGotKeyboardFocusEvent" Hidden="true" />
+      <Field Name="PreviewKeyDownEvent" Hidden="true" />
+      <Field Name="PreviewKeyUpEvent" Hidden="true" />
+      <Field Name="PreviewLostKeyboardFocusEvent" Hidden="true" />
+      <Field Name="PreviewMouseDownEvent" Hidden="true" />
+      <Field Name="PreviewMouseLeftButtonDownEvent" Hidden="true" />
+      <Field Name="PreviewMouseLeftButtonUpEvent" Hidden="true" />
+      <Field Name="PreviewMouseMoveEvent" Hidden="true" />
+      <Field Name="PreviewMouseRightButtonDownEvent" Hidden="true" />
+      <Field Name="PreviewMouseRightButtonUpEvent" Hidden="true" />
+      <Field Name="PreviewMouseUpEvent" Hidden="true" />
+      <Field Name="PreviewMouseWheelEvent" Hidden="true" />
+      <Field Name="PreviewQueryContinueDragEvent" Hidden="true" />
+      <Field Name="PreviewStylusButtonDownEvent" Hidden="true" />
+      <Field Name="PreviewStylusButtonUpEvent" Hidden="true" />
+      <Field Name="PreviewStylusDownEvent" Hidden="true" />
+      <Field Name="PreviewStylusInAirMoveEvent" Hidden="true" />
+      <Field Name="PreviewStylusInRangeEvent" Hidden="true" />
+      <Field Name="PreviewStylusMoveEvent" Hidden="true" />
+      <Field Name="PreviewStylusOutOfRangeEvent" Hidden="true" />
+      <Field Name="PreviewStylusSystemGestureEvent" Hidden="true" />
+      <Field Name="PreviewStylusUpEvent" Hidden="true" />
+      <Field Name="PreviewTextInputEvent" Hidden="true" />
+      <Field Name="QueryContinueDragEvent" Hidden="true" />
+      <Field Name="QueryCursorEvent" Hidden="true" />
+      <Field Name="StylusButtonDownEvent" Hidden="true" />
+      <Field Name="StylusButtonUpEvent" Hidden="true" />
+      <Field Name="StylusDownEvent" Hidden="true" />
+      <Field Name="StylusEnterEvent" Hidden="true" />
+      <Field Name="StylusInAirMoveEvent" Hidden="true" />
+      <Field Name="StylusInRangeEvent" Hidden="true" />
+      <Field Name="StylusLeaveEvent" Hidden="true" />
+      <Field Name="StylusMoveEvent" Hidden="true" />
+      <Field Name="StylusOutOfRangeEvent" Hidden="true" />
+      <Field Name="StylusSystemGestureEvent" Hidden="true" />
+      <Field Name="StylusUpEvent" Hidden="true" />
+      <Field Name="TextInputEvent" Hidden="true" />
+      <Field Name="VisibilityProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

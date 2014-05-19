@@ -1,0 +1,42 @@
+﻿<Window x:Class="LightsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="LightsDemo" Height="480" Width="640">
+    <Window.Resources>
+        <Style TargetType="helix:RectangleVisual3D">
+            <Setter Property="DivWidth" Value="20"/>
+            <Setter Property="DivLength" Value="20"/>
+            <Setter Property="BackMaterial" Value="{helix:Material Green}"/>
+        </Style>
+    </Window.Resources>
+    <TabControl>
+        <TabItem Header="Default lights">
+            <helix:HelixViewport3D>
+                <helix:DefaultLights ShowLights="True"/>
+                <helix:RectangleVisual3D/>
+                <helix:Teapot/>
+            </helix:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="ThreePointLights">
+            <helix:HelixViewport3D>
+                <helix:ThreePointLights ShowLights="True"/>
+                <helix:RectangleVisual3D/>
+                <helix:Teapot/>
+            </helix:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Sunlight">
+            <helix:HelixViewport3D>
+                <helix:SunLight ShowLights="True"/>
+                <helix:RectangleVisual3D/>
+                <helix:Teapot/>
+            </helix:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Head light">
+            <helix:HelixViewport3D IsHeadLightEnabled="True">
+                <helix:RectangleVisual3D/>
+                <helix:Teapot/>
+            </helix:HelixViewport3D>
+        </TabItem>
+    </TabControl>
+</Window>

@@ -1,0 +1,47 @@
+﻿<local:StereoControl x:Class="HelixToolkit.Wpf.StereoView3D" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:HelixToolkit.Wpf" x:Name="thisControl">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition Width="2" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<Viewport3D Name="LeftView" Grid.Column="0">
+			<Viewport3D.Camera>
+				<PerspectiveCamera />
+			</Viewport3D.Camera>
+		</Viewport3D>
+		<local:CameraController x:Name="LeftCameraControl" Grid.Column="0" Camera="{Binding Camera, ElementName=thisControl}" CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" Viewport="{Binding ElementName=LeftView}">
+            <local:CameraController.InputBindings>
+                <MouseBinding Gesture="RightClick" Command="{x:Static local:CameraController.RotateCommand}"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="{x:Static local:CameraController.PanCommand}"/>
+                <MouseBinding Gesture="Ctrl+RightClick" Command="{x:Static local:CameraController.ZoomCommand}"/>
+                <!--<MouseBinding Gesture="Ctrl+Shift+RightClick" Command="{x:Static local:CameraController.ZoomRectangleCommand}"/>-->
+                <MouseBinding Gesture="Alt+RightClick" Command="{x:Static local:CameraController.ChangeFieldOfViewCommand}"/>
+                <MouseBinding Gesture="RightDoubleClick" Command="{x:Static local:CameraController.ChangeLookAtCommand}"/>
+                <KeyBinding Key="E" Modifiers="Ctrl+Shift" Command="{x:Static local:CameraController.ZoomExtentsCommand}"/>
+                <MouseBinding Gesture="MiddleDoubleClick" Command="{x:Static local:CameraController.ResetCameraCommand}"/>
+            </local:CameraController.InputBindings>
+        </local:CameraController>
+
+        <Border Background="Black" Grid.Column="1" />
+
+		<Viewport3D Name="RightView" Grid.Column="2">
+			<Viewport3D.Camera>
+				<PerspectiveCamera />
+			</Viewport3D.Camera>
+		</Viewport3D>
+		<local:CameraController x:Name="RightCameraControl" Grid.Column="2" Camera="{Binding Camera, ElementName=thisControl}" CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" Viewport="{Binding ElementName=RightView}" >
+            <local:CameraController.InputBindings>
+                <MouseBinding Gesture="RightClick" Command="{x:Static local:CameraController.RotateCommand}"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="{x:Static local:CameraController.PanCommand}"/>
+                <MouseBinding Gesture="Ctrl+RightClick" Command="{x:Static local:CameraController.ZoomCommand}"/>
+                <!--<MouseBinding Gesture="Ctrl+Shift+RightClick" Command="{x:Static local:CameraController.ZoomRectangleCommand}"/>-->
+                <MouseBinding Gesture="Alt+RightClick" Command="{x:Static local:CameraController.ChangeFieldOfViewCommand}"/>
+                <MouseBinding Gesture="RightDoubleClick" Command="{x:Static local:CameraController.ChangeLookAtCommand}"/>
+                <KeyBinding Key="E" Modifiers="Ctrl+Shift" Command="{x:Static local:CameraController.ZoomExtentsCommand}"/>
+                <MouseBinding Gesture="MiddleDoubleClick" Command="{x:Static local:CameraController.ResetCameraCommand}"/>
+            </local:CameraController.InputBindings>
+        </local:CameraController>
+    </Grid>
+</local:StereoControl>

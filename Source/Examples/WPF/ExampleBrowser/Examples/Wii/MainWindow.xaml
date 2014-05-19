@@ -1,0 +1,64 @@
+﻿<Window x:Class="WiiDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="WiiDemo" Height="480" Width="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <h:HelixViewport3D x:Name="view1" ZoomExtentsWhenLoaded="True" Grid.RowSpan="2" MouseLeftButtonDown="view1_MouseLeftButtonDown">
+            <h:DefaultLights/>
+            <ModelVisual3D>
+                <ModelVisual3D.Transform>
+                    <Transform3DGroup>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Axis="1,0,0" Angle="{Binding Heel}"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D Axis="0,1,0" Angle="{Binding Trim}"/>
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        <TranslateTransform3D OffsetZ="{Binding Heave}"/>
+                    </Transform3DGroup>
+                </ModelVisual3D.Transform>
+                
+                <!-- "Semi-submersible" -->
+                <h:BoxVisual3D Width="50" Height="4" Length="50" Center="0,0,12" Fill="Gray"/>
+                <h:BoxVisual3D Width="6" Height="20" Length="6" Center="0,0,24" Fill="Yellow"/>
+                <h:BoxVisual3D Width="10" Height="4" Length="30" Center="0,10,16" Fill="White"/>
+                <h:BoxVisual3D Width="10" Height="4" Length="10" Center="10,10,20" Fill="White"/>
+                <h:TruncatedConeVisual3D BaseRadius="5" TopRadius="5" BaseCap="True" Origin="-20,-20,-10" Height="20" Fill="{Binding HullBrush}" ThetaDiv="18"/>
+                <h:TruncatedConeVisual3D BaseRadius="5" TopRadius="5" BaseCap="True" Origin="-20,20,-10" Height="20" Fill="{Binding HullBrush}" ThetaDiv="18"/>
+                <h:TruncatedConeVisual3D BaseRadius="5" TopRadius="5" BaseCap="True" Origin="20,-20,-10" Height="20" Fill="{Binding HullBrush}" ThetaDiv="18"/>
+                <h:TruncatedConeVisual3D BaseRadius="5" TopRadius="5" BaseCap="True" Origin="20,20,-10" Height="20" Fill="{Binding HullBrush}" ThetaDiv="18"/>
+                <h:BoxVisual3D Center="-20,0,-6" Height="4" Width="40" Length="4" Fill="Gray"/>
+                <h:BoxVisual3D Center="20,0,-6" Height="4" Width="40" Length="4" Fill="Gray"/>
+                <h:BoxVisual3D Center="0,-20,-6" Height="4" Width="4" Length="40" Fill="Gray"/>
+                <h:BoxVisual3D Center="0,20,-6" Height="4" Width="4" Length="40" Fill="Gray"/>
+                
+                <!-- "Ship" -->
+                <!--<h:BoxVisual3D Width="40" Height="20" Length="{Binding Length}" Center="0,0,0" Fill="{Binding HullBrush}"/>
+                <h:BoxVisual3D Width="30" Height="10" Length="20" Center="-80,0,15" Fill="White"/>
+                <h:BoxVisual3D Width="60" Height="10" Length="10" Center="-75,0,25" Fill="White"/>-->
+            </ModelVisual3D>
+            <h:GridLinesVisual3D Width="400" Length="400" Center="0,0,0.1" Fill="Gray"/>
+            <h:RectangleVisual3D Width="400" Length="400" Material="{h:Material #600000FF, SpecularIntensity=0.2}" BackMaterial="{h:Material #600000FF, SpecularIntensity=0.2}" DivLength="40" DivWidth="40"/>
+
+        </h:HelixViewport3D>
+        <UniformGrid Columns="3" DockPanel.Dock="Top" Width="200">
+            <Label Content="Heel" HorizontalAlignment="Center"/>
+            <Label Content="Trim" HorizontalAlignment="Center"/>
+            <Label Content="Heave" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Heel, StringFormat={}{0:0.0°}}" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Trim, StringFormat={}{0:0.0°}}" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Heave, StringFormat={}{0:0.0m}}" HorizontalAlignment="Center"/>
+            <Slider Value="{Binding Heel}" Minimum="-90" Maximum="90"/>
+            <Slider Value="{Binding Trim}" Minimum="-90" Maximum="90"/>
+            <Slider Value="{Binding Heave}" Minimum="-20" Maximum="20"/>
+        </UniformGrid>
+    </Grid>
+</Window>
