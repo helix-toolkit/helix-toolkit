@@ -111,6 +111,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Examples\ScatterPlot\MainViewModel.cs" />
+    <Compile Include="Examples\ScatterPlot\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
     <Compile Include="Workitems\Workitem10042\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,10 @@
     <Page Include="Examples\EarthCuttingPlanes\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\ScatterPlot\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\SurfacePlotCuttingPlanes\MainWindow.xaml">
       <SubType>Designer</SubType>
@@ -555,6 +564,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\ScatterPlotDemo_small.png" />
     <Resource Include="Images\Workitem10042_small.png" />
     <Resource Include="Workitems\Workitem10042\TextureTestImage.png" />
     <Resource Include="Images\Workitem10046_small.png" />
