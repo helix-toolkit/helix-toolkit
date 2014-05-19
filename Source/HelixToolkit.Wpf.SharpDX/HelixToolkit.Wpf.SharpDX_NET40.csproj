@@ -135,7 +135,10 @@
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Core\Box3D.cs" />
+    <Compile Include="Core\Color4Collection.cs" />
     <Compile Include="Core\CuttingEarsTriangulator.cs" />
+    <Compile Include="Core\ExposedArrayList.cs" />
+    <Compile Include="Core\IntCollection.cs" />
     <Compile Include="Core\Polygon.cs" />
     <Compile Include="Core\Polygon3D.cs" />
     <Compile Include="Core\HelixToolkitException.cs" />
@@ -161,12 +164,17 @@
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Controls\ViewportCommands.cs" />
+    <Compile Include="Core\Vector2Collection.cs" />
+    <Compile Include="Core\Vector3Collection.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\TokenizerHelper.cs" />
+    <Compile Include="Utilities\TypeConverter.cs" />
     <Compile Include="Utilities\ValueConverter.cs" />
     <Compile Include="Extensions\Vector3DExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

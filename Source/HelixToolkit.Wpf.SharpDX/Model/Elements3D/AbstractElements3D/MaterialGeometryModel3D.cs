@@ -173,7 +173,7 @@
                     this.Bounds = new BoundingBox();
                     return;
                 }
-                var b = BoundingBox.FromPoints(this.Geometry.Positions);
+                var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
                 this.Bounds = b;
                 //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
             }

@@ -4,24 +4,23 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX;
 
-    using Point3D = global::SharpDX.Vector3;
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     [Serializable]
     public abstract class Geometry3D
     {
-        public int[] Indices { get; set; }
-        public Point3D[] Positions { get; set; }
-        public Color4[] Colors { get; set; }
-
+        public IntCollection Indices { get; set; }
+        public Vector3Collection Positions { get; set; }
+        public Color4Collection Colors { get; set; }
 
         public struct Triangle
         {            
-            public Point3D P0, P1, P2;
+            public Vector3 P0, P1, P2;
         }
 
         public struct Line
         {
-            public Point3D P0, P1;
+            public Vector3 P0, P1;
         }
     }
 }
