@@ -135,8 +135,10 @@
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Core\Box3D.cs" />
+    <Compile Include="Core\Color4Collection.cs" />
     <Compile Include="Core\CuttingEarsTriangulator.cs" />
     <Compile Include="Core\ExposedArrayList.cs" />
+    <Compile Include="Core\IntCollection.cs" />
     <Compile Include="Core\Polygon.cs" />
     <Compile Include="Core\Polygon3D.cs" />
     <Compile Include="Core\HelixToolkitException.cs" />
@@ -162,9 +164,7 @@
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Controls\ViewportCommands.cs" />
-    <Compile Include="Core\IntCollection.cs" />
     <Compile Include="Core\Vector2Collection.cs" />
-    <Compile Include="Core\Color4Collection.cs" />
     <Compile Include="Core\Vector3Collection.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
