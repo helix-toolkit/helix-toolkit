@@ -90,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }).ToArray());
 
                 /// --- init index buffer
-                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices);
+                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
             }
 
             /// --- init instances buffer            
@@ -222,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
-                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Length, this.instanceArray.Length, 0, 0, 0);
+                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
             }
             else
             {
@@ -231,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
-                this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Length, 0, 0);
+                this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
             }
         }
 

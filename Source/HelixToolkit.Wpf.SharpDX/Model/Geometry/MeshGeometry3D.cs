@@ -6,23 +6,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX;
 
-    using Point2D = global::SharpDX.Vector2;
-    using Point3D = global::SharpDX.Vector3;
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     [Serializable]
     public class MeshGeometry3D : Geometry3D
     {
-        public Point3D[] Normals { get; set; }
-        public Point2D[] TextureCoordinates { get; set; }
+        public Vector3Collection Normals { get; set; }
+        public Vector2Collection TextureCoordinates { get; set; }
 
-        public Point3D[] Tangents { get; set; }
-        public Point3D[] BiTangents { get; set; }
+        public Vector3Collection Tangents { get; set; }
+        public Vector3Collection BiTangents { get; set; }
 
         public IEnumerable<Geometry3D.Triangle> Triangles
         {
             get
             {
-                for (int i = 0; i < Indices.Length; i += 3)
+                for (int i = 0; i < Indices.Count; i += 3)
                 {
                     yield return new Triangle() { P0 = Positions[Indices[i]], P1 = Positions[Indices[i + 1]], P2 = Positions[Indices[i + 2]], };
                 }
@@ -31,61 +30,67 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static MeshGeometry3D Merge(params MeshGeometry3D[] meshes)
         {
-            var positions = new List<Point3D>();
-            var indices = new List<int>();
+            var positions = new Vector3Collection();
+            var indices = new IntCollection();
 
-            var normals = meshes.All(x => x.Normals != null) ? new List<Point3D>() : null;
-            var colors = meshes.All(x => x.Colors != null) ? new List<Color4>() : null;
-            var textureCoods = meshes.All(x => x.TextureCoordinates != null) ? new List<Point2D>() : null;
-            var tangents = meshes.All(x => x.Tangents != null) ? new List<Point3D>() : null;
-            var bitangents = meshes.All(x => x.BiTangents != null) ? new List<Point3D>() : null;
+            var normals = meshes.All(x => x.Normals != null) ? new Vector3Collection() : null;
+            var colors = meshes.All(x => x.Colors != null) ? new Color4Collection() : null;
+            var textureCoods = meshes.All(x => x.TextureCoordinates != null) ? new Vector2Collection() : null;
+            var tangents = meshes.All(x => x.Tangents != null) ? new Vector3Collection() : null;
+            var bitangents = meshes.All(x => x.BiTangents != null) ? new Vector3Collection() : null;
 
             int index = 0;
             foreach (var part in meshes)
             {
-                for (int i = 0; i < part.Positions.Length; i++)
+                for (int i = 0; i < part.Positions.Count; i++)
                 {
                     positions.Add(part.Positions[i]);
                 }
 
-                for (int i = 0; i < part.Indices.Length; i++)
+                for (int i = 0; i < part.Indices.Count; i++)
                 {
                     indices.Add(index + part.Indices[i]);
                 }
 
-                index += part.Indices.Length;
+                index += part.Indices.Count;
             }
+
             if (normals != null)
             {
-                normals = meshes.SelectMany(x => x.Normals).ToList();
+                normals = new Vector3Collection(meshes.SelectMany(x => x.Normals));
             }
+
             if (colors != null)
             {
-                colors = meshes.SelectMany(x => x.Colors).ToList();
+                colors = new Color4Collection(meshes.SelectMany(x => x.Colors));
             }
+
             if (textureCoods != null)
             {
-                textureCoods = meshes.SelectMany(x => x.TextureCoordinates).ToList();
+                textureCoods = new Vector2Collection(meshes.SelectMany(x => x.TextureCoordinates));
             }
+
             if (tangents != null)
             {
-                tangents = meshes.SelectMany(x => x.Tangents).ToList();
+                tangents = new Vector3Collection(meshes.SelectMany(x => x.Tangents));
             }
+
             if (bitangents != null)
             {
-                bitangents = meshes.SelectMany(x => x.BiTangents).ToList();
+                bitangents = new Vector3Collection(meshes.SelectMany(x => x.BiTangents));
             }
 
             var mesh = new MeshGeometry3D()
             {
-                Positions = positions.ToArray(),
-                Indices = indices.ToArray(),
+                Positions = positions,
+                Indices = indices,
             };
-            mesh.Normals = normals != null ? normals.ToArray() : null;
-            mesh.Colors = colors != null ? colors.ToArray() : null;
-            mesh.TextureCoordinates = textureCoods != null ? textureCoods.ToArray() : null;
-            mesh.Tangents = tangents != null ? tangents.ToArray() : null;
-            mesh.BiTangents = bitangents != null ? bitangents.ToArray() : null;
+
+            mesh.Normals = normals;
+            mesh.Colors = colors;
+            mesh.TextureCoordinates = textureCoods;
+            mesh.Tangents = tangents;
+            mesh.BiTangents = bitangents;
 
             return mesh;
         }
