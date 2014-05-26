@@ -1,0 +1,26 @@
+﻿<Window x:Class="ScatterPlotDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" xmlns:local="clr-namespace:ScatterPlotDemo" Title="Scatter plot demo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Export" IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="FileExit_Click"/>
+            </MenuItem>
+        </Menu>
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowCoordinateSystem="True">
+            <h:HelixViewport3D.Camera>
+                <!-- HelixViewport3D.ZoomExtentsWhenLoaded will figure out the position of the Camera -->
+                <PerspectiveCamera LookDirection="5,10,-10" UpDirection="0,0,1"/>
+            </h:HelixViewport3D.Camera>
+            
+            <!-- Lights -->
+            <ModelVisual3D Content="{Binding Lights}"/>
+            
+            <!-- The plot visual (surface, axes and labels) -->
+            <local:ScatterPlotVisual3D Points="{Binding Data}" Values="{Binding Values}" SurfaceBrush="{Binding SurfaceBrush}"/>
+            
+        </h:HelixViewport3D>
+    </DockPanel>
+</Window>

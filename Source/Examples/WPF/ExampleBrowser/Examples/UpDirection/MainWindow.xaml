@@ -1,0 +1,15 @@
+﻿<Window x:Class="UpDirectionDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="UpDirectionDemo" Height="480" Width="640">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="HelixViewport3D.ModelUpDirection = 0,1,0" Padding="8" Foreground="Black"/>
+        <h:HelixViewport3D x:Name="view1" CameraRotationMode="Turntable" ModelUpDirection="0,1,0" ShowCoordinateSystem="True">
+            <h:HelixViewport3D.Camera>
+                <PerspectiveCamera Position="5, 30, 40"  LookDirection="-5, -30, -40" FieldOfView="45" UpDirection="0,1,0"/>
+            </h:HelixViewport3D.Camera>
+            <h:DefaultLights/>
+            <h:CoordinateSystemVisual3D ArrowLengths="10"/>
+            <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
+        </h:HelixViewport3D>
+    </DockPanel>
+</Window>

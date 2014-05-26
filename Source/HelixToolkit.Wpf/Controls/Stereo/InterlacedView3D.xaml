@@ -1,0 +1,40 @@
+﻿<local:StereoControl x:Class="HelixToolkit.Wpf.InterlacedView3D" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:HelixToolkit.Wpf" x:Name="thisControl">
+	<Grid>
+		<Grid Name="LeftPanel" Background="{Binding Background, ElementName=thisControl}">
+			<Viewport3D Name="LeftView">
+				<Viewport3D.Camera>
+					<PerspectiveCamera />
+				</Viewport3D.Camera>
+			</Viewport3D>
+		</Grid>
+
+		<Grid Name="RightPanel" Background="{Binding Background, ElementName=thisControl}">
+			<Grid.Effect>
+                <local:InterlacedEffect x:Name="InterlacedEffect1" EvenLeft="{Binding EvenLeft, ElementName=thisControl}" Offset="{Binding HorizontalOffset, ElementName=thisControl}">
+					<local:InterlacedEffect.LeftInput>
+						<VisualBrush Visual="{Binding ElementName=LeftPanel}" />
+					</local:InterlacedEffect.LeftInput>
+				</local:InterlacedEffect>
+			</Grid.Effect>
+			<Viewport3D Name="RightView">
+				<Viewport3D.Camera>
+					<PerspectiveCamera />
+				</Viewport3D.Camera>
+			</Viewport3D>
+
+		</Grid>
+        
+        <local:CameraController x:Name="CameraControl" Camera="{Binding Camera, ElementName=thisControl}" CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" Viewport="{Binding ElementName=LeftView}">
+            <local:CameraController.InputBindings>
+                <MouseBinding Gesture="RightClick" Command="{x:Static local:CameraController.RotateCommand}"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="{x:Static local:CameraController.PanCommand}"/>
+                <MouseBinding Gesture="Ctrl+RightClick" Command="{x:Static local:CameraController.ZoomCommand}"/>
+                <!--<MouseBinding Gesture="Ctrl+Shift+RightClick" Command="{x:Static local:CameraController.ZoomRectangleCommand}"/>-->
+                <MouseBinding Gesture="Alt+RightClick" Command="{x:Static local:CameraController.ChangeFieldOfViewCommand}"/>
+                <MouseBinding Gesture="RightDoubleClick" Command="{x:Static local:CameraController.ChangeLookAtCommand}"/>
+                <KeyBinding Key="E" Modifiers="Ctrl+Shift" Command="{x:Static local:CameraController.ZoomExtentsCommand}"/>
+                <MouseBinding Gesture="MiddleDoubleClick" Command="{x:Static local:CameraController.ResetCameraCommand}"/>
+            </local:CameraController.InputBindings>
+        </local:CameraController>
+    </Grid>
+</local:StereoControl>
