@@ -33,6 +33,7 @@ syntax: glob
 Output/
 ClientBin/
 lib/
+*.sln.ide/
 
 _ReSharper*/
 _TeamCity*/
