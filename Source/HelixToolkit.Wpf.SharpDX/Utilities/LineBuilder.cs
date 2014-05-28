@@ -2,6 +2,8 @@
 {
     using System;
 
+    using global::SharpDX;
+
     using HelixToolkit.Wpf.SharpDX.Core;
 
     using Vector3D = global::SharpDX.Vector3;
@@ -233,6 +235,160 @@
             ll.AddLine(cc[2], cc[6]);
             ll.AddLine(cc[3], cc[7]);
             return ll.ToLineGeometry3D();
+        }
+
+        // ~7874015 tests per second, 3.36 times faster than GetRayToLineDistance()
+        public static float GetPointToLineDistance2D(ref Vector3 pt, ref Vector3 p0, ref Vector3 p1, out Vector3 closest, out float t)
+        {
+            float dx = p1.X - p0.X;
+            float dy = p1.Y - p0.Y;
+            if (Math.Abs(dx) < float.Epsilon && Math.Abs(dy) < float.Epsilon)
+            {
+                // The points are too close together.
+                closest = p0;
+                dx = pt.X - p0.X;
+                dy = pt.Y - p0.Y;
+                t = 0f;
+                return (float)Math.Sqrt(dx * dx + dy * dy);
+            }
+
+            // Calculate scale factor t of intersection.
+            t = ((pt.X - p0.X) * dx + (pt.Y - p0.Y) * dy) / (dx * dx + dy * dy);
+
+            // Test, if t inside line bounds.
+            if (t < 0)
+            {
+                closest = new Vector3(p0.X, p0.Y, p0.Z);
+                t = 0f;
+                dx = pt.X - p0.X;
+                dy = pt.Y - p0.Y;
+            }
+            else if (t > 1)
+            {
+                closest = new Vector3(p1.X, p1.Y, p1.Z);
+                t = 1f;
+                dx = pt.X - p1.X;
+                dy = pt.Y - p1.Y;
+            }
+            else
+            {
+                closest = new Vector3(p0.X + t * dx, p0.Y + t * dy, pt.Z);
+                dx = pt.X - closest.X;
+                dy = pt.Y - closest.Y;
+            }
+
+            return (float)Math.Sqrt(dx * dx + dy * dy);
+        }
+        
+        public static float GetRayToLineDistance(
+            Ray ray, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc)
+        {
+            var s0 = ray.Position;
+            var s1 = ray.Position + ray.Direction;
+            return GetLineToLineDistance(s0, s1, t0, t1, out sp, out tp, out sc, out tc, true);
+        }
+
+        // Source: http://geomalgorithms.com/a07-_distance.html
+        // ~2341920 tests per second
+        public static float GetLineToLineDistance(
+            Vector3 s0, Vector3 s1, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc, bool sIsRay = false)
+        {
+            Vector3 u = s1 - s0;
+            Vector3 v = t1 - t0;
+            Vector3 w = s0 - t0;
+
+            float a = Vector3.Dot(u, u); // always >= 0
+            float b = Vector3.Dot(u, v);
+            float c = Vector3.Dot(v, v); // always >= 0
+            float d = Vector3.Dot(u, w);
+            float e = Vector3.Dot(v, w);
+            float D = a * c - b * b;     // always >= 0
+            float sN, sD = D;            // sc = sN / sD, default sD = D >= 0
+            float tN, tD = D;            // tc = tN / tD, default tD = D >= 0
+
+            // compute the line parameters of the two closest points
+            if (D < float.Epsilon)
+            {
+                // the lines are almost parallel
+                sN = 0.0f; // force using point P0 on segment S1
+                sD = 1.0f; // to prevent possible division by 0.0 later
+                tN = e;
+                tD = c;
+            }
+            else
+            {
+                // get the closest points on the infinite lines
+                sN = (b * e - c * d);
+                tN = (a * e - b * d);
+
+                if (!sIsRay)
+                {
+                    if (sN < 0.0f)
+                    {
+                        // sc < 0 => the s=0 edge is visible
+                        sN = 0.0f;
+                        tN = e;
+                        tD = c;
+                    }
+                    else if (sN > sD)
+                    {
+                        // sc > 1  => the s=1 edge is visible
+                        sN = sD;
+                        tN = e + b;
+                        tD = c;
+                    }                    
+                }
+            }
+
+            if (tN < 0.0f)
+            {
+                // tc < 0 => the t=0 edge is visible
+                tN = 0.0f;
+                // recompute sc for this edge
+                if (-d < 0.0f)
+                {
+                    sN = 0.0f;
+                }
+                else if (-d > a)
+                {
+                    sN = sD;
+                }
+                else
+                {
+                    sN = -d;
+                    sD = a;
+                }
+            }
+            else if (tN > tD)
+            {
+                // tc > 1  => the t=1 edge is visible
+                tN = tD;
+                // recompute sc for this edge
+                if ((-d + b) < 0.0f)
+                {
+                    sN = 0;
+                }
+                else if ((-d + b) > a)
+                {
+                    sN = sD;
+                }
+                else
+                {
+                    sN = (-d + b);
+                    sD = a;
+                }
+            }
+
+            // finally do the division to get sc and tc
+            sc = (Math.Abs(sN) < float.Epsilon ? 0.0f : sN / sD);
+            tc = (Math.Abs(tN) < float.Epsilon ? 0.0f : tN / tD);
+
+            // get the difference of the two closest points
+            sp = s0 + (sc * u);
+            tp = t0 + (tc * v);
+            var tv = sp - tp;
+
+            return tv.Length(); // return the closest distance
         }
     }
 }

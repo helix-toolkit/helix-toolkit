@@ -57,8 +57,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty SmoothnessProperty =
             DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(0.0));
 
-
-
         public IEnumerable<Matrix> Instances
         {
             get { return (IEnumerable<Matrix>)this.GetValue(InstancesProperty); }
@@ -67,6 +65,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty InstancesProperty =
             DependencyProperty.Register("Instances", typeof(IEnumerable<Matrix>), typeof(LineGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+
+        public double HitTestThickness
+        {
+            get { return (double)this.GetValue(HitTestThicknessProperty); }
+            set { this.SetValue(HitTestThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty HitTestThicknessProperty =
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
         protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -82,6 +89,70 @@ namespace HelixToolkit.Wpf.SharpDX
             model.isChanged = true;
         }
 
+        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        {
+            LineGeometry3D lineGeometry3D;
+            Viewport3DX viewport;
+
+            if (this.Visibility == Visibility.Collapsed ||
+                this.IsHitTestVisible == false ||
+                (viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
+                (lineGeometry3D = this.Geometry as LineGeometry3D) == null)
+            {
+                return false;
+            }
+
+            // revert unprojection; probably better: overloaded HitTest() for LineGeometryModel3D?
+            var svpm = viewport.GetScreenViewProjectionMatrix();
+            var smvpm = this.modelMatrix * svpm;
+            var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
+            Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
+            var clickPoint = clickPoint4.ToVector3();
+
+            var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
+            var maxDist = this.HitTestThickness;
+            var lastDist = double.MaxValue;
+            var index = 0;
+
+            foreach (var line in lineGeometry3D.Lines)
+            {
+                var p0 = Vector3.TransformCoordinate(line.P0, smvpm);
+                var p1 = Vector3.TransformCoordinate(line.P1, smvpm);
+                Vector3 hitPoint;
+                float t;
+
+                var dist = LineBuilder.GetPointToLineDistance2D(ref clickPoint, ref p0, ref p1, out hitPoint, out t);
+                if (dist < lastDist && dist <= maxDist)
+                {
+                    lastDist = dist;
+                    Vector4 res;
+                    var lp0 = line.P0;
+                    Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
+                    lp0 = res.ToVector3();
+
+                    var lp1 = line.P1;
+                    Vector3.Transform(ref lp1, ref this.modelMatrix, out res);
+                    lp1 = res.ToVector3();
+
+                    var lv = lp1 - lp0;
+                    var hitPointWS = lp0 + lv * t;
+                    result.Distance = (rayWS.Position - hitPointWS).Length();
+                    result.PointHit = hitPointWS.ToPoint3D();
+                    result.ModelHit = this;
+                    result.IsValid = true;
+                    result.Tag = index; // ToDo: LineHitTag with additional info
+                }
+
+                index++;
+            }
+
+            if (result.IsValid)
+            {
+                hits.Add(result);
+            }
+
+            return result.IsValid;
+        }
 
         protected override void OnRasterStateChanged(int depthBias)
         {
