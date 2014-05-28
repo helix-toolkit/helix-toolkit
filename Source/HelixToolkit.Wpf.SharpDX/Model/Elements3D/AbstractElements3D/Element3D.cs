@@ -2,6 +2,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Windows;
+    using System.Windows.Media;
 
     /// <summary>
     /// Base class for renderable elements.
@@ -83,6 +84,23 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)this.GetValue(IsRenderingProperty); }
             set { this.SetValue(IsRenderingProperty, value); }
+        }
+
+        public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
+        {
+            var parent = VisualTreeHelper.GetParent(obj);
+            while (parent != null)
+            {
+                var typed = parent as T;
+                if (typed != null)
+                {
+                    return typed;
+                }
+
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            return null;
         }
     }
 }
