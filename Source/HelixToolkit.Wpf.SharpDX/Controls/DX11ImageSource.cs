@@ -70,7 +70,11 @@
             {
                 this.renderTarget = null;
                 base.Lock();
+#if NET40
                 base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
+#else
+                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
+#endif
                 base.Unlock();
             }
 
@@ -94,7 +98,11 @@
                 using (Surface surface = this.renderTarget.GetSurfaceLevel(0))                
                 {
                     base.Lock();
+#if NET40
                     base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer);
+#else
+                    base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer, true);
+#endif
                     base.Unlock();
                 }
             }
