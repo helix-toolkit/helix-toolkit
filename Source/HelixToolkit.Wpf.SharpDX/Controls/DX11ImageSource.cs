@@ -70,11 +70,7 @@
             {
                 this.renderTarget = null;
                 base.Lock();
-#if NET40
                 base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
-#else
-                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
-#endif
                 base.Unlock();
             }
 
