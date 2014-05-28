@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX"
         xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
-        xmlns:local="clr-namespace:Workitem10044"
-        xmlns:workitem10048="clr-namespace:ExampleBrowser.Workitems.Workitem10048"
+        xmlns:local="clr-namespace:Workitem10048"
         mc:Ignorable="d"
         Title="SharpDX in WPF (Workitem 10048 and 10052)" Height="500" Width="800">
     <Window.DataContext>
@@ -19,11 +18,6 @@
                             Indices="0 1"/>
         <TranslateTransform3D x:Key="Transform1" OffsetX="0" OffsetY="1" OffsetZ="0"/>
         <htx:PerspectiveCamera x:Key="Camera" Position="3, 3, 5" LookDirection="-3, -3, -5" UpDirection="0, 1, 0"/>
-        <!--
-        <htx:OrthographicCamera x:Key="Camera" Position="0, 0, 1" LookDirection="0, 0, -1" Width="3" UpDirection="0, 1, 0"/>
-        <htx:PerspectiveCamera x:Key="Camera" Position="0, 0, 1" LookDirection="0, 0, -1" UpDirection="0, 1, 0"/>
-        <htx:OrthographicCamera x:Key="Camera" Position="3, 3, 5" LookDirection="-3, -3, -5" UpDirection="0, 1, 0"/>
-        -->
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -68,15 +62,15 @@
             </htx:Viewport3DX.InputBindings>
             <htx:AmbientLight3D Color="0.1,0.1,0.1,1.0"/>
             <htx:DirectionalLight3D Color="{x:Static sdx:Color4.White}" Direction="-2,-5,-2"/>
-            <workitem10048:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
+            <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
                                                  Color="{x:Static sdx:Color.Black}">
-            </workitem10048:MyLineGeometryModel3D>
-            <workitem10048:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
+            </local:MyLineGeometryModel3D>
+            <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
                                                  Color="{x:Static sdx:Color.Blue}"
                                                  Transform="{StaticResource Transform1}"
                                                  Thickness="8"
                                                  HitTestThickness="8">
-            </workitem10048:MyLineGeometryModel3D>
+            </local:MyLineGeometryModel3D>
         </htx:Viewport3DX>
 
         <StackPanel Grid.Row="1" Margin="0 24 0 0">

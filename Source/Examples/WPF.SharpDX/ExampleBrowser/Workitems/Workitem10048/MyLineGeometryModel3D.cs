@@ -1,4 +1,4 @@
-﻿namespace ExampleBrowser.Workitems.Workitem10048
+﻿namespace Workitem10048
 {
     using System.Collections.Generic;
     using System.Windows;
@@ -30,7 +30,7 @@
             return result;
         }
 
-        // alternative way, 3.36 ties slower
+        // alternative way, 3.36 times slower
         protected bool MyHitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
             LineGeometry3D lineGeometry3D;
