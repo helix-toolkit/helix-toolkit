@@ -290,15 +290,15 @@
                 return false;
             }
 
-            //var hits = FindHits(viewport, position);
-            //if (hits.Count > 0)
-            //{
-            //    point = hits[0].PointHit;
-            //    normal = hits[0].NormalAtHit;
-            //    model = hits[0].ModelHit;
-            //    return true;
-            //}
-            //else
+            var hits = FindHits(viewport, position);
+            if (hits.Count > 0)
+            {
+                point = hits[0].PointHit;
+                normal = hits[0].NormalAtHit;
+                model = hits[0].ModelHit;
+                return true;
+            }
+            else
             {
                 // check for nearest points in the scene
                 // TODO!!
