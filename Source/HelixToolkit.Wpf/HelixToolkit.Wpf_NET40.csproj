@@ -110,6 +110,7 @@
     <Compile Include="Helpers\CanonicalSplineHelper.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ContourHelper.cs" />
+    <Compile Include="Helpers\DependencyPropertyEx.cs" />
     <Compile Include="Helpers\Model3DHelper.cs" />
     <Compile Include="Helpers\ScreenSpace\Billboard.cs" />
     <Compile Include="Helpers\ScreenSpace\BillboardGeometryBuilder.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="ShaderEffects\InterlacedEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\MeshGeometryVisual3D.cs" />
+    <Compile Include="Visual3Ds\MeshVisuals\ParticleSystem.cs" />
     <Compile Include="Visual3Ds\Text\BillboardTextItem.cs" />
     <Compile Include="Visual3Ds\Text\SpatialTextItem.cs" />
     <Compile Include="Visual3Ds\Text\TextGroupVisual3D.cs" />
