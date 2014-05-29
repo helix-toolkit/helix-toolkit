@@ -458,34 +458,50 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void AddBox(Point3D center, double xlength, double ylength, double zlength, BoxFaces faces)
         {
+            this.AddBox(center, new Vector3D(1, 0, 0), new Vector3D(0, 1, 0), xlength, ylength, zlength, faces);
+        }
+
+        /// <summary>
+        /// Adds a box with the specified faces, aligned with the specified axes.
+        /// </summary>
+        /// <param name="center">The center point of the box.</param>
+        /// <param name="x">The x axis.</param>
+        /// <param name="y">The y axis.</param>
+        /// <param name="xlength">The length of the box along the X axis.</param>
+        /// <param name="ylength">The length of the box along the Y axis.</param>
+        /// <param name="zlength">The length of the box along the Z axis.</param>
+        /// <param name="faces">The faces to include.</param>
+        public void AddBox(Point3D center, Vector3D x, Vector3D y, double xlength, double ylength, double zlength, BoxFaces faces = BoxFaces.All)
+        {
+            var z = Vector3D.CrossProduct(x, y);
             if ((faces & BoxFaces.Front) == BoxFaces.Front)
             {
-                this.AddCubeFace(center, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
+                this.AddCubeFace(center, x, z, xlength, ylength, zlength);
             }
 
             if ((faces & BoxFaces.Back) == BoxFaces.Back)
             {
-                this.AddCubeFace(center, new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1), xlength, ylength, zlength);
+                this.AddCubeFace(center, -x, z, xlength, ylength, zlength);
             }
 
             if ((faces & BoxFaces.Left) == BoxFaces.Left)
             {
-                this.AddCubeFace(center, new Vector3D(0, -1, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
+                this.AddCubeFace(center, -y, z, ylength, xlength, zlength);
             }
 
             if ((faces & BoxFaces.Right) == BoxFaces.Right)
             {
-                this.AddCubeFace(center, new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), ylength, xlength, zlength);
+                this.AddCubeFace(center, y, z, ylength, xlength, zlength);
             }
 
             if ((faces & BoxFaces.Top) == BoxFaces.Top)
             {
-                this.AddCubeFace(center, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), zlength, xlength, ylength);
+                this.AddCubeFace(center, z, y, zlength, xlength, ylength);
             }
 
             if ((faces & BoxFaces.Bottom) == BoxFaces.Bottom)
             {
-                this.AddCubeFace(center, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), zlength, xlength, ylength);
+                this.AddCubeFace(center, -z, y, zlength, xlength, ylength);
             }
         }
 
@@ -692,7 +708,7 @@ namespace HelixToolkit.Wpf
         /// The end origin of the extruded surface.
         /// </param>
         /// <remarks>
-        /// The y-axis is determined by the cross product between the specified x-axis and the p1-p0 vector.
+        /// The y-axis is determined by the cross product between the specified x-axis and the p1-origin vector.
         /// </remarks>
         public void AddExtrudedGeometry(IList<Point> points, Vector3D xaxis, Point3D p0, Point3D p1)
         {
@@ -731,6 +747,82 @@ namespace HelixToolkit.Wpf
                 this.triangleIndices.Add(i1);
                 this.triangleIndices.Add(i3);
                 this.triangleIndices.Add(i2);
+            }
+        }
+
+        /// <summary>
+        /// Adds a polygon.
+        /// </summary>
+        /// <param name="points">The 2D points defining the polygon.</param>
+        /// <param name="axisX">The x axis.</param>
+        /// <param name="axisY">The y axis.</param>
+        /// <param name="origin">The origin.</param>
+        public void AddPolygon(IList<Point> points, Vector3D axisX, Vector3D axisY, Point3D origin)
+        {
+            var indices = CuttingEarsTriangulator.Triangulate(points);
+            var index0 = this.positions.Count;
+            foreach (var p in points)
+            {
+                this.positions.Add(origin + (axisX * p.X) + (axisY * p.Y));
+            }
+
+            foreach (var i in indices)
+            {
+                this.triangleIndices.Add(index0 + i);
+            }
+        }
+
+        /// <summary>
+        /// Adds an extruded surface of the specified line segments.
+        /// </summary>
+        /// <param name="points">The 2D points describing the line segments to extrude. The number of points must be even.</param>
+        /// <param name="axisX">The x-axis.</param>
+        /// <param name="p0">The start origin of the extruded surface.</param>
+        /// <param name="p1">The end origin of the extruded surface.</param>
+        /// <remarks>The y-axis is determined by the cross product between the specified x-axis and the p1-origin vector.</remarks>
+        public void AddExtrudedSegments(IList<Point> points, Vector3D axisX, Point3D p0, Point3D p1)
+        {
+            var axisY = Vector3D.CrossProduct(axisX, p1 - p0);
+            axisY.Normalize();
+            axisX.Normalize();
+            int index0 = this.positions.Count;
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                var p = points[i];
+                var d = (axisX * p.X) + (axisY * p.Y);
+                this.positions.Add(p0 + d);
+                this.positions.Add(p1 + d);
+
+                if (this.normals != null)
+                {
+                    d.Normalize();
+                    this.normals.Add(d);
+                    this.normals.Add(d);
+                }
+
+                if (this.textureCoordinates != null)
+                {
+                    var v = i / (points.Count - 1d);
+                    this.textureCoordinates.Add(new Point(0, v));
+                    this.textureCoordinates.Add(new Point(1, v));
+                }
+            }
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                int i0 = index0 + (i * 2);
+                int i1 = i0 + 1;
+                int i2 = i0 + 3;
+                int i3 = i0 + 2;
+
+                this.triangleIndices.Add(i0);
+                this.triangleIndices.Add(i1);
+                this.triangleIndices.Add(i2);
+
+                this.triangleIndices.Add(i2);
+                this.triangleIndices.Add(i3);
+                this.triangleIndices.Add(i0);
             }
         }
 
@@ -1021,7 +1113,7 @@ namespace HelixToolkit.Wpf
             //// |               |
             //// |               |
             //// +---------------+
-            //// p0               p1
+            //// origin               p1
             var uv0 = new Point(0, 0);
             var uv1 = new Point(1, 0);
             var uv2 = new Point(1, 1);
@@ -1067,7 +1159,7 @@ namespace HelixToolkit.Wpf
             //// |               |
             //// |               |
             //// +---------------+
-            //// p0               p1
+            //// origin               p1
             int i0 = this.positions.Count;
 
             this.positions.Add(p0);
@@ -1338,6 +1430,88 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds a surface of revolution.
         /// </summary>
+        /// <param name="origin">The origin.</param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="section">The points defining the curve to revolve.</param>
+        /// <param name="sectionIndices">The indices of the line segments of the section.</param>
+        /// <param name="thetaDiv">The number of divisions.</param>
+        /// <param name="textureValues">The texture values.</param>
+        public void AddSurfaceOfRevolution(
+            Point3D origin,
+            Vector3D axis,
+            IList<Point> section,
+            IList<int> sectionIndices,
+            int thetaDiv = 37,
+            IList<double> textureValues = null)
+        {
+            if (this.textureCoordinates != null && textureValues == null)
+            {
+                throw new ArgumentNullException("textureValues");
+            }
+
+            if (textureValues != null && textureValues.Count != section.Count)
+            {
+                throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
+            }
+
+            axis.Normalize();
+
+            // Find two unit vectors orthogonal to the specified direction
+            var u = axis.FindAnyPerpendicular();
+            var v = Vector3D.CrossProduct(axis, u);
+            var circle = GetCircle(thetaDiv);
+            int n = section.Count;
+            int index0 = this.positions.Count;
+            for (int i = 0; i < thetaDiv; i++)
+            {
+                var w = (v * circle[i].X) + (u * circle[i].Y);
+                for (int j = 0; j < n; j++)
+                {
+                    var q1 = origin + (axis * section[j].Y) + (w * section[j].X);
+                    this.positions.Add(q1);
+                    if (this.normals != null)
+                    {
+                        double tx = section[j + 1].X - section[j].X;
+                        double ty = section[j + 1].Y - section[j].Y;
+                        var normal = (-axis * ty) + (w * tx);
+                        normal.Normalize();
+                        this.normals.Add(normal);
+                    }
+
+                    if (this.textureCoordinates != null)
+                    {
+                        this.textureCoordinates.Add(new Point((double)i / (thetaDiv - 1), textureValues == null ? (double)j / (n - 1) : textureValues[j]));
+                    }
+                }
+            }
+
+            for (int i = 0; i < thetaDiv; i++)
+            {
+                var ii = (i + 1) % thetaDiv;
+                for (int j = 0; j + 1 < sectionIndices.Count; j += 2)
+                {
+                    var j0 = sectionIndices[j];
+                    var j1 = sectionIndices[j + 1];
+
+                    int i0 = index0 + (i * n) + j0;
+                    int i1 = index0 + (ii * n) + j0;
+                    int i2 = index0 + (i * n) + j1;
+                    int i3 = index0 + (ii * n) + j1;
+
+                    this.triangleIndices.Add(i0);
+                    this.triangleIndices.Add(i1);
+                    this.triangleIndices.Add(i3);
+
+                    this.triangleIndices.Add(i3);
+                    this.triangleIndices.Add(i2);
+                    this.triangleIndices.Add(i0);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a surface of revolution.
+        /// </summary>
         /// <param name="points">The points (x coordinates are distance from the origin along the axis of revolution, y coordinates are radius, )</param>
         /// <param name="textureValues">The v texture coordinates, one for each point in the <paramref name="points" /> list.</param>
         /// <param name="origin">The origin of the revolution axis.</param>
@@ -1379,17 +1553,16 @@ namespace HelixToolkit.Wpf
                     // const double eps = 1e-6;
                     // if (Point3D.Subtract(q1, q2).LengthSquared < eps)
                     // continue;
-                    double tx = points[j + 1].X - points[j].X;
-                    double ty = points[j + 1].Y - points[j].Y;
-
-                    var normal = (-direction * ty) + (w * tx);
-                    normal.Normalize();
-
                     this.positions.Add(q1);
                     this.positions.Add(q2);
 
                     if (this.normals != null)
                     {
+                        double tx = points[j + 1].X - points[j].X;
+                        double ty = points[j + 1].Y - points[j].Y;
+                        var normal = (-direction * ty) + (w * tx);
+                        normal.Normalize();
+
                         this.normals.Add(normal);
                         this.normals.Add(normal);
                     }
@@ -2266,7 +2439,7 @@ namespace HelixToolkit.Wpf
                 p1 = this.positions[this.triangleIndices[i1]];
                 p2 = this.positions[this.triangleIndices[i2]];
 
-                // p0 is the corner vertex (at index i0)
+                // origin is the corner vertex (at index i0)
                 // find the intersections between the chamfer plane and the two edges connected to the corner
                 var p01 = plane.LineIntersection(p0, p1);
                 var p02 = plane.LineIntersection(p0, p2);
@@ -2421,10 +2594,10 @@ namespace HelixToolkit.Wpf
             }
 
             var mg = new MeshGeometry3D
-                         {
-                             Positions = new Point3DCollection(this.positions),
-                             TriangleIndices = new Int32Collection(this.triangleIndices)
-                         };
+            {
+                Positions = new Point3DCollection(this.positions),
+                TriangleIndices = new Int32Collection(this.triangleIndices)
+            };
             if (this.normals != null)
             {
                 mg.Normals = new Vector3DCollection(this.normals);
