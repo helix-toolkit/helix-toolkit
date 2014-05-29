@@ -1,0 +1,49 @@
+﻿<Window x:Class="BuildingDemo.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="http://helixtoolkit.codeplex.com"
+        xmlns:buildingDemo="clr-namespace:BuildingDemo"
+        xmlns:pt="http://propertytools.codeplex.com"
+        Title="BuildingDemo" Height="720" Width="1080">
+    <Window.Resources>
+        <ImageBrush x:Key="SmokeBrush" ImageSource="smoke.png"/>
+        <buildingDemo:BoundsConverter x:Key="BoundsConverter"></buildingDemo:BoundsConverter>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.61*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" MouseDown="UIElement_OnMouseDown" Background="LightGray" IsHeadLightEnabled="True">
+            <ModelVisual3D>
+                <buildingDemo:HouseVisual3D/>
+                <buildingDemo:HouseVisual3D Transform="{h:Translate 40,0,0}"/>
+                <buildingDemo:HouseVisual3D Transform="{h:Translate 0,20,0}"/>
+                <buildingDemo:HouseVisual3D Transform="{h:Translate 40,20,0}"/>
+
+                <buildingDemo:SiloVisual3D Transform="{h:Translate 0,100,0}"/>
+                <buildingDemo:SiloVisual3D Transform="{h:Translate 50,100,0}"/>
+                <buildingDemo:SiloVisual3D Transform="{h:Translate 0,150,0}"/>
+                <buildingDemo:SiloVisual3D Transform="{h:Translate 50,150,0}"/>
+
+                <buildingDemo:SiloVisual3D Transform="{h:Translate 100,125,0}" Height="40" Diameter="20" DomeDiameter="18" DomeHeight="3"/>
+                <buildingDemo:SiloVisual3D Transform="{h:Translate 130,125,0}" Height="40" Diameter="20" DomeDiameter="18" DomeHeight="3"/>
+                <buildingDemo:SiloVisual3D Transform="{h:Translate 160,125,0}" Height="40" Diameter="20" DomeDiameter="18" DomeHeight="3"/>
+
+                <buildingDemo:ChimneyVisual3D x:Name="chimney1" Position="100,0,0"/>
+                <buildingDemo:ChimneyVisual3D Position="120,0,0"/>
+            </ModelVisual3D>
+
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <AmbientLight Color="White"/>
+                </ModelVisual3D.Content>
+                <h:ParticleSystem Texture="{StaticResource SmokeBrush}" Position="{Binding TopPosition, ElementName=chimney1}"/>
+            </ModelVisual3D>
+
+
+            <h:BoundingBoxVisual3D BoundingBox="{Binding SelectedVisual, Converter={StaticResource BoundsConverter}}" Diameter="0.2"/>
+        </h:HelixViewport3D>
+        <pt:PropertyGrid Grid.Column="1" SelectedObject="{Binding SelectedObject}" UseTabs="False" Margin="4"/>
+    </Grid>
+</Window>

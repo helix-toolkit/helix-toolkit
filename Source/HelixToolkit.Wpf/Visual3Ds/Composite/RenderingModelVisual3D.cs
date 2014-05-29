@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected RenderingModelVisual3D()
         {
-            renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
+            this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected void SubscribeToRenderingEvent()
         {
-            RenderingEventManager.AddListener(renderingEventListener);
+            RenderingEventManager.AddListener(this.renderingEventListener);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected void UnsubscribeRenderingEvent()
         {
-            RenderingEventManager.RemoveListener(renderingEventListener);
+            RenderingEventManager.RemoveListener(this.renderingEventListener);
         }
 
         /// <summary>
