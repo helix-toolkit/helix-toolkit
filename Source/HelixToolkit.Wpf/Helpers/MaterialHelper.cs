@@ -139,19 +139,16 @@ namespace HelixToolkit.Wpf
         /// Creates a material with the specifed brush as diffuse material.
         /// This method will also add a white specular material.
         /// </summary>
-        /// <param name="brush">
-        /// The brush.
-        /// </param>
-        /// <param name="specularPower">
-        /// The specular power.
-        /// </param>
+        /// <param name="brush">The brush.</param>
+        /// <param name="specularPower">The specular power.</param>
+        /// <param name="ambient">The ambient component.</param>
         /// <returns>
         /// The material.
         /// </returns>
-        public static Material CreateMaterial(Brush brush, double specularPower = 100)
+        public static Material CreateMaterial(Brush brush, double specularPower = 100, byte ambient = 255)
         {
             var mg = new MaterialGroup();
-            mg.Children.Add(new DiffuseMaterial(brush));
+            mg.Children.Add(new DiffuseMaterial(brush) { AmbientColor = Color.FromRgb(ambient, ambient, ambient) });
             if (specularPower > 0)
             {
                 mg.Children.Add(new SpecularMaterial(Brushes.White, specularPower));
