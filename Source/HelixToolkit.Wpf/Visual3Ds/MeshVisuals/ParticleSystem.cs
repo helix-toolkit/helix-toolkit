@@ -15,26 +15,96 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class ParticleSystem : RenderingModelVisual3D
     {
+        /// <summary>
+        /// Identifies the <see cref="Texture"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty TextureProperty = DependencyPropertyEx.Register<Brush, ParticleSystem>("Texture", null, (s, e) => s.TextureChanged());
 
+
+        /// <summary>
+        /// Identifies the <see cref="LifeTime"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty LifeTimeProperty = DependencyPropertyEx.Register<double, ParticleSystem>("LifeTime", 20d);
+
+        /// <summary>
+        /// Identifies the <see cref="FadeOutTime"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty FadeOutTimeProperty = DependencyPropertyEx.Register<double, ParticleSystem>("FadeOutTime", 0.5d);
 
+        /// <summary>
+        /// Identifies the <see cref="AngularVelocity"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AngularVelocityProperty = DependencyPropertyEx.Register<double, ParticleSystem>("AngularVelocity", 20d);
+
+        /// <summary>
+        /// Identifies the <see cref="SizeRate"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty SizeRateProperty = DependencyPropertyEx.Register<double, ParticleSystem>("SizeRate", 2d);
+
+        /// <summary>
+        /// Identifies the <see cref="VelocityDamping"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty VelocityDampingProperty = DependencyPropertyEx.Register<double, ParticleSystem>("VelocityDamping", 1d);
+
+        /// <summary>
+        /// Identifies the <see cref="Acceleration"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AccelerationProperty = DependencyPropertyEx.Register<double, ParticleSystem>("Acceleration", 4d);
+
+        /// <summary>
+        /// Identifies the <see cref="AccelerationDirection"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AccelerationDirectionProperty = DependencyPropertyEx.Register<Vector3D, ParticleSystem>("AccelerationDirection", new Vector3D(3, 0, 1));
+
+        /// <summary>
+        /// Identifies the <see cref="AccelerationSpreading"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AccelerationSpreadingProperty = DependencyPropertyEx.Register<double, ParticleSystem>("AccelerationSpreading", 10d);
 
+
+        /// <summary>
+        /// Identifies the <see cref="EmitRate"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty EmitRateProperty = DependencyPropertyEx.Register<double, ParticleSystem>("EmitRate", 40d);
+
+        /// <summary>
+        /// Identifies the <see cref="Position"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyPropertyEx.Register<Point3D, ParticleSystem>("Position", new Point3D(0, 0, 0));
+
+        /// <summary>
+        /// Identifies the <see cref="StartRadius"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StartRadiusProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartRadius", 1d);
+
+        /// <summary>
+        /// Identifies the <see cref="StartSize"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StartSizeProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartSize", 0.5d);
+
+        /// <summary>
+        /// Identifies the <see cref="StartDirection"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StartDirectionProperty = DependencyPropertyEx.Register<Vector3D, ParticleSystem>("StartDirection", new Vector3D(0, 0, 1));
+
+        /// <summary>
+        /// Identifies the <see cref="StartVelocity"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StartVelocityProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartVelocity", 2d);
+
+        /// <summary>
+        /// Identifies the <see cref="StartVelocityRandomness"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StartVelocityRandomnessProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartVelocityRandomness", 1d);
+
+        /// <summary>
+        /// Identifies the <see cref="StartSpreading"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StartSpreadingProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartSpreading", 40d);
+
+        /// <summary>
+        /// Identifies the <see cref="AliveParticles"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AliveParticlesProperty = DependencyPropertyEx.Register<int, ParticleSystem>("AliveParticles", 0);
 
         private readonly Stopwatch watch = Stopwatch.StartNew();
@@ -61,122 +131,233 @@ namespace HelixToolkit.Wpf
             this.EmitOne();
         }
 
+        /// <summary>
+        /// Gets or sets the number of alive particles.
+        /// </summary>
+        /// <value>
+        /// The alive particles.
+        /// </value>
         public int AliveParticles
         {
             get { return (int)this.GetValue(AliveParticlesProperty); }
             set { this.SetValue(AliveParticlesProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
         public Point3D Position
         {
             get { return (Point3D)this.GetValue(PositionProperty); }
             set { this.SetValue(PositionProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the start direction.
+        /// </summary>
+        /// <value>
+        /// The start direction.
+        /// </value>
         public Vector3D StartDirection
         {
             get { return (Vector3D)this.GetValue(StartDirectionProperty); }
             set { this.SetValue(StartDirectionProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the acceleration.
+        /// </summary>
+        /// <value>
+        /// The acceleration.
+        /// </value>
         public double Acceleration
         {
             get { return (double)this.GetValue(AccelerationProperty); }
             set { this.SetValue(AccelerationProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the acceleration direction.
+        /// </summary>
+        /// <value>
+        /// The acceleration direction.
+        /// </value>
         public Vector3D AccelerationDirection
         {
             get { return (Vector3D)this.GetValue(AccelerationDirectionProperty); }
             set { this.SetValue(AccelerationDirectionProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the acceleration spreading angle.
+        /// </summary>
+        /// <value>
+        /// The acceleration spreading.
+        /// </value>
         public double AccelerationSpreading
         {
             get { return (double)this.GetValue(AccelerationSpreadingProperty); }
             set { this.SetValue(AccelerationSpreadingProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the start radius.
+        /// </summary>
+        /// <value>
+        /// The start radius.
+        /// </value>
         public double StartRadius
         {
             get { return (double)this.GetValue(StartRadiusProperty); }
             set { this.SetValue(StartRadiusProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the start size.
+        /// </summary>
+        /// <value>
+        /// The start size.
+        /// </value>
         public double StartSize
         {
             get { return (double)this.GetValue(StartSizeProperty); }
             set { this.SetValue(StartSizeProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the start velocity.
+        /// </summary>
+        /// <value>
+        /// The start velocity.
+        /// </value>
         public double StartVelocity
         {
             get { return (double)this.GetValue(StartVelocityProperty); }
             set { this.SetValue(StartVelocityProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the velocity damping factor.
+        /// </summary>
+        /// <value>
+        /// The velocity damping.
+        /// </value>
         public double VelocityDamping
         {
             get { return (double)this.GetValue(VelocityDampingProperty); }
             set { this.SetValue(VelocityDampingProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the start velocity randomness.
+        /// </summary>
+        /// <value>
+        /// The start velocity randomness.
+        /// </value>
         public double StartVelocityRandomness
         {
             get { return (double)this.GetValue(StartVelocityRandomnessProperty); }
             set { this.SetValue(StartVelocityRandomnessProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the start spreading.
+        /// </summary>
+        /// <value>
+        /// The start spreading.
+        /// </value>
         public double StartSpreading
         {
             get { return (double)this.GetValue(StartSpreadingProperty); }
             set { this.SetValue(StartSpreadingProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the life time.
+        /// </summary>
+        /// <value>
+        /// The life time.
+        /// </value>
         public double LifeTime
         {
             get { return (double)this.GetValue(LifeTimeProperty); }
             set { this.SetValue(LifeTimeProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the angular velocity.
+        /// </summary>
+        /// <value>
+        /// The angular velocity.
+        /// </value>
         public double AngularVelocity
         {
             get { return (double)this.GetValue(AngularVelocityProperty); }
             set { this.SetValue(AngularVelocityProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the size rate.
+        /// </summary>
+        /// <value>
+        /// The size rate.
+        /// </value>
         public double SizeRate
         {
             get { return (double)this.GetValue(SizeRateProperty); }
             set { this.SetValue(SizeRateProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the fade out time.
+        /// </summary>
+        /// <value>
+        /// The fade out time.
+        /// </value>
         public double FadeOutTime
         {
             get { return (double)this.GetValue(FadeOutTimeProperty); }
             set { this.SetValue(FadeOutTimeProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the emit rate.
+        /// </summary>
+        /// <value>
+        /// The emit rate.
+        /// </value>
         public double EmitRate
         {
             get { return (double)this.GetValue(EmitRateProperty); }
             set { this.SetValue(EmitRateProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the texture.
+        /// </summary>
+        /// <value>
+        /// The texture.
+        /// </value>
         public Brush Texture
         {
             get { return (Brush)this.GetValue(TextureProperty); }
             set { this.SetValue(TextureProperty, value); }
         }
 
-        private void TextureChanged()
+        /// <summary>
+        /// Updates the material when the texture changes.
+        /// </summary>
+        protected void TextureChanged()
         {
             var w = 256;
             var h = 256;
             var bitmap = new RenderTargetBitmap(this.opacityLevels * w, h, 96, 96, PixelFormats.Pbgra32);
             for (int i = 0; i < this.opacityLevels; i++)
             {
-                var rect = new Rectangle { Opacity = 1 - (double)i / this.opacityLevels, Fill = this.Texture, Width = w, Height = h };
+                var rect = new Rectangle { Opacity = 1 - ((double)i / this.opacityLevels), Fill = this.Texture, Width = w, Height = h };
                 rect.Arrange(new Rect(w * i, 0, w, h));
                 bitmap.Render(rect);
             }
@@ -188,6 +369,10 @@ namespace HelixToolkit.Wpf
             this.model.Material = material;
         }
 
+        /// <summary>
+        /// Called when the parent of the 3-D visual object is changed.
+        /// </summary>
+        /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject" /> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D" /> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D" /> object did not have a previous parent, the value of the parameter is null.</param>
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
             base.OnVisualParentChanged(oldParent);
@@ -201,7 +386,10 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        public void EmitOne()
+        /// <summary>
+        /// Emits one particle.
+        /// </summary>
+        protected void EmitOne()
         {
             // calculate start direction with random spreading
             var startDirection = this.CreateRandomVector(this.StartDirection, this.StartSpreading);
@@ -241,7 +429,11 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        public void Update(double time)
+        /// <summary>
+        /// Updates the system.
+        /// </summary>
+        /// <param name="time">The time.</param>
+        protected void Update(double time)
         {
             if (double.IsNaN(this.previousTime))
             {
@@ -399,7 +591,13 @@ namespace HelixToolkit.Wpf
             this.mesh.TriangleIndices = triangleIndices;
         }
 
-        private Vector3D CreateRandomVector(Vector3D dir, double spreading)
+        /// <summary>
+        /// Creates a random vector.
+        /// </summary>
+        /// <param name="dir">The direction.</param>
+        /// <param name="spreading">The spreading.</param>
+        /// <returns>The random vector.</returns>
+        protected Vector3D CreateRandomVector(Vector3D dir, double spreading)
         {
             var theta = spreading / 180 * Math.PI * this.r.NextDouble();
             var phi = Math.PI * 2 * this.r.NextDouble();
@@ -413,6 +611,11 @@ namespace HelixToolkit.Wpf
             return (x * Math.Sin(theta) * Math.Cos(phi)) + (y * Math.Sin(theta) * Math.Sin(phi)) + (z * Math.Cos(theta));
         }
 
+        /// <summary>
+        /// Handles the CompositionTarget.Rendering event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs" /> instance containing the event data.</param>
         protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
         {
             this.Update(this.watch.ElapsedMilliseconds * 0.001);
