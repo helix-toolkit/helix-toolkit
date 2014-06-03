@@ -70,9 +70,8 @@
     <Reference Include="3DTools">
       <HintPath>..\..\..\..\Components\3DTools.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NAudio.1.6\lib\net20\NAudio.dll</HintPath>
+    <Reference Include="NAudio">
+      <HintPath>..\..\..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
@@ -723,9 +722,7 @@
     <Content Include="Examples\CuttingPlanes\Astronaut.3ds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
