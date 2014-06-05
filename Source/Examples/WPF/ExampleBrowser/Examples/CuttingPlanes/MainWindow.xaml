@@ -1,0 +1,22 @@
+﻿<Window x:Class="CuttingPlanesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="CuttingPlanesDemo" Height="480" Width="640">
+    <Grid>
+        <ht:HelixViewport3D x:Name="view1" ZoomExtentsWhenLoaded="True" ShowFrameRate="True" Camera="{ht:PerspectiveCamera 0,-20,10}">
+            <ht:SunLight/>
+            <ht:CuttingPlaneGroup x:Name="cuttingGroup1">
+                <ht:CuttingPlaneGroup.CuttingPlanes>
+                    <ht:Plane3D Normal="0,-1,0"/>
+                    <ht:Plane3D Normal="2,-1,0.1"/>
+                </ht:CuttingPlaneGroup.CuttingPlanes>
+                <ht:SphereVisual3D Center="0,0,2" BackMaterial="{ht:Material Blue}" Material="{ht:Material LightBlue}"/>
+                <ht:CubeVisual3D Center="0.2,0.1,0" SideLength="2" BackMaterial="{ht:Material Green}" Material="{ht:Material LightGreen}"/>
+                <ht:TruncatedConeVisual3D Origin="0.2,0.1,3" BackMaterial="{ht:Material Red}" Material="{ht:Material LightCoral}"/>
+                <!--<ht:FileModelVisual3D Source="Astronaut.3ds"/>-->
+            </ht:CuttingPlaneGroup>
+        </ht:HelixViewport3D>
+        <CheckBox Content="Enable cutting planes" IsChecked="{Binding IsEnabled, ElementName=cuttingGroup1}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8"/>
+    </Grid>
+</Window>

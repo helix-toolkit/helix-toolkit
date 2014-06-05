@@ -1,0 +1,10 @@
+﻿<Window x:Class="HalfEdgeMeshDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" xmlns:h2="clr-namespace:HelixToolkit.Wpf"
+        Title="HalfEdgeMeshDemo" Height="480" Width="640">
+    <h:HelixViewport3D ZoomExtentsWhenLoaded="True">
+        <h:SunLight/>
+        <h2:HalfEdgeMeshVisual3D Mesh="{Binding Mesh}"/>
+    </h:HelixViewport3D>
+</Window>

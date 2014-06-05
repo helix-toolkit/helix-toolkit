@@ -1,0 +1,49 @@
+﻿<Window x:Class="StereoDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+    Title="StereoDemo" Height="480" Width="640">
+    <DockPanel>
+
+        <StackPanel Margin="4" DockPanel.Dock="Right" Width="200">
+            <GroupBox Header="Stereo base" Margin="4" Padding="4">
+                <Slider Name="stereoBase" Minimum="0" Maximum="0.2" Value="0.01"/>
+                <!--<TextBlock Text="{Binding LeftCamera.Position, ElementName=stereoView1}"/>
+                <TextBlock Text="{Binding RightCamera.Position, ElementName=stereoView1}"/>-->
+            </GroupBox>
+            <GroupBox Header="Properties" Margin="4" Padding="4" >
+                <StackPanel>
+                    <CheckBox Name="dirVector" Content="Parallel direction vectors"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Wiggle rate" Margin="4" Padding="4" >
+                <Slider Name="wiggleRate" Minimum="1" Maximum="30" Value="5"/>
+            </GroupBox>
+        </StackPanel>
+        <TabControl Margin="4">
+            <TabItem Header="Stereo">
+                <h:StereoView3D x:Name="stereoView1" 
+                                StereoBase="{Binding Value, ElementName=stereoBase}" 
+                                CopyDirectionVector="{Binding IsChecked, ElementName=dirVector}">
+                </h:StereoView3D>
+            </TabItem>
+            <TabItem Header="Anaglyph">
+                <h:AnaglyphView3D x:Name="anaglyphView1" Background="White" 
+                                StereoBase="{Binding Value, ElementName=stereoBase}" 
+                                CopyDirectionVector="{Binding IsChecked, ElementName=dirVector}"/>
+            </TabItem>
+            <TabItem Header="Interlaced">
+                <h:InterlacedView3D x:Name="interlacedView1" Background="White" 
+                                StereoBase="{Binding Value, ElementName=stereoBase}" 
+                                CopyDirectionVector="{Binding IsChecked, ElementName=dirVector}"/>
+            </TabItem>
+            <TabItem Header="Wiggle">
+                <h:WiggleView3D x:Name="wiggleView1"
+                                StereoBase="{Binding Value, ElementName=stereoBase}" 
+                                WiggleRate="{Binding Value, ElementName=wiggleRate}"
+                                CopyDirectionVector="{Binding IsChecked, ElementName=dirVector}"/>
+            </TabItem>
+
+        </TabControl>
+    </DockPanel>
+</Window>

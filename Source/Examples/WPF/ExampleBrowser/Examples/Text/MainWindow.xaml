@@ -1,0 +1,57 @@
+﻿<Window x:Class="TextDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        Title="TextDemo" Height="480" Width="640">
+    <Grid>
+        <h:HelixViewport3D>
+            <h:SunLight/>
+            <h:CoordinateSystemVisual3D />
+
+            <h:TextVisual3D 
+                Foreground="Black" 
+                Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="2" Padding="2" FontFamily="Arial" FontWeight="Normal" IsDoubleSided="True" 
+                Position="1,1,0" UpDirection="0,0,1" TextDirection="0,1,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="TextVisual3D">
+            </h:TextVisual3D>
+            <h:SphereVisual3D Center="1,1,0" Radius="0.1"></h:SphereVisual3D>
+
+            <h:TextVisual3D 
+                Foreground="Black" 
+                Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="2" Padding="2" FontFamily="Arial" FontWeight="Normal" FontSize="48" IsDoubleSided="True" 
+                Position="2,1,0" UpDirection="0,0,1" TextDirection="0,1,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="TextVisual3D">
+            </h:TextVisual3D>
+            <h:SphereVisual3D Center="2,1,0" Radius="0.1"></h:SphereVisual3D>
+
+            <h:BillboardTextVisual3D 
+                Foreground="Black" 
+                Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="2" Padding="2" FontFamily="Arial" FontWeight="Normal"
+                Position="-1,1,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="TextBillboardVisual3D">
+            </h:BillboardTextVisual3D>
+            <h:BillboardTextVisual3D 
+                Foreground="Black" 
+                Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="2" Padding="2" FontFamily="Arial" FontWeight="Normal"
+                Position="-3,1,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" MaterialType="Emissive" Text="Emissive TextBillboardVisual3D">
+            </h:BillboardTextVisual3D>
+
+            <h:SphereVisual3D Center="-1,1,0" Radius="0.1"></h:SphereVisual3D>
+
+            <h:BillboardTextVisual3D 
+                Foreground="Black" 
+                Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="2" Padding="2" FontFamily="Arial" FontWeight="Normal"
+                Position="-2,1,0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="TextBillboardVisual3D with DepthOffset" DepthOffset="1e-3">
+            </h:BillboardTextVisual3D>
+            <h:SphereVisual3D Center="-2,1,0" Radius="0.1"></h:SphereVisual3D>
+
+            <h:TextGroupVisual3D Background="LightBlue" BorderBrush="DarkBlue" BorderThickness="1" Height="0.95" FontSize="32" Padding="2" IsDoubleSided="True" Items="{Binding TextItems}"/>
+            <h:BillboardTextGroupVisual3D Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="1" FontSize="10" Padding="2" Items="{Binding TextItems2}"/>
+
+            <h:BoxVisual3D Center="0,0,0.5" Length="1" Width="1" Height="1"/>
+            
+            <h:BillboardTextGroupVisual3D Background="White" BorderBrush="Black" Foreground="Black" BorderThickness="1" FontSize="12" Padding="2" 
+                                      Offset="20,20" PinBrush="Gray" Items="{Binding TextItems3}" IsEnabled="{Binding IsChecked, ElementName=EnableUpdates}"/>
+        </h:HelixViewport3D>
+        <StackPanel>
+            <CheckBox x:Name="EnableUpdates" IsChecked="True" Content="Enable updates"/>
+        </StackPanel>
+    </Grid>
+</Window>

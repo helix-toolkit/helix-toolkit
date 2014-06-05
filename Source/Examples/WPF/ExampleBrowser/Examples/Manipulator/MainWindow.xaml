@@ -1,0 +1,41 @@
+﻿<Window x:Class="ManipulatorDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="ManipulatorDemo" Height="480" Width="640">
+    <Window.Resources>
+        <ht:LinearConverter x:Key="Multiplier" M="0.5"/>
+    </Window.Resources>
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="{Binding Value, ElementName=planeManipulator, StringFormat='{}{0:0.000}'}"/>
+        </StatusBar>
+        <ht:HelixViewport3D Camera="{ht:PerspectiveCamera 20,10,10}" ZoomExtentsWhenLoaded="True">
+            <ht:SunLight/>
+
+            <ht:SphereVisual3D x:Name="sphere1" Center="-4,0,0" Fill="Orange"/>
+            <ht:TranslateManipulator Material="{ht:Material Gold}" Position="-4,0,0" Offset="0,0,1" Length="1" Value="{Binding Radius, ElementName=sphere1}" Direction="0,0,1"/>
+
+            <ht:BoxVisual3D x:Name="box1" Center="-8,0,0" Fill="Orange"/>
+            <ht:TranslateManipulator Color="Black" Position="-8,0,0" Offset="0,0,0.5" Length="1" Value="{Binding Height, ElementName=box1, Converter={StaticResource Multiplier}}" Direction="0,0,1"/>
+            <ht:TranslateManipulator Color="Black" Position="-8,0,0" Offset="0,0.5,0" Length="1" Value="{Binding Width, ElementName=box1, Converter={StaticResource Multiplier}}" Direction="0,1,0"/>
+            <ht:TranslateManipulator Color="Black" Position="-8,0,0" Offset="0.5,0,0" Length="1" Value="{Binding Length, ElementName=box1, Converter={StaticResource Multiplier}}" Direction="1,0,0"/>
+
+            <ht:RectangleVisual3D x:Name="plane2" Origin="0,0,0" Normal="1,0,0" LengthDirection="0,1,0" Fill="Gray"/>
+            <ht:RotateManipulator Color="Green" Axis="0,1,0" Transform="{Binding Transform, ElementName=plane2}" TargetTransform="{Binding Transform, ElementName=plane2}" Diameter="1"/>
+            <ht:RotateManipulator Color="Blue" Axis="0,0,1" Transform="{Binding Transform, ElementName=plane2}" TargetTransform="{Binding Transform, ElementName=plane2}" Diameter="1"/>
+            <ht:TranslateManipulator x:Name="planeManipulator" Color="Red" Transform="{Binding Transform, ElementName=plane2}" TargetTransform="{Binding Transform,ElementName=plane2}" Direction="1,0,0"/>
+
+            <ht:CubeVisual3D x:Name="cube1" Transform="{ht:Translate 4,0,2}" Fill="Gold"/>
+            <ht:CombinedManipulator TargetTransform="{Binding Transform, ElementName=cube1}"/>
+
+            <ht:CubeVisual3D x:Name="cube2" Transform="{ht:Translate 4,-4,1}" Fill="Silver"/>
+            <ht:CombinedManipulator CanTranslateX="False" CanTranslateY="False" CanTranslateZ="False" TargetTransform="{Binding Transform, ElementName=cube2}"/>
+
+            <ht:CubeVisual3D x:Name="cube3" Transform="{ht:Translate 4,4,1}" Fill="#cd7f32"/>
+            <ht:CombinedManipulator CanRotateX="False" CanRotateY="False" CanRotateZ="False" TargetTransform="{Binding Transform, ElementName=cube3}"/>
+
+            <ht:RectangleVisual3D Fill="#800000FF" DivLength="40" DivWidth="40"/>            
+        </ht:HelixViewport3D>
+    </DockPanel>
+</Window>

@@ -1,0 +1,118 @@
+Helix Toolkit build system
+===========================================
+
+Running in a VirtualBox virtual machine on Windows 8.1.
+
+=== Installed software
+
+- TeamCity 8.0.5
+- Visual Studio 2013
+- Mercurial
+- 7-Zip in default folder
+
+=== Build parameters
+
+Defined under "Parameters" in the TeamCity project.
+
+Environment variables:
+CODEPLEX_USERNAME = ####
+CODEPLEX_PASSWORD = ####
+EnableNuGetPackageRestore = true
+NUGET_ACCESS_KEY = ####
+YEAR = 2014
+
+HelixToolkit :: Build Configuration
+-------------------------------------------
+
+Build number format: 
+%env.YEAR%.1.%build.counter%.1
+
+Artifact paths:
+build/**/*.* => Output.zip!/build/
+output/**/*.zip => Output.zip!/output/
+packages/**/*.* => Output.zip!/packages/
+tools/**/*.* => Output.zip!/tools/
+source/.nuget/*.* => Output.zip!/source/.nuget
+
+VCS
+Pull changes from:
+https://hg.codeplex.com/helixtoolkit 
+Automatically on agent
+Clean all files before build
+
+Build steps
+
+Update version number
+Tools\Lynx
+UpdateVersionNumber.exe
+/Version=%build.number% /Directory=..\..
+
+Create changeset ID file
+mkdir Output
+echo %build.vcs.number% > Output\changeset.id
+hg log > Output\changesets.log
+
+Build WPF .NET 4.0 solution
+Source\HelixToolkit.Wpf_NET40.sln
+
+Build WPF .NET 4.5 solution
+Source\HelixToolkit.Wpf.sln
+
+Build WPF/SharpDX .NET 4.0 solution
+Source\HelixToolkit.Wpf.SharpDX_NET40.sln
+
+Build WPF/SharpDX .NET 4.5 solution
+Source\HelixToolkit.Wpf.SharpDX.sln
+
+Run unit tests
+NUnit runner: 
+NUnit 2.6.3
+.NET Runtime: 
+Version v4.0
+Run tests from:
+Source\HelixToolkit.Tests\bin\Release\HelixToolkit.Tests.dll
+Source\HelixToolkit.Wpf.Tests\bin\Release\HelixToolkit.Wpf.Tests.dll
+Source\HelixToolkit.Wpf.SharpDX.Tests\bin\Release\HelixToolkit.Wpf.SharpDX.Tests.dll
+.NET Coverage tool: JetBrains dotCover
+Filters:
++:HelixToolkit*
+-:*.Tests*
+
+Pack NuGet
+build
+pack.cmd
+
+Delete pdb files
+Output\NET45\Examples
+del /S *.pdb
+
+Create release
+Build
+ZipRelease.cmd %build.number%
+
+Build triggers: 
+VCS Trigger
+
+HelixToolkit :: Upload Configuration
+-------------------------------------------
+
+Build number format:
+%dep.HelixToolkit_Build.build.number%
+
+Build steps
+
+Push NuGet
+build
+push.cmd
+
+Upload release
+Build
+UploadRelease.cmd %build.number%
+
+Build triggers
+Finish build trigger: HelixToolkit :: Build
+
+Dependencies
+Artifact dependency
+Output.zip!** => .
+Clean destination paths before downloading artifacts
