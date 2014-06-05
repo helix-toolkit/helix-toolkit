@@ -2,6 +2,7 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Diagnostics;
     using System.Linq;
     using System.Windows;
@@ -107,17 +108,59 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty AliveParticlesProperty = DependencyPropertyEx.Register<int, ParticleSystem>("AliveParticles", 0);
 
-        private readonly Stopwatch watch = Stopwatch.StartNew();
-        private readonly int opacityLevels = 10;
-        private readonly MeshGeometry3D mesh;
-        private readonly GeometryModel3D model;
-        private readonly List<Particle> particles = new List<Particle>(1000);
-        private readonly Random r = new Random();
+        /// <summary>
+        /// The degrees to radians conversion factor.
+        /// </summary>
+        private const double DegToRad = Math.PI / 180;
 
+        /// <summary>
+        /// Two PI
+        /// </summary>
+        private const double TwoPi = Math.PI * 2;
+
+        /// <summary>
+        /// The random number generator.
+        /// </summary>
+        private static readonly Random r = new Random();
+
+        /// <summary>
+        /// The number of opacity levels
+        /// </summary>
+        private readonly int opacityLevels = 10;
+
+        /// <summary>
+        /// The stopwatch that measures the time.
+        /// </summary>
+        private readonly Stopwatch watch = Stopwatch.StartNew();
+
+        /// <summary>
+        /// The mesh containing the particles quads.
+        /// </summary>
+        private readonly MeshGeometry3D mesh;
+
+        /// <summary>
+        /// The model containing the particle mesh
+        /// </summary>
+        private readonly GeometryModel3D model;
+
+        /// <summary>
+        /// The particles
+        /// </summary>
+        private readonly List<Particle> particles = new List<Particle>(1000);
+
+        /// <summary>
+        /// The accumulated number of particles to emit. A particle is emitted when this number is greater than 1.
+        /// </summary>
         private double particlesToEmit;
 
+        /// <summary>
+        /// The previous time.
+        /// </summary>
         private double previousTime = double.NaN;
 
+        /// <summary>
+        /// The camera.
+        /// </summary>
         private ProjectionCamera camera;
 
         /// <summary>
@@ -354,10 +397,10 @@ namespace HelixToolkit.Wpf
         {
             var w = 256;
             var h = 256;
-            var bitmap = new RenderTargetBitmap(this.opacityLevels * w, h, 96, 96, PixelFormats.Pbgra32);
-            for (int i = 0; i < this.opacityLevels; i++)
+            var bitmap = new RenderTargetBitmap(opacityLevels * w, h, 96, 96, PixelFormats.Pbgra32);
+            for (int i = 0; i < opacityLevels; i++)
             {
-                var rect = new Rectangle { Opacity = 1 - ((double)i / this.opacityLevels), Fill = this.Texture, Width = w, Height = h };
+                var rect = new Rectangle { Opacity = 1 - ((double)i / opacityLevels), Fill = this.Texture, Width = w, Height = h };
                 rect.Arrange(new Rect(w * i, 0, w, h));
                 bitmap.Render(rect);
             }
@@ -392,7 +435,7 @@ namespace HelixToolkit.Wpf
         protected void EmitOne()
         {
             // calculate start direction with random spreading
-            var startDirection = this.CreateRandomVector(this.StartDirection, this.StartSpreading);
+            var startDirection = CreateRandomVector(this.StartDirection, this.StartSpreading);
 
             // find start position
             var position = this.Position;
@@ -402,11 +445,11 @@ namespace HelixToolkit.Wpf
             var y = Vector3D.CrossProduct(z, x);
             if (this.StartRadius > 0)
             {
-                var psi = Math.PI * 2 * this.r.NextDouble();
+                var psi = TwoPi * r.NextDouble();
                 position += this.StartRadius * ((x * Math.Cos(psi)) + (y * Math.Sin(psi)));
             }
 
-            var speed = this.StartVelocity + (this.StartVelocityRandomness * (this.r.NextDouble() - 0.5));
+            var speed = this.StartVelocity + (this.StartVelocityRandomness * (r.NextDouble() - 0.5));
 
             var particle = new Particle
                         {
@@ -451,36 +494,35 @@ namespace HelixToolkit.Wpf
                 this.particlesToEmit--;
             }
 
-            var angularVelocity = this.AngularVelocity / 180 * Math.PI;
+            var angularVelocity = this.AngularVelocity * DegToRad;
             var velocityDamping = this.VelocityDamping;
             var accelerationDirection = this.AccelerationDirection;
             accelerationDirection.Normalize();
             var acceleration = this.Acceleration;
             var accelerationSpreading = this.AccelerationSpreading;
             var sizeRate = this.SizeRate;
-            int alive = 0;
+            var fadeOutTime = this.FadeOutTime;
+            var lifeTime = this.LifeTime;
             for (int i = 0; i < this.particles.Count; i++)
             {
                 var p = this.particles[i];
-                if (p == null)
-                {
-                    continue;
-                }
 
                 p.Age += deltaTime;
-                if (p.Age > this.LifeTime)
+                if (p.Age > lifeTime)
                 {
-                    this.particles[i] = null;
+                    this.particles.RemoveAt(i);
+                    i--;
                     continue;
                 }
 
+                var a = accelerationSpreading > 0 ? CreateRandomVector(accelerationDirection, accelerationSpreading) : accelerationDirection;
                 p.Position += p.Velocity * deltaTime;
                 p.Rotation += angularVelocity * deltaTime;
                 p.Size += sizeRate * deltaTime;
-                var a = accelerationSpreading > 0 ? this.CreateRandomVector(accelerationDirection, accelerationSpreading) : accelerationDirection;
                 p.Velocity = (p.Velocity * velocityDamping) + (a * acceleration * deltaTime);
-                alive++;
             }
+
+            var alive = this.particles.Count;
 
             var positions = this.mesh.Positions;
             var textureCoordinates = this.mesh.TextureCoordinates;
@@ -491,30 +533,23 @@ namespace HelixToolkit.Wpf
 
             this.AliveParticles = alive;
 
-            if (positions == null || positions.Count != alive)
+            if (positions == null)
             {
-                Debug.WriteLine("Adjust to " + alive);
                 positions = new Point3DCollection(alive * 4);
                 textureCoordinates = new PointCollection(alive * 4);
                 triangleIndices = new Int32Collection(alive * 6);
+            }
+
+            if (positions.Count != alive * 4)
+            {
+                int previousAliveParticles = positions.Count / 4;
 
                 // allocate positions, texture coordinates and triangle indices (to make the updating code simpler)
-                while (positions.Count < alive * 4)
-                {
-                    positions.Add(new Point3D());
-                }
+                AdjustListLength(positions, alive * 4);
+                AdjustListLength(textureCoordinates, alive * 4);
+                AdjustListLength(triangleIndices, alive * 6);
 
-                while (textureCoordinates.Count < alive * 4)
-                {
-                    textureCoordinates.Add(new Point());
-                }
-
-                while (triangleIndices.Count < alive * 6)
-                {
-                    triangleIndices.Add(0);
-                }
-
-                for (int i = 0; i < alive; i++)
+                for (int i = previousAliveParticles; i < alive; i++)
                 {
                     var i4 = i * 4;
                     var i6 = i * 6;
@@ -546,12 +581,10 @@ namespace HelixToolkit.Wpf
             y.Normalize();
 
             // find alive particles and sort by distance from camera (projected to look direction, nearest particles last)
-            var aliveParticles = this.particles.Where(p => p != null).OrderBy(p => -Vector3D.DotProduct(p.Position - cameraPosition, this.camera.LookDirection));
-            var fadeOutTime = this.FadeOutTime;
-            var lifeTime = this.LifeTime;
+            var sortedParticles = this.particles.OrderBy(p => -Vector3D.DotProduct(p.Position - cameraPosition, this.camera.LookDirection));
 
             int j = 0;
-            foreach (var p in aliveParticles)
+            foreach (var p in sortedParticles)
             {
                 var halfSize = p.Size * 0.5;
                 var j4 = j * 4;
@@ -564,11 +597,11 @@ namespace HelixToolkit.Wpf
                 var p1 = new Point(halfSize * (cos - sin), halfSize * (cos + sin));
                 var p2 = new Point(-halfSize * (cos + sin), halfSize * (cos - sin));
                 var p3 = new Point(halfSize * (sin - cos), -halfSize * (cos + sin));
-
-                positions[j4 + 0] = p.Position + (x * p0.X) + (y * p0.Y);
-                positions[j4 + 1] = p.Position + (x * p1.X) + (y * p1.Y);
-                positions[j4 + 2] = p.Position + (x * p2.X) + (y * p2.Y);
-                positions[j4 + 3] = p.Position + (x * p3.X) + (y * p3.Y);
+                var pos = p.Position;
+                positions[j4] = pos + (x * p0.X) + (y * p0.Y);
+                positions[j4 + 1] = pos + (x * p1.X) + (y * p1.Y);
+                positions[j4 + 2] = pos + (x * p2.X) + (y * p2.Y);
+                positions[j4 + 3] = pos + (x * p3.X) + (y * p3.Y);
 
                 var opacity = 1d;
                 if (fadeOutTime < 1 && p.Age > lifeTime * fadeOutTime)
@@ -592,23 +625,44 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Adjusts the length of the specified list.
+        /// </summary>
+        /// <typeparam name="T">The type of the list elements.</typeparam>
+        /// <param name="list">The list to change.</param>
+        /// <param name="targetLength">Target length of the list.</param>
+        protected static void AdjustListLength<T>(IList<T> list, int targetLength)
+        {
+            int n = list.Count;
+            for (int i = n - 1; i >= targetLength; i--)
+            {
+                list.RemoveAt(i);
+            }
+
+            for (int i = 0; i < targetLength - n; i++)
+            {
+                list.Add(default(T));
+            }
+        }
+
+        /// <summary>
         /// Creates a random vector.
         /// </summary>
-        /// <param name="dir">The direction.</param>
+        /// <param name="z">The direction.</param>
         /// <param name="spreading">The spreading.</param>
         /// <returns>The random vector.</returns>
-        protected Vector3D CreateRandomVector(Vector3D dir, double spreading)
+        protected static Vector3D CreateRandomVector(Vector3D z, double spreading)
         {
-            var theta = spreading / 180 * Math.PI * this.r.NextDouble();
-            var phi = Math.PI * 2 * this.r.NextDouble();
+            var theta = spreading * DegToRad * r.NextDouble();
+            var phi = TwoPi * r.NextDouble();
 
             // find basis vectors
-            var z = dir;
             var x = z.FindAnyPerpendicular();
             var y = Vector3D.CrossProduct(z, x);
 
+            var sintheta = Math.Sin(theta);
+
             // calculate actual direction by spherical coordinates
-            return (x * Math.Sin(theta) * Math.Cos(phi)) + (y * Math.Sin(theta) * Math.Sin(phi)) + (z * Math.Cos(theta));
+            return (x * sintheta * Math.Cos(phi)) + (y * sintheta * Math.Sin(phi)) + (z * Math.Cos(theta));
         }
 
         /// <summary>
@@ -624,7 +678,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Represents a particle.
         /// </summary>
-        public class Particle
+        internal class Particle
         {
             /// <summary>
             /// Gets or sets the position of the particle.
@@ -632,7 +686,7 @@ namespace HelixToolkit.Wpf
             /// <value>
             /// The position.
             /// </value>
-            public Point3D Position { get; set; }
+            internal Point3D Position;
 
             /// <summary>
             /// Gets or sets the velocity of the particle.
@@ -640,7 +694,7 @@ namespace HelixToolkit.Wpf
             /// <value>
             /// The velocity.
             /// </value>
-            public Vector3D Velocity { get; set; }
+            internal Vector3D Velocity;
 
             /// <summary>
             /// Gets or sets the 2D rotation of the rendered particle texture.
@@ -648,7 +702,7 @@ namespace HelixToolkit.Wpf
             /// <value>
             /// The rotation.
             /// </value>
-            public double Rotation { get; set; }
+            internal double Rotation;
 
             /// <summary>
             /// Gets or sets the size of the particle.
@@ -656,7 +710,7 @@ namespace HelixToolkit.Wpf
             /// <value>
             /// The size.
             /// </value>
-            public double Size { get; set; }
+            internal double Size;
 
             /// <summary>
             /// Gets or sets the age of the particle.
@@ -664,7 +718,7 @@ namespace HelixToolkit.Wpf
             /// <value>
             /// The age.
             /// </value>
-            public double Age { get; set; }
+            internal double Age;
         }
     }
 }
