@@ -7,7 +7,15 @@
         Title="BuildingDemo" Height="720" Width="1080">
     <Window.Resources>
         <ImageBrush x:Key="SmokeBrush" ImageSource="smoke.png"/>
+        <ImageBrush x:Key="FenceBrush" ImageSource="fence.png" ViewportUnits="Absolute" TileMode="Tile"/>
         <buildingDemo:BoundsConverter x:Key="BoundsConverter"></buildingDemo:BoundsConverter>
+        <Point3DCollection x:Key="FencePositions">
+            <Point3D X="-22" Y="78" Z="0"/>
+            <Point3D X="72" Y="78" Z="0"/>
+            <Point3D X="72" Y="172" Z="0"/>
+            <Point3D X="-22" Y="172" Z="0"/>
+            <Point3D X="-22" Y="78" Z="0"/>
+        </Point3DCollection>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,6 +40,8 @@
 
                 <buildingDemo:ChimneyVisual3D x:Name="chimney1" Position="100,0,0"/>
                 <buildingDemo:ChimneyVisual3D Position="120,0,0"/>
+                <buildingDemo:FenceVisual3D Height="2" Positions="{StaticResource FencePositions}" PoleTexture="Silver"/>
+                <buildingDemo:FenceVisual3D Height="2" Positions="{StaticResource FencePositions}" FenceTexture="{StaticResource FenceBrush}"/>
             </ModelVisual3D>
 
             <ModelVisual3D>
