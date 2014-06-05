@@ -69,6 +69,12 @@ namespace BuildingDemo
                 return new ChimneyVisualDecorator(chimney);
             }
 
+            var fence = visual as FenceVisual3D;
+            if (fence != null)
+            {
+                return new FenceVisualDecorator(fence);
+            }
+
             return null;
         }
     }
