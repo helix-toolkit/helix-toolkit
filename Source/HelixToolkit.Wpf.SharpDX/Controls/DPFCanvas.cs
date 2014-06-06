@@ -332,7 +332,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.device.ImmediateContext.ResolveSubresource(this.colorBuffer, 0, this.renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
             this.surfaceD3D.SetRenderTargetDX11(this.renderTargetNMS);
 #else
-            this.surfaceD3D.SetRenderTargetDX11(this.renderTarget);
+            this.surfaceD3D.SetRenderTargetDX11(this.colorBuffer);
 #endif                       
         }
 
@@ -412,7 +412,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         this.renderContext = new RenderContext(this, EffectsManager.Instance.GetEffect(this.RenderTechnique));
                         this.renderRenderable.Attach(this);
-                        this.SetDefaultRenderTargets();
                         
                         if(this.RenderTechnique == Techniques.RenderDeferred)
                         {
@@ -429,6 +428,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         System.Windows.MessageBox.Show("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
                     }
                 }
+
+                this.SetDefaultRenderTargets();
 
                 /// ---------------------------------------------------------------------------
                 /// this part is per frame                
@@ -458,7 +459,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #if MSAA
                     this.deferredRenderer.RenderGBufferOutput(ref this.renderTargetNMS);
 #else
-                    this.deferredRenderer.RenderGBufferOutput(ref this.renderTarget);
+                    this.deferredRenderer.RenderGBufferOutput(ref this.colorBuffer);
 #endif
                 }
                 else
