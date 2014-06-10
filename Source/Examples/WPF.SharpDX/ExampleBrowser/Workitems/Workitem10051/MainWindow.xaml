@@ -74,7 +74,7 @@
             <htx:MeshGeometryModel3D Geometry="{StaticResource Model}" Transform="{StaticResource Model1Transform}" Material="{x:Static htx:PhongMaterials.Red}"/>
             <htx:MeshGeometryModel3D Geometry="{StaticResource Model}" Transform="{StaticResource Model2Transform}" Material="{x:Static htx:PhongMaterials.Green}"/>
             <htx:MeshGeometryModel3D Geometry="{StaticResource Model}" Transform="{StaticResource Model3Transform}" Material="{x:Static htx:PhongMaterials.Blue}"/>
-            <htx:LineGeometryModel3D Geometry="{StaticResource Lines}" Transform="{StaticResource Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="5"/>
+            <htx:LineGeometryModel3D Geometry="{StaticResource Lines}" Transform="{StaticResource Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
         </htx:Viewport3DX>
 
         <StackPanel Grid.Row="1" Margin="0 24 0 0">
