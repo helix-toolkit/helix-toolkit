@@ -55,23 +55,22 @@ struct PSInputLS
 //--------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------
-// From window pixel pos to projection frame at the specified z (view frame). 
+// From projection frame to window pixel pos.
 //--------------------------------------------------------------------------------------
 float2 projToWindow(in float4 pos)
 {
-    return float2(  vViewport.x*0.5*((pos.x/pos.w) + 1) + vViewport.z,
-                    vViewport.y*0.5*(1-(pos.y/pos.w))   + vViewport.w );
+    return float2(vViewport.x * 0.5 * (1.0 + (pos.x / pos.w)),
+                  vViewport.y * 0.5 * (1.0 - (pos.y / pos.w)));
 }
 
 //--------------------------------------------------------------------------------------
 // From window pixel pos to projection frame at the specified z (view frame). 
 //--------------------------------------------------------------------------------------
-float4 windowToProj(in float2 pos, float depth)
+float4 windowToProj(in float2 pos, in float z, in float w)
 {
-    return float4(  (((pos.x-vViewport.z)*2/vViewport.x)-1)*depth,
-                    (((pos.y-vViewport.w)*2/vViewport.y)-1)*(-depth),
-                    (depth - vFrustum.z)*vFrustum.w /(vFrustum.w - vFrustum.z),
-                    depth );
+    return float4(((pos.x * 2.0 / vViewport.x) - 1.0) * w,
+                  ((pos.y * 2.0 / vViewport.y) - 1.0) * -w,
+                  z, w);
 }
 
 
@@ -97,10 +96,10 @@ void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float wid
     float2 B2w = (Bw + binormal);
 
     // bring back corners in projection frame
-    points[0] = windowToProj(A1w, posA.w);
-    points[1] = windowToProj(A2w, posA.w);
-    points[2] = windowToProj(B1w, posB.w);
-    points[3] = windowToProj(B2w, posB.w);
+    points[0] = windowToProj(A1w, posA.z, posA.w);
+    points[1] = windowToProj(A2w, posA.z, posA.w);
+    points[2] = windowToProj(B1w, posB.z, posB.w);
+    points[3] = windowToProj(B2w, posB.z, posB.w);
 }
 
 
@@ -222,7 +221,7 @@ float4 PShaderLinesFade( PSInputLS input) : SV_Target
 	//if(alpha<0.1) discard;
 
     // Standard wire color
-    float4 color = input.c;	
+    float4 color = float4(1.0, 1.0, 0.0, 1.0); //input.c;	
 	
 	//color = texDiffuseMap.Sample(SSLinearSamplerWrap, input.t.xy);	
 	color.a = alpha;
