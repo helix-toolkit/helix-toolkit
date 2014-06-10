@@ -221,7 +221,7 @@ float4 PShaderLinesFade( PSInputLS input) : SV_Target
 	//if(alpha<0.1) discard;
 
     // Standard wire color
-    float4 color = float4(1.0, 1.0, 0.0, 1.0); //input.c;	
+    float4 color = input.c;	
 	
 	//color = texDiffuseMap.Sample(SSLinearSamplerWrap, input.t.xy);	
 	color.a = alpha;
