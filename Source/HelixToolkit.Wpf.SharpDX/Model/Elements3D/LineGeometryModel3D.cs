@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Buffer instanceBuffer;
         private EffectTechnique effectTechnique;
         private EffectTransformVariables effectTransforms;
-        private EffectVectorVariable vFrustum, vViewport, vLineParams;                
+        private EffectVectorVariable vViewport, vLineParams; // vFrustum, 
         //private DepthStencilState depthStencilState;
         //private LineGeometry3D geometry;
         private EffectScalarVariable bHasInstances;
@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     IsFrontCounterClockwise = false,
 
                     IsMultisampleEnabled = true,
-                    IsAntialiasedLineEnabled = true,
+                    //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
                     //IsScissorEnabled = true,
                 };
 
@@ -246,7 +246,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- set up const variables
             this.vViewport = effect.GetVariableByName("vViewport").AsVector();
-            this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
+            //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             this.vLineParams = effect.GetVariableByName("vLineParams").AsVector();
 
             /// --- set effect per object const vars
@@ -289,7 +289,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
             Disposer.RemoveAndDispose(ref this.indexBuffer);
             Disposer.RemoveAndDispose(ref this.instanceBuffer);
-            Disposer.RemoveAndDispose(ref this.vFrustum);
+            //Disposer.RemoveAndDispose(ref this.vFrustum);
             Disposer.RemoveAndDispose(ref this.vViewport);
             Disposer.RemoveAndDispose(ref this.vLineParams);            
             Disposer.RemoveAndDispose(ref this.rasterState);
@@ -337,13 +337,15 @@ namespace HelixToolkit.Wpf.SharpDX
                     // viewport: W,H,0,0   
                     var viewport = new Vector4((float)renderContext.Canvas.ActualWidth, (float)renderContext.Canvas.ActualHeight, 0, 0);
                     var ar = viewport.X / viewport.Y;
-                    var fov = 100.0; // this is a fake value, since the line shader does not use it!
-                    var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
-                    var zf = c.FarPlaneDistance + 0.0;
-                    // frustum: FOV,AR,N,F
-                    var frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
                     this.vViewport.Set(ref viewport);
-                    this.vFrustum.Set(ref frustum);
+
+                    // Actually, we don't really need vFrustum because we already know the depth of the projected line.
+                    //var fov = 100.0; // this is a fake value, since the line shader does not use it!
+                    //var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
+                    //var zf = c.FarPlaneDistance + 0.0;
+                    // frustum: FOV,AR,N,F
+                    //var frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
+                    //this.vFrustum.Set(ref frustum);
                 }
             }
             /// --- set transform paramerers             
