@@ -4,10 +4,31 @@
         xmlns:h="http://helixtoolkit.codeplex.com"
         xmlns:buildingDemo="clr-namespace:BuildingDemo"
         xmlns:pt="http://propertytools.codeplex.com"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
         Title="BuildingDemo" Height="720" Width="1080">
     <Window.Resources>
         <ImageBrush x:Key="SmokeBrush" ImageSource="smoke.png"/>
-        <ImageBrush x:Key="FenceBrush" ImageSource="fence.png" ViewportUnits="Absolute" TileMode="Tile"/>
+        <ImageBrush x:Key="FenceBrush" ImageSource="fence.png" ViewboxUnits="Absolute" Viewbox="0,0,1,1" Viewport="0,0,1,1" ViewportUnits="Absolute" TileMode="Tile"/>
+        <DrawingBrush x:Key="KerbBrush" ViewportUnits="Absolute" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Black">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,1,1" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="Yellow">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,0.5,1" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
         <buildingDemo:BoundsConverter x:Key="BoundsConverter"></buildingDemo:BoundsConverter>
         <Point3DCollection x:Key="FencePositions">
             <Point3D X="-22" Y="78" Z="0"/>
@@ -38,6 +59,8 @@
                 <buildingDemo:SiloVisual3D Transform="{h:Translate 130,125,0}" Height="40" Diameter="20" DomeDiameter="18" DomeHeight="3"/>
                 <buildingDemo:SiloVisual3D Transform="{h:Translate 160,125,0}" Height="40" Diameter="20" DomeDiameter="18" DomeHeight="3"/>
 
+                <buildingDemo:KerbVisual3D Transform="{h:Translate 130,125,0}" Width="0.2" Height="0.1" Positions="{buildingDemo:Superellipse 45,15,40}" Texture="{StaticResource KerbBrush}"/>
+
                 <buildingDemo:ChimneyVisual3D x:Name="chimney1" Position="100,0,0"/>
                 <buildingDemo:ChimneyVisual3D Position="120,0,0"/>
                 <buildingDemo:FenceVisual3D Height="2" Positions="{StaticResource FencePositions}" PoleTexture="Silver"/>
@@ -52,8 +75,8 @@
             </ModelVisual3D>
 
 
-            <h:BoundingBoxVisual3D BoundingBox="{Binding SelectedVisual, Converter={StaticResource BoundsConverter}}" Diameter="0.2"/>
+            <h:BoundingBoxVisual3D BoundingBox="{Binding SelectedObject, Converter={StaticResource BoundsConverter}}" Diameter="0.2"/>
         </h:HelixViewport3D>
-        <pt:PropertyGrid Grid.Column="1" SelectedObject="{Binding SelectedObject}" UseTabs="False" Margin="4"/>
+        <pt:PropertyGrid Grid.Column="1" SelectedObject="{Binding SelectedObject}" UseTabs="False" Margin="4" RequiredAttribute="{x:Type componentModel:BrowsableAttribute}"/>
     </Grid>
 </Window>

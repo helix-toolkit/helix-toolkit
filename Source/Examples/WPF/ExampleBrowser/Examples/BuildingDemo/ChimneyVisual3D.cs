@@ -1,10 +1,13 @@
 namespace BuildingDemo
 {
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
+
+    using PropertyTools.DataAnnotations;
 
     public class ChimneyVisual3D : UIElement3D
     {
@@ -41,24 +44,37 @@ namespace BuildingDemo
             set { this.SetValue(TopPositionProperty, value); }
         }
 
+        [Category("Chimney properties")]
+        [Slidable(0, 20)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double BaseDiameter
         {
             get { return (double)this.GetValue(BaseDiameterProperty); }
             set { this.SetValue(BaseDiameterProperty, value); }
         }
 
+        [Slidable(0, 20)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double TopDiameter
         {
             get { return (double)this.GetValue(TopDiameterProperty); }
             set { this.SetValue(TopDiameterProperty, value); }
         }
 
+        [Slidable(0, 100)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double Height
         {
             get { return (double)this.GetValue(HeightProperty); }
             set { this.SetValue(HeightProperty, value); }
         }
 
+        [Slidable(1, 20)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public int Bands
         {
             get { return (int)this.GetValue(BandsProperty); }
