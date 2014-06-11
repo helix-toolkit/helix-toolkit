@@ -1,14 +1,15 @@
 namespace BuildingDemo
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
+
+    using PropertyTools.DataAnnotations;
 
     public class FenceVisual3D : UIElement3D
     {
@@ -32,12 +33,19 @@ namespace BuildingDemo
             this.Visual3DModel = group;
         }
 
+        [Category("Fence properties")]
+        [Slidable(0.01, 0.2)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double Diameter
         {
             get { return (double)this.GetValue(DiameterProperty); }
             set { this.SetValue(DiameterProperty, value); }
         }
 
+        [Slidable(0, 2)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double Height
         {
             get { return (double)this.GetValue(HeightProperty); }
@@ -50,12 +58,18 @@ namespace BuildingDemo
             set { this.SetValue(PositionsProperty, value); }
         }
 
+        [Slidable(0.01, 0.2)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double MeshSize
         {
             get { return (double)this.GetValue(MeshSizeProperty); }
             set { this.SetValue(MeshSizeProperty, value); }
         }
 
+        [Slidable(0.2, 10)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double PoleDistance
         {
             get { return (double)this.GetValue(PoleDistanceProperty); }

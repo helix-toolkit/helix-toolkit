@@ -1,11 +1,14 @@
 namespace BuildingDemo
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
+
+    using PropertyTools.DataAnnotations;
 
     public class HouseVisual3D : UIElement3D
     {
@@ -31,46 +34,64 @@ namespace BuildingDemo
             this.Visual3DModel = model;
         }
 
-        public double RoofAngle
-        {
-            get { return (double)this.GetValue(RoofAngleProperty); }
-            set { this.SetValue(RoofAngleProperty, value); }
-        }
-
-        public double RoofThickness
-        {
-            get { return (double)this.GetValue(RoofThicknessProperty); }
-            set { this.SetValue(RoofThicknessProperty, value); }
-        }
-
-        public double FloorThickness
-        {
-            get { return (double)this.GetValue(FloorThicknessProperty); }
-            set { this.SetValue(FloorThicknessProperty, value); }
-        }
-
-        public double StoryHeight
-        {
-            get { return (double)this.GetValue(StoryHeightProperty); }
-            set { this.SetValue(StoryHeightProperty, value); }
-        }
-
+        [Category("House properties")]
+        [Slidable(0, 60)]
+        [Browsable(true)]
         public double Width
         {
             get { return (double)this.GetValue(WidthProperty); }
             set { this.SetValue(WidthProperty, value); }
         }
 
+        [Slidable(0, 60)]
+        [Browsable(true)]
         public double Length
         {
             get { return (double)this.GetValue(LengthProperty); }
             set { this.SetValue(LengthProperty, value); }
         }
 
+        [Slidable(0, 4)]
+        [FormatString("0.00")]
+        [Browsable(true)]
+        public double StoryHeight
+        {
+            get { return (double)this.GetValue(StoryHeightProperty); }
+            set { this.SetValue(StoryHeightProperty, value); }
+        }
+
+        [Slidable(1, 8)]
+        [Browsable(true)]
         public int Stories
         {
             get { return (int)this.GetValue(StoriesProperty); }
             set { this.SetValue(StoriesProperty, value); }
+        }
+
+        [Slidable(0, 60)]
+        [Browsable(true)]
+        public double RoofAngle
+        {
+            get { return (double)this.GetValue(RoofAngleProperty); }
+            set { this.SetValue(RoofAngleProperty, value); }
+        }
+
+        [Slidable(0, 2)]
+        [FormatString("0.00")]
+        [Browsable(true)]
+        public double RoofThickness
+        {
+            get { return (double)this.GetValue(RoofThicknessProperty); }
+            set { this.SetValue(RoofThicknessProperty, value); }
+        }
+
+        [Slidable(0, 1)]
+        [FormatString("0.00")]
+        [Browsable(true)]
+        public double FloorThickness
+        {
+            get { return (double)this.GetValue(FloorThicknessProperty); }
+            set { this.SetValue(FloorThicknessProperty, value); }
         }
 
         private void AppearanceChanged()

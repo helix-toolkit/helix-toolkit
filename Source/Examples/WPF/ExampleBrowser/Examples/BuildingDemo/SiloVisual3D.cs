@@ -2,12 +2,15 @@ namespace BuildingDemo
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
+
+    using PropertyTools.DataAnnotations;
 
     public class SiloVisual3D : UIElement3D
     {
@@ -34,24 +37,37 @@ namespace BuildingDemo
             this.Visual3DModel = group;
         }
 
+        [Category("Silo/tank properties")]
+        [Slidable(0, 100)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double Diameter
         {
             get { return (double)this.GetValue(DiameterProperty); }
             set { this.SetValue(DiameterProperty, value); }
         }
 
+        [Slidable(0, 100)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double Height
         {
             get { return (double)this.GetValue(HeightProperty); }
             set { this.SetValue(HeightProperty, value); }
         }
 
+        [Slidable(0, 20)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double DomeHeight
         {
             get { return (double)this.GetValue(DomeHeightProperty); }
             set { this.SetValue(DomeHeightProperty, value); }
         }
 
+        [Slidable(0, 50)]
+        [FormatString("0.00")]
+        [Browsable(true)]
         public double DomeDiameter
         {
             get { return (double)this.GetValue(DomeDiameterProperty); }

@@ -112,13 +112,11 @@
     </ApplicationDefinition>
     <Compile Include="Examples\BuildingDemo\BoundsConverter.cs" />
     <Compile Include="Examples\BuildingDemo\ChimneyVisual3D.cs" />
-    <Compile Include="Examples\BuildingDemo\ChimneyVisualDecorator.cs" />
+    <Compile Include="Examples\BuildingDemo\KerbVisual3D.cs" />
     <Compile Include="Examples\BuildingDemo\HouseVisual3D.cs" />
-    <Compile Include="Examples\BuildingDemo\HouseVisualDecorator.cs" />
     <Compile Include="Examples\BuildingDemo\FenceVisual3D.cs" />
     <Compile Include="Examples\BuildingDemo\SiloVisual3D.cs" />
-    <Compile Include="Examples\BuildingDemo\FenceVisualDecorator.cs" />
-    <Compile Include="Examples\BuildingDemo\SiloVisualDecorator.cs" />
+    <Compile Include="Examples\BuildingDemo\Superellipse.cs" />
     <Compile Include="Examples\BuildingDemo\ViewModel.cs" />
     <Compile Include="Examples\BuildingDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
