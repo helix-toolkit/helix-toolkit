@@ -270,6 +270,13 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsChangeFieldOfViewEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsInertiaEnabledProperty =
+            DependencyProperty.Register(
+                "IsInertiaEnabled", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(true));
+
+        /// <summary>
         /// The is pan enabled property
         /// </summary>
         public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
@@ -660,6 +667,17 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(CameraProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the camera controller
+        /// </summary>
+        public CameraController CameraController
+        {
+            get
+            {
+                return this.cameraController;
             }
         }
 
@@ -1205,6 +1223,23 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(IsChangeFieldOfViewEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
+        /// </summary>
+        /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
+        public bool IsInertiaEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsInertiaEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsInertiaEnabledProperty, value);
             }
         }
 

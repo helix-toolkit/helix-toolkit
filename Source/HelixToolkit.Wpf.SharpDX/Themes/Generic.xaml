@@ -16,9 +16,47 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid FocusVisualStyle="{x:Null}">
 
-                            <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <hx:DPFCanvas x:Name="PART_Canvas"/>
-                            </AdornerDecorator>
+                            <hx:CameraController x:Name="PART_CameraController"
+                                                 ShowCameraTarget="{TemplateBinding ShowCameraTarget}"
+                                                 CameraRotationMode="{TemplateBinding CameraRotationMode}"
+                                                 CameraMode="{TemplateBinding CameraMode}"
+                                                 RotateAroundMouseDownPoint="{TemplateBinding RotateAroundMouseDownPoint}"
+                                                 MinimumFieldOfView="{TemplateBinding MinimumFieldOfView}"
+                                                 MaximumFieldOfView="{TemplateBinding MaximumFieldOfView}"
+                                                 ZoomAroundMouseDownPoint="{TemplateBinding ZoomAroundMouseDownPoint}"
+                                                 DefaultCamera="{TemplateBinding DefaultCamera}"
+                                                 InfiniteSpin="{TemplateBinding InfiniteSpin}"
+                                                 InertiaFactor="{TemplateBinding CameraInertiaFactor}"
+                                                 RotationSensitivity="{TemplateBinding RotationSensitivity}"
+                                                 ZoomSensitivity="{TemplateBinding ZoomSensitivity}"
+                                                 ModelUpDirection="{TemplateBinding ModelUpDirection}"
+                                                 RotateCursor="{TemplateBinding RotateCursor}"
+                                                 ZoomCursor="{TemplateBinding ZoomCursor}"
+                                                 ZoomRectangleCursor="{TemplateBinding ZoomRectangleCursor}"
+                                                 PanCursor="{TemplateBinding PanCursor}"
+                                                 ChangeFieldOfViewCursor="{TemplateBinding ChangeFieldOfViewCursor}"
+                                                 IsPanEnabled="{TemplateBinding IsPanEnabled}"
+                                                 IsMoveEnabled="{TemplateBinding IsMoveEnabled}"
+                                                 IsZoomEnabled="{TemplateBinding IsZoomEnabled}"
+                                                 IsRotationEnabled="{TemplateBinding IsRotationEnabled}"
+                                                 IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}"
+                                                 IsChangeFieldOfViewEnabled="{TemplateBinding IsChangeFieldOfViewEnabled}"
+                                                 IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
+                                                 LeftRightRotationSensitivity="{TemplateBinding LeftRightRotationSensitivity}"
+                                                 UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
+                                                 LeftRightPanSensitivity="{TemplateBinding LeftRightPanSensitivity}"
+                                                 UpDownPanSensitivity="{TemplateBinding UpDownPanSensitivity}"
+                                                 PageUpDownZoomSensitivity="{TemplateBinding PageUpDownZoomSensitivity}"
+                                                 >
+                                <!-- ToDo: hx:CameraController.InputBindings?
+                                <hx:CameraController.InputBindings>
+                                    <h:InputBinding />
+                                </hx:CameraController.InputBindings>
+                                -->
+                                <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <hx:DPFCanvas x:Name="PART_Canvas"/>
+                                </AdornerDecorator>
+                            </hx:CameraController>
 
                             <Grid IsHitTestVisible="False">
                                 <!-- Titles -->

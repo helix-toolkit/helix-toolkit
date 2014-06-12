@@ -125,6 +125,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Controls\CameraController.cs" />
     <Compile Include="Controls\DeferredRenderer.cs" />
     <Compile Include="Controls\Disposer.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
