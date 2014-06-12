@@ -31,6 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [DefaultEvent("OnChildrenChanged")]
     [DefaultProperty("Children")]
     [ContentProperty("Items")]
+    [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
     [TemplatePart(Name = "PART_Canvas", Type = typeof(DPFCanvas))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
@@ -42,6 +43,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The adorner layer part name.
         /// </summary>
         private const string PartAdornerLayer = "PART_AdornerLayer";
+
+        /// <summary>
+        /// The camera controller part name.
+        /// </summary>
+        private const string PartCameraController = "PART_CameraController";
 
         /// <summary>
         /// The coordinate view part name.
@@ -126,6 +132,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The adorner layer.
         /// </summary>
         private AdornerDecorator adornerLayer;
+
+        /// <summary>
+        /// The camera controller.
+        /// </summary>
+        private CameraController cameraController;
 
         /// <summary>
         /// The coordinate system lights.
@@ -629,6 +640,17 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.adornerLayer == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
+            }
+
+            if (this.cameraController == null)
+            {
+                this.cameraController = this.Template.FindName(PartCameraController, this) as CameraController;
+                if (this.cameraController != null)
+                {
+                    this.cameraController.Viewport = this;
+                    this.cameraController.LookAtChanged += (s, e) => this.OnCameraChanged();
+                    this.cameraController.ZoomedByRectangle += (s, e) => this.OnCameraChanged();
+                }
             }
 
             if (this.coordinateView == null)

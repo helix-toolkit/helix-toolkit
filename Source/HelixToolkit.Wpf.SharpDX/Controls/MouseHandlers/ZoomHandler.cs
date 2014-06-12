@@ -154,6 +154,29 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Changes the camera position by the specified vector.
+        /// </summary>
+        /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
+        public void MoveCameraPosition(Vector3D delta)
+        {
+            var z = this.Camera.LookDirection;
+            z.Normalize();
+            var x = Vector3D.CrossProduct(this.Camera.LookDirection, this.Camera.UpDirection);
+            var y = Vector3D.CrossProduct(x, z);
+            y.Normalize();
+            x = Vector3D.CrossProduct(z, y);
+
+            // delta *= this.ZoomSensitivity;
+            switch (this.CameraMode)
+            {
+                case CameraMode.Inspect:
+                case CameraMode.WalkAround:
+                    this.Camera.Position += (x * delta.X) + (y * delta.Y) + (z * delta.Z);
+                    break;
+            }
+        }
+
+        /// <summary>
         /// The change camera width.
         /// </summary>
         /// <param name="delta">

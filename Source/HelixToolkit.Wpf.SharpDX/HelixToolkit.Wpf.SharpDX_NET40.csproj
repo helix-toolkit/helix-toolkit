@@ -132,6 +132,7 @@
     <Compile Include="Controls\DPFCanvas.cs" />
     <Compile Include="Controls\IRenderable.cs" />
     <Compile Include="Controls\IRenderHost.cs" />
+    <Compile Include="Controls\CameraController.cs" />
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Core\Box3D.cs" />
