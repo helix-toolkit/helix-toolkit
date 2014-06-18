@@ -7,39 +7,38 @@
 namespace HelixToolkit.Wpf
 {
     using System;
+    using System.Linq;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Creates diffuse/specular materials.
+    /// Provides methods that creates materials.
     /// </summary>
     public static class MaterialHelper
     {
         /// <summary>
         /// Changes the opacity of a material.
         /// </summary>
-        /// <param name="material">
-        /// The material.
-        /// </param>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        public static void ChangeOpacity(Material material, double d)
+        /// <param name="material">The material.</param>
+        /// <param name="opacity">The new opacity.</param>
+        /// <remarks>The method will traverse children of <see cref="MaterialGroup" /> and change the opacity of all <see cref="DiffuseMaterial" /> objects.
+        /// Remember that the material must not be frozen.</remarks>
+        public static void ChangeOpacity(Material material, double opacity)
         {
             var mg = material as MaterialGroup;
             if (mg != null)
             {
                 foreach (var m in mg.Children)
                 {
-                    ChangeOpacity(m, d);
+                    ChangeOpacity(m, opacity);
                 }
             }
 
             var dm = material as DiffuseMaterial;
             if (dm != null && dm.Brush != null)
             {
-                dm.Brush.Opacity = d;
+                dm.Brush.Opacity = opacity;
             }
         }
 
@@ -49,8 +48,9 @@ namespace HelixToolkit.Wpf
         /// <param name="uri">The uri.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="uriKind">Kind of the URI.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
         /// <returns>The image material (texture).</returns>
-        public static Material CreateImageMaterial(string uri, double opacity = 1.0, UriKind uriKind = UriKind.RelativeOrAbsolute)
+        public static Material CreateImageMaterial(string uri, double opacity = 1.0, UriKind uriKind = UriKind.RelativeOrAbsolute, bool freeze = true)
         {
             var image = GetImage(uri, uriKind);
             if (image == null)
@@ -58,43 +58,45 @@ namespace HelixToolkit.Wpf
                 return null;
             }
 
-            return CreateImageMaterial(image, opacity);
-        }
-
-        /// <summary>
-        /// Creates an emissive image material.
-        /// </summary>
-        /// <param name="uri">The uri.</param>
-        /// <param name="diffuseBrush">The diffuse brush.</param>
-        /// <param name="uriKind">Kind of the URI.</param>
-        /// <returns>The image material.</returns>
-        public static Material CreateEmissiveImageMaterial(string uri, Brush diffuseBrush, UriKind uriKind)
-        {
-            var image = GetImage(uri, uriKind);
-            if (image == null)
-            {
-                return null;
-            }
-
-            return CreateEmissiveImageMaterial(image, diffuseBrush);
+            return CreateImageMaterial(image, opacity, freeze: freeze);
         }
 
         /// <summary>
         /// Creates a material from the specified image.
         /// </summary>
-        /// <param name="image">
-        /// The image.
-        /// </param>
-        /// <param name="opacity">
-        /// The opacity value.
-        /// </param>
-        /// <returns>
-        /// The image material.
-        /// </returns>
-        public static Material CreateImageMaterial(BitmapImage image, double opacity)
+        /// <param name="image">The image.</param>
+        /// <param name="opacity">The opacity value.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
+        /// <returns>The image material.</returns>
+        public static Material CreateImageMaterial(BitmapImage image, double opacity, bool freeze = true)
         {
             var brush = new ImageBrush(image) { Opacity = opacity };
-            return new DiffuseMaterial(brush);
+            var material = new DiffuseMaterial(brush);
+            if (freeze)
+            {
+                material.Freeze();
+            }
+
+            return material;
+        }
+
+        /// <summary>
+        /// Creates an emissive image material.
+        /// </summary>
+        /// <param name="uri">The uri of the image.</param>
+        /// <param name="diffuseBrush">The diffuse brush.</param>
+        /// <param name="uriKind">Kind of the <paramref name="uri" />.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
+        /// <returns>The image material.</returns>
+        public static Material CreateEmissiveImageMaterial(string uri, Brush diffuseBrush, UriKind uriKind, bool freeze = true)
+        {
+            var image = GetImage(uri, uriKind);
+            if (image == null)
+            {
+                return null;
+            }
+
+            return CreateEmissiveImageMaterial(image, diffuseBrush, freeze: freeze);
         }
 
         /// <summary>
@@ -102,8 +104,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="image">The image.</param>
         /// <param name="diffuseBrush">The diffuse brush.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
         /// <returns>The image material</returns>
-        public static Material CreateEmissiveImageMaterial(BitmapImage image, Brush diffuseBrush)
+        public static Material CreateEmissiveImageMaterial(BitmapImage image, Brush diffuseBrush, bool freeze = true)
         {
             var brush = new ImageBrush(image);
             var em = new EmissiveMaterial(brush);
@@ -111,7 +114,12 @@ namespace HelixToolkit.Wpf
             var mg = new MaterialGroup();
             mg.Children.Add(dm);
             mg.Children.Add(em);
-            return mg; // new DiffuseMaterial(brush);
+            if (freeze)
+            {
+                mg.Freeze();
+            }
+
+            return mg;
         }
 
         /// <summary>
@@ -136,16 +144,15 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Creates a material with the specifed brush as diffuse material.
+        /// Creates a material with the specified brush as diffuse material.
         /// This method will also add a white specular material.
         /// </summary>
         /// <param name="brush">The brush.</param>
         /// <param name="specularPower">The specular power.</param>
         /// <param name="ambient">The ambient component.</param>
-        /// <returns>
-        /// The material.
-        /// </returns>
-        public static Material CreateMaterial(Brush brush, double specularPower = 100, byte ambient = 255)
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
+        /// <returns>The material.</returns>
+        public static Material CreateMaterial(Brush brush, double specularPower = 100, byte ambient = 255, bool freeze = true)
         {
             var mg = new MaterialGroup();
             mg.Children.Add(new DiffuseMaterial(brush) { AmbientColor = Color.FromRgb(ambient, ambient, ambient) });
@@ -154,7 +161,11 @@ namespace HelixToolkit.Wpf
                 mg.Children.Add(new SpecularMaterial(Brushes.White, specularPower));
             }
 
-            mg.Freeze();
+            if (freeze)
+            {
+                mg.Freeze();
+            }
+
             return mg;
         }
 
@@ -166,9 +177,9 @@ namespace HelixToolkit.Wpf
         /// <param name="specular">The specular color.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="specularPower">The specular power.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
         /// <returns>The material.</returns>
-        public static Material CreateMaterial(
-            Brush diffuse, Brush emissive, Brush specular = null, double opacity = 1, double specularPower = 85)
+        public static Material CreateMaterial(Brush diffuse, Brush emissive, Brush specular = null, double opacity = 1, double specularPower = 85, bool freeze = true)
         {
             var mg = new MaterialGroup();
             if (diffuse != null)
@@ -192,6 +203,11 @@ namespace HelixToolkit.Wpf
                 mg.Children.Add(new SpecularMaterial(specular, specularPower));
             }
 
+            if (freeze)
+            {
+                mg.Freeze();
+            }
+
             return mg;
         }
 
@@ -200,7 +216,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <typeparam name="T">Type of material</typeparam>
         /// <param name="material">The source material.</param>
-        /// <returns>The first material.</returns>
+        /// <returns>The first material of the specified type.</returns>
         public static T GetFirst<T>(Material material) where T : Material
         {
             if (material.GetType() == typeof(T))
@@ -211,14 +227,7 @@ namespace HelixToolkit.Wpf
             var mg = material as MaterialGroup;
             if (mg != null)
             {
-                foreach (var m in mg.Children)
-                {
-                    var result = GetFirst<T>(m);
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                }
+                return mg.Children.Select(GetFirst<T>).FirstOrDefault(m => m != null);
             }
 
             return null;
