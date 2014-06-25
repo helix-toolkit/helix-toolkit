@@ -111,6 +111,7 @@ namespace BuildingDemo
             this.postsModel.Geometry = builder.ToMesh();
 
             var fenceBuilder = new MeshBuilder(false, true);
+            var w0 = 0d;
             for (int i = 0; i + 1 < this.Positions.Count; i++)
             {
                 var p0 = this.Positions[i];
@@ -118,16 +119,17 @@ namespace BuildingDemo
                 var p2 = this.Positions[i + 1] + new Vector3D(0, 0, this.Height);
                 var p3 = this.Positions[i] + new Vector3D(0, 0, this.Height);
                 var h = this.Height / this.MeshSize;
-                var w = p0.DistanceTo(p1) / this.MeshSize;
+                var dw = p0.DistanceTo(p1) / this.MeshSize;
                 fenceBuilder.AddQuad(
                     p0,
                     p1,
                     p2,
                     p3,
-                    new Point(0, h),
-                    new Point(w, h),
-                    new Point(w, 0),
-                    new Point(0, 0));
+                    new Point(w0, h),
+                    new Point(w0 + dw, h),
+                    new Point(w0 + dw, 0),
+                    new Point(w0, 0));
+                w0 += dw;
             }
 
             this.fenceModel.Geometry = fenceBuilder.ToMesh();
@@ -135,17 +137,21 @@ namespace BuildingDemo
 
         private static IEnumerable<Point3D> DistributePoles(IList<Point3D> positions, double distance)
         {
+            var l0 = 0d;
+            var x = distance;
             for (int i = 0; i + 1 < positions.Count; i++)
             {
                 var p0 = positions[i];
                 var p1 = positions[i + 1];
-                var n = Math.Round(p0.DistanceTo(p1) / distance);
-                for (int j = 0; j < n; j++)
+                var d = p0.DistanceTo(p1);
+                while (x >= l0 && x < l0 + d)
                 {
-                    var f = j / n;
+                    var f = (x - l0) / d;
                     yield return p0 + ((p1 - p0) * f);
+                    x += distance;
                 }
 
+                l0 += d;
                 if (i + 1 == positions.Count)
                 {
                     yield return p1;
