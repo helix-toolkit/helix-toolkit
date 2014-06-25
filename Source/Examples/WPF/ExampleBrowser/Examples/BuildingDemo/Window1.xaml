@@ -8,7 +8,7 @@
         Title="BuildingDemo" Height="720" Width="1080">
     <Window.Resources>
         <ImageBrush x:Key="SmokeBrush" ImageSource="smoke.png"/>
-        <ImageBrush x:Key="FenceBrush" ImageSource="fence.png" ViewboxUnits="Absolute" Viewbox="0,0,1,1" Viewport="0,0,1,1" ViewportUnits="Absolute" TileMode="Tile"/>
+        <ImageBrush x:Key="FenceBrush" ImageSource="fence.png" ViewportUnits="Absolute" TileMode="Tile"/>
         <DrawingBrush x:Key="KerbBrush" ViewportUnits="Absolute" TileMode="Tile">
             <DrawingBrush.Drawing>
                 <DrawingGroup>
@@ -63,8 +63,9 @@
 
                 <buildingDemo:ChimneyVisual3D x:Name="chimney1" Position="100,0,0"/>
                 <buildingDemo:ChimneyVisual3D Position="120,0,0"/>
-                <buildingDemo:FenceVisual3D Height="2" Positions="{StaticResource FencePositions}" PoleTexture="Silver"/>
-                <buildingDemo:FenceVisual3D Height="2" Positions="{StaticResource FencePositions}" FenceTexture="{StaticResource FenceBrush}"/>
+
+                <buildingDemo:FenceVisual3D Height="2" Transform="{h:Translate 110,0,0}" Positions="{buildingDemo:Superellipse 20,20,3}" PoleTexture="Silver" FenceTexture="{StaticResource FenceBrush}"/>
+                <buildingDemo:FenceVisual3D Height="2" Positions="{StaticResource FencePositions}" PoleTexture="Silver" FenceTexture="{StaticResource FenceBrush}"/>
             </ModelVisual3D>
 
             <ModelVisual3D>
