@@ -2236,7 +2236,11 @@ namespace HelixToolkit.Wpf
 
                 forward = path[i1] - path[i0];
                 right = Vector3D.CrossProduct(up, forward);
-                up = Vector3D.CrossProduct(forward, right);
+                if (right.LengthSquared > 1e-6)
+                {
+                    up = Vector3D.CrossProduct(forward, right);
+                }
+
                 up.Normalize();
                 right.Normalize();
                 for (int j = 0; j < sectionLength; j++)
