@@ -17,10 +17,10 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// A visual element that shows a collection of text items.
+    /// Provides a visual element that shows a collection of text items.
     /// </summary>
     /// <remarks>
-    /// Set the Items property last to avoid multiple updates.
+    /// Set the <see cref="Items"/> property last to avoid multiple updates.
     /// </remarks>
     public class TextGroupVisual3D : ModelVisual3D
     {
@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf
             "Items",
             typeof(IList<SpatialTextItem>),
             typeof(TextGroupVisual3D),
-            new UIPropertyMetadata(null, VisualChanged));
+            new UIPropertyMetadata(new List<SpatialTextItem>(), VisualChanged));
 
         /// <summary>
         /// Identifies the <see cref="Padding"/> dependency property.
@@ -119,6 +119,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Brush)this.GetValue(BackgroundProperty);
             }
+
             set
             {
                 this.SetValue(BackgroundProperty, value);
@@ -135,6 +136,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Brush)this.GetValue(BorderBrushProperty);
             }
+
             set
             {
                 this.SetValue(BorderBrushProperty, value);
@@ -151,6 +153,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Thickness)this.GetValue(BorderThicknessProperty);
             }
+
             set
             {
                 this.SetValue(BorderThicknessProperty, value);
@@ -184,6 +187,7 @@ namespace HelixToolkit.Wpf
             {
                 return (double)this.GetValue(FontSizeProperty);
             }
+
             set
             {
                 this.SetValue(FontSizeProperty, value);
@@ -251,6 +255,7 @@ namespace HelixToolkit.Wpf
             {
                 return (bool)this.GetValue(IsDoubleSidedProperty);
             }
+
             set
             {
                 this.SetValue(IsDoubleSidedProperty, value);
@@ -272,6 +277,7 @@ namespace HelixToolkit.Wpf
             {
                 return (bool)this.GetValue(IsFlippedProperty);
             }
+
             set
             {
                 this.SetValue(IsFlippedProperty, value);
@@ -288,6 +294,7 @@ namespace HelixToolkit.Wpf
             {
                 return (IList<SpatialTextItem>)this.GetValue(ItemsProperty);
             }
+
             set
             {
                 this.SetValue(ItemsProperty, value);
@@ -304,6 +311,7 @@ namespace HelixToolkit.Wpf
             {
                 return (Thickness)this.GetValue(PaddingProperty);
             }
+
             set
             {
                 this.SetValue(PaddingProperty, value);
@@ -318,7 +326,7 @@ namespace HelixToolkit.Wpf
         /// <param name="background">The background.</param>
         /// <param name="elementMap">The element map.</param>
         /// <param name="elementPositions">The element positions.</param>
-        /// <returns>Material.</returns>
+        /// <returns>A text material.</returns>
         public static Material CreateTextMaterial(
             IEnumerable<TextItem> items,
             Func<string, FrameworkElement> createElement,
@@ -384,6 +392,13 @@ namespace HelixToolkit.Wpf
             return new DiffuseMaterial(ib) { Color = Colors.White };
         }
 
+        /// <summary>
+        /// Optimizes the size of a panel.
+        /// </summary>
+        /// <param name="panel">The panel to optimize.</param>
+        /// <param name="minWidth">The minimum width.</param>
+        /// <param name="maxWidth">The maximum width.</param>
+        /// <returns>The desired size.</returns>
         private static double OptimizeSize(UIElement panel, double minWidth, double maxWidth)
         {
             double width;
@@ -417,6 +432,11 @@ namespace HelixToolkit.Wpf
             ((TextGroupVisual3D)d).VisualChanged();
         }
 
+        /// <summary>
+        /// Creates an element (<see cref="TextBlock" /> or <see cref="FrameworkElement"/> wrapping a <see cref="TextBlock" />) for the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>A text block.</returns>
         private FrameworkElement CreateElement(string text)
         {
             var textBlock = new TextBlock(new Run(text))
@@ -443,12 +463,10 @@ namespace HelixToolkit.Wpf
                            {
                                BorderBrush = this.BorderBrush,
                                BorderThickness = this.BorderThickness,
-                               Child = textBlock,
-                               //  Margin = new Thickness(1),
+                               Child = textBlock
                            };
             }
 
-            //   textBlock.Margin = new Thickness(1);
             return textBlock;
         }
 
@@ -499,6 +517,7 @@ namespace HelixToolkit.Wpf
                     {
                         xa = 0;
                     }
+
                     if (item.HorizontalAlignment == HorizontalAlignment.Right)
                     {
                         xa = -1;
@@ -510,6 +529,7 @@ namespace HelixToolkit.Wpf
                     {
                         ya = -1;
                     }
+
                     if (item.VerticalAlignment == VerticalAlignment.Bottom)
                     {
                         ya = 0;
@@ -517,20 +537,18 @@ namespace HelixToolkit.Wpf
 
                     var position = item.Position;
                     var textDirection = item.TextDirection;
-                    var updirection = item.UpDirection;
+                    var upDirection = item.UpDirection;
                     var height = this.Height;
                     var width = this.Height / element.ActualHeight * element.ActualWidth;
-                    var p0 = position + (xa * width) * textDirection + (ya * height) * updirection;
-                    var p1 = p0 + textDirection * width;
-                    var p2 = p0 + updirection * height + textDirection * width;
-                    var p3 = p0 + updirection * height;
-                    builder.AddQuad(
-                        p0, p1, p2, p3, new Point(u0, v1), new Point(u1, v1), new Point(u1, v0), new Point(u0, v0));
+                    var p0 = position + ((xa * width) * textDirection) + ((ya * height) * upDirection);
+                    var p1 = p0 + (textDirection * width);
+                    var p2 = p0 + (upDirection * height) + (textDirection * width);
+                    var p3 = p0 + (upDirection * height);
+                    builder.AddQuad(p0, p1, p2, p3, new Point(u0, v1), new Point(u1, v1), new Point(u1, v0), new Point(u0, v0));
 
                     if (this.IsDoubleSided)
                     {
-                        builder.AddQuad(
-                            p1, p0, p3, p2, new Point(u0, v1), new Point(u1, v1), new Point(u1, v0), new Point(u0, v0));
+                        builder.AddQuad(p1, p0, p3, p2, new Point(u0, v1), new Point(u1, v1), new Point(u1, v0), new Point(u0, v0));
                     }
 
                     addedChildren.Add(item);
