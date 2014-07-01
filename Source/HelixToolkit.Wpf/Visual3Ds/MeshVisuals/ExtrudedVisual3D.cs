@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="SectionXAxis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SectionXAxisProperty = DependencyProperty.Register(
-            "SectionXAxis", typeof(Vector3D), typeof(ExtrudedVisual3D), new UIPropertyMetadata(new Vector3D(1, 0, 0), GeometryChanged));
+            "SectionXAxis", typeof(Vector3D), typeof(ExtrudedVisual3D), new UIPropertyMetadata(GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="Angles"/> dependency property.
@@ -231,13 +231,27 @@ namespace HelixToolkit.Wpf
             // http://linas.org/gle/
             // http://sharpmap.codeplex.com/Thread/View.aspx?ThreadId=18864
             var builder = new MeshBuilder(false, this.TextureCoordinates != null);
+
+            var sectionXAxis = this.SectionXAxis;
+            if (sectionXAxis.Length < 1e-6)
+            {
+                sectionXAxis = new Vector3D(1, 0, 0);
+            }
+
+            var forward = this.Path[1] - this.Path[0];
+            var up = Vector3D.CrossProduct(forward, sectionXAxis);
+            if (up.LengthSquared < 1e-6)
+            {
+                sectionXAxis = forward.FindAnyPerpendicular();
+            }
+
             builder.AddTube(
                 this.Path,
                 this.Angles,
                 this.TextureCoordinates,
                 this.Diameters,
                 this.Section,
-                this.SectionXAxis,
+                sectionXAxis,
                 this.IsPathClosed,
                 this.IsSectionClosed);
             return builder.ToMesh();
