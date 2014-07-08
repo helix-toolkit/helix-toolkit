@@ -7,7 +7,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Windows.Markup;
 
@@ -19,14 +18,14 @@ namespace HelixToolkit.Wpf.SharpDX
     [ContentProperty("Children")]
     public class CompositeModel3D : GeometryModel3D
     {
-        private ObservableCollection<Element3D> children;
+        private readonly ObservableElement3DCollection children;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
         /// </summary>
         public CompositeModel3D()
         {
-            this.children = new ObservableCollection<Element3D>();
+            this.children = new ObservableElement3DCollection();
             this.children.CollectionChanged += this.ChildrenChanged;
         }
 
@@ -36,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///     The children.
         /// </value>
-        public IList<Element3D> Children { get { return this.children; } }
+        public ObservableElement3DCollection Children { get { return this.children; } }
 
         /// <summary>
         /// Attaches the specified host.
