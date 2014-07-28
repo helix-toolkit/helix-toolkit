@@ -1667,7 +1667,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (hits.Count > 0)
             {
                 Mouse.Capture(this, CaptureMode.SubTree);
-                foreach (var hit in hits.Where(x => x.IsValid))
+                foreach (var hit in hits.Where(x => x.IsValid && x.ModelHit != null))
                 {
                     hit.ModelHit.RaiseEvent(new MouseDown3DEventArgs(hit.ModelHit, hit, e.GetPosition(this), this));
                     this.mouseHitModels.Add(hit);
