@@ -426,7 +426,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The total view and projection transform.</returns>
         public static Matrix3D GetViewProjectionMatrix3D(this Camera camera, double aspectRatio)
         {
-            return GetProjectionMatrix(camera, aspectRatio).ToMatrix3D();
+            return GetViewProjectionMatrix(camera, aspectRatio).ToMatrix3D();
         }
 
         /// <summary>
