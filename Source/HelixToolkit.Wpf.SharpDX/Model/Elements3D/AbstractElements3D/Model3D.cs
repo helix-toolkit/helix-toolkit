@@ -41,6 +41,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return this.modelMatrix; }
         }
 
+        public Matrix TotalModelMatrix
+        {
+            get { return this.totalModelMatrix; }
+        }
+
         public Transform3D Transform
         {
             get { return (Transform3D)this.GetValue(TransformProperty); }
