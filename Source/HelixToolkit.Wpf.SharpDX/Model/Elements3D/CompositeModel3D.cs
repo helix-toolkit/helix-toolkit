@@ -48,6 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Attach(host);
             foreach (var model in this.Children)
             {
+                this.AddLogicalChild(model);
                 model.Attach(host);
             }
         }
@@ -60,6 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var model in this.Children)
             {
                 model.Detach();
+                this.RemoveLogicalChild(model);
             }
             base.Detach();
         }
@@ -156,6 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         // todo: detach?
                         // yes, always
                         item.Detach();
+                        this.RemoveLogicalChild(item);
                     }
 
                     break;
@@ -173,6 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             // yes, always  
                             // where to get a refrence to renderHost?
                             // store it as private memeber of the class?
+                            this.AddLogicalChild(item);
                             item.Attach(this.renderHost);
                         }
                     }
