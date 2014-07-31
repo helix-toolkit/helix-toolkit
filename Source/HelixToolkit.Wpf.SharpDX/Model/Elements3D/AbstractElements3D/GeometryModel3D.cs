@@ -179,10 +179,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         ~GeometryModel3D()
         {
-            this.Dispose();
-            this.MouseDown3D -= OnMouse3DDown;
-            this.MouseUp3D -= OnMouse3DUp;
-            this.MouseMove3D -= OnMouse3DMove;
+            // Should to be called on dispatcher thread.
+            this.Dispatch(() =>
+            {
+                this.Dispose();
+                this.MouseDown3D -= OnMouse3DDown;
+                this.MouseUp3D -= OnMouse3DUp;
+                this.MouseMove3D -= OnMouse3DMove;
+            });
       
             //count--;
             //Console.WriteLine(count);

@@ -1,6 +1,7 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Media;
 
@@ -66,7 +67,23 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual void Dispose()
         {
             this.Detach();                        
-        }        
+        }
+
+        /// <summary>
+        /// Makes sure the action is called on the dispatcher thread of this element.
+        /// </summary>
+        /// <param name="action">The action to be executed.</param>
+        public void Dispatch(Action action)
+        {
+            if (this.Dispatcher.Thread != Thread.CurrentThread)
+            {
+                this.Dispatcher.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
 
         /// <summary>
         /// Indicates, if this element should be rendered,
