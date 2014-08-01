@@ -241,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         var p2 = Vector3.TransformCoordinate(t.P2, m);
                         if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
                         {
-                            if (d < result.Distance)
+                            if (d < result.Distance) // If d is NaN, the condition is false.
                             {
                                 result.IsValid = true;
                                 result.ModelHit = this;
@@ -253,15 +253,14 @@ namespace HelixToolkit.Wpf.SharpDX
                                 n.Normalize();
                                 // transform hit-info to world space now:
                                 result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
+                                h = true;
                             }
-                            h = true;
                         }
                     }
                 }
             }
             if (h)
             {
-                result.IsValid = h;
                 hits.Add(result);                
             }
             return h;
