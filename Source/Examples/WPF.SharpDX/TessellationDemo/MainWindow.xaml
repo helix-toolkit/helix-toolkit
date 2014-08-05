@@ -5,16 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
-        xmlns:htx="clr-namespace:HelixToolkit.SharpDX.Wpf;assembly=HelixToolkit.SharpDX.Wpf"
+        xmlns:htx="clr-namespace:HelixToolkit.Wpf.SharpDX;assembly=HelixToolkit.Wpf.SharpDX"
         xmlns:local="clr-namespace:TessellationDemo" 
         mc:Ignorable="d"         
         Title="{Binding Title}" Height="500" Width="800">
-    <Window.DataContext> 
-         <local:MainViewModel/>
-    </Window.DataContext>
-    <Window.Resources>
-        <x:StaticExtension Member="htx:PNTechniques.ShadingTechniques" x:Key="ShadingTechniques"/>
-        <x:StaticExtension Member="htx:PNTechniques.ShadingPasses" x:Key="ShadingPasses" />
+    <Window.Resources>        
+        <x:StaticExtension Member="htx:TessellationTechniques.Shading" x:Key="Shading"/>
+        <x:StaticExtension Member="htx:TessellationTechniques.RenderTechniques" x:Key="RenderTechniques" />
     </Window.Resources>    
     <Grid>
         <Grid.RowDefinitions>
@@ -38,11 +35,15 @@
                 <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
                 <MouseBinding Gesture="Shift+RightClick" Command="htx:ViewportCommands.Pan"/>
             </htx:Viewport3DX.InputBindings>
+            
             <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection1}"/>
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection2}"/>            
-            <htx:PNPatchGeometryModel3D x:Name="model1" Geometry="{Binding DefaultModel}" Transform="{Binding DefaultTransform}" Material="{Binding DefaultMaterial}" />            
-            <htx:LineGeometryModel3D    x:Name="grid"   Geometry="{Binding Grid}"         Transform = "{Binding GridTransform}"  Color="{Binding GridColor}"/>
+            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection2}"/>
+            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection3}"/>
+
+            <htx:PatchGeometryModel3D x:Name="model1" Geometry="{Binding DefaultModel}" Transform="{Binding DefaultTransform}" Material="{Binding DefaultMaterial}" />            
+            <htx:LineGeometryModel3D  x:Name="grid"   Geometry="{Binding Grid}"         Transform = "{Binding GridTransform}"  Color="{Binding GridColor}" IsRendering="False"/>
+            
         </htx:Viewport3DX>
         
         <StackPanel Grid.Row="1" >
@@ -72,15 +73,15 @@
                     <ComboBox  Grid.Row="1"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding MeshTopologyList}" SelectedItem="{Binding MeshTopology}" IsReadOnly="True" Margin="3" />
 
                     <TextBlock Grid.Row="2"  Grid.Column="0" Margin="3">Render Techniqe:</TextBlock>
-                    <ComboBox  Grid.Row="3"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding Source={StaticResource ShadingTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" />
-                    <ComboBox  Grid.Row="4"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding Source={StaticResource ShadingPasses}}" SelectedItem="{Binding Shading, ElementName=model1}" IsReadOnly="True" Margin="3" />                    
+                    <!--<ComboBox  Grid.Row="3"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" />-->
+                    <ComboBox  Grid.Row="4"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding Source={StaticResource Shading}}" SelectedItem="{Binding Shading, ElementName=model1}" IsReadOnly="True" Margin="3" />                    
                     <CheckBox  Grid.Row="5"  Grid.ColumnSpan="2" IsChecked="{Binding RenderDiffuseMap, ElementName=model1}" Margin="3" >Render Diffuse Map</CheckBox>
                     <CheckBox  Grid.Row="6"  Grid.ColumnSpan="2" IsChecked="{Binding RenderNormalMap, ElementName=model1}"  Margin="3" >Render Normal Map</CheckBox>
                     <CheckBox  Grid.Row="7"  Grid.ColumnSpan="2" IsChecked="{Binding IsRendering, ElementName=grid}" Margin="3" >Render Grid</CheckBox>
                                        
                     <TextBlock Grid.Row="8"  Grid.Column="0" Margin="3">Tessellation Factor: </TextBlock>
                     <TextBox   Grid.Row="8"  Grid.Column="1" Margin="3" Text="{Binding TessellationFactor, ElementName=model1}"/>
-                    <Slider    Grid.Row="9" Grid.ColumnSpan="2" Value="{Binding TessellationFactor, ElementName=model1}" Minimum="1" Maximum="24" Margin="3" />
+                    <Slider    Grid.Row="9" Grid.ColumnSpan="2" Value="{Binding TessellationFactor, ElementName=model1}" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="24" Margin="3" />
                                         
                 </Grid>
             </Expander>            

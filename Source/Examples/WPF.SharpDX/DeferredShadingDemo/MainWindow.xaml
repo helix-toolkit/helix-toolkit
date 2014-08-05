@@ -6,19 +6,19 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
         xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
         xmlns:local="clr-namespace:DeferredShadingDemo"          
         mc:Ignorable="d"         
-        Title="SharpDX in WPF" Height="500" Width="800">
+        Title="{Binding Title}" Height="500" Width="800">
     <Window.Resources>
         <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <local:ColorVectorConverter x:Key="ColorConverter"/>
     </Window.Resources>
-    <Window.DataContext>
-        <local:MainViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>            
+            <RowDefinition/>
+            <!--<RowDefinition Height="Auto"/>-->
         </Grid.RowDefinitions>
 
         <htx:Viewport3DX 
@@ -27,33 +27,27 @@
             Camera="{Binding Camera}"
             Title="{Binding Title}"
             SubTitle="{Binding SubTitle}"
-            BackgroundColor="{Binding BackgroundColor}"
             TextBrush="Black"           
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"            
+            UseDefaultGestures="False"              
             RenderTechnique="{Binding RenderTechnique}">
             <htx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="htx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="htx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="htx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="htx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="htx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="htx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
                 <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Rotate"/>
                 <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
                 <MouseBinding Gesture="Shift+RightClick" Command="htx:ViewportCommands.Pan"/>
             </htx:Viewport3DX.InputBindings>
-            <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>            
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor1}" Direction = "{Binding DirectionalLightDirection1}"/>
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor2}" Direction = "{Binding DirectionalLightDirection2}"/>
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor3}" Direction = "{Binding DirectionalLightDirection3}"/>
+            <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
+            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
+            <!--<htx:PointLight3D Color="{Binding PointLightColor}" Attenuation="{Binding PointLightAttenuation}" Transform="{Binding PointLightTransform1}"/>-->
+            <!--<htx:PointLight3D Color="{Binding PointLightColor}" Attenuation="{Binding PointLightAttenuation}" Transform="{Binding PointLightTransform2}"/>-->
+            <!--<htx:PointLight3D Color="{Binding PointLightColor}" Attenuation="{Binding PointLightAttenuation}" Transform="{Binding PointLightTransform3}"/>-->
+            <htx:Light3DCollection Children="{Binding PointLightCollection}" />
+            <htx:Light3DCollection Children="{Binding SpotLightCollection}" />
             <htx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}"   />
             <htx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" />
             <htx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}"  />
-            <!--<htx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}"/>-->
-            <!--<htx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
+            <htx:MeshGeometryModel3D x:Name="model4" Geometry="{Binding Plane}" Transform = "{Binding PlaneTransform}"  Material="{Binding PlaneMaterial}"  />
         </htx:Viewport3DX>
 
         <StackPanel Grid.Row="1" >
@@ -63,13 +57,96 @@
                 </Expander.Background>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="23*"/>
-                        <ColumnDefinition Width="51*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" Grid.ColumnSpan="2"/>
+                    <ComboBox  Grid.Row="0" Grid.ColumnSpan="2" Text="--- Select Model ---" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" Margin="3"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="3" VerticalAlignment="Center">MSAA</TextBlock>
+                    <ComboBox  Grid.Row="1" Grid.Column="1" Text="--- Select Num Sample ---" SelectedItem="{Binding DeferredRenderer.NumberSamplesMSAA, ElementName=view1}" ItemsSource="{Binding SamplesMSAA}" Margin="3">
+                    </ComboBox>
+                </Grid>
+            </Expander>
+
+            <Expander Header="Directional Light" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" BorderBrush="LightGray" IsExpanded="True" Margin="10">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
+                </Expander.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <!--<ComboBox  Grid.Row="0" Grid.ColumnSpan="2" Margin="3" Text=" Select Light " ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsEditable="True" IsReadOnly="True" />-->
+                    <!--<CheckBox    Grid.Row="0" Grid.ColumnSpan="2" Margin="3"  VerticalAlignment="Center" IsChecked="{Binding IsRendering, ElementName=dirLight}">Directional Light</CheckBox>-->
+                    <TextBlock   Grid.Row="0" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Direction:</TextBlock>
+                    <TextBox     Grid.Row="0" Grid.Column="1"   Margin="3"  Text="{Binding DirectionalLightDirection}"  VerticalAlignment="Center"></TextBox>
+                    <TextBlock   Grid.Row="1" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Color:</TextBlock>
+                    <pt:ColorPicker Grid.Row="1" Grid.Column="1"   Margin="3"  SelectedColor="{Binding DirectionalLightColor, Converter={StaticResource ResourceKey=ColorConverter}}" VerticalAlignment="Center"/>
+                </Grid>
+            </Expander>
+
+            <Expander Header="Point Lights" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" BorderBrush="LightGray" IsExpanded="True" Margin="10">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
+                </Expander.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <!--<ComboBox  Grid.Row="0" Grid.ColumnSpan="2" Margin="3" Text=" Select Light " ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsEditable="True" IsReadOnly="True" />-->
+                    <TextBlock   Grid.Row="1" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Count:</TextBlock>
+                    <TextBox     Grid.Row="1" Grid.Column="1"   Margin="3"  Text="{Binding PointLightCount}"  VerticalAlignment="Center"></TextBox>
+                    <TextBlock   Grid.Row="2" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Spread:</TextBlock>
+                    <TextBox     Grid.Row="2" Grid.Column="1"   Margin="3"  Text="{Binding PointLightSpread}" VerticalAlignment="Center"></TextBox>
+                    <TextBlock   Grid.Row="3" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Color:</TextBlock>
+                    <pt:ColorPicker Grid.Row="3" Grid.Column="1"   Margin="3"  SelectedColor="{Binding PointLightColor, Converter={StaticResource ResourceKey=ColorConverter}}" VerticalAlignment="Center"/>
+                    <TextBlock   Grid.Row="4" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Attenuation:</TextBlock>
+                    <TextBox     Grid.Row="4" Grid.Column="1"   Margin="3"  Text="{Binding PointLightAttenuation}" VerticalAlignment="Center"></TextBox>
+                </Grid>
+            </Expander>
+
+            <Expander Header="Spot Lights" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" BorderBrush="LightGray" IsExpanded="True" Margin="10">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
+                </Expander.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <!--<ComboBox  Grid.Row="0" Grid.ColumnSpan="2" Margin="3" Text=" Select Light " ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsEditable="True" IsReadOnly="True" />-->
+                    <TextBlock   Grid.Row="1" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Count:</TextBlock>
+                    <TextBox     Grid.Row="1" Grid.Column="1"   Margin="3"  Text="{Binding SpotLightCount}"  VerticalAlignment="Center"></TextBox>
+                    <!--<TextBlock   Grid.Row="2" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Spread:</TextBlock>-->
+                    <!--<TextBox     Grid.Row="2" Grid.Column="1"   Margin="3"  Text="{Binding SpotLightSpread}" VerticalAlignment="Center"></TextBox>-->
+                    <TextBlock   Grid.Row="4" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Color:</TextBlock>
+                    <pt:ColorPicker Grid.Row="4" Grid.Column="1"   Margin="3"  SelectedColor="{Binding SpotLightColor, Converter={StaticResource ResourceKey=ColorConverter}}" VerticalAlignment="Center"/>
+                    <TextBlock   Grid.Row="5" Grid.Column="0"   Margin="3" VerticalAlignment="Center">Attenuation:</TextBlock>
+                    <TextBox     Grid.Row="5" Grid.Column="1"   Margin="3"  Text="{Binding SpotLightAttenuation}" VerticalAlignment="Center"></TextBox>
                 </Grid>
             </Expander>
         </StackPanel>
@@ -101,3 +178,4 @@
 
     </Grid>
 </Window>
+

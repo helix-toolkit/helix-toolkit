@@ -30,17 +30,19 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Output\NET45\Examples\WPF.SharpDX\EnvironmentMapDemo\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PropertyTools">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.12.1\lib\NET40\PropertyTools.dll</HintPath>
+    <Reference Include="PropertyTools, Version=2014.1.29.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.29.1\lib\NET45\PropertyTools.dll</HintPath>
     </Reference>
-    <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.12.1\lib\NET40\PropertyTools.Wpf.dll</HintPath>
+    <Reference Include="PropertyTools.Wpf, Version=2014.1.29.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.29.1\lib\NET45\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

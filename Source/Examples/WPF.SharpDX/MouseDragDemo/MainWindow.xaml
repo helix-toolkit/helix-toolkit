@@ -92,26 +92,10 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>                    
                     <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" Grid.ColumnSpan="2"/>
-
-                    <ListBox Grid.Row="1"  Margin="3" Grid.ColumnSpan="2"
-                         ItemsSource="{Binding Element3DCollection}"   
-                         SelectedItem="{Binding SelectedItem}"
-                         SelectionMode="Single">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox> </CheckBox>
-                                    <TextBlock Text="{Binding Material.Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <Button Command="{Binding AddCmd}" Margin="3" Grid.Row="2" Grid.Column="0">Add</Button>
-                    <Button Command="{Binding DelCmd}" Margin="3" Grid.Row="2" Grid.Column="1">Delete</Button>
                 </Grid>
             </Expander>            
         </StackPanel>

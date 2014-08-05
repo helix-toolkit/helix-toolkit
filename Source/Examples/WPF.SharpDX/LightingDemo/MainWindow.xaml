@@ -78,10 +78,10 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <CheckBox Grid.Row="1" IsChecked="{Binding RenderLight1}" Margin="4">Render Light 1</CheckBox>
-                    <CheckBox Grid.Row="2" IsChecked="{Binding RenderLight2}" Margin="4">Render Light 2</CheckBox>
-                    <CheckBox Grid.Row="3" IsChecked="{Binding RenderLight3}" Margin="4">Render Light 3</CheckBox>
-                    <CheckBox Grid.Row="4" IsChecked="{Binding RenderLight4}" Margin="4">Render Light 4</CheckBox>
+                    <CheckBox Grid.Row="1" IsChecked="{Binding RenderLight1}" Margin="4">Render DirectionalLight</CheckBox>
+                    <CheckBox Grid.Row="2" IsChecked="{Binding RenderLight2}" Margin="4">Render PointLight 1</CheckBox>
+                    <CheckBox Grid.Row="3" IsChecked="{Binding RenderLight3}" Margin="4">Render PointLight 2</CheckBox>
+                    <CheckBox Grid.Row="4" IsChecked="{Binding RenderLight4}" Margin="4">Render SpotLight</CheckBox>
                 </Grid>
             </Expander>
         </StackPanel>

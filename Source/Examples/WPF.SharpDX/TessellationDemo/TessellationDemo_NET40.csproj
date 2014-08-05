@@ -22,7 +22,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TESSELLATION_</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -30,7 +30,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;TESSELLATION_</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,11 +38,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SharpDX">
       <HintPath>..\..\..\packages\SharpDX.2.5.0\lib\net40\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -92,10 +93,10 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Media\teapot_low_tex_quads.mtl">
+    <Content Include="Media\teapot_quads_tex.mtl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Media\teapot_low_tex_quads.obj">
+    <Content Include="Media\teapot_quads_tex.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
@@ -106,22 +107,22 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\HelixToolkit.SharpDX.Wpf\HelixToolkit.SharpDX.Wpf_NET40.csproj">
-      <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
-      <Name>HelixToolkit.SharpDX.Wpf_NET40</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DemoCore\DemoCore.csproj">
-      <Project>{b475c12b-80f9-4bc0-88e5-815c88593bee}</Project>
-      <Name>DemoCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Media\TextureCheckerboard2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Media\TextureCheckerboard2_dot3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX_NET40.csproj">
+      <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
+      <Name>HelixToolkit.Wpf.SharpDX_NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoCore\DemoCore _NET40.csproj">
+      <Project>{2788327a-7e25-4119-a9eb-06ff1cea01e8}</Project>
+      <Name>DemoCore _NET40</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

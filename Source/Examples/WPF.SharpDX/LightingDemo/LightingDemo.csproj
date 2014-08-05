@@ -31,7 +31,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Output\NET45\Examples\WPF.SharpDX\LightingDemo\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -101,9 +101,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX_NET40.csproj">
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
       <Project>{39740654-F5F1-4936-B4EA-9BC97D4CDE37}</Project>
-      <Name>HelixToolkit.Wpf.SharpDX_NET40</Name>
+      <Name>HelixToolkit.Wpf.SharpDX</Name>
     </ProjectReference>
     <ProjectReference Include="..\DemoCore\DemoCore.csproj">
       <Project>{b475c12b-80f9-4bc0-88e5-815c88593bee}</Project>

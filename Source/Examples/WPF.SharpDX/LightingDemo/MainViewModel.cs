@@ -3,16 +3,14 @@
     using System;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
-
     using DemoCore;
-
     using HelixToolkit.Wpf.SharpDX;
-
     using SharpDX;
-
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -22,14 +20,14 @@
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
         public LineGeometry3D CubeEdges { get; private set; }
-        public Media3D.Transform3D ModelTransform { get; private set; }
-        public Media3D.Transform3D FloorTransform { get; private set; }
-        public Media3D.Transform3D Light1Transform { get; private set; }
-        public Media3D.Transform3D Light2Transform { get; private set; }
-        public Media3D.Transform3D Light3Transform { get; private set; }
-        public Media3D.Transform3D Light4Transform { get; private set; }
-        public Media3D.Transform3D Light1DirectionTransform { get; private set; }
-        public Media3D.Transform3D Light4DirectionTransform { get; private set; }
+        public Transform3D ModelTransform { get; private set; }
+        public Transform3D FloorTransform { get; private set; }
+        public Transform3D Light1Transform { get; private set; }
+        public Transform3D Light2Transform { get; private set; }
+        public Transform3D Light3Transform { get; private set; }
+        public Transform3D Light4Transform { get; private set; }
+        public Transform3D Light1DirectionTransform { get; private set; }
+        public Transform3D Light4DirectionTransform { get; private set; }
 
         public PhongMaterial ModelMaterial { get; set; }
         public PhongMaterial FloorMaterial { get; set; }
@@ -37,7 +35,7 @@
 
         public Vector3 Light1Direction { get; set; }
         public Vector3 Light4Direction { get; set; }
-        public Media3D.Vector3D LightDirection4 { get; set; }        
+        public Vector3D LightDirection4 { get; set; }        
         public Color4 Light1Color { get; set; }
         public Color4 Light2Color { get; set; }
         public Color4 Light3Color { get; set; }
@@ -55,9 +53,9 @@
         public MainViewModel()
         {
             // ----------------------------------------------
-            // set windows text
-            this.Title = "Lighting Demo (WPF & SharpDX)";
-            this.SubTitle = string.Format("Model: {0}, Number Lights: {1}", RenderTechnique, Light3D.LightCount);
+            // titles
+            this.Title = "Lighting Demo";
+            this.SubTitle = "WPF & SharpDX";
 
             // ----------------------------------------------
             // camera setup
@@ -82,14 +80,14 @@
             this.Light4Attenuation = new Vector3(1.0f, 0.2f, 0.0f);
 
             this.Light1Direction = new Vector3(0, -10, -10);
-            this.Light1Transform = new Media3D.TranslateTransform3D(-Light1Direction.ToVector3D());
+            this.Light1Transform = new TranslateTransform3D(-Light1Direction.ToVector3D());
             this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction.ToVector3D(), new Vector3D(0, 1, -1), 24);
 
             this.Light2Transform = CreateAnimatedTransform1(new Vector3D(-4, 0, 0), new Vector3D(0, 0, 1), 3);
             this.Light3Transform = CreateAnimatedTransform1(new Vector3D(0, 0, 4), new Vector3D(0, 1, 0), 5);
 
             this.Light4Direction = new Vector3(0, -5, 0);
-            this.Light4Transform = new Media3D.TranslateTransform3D(-Light4Direction.ToVector3D());
+            this.Light4Transform = new TranslateTransform3D(-Light4Direction.ToVector3D());
             this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12); 
             
             // ----------------------------------------------
@@ -133,12 +131,12 @@
             this.FloorMaterial = new PhongMaterial
             {
                 AmbientColor = Color.Gray,
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), // Colors.LightGray,
+                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), 
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
                 DiffuseMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute)),
                 NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
-            };
+            };            
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)
