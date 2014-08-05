@@ -75,6 +75,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="action">The action to be executed.</param>
         public void Dispatch(Action action)
         {
+            // pm@20140805: this call causes a System.Threading.Tasks.TaskCanceledException in Element3D on application closing, \
+            // it seems it happens only in the Net45 version, not in the Net40 
             if (this.Dispatcher.Thread != Thread.CurrentThread)
             {
                 this.Dispatcher.Invoke(action);
