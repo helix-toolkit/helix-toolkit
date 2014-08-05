@@ -33,6 +33,7 @@ syntax: glob
 Output/
 ClientBin/
 lib/
+.svn/
 *.sln.ide/
 
 _ReSharper*/
