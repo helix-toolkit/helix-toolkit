@@ -92,6 +92,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- init index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
             }
+            else
+            {
+                throw new System.Exception("Geometry must not be null");
+            }
 
             /// --- init instances buffer            
             this.hasInstances = (this.Instances != null) && (this.Instances.Any());

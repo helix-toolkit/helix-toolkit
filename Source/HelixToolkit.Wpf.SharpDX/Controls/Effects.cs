@@ -1,5 +1,4 @@
-﻿
-namespace HelixToolkit.Wpf.SharpDX
+﻿namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;
@@ -97,21 +96,24 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderColors = new RenderTechnique("RenderColors");
             RenderPositions = new RenderTechnique("RenderPositions");
             RenderNormals = new RenderTechnique("RenderNormals");
+            RenderPerturbedNormals = new RenderTechnique("RenderPerturbedNormals");
             RenderTangents = new RenderTechnique("RenderTangents");
             RenderTexCoords = new RenderTechnique("RenderTexCoords");
             RenderWires = new RenderTechnique("RenderWires");
 
+#if DEFERRED 
             RenderDeferred = new RenderTechnique("RenderDeferred");
             RenderGBuffer = new RenderTechnique("RenderGBuffer");
+            RenderDeferredLighting = new RenderTechnique("RenderDeferredLighting");
+            RenderScreenSpace = new RenderTechnique("RenderScreenSpace");
+#endif
 
-#if TESSELATION 
+#if TESSELLATION 
             RenderPNTriangs = new RenderTechnique("RenderPNTriangs");
             RenderPNQuads = new RenderTechnique("RenderPNQuads");
 #endif
             RenderCubeMap = new RenderTechnique("RenderCubeMap");
-            RenderLines = new RenderTechnique("RenderLines");
-            RenderDeferredLighting = new RenderTechnique("RenderDeferredLighting");
-            RenderScreenSpace = new RenderTechnique("RenderScreenSpace");
+            RenderLines = new RenderTechnique("RenderLines");                        
 
             RenderTechniques = new List<RenderTechnique>
             { 
@@ -122,12 +124,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderDiffuse,
                 RenderPositions,
                 RenderNormals,
+                RenderPerturbedNormals,
                 RenderTangents, 
                 RenderTexCoords,
                 RenderWires,
-
+#if DEFERRED
                 RenderDeferred,
-                RenderGBuffer,            
+                RenderGBuffer,  
+#endif
+                
+#if TESSELLATION 
+                RenderPNTriangs,
+                RenderPNQuads,
+#endif
             };
 
             TechniquesSourceDict = new Dictionary<RenderTechnique, byte[]>()
@@ -138,18 +147,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 {     Techniques.RenderColors,     Properties.Resources._default}, 
                 {     Techniques.RenderDiffuse,    Properties.Resources._default}, 
                 {     Techniques.RenderPositions,  Properties.Resources._default}, 
-                {     Techniques.RenderNormals,    Properties.Resources._default}, 
+                {     Techniques.RenderNormals,    Properties.Resources._default},
+                {     Techniques.RenderPerturbedNormals,    Properties.Resources._default}, 
                 {     Techniques.RenderTangents,   Properties.Resources._default}, 
                 {     Techniques.RenderTexCoords,  Properties.Resources._default}, 
                 {     Techniques.RenderWires,      Properties.Resources._default}, 
                 {     Techniques.RenderLines,      Properties.Resources._default}, 
-    #if TESSELATION                                        
+    #if TESSELLATION                                        
                 {     Techniques.RenderPNTriangs,  Properties.Resources._default}, 
                 {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
-    #endif            
+    #endif 
+    #if DEFERRED            
                 {     Techniques.RenderDeferred,   Properties.Resources._deferred},
                 {     Techniques.RenderGBuffer,    Properties.Resources._deferred},
                 {     Techniques.RenderDeferredLighting , Properties.Resources._deferred},
+    #endif
             };
         }
 
@@ -172,22 +184,24 @@ namespace HelixToolkit.Wpf.SharpDX
         public static RenderTechnique RenderColors { get; private set; }
         public static RenderTechnique RenderPositions { get; private set; }
         public static RenderTechnique RenderNormals { get; private set; }
+        public static RenderTechnique RenderPerturbedNormals { get; private set; }
         public static RenderTechnique RenderTangents { get; private set; }
         public static RenderTechnique RenderTexCoords { get; private set; }
         public static RenderTechnique RenderWires { get; private set; }
+        public static RenderTechnique RenderCubeMap { get; private set; }
+        public static RenderTechnique RenderLines { get; private set; }
 
-        public static RenderTechnique RenderDeferred { get; private set; }
-        public static RenderTechnique RenderGBuffer { get; private set; }
-
-#if TESSELATION
+#if TESSELLATION
         public static RenderTechnique RenderPNTriangs { get; private set; }
         public static RenderTechnique RenderPNQuads { get; private set; }
 #endif
-        public static RenderTechnique RenderCubeMap { get; private set; }
-        public static RenderTechnique RenderLines { get; private set; }
+
+#if DEFERRED                 
+        public static RenderTechnique RenderDeferred { get; private set; }
+        public static RenderTechnique RenderGBuffer { get; private set; }
         public static RenderTechnique RenderDeferredLighting { get; private set; }
         public static RenderTechnique RenderScreenSpace { get; private set; }
-
+#endif
         public static IEnumerable<RenderTechnique> RenderTechniques { get; private set; }
     }
 
@@ -288,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
 
                 // ------------------------------------------------------------------------------------
-#if TESSELATION
+#if TESSELLATION
                 RegisterEffect(Properties.Resources.Tessellation,
 #else                
                 RegisterEffect(Properties.Resources.Default,                                    
@@ -302,18 +316,20 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderColors, 
                     Techniques.RenderDiffuse,
                     Techniques.RenderPositions,
-                    Techniques.RenderNormals, 
+                    Techniques.RenderNormals,
+                    Techniques.RenderPerturbedNormals,
                     Techniques.RenderTangents, 
                     Techniques.RenderTexCoords, 
                     Techniques.RenderWires, 
                     Techniques.RenderLines,                                        
-#if TESSELATION
+#if TESSELLATION
                     Techniques.RenderPNTriangs,                     
                     Techniques.RenderPNQuads,
 #endif
                     
                 });
 
+#if DEFERRED  
                 // ------------------------------------------------------------------------------------                
                 RegisterEffect(Properties.Resources.Deferred, //Properties.Resources.Deferred,
                 new[] 
@@ -322,7 +338,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderGBuffer,
                     Techniques.RenderDeferredLighting 
                 });
-
+#endif
 
                 // ##############################################################################################
 
@@ -366,7 +382,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 RegisterLayout(new[] 
                 { 
                     Techniques.RenderCubeMap, 
+#if DEFERRED 
                     Techniques.RenderDeferredLighting
+#endif
                 }, cubeMapInputLayout);
 
                 // ------------------------------------------------------------------------------------
@@ -385,17 +403,19 @@ namespace HelixToolkit.Wpf.SharpDX
                                         
                     Techniques.RenderDiffuse,
                     Techniques.RenderPositions,
-                    Techniques.RenderNormals, 
+                    Techniques.RenderNormals,
+                    Techniques.RenderPerturbedNormals,
                     Techniques.RenderTangents, 
                     Techniques.RenderTexCoords, 
                     Techniques.RenderColors, 
                     Techniques.RenderWires, 
-
+#if DEFERRED 
                     Techniques.RenderDeferred,
                     Techniques.RenderGBuffer,
+#endif
                 }, defaultInputLayout);
 
-#if TESSELATION
+#if TESSELLATION
                 // ------------------------------------------------------------------------------------
                 var tessellationInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPNTriangs).GetTechniqueByName(Techniques.RenderPNTriangs.Name).GetPassByIndex(0).Description.Signature, new[] 
                 {
@@ -465,8 +485,19 @@ namespace HelixToolkit.Wpf.SharpDX
             eFlags |= EffectFlags.None;       
 #endif
 
-            var preprocess = ShaderBytecode.Preprocess(shaderEffectString, null, new IncludeHandler());
-            var hashCode = preprocess.GetHashCode();
+            var preposessMacros = new List<ShaderMacro>();
+
+#if DEFERRED
+    #if DEFERRED_MSAA
+            preposessMacros.Add(new ShaderMacro("DEFERRED_MSAA", true));
+    #endif
+
+    #if SSAO
+            preposessMacros.Add(new ShaderMacro("SSAO", true));
+    #endif
+#endif
+            var preprocess = ShaderBytecode.Preprocess(shaderEffectString, preposessMacros.ToArray(), new IncludeHandler());
+			var hashCode = preprocess.GetHashCode();
             if (!File.Exists(hashCode.ToString()))
             {
                 try
@@ -581,9 +612,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 writer.Flush();
                 stream.Position = 0;
                 return stream;
-
-                //stream = new StreamReader(fileName).BaseStream;                
-                //return stream;
             }
 
             public IDisposable Shadow

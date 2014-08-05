@@ -55,8 +55,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.IsAttached)
             {
+                var host = this.renderHost;
                 this.Detach();
-                this.Attach(this.renderHost);
+                this.Attach(host);
             }
         }
 
@@ -180,16 +181,19 @@ namespace HelixToolkit.Wpf.SharpDX
         ~GeometryModel3D()
         {
             // Should to be called on dispatcher thread.
-            this.Dispatch(() =>
-            {
-                this.Dispose();
-                this.MouseDown3D -= OnMouse3DDown;
-                this.MouseUp3D -= OnMouse3DUp;
-                this.MouseMove3D -= OnMouse3DMove;
-            });
-      
-            //count--;
-            //Console.WriteLine(count);
+            // pm@20140805: this call causes a System.Threading.Tasks.TaskCanceledException in Element3D on application closing , I comment it out temporarly
+            //this.Dispatch(() =>
+            //{
+            //    this.Dispose();
+            //    this.MouseDown3D -= OnMouse3DDown;
+            //    this.MouseUp3D -= OnMouse3DUp;
+            //    this.MouseMove3D -= OnMouse3DMove;
+            //});
+
+            this.Dispose();
+            this.MouseDown3D -= OnMouse3DDown;
+            this.MouseUp3D -= OnMouse3DUp;
+            this.MouseMove3D -= OnMouse3DMove;
         }
 
         //static ulong count = 0;

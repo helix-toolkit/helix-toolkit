@@ -38,10 +38,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Render(RenderContext context)
         {
+#if DEFERRED  
             if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
             {
                 return;
             }
+#endif
 
             if (this.IsRendering)
             {

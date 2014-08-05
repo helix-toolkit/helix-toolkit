@@ -425,7 +425,7 @@
         /// </summary>
         public MeshGeometry3D ToMeshGeometry3D()
         {
-            if (this.HasTangents)
+            if (this.HasTangents && this.tangents.Count==0)
             {
                 Vector3Collection tan, bitan;
                 ComputeTangents(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out tan, out bitan);

@@ -996,6 +996,11 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseUpHitTest(e);
         }
 
+        public void EmulateMouseUpByTouch(MouseButtonEventArgs e)
+        {
+            this.MouseUpHitTest(e);
+        }
+
         /// <summary>
         /// Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
@@ -1003,6 +1008,12 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
+            this.Focus();
+            this.MouseDownHitTest(e);
+        }
+
+        public void EmulateMouseDownByTouch(MouseButtonEventArgs e)
+        {
             this.Focus();
             this.MouseDownHitTest(e);
         }
@@ -1020,6 +1031,27 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.EnableCurrentPosition)
             {
                 var pt = e.GetPosition(this);
+                var pos = this.FindNearestPoint(pt);
+                if (pos != null)
+                {
+                    this.CurrentPosition = pos.Value;
+                }
+                else
+                {
+                    var p = this.UnProjectOnPlane(pt);
+                    if (p != null)
+                    {
+                        this.CurrentPosition = p.Value;
+                    }
+                }
+            }
+        }
+
+        public void EmulateMouseMoveByTouch(Point pt)
+        {
+            this.MouseMoveHitTest(pt);
+            if (this.EnableCurrentPosition)
+            {
                 var pos = this.FindNearestPoint(pt);
                 if (pos != null)
                 {
@@ -1064,6 +1096,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.AddZoomForce(-e.Delta * 0.001);
             e.Handled = true;
+        }
+
+        protected override void OnManipulationStarting(ManipulationStartingEventArgs e)
+        {
+            base.OnManipulationStarting(e);
+        }
+
+        protected override void OnPreviewTouchMove(TouchEventArgs e)
+        {
+            base.OnPreviewTouchMove(e);
         }
 
         /// <summary>
@@ -1678,6 +1720,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }            
         }
 
+        public bool HittedSomething(MouseEventArgs e)
+        {
+            var hits = this.FindHits(e.GetPosition(this));
+            if (hits.Count > 0)
+                return true;
+            return false;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -1706,6 +1757,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 foreach (var hit in this.mouseHitModels)
                 {
                     hit.ModelHit.RaiseEvent(new MouseMove3DEventArgs(hit.ModelHit, hit, e.GetPosition(this), this));
+                }
+            }
+        }
+
+        private void MouseMoveHitTest(Point pt)
+        {
+            if (mouseHitModels.Count > 0)
+            {
+                foreach (var hit in this.mouseHitModels)
+                {
+                    hit.ModelHit.RaiseEvent(new MouseMove3DEventArgs(hit.ModelHit, hit, pt, this));
                 }
             }
         }

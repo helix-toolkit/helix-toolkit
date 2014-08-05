@@ -210,8 +210,10 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Geometry == null)            
                 return;
 
+#if DEFERRED  
             if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
                 return;  
+#endif
 
             // --- get device
             this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
@@ -318,8 +320,10 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
+#if DEFERRED
             if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
                 return;
+#endif
 
             if (renderContext.IsShadowPass)
                 if (!this.IsThrowingShadow)

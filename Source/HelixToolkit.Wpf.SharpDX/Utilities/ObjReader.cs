@@ -30,9 +30,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class Object3D
     {
-        public Geometry3D Geometry;
-        public Material Material;
-        public Matrix Transform;
+        public Geometry3D Geometry { get; set; }
+        public Material Material { get; set; }
+        public Matrix Transform { get; set; }
+        public string Name { get; set; }
     }
 
     /// <summary>

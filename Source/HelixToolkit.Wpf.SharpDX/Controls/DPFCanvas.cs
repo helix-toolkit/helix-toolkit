@@ -1,8 +1,4 @@
-﻿#define MSAA
-#define SSAO
-
-
-namespace HelixToolkit.Wpf.SharpDX
+﻿namespace HelixToolkit.Wpf.SharpDX
 {
     using System.ComponentModel;
     using System.Diagnostics;
@@ -180,8 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         private void StartD3D()
-        {
-           
+        {           
             this.surfaceD3D = new DX11ImageSource();
             this.surfaceD3D.IsFrontBufferAvailableChanged += this.OnIsFrontBufferAvailableChanged;            
             this.device = EffectsManager.Device;
@@ -203,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderRenderable.Detach();
                 this.sceneAttached = false;
             }
-            
+
             if (this.surfaceD3D == null)
             {
                 return;
@@ -217,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.colorBufferView);
             Disposer.RemoveAndDispose(ref this.depthStencilBufferView);
             Disposer.RemoveAndDispose(ref this.colorBuffer);
-            Disposer.RemoveAndDispose(ref this.depthStencilBuffer);                        
+            Disposer.RemoveAndDispose(ref this.depthStencilBuffer);
 #if MSAA
             Disposer.RemoveAndDispose(ref this.renderTargetNMS);
 #endif
@@ -296,6 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var depthdesc = new Texture2DDescription
             {
                 BindFlags = BindFlags.DepthStencil,
+                //Format = Format.D24_UNorm_S8_UInt,
                 Format = Format.D32_Float_S8X24_UInt,
                 Width = width,
                 Height = height,
@@ -360,6 +356,21 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Sets the default render-targets
+        /// </summary>
+        public void SetDefaultColorTargets(DepthStencilView dsv)
+        {
+            this.targetWidth = this.colorBuffer.Description.Width;
+            this.targetHeight = this.colorBuffer.Description.Height;
+
+            this.device.ImmediateContext.OutputMerger.SetTargets(dsv, this.colorBufferView);
+            this.device.ImmediateContext.Rasterizer.SetViewport(0, 0, this.colorBuffer.Description.Width, this.colorBuffer.Description.Height, 0.0f, 1.0f);
+
+            this.device.ImmediateContext.ClearRenderTargetView(this.colorBufferView, this.ClearColor);
+            this.device.ImmediateContext.ClearDepthStencilView(this.depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+        }
+
+        /// <summary>
         /// Clears the buffers with the clear-color
         /// </summary>
         /// <param name="clearBackBuffer"></param>
@@ -413,6 +424,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         this.renderContext = new RenderContext(this, EffectsManager.Instance.GetEffect(this.RenderTechnique));
                         this.renderRenderable.Attach(this);
                         
+#if DEFERRED  
                         if(this.RenderTechnique == Techniques.RenderDeferred)
                         {
                             this.deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
@@ -422,6 +434,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             this.deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
+#endif
                     }
                     catch (System.Exception ex)
                     {
@@ -433,15 +446,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 /// ---------------------------------------------------------------------------
                 /// this part is per frame                
+#if DEFERRED
                 if (this.RenderTechnique == Techniques.RenderDeferred)
-                {                  
+                {
                     /// set G-Buffer                    
                     this.deferredRenderer.SetGBufferTargets();
 
                     /// render G-Buffer pass                
                     this.renderRenderable.Update(this.renderTimer.Elapsed);
                     this.renderRenderable.Render(this.renderContext);
-                    
+
                     /// call deferred render 
                     this.deferredRenderer.RenderDeferred(this.renderContext, this.renderRenderable);
 
@@ -462,7 +476,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.deferredRenderer.RenderGBufferOutput(ref this.colorBuffer);
 #endif
                 }
-                else
+                else 
+#endif
                 {
                     this.device.ImmediateContext.ClearRenderTargetView(this.colorBufferView, this.ClearColor);
                     this.device.ImmediateContext.ClearDepthStencilView(this.depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
@@ -525,6 +540,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.surfaceD3D != null)
             {
+#if DEFERRED
                 if (this.RenderTechnique == Techniques.RenderDeferred)
                 {
                     this.deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
@@ -533,11 +549,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                 }
-            
+#endif
                 this.CreateAndBindTargets();
-                this.SetDefaultRenderTargets();              
+                this.SetDefaultRenderTargets();
             }
-
             base.OnRenderSizeChanged(sizeInfo);
         }
 
