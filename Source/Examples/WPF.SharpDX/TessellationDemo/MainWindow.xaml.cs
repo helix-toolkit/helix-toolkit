@@ -3,8 +3,7 @@
     using System.Linq;
     using System.Windows;
     using System.Windows.Input;
-    using HelixToolkit.SharpDX;
-    using HelixToolkit.SharpDX.Wpf;
+    using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
@@ -20,6 +19,7 @@
         public MainWindow()
         {
             this.InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
     }
 

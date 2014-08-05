@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpDX;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,8 @@ namespace DeferredShadingDemo
     {
         public MainWindow()
         {
-            InitializeComponent();          
+            InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
     }
 }

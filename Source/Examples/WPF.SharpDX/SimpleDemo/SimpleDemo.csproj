@@ -29,7 +29,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Output\NET45\Examples\WPF.SharpDX\SimpleDemo\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -100,9 +100,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX_NET40.csproj">
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
       <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
-      <Name>HelixToolkit.Wpf.SharpDX_NET40</Name>
+      <Name>HelixToolkit.Wpf.SharpDX</Name>
     </ProjectReference>
     <ProjectReference Include="..\DemoCore\DemoCore.csproj">
       <Project>{b475c12b-80f9-4bc0-88e5-815c88593bee}</Project>

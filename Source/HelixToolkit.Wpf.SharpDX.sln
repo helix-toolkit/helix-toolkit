@@ -1,7 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{78DEE658-114C-49AF-96E8-B02B34585622}"
 	ProjectSection(SolutionItems) = preProject
@@ -47,6 +46,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateDemo", "Examples\WPF.SharpDX\TemplateDemo\TemplateDemo.csproj", "{10CF1F8D-1297-495C-92C2-A24E341AA7AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\WPF.SharpDX\ExampleBrowser\ExampleBrowser.csproj", "{991A4C2B-D830-41CB-A810-047ADCF69219}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TessellationDemo", "Examples\WPF.SharpDX\TessellationDemo\TessellationDemo.csproj", "{82BB6745-9D34-453A-851C-01C8FD7A0F20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSpaceDemo", "Examples\WPF.SharpDX\ScreenSpaceDemo\ScreenSpaceDemo.csproj", "{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -206,6 +209,22 @@ Global
 		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|Any CPU.Build.0 = Release|Any CPU
 		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|x64.ActiveCfg = Release|Any CPU
 		{991A4C2B-D830-41CB-A810-047ADCF69219}.Release|x86.ActiveCfg = Release|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|x64.ActiveCfg = Release|Any CPU
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|x86.ActiveCfg = Release|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|x64.ActiveCfg = Release|Any CPU
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -224,5 +243,7 @@ Global
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{10CF1F8D-1297-495C-92C2-A24E341AA7AC} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{991A4C2B-D830-41CB-A810-047ADCF69219} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{82BB6745-9D34-453A-851C-01C8FD7A0F20} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 	EndGlobalSection
 EndGlobal
