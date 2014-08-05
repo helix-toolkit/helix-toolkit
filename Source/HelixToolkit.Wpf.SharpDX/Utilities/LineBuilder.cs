@@ -15,14 +15,22 @@
     {
         private Vector3Collection positions;
         private IntCollection lineListIndices;
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public LineBuilder()
         {
             positions = new Vector3Collection();
             // textureCoordinates = new List<Point>();
             lineListIndices = new IntCollection();
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isClosed"></param>
+        /// <param name="points"></param>
         public void Add(bool isClosed, params Point3D[] points)
         {
             int i0 = positions.Count;
@@ -39,7 +47,14 @@
                 this.lineListIndices.Add(i0);
             }
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="xlength"></param>
+        /// <param name="ylength"></param>
+        /// <param name="zlength"></param>
         public void AddBox(Point3D center, double xlength, double ylength, double zlength)
         {
             int i0 = positions.Count;
@@ -50,7 +65,12 @@
             this.Add(true, center - dx - dy + dz, center + dx - dy + dz, center + dx + dy + dz, center - dx + dy + dz);
             lineListIndices.AddRange(new[] { i0 + 0, i0 + 4, i0 + 1, i0 + 5, i0 + 2, i0 + 6, i0 + 3, i0 + 7 });
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
         public void AddLine(Point3D p1, Point3D p2)
         {
             int i0 = positions.Count;
@@ -60,7 +80,14 @@
             this.lineListIndices.Add(i0 + 1);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="plane"></param>
+        /// <param name="columns"></param>
+        /// <param name="rows"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public void AddGrid(BoxFaces plane, int columns, int rows, float width, float height)
         {
             // checks
@@ -91,7 +118,10 @@
             }
         }
              
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public LineGeometry3D ToLineGeometry3D()
         {
             return new LineGeometry3D { Positions = this.positions, Indices = this.lineListIndices };
@@ -237,7 +267,91 @@
             return ll.ToLineGeometry3D();
         }
 
-        // ~7874015 tests per second, 3.36 times faster than GetRayToLineDistance()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="plane"></param>
+        /// <param name="radius"></param>
+        /// <param name="segments"></param>
+        /// <returns></returns>
+        public static LineGeometry3D GenerateCircle(Vector3 plane, float radius, int segments)
+        {
+            if (segments < 3)
+            {
+                throw new ArgumentNullException("too few segments, at least 3");
+            }
+
+            var circle = new LineBuilder();
+
+            float sectionAngle = (float)(2.0 * Math.PI / segments);
+
+            if (plane == Vector3.UnitX)
+            {
+                Point3D start = new Point3D(0.0f, 0.0f, radius);
+                Point3D current = new Point3D(0.0f, 0.0f, radius);
+                Point3D next = new Point3D(0.0f, 0.0f, 0.0f);
+
+                for (int i = 1; i < segments; i++)
+                {
+                    next.Z = radius * (float)Math.Cos(i * sectionAngle);
+                    next.Y = radius * (float)Math.Sin(i * sectionAngle);
+
+                    circle.AddLine(current, next);
+
+                    current = next;
+                }
+
+                circle.AddLine(current, start);
+            }
+            else if (plane == Vector3.UnitY)
+            {
+                Point3D start = new Point3D(radius, 0.0f, 0.0f);
+                Point3D current = new Point3D(radius, 0.0f, 0.0f);
+                Point3D next = new Point3D(0.0f, 0.0f, 0.0f);
+
+                for (int i = 1; i < segments; i++)
+                {
+                    next.X = radius * (float)Math.Cos(i * sectionAngle);
+                    next.Z = radius * (float)Math.Sin(i * sectionAngle);
+
+                    circle.AddLine(current, next);
+
+                    current = next;
+                }
+
+                circle.AddLine(current, start);
+            }
+            else
+            {
+                Point3D start = new Point3D(0.0f, radius, 0.0f);
+                Point3D current = new Point3D(0.0f, radius, 0.0f);
+                Point3D next = new Point3D(0.0f, 0.0f, 0.0f);
+
+                for (int i = 1; i < segments; i++)
+                {
+                    next.Y = radius * (float)Math.Cos(i * sectionAngle);
+                    next.X = radius * (float)Math.Sin(i * sectionAngle);
+
+                    circle.AddLine(current, next);
+
+                    current = next;
+                }
+
+                circle.AddLine(current, start);
+            }
+
+            return circle.ToLineGeometry3D();
+        }
+
+        /// <summary>
+        /// ~7874015 tests per second, 3.36 times faster than GetRayToLineDistance()
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="p0"></param>
+        /// <param name="p1"></param>
+        /// <param name="closest"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static float GetPointToLineDistance2D(ref Vector3 pt, ref Vector3 p0, ref Vector3 p1, out Vector3 closest, out float t)
         {
             float dx = p1.X - p0.X;
@@ -280,6 +394,17 @@
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <param name="t0"></param>
+        /// <param name="t1"></param>
+        /// <param name="sp"></param>
+        /// <param name="tp"></param>
+        /// <param name="sc"></param>
+        /// <param name="tc"></param>
+        /// <returns></returns>
         public static float GetRayToLineDistance(
             Ray ray, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc)
         {
@@ -288,8 +413,19 @@
             return GetLineToLineDistance(s0, s1, t0, t1, out sp, out tp, out sc, out tc, true);
         }
 
-        // Source: http://geomalgorithms.com/a07-_distance.html
-        // ~2341920 tests per second
+        /// <summary>
+        /// Source: http://geomalgorithms.com/a07-_distance.html
+        /// ~2341920 tests per second</summary>
+        /// <param name="s0"></param>
+        /// <param name="s1"></param>
+        /// <param name="t0"></param>
+        /// <param name="t1"></param>
+        /// <param name="sp"></param>
+        /// <param name="tp"></param>
+        /// <param name="sc"></param>
+        /// <param name="tc"></param>
+        /// <param name="sIsRay"></param>
+        /// <returns></returns>
         public static float GetLineToLineDistance(
             Vector3 s0, Vector3 s1, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc, bool sIsRay = false)
         {

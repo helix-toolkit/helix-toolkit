@@ -173,7 +173,8 @@
         /// </summary>
         public override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {            
-            base.OnMouse3DMove(sender, e);
+            if (IsHitTestVisible)
+                base.OnMouse3DMove(sender, e);
         }
     }
 }

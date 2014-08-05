@@ -19,14 +19,6 @@
 //--------------------------------------------------------------------------------------
 #include "./Shaders/Default.fx"
 
-
-
-//--------------------------------------------------------------------------------------
-// pre-processor defines
-//--------------------------------------------------------------------------------------
-#define PN_TRIANGLES 1
-#define PN_QUADS 1
-
 //--------------------------------------------------------------------------------------
 // SHADER STRUCTURES
 //--------------------------------------------------------------------------------------
@@ -35,16 +27,14 @@ struct HSConstantDataOutput
     float Edges[3]  : SV_TessFactor;
     float Inside    : SV_InsideTessFactor;
 	float Sign      : SIGN;
-#ifdef PN_TRIANGLES
-    // Geometry cubic generated control points
+   
     float3 f3B210   : POSITION3;
     float3 f3B120   : POSITION4;
     float3 f3B021   : POSITION5;
     float3 f3B012   : POSITION6;
     float3 f3B102   : POSITION7;
     float3 f3B201   : POSITION8;
-    float3 f3B111   : CENTER;
-#endif    
+    float3 f3B111   : CENTER;   
 };
 
 //--------------------------------------------------------------------------------------
@@ -53,11 +43,8 @@ struct HSConstantDataOutputQuads
     float  Edges[4]			: SV_TessFactor;
     float  Inside[2]		: SV_InsideTessFactor;
 	float  Sign				: SIGN;
-
-#ifdef PN_TRIANGLES  
 	float3 vEdgePos[8]		: EDGEPOS;
     float3 vInteriorPos[4]	: INTERIORPOS;
-#endif
 };
 
 //--------------------------------------------------------------------------------------
@@ -97,7 +84,7 @@ float4 BernsteinBasis(float u)
                    u * u * u );
 }
 
-#if PN_QUADS
+
 //------------------------------------------------------------------------------------
 // Bezier-Evaluation helper function
 //--------------------------------------------------------------------------------------
@@ -115,15 +102,15 @@ float3 EvaluateBezier( float3  p0, float3  p1, float3  p2, float3  p3,
                        float3 p12, float3 p13, float3 p14, float3 p15,
                        float4 basisU,
                        float4 basisV )
-{	
+{
     float3 value;
     value  = basisV.x * (  p0 * basisU.x +  p1 * basisU.y +  p2 * basisU.z +  p3 * basisU.w );
     value += basisV.y * (  p4 * basisU.x +  p5 * basisU.y +  p6 * basisU.z +  p7 * basisU.w );
     value += basisV.z * (  p8 * basisU.x +  p9 * basisU.y + p10 * basisU.z + p11 * basisU.w );
     value += basisV.w * ( p12 * basisU.x + p13 * basisU.y + p14 * basisU.z + p15 * basisU.w );
-    return value;
+	return value;  
 }
-#endif
+
 
 //--------------------------------------------------------------------------------------
 // VERTEX SHADER function
@@ -140,8 +127,6 @@ HSInput VShaderTessellated( VSIn input )
 	output.c		= input.c;
     return output;
 }
-
-
 
 //--------------------------------------------------------------------------------------
 // HULL SHADER main function
@@ -170,13 +155,23 @@ HSInput HShaderQuadMain( InputPatch<HSInput, 4> inputPatch, uint cpID : SV_Outpu
 }
 
 //--------------------------------------------------------------------------------------
-// HULL SHADER constant function
+// HULL SHADER constant function for triangular patches
 // called per patch
 //--------------------------------------------------------------------------------------
-HSConstantDataOutput 
-	HShaderTriConstant( InputPatch<HSInput, 3> inputPatch)
+HSConstantDataOutput HShaderTriConstant( InputPatch<HSInput, 3> inputPatch)
 {    
 	HSConstantDataOutput output;
+
+	// edge control points
+    output.f3B210 = 1;
+    output.f3B120 = 1;
+    output.f3B021 = 1;
+    output.f3B012 = 1;
+    output.f3B102 = 1;
+    output.f3B201 = 1;
+
+    // center control point
+    output.f3B111 = 1;
 
 	// tessellation factors
 	[unroll]
@@ -186,9 +181,8 @@ HSConstantDataOutput
 	}
 	output.Inside = (output.Edges[0] + output.Edges[1] + output.Edges[2]) / 3;
 
-#ifdef PN_TRIANGLES
-    // compute the cubic geometry control points
-    // edge control points
+ 
+	// edge control points
     output.f3B210 = ( ( 2.0f * inputPatch[0].p ) + inputPatch[1].p - ( dot( ( inputPatch[1].p - inputPatch[0].p ), inputPatch[0].n ) * inputPatch[0].n ) ) / 3.0f;
     output.f3B120 = ( ( 2.0f * inputPatch[1].p ) + inputPatch[0].p - ( dot( ( inputPatch[0].p - inputPatch[1].p ), inputPatch[1].n ) * inputPatch[1].n ) ) / 3.0f;
     output.f3B021 = ( ( 2.0f * inputPatch[1].p ) + inputPatch[2].p - ( dot( ( inputPatch[2].p - inputPatch[1].p ), inputPatch[1].n ) * inputPatch[1].n ) ) / 3.0f;
@@ -199,23 +193,24 @@ HSConstantDataOutput
     float3 f3E = ( output.f3B210 + output.f3B120 + output.f3B021 + output.f3B012 + output.f3B102 + output.f3B201 ) / 6.0f;
     float3 f3V = ( inputPatch[0].p + inputPatch[1].p + inputPatch[2].p ) / 3.0f;
     output.f3B111 = f3E + ( ( f3E - f3V ) / 2.0f );
-#endif
 
+	// -- culling in HS
     float2 t01 = inputPatch[1].t - inputPatch[0].t;
     float2 t02 = inputPatch[2].t - inputPatch[0].t;
     output.Sign = t01.x * t02.y - t01.y * t02.x > 0.0f ? 1 : -1;
+
     return output;
 }
 
-
-HSConstantDataOutputQuads
-	HShaderQuadConstant( InputPatch<HSInput, 4> inputPatch)
+//--------------------------------------------------------------------------------------
+// HULL SHADER constant function for quad patches
+// called per patch
+//--------------------------------------------------------------------------------------
+HSConstantDataOutputQuads HShaderQuadConstant( InputPatch<HSInput, 4> inputPatch)
 {    
     HSConstantDataOutputQuads output = (HSConstantDataOutputQuads)0;
 
-#if PN_QUADS
-
-	// tessellation factors are proportional to model space edge length
+	// tessellation factors are proportional to model space edge length	
 	[unroll]
 	for (int ie = 0; ie < 4; ++ie)
 	{
@@ -223,7 +218,6 @@ HSConstantDataOutputQuads
 	}
 	output.Inside[1] = (output.Edges[0] + output.Edges[2]) / 2;
 	output.Inside[0] = (output.Edges[1] + output.Edges[3]) / 2;
-
 
 	// edge-points
     [unroll]
@@ -234,7 +228,7 @@ HSConstantDataOutputQuads
         float3 vPosTmp = 0;
 
         vPosTmp = inputPatch[j].p - inputPatch[i].p;
-        output.vEdgePos[    iedge * 2] = (2 * inputPatch[i].p + inputPatch[j].p - dot(vPosTmp, inputPatch[i].n) * inputPatch[i].n) / 3;
+        output.vEdgePos[iedge * 2] = (2 * inputPatch[i].p + inputPatch[j].p - dot(vPosTmp, inputPatch[i].n) * inputPatch[i].n) / 3;
 
         i = j;
         j = iedge;
@@ -263,15 +257,6 @@ HSConstantDataOutputQuads
     float2 t01 = inputPatch[1].t - inputPatch[0].t;
     float2 t02 = inputPatch[2].t - inputPatch[0].t;
     output.Sign = t01.x * t02.y - t01.y * t02.x > 0.0f ? 1 : -1;
-#else		
-	// constant tessellation factors
-	output.Edges[0] = 1;
-	output.Edges[1] = 1;
-	output.Edges[2] = 1;
-	output.Edges[3] = 1;
-	output.Inside[0] = 1;
-	output.Inside[1] = 1;	
-#endif
 
     return output;
 }
@@ -280,22 +265,20 @@ HSConstantDataOutputQuads
 
 
 //--------------------------------------------------------------------------------------
-// DOMAIN SHADER functions
-// called per ouput vertex
+// DOMAIN SHADER function for triangle-patches
+// called per uv-coordinate/ouput vertex
 //--------------------------------------------------------------------------------------
 [domain("tri")]
-PSInput DShaderTri(	HSConstantDataOutput input, 
-					float3 barycentricCoords : SV_DomainLocation,
-					OutputPatch<HSInput, 3> inputPatch )
+PSInput DShaderTri(	HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLocation, OutputPatch<HSInput, 3> inputPatch )
 {
     PSInput output = (PSInput)0;
 
-    // The barycentric coordinates
+    // --- The barycentric coordinates
     float fU = barycentricCoords.x;
     float fV = barycentricCoords.y;
     float fW = barycentricCoords.z;
 
-    // Precompute squares and squares * 3 
+    // --- Precompute squares and squares * 3 
     float fUU = fU * fU;
     float fVV = fV * fV;
     float fWW = fW * fW;
@@ -303,9 +286,7 @@ PSInput DShaderTri(	HSConstantDataOutput input,
     float fVV3 = fVV * 3.0f;
     float fWW3 = fWW * 3.0f;
 
-#ifdef PN_TRIANGLES
-    
-	// Compute position from cubic control points and barycentric coords
+	// --- Compute position from cubic control points and barycentric coords
     float3 position =	inputPatch[0].p * fWW * fW + 
 						inputPatch[1].p * fUU * fU +
 						inputPatch[2].p * fVV * fV +
@@ -316,68 +297,49 @@ PSInput DShaderTri(	HSConstantDataOutput input,
 						input.f3B102 * fW * fVV3 + 
 						input.f3B012 * fU * fVV3 + 
 						input.f3B111 * 6.0f * fW * fU * fV;
-#else
-	 float3 position =	inputPatch[0].p * barycentricCoords.x +
-						inputPatch[1].p * barycentricCoords.y +
-						inputPatch[2].p * barycentricCoords.z;
-#endif
 
-
-	// Compute texture coordinates
-    float2 texCoord = inputPatch[0].t * barycentricCoords.z + inputPatch[1].t * barycentricCoords.x + inputPatch[2].t * barycentricCoords.y;
-	
 	// Compute normal from barycentric coords
     output.n		= normalize( inputPatch[0].n * barycentricCoords.z + inputPatch[1].n * barycentricCoords.x + inputPatch[2].n * barycentricCoords.y );    
 	
 	// Compute tangent-space
     output.t1		= normalize( inputPatch[0].t1 * barycentricCoords.z + inputPatch[1].t1 * barycentricCoords.x + inputPatch[2].t1 * barycentricCoords.y );
 	output.t2		= normalize( inputPatch[0].t2 * barycentricCoords.z + inputPatch[1].t2 * barycentricCoords.x + inputPatch[2].t2 * barycentricCoords.y );
+		
+	// --- interpolate texture coordinates
+    output.t = inputPatch[0].t * barycentricCoords.z + inputPatch[1].t * barycentricCoords.x + inputPatch[2].t * barycentricCoords.y;
 	
-	// Set the interpolated per-vertex colors
+	// ---  interpolated per-vertex colors
 	output.c		= inputPatch[0].c * barycentricCoords.z + inputPatch[1].c * barycentricCoords.x + inputPatch[2].c * barycentricCoords.y;
     
-	// Compute output postion in the clip-space	
+	// --- Classical vertex-shader transforms: 
+	// --- output position in the clip-space	
 	output.p		= mul( float4(position, 1.0f),	mWorld );		
 	output.wp		= output.p;
 	output.p		= mul( output.p, mView );    
 	output.p		= mul( output.p, mProjection );	
 
-	// Set the interpolated normals and texcoords
-    output.t		= texCoord;    
+	// --- interpolated normals    
     output.n		= normalize( mul(output.n,  (float3x3)mWorld) );
     output.t1		= normalize( mul(output.t1, (float3x3)mWorld) );
 	output.t2		= normalize( mul(output.t2, (float3x3)mWorld) );
     	
-    //output.Sign = input.Sign;//inputPatch[0].sign;
-
     return output;
 }
 
-
+//--------------------------------------------------------------------------------------
+// DOMAIN SHADER function for quad-patches
+// called per uv-coordinate/ouput vertex
+//--------------------------------------------------------------------------------------
 [domain("quad")]
-PSInput DShaderQuad( 
-					HSConstantDataOutputQuads input, 
-                    float2 uv : SV_DomainLocation,
-                    OutputPatch<HSInput, 4> inputPatch )
+PSInput DShaderQuad(HSConstantDataOutputQuads input, float2 uv : SV_DomainLocation, OutputPatch<HSInput, 4> inputPatch )
 {
     PSInput output = (PSInput)0;
 
-#if PN_QUADS
-
-    float4 basisU = BernsteinBasis( uv.x );
+	// --- get Bernstein basis
+	float4 basisU = BernsteinBasis( uv.x );
     float4 basisV = BernsteinBasis( uv.y );
 
-	// *** TODO: evaluate cubic bezier patch from u v to determine the position *** //
-
-	// *** TODO: interpolate tex coords *** //
-
-	// *** TODO: possibly evaluate quadratic-bezier normals from u v or at least interpolate lineraly *** //
-
-	// *** TODO: possibly evaluate quadratic-bezier tangents from u v or at least interpolate lineraly *** //
-
-	// *** TODO: possibly apply displacement *** //
-
-	// the order of patch points provided to the evaluation func.
+	// hint: the order of patch points provided to the evaluation func. EvaluateBezier(...);
 	// p0 - e7 - e6 - p3           p0 - p4 - p8 - p12
 	// |    |    |    |		       |    |    |    |
 	// e0 - i0 - i3 - e5	       p1 - p5 - p9 - p13
@@ -408,14 +370,12 @@ PSInput DShaderQuad(
 		basisU, 
 		basisV);
 
-		// bi-linear interpolate normals
+	// TODO: implement cuadratic normals!!
+	
+	// bi-linear interpolate normals
     output.n  = (1 - uv.y) * (inputPatch[0].n * (1 - uv.x) + inputPatch[1].n * uv.x) +
                      uv.y  * (inputPatch[3].n * (1 - uv.x) + inputPatch[2].n * uv.x);
 	output.n  = normalize( output.n );
-
-	// bi-linear interpolate tex-coords
-    output.t  = (1 - uv.y) * (inputPatch[0].t * (1 - uv.x) + inputPatch[1].t * uv.x) +
-                      uv.y * (inputPatch[3].t * (1 - uv.x) + inputPatch[2].t * uv.x);
     
 	// bi-linear interpolate tangents
     output.t1 = (1 - uv.y) * (inputPatch[0].t1 * (1 - uv.x) + inputPatch[1].t1 * uv.x) +
@@ -427,23 +387,24 @@ PSInput DShaderQuad(
                       uv.y * (inputPatch[3].t2 * (1 - uv.x) + inputPatch[2].t2 * uv.x);
 	output.t2 = normalize( output.t2 );
 
-#else
-	// bi-linear interpolate position
-    float3 position  = (1 - uv.y) * (inputPatch[0].p * (1 - uv.x) + inputPatch[1].p * uv.x) +
-                     uv.y  * (inputPatch[3].p * (1 - uv.x) + inputPatch[2].p * uv.x);
-#endif
+
+	
+	// bi-linear interpolate tex-coords
+    output.t  = (1 - uv.y) * (inputPatch[0].t * (1 - uv.x) + inputPatch[1].t * uv.x) +
+                      uv.y * (inputPatch[3].t * (1 - uv.x) + inputPatch[2].t * uv.x);
    
-	// bi-linear interpolate per-vertex colors	
+	// --- bi-linear interpolation of per-vertex colors	
 	output.c = (1 - uv.y) * (inputPatch[0].c * (1 - uv.x) + inputPatch[1].c * uv.x) + 
                      uv.y * (inputPatch[3].c * (1 - uv.x) + inputPatch[2].c * uv.x);
 
-	// Compute output postion in the clip-space	
+	// --- Classical vertex-shader transforms: 
+	// --- output postion in the clip-space	
 	output.p		= mul( float4(position, 1.0f),	mWorld );		
 	output.wp		= output.p;
 	output.p		= mul( output.p, mView );    
 	output.p		= mul( output.p, mProjection );	
 
-	// Set the interpolated normals and texcoords     
+	// --- interpolated normals     
     output.n		= normalize( mul(output.n,  (float3x3)mWorld) );
     output.t1		= normalize( mul(output.t1, (float3x3)mWorld) );
 	output.t2		= normalize( mul(output.t2, (float3x3)mWorld) );
@@ -477,12 +438,12 @@ technique11 RenderPNTriangs
     {
 		SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
-		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
-        SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
+		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );			
+		SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                		
 		SetHullShader		( CompileShader( hs_5_0, HShaderTriMain() ) );
-        SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
-        SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_5_0, PShaderPhong() ) ); 
+		SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
+		SetGeometryShader	( NULL );
+		SetPixelShader		( CompileShader( ps_5_0, PShaderPhong() ) ); 
     } 
 	pass Wires
     {

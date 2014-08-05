@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
         bool IsMSAAEnabled { get; }
         IRenderer Renderable { get; }
         void SetDefaultRenderTargets();
+        void SetDefaultColorTargets(DepthStencilView dsv);
 
         /// <summary>
         /// This technique is used for the entire render pass 

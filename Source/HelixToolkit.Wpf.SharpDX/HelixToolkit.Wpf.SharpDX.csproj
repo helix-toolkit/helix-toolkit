@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DX11 PRECOMPILED_SHADERS TESSELATION_</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\NET45\</OutputPath>
-    <DefineConstants>TRACE;DX11 PRECOMPILED_SHADERS TESSELATION_</DefineConstants>
+    <DefineConstants>TRACE;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -167,11 +167,13 @@
     <Compile Include="Core\Vector3Collection.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
+    <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\OffReader.cs" />
     <Compile Include="Utilities\TokenizerHelper.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />
     <Compile Include="Utilities\ValueConverter.cs" />
@@ -194,7 +196,6 @@
     <Compile Include="Model\Elements3D\MeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\Element3DCollection.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\MaterialGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\PNPatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\TransformableItems3DControl.cs" />
     <Compile Include="Model\Elements3D\UICompositeManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIManipulator3D.cs" />

@@ -75,8 +75,11 @@ struct PSInput
 //--------------------------------------------------------------------------------------
 // Phong Lighting Reflection Model
 //--------------------------------------------------------------------------------------
+// Returns the sum of the diffuse and specular terms in the Phong reflection model
+// The specular and diffuse reflection constants for the currently loaded material (k_d and k_s) as well
+// as other material properties are defined in Material.fx.
 float4 calcPhongLighting( float4 LColor, float4 vMaterialTexture, float3 N, float3 L, float3 V, float3 R )
-{		
+{
 	float4 Id = vMaterialTexture * vMaterialDiffuse * saturate( dot(N,L) );
 	float4 Is = vMaterialSpecular * pow( saturate(dot(R,V)), sMaterialShininess );	
 	return (Id + Is) * LColor;
@@ -85,18 +88,24 @@ float4 calcPhongLighting( float4 LColor, float4 vMaterialTexture, float3 N, floa
 //--------------------------------------------------------------------------------------
 // Blinn-Phong Lighting Reflection Model
 //--------------------------------------------------------------------------------------
+// Returns the sum of the diffuse and specular terms in the Blinn-Phong reflection model.
 float4 calcBlinnPhongLighting( float4 LColor, float4 vMaterialTexture, float3 N, float3 L, float3 H )
-{		
+{
 	float4 Id = vMaterialTexture * vMaterialDiffuse * saturate( dot(N,L) );
-	float4 Is = vMaterialSpecular * pow( saturate(dot(N,H)), sMaterialShininess );		
+	float4 Is = vMaterialSpecular * pow( saturate(dot(N,H)), sMaterialShininess );
 	return (Id + Is) * LColor;
 }
 
 //--------------------------------------------------------------------------------------
 // normal mapping
 //--------------------------------------------------------------------------------------
+// This function returns the normal in world coordinates.
+// The input struct contains tangent (t1), bitangent (t2) and normal (n) of the
+// unperturbed surface in world coordinates. The perturbed normal in tangent space
+// can be read from texNormalMap.
+// The RGB values in this texture need to be normalized from (0, +1) to (-1, +1).
 float3 calcNormal(PSInput input)
-{
+{	
 	if(bHasNormalMap)
 	{
 		// Normalize the per-pixel interpolated tangent-space
@@ -110,7 +119,6 @@ float3 calcNormal(PSInput input)
 		bumpMap = (bumpMap * 2.0f) - 1.0f;
 		// Calculate the normal from the data in the bump map.
 		input.n = input.n + bumpMap.x * input.t1 + bumpMap.y * input.t2;
-
 	}
 	return normalize( input.n );
 }
@@ -230,6 +238,7 @@ PSInput VShaderDefault( VSInput input )
 	//set normal for interpolation	
 	output.n = normalize( mul(input.n, (float3x3)mWorld) );
 
+
 	if(bHasNormalMap)
 	{
 		// transform the tangents by the world matrix and normalize
@@ -249,7 +258,8 @@ PSInput VShaderDefault( VSInput input )
 // PER PIXEL LIGHTING  - PHONG
 //------------------------------------------------------------------------------------
 float4 PShaderPhong( PSInput input ) : SV_Target
-{     	
+{   
+
 	//calculate lighting vectors - renormalize vectors	
 	input.n = calcNormal( input );
 
@@ -257,6 +267,7 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 	float3 eye = normalize( vEyePos - input.wp.xyz );
 
 	// light emissive and ambient intensity
+	// this variable can be used for light accumulation
 	float4 I = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
 	
 	// get shadow color
@@ -270,20 +281,28 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 	float4 vMaterialTexture = 1.0f;
 	if(bHasDiffuseMap)
 	{	
-		vMaterialTexture = texDiffuseMap.Sample(LinearSampler, input.t);	
+		// SamplerState is defined in Common.fx.
+		vMaterialTexture = texDiffuseMap.Sample(LinearSampler, input.t);
 	}
 
 	// loop over lights
 	for (int i = 0; i < LIGHTS; i++)
-	{			
+	{		
+		// This framework calculates lighting in world space.
+		// For every light type, you should calculate the input values to the
+		// calcPhongLighting function, namely light direction and the reflection vector.
+		// For computuation of attenuation and the spot light factor, use the
+		// model from the DirectX documentation:
+		// http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
+
 		if(iLightType[i] == 1) // directional
-		{					
+		{
 			float3 d = normalize( (float3)vLightDir[i] );
 			float3 r = reflect( -d, input.n );
-			I += s * calcPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, eye, r );			
+			I += s * calcPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, eye, r );
 		}
 		else if(iLightType[i] == 2)  // point
-		{		
+		{
 			float3 d = (float3)( vLightPos[i] - input.wp );	 // light dir	
 			float dl = length(d);
 			d = normalize(d);	
@@ -292,7 +311,7 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 			I += att * calcPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, eye, r );
 		}
 		else if(iLightType[i] == 3)  // spot
-		{			
+		{
 			float3 d = (float3)( vLightPos[i] - input.wp );	 // light dir
 			float dl = length(d);
 			d = normalize(d);	
@@ -355,33 +374,36 @@ float4 PSShaderBlinnPhong( PSInput input ) : SV_Target
 	// add diffuse sampling
 	float4 vMaterialTexture = 1.0f;
 	if(bHasDiffuseMap)
-	{	
-		vMaterialTexture *= texDiffuseMap.Sample(LinearSampler, input.t);	
+	{			
+		// SamplerState is defined in Common.fx.
+		vMaterialTexture *= texDiffuseMap.Sample(LinearSampler, input.t);
 	}
 
 	// compute lighting
 	for (int i = 0; i < LIGHTS; i++)
-	{	
+	{		
+		// Same as for the Phong PixelShader, but use
+		// calcBlinnPhongLighting instead.
 		if(iLightType[i] == 1) // directional
-		{		
+		{
 			float3 d = normalize( (float3)vLightDir[i] );  // light dir	
 			float3 h = normalize( eye + d );
 			I += s * calcBlinnPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, h );
 		}
 		else if(iLightType[i] == 2)  // point
-		{		
-			float3 d = (float3)( vLightPos[i] - input.wp );	 // light dir
-			float dl = length(d);
-			d = normalize(d);	
-			float3 h = normalize( eye + d );
+		{
+			float3 d = (float3)( vLightPos[i] - input.wp );	// light dir
+			float dl = length(d);							// light distance
+			d = d/dl;										// normalized light dir						
+			float3 h = normalize( eye + d );				// half direction for specular
 			float att = 1.0f / ( vLightAtt[i].x + vLightAtt[i].y * dl + vLightAtt[i].z * dl * dl );
-			I += att*calcBlinnPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, h );
+			I += att * calcBlinnPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, h );
 		}
 		else if(iLightType[i] == 3)  // spot
-		{				
+		{			
 			float3 d = (float3)( vLightPos[i] - input.wp );	// light dir
 			float  dl = length(d);							// light distance
-			d = normalize(d);								// normalized light dir					
+			d = d/dl;										// normalized light dir					
 			float3 h = normalize( eye + d );				// half direction for specular
 			float3 sd = normalize( (float3)vLightDir[i] );	// missuse the vLightDir variable for spot-dir
 
@@ -436,7 +458,15 @@ float4 PShaderPositions( PSInput input ) : SV_Target
 //--------------------------------------------------------------------------------------
 float4 PShaderNormals( PSInput input ) : SV_Target
 {
-	return float4(input.n, 1);
+	return float4(input.n*0.5+0.5, 1);
+}
+
+//--------------------------------------------------------------------------------------
+//  Render Perturbed normals as Color
+//--------------------------------------------------------------------------------------
+float4 PShaderPerturbedNormals( PSInput input ) : SV_Target
+{
+	return float4(calcNormal(input)*0.5+0.5, 1.0f);
 }
 
 //--------------------------------------------------------------------------------------
@@ -444,7 +474,7 @@ float4 PShaderNormals( PSInput input ) : SV_Target
 //--------------------------------------------------------------------------------------
 float4 PShaderTangents( PSInput input ) : SV_Target
 {
-	return float4(input.t1, 1);
+	return float4(input.t1*0.5+0.5, 1);
 }
 
 //--------------------------------------------------------------------------------------
@@ -459,7 +489,8 @@ float4 PShaderTexCoords( PSInput input ) : SV_Target
 // diffuse map pixel shader
 //--------------------------------------------------------------------------------------
 float4 PShaderDiffuseMap ( PSInput input )  : SV_Target
-{
+{	
+	// SamplerState is defined in Common.fx.
 	return texDiffuseMap.Sample(LinearSampler, input.t);
 }
 
@@ -666,6 +697,32 @@ technique11 RenderNormals
         SetDomainShader		( NULL );
         SetGeometryShader	( NULL );
         SetPixelShader		( CompileShader( ps_4_0, PShaderNormals() ) );         
+    }
+}
+
+technique11 RenderPerturbedNormals
+{
+    pass P0
+    {
+		//SetRasterizerState	( RSSolid );
+		SetDepthStencilState( DSSDepthLess, 0);
+		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
+        SetVertexShader		( CompileShader( vs_4_0, VShaderDefault() ) );
+        SetHullShader		( NULL );
+        SetDomainShader		( NULL );
+        SetGeometryShader	( NULL );
+        SetPixelShader		( CompileShader( ps_4_0, PShaderPerturbedNormals() ) );        
+    } 
+	pass P1
+    {
+		SetRasterizerState	( RSWire );
+		SetDepthStencilState( DSSDepthLess, 0);
+		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
+        SetVertexShader		( CompileShader( vs_4_0, VShaderDefault() ) );
+        SetHullShader		( NULL );
+        SetDomainShader		( NULL );
+        SetGeometryShader	( NULL );
+        SetPixelShader		( CompileShader( ps_4_0, PShaderPerturbedNormals() ) );         
     }
 }
 
