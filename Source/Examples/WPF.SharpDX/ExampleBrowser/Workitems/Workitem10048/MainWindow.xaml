@@ -63,13 +63,14 @@
             <htx:AmbientLight3D Color="0.1,0.1,0.1,1.0"/>
             <htx:DirectionalLight3D Color="{x:Static sdx:Color4.White}" Direction="-2,-5,-2"/>
             <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
-                                                 Color="{x:Static sdx:Color.Black}">
+                                         Color="{x:Static sdx:Color.Black}"
+                                         HitTestThickness="2">
             </local:MyLineGeometryModel3D>
             <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
-                                                 Color="{x:Static sdx:Color.Blue}"
-                                                 Transform="{StaticResource Transform1}"
-                                                 Thickness="8"
-                                                 HitTestThickness="8">
+                                         Color="{x:Static sdx:Color.Blue}"
+                                         Transform="{StaticResource Transform1}"
+                                         Thickness="8"
+                                         HitTestThickness="8">
             </local:MyLineGeometryModel3D>
         </htx:Viewport3DX>
 
