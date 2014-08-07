@@ -97,6 +97,8 @@
 #if NET40
                     base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer);
 #else
+                    // "enableSoftwareFallback = true" makes Remote Desktop possible.
+                    // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
                     base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer, true);
 #endif
                     base.Unlock();

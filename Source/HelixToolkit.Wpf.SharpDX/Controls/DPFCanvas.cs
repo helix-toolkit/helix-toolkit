@@ -571,7 +571,11 @@
             }
             else
             {
+#if NET40
                 this.StopRendering();
+#endif
+                // We don't need to stop rendering on NET45+ because of software fallback (Remote Desktop).
+                // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
             }
         }
     }
