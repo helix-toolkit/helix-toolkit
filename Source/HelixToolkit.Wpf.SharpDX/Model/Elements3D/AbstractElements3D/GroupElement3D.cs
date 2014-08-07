@@ -26,7 +26,11 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Attach(host);
             foreach (var c in this.Children)
             {
-                this.AddLogicalChild(c);
+                if (c.Parent == null)
+                {
+                    this.AddLogicalChild(c);                    
+                }
+
                 c.Attach(host);
             }
         }
@@ -37,7 +41,10 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var c in this.Children)
             {
                 c.Detach();
-                this.RemoveLogicalChild(c);
+                if (c.Parent == this)
+                {
+                    this.RemoveLogicalChild(c);                    
+                }
             }
         }
 

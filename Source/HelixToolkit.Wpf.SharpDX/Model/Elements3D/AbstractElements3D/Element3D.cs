@@ -70,24 +70,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Makes sure the action is called on the dispatcher thread of this element.
-        /// </summary>
-        /// <param name="action">The action to be executed.</param>
-        public void Dispatch(Action action)
-        {
-            // pm@20140805: this call causes a System.Threading.Tasks.TaskCanceledException in Element3D on application closing, \
-            // it seems it happens only in the Net45 version, not in the Net40 
-            if (this.Dispatcher.Thread != Thread.CurrentThread)
-            {
-                this.Dispatcher.Invoke(action);
-            }
-            else
-            {
-                action();
-            }
-        }
-
-        /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
         /// </summary>
