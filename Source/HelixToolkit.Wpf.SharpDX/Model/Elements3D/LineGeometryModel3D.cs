@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.IsAttached)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.CreateLinesVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, LinesVertex.SizeInBytes, this.CreateLinesVertexArray());
             }
         }
 
@@ -224,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (geometry != null)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.CreateLinesVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, LinesVertex.SizeInBytes, this.CreateLinesVertexArray());
 
                 /// --- set up indexbuffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
