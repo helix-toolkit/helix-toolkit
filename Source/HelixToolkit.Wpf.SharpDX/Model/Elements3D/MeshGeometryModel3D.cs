@@ -79,15 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");                
 
                 /// --- init vertex buffer
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, geometry.Positions.Select((x, ii) => new DefaultVertex()
-                {
-                    Position = new Vector4(x, 1f),
-                    Color = geometry.Colors == null ? new Color4(1f, 1f, 1f, 1f) : geometry.Colors[ii],
-                    TexCoord = geometry.TextureCoordinates == null ? new Vector2() : texScale * geometry.TextureCoordinates[ii],
-                    Normal = geometry.Normals == null ? new Vector3() : geometry.Normals[ii],
-                    Tangent = geometry.Tangents != null ? geometry.BiTangents[ii] : new Vector3(),
-                    BiTangent = geometry.BiTangents != null ? geometry.BiTangents[ii] : new Vector3(),
-                }).ToArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.CreateDefaultVertexArray());
 
                 /// --- init index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
@@ -245,6 +237,38 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Dispose()
         {
             this.Detach();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="T:DefaultVertex[]"/>.
+        /// </summary>
+        private DefaultVertex[] CreateDefaultVertexArray()
+        {
+            var geometry = (MeshGeometry3D)this.Geometry;
+            var colors = geometry.Colors != null ? geometry.Colors.Array : null;
+            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.Array : null;
+            var texScale = this.TextureCoodScale;
+            var normals = geometry.Normals != null ? geometry.Normals.Array : null;
+            var tangents = geometry.Tangents != null ? geometry.Tangents.Array : null;
+            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
+            var positions = geometry.Positions.Array;
+            var vertexCount = positions.Length;
+            var result = new DefaultVertex[vertexCount];
+
+            for (var i = 0; i < vertexCount; i++)
+            {
+                result[i] = new DefaultVertex
+                {
+                    Position = new Vector4(positions[i], 1f),
+                    Color = colors != null ? colors[i] : Color4.White,
+                    TexCoord = textureCoordinates != null ? texScale * textureCoordinates[i] : Vector2.Zero,
+                    Normal = normals != null ? normals[i] : Vector3.Zero,
+                    Tangent = tangents != null ? tangents[i] : Vector3.Zero,
+                    BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero,
+                };
+            }
+
+            return result;
         }
     }
 }

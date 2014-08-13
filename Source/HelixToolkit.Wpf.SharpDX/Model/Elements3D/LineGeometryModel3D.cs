@@ -187,11 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.IsAttached)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.Geometry.Positions.Select((x, ii) => new LinesVertex()
-                {
-                    Position = new Vector4(x, 1f),
-                    Color = this.Color,
-                }).ToArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.CreateLinesVertexArray());
             }
         }
 
@@ -228,11 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (geometry != null)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.Geometry.Positions.Select((x, ii) => new LinesVertex()
-                {
-                    Position = new Vector4(x, 1f),
-                    Color = this.Color,
-                }).ToArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.CreateLinesVertexArray());
 
                 /// --- set up indexbuffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
@@ -418,6 +410,28 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Dispose()
         {
             this.Detach();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="T:LinesVertex[]"/>.
+        /// </summary>
+        private LinesVertex[] CreateLinesVertexArray()
+        {
+            var positions = this.Geometry.Positions.Array;
+            var vertexCount = positions.Length;
+            var color = this.Color;
+            var result = new LinesVertex[vertexCount];
+
+            for (var i = 0; i < vertexCount; i++)
+            {
+                result[i] = new LinesVertex
+                {
+                    Position = new Vector4(positions[i], 1f),
+                    Color = color,
+                };
+            }
+
+            return result;
         }
     }
 }
