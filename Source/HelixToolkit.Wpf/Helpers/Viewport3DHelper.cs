@@ -182,6 +182,73 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// The find hits for the special rectangle.
+        /// </summary>
+        /// <param name="viewport">
+        /// The viewport.
+        /// </param>
+        /// <param name="rectangle">
+        /// The rectangle.
+        /// </param>
+        /// <param name="mode">
+        /// The mode of selection.
+        /// </param>
+        /// <returns>
+        /// The list of the hits.
+        /// </returns>
+        public static IList<GeometryModel3D> FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)
+        {
+            var camera = viewport.Camera as ProjectionCamera;
+            var result = new List<GeometryModel3D>();
+
+            if (camera == null)
+            {
+                return result;
+            }
+
+            viewport.Children.Traverse<GeometryModel3D>(
+                (model, transform) =>
+                    {
+                        var geometry = model.Geometry as MeshGeometry3D;
+                        if (geometry != null)
+                        {
+                            var status = mode == SelectionHitMode.Inside;
+                            var point2Ds = geometry.TriangleIndices.Select(x => geometry.Positions[x])
+                                .Select(transform.Transform)
+                                .Select(viewport.Point3DtoPoint2D).ToArray();
+                            for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
+                            {
+                                var a = point2Ds[geometry.TriangleIndices[i * 3]];
+                                var b = point2Ds[geometry.TriangleIndices[i * 3 + 1]];
+                                var c = point2Ds[geometry.TriangleIndices[i * 3 + 2]];
+
+                                switch (mode)
+                                {
+                                    case SelectionHitMode.Inside:
+                                        status = status && Inside(a, b, c, rectangle);
+                                        break;
+                                    case SelectionHitMode.Touch:
+                                        status = status || (Inside(a, b, c, rectangle) || Intersect(a, b, c, rectangle));
+                                        break;
+                                }
+
+                                if (mode == SelectionHitMode.Touch && status)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (status)
+                            {
+                                result.Add(model);
+                            }
+                        }
+                    });
+
+            return result;
+        }
+
+        /// <summary>
         /// Finds the nearest visual, hit point and its normal.
         /// </summary>
         /// <param name="viewport">
@@ -864,6 +931,70 @@ namespace HelixToolkit.Wpf
                     }
                 });
             return count;
+        }
+
+        /// <summary>
+        /// Check whether the triangle is in the rectangle.
+        /// </summary>
+        /// <param name="a">The vertex a of triangle</param>
+        /// <param name="b">The vertex b of triangle</param>
+        /// <param name="c">The vertex c of triangle</param>
+        /// <param name="rect">The rectangle</param>
+        /// <returns>
+        /// True if the triangle is inside the rectangle.
+        /// </returns>
+        private static bool Inside(Point a, Point b, Point c, Rect rect)
+        {
+            return rect.Contains(a) && rect.Contains(b) && rect.Contains(c);
+        }
+
+        /// <summary>
+        /// Intersect of two lines.
+        /// </summary>
+        /// <param name="a1">One vertex of line a.</param>
+        /// <param name="a2">The other vertex of the line a.</param>
+        /// <param name="b1">One vertex of line b.</param>
+        /// <param name="b2">The other vertex of the line b.</param>
+        /// <returns>
+        /// True, if the two lines are crossed. Otherwise, it returns false.
+        /// </returns>
+        private static bool Intersect(Point a1, Point a2, Point b1, Point b2)
+        {
+            if (((a2.X - a1.X) * (b1.Y - a1.Y) - (b1.X - a1.X) * (a2.Y - a1.Y))
+                * ((a2.X - a1.X) * (b2.Y - a1.Y) - (b2.X - a1.X) * (a2.Y - a1.Y)) > 0)
+            {
+                return false;
+            }
+
+            if (((b2.X - b1.X) * (a1.Y - b1.Y) - (a1.X - b1.X) * (b2.Y - b1.Y))
+                * ((b2.X - b1.X) * (a2.Y - b1.Y) - (a2.X - b1.X) * (b2.Y - b1.Y)) > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Intersect of the point with the rectangle.
+        /// </summary>
+        /// <param name="a">The vertex a of the triangle.</param>
+        /// <param name="b">The vertex b of the triangle.</param>
+        /// <param name="c">The vertex c of the triangle.</param>
+        /// <param name="rect">The rectangle to be checked.</param>
+        /// <returns>
+        /// True, if the triangle intersect with the rectangle. Otherwise, it returns false.
+        /// </returns>
+        private static bool Intersect(Point a, Point b, Point c, Rect rect)
+        {
+            return Intersect(a, b, rect.BottomLeft, rect.BottomRight) || Intersect(a, b, rect.BottomLeft, rect.TopLeft)
+                   || Intersect(a, b, rect.TopLeft, rect.TopRight) || Intersect(a, b, rect.TopRight, rect.BottomRight)
+                   || Intersect(b, c, rect.BottomLeft, rect.BottomRight)
+                   || Intersect(b, c, rect.BottomLeft, rect.TopLeft) || Intersect(b, c, rect.TopLeft, rect.TopRight)
+                   || Intersect(b, c, rect.TopRight, rect.BottomRight)
+                   || Intersect(c, a, rect.BottomLeft, rect.BottomRight)
+                   || Intersect(c, a, rect.BottomLeft, rect.TopLeft) || Intersect(c, a, rect.TopLeft, rect.TopRight)
+                   || Intersect(c, a, rect.TopRight, rect.BottomRight);
         }
 
         /// <summary>

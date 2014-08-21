@@ -1,0 +1,53 @@
+﻿<Window x:Class="MeshVisualsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="MeshVisualsDemo" Height="480" Width="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ToolBarPanel>
+            <ToolBar>
+                <CheckBox Name="ArrowVisible" Content="Arrow" IsChecked="True"/>
+                <CheckBox Name="BoxVisible" Content="Box" IsChecked="True"/>
+                <CheckBox Name="CubeVisible" Content="Cube" IsChecked="True"/>
+                <CheckBox Name="EllipsoidVisible" Content="Ellipsoid" IsChecked="True"/>
+                <CheckBox Name="ExtrudedVisible" Content="Extruded" IsChecked="True"/>
+                <CheckBox Name="HelixVisible" Content="Helix" IsChecked="True"/>
+                <CheckBox Name="PieSliceVisible" Content="PieSlice" IsChecked="True"/>
+                <CheckBox Name="PipeVisible" Content="Pipe" IsChecked="True"/>
+                <CheckBox Name="QuadVisible" Content="Quad" IsChecked="True"/>
+                <CheckBox Name="RectangleVisible" Content="Rectangle" IsChecked="True"/>
+                <CheckBox Name="SphereVisible" Content="Sphere" IsChecked="True"/>
+                <CheckBox Name="TruncatedConeVisible" Content="TruncatedCone" IsChecked="True"/>
+                <CheckBox Name="TubeVisible" Content="Tube" IsChecked="True"/>
+                <CheckBox Name="GridLinesVisible" Content="GridLines" IsChecked="True"/>
+            </ToolBar>
+            <ToolBar>
+                <CheckBox Name="MeshVisible" Content="MeshGeometry" IsChecked="True"/>
+            </ToolBar>
+        </ToolBarPanel>
+        <helix:HelixViewport3D Grid.Row="1" x:Name="viewport">
+            <helix:DefaultLights/>
+
+            <helix:GridLinesVisual3D Center="6 0 -0.5" Fill="Gray" Visible="{Binding IsChecked, ElementName=GridLinesVisible}"/>
+
+            <helix:ArrowVisual3D Point1="5 0 -0.45" Point2="5 0 0.45" Diameter="0.2" Fill="Red" Visible="{Binding IsChecked, ElementName=ArrowVisible}"/>
+            <helix:BoxVisual3D Center="4 0 0" Fill="Orange" Length="0.8" Width="0.6" Height="0.9" Visible="{Binding IsChecked, ElementName=BoxVisible}"/>
+            <helix:CubeVisual3D Center="3 0 0" Fill="Yellow" SideLength="0.9" Visible="{Binding IsChecked, ElementName=CubeVisible}"/>
+            <helix:EllipsoidVisual3D Center="2 0 0" Fill="Green" RadiusX="0.45" RadiusY="0.3" RadiusZ="0.45" Visible="{Binding IsChecked, ElementName=EllipsoidVisible}"/>
+            <helix:ExtrudedVisual3D Path="1 0 -0.45 1 0 0.45" Section="0 0 0.45 0 0 0.45" Fill="Blue" Visible="{Binding IsChecked, ElementName=ExtrudedVisible}"/>
+            <helix:HelixVisual3D Origin="0 0 -0.45" Diameter="0.1" Turns="2" Length="0.9" Radius="0.35" Fill="Violet" Visible="{Binding IsChecked, ElementName=HelixVisible}"/>
+            <helix:PieSliceVisual3D Center="-1 0 0" OuterRadius="0.45" InnerRadius="0.1" Fill="Turquoise" Visible="{Binding IsChecked, ElementName=PieSliceVisible}"/>
+            <helix:PipeVisual3D Point1="-2 0 -0.45" Point2="-2 0 0.45" Diameter="0.9" InnerDiameter="0.7" Fill="Bisque" Visible="{Binding IsChecked, ElementName=PipeVisible}"/>
+            <helix:QuadVisual3D Point1="-3 -0.45 -0.45" Point2="-3 0.45 -0.45" Point3="-3 0.45 0.45" Point4="-3 -0.45 0.45" Fill="Gray" Visible="{Binding IsChecked, ElementName=QuadVisible}"/>
+            <helix:RectangleVisual3D Origin="-4 0 0" Width="0.9" Length="0.7" Fill="Tomato" Visible="{Binding IsChecked, ElementName=RectangleVisible}"/>
+            <helix:SphereVisual3D Center="-5 0 0" Fill="Gold" Radius="0.45" Visible="{Binding IsChecked, ElementName=SphereVisible}"/>
+            <helix:TruncatedConeVisual3D Origin="-6 0 -0.45" Height="0.9" BaseRadius="0.45" TopRadius="0.05" Fill="IndianRed" Visible="{Binding IsChecked, ElementName=TruncatedConeVisible}"/>
+            <helix:TubeVisual3D Path="-7 0 -0.45 -7 0.1 0 -7 0 0.45" Diameter="0.1" Fill="HotPink" Visible="{Binding IsChecked, ElementName=TubeVisible}"/>
+            <helix:MeshGeometryVisual3D Transform="{helix:Translate 6,0,-0.5}" MeshGeometry="{Binding GlassGeometry}" Fill="White" Visible="{Binding IsChecked, ElementName=MeshVisible}"/>
+        </helix:HelixViewport3D>
+    </Grid>
+</Window>
