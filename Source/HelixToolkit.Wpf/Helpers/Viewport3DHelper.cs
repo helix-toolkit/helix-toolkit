@@ -201,7 +201,6 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static IList<GeometryModel3D> FindHits(this Viewport3D viewport, Rect rectangle, Point last, SelectionHitMode mode)
         {
-            //const double Tolerance = 1e-10;
             var camera = viewport.Camera as ProjectionCamera;
             var result = new List<GeometryModel3D>();
 
@@ -209,14 +208,6 @@ namespace HelixToolkit.Wpf
             {
                 return result;
             }
-
-            //if (Math.Abs(rectangle.Height) < Tolerance && Math.Abs(rectangle.Width) < Tolerance)
-            //{
-            //    var selected = FindHits(viewport, last);
-            //    result.AddRange(selected.Select(hitResult => hitResult.Model).OfType<GeometryModel3D>());
-
-            //    return result;
-            //}
 
             viewport.Children.Traverse<GeometryModel3D>(
                 (model, transform) =>
