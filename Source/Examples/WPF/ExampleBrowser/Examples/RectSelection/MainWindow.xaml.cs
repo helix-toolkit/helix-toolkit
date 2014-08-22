@@ -10,20 +10,15 @@
 namespace RectSelection
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     using ExampleBrowser;
 
     using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.Selections;
-
-    using PropertyTools.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -47,6 +42,8 @@ namespace RectSelection
             typeof(MainWindow),
             new PropertyMetadata(SelectionHitMode.Touch));
 
+        private readonly Material[] materials = new Material[2];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
@@ -57,6 +54,19 @@ namespace RectSelection
             this.view1.InputBindings.Add(new MouseBinding(this.SelectCommand, new MouseGesture(MouseAction.LeftClick)));
             this.InitSelector();
             this.modeSelector.SelectedIndex = 0;
+
+            this.materials[0] = Materials.Blue;
+            this.materials[1] = Materials.Red;
+
+            foreach (var item in this.view1.Viewport.Children)
+            {
+                var model = item as MeshElement3D;
+                if (model != null)
+                {
+                    model.Material = this.materials[0];
+                    model.BackMaterial = this.materials[0];
+                }
+            }
         }
 
         /// <summary>
@@ -124,35 +134,15 @@ namespace RectSelection
         /// </param>
         private void OnModelsSelected(object sender, SelectionRoutedEventArgs args)
         {
-            var types = new List<string>();
             foreach (var model in args.SelectedModels)
             {
                 var geoModel = model as GeometryModel3D;
                 if (geoModel != null)
                 {
-                    var selected = this.view1.Viewport.Children.FirstOrDefault(
-                        x =>
-                            {
-                                var mesh = x as MeshElement3D;
-                                if (mesh != null)
-                                {
-                                    if (mesh.Model.Equals(geoModel))
-                                    {
-                                        return true;
-                                    }
-                                }
-
-                                return false;
-                            });
-
-                    if (selected != null)
-                    {
-                        types.Add(selected.DependencyObjectType.Name);
-                    }
+                    geoModel.Material = geoModel.Material.Equals(this.materials[0]) ? this.materials[1] : this.materials[0];
+                    geoModel.BackMaterial = geoModel.Material;
                 }
             }
-
-            MessageBox.Show(string.Join(", ", types));
         }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)

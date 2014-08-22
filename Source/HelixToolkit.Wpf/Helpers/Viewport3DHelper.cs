@@ -190,14 +190,18 @@ namespace HelixToolkit.Wpf
         /// <param name="rectangle">
         /// The rectangle.
         /// </param>
+        /// <param name="last">
+        /// The last point of the rectangle.
+        /// </param>
         /// <param name="mode">
         /// The mode of selection.
         /// </param>
         /// <returns>
         /// The list of the hits.
         /// </returns>
-        public static IList<GeometryModel3D> FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)
+        public static IList<GeometryModel3D> FindHits(this Viewport3D viewport, Rect rectangle, Point last, SelectionHitMode mode)
         {
+            //const double Tolerance = 1e-10;
             var camera = viewport.Camera as ProjectionCamera;
             var result = new List<GeometryModel3D>();
 
@@ -206,6 +210,14 @@ namespace HelixToolkit.Wpf
                 return result;
             }
 
+            //if (Math.Abs(rectangle.Height) < Tolerance && Math.Abs(rectangle.Width) < Tolerance)
+            //{
+            //    var selected = FindHits(viewport, last);
+            //    result.AddRange(selected.Select(hitResult => hitResult.Model).OfType<GeometryModel3D>());
+
+            //    return result;
+            //}
+
             viewport.Children.Traverse<GeometryModel3D>(
                 (model, transform) =>
                     {
@@ -213,9 +225,7 @@ namespace HelixToolkit.Wpf
                         if (geometry != null)
                         {
                             var status = mode == SelectionHitMode.Inside;
-                            var point2Ds = geometry.TriangleIndices.Select(x => geometry.Positions[x])
-                                .Select(transform.Transform)
-                                .Select(viewport.Point3DtoPoint2D).ToArray();
+                            var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
                             for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
                             {
                                 var a = point2Ds[geometry.TriangleIndices[i * 3]];
@@ -225,10 +235,12 @@ namespace HelixToolkit.Wpf
                                 switch (mode)
                                 {
                                     case SelectionHitMode.Inside:
-                                        status = status && Inside(a, b, c, rectangle);
+                                        status = status && InsideRect(a, b, c, rectangle);
                                         break;
                                     case SelectionHitMode.Touch:
-                                        status = status || (Inside(a, b, c, rectangle) || Intersect(a, b, c, rectangle));
+                                        status = status
+                                                 || InsideRect(a, b, c, rectangle) || Intersect(a, b, c, rectangle)
+                                                 || InsideTriangle(a, b, c, rectangle);
                                         break;
                                 }
 
@@ -943,9 +955,54 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// True if the triangle is inside the rectangle.
         /// </returns>
-        private static bool Inside(Point a, Point b, Point c, Rect rect)
+        private static bool InsideRect(Point a, Point b, Point c, Rect rect)
         {
             return rect.Contains(a) && rect.Contains(b) && rect.Contains(c);
+        }
+
+        /// <summary>
+        /// Check whether the rectangle is inside the triangle.
+        /// </summary>
+        /// <param name="a">The vertex a of triangle</param>
+        /// <param name="b">The vertex b of triangle</param>
+        /// <param name="c">The vertex c of triangle</param>
+        /// <param name="rect">The rectangle.</param>
+        /// <returns>
+        /// True if the rectangle is inside triangle. Otherwise, it returns false.
+        /// </returns>
+        private static bool InsideTriangle(Point a, Point b, Point c, Rect rect)
+        {
+            return PointInTriangle(rect.TopLeft, a, b, c) && PointInTriangle(rect.TopRight, a, b, c)
+                   && PointInTriangle(rect.BottomLeft, a, b, c) && PointInTriangle(rect.BottomRight, a, b, c);
+        }
+
+        /// <summary>
+        /// Check whether the point is in the triangle. See: http://stackoverflow.com/questions/2049582/how-to-determine-a-point-in-a-triangle
+        /// </summary>
+        /// <param name="p">The point to be checked.</param>
+        /// <param name="p0">The vertex p0 of the triangle.</param>
+        /// <param name="p1">The vertex p1 of the triangle.</param>
+        /// <param name="p2">The vertex p2 of the triangle.</param>
+        /// <returns>
+        /// True if the piont is in the triangle. Otherwise, it returns false.
+        /// </returns>
+        public static bool PointInTriangle(Point p, Point p0, Point p1, Point p2)
+        {
+            var s = p0.Y * p2.X - p0.X * p2.Y + (p2.Y - p0.Y) * p.X + (p0.X - p2.X) * p.Y;
+            var t = p0.X * p1.Y - p0.Y * p1.X + (p0.Y - p1.Y) * p.X + (p1.X - p0.X) * p.Y;
+
+            if ((s < 0) != (t < 0))
+                return false;
+
+            var a = -p1.Y * p2.X + p0.Y * (p2.X - p1.X) + p0.X * (p1.Y - p2.Y) + p1.X * p2.Y;
+            if (a < 0.0)
+            {
+                s = -s;
+                t = -t;
+                a = -a;
+            }
+
+            return s > 0 && t > 0 && (s + t) < a;
         }
 
         /// <summary>
@@ -960,6 +1017,11 @@ namespace HelixToolkit.Wpf
         /// </returns>
         private static bool Intersect(Point a1, Point a2, Point b1, Point b2)
         {
+            if (b1 == b2 || a1 == a2)
+            {
+                return false;
+            }
+
             if (((a2.X - a1.X) * (b1.Y - a1.Y) - (b1.X - a1.X) * (a2.Y - a1.Y))
                 * ((a2.X - a1.X) * (b2.Y - a1.Y) - (b2.X - a1.X) * (a2.Y - a1.Y)) > 0)
             {
