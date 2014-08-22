@@ -3,11 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         Title="MainWindow" Height="400" Width="700">
-    <Window.Resources>
-        <Style TargetType="{x:Type RadioButton}">
-            <Setter Property="Margin" Value="0, 0, 20, 0" />
-        </Style>
-    </Window.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="7, 5">
             <ComboBox x:Name="modeSelector" x:FieldModifier="private" SelectionChanged="OnSelectionChanged"/>
@@ -16,20 +11,20 @@
             <helix:DefaultLights />
             <helix:DefaultLights/>
 
-            <helix:ArrowVisual3D Point1="5 0 -0.45" Point2="5 0 0.45" Diameter="0.2" Fill="Red" />
-            <helix:BoxVisual3D Center="4 0 0" Fill="Orange" Length="0.8" Width="0.6" Height="0.9" />
-            <helix:CubeVisual3D Center="3 0 0" Fill="Yellow" SideLength="0.9" />
-            <helix:EllipsoidVisual3D Center="2 0 0" Fill="Green" RadiusX="0.45" RadiusY="0.3" RadiusZ="0.45" />
-            <helix:ExtrudedVisual3D Path="1 0 -0.45 1 0 0.45" Section="0 0 0.45 0 0 0.45" Fill="Blue" />
-            <helix:HelixVisual3D Origin="0 0 -0.45" Diameter="0.1" Turns="2" Length="0.9" Radius="0.35" Fill="Violet" />
-            <helix:PieSliceVisual3D Center="-1 0 0" OuterRadius="0.45" InnerRadius="0.1" Fill="Turquoise" />
-            <helix:PipeVisual3D Point1="-2 0 -0.45" Point2="-2 0 0.45" Diameter="0.9" InnerDiameter="0.7" Fill="Bisque" />
-            <helix:QuadVisual3D Point1="-3 -0.45 -0.45" Point2="-3 0.45 -0.45" Point3="-3 0.45 0.45" Point4="-3 -0.45 0.45" Fill="Gray" />
-            <helix:RectangleVisual3D Origin="-4 0 0" Width="0.9" Length="0.7" Fill="Tomato" />
-            <helix:SphereVisual3D Center="-5 0 0" Fill="Gold" Radius="0.45" />
-            <helix:TruncatedConeVisual3D Origin="-6 0 -0.45" Height="0.9" BaseRadius="0.45" TopRadius="0.05" Fill="IndianRed" />
-            <helix:TubeVisual3D Path="-7 0 -0.45 -7 0.1 0 -7 0 0.45" Diameter="0.1" Fill="HotPink" />
-            <helix:MeshGeometryVisual3D Transform="{helix:Translate 6,0,-0.5}" MeshGeometry="{Binding GlassGeometry}" Fill="White" />
+            <helix:ArrowVisual3D Point1="5 0 -0.45" Point2="5 0 0.45" Diameter="0.2" x:Name="Arrow" />
+            <helix:BoxVisual3D Center="4 0 0" Length="0.8" Width="0.6" Height="0.9" x:Name="Box"/>
+            <helix:CubeVisual3D Center="3 0 0" SideLength="0.9" x:Name="Cube"/>
+            <helix:EllipsoidVisual3D Center="2 0 0" RadiusX="0.45" RadiusY="0.3" RadiusZ="0.45" x:Name="Ellipsoid"/>
+            <helix:ExtrudedVisual3D Path="1 0 -0.45 1 0 0.45" Section="0 0 0.45 0 0 0.45" x:Name="Extruded"/>
+            <helix:HelixVisual3D Origin="0 0 -0.45" Diameter="0.1" Turns="2" Length="0.9" Radius="0.35" x:Name="Helix"/>
+            <helix:PieSliceVisual3D Center="-1 0 0" OuterRadius="0.45" InnerRadius="0.1" x:Name="PieSlice"/>
+            <helix:PipeVisual3D Point1="-2 0 -0.45" Point2="-2 0 0.45" Diameter="0.9" InnerDiameter="0.7" x:Name="Pipe"/>
+            <helix:QuadVisual3D Point1="-3 -0.45 -0.45" Point2="-3 0.45 -0.45" Point3="-3 0.45 0.45" Point4="-3 -0.45 0.45" x:Name="Quad"/>
+            <helix:RectangleVisual3D Origin="-4 0 0" Width="0.9" Length="0.7" x:Name="Rectangle"/>
+            <helix:SphereVisual3D Center="-5 0 0" Radius="0.45" x:Name="Sphere"/>
+            <helix:TruncatedConeVisual3D Origin="-6 0 -0.45" Height="0.9" BaseRadius="0.45" TopRadius="0.05" x:Name="TruncatedCone"/>
+            <helix:TubeVisual3D Path="-7 0 -0.45 -7 0.1 0 -7 0 0.45" Diameter="0.1" x:Name="Tube"/>
+            <helix:MeshGeometryVisual3D Transform="{helix:Translate 6,0,-0.5}" MeshGeometry="{Binding GlassGeometry}" x:Name="MeshGeometry"/>
         </helix:HelixViewport3D>
     </DockPanel>
 </Window>

@@ -134,7 +134,7 @@ namespace HelixToolkit.Wpf
             }
 
             this.CompletedImpl(e);
-
+            this.LastPoint = e.CurrentPosition;
             this.SelectedModels = new List<Model3D>();
             this.SelectModels();
 

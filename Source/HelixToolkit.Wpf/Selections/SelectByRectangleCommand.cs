@@ -90,7 +90,7 @@ namespace HelixToolkit.Wpf.Selections
         /// </summary>
         public override void SelectModels()
         {
-            this.SelectedModels = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Cast<Model3D>().ToList();
+            this.SelectedModels = this.Viewport.FindHits(this.selectionRect, this.LastPoint, this.SelectionHitMode).Cast<Model3D>().ToList();
         }
 
         /// <summary>
