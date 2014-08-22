@@ -201,11 +201,19 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static IList<GeometryModel3D> FindHits(this Viewport3D viewport, Rect rectangle, Point last, SelectionHitMode mode)
         {
+            const double Torlerance = 1e-10;
             var camera = viewport.Camera as ProjectionCamera;
             var result = new List<GeometryModel3D>();
 
             if (camera == null)
             {
+                return result;
+            }
+
+            if (rectangle.Width < Torlerance && rectangle.Height < Torlerance)
+            {
+                var hitResults = FindHits(viewport, last);
+                result.AddRange(hitResults.Select(x => x.Model).OfType<GeometryModel3D>());
                 return result;
             }
 

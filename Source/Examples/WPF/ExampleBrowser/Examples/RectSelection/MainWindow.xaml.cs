@@ -42,8 +42,6 @@ namespace RectSelection
             typeof(MainWindow),
             new PropertyMetadata(SelectionHitMode.Touch));
 
-        private readonly Material[] materials = new Material[2];
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
@@ -55,16 +53,15 @@ namespace RectSelection
             this.InitSelector();
             this.modeSelector.SelectedIndex = 0;
 
-            this.materials[0] = Materials.Blue;
-            this.materials[1] = Materials.Red;
+            this.InitModels();
 
             foreach (var item in this.view1.Viewport.Children)
             {
                 var model = item as MeshElement3D;
                 if (model != null)
                 {
-                    model.Material = this.materials[0];
-                    model.BackMaterial = this.materials[0];
+                    model.Material = Materials.Blue;
+                    model.BackMaterial = Materials.Blue;
                 }
             }
         }
@@ -114,6 +111,21 @@ namespace RectSelection
                 return builder.ToMesh(true);
             }
         }
+
+        private void InitModels()
+        {
+            for (var i = 1; i < 5; i++)
+            {
+                var model = new SphereVisual3D
+                                {
+                                    Center = new Point3D(0, 3, 0),
+                                    Radius = 0.1,
+                                    Transform = new TranslateTransform3D(i * 0.5, 0, 0)
+                                };
+
+                this.view1.Viewport.Children.Add(model);
+            }
+        }
         
         private void InitSelector()
         {
@@ -134,13 +146,14 @@ namespace RectSelection
         /// </param>
         private void OnModelsSelected(object sender, SelectionRoutedEventArgs args)
         {
+            this.ResetModels();
             foreach (var model in args.SelectedModels)
             {
                 var geoModel = model as GeometryModel3D;
                 if (geoModel != null)
                 {
-                    geoModel.Material = geoModel.Material.Equals(this.materials[0]) ? this.materials[1] : this.materials[0];
-                    geoModel.BackMaterial = geoModel.Material;
+                    geoModel.Material = Materials.Red;
+                    geoModel.BackMaterial = Materials.Red;
                 }
             }
         }
@@ -154,6 +167,15 @@ namespace RectSelection
             {
                 this.SelectCommand.SelectionHitMode = mode;
             }
+        }
+
+        private void ResetModels()
+        {
+            this.view1.Viewport.Children.Traverse<GeometryModel3D>((x, transform) =>
+                {
+                    x.Material = Materials.Blue;
+                    x.BackMaterial = Materials.Blue;
+                });
         }
     }
 }
