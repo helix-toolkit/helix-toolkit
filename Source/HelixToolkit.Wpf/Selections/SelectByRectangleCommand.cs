@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.Selections
             }
 
             var adornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
-            this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Black, 1, 1, 10, DashStyles.Dash);
+            this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Black, 1, 1, 0, DashStyles.Dash);
             adornerLayer.Add(this.rectangleAdorner);
         }
     }
