@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkit.Wpf
+namespace HelixToolkit.Wpf.Selections
 {
     /// <summary>
     /// The selection hit mode.

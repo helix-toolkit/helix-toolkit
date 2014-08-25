@@ -144,7 +144,7 @@ namespace RectSelection
         /// <param name="args">
         /// The args.
         /// </param>
-        private void OnModelsSelected(object sender, SelectionRoutedEventArgs args)
+        private void OnModelsSelected(object sender, RangeSelectionEventArgs args)
         {
             this.ResetModels();
             foreach (var model in args.SelectedModels)

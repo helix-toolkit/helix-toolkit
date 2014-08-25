@@ -18,6 +18,8 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
     using System.Windows.Shapes;
 
+    using HelixToolkit.Wpf.Selections;
+
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3D"/>.
     /// </summary>

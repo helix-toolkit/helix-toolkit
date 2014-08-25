@@ -10,13 +10,11 @@
 namespace HelixToolkit.Wpf.Selections
 {
     using System;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
-    using System.Windows.Media.Media3D;
 
     /// <summary>
     /// The select by rectangle command.
@@ -45,7 +43,7 @@ namespace HelixToolkit.Wpf.Selections
         /// <param name="selectedHandler">
         /// The selected Handler.
         /// </param>
-        public SelectByRectangleCommand(Viewport3D viewport, SelectionHitMode mode, EventHandler<SelectionRoutedEventArgs> selectedHandler)
+        public SelectByRectangleCommand(Viewport3D viewport, SelectionHitMode mode, EventHandler<RangeSelectionEventArgs> selectedHandler)
             : base(viewport, mode)
         {
             this.ModelsSelected += selectedHandler;
