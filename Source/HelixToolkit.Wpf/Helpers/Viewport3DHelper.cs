@@ -199,11 +199,11 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The list of the hits.
         /// </returns>
-        public static IList<GeometryModel3D> FindHits(this Viewport3D viewport, Rect rectangle, Point last, SelectionHitMode mode)
+        public static RectangleHitResult FindHits(this Viewport3D viewport, Rect rectangle, Point last, SelectionHitMode mode)
         {
             const double Torlerance = 1e-10;
             var camera = viewport.Camera as ProjectionCamera;
-            var result = new List<GeometryModel3D>();
+            var result = new RectangleHitResult();
 
             if (camera == null)
             {
@@ -213,7 +213,11 @@ namespace HelixToolkit.Wpf
             if (rectangle.Width < Torlerance && rectangle.Height < Torlerance)
             {
                 var hitResults = FindHits(viewport, last);
-                result.AddRange(hitResults.Select(x => x.Model).OfType<GeometryModel3D>());
+                foreach (var model in hitResults.Select(x => x.Model))
+                {
+                    result.Models.Add(model);
+                }
+
                 return result;
             }
 
@@ -251,7 +255,7 @@ namespace HelixToolkit.Wpf
 
                             if (status)
                             {
-                                result.Add(model);
+                                result.Models.Add(model);
                             }
                         }
                     });
@@ -1190,6 +1194,25 @@ namespace HelixToolkit.Wpf
                     SearchFor(group.Children, type, output);
                 }
             }
+        }
+
+        /// <summary>
+        /// The rectangle hit result.
+        /// </summary>
+        public class RectangleHitResult
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RectangleHitResult"/> class.
+            /// </summary>
+            public RectangleHitResult()
+            {
+                this.Models = new List<Model3D>();
+            }
+
+            /// <summary>
+            /// Gets the models.
+            /// </summary>
+            public IList<Model3D> Models { get; private set; }
         }
 
         /// <summary>
