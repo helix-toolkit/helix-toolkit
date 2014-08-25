@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkit.Wpf
+namespace HelixToolkit.Wpf.Selections
 {
     using System;
     using System.Collections.Generic;
@@ -16,8 +16,6 @@ namespace HelixToolkit.Wpf
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
-
-    using HelixToolkit.Wpf.Selections;
 
     /// <summary>
     /// The basic class of selection command.
@@ -49,7 +47,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The event occurs after the models are selected.
         /// </summary>
-        public event EventHandler<SelectionRoutedEventArgs> ModelsSelected;
+        public event EventHandler<RangeSelectionEventArgs> ModelsSelected;
 
         /// <summary>
         /// The can execute changed.
@@ -140,7 +138,7 @@ namespace HelixToolkit.Wpf
 
             if (this.ModelsSelected != null)
             {
-                this.ModelsSelected(this.Viewport, new SelectionRoutedEventArgs(this.SelectedModels));
+                this.ModelsSelected(this.Viewport, new RangeSelectionEventArgs(this.SelectedModels, this.MouseDownPoint, this.LastPoint));
             }
         }
         

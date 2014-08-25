@@ -151,7 +151,7 @@
     <Compile Include="Selections\SelectByRectangleCommand.cs" />
     <Compile Include="Selections\SelectionCommand.cs" />
     <Compile Include="Selections\SelectionHitMode.cs" />
-    <Compile Include="Selections\SelectionRoutedEventArgs.cs" />
+    <Compile Include="Selections\RangeSelectionEventArgs.cs" />
     <Compile Include="ShaderEffects\InterlacedEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\MeshGeometryVisual3D.cs" />
