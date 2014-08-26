@@ -8,15 +8,12 @@ namespace WindDemo
 {
     using System;
     using System.Diagnostics;
-    using System.Windows;
-    using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     using ExampleBrowser;
 
     using HelixToolkit.Wpf;
-    using HelixToolkit.Wpf.Selections;
 
     using WiimoteLib;
 

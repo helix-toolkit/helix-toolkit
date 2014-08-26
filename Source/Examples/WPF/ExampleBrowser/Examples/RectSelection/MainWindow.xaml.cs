@@ -18,7 +18,6 @@ namespace RectSelection
     using ExampleBrowser;
 
     using HelixToolkit.Wpf;
-    using HelixToolkit.Wpf.Selections;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

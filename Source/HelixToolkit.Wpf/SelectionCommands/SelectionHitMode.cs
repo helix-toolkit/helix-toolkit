@@ -3,24 +3,24 @@
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
-//   The selection hit mode.
+//   Specifies the selection hit mode.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkit.Wpf.Selections
+namespace HelixToolkit.Wpf
 {
     /// <summary>
-    /// The selection hit mode.
+    /// Specifies the selection hit mode.
     /// </summary>
     public enum SelectionHitMode
     {
         /// <summary>
-        /// The model is touching to the selection range.
+        /// Selects models touching the selection range.
         /// </summary>
         Touch,
 
         /// <summary>
-        /// The entire model is in the selection range.
+        /// Selects models completely inside selection range.
         /// </summary>
         Inside,
     }

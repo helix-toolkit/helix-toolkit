@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkit.Wpf.Selections
+namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
