@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The find hits for the special rectangle.
+        /// Finds the hits for the specified rectangle.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -190,81 +190,78 @@ namespace HelixToolkit.Wpf
         /// <param name="rectangle">
         /// The rectangle.
         /// </param>
-        /// <param name="last">
-        /// The last point of the rectangle.
-        /// </param>
         /// <param name="mode">
         /// The mode of selection.
         /// </param>
         /// <returns>
         /// The list of the hits.
         /// </returns>
-        public static RectangleHitResult FindHits(this Viewport3D viewport, Rect rectangle, Point last, SelectionHitMode mode)
+        public static IEnumerable<RectangleHitResult> FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)
         {
-            const double Torlerance = 1e-10;
+            const double Tolerance = 1e-10;
             var camera = viewport.Camera as ProjectionCamera;
-            var result = new RectangleHitResult();
 
             if (camera == null)
             {
-                return result;
+                throw new InvalidOperationException("No projection camera defined. Cannot find rectangle hits.");
             }
 
-            if (rectangle.Width < Torlerance && rectangle.Height < Torlerance)
+            if (rectangle.Width < Tolerance && rectangle.Height < Tolerance)
             {
-                var hitResults = FindHits(viewport, last);
-                foreach (var model in hitResults.Select(x => x.Model))
-                {
-                    result.Models.Add(model);
-                }
-
-                return result;
+                var hitResults = FindHits(viewport, rectangle.BottomLeft);
+                return hitResults.Select(x => x.Model).Select(model => new RectangleHitResult(model));
             }
 
+            var results = new List<RectangleHitResult>();
             viewport.Children.Traverse<GeometryModel3D>(
                 (model, transform) =>
+                {
+                    var geometry = model.Geometry as MeshGeometry3D;
+                    if (geometry != null)
                     {
-                        var geometry = model.Geometry as MeshGeometry3D;
-                        if (geometry != null)
+                        var status = mode == SelectionHitMode.Inside;
+
+                        // transform the positions of the mesh to screen coordinates
+                        var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
+
+                        // evaluate each triangle
+                        for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
                         {
-                            var status = mode == SelectionHitMode.Inside;
-                            var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
-                            for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
+                            var a = point2Ds[geometry.TriangleIndices[i * 3]];
+                            var b = point2Ds[geometry.TriangleIndices[(i * 3) + 1]];
+                            var c = point2Ds[geometry.TriangleIndices[(i * 3) + 2]];
+
+                            switch (mode)
                             {
-                                var a = point2Ds[geometry.TriangleIndices[i * 3]];
-                                var b = point2Ds[geometry.TriangleIndices[i * 3 + 1]];
-                                var c = point2Ds[geometry.TriangleIndices[i * 3 + 2]];
-
-                                switch (mode)
-                                {
-                                    case SelectionHitMode.Inside:
-                                        status = status && GeometryHelper.TriangleInsideRect(a, b, c, rectangle);
-                                        break;
-                                    case SelectionHitMode.Touch:
-                                        status = status
-                                                 || GeometryHelper.TriangleInsideRect(a, b, c, rectangle) || GeometryHelper.Intersect(a, b, c, rectangle)
-                                                 || GeometryHelper.RectInsideTriangle(a, b, c, rectangle);
-                                        break;
-                                }
-
-                                if (mode == SelectionHitMode.Touch && status)
-                                {
+                                case SelectionHitMode.Inside:
+                                    status = status && GeometryHelper.TriangleInsideRect(a, b, c, rectangle);
                                     break;
-                                }
+                                case SelectionHitMode.Touch:
+                                    status = status
+                                             || GeometryHelper.TriangleInsideRect(a, b, c, rectangle)
+                                             || GeometryHelper.Intersect(a, b, c, rectangle)
+                                             || GeometryHelper.RectInsideTriangle(a, b, c, rectangle);
+                                    break;
                             }
 
-                            if (status)
+                            if (mode == SelectionHitMode.Touch && status)
                             {
-                                result.Models.Add(model);
+                                break;
                             }
                         }
-                    });
 
-            return result;
+                        if (status)
+                        {
+                            results.Add(new RectangleHitResult(model));
+                        }
+                    }
+                });
+
+            return results;
         }
 
         /// <summary>
-        /// Finds the nearest visual, hit point and its normal.
+        /// Finds the nearest visual, hit point and its normal at the specified position.
         /// </summary>
         /// <param name="viewport">
         /// The viewport.
@@ -273,16 +270,16 @@ namespace HelixToolkit.Wpf
         /// The position.
         /// </param>
         /// <param name="point">
-        /// The point.
+        /// The 3D hit point.
         /// </param>
         /// <param name="normal">
-        /// The normal.
+        /// The normal of the mesh at the hit point.
         /// </param>
         /// <param name="visual">
-        /// The visual.
+        /// The hit visual.
         /// </param>
         /// <returns>
-        /// The find nearest.
+        /// <c>true</c> if a visual was found at the specified position.
         /// </returns>
         public static bool FindNearest(this Viewport3D viewport, Point position, out Point3D point, out Vector3D normal, out DependencyObject visual)
         {
@@ -1197,22 +1194,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The rectangle hit result.
+        /// Represents a rectangle hit result.
         /// </summary>
         public class RectangleHitResult
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="RectangleHitResult"/> class.
+            /// Initializes a new instance of the <see cref="RectangleHitResult" /> class.
             /// </summary>
-            public RectangleHitResult()
+            /// <param name="model">The hit model.</param>
+            public RectangleHitResult(Model3D model)
             {
-                this.Models = new List<Model3D>();
+                this.Model = model;
             }
 
             /// <summary>
-            /// Gets the models.
+            /// Gets the hit model.
             /// </summary>
-            public IList<Model3D> Models { get; private set; }
+            public Model3D Model { get; private set; }
         }
 
         /// <summary>

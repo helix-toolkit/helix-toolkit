@@ -3,21 +3,26 @@
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
-//   The select by rectangle command.
+//   Provides a command that shows a rectangle when the mouse is dragged and raises an event returning the models contained in the rectangle
+//   when the mouse button is released.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// The select by rectangle command.
+    /// Provides a command that shows a rectangle when the mouse is dragged and raises an event returning the models contained in the rectangle
+    /// when the mouse button is released.
     /// </summary>
     public class SelectByRectangleCommand : SelectionCommand
     {
@@ -32,21 +37,35 @@ namespace HelixToolkit.Wpf
         private RectangleAdorner rectangleAdorner;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectByRectangleCommand"/> class.
+        /// Initializes a new instance of the <see cref="SelectByRectangleCommand" /> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        /// <param name="mode">
-        /// The mode.
-        /// </param>
-        /// <param name="selectedHandler">
-        /// The selected Handler.
-        /// </param>
-        public SelectByRectangleCommand(Viewport3D viewport, SelectionHitMode mode, EventHandler<RangeSelectionEventArgs> selectedHandler)
-            : base(viewport, mode)
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="eventHandler">The selection event handler.</param>
+        public SelectByRectangleCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> eventHandler)
+            : base(viewport, eventHandler)
         {
-            this.ModelsSelected += selectedHandler;
+        }
+
+        /// <summary>
+        /// Occurs when the manipulation is started.
+        /// </summary>
+        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
+        protected override void Started(ManipulationEventArgs e)
+        {
+            base.Started(e);
+            this.selectionRect = new Rect(this.MouseDownPoint, this.MouseDownPoint);
+            this.ShowRectangle();
+        }
+
+        /// <summary>
+        /// Occurs when the position is changed during a manipulation.
+        /// </summary>
+        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
+        protected override void Delta(ManipulationEventArgs e)
+        {
+            base.Delta(e);
+            this.selectionRect = new Rect(this.MouseDownPoint, e.CurrentPosition);
+            this.UpdateRectangle();
         }
 
         /// <summary>
@@ -55,40 +74,19 @@ namespace HelixToolkit.Wpf
         /// <param name="e">
         /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
         /// </param>
-        public override void CompletedImpl(ManipulationEventArgs e)
+        protected override void Completed(ManipulationEventArgs e)
         {
-            base.CompletedImpl(e);
             this.HideRectangle();
+            base.Completed(e);
         }
 
         /// <summary>
-        /// Occurs when the position is changed during a manipulation.
+        /// Gets the selected models.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(ManipulationEventArgs e)
+        /// <returns>The selected models.</returns>
+        protected override IList<Model3D> GetSelectedModels()
         {
-            base.Delta(e);
-            this.selectionRect = new Rect(this.MouseDownPoint, e.CurrentPosition);
-            this.UpdateRectangle();
-        }
-
-        /// <summary>
-        /// Occurs when the manipulation is started.
-        /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Started(ManipulationEventArgs e)
-        {
-            base.Started(e);
-            this.selectionRect = new Rect(this.MouseDownPoint, this.MouseDownPoint);
-            this.ShowRectangle();
-        }
-
-        /// <summary>
-        /// Select the models.
-        /// </summary>
-        public override void SelectModels()
-        {
-            this.SelectedModels = this.Viewport.FindHits(this.selectionRect, this.LastPoint, this.SelectionHitMode).Models;
+            return this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Select(hit => hit.Model).ToList();
         }
 
         /// <summary>
@@ -103,7 +101,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Hides the rectangle.
+        /// Hides the selection rectangle.
         /// </summary>
         private void HideRectangle()
         {
@@ -119,7 +117,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Updates the rectangle.
+        /// Updates the selection rectangle.
         /// </summary>
         private void UpdateRectangle()
         {
@@ -133,7 +131,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Shows the rectangle.
+        /// Shows the selection rectangle.
         /// </summary>
         private void ShowRectangle()
         {

@@ -34,13 +34,11 @@ namespace RectSelection
 
     public class MainWindowViewModel
     {
-        private SelectionHitMode selectionMode;
-
         private IList<Model3D> selectedModels;
 
         public MainWindowViewModel(Viewport3D viewport)
         {
-            this.SelectCommand = new SelectByRectangleCommand(viewport, SelectionHitMode.Touch, this.HandleSelectionEvent);
+            this.SelectCommand = new SelectByRectangleCommand(viewport, this.HandleSelectionEvent);
         }
 
         public SelectByRectangleCommand SelectCommand { get; private set; }
@@ -49,12 +47,11 @@ namespace RectSelection
         {
             get
             {
-                return this.selectionMode;
+                return this.SelectCommand.SelectionHitMode;
             }
 
             set
             {
-                this.selectionMode = value;
                 this.SelectCommand.SelectionHitMode = value;
             }
         }
@@ -67,7 +64,7 @@ namespace RectSelection
             }
         }
 
-        private void HandleSelectionEvent(object sender, RangeSelectionEventArgs args)
+        private void HandleSelectionEvent(object sender, ModelsSelectedEventArgs args)
         {
             this.ChangeMaterial(this.selectedModels, Materials.Blue);
             this.selectedModels = args.SelectedModels;

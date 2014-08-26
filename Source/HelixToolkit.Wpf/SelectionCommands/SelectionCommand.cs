@@ -11,7 +11,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -28,30 +27,30 @@ namespace HelixToolkit.Wpf
         protected readonly Viewport3D Viewport;
 
         /// <summary>
+        /// Keeps track of the old cursor.
+        /// </summary>
+        private Cursor oldCursor;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SelectionCommand"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        /// <param name="mode">
-        /// The mode of selection.
-        /// </param>
-        protected SelectionCommand(Viewport3D viewport, SelectionHitMode mode)
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="eventHandler">The selection event handler.</param>
+        protected SelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> eventHandler)
         {
             this.Viewport = viewport;
-            this.SelectionHitMode = mode;
-            this.ManipulationWatch = new Stopwatch();
+            this.ModelsSelected = eventHandler;
         }
 
         /// <summary>
-        /// The event occurs after the models are selected.
-        /// </summary>
-        public event EventHandler<RangeSelectionEventArgs> ModelsSelected;
-
-        /// <summary>
-        /// The can execute changed.
+        /// Occurs when <see cref="CanExecute" /> is changed.
         /// </summary>
         public event EventHandler CanExecuteChanged;
+
+        /// <summary>
+        /// Occurs when models are selected.
+        /// </summary>
+        private event EventHandler<ModelsSelectedEventArgs> ModelsSelected;
 
         /// <summary>
         /// Gets or sets the selection hit mode.
@@ -59,86 +58,9 @@ namespace HelixToolkit.Wpf
         public SelectionHitMode SelectionHitMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the mouse down point (2D screen coordinates).
+        /// Gets the mouse down point (2D screen coordinates).
         /// </summary>
-        protected Point MouseDownPoint { get; set; }
-
-        /// <summary>
-        /// Gets or sets the last point (2D screen coordinates).
-        /// </summary>
-        protected Point LastPoint { get; set; }
-
-        /// <summary>
-        /// Gets or sets the manipulation watch.
-        /// </summary>
-        protected Stopwatch ManipulationWatch { get; set; }
-
-        /// <summary>
-        /// Gets or sets the selected models.
-        /// </summary>
-        protected IList<Model3D> SelectedModels { get; set; }
-
-        /// <summary>
-        /// Gets or sets the old cursor.
-        /// </summary>
-        private Cursor OldCursor { get; set; }
-
-        /// <summary>
-        /// Occurs when the position is changed during a manipulation.
-        /// </summary>
-        /// <param name="e">
-        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
-        /// </param>
-        public virtual void Delta(ManipulationEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// The customized complete operation when the manipulation is completed.
-        /// </summary>
-        /// <param name="e">
-        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
-        /// </param>
-        public virtual void CompletedImpl(ManipulationEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Select the models.
-        /// </summary>
-        public abstract void SelectModels();
-
-        /// <summary>
-        /// Occurs when the manipulation is completed.
-        /// </summary>
-        /// <param name="e">
-        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
-        /// </param>
-        public void Completed(ManipulationEventArgs e)
-        {
-            this.CompletedImpl(e);
-            this.LastPoint = e.CurrentPosition;
-            this.SelectedModels = new List<Model3D>();
-            this.SelectModels();
-
-            if (this.ModelsSelected != null)
-            {
-                this.ModelsSelected(this.Viewport, new RangeSelectionEventArgs(this.SelectedModels, this.MouseDownPoint, this.LastPoint));
-            }
-        }
-        
-        /// <summary>
-        /// Occurs when the manipulation is started.
-        /// </summary>
-        /// <param name="e">
-        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
-        /// </param>
-        public virtual void Started(ManipulationEventArgs e)
-        {
-            this.MouseDownPoint = e.CurrentPosition;
-            this.LastPoint = this.MouseDownPoint;
-            this.ManipulationWatch.Restart();
-        }
+        protected Point MouseDownPoint { get; private set; }
 
         /// <summary>
         /// Executes the command.
@@ -171,13 +93,57 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets the selected models.
+        /// </summary>
+        /// <returns>The selected models.</returns>
+        protected abstract IList<Model3D> GetSelectedModels();
+
+        /// <summary>
+        /// Occurs when the manipulation is started.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void Started(ManipulationEventArgs e)
+        {
+            this.MouseDownPoint = e.CurrentPosition;
+        }
+
+        /// <summary>
+        /// Occurs when the position is changed during a manipulation.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void Delta(ManipulationEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Occurs when the manipulation is completed.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void Completed(ManipulationEventArgs e)
+        {
+            var selectedModels = this.GetSelectedModels();
+
+            var handler = this.ModelsSelected;
+            if (handler != null)
+            {
+                handler(this.Viewport, new ModelsSelectedEventArgs(selectedModels));
+            }
+        }
+
+        /// <summary>
         /// Gets the cursor for the gesture.
         /// </summary>
         /// <returns>
         /// A cursor.
         /// </returns>
         protected abstract Cursor GetCursor();
-        
+
         /// <summary>
         /// Called when the mouse button is pressed down.
         /// </summary>
@@ -191,7 +157,7 @@ namespace HelixToolkit.Wpf
         {
             this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
 
-            this.OldCursor = this.Viewport.Cursor;
+            this.oldCursor = this.Viewport.Cursor;
             this.Viewport.Cursor = this.GetCursor();
         }
 
@@ -209,7 +175,7 @@ namespace HelixToolkit.Wpf
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.ReleaseMouseCapture();
-            this.Viewport.Cursor = this.OldCursor;
+            this.Viewport.Cursor = this.oldCursor;
             this.Completed(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
         }
 
