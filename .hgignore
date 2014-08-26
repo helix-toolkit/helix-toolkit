@@ -42,6 +42,7 @@ packages/
 Packages/*/license.txt
 *.dotCover
 *.GhostDoc.xml
+NuGet.exe
 
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*
