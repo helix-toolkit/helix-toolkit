@@ -192,8 +192,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\RectSelection\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\ScatterPlot\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
