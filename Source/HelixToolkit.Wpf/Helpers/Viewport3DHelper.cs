@@ -227,20 +227,20 @@ namespace HelixToolkit.Wpf
                         // evaluate each triangle
                         for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
                         {
-                            var a = point2Ds[geometry.TriangleIndices[i * 3]];
-                            var b = point2Ds[geometry.TriangleIndices[(i * 3) + 1]];
-                            var c = point2Ds[geometry.TriangleIndices[(i * 3) + 2]];
-
+                            var triangle = new Triangle(
+                                point2Ds[geometry.TriangleIndices[i * 3]],
+                                point2Ds[geometry.TriangleIndices[(i * 3) + 1]],
+                                point2Ds[geometry.TriangleIndices[(i * 3) + 2]]);
                             switch (mode)
                             {
                                 case SelectionHitMode.Inside:
-                                    status = status && GeometryHelper.TriangleInsideRect(a, b, c, rectangle);
+                                    status = status && triangle.IsCompletelyInside(rectangle);
                                     break;
                                 case SelectionHitMode.Touch:
                                     status = status
-                                             || GeometryHelper.TriangleInsideRect(a, b, c, rectangle)
-                                             || GeometryHelper.Intersect(a, b, c, rectangle)
-                                             || GeometryHelper.RectInsideTriangle(a, b, c, rectangle);
+                                             || triangle.IsCompletelyInside(rectangle)
+                                             || triangle.IntersectsWith(rectangle)
+                                             || triangle.IsRectCompletelyInside(rectangle);
                                     break;
                             }
 

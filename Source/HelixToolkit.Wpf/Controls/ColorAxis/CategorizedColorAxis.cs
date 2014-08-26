@@ -90,7 +90,7 @@ namespace HelixToolkit.Wpf
                         break;
                 }
 
-                var l = new Line
+                var l = new System.Windows.Shapes.Line
                             {
                                 X1 = p0.X,
                                 X2 = p1.X,
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf
                 this.Canvas.Children.Add(l);
                 if (i == this.Categories.Count - 1)
                 {
-                    var l2 = new Line
+                    var l2 = new System.Windows.Shapes.Line
                                  {
                                      X1 = p3.X,
                                      X2 = p4.X,

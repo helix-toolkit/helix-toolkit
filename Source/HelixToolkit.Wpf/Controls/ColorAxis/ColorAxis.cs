@@ -226,7 +226,7 @@ namespace HelixToolkit.Wpf
             this.Canvas.Children.Add(r);
 
             this.Canvas.Children.Add(
-                new Line
+                new System.Windows.Shapes.Line
                     {
                         Stroke = this.Foreground,
                         StrokeThickness = 1,
@@ -237,7 +237,7 @@ namespace HelixToolkit.Wpf
                         Y2 = this.ColorArea.Bottom
                     });
             this.Canvas.Children.Add(
-                new Line
+                new System.Windows.Shapes.Line
                     {
                         Stroke = this.Foreground,
                         StrokeThickness = 1,

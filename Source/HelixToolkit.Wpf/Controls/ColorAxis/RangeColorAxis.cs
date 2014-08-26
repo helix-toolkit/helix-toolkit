@@ -229,7 +229,7 @@ namespace HelixToolkit.Wpf
                         break;
                 }
 
-                var l = new Line
+                var l = new System.Windows.Shapes.Line
                             {
                                 X1 = p0.X,
                                 X2 = p1.X,

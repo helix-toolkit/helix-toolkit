@@ -7,7 +7,7 @@
 namespace HelixToolkit.Wpf
 {
     using System.Windows.Media;
-
+    
     /// <summary>
     /// Represents a 2D polygon.
     /// </summary>

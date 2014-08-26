@@ -69,6 +69,8 @@
       <DependentUpon>InterlacedView3D.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExtensionMethods\AnimationExtensions.cs" />
+    <Compile Include="Geometry\LineSegment.cs" />
+    <Compile Include="Geometry\Triangle.cs" />
     <Compile Include="Helpers\AttachedProperties.cs" />
     <Compile Include="Controls\CameraController\CameraMode.cs" />
     <Compile Include="Controls\CameraController\CameraRotationMode.cs" />
@@ -112,7 +114,6 @@
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ContourHelper.cs" />
     <Compile Include="Helpers\DependencyPropertyEx.cs" />
-    <Compile Include="Helpers\GeometryHelper.cs" />
     <Compile Include="Helpers\Model3DHelper.cs" />
     <Compile Include="Helpers\ScreenSpace\Billboard.cs" />
     <Compile Include="Helpers\ScreenSpace\BillboardGeometryBuilder.cs" />
