@@ -3,7 +3,7 @@
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
-//   The basic class of selection command.
+//   Provides an abstract base class for selection commands.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// The basic class of selection command.
+    /// Provides an abstract base class for selection commands.
     /// </summary>
     public abstract class SelectionCommand : ICommand
     {
@@ -40,7 +40,6 @@ namespace HelixToolkit.Wpf
         {
             this.Viewport = viewport;
             this.SelectionHitMode = mode;
-            this.SpinReleaseTime = 200;
             this.ManipulationWatch = new Stopwatch();
         }
 
@@ -58,14 +57,6 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the selection hit mode.
         /// </summary>
         public SelectionHitMode SelectionHitMode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the max duration of mouse drag to activate spin.
-        /// </summary>
-        /// <remarks>
-        /// If the time between mouse down and mouse up is less than this value, spin is activated.
-        /// </remarks>
-        public int SpinReleaseTime { get; set; }
 
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
@@ -125,12 +116,6 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void Completed(ManipulationEventArgs e)
         {
-            var elapsed = this.ManipulationWatch.ElapsedMilliseconds;
-            if (elapsed > 0 && elapsed < this.SpinReleaseTime)
-            {
-                this.OnInertiaStarting((int)this.ManipulationWatch.ElapsedMilliseconds);
-            }
-
             this.CompletedImpl(e);
             this.LastPoint = e.CurrentPosition;
             this.SelectedModels = new List<Model3D>();
@@ -156,7 +141,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Execute the command.
+        /// Executes the command.
         /// </summary>
         /// <param name="parameter">
         /// The parameter.
@@ -172,27 +157,17 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Check whether the command can executed.
+        /// Checks whether the command can be executed.
         /// </summary>
         /// <param name="parameter">
         /// The parameter.
         /// </param>
         /// <returns>
-        /// True if the command can be executed. Otherwise, it returns false.
+        /// <c>true</c> if the command can be executed. Otherwise, it returns <c>false</c>.
         /// </returns>
         public bool CanExecute(object parameter)
         {
             return true;
-        }
-
-        /// <summary>
-        /// Called when inertia is starting.
-        /// </summary>
-        /// <param name="elapsedTime">
-        /// The elapsed time (milliseconds).
-        /// </param>
-        protected virtual void OnInertiaStarting(int elapsedTime)
-        {
         }
 
         /// <summary>
@@ -263,9 +238,10 @@ namespace HelixToolkit.Wpf
         /// </param>
         protected virtual void OnCanExecutedChanged(object sender, EventArgs e)
         {
-            if (this.CanExecuteChanged != null)
+            var handler = this.CanExecuteChanged;
+            if (handler != null)
             {
-                this.CanExecuteChanged(sender, e);
+                handler(sender, e);
             }
         }
     }
