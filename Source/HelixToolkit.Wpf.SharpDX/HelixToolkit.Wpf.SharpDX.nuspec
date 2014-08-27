@@ -5,9 +5,9 @@
     <version>2014.2.1.1</version>
     <title>HelixToolkit.Wpf.SharpDX (ALPHA)</title>
     <authors>objo</authors>
-    <licenseUrl>http://helixtoolkit.codeplex.com/license</licenseUrl>
-    <projectUrl>http://helixtoolkit.codeplex.com/</projectUrl>
-    <iconUrl>http://www.objo.net/codeplex/icons/helixtoolkit.png</iconUrl>
+    <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
+    <projectUrl>http://helix-toolkit.github.io/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom controls for WPF and a scene graph based on SharpDX.</description>
     <tags>wpf SharpDX 3D</tags>
@@ -25,4 +25,12 @@
       <dependency id="SharpDX.Toolkit.Graphics" version="2.5.0" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="..\..\Output\NET45\HelixToolkit.Wpf.SharpDX.???" target="lib\net45" />
+    <file src="..\..\Output\NET40\HelixToolkit.Wpf.SharpDX.???" target="lib\net40" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
 </package>
