@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{39740654-F5F1-4936-B4EA-9BC97D4CDE37}</ProjectGuid>
+    <ProjectGuid>{2CC099D1-E80D-4819-8195-9AA6F0E9EEA2}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HelixToolkit.Wpf.SharpDX</RootNamespace>
@@ -21,6 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION; NET40;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,6 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\NET40\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET40\</IntermediateOutputPath>
     <DefineConstants>TRACE;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION; NET40;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -294,7 +296,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj">
-      <Project>{3f3b4548-a9db-4874-86f7-e7c4fec8a351}</Project>
+      <Project>{27ed13f0-c6b2-4aba-a837-52f4775d5455}</Project>
       <Name>HelixToolkit.Wpf_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">

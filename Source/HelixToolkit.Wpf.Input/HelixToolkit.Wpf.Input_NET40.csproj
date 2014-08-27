@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{20A2B996-7124-4783-AF5E-907EF7167881}</ProjectGuid>
+    <ProjectGuid>{26FFEC80-5997-472C-9F58-1D9ECD45B70B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HelixToolkit.Wpf.Input</RootNamespace>
@@ -56,8 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj">
-      <Project>{3f3b4548-a9db-4874-86f7-e7c4fec8a351}</Project>
+      <Project>{27ed13f0-c6b2-4aba-a837-52f4775d5455}</Project>
       <Name>HelixToolkit.Wpf_NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

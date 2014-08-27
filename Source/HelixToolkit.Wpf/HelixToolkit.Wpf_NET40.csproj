@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</ProjectGuid>
+    <ProjectGuid>{27ED13F0-C6B2-4ABA-A837-52F4775D5455}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HelixToolkit.Wpf</RootNamespace>
