@@ -1,0 +1,31 @@
+version: 2014.2.{build}
+
+environment:
+  nuget_api_key:
+    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+      
+install:
+  - cinst stylecop
+
+platform: Any CPU
+
+configuration: Release
+
+build:
+  project: Source/HelixToolkit.AppVeyor.sln
+  verbosity: normal
+
+before_build:
+  - cmd: Tools\Lynx\UpdateVersionNumbers.exe /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ReleaseNotesFile=release-notes.txt /Directory=Source
+  
+after_build:
+  - cmd: mkdir Packages
+  - cmd: NuGet.exe pack Source\HelixToolkit\HelixToolkit.nuspec -OutputDirectory Packages
+  - cmd: NuGet.exe pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -OutputDirectory Packages
+  - cmd: NuGet.exe pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -OutputDirectory Packages
+  - cmd: for %%G in (Packages\*.nupkg) do NuGet.exe push %%G %nuget_api_key%
+artifacts:
+  - path: Output
+    name: 'HelixToolkit-{version}'
+    type: zip
+  - path: Packages\*.nupkg
