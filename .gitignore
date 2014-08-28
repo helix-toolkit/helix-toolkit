@@ -59,6 +59,7 @@ dlldata.c
 *.pidb
 *.svclog
 *.scc
+*.bak
 
 # Chutzpah Test files
 _Chutzpah*
@@ -185,3 +186,6 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# GhostDoc settings
+*.GhostDoc.xml
