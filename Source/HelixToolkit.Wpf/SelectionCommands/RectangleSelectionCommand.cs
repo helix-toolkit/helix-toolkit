@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Prepares the arguments for the <see cref="SelectionCommand.ModelsSelected" /> event.
+        /// Prepares the arguments for the ModelsSelected event.
         /// </summary>
         /// <returns>
         /// The <see cref="ModelsSelectedEventArgs"/> object.

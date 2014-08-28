@@ -3,7 +3,7 @@
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
-//   Provides event data for the SelectionCommand.ModelsSelected event.
+//   Provides event data for the ModelsSelected event of the SelectionCommand.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Provides event data for the <see cref="SelectionCommand.ModelsSelected" /> event.
+    /// Provides event data for the ModelsSelected event of the <see cref="SelectionCommand" />.
     /// </summary>
     public class ModelsSelectedEventArgs : EventArgs
     {
