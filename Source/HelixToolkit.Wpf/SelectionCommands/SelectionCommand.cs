@@ -127,13 +127,24 @@ namespace HelixToolkit.Wpf
         /// </param>
         protected virtual void Completed(ManipulationEventArgs e)
         {
-            var selectedModels = this.GetSelectedModels();
-
             var handler = this.ModelsSelected;
             if (handler != null)
             {
-                handler(this.Viewport, new ModelsSelectedEventArgs(selectedModels));
+                handler(this.Viewport, this.PrepareModelsSelectedEventArgs());
             }
+        }
+
+        /// <summary>
+        /// Prepare the arguments for models selection.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ModelsSelectedEventArgs"/> object.
+        /// </returns>
+        protected virtual ModelsSelectedEventArgs PrepareModelsSelectedEventArgs()
+        {
+            var selectedModels = this.GetSelectedModels();
+
+            return new ModelsSelectedEventArgs(selectedModels);
         }
 
         /// <summary>
