@@ -18,7 +18,7 @@ build:
 before_build:
   - cmd: Tools\Lynx\UpdateVersionNumbers.exe /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ReleaseNotesFile=release-notes.txt /Directory=Source
   
-after_build:
+deploy_script:
   - cmd: mkdir Packages
   - cmd: NuGet.exe pack Source\HelixToolkit\HelixToolkit.nuspec -OutputDirectory Packages
   - cmd: NuGet.exe pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -OutputDirectory Packages
