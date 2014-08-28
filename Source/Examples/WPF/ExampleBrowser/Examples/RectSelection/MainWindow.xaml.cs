@@ -12,6 +12,7 @@ namespace RectSelection
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
@@ -68,7 +69,10 @@ namespace RectSelection
         {
             this.ChangeMaterial(this.selectedModels, Materials.Blue);
             this.selectedModels = args.SelectedModels;
-            this.ChangeMaterial(this.selectedModels, Materials.Red);
+
+            this.ChangeMaterial(
+                this.selectedModels,
+                args.Rectangle.Size != default(Size) ? Materials.Red : Materials.Green);
         }
 
         private void ChangeMaterial(IEnumerable<Model3D> models, Material material)

@@ -81,6 +81,19 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Prepare the arguments for models selection.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ModelsSelectedEventArgs"/> object.
+        /// </returns>
+        protected override ModelsSelectedEventArgs PrepareModelsSelectedEventArgs()
+        {
+            var result = base.PrepareModelsSelectedEventArgs();
+            result.Rectangle = this.selectionRect;
+            return result;
+        }
+
+        /// <summary>
         /// Gets the selected models.
         /// </summary>
         /// <returns>The selected models.</returns>
