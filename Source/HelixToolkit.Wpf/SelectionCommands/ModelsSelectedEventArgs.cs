@@ -11,7 +11,6 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows;
     using System.Windows.Media.Media3D;
 
     /// <summary>
@@ -34,10 +33,5 @@ namespace HelixToolkit.Wpf
         /// Gets the selected models.
         /// </summary>
         public IList<Model3D> SelectedModels { get; private set; }
-
-        /// <summary>
-        /// Gets the rectangle of selection.
-        /// </summary>
-        public Rect Rectangle { get; internal set; }
     }
 }

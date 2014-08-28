@@ -93,12 +93,6 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the selected models.
-        /// </summary>
-        /// <returns>The selected models.</returns>
-        protected abstract IList<Model3D> GetSelectedModels();
-
-        /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
         /// <param name="e">
@@ -135,17 +129,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Prepare the arguments for models selection.
+        /// Prepares the arguments for the <see cref="ModelsSelected" /> event.
         /// </summary>
         /// <returns>
         /// The <see cref="ModelsSelectedEventArgs"/> object.
         /// </returns>
-        protected virtual ModelsSelectedEventArgs PrepareModelsSelectedEventArgs()
-        {
-            var selectedModels = this.GetSelectedModels();
-
-            return new ModelsSelectedEventArgs(selectedModels);
-        }
+        protected abstract ModelsSelectedEventArgs PrepareModelsSelectedEventArgs();
 
         /// <summary>
         /// Gets the cursor for the gesture.

@@ -11,14 +11,12 @@
 namespace HelixToolkit.Wpf
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
-    using System.Windows.Media.Media3D;
 
     /// <summary>
     /// Provides a command that shows a rectangle when the mouse is dragged and raises an event returning the models contained in the rectangle
@@ -81,25 +79,15 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Prepare the arguments for models selection.
+        /// Prepares the arguments for the <see cref="SelectionCommand.ModelsSelected" /> event.
         /// </summary>
         /// <returns>
         /// The <see cref="ModelsSelectedEventArgs"/> object.
         /// </returns>
         protected override ModelsSelectedEventArgs PrepareModelsSelectedEventArgs()
         {
-            var result = base.PrepareModelsSelectedEventArgs();
-            result.Rectangle = this.selectionRect;
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the selected models.
-        /// </summary>
-        /// <returns>The selected models.</returns>
-        protected override IList<Model3D> GetSelectedModels()
-        {
-            return this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Select(hit => hit.Model).ToList();
+            var selectedModels = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Select(hit => hit.Model).ToList();
+            return new ModelsSelectedByRectangleEventArgs(selectedModels, this.selectionRect);
         }
 
         /// <summary>

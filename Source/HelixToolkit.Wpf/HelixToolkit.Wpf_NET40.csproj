@@ -149,6 +149,7 @@
     <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />
     <Compile Include="MarkupExtensions\PerspectiveCameraExtension.cs" />
     <Compile Include="MarkupExtensions\TranslateExtension.cs" />
+    <Compile Include="SelectionCommands\ModelsSelectedByRectangleEventArgs.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedEventArgs.cs" />
     <Compile Include="SelectionCommands\SelectByRectangleCommand.cs" />
     <Compile Include="SelectionCommands\SelectionCommand.cs" />
