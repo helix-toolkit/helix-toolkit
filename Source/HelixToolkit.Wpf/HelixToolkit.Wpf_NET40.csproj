@@ -151,7 +151,7 @@
     <Compile Include="MarkupExtensions\TranslateExtension.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedByRectangleEventArgs.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedEventArgs.cs" />
-    <Compile Include="SelectionCommands\SelectByRectangleCommand.cs" />
+    <Compile Include="SelectionCommands\RectangleSelectionCommand.cs" />
     <Compile Include="SelectionCommands\SelectionCommand.cs" />
     <Compile Include="SelectionCommands\SelectionHitMode.cs" />
     <Compile Include="ShaderEffects\InterlacedEffect.cs" />

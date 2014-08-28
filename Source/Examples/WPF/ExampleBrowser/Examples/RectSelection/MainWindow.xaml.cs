@@ -29,7 +29,7 @@ namespace RectSelection
             this.InitializeComponent();
             var vm = new MainWindowViewModel(this.view1.Viewport);
             this.DataContext = vm;
-            this.view1.InputBindings.Add(new MouseBinding(vm.SelectCommand, new MouseGesture(MouseAction.LeftClick)));
+            this.view1.InputBindings.Add(new MouseBinding(vm.SelectionCommand, new MouseGesture(MouseAction.LeftClick)));
         }
     }
 
@@ -39,21 +39,21 @@ namespace RectSelection
 
         public MainWindowViewModel(Viewport3D viewport)
         {
-            this.SelectCommand = new SelectByRectangleCommand(viewport, this.HandleSelectionEvent);
+            this.SelectionCommand = new RectangleSelectionCommand(viewport, this.HandleSelectionEvent);
         }
 
-        public SelectByRectangleCommand SelectCommand { get; private set; }
+        public RectangleSelectionCommand SelectionCommand { get; private set; }
 
         public SelectionHitMode SelectionMode
         {
             get
             {
-                return this.SelectCommand.SelectionHitMode;
+                return this.SelectionCommand.SelectionHitMode;
             }
 
             set
             {
-                this.SelectCommand.SelectionHitMode = value;
+                this.SelectionCommand.SelectionHitMode = value;
             }
         }
 

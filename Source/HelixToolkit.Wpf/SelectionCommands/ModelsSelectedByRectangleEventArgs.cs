@@ -3,7 +3,7 @@
 //   http://helixtoolkit.codeplex.com, license: MIT
 // </copyright>
 // <summary>
-//   Provides event data for the SelectByRectangleCommand.ModelsSelected event.
+//   Provides event data for the RectangleSelectionCommand.ModelsSelected event.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Provides event data for the <see cref="SelectByRectangleCommand.ModelsSelected" /> event.
+    /// Provides event data for the <see cref="RectangleSelectionCommand.ModelsSelected" /> event.
     /// </summary>
     public class ModelsSelectedByRectangleEventArgs : ModelsSelectedEventArgs
     {
