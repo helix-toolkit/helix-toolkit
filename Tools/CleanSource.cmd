@@ -1,1 +1,0 @@
-Lynx\CleanSource.exe /cleansummary /cleanregions ..\Source > CleanSource.log

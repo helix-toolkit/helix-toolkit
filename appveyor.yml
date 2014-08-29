@@ -6,6 +6,7 @@ environment:
       
 install:
   - cinst stylecop
+  - cinst LynxToolkit
 
 platform: Any CPU
 
@@ -16,7 +17,7 @@ build:
   verbosity: normal
 
 before_build:
-  - cmd: Tools\Lynx\UpdateVersionNumbers.exe /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ReleaseNotesFile=release-notes.txt /Directory=Source
+  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ReleaseNotesFile=release-notes.txt /Directory=Source
   
 deploy_script:
   - cmd: mkdir Packages
