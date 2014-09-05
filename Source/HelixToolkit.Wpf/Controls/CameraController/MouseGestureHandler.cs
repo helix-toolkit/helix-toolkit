@@ -6,7 +6,6 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
@@ -246,11 +245,6 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the old cursor.
-        /// </summary>
-        private Cursor OldCursor { get; set; }
-
-        /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">
@@ -276,7 +270,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Executes the mousegesture command.
+        /// Starts the mouse gesture handler.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -292,8 +286,6 @@ namespace HelixToolkit.Wpf
             }
 
             this.Controller.PushCameraSetting();
-            this.Controller.MouseMove += this.OnMouseMove;
-            this.Controller.MouseUp += this.OnMouseUp;
             this.OnMouseDown(sender, null);
             this.Controller.Focus();
             this.Controller.CaptureMouse();
@@ -416,16 +408,17 @@ namespace HelixToolkit.Wpf
         /// <param name="e">
         /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
         /// </param>
-        protected virtual void OnMouseDown(object sender, MouseEventArgs e)
+        protected virtual void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Controller)));
+            this.Controller.MouseUp += this.OnMouseUp;
+            this.Controller.MouseMove += this.OnMouseMove;
+            this.Controller.SetCursor(this.GetCursor());
 
-            this.OldCursor = this.Controller.Cursor;
-            this.Controller.Cursor = this.GetCursor();
+            this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Controller)));
         }
 
         /// <summary>
-        /// The on mouse move.
+        /// Handles the mouse move events.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -439,7 +432,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on mouse up.
+        /// Handles the mouse up event.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -449,10 +442,12 @@ namespace HelixToolkit.Wpf
         /// </param>
         protected virtual void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
+            // TODO: this will handle all mouse button release events - not only the one assigned to this command...
+            // May need to refactor and not use input bindings to support only releasing for the relevant mouse button...
             this.Controller.MouseMove -= this.OnMouseMove;
             this.Controller.MouseUp -= this.OnMouseUp;
             this.Controller.ReleaseMouseCapture();
-            this.Controller.Cursor = this.OldCursor;
+            this.Controller.RestoreCursor();
             this.Completed(new ManipulationEventArgs(Mouse.GetPosition(this.Controller)));
         }
 
@@ -467,7 +462,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected Point Project(Point3D p)
         {
-            return Viewport3DHelper.Point3DtoPoint2D(this.Viewport, p);
+            return this.Viewport.Point3DtoPoint2D(p);
         }
 
         /// <summary>
@@ -483,8 +478,7 @@ namespace HelixToolkit.Wpf
             Point3D nearestPoint;
             Vector3D normal;
             DependencyObject visual;
-            if (Viewport3DHelper.FindNearest(
-                this.Controller.Viewport, this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            if (this.Controller.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }
@@ -495,6 +489,5 @@ namespace HelixToolkit.Wpf
 
             this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
         }
-
     }
 }
