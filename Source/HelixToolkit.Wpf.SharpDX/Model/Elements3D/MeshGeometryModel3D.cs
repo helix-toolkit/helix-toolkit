@@ -183,7 +183,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- check instancing
             this.hasInstances = (this.Instances != null) && (this.Instances.Any());
-            this.bHasInstances.Set(this.hasInstances);
+            if (this.bHasInstances != null)
+            {
+                this.bHasInstances.Set(this.hasInstances);
+            }
 
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
