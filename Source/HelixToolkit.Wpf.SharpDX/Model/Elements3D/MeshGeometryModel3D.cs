@@ -262,9 +262,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     Position = new Vector4(positions[i], 1f),
                     Color = colors != null ? colors[i] : Color4.White,
                     TexCoord = textureCoordinates != null ? texScale * textureCoordinates[i] : Vector2.Zero,
-                    Normal = normals != null && i < normals.Length ? normals[i] : Vector3.Zero,
-                    Tangent = tangents != null && i < tangents.Length ? tangents[i] : Vector3.Zero,
-                    BiTangent = bitangents != null && i < bitangents.Length ? bitangents[i] : Vector3.Zero,
+                    Normal = normals != null ? normals[i] : Vector3.Zero,
+                    Tangent = tangents != null ? tangents[i] : Vector3.Zero,
+                    BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero,
                 };
             }
 
