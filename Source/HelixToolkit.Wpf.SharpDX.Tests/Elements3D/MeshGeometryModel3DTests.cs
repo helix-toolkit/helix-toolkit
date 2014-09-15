@@ -7,6 +7,10 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
     [TestFixture]
     class MeshGeometryModel3DTests
     {
+        /// <summary>
+        /// Test for pull request #54.
+        /// Fix IndexOutOfRange exception in CreateDefaultVertexArray.
+        /// </summary>
         [Test, STAThread]
         public void CreateDefaultVertexArrayForTriangle()
         {
