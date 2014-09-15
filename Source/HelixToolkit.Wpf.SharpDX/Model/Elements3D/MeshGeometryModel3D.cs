@@ -255,7 +255,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var tangents = geometry.Tangents != null ? geometry.Tangents.Array : null;
             var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
             var positions = geometry.Positions.Array;
-            var vertexCount = positions.Length;
+            var vertexCount = geometry.Positions.Count;
             var result = new DefaultVertex[vertexCount];
 
             for (var i = 0; i < vertexCount; i++)
