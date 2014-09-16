@@ -418,7 +418,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private LinesVertex[] CreateLinesVertexArray()
         {
             var positions = this.Geometry.Positions.Array;
-            var vertexCount = positions.Length;
+            var vertexCount = this.Geometry.Positions.Count;
             var color = this.Color;
             var result = new LinesVertex[vertexCount];
 
