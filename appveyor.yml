@@ -27,6 +27,6 @@ deploy_script:
   - cmd: for %%G in (Packages\*.nupkg) do NuGet.exe push %%G %nuget_api_key%
 artifacts:
   - path: Output
-    name: 'HelixToolkit-{version}'
+    name: HelixToolkit-$(APPVEYOR_BUILD_VERSION)
     type: zip
   - path: Packages\*.nupkg
