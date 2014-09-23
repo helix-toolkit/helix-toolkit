@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
-             xmlns:htx="clr-namespace:HelixToolkit.Wpf.SharpDX"
+             xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX"
              xmlns:local="clr-namespace:EnvironmentMapDemo"
              x:Name="matControl"
              mc:Ignorable="d">

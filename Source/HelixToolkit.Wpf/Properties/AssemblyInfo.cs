@@ -12,6 +12,6 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("HelixToolkit")]
 [assembly: AssemblyDescription("")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
-[assembly: XmlnsPrefix("http://helixtoolkit.codeplex.com", "h")]
-[assembly: XmlnsDefinition("http://helixtoolkit.codeplex.com", "HelixToolkit.Wpf")]
+[assembly: XmlnsPrefix("http://helix-toolkit.org/wpf", "h")]
+[assembly: XmlnsDefinition("http://helix-toolkit.org/wpf", "HelixToolkit.Wpf")]
 [assembly: ComVisible(false)]

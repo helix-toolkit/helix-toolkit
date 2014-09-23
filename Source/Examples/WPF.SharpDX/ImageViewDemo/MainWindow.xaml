@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
-        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
-        xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:ImageViewDemo"     
         mc:Ignorable="d"           
         Title="ImageViewDemo" Height="600" Width="1200">
@@ -12,7 +11,7 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <!--<x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>-->
+        <!--<x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>-->
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -26,7 +25,7 @@
             </MenuItem>
         </Menu>
 
-        <htx:Viewport3DX 
+        <hx:Viewport3DX 
             Grid.Row="1" 
             Grid.Column="2"
             x:Name="view1" 
@@ -38,17 +37,17 @@
             UseDefaultGestures="False"  
             RenderTechnique="{Binding RenderTechnique}"
             >
-            <htx:Viewport3DX.InputBindings>
-                <KeyBinding  Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="htx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Pan"/>
-            </htx:Viewport3DX.InputBindings>            
-            <!--<htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>-->
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
-            <htx:MeshGeometryModel3D x:Name="plane"  Geometry="{Binding Plane}" Transform = "{Binding PlaneTransform}" Material="{Binding PlaneMaterial}"   />
-            <htx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"  Color="{Binding GridColor}" DepthBias="-10"  Smoothness="0" Thickness="1.0"/>
-        </htx:Viewport3DX>
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding  Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Pan"/>
+            </hx:Viewport3DX.InputBindings>            
+            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>-->
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
+            <hx:MeshGeometryModel3D x:Name="plane"  Geometry="{Binding Plane}" Transform = "{Binding PlaneTransform}" Material="{Binding PlaneMaterial}"   />
+            <hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"  Color="{Binding GridColor}" DepthBias="-10"  Smoothness="0" Thickness="1.0"/>
+        </hx:Viewport3DX>
         
         <StackPanel Grid.Row="1" >
             <Expander Header="Properties" x:Name="lightPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">

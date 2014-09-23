@@ -3,17 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"               
         Title="LightingDemo SharpDX" Height="700" Width="1200">
     <Window.Resources>
-        <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
     </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <htx:Viewport3DX 
+        <hx:Viewport3DX 
             Grid.Row="0"
             x:Name="view1" 
             Camera="{Binding Camera}"
@@ -25,34 +25,34 @@
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             UseDefaultGestures="False">
-            <htx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="htx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="htx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="htx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="htx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="htx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="htx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="LeftClick" Command="htx:ViewportCommands.Pan"/>
-            </htx:Viewport3DX.InputBindings>
-            <htx:ShadowMap3D />
-            <htx:AmbientLight3D     Color="{Binding AmbientLightColor}"/>
-            <htx:DirectionalLight3D Color="{Binding Light1Color}" IsRendering="{Binding RenderLight1}" Direction="{Binding Light1Direction}" DirectionTransform="{Binding Light1DirectionTransform}"/>
-            <htx:PointLight3D       Color="{Binding Light2Color}" IsRendering="{Binding RenderLight2}" Attenuation="{Binding Light2Attenuation}" Transform="{Binding Light2Transform}"/>
-            <htx:PointLight3D       Color="{Binding Light3Color}" IsRendering="{Binding RenderLight3}" Attenuation="{Binding Light3Attenuation}" Transform="{Binding Light3Transform}"/>
-            <htx:SpotLight3D        Color="{Binding Light4Color}" IsRendering="{Binding RenderLight4}" Attenuation="{Binding Light4Attenuation}" Transform="{Binding Light4Transform}" Direction="{Binding Light4Direction}" DirectionTransform="{Binding Light4DirectionTransform}"/>
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
+                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="LeftClick" Command="hx:ViewportCommands.Pan"/>
+            </hx:Viewport3DX.InputBindings>
+            <hx:ShadowMap3D />
+            <hx:AmbientLight3D     Color="{Binding AmbientLightColor}"/>
+            <hx:DirectionalLight3D Color="{Binding Light1Color}" IsRendering="{Binding RenderLight1}" Direction="{Binding Light1Direction}" DirectionTransform="{Binding Light1DirectionTransform}"/>
+            <hx:PointLight3D       Color="{Binding Light2Color}" IsRendering="{Binding RenderLight2}" Attenuation="{Binding Light2Attenuation}" Transform="{Binding Light2Transform}"/>
+            <hx:PointLight3D       Color="{Binding Light3Color}" IsRendering="{Binding RenderLight3}" Attenuation="{Binding Light3Attenuation}" Transform="{Binding Light3Transform}"/>
+            <hx:SpotLight3D        Color="{Binding Light4Color}" IsRendering="{Binding RenderLight4}" Attenuation="{Binding Light4Attenuation}" Transform="{Binding Light4Transform}" Direction="{Binding Light4Direction}" DirectionTransform="{Binding Light4DirectionTransform}"/>
 
             <!--<hx:EnvironmentMap x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>-->
-            <htx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight1}" Material="{Binding LightModelMaterial}" Transform="{Binding Light1Transform}"/>
-            <htx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight2}" Material="{Binding LightModelMaterial}" Transform="{Binding Light2Transform}"/>
-            <htx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight3}" Material="{Binding LightModelMaterial}" Transform="{Binding Light3Transform}"/>
-            <htx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight4}" Material="{Binding LightModelMaterial}" Transform="{Binding Light4Transform}"/>
-            <htx:MeshGeometryModel3D x:Name="model" Geometry="{Binding Model}" Material="{Binding ModelMaterial}" Transform = "{Binding ModelTransform}"/>
-            <htx:MeshGeometryModel3D x:Name="floor" Geometry="{Binding Floor}" Material="{Binding FloorMaterial}" Transform = "{Binding FloorTransform}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight1}" Material="{Binding LightModelMaterial}" Transform="{Binding Light1Transform}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight2}" Material="{Binding LightModelMaterial}" Transform="{Binding Light2Transform}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight3}" Material="{Binding LightModelMaterial}" Transform="{Binding Light3Transform}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding Sphere}" IsRendering="{Binding RenderLight4}" Material="{Binding LightModelMaterial}" Transform="{Binding Light4Transform}"/>
+            <hx:MeshGeometryModel3D x:Name="model" Geometry="{Binding Model}" Material="{Binding ModelMaterial}" Transform = "{Binding ModelTransform}"/>
+            <hx:MeshGeometryModel3D x:Name="floor" Geometry="{Binding Floor}" Material="{Binding FloorMaterial}" Transform = "{Binding FloorTransform}"/>
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
-        </htx:Viewport3DX>
+        </hx:Viewport3DX>
         <StackPanel>
             <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="200" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
                 <Expander.Background>
