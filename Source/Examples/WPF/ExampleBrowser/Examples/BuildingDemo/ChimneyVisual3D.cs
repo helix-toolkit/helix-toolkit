@@ -1,3 +1,9 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ChimneyVisual3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace BuildingDemo
 {
     using System.ComponentModel;

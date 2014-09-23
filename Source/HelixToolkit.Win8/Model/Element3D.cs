@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Win8
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Element3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Base class for 3D elements.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Win8
 {
     using HelixToolkit.Win8.CommonDX;
 

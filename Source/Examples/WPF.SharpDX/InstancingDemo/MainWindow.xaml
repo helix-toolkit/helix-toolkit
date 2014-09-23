@@ -3,20 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
-        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
-        xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"         
         Title="{Binding Title}" Height="500" Width="800">
     <Window.Resources>
-        <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>                        
         </Grid.RowDefinitions>
         
-        <htx:Viewport3DX 
+        <hx:Viewport3DX 
             Grid.Row="0" 
             x:Name="view1" 
             Camera="{Binding Camera}"
@@ -28,17 +26,17 @@
             UseDefaultGestures="True"
             RenderTechnique="{Binding RenderTechnique}">
             
-            <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
 
-            <htx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>
+            <hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>
 
-            <htx:MeshGeometryModel3D x:Name="mesh"  Instances="{Binding ModelInstances}" Geometry="{Binding Model}" Transform="{Binding ModelTransform}" Material="{Binding ModelMaterial}"   />
+            <hx:MeshGeometryModel3D x:Name="mesh"  Instances="{Binding ModelInstances}" Geometry="{Binding Model}" Transform="{Binding ModelTransform}" Material="{Binding ModelMaterial}"   />
 
-            <htx:LineGeometryModel3D x:Name="lines" Instances="{Binding ModelInstances}" Geometry="{Binding Lines}" Transform="{Binding ModelTransform}" />
+            <hx:LineGeometryModel3D x:Name="lines" Instances="{Binding ModelInstances}" Geometry="{Binding Lines}" Transform="{Binding ModelTransform}" />
 
-        </htx:Viewport3DX>
+        </hx:Viewport3DX>
         
         <StackPanel Grid.Row="0" >
             <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">

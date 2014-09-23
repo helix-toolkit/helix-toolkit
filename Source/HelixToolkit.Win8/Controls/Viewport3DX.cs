@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Viewport3DX.cs" company="Helix Toolkit">
-//   
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   Renders the contained 3-D content within the 2-D layout bounds of the Viewport3DX element.

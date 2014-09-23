@@ -1,4 +1,12 @@
-﻿ 
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="InteractionHandle3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace MouseDragDemo
 {
     using System.Linq;

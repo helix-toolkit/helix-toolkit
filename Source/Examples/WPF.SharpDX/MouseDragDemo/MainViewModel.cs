@@ -1,4 +1,10 @@
-﻿namespace MouseDragDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace MouseDragDemo
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TranslateManipulator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="TranslateManipulator.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   A visual element that contains a manipulator that can translate along an axis.
+//   Represents a visual element that contains a manipulator that can translate along an axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

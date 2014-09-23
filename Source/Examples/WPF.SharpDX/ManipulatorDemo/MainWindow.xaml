@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
-        xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"         
         Title="Manipulator Demo (HelixToolkitDX)" Height="600" Width="1200">
     <Window.Resources>
-        <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>            
             <RowDefinition/>            
         </Grid.RowDefinitions>
-        <htx:Viewport3DX 
+        <hx:Viewport3DX 
             Grid.Row="1" 
             x:Name="view1" 
             Camera="{Binding Camera}"
@@ -26,69 +26,69 @@
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"
             RenderTechnique="{Binding RenderTechnique}">
-            <htx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="htx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="htx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="htx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="htx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="htx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="htx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="htx:ViewportCommands.Pan"/>
-            </htx:Viewport3DX.InputBindings>
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
+                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+            </hx:Viewport3DX.InputBindings>
 
-            <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
 
-            <htx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding Material1}" />
+            <hx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding Material1}" />
 
-            <htx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding Material2}" />
+            <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding Material2}" />
             
-            <htx:DraggableGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding Material3}"  />
+            <hx:DraggableGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding Material3}"  />
 
-            <htx:LineGeometryModel3D x:Name="lines" Geometry="{Binding Lines}" Transform = "{Binding Transform, ElementName=model3}" Color="{x:Static sdx:Color.Black}" Thickness="2" Smoothness="2"/>
+            <hx:LineGeometryModel3D x:Name="lines" Geometry="{Binding Lines}" Transform = "{Binding Transform, ElementName=model3}" Color="{x:Static sdx:Color.Black}" Thickness="2" Smoothness="2"/>
             
-            <htx:UITranslateManipulator3D x:Name="translateX" Direction="1,0,0" 
+            <hx:UITranslateManipulator3D x:Name="translateX" Direction="1,0,0" 
                                           Offset="1,0,0"
                                           Transform="{Binding Transform,ElementName=model2}" 
                                           TargetTransform="{Binding Transform,ElementName=model2}"
-                                          Material="{x:Static htx:PhongMaterials.Red}"/>
+                                          Material="{x:Static hx:PhongMaterials.Red}"/>
 
-            <htx:UITranslateManipulator3D x:Name="translateY" Direction="0,1,0" 
+            <hx:UITranslateManipulator3D x:Name="translateY" Direction="0,1,0" 
                                           Offset="0,1,0"
                                           Transform="{Binding Transform,ElementName=model2}"  
                                           TargetTransform="{Binding Transform,ElementName=model2}"
-                                          Material="{x:Static htx:PhongMaterials.Green}"/>
+                                          Material="{x:Static hx:PhongMaterials.Green}"/>
 
-            <htx:UITranslateManipulator3D x:Name="translateZ" Direction="0,0,1" 
+            <hx:UITranslateManipulator3D x:Name="translateZ" Direction="0,0,1" 
                                           Offset="0,0,1"
                                           Transform="{Binding Transform,ElementName=model2}"  
                                           TargetTransform="{Binding Transform,ElementName=model2}"
-                                          Material="{x:Static htx:PhongMaterials.Blue}"/>
+                                          Material="{x:Static hx:PhongMaterials.Blue}"/>
             
-            <htx:UIRotateManipulator3D    x:Name="rotateX" Axis="1,0,0"  
+            <hx:UIRotateManipulator3D    x:Name="rotateX" Axis="1,0,0"  
                                           InnerDiameter="{Binding BoundsDiameter,ElementName=model2}" 
                                           Transform="{Binding Transform,ElementName=model2}" 
                                           TargetTransform="{Binding Transform,ElementName=model2}" 
-                                          Material="{x:Static htx:PhongMaterials.Red}"/>
+                                          Material="{x:Static hx:PhongMaterials.Red}"/>
             
-            <htx:UIRotateManipulator3D    x:Name="rotateY" Axis="0,1,0"  
+            <hx:UIRotateManipulator3D    x:Name="rotateY" Axis="0,1,0"  
                                           InnerDiameter="{Binding BoundsDiameter,ElementName=model2}" 
                                           Transform="{Binding Transform,ElementName=model2}" 
                                           TargetTransform="{Binding Transform,ElementName=model2}"
-                                          Material="{x:Static htx:PhongMaterials.Green}"/>
+                                          Material="{x:Static hx:PhongMaterials.Green}"/>
 
-            <htx:UIRotateManipulator3D    x:Name="rotateZ" Axis="0,0,1"  
+            <hx:UIRotateManipulator3D    x:Name="rotateZ" Axis="0,0,1"  
                                           InnerDiameter="{Binding BoundsDiameter,ElementName=model2}" 
                                           Transform="{Binding Transform,ElementName=model2}"
                                           TargetTransform="{Binding Transform,ElementName=model2}"
-                                          Material="{x:Static htx:PhongMaterials.Blue}"/>
+                                          Material="{x:Static hx:PhongMaterials.Blue}"/>
 
 
-            <htx:UICompositeManipulator3D  x:Name="composit"                                                                                     
+            <hx:UICompositeManipulator3D  x:Name="composit"                                                                                     
                                           CanRotateX="true" CanRotateY="true" CanRotateZ="true"                                                                                    
                                           CanTranslateX="true" CanTranslateY="true" CanTranslateZ="true"
                                           Diameter="{Binding BoundsDiameter,ElementName=model1}"                                                                                                
@@ -97,10 +97,10 @@
                                           />
 
 
-            <htx:LineGeometryModel3D x:Name="grid"  Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>
+            <hx:LineGeometryModel3D x:Name="grid"  Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>
 
 
-        </htx:Viewport3DX>
+        </hx:Viewport3DX>
         <StackPanel Grid.Row="1" >
             <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
                 <Expander.Background>

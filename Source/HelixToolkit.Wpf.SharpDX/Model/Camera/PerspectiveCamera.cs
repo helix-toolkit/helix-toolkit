@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PerspectiveCamera.cs" company="">
-//   
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PerspectiveCamera.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   Represents a perspective projection camera.

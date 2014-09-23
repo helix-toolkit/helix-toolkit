@@ -1,4 +1,10 @@
-﻿namespace ModelViewer
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FileDialogService.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ModelViewer
 {
     using Microsoft.Win32;
 

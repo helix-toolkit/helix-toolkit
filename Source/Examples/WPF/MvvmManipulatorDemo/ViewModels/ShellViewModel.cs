@@ -1,4 +1,10 @@
-﻿namespace MvvmManipulatorDemo.ViewModels
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ShellViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace MvvmManipulatorDemo.ViewModels
 {
     using Caliburn.Micro;
 

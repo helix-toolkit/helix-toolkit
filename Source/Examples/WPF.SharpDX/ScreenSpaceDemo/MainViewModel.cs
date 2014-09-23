@@ -1,4 +1,10 @@
-﻿namespace ScreenSpaceDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ScreenSpaceDemo
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;

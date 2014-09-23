@@ -1,4 +1,17 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RelayCommand.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   A command whose sole purpose is to 
+//   relay its functionality to other
+//   objects by invoking delegates. The
+//   default return value for the CanExecute
+//   method is 'true'.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
 

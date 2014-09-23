@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MandelbrotSolver.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="MandelbrotSolver.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   The MandelbrotSolver contains the coordinates of the image and the resulting ImageBuffer
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics;

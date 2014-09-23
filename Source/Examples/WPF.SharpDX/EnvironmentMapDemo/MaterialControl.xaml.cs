@@ -1,4 +1,13 @@
-﻿namespace EnvironmentMapDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MaterialControl.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Interaction logic for MaterialControl.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace EnvironmentMapDemo
 {
     using System;
     using System.Windows.Controls;

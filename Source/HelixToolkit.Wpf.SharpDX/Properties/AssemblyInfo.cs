@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Markup;
@@ -8,5 +14,5 @@ using System.Windows.Markup;
 [assembly: ComVisible(false)]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-[assembly: XmlnsPrefix("http://helixtoolkit.codeplex.com/wpf/SharpDX", "hx")]
-[assembly: XmlnsDefinition("http://helixtoolkit.codeplex.com/wpf/SharpDX", "HelixToolkit.Wpf.SharpDX")]
+[assembly: XmlnsPrefix("http://helix-toolkit.org/wpf/SharpDX", "hx")]
+[assembly: XmlnsDefinition("http://helix-toolkit.org/wpf/SharpDX", "HelixToolkit.Wpf.SharpDX")]

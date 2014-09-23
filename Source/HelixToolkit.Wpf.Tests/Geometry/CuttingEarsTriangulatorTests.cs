@@ -1,4 +1,10 @@
-﻿namespace HelixToolkit.Wpf.Tests.Geometry
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CuttingEarsTriangulatorTests.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.Tests.Geometry
 {
     using System.Windows;
 

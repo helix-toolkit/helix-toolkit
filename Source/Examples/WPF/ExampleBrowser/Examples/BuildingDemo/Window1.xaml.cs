@@ -1,4 +1,13 @@
-﻿namespace BuildingDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Window1.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Interaction logic for Window1.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace BuildingDemo
 {
     using System.Linq;
     using System.Windows;

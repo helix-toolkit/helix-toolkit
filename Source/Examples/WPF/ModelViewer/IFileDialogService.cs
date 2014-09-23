@@ -1,4 +1,10 @@
-﻿namespace ModelViewer
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IFileDialogService.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ModelViewer
 {
     public interface IFileDialogService
     {

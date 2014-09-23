@@ -1,4 +1,10 @@
-﻿namespace TemplateDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Cube.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace TemplateDemo
 {
     using HelixToolkit.Wpf.SharpDX;
 

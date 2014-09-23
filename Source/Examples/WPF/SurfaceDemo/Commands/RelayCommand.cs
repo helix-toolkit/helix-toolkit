@@ -1,7 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RelayCommand.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="RelayCommand.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   A command whose sole purpose is to
+//   relay its functionality to other
+//   objects by invoking delegates. The
+//   default return value for the CanExecute
+//   method is 'true'.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace MvvmFoundation.Wpf

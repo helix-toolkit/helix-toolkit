@@ -1,3 +1,9 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ScreenCapture.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace ExampleBrowser
 {
     using System;

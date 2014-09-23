@@ -1,3 +1,14 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Light3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Direction of the light.
+//   It applies to Directional Light and to Spot Light,
+//   for all other lights it is ignored.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;

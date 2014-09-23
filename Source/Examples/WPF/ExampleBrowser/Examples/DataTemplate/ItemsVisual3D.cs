@@ -1,3 +1,13 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ItemsVisual3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Represents a model that can be used to present a collection of items.supports generating child items by a
+//   DataTemplate3D.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace DataTemplateDemo
 {
     using System;

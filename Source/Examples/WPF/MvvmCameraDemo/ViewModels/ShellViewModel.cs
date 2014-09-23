@@ -1,4 +1,10 @@
-﻿namespace MvvmCameraDemo.ViewModels
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ShellViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace MvvmCameraDemo.ViewModels
 {
     using Caliburn.Micro;
     using System.Windows.Media.Media3D;
