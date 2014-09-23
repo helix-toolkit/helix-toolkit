@@ -1,4 +1,12 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ResizeManipulator3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   The can translate x property.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace MouseDragDemo
 {
     using System.Windows;

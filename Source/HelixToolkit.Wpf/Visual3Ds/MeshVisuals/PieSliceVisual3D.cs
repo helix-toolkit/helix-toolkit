@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PieSliceVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="PieSliceVisual3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   A visual element that shows a flat pie slice defined by center, normal, up vectors, inner and outer radius, start and end angles.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf

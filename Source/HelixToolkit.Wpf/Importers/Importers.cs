@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Importers.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="Importers.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Contains a list of all supported importers.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf

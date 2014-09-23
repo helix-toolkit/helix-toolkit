@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Transform3DHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="Transform3DHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Helper methods for Transform3D.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf

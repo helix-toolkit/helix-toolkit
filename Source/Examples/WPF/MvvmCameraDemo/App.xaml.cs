@@ -1,4 +1,10 @@
-﻿namespace MvvmCameraDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="App.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace MvvmCameraDemo
 {
     using System.Windows;
 

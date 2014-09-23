@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MatrixCamera.cs" company="">
-//   
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MatrixCamera.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   Camera which specifies the view and projection transforms as Matrix3D objects

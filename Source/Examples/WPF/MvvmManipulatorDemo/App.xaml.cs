@@ -1,4 +1,10 @@
-﻿namespace MvvmManipulatorDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="App.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace MvvmManipulatorDemo
 {
     using System.Windows;
 

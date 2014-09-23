@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelsSelectedByRectangleEventArgs.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="ModelsSelectedByRectangleEventArgs.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides event data for the ModelsSelected event of the RectangleSelectionCommand.
+//   Provides event data for the ModelsSelected event of the .
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

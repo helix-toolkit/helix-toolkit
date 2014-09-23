@@ -1,4 +1,13 @@
-﻿namespace TessellationDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   load the model from obj-file
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace TessellationDemo
 {
     using System.Linq;
     using DemoCore;    

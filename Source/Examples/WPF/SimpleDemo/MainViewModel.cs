@@ -1,3 +1,12 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Provides a ViewModel for the Main window.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace ExampleBrowser
 {
     using System.Windows.Media;

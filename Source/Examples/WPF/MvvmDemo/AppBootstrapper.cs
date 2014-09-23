@@ -1,7 +1,10 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppBootstrapper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AppBootstrapper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   By default, we are configured to use MEF
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace MvvmDemo

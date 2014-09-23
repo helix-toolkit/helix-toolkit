@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProjectionCamera.cs" company="">
-//   
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ProjectionCamera.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   An abstract base class for perspective and orthographic projection cameras.

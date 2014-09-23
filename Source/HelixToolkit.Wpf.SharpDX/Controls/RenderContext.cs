@@ -1,3 +1,13 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RenderContext.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   The render-context is currently generated per frame
+//   Optimizations might be possible
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;

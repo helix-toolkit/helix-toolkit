@@ -1,3 +1,12 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RenderingModelVisual3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Provides an abstract base class for ModelVisual3D objects that listens to the CompositionTarget.Rendering event.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System.Windows.Media;

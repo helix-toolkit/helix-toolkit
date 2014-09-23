@@ -1,3 +1,12 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ParticleSystem.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Renders a simple particle system within the limitations of WPF.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf
 {
     using System;

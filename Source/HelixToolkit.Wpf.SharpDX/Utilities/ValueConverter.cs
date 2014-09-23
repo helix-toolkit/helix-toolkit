@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ValueConverter.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Source to Target
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Windows.Data;

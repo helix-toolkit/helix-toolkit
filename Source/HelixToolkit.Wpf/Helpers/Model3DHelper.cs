@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Model3DHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="Model3DHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for <see cref="Model3D" /> objects.
+//   Provides extension methods for  objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

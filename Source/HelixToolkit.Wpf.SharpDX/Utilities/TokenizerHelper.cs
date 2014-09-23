@@ -1,18 +1,15 @@
-﻿//---------------------------------------------------------------------------- 
-//
-// Copyright (C) Microsoft Corporation.  All rights reserved.
-//
-// File: TokenizerHelper.cs 
-//
-// Description: This file contains the implementation of TokenizerHelper. 
-//              This class should be used by most - if not all - MIL parsers. 
-//
-// History: 
-//  05/19/2003 : [....] - Created it
-//  05/20/2003 : [....] - Moved to Shared
-//  05/16/2014 : Copied to HelixToolkit and adjusted
-//
-//--------------------------------------------------------------------------- 
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TokenizerHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Constructor for TokenizerHelper which accepts an IFormatProvider.
+//   If the IFormatProvider is null, we use the thread's IFormatProvider info. 
+//   We will use ',' as the list separator, unless it's the same as the
+//   decimal separator.  If it *is*, then we can't determine if, say, "23,5" is one
+//   number or two.  In this case, we will use ";" as the separator.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf.SharpDX.Utilities
 {

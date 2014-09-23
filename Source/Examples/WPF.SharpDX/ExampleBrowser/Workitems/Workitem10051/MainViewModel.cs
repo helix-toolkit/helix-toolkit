@@ -1,4 +1,10 @@
-﻿ namespace Workitem10051
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+ namespace Workitem10051
 {
     using DemoCore;
 

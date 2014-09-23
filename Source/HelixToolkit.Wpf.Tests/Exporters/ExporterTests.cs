@@ -1,7 +1,10 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExporterTests.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ExporterTests.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Provides a base class for Exporter test classes.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf.Tests

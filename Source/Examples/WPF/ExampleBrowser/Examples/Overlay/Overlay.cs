@@ -1,4 +1,13 @@
-﻿namespace OverlayDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Overlay.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   The overlay.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OverlayDemo
 {
     using System.Windows;
     using System.Windows.Media.Media3D;

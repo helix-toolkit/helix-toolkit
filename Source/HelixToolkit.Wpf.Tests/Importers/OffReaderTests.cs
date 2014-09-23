@@ -1,9 +1,9 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OffReaderTests.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OffReaderTests.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides unit tests for the <see cref="OffReader" /> class.
+//   Provides unit tests for the  class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

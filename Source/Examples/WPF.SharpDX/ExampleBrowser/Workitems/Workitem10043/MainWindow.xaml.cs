@@ -1,4 +1,13 @@
-﻿namespace Workitem10043
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Interaction logic for MainWindow.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Workitem10043
 {
     using System.Windows;
 

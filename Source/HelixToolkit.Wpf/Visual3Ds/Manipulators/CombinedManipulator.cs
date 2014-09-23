@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CombinedManipulator.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="CombinedManipulator.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   A visual element that shows translation and rotation manipulators.
+//   Represents a visual element that shows translation and rotation manipulators.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

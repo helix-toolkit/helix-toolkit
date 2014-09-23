@@ -1,4 +1,14 @@
-﻿using NUnit.Framework;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ObjReaderTests.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Test for pull request #52.
+//   Fix ArgumentOutOfRangeException in MeshBuilder.ComputeNormals.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using NUnit.Framework;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 {

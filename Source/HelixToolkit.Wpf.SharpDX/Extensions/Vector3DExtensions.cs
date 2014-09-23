@@ -1,3 +1,12 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Vector3DExtensions.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Find a  that is perpendicular to the given .
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;

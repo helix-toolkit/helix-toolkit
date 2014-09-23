@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ViewportExtensions.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Provides extension methods for .
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;

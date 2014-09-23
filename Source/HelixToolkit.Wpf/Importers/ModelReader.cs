@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelReader.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Class ModelReader.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf
 {
     using System;
     using System.IO;

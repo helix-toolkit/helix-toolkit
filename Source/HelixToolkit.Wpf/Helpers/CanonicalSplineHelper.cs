@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CanonicalSplineHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Interpolates a list of points using a canonical spline.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;

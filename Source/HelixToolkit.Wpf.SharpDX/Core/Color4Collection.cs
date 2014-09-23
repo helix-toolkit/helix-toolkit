@@ -1,4 +1,10 @@
-﻿namespace HelixToolkit.Wpf.SharpDX.Core
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Color4Collection.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX.Core
 {
     using System;
     using System.Collections.Generic;

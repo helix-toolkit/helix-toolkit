@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Effects.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Names of techniques which are implemented by default
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;

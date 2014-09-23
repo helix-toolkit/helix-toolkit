@@ -1,4 +1,14 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MeshGeometryModel3DTests.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Test for pull request #54.
+//   Fix IndexOutOfRange exception in CreateDefaultVertexArray.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System;
 using HelixToolkit.Wpf.SharpDX.Tests.Controls;
 using NUnit.Framework;
 

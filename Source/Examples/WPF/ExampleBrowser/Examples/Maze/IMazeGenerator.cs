@@ -1,7 +1,10 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMazeGenerator.cs" company="Helix 3D Toolkit examples">
-//   http://helixtoolkit.codeplex.com, license: MIT
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IMazeGenerator.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Provides functionality to generate a maze.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace MazeDemo

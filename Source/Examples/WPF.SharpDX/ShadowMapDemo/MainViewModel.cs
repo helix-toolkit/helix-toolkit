@@ -1,4 +1,10 @@
-﻿namespace ShadowMapDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ShadowMapDemo
 {
     using System;
     using System.Windows.Media.Animation;

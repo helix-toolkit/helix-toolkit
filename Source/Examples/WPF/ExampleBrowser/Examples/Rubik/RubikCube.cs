@@ -1,7 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RubikCube.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="RubikCube.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   A rubik's cube - demo of building a geometry with Helix Toolkit's MeshBuilder
+//   and using animated transforms to do the rotations
+//   http://en.wikipedia.org/wiki/Rubik's_Cube
+//   http://www.rubiks.com/
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;

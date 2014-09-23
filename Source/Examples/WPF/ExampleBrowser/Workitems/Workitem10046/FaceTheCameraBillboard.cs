@@ -1,4 +1,13 @@
-﻿namespace Workitem10046
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FaceTheCameraBillboard.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Identifies the  dependency property.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Workitem10046
 {
     using System;
     using System.Windows;

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CameraExtensions.cs" company="">
-//   
+// <copyright file="CameraExtensions.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   Provides extension methods for the cameras.
