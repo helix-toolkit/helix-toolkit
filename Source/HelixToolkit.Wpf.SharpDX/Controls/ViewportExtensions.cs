@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for .
+//   Provides extension methods for Viewport3DX.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

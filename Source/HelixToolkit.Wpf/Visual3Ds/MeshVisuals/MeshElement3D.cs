@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Represents a base class for elements that contain one  and front and back s.
+//   Represents a base class for elements that contain one GeometryModel3D and front and back Materials.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

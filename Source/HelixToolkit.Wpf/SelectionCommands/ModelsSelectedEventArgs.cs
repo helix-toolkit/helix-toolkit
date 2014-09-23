@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides event data for the ModelsSelected event of the .
+//   Provides event data for the ModelsSelected event of the SelectionCommand.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

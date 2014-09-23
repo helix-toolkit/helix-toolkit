@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides unit tests for the  class.
+//   Provides unit tests for the OffReader class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

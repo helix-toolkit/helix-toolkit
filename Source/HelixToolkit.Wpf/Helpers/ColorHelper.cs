@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Helper methods for .
+//   Helper methods for Color.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

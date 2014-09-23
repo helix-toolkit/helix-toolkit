@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for  objects.
+//   Provides extension methods for Visual3D objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

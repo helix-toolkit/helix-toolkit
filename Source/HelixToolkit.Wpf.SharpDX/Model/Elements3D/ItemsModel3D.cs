@@ -4,7 +4,7 @@
 // </copyright>
 // <summary>
 //   Represents a model that can be used to present a collection of items. supports generating child items by a
-//   .
+//   DataTemplate.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

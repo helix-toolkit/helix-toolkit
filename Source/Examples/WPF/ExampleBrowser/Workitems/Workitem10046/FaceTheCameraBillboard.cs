@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Identifies the  dependency property.
+//   Identifies the Height dependency property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

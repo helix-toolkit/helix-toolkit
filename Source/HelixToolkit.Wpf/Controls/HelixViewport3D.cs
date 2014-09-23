@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   A control that contains a  and a .
+//   A control that contains a Viewport3D and a CameraController.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

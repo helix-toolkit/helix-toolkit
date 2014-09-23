@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   A visual element that can be bound to a .
+//   A visual element that can be bound to a MeshGeometry3D.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

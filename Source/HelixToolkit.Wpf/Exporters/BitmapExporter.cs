@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Exports a  to a .bmp, .png or .jpg file.
+//   Exports a Viewport3D to a .bmp, .png or .jpg file.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

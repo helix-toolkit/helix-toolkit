@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Extension methods for .
+//   Extension methods for Point3D.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

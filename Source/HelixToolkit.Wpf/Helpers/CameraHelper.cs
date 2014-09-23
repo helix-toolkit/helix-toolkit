@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides extension methods for  derived classes.
+//   Provides extension methods for Camera derived classes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

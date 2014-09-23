@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Target to render to a , used to integrate
+//   Target to render to a SurfaceImageSource, used to integrate
 //   DirectX content into a XAML brush.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Find a  that is perpendicular to the given .
+//   Find a Vector3D that is perpendicular to the given Vector3D.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
