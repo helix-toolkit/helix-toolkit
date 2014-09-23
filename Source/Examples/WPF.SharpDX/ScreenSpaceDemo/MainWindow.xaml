@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
-        xmlns:htx="clr-namespace:HelixToolkit.Wpf.SharpDX;assembly=HelixToolkit.Wpf.SharpDX"
+        xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX;assembly=HelixToolkit.Wpf.SharpDX"
         xmlns:local="clr-namespace:ScreenSpaceDemo" 
         mc:Ignorable="d"         
         Title="{Binding Title}" Height="500" Width="800">
     <Window.Resources>
-        <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
-        <x:StaticExtension Member="htx:DeferredRenderPasses.RenderPasses" x:Key="RenderPasses"/>
-        <x:StaticExtension Member="htx:DeferredRenderPasses.BlurPasses" x:Key="BlurPasses"/>
+        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <x:StaticExtension Member="hx:DeferredRenderPasses.RenderPasses" x:Key="RenderPasses"/>
+        <x:StaticExtension Member="hx:DeferredRenderPasses.BlurPasses" x:Key="BlurPasses"/>
     </Window.Resources> 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
        
-        <htx:Viewport3DX 
+        <hx:Viewport3DX 
             Grid.Row="0" 
             x:Name="view1" 
             Camera="{Binding Camera}"
@@ -31,17 +31,17 @@
             UseDefaultGestures="False"  
             BackgroundColor="{Binding BackgroundColor}"
             RenderTechnique="{Binding RenderTechnique}">
-            <htx:Viewport3DX.InputBindings>
-                <KeyBinding Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="htx:ViewportCommands.Pan"/>
-            </htx:Viewport3DX.InputBindings>
-            <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection1}"/>
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection2}"/>
-            <htx:GroupModel3D x:Name="group"  Children="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
-        </htx:Viewport3DX>
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+            </hx:Viewport3DX.InputBindings>
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection1}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection2}"/>
+            <hx:GroupModel3D x:Name="group"  Children="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
+        </hx:Viewport3DX>
         
         <StackPanel Grid.Row="0" >
             <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
