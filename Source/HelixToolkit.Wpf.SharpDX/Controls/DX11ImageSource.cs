@@ -54,8 +54,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public void Dispose()
         {
             this.SetRenderTargetDX11(null);
-            Disposer.RemoveAndDispose(ref this.renderTarget);
-
             activeClients--;
             this.EndD3D();
         }
@@ -74,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.renderTarget != null)
             {
-                this.renderTarget = null;
+                Disposer.RemoveAndDispose(ref this.renderTarget);
                 base.Lock();
                 base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
                 base.Unlock();
