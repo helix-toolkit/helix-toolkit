@@ -192,7 +192,7 @@ namespace HelixToolkit.Wpf
             var oldNotifyCollectionChanged = e.OldValue as INotifyCollectionChanged;
             if (oldNotifyCollectionChanged != null)
             {
-                CollectionChangedEventManager.AddListener(oldNotifyCollectionChanged, screenSpaceVisual3D);
+                CollectionChangedEventManager.RemoveListener(oldNotifyCollectionChanged, screenSpaceVisual3D);
             }
         }
 
