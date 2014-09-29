@@ -9,7 +9,9 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -17,7 +19,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// An abstract base class for visuals that use screen space dimensions when rendering.
     /// </summary>
-    public abstract class ScreenSpaceVisual3D : RenderingModelVisual3D
+    public abstract class ScreenSpaceVisual3D : RenderingModelVisual3D, IWeakEventListener
     {
         /// <summary>
         /// Identifies the <see cref="Color"/> dependency property.
@@ -35,7 +37,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-            "Points", typeof(IList<Point3D>), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(null, GeometryChanged));
+            "Points", typeof(IList<Point3D>), typeof(ScreenSpaceVisual3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure, PointsChanged));
 
         /// <summary>
         /// The is rendering flag.
@@ -170,6 +172,31 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Called when points have changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// </param>
+        private static void PointsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var screenSpaceVisual3D = (ScreenSpaceVisual3D)sender;
+            screenSpaceVisual3D.UpdateGeometry();
+            var newNotifyCollectionChanged = e.NewValue as INotifyCollectionChanged;
+            if (newNotifyCollectionChanged != null)
+            {
+                CollectionChangedEventManager.AddListener(newNotifyCollectionChanged, screenSpaceVisual3D);
+            }
+            var oldNotifyCollectionChanged = e.OldValue as INotifyCollectionChanged;
+            if (oldNotifyCollectionChanged != null)
+            {
+                CollectionChangedEventManager.RemoveListener(oldNotifyCollectionChanged, screenSpaceVisual3D);
+            }
+        }
+
+        /// <summary>
         /// The composition target_ rendering.
         /// </summary>
         /// <param name="sender">
@@ -259,6 +286,24 @@ namespace HelixToolkit.Wpf
             }
 
             this.Clipping = new CohenSutherlandClipping(10, vp.ActualWidth - 20, 10, vp.ActualHeight - 20);
+        }
+
+        /// <summary>
+        /// The bound list raised CollectionChanged
+        /// </summary>
+        /// <param name="managerType"></param>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            var args = e as NotifyCollectionChangedEventArgs;
+            if (args == null)
+            {
+                return false;
+            }
+            UpdateGeometry();
+            return true;
         }
     }
 }
