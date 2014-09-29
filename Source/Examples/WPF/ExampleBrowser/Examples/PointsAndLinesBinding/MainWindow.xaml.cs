@@ -39,7 +39,7 @@
         public int N
         {
             get { return n; }
-            set { n = value; RaisePropertyChanged(); }
+            set { n = value; RaisePropertyChanged("N"); }
         }
 
         public bool ShowLinesVisual3D { get; set; }
@@ -62,7 +62,7 @@
             }
         }
 
-        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        protected void RaisePropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null)

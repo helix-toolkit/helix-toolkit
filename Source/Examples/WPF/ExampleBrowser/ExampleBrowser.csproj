@@ -569,6 +569,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\PointsAndLinesBinding_small.png" />
     <Resource Include="Images\RectSelection_small.png" />
     <Resource Include="Images\Workitem10054_small.png" />
     <Resource Include="Images\ParticleSystemDemo_small.png" />
