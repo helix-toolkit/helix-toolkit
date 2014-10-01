@@ -402,8 +402,9 @@ namespace HelixToolkit.Wpf
         public static MeshGeometry3D Cut(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
             var hasTextureCoordinates = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0;
-            var meshBuilder = new MeshBuilder(false, hasTextureCoordinates);
-            var contourHelper = new ContourHelper(plane, normal, mesh, hasTextureCoordinates);
+            var hasNormals = mesh.Normals != null && mesh.Normals.Count > 0;
+            var meshBuilder = new MeshBuilder(hasNormals, hasTextureCoordinates);
+            var contourHelper = new ContourHelper(plane, normal, mesh, hasNormals, hasTextureCoordinates);
             foreach (var position in mesh.Positions)
             {
                 meshBuilder.Positions.Add(position);
@@ -417,6 +418,14 @@ namespace HelixToolkit.Wpf
                 }
             }
 
+            if (hasNormals)
+            {
+                foreach (var n in mesh.Normals)
+                {
+                    meshBuilder.Normals.Add(n);
+                }
+            }
+
             for (var i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
                 var index0 = mesh.TriangleIndices[i];
@@ -424,10 +433,11 @@ namespace HelixToolkit.Wpf
                 var index2 = mesh.TriangleIndices[i + 2];
 
                 Point3D[] positions;
+                Vector3D[] normals;
                 Point[] textureCoordinates;
                 int[] triangleIndices;
 
-                contourHelper.ContourFacet(index0, index1, index2, out positions, out textureCoordinates, out triangleIndices);
+                contourHelper.ContourFacet(index0, index1, index2, out positions, out normals, out textureCoordinates, out triangleIndices);
 
                 foreach (var p in positions)
                 {
@@ -437,6 +447,11 @@ namespace HelixToolkit.Wpf
                 foreach (var tc in textureCoordinates)
                 {
                     meshBuilder.TextureCoordinates.Add(tc);
+                }
+
+                foreach (var n in normals)
+                {
+                    meshBuilder.Normals.Add(n);
                 }
 
                 foreach (var ti in triangleIndices)
@@ -470,6 +485,7 @@ namespace HelixToolkit.Wpf
             for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
                 Point3D[] positions;
+                Vector3D[] normals;
                 Point[] textureCoordinates;
                 int[] triangleIndices;
 
@@ -478,6 +494,7 @@ namespace HelixToolkit.Wpf
                     mesh.TriangleIndices[i + 1],
                     mesh.TriangleIndices[i + 2],
                     out positions,
+                    out normals,
                     out textureCoordinates,
                     out triangleIndices);
                 segments.AddRange(positions);
