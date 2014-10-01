@@ -1,0 +1,100 @@
+# The glossy Cornell Box in OBJ format.
+# Note that the real box is not a perfect cube, so
+# the faces are imperfect in this data set.
+# This can be matched with Henrik Jensen's "Global Illumination using Photon Maps" Page 17 Fig. 6
+#
+# Created by Guedis Cardenas and Morgan McGuire at Williams College, 2011
+# Released into the Public Domain.
+#
+# http://graphics.cs.williams.edu/data
+# http://scholar.google.com/scholar?q=global+illumination+using+photon+maps+jensen&hl=en&as_sdt=0&as_vis=1&oi=scholart 
+#
+newmtl sphere						
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	# Cyan
+	Ka 0.486 0.631 0.663 
+	Kd 0.486 0.631 0.663
+	Ks 0.700 0.700 0.700
+	Ke 0.000 0.000 0.000
+
+newmtl shortBox
+	Ns 10.0000
+  Ni 1.0000
+  illum 2
+  # White
+  Ka 0.725 0.71 0.68 
+  Kd 0.725 0.71 0.68
+  Ks 0 0 0
+  Ke 0 0 0
+
+newmtl floor
+	Ns 80
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.7250 0.7100 0.6800
+	Kd 0.7250 0.7100 0.6800
+	Ks 0.3000 0.3000 0.3000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl ceiling
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.7250 0.7100 0.6800
+	Kd 0.7250 0.7100 0.6800
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl backWall
+  Ns 10.0000
+  Ni 1.0000
+  illum 2
+  # White
+  Ka 0.725 0.71 0.68 
+  Kd 0.725 0.71 0.68
+  Ks 0 0 0
+  Ke 0 0 0
+
+newmtl leftWall
+  Ns 10.0000
+  Ni 1.5000
+  illum 2
+  # Red
+  Ka 0.63 0.065 0.05 
+  Kd 0.63 0.065 0.05
+  Ks 0 0 0
+  Ke 0 0 0
+
+
+newmtl rightWall
+  Ns 10.0000
+  Ni 1.5000
+  illum 2
+  # Green
+  Ka 0.3725 0.6480 0.3137 
+  Kd 0.3725 0.6480 0.3137 
+  Ks 0 0 0
+  Ke 0 0 0
+  
+
+ newmtl light
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.7800 0.7800 0.7800
+	Kd 0.7800 0.7800 0.7800
+    Ke 10 10 10
+	Ks 0 0 0
