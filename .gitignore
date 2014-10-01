@@ -19,6 +19,9 @@ bld/
 [Oo]bj/
 Output/
 
+# Helix Toolkit specific files
+!Models/obj/
+
 # Roslyn cache directories
 *.ide/
 
