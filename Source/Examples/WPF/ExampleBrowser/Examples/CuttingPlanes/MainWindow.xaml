@@ -21,7 +21,7 @@
                 </ht:HelixViewport3D>
                 <StackPanel HorizontalAlignment="Left">
                     <CheckBox Content="Enable cutting planes" IsChecked="{Binding IsEnabled, ElementName=cuttingGroup1}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8"/>
-                    <ComboBox ToolTip="Cutting operation" ItemsSource="{exampleBrowser:EnumValues ht:CuttingOperations}" SelectedItem="{Binding Operation, ElementName=cuttingGroup1}"/>
+                    <ComboBox ToolTip="Cutting operation" ItemsSource="{exampleBrowser:EnumValues ht:CuttingOperation}" SelectedItem="{Binding Operation, ElementName=cuttingGroup1}"/>
                 </StackPanel>
             </Grid>
         </TabItem>

@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Defines the cutting operation.
     /// </summary>
-    public enum CuttingOperations
+    public enum CuttingOperation
     {
         /// <summary>
         /// The intersect operation.
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Operation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OperationProperty =
-            DependencyProperty.Register("Operation", typeof(CuttingOperations), typeof(CuttingPlaneGroup), new PropertyMetadata(CuttingOperations.Intersect, OperationChanged));
+            DependencyProperty.Register("Operation", typeof(CuttingOperation), typeof(CuttingPlaneGroup), new PropertyMetadata(CuttingOperation.Intersect, OperationChanged));
 
         /// <summary>
         /// The cut geometries.
@@ -110,9 +110,9 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the cutting operation.
         /// </summary>
         /// <value>The operation.</value>
-        public CuttingOperations Operation
+        public CuttingOperation Operation
         {
-            get { return (CuttingOperations)this.GetValue(OperationProperty); }
+            get { return (CuttingOperation)this.GetValue(OperationProperty); }
             set { this.SetValue(OperationProperty, value); }
         }
 
@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf
 
                 switch (this.Operation)
                 {
-                    case CuttingOperations.Intersect:
+                    case CuttingOperation.Intersect:
 
                         var intersectedGeometry = originalMeshGeometry;
 
@@ -246,7 +246,7 @@ namespace HelixToolkit.Wpf
 
                         newGeometry = intersectedGeometry;
                         break;
-                    case CuttingOperations.Subtract:
+                    case CuttingOperation.Subtract:
                         var builder = new MeshBuilder(originalMeshGeometry.Normals.Any(), originalMeshGeometry.TextureCoordinates.Any());
 
                         // Calculate the union of all complement intersections
