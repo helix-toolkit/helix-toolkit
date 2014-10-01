@@ -1,6 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{28817336-7865-4601-A72F-7ED7D738D8AE}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{288173
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf_NET40", "HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj", "{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf_NET40", "HelixToolkit.Wpf\HelixToolkit.Wpf_NET40.csproj", "{27ED13F0-C6B2-4ABA-A837-52F4775D5455}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX_NET40", "HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX_NET40.csproj", "{39740654-F5F1-4936-B4EA-9BC97D4CDE37}"
 EndProject
@@ -69,14 +70,14 @@ Global
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x64.ActiveCfg = Release|Any CPU
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x86.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x64.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x86.ActiveCfg = Release|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Release|x64.ActiveCfg = Release|Any CPU
+		{27ED13F0-C6B2-4ABA-A837-52F4775D5455}.Release|x86.ActiveCfg = Release|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|x64.ActiveCfg = Debug|x64

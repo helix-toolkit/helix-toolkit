@@ -131,17 +131,21 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Models\Ferarri40.3ds">
+    <Content Include="..\..\..\..\Models\3ds\Ferarri40.3ds">
+      <Link>Models\Ferarri40.3ds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\LeonardoVehicle.3ds">
+    <Content Include="..\..\..\..\Models\3ds\LeonardoVehicle.3ds">
+      <Link>Models\LeonardoVehicle.3ds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Moose.3ds">
+    <Content Include="..\..\..\..\Models\3ds\Moose.3ds">
+      <Link>Models\Moose.3ds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
-    <Content Include="Models\tour.obj">
+    <Content Include="..\..\..\..\Models\obj\tour.obj">
+      <Link>Models\tour.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">

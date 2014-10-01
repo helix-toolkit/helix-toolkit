@@ -38,8 +38,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SharpDX">
       <HintPath>..\..\..\packages\SharpDX.2.5.0\lib\net40\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -92,10 +91,12 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Media\teapot_quads_tex.mtl">
+    <Content Include="..\..\..\..\Models\obj\teapot_quads_tex\teapot_quads_tex.mtl">
+      <Link>Media\teapot_quads_tex.mtl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Media\teapot_quads_tex.obj">
+    <Content Include="..\..\..\..\Models\obj\teapot_quads_tex\teapot_quads_tex.obj">
+      <Link>Media\teapot_quads_tex.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
@@ -116,10 +117,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Media\TextureCheckerboard2.jpg">
+    <Content Include="..\..\..\..\Models\obj\teapot_quads_tex\TextureCheckerboard2.jpg">
+      <Link>Media\TextureCheckerboard2.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Media\TextureCheckerboard2_dot3.jpg">
+    <Content Include="..\..\..\..\Models\obj\teapot_quads_tex\TextureCheckerboard2_dot3.jpg">
+      <Link>Media\TextureCheckerboard2_dot3.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

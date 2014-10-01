@@ -76,13 +76,16 @@
     <Compile Include="Utilities\MeshBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Models\obj\cornell_box.mtl">
+    <None Include="..\..\Models\obj\Triangle.obj">
+      <Link>Models\obj\Triangle.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Models\obj\cornell_box.obj">
+    <None Include="..\..\Models\obj\cornell_box\cornell_box.mtl">
+      <Link>Models\obj\cornell_box.mtl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Models\obj\Triangle.obj">
+    <None Include="..\..\Models\obj\cornell_box\cornell_box.obj">
+      <Link>Models\obj\cornell_box.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
