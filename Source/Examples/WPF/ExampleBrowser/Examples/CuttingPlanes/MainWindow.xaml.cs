@@ -9,9 +9,6 @@
 
 namespace CuttingPlanesDemo
 {
-    using System;
-    using System.Windows.Markup;
-
     using ExampleBrowser;
 
     /// <summary>
@@ -26,21 +23,6 @@ namespace CuttingPlanesDemo
         public MainWindow()
         {
             this.InitializeComponent();
-        }
-    }
-
-    public class EnumValues : MarkupExtension
-    {
-        private readonly Type type;
-
-        public EnumValues(Type type)
-        {
-            this.type = type;
-        }
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return Enum.GetValues(type);
         }
     }
 }

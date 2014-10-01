@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         xmlns:local="clr-namespace:CuttingPlanesDemo"
+        xmlns:exampleBrowser="clr-namespace:ExampleBrowser"
         Title="CuttingPlanesDemo" Height="480" Width="640">
     <TabControl>
         <TabItem Header="Astronaut">
@@ -20,7 +21,7 @@
                 </ht:HelixViewport3D>
                 <StackPanel HorizontalAlignment="Left">
                     <CheckBox Content="Enable cutting planes" IsChecked="{Binding IsEnabled, ElementName=cuttingGroup1}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8"/>
-                    <ComboBox ToolTip="Cutting operation" ItemsSource="{local:EnumValues ht:CuttingOperations}" SelectedItem="{Binding Operation, ElementName=cuttingGroup1}"/>
+                    <ComboBox ToolTip="Cutting operation" ItemsSource="{exampleBrowser:EnumValues ht:CuttingOperations}" SelectedItem="{Binding Operation, ElementName=cuttingGroup1}"/>
                 </StackPanel>
             </Grid>
         </TabItem>
