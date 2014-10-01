@@ -9,13 +9,31 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// A visual element that applies cutting planes to all children.
+    /// Defines the cutting operation.
+    /// </summary>
+    public enum CuttingOperation
+    {
+        /// <summary>
+        /// The intersect operation.
+        /// </summary>
+        Intersect,
+
+        /// <summary>
+        /// The subtract operation.
+        /// </summary>
+        Subtract,
+    }
+
+    /// <summary>
+    /// A visual element that applies the intersection of all the specified cutting planes to all children.
     /// </summary>
     public class CuttingPlaneGroup : RenderingModelVisual3D
     {
@@ -26,29 +44,30 @@ namespace HelixToolkit.Wpf
             "IsEnabled", typeof(bool), typeof(CuttingPlaneGroup), new UIPropertyMetadata(false, IsEnabledChanged));
 
         /// <summary>
+        /// Identifies the <see cref="Operation"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OperationProperty =
+            DependencyProperty.Register("Operation", typeof(CuttingOperation), typeof(CuttingPlaneGroup), new PropertyMetadata(CuttingOperation.Intersect, OperationChanged));
+
+        /// <summary>
         /// The cut geometries.
         /// </summary>
-        private Dictionary<Model3D, Geometry3D> CutGeometries = new Dictionary<Model3D, Geometry3D>();
+        private Dictionary<Model3D, Geometry3D> cutGeometries = new Dictionary<Model3D, Geometry3D>();
 
         /// <summary>
         /// The new cut geometries.
         /// </summary>
-        private Dictionary<Model3D, Geometry3D> NewCutGeometries;
+        private Dictionary<Model3D, Geometry3D> newCutGeometries;
 
         /// <summary>
         /// The new original geometries.
         /// </summary>
-        private Dictionary<Model3D, Geometry3D> NewOriginalGeometries;
+        private Dictionary<Model3D, Geometry3D> newOriginalGeometries;
 
         /// <summary>
         /// The original geometries.
         /// </summary>
-        private Dictionary<Model3D, Geometry3D> OriginalGeometries = new Dictionary<Model3D, Geometry3D>();
-
-        /// <summary>
-        /// The force update.
-        /// </summary>
-        private bool forceUpdate;
+        private Dictionary<Model3D, Geometry3D> originalGeometries = new Dictionary<Model3D, Geometry3D>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "CuttingPlaneGroup" /> class.
@@ -62,7 +81,13 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets the cutting planes.
         /// </summary>
-        /// <value>The cutting planes.</value>
+        /// <value>
+        /// The cutting planes.
+        /// </value>
+        /// <remarks>
+        /// The the intersection of all the cutting planes will be used to
+        /// intersect/subtract (defined in <see cref="Operation" /> all child visuals of the <see cref="CuttingPlaneGroup" />.
+        /// </remarks>
         public List<Plane3D> CuttingPlanes { get; set; }
 
         /// <summary>
@@ -82,55 +107,90 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The is sorting changed.
+        /// Gets or sets the cutting operation.
         /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <value>The operation.</value>
+        public CuttingOperation Operation
+        {
+            get { return (CuttingOperation)this.GetValue(OperationProperty); }
+            set { this.SetValue(OperationProperty, value); }
+        }
+
+        /// <summary>
+        /// Called when the composition target rendering event is raised.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RenderingEventArgs"/> instance containing the event data.</param>
+        protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
+        {
+            // TODO: Find a better way to handle this...
+            if (this.IsEnabled)
+            {
+                this.ApplyCuttingGeometries();
+            }
+        }
+
+        /// <summary>
+        /// Handles changes to the <see cref="IsEnabled" /> property.
+        /// </summary>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void IsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((CuttingPlaneGroup)d).OnIsEnabledChanged();
+            var g = (CuttingPlaneGroup)d;
+
+            if (g.IsEnabled)
+            {
+                g.SubscribeToRenderingEvent();
+            }
+            else
+            {
+                g.UnsubscribeRenderingEvent();
+            }
+
+            g.ApplyCuttingGeometries(true);
+        }
+
+        /// <summary>
+        /// Handles changes to the <see cref="Operation" /> property.
+        /// </summary>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+        private static void OperationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((CuttingPlaneGroup)d).ApplyCuttingGeometries(true);
         }
 
         /// <summary>
         /// Applies the cutting planes.
         /// </summary>
-        /// <param name="forceUpdate">
-        /// if set to <c>true</c> [force update].
-        /// </param>
-        private void ApplyCuttingPlanes(bool forceUpdate = false)
+        /// <param name="forceUpdate">Force the geometries to be updated if set to <c>true</c>.</param>
+        private void ApplyCuttingGeometries(bool forceUpdate = false)
         {
             lock (this)
             {
-                this.NewCutGeometries = new Dictionary<Model3D, Geometry3D>();
-                this.NewOriginalGeometries = new Dictionary<Model3D, Geometry3D>();
-                this.forceUpdate = forceUpdate;
-                Visual3DHelper.Traverse<GeometryModel3D>(this.Children, this.ApplyCuttingPlanesToModel);
-                this.CutGeometries = this.NewCutGeometries;
-                this.OriginalGeometries = this.NewOriginalGeometries;
+                this.newCutGeometries = new Dictionary<Model3D, Geometry3D>();
+                this.newOriginalGeometries = new Dictionary<Model3D, Geometry3D>();
+                this.Children.Traverse<GeometryModel3D>((m, t) => this.ApplyCuttingPlanesToModel(m, t, forceUpdate));
+                this.cutGeometries = this.newCutGeometries;
+                this.originalGeometries = this.newOriginalGeometries;
             }
         }
 
         /// <summary>
         /// Applies the cutting planes to the model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        private void ApplyCuttingPlanesToModel(GeometryModel3D model, Transform3D transform)
+        /// <param name="model">The model.</param>
+        /// <param name="transform">The transform.</param>
+        /// <param name="updateRequired">An update is required if set to <c>true</c>.</param>
+        /// <exception cref="System.InvalidOperationException">No inverse transform.</exception>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private void ApplyCuttingPlanesToModel(GeometryModel3D model, Transform3D transform, bool updateRequired)
         {
             if (model.Geometry == null)
             {
                 return;
             }
-
-            bool updateRequired = this.forceUpdate;
 
             if (!this.IsEnabled)
             {
@@ -138,82 +198,93 @@ namespace HelixToolkit.Wpf
             }
 
             Geometry3D cutGeometry;
-            if (this.CutGeometries.TryGetValue(model, out cutGeometry))
+            if (this.cutGeometries.TryGetValue(model, out cutGeometry))
             {
-                if (cutGeometry != model.Geometry)
+                // ReSharper disable once RedundantNameQualifier
+                if (object.ReferenceEquals(cutGeometry, model.Geometry))
                 {
                     updateRequired = true;
                 }
             }
 
             Geometry3D originalGeometry;
-            if (!this.OriginalGeometries.TryGetValue(model, out originalGeometry))
+            if (!this.originalGeometries.TryGetValue(model, out originalGeometry))
             {
                 originalGeometry = model.Geometry;
                 updateRequired = true;
             }
 
-            this.NewOriginalGeometries.Add(model, originalGeometry);
+            this.newOriginalGeometries.Add(model, originalGeometry);
 
             if (!updateRequired)
             {
                 return;
             }
 
-            var g = originalGeometry as MeshGeometry3D;
+            var newGeometry = originalGeometry;
+            var originalMeshGeometry = originalGeometry as MeshGeometry3D;
 
-            if (this.IsEnabled)
+            if (this.IsEnabled && originalMeshGeometry != null)
             {
                 var inverseTransform = transform.Inverse;
-                foreach (var cp in this.CuttingPlanes)
+                if (inverseTransform == null)
                 {
-                    var p = inverseTransform.Transform(cp.Position);
-                    var p2 = inverseTransform.Transform(cp.Position + cp.Normal);
-                    var n = p2 - p;
+                    throw new InvalidOperationException("No inverse transform.");
+                }
 
-                    // var p = transform.Transform(cp.Position);
-                    // var n = transform.Transform(cp.Normal);
-                    g = MeshGeometryHelper.Cut(g, p, n);
+                switch (this.Operation)
+                {
+                    case CuttingOperation.Intersect:
+
+                        var intersectedGeometry = originalMeshGeometry;
+
+                        // Calculate the intersection of all the intersections
+                        foreach (var cp in this.CuttingPlanes)
+                        {
+                            intersectedGeometry = this.Intersect(intersectedGeometry, inverseTransform, cp, false);
+                        }
+
+                        newGeometry = intersectedGeometry;
+                        break;
+                    case CuttingOperation.Subtract:
+                        var builder = new MeshBuilder(originalMeshGeometry.Normals.Any(), originalMeshGeometry.TextureCoordinates.Any());
+
+                        // Calculate the union of all complement intersections
+                        foreach (var cp in this.CuttingPlanes)
+                        {
+                            var cg = this.Intersect(originalMeshGeometry, inverseTransform, cp, true);
+                            builder.Append(cg);
+                        }
+
+                        newGeometry = builder.ToMesh(true);
+                        break;
                 }
             }
 
-            model.Geometry = g;
-            this.NewCutGeometries.Add(model, g);
+            model.Geometry = newGeometry;
+            this.newCutGeometries.Add(model, originalMeshGeometry);
         }
 
         /// <summary>
-        /// The compositiontarget rendering.
+        /// Intersects the specified source mesh geometry with the specified plane.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
+        /// <param name="source">The source.</param>
+        /// <param name="inverseTransform">The inverse transform of the source.</param>
+        /// <param name="plane">The plane.</param>
+        /// <param name="complement">Cut with the complement set if set to <c>true</c>.</param>
+        /// <returns>The intersected geometry.</returns>
+        private MeshGeometry3D Intersect(MeshGeometry3D source, GeneralTransform3D inverseTransform, Plane3D plane, bool complement)
         {
-            if (this.IsEnabled)
+            var p = inverseTransform.Transform(plane.Position);
+            var p2 = inverseTransform.Transform(plane.Position + plane.Normal);
+            var n = p2 - p;
+
+            if (complement)
             {
-                this.ApplyCuttingPlanes();
+                n *= -1;
             }
+
+            return MeshGeometryHelper.Cut(source, p, n);
         }
-
-        /// <summary>
-        /// Called when IsEnabled is changed.
-        /// </summary>
-        private void OnIsEnabledChanged()
-        {
-            if (this.IsEnabled)
-            {
-                this.SubscribeToRenderingEvent();
-            }
-            else
-            {
-                this.UnsubscribeRenderingEvent();
-            }
-
-            this.ApplyCuttingPlanes(true);
-        }
-
     }
 }
