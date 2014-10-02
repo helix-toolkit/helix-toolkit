@@ -19,9 +19,6 @@ bld/
 [Oo]bj/
 Output/
 
-# Helix Toolkit specific files
-!Models/obj/
-
 # Roslyn cache directories
 *.ide/
 
@@ -192,3 +189,7 @@ FakesAssemblies/
 
 # GhostDoc settings
 *.GhostDoc.xml
+
+# Helix Toolkit specific files
+!Models/obj/
+!Models/obj/**/*.obj
