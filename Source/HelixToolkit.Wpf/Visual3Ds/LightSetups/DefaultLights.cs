@@ -39,6 +39,5 @@ namespace HelixToolkit.Wpf
 
             lightGroup.Children.Add(new AmbientLight(Color.FromRgb(30, 30, 30)));
         }
-
     }
 }

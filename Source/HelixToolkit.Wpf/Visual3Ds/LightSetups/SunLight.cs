@@ -45,12 +45,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The altitude axis.
         /// </summary>
-        private readonly Vector3D AltitudeAxis = new Vector3D(0, 1, 0);
+        private readonly Vector3D altitudeAxis = new Vector3D(0, 1, 0);
 
         /// <summary>
         /// The azimuth axis.
         /// </summary>
-        private readonly Vector3D AzimuthAxis = new Vector3D(0, 0, 1);
+        private readonly Vector3D azimuthAxis = new Vector3D(0, 0, 1);
 
         /// <summary>
         /// Gets or sets the altitude angle (degrees).
@@ -128,8 +128,8 @@ namespace HelixToolkit.Wpf
         /// </param>
         protected override void AddLights(Model3DGroup lightGroup)
         {
-            var t1 = new RotateTransform3D(new AxisAngleRotation3D(this.AzimuthAxis, this.Azimuth));
-            var t2 = new RotateTransform3D(new AxisAngleRotation3D(this.AltitudeAxis, this.Altitude));
+            var t1 = new RotateTransform3D(new AxisAngleRotation3D(this.azimuthAxis, this.Azimuth));
+            var t2 = new RotateTransform3D(new AxisAngleRotation3D(this.altitudeAxis, this.Altitude));
             var dir = t1.Transform(t2.Transform(new Vector3D(1, 0, 0)));
 
             var i = (byte)(255 * this.Brightness);
@@ -138,6 +138,5 @@ namespace HelixToolkit.Wpf
             var ai = (byte)(255 * this.Ambient);
             lightGroup.Children.Add(new AmbientLight(Color.FromRgb(ai, ai, ai)));
         }
-
     }
 }

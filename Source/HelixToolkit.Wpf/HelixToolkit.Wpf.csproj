@@ -20,7 +20,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\NET45</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET45\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,6 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\NET45\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET45\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -153,6 +155,9 @@
     <Compile Include="SelectionCommands\SelectionHitMode.cs" />
     <Compile Include="ShaderEffects\InterlacedEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
+    <Compile Include="Visual3Ds\LightSetups\DirectionalHeadLight.cs" />
+    <Compile Include="Visual3Ds\LightSetups\GenericHeadLight.cs" />
+    <Compile Include="Visual3Ds\LightSetups\SpotHeadLight.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\MeshGeometryVisual3D.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\ParticleSystem.cs" />
     <Compile Include="Visual3Ds\Text\BillboardTextItem.cs" />

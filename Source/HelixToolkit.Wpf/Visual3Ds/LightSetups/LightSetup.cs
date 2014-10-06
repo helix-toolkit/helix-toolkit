@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf
         protected abstract void AddLights(Model3DGroup lightGroup);
 
         /// <summary>
-        /// The on setup changed.
+        /// Handles changes to the light setup.
         /// </summary>
         protected void OnSetupChanged()
         {

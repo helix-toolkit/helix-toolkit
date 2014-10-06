@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\NET40</OutputPath>
     <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -156,6 +156,9 @@
     <Compile Include="SelectionCommands\SelectionHitMode.cs" />
     <Compile Include="ShaderEffects\InterlacedEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
+    <Compile Include="Visual3Ds\LightSetups\DirectionalHeadLight.cs" />
+    <Compile Include="Visual3Ds\LightSetups\GenericHeadLight.cs" />
+    <Compile Include="Visual3Ds\LightSetups\SpotHeadLight.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\MeshGeometryVisual3D.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\ParticleSystem.cs" />
     <Compile Include="Visual3Ds\Text\BillboardTextItem.cs" />
