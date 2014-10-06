@@ -49,39 +49,55 @@
         <TabItem Header="Headlight">
             <Grid>
                 <helix:HelixViewport3D IsHeadLightEnabled="{Binding EnableHeadlight}">
-                    <helix:RectangleVisual3D DivWidth="{Binding Divisions}" DivLength="{Binding Divisions}" BackMaterial="{helix:Material Green}"/>
-                    <helix:Teapot/>
+                    <helix:RectangleVisual3D DivWidth="{Binding Divisions}" DivLength="{Binding Divisions}" Material="{Binding BlueMaterial}" BackMaterial="{Binding GreenMaterial}"/>
+                    <helix:Teapot Material="{Binding GreenMaterial}" />
+                    <helix:CubeVisual3D Material="{Binding GreenMaterial}" Center="3,0,.5" />
+                    <helix:SphereVisual3D Material="{Binding GreenMaterial}" Center="-3,0,.5" Radius="0.5"/>
                 </helix:HelixViewport3D>
                 <StackPanel HorizontalAlignment="Left" Width="400">
                     <CheckBox Content="IsHeadlightEnabled" IsChecked="{Binding EnableHeadlight}"/>
+                    <pt:HeaderedEntrySlider Header="Mat.spec.v:" Value="{Binding SpecularBrightness}" Minimum="0" Maximum="1"/>
+                    <pt:HeaderedEntrySlider Header="Mat.spec.power:" Value="{Binding SpecularPower}" Minimum="0" Maximum="200"/>
                 </StackPanel>
             </Grid>
         </TabItem>
         <TabItem Header="DirectionalHeadLight">
             <Grid>
                 <helix:HelixViewport3D>
-                    <helix:DirectionalHeadLight Position="5,0,5" Brightness="{Binding Brightness}"/>
-                    <helix:DirectionalHeadLight Position="0,0,-5" Brightness="{Binding Brightness}"/>
-                    <helix:RectangleVisual3D DivWidth="{Binding Divisions}" DivLength="{Binding Divisions}" BackMaterial="{helix:Material Green}"/>
-                    <helix:Teapot/>
+                    <helix:DirectionalHeadLight Position="{Binding Headlight1}" Brightness="{Binding Brightness}"/>
+                    <helix:DirectionalHeadLight Position="{Binding Headlight2}" Brightness="{Binding Brightness}"/>
+                    <helix:RectangleVisual3D DivWidth="{Binding Divisions}" DivLength="{Binding Divisions}" Material="{Binding BlueMaterial}" BackMaterial="{Binding GreenMaterial}"/>
+                    <helix:Teapot Material="{Binding GreenMaterial}" />
+                    <helix:CubeVisual3D Material="{Binding GreenMaterial}" Center="3,0,.5" />
+                    <helix:SphereVisual3D Material="{Binding GreenMaterial}" Center="-3,0,.5" Radius="0.5"/>
                 </helix:HelixViewport3D>
                 <StackPanel HorizontalAlignment="Left" Width="400">
+                    <pt:HeaderedEntrySlider Header="Lateral position:" Value="{Binding HeadlightLateralPosition}" Minimum="0" Maximum="100"/>
+                    <pt:HeaderedEntrySlider Header="Vertical position:" Value="{Binding HeadlightVerticalPosition}" Minimum="0" Maximum="100"/>
                     <pt:HeaderedEntrySlider Header="Brightness:" Value="{Binding Brightness}" Minimum="0" Maximum="1"/>
                     <pt:HeaderedEntrySlider Header="Rectangle divs:" Value="{Binding Divisions}" Minimum="2" Maximum="100"/>
+                    <pt:HeaderedEntrySlider Header="Mat.spec.v:" Value="{Binding SpecularBrightness}" Minimum="0" Maximum="1"/>
+                    <pt:HeaderedEntrySlider Header="Mat.spec.power:" Value="{Binding SpecularPower}" Minimum="0" Maximum="200"/>
                 </StackPanel>
             </Grid>
         </TabItem>
         <TabItem Header="SpotHeadLight">
             <Grid>
                 <helix:HelixViewport3D>
-                    <helix:SpotHeadLight Position="5,0,5" Brightness="{Binding Brightness}"/>
-                    <helix:SpotHeadLight Position="0,0,-5" Brightness="{Binding Brightness}"/>
-                    <helix:RectangleVisual3D DivWidth="{Binding Divisions}" DivLength="{Binding Divisions}" BackMaterial="{helix:Material Green}"/>
-                    <helix:Teapot/>
+                    <helix:SpotHeadLight Position="{Binding Headlight1}" Brightness="{Binding Brightness}"/>
+                    <helix:SpotHeadLight Position="{Binding Headlight2}" Brightness="{Binding Brightness}"/>
+                    <helix:RectangleVisual3D DivWidth="{Binding Divisions}" DivLength="{Binding Divisions}" Material="{Binding BlueMaterial}" BackMaterial="{Binding GreenMaterial}"/>
+                    <helix:Teapot Material="{Binding GreenMaterial}" />
+                    <helix:CubeVisual3D Material="{Binding GreenMaterial}" Center="3,0,.5" />
+                    <helix:SphereVisual3D Material="{Binding GreenMaterial}" Center="-3,0,.5" Radius="0.5"/>
                 </helix:HelixViewport3D>
                 <StackPanel HorizontalAlignment="Left" Width="400">
+                    <pt:HeaderedEntrySlider Header="Lateral position:" Value="{Binding HeadlightLateralPosition}" Minimum="0" Maximum="100"/>
+                    <pt:HeaderedEntrySlider Header="Vertical position:" Value="{Binding HeadlightVerticalPosition}" Minimum="0" Maximum="100"/>
                     <pt:HeaderedEntrySlider Header="Brightness:" Value="{Binding Brightness}" Minimum="0" Maximum="1"/>
                     <pt:HeaderedEntrySlider Header="Rectangle divs:" Value="{Binding Divisions}" Minimum="2" Maximum="100"/>
+                    <pt:HeaderedEntrySlider Header="Mat.spec.v:" Value="{Binding SpecularBrightness}" Minimum="0" Maximum="1"/>
+                    <pt:HeaderedEntrySlider Header="Mat.spec.power:" Value="{Binding SpecularPower}" Minimum="0" Maximum="200"/>
                 </StackPanel>
             </Grid>
         </TabItem>
