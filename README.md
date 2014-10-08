@@ -13,3 +13,4 @@ Issue tracker       | http://github.com/helix-toolkit/helix-toolkit/issues
 NuGet packages      | http://www.nuget.org/packages?q=HelixToolkit
 StackOverflow       | http://stackoverflow.com/questions/tagged/helix-3d-toolkit
 Twitter             | https://twitter.com/hashtag/Helix3DToolkit
+Chat                | https://gitter.im/helix-toolkit/helix-toolkit
