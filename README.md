@@ -4,6 +4,7 @@ Helix Toolkit is a 3D toolkit for .NET
 
 Description         | Value
 --------------------|-----------------------
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/helix-toolkit/helix-toolkit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 License             | The MIT License (MIT)
 Web page            | http://helix-toolkit.github.io/
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
