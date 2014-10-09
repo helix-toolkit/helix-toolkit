@@ -220,43 +220,45 @@ namespace HelixToolkit.Wpf
                 (model, transform) =>
                 {
                     var geometry = model.Geometry as MeshGeometry3D;
-                    if (geometry != null)
+                    if (geometry == null || geometry.Positions == null || geometry.TriangleIndices == null)
                     {
-                        var status = mode == SelectionHitMode.Inside;
+                        return;
+                    }
 
-                        // transform the positions of the mesh to screen coordinates
-                        var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
+                    var status = mode == SelectionHitMode.Inside;
 
-                        // evaluate each triangle
-                        for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
+                    // transform the positions of the mesh to screen coordinates
+                    var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
+
+                    // evaluate each triangle
+                    for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
+                    {
+                        var triangle = new Triangle(
+                            point2Ds[geometry.TriangleIndices[i * 3]],
+                            point2Ds[geometry.TriangleIndices[(i * 3) + 1]],
+                            point2Ds[geometry.TriangleIndices[(i * 3) + 2]]);
+                        switch (mode)
                         {
-                            var triangle = new Triangle(
-                                point2Ds[geometry.TriangleIndices[i * 3]],
-                                point2Ds[geometry.TriangleIndices[(i * 3) + 1]],
-                                point2Ds[geometry.TriangleIndices[(i * 3) + 2]]);
-                            switch (mode)
-                            {
-                                case SelectionHitMode.Inside:
-                                    status = status && triangle.IsCompletelyInside(rectangle);
-                                    break;
-                                case SelectionHitMode.Touch:
-                                    status = status
-                                             || triangle.IsCompletelyInside(rectangle)
-                                             || triangle.IntersectsWith(rectangle)
-                                             || triangle.IsRectCompletelyInside(rectangle);
-                                    break;
-                            }
-
-                            if (mode == SelectionHitMode.Touch && status)
-                            {
+                            case SelectionHitMode.Inside:
+                                status = status && triangle.IsCompletelyInside(rectangle);
                                 break;
-                            }
+                            case SelectionHitMode.Touch:
+                                status = status
+                                         || triangle.IsCompletelyInside(rectangle)
+                                         || triangle.IntersectsWith(rectangle)
+                                         || triangle.IsRectCompletelyInside(rectangle);
+                                break;
                         }
 
-                        if (status)
+                        if (mode == SelectionHitMode.Touch && status)
                         {
-                            results.Add(new RectangleHitResult(model));
+                            break;
                         }
+                    }
+
+                    if (status)
+                    {
+                        results.Add(new RectangleHitResult(model));
                     }
                 });
 
