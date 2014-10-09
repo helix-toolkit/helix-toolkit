@@ -706,8 +706,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 System.Windows.MessageBox.Show(string.Format("Error composing polygonal object: {0}", ex.Message), "Error", MessageBoxButton.OKCancel);
             }
-
-            Console.WriteLine();
         }
 
         /// <summary>

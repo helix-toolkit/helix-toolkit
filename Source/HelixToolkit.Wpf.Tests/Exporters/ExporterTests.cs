@@ -11,7 +11,6 @@ namespace HelixToolkit.Wpf.Tests
 {
     using System;
     using System.IO;
-    using System.Threading;
     using System.Windows.Controls;
     using System.Windows.Media.Media3D;
     using System.Xml;
@@ -34,8 +33,6 @@ namespace HelixToolkit.Wpf.Tests
             CrossThreadTestRunner.RunInSTA(
                 () =>
                 {
-                    Console.WriteLine(Thread.CurrentThread.GetApartmentState());
-
                     var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
                     vp.Children.Add(new DefaultLights());
                     var box = new BoxVisual3D();
@@ -57,8 +54,6 @@ namespace HelixToolkit.Wpf.Tests
             CrossThreadTestRunner.RunInSTA(
                 () =>
                 {
-                    Console.WriteLine(Thread.CurrentThread.GetApartmentState());
-
                     var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
                     vp.Children.Add(new DefaultLights());
                     vp.Children.Add(visual());
