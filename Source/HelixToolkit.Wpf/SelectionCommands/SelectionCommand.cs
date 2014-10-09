@@ -119,10 +119,19 @@ namespace HelixToolkit.Wpf
         /// </param>
         protected virtual void Completed(ManipulationEventArgs e)
         {
+            this.OnModelsSelected(this.PrepareModelsSelectedEventArgs());
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:ModelsSelected" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ModelsSelectedEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnModelsSelected(ModelsSelectedEventArgs e)
+        {
             var handler = this.ModelsSelected;
             if (handler != null)
             {
-                handler(this.Viewport, this.PrepareModelsSelectedEventArgs());
+                handler(this.Viewport, e);
             }
         }
 

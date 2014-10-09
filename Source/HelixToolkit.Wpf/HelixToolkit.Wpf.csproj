@@ -21,6 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET45\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,6 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\NET45\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET45\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -146,8 +148,10 @@
     <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />
     <Compile Include="MarkupExtensions\PerspectiveCameraExtension.cs" />
     <Compile Include="MarkupExtensions\TranslateExtension.cs" />
+    <Compile Include="SelectionCommands\ModelsSelectedByPointEventArgs.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedByRectangleEventArgs.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedEventArgs.cs" />
+    <Compile Include="SelectionCommands\PointSelectionCommand.cs" />
     <Compile Include="SelectionCommands\RectangleSelectionCommand.cs" />
     <Compile Include="SelectionCommands\SelectionCommand.cs" />
     <Compile Include="SelectionCommands\SelectionHitMode.cs" />
