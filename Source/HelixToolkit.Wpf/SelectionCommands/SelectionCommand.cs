@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Input;
 
     /// <summary>
-    /// Provides an abstract base class for selection commands.
+    /// Provides an abstract base class for mouse selection commands.
     /// </summary>
     public abstract class SelectionCommand : ICommand
     {
@@ -68,12 +68,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void Execute(object parameter)
         {
-            this.Viewport.MouseMove += this.OnMouseMove;
-            this.Viewport.MouseUp += this.OnMouseUp;
-
-            this.OnMouseDown(this.Viewport, null);
-            this.Viewport.Focus();
-            this.Viewport.CaptureMouse();
+            this.OnMouseDown(this.Viewport);
         }
 
         /// <summary>
@@ -157,11 +152,14 @@ namespace HelixToolkit.Wpf
         /// <param name="sender">
         /// The sender.
         /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
-        /// </param>
-        protected virtual void OnMouseDown(object sender, MouseEventArgs e)
+        protected virtual void OnMouseDown(object sender)
         {
+            this.Viewport.MouseMove += this.OnMouseMove;
+            this.Viewport.MouseUp += this.OnMouseUp;
+
+            this.Viewport.Focus();
+            this.Viewport.CaptureMouse();
+
             this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
 
             this.oldCursor = this.Viewport.Cursor;
@@ -184,6 +182,7 @@ namespace HelixToolkit.Wpf
             this.Viewport.ReleaseMouseCapture();
             this.Viewport.Cursor = this.oldCursor;
             this.Completed(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+            e.Handled = true;
         }
 
         /// <summary>
@@ -198,6 +197,7 @@ namespace HelixToolkit.Wpf
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
             this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+            e.Handled = true;
         }
 
         /// <summary>
