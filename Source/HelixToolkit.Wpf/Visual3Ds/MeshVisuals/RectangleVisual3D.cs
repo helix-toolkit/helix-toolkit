@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Media.Media3D;
@@ -22,13 +23,13 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="DivLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DivLengthProperty = DependencyProperty.Register(
-            "DivLength", typeof(int), typeof(RectangleVisual3D), new UIPropertyMetadata(10, GeometryChanged));
+            "DivLength", typeof(int), typeof(RectangleVisual3D), new UIPropertyMetadata(10, GeometryChanged, CoerceDivValue));
 
         /// <summary>
         /// Identifies the <see cref="DivWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DivWidthProperty = DependencyProperty.Register(
-            "DivWidth", typeof(int), typeof(RectangleVisual3D), new UIPropertyMetadata(10, GeometryChanged));
+            "DivWidth", typeof(int), typeof(RectangleVisual3D), new UIPropertyMetadata(10, GeometryChanged, CoerceDivValue));
 
         /// <summary>
         /// Identifies the <see cref="LengthDirection"/> dependency property.
@@ -222,6 +223,17 @@ namespace HelixToolkit.Wpf
             builder.AddRectangularMesh(pts, this.DivWidth);
 
             return builder.ToMesh();
+        }
+
+        /// <summary>
+        /// Coerces the division value.
+        /// </summary>
+        /// <param name="d">The sender.</param>
+        /// <param name="baseValue">The base value.</param>
+        /// <returns>A value not less than 2.</returns>
+        private static object CoerceDivValue(DependencyObject d, object baseValue)
+        {
+            return Math.Max(2, (int)baseValue);
         }
     }
 }

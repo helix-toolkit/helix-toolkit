@@ -9,8 +9,6 @@
 
 namespace ParticleSystemDemo
 {
-    using System.ComponentModel;
-    using System.Drawing;
     using System.Windows;
     using System.Windows.Media.Media3D;
 

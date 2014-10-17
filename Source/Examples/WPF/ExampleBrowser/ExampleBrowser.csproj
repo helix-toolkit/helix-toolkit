@@ -21,7 +21,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\NET45\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET45\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,6 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\..\Output\NET45\Examples\WPF\ExampleBrowser\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET45\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -49,10 +51,10 @@
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.28.1\lib\NET45\PropertyTools.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.28.1\lib\NET45\PropertyTools.Wpf.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
