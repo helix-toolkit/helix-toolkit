@@ -782,6 +782,11 @@ namespace HelixToolkit.Wpf
         /// <remarks>The y-axis is determined by the cross product between the specified x-axis and the p1-origin vector.</remarks>
         public void AddExtrudedSegments(IList<Point> points, Vector3D axisX, Point3D p0, Point3D p1)
         {
+            if (points.Count % 2 != 0)
+            {
+                throw new InvalidOperationException("The number of points should be even.");
+            }
+
             var axisY = Vector3D.CrossProduct(axisX, p1 - p0);
             axisY.Normalize();
             axisX.Normalize();
@@ -809,7 +814,8 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            for (int i = 0; i < points.Count; i++)
+            int n = points.Count - 1;
+            for (int i = 0; i < n; i++)
             {
                 int i0 = index0 + (i * 2);
                 int i1 = i0 + 1;
