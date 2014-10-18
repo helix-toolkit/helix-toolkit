@@ -62,6 +62,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="Triangle">
+      <HintPath>..\..\..\..\Components\Triangle.dll</HintPath>
+    </Reference>
     <Reference Include="WiimoteLib">
       <HintPath>..\..\..\..\Components\WiimoteLib.dll</HintPath>
     </Reference>
@@ -88,6 +91,10 @@
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
     <Compile Include="EnumValues.cs" />
+    <Compile Include="Examples\ExtrudedText\Extensions.cs" />
+    <Compile Include="Examples\ExtrudedText\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ParticleSystemDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -155,6 +162,10 @@
     <Page Include="Examples\EarthCuttingPlanes\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\ExtrudedText\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ParticleSystemDemo\Window1.xaml">
       <SubType>Designer</SubType>
@@ -573,6 +584,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\ExtrudedTextDemo_small.png" />
     <Resource Include="Images\PointsAndLinesBinding_small.png" />
     <Resource Include="Images\RectSelection_small.png" />
     <Resource Include="Images\Workitem10054_small.png" />

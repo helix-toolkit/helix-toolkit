@@ -1,0 +1,12 @@
+﻿<Window x:Class="ExtrudedTextDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="ExtrudedTextDemo" Height="480" Width="640">
+    <Grid>
+        <helix:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowCameraInfo="False">
+            <helix:DefaultLights/>
+            <helix:MeshGeometryVisual3D MeshGeometry="{Binding TextGeometry}" Fill="White" />
+        </helix:HelixViewport3D>
+    </Grid>
+</Window>
