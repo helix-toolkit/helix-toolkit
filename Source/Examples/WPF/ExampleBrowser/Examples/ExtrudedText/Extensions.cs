@@ -20,16 +20,25 @@
     {
         public static void ExtrudeText(this MeshBuilder builder, string text, string font, FontStyle fontStyle, FontWeight fontWeight, double fontSize, Vector3D textDirection, Point3D p0, Point3D p1)
         {
-            var outlines = GetTextOutlines(text, font, fontStyle, fontWeight, fontSize);
+            var outlineList = GetTextOutlines(text, font, fontStyle, fontWeight, fontSize);
 
             // Build the polygon to mesh (using Triangle.NET to triangulate)
             var polygon = new TriangleNet.Geometry.Polygon();
             int marker = 0;
-            foreach (var outline in outlines)
+
+            foreach (var outlines in outlineList)
             {
-                polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++);
-                builder.AddExtrudedSegments(outline.ToSegments().ToList(), textDirection, p0, p1);
+
+                var outer = outlines.OrderBy(x => x.AreaOfSegment()).Last();
+
+                foreach (var outline in outlines)
+                {
+                    polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++,
+                        outlines.ToList().IndexOf(outline) != outlines.ToList().Count() - 1 && IsPointInPolygon(outer, outline[0]));
+                    builder.AddExtrudedSegments(outline.ToSegments().ToList(), textDirection, p0, p1);
+                }    
             }
+            
 
             // TODO: get the holes right...
             var mesher = new GenericMesher();
@@ -52,6 +61,31 @@
             return new Point3D(v.X, -v.Y, z);
         }
 
+        public static double AreaOfSegment(this Point[] segment)
+        {
+            return Math.Abs(segment.Take(segment.Length - 1)
+                .Select((p, i) => (segment[i + 1].X - p.X) * (segment[i + 1].Y + p.Y))
+                .Sum() / 2);
+        }
+
+        public static bool IsPointInPolygon(IList<Point> polygon, Point testPoint)
+        {
+            bool result = false;
+            int j = polygon.Count() - 1;
+            for (int i = 0; i < polygon.Count(); i++)
+            {
+                if (polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y || polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y)
+                {
+                    if (polygon[i].X + (testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < testPoint.X)
+                    {
+                        result = !result;
+                    }
+                }
+                j = i;
+            }
+            return result;
+        }
+
         public static IEnumerable<Point> ToSegments(this IEnumerable<Point> input)
         {
             bool first = true;
@@ -72,7 +106,7 @@
             }
         }
 
-        public static IEnumerable<Point[]> GetTextOutlines(string text, string fontName, FontStyle fontStyle, FontWeight fontWeight, double fontSize)
+        public static IEnumerable<IList<Point[]>> GetTextOutlines(string text, string fontName, FontStyle fontStyle, FontWeight fontWeight, double fontSize)
         {
             var formattedText = new FormattedText(
                 text,
@@ -83,12 +117,12 @@
                 Brushes.Black);
 
             var textGeometry = formattedText.BuildGeometry(new Point(0, 0));
-            var outlines = new List<Point[]>();
+            var outlines = new List<List<Point[]>>();
             AppendOutlines(textGeometry, outlines);
             return outlines;
         }
 
-        private static void AppendOutlines(Geometry geometry, List<Point[]> outlines)
+        private static void AppendOutlines(Geometry geometry, List<List<Point[]>> outlines)
         {
             var group = geometry as GeometryGroup;
             if (group != null)
@@ -104,10 +138,12 @@
             var pathGeometry = geometry as PathGeometry;
             if (pathGeometry != null)
             {
+                List<Point[]> figures = new List<Point[]>();
                 foreach (var figure in pathGeometry.Figures)
                 {
-                    outlines.Add(figure.ToPolyLine());
+                    figures.Add(figure.ToPolyLine());
                 }
+                outlines.Add(figures);
 
                 return;
             }
