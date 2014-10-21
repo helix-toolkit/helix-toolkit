@@ -28,22 +28,26 @@
 
             foreach (var outlines in outlineList)
             {
+                var outerOutline = outlines.OrderBy(x => x.AreaOfSegment()).Last();
 
-                var outer = outlines.OrderBy(x => x.AreaOfSegment()).Last();
-
-                foreach (var outline in outlines)
+                for (int i = 0; i < outlines.Count; i++)
                 {
-                    polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++,
-                        outlines.ToList().IndexOf(outline) != outlines.ToList().Count() - 1 && IsPointInPolygon(outer, outline[0]));
+                    var outline = outlines[i];
+                    var isHole = i != outlines.Count - 1 && IsPointInPolygon(outerOutline, outline[0]);
+                    polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++, isHole);
                     builder.AddExtrudedSegments(outline.ToSegments().ToList(), textDirection, p0, p1);
-                }    
+                }
             }
-            
 
-            // TODO: get the holes right...
             var mesher = new GenericMesher();
             var options = new ConstraintOptions();
             var mesh = mesher.Triangulate(polygon, options);
+
+            var u = textDirection;
+            u.Normalize();
+            var z = p1 - p0;
+            z.Normalize();
+            var v = Vector3D.CrossProduct(z, u);
 
             // Convert the triangles
             foreach (var t in mesh.Triangles)
@@ -51,14 +55,19 @@
                 var v0 = t.GetVertex(0);
                 var v1 = t.GetVertex(1);
                 var v2 = t.GetVertex(2);
-                builder.AddTriangle(v0.Project(1), v1.Project(1), v2.Project(1));
-                builder.AddTriangle(v2.Project(0), v1.Project(0), v0.Project(0));
+
+                // Add the top triangle.
+                // Project the X/Y vertices onto a plane defined by textdirection, p0 and p1.                
+                builder.AddTriangle(v0.Project(p0, u, v, z, 1), v1.Project(p0, u, v, z, 1), v2.Project(p0, u, v, z, 1));
+                
+                // Add the bottom triangle.
+                builder.AddTriangle(v2.Project(p0, u, v, z, 0), v1.Project(p0, u, v, z, 0), v0.Project(p0, u, v, z, 0));
             }
         }
 
-        public static Point3D Project(this Vertex v, double z)
+        public static Point3D Project(this Vertex v, Point3D p0, Vector3D x, Vector3D y, Vector3D z, double h)
         {
-            return new Point3D(v.X, -v.Y, z);
+            return p0 + x * v.X - y * v.Y + z * h;
         }
 
         public static double AreaOfSegment(this Point[] segment)
@@ -71,18 +80,20 @@
         public static bool IsPointInPolygon(IList<Point> polygon, Point testPoint)
         {
             bool result = false;
-            int j = polygon.Count() - 1;
-            for (int i = 0; i < polygon.Count(); i++)
+            int j = polygon.Count - 1;
+            for (int i = 0; i < polygon.Count; i++)
             {
-                if (polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y || polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y)
+                if ((polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y) || (polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y))
                 {
-                    if (polygon[i].X + (testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < testPoint.X)
+                    if (polygon[i].X + ((testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X)) < testPoint.X)
                     {
                         result = !result;
                     }
                 }
+
                 j = i;
             }
+
             return result;
         }
 
@@ -138,13 +149,8 @@
             var pathGeometry = geometry as PathGeometry;
             if (pathGeometry != null)
             {
-                List<Point[]> figures = new List<Point[]>();
-                foreach (var figure in pathGeometry.Figures)
-                {
-                    figures.Add(figure.ToPolyLine());
-                }
+                var figures = pathGeometry.Figures.Select(figure => figure.ToPolyLine()).ToList();
                 outlines.Add(figures);
-
                 return;
             }
 
@@ -209,8 +215,8 @@
                 var t = (double)i / n;
                 var u = 1 - t;
                 yield return new Point(
-                    u * u * u * p1.X + 3 * t * u * u * p2.X + 3 * t * t * u * p3.X + t * t * t * p4.X,
-                    u * u * u * p1.Y + 3 * t * u * u * p2.Y + 3 * t * t * u * p3.Y + t * t * t * p4.Y);
+                    (u * u * u * p1.X) + (3 * t * u * u * p2.X) + (3 * t * t * u * p3.X) + (t * t * t * p4.X),
+                    (u * u * u * p1.Y) + (3 * t * u * u * p2.Y) + (3 * t * t * u * p3.Y) + (t * t * t * p4.Y));
             }
         }
     }
