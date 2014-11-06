@@ -172,6 +172,8 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
+    <Compile Include="Model\Geometry\PointGeometry3D.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -285,6 +287,7 @@
       <Link>sharpdx_direct3d11_effects_x86.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Shaders\Points.fx" />
     <Content Include="Textures\random4x4_dot3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

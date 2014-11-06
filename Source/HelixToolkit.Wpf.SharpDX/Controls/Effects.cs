@@ -122,7 +122,8 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderPNQuads = new RenderTechnique("RenderPNQuads");
 #endif
             RenderCubeMap = new RenderTechnique("RenderCubeMap");
-            RenderLines = new RenderTechnique("RenderLines");                        
+            RenderLines = new RenderTechnique("RenderLines");
+            RenderPoints = new RenderTechnique("RenderPoints");
 
             RenderTechniques = new List<RenderTechnique>
             { 
@@ -162,6 +163,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {     Techniques.RenderTexCoords,  Properties.Resources._default}, 
                 {     Techniques.RenderWires,      Properties.Resources._default}, 
                 {     Techniques.RenderLines,      Properties.Resources._default}, 
+                {     Techniques.RenderPoints,     Properties.Resources._default},
     #if TESSELLATION                                        
                 {     Techniques.RenderPNTriangs,  Properties.Resources._default}, 
                 {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
@@ -199,6 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static RenderTechnique RenderWires { get; private set; }
         public static RenderTechnique RenderCubeMap { get; private set; }
         public static RenderTechnique RenderLines { get; private set; }
+        public static RenderTechnique RenderPoints { get; private set; }
 
 #if TESSELLATION
         public static RenderTechnique RenderPNTriangs { get; private set; }
@@ -330,7 +333,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderTangents, 
                     Techniques.RenderTexCoords, 
                     Techniques.RenderWires, 
-                    Techniques.RenderLines,                                        
+                    Techniques.RenderLines,
+                    Techniques.RenderPoints,                    
 #if TESSELLATION
                     Techniques.RenderPNTriangs,                     
                     Techniques.RenderPNQuads,
@@ -387,6 +391,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),                                                             
                 });
 
+                var pointsInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPoints).GetTechniqueByName(Techniques.RenderPoints.Name).GetPassByIndex(0).Description.Signature, new[] 
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
+                });
+
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
                 { 
@@ -402,6 +412,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderLines 
                 },
                 linesInputLayout);
+
+                // ------------------------------------------------------------------------------------
+                RegisterLayout(new[] 
+                { 
+                    Techniques.RenderPoints 
+                },
+                pointsInputLayout);
 
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
