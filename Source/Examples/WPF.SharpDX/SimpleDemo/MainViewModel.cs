@@ -4,7 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
- namespace SimpleDemo
+using HelixToolkit.Wpf.SharpDX.Model.Geometry;
+
+namespace SimpleDemo
 {
     using System.Linq;
 
@@ -23,6 +25,7 @@
         public MeshGeometry3D Model { get; private set; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
+        public PointGeometry3D Points { get; private set; }
 
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
@@ -86,7 +89,26 @@
             this.BlueMaterial = PhongMaterials.Blue;
             //var diffColor = this.RedMaterial.DiffuseColor;
             //diffColor.Alpha = 0.5f;
-            //this.RedMaterial.DiffuseColor = diffColor;            
+            //this.RedMaterial.DiffuseColor = diffColor;   
+
+            Points = new PointGeometry3D();
+            var ptPos = new Vector3Collection();
+            var ptIdx = new IntCollection();
+
+            for (int x = 0; x < 10; x++)
+            {
+                for (int y = 0; y < 10; y++)
+                {
+                    for (int z = 0; z < 10; z++)
+                    {
+                        ptIdx.Add(ptPos.Count);
+                        ptPos.Add(new Vector3(x, y, z));
+                    }
+                }
+            }
+
+            Points.Positions = ptPos;
+            Points.Indices = ptIdx;
         }
     }
 }
