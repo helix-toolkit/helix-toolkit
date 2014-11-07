@@ -2137,33 +2137,50 @@ namespace HelixToolkit.Wpf
             int diametersCount = diameters != null ? diameters.Count : 0;
             int valuesCount = values != null ? values.Count : 0;
 
+            //*******************************
+            //*** PROPOSED SOLUTION *********
+            var lastUp = new Vector3D(); 
+            var lastForward = new Vector3D();
+            //*** PROPOSED SOLUTION *********
+            //*******************************
+
             for (int i = 0; i < pathLength; i++)
             {
                 double r = diameters != null ? diameters[i % diametersCount] / 2 : 1;
                 int i0 = i > 0 ? i - 1 : i;
                 int i1 = i + 1 < pathLength ? i + 1 : i;
-
                 var forward = path[i1] - path[i0];
                 var right = Vector3D.CrossProduct(up, forward);
+
                 up = Vector3D.CrossProduct(forward, right);
                 up.Normalize();
                 right.Normalize();
                 var u = right;
                 var v = up;
 
-                //*** THE PROBLEM IS HERE
-                //** This is obviously not a fix, but allows something to be displayed
-                //** it seems the selection of i0 and i1 come into play here.
-                //** when both points are the same, the cross product calculations becomes NaN
-                //** causing the creation of position, normals, textures to fail.  
-                //** The iX indexes generally have a differnce of 2.
-                //** Perhaps a better selection would be to separate them by 1 since it is
-                //** undesireable to plot the same point twice in a row.
-                //** maybe also add some logic to skip duplicate points in series to avoid that problem
-                if (u.IsUndefined())
-                    u = new Vector3D();
-                if (v.IsUndefined())
-                    v  = new Vector3D();
+                //*******************************
+                //*** PROPOSED SOLUTION *********
+                // ** I think this will work because if path[n-1] is same point, 
+                // ** it is always a reflection of the current move
+                // ** so reversing the last move vector should work?
+                //*******************************
+                if (u.IsUndefined() || v.IsUndefined())
+                {
+                    forward = lastForward;
+                    forward.Negate();
+                    up = lastUp;
+                    //** Please verify that negation of "up" is correct here
+                    up.Negate();
+                    right = Vector3D.CrossProduct(up, forward);
+                    up.Normalize();
+                    right.Normalize();
+                    u = right;
+                    v = up;
+                }
+                lastForward = forward;
+                lastUp = up;
+                //*** PROPOSED SOLUTION *********
+                //*******************************
 
                 for (int j = 0; j < sectionLength; j++)
                 {
