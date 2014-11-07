@@ -2150,6 +2150,21 @@ namespace HelixToolkit.Wpf
                 right.Normalize();
                 var u = right;
                 var v = up;
+
+                //*** THE PROBLEM IS HERE
+                //** This is obviously not a fix, but allows something to be displayed
+                //** it seems the selection of i0 and i1 come into play here.
+                //** when both points are the same, the cross product calculations becomes NaN
+                //** causing the creation of position, normals, textures to fail.  
+                //** The iX indexes generally have a differnce of 2.
+                //** Perhaps a better selection would be to separate them by 1 since it is
+                //** undesireable to plot the same point twice in a row.
+                //** maybe also add some logic to skip duplicate points in series to avoid that problem
+                if (u.IsUndefined())
+                    u = new Vector3D();
+                if (v.IsUndefined())
+                    v  = new Vector3D();
+
                 for (int j = 0; j < sectionLength; j++)
                 {
                     var w = (section[j].X * u * r) + (section[j].Y * v * r);
