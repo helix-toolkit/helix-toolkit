@@ -14,6 +14,7 @@
 #include "./Shaders/Common.fx"
 #include "./Shaders/Material.fx"
 #include "./Shaders/Lines.fx"
+#include "./Shaders/Points.fx"
 
 //--------------------------------------------------------------------------------------
 // pre-processor defines
