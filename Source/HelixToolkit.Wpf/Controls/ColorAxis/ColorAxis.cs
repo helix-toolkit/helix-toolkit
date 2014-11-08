@@ -272,11 +272,11 @@ namespace HelixToolkit.Wpf
 
             var maxWidth = this.GetTickLabels().Max(
                 c =>
-                    {
-                        var tb = new TextBlock(new Run(c));
-                        tb.Measure(constraint);
-                        return tb.DesiredSize.Width;
-                    });
+                {
+                    var tb = new TextBlock(new Run(c));
+                    tb.Measure(constraint);
+                    return tb.DesiredSize.Width;
+                });
             size.Width = maxWidth + this.BarWidth + this.TickLength + this.Padding.Left + this.Padding.Right
                          + this.TextMargin;
 
@@ -288,6 +288,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected void UpdateVisuals()
         {
+            if (Canvas == null)
+            {
+                return;
+            }
+
             this.Canvas.Children.Clear();
             this.AddVisuals();
         }
