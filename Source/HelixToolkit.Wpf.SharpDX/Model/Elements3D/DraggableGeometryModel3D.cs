@@ -1,4 +1,13 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DraggableGeometryModel3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Example class how to implement mouse dragging for objects.
+//   Probably it should be moved to a "Dragging Demo."
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;

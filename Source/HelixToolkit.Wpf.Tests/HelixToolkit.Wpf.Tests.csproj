@@ -88,6 +88,7 @@
     <Compile Include="Geometry\CuttingEarsTriangulatorTests.cs" />
     <Compile Include="Geometry\LineSegmentTests.cs" />
     <Compile Include="Geometry\Ray3DTests.cs" />
+    <Compile Include="Helpers\ContourHelperTests.cs" />
     <Compile Include="Helpers\Vector3DExtensionsTests.cs" />
     <Compile Include="Helpers\MeshBuilderTests.cs" />
     <Compile Include="Helpers\ScreenSpace\LineGeometryBuilderTests.cs" />
@@ -121,46 +122,58 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\lwo\Apple.jpg">
+    <Content Include="..\..\Models\lwo\Apple.jpg">
+      <Link>Models\lwo\Apple.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\obj\cornell_box.mtl">
+    <Content Include="..\..\Models\obj\cornell_box\cornell_box.mtl">
+      <Link>Models\obj\cornell_box.mtl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\obj\cornell_box.obj">
+    <Content Include="..\..\Models\obj\cornell_box\cornell_box.obj">
+      <Link>Models\obj\cornell_box.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\obj\test.mtl">
+    <Content Include="..\..\Models\obj\test\test.mtl">
+      <Link>Models\obj\test.mtl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\obj\test.obj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Models\lwo\Apple.lwo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Models\stl\bottle.stl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\stl\cube.stl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\stl\magnolia.stl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\stl\sphere.stl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\stl\teapot.stl">
+    <Content Include="..\..\Models\obj\test\test.obj">
+      <Link>Models\obj\test.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\lwo\Teddy.lwo">
+    <Content Include="..\..\Models\lwo\Apple.lwo">
+      <Link>Models\lwo\Apple.lwo</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Models\stl\bottle.stl">
+      <Link>Models\stl\bottle.stl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\stl\cube.stl">
+      <Link>Models\stl\cube.stl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\stl\magnolia.stl">
+      <Link>Models\stl\magnolia.stl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\stl\sphere.stl">
+      <Link>Models\stl\sphere.stl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\stl\teapot.stl">
+      <Link>Models\stl\teapot.stl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Models\lwo\Teddy.lwo">
+      <Link>Models\lwo\Teddy.lwo</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -171,27 +184,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\3ds\skeleton.3ds">
+    <Content Include="..\..\Models\3ds\skeleton.3ds">
+      <Link>Models\3ds\skeleton.3ds</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\SmoothingOff.obj">
+      <Link>Models\obj\SmoothingOff.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\obj\SmoothingOff.obj">
+    <Content Include="..\..\Models\obj\SmoothingGroup0.obj">
+      <Link>Models\obj\SmoothingGroup0.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\obj\SmoothingGroup0.obj">
+    <Content Include="..\..\Models\obj\SmoothingGroup1.obj">
+      <Link>Models\obj\SmoothingGroup1.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\obj\SmoothingGroup1.obj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Models\stl\binary\bottle.stl">
+    <Content Include="..\..\Models\stl\binary\bottle.stl">
+      <Link>Models\stl\binary\bottle.stl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

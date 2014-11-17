@@ -1,4 +1,10 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DX11ImageSource.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Runtime.InteropServices;
@@ -48,8 +54,6 @@
         public void Dispose()
         {
             this.SetRenderTargetDX11(null);
-            Disposer.RemoveAndDispose(ref this.renderTarget);
-
             activeClients--;
             this.EndD3D();
         }
@@ -68,7 +72,7 @@
         {
             if (this.renderTarget != null)
             {
-                this.renderTarget = null;
+                Disposer.RemoveAndDispose(ref this.renderTarget);
                 base.Lock();
                 base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
                 base.Unlock();

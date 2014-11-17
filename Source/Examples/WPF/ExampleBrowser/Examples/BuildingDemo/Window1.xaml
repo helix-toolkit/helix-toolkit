@@ -1,9 +1,9 @@
 ﻿<Window x:Class="BuildingDemo.Window1"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:h="http://helixtoolkit.codeplex.com"
+        xmlns:h="http://helix-toolkit.org/wpf"
         xmlns:buildingDemo="clr-namespace:BuildingDemo"
-        xmlns:pt="http://propertytools.codeplex.com"
+        xmlns:pt="http://propertytools.org/wpf"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
         Title="BuildingDemo" Height="720" Width="1080">
     <Window.Resources>
@@ -78,6 +78,6 @@
 
             <h:BoundingBoxVisual3D BoundingBox="{Binding SelectedObject, Converter={StaticResource BoundsConverter}}" Diameter="0.2"/>
         </h:HelixViewport3D>
-        <pt:PropertyGrid Grid.Column="1" SelectedObject="{Binding SelectedObject}" UseTabs="False" Margin="4" RequiredAttribute="{x:Type componentModel:BrowsableAttribute}"/>
+        <pt:PropertyGrid Grid.Column="1" SelectedObject="{Binding SelectedObject}" TabVisibility="Collapsed" Margin="4" RequiredAttribute="{x:Type componentModel:BrowsableAttribute}"/>
     </Grid>
 </Window>

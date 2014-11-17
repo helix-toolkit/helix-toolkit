@@ -1,17 +1,24 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="MainWindow.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Interaction logic for the main window.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PointsAndLinesDemo
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
+
+    using _3DTools;
 
     using ExampleBrowser;
 
@@ -19,135 +26,178 @@ namespace PointsAndLinesDemo
 
     using Petzold.Media3D;
 
-    using _3DTools;
-
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for the main window.
     /// </summary>
     [Example(null, "Renders text and lines.")]
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    public partial class MainWindow : INotifyPropertyChanged
     {
-        public bool ShowLinesVisual3D { get; set; }
-        public bool ShowPointsVisual3D { get; set; }
-        public bool ShowScreenSpaceLines3D { get; set; }
-        public bool ShowWireLines { get; set; }
-        public Point3DCollection Points { get; set; }
-        private int n;
-        public int N
-        {
-            get { return n; }
-            set { n = value; RaisePropertyChanged("N"); }
-        }
+        private readonly Stopwatch watch = new Stopwatch();
 
-        Stopwatch watch = new Stopwatch();
+        private int numberOfPoints;
 
-        private bool isAnimating = false;
-
-        private LinesVisual3D lines;
-        private PointsVisual3D points;
+        private LinesVisual3D linesVisual;
+        private PointsVisual3D pointsVisual;
         private ScreenSpaceLines3D screenSpaceLines;
         private WireLines wireLines;
 
+        private Point3DCollection points;
+
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            this.watch.Start();
+
+            this.NumberOfPoints = 100;
+            this.DataContext = this;
+
+            CompositionTarget.Rendering += this.OnCompositionTargetRendering;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool ShowLinesVisual3D { get; set; }
+
+        public bool ShowPointsVisual3D { get; set; }
+
+        public bool ShowScreenSpaceLines3D { get; set; }
+
+        public bool ShowWireLines { get; set; }
+
+        public Point3DCollection Points
+        {
+            get
+            {
+                return this.points;
+            }
+
+            set
+            {
+                this.points = value;
+                this.RaisePropertyChanged("Points");
+            }
+        }
+
+        public int NumberOfPoints
+        {
+            get
+            {
+                return this.numberOfPoints;
+            }
+
+            set
+            {
+                this.numberOfPoints = value;
+                this.RaisePropertyChanged("NumberOfPoints");
+            }
+        }
+
+        public static IEnumerable<Point3D> GeneratePoints(int n, double time)
+        {
+            const double R = 2;
+            const double Q = 0.5;
+            for (int i = 0; i < n; i++)
+            {
+                double t = Math.PI * 2 * i / (n - 1);
+                double u = (t * 24) + (time * 5);
+                var pt = new Point3D(Math.Cos(t) * (R + (Q * Math.Cos(u))), Math.Sin(t) * (R + (Q * Math.Cos(u))), Q * Math.Sin(u));
+                yield return pt;
+                if (i > 0 && i < n - 1)
+                {
+                    yield return pt;
+                }
+            }
+        }
 
         protected void RaisePropertyChanged(string property)
         {
-            var handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
 
-        public MainWindow()
+        private void OnCompositionTargetRendering(object sender, EventArgs e)
         {
-            InitializeComponent();
-            watch.Start();
+            if (this.ShowLinesVisual3D && this.linesVisual == null)
+            {
+                this.linesVisual = new LinesVisual3D { Color = Colors.Blue };
+                View1.Children.Add(this.linesVisual);
+            }
 
-            N = 10000;
-            DataContext = this;
+            if (!this.ShowLinesVisual3D && this.linesVisual != null)
+            {
+                this.linesVisual.IsRendering = false;
+                View1.Children.Remove(this.linesVisual);
+                this.linesVisual = null;
+            }
 
-            CompositionTarget.Rendering += this.OnCompositionTargetRendering;
+            if (this.ShowPointsVisual3D && this.pointsVisual == null)
+            {
+                this.pointsVisual = new PointsVisual3D { Color = Colors.Red, Size = 6 };
+                View1.Children.Add(this.pointsVisual);
+            }
+
+            if (!this.ShowPointsVisual3D && this.pointsVisual != null)
+            {
+                this.pointsVisual.IsRendering = false;
+                View1.Children.Remove(this.pointsVisual);
+                this.pointsVisual = null;
+            }
+
+            if (this.ShowScreenSpaceLines3D && this.screenSpaceLines == null)
+            {
+                this.screenSpaceLines = new ScreenSpaceLines3D { Color = Colors.Green };
+                View1.Children.Add(this.screenSpaceLines);
+            }
+
+            if (!this.ShowScreenSpaceLines3D && this.screenSpaceLines != null)
+            {
+                View1.Children.Remove(this.screenSpaceLines);
+                this.screenSpaceLines = null;
+            }
+
+            if (this.ShowWireLines && this.wireLines == null)
+            {
+                this.wireLines = new WireLines { Color = Colors.Pink };
+                View1.Children.Add(this.wireLines);
+            }
+
+            if (!this.ShowWireLines && this.wireLines != null)
+            {
+                View1.Children.Remove(this.wireLines);
+                this.wireLines = null;
+            }
+
+            if (this.Points == null || this.Points.Count != this.NumberOfPoints)
+            {
+                this.Points = new Point3DCollection(GeneratePoints(this.NumberOfPoints, this.watch.ElapsedMilliseconds * 0.001));
+            }
+
+            if (this.linesVisual != null)
+            {
+                this.linesVisual.Points = this.Points;
+            }
+
+            if (this.pointsVisual != null)
+            {
+                this.pointsVisual.Points = this.Points;
+            }
+
+            if (this.screenSpaceLines != null)
+            {
+                this.screenSpaceLines.Points = this.Points;
+            }
+
+            if (this.wireLines != null)
+            {
+                this.wireLines.Lines = this.Points;
+            }
         }
 
-        void OnCompositionTargetRendering(object sender, EventArgs e)
-        {
-            if (ShowLinesVisual3D && lines == null)
-            {
-                lines = new LinesVisual3D { Color = Colors.Blue };
-                view1.Children.Add(lines);
-            }
-            if (!ShowLinesVisual3D && lines != null)
-            {
-                lines.IsRendering = false;
-                view1.Children.Remove(lines);
-                lines = null;
-            }
-            if (ShowPointsVisual3D && points == null)
-            {
-                points = new PointsVisual3D { Color = Colors.Red, Size = 6 };
-                view1.Children.Add(points);
-            }
-            if (!ShowPointsVisual3D && points != null)
-            {
-                points.IsRendering = false;
-                view1.Children.Remove(points);
-                points = null;
-            }
-            if (ShowScreenSpaceLines3D && screenSpaceLines == null)
-            {
-                screenSpaceLines = new ScreenSpaceLines3D { Color = Colors.Green };
-                view1.Children.Add(screenSpaceLines);
-            }
-            if (!ShowScreenSpaceLines3D && screenSpaceLines != null)
-            {
-                view1.Children.Remove(screenSpaceLines);
-                screenSpaceLines = null;
-            }
-            if (ShowWireLines && wireLines == null)
-            {
-                wireLines = new WireLines { Color = Colors.Pink };
-                view1.Children.Add(wireLines);
-            }
-            if (!ShowWireLines && wireLines != null)
-            {
-                view1.Children.Remove(wireLines);
-                wireLines = null;
-            }
-
-            if (Points == null || Points.Count != N || isAnimating)
-            {
-                Points = GeneratePoints(N, watch.ElapsedMilliseconds * 0.001);
-                RaisePropertyChanged("Points");
-            }
-
-            if (lines != null)
-                lines.Points = Points;
-            if (points != null)
-                points.Points = Points;
-            if (screenSpaceLines != null)
-                screenSpaceLines.Points = Points;
-            if (wireLines != null)
-                wireLines.Lines = Points;
-        }
-
-        public Point3DCollection GeneratePoints(int n, double time)
-        {
-            var result = new Point3DCollection(n);
-            double R = 2;
-            double r = 0.5;
-            for (int i = 0; i < n; i++)
-            {
-                double t = Math.PI * 2 * i / (n - 1);
-                double u = t * 24 + time * 5;
-                var pt = new Point3D(Math.Cos(t) * (R + r * Math.Cos(u)), Math.Sin(t) * (R + r * Math.Cos(u)), r * Math.Sin(u));
-                result.Add(pt);
-                if (i > 0 && i < n - 1)
-                    result.Add(pt);
-            }
-            return result;
-        }
-        private void Exit_Click(object sender, RoutedEventArgs e)
+        private void ExitClick(object sender, RoutedEventArgs e)
         {
             Close();
         }

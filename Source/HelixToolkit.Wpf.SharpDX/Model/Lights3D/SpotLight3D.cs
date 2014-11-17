@@ -1,4 +1,16 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SpotLight3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Decay Exponent of the spotlight.
+//   The falloff the spotlight between inner and outer angle
+//   depends on this value.
+//   For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Windows;

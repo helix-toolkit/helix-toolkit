@@ -1,3 +1,11 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Geometry3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
@@ -5,6 +13,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using HelixToolkit.Wpf.SharpDX.Core;
+
+    using System.Runtime.InteropServices;
 
     [Serializable]
     public abstract class Geometry3D
@@ -21,6 +31,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public struct Line
         {
             public Vector3 P0, P1;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        public struct PointsVertex
+        {
+            public Vector4 Position;
+            public Color4 Color;
+            public const int SizeInBytes = 4 * (4 + 4);
+        }
+
+        public struct Point
+        {
+            public Vector3 P0;
         }
     }
 }

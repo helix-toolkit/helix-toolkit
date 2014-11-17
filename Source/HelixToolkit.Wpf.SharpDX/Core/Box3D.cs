@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf.SharpDX.Core
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Box3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Struct for a 3dimensional Box
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX.Core
 {
     using System;
     using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CameraController.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="CameraController.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   Provides a control that manipulates the camera by mouse and keyboard gestures.
@@ -276,7 +276,7 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ZoomSensitivityProperty =
             DependencyProperty.Register(
                 "ZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
-        
+
         /// <summary>
         /// The zoomed by rectangle event
         /// </summary>
@@ -295,6 +295,11 @@ namespace HelixToolkit.Wpf
         /// The rendering event listener.
         /// </summary>
         private readonly RenderingEventListener renderingEventListener;
+
+        /// <summary>
+        /// The stacked cursors - used for restoring to original cursor
+        /// </summary>
+        private readonly Stack<Cursor> cursorStack = new Stack<Cursor>();
 
         /// <summary>
         /// The change field of view event handler.
@@ -548,7 +553,7 @@ namespace HelixToolkit.Wpf
         /// Gets the zoom rectangle command.
         /// </summary>
         public static RoutedCommand ZoomRectangleCommand { get; private set; }
-      
+
         /// <summary>
         /// Gets ActualCamera.
         /// </summary>
@@ -1708,6 +1713,25 @@ namespace HelixToolkit.Wpf
 
             this.PushCameraSetting();
             this.ActualCamera.ZoomExtents(this.Viewport, animationTime);
+        }
+
+        /// <summary>
+        /// Restores the cursor from the cursor stack.
+        /// </summary>
+        public void RestoreCursor()
+        {
+            this.Cursor = this.cursorStack.Pop();
+        }
+
+        /// <summary>
+        /// Sets the cursor and pushes the current cursor to the cursor stack.
+        /// </summary>
+        /// <param name="cursor">The cursor.</param>
+        /// <remarks>Use <see cref="RestoreCursor" /> to restore the cursor again.</remarks>
+        public void SetCursor(Cursor cursor)
+        {
+            this.cursorStack.Push(this.Cursor);
+            this.Cursor = cursor;
         }
 
         /// <summary>

@@ -1,4 +1,13 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DeferredRenderer.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Number Samples Propery can be set directly to the deferred renderer
+//   It couses a re-init of the renderer
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using global::SharpDX;

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ColorAxis.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="ColorAxis.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   The base class for color axes.
@@ -34,6 +34,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty = DependencyProperty.Register(
             "ColorScheme", typeof(Brush), typeof(ColorAxis), new UIPropertyMetadata(null, PropertyChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="FlipColorScheme"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FlipColorSchemeProperty = DependencyProperty.Register(
+            "FlipColorScheme", typeof(bool), typeof(ColorAxis), new UIPropertyMetadata(false, PropertyChanged));
 
         /// <summary>
         /// Identifies the <see cref="Position"/> dependency property.
@@ -102,6 +108,23 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(ColorSchemeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color scheme direction, if true inverts the color normal color brush direction.
+        /// </summary>
+        /// <value>A boolean indicating inverted color direction when true.</value>
+        public bool FlipColorScheme
+        {
+            get
+            {
+                return (bool)this.GetValue(FlipColorSchemeProperty);
+            }
+
+            set
+            {
+                this.SetValue(FlipColorSchemeProperty, value);
             }
         }
 
@@ -216,13 +239,20 @@ namespace HelixToolkit.Wpf
             }
 
             var r = new Rectangle
-                        {
-                            Fill = this.ColorScheme,
-                            Width = this.ColorArea.Width,
-                            Height = this.ColorArea.Height
-                        };
+                              {
+                                  Fill = this.ColorScheme,
+                                  Width = this.ColorArea.Width,
+                                  Height = this.ColorArea.Height
+                              };
+
+            if (this.FlipColorScheme)
+            {
+                r.LayoutTransform = new RotateTransform(180);
+            }
+
             Canvas.SetLeft(r, this.ColorArea.Left);
             Canvas.SetTop(r, this.ColorArea.Top);
+
             this.Canvas.Children.Add(r);
 
             this.Canvas.Children.Add(
@@ -272,11 +302,11 @@ namespace HelixToolkit.Wpf
 
             var maxWidth = this.GetTickLabels().Max(
                 c =>
-                    {
-                        var tb = new TextBlock(new Run(c));
-                        tb.Measure(constraint);
-                        return tb.DesiredSize.Width;
-                    });
+                {
+                    var tb = new TextBlock(new Run(c));
+                    tb.Measure(constraint);
+                    return tb.DesiredSize.Width;
+                });
             size.Width = maxWidth + this.BarWidth + this.TickLength + this.Padding.Left + this.Padding.Right
                          + this.TextMargin;
 
@@ -288,6 +318,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected void UpdateVisuals()
         {
+            if (Canvas == null)
+            {
+                return;
+            }
+
             this.Canvas.Children.Clear();
             this.AddVisuals();
         }

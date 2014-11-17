@@ -1,10 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit examples">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="MainWindow.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
-// <summary>
-//   Interaction logic for MainWindow.xaml
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace RectSelection
@@ -29,7 +26,8 @@ namespace RectSelection
             this.InitializeComponent();
             var vm = new MainWindowViewModel(this.view1.Viewport);
             this.DataContext = vm;
-            this.view1.InputBindings.Add(new MouseBinding(vm.SelectionCommand, new MouseGesture(MouseAction.LeftClick)));
+            this.view1.InputBindings.Add(new MouseBinding(vm.RectangleSelectionCommand, new MouseGesture(MouseAction.LeftClick)));
+            this.view1.InputBindings.Add(new MouseBinding(vm.PointSelectionCommand, new MouseGesture(MouseAction.LeftClick, ModifierKeys.Control)));
         }
     }
 
@@ -39,21 +37,24 @@ namespace RectSelection
 
         public MainWindowViewModel(Viewport3D viewport)
         {
-            this.SelectionCommand = new RectangleSelectionCommand(viewport, this.HandleSelectionEvent);
+            this.RectangleSelectionCommand = new RectangleSelectionCommand(viewport, this.HandleSelectionEvent);
+            this.PointSelectionCommand = new PointSelectionCommand(viewport, this.HandleSelectionEvent);
         }
 
-        public RectangleSelectionCommand SelectionCommand { get; private set; }
+        public RectangleSelectionCommand RectangleSelectionCommand { get; private set; }
+
+        public PointSelectionCommand PointSelectionCommand { get; private set; }
 
         public SelectionHitMode SelectionMode
         {
             get
             {
-                return this.SelectionCommand.SelectionHitMode;
+                return this.RectangleSelectionCommand.SelectionHitMode;
             }
 
             set
             {
-                this.SelectionCommand.SelectionHitMode = value;
+                this.RectangleSelectionCommand.SelectionHitMode = value;
             }
         }
 
@@ -72,7 +73,13 @@ namespace RectSelection
             var rectangleSelectionArgs = args as ModelsSelectedByRectangleEventArgs;
             if (rectangleSelectionArgs != null)
             {
-                this.ChangeMaterial(this.selectedModels, rectangleSelectionArgs.Rectangle.Size != default(Size) ? Materials.Red : Materials.Green);
+                this.ChangeMaterial(
+                    this.selectedModels,
+                    rectangleSelectionArgs.Rectangle.Size != default(Size) ? Materials.Red : Materials.Green);
+            }
+            else
+            {
+                this.ChangeMaterial(this.selectedModels, Materials.Orange);
             }
         }
 

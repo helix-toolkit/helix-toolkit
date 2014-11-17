@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OctaneStarter.cs" company="">
-//
+// <copyright file="OctaneLauncher.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Creates the arguments to start Octane render.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExportDemo

@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MeshBuilder.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Box face enumeration.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Linq;
@@ -256,6 +265,8 @@
         private static void ComputeNormals(Vector3Collection positions, IntCollection triangleIndices, out Vector3Collection normals)
         {
             normals = new Vector3Collection(positions.Count);
+            normals.AddRange(Enumerable.Repeat(Vector3.Zero, positions.Count));
+
             for (int t = 0; t < triangleIndices.Count; t += 3)
             {
                 var i1 = triangleIndices[t];

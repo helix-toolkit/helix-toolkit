@@ -1,3 +1,12 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LineGeometryModel3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
@@ -418,7 +427,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private LinesVertex[] CreateLinesVertexArray()
         {
             var positions = this.Geometry.Positions.Array;
-            var vertexCount = positions.Length;
+            var vertexCount = this.Geometry.Positions.Count;
             var color = this.Color;
             var result = new LinesVertex[vertexCount];
 

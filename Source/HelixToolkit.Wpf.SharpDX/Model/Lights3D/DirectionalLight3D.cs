@@ -1,3 +1,9 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DirectionalLight3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     public sealed class DirectionalLight3D : Light3D

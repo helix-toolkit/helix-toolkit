@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainViewModel.cs" company="Helix 3D Toolkit examples">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   The main view model.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace MazeDemo

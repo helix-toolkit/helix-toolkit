@@ -1,3 +1,12 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Element.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Represents an element.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace DataTemplateDemo
 {
     using System.Windows.Media.Media3D;

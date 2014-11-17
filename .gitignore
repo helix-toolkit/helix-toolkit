@@ -189,3 +189,7 @@ FakesAssemblies/
 
 # GhostDoc settings
 *.GhostDoc.xml
+
+# Helix Toolkit specific files
+!Models/obj/
+!Models/obj/**/*.obj

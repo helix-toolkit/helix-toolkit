@@ -1,4 +1,10 @@
-﻿namespace ImageViewDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ImageViewDemo
 {
     using System;
     using System.IO;

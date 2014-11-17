@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX"
-        xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:Workitem10048"
         mc:Ignorable="d"
         Title="SharpDX in WPF (Workitem 10048 and 10052)" Height="500" Width="800">
@@ -12,12 +12,12 @@
         <local:MainViewModel/>
     </Window.DataContext>    
     <Window.Resources>
-        <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
-        <htx:LineGeometry3D x:Key="Lines"
+        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:LineGeometry3D x:Key="Lines"
                             Positions="-6.0,0.0,0.0 3.0,0.0,0.0"
                             Indices="0 1"/>
         <TranslateTransform3D x:Key="Transform1" OffsetX="0" OffsetY="1" OffsetZ="0"/>
-        <htx:PerspectiveCamera x:Key="Camera" Position="3, 3, 5" LookDirection="-3, -3, -5" UpDirection="0, 1, 0"/>
+        <hx:PerspectiveCamera x:Key="Camera" Position="3, 3, 5" LookDirection="-3, -3, -5" UpDirection="0, 1, 0"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -31,11 +31,11 @@
                 <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
             </Menu.Background>
             <MenuItem Header="View">
-                <MenuItem Header="Zoom extents" Command="htx:ViewportCommands.ZoomExtents"/>
+                <MenuItem Header="Zoom extents" Command="hx:ViewportCommands.ZoomExtents"/>
             </MenuItem>
         </Menu>
 
-        <htx:Viewport3DX
+        <hx:Viewport3DX
             x:Name="Viewport"
             Grid.Row="1"
             Camera="{StaticResource Camera}"
@@ -48,20 +48,20 @@
             RenderTechnique="{Binding RenderTechnique}"
             RotateAroundMouseDownPoint="True"
             ZoomAroundMouseDownPoint="True">
-            <htx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="htx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="htx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="htx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="htx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="htx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="htx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="htx:ViewportCommands.Pan"/>
-            </htx:Viewport3DX.InputBindings>
-            <htx:AmbientLight3D Color="0.1,0.1,0.1,1.0"/>
-            <htx:DirectionalLight3D Color="{x:Static sdx:Color4.White}" Direction="-2,-5,-2"/>
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
+                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+            </hx:Viewport3DX.InputBindings>
+            <hx:AmbientLight3D Color="0.1,0.1,0.1,1.0"/>
+            <hx:DirectionalLight3D Color="{x:Static sdx:Color4.White}" Direction="-2,-5,-2"/>
             <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
                                          Color="{x:Static sdx:Color.Black}"
                                          HitTestThickness="2">
@@ -72,7 +72,7 @@
                                          Thickness="8"
                                          HitTestThickness="8">
             </local:MyLineGeometryModel3D>
-        </htx:Viewport3DX>
+        </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1" Margin="0 24 0 0">
             <Expander Header="Render Technique" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">

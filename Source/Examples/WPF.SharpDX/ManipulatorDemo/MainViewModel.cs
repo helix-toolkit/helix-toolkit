@@ -1,4 +1,10 @@
-﻿namespace ManipulatorDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ManipulatorDemo
 {
     using System;
     using System.Windows.Media.Animation;

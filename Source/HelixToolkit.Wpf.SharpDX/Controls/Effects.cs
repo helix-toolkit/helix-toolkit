@@ -1,4 +1,13 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Effects.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Names of techniques which are implemented by default
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;
@@ -113,7 +122,8 @@
             RenderPNQuads = new RenderTechnique("RenderPNQuads");
 #endif
             RenderCubeMap = new RenderTechnique("RenderCubeMap");
-            RenderLines = new RenderTechnique("RenderLines");                        
+            RenderLines = new RenderTechnique("RenderLines");
+            RenderPoints = new RenderTechnique("RenderPoints");
 
             RenderTechniques = new List<RenderTechnique>
             { 
@@ -153,6 +163,7 @@
                 {     Techniques.RenderTexCoords,  Properties.Resources._default}, 
                 {     Techniques.RenderWires,      Properties.Resources._default}, 
                 {     Techniques.RenderLines,      Properties.Resources._default}, 
+                {     Techniques.RenderPoints,     Properties.Resources._default},
     #if TESSELLATION                                        
                 {     Techniques.RenderPNTriangs,  Properties.Resources._default}, 
                 {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
@@ -190,6 +201,7 @@
         public static RenderTechnique RenderWires { get; private set; }
         public static RenderTechnique RenderCubeMap { get; private set; }
         public static RenderTechnique RenderLines { get; private set; }
+        public static RenderTechnique RenderPoints { get; private set; }
 
 #if TESSELLATION
         public static RenderTechnique RenderPNTriangs { get; private set; }
@@ -321,7 +333,8 @@
                     Techniques.RenderTangents, 
                     Techniques.RenderTexCoords, 
                     Techniques.RenderWires, 
-                    Techniques.RenderLines,                                        
+                    Techniques.RenderLines,
+                    Techniques.RenderPoints,                    
 #if TESSELLATION
                     Techniques.RenderPNTriangs,                     
                     Techniques.RenderPNQuads,
@@ -378,6 +391,12 @@
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),                                                             
                 });
 
+                var pointsInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPoints).GetTechniqueByName(Techniques.RenderPoints.Name).GetPassByIndex(0).Description.Signature, new[] 
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
+                });
+
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
                 { 
@@ -393,6 +412,13 @@
                     Techniques.RenderLines 
                 },
                 linesInputLayout);
+
+                // ------------------------------------------------------------------------------------
+                RegisterLayout(new[] 
+                { 
+                    Techniques.RenderPoints 
+                },
+                pointsInputLayout);
 
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 

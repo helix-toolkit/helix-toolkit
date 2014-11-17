@@ -1,3 +1,13 @@
+ï»¿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PhongMaterial.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Implments a phong-material with its all properties
+//   Includes Diffuse, Normal, Displacement, Specular, etc. maps
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using global::SharpDX;
@@ -14,14 +24,14 @@ namespace HelixToolkit.Wpf.SharpDX
     public partial class PhongMaterial : Material
     {
         /// <summary>
-        /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.AmbientColor dependency
+        /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.AmbientColorï¿½dependency
         /// property.
         /// </summary>
         public static readonly DependencyProperty AmbientColorProperty =
             DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new UIPropertyMetadata((Color4)Color.Gray));
 
         /// <summary>
-        /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.Color dependency
+        /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.Colorï¿½dependency
         /// property.
         /// </summary>
         public static readonly DependencyProperty DiffuseColorProperty =

@@ -1,7 +1,10 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SurfacePlotVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SurfacePlotVisual3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Gets or sets the points defining the surface.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;

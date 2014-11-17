@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MazeSolver1.cs" company="Helix 3D Toolkit examples">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="MazeSolver1.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Represents a simple DFS solution algorithm.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace MazeDemo

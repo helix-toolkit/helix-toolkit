@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjReader.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="ObjReader.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   A Wavefront .obj file reader.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf.SharpDX
@@ -703,8 +706,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 System.Windows.MessageBox.Show(string.Format("Error composing polygonal object: {0}", ex.Message), "Error", MessageBoxButton.OKCancel);
             }
-
-            Console.WriteLine();
         }
 
         /// <summary>

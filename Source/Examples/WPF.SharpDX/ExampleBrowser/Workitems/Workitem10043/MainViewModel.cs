@@ -1,4 +1,10 @@
-﻿ namespace Workitem10043
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+ namespace Workitem10043
 {
     using System.Globalization;
     using System.Linq;

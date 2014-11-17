@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ContourHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="ContourHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Provides functionality to calculate a contour slice through a 3 vertex facet.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
@@ -18,7 +21,7 @@ namespace HelixToolkit.Wpf
     /// <remarks>
     /// See <a href="http://paulbourke.net/papers/conrec/">CONREC</a> for further information.
     /// </remarks>
-    internal class ContourHelper
+    public class ContourHelper
     {
         /// <summary>
         /// Provides the indices for the various <see cref="ContourFacetResult"/> cases.
@@ -70,9 +73,19 @@ namespace HelixToolkit.Wpf
         private readonly bool hasTextureCoordinates;
 
         /// <summary>
+        /// Indicates whether the mesh has normal vectors.
+        /// </summary>
+        private readonly bool hasNormals;
+
+        /// <summary>
         /// The original mesh positions.
         /// </summary>
         private readonly Point3D[] meshPositions;
+
+        /// <summary>
+        /// The original mesh normal vectors.
+        /// </summary>
+        private readonly Vector3D[] meshNormals;
 
         /// <summary>
         /// The original mesh texture coordinates.
@@ -85,6 +98,11 @@ namespace HelixToolkit.Wpf
         private readonly Point3D[] points = new Point3D[3];
 
         /// <summary>
+        /// The points.
+        /// </summary>
+        private readonly Vector3D[] normals = new Vector3D[3];
+
+        /// <summary>
         /// The textures.
         /// </summary>
         private readonly Point[] textures = new Point[3];
@@ -95,26 +113,21 @@ namespace HelixToolkit.Wpf
         private int positionCount;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContourHelper"/> class.
+        /// Initializes a new instance of the <see cref="ContourHelper" /> class.
         /// </summary>
-        /// <param name="planeOrigin">
-        /// The plane origin.
-        /// </param>
-        /// <param name="planeNormal">
-        /// The plane normal.
-        /// </param>
-        /// <param name="originalMesh">
-        /// The original mesh.
-        /// </param>
-        /// <param name="hasTextureCoordinates">
-        /// Indicates whether texture coordinates need calculating.
-        /// </param>
-        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh, bool hasTextureCoordinates = false)
+        /// <param name="planeOrigin">The plane origin.</param>
+        /// <param name="planeNormal">The plane normal.</param>
+        /// <param name="originalMesh">The original mesh.</param>
+        /// <param name="hasNormals">Indicates whether normal vectors needs to be calculated.</param>
+        /// <param name="hasTextureCoordinates">Indicates whether texture coordinates need calculating.</param>
+        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh, bool hasNormals = false, bool hasTextureCoordinates = false)
         {
+            this.hasNormals = hasNormals;
             this.hasTextureCoordinates = hasTextureCoordinates;
             this.positionCount = originalMesh.Positions.Count;
 
             this.meshPositions = originalMesh.Positions.ToArray();
+            this.meshNormals = originalMesh.Normals.ToArray();
             this.meshTextureCoordinates = originalMesh.TextureCoordinates.ToArray();
 
             // Determine the equation of the plane as
@@ -175,30 +188,20 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Create a contour slice through a 3 vertex facet.
         /// </summary>
-        /// <param name="index0">
-        /// The 0th point index.
-        /// </param>
-        /// <param name="index1">
-        /// The 1st point index.
-        /// </param>
-        /// <param name="index2">
-        /// The 2nd point index.
-        /// </param>
-        /// <param name="positions">
-        /// Any new positions that are created, when the contour plane slices through the vertex.
-        /// </param>
-        /// <param name="textureCoordinates">
-        /// Any new texture coordinates that are created, when the contour plane slices through the vertex.
-        /// </param>
-        /// <param name="triangleIndices">
-        /// All triangle indices that are created, when 1 or more points fall below the contour plane.
-        /// </param>
+        /// <param name="index0">The 0th point index.</param>
+        /// <param name="index1">The 1st point index.</param>
+        /// <param name="index2">The 2nd point index.</param>
+        /// <param name="newPositions">Any new positions that are created, when the contour plane slices through the vertex.</param>
+        /// <param name="newNormals">Any new normal vectors that are created, when the contour plane slices through the vertex.</param>
+        /// <param name="newTextureCoordinates">Any new texture coordinates that are created, when the contour plane slices through the vertex.</param>
+        /// <param name="triangleIndices">Triangle indices for the triangle(s) above the plane.</param>
         public void ContourFacet(
             int index0,
             int index1,
             int index2,
-            out Point3D[] positions,
-            out Point[] textureCoordinates,
+            out Point3D[] newPositions,
+            out Vector3D[] newNormals,
+            out Point[] newTextureCoordinates,
             out int[] triangleIndices)
         {
             this.SetData(index0, index1, index2);
@@ -225,26 +228,42 @@ namespace HelixToolkit.Wpf
                     triangleIndices = new[] { index0, index1, this.positionCount, this.positionCount++, this.positionCount++, index0 };
                     break;
                 case ContourFacetResult.All:
-                    positions = new Point3D[0];
-                    textureCoordinates = new Point[0];
+                    newPositions = new Point3D[0];
+                    newNormals = new Vector3D[0];
+                    newTextureCoordinates = new Point[0];
                     triangleIndices = new[] { index0, index1, index2 };
                     return;
                 default:
-                    positions = new Point3D[0];
-                    textureCoordinates = new Point[0];
+                    newPositions = new Point3D[0];
+                    newNormals = new Vector3D[0];
+                    newTextureCoordinates = new Point[0];
                     triangleIndices = new int[0];
                     return;
             }
 
             var facetIndices = ResultIndices[facetResult];
-            positions = new[]
+            newPositions = new[]
             {
                 this.CreateNewPosition(facetIndices[0, 0], facetIndices[0, 1]),
                 this.CreateNewPosition(facetIndices[1, 0], facetIndices[1, 1])
             };
+
+            if (this.hasNormals)
+            {
+                newNormals = new[]
+            {
+                this.CreateNewNormal(facetIndices[0, 0], facetIndices[0, 1]),
+                this.CreateNewNormal(facetIndices[1, 0], facetIndices[1, 1])
+            };
+            }
+            else
+            {
+                newNormals = new Vector3D[0];
+            }
+
             if (this.hasTextureCoordinates)
             {
-                textureCoordinates = new[]
+                newTextureCoordinates = new[]
                 {
                     this.CreateNewTexture(facetIndices[0, 0], facetIndices[0, 1]),
                     this.CreateNewTexture(facetIndices[1, 0], facetIndices[1, 1])
@@ -252,7 +271,7 @@ namespace HelixToolkit.Wpf
             }
             else
             {
-                textureCoordinates = new Point[0];
+                newTextureCoordinates = new Point[0];
             }
         }
 
@@ -322,6 +341,13 @@ namespace HelixToolkit.Wpf
             this.points[1] = this.meshPositions[index1];
             this.points[2] = this.meshPositions[index2];
 
+            if (this.hasNormals)
+            {
+                this.normals[0] = this.meshNormals[index0];
+                this.normals[1] = this.meshNormals[index1];
+                this.normals[2] = this.meshNormals[index2];
+            }
+
             if (this.hasTextureCoordinates)
             {
                 this.textures[0] = this.meshTextureCoordinates[index0];
@@ -347,6 +373,24 @@ namespace HelixToolkit.Wpf
             var firstSide = this.sides[index0];
             var secondSide = this.sides[index1];
             return new Point3D(
+                CalculatePoint(firstPoint.X, secondPoint.X, firstSide, secondSide),
+                CalculatePoint(firstPoint.Y, secondPoint.Y, firstSide, secondSide),
+                CalculatePoint(firstPoint.Z, secondPoint.Z, firstSide, secondSide));
+        }
+
+        /// <summary>
+        /// Calculates the normal at the plane intersection for the side specified by two triangle indices.
+        /// </summary>
+        /// <param name="index0">The first index.</param>
+        /// <param name="index1">The second index.</param>
+        /// <returns>The interpolated vector.</returns>
+        private Vector3D CreateNewNormal(int index0, int index1)
+        {
+            var firstPoint = this.normals[index0];
+            var secondPoint = this.normals[index1];
+            var firstSide = this.sides[index0];
+            var secondSide = this.sides[index1];
+            return new Vector3D(
                 CalculatePoint(firstPoint.X, secondPoint.X, firstSide, secondSide),
                 CalculatePoint(firstPoint.Y, secondPoint.Y, firstSide, secondSide),
                 CalculatePoint(firstPoint.Z, secondPoint.Z, firstSide, secondSide));

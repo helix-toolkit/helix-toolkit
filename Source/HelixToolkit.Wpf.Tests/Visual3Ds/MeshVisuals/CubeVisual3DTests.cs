@@ -1,4 +1,10 @@
-﻿namespace HelixToolkit.Wpf.Tests.Visual3Ds.MeshVisuals
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CubeVisual3DTests.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.Tests.Visual3Ds.MeshVisuals
 {
     using System.Windows.Media.Media3D;
 

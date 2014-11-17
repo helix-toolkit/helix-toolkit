@@ -1,7 +1,10 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Interaction logic for MainWindow.xaml
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleBrowser
@@ -71,8 +74,8 @@ namespace ExampleBrowser
                 {
                     if (args.Key == Key.F12)
                     {
-                        CreateThumbnail(window, 120, Path.Combine(@"..\..\Images\", example.ThumbnailFileName));
-                        MessageBox.Show(window, "Demo image updated.");
+                        CreateThumbnail(window, 120, Path.Combine(@"..\..\..\Images\", example.ThumbnailFileName));
+                        MessageBox.Show(window, "Demo image updated. Now add `" + example.ThumbnailFileName + "` as a resource in the Images folder in the ExampleBrowser project.");
                         e.Handled = true;
                     }
                 };

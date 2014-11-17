@@ -1,12 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtrudedVisual3D.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="ExtrudedVisual3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   A visual element that extrudes a section along a path.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
 {
-    using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -70,7 +72,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty TextureCoordinatesProperty =
             DependencyProperty.Register(
-                "TextureCoordinates", typeof(IList<double>), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
+                "TextureCoordinates", typeof(DoubleCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtrudedVisual3D" /> class.
@@ -201,11 +203,11 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the texture coordinates along the path (X only).
         /// </summary>
         /// <value> The texture coordinates. </value>
-        public IList<double> TextureCoordinates
+        public DoubleCollection TextureCoordinates
         {
             get
             {
-                return (IList<double>)this.GetValue(TextureCoordinatesProperty);
+                return (DoubleCollection)this.GetValue(TextureCoordinatesProperty);
             }
 
             set

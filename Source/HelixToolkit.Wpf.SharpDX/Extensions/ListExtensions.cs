@@ -1,4 +1,10 @@
-﻿namespace HelixToolkit.Wpf.SharpDX.Extensions
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ListExtensions.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HelixToolkit.Wpf.SharpDX.Extensions
 {
     using System;
     using System.Collections.Generic;

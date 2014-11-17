@@ -1,3 +1,12 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MeshGeometryModel3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Linq;
@@ -183,7 +192,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- check instancing
             this.hasInstances = (this.Instances != null) && (this.Instances.Any());
-            this.bHasInstances.Set(this.hasInstances);
+            if (this.bHasInstances != null)
+            {
+                this.bHasInstances.Set(this.hasInstances);
+            }
 
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
@@ -252,7 +264,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var tangents = geometry.Tangents != null ? geometry.Tangents.Array : null;
             var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
             var positions = geometry.Positions.Array;
-            var vertexCount = positions.Length;
+            var vertexCount = geometry.Positions.Count;
             var result = new DefaultVertex[vertexCount];
 
             for (var i = 0; i < vertexCount; i++)

@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\NET40\</OutputPath>
     <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -52,16 +52,19 @@
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.28.1\lib\NET40\PropertyTools.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net40\PropertyTools.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.1.28.1\lib\NET40\PropertyTools.Wpf.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net40\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="Triangle">
+      <HintPath>..\..\..\..\Components\Triangle.dll</HintPath>
+    </Reference>
     <Reference Include="WiimoteLib">
       <HintPath>..\..\..\..\Components\WiimoteLib.dll</HintPath>
     </Reference>
@@ -87,8 +90,16 @@
     <Compile Include="Examples\BuildingDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EnumValues.cs" />
+    <Compile Include="Examples\ExtrudedText\Extensions.cs" />
+    <Compile Include="Examples\ExtrudedText\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ParticleSystemDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\PointsAndLinesBinding\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\RectSelection\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -98,6 +109,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
+    <Compile Include="Workitems\Workitem73\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem10054\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -152,7 +166,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Examples\ExtrudedText\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\ParticleSystemDemo\Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\PointsAndLinesBinding\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -421,6 +443,10 @@
     </Compile>
     <Compile Include="Examples\Fractal\Observable.cs" />
     <Compile Include="Examples\HalfEdgeMesh\HalfEdgeMesh.cs" />
+    <Page Include="Workitems\Workitem73\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Workitems\Workitem10054\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -565,6 +591,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\ExtrudedTextDemo_small.png" />
+    <Resource Include="Images\PointsAndLinesBinding_small.png" />
     <Resource Include="Images\RectSelection_small.png" />
     <Resource Include="Images\Workitem10054_small.png" />
     <Resource Include="Images\ParticleSystemDemo_small.png" />
@@ -660,25 +688,32 @@
     <Resource Include="Examples\ParticleSystemDemo\smoke.png" />
     <Resource Include="Examples\BuildingDemo\smoke.png" />
     <Resource Include="Examples\BuildingDemo\fence.png" />
-    <Content Include="Examples\Subdivision\Models\boxcube.off">
+    <Content Include="..\..\..\..\Models\off\boxcube.off">
+      <Link>Examples\Subdivision\Models\boxcube.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\Subdivision\Models\boxtorus.off">
+    <Content Include="..\..\..\..\Models\off\boxtorus.off">
+      <Link>Examples\Subdivision\Models\boxtorus.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\Subdivision\Models\cubix.off">
+    <Content Include="..\..\..\..\Models\off\cubix.off">
+      <Link>Examples\Subdivision\Models\cubix.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\Subdivision\Models\epcot.off">
+    <Content Include="..\..\..\..\Models\off\epcot.off">
+      <Link>Examples\Subdivision\Models\epcot.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\Subdivision\Models\king.off">
+    <Content Include="..\..\..\..\Models\off\king.off">
+      <Link>Examples\Subdivision\Models\king.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\Subdivision\Models\pear.off">
+    <Content Include="..\..\..\..\Models\off\pear.off">
+      <Link>Examples\Subdivision\Models\pear.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\Subdivision\Models\seashell.off">
+    <Content Include="..\..\..\..\Models\off\seashell.off">
+      <Link>Examples\Subdivision\Models\seashell.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Examples\Terrain\Models\crater_0513.btz">
@@ -699,10 +734,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
-    <Content Include="Examples\Contour\VWBus.3ds">
+    <Content Include="..\..\..\..\Models\3ds\VWBus.3ds">
+      <Link>Examples\Contour\VWBus.3ds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\CuttingPlanes\Astronaut.3ds">
+    <Content Include="..\..\..\..\Models\3ds\Astronaut.3ds">
+      <Link>Examples\CuttingPlanes\Astronaut.3ds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

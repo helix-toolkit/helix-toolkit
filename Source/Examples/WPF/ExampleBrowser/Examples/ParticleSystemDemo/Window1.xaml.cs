@@ -1,8 +1,14 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Window1.xaml.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Interaction logic for Window1.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace ParticleSystemDemo
 {
-    using System.ComponentModel;
-    using System.Drawing;
     using System.Windows;
     using System.Windows.Media.Media3D;
 

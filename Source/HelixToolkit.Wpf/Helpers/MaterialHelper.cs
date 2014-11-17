@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MaterialHelper.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="MaterialHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Provides methods that creates materials.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
@@ -151,14 +154,38 @@ namespace HelixToolkit.Wpf
         /// <param name="specularPower">The specular power.</param>
         /// <param name="ambient">The ambient component.</param>
         /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
-        /// <returns>The material.</returns>
-        public static Material CreateMaterial(Brush brush, double specularPower = 100, byte ambient = 255, bool freeze = true)
+        /// <returns>
+        /// The material.
+        /// </returns>
+        public static Material CreateMaterial(
+            Brush brush,
+            double specularPower = 100,
+            byte ambient = 255,
+            bool freeze = true)
+        {
+            return CreateMaterial(brush, 1d, specularPower, ambient, freeze);
+        }
+
+        /// <summary>
+        /// Creates a material with the specified brush as diffuse material.
+        /// This method will also add a white specular material.
+        /// </summary>
+        /// <param name="brush">The brush of the diffuse material.</param>
+        /// <param name="specularBrightness">The brightness of the specular material.</param>
+        /// <param name="specularPower">The specular power.</param>
+        /// <param name="ambient">The ambient component.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
+        /// <returns>
+        /// The material.
+        /// </returns>
+        public static Material CreateMaterial(Brush brush, double specularBrightness, double specularPower = 100, byte ambient = 255, bool freeze = true)
         {
             var mg = new MaterialGroup();
             mg.Children.Add(new DiffuseMaterial(brush) { AmbientColor = Color.FromRgb(ambient, ambient, ambient) });
             if (specularPower > 0)
             {
-                mg.Children.Add(new SpecularMaterial(Brushes.White, specularPower));
+                var b = (byte)(255 * specularBrightness);
+                mg.Children.Add(new SpecularMaterial(new SolidColorBrush(Color.FromRgb(b, b, b)), specularPower));
             }
 
             if (freeze)

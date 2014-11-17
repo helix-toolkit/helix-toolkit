@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LightSetup.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="LightSetup.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   An abstract base class for light models.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
@@ -81,7 +84,7 @@ namespace HelixToolkit.Wpf
         protected abstract void AddLights(Model3DGroup lightGroup);
 
         /// <summary>
-        /// The on setup changed.
+        /// Handles changes to the light setup.
         /// </summary>
         protected void OnSetupChanged()
         {

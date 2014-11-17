@@ -1,4 +1,13 @@
-﻿namespace ExportDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ProgramFilesHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Finds files in the Program files folders.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ExportDemo
 {
     using System;
     using System.Collections.Generic;

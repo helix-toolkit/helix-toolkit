@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrthographicCamera.cs" company="">
-//   
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OrthographicCamera.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   Represents an orthographic projection camera.

@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Materials.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="Materials.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
+// <summary>
+//   Contains a set of predefined materials.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf
@@ -15,69 +18,259 @@ namespace HelixToolkit.Wpf
     public static class Materials
     {
         /// <summary>
-        /// The black.
+        /// The black material.
         /// </summary>
-        public static Material Black = MaterialHelper.CreateMaterial(Brushes.Black);
+        private static readonly Material BlackMaterial = MaterialHelper.CreateMaterial(Brushes.Black);
 
         /// <summary>
-        /// The blue.
+        /// The dark GrayMaterial material.
         /// </summary>
-        public static Material Blue = MaterialHelper.CreateMaterial(Brushes.Blue);
+        private static readonly Material DarkGrayMaterial = MaterialHelper.CreateMaterial(Brushes.DarkGray);
 
         /// <summary>
-        /// The dark gray.
+        /// The gray material.
         /// </summary>
-        public static Material DarkGray = MaterialHelper.CreateMaterial(Brushes.DarkGray);
+        private static readonly Material GrayMaterial = MaterialHelper.CreateMaterial(Brushes.Gray);
 
         /// <summary>
-        /// The gold.
+        /// The light gray material.
         /// </summary>
-        public static Material Gold = MaterialHelper.CreateMaterial(Brushes.Gold);
+        private static readonly Material LightGrayMaterial = MaterialHelper.CreateMaterial(Brushes.LightGray);
 
         /// <summary>
-        /// The gray.
+        /// The white material.
         /// </summary>
-        public static Material Gray = MaterialHelper.CreateMaterial(Brushes.Gray);
+        private static readonly Material WhiteMaterial = MaterialHelper.CreateMaterial(Brushes.White);
 
         /// <summary>
-        /// The green.
+        /// The hue material.
         /// </summary>
-        public static Material Green = MaterialHelper.CreateMaterial(Brushes.Green);
+        private static readonly Material HueMaterial = MaterialHelper.CreateMaterial(BrushHelper.CreateHsvBrush());
 
         /// <summary>
-        /// The hue.
+        /// The rainbow material.
         /// </summary>
-        public static Material Hue = MaterialHelper.CreateMaterial(BrushHelper.CreateHsvBrush(1.0));
+        private static readonly Material RainbowMaterial = MaterialHelper.CreateMaterial(BrushHelper.CreateRainbowBrush());
 
         /// <summary>
-        /// The light gray.
+        /// The red material.
         /// </summary>
-        public static Material LightGray = MaterialHelper.CreateMaterial(Brushes.LightGray);
+        private static readonly Material RedMaterial = MaterialHelper.CreateMaterial(Brushes.Red);
 
         /// <summary>
-        /// The rainbow.
+        /// The orange material.
         /// </summary>
-        public static Material Rainbow = MaterialHelper.CreateMaterial(BrushHelper.CreateRainbowBrush());
+        private static readonly Material OrangeMaterial = MaterialHelper.CreateMaterial(Brushes.Orange);
 
         /// <summary>
-        /// The red.
+        /// The yellow material.
         /// </summary>
-        public static Material Red = MaterialHelper.CreateMaterial(Brushes.Red);
+        private static readonly Material YellowMaterial = MaterialHelper.CreateMaterial(Brushes.Yellow);
 
         /// <summary>
-        /// The white.
+        /// The green material.
         /// </summary>
-        public static Material White = MaterialHelper.CreateMaterial(Brushes.White);
+        private static readonly Material GreenMaterial = MaterialHelper.CreateMaterial(Brushes.Green);
 
         /// <summary>
-        /// The yellow.
+        /// The blue material.
         /// </summary>
-        public static Material Yellow = MaterialHelper.CreateMaterial(Brushes.Yellow);
+        private static readonly Material BlueMaterial = MaterialHelper.CreateMaterial(Brushes.Blue);
 
         /// <summary>
-        /// The brown.
+        /// The indigo material.
         /// </summary>
-        public static Material Brown = MaterialHelper.CreateMaterial(Brushes.Brown);
+        private static readonly Material IndigoMaterial = MaterialHelper.CreateMaterial(Brushes.Indigo);
 
+        /// <summary>
+        /// The violet material.
+        /// </summary>
+        private static readonly Material VioletMaterial = MaterialHelper.CreateMaterial(Brushes.Violet);
+
+        /// <summary>
+        /// The brown material.
+        /// </summary>
+        private static readonly Material BrownMaterial = MaterialHelper.CreateMaterial(Brushes.Brown);
+
+        /// <summary>
+        /// The gold material.
+        /// </summary>
+        private static readonly Material GoldMaterial = MaterialHelper.CreateMaterial(Brushes.Gold);
+
+        /// <summary>
+        /// Gets the black material.
+        /// </summary>
+        public static Material Black
+        {
+            get
+            {
+                return BlackMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the dark GrayMaterial material.
+        /// </summary>
+        public static Material DarkGray
+        {
+            get
+            {
+                return DarkGrayMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the GrayMaterial material.
+        /// </summary>
+        public static Material Gray
+        {
+            get
+            {
+                return GrayMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the light GrayMaterial material.
+        /// </summary>
+        public static Material LightGray
+        {
+            get
+            {
+                return LightGrayMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the white material.
+        /// </summary>
+        public static Material White
+        {
+            get
+            {
+                return WhiteMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the hue material.
+        /// </summary>
+        public static Material Hue
+        {
+            get
+            {
+                return HueMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the rainbow material.
+        /// </summary>
+        public static Material Rainbow
+        {
+            get
+            {
+                return RainbowMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the red material.
+        /// </summary>
+        public static Material Red
+        {
+            get
+            {
+                return RedMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the orange material.
+        /// </summary>
+        public static Material Orange
+        {
+            get
+            {
+                return OrangeMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the yellow material.
+        /// </summary>
+        public static Material Yellow
+        {
+            get
+            {
+                return YellowMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the green material.
+        /// </summary>
+        public static Material Green
+        {
+            get
+            {
+                return GreenMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the blue material.
+        /// </summary>
+        public static Material Blue
+        {
+            get
+            {
+                return BlueMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the indigo material.
+        /// </summary>
+        public static Material Indigo
+        {
+            get
+            {
+                return IndigoMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the violet material.
+        /// </summary>
+        public static Material Violet
+        {
+            get
+            {
+                return VioletMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the brown material.
+        /// </summary>
+        public static Material Brown
+        {
+            get
+            {
+                return BrownMaterial;
+            }
+        }
+
+        /// <summary>
+        /// Gets the gold material.
+        /// </summary>
+        public static Material Gold
+        {
+            get
+            {
+                return GoldMaterial;
+            }
+        }
     }
 }

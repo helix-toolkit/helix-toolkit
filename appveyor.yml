@@ -17,7 +17,7 @@ build:
   verbosity: normal
 
 before_build:
-  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ReleaseNotesFile=release-notes.txt /Directory=Source
+  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
   
 deploy_script:
   - cmd: mkdir Packages
@@ -27,6 +27,6 @@ deploy_script:
   - cmd: for %%G in (Packages\*.nupkg) do NuGet.exe push %%G %nuget_api_key%
 artifacts:
   - path: Output
-    name: 'HelixToolkit-{version}'
+    name: HelixToolkit-$(APPVEYOR_BUILD_VERSION)
     type: zip
   - path: Packages\*.nupkg

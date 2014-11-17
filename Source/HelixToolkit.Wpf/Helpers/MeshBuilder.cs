@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MeshBuilder.cs" company="Helix 3D Toolkit">
-//   http://helixtoolkit.codeplex.com, license: MIT
+// <copyright file="MeshBuilder.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   Builds MeshGeometry3D objects.
@@ -782,6 +782,11 @@ namespace HelixToolkit.Wpf
         /// <remarks>The y-axis is determined by the cross product between the specified x-axis and the p1-origin vector.</remarks>
         public void AddExtrudedSegments(IList<Point> points, Vector3D axisX, Point3D p0, Point3D p1)
         {
+            if (points.Count % 2 != 0)
+            {
+                throw new InvalidOperationException("The number of points should be even.");
+            }
+
             var axisY = Vector3D.CrossProduct(axisX, p1 - p0);
             axisY.Normalize();
             axisX.Normalize();
@@ -809,7 +814,8 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            for (int i = 0; i < points.Count; i++)
+            int n = points.Count - 1;
+            for (int i = 0; i < n; i++)
             {
                 int i0 = index0 + (i * 2);
                 int i1 = i0 + 1;
@@ -2131,19 +2137,51 @@ namespace HelixToolkit.Wpf
             int diametersCount = diameters != null ? diameters.Count : 0;
             int valuesCount = values != null ? values.Count : 0;
 
+            //*******************************
+            //*** PROPOSED SOLUTION *********
+            var lastUp = new Vector3D(); 
+            var lastForward = new Vector3D();
+            //*** PROPOSED SOLUTION *********
+            //*******************************
+
             for (int i = 0; i < pathLength; i++)
             {
                 double r = diameters != null ? diameters[i % diametersCount] / 2 : 1;
                 int i0 = i > 0 ? i - 1 : i;
                 int i1 = i + 1 < pathLength ? i + 1 : i;
-
                 var forward = path[i1] - path[i0];
                 var right = Vector3D.CrossProduct(up, forward);
+
                 up = Vector3D.CrossProduct(forward, right);
                 up.Normalize();
                 right.Normalize();
                 var u = right;
                 var v = up;
+
+                //*******************************
+                //*** PROPOSED SOLUTION *********
+                // ** I think this will work because if path[n-1] is same point, 
+                // ** it is always a reflection of the current move
+                // ** so reversing the last move vector should work?
+                //*******************************
+                if (u.IsUndefined() || v.IsUndefined())
+                {
+                    forward = lastForward;
+                    forward.Negate();
+                    up = lastUp;
+                    //** Please verify that negation of "up" is correct here
+                    up.Negate();
+                    right = Vector3D.CrossProduct(up, forward);
+                    up.Normalize();
+                    right.Normalize();
+                    u = right;
+                    v = up;
+                }
+                lastForward = forward;
+                lastUp = up;
+                //*** PROPOSED SOLUTION *********
+                //*******************************
+
                 for (int j = 0; j < sectionLength; j++)
                 {
                     var w = (section[j].X * u * r) + (section[j].Y * v * r);

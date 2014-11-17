@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
-        xmlns:htx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:SimpleDemo" 
         mc:Ignorable="d"         
         Title="SharpDX in WPF" Height="500" Width="800">
@@ -13,7 +13,7 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <x:StaticExtension Member="htx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
     </Window.Resources>    
     <Grid>
         <Grid.RowDefinitions>
@@ -27,11 +27,11 @@
                 <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
             </Menu.Background>
             <MenuItem Header="View">
-                <MenuItem Header="Zoom extents" Command="htx:ViewportCommands.ZoomExtents"/>
+                <MenuItem Header="Zoom extents" Command="hx:ViewportCommands.ZoomExtents"/>
             </MenuItem>
         </Menu>
 
-        <htx:Viewport3DX 
+        <hx:Viewport3DX 
             Grid.Row="1" 
             x:Name="view1" 
             Camera="{Binding Camera}"
@@ -42,26 +42,27 @@
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"  
             RenderTechnique="{Binding RenderTechnique}">
-            <htx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="htx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="htx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="htx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="htx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="htx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="htx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="htx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="htx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="htx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="htx:ViewportCommands.Pan"/>
-            </htx:Viewport3DX.InputBindings>
-            <htx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <htx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
-            <htx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}"   />
-            <htx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" />
-            <htx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}"  />
-            <htx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
-            <!--<htx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
-        </htx:Viewport3DX>
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
+                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+            </hx:Viewport3DX.InputBindings>
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
+            <hx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}"   />
+            <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" />
+            <hx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}"  />
+            <hx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
+            <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
+            <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Transform="{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}"/>-->
+        </hx:Viewport3DX>
         
         <StackPanel Grid.Row="1" >
             <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
