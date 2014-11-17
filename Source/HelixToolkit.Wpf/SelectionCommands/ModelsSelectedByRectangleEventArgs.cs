@@ -23,8 +23,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="selectedModels">The selected models.</param>
         /// <param name="rectangle">The selection rectangle.</param>
+        /// <remarks>
+        /// For the models selected by rectangle, they are not sorted by distance in ascending order.
+        /// </remarks>
         public ModelsSelectedByRectangleEventArgs(IList<Model3D> selectedModels, Rect rectangle)
-            : base(selectedModels)
+            : base(selectedModels, false)
         {
             this.Rectangle = rectangle;
         }
