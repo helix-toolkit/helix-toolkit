@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelsSelectedByRectangleEventArgs.cs" company="Helix Toolkit">
+// <copyright file="ModelsSelectedByPointEventArgs.cs" company="Helix Toolkit">
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
@@ -23,8 +23,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="selectedModels">The selected models.</param>
         /// <param name="position">The position.</param>
+        /// <remarks>
+        /// For the models selected by point, they are sorted by distance in ascending order.
+        /// </remarks>
         public ModelsSelectedByPointEventArgs(IList<Model3D> selectedModels, Point position)
-            : base(selectedModels)
+            : base(selectedModels, true)
         {
             this.Position = position;
         }
