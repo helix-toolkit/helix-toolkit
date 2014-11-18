@@ -57,9 +57,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         internal void DrawText(TextInfo info)
         {
-            Positions.Clear();
-            Colors.Clear();
-            TextureCoordinates.Clear();
+            //Positions.Clear();
+            //Colors.Clear();
+            //TextureCoordinates.Clear();
 
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
 

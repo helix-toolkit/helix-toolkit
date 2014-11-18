@@ -112,7 +112,15 @@ namespace SimpleDemo
             Points.Indices = ptIdx;
 
             Text = new BillboardText3D();
-            Text.TextInfo.Add(new TextInfo("Hello World", new Vector3()));
+
+            for (var i = 0; i < 50; i++)
+            {
+                for (var j = 0; j < 50; j++)
+                {
+                    Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
+                }
+            }
+            
         }
     }
 }
