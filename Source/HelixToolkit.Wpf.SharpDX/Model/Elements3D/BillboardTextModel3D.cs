@@ -4,9 +4,9 @@ using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
-namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
+namespace HelixToolkit.Wpf.SharpDX
 {
-    class BillboardTextModel3D : MeshGeometryModel3D
+    public class BillboardTextModel3D : MeshGeometryModel3D
     {
         #region Overridable Methods
 

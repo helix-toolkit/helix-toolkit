@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using Cyotek.Drawing.BitmapFont;
 using System;
+using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 
-namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
+namespace HelixToolkit.Wpf.SharpDX
 {
     public class TextInfo
     {
@@ -15,12 +18,33 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
         {
             Offsets = new List<Vector2>();
         }
+
+        public TextInfo(string text, Vector3 origin)
+        {
+            Offsets = new List<Vector2>();
+            Text = text;
+            Origin = origin;
+        }
     }
 
     [Serializable]
-    class BillboardText3D : MeshGeometry3D
+    public class BillboardText3D : MeshGeometry3D
     {
+        private BitmapFont bmpFont;
+
         public List<TextInfo> TextInfo { get; set; }
+
+        public BillboardText3D()
+        {
+            Positions = new Vector3Collection();
+            Indices = new IntCollection();
+            Colors = new Color4Collection();
+            this.TextInfo = new List<TextInfo>();
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var path = Path.Combine(Path.GetDirectoryName(assembly.Location), "Textures", "arial.fnt");
+            bmpFont = BitmapFontLoader.LoadFontFromFile(path);
+        }
 
         internal void DrawText(BitmapFont bmpFont, TextInfo info)
         {
