@@ -64,7 +64,7 @@ float4 PShaderBillboardText( PSInputBT input ) : SV_Target
 // Techniques
 //-------------------------------------------------------------------------------------
 
-technique11 RenderBillboardText
+technique11 RenderBillboard
 {
     pass P0
     {	        

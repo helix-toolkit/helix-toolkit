@@ -111,8 +111,8 @@ namespace SimpleDemo
             Points.Positions = ptPos;
             Points.Indices = ptIdx;
 
-            //Text = new BillboardText3D();
-            //Text.TextInfo.Add(new TextInfo("Hello World", new Vector3()));
+            Text = new BillboardText3D();
+            Text.TextInfo.Add(new TextInfo("Hello World", new Vector3()));
         }
     }
 }

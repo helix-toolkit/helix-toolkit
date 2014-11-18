@@ -100,8 +100,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             /// --- check shadowmaps
-            this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
-            this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
+            //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
+            //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
@@ -114,8 +114,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, DefaultVertex.SizeInBytes, 0));
             /// --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+            
             /// --- draw
-            this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
+            this.Device.ImmediateContext.Draw(Geometry.Positions.Count, 0);
         }
 
         #endregion
@@ -125,12 +126,18 @@ namespace HelixToolkit.Wpf.SharpDX
         private BillboardVertex[] CreateBillboardVertexArray()
         {
             var billboardGeometry = Geometry as BillboardText3D;
+
+            // Gather all of the textInfo offsets.
+            // These should be equal in number to the positions.
+            foreach (var ti in billboardGeometry.TextInfo)
+            {
+                billboardGeometry.DrawText(ti);
+            }
+
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
             var result = new List<BillboardVertex>();
 
-            // Gather all of the textInfo offsets.
-            // These should be equal in number to the positions.
             var allOffsets = billboardGeometry.TextInfo.SelectMany(ti => ti.Offsets).ToArray();
 
             for (var i = 0; i < vertexCount; i++)
