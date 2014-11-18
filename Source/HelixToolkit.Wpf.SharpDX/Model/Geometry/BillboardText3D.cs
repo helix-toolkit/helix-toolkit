@@ -128,12 +128,12 @@ namespace HelixToolkit.Wpf.SharpDX
             Colors.Add(new Color4(0, 0, 0, 1));
             Colors.Add(new Color4(0, 0, 0, 1));
 
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_c);
             TextureCoordinates.Add(uv_b);
-            TextureCoordinates.Add(uv_b);
-            TextureCoordinates.Add(uv_c);
             TextureCoordinates.Add(uv_d);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_d);
+            TextureCoordinates.Add(uv_c);
 
             info.Offsets.Add(a);
             info.Offsets.Add(c);
