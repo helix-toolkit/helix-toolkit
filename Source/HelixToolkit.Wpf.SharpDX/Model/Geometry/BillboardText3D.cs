@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Windows.Media.Imaging;
 using Cyotek.Drawing.BitmapFont;
 using System;
 using HelixToolkit.Wpf.SharpDX.Core;
@@ -33,6 +34,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private BitmapFont bmpFont;
 
         public List<TextInfo> TextInfo { get; set; }
+
+        public BitmapSource Texture
+        {
+            get { return null; }
+        }
 
         public BillboardText3D()
         {
