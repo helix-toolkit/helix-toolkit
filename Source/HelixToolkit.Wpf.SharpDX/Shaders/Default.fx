@@ -15,6 +15,7 @@
 #include "./Shaders/Material.fx"
 #include "./Shaders/Lines.fx"
 #include "./Shaders/Points.fx"
+#include "./Shaders/BillboardText.fx"
 
 //--------------------------------------------------------------------------------------
 // pre-processor defines
