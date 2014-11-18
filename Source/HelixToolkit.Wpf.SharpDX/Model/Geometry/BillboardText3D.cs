@@ -35,10 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public List<TextInfo> TextInfo { get; set; }
 
-        public BitmapSource Texture
-        {
-            get { return null; }
-        }
+        public BitmapSource Texture { get; internal set; }
 
         public BillboardText3D()
         {
@@ -48,9 +45,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.TextInfo = new List<TextInfo>();
 
+            // Read the bitmap font file
             var assembly = Assembly.GetExecutingAssembly();
             var path = Path.Combine(Path.GetDirectoryName(assembly.Location), "Textures", "arial.fnt");
             bmpFont = BitmapFontLoader.LoadFontFromFile(path);
+
+            //Read the texture
+            var texturePath = Path.Combine(Path.GetDirectoryName(assembly.Location), "Textures", "arial.png");
+            Texture = new BitmapImage(new Uri(texturePath));
         }
 
         internal void DrawText(TextInfo info)
@@ -98,17 +100,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var cw = character.Bounds.Width;
             var ch = character.Bounds.Height;
-            
+            var cu = character.Bounds.Left;
+            var cv = character.Bounds.Top;
+
             // CCW from top left 
             var a = new Vector2(origin.X + kerning, origin.Y);
             var b = new Vector2(origin.X + kerning, origin.Y + ch);
             var c = new Vector2(origin.X + cw + kerning, origin.Y);
             var d = new Vector2(origin.X + cw + kerning, origin.Y + ch);
 
-            var uv_a = new Vector2(origin.X/w, origin.Y/h);
-            var uv_b = new Vector2(origin.X/w, (origin.Y + ch)/h);
-            var uv_c = new Vector2((origin.X + cw)/w, origin.Y/h);
-            var uv_d = new Vector2((origin.X + cw)/w, (origin.Y + ch)/h);
+            var uv_a = new Vector2(cu/w, cv/h);
+            var uv_b = new Vector2(cu/w, (cv + ch)/h);
+            var uv_c = new Vector2((cu + cw)/w, cv/h);
+            var uv_d = new Vector2((cu + cw)/w, (cv + ch)/h);
 
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);

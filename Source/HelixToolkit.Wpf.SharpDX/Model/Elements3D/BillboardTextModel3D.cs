@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
 
             /// --- bind buffer                
-            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, DefaultVertex.SizeInBytes, 0));
+            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, BillboardVertex.SizeInBytes, 0));
             /// --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
             
@@ -142,12 +142,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             for (var i = 0; i < vertexCount; i++)
             {
+                var tc = billboardGeometry.TextureCoordinates[i];
                 var vtx = new BillboardVertex
                 {
                     Position = new Vector4(position[i], 1.0f),
                     Color = billboardGeometry.Colors[i],
-                    Offset = allOffsets[i],
-                    TexCoord = billboardGeometry.TextureCoordinates[i]
+                    TexCoord = new Vector4(tc.X,tc.Y, allOffsets[i].X, allOffsets[i].Y)
                 };
 
                 result.Add(vtx);
