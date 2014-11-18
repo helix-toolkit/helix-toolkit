@@ -43,8 +43,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public BillboardText3D()
         {
             Positions = new Vector3Collection();
-            Indices = new IntCollection();
             Colors = new Color4Collection();
+            TextureCoordinates = new Vector2Collection();
+
             this.TextInfo = new List<TextInfo>();
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -52,8 +53,12 @@ namespace HelixToolkit.Wpf.SharpDX
             bmpFont = BitmapFontLoader.LoadFontFromFile(path);
         }
 
-        internal void DrawText(BitmapFont bmpFont, TextInfo info)
+        internal void DrawText(TextInfo info)
         {
+            Positions.Clear();
+            Colors.Clear();
+            TextureCoordinates.Clear();
+
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
 
             int x = 0;
@@ -105,8 +110,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var uv_c = new Vector2((origin.X + cw)/w, origin.Y/h);
             var uv_d = new Vector2((origin.X + cw)/w, (origin.Y + ch)/h);
 
-            var n = new Vector3(0, 0, 1);
-
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
@@ -114,19 +117,12 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
 
-            Colors.Add(new Color4(0,0,0,1));
             Colors.Add(new Color4(0, 0, 0, 1));
             Colors.Add(new Color4(0, 0, 0, 1));
             Colors.Add(new Color4(0, 0, 0, 1));
             Colors.Add(new Color4(0, 0, 0, 1));
             Colors.Add(new Color4(0, 0, 0, 1));
-
-            Normals.Add(new Vector3(0, 0, 1));
-            Normals.Add(new Vector3(0, 0, 1));
-            Normals.Add(new Vector3(0, 0, 1));
-            Normals.Add(new Vector3(0, 0, 1));
-            Normals.Add(new Vector3(0, 0, 1));
-            Normals.Add(new Vector3(0, 0, 1));
+            Colors.Add(new Color4(0, 0, 0, 1));
 
             TextureCoordinates.Add(uv_a);
             TextureCoordinates.Add(uv_c);
