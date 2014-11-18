@@ -9,6 +9,12 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class BillboardTextModel3D : MeshGeometryModel3D
     {
+        #region Private Class Data Members
+
+        private EffectVectorVariable vViewport;
+
+        #endregion
+
         #region Overridable Methods
 
         public override void Attach(IRenderHost host)
@@ -24,6 +30,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- transformations
             this.effectTransforms = new EffectTransformVariables(this.effect);
+
+            // --- shader variables
+            this.vViewport = effect.GetVariableByName("vViewport").AsVector();
 
             // --- material 
             this.AttachMaterial();
@@ -44,6 +53,12 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.Flush();
         }
 
+        public override void Detach()
+        {
+            Disposer.RemoveAndDispose(ref this.vViewport);
+            base.Detach();
+        }
+
         public override void Render(RenderContext renderContext)
         {
             /// --- check to render the model
@@ -60,6 +75,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (renderContext.IsShadowPass)
                     if (!this.IsThrowingShadow)
                         return;
+            }
+
+            if (renderContext.Camera is ProjectionCamera)
+            {
+                var c = renderContext.Camera as ProjectionCamera;
+                var width = ((float)renderContext.Canvas.ActualWidth);
+                var height = ((float) renderContext.Canvas.ActualHeight);
+                var viewport = new Vector4(width, height, 0, 0);
+                this.vViewport.Set(ref viewport);
             }
 
             /// --- set constant paramerers             
