@@ -19,6 +19,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Overridable Methods
 
+        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        {
+            return false; // No hit testing on point geometry -- yet.
+        }
+
         public override void Attach(IRenderHost host)
         {
             // --- attach
