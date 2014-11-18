@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -8,33 +8,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
 {
     class BillboardTextModel3D : MeshGeometryModel3D
     {
-        #region Dependency Properties
-
-        public Color Color
-        {
-            get { return (Color)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color),
-            typeof(BillboardTextModel3D),
-            new UIPropertyMetadata(Color.Black, (o, e) => ((BillboardTextModel3D)o).OnColorChanged()));
-
-        private PropertyChangedCallback a;
-
-        public Vector2 ScreenPixelSize
-        {
-            get { return (Vector2)GetValue(ScreenPixelSizeProperty); }
-            set { SetValue(ScreenPixelSizeProperty, value); }
-        }
-
-        public static readonly DependencyProperty ScreenPixelSizeProperty =
-            DependencyProperty.Register("ScreenPixelSizeProperty", typeof(Vector2),
-            typeof(BillboardTextModel3D), new UIPropertyMetadata(new Vector2(320, 240)));
-
-        #endregion
-
         #region Overridable Methods
 
         public override void Attach(IRenderHost host)
@@ -120,30 +93,26 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
             var billboardGeometry = Geometry as BillboardText3D;
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
-            var result = new BillboardVertex[vertexCount];
+            var result = new List<BillboardVertex>();
+
+            // Gather all of the textInfo offsets.
+            // These should be equal in number to the positions.
+            var allOffsets = billboardGeometry.TextInfo.SelectMany(ti => ti.Offsets).ToArray();
 
             for (var i = 0; i < vertexCount; i++)
             {
-                result[i] = new BillboardVertex
+                var vtx = new BillboardVertex
                 {
                     Position = new Vector4(position[i], 1.0f),
                     Color = billboardGeometry.Colors[i],
-                    Offset = billboardGeometry.Offsets[i],
+                    Offset = allOffsets[i],
                     TexCoord = billboardGeometry.TextureCoordinates[i]
                 };
+
+                result.Add(vtx);
             }
 
-            return null;
-        }
-
-        private void OnColorChanged()
-        {
-            if (IsAttached)
-            {
-                /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
-                    BillboardVertex.SizeInBytes, CreateBillboardVertexArray());
-            }
+            return result.ToArray();
         }
 
         #endregion
