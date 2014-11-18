@@ -12,6 +12,8 @@ namespace HelixToolkit.Wpf.SharpDX
         #region Private Class Data Members
 
         private EffectVectorVariable vViewport;
+        private ShaderResourceView billboardTextureView;
+        private EffectShaderResourceVariable billboardTextureVariable;
 
         #endregion
 
@@ -34,13 +36,18 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- shader variables
             this.vViewport = effect.GetVariableByName("vViewport").AsVector();
 
-            // --- material 
-            this.AttachMaterial();
-
             // --- get geometry
             var geometry = this.Geometry as BillboardText3D;
             if (geometry == null)
                 throw new System.Exception("Geometry must not be null");
+
+            // --- material 
+            // this.AttachMaterial();
+            billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
+
+            var textureBytes = geometry.Texture.ToByteArray();
+            billboardTextureView = ShaderResourceView.FromMemory(Device, textureBytes);
+            billboardTextureVariable.SetResource(billboardTextureView);
 
             // -- set geometry if given
             vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
@@ -55,7 +62,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Detach()
         {
-            Disposer.RemoveAndDispose(ref this.vViewport);
+            Disposer.RemoveAndDispose(ref vViewport);
+            Disposer.RemoveAndDispose(ref billboardTextureVariable);
+            Disposer.RemoveAndDispose(ref billboardTextureView);
             base.Detach();
         }
 
