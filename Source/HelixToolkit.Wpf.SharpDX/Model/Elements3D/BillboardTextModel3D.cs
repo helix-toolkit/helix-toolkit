@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -20,8 +19,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
             DependencyProperty.Register("Color", typeof(Color),
             typeof(BillboardTextModel3D),
             new UIPropertyMetadata(Color.Black, (o, e) => ((BillboardTextModel3D)o).OnColorChanged()));
-
-        private PropertyChangedCallback a;
 
         public Vector2 ScreenPixelSize
         {

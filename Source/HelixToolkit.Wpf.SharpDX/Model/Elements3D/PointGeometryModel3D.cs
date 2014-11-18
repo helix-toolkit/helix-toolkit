@@ -15,7 +15,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private Buffer vertexBuffer;
         private EffectTechnique effectTechnique;
         private EffectTransformVariables effectTransforms;
-        private bool isChanged = true;
         private EffectVectorVariable vViewport;
 
         public Color Color
