@@ -76,12 +76,17 @@ namespace HelixToolkit.Wpf
         {
             this.HideRectangle();
 
-            if (!this.selectionRect.Size.Equals(default(Size)))
-            {
-                var selectedModels =
+            var selectedModels =
                     this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Select(hit => hit.Model).ToList();
-                this.OnModelsSelected(new ModelsSelectedByRectangleEventArgs(selectedModels, this.selectionRect));
+
+            // We do not handle the point selection, unless no models are selected. If no models are selected, we clear the
+            // existing selection.
+            if (this.selectionRect.Size.Equals(default(Size)) && selectedModels.Any())
+            {
+                return;
             }
+
+            this.OnModelsSelected(new ModelsSelectedByRectangleEventArgs(selectedModels, this.selectionRect));
         }
 
         /// <summary>
