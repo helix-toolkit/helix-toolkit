@@ -714,8 +714,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Vector4 Position;
         public Color4 Color;
-        public Vector2 TexCoord;
-        public Vector2 Offset;
-        public const int SizeInBytes = 4 * (4 + 4 + 2 + 2);
+        public Vector4 TexCoord;
+        //public Vector2 Offset;
+        public const int SizeInBytes = 4 * (4 + 4 + 4);
     }
 }
