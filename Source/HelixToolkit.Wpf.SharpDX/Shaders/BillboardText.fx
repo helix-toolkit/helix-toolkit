@@ -56,8 +56,10 @@ PSInputBT VShaderBillboardText( VSInputBT input )
 
 float4 PShaderBillboardText( PSInputBT input ) : SV_Target
 {
-    return billboardTexture.Sample(NormalSampler, input.t);
-    // return color * input.color;
+    // Take the color off the texture, and use its red component as alpha.
+    float4 pixelColor = billboardTexture.Sample(NormalSampler, input.t);
+    float4 intermediateColor = float4(1.0, 1.0, 1.0, pixelColor.x);
+    return intermediateColor * input.c;
 }
 
 //--------------------------------------------------------------------------------------
