@@ -124,6 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderCubeMap = new RenderTechnique("RenderCubeMap");
             RenderLines = new RenderTechnique("RenderLines");
             RenderPoints = new RenderTechnique("RenderPoints");
+            RenderBillboard = new RenderTechnique("RenderBillboard");
 
             RenderTechniques = new List<RenderTechnique>
             { 
@@ -164,6 +165,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {     Techniques.RenderWires,      Properties.Resources._default}, 
                 {     Techniques.RenderLines,      Properties.Resources._default}, 
                 {     Techniques.RenderPoints,     Properties.Resources._default},
+                {     Techniques.RenderBillboard,  Properties.Resources._default},
     #if TESSELLATION                                        
                 {     Techniques.RenderPNTriangs,  Properties.Resources._default}, 
                 {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
@@ -202,6 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static RenderTechnique RenderCubeMap { get; private set; }
         public static RenderTechnique RenderLines { get; private set; }
         public static RenderTechnique RenderPoints { get; private set; }
+        public static RenderTechnique RenderBillboard { get; private set; }
 
 #if TESSELLATION
         public static RenderTechnique RenderPNTriangs { get; private set; }
@@ -334,9 +337,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderTexCoords, 
                     Techniques.RenderWires, 
                     Techniques.RenderLines,
-                    Techniques.RenderPoints,                    
+                    Techniques.RenderPoints,
+                    Techniques.RenderBillboard,
 #if TESSELLATION
-                    Techniques.RenderPNTriangs,                     
+                    Techniques.RenderPNTriangs,
                     Techniques.RenderPNQuads,
 #endif
                     
@@ -397,6 +401,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
                 });
 
+                var billboardInputLayout = new InputLayout(device, GetEffect(Techniques.RenderBillboard).GetTechniqueByName(Techniques.RenderBillboard.Name).GetPassByIndex(0).Description.Signature, new[]
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,        InputElement.AppendAligned, 0),
+                    new InputElement("OFFSET",   0, Format.R32G32_Float,        InputElement.AppendAligned, 0),
+                });
+
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
                 { 
@@ -419,6 +431,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderPoints 
                 },
                 pointsInputLayout);
+
+                // ------------------------------------------------------------------------------------
+                RegisterLayout(new []
+                {
+                    Techniques.RenderBillboard
+                },
+                billboardInputLayout);
 
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
@@ -696,8 +715,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Vector4 Position;
         public Color4 Color;
-        public Vector2 Offset;
         public Vector2 TexCoord;
+        public Vector2 Offset;
         public const int SizeInBytes = 4 * (4 + 4 + 2 + 2);
     }
 }
