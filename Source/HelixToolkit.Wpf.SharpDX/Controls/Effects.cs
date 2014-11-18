@@ -690,4 +690,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 Position;
         public const int SizeInBytes = 4 * 4;
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct BillboardVertex
+    {
+        public Vector4 Position;
+        public Color4 Color;
+        public Vector2 Offset;
+        public Vector2 TexCoord;
+        public const int SizeInBytes = 4 * (4 + 4 + 2 + 2);
+    }
 }
