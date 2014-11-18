@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2CC099D1-E80D-4819-8195-9AA6F0E9EEA2}</ProjectGuid>
+    <ProjectGuid>{39740654-F5F1-4936-B4EA-9BC97D4CDE37}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HelixToolkit.Wpf.SharpDX</RootNamespace>
@@ -289,6 +289,7 @@
       <Link>sharpdx_direct3d11_effects_x86.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Shaders\BillboardText.fx" />
     <Content Include="Shaders\Points.fx" />
     <Content Include="Textures\random4x4_dot3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

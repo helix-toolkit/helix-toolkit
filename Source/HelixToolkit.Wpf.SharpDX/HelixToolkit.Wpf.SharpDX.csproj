@@ -271,6 +271,7 @@
     <EmbeddedResource Include="Shaders\Material.fx" />
     <EmbeddedResource Include="Shaders\Tessellation.fx" />
     <EmbeddedResource Include="Shaders\Lines.fx" />
+    <EmbeddedResource Include="Shaders\BillboardText.fx" />
     <EmbeddedResource Include="Shaders\_compile_instructions.txt" />
     <Content Include="..\packages\SharpDX.Direct3D11.Effects.2.5.0\Content\sharpdx_direct3d11_effects_x64.dll">
       <Link>sharpdx_direct3d11_effects_x64.dll</Link>
