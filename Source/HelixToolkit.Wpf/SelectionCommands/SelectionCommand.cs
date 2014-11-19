@@ -114,7 +114,6 @@ namespace HelixToolkit.Wpf
         /// </param>
         protected virtual void Completed(ManipulationEventArgs e)
         {
-            this.OnModelsSelected(this.PrepareModelsSelectedEventArgs());
         }
 
         /// <summary>
@@ -129,14 +128,6 @@ namespace HelixToolkit.Wpf
                 handler(this.Viewport, e);
             }
         }
-
-        /// <summary>
-        /// Prepares the arguments for the <see cref="ModelsSelected" /> event.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ModelsSelectedEventArgs"/> object.
-        /// </returns>
-        protected abstract ModelsSelectedEventArgs PrepareModelsSelectedEventArgs();
 
         /// <summary>
         /// Gets the cursor for the gesture.

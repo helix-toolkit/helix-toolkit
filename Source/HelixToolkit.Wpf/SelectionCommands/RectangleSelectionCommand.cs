@@ -75,19 +75,18 @@ namespace HelixToolkit.Wpf
         protected override void Completed(ManipulationEventArgs e)
         {
             this.HideRectangle();
-            base.Completed(e);
-        }
 
-        /// <summary>
-        /// Prepares the arguments for the ModelsSelected event.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ModelsSelectedEventArgs"/> object.
-        /// </returns>
-        protected override ModelsSelectedEventArgs PrepareModelsSelectedEventArgs()
-        {
-            var selectedModels = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Select(hit => hit.Model).ToList();
-            return new ModelsSelectedByRectangleEventArgs(selectedModels, this.selectionRect);
+            var selectedModels =
+                    this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Select(hit => hit.Model).ToList();
+
+            // We do not handle the point selection, unless no models are selected. If no models are selected, we clear the
+            // existing selection.
+            if (this.selectionRect.Size.Equals(default(Size)) && selectedModels.Any())
+            {
+                return;
+            }
+
+            this.OnModelsSelected(new ModelsSelectedByRectangleEventArgs(selectedModels, this.selectionRect));
         }
 
         /// <summary>
