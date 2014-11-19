@@ -47,7 +47,7 @@ PSInputBT VShaderBillboardText( VSInputBT input )
 
     // Translate offset into normalized device coordinates.
     float2 offset = windowToNdc( input.t.zw );	
-	output.p = float4( ndcTranslated.xy + offset, 0.0, 1.0 );
+	output.p = float4( ndcTranslated.xy + offset, ndcTranslated.z, 1.0 );
 
     output.c = input.c;
     output.t = input.t.xy;
