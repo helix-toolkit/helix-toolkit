@@ -66,6 +66,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderTechnique = host.RenderTechnique;
             base.Attach(host);
 
+            if (this.Geometry == null)
+                return;
+
             // --- get variables
             this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);

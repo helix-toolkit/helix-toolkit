@@ -26,6 +26,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Attach(IRenderHost host)
         {
+            if (this.Geometry == null)
+                return;
+
             // --- attach
             this.renderTechnique = Techniques.RenderBillboard;
             this.effect = EffectsManager.Instance.GetEffect(renderTechnique);

@@ -343,6 +343,9 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 	/// set diffuse alpha
 	I.a = vMaterialDiffuse.a;
 
+	// multiply by vertex colors
+	I = I * input.c;
+
 	/// get reflection-color
 	if(bHasCubeMap)
 	{

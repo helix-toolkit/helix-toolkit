@@ -1,4 +1,5 @@
-﻿using HelixToolkit.Wpf.SharpDX.Model.Geometry;
+﻿using System.Linq;
+using HelixToolkit.Wpf.SharpDX.Model.Geometry;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -207,13 +208,28 @@ namespace HelixToolkit.Wpf.SharpDX
             var color = this.Color;
             var result = new Geometry3D.PointsVertex[vertexCount];
 
-            for (var i = 0; i < vertexCount; i++)
+            if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
             {
-                result[i] = new Geometry3D.PointsVertex
+                var colors = this.Geometry.Colors;
+                for (var i = 0; i < vertexCount; i++)
                 {
-                    Position = new Vector4(positions[i], 1f),
-                    Color = color,
-                };
+                    result[i] = new Geometry3D.PointsVertex
+                    {
+                        Position = new Vector4(positions[i], 1f),
+                        Color = color * colors[i],
+                    };
+                }
+            }
+            else
+            {
+                for (var i = 0; i < vertexCount; i++)
+                {
+                    result[i] = new Geometry3D.PointsVertex
+                    {
+                        Position = new Vector4(positions[i], 1f),
+                        Color = color,
+                    };
+                }
             }
 
             return result;
