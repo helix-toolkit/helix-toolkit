@@ -26,9 +26,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Attach(IRenderHost host)
         {
-            if (this.Geometry == null)
-                return;
-
             // --- attach
             this.renderTechnique = Techniques.RenderBillboard;
             this.effect = EffectsManager.Instance.GetEffect(renderTechnique);
@@ -47,7 +44,9 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- get geometry
             var geometry = this.Geometry as BillboardText3D;
             if (geometry == null)
-                throw new System.Exception("Geometry must not be null");
+            {
+                return;
+            }
 
             // --- material 
             // this.AttachMaterial();
