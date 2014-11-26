@@ -20,16 +20,29 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class StlExporter : Exporter<BinaryWriter>
     {
+        /// <summary>
+        /// Creates a <see cref="BinaryWriter"/> used to write the StlFile
+        /// </summary>
+        /// <param name="stream">The output stream where the STL is written.</param>
+        /// <returns>The created <see cref="BinaryWriter"/></returns>
         protected override BinaryWriter Create(Stream stream)
         {
-            return new BinaryWriter(stream, Encoding.UTF8, true);
+            return new BinaryWriter(stream);
         }
 
+        /// <summary>
+        /// Closes a <see cref="BinaryWriter"/>.
+        /// </summary>
+        /// <param name="writer">The writer to close</param>
         protected override void Close(BinaryWriter writer)
         {
-            writer.Dispose();
         }
 
+        /// <summary>
+        /// Exports the specified viewport.
+        /// </summary>
+        /// <param name="viewport">The viewport to export</param>
+        /// <param name="stream">The output stream to export to</param>
         public override void Export(Viewport3D viewport, Stream stream)
         {
             var writer = Create(stream);
@@ -43,6 +56,11 @@ namespace HelixToolkit.Wpf
             Close(writer);
         }
 
+        /// <summary>
+        /// Exports specified <see cref="Visual3D"/>
+        /// </summary>
+        /// <param name="visual">The <see cref="Visual3D"/> to export.</param>
+        /// <param name="stream">The output stream to export to</param>
         public override void Export(Visual3D visual, Stream stream)
         {
             var writer = Create(stream);
@@ -56,6 +74,11 @@ namespace HelixToolkit.Wpf
             Close(writer);
         }
         
+        /// <summary>
+        /// Exports specified <see cref="Model3D"/>.
+        /// </summary>
+        /// <param name="model">The <see cref="Model3D"/> to export</param>
+        /// <param name="stream">The output stream to export to</param>
         public override void Export(Model3D model, Stream stream)
         {
             var writer = Create(stream);
@@ -75,11 +98,21 @@ namespace HelixToolkit.Wpf
             writer.Write(triangleCount);
         }
 
+        /// <summary>
+        /// Writes an empty STL header.
+        /// </summary>
+        /// <param name="writer">The <see cref="BinaryWriter"/> to write to.</param>
         protected override void ExportHeader(BinaryWriter writer)
         {
             writer.Write(new byte[80]);
         }
 
+        /// <summary>
+        /// Writes a <see cref="GeometryModel3D"/> to a <see cref="BinaryWriter"/> in STL binary format.
+        /// </summary>
+        /// <param name="writer">The <see cref="BinaryWriter"/> to write to.</param>
+        /// <param name="model">The model to write.</param>
+        /// <param name="t">All vertices are transformed with this transform before written</param>
         protected override void ExportModel(BinaryWriter writer, GeometryModel3D model, Transform3D t)
         {
             var mesh = (MeshGeometry3D) model.Geometry;
