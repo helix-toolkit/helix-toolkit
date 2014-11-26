@@ -98,6 +98,9 @@ namespace HelixToolkit.Wpf
                 case ".dae":
                     ExportCollada(viewport, fileName);
                     break;
+                case ".stl":
+                    ExportStl(viewport, fileName);
+                    break;
                 default:
                     throw new HelixToolkitException("Not supported file format.");
             }
@@ -1062,6 +1065,20 @@ namespace HelixToolkit.Wpf
         private static void ExportCollada(this Viewport3D view, string fileName)
         {
             var e = new ColladaExporter();
+            using (var stream = File.Create(fileName))
+            {
+                e.Export(view, stream);
+            }
+        }
+
+        /// <summary>
+        /// Exports to a STL file.
+        /// </summary>
+        /// <param name="view">The viewport.</param>
+        /// <param name="fileName">Name of the file.</param>
+        private static void ExportStl(this Viewport3D view, string fileName)
+        {
+            var e = new StlExporter();
             using (var stream = File.Create(fileName))
             {
                 e.Export(view, stream);
