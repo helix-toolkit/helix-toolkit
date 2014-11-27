@@ -68,6 +68,7 @@
     <Compile Include="Controls\Stereo\InterlacedView3D.xaml.cs">
       <DependentUpon>InterlacedView3D.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Exporters\StlExporter.cs" />
     <Compile Include="ExtensionMethods\AnimationExtensions.cs" />
     <Compile Include="Geometry\LineSegment.cs" />
     <Compile Include="Geometry\Triangle.cs" />
