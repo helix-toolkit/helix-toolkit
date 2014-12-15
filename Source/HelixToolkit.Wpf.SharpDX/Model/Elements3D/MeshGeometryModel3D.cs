@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Linq;
@@ -21,7 +23,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
-
         /// <summary>
         /// 
         /// </summary>
@@ -35,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var rasterStateDesc = new RasterizerStateDescription()
                 {
                     FillMode = FillMode.Solid,
-                    CullMode = CullMode.Back,
+                    CullMode = CullMode.None,
                     DepthBias = depthBias,
                     DepthBiasClamp = -1000,
                     SlopeScaledDepthBias = +0,
@@ -285,5 +286,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return result;
         }
+
     }
 }
