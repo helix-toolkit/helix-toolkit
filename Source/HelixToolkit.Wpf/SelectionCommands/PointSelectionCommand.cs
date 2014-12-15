@@ -44,7 +44,9 @@ namespace HelixToolkit.Wpf
         {
             base.Started(e);
             this.position = e.CurrentPosition;
-            this.OnModelsSelected(this.PrepareModelsSelectedEventArgs());
+
+            var selectedModels = this.Viewport.FindHits(this.position).Select(hit => hit.Model).ToList();
+            this.OnModelsSelected(new ModelsSelectedByPointEventArgs(selectedModels, this.position));
         }
 
         /// <summary>
@@ -56,18 +58,6 @@ namespace HelixToolkit.Wpf
         protected override void Completed(ManipulationEventArgs e)
         {
             // do not raise event here
-        }
-
-        /// <summary>
-        /// Prepares the arguments for the ModelsSelected event.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ModelsSelectedEventArgs"/> object.
-        /// </returns>
-        protected override ModelsSelectedEventArgs PrepareModelsSelectedEventArgs()
-        {
-            var selectedModels = this.Viewport.FindHits(this.position).Select(hit => hit.Model).ToList();
-            return new ModelsSelectedByPointEventArgs(selectedModels, this.position);
         }
 
         /// <summary>
