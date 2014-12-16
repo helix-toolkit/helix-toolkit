@@ -46,8 +46,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.TextInfo = new List<TextInfo>();
 
             var assembly = Assembly.GetExecutingAssembly();
-            var texDescriptionFilePath = Path.Combine(Path.GetTempPath(), "arial.fnt");
-            var texImageFilePath = Path.Combine(Path.GetTempPath(), "arial.png");
+
+            var texDescriptionFilePath = Path.GetTempFileName();
+            var texImageFilePath = Path.GetTempFileName();
 
             //Read the texture description           
             var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
