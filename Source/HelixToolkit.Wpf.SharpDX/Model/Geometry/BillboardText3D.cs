@@ -45,14 +45,33 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.TextInfo = new List<TextInfo>();
 
-            // Read the bitmap font file
             var assembly = Assembly.GetExecutingAssembly();
-            var path = Path.Combine(Path.GetDirectoryName(assembly.Location), "Textures", "arial.fnt");
-            bmpFont = BitmapFontLoader.LoadFontFromFile(path);
+            var texDescriptionFilePath = Path.Combine(Path.GetTempPath(), "arial.fnt");
+            var texImageFilePath = Path.Combine(Path.GetTempPath(), "arial.png");
 
-            //Read the texture
-            var texturePath = Path.Combine(Path.GetDirectoryName(assembly.Location), "Textures", "arial.png");
-            Texture = new BitmapImage(new Uri(texturePath));
+            //Read the texture description           
+            var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
+            using (var fileStream = File.Create(texDescriptionFilePath))
+            {
+                texDescriptionStream.CopyTo(fileStream);
+            }
+
+            bmpFont = BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
+
+            //Read the texture          
+            var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
+            using (var fileStream = File.Create(texImageFilePath))
+            {
+                texImageStream.CopyTo(fileStream);
+            }
+
+            Texture = new BitmapImage(new Uri(texImageFilePath));
+
+            //Cleanup the temp files
+            if (File.Exists(texDescriptionFilePath))
+            {
+                File.Delete(texDescriptionFilePath);
+            }
         }
 
         internal void DrawText(TextInfo info)

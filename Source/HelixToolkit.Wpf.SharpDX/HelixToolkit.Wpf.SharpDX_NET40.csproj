@@ -272,9 +272,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Resources\_deferred.bfx" />
-    <Content Include="Textures\arial.fnt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Textures\arial.fnt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />
@@ -297,9 +295,7 @@
     </Content>
     <Content Include="Shaders\BillboardText.fx" />
     <Content Include="Shaders\Points.fx" />
-    <Content Include="Textures\arial.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Textures\arial.png" />
     <Content Include="Textures\random4x4_dot3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
