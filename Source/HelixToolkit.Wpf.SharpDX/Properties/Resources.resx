@@ -133,6 +133,9 @@
   <data name="Lines" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Shaders\Lines.fx;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="BillboardText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Shaders\BillboardText.fx;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="Material" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Shaders\Material.fx;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

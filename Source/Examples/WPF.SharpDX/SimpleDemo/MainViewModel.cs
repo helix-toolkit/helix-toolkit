@@ -26,6 +26,7 @@ namespace SimpleDemo
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
         public PointGeometry3D Points { get; private set; }
+        public BillboardText3D Text { get; private set; }
 
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
@@ -109,6 +110,17 @@ namespace SimpleDemo
 
             Points.Positions = ptPos;
             Points.Indices = ptIdx;
+
+            Text = new BillboardText3D();
+
+            for (var i = 0; i < 50; i++)
+            {
+                for (var j = 0; j < 50; j++)
+                {
+                    Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
+                }
+            }
+            
         }
     }
 }
