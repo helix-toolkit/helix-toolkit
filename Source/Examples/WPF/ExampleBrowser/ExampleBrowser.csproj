@@ -45,16 +45,16 @@
       <HintPath>..\..\..\..\Components\3DTools.dll</HintPath>
     </Reference>
     <Reference Include="NAudio">
-      <HintPath>..\..\..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.Wpf.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
