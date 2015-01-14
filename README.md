@@ -2,6 +2,10 @@ Helix Toolkit is a 3D toolkit for .NET
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7)](https://ci.appveyor.com/project/objorke/helix-toolkit)
 
+[![Pull request status](http://www.issuestats.com/github/helix-toolkit/helix-toolkit/badge/pr?style=flat)](http://www.issuestats.com/github/helix-toolkit/helix-toolkit/)
+
+[![Issues closed status](http://www.issuestats.com/github/helix-toolkit/helix-toolkit/badge/issue?style=flat)](http://www.issuestats.com/github/helix-toolkit/helix-toolkit/)
+
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/helix-toolkit/helix-toolkit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Description         | Value
