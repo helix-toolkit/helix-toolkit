@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf
         public bool UpdateTransforms()
         {
             var newTransform = this.visual.GetViewportTransform();
-
+                       
             if (double.IsNaN(newTransform.M11))
             {
                 return false;
@@ -83,18 +83,28 @@ namespace HelixToolkit.Wpf
                 return false;
             }
 
-            this.visualToScreen = newTransform;
-            this.screenToVisual = newTransform.Inverse();
 
             if (this.viewport == null)
             {
                 this.viewport = this.visual.GetViewport3D();
             }
 
-            this.projectionToScreen = this.viewport.GetProjectionMatrix() * this.viewport.GetViewportTransform();
-            this.visualToProjection = this.visualToScreen * this.projectionToScreen.Inverse();
+            var newProjectionToScreen = this.viewport.GetProjectionMatrix() * this.viewport.GetViewportTransform();
+
+            if (!newProjectionToScreen.HasInverse)
+            {
+                return false;
+            }
+            
+            var newVisualToProjection = newTransform * newProjectionToScreen.Inverse();
+                       
+            this.visualToScreen = newTransform;
+            this.screenToVisual = newTransform.Inverse();
+            this.projectionToScreen = newProjectionToScreen;
+            this.visualToProjection = newVisualToProjection;
 
             return true;
+            
         }
     }
 }
