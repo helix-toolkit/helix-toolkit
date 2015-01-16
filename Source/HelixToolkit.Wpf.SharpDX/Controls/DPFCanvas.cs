@@ -572,20 +572,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            // We don't need to handle this on NET45+ because of software fallback (Remote Desktop, Sleep).
+            // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
+#if NET40
             // this fires when the screensaver kicks in, the machine goes into sleep or hibernate
             // and any other catastrophic losses of the d3d device from WPF's point of view
             if (this.surfaceD3D.IsFrontBufferAvailable)
             {
+                // We need to re-create the render targets because the get lost on NET40.
+                this.CreateAndBindTargets();
+                this.SetDefaultRenderTargets();
                 this.StartRendering();
             }
             else
             {
-#if NET40
                 this.StopRendering();
-#endif
-                // We don't need to stop rendering on NET45+ because of software fallback (Remote Desktop).
-                // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
             }
+#endif
         }
     }
 }
