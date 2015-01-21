@@ -543,6 +543,18 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Tries to invalidate the current render.
+        /// </summary>
+        public void InvalidateRender()
+        {
+            var rh = this.RenderHost;
+            if (rh != null)
+            {
+                rh.InvalidateRender();
+            }
+        }
+
+        /// <summary>
         /// Change the camera to look at the specified point.
         /// </summary>
         /// <param name="p">
@@ -984,6 +996,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.UpdateCameraInfo();
             }
+
+            this.InvalidateRender();
         }
 
         /// <summary>
