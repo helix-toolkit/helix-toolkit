@@ -43,7 +43,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.renderTechnique = this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
             this.effect = EffectsManager.Instance.GetEffect(renderTechnique);
-            this.renderHost = host;            
+            this.renderHost = host;
+            this.InvalidateRender();
         }
 
         /// <summary>
@@ -54,6 +55,19 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderTechnique = null;            
             this.effect = null;
             this.renderHost = null;           
+        }
+
+        /// <summary>
+        /// Tries to invalidate the current render.
+        /// </summary>
+        public void InvalidateRender()
+        {
+            // ToDo: Add InvalidateRender() to IRenderHost?
+            var rh = this.renderHost as DPFCanvas;
+            if (rh != null)
+            {
+                rh.InvalidateRender();
+            }
         }
 
         /// <summary>
@@ -96,21 +110,49 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(IsRenderingProperty, value); }
         }
 
+        /// <summary>
+        /// Looks for the first visual ancestor of type <see cref="T"/>>.
+        /// </summary>
+        /// <typeparam name="T">The type of visual ancestor.</typeparam>
+        /// <param name="obj">The respective <see cref="DependencyObject"/>.</param>
+        /// <returns>
+        /// The first visual ancestor of type <see cref="T"/> if exists, else <c>null</c>.
+        /// </returns>
         public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
         {
-            var parent = VisualTreeHelper.GetParent(obj);
-            while (parent != null)
+            if (obj != null)
             {
-                var typed = parent as T;
-                if (typed != null)
+                var parent = VisualTreeHelper.GetParent(obj);
+                while (parent != null)
                 {
-                    return typed;
-                }
+                    var typed = parent as T;
+                    if (typed != null)
+                    {
+                        return typed;
+                    }
 
-                parent = VisualTreeHelper.GetParent(parent);
+                    parent = VisualTreeHelper.GetParent(parent);
+                }
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Invoked whenever the effective value of any dependency property on this <see cref="Element3D"/> has been updated.
+        /// </summary>
+        /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
+            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "Element3DPropertyMetadata".
+            //var fmetadata = e.Property.GetMetadata(this) as FrameworkPropertyMetadata;
+            //if (fmetadata != null && fmetadata.AffectsRender)
+            {
+                this.InvalidateRender();
+            }
         }
     }
 }

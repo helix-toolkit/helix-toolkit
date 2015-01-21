@@ -58,6 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private DeferredRenderer deferredRenderer;
         private bool sceneAttached;        
         private int targetWidth, targetHeight;
+        private int pendingValidationCycles;
 
 #if MSAA
         private Texture2D renderTargetNMS;
@@ -104,6 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 this.sceneAttached = false;
                 this.renderRenderable = value;
+                this.InvalidateRender();
             }
         }
 
@@ -150,6 +152,16 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Invalidates the current render and requests an update.
+        /// </summary>
+        public void InvalidateRender()
+        {
+            // For some reason, we need two render cycles to recover from 
+            // UAC popup or sleep when MSAA is enabled.
+            this.pendingValidationCycles = 2;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
@@ -185,7 +197,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         private void StartD3D()
-        {           
+        {   
             this.surfaceD3D = new DX11ImageSource();
             this.surfaceD3D.IsFrontBufferAvailableChanged += this.OnIsFrontBufferAvailableChanged;            
             this.device = EffectsManager.Device;
@@ -195,6 +207,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.CreateAndBindTargets();
             this.SetDefaultRenderTargets();
             this.Source = this.surfaceD3D;
+            this.InvalidateRender();
         }
 
         /// <summary>
@@ -400,8 +413,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sceneTime"></param>
-        private void Render(System.TimeSpan sceneTime)
+        private void Render()
         {
             var device = this.device;
             if (device == null)
@@ -462,7 +474,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.deferredRenderer.SetGBufferTargets();
 
                     /// render G-Buffer pass                
-                    this.renderRenderable.Update(this.renderTimer.Elapsed);
                     this.renderRenderable.Render(this.renderContext);
 
                     /// call deferred render 
@@ -475,7 +486,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2);
 
                     /// render G-Buffer pass                    
-                    this.renderRenderable.Update(this.renderTimer.Elapsed);
                     this.renderRenderable.Render(this.renderContext);
 
                     /// reset render targets and run lighting pass                                         
@@ -491,7 +501,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.device.ImmediateContext.ClearRenderTargetView(this.colorBufferView, this.ClearColor);
                     this.device.ImmediateContext.ClearDepthStencilView(this.depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
 
-                    this.renderRenderable.Update(this.renderTimer.Elapsed);
                     this.renderRenderable.Render(this.renderContext);
                 }
             }
@@ -507,7 +516,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.renderTimer.IsRunning)
                 return;
 
-            CompositionTarget.Rendering += OnRendering;
+            CompositionTarget.Rendering += this.OnRendering;
             this.renderTimer.Start();
         }
 
@@ -519,7 +528,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (!this.renderTimer.IsRunning)
                 return;
 
-            CompositionTarget.Rendering -= OnRendering;
+            CompositionTarget.Rendering -= this.OnRendering;
             this.renderTimer.Stop();
         }
 
@@ -533,12 +542,20 @@ namespace HelixToolkit.Wpf.SharpDX
             if (!this.renderTimer.IsRunning)
                 return;
 
-            this.Render(this.renderTimer.Elapsed);
+            // Update all renderables before rendering 
+            // giving them the chance to invalidate the current render.
+            this.renderRenderable.Update(this.renderTimer.Elapsed);
 
+            if (this.pendingValidationCycles > 0)
+            {
+                this.pendingValidationCycles--;
+
+                this.Render();
 #if MSAA
-            this.device.ImmediateContext.ResolveSubresource(this.colorBuffer, 0, this.renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+                this.device.ImmediateContext.ResolveSubresource(this.colorBuffer, 0, this.renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
 #endif
-            this.surfaceD3D.InvalidateD3DImage();
+                this.surfaceD3D.InvalidateD3DImage();
+            }
         }
 
         /// <summary>
@@ -561,6 +578,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
                 this.CreateAndBindTargets();
                 this.SetDefaultRenderTargets();
+                this.InvalidateRender();
             }
             base.OnRenderSizeChanged(sizeInfo);
         }
@@ -582,6 +600,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // We need to re-create the render targets because the get lost on NET40.
                 this.CreateAndBindTargets();
                 this.SetDefaultRenderTargets();
+                this.InvalidateRender();
                 this.StartRendering();
             }
             else
