@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Windows;
@@ -59,6 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool sceneAttached;        
         private int targetWidth, targetHeight;
         private int pendingValidationCycles;
+        private TimeSpan lastRenderDuration;
 
 #if MSAA
         private Texture2D renderTargetNMS;
@@ -516,6 +518,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.renderTimer.IsRunning)
                 return;
 
+            this.lastRenderDuration = TimeSpan.Zero;
             CompositionTarget.Rendering += this.OnRendering;
             this.renderTimer.Start();
         }
@@ -537,10 +540,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnRendering(object sender, System.EventArgs e)
+        private void OnRendering(object sender, EventArgs e)
         {
             if (!this.renderTimer.IsRunning)
                 return;
+
+            // If rendering took too long last time...
+            if (this.lastRenderDuration.TotalMilliseconds > 20.0)
+            {
+                // ...give other dispatcher queues like Input the chance to process.
+                this.lastRenderDuration = TimeSpan.Zero;
+                return;
+            }
+
+            var t0 = this.renderTimer.Elapsed;
 
             // Update all renderables before rendering 
             // giving them the chance to invalidate the current render.
@@ -556,6 +569,8 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
                 this.surfaceD3D.InvalidateD3DImage();
             }
+
+            this.lastRenderDuration = renderTimer.Elapsed - t0;
         }
 
         /// <summary>
