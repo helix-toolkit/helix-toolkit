@@ -570,7 +570,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.surfaceD3D.InvalidateD3DImage();
             }
 
-            this.lastRenderDuration = renderTimer.Elapsed - t0;
+            this.lastRenderDuration = this.renderTimer.Elapsed - t0;
         }
 
         /// <summary>
