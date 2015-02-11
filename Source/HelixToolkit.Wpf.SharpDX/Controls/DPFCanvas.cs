@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -48,13 +49,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class DPFCanvas : Image, IRenderHost
     {
+        private readonly Action updateAndRenderAction;
+        private readonly Stopwatch renderTimer;
         private Device device;
         private Texture2D colorBuffer;
         private Texture2D depthStencilBuffer;
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
         private DX11ImageSource surfaceD3D;
-        private Stopwatch renderTimer;
         private IRenderer renderRenderable;
         private RenderContext renderContext;
         private DeferredRenderer deferredRenderer;
@@ -62,7 +64,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private int targetWidth, targetHeight;
         private int pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
-        private Action updateAndRenderAction;
         private DispatcherOperation updateAndRenderOperation;
 
 #if MSAA
@@ -86,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Gets or sets the maximum time that rendering is allowed to take. When exceeded,
-        /// the next cycle will return immediately to give other dispatcher queues like Input the chance to process.
+        /// the next cycle will be enqueued at <see cref="DispatcherPriority.Input"/> to reduce input lag.
         /// </summary>
         public TimeSpan MaxRenderingDuration { get; set; }
 
