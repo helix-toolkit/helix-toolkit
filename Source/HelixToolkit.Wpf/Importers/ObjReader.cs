@@ -32,12 +32,12 @@ namespace HelixToolkit.Wpf
         /// The outer dictionary maps from a smoothing group number to a dictionary.
         /// The inner dictionary maps from an obj file vertex index to a vertex index in the current group.
         /// </remarks>
-        private readonly Dictionary<int, Dictionary<int, int>> smoothingGroupMaps;
+        private readonly Dictionary<long, Dictionary<int, int>> smoothingGroupMaps;
 
         /// <summary>
         /// The current smoothing group.
         /// </summary>
-        private int currentSmoothingGroup;
+        private long currentSmoothingGroup;
 
         /// <summary>
         /// The line number of the line being parsed.
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf
             this.Groups = new List<Group>();
             this.Materials = new Dictionary<string, MaterialDefinition>();
 
-            this.smoothingGroupMaps = new Dictionary<int, Dictionary<int, int>>();
+            this.smoothingGroupMaps = new Dictionary<long, Dictionary<int, int>>();
 
             // File format specifications
             // http://en.wikipedia.org/wiki/Obj
