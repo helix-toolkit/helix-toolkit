@@ -752,7 +752,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         private Object3DGroup BuildModel()
         {
-            //Debugger.Launch();
             var modelGroup = new Object3DGroup();
             foreach (var g in this.Groups)
             {
