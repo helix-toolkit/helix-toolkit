@@ -70,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Groups = new List<Group>();
             this.Materials = new Dictionary<string, MaterialDefinition>();
 
-            this.smoothingGroupMaps = new Dictionary<int, Dictionary<int, int>>();
+            this.smoothingGroupMaps = new Dictionary<long, Dictionary<int, int>>();
         }
 
         /// <summary>
@@ -320,15 +320,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The smoothing group maps.
         /// </summary>
         /// <remarks>
-        /// The outer dictionary maps from a smoothing group number to a Dictionary&lt;int,int&gt;.
+        /// The outer dictionary maps from a smoothing group number to a Dictionary&lt;long,int&gt;.
         /// The inner dictionary maps from an obj file vertex index to a vertex index in the current group.
         /// </remarks>
-        private readonly Dictionary<int, Dictionary<int, int>> smoothingGroupMaps;
+        private readonly Dictionary<long, Dictionary<int, int>> smoothingGroupMaps;
 
         /// <summary>
         /// The current smoothing group.
         /// </summary>
-        private int currentSmoothingGroup;
+        private long currentSmoothingGroup;
 
         /// <summary>
         /// The line number of the line being parsed.
@@ -482,8 +482,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                int smoothingGroup;
-                if (int.TryParse(values, out smoothingGroup))
+                long smoothingGroup;
+                if (long.TryParse(values, out smoothingGroup))
                 {
                     this.currentSmoothingGroup = smoothingGroup;
                 }
@@ -1147,8 +1147,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     //AmbientMap = this.AmbientMap,
 
                     DiffuseColor = this.Diffuse,
-                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(this.DiffuseMap),                    
-                    
+                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(this.DiffuseMap),
+
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
                     //SpecularMap = this.SpecularMap,
@@ -1158,7 +1158,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     //Illumination = this.Illumination,
 
                 };
-               
+
                 //return mg.Children.Count != 1 ? mg : mg.Children[0];
                 return mat;
             }
@@ -1166,7 +1166,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private static BitmapImage LoadImage(string path)
             {
-                var bmp = new BitmapImage(new Uri(@"./Media/"+path, UriKind.RelativeOrAbsolute));
+                var bmp = new BitmapImage(new Uri(@"./Media/" + path, UriKind.RelativeOrAbsolute));
                 return bmp;
             }
 
