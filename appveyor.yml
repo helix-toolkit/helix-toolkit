@@ -7,6 +7,7 @@ environment:
 install:
   - cinst stylecop
   - cinst LynxToolkit
+  - cinst gitlink -Pre
 
 platform: Any CPU
 
@@ -18,7 +19,10 @@ build:
 
 before_build:
   - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ReleaseNotesFile=RELEASE-NOTES.md /Directory=Source
-  
+
+after_build:
+  - cmd: gitlink c:\projects\helix-toolkit -u https://github.com/helix-toolkit/helix-toolkit -b master -f Source/HelixToolkit.AppVeyor.sln
+
 deploy_script:
   - cmd: mkdir Packages
   - cmd: NuGet.exe pack Source\HelixToolkit\HelixToolkit.nuspec -OutputDirectory Packages
