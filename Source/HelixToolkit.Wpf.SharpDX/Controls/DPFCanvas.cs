@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
+    using System.Windows.Threading;
 
     using global::SharpDX;
 
@@ -47,20 +48,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class DPFCanvas : Image, IRenderHost
     {
+        private readonly Action updateAndRenderAction;
+        private readonly Stopwatch renderTimer;
         private Device device;
         private Texture2D colorBuffer;
         private Texture2D depthStencilBuffer;
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
         private DX11ImageSource surfaceD3D;
-        private Stopwatch renderTimer;
         private IRenderer renderRenderable;
         private RenderContext renderContext;
         private DeferredRenderer deferredRenderer;
         private bool sceneAttached;        
         private int targetWidth, targetHeight;
         private int pendingValidationCycles;
-        private TimeSpan lastRenderDuration;
+        private TimeSpan lastRenderingDuration;
+        private DispatcherOperation updateAndRenderOperation;
 
 #if MSAA
         private Texture2D renderTargetNMS;
@@ -80,6 +83,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public bool IsMSAAEnabled { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the maximum time that rendering is allowed to take. When exceeded,
+        /// the next cycle will be enqueued at <see cref="DispatcherPriority.Input"/> to reduce input lag.
+        /// </summary>
+        public TimeSpan MaxRenderingDuration { get; set; }
 
         /// <summary>
         /// 
@@ -145,7 +154,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public DPFCanvas()
         {
+            this.updateAndRenderAction = this.UpdateAndRender;
+            this.updateAndRenderOperation = null;
             this.renderTimer = new Stopwatch();
+            this.MaxRenderingDuration = TimeSpan.FromMilliseconds(20.0);
             this.Loaded += this.OnLoaded;
             this.Unloaded += this.OnUnloaded;
             this.ClearColor = global::SharpDX.Color.Gray;
@@ -532,7 +544,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.renderTimer.IsRunning)
                 return;
 
-            this.lastRenderDuration = TimeSpan.Zero;
+            this.lastRenderingDuration = TimeSpan.Zero;
             CompositionTarget.Rendering += this.OnRendering;
             this.renderTimer.Start();
         }
@@ -550,23 +562,52 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Handles the <see cref="CompositionTarget.Rendering"/> event.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The sender is in fact a the UI <see cref="Dispatcher"/>.</param>
+        /// <param name="e">Is in fact <see cref="RenderingEventArgs"/>.</param>
         private void OnRendering(object sender, EventArgs e)
         {
             if (!this.renderTimer.IsRunning)
                 return;
 
-            // If rendering took too long last time...
-            if (this.lastRenderDuration.TotalMilliseconds > 20.0)
+            // Check if there is a deferred updateAndRenderOperation in progress.
+            if (this.updateAndRenderOperation != null)
             {
-                // ...give other dispatcher queues like Input the chance to process.
-                this.lastRenderDuration = TimeSpan.Zero;
-                return;
+                // If the deferred updateAndRenderOperation has not yet ended...
+                var status = this.updateAndRenderOperation.Status;
+                if (status == DispatcherOperationStatus.Pending ||
+                    status == DispatcherOperationStatus.Executing)
+                {
+                    // ... return immediately.
+                    return;
+                }
+
+                this.updateAndRenderOperation = null;
+
+                // Ensure that at least every other cycle is done at DispatcherPriority.Render.
+                // Uncomment if animation stutters, but no need as far as I can see.
+                // this.lastRenderingDuration = TimeSpan.Zero;
             }
 
+            // If rendering took too long last time...
+            if (this.lastRenderingDuration > this.MaxRenderingDuration)
+            {
+                // ... enqueue an updateAndRenderAction at DispatcherPriority.Input.
+                this.updateAndRenderOperation = this.Dispatcher.BeginInvoke(
+                    this.updateAndRenderAction, DispatcherPriority.Input);
+            }
+            else
+            {
+                this.UpdateAndRender();
+            }
+        }
+
+        /// <summary>
+        /// Updates and renders the scene.
+        /// </summary>
+        private void UpdateAndRender()
+        {
             var t0 = this.renderTimer.Elapsed;
 
             // Update all renderables before rendering 
@@ -584,7 +625,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.surfaceD3D.InvalidateD3DImage();
             }
 
-            this.lastRenderDuration = this.renderTimer.Elapsed - t0;
+            this.lastRenderingDuration = this.renderTimer.Elapsed - t0;
         }
 
         /// <summary>
