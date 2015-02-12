@@ -146,8 +146,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public DPFCanvas()
         {
             this.renderTimer = new Stopwatch();
-            this.Loaded += this.WindowLoaded;
-            this.Unloaded += this.WindowClosing;
+            this.Loaded += this.OnLoaded;
+            this.Unloaded += this.OnUnloaded;
             this.ClearColor = global::SharpDX.Color.Gray;
             this.IsShadowMapEnabled = false;            
             this.IsMSAAEnabled = true;            
@@ -168,15 +168,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void WindowLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             if (IsInDesignMode)
             {
                 return;
             }
 
-            this.StartD3D();
-            this.StartRendering();
+            try
+            {
+                this.StartD3D();
+                this.StartRendering();
+            }
+            catch (Exception)
+            {
+                // Exceptions in the Loaded event handler are silently swallowed by WPF.
+                // https://social.msdn.microsoft.com/Forums/vstudio/en-US/9ed3d13d-0b9f-48ac-ae8d-daf0845c9e8f/bug-in-wpf-windowloaded-exception-handling?forum=wpf
+                // http://stackoverflow.com/questions/19140593/wpf-exception-thrown-in-eventhandler-is-swallowed
+                // tl;dr: M$ says it's "by design" and "working as indended" but may change in the future :).
+
+                // This prevents a crash if no DX10 GPU is present (VMWare)
+                // ToDo: (MVVM friendly) exception handling
+                this.StopRendering();
+            }
         }
 
         /// <summary>
@@ -184,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void WindowClosing(object sender, RoutedEventArgs e)
+        private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             if (IsInDesignMode)
             {
