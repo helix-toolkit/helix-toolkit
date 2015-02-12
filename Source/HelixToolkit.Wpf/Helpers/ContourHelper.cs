@@ -68,16 +68,6 @@ namespace HelixToolkit.Wpf
         private readonly int[] indices = new int[3];
 
         /// <summary>
-        /// Indicates whether the mesh uses texture coordinates.
-        /// </summary>
-        private readonly bool hasTextureCoordinates;
-
-        /// <summary>
-        /// Indicates whether the mesh has normal vectors.
-        /// </summary>
-        private readonly bool hasNormals;
-
-        /// <summary>
         /// The original mesh positions.
         /// </summary>
         private readonly Point3D[] meshPositions;
@@ -98,14 +88,14 @@ namespace HelixToolkit.Wpf
         private readonly Point3D[] points = new Point3D[3];
 
         /// <summary>
-        /// The points.
+        /// The normal vectors.
         /// </summary>
-        private readonly Vector3D[] normals = new Vector3D[3];
+        private readonly Vector3D[] normals;
 
         /// <summary>
-        /// The textures.
+        /// The texture coordinates.
         /// </summary>
-        private readonly Point[] textures = new Point[3];
+        private readonly Point[] textures;
 
         /// <summary>
         /// The position count.
@@ -118,17 +108,17 @@ namespace HelixToolkit.Wpf
         /// <param name="planeOrigin">The plane origin.</param>
         /// <param name="planeNormal">The plane normal.</param>
         /// <param name="originalMesh">The original mesh.</param>
-        /// <param name="hasNormals">Indicates whether normal vectors needs to be calculated.</param>
-        /// <param name="hasTextureCoordinates">Indicates whether texture coordinates need calculating.</param>
-        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh, bool hasNormals = false, bool hasTextureCoordinates = false)
+        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh)
         {
-            this.hasNormals = hasNormals;
-            this.hasTextureCoordinates = hasTextureCoordinates;
+            var hasNormals = originalMesh.Normals != null && originalMesh.Normals.Count > 0;
+            var hasTextureCoordinates = originalMesh.TextureCoordinates != null && originalMesh.TextureCoordinates.Count > 0;
+            this.normals = hasNormals ? new Vector3D[3] : null;
+            this.textures = hasTextureCoordinates ? new Point[3] : null;
             this.positionCount = originalMesh.Positions.Count;
 
             this.meshPositions = originalMesh.Positions.ToArray();
-            this.meshNormals = originalMesh.Normals.ToArray();
-            this.meshTextureCoordinates = originalMesh.TextureCoordinates.ToArray();
+            this.meshNormals = hasNormals ? originalMesh.Normals.ToArray() : null;
+            this.meshTextureCoordinates = hasTextureCoordinates ? originalMesh.TextureCoordinates.ToArray() : null;
 
             // Determine the equation of the plane as
             // ax + by + cz + d = 0
@@ -248,7 +238,7 @@ namespace HelixToolkit.Wpf
                 this.CreateNewPosition(facetIndices[1, 0], facetIndices[1, 1])
             };
 
-            if (this.hasNormals)
+            if (this.normals != null)
             {
                 newNormals = new[]
             {
@@ -261,7 +251,7 @@ namespace HelixToolkit.Wpf
                 newNormals = new Vector3D[0];
             }
 
-            if (this.hasTextureCoordinates)
+            if (this.textures != null)
             {
                 newTextureCoordinates = new[]
                 {
@@ -341,14 +331,14 @@ namespace HelixToolkit.Wpf
             this.points[1] = this.meshPositions[index1];
             this.points[2] = this.meshPositions[index2];
 
-            if (this.hasNormals)
+            if (this.normals != null)
             {
                 this.normals[0] = this.meshNormals[index0];
                 this.normals[1] = this.meshNormals[index1];
                 this.normals[2] = this.meshNormals[index2];
             }
 
-            if (this.hasTextureCoordinates)
+            if (this.textures != null)
             {
                 this.textures[0] = this.meshTextureCoordinates[index0];
                 this.textures[1] = this.meshTextureCoordinates[index1];

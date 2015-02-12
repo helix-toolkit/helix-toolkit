@@ -73,7 +73,7 @@
 
         private static MeshGeometry3D MeshFromTriangle(Point3D p1, Point3D p2, Point3D p3)
         {
-            var mb = new MeshBuilder();
+            var mb = new MeshBuilder(false, false);
             mb.AddTriangle(p1, p2, p3);
             return mb.ToMesh();
         }
