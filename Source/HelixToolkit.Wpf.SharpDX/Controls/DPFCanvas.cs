@@ -12,7 +12,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -158,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.updateAndRenderAction = this.UpdateAndRender;
             this.updateAndRenderOperation = null;
             this.renderTimer = new Stopwatch();
-            this.MaxRenderingDuration = TimeSpan.FromMilliseconds(15.0);
+            this.MaxRenderingDuration = TimeSpan.FromMilliseconds(20.0);
             this.Loaded += this.WindowLoaded;
             this.Unloaded += this.WindowClosing;
             this.ClearColor = global::SharpDX.Color.Gray;
@@ -549,26 +548,32 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Handles the <see cref="CompositionTarget.Rendering"/> event.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The sender is in fact a the UI <see cref="Dispatcher"/>.</param>
+        /// <param name="e">Is in fact <see cref="RenderingEventArgs"/>.</param>
         private void OnRendering(object sender, EventArgs e)
         {
             if (!this.renderTimer.IsRunning)
                 return;
 
-            // Check if there is an updateAndRenderOperation in progress.
+            // Check if there is a deferred updateAndRenderOperation in progress.
             if (this.updateAndRenderOperation != null)
             {
+                // If the deferred updateAndRenderOperation has not yet ended...
                 var status = this.updateAndRenderOperation.Status;
                 if (status == DispatcherOperationStatus.Pending ||
                     status == DispatcherOperationStatus.Executing)
                 {
+                    // ... return immediately.
                     return;
                 }
 
                 this.updateAndRenderOperation = null;
+
+                // Ensure that at least every other cycle is done at DispatcherPriority.Render.
+                // Uncomment if animation stutters, but no need as far as I can see.
+                // this.lastRenderingDuration = TimeSpan.Zero;
             }
 
             // If rendering took too long last time...
