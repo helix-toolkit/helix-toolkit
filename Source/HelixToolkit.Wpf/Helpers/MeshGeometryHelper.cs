@@ -404,7 +404,7 @@ namespace HelixToolkit.Wpf
             var hasTextureCoordinates = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0;
             var hasNormals = mesh.Normals != null && mesh.Normals.Count > 0;
             var meshBuilder = new MeshBuilder(hasNormals, hasTextureCoordinates);
-            var contourHelper = new ContourHelper(plane, normal, mesh, hasNormals, hasTextureCoordinates);
+            var contourHelper = new ContourHelper(plane, normal, mesh);
             foreach (var position in mesh.Positions)
             {
                 meshBuilder.Positions.Add(position);
