@@ -358,7 +358,7 @@ namespace HelixToolkit.Wpf
 
                     // create .png bitmap file for the brush
                     this.RenderBrush(texturePath, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
-                    materialWriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
+                    materialWriter.WriteLine(string.Format("map_Kd {0}", textureFilename));
                 }
             }
 
