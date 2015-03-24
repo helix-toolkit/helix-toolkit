@@ -228,6 +228,23 @@ namespace HelixToolkit.Wpf
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
+        /// Identifies the <see cref="CursorViewPosition"/> dependency property.
+        /// </summary>
+        /// <remarks> 
+        /// This property returns the point on the view plane. 
+        /// The view plane is always parallel to the screen and
+        /// the Camera Targetpoint is part of this plane.
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public static readonly DependencyProperty CursorViewPositionProperty =
+            DependencyProperty.Register(
+                "CursorViewPosition",
+                typeof(Point3D),
+                typeof(HelixViewport3D),
+                new FrameworkPropertyMetadata(
+                    new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
         /// Identifies the <see cref="CursorModelSnapPosition"/> dependency property.
         /// </summary>
         /// <remarks> 
@@ -1618,6 +1635,25 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets and Sets the cursor plane
+        /// </summary>
+        /// <value>
+        /// The cursor plane .
+        /// </value>
+        // #133, CK, 2015-03-24
+        public Plane3D CursorPlane
+        {
+            get
+            {
+                return (Plane3D)this.GetValue(CursorPlaneProperty);
+            }
+            set
+            {
+                this.SetValue(CursorPlaneProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets the current cursor position on the nearest snaped Model.
         /// </summary>
         /// <value>
@@ -1636,6 +1672,28 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(CursorModelSnapPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the current cursor position on the view plane.
+        /// </summary>
+        /// <value>
+        /// The cursor plane position.
+        /// </value>
+        /// <remarks>
+        /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public Point3D CursorViewPosition
+        {
+            get
+            {
+                return (Point3D)this.GetValue(CursorViewPositionProperty);
+            }
+            set
+            {
+                this.SetValue(CursorViewPositionProperty, value);
             }
         }
 
@@ -3507,10 +3565,15 @@ namespace HelixToolkit.Wpf
                     this.CursorModelSnapPosition = pos.Value;
                 }
 
+                // Set CursorPlanePosition
+                //TODO: #133, CK, 2015-03-24 
+                // Calculate IntersectionPoint between Cursor plane and Ray from ScreenPos along Camera View Direction
+
+                // Set CursorViewPosition
                 var p = this.Viewport.UnProject(pt);
                 if (p != null)
                 {
-                    this.CursorPlanePosition = p.Value;
+                    this.CursorViewPosition = p.Value;
                 }
             }
         }
