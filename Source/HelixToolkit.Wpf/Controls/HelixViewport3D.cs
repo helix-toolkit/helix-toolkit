@@ -197,10 +197,66 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="EnableCurrentPosition"/> dependency property.
         /// </summary>
-        [Obsolete("Issue #133, EnableCurrentPosition is now obsolete, please use CalculateCursorPositions instead", false)]
+        [Obsolete("Issue #133, EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
         public static readonly DependencyProperty EnableCurrentPositionProperty =
             DependencyProperty.Register(
                 "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
+
+        /// <summary>
+        /// Identifies the <see cref="CalculateCursorPosition"/> dependency property. 
+        /// It enables (true) or disables (false) the calculation of the cursor position in the 3D Viewport
+        /// </summary>
+        // #133, CK, 2015-03-24
+        public static readonly DependencyProperty CalculateCursorPositionProperty =
+            DependencyProperty.Register(
+                "CalculateCursorPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
+
+        /// <summary>
+        /// Identifies the <see cref="CursorPosition"/> dependency property.
+        /// </summary>
+        /// <remarks> 
+        /// This property always returns a Coordiante. 
+        /// The return value equals CursorPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public static readonly DependencyProperty CursorPositionProperty =
+            DependencyProperty.Register(
+                "CursorPosition",
+                typeof(Point3D),
+                typeof(HelixViewport3D),
+                new FrameworkPropertyMetadata(
+                    new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Identifies the <see cref="CursorModelSnapPosition"/> dependency property.
+        /// </summary>
+        /// <remarks> 
+        /// This property returns the position of the nearest model.
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public static readonly DependencyProperty CursorModelSnapPositionProperty =
+            DependencyProperty.Register(
+                "CursorModelSnapPosition",
+                typeof(Point3D),
+                typeof(HelixViewport3D),
+                new FrameworkPropertyMetadata(
+                    new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Identifies the <see cref="CursorPlanePosition"/> dependency property.
+        /// </summary>
+        /// <remarks> 
+        /// This property returns the point on the cursor plane..
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public static readonly DependencyProperty CursorPlanePositionProperty =
+            DependencyProperty.Register(
+                "CursorPlanePosition",
+                typeof(Point3D),
+                typeof(HelixViewport3D),
+                new FrameworkPropertyMetadata(
+                    new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
 
         /// <summary>
         /// Identifies the <see cref="DebugInfo"/> dependency property.
