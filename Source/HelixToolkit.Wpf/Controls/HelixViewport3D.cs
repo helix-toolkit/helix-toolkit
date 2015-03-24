@@ -185,6 +185,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="CurrentPosition"/> dependency property.
         /// </summary>
+        [Obsolete("Issue #133, CurrentPosition is now obsolete, please use CursorPosition instead", false)]
         public static readonly DependencyProperty CurrentPositionProperty =
             DependencyProperty.Register(
                 "CurrentPosition",
@@ -192,6 +193,14 @@ namespace HelixToolkit.Wpf
                 typeof(HelixViewport3D),
                 new FrameworkPropertyMetadata(
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Identifies the <see cref="EnableCurrentPosition"/> dependency property.
+        /// </summary>
+        [Obsolete("Issue #133, EnableCurrentPosition is now obsolete, please use CalculateCursorPositions instead", false)]
+        public static readonly DependencyProperty EnableCurrentPositionProperty =
+            DependencyProperty.Register(
+                "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="DebugInfo"/> dependency property.
@@ -205,12 +214,6 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
             "DefaultCamera", typeof(ProjectionCamera), typeof(HelixViewport3D), new UIPropertyMetadata(null));
 
-        /// <summary>
-        /// Identifies the <see cref="EnableCurrentPosition"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty EnableCurrentPositionProperty =
-            DependencyProperty.Register(
-                "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="FieldOfViewText"/> dependency property.
