@@ -257,6 +257,39 @@ namespace HelixToolkit.Wpf
                 new FrameworkPropertyMetadata(
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+        /// <summary>
+        /// Identifies the <see cref="CursorPlane"/> dependency property.
+        /// </summary>
+        // #133, CK, 2015-03-24
+        public static readonly DependencyProperty CursorPlaneProperty =
+            DependencyProperty.Register(
+                "CursorPlane",
+                typeof(Plane3D),
+                typeof(HelixViewport3D),
+                new FrameworkPropertyMetadata(
+                    new Plane3D(new Point3D(0, 0, 0), new Vector3D(0, 0, 1)), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        // #133, CK, 2015-03-24
+        [Flags]
+        enum EnumCursorSnapTarget
+        {
+            None = 0,
+            Point = 1,
+            All = 65535,
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="CursorSnapTarget"/> dependency property.
+        /// </summary>
+        // #133, CK, 2015-03-24
+        public static readonly DependencyProperty CursorSnapTargetProperty =
+            DependencyProperty.Register(
+                "CursorSnapTargets",
+                typeof(EnumCursorSnapTarget),
+                typeof(HelixViewport3D),
+                new FrameworkPropertyMetadata(
+                    EnumCursorSnapTarget.All, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
 
         /// <summary>
         /// Identifies the <see cref="DebugInfo"/> dependency property.
@@ -337,13 +370,6 @@ namespace HelixToolkit.Wpf
                 typeof(bool),
                 typeof(HelixViewport3D),
                 new UIPropertyMetadata(false, HeadlightChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="SnapMouseToElement"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SnapMouseToElementProperty =
-            DependencyProperty.Register(
-                "SnapMouseToElement", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
@@ -1449,18 +1475,20 @@ namespace HelixToolkit.Wpf
         /// The current position.
         /// </value>
         /// <remarks>
-        /// The <see cref="EnableCurrentPosition" /> property must be set to true to enable updating of this property.
+        /// The <see cref="CalculatePosition" /> property must be set to true to enable updating of this property.
         /// </remarks>
+        // #133, CK, 2015-03-24
+        [Obsolete("Issue #133, CurrentPosition is now obsolete, please use CursorPosition instead", false)]
         public Point3D CurrentPosition
         {
             get
             {
-                return (Point3D)this.GetValue(CurrentPositionProperty);
+                return CursorPosition;
             }
 
             set
             {
-                this.SetValue(CurrentPositionProperty, value);
+                CursorPosition = value;
             }
         }
 
@@ -1508,18 +1536,109 @@ namespace HelixToolkit.Wpf
         /// <value>
         ///     <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
         /// </value>
+        // #133, CK, 2015-03-24
+        [Obsolete("Issue #133, EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
         public bool EnableCurrentPosition
         {
             get
             {
-                return (bool)this.GetValue(EnableCurrentPositionProperty);
+                return CalculateCursorPosition;
             }
 
             set
             {
-                this.SetValue(EnableCurrentPositionProperty, value);
+                CalculateCursorPosition = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether calculation of the <see cref="CursorPosition" /> properties is enabled.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
+        /// </value>
+        // #133, CK, 2015-03-24
+        public bool CalculateCursorPosition
+        {
+            get
+            {
+                return (bool)this.GetValue(CalculateCursorPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(CalculateCursorPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the current cursor position.
+        /// </summary>
+        /// <value>
+        /// The current cursor position.
+        /// </value>
+        /// <remarks>
+        /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public Point3D CursorPosition
+        {
+            get
+            {
+                var result = this.GetValue(CursorModelSnapPositionProperty) ?? this.GetValue(CursorPlanePositionProperty);
+                return (Point3D)result;
+            }
+            set
+            {
+                // Setting of the Cursor Position only changes the CursorPlanePosition 
+                CursorPlanePosition = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current cursor position on the cursor plane.
+        /// </summary>
+        /// <value>
+        /// The cursor plane position.
+        /// </value>
+        /// <remarks>
+        /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public Point3D CursorPlanePosition
+        {
+            get
+            {
+                return (Point3D) this.GetValue(CursorPlanePositionProperty);
+            }
+            set
+            {
+                this.SetValue(CursorPlanePositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the current cursor position on the nearest snaped Model.
+        /// </summary>
+        /// <value>
+        /// The position of the snapped Model
+        /// </value>
+        /// <remarks>
+        /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+        /// </remarks>
+        // #133, CK, 2015-03-24
+        public Point3D CursorModelSnapPosition
+        {
+            get
+            {
+                return (Point3D)this.GetValue(CursorModelSnapPositionProperty);
+            }
+            set
+            {
+                this.SetValue(CursorModelSnapPositionProperty, value);
+            }
+        }
+
 
         /// <summary>
         /// Gets or sets the field of view text.
@@ -1651,23 +1770,6 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(InfoForegroundProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the Mouse Cursor (current Position) snaps to an element if it is over the element.
-        /// </summary>
-        /// <value><c>true</c> if snaping is activated; otherwise, <c>false</c>.</value>
-        public bool SnapMouseToElement
-        {
-            get
-            {
-                return (bool)this.GetValue(SnapMouseToElementProperty);
-            }
-
-            set
-            {
-                this.SetValue(SnapMouseToElementProperty, value);
             }
         }
 
@@ -3394,21 +3496,21 @@ namespace HelixToolkit.Wpf
         {
             base.OnMouseMove(e);
 
-            if (this.EnableCurrentPosition)
-            {
+            if (this.CalculateCursorPosition)
+            {             
                 var pt = e.GetPosition(this);
+             
+                // Set CursorModelSnapPosition
                 var pos = this.FindNearestPoint(pt);
-                if (pos != null && this.SnapMouseToElement == true)
+                if (pos != null)
                 {
-                    this.CurrentPosition = pos.Value;
+                    this.CursorModelSnapPosition = pos.Value;
                 }
-                else
+
+                var p = this.Viewport.UnProject(pt);
+                if (p != null)
                 {
-                    var p = this.Viewport.UnProject(pt);
-                    if (p != null)
-                    {
-                        this.CurrentPosition = p.Value;
-                    }
+                    this.CursorPlanePosition = p.Value;
                 }
             }
         }
