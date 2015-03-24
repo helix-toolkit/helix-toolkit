@@ -280,6 +280,13 @@ namespace HelixToolkit.Wpf
                 new UIPropertyMetadata(false, HeadlightChanged));
 
         /// <summary>
+        /// Identifies the <see cref="SnapMouseToElement"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SnapMouseToElementProperty =
+            DependencyProperty.Register(
+                "SnapMouseToElement", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsInertiaEnabledProperty =
@@ -1585,6 +1592,23 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(InfoForegroundProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Mouse Cursor (current Position) snaps to an element if it is over the element.
+        /// </summary>
+        /// <value><c>true</c> if snaping is activated; otherwise, <c>false</c>.</value>
+        public bool SnapMouseToElement
+        {
+            get
+            {
+                return (bool)this.GetValue(SnapMouseToElementProperty);
+            }
+
+            set
+            {
+                this.SetValue(SnapMouseToElementProperty, value);
             }
         }
 
@@ -3315,7 +3339,7 @@ namespace HelixToolkit.Wpf
             {
                 var pt = e.GetPosition(this);
                 var pos = this.FindNearestPoint(pt);
-                if (pos != null)
+                if (pos != null && this.SnapMouseToElement == true)
                 {
                     this.CurrentPosition = pos.Value;
                 }
