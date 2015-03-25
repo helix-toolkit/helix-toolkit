@@ -3590,6 +3590,14 @@ namespace HelixToolkit.Wpf
             // Calculate IntersectionPoint between Cursor plane and CursorRay 
             // from ScreenPos along Camera View Direction (for orthographic mode)
             // or from ScreenPos to Camera Target Point (for perspective mode)
+            var positionOnTargetPointPlane = this.Viewport.UnProject(pt);
+            if (positionOnTargetPointPlane != null)
+            {
+                // calculate CorsorRay
+                var cameraTargetPoint = this.CameraController.CameraPosition + this.CameraController.CameraLookDirection;
+
+            }
+
             this.CursorOnCursorPlanePosition = null;
         }
 
