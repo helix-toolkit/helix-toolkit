@@ -618,11 +618,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.pendingValidationCycles--;
 
-                this.Render();
-#if MSAA
-                this.device.ImmediateContext.ResolveSubresource(this.colorBuffer, 0, this.renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
-                this.surfaceD3D.InvalidateD3DImage();
+                // Safety check because of dispatcher deferred render call
+                if (this.surfaceD3D != null)
+                {
+                    this.Render();
+#if MSAA            
+                    this.device.ImmediateContext.ResolveSubresource(this.colorBuffer, 0, this.renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif              
+                    this.surfaceD3D.InvalidateD3DImage();
+                }
             }
 
             this.lastRenderingDuration = this.renderTimer.Elapsed - t0;
