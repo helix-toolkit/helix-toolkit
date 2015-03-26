@@ -217,7 +217,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Cursor3DPosition"/> dependency property.
         /// </summary>
         /// <remarks> 
-        /// The return value equals CursorPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
+        /// The return value equals ConstructionPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
         /// </remarks>
         // #133, CK, 2015-03-24
         public static readonly DependencyProperty Cursor3DPositionProperty =
@@ -243,27 +243,27 @@ namespace HelixToolkit.Wpf
                     null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// Identifies the <see cref="CursorOnCursorPlanePosition"/> dependency property.
+        /// Identifies the <see cref="CursorOnConstructionPlanePosition"/> dependency property.
         /// </summary>
         /// <remarks> 
         /// This property returns the point on the cursor plane..
         /// </remarks>
         // #133, CK, 2015-03-24
-        public static readonly DependencyProperty CursorOnCursorPlanePositionProperty =
+        public static readonly DependencyProperty CursorOnConstructionPlanePositionProperty =
             DependencyProperty.Register(
-                "CursorOnCursorPlanePosition",
+                "CursorOnConstructionPlanePosition",
                 typeof(Point3D?),
                 typeof(HelixViewport3D),
                 new FrameworkPropertyMetadata(
                     null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// Identifies the <see cref="CursorPlane"/> dependency property.
+        /// Identifies the <see cref="ConstructionPlane"/> dependency property.
         /// </summary>
         // #133, CK, 2015-03-24
-        public static readonly DependencyProperty CursorPlaneProperty =
+        public static readonly DependencyProperty ConstructionPlaneProperty =
             DependencyProperty.Register(
-                "CursorPlane",
+                "ConstructionPlane",
                 typeof(Plane3D),
                 typeof(HelixViewport3D),
                 new FrameworkPropertyMetadata(
@@ -1592,15 +1592,15 @@ namespace HelixToolkit.Wpf
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
         /// </remarks>
         // #133, CK, 2015-03-24
-        public Point3D? CursorOnCursorPlanePosition
+        public Point3D? CursorOnConstructionPlanePosition
         {
             get
             {
-                return (Point3D?) this.GetValue(CursorOnCursorPlanePositionProperty);
+                return (Point3D?) this.GetValue(CursorOnConstructionPlanePositionProperty);
             }
             set
             {
-                this.SetValue(CursorOnCursorPlanePositionProperty, value);
+                this.SetValue(CursorOnConstructionPlanePositionProperty, value);
             }
         }
 
@@ -1611,15 +1611,15 @@ namespace HelixToolkit.Wpf
         /// The cursor plane .
         /// </value>
         // #133, CK, 2015-03-24
-        public Plane3D CursorPlane
+        public Plane3D ConstructionPlane
         {
             get
             {
-                return (Plane3D)this.GetValue(CursorPlaneProperty);
+                return (Plane3D)this.GetValue(ConstructionPlaneProperty);
             }
             set
             {
-                this.SetValue(CursorPlaneProperty, value);
+                this.SetValue(ConstructionPlaneProperty, value);
             }
         }
 
@@ -3558,7 +3558,7 @@ namespace HelixToolkit.Wpf
             this.CursorOnElementPosition = pos != null ? pos.Value : (Point3D?)null;
             // The cast "(Point3D?)null" looks crazy but it is neccessary. But I don't know why.  chrkon, 2015-3-25
             
-            // Set CursorOnCursorPlanePosition
+            // Set CursorOnConstructionPlanePosition
             // #133, CK, 2015-03-26            
             // Calculate CursorRay
             Point3D cursorNearPlanePoint;
@@ -3571,13 +3571,13 @@ namespace HelixToolkit.Wpf
             }
             else
             {
-                this.CursorOnCursorPlanePosition = null;
+                this.CursorOnConstructionPlanePosition = null;
                 this.CursorRay = null;
             }
 
             // Calculate IntersectionPoint between Cursor plane and CursorRay 
-            var intersectionPoint = this.CursorPlane.LineIntersection(CursorRay.Origin, CursorRay.Origin + CursorRay.Direction);
-            this.CursorOnCursorPlanePosition = intersectionPoint != null ? intersectionPoint.Value : (Point3D?)null;
+            var intersectionPoint = this.ConstructionPlane.LineIntersection(CursorRay.Origin, CursorRay.Origin + CursorRay.Direction);
+            this.CursorOnConstructionPlanePosition = intersectionPoint != null ? intersectionPoint.Value : (Point3D?)null;
             // The cast "(Point3D?)null" looks crazy but it is neccessary. But I don't know why.  chrkon, 2015-3-25
 
         }
