@@ -214,15 +214,15 @@ namespace HelixToolkit.Wpf
                 "CalculateCursorPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="Cursor3DPosition"/> dependency property.
+        /// Identifies the <see cref="CursorPosition"/> dependency property.
         /// </summary>
         /// <remarks> 
         /// The return value equals ConstructionPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
         /// </remarks>
         // #133, CK, 2015-03-24
-        public static readonly DependencyProperty Cursor3DPositionProperty =
+        public static readonly DependencyProperty CursorPositionProperty =
             DependencyProperty.Register(
-                "Cursor3DPosition",
+                "CursorPosition",
                 typeof(Point3D?),
                 typeof(HelixViewport3D),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
@@ -1541,7 +1541,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether calculation of the <see cref="Cursor3DPosition" /> properties is enabled.
+        /// Gets or sets a value indicating whether calculation of the <see cref="CursorPosition" /> properties is enabled.
         /// </summary>
         /// <value>
         ///     <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
@@ -1570,15 +1570,15 @@ namespace HelixToolkit.Wpf
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
         /// </remarks>
         // #133, CK, 2015-03-24
-        public Point3D? Cursor3DPosition
+        public Point3D? CursorPosition
         {
             get
             {
-                return (Point3D?)this.GetValue(Cursor3DPositionProperty);
+                return (Point3D?)this.GetValue(CursorPositionProperty);
             }
             set
             {
-                this.SetValue(Cursor3DPositionProperty, value);
+                this.SetValue(CursorPositionProperty, value);
             }
         }
 
@@ -3550,7 +3550,7 @@ namespace HelixToolkit.Wpf
 
             // Set Cursor 3D Position
             var p = this.Viewport.UnProject(pt);
-            this.Cursor3DPosition = p != null ? p.Value : (Point3D?)null;  
+            this.CursorPosition = p != null ? p.Value : (Point3D?)null;  
             // The cast "(Point3D?)null" looks crazy but it is neccessary. But I don't know why.  chrkon, 2015-3-25
 
             // Set CursorOnElementPosition

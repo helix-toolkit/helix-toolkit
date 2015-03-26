@@ -72,14 +72,14 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="x" Margin="5,0,4,0"/>
                     <TextBox Grid.Row="0" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=Cursor3DPosition.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
+                         Text="{Binding Path=CursorPosition.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="y" Margin="5,0,4,0" />
                     <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=Cursor3DPosition.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
+                         Text="{Binding Path=CursorPosition.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="z" Margin="5,0,4,0" />
                     <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=Cursor3DPosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
-                    <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="3D" Background="Beige"/>
+                         Text="{Binding Path=CursorPosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Cursor" Background="Beige"/>
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Position" Background="Beige"/>
                 </Grid>
 
