@@ -270,14 +270,6 @@ namespace HelixToolkit.Wpf
                     new Plane3D(new Point3D(0, 0, 0), new Vector3D(0, 0, 1)), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// Identifies the <see cref="CursorPlaneIsVisible"/> dependency property.
-        /// </summary>
-        // #133, CK, 2015-03-25
-        public static readonly DependencyProperty CursorPlaneIsVisibleProperty =
-            DependencyProperty.Register(
-                "CursorPlaneIsVisible", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
-
-        /// <summary>
         /// Identifies the <see cref="CursorRay"/> dependency property.
         /// </summary>
         // #133, CK, 2015-03-24
@@ -1628,25 +1620,6 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(CursorPlaneProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets and Sets wether the cursor plane is visualized by a grid
-        /// </summary>
-        /// <value>
-        /// true if the plane is visible. False if it is not visible.
-        /// </value>
-        // #133, CK, 2015-03-25
-        public bool CursorPlaneIsVisible
-        {
-            get
-            {
-                return (bool)this.GetValue(CursorPlaneIsVisibleProperty);
-            }
-            set
-            {
-                this.SetValue(CursorPlaneIsVisibleProperty, value);
             }
         }
 
@@ -3586,11 +3559,27 @@ namespace HelixToolkit.Wpf
             // The cast "(Point3D?)null" looks crazy but it is neccessary. But I don't know why.  chrkon, 2015-3-25
             
             // Set CursorOnCursorPlanePosition
-            //TODO: #133, CK, 2015-03-24 
+            // #133, CK, 2015-03-26            
+            // Calculate CursorRay
+            Point3D cursorNearPlanePoint;
+            Point3D cursorFarPlanePoint;
+            var ok = this.Viewport.Point2DtoPoint3D(pt, out cursorNearPlanePoint, out cursorFarPlanePoint);
+            if (ok)
+            {
+                var ray = new Ray3D(cursorFarPlanePoint, cursorNearPlanePoint);
+                this.CursorRay = ray;
+            }
+            else
+            {
+                this.CursorOnCursorPlanePosition = null;
+                this.CursorRay = null;
+            }
+
             // Calculate IntersectionPoint between Cursor plane and CursorRay 
-            // from ScreenPos along Camera View Direction (for orthographic mode)
-            // or from ScreenPos to Camera Target Point (for perspective mode)
-            this.CursorOnCursorPlanePosition = null;
+            var intersectionPoint = this.CursorPlane.LineIntersection(CursorRay.Origin, CursorRay.Origin + CursorRay.Direction);
+            this.CursorOnCursorPlanePosition = intersectionPoint != null ? intersectionPoint.Value : (Point3D?)null;
+            // The cast "(Point3D?)null" looks crazy but it is neccessary. But I don't know why.  chrkon, 2015-3-25
+
         }
 
         /// <summary>

@@ -2,33 +2,57 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
         xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="CursorPositionDemo" Height="480" Width="640">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Margin="10" MaxWidth="170">
             <CheckBox Content="Calulate Cursor Position" IsChecked="{Binding Path=CalculateCursorPosition, ElementName=view1}" Margin="5"/>
             <TextBlock  Margin="5" TextWrapping="Wrap"
                         Text="Move mouse over the elements and check the position fields to see the differences between the position calculations." />
+            <Separator/>
+            <CheckBox x:Name="cbGrid" Content="Show Grid" Margin="5" IsChecked="True"/>
             <TextBlock  Margin="5" TextWrapping="Wrap"
                         Text="The blue grid is an element like the sphere. ZoomIn to see the behaviour of 'OnElement Position' when you cross the lines of the Grid." />
-            <TextBlock  Margin="5" TextWrapping="Wrap" Visibility="{Binding Path=Visibility, ElementName=CursorOnCursorPlanePositionBlock}"
-                        Text="The cursor plane is a virtual plane, which can be used as a construction plane. It can be set independently from the camera." />
+            <Separator/>
+            <CheckBox x:Name="cbCursorPlane" Content="Show CursorPlane" Margin="5"/>
             <TextBlock  Margin="5" TextWrapping="Wrap"
-                        Text="The 3D position is based on the camera target point, which can be calculated from the camera position and the look direction." />
-            <TextBlock  Margin="5,0,5,0" TextWrapping="Wrap"
-                        Text="{Binding Path=Camera.Position, ElementName=view1, StringFormat=Cam.Pos: {0:f1}, FallbackValue=---}" />
-            <TextBlock  Margin="5,0,5,0" TextWrapping="Wrap"
-                        Text="{Binding Path=Camera.LookDirection, ElementName=view1, StringFormat=LookDir.: {0:f1}, FallbackValue=---}" />
+                        Text="The cursor plane is a virtual plane, which can be used as a construction plane. It can be set independently from the camera." />
+            <Grid x:Name="CursorPlaneData" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,0,0,0" Background="GhostWhite" Opacity="1" IsHitTestVisible="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition MinWidth="80"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Text="CursorPlane" Background="Azure"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Text="Position:" />
+                <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Text="Normal:" />
+
+                <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
+                         Text="{Binding Path=CursorPlane.Position, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
+                         Text="{Binding Path=CursorPlane.Normal, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
 
         </StackPanel>
         <Grid>
-            <helix:HelixViewport3D x:Name="view1" CalculateCursorPosition="True" ShowCoordinateSystem="True">
+            <helix:HelixViewport3D x:Name="view1" CalculateCursorPosition="True" ShowCameraInfo="True">
                 <helix:HelixViewport3D.DefaultCamera>
                     <PerspectiveCamera Position="100,100,100" LookDirection="-100,-100,-100" UpDirection="0,0,1" FieldOfView="61" NearPlaneDistance="0.001"/>
-                </helix:HelixViewport3D.DefaultCamera>
+                </helix:HelixViewport3D.DefaultCamera>                
                 <helix:SunLight/>
                 <helix:SphereVisual3D Radius="5"/>
                 <helix:SphereVisual3D Center="5,0,0" Radius="1" Fill="White"/>
                 <helix:BoxVisual3D Center="-40,-10,20"  Length="30" Width="20" Height="10"/>
-                <helix:GridLinesVisual3D Fill="Blue" />                    
+                <helix:GridLinesVisual3D Fill="Blue" Visible="{Binding ElementName=cbGrid, Path=IsChecked}" />
+                <helix:GridLinesVisual3D x:Name="cursorPlaneGrid" Fill="Red" Visible="{Binding ElementName=cbCursorPlane, Path=IsChecked}"
+                                         Center="{Binding Path=CursorPlane.Position, ElementName=view1}"
+                                         Normal="{Binding Path=CursorPlane.Normal, ElementName=view1}" />
             </helix:HelixViewport3D>
            
             <StackPanel Orientation="Horizontal">
@@ -85,8 +109,7 @@
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Position" Background="BlanchedAlmond"/>
                 </Grid>
 
-                <Grid x:Name="CursorOnCursorPlanePositionBlock" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,0,0,0" Background="WhiteSmoke" Opacity="1" IsHitTestVisible="True"
-                      Visibility="Collapsed">
+                <Grid x:Name="CursorOnCursorPlanePositionBlock" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,0,0,0" Background="WhiteSmoke" Opacity="1" IsHitTestVisible="True">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition MinWidth="50"></ColumnDefinition>
