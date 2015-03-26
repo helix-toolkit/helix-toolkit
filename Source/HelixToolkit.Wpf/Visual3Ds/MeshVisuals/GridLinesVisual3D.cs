@@ -238,8 +238,20 @@ namespace HelixToolkit.Wpf
         {
             this.lengthDirection = this.LengthDirection;
             this.lengthDirection.Normalize();
-            this.widthDirection = Vector3D.CrossProduct(this.Normal, this.lengthDirection);
+
+            // #136, chrkon, 2015-03-26
+            // if NormalVector and LenghtDirection are not perpendicular then overwrite LengthDirection
+            if (Vector3D.DotProduct(this.Normal, this.LengthDirection) != 0.0)
+            {
+                this.lengthDirection = this.Normal.FindAnyPerpendicular();
+                this.lengthDirection.Normalize();
+            }
+        
+            // create WidthDirection by rotating lengthDirection vector 90° around normal vector
+            var rotate = new RotateTransform3D(new AxisAngleRotation3D(this.Normal, 90.0));
+            this.widthDirection = rotate.Transform(this.lengthDirection);
             this.widthDirection.Normalize();
+            // #136 
 
             var mesh = new MeshBuilder(true, false);
             double minX = -this.Width / 2;
