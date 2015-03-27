@@ -21,43 +21,48 @@ namespace DnaDemo
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [Example(null, "Shows a double helix, the first exmaple of this library :)")]
+    [Example(null, "Shows a double helix, the first example of this library :)")]
     public partial class MainWindow : Window
     {
         private static readonly Random r = new Random();
 
-        private readonly Brush[] baseBrush1 = new Brush[] { Brushes.Blue, Brushes.Yellow, Brushes.Red, Brushes.Green };
-        private readonly Brush[] baseBrush2 = new Brush[] { Brushes.Yellow, Brushes.Blue, Brushes.Green, Brushes.Red };
+        private static readonly Brush[] BaseBrush1 = { Brushes.Blue, Brushes.Yellow, Brushes.Red, Brushes.Green };
 
+        private static readonly Brush[] BaseBrush2 = { Brushes.Yellow, Brushes.Blue, Brushes.Green, Brushes.Red };
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             // Adding elements programatically
-            AddBases(model, 24, 3, 30);
+            this.AddBases(this.model, 24, 3, 30);
         }
 
         private void AddBases(ModelVisual3D model, int number, double turns, double length)
         {
-            double b = turns * 2 * Math.PI;
-            double l = length;
-            double p1 = 0;
-            double p2 = 3.14;
+            var b = turns * 2 * Math.PI;
+            var l = length;
+            var p1 = 0d;
+            var p2 = 3.14;
             for (int i = 0; i < number; i++)
             {
-                double u = (double)i / (number - 1);
-                double x1 = Math.Cos(b * u + p1) + Math.Cos(b * u + p1);
-                double y1 = Math.Sin(b * u + p1) + Math.Sin(b * u + p1);
-                double z = u * l;
-                double x2 = Math.Cos(b * u + p2) + Math.Cos(b * u + p2);
-                double y2 = Math.Sin(b * u + p2) + Math.Sin(b * u + p2);
+                var u = (double)i / (number - 1);
+                var bu = b * u;
+                var x1 = Math.Cos(bu + p1) + Math.Cos(bu + p1);
+                var y1 = Math.Sin(bu + p1) + Math.Sin(bu + p1);
+                var z = u * l;
+                var x2 = Math.Cos(bu + p2) + Math.Cos(bu + p2);
+                var y2 = Math.Sin(bu + p2) + Math.Sin(bu + p2);
                 var pt1 = new Point3D(x1, y1, z);
                 var pt2 = new Point3D(x2, y2, z);
                 var pt3 = new Point3D(0, 0, z);
 
-                int j = r.Next(4);
-                Brush brush1 = baseBrush1[j];
-                Brush brush2 = baseBrush2[j];
+                var j = r.Next(4);
+                var brush1 = BaseBrush1[j];
+                var brush2 = BaseBrush2[j];
 
                 var ts = new PipeVisual3D
                              {
@@ -79,12 +84,4 @@ namespace DnaDemo
             }
         }
     }
-
-    public enum Base
-    {
-        A,
-        D,
-        T,
-        C
-    } ;
 }

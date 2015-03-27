@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf
                 "CameraRotationMode",
                 typeof(CameraRotationMode),
                 typeof(HelixViewport3D),
-                new UIPropertyMetadata(CameraRotationMode.Turntable, CameraRotationModeChanged));
+                new UIPropertyMetadata(CameraRotationMode.Turntable, (s, e) => ((HelixViewport3D)s).OnCameraRotationModeChanged()));
 
         /// <summary>
         /// Identifies the <see cref="ChangeFieldOfViewCursor"/> dependency property.
@@ -183,23 +183,18 @@ namespace HelixToolkit.Wpf
                 "CoordinateSystemWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
 
         /// <summary>
-        /// Identifies the <see cref="CurrentPosition"/> dependency property.
+        /// Identifies the CurrentPosition dependency property.
         /// </summary>
-        /// <remark>
-        /// Obsolete since Issue #133, CurrentPosition is now obsolete, please use CursorPosition instead
-        /// </remark>
         public static readonly DependencyProperty CurrentPositionProperty =
             DependencyProperty.Register(
                 "CurrentPosition",
                 typeof(Point3D),
                 typeof(HelixViewport3D),
-                new FrameworkPropertyMetadata(
-                    new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                new FrameworkPropertyMetadata(new Point3D(0, 0, 0)));
 
         /// <summary>
-        /// Identifies the <see cref="EnableCurrentPosition"/> dependency property.
+        /// Identifies the EnableCurrentPosition dependency property.
         /// </summary>
-        [Obsolete("Issue #133, EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
         public static readonly DependencyProperty EnableCurrentPositionProperty =
             DependencyProperty.Register(
                 "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
@@ -208,7 +203,6 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="CalculateCursorPosition"/> dependency property. 
         /// It enables (true) or disables (false) the calculation of the cursor position in the 3D Viewport
         /// </summary>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CalculateCursorPositionProperty =
             DependencyProperty.Register(
                 "CalculateCursorPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
@@ -219,7 +213,6 @@ namespace HelixToolkit.Wpf
         /// <remarks> 
         /// The return value equals ConstructionPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorPositionProperty =
             DependencyProperty.Register(
                 "CursorPosition",
@@ -233,7 +226,6 @@ namespace HelixToolkit.Wpf
         /// <remarks> 
         /// This property returns the position of the nearest model.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorOnElementPositionProperty =
             DependencyProperty.Register(
                 "CursorOnElementPosition",
@@ -248,7 +240,6 @@ namespace HelixToolkit.Wpf
         /// <remarks> 
         /// This property returns the point on the cursor plane..
         /// </remarks>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorOnConstructionPlanePositionProperty =
             DependencyProperty.Register(
                 "CursorOnConstructionPlanePosition",
@@ -260,7 +251,6 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="ConstructionPlane"/> dependency property.
         /// </summary>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty ConstructionPlaneProperty =
             DependencyProperty.Register(
                 "ConstructionPlane",
@@ -272,7 +262,6 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="CursorRay"/> dependency property.
         /// </summary>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorRayProperty =
             DependencyProperty.Register(
                 "CursorRay",
@@ -292,7 +281,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
             "DefaultCamera", typeof(ProjectionCamera), typeof(HelixViewport3D), new UIPropertyMetadata(null));
-
 
         /// <summary>
         /// Identifies the <see cref="FieldOfViewText"/> dependency property.
@@ -359,7 +347,7 @@ namespace HelixToolkit.Wpf
                 "IsHeadLightEnabled",
                 typeof(bool),
                 typeof(HelixViewport3D),
-                new UIPropertyMetadata(false, HeadlightChanged));
+                new UIPropertyMetadata(false, (s, e) => ((HelixViewport3D)s).OnHeadlightChanged()));
 
         /// <summary>
         /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
@@ -459,7 +447,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Orthographic"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrthographicProperty = DependencyProperty.Register(
-            "Orthographic", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false, OrthographicChanged));
+            "Orthographic", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false, (s, e) => ((HelixViewport3D)s).OnOrthographicChanged()));
 
         /// <summary>
         /// Identifies the <see cref="OrthographicToggleGesture"/> dependency property.
@@ -575,7 +563,7 @@ namespace HelixToolkit.Wpf
             "ShowCameraInfo",
             typeof(bool),
             typeof(HelixViewport3D),
-            new UIPropertyMetadata(false, ShowCameraInfoChanged));
+            new UIPropertyMetadata(false, (s, e) => ((HelixViewport3D)s).UpdateCameraInfo()));
 
         /// <summary>
         /// Identifies the <see cref="ShowCameraTarget"/> dependency property.
@@ -599,7 +587,7 @@ namespace HelixToolkit.Wpf
                 "ShowFieldOfView",
                 typeof(bool),
                 typeof(HelixViewport3D),
-                new UIPropertyMetadata(false, ShowFieldOfViewChanged));
+                new UIPropertyMetadata(false, (s, e) => ((HelixViewport3D)s).UpdateFieldOfViewInfo()));
 
         /// <summary>
         /// Identifies the <see cref="ShowFrameRate"/> dependency property.
@@ -608,7 +596,7 @@ namespace HelixToolkit.Wpf
             "ShowFrameRate",
             typeof(bool),
             typeof(HelixViewport3D),
-            new UIPropertyMetadata(false, (d, e) => ((HelixViewport3D)d).OnShowFrameRateChanged()));
+            new UIPropertyMetadata(false, (s, e) => ((HelixViewport3D)s).OnShowFrameRateChanged()));
 
         /// <summary>
         /// Identifies the <see cref="ShowTriangleCountInfo"/> dependency property.
@@ -618,7 +606,7 @@ namespace HelixToolkit.Wpf
                 "ShowTriangleCountInfo",
                 typeof(bool),
                 typeof(HelixViewport3D),
-                new UIPropertyMetadata(false, (d, e) => ((HelixViewport3D)d).OnShowTriangleCountInfoChanged()));
+                new UIPropertyMetadata(false, (s, e) => ((HelixViewport3D)s).OnShowTriangleCountInfoChanged()));
 
         /// <summary>
         /// Identifies the <see cref="ShowViewCube"/> dependency property.
@@ -858,7 +846,7 @@ namespace HelixToolkit.Wpf
                 "ZoomSensitivity", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The zoomed by rectangle event
+        /// Identifies the <see cref="ZoomedByRectangle"/> routed event.
         /// </summary>
         public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
             "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
@@ -894,7 +882,7 @@ namespace HelixToolkit.Wpf
         private readonly Stopwatch fpsWatch = new Stopwatch();
 
         /// <summary>
-        /// The head light.
+        /// The headlight.
         /// </summary>
         private readonly DirectionalLight headLight = new DirectionalLight { Color = Colors.White };
 
@@ -984,10 +972,7 @@ namespace HelixToolkit.Wpf
         private Viewport3D viewCubeViewport;
 
         /// <summary>
-        /// Initializes static members of the <see cref="HelixViewport3D" /> class. Initializes static members of the
-        ///     <see
-        ///         cref="HelixViewport3D" />
-        /// class.
+        /// Initializes static members of the <see cref="HelixViewport3D"/> class.
         /// </summary>
         static HelixViewport3D()
         {
@@ -998,10 +983,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HelixViewport3D" /> class. Initializes a new instance of the
-        ///     <see
-        ///         cref="HelixViewport3D" />
-        /// class.
+        /// Initializes a new instance of the <see cref="HelixViewport3D"/> class.
         /// </summary>
         public HelixViewport3D()
         {
@@ -1155,7 +1137,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the camera controller
+        /// Gets the camera controller.
         /// </summary>
         public CameraController CameraController
         {
@@ -1185,7 +1167,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the camera info.
+        /// Gets the camera info.
         /// </summary>
         /// <value>
         /// The camera info.
@@ -1197,7 +1179,7 @@ namespace HelixToolkit.Wpf
                 return (string)this.GetValue(CameraInfoProperty);
             }
 
-            set
+            private set
             {
                 this.SetValue(CameraInfoProperty, value);
             }
@@ -1274,7 +1256,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the change look-at view gesture.
+        /// Gets or sets the change look-at gesture.
         /// </summary>
         /// <value>
         /// The change look-at gesture.
@@ -1466,15 +1448,15 @@ namespace HelixToolkit.Wpf
         /// </value>
         /// <remarks>
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
-        /// Obsolete since Issue #133, CurrentPosition is now obsolete, please use CursorPosition instead.
         /// </remarks>
-        // #133, CK, 2015-03-24
+        [Obsolete("CurrentPosition is now obsolete, please use CursorPosition instead", false)]
         public Point3D CurrentPosition
         {
             get
             {
                 return (Point3D)this.GetValue(CurrentPositionProperty);
             }
+
             set
             {
                 this.SetValue(CurrentPositionProperty, value);
@@ -1523,20 +1505,19 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition" /> property is enabled.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
+        ///   <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
         /// </value>
-        // #133, CK, 2015-03-24
-        [Obsolete("Issue #133, EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
+        [Obsolete("EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
         public bool EnableCurrentPosition
         {
             get
             {
-                return CalculateCursorPosition;
+                return this.CalculateCursorPosition;
             }
 
             set
             {
-                CalculateCursorPosition = value;
+                this.CalculateCursorPosition = value;
             }
         }
 
@@ -1544,9 +1525,8 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether calculation of the <see cref="CursorPosition" /> properties is enabled.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
+        ///   <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
         /// </value>
-        // #133, CK, 2015-03-24
         public bool CalculateCursorPosition
         {
             get
@@ -1569,14 +1549,14 @@ namespace HelixToolkit.Wpf
         /// <remarks>
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public Point3D? CursorPosition
         {
             get
             {
                 return (Point3D?)this.GetValue(CursorPositionProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorPositionProperty, value);
             }
@@ -1591,32 +1571,32 @@ namespace HelixToolkit.Wpf
         /// <remarks>
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public Point3D? CursorOnConstructionPlanePosition
         {
             get
             {
-                return (Point3D?) this.GetValue(CursorOnConstructionPlanePositionProperty);
+                return (Point3D?)this.GetValue(CursorOnConstructionPlanePositionProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorOnConstructionPlanePositionProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets and Sets the cursor plane
+        /// Gets or sets the plane that defines the <see cref="CursorOnConstructionPlanePosition" />.
         /// </summary>
         /// <value>
-        /// The cursor plane .
+        /// The plane used to calculate the <see cref="CursorOnConstructionPlanePosition" />.
         /// </value>
-        // #133, CK, 2015-03-24
         public Plane3D ConstructionPlane
         {
             get
             {
                 return (Plane3D)this.GetValue(ConstructionPlaneProperty);
             }
+
             set
             {
                 this.SetValue(ConstructionPlaneProperty, value);
@@ -1624,51 +1604,48 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the cursor Ray
+        /// Gets the cursor ray.
         /// </summary>
         /// <value>
-        /// The cursor Ray.
+        /// The cursor ray.
         /// </value>
-        // #133, CK, 2015-03-25
         public Ray3D CursorRay
         {
             get
             {
                 return (Ray3D)this.GetValue(CursorRayProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorRayProperty, value);
             }
         }
 
-
         /// <summary>
-        /// Gets the current cursor position on the nearest Model. If the model is not hit, the position is null.
+        /// Gets the current cursor position on the nearest model. If the model is not hit, the position is <c>null</c>.
         /// </summary>
         /// <value>
-        /// The position of the snapped Model
+        /// The position of the model intersection.
         /// </value>
         /// <remarks>
-        /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+        /// The <see cref="CalculateCursorPosition" /> property must be set to <c>true</c> to enable updating of this property.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public Point3D? CursorOnElementPosition
         {
             get
             {
                 return (Point3D?)this.GetValue(CursorOnElementPositionProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorOnElementPositionProperty, value);
             }
         }
 
-
-
         /// <summary>
-        /// Gets or sets the field of view text.
+        /// Gets the field of view text.
         /// </summary>
         /// <value>
         /// The field of view text.
@@ -1680,14 +1657,14 @@ namespace HelixToolkit.Wpf
                 return (string)this.GetValue(FieldOfViewTextProperty);
             }
 
-            set
+            private set
             {
                 this.SetValue(FieldOfViewTextProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the frame rate.
+        /// Gets the frame rate.
         /// </summary>
         /// <value>
         /// The frame rate.
@@ -1699,14 +1676,14 @@ namespace HelixToolkit.Wpf
                 return (int)this.GetValue(FrameRateProperty);
             }
 
-            set
+            private set
             {
                 this.SetValue(FrameRateProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the frame rate text.
+        /// Gets the frame rate text.
         /// </summary>
         /// <value>
         /// The frame rate text.
@@ -1718,7 +1695,7 @@ namespace HelixToolkit.Wpf
                 return (string)this.GetValue(FrameRateTextProperty);
             }
 
-            set
+            private set
             {
                 this.SetValue(FrameRateTextProperty, value);
             }
@@ -1744,10 +1721,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [infinite spin].
+        /// Gets or sets a value indicating whether to enable infinite spin.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if [infinite spin]; otherwise, <c>false</c> .
+        /// <c>true</c> if infinite spin is enabled; otherwise, <c>false</c> .
         /// </value>
         public bool InfiniteSpin
         {
@@ -1817,10 +1794,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is head light enabled.
+        /// Gets or sets a value indicating whether the head light is enabled.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if this instance is head light enabled; otherwise, <c>false</c> .
+        ///     <c>true</c> if the head light is enabled; otherwise, <c>false</c> .
         /// </value>
         public bool IsHeadLightEnabled
         {
@@ -2070,10 +2047,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="HelixViewport3D" /> is orthographic.
+        /// Gets or sets a value indicating whether this <see cref="HelixViewport3D" /> should use an orthographic camera.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if orthographic; otherwise, <c>false</c> .
+        ///     <c>true</c> if an orthographic camera should be used; otherwise, <c>false</c> .
         /// </value>
         public bool Orthographic
         {
@@ -2187,7 +2164,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the ResetCameraGesture.
+        /// Gets or sets the reset camera gesture.
         /// </summary>
         public InputGesture ResetCameraGesture
         {
@@ -2260,10 +2237,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the rotate cursor.
+        /// Gets or sets the rotation cursor.
         /// </summary>
         /// <value>
-        /// The rotate cursor.
+        /// The rotation cursor.
         /// </value>
         public Cursor RotateCursor
         {
@@ -2279,10 +2256,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the rotate gesture.
+        /// Gets or sets the rotation gesture.
         /// </summary>
         /// <value>
-        /// The rotate gesture.
+        /// The rotation gesture.
         /// </value>
         public MouseGesture RotateGesture
         {
@@ -2298,10 +2275,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the alternative rotate gesture.
+        /// Gets or sets the alternative rotation gesture.
         /// </summary>
         /// <value>
-        /// The alternative rotate gesture.
+        /// The alternative rotation gesture.
         /// </value>
         public MouseGesture RotateGesture2
         {
@@ -2339,7 +2316,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to show camera info.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if [show camera info]; otherwise, <c>false</c> .
+        ///     <c>true</c> if the camera info should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowCameraInfo
         {
@@ -2358,7 +2335,7 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether to show the camera target adorner.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if [show camera target]; otherwise, <c>false</c> .
+        ///     <c>true</c> if the camera target adorner should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowCameraTarget
         {
@@ -2374,10 +2351,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [show coordinate system].
+        /// Gets or sets a value indicating whether to show the coordinate system.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if [show coordinate system]; otherwise, <c>false</c> .
+        ///     <c>true</c> if the coordinate system should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowCoordinateSystem
         {
@@ -2393,10 +2370,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show field of view.
+        /// Gets or sets a value indicating whether to show the current field of view.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if [show field of view]; otherwise, <c>false</c> .
+        ///     <c>true</c> if field of view should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowFieldOfView
         {
@@ -2412,10 +2389,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show frame rate.
+        /// Gets or sets a value indicating whether to show the frame rate.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if [show frame rate]; otherwise, <c>false</c> .
+        ///     <c>true</c> if the frame rate should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowFrameRate
         {
@@ -2447,10 +2424,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [show view cube].
+        /// Gets or sets a value indicating whether to show the view cube.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if [show view cube]; otherwise, <c>false</c> .
+        ///     <c>true</c> if the view cube should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowViewCube
         {
@@ -2637,7 +2614,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TriangleCountInfo.
+        /// Gets information about the triangle count.
         /// </summary>
         public string TriangleCountInfo
         {
@@ -2646,7 +2623,7 @@ namespace HelixToolkit.Wpf
                 return (string)this.GetValue(TriangleCountInfoProperty);
             }
 
-            set
+            private set
             {
                 this.SetValue(TriangleCountInfoProperty, value);
             }
@@ -2811,7 +2788,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the opacity of the ViewCube when inactive.
+        /// Gets or sets the opacity of the view cube when inactive.
         /// </summary>
         public double ViewCubeOpacity
         {
@@ -2917,7 +2894,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to zoom around mouse down point.
+        /// Gets or sets a value indicating whether to zoom around the mouse down point.
         /// </summary>
         /// <value>
         ///     <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> .
@@ -2955,7 +2932,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets or sets ZoomExtentsGesture.
+        /// Gets or sets the zoom extents gesture.
         /// </summary>
         public InputGesture ZoomExtentsGesture
         {
@@ -3115,7 +3092,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Exports the view to the specified file name.
+        /// Exports the view to the specified file.
         /// </summary>
         /// <remarks>
         /// Exporters.Filter contains all supported export file types.
@@ -3176,7 +3153,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Finds the nearest <see cref="Visual3D" />.
+        /// Finds the <see cref="Visual3D" /> that is nearest the camera ray through the specified point.
         /// </summary>
         /// <param name="pt">
         /// The point.
@@ -3190,24 +3167,24 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Change the camera to look at the specified point.
+        /// Changes the camera to look at the specified point.
         /// </summary>
-        /// <param name="p">
+        /// <param name="target">
         /// The point.
         /// </param>
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void LookAt(Point3D p, double animationTime = 0)
+        public void LookAt(Point3D target, double animationTime = 0)
         {
-            this.Camera.LookAt(p, animationTime);
+            this.Camera.LookAt(target, animationTime);
         }
 
         /// <summary>
-        /// Change the camera to look at the specified point.
+        /// Changes the camera to look at the specified point.
         /// </summary>
-        /// <param name="p">
-        /// The point.
+        /// <param name="target">
+        /// The target point.
         /// </param>
         /// <param name="distance">
         /// The distance.
@@ -3215,34 +3192,30 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void LookAt(Point3D p, double distance, double animationTime)
+        public void LookAt(Point3D target, double distance, double animationTime)
         {
-            this.Camera.LookAt(p, distance, animationTime);
+            this.Camera.LookAt(target, distance, animationTime);
         }
 
         /// <summary>
-        /// Change the camera to look at the specified point.
+        /// Changes the camera to look at the specified point.
         /// </summary>
-        /// <param name="p">
-        /// The point.
-        /// </param>
-        /// <param name="direction">
-        /// The direction.
-        /// </param>
-        /// <param name="animationTime">
-        /// The animation time.
-        /// </param>
-        public void LookAt(Point3D p, Vector3D direction, double animationTime)
+        /// <param name="target">The target point.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="animationTime">The animation time.</param>
+        public void LookAt(Point3D target, Vector3D direction, double animationTime)
         {
-            this.Camera.LookAt(p, direction, animationTime);
+            this.Camera.LookAt(target, direction, animationTime);
         }
 
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call
-        ///     <see
-        ///         cref="M:System.Windows.FrameworkElement.ApplyTemplate" />
+        /// <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />
         /// .
         /// </summary>
+        /// <exception cref="HelixToolkitException">
+        /// A part is missing from the template.
+        /// </exception>
         public override void OnApplyTemplate()
         {
             if (this.adornerLayer == null)
@@ -3338,7 +3311,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Change the camera position and directions.
+        /// Sets the camera position and orientation.
         /// </summary>
         /// <param name="newPosition">
         /// The new camera position.
@@ -3404,7 +3377,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the camera is changed.
+        /// Handles camera changes.
         /// </summary>
         protected virtual void OnCameraChanged()
         {
@@ -3450,7 +3423,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when headlight is changed.
+        /// Handles changes to the <see cref="IsHeadLightEnabled" /> property.
         /// </summary>
         protected void OnHeadlightChanged()
         {
@@ -3471,11 +3444,14 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
+        /// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> property changes.
         /// </summary>
-        /// <param name="e">
-        /// Information about the change.
-        /// </param>
+        /// <param name="e">Information about the change.</param>
+        /// <exception cref="System.NotImplementedException">
+        /// Move operation not implemented.
+        /// or
+        /// Replace operation not implemented.
+        /// </exception>
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -3484,14 +3460,12 @@ namespace HelixToolkit.Wpf
                     this.AddItems(e.NewItems);
                     break;
                 case NotifyCollectionChangedAction.Move:
-                    // todo
-                    break;
+                    throw new NotImplementedException("Move operation not implemented.");
                 case NotifyCollectionChangedAction.Remove:
                     this.RemoveItems(e.OldItems);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    // todo
-                    break;
+                    throw new NotImplementedException("Replace operation not implemented.");
                 case NotifyCollectionChangedAction.Reset:
                     this.Children.Clear();
                     break;
@@ -3526,41 +3500,30 @@ namespace HelixToolkit.Wpf
             if (this.CalculateCursorPosition)
             {
                 var pt = e.GetPosition(this);
-                UpdateCursorPosition(pt);
+                this.UpdateCursorPosition(pt);
             }
         }
 
+        /// <summary>
+        /// Raises the camera changed event.
+        /// </summary>
+        protected virtual void RaiseCameraChangedEvent()
+        {
+            // e.Handled = true;
+            var args = new RoutedEventArgs(CameraChangedEvent);
+            this.RaiseEvent(args);
+        }
+
+        /// <summary>
+        /// Updates the cursor position.
+        /// </summary>
+        /// <param name="pt">The position of the cursor (in viewport coordinates).</param>
         private void UpdateCursorPosition(Point pt)
         {
-            // set CurrentPosition (is obsolete since Issue #133, chrkon, 2015-03-25)
-            var obsolete_pos = this.FindNearestPoint(pt);
-            if (obsolete_pos != null)
-            {
-                this.CurrentPosition = obsolete_pos.Value;
-            }
-            else
-            {
-                var obsolete_p = this.Viewport.UnProject(pt);
-                if (obsolete_p != null)
-                {
-                    this.CurrentPosition = obsolete_p.Value;
-                }
-            }
+            this.CursorOnElementPosition = this.FindNearestPoint(pt);
+            this.CursorPosition = this.Viewport.UnProject(pt);
 
-            // The cast "(Point3D?)null" in the following code looks crazy, but it is neccessary. 
-            // Without this cast the compiler won't work. But I don't know the reason why.  chrkon, 2015-3-25
-
-            // Set Cursor 3D Position
-            var p = this.Viewport.UnProject(pt);
-            this.CursorPosition = p != null ? p.Value : (Point3D?)null;  
-
-            // Set CursorOnElementPosition
-            var pos = this.FindNearestPoint(pt);
-            this.CursorOnElementPosition = pos != null ? pos.Value : (Point3D?)null;
-           
-            // Set CursorOnConstructionPlanePosition
-            // #133, CK, 2015-03-26            
-            // Calculate CursorRay
+            // Calculate the cursor ray
             Point3D cursorNearPlanePoint;
             Point3D cursorFarPlanePoint;
             var ok = this.Viewport.Point2DtoPoint3D(pt, out cursorNearPlanePoint, out cursorFarPlanePoint);
@@ -3575,97 +3538,38 @@ namespace HelixToolkit.Wpf
                 this.CursorRay = null;
             }
 
-            // Calculate IntersectionPoint between Cursor plane and CursorRay 
-            var intersectionPoint = this.ConstructionPlane.LineIntersection(CursorRay.Origin, CursorRay.Origin + CursorRay.Direction);
-            this.CursorOnConstructionPlanePosition = intersectionPoint != null ? intersectionPoint.Value : (Point3D?)null;
-        }
+            // Calculate the intersection between the construction plane and the cursor ray
+            if (this.CursorRay != null)
+            {
+                this.CursorOnConstructionPlanePosition = this.ConstructionPlane.LineIntersection(
+                    this.CursorRay.Origin,
+                    this.CursorRay.Origin + this.CursorRay.Direction);
+            }
+            else
+            {
+                this.CursorOnConstructionPlanePosition = null;
+            }
 
-        /// <summary>
-        /// Raises the camera changed event.
-        /// </summary>
-        protected virtual void RaiseCameraChangedEvent()
-        {
-            // e.Handled = true;
-            var args = new RoutedEventArgs(CameraChangedEvent);
-            this.RaiseEvent(args);
-        }
-
-        /// <summary>
-        /// The camera rotation mode changed.
-        /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void CameraRotationModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((HelixViewport3D)d).OnCameraRotationModeChanged();
-        }
-
-        /// <summary>
-        /// The headlight changed.
-        /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void HeadlightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((HelixViewport3D)d).OnHeadlightChanged();
-        }
-
-        /// <summary>
-        /// The orthographic changed.
-        /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void OrthographicChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((HelixViewport3D)d).OnOrthographicChanged();
-        }
-
-        /// <summary>
-        /// Called when the ShowCameraInfo is changed.
-        /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        private static void ShowCameraInfoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((HelixViewport3D)d).UpdateCameraInfo();
-        }
-
-        /// <summary>
-        /// Called when ShowFieldOfView is changed.
-        /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        private static void ShowFieldOfViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((HelixViewport3D)d).UpdateFieldOfViewInfo();
+            // TODO: remove this code when the CurrentPosition property is removed
+#pragma warning disable 618
+            if (this.CursorOnElementPosition.HasValue)
+            {
+                this.CurrentPosition = this.CursorOnElementPosition.Value;
+            }
+            else
+            {
+                if (this.CursorPosition.HasValue)
+                {
+                    this.CurrentPosition = this.CursorPosition.Value;
+                }
+            }
+#pragma warning restore 618
         }
 
         /// <summary>
         /// Adds the specified items.
         /// </summary>
-        /// <param name="newValue">
-        /// The items to add.
-        /// </param>
+        /// <param name="newValue">The items to add.</param>
         private void AddItems(IEnumerable newValue)
         {
             if (newValue != null)
@@ -3682,7 +3586,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The camera_ changed.
+        /// Handles the Changed event of the current camera.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -3702,12 +3606,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Handles the Rendering event of the CompositionTarget control.
         /// </summary>
-        /// <param name="sender">
-        /// The source of the event.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
             this.frameCounter++;
@@ -3728,18 +3628,14 @@ namespace HelixToolkit.Wpf
                 var count = this.viewport.GetTotalNumberOfTriangles();
                 this.TriangleCountInfo = string.Format("Triangles: {0}", count);
                 this.infoFrameCounter = 0;
-            }            
+            }
         }
 
         /// <summary>
-        /// The copy command handler.
+        /// Handles the <see cref="ApplicationCommands.Copy" /> command.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="ExecutedRoutedEventArgs"/> instance containing the event data.</param>
         private void CopyHandler(object sender, ExecutedRoutedEventArgs e)
         {
             // var vm = Viewport3DHelper.GetViewMatrix(Camera);
@@ -3756,7 +3652,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on camera rotation mode changed.
+        /// Handles changes to the camera rotation mode.
         /// </summary>
         private void OnCameraRotationModeChanged()
         {
@@ -3767,7 +3663,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the control is loaded.
+        /// Handles the Loaded event.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -3796,7 +3692,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the control is unloaded.
+        /// Handles the Unloaded event.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -3810,7 +3706,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the camera type is changed.
+        /// Handles changes to the <see cref="Orthographic" /> property.
         /// </summary>
         private void OnOrthographicChanged()
         {
@@ -3828,7 +3724,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on show frame rate changed.
+        /// Handles changes to the <see cref="ShowFrameRate" /> property.
         /// </summary>
         private void OnShowFrameRateChanged()
         {
@@ -3836,7 +3732,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The on show triangle count info changed.
+        /// Handles changes to the <see cref="ShowTriangleCountInfo" /> property.
         /// </summary>
         private void OnShowTriangleCountInfoChanged()
         {
@@ -3844,14 +3740,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The orthographic toggle.
+        /// Handles the <see cref="OrthographicToggleCommand" />.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="ExecutedRoutedEventArgs"/> instance containing the event data.</param>
         private void OrthographicToggle(object sender, ExecutedRoutedEventArgs e)
         {
             this.Orthographic = !this.Orthographic;
@@ -3879,7 +3771,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The subscribe to rendering event.
+        /// Subscribes to the rendering event.
         /// </summary>
         private void SubscribeToRenderingEvent()
         {
@@ -3891,7 +3783,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The unsubscribe rendering event.
+        /// Unsubscribes the rendering event.
         /// </summary>
         private void UnsubscribeRenderingEvent()
         {
@@ -3911,7 +3803,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The update field of view info.
+        /// Updates the field of view info.
         /// </summary>
         private void UpdateFieldOfViewInfo()
         {
@@ -3920,7 +3812,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The update rendering event subscription.
+        /// Updates the rendering event subscription.
         /// </summary>
         private void UpdateRenderingEventSubscription()
         {
@@ -3935,7 +3827,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the mouse enters the view cube.
+        /// Handles the mouse enter events on the view cube.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -3949,7 +3841,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Called when the mouse leaves the view cube.
+        /// Handles the mouse leave events on the view cube.
         /// </summary>
         /// <param name="sender">
         /// The sender.
