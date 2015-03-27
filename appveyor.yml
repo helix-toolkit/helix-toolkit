@@ -5,9 +5,9 @@ environment:
     secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
       
 install:
-  - cinst stylecop
-  - cinst LynxToolkit
-  - cinst gitlink -Pre
+  - cinst stylecop -y
+  - cinst LynxToolkit -y
+  - cinst gitlink -Pre -y
 
 platform: Any CPU
 
