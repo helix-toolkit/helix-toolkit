@@ -9,20 +9,20 @@
 
 namespace CursorPositionDemo
 {
-    using System.Windows;
-
     using ExampleBrowser;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [Example(null, "Shows the cursor positions in the HelixViewport3D.")]
-    public partial class MainWindow : Window
+    [Example(null, "Shows the position of the mouse cursor in the HelixViewport3D.")]
+    public partial class MainWindow
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
-
     }
 }

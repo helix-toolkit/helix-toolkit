@@ -208,7 +208,6 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="CalculateCursorPosition"/> dependency property. 
         /// It enables (true) or disables (false) the calculation of the cursor position in the 3D Viewport
         /// </summary>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CalculateCursorPositionProperty =
             DependencyProperty.Register(
                 "CalculateCursorPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
@@ -219,7 +218,6 @@ namespace HelixToolkit.Wpf
         /// <remarks> 
         /// The return value equals ConstructionPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorPositionProperty =
             DependencyProperty.Register(
                 "CursorPosition",
@@ -233,7 +231,6 @@ namespace HelixToolkit.Wpf
         /// <remarks> 
         /// This property returns the position of the nearest model.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorOnElementPositionProperty =
             DependencyProperty.Register(
                 "CursorOnElementPosition",
@@ -248,7 +245,6 @@ namespace HelixToolkit.Wpf
         /// <remarks> 
         /// This property returns the point on the cursor plane..
         /// </remarks>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorOnConstructionPlanePositionProperty =
             DependencyProperty.Register(
                 "CursorOnConstructionPlanePosition",
@@ -260,7 +256,6 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="ConstructionPlane"/> dependency property.
         /// </summary>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty ConstructionPlaneProperty =
             DependencyProperty.Register(
                 "ConstructionPlane",
@@ -272,7 +267,6 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="CursorRay"/> dependency property.
         /// </summary>
-        // #133, CK, 2015-03-24
         public static readonly DependencyProperty CursorRayProperty =
             DependencyProperty.Register(
                 "CursorRay",
@@ -292,7 +286,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
             "DefaultCamera", typeof(ProjectionCamera), typeof(HelixViewport3D), new UIPropertyMetadata(null));
-
 
         /// <summary>
         /// Identifies the <see cref="FieldOfViewText"/> dependency property.
@@ -1468,13 +1461,13 @@ namespace HelixToolkit.Wpf
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
         /// Obsolete since Issue #133, CurrentPosition is now obsolete, please use CursorPosition instead.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public Point3D CurrentPosition
         {
             get
             {
                 return (Point3D)this.GetValue(CurrentPositionProperty);
             }
+
             set
             {
                 this.SetValue(CurrentPositionProperty, value);
@@ -1523,20 +1516,19 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition" /> property is enabled.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
+        ///   <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
         /// </value>
-        // #133, CK, 2015-03-24
-        [Obsolete("Issue #133, EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
+        [Obsolete("EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead. See issue #133.", false)]
         public bool EnableCurrentPosition
         {
             get
             {
-                return CalculateCursorPosition;
+                return this.CalculateCursorPosition;
             }
 
             set
             {
-                CalculateCursorPosition = value;
+                this.CalculateCursorPosition = value;
             }
         }
 
@@ -1544,9 +1536,8 @@ namespace HelixToolkit.Wpf
         /// Gets or sets a value indicating whether calculation of the <see cref="CursorPosition" /> properties is enabled.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
+        ///   <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
         /// </value>
-        // #133, CK, 2015-03-24
         public bool CalculateCursorPosition
         {
             get
@@ -1569,14 +1560,14 @@ namespace HelixToolkit.Wpf
         /// <remarks>
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public Point3D? CursorPosition
         {
             get
             {
                 return (Point3D?)this.GetValue(CursorPositionProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorPositionProperty, value);
             }
@@ -1591,32 +1582,32 @@ namespace HelixToolkit.Wpf
         /// <remarks>
         /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public Point3D? CursorOnConstructionPlanePosition
         {
             get
             {
-                return (Point3D?) this.GetValue(CursorOnConstructionPlanePositionProperty);
+                return (Point3D?)this.GetValue(CursorOnConstructionPlanePositionProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorOnConstructionPlanePositionProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets and Sets the cursor plane
+        /// Gets or sets the plane that defines the <see cref="CursorOnConstructionPlanePosition" />.
         /// </summary>
         /// <value>
-        /// The cursor plane .
+        /// The plane used to calculate the <see cref="CursorOnConstructionPlanePosition" />.
         /// </value>
-        // #133, CK, 2015-03-24
         public Plane3D ConstructionPlane
         {
             get
             {
                 return (Plane3D)this.GetValue(ConstructionPlaneProperty);
             }
+
             set
             {
                 this.SetValue(ConstructionPlaneProperty, value);
@@ -1624,48 +1615,45 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Gets the cursor Ray
+        /// Gets the cursor ray.
         /// </summary>
         /// <value>
-        /// The cursor Ray.
+        /// The cursor ray.
         /// </value>
-        // #133, CK, 2015-03-25
         public Ray3D CursorRay
         {
             get
             {
                 return (Ray3D)this.GetValue(CursorRayProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorRayProperty, value);
             }
         }
 
-
         /// <summary>
-        /// Gets the current cursor position on the nearest Model. If the model is not hit, the position is null.
+        /// Gets the current cursor position on the nearest model. If the model is not hit, the position is <c>null</c>.
         /// </summary>
         /// <value>
-        /// The position of the snapped Model
+        /// The position of the model intersection.
         /// </value>
         /// <remarks>
-        /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+        /// The <see cref="CalculateCursorPosition" /> property must be set to <c>true</c> to enable updating of this property.
         /// </remarks>
-        // #133, CK, 2015-03-24
         public Point3D? CursorOnElementPosition
         {
             get
             {
                 return (Point3D?)this.GetValue(CursorOnElementPositionProperty);
             }
-            set
+
+            private set
             {
                 this.SetValue(CursorOnElementPositionProperty, value);
             }
         }
-
-
 
         /// <summary>
         /// Gets or sets the field of view text.
@@ -3526,58 +3514,8 @@ namespace HelixToolkit.Wpf
             if (this.CalculateCursorPosition)
             {
                 var pt = e.GetPosition(this);
-                UpdateCursorPosition(pt);
+                this.UpdateCursorPosition(pt);
             }
-        }
-
-        private void UpdateCursorPosition(Point pt)
-        {
-            // set CurrentPosition (is obsolete since Issue #133, chrkon, 2015-03-25)
-            var obsolete_pos = this.FindNearestPoint(pt);
-            if (obsolete_pos != null)
-            {
-                this.CurrentPosition = obsolete_pos.Value;
-            }
-            else
-            {
-                var obsolete_p = this.Viewport.UnProject(pt);
-                if (obsolete_p != null)
-                {
-                    this.CurrentPosition = obsolete_p.Value;
-                }
-            }
-
-            // The cast "(Point3D?)null" in the following code looks crazy, but it is neccessary. 
-            // Without this cast the compiler won't work. But I don't know the reason why.  chrkon, 2015-3-25
-
-            // Set Cursor 3D Position
-            var p = this.Viewport.UnProject(pt);
-            this.CursorPosition = p != null ? p.Value : (Point3D?)null;  
-
-            // Set CursorOnElementPosition
-            var pos = this.FindNearestPoint(pt);
-            this.CursorOnElementPosition = pos != null ? pos.Value : (Point3D?)null;
-           
-            // Set CursorOnConstructionPlanePosition
-            // #133, CK, 2015-03-26            
-            // Calculate CursorRay
-            Point3D cursorNearPlanePoint;
-            Point3D cursorFarPlanePoint;
-            var ok = this.Viewport.Point2DtoPoint3D(pt, out cursorNearPlanePoint, out cursorFarPlanePoint);
-            if (ok)
-            {
-                var ray = new Ray3D(cursorFarPlanePoint, cursorNearPlanePoint);
-                this.CursorRay = ray;
-            }
-            else
-            {
-                this.CursorOnConstructionPlanePosition = null;
-                this.CursorRay = null;
-            }
-
-            // Calculate IntersectionPoint between Cursor plane and CursorRay 
-            var intersectionPoint = this.ConstructionPlane.LineIntersection(CursorRay.Origin, CursorRay.Origin + CursorRay.Direction);
-            this.CursorOnConstructionPlanePosition = intersectionPoint != null ? intersectionPoint.Value : (Point3D?)null;
         }
 
         /// <summary>
@@ -3658,6 +3596,56 @@ namespace HelixToolkit.Wpf
         private static void ShowFieldOfViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((HelixViewport3D)d).UpdateFieldOfViewInfo();
+        }
+
+        /// <summary>
+        /// Updates the cursor position.
+        /// </summary>
+        /// <param name="pt">The position of the cursor (in viewport coordinates).</param>
+        private void UpdateCursorPosition(Point pt)
+        {
+            this.CursorOnElementPosition = this.FindNearestPoint(pt);
+            this.CursorPosition = this.Viewport.UnProject(pt);
+
+            // Calculate the cursor ray
+            Point3D cursorNearPlanePoint;
+            Point3D cursorFarPlanePoint;
+            var ok = this.Viewport.Point2DtoPoint3D(pt, out cursorNearPlanePoint, out cursorFarPlanePoint);
+            if (ok)
+            {
+                var ray = new Ray3D(cursorFarPlanePoint, cursorNearPlanePoint);
+                this.CursorRay = ray;
+            }
+            else
+            {
+                this.CursorOnConstructionPlanePosition = null;
+                this.CursorRay = null;
+            }
+
+            // Calculate the intersection between the construction plane and the cursor ray
+            if (this.CursorRay != null)
+            {
+                this.CursorOnConstructionPlanePosition = this.ConstructionPlane.LineIntersection(
+                    this.CursorRay.Origin,
+                    this.CursorRay.Origin + this.CursorRay.Direction);
+            }
+            else
+            {
+                this.CursorOnConstructionPlanePosition = null;
+            }
+
+            // TODO: remove this code when the CurrentPosition property is removed
+            if (this.CursorOnElementPosition.HasValue)
+            {
+                this.CurrentPosition = this.CursorOnElementPosition.Value;
+            }
+            else
+            {
+                if (this.CursorPosition.HasValue)
+                {
+                    this.CurrentPosition = this.CursorPosition.Value;
+                }
+            }
         }
 
         /// <summary>
