@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using HelixToolkit.Wpf.SharpDX.Model.Geometry;
-
-namespace HelixToolkit.Wpf.SharpDX
+﻿namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using global::SharpDX;
     using global::SharpDX.Direct3D;
