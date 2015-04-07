@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Geometry
+﻿namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using System.Collections.Generic;
 
     [Serializable]

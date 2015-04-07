@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HelixToolkit.Wpf.SharpDX.Model.Geometry;
-
 namespace SimpleDemo
 {
     using System.Linq;
