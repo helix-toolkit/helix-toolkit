@@ -94,6 +94,16 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
             var geometry = (MeshGeometry3D)model[0].Geometry;
             geometry.TextureCoordinates.AssertContains(new[] { 0d, 0d }, new[] { 0d, 0d }, new[] { 0d, 0d });
         }
+
+        [Test]
+        public void CanReadWrappedLines() {
+            var expectedNumberOfGeometries = 14;
+            var objReader = new ObjReader();
+
+            var model = objReader.Read(@"Models\obj\wrap_long_lines.obj");
+
+            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+        }
     }
 
     public static class TestExtensions 
