@@ -120,5 +120,15 @@ namespace HelixToolkit.Wpf.Tests
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
         }
+
+        [Test]
+        public void CanReadLinesWrappedMultipleTimes() {
+            var expectedNumberOfGeometries = 14;
+            var objReader = new ObjReader();
+
+            var model = objReader.Read(@"Models\obj\wrap_lines_multiple_times.obj");
+
+            Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
+        }
     }
 }

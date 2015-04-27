@@ -184,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                     }
 
-                    if (line.EndsWith("\\")) 
+                    while (line.EndsWith("\\")) 
                     {
                         var nextLine = this.Reader.ReadLine();
                         line = line.TrimEnd('\\') + nextLine;
