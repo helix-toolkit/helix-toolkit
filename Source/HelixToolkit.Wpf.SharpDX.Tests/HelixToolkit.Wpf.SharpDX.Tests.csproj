@@ -110,6 +110,14 @@
     <Compile Include="Utilities\MeshBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Models\obj\obj_format_tests\wrap_long_lines.mtl">
+      <Link>Models\obj\wrap_long_lines.mtl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\wrap_long_lines.obj">
+      <Link>Models\obj\wrap_long_lines.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="..\..\Models\obj\Triangle.obj">
       <Link>Models\obj\Triangle.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

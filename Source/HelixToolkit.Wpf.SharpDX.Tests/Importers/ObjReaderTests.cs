@@ -34,5 +34,16 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
             Assert.AreEqual(4, floorGeometry.Positions.Count);
             Assert.AreEqual(4, floorGeometry.Normals.Count);
         }
+
+
+        [Test]
+        public void CanReadWrappedLines() {
+            var expectedNumberOfGeometries = 14;
+            var objReader = new ObjReader();
+
+            var model = objReader.Read(@"Models\obj\wrap_long_lines.obj");
+
+            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+        }
     }
 }
