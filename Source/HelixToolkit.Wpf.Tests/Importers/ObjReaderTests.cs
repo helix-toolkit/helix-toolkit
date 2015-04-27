@@ -110,5 +110,15 @@ namespace HelixToolkit.Wpf.Tests
             Assert.NotNull(mg1);
             Assert.AreEqual(4, mg1.TriangleIndices.Count / 3);
         }
+
+        [Test]
+        public void CanReadWrappedLines() {
+            var expectedNumberOfGeometries = 14;
+            var objReader = new ObjReader();
+
+            var model = objReader.Read(@"Models\obj\wrap_long_lines.obj");
+
+            Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
+        }
     }
 }
