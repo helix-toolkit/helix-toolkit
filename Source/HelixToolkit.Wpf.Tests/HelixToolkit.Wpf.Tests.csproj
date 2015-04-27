@@ -254,6 +254,14 @@
       <Link>Models\obj\wrap_long_lines.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\wrap_lines_multiple_times.mtl">
+      <Link>Models\obj\wrap_lines_multiple_times.mtl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\wrap_lines_multiple_times.obj">
+      <Link>Models\obj\wrap_lines_multiple_times.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup />
