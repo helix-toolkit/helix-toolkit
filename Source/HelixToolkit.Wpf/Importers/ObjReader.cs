@@ -194,6 +194,12 @@ namespace HelixToolkit.Wpf
                         break;
                     }
 
+                    if (line.EndsWith("\\")) 
+                    {
+                        var nextLine = this.Reader.ReadLine();
+                        line = line.TrimEnd('\\') + nextLine;
+                    }
+
                     line = line.Trim();
                     if (line.StartsWith("#") || line.Length == 0)
                     {
