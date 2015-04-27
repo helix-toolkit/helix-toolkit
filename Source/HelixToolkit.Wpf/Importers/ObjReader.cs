@@ -421,8 +421,8 @@ namespace HelixToolkit.Wpf
             }
             else
             {
-                int smoothingGroup;
-                if (int.TryParse(values, out smoothingGroup))
+                long smoothingGroup;
+                if (long.TryParse(values, out smoothingGroup))
                 {
                     this.currentSmoothingGroup = smoothingGroup;
                 }
