@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 {
     [TestFixture]
-    class ObjReaderTests
+    class ObjReaderTests 
     {
         private ObjReader _objReader;
 
@@ -32,8 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
         [Test]
         public void LoadModelWithoutNormals()
         {
-            var reader = new ObjReader();
-            var objects = reader.Read(@"Models\obj\cornell_box.obj");
+            var objects = _objReader.Read(@"Models\obj\cornell_box.obj");
             
             Assert.IsNotNull(objects);
             Assert.AreEqual(9, objects.Count);
@@ -96,23 +95,21 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
         }
 
         [Test]
-        public void CanReadWrappedLines() 
+        public void CanParseLineContinuations() 
         {
             var expectedNumberOfGeometries = 1;
-            var objReader = new ObjReader();
 
-            var model = objReader.Read(@"Models\obj\line_continuation_single.obj");
+            var model = _objReader.Read(@"Models\obj\line_continuation_single.obj");
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Count);
         }
 
         [Test]
-        public void CanReadLinesWrappedMultipleTimes() 
+        public void CanParseLineContinuationsWithMultipleBreaks() 
         {
             var expectedNumberOfGeometries = 1;
-            var objReader = new ObjReader();
 
-            var model = objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
+            var model = _objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Count);
         }
