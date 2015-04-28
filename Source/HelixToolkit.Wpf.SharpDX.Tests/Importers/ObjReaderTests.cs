@@ -37,21 +37,23 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 
 
         [Test]
-        public void CanReadWrappedLines() {
-            var expectedNumberOfGeometries = 14;
+        public void CanReadWrappedLines() 
+        {
+            var expectedNumberOfGeometries = 1;
             var objReader = new ObjReader();
 
-            var model = objReader.Read(@"Models\obj\wrap_long_lines.obj");
+            var model = objReader.Read(@"Models\obj\line_continuation_single.obj");
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Count);
         }
 
         [Test]
-        public void CanReadLinesWrappedMultipleTimes() {
-            var expectedNumberOfGeometries = 14;
+        public void CanReadLinesWrappedMultipleTimes() 
+        {
+            var expectedNumberOfGeometries = 1;
             var objReader = new ObjReader();
 
-            var model = objReader.Read(@"Models\obj\wrap_lines_multiple_times.obj");
+            var model = objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Count);
         }

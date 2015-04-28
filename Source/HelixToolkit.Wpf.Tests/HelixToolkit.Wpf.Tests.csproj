@@ -220,20 +220,24 @@
       <Link>Models\off\boxcube.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Models\obj\obj_format_tests\wrap_long_lines.mtl">
-      <Link>Models\obj\wrap_long_lines.mtl</Link>
+    <Content Include="..\..\Models\obj\obj_format_tests\line_continuation_comment.obj">
+      <Link>Models\obj\line_continuation_comment.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Models\obj\obj_format_tests\wrap_long_lines.obj">
-      <Link>Models\obj\wrap_long_lines.obj</Link>
+    <Content Include="..\..\Models\obj\obj_format_tests\line_continuation_empty_continuation.obj">
+      <Link>Models\obj\line_continuation_empty_continuation.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Models\obj\obj_format_tests\wrap_lines_multiple_times.mtl">
-      <Link>Models\obj\wrap_lines_multiple_times.mtl</Link>
+    <Content Include="..\..\Models\obj\obj_format_tests\line_continuation_empty_line.obj">
+      <Link>Models\obj\line_continuation_empty_line.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Models\obj\obj_format_tests\wrap_lines_multiple_times.obj">
-      <Link>Models\obj\wrap_lines_multiple_times.obj</Link>
+    <Content Include="..\..\Models\obj\obj_format_tests\line_continuation_multiple_breaks.obj">
+      <Link>Models\obj\line_continuation_multiple_breaks.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\line_continuation_single.obj">
+      <Link>Models\obj\line_continuation_single.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
