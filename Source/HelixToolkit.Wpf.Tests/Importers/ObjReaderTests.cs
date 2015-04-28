@@ -15,13 +15,20 @@ namespace HelixToolkit.Wpf.Tests
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
-    public class ObjReaderTests
+    public class ObjReaderTests 
     {
+        private ObjReader _objReader;
+
+        [SetUp]
+        public void SetUp() 
+        {
+            _objReader = new ObjReader();              
+        }
+
         [Test, Ignore]
         public void Read_Bunny_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\bunny.obj");
+            var model = _objReader.Read(@"Models\obj\bunny.obj");
             Assert.AreEqual(2, model.Children.Count);
             var gm1 = model.Children[1] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -33,8 +40,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_CornellBox_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\cornell_box.obj");
+            var model = _objReader.Read(@"Models\obj\cornell_box.obj");
             Assert.AreEqual(9, model.Children.Count);
             var gm1 = model.Children[1] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -46,8 +52,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test, Ignore]
         public void Read_Ducky_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\ducky.obj");
+            var model = _objReader.Read(@"Models\obj\ducky.obj");
             Assert.AreEqual(4, model.Children.Count);
             var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
             var m1 = (MeshGeometry3D)((GeometryModel3D)model.Children[1]).Geometry;
@@ -62,8 +67,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_Test_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\test.obj");
+            var model = _objReader.Read(@"Models\obj\test.obj");
             Assert.AreEqual(2, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -75,8 +79,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_SmoothingOff_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\SmoothingOff.obj");
+            var model = _objReader.Read(@"Models\obj\SmoothingOff.obj");
             Assert.AreEqual(1, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -88,8 +91,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_SmoothingGroup0_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\SmoothingGroup0.obj");
+            var model = _objReader.Read(@"Models\obj\SmoothingGroup0.obj");
             Assert.AreEqual(1, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -101,8 +103,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_SmoothingGroup1_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\SmoothingGroup1.obj");
+            var model = _objReader.Read(@"Models\obj\SmoothingGroup1.obj");
             Assert.AreEqual(1, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -112,23 +113,21 @@ namespace HelixToolkit.Wpf.Tests
         }
 
         [Test]
-        public void CanReadWrappedLines() 
+        public void CanParseLineContinuations() 
         {
             var expectedNumberOfGeometries = 1;
-            var objReader = new ObjReader();
 
-            var model = objReader.Read(@"Models\obj\line_continuation_single.obj");
+            var model = _objReader.Read(@"Models\obj\line_continuation_single.obj");
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
         }
 
         [Test]
-        public void CanReadLinesWrappedMultipleTimes() 
+        public void CanParseLineContinuationsWithMultipleBreaks() 
         {
             var expectedNumberOfGeometries = 1;
-            var objReader = new ObjReader();
 
-            var model = objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
+            var model = _objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
         }
