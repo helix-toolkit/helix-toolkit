@@ -113,6 +113,36 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 
             Assert.AreEqual(expectedNumberOfGeometries, model.Count);
         }
+
+        [Test]
+        public void CanParseLineContinuationsWithEmptyContinuations() 
+        {
+            var expectedNumberOfGeometries = 1;
+
+            var model = _objReader.Read(@"Models\obj\line_continuation_empty_continuation.obj");
+
+            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+        }
+
+        [Test]
+        public void CanParseLineContinuationsWithEmptyLineInMiddle() 
+        {
+            var expectedNumberOfGeometries = 1;
+
+            var model = _objReader.Read(@"Models\obj\line_continuation_empty_line.obj");
+
+            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+        }
+
+        [Test]
+        public void CanParseLineContinuationsInComments() 
+        {
+            var expectedNumberOfGeometries = 1;
+
+            var model = _objReader.Read(@"Models\obj\line_continuation_comment.obj");
+
+            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+        }
     }
 
     public static class TestExtensions 
