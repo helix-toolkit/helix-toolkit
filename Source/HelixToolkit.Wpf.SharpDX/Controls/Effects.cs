@@ -125,6 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderLines = new RenderTechnique("RenderLines");
             RenderPoints = new RenderTechnique("RenderPoints");
             RenderBillboard = new RenderTechnique("RenderBillboard");
+            RenderPerVertexPhong = new RenderTechnique("RenderPerVertexPhong");
 
             RenderTechniques = new List<RenderTechnique>
             { 
@@ -139,6 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderTangents, 
                 RenderTexCoords,
                 RenderWires,
+                RenderPerVertexPhong,
 #if DEFERRED
                 RenderDeferred,
                 RenderGBuffer,  
@@ -166,6 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {     Techniques.RenderLines,      Properties.Resources._default}, 
                 {     Techniques.RenderPoints,     Properties.Resources._default},
                 {     Techniques.RenderBillboard,  Properties.Resources._default},
+                {     Techniques.RenderPerVertexPhong, Properties.Resources._default},
     #if TESSELLATION                                        
                 {     Techniques.RenderPNTriangs,  Properties.Resources._default}, 
                 {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
@@ -205,6 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static RenderTechnique RenderLines { get; private set; }
         public static RenderTechnique RenderPoints { get; private set; }
         public static RenderTechnique RenderBillboard { get; private set; }
+        public static RenderTechnique RenderPerVertexPhong { get; private set; }
 
 #if TESSELLATION
         public static RenderTechnique RenderPNTriangs { get; private set; }
@@ -339,6 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderLines,
                     Techniques.RenderPoints,
                     Techniques.RenderBillboard,
+                    Techniques.RenderPerVertexPhong,
 #if TESSELLATION
                     Techniques.RenderPNTriangs,
                     Techniques.RenderPNQuads,
@@ -452,7 +457,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderTangents, 
                     Techniques.RenderTexCoords, 
                     Techniques.RenderColors, 
-                    Techniques.RenderWires, 
+                    Techniques.RenderWires,
+                    Techniques.RenderPerVertexPhong,
 #if DEFERRED 
                     Techniques.RenderDeferred,
                     Techniques.RenderGBuffer,

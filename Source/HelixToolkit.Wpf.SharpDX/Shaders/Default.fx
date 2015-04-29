@@ -268,6 +268,114 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 	// get per pixel vector to eye-position
 	float3 eye = normalize( vEyePos - input.wp.xyz );
 
+	if(dot(input.n, eye) < 0)
+	{
+		input.n = -input.n;
+	}
+
+	// light emissive and ambient intensity
+	// this variable can be used for light accumulation
+	float4 I = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+	
+	// get shadow color
+	float s = 1;
+	if(bHasShadowMap)
+	{
+		s = shadowStrength( input.sp );
+	}
+
+	// add diffuse sampling
+	float4 vMaterialTexture = 1.0f;
+	if(bHasDiffuseMap)
+	{	
+		// SamplerState is defined in Common.fx.
+		vMaterialTexture = texDiffuseMap.Sample(LinearSampler, input.t);
+	}
+
+	// loop over lights
+	for (int i = 0; i < LIGHTS; i++)
+	{		
+		// This framework calculates lighting in world space.
+		// For every light type, you should calculate the input values to the
+		// calcPhongLighting function, namely light direction and the reflection vector.
+		// For computuation of attenuation and the spot light factor, use the
+		// model from the DirectX documentation:
+		// http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
+
+		if(iLightType[i] == 1) // directional
+		{
+			float3 d = normalize( (float3)vLightDir[i] );
+			float3 r = reflect( -d, input.n );
+			I += s * calcPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, eye, r );
+		}
+		else if(iLightType[i] == 2)  // point
+		{
+			float3 d = (float3)( vLightPos[i] - input.wp );	 // light dir	
+			float dl = length(d);
+			d = normalize(d);	
+			float3 r = reflect( -d, input.n );
+			float att = 1.0f / ( vLightAtt[i].x + vLightAtt[i].y * dl + vLightAtt[i].z * dl * dl );
+			I += att * calcPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, eye, r );
+		}
+		else if(iLightType[i] == 3)  // spot
+		{
+			float3 d = (float3)( vLightPos[i] - input.wp );	 // light dir
+			float dl = length(d);
+			d = normalize(d);	
+			float3 r = reflect( -d, input.n );
+			float3 sd = normalize( (float3)vLightDir[i] );	// missuse the vLightDir variable for spot-dir
+
+			/* --- this is the OpenGL 1.2 version (not so nice) --- */
+			//float spot = (dot(-d, sd));
+			//if(spot > cos(vLightSpot[i].x))
+			//	spot = pow( spot, vLightSpot[i].y );
+			//else
+			//	spot = 0.0f;	
+			/* --- */
+
+			/* --- this is the  DirectX9 version (better) --- */			
+			float rho = dot(-d, sd);
+			float spot = pow( saturate( (rho - vLightSpot[i].x) / (vLightSpot[i].y - vLightSpot[i].x) ), vLightSpot[i].z );			
+			float att = spot / ( vLightAtt[i].x + vLightAtt[i].y * dl + vLightAtt[i].z * dl * dl );
+			I += att * calcPhongLighting( vLightColor[i], vMaterialTexture, input.n, d, eye, r );
+		}
+		else
+		{		
+			//I += 0;
+		}		
+	}
+
+	/// set diffuse alpha
+	I.a = vMaterialDiffuse.a;
+
+	/// get reflection-color
+	if(bHasCubeMap)
+	{
+		I = cubeMapReflection( input, I );
+	}
+	
+	return I;	
+}
+
+//--------------------------------------------------------------------------------------
+// PER PIXEL LIGHTING  - PHONG
+// This is an adaptation of the phong shader which blends the vertex
+// colors with the material colors.
+//------------------------------------------------------------------------------------
+float4 PShaderPerVertexPhong( PSInput input ) : SV_Target
+{   
+
+	//calculate lighting vectors - renormalize vectors	
+	input.n = calcNormal( input );
+
+	// get per pixel vector to eye-position
+	float3 eye = normalize( vEyePos - input.wp.xyz );
+
+	if(dot(input.n, eye) < 0)
+	{
+		input.n = -input.n;
+	}
+
 	// light emissive and ambient intensity
 	// this variable can be used for light accumulation
 	float4 I = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
@@ -570,6 +678,32 @@ technique11 RenderPhong
         SetDomainShader		( NULL );
         SetGeometryShader	( NULL );
         SetPixelShader		( CompileShader( ps_4_0, PShaderPhong() ) );        
+    }
+}
+
+technique11 RenderPerVertexPhong
+{
+    pass P0
+    {
+		//SetRasterizerState	( RSSolid );
+		SetDepthStencilState( DSSDepthLess, 0);
+		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
+        SetVertexShader		( CompileShader( vs_4_0, VShaderDefault() ) );        
+        SetHullShader		( NULL );
+        SetDomainShader		( NULL );
+        SetGeometryShader	( NULL );
+        SetPixelShader		( CompileShader( ps_4_0, PShaderPerVertexPhong() ) );        
+    }
+	pass P1
+    {
+		SetRasterizerState	( RSWire );
+		SetDepthStencilState( DSSDepthLess, 0);
+		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
+        SetVertexShader		( CompileShader( vs_4_0, VShaderDefault() ) );
+        SetHullShader		( NULL );
+        SetDomainShader		( NULL );
+        SetGeometryShader	( NULL );
+        SetPixelShader		( CompileShader( ps_4_0, PShaderPerVertexPhong() ) );        
     }
 }
 

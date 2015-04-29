@@ -294,6 +294,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Shaders\BillboardText.fx" />
+    <Content Include="Shaders\PerVertexPhong.fx" />
     <Content Include="Shaders\Points.fx" />
     <EmbeddedResource Include="Textures\arial.png" />
     <Content Include="Textures\random4x4_dot3.png">
