@@ -494,7 +494,7 @@ namespace HelixToolkit.Wpf
 
                 if (vti < 0)
                 {
-                    vti = this.TextureCoordinates.Count + vti;
+                    vti = this.TextureCoordinates.Count + vti + 1;
                 }
 
                 if (vni < 0)

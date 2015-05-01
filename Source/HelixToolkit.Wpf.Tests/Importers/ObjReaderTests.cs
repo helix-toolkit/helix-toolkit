@@ -4,6 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+using System.Windows.Media;
+
 namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
@@ -125,7 +128,8 @@ namespace HelixToolkit.Wpf.Tests
             var model = _objReader.Read(@"Models\obj\face_relative_vertices.obj");
 
             Assert.AreEqual(1, model.Children.Count);
-            model.Children[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+            var mesh = model.Children[0].GetMesh();
+            mesh.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
         }
 
         [Test]
@@ -134,7 +138,8 @@ namespace HelixToolkit.Wpf.Tests
             var model = _objReader.Read(@"Models\obj\simple_triangle_with_normals.obj");
 
             Assert.AreEqual(1, model.Children.Count);
-            model.Children[0].AssertHasNormals(new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d });
+            var mesh = model.Children[0].GetMesh();
+            mesh.Normals.AssertContains(new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d });
         }
 
         [Test]
@@ -143,28 +148,54 @@ namespace HelixToolkit.Wpf.Tests
             var model = _objReader.Read(@"Models\obj\face_relative_vertex_normals.obj");
 
             Assert.AreEqual(1, model.Children.Count);
-            model.Children[0].AssertHasNormals(new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d });
+            var mesh = model.Children[0].GetMesh();
+            mesh.Normals.AssertContains(new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d });
+        }
+
+        [Test]
+        public void CanParseFaceWithAbsoluteTextureCoords() 
+        {
+            var model = _objReader.Read(@"Models\obj\simple_triangle_with_texture.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            var mesh = model.Children[0].GetMesh();
+            mesh.TextureCoordinates.AssertContains(new[] {0d, 0d}, new[] {0d, 0d}, new[] {0d, 0d});
+        }
+
+        [Test]
+        public void CanParseFaceWithRelativeTextureCoords() 
+        {
+            var model = _objReader.Read(@"Models\obj\face_relative_texture_vertices.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            var mesh = model.Children[0].GetMesh();
+            mesh.TextureCoordinates.AssertContains(new[] {0d, 0d}, new[] {0d, 0d}, new[] {0d, 0d});
         }
     }
 
-    public static class Model3DTestExtensions 
-    {
-        public static void AssertHasVertices(this Model3D model, params double[][] vertices) 
-        {
-            var geometryModel = (GeometryModel3D) model;
-            var geometry = (MeshGeometry3D) geometryModel.Geometry;
-            Assert.AreEqual(vertices.Length, geometry.Positions.Count, "Expected to find {0} vertices in model", vertices.Length);
-            foreach (var vertex in vertices)
-                Assert.IsTrue(geometry.Positions.Contains(new Point3D(vertex[0], vertex[1], vertex[2])), "Expected geometry to contain vertex [{0},{1},{2}]", vertex[0],vertex[1],vertex[2]);
+    public static class TestExtensions {
+        public static void AssertContains(this PointCollection collection, params double[][] points) {
+            Assert.AreEqual(points.Length, collection.Count, "Expected to find {0} points in collection", points.Length);
+            foreach (var point in points)
+                Assert.IsTrue(collection.Contains(new Point(point[0],point[1])), "Expected collection to contain point [{0},{1}]", point[0], point[1]);
         }
 
-        public static void AssertHasNormals(this Model3D model, params double[][] normals) 
+        public static void AssertContains(this Vector3DCollection collection, params double[][] points) {
+            Assert.AreEqual(points.Length, collection.Count, "Expected to find {0} points in collection", points.Length);
+            foreach (var point in points)
+                Assert.IsTrue(collection.Contains(new Vector3D(point[0],point[1],point[2])), "Expected collection to contain point [{0},{1},{2}]", point[0], point[1], point[2]);
+        }
+
+        public static void AssertContains(this Point3DCollection collection, params double[][] points) {
+            Assert.AreEqual(points.Length, collection.Count, "Expected to find {0} points in collection", points.Length);
+            foreach (var point in points)
+                Assert.IsTrue(collection.Contains(new Point3D(point[0],point[1],point[2])), "Expected collection to contain point [{0},{1},{2}]", point[0], point[1], point[2]);
+        }
+
+        public static MeshGeometry3D GetMesh(this Model3D model) 
         {
             var geometryModel = (GeometryModel3D) model;
-            var geometry = (MeshGeometry3D) geometryModel.Geometry;
-            Assert.AreEqual(normals.Length, geometry.Normals.Count, "Expected to find {0} normals in model", normals.Length);
-            foreach (var normal in normals)
-                Assert.IsTrue(geometry.Normals.Contains(new Vector3D(normal[0], normal[1], normal[2])), "Expected geometry to contain normal [{0},{1},{2}]", normal[0],normal[1],normal[2]);
+            return (MeshGeometry3D) geometryModel.Geometry;
         }
-     }		     
+    }		  
 }
