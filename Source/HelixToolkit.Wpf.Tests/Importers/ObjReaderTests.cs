@@ -6,6 +6,7 @@
 
 using System.Windows;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace HelixToolkit.Wpf.Tests
 {
@@ -166,53 +167,69 @@ namespace HelixToolkit.Wpf.Tests
         }
 
         [Test]
+        public void CanParseSimpleTriangle() 
+        {
+            var model = _objReader.Read(@"Models\obj\simple_triangle.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+
+        [Test]
         public void CanParseLineContinuations() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_single.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
         }
 
         [Test]
         public void CanParseLineContinuationsWithMultipleBreaks() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
         }
 
         [Test]
         public void CanParseLineContinuationsWithEmptyContinuations() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_empty_continuation.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
         }
 
         [Test]
         public void CanParseLineContinuationsWithEmptyLineInMiddle() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_empty_line.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
         }
 
         [Test]
         public void CanParseLineContinuationsInComments() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_comment.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Children.Count);
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+    }
+
+    public static class Model3DTestExtensions 
+    {
+        public static void AssertHasVertices(this Model3D model, params double[][] vertices) 
+        {
+            var geometryModel = (GeometryModel3D) model;
+            var geometry = (MeshGeometry3D) geometryModel.Geometry;
+            Assert.AreEqual(vertices.Length, geometry.Positions.Count, "Expected to find {0} vertices in model", vertices.Length);
+            foreach (var vertex in vertices)
+                Assert.IsTrue(geometry.Positions.Contains(new Point3D(vertex[0], vertex[1], vertex[2])), "Expected geometry to contain vertex [{0},{1},{2}]", vertex[0],vertex[1],vertex[2]);
         }
     }
 

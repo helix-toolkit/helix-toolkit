@@ -10,7 +10,9 @@
 
 using System;
 using System.Linq;
+using System.Windows.Media.Media3D;
 using NUnit.Framework;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 {
@@ -43,6 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
             Assert.AreEqual(4, floorGeometry.Positions.Count);
             Assert.AreEqual(4, floorGeometry.Normals.Count);
         }
+
 
         [Test]
         public void CanParseFaceWithRelativeIndices() 
@@ -95,53 +98,76 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
         }
 
         [Test]
+        public void CanParseSimpleTriangle() 
+        {
+            var model = _objReader.Read(@"Models\obj\simple_triangle.obj");
+
+            Assert.AreEqual(1, model.Count);
+            model[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+
+        [Test]
         public void CanParseLineContinuations() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_single.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+            Assert.AreEqual(1, model.Count);
+            model[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
         }
 
         [Test]
         public void CanParseLineContinuationsWithMultipleBreaks() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+            Assert.AreEqual(1, model.Count);
+            model[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
         }
 
         [Test]
         public void CanParseLineContinuationsWithEmptyContinuations() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_empty_continuation.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+            Assert.AreEqual(1, model.Count);
+            model[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
         }
 
         [Test]
         public void CanParseLineContinuationsWithEmptyLineInMiddle() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_empty_line.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+            Assert.AreEqual(1, model.Count);
+            model[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
         }
 
         [Test]
         public void CanParseLineContinuationsInComments() 
         {
-            var expectedNumberOfGeometries = 1;
-
             var model = _objReader.Read(@"Models\obj\line_continuation_comment.obj");
 
-            Assert.AreEqual(expectedNumberOfGeometries, model.Count);
+            Assert.AreEqual(1, model.Count);
+            model[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+    }
+
+    public static class TestExtensions 
+    {
+        public static void AssertHasVertices(this Object3D model, params double[][] vertices) 
+        {
+            var geometryModel = model;
+            var geometry = (MeshGeometry3D)geometryModel.Geometry;
+            Assert.AreEqual(vertices.Length, geometry.Positions.Count, "Expected to find {0} vertices in model", vertices.Length);
+            foreach (var vertex in vertices)
+                Assert.IsTrue(geometry.Positions.Contains(vertex), "Expected geometry to contain vertex [{0},{1},{2}]", vertex[0], vertex[1], vertex[2]);
+        }
+
+        public static bool Contains(this Core.Vector3Collection vectors, double[] expectedVertex) 
+        {
+            return vectors.Any(vector => Math.Abs((float)expectedVertex[0] - vector.X) < float.Epsilon &&
+                                         Math.Abs((float)expectedVertex[1] - vector.Y) < float.Epsilon &&
+                                         Math.Abs((float)expectedVertex[2] - vector.Z) < float.Epsilon);
         }
     }
 
