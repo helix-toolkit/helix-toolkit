@@ -127,6 +127,24 @@ namespace HelixToolkit.Wpf.Tests
             Assert.AreEqual(1, model.Children.Count);
             model.Children[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
         }
+
+        [Test]
+        public void CanParseFaceWithAbsoluteNormals() 
+        {
+            var model = _objReader.Read(@"Models\obj\simple_triangle_with_normals.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasNormals(new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d });
+        }
+
+        [Test]
+        public void CanParseFaceWithRelativeNormals() 
+        {
+            var model = _objReader.Read(@"Models\obj\face_relative_vertex_normals.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasNormals(new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d }, new[] { 0d, 1d, 0d });
+        }
     }
 
     public static class Model3DTestExtensions 
@@ -138,6 +156,15 @@ namespace HelixToolkit.Wpf.Tests
             Assert.AreEqual(vertices.Length, geometry.Positions.Count, "Expected to find {0} vertices in model", vertices.Length);
             foreach (var vertex in vertices)
                 Assert.IsTrue(geometry.Positions.Contains(new Point3D(vertex[0], vertex[1], vertex[2])), "Expected geometry to contain vertex [{0},{1},{2}]", vertex[0],vertex[1],vertex[2]);
+        }
+
+        public static void AssertHasNormals(this Model3D model, params double[][] normals) 
+        {
+            var geometryModel = (GeometryModel3D) model;
+            var geometry = (MeshGeometry3D) geometryModel.Geometry;
+            Assert.AreEqual(normals.Length, geometry.Normals.Count, "Expected to find {0} normals in model", normals.Length);
+            foreach (var normal in normals)
+                Assert.IsTrue(geometry.Normals.Contains(new Vector3D(normal[0], normal[1], normal[2])), "Expected geometry to contain normal [{0},{1},{2}]", normal[0],normal[1],normal[2]);
         }
      }		     
 }

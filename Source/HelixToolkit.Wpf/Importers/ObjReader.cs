@@ -499,7 +499,7 @@ namespace HelixToolkit.Wpf
 
                 if (vni < 0)
                 {
-                    vni = this.Normals.Count + vni;
+                    vni = this.Normals.Count + vni + 1;
                 }
 
                 // Check if the indices are valid

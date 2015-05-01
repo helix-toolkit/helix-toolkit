@@ -118,6 +118,10 @@
       <Link>Models\obj\face_relative_vertices.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_normals.obj">
+      <Link>Models\obj\simple_triangle_with_normals.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="..\..\Models\obj\Triangle.obj">
       <Link>Models\obj\Triangle.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
