@@ -544,23 +544,23 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 var ff = field.Split('/');
                 int vi = int.Parse(ff[0]);
-                int vti = ff.Length > 1 && ff[1].Length > 0 ? int.Parse(ff[1]) : -1;
-                int vni = ff.Length > 2 && ff[2].Length > 0 ? int.Parse(ff[2]) : -1;
+                int vti = ff.Length > 1 && ff[1].Length > 0 ? int.Parse(ff[1]) : int.MaxValue;
+                int vni = ff.Length > 2 && ff[2].Length > 0 ? int.Parse(ff[2]) : int.MaxValue;
 
                 // Handle relative indices (negative numbers)
-                if (this.Points.Count > 0 && vi < 0)
+                if (vi < 0)
                 {
                     vi = this.Points.Count + vi + 1;
                 }
 
-                if (this.TextureCoordinates.Count > 0 && vti < 0)
+                if (vti < 0)
                 {
-                    vti = this.TextureCoordinates.Count + vti + 1;
+                    vti = this.TextureCoordinates.Count + vti;
                 }
 
-                if (this.Normals.Count > 0 && vni < 0)
+                if (vni < 0)
                 {
-                    vni = this.Normals.Count + vni + 1;
+                    vni = this.Normals.Count + vni;
                 }
 
                 // Check if the indices are valid
@@ -574,14 +574,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     throw new FileFormatException(string.Format("Invalid vertex index ({0}) on line {1}.", vi, this.currentLineNo));
                 }
 
-                if (vti == -1)
+                if (vti == int.MaxValue)
                 {
                     // turn off texture coordinates in the builder
                     //builder.CreateTextureCoordinates = false;
                     builder.TextureCoordinates = null;
                 }
 
-                if (vni == -1)
+                if (vni == int.MaxValue)
                 {
                     // turn off normals in the builder
                     //builder.CreateNormals = false;

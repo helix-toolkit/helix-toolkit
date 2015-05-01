@@ -17,6 +17,14 @@ namespace HelixToolkit.Wpf.Tests
     [TestFixture]
     public class ObjReaderTests
     {
+        private ObjReader _objReader;
+
+        [SetUp]
+        public void SetUp() 
+        {
+            _objReader = new ObjReader();
+        }
+
         [Test, Ignore]
         public void Read_Bunny_ValidModel()
         {
@@ -110,5 +118,26 @@ namespace HelixToolkit.Wpf.Tests
             Assert.NotNull(mg1);
             Assert.AreEqual(4, mg1.TriangleIndices.Count / 3);
         }
+
+        [Test]
+        public void CanParseFaceWithRelativeIndices() 
+        {
+            var model = _objReader.Read(@"Models\obj\face_relative_vertices.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
     }
+
+    public static class Model3DTestExtensions 
+    {
+        public static void AssertHasVertices(this Model3D model, params double[][] vertices) 
+        {
+            var geometryModel = (GeometryModel3D) model;
+            var geometry = (MeshGeometry3D) geometryModel.Geometry;
+            Assert.AreEqual(vertices.Length, geometry.Positions.Count, "Expected to find {0} vertices in model", vertices.Length);
+            foreach (var vertex in vertices)
+                Assert.IsTrue(geometry.Positions.Contains(new Point3D(vertex[0], vertex[1], vertex[2])), "Expected geometry to contain vertex [{0},{1},{2}]", vertex[0],vertex[1],vertex[2]);
+        }
+     }		     
 }

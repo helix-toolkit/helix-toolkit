@@ -487,19 +487,19 @@ namespace HelixToolkit.Wpf
                 int vni = ff.Length > 2 && ff[2].Length > 0 ? int.Parse(ff[2]) : int.MaxValue;
 
                 // Handle relative indices (negative numbers)
-                if (this.Points.Count > 0 && vi < 0)
+                if (vi < 0)
                 {
                     vi = this.Points.Count + vi + 1;
                 }
 
-                if (this.TextureCoordinates.Count > 0 && vti < 0)
+                if (vti < 0)
                 {
-                    vti = this.TextureCoordinates.Count + vti + 1;
+                    vti = this.TextureCoordinates.Count + vti;
                 }
 
-                if (this.Normals.Count > 0 && vni < 0)
+                if (vni < 0)
                 {
-                    vni = this.Normals.Count + vni + 1;
+                    vni = this.Normals.Count + vni;
                 }
 
                 // Check if the indices are valid
