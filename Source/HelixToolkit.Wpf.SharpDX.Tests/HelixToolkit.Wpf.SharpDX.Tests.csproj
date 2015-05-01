@@ -130,6 +130,10 @@
       <Link>Models\obj\line_continuation_single.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\simple_triangle.obj">
+      <Link>Models\obj\simple_triangle.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="..\..\Models\obj\Triangle.obj">
       <Link>Models\obj\Triangle.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
