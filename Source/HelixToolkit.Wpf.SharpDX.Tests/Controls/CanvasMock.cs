@@ -19,6 +19,8 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         }
 
         public Device Device { get; private set; }
+        Color4 IRenderHost.ClearColor { get; }
+        Device IRenderHost.Device { get; }
         public Color4 ClearColor { get; private set; }
         public bool IsShadowMapEnabled { get; private set; }
         public bool IsMSAAEnabled { get; private set; }
@@ -28,13 +30,13 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             throw new NotImplementedException();
         }
 
-        public RenderTechnique RenderTechnique { get; private set; }
-        public double ActualHeight { get; private set; }
-        public double ActualWidth { get; private set; }
-
         public void SetDefaultColorTargets(DepthStencilView dsv)
         {
             throw new NotImplementedException();
         }
+
+        public RenderTechnique RenderTechnique { get; private set; }
+        public double ActualHeight { get; private set; }
+        public double ActualWidth { get; private set; }
     }
 }
