@@ -229,6 +229,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private Adorner targetAdorner;
 
         /// <summary>
+        /// The <see cref="TouchDevice"/> of the first TouchDown.
+        /// </summary>
+        private TouchDevice touchDownDevice;
+
+        /// <summary>
         /// The view cube.
         /// </summary>
         private ViewCubeVisual3D viewCube;
@@ -1001,50 +1006,94 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Invoked when an unhandled MouseUp attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Gets the pressed mouse buttons as flags of <see cref="MouseButton"/>.
+        /// If not button is pressed (result is zero), then it was a touch down.
         /// </summary>
-        /// <param name="e"></param>
-        protected override void OnMouseUp(MouseButtonEventArgs e)
+        /// <returns>
+        /// The pressed mouse buttons as flags of <see cref="MouseButton"/>.
+        /// </returns>
+        public static MouseButton GetPressedMouseButtons()
         {
-            base.OnMouseUp(e);
-            this.MouseUpHitTest(e);
+            int flags = 0;
+            flags |= (int)Mouse.LeftButton << 0;
+            flags |= (int)Mouse.MiddleButton << 1;
+            flags |= (int)Mouse.RightButton << 2;
+            flags |= (int)Mouse.XButton1 << 3;
+            flags |= (int)Mouse.XButton2 << 4;
+            return (MouseButton)flags;
         }
 
-        public void EmulateMouseUpByTouch(MouseButtonEventArgs e)
-        {
-            this.MouseUpHitTest(e);
-        }
-
-        /// <summary>
-        /// Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
-        /// </summary>
-        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</param>
+        /// <inheritdoc/>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            this.Focus();
-            this.MouseDownHitTest(e);
+            if (this.touchDownDevice == null)
+            {
+                this.Focus();
+                this.MouseDownHitTest(e.GetPosition(this), e);
+            }
+        }
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This makes selection via Touch work without disabling the CameraController which uses Manipulation.
+        /// </remarks>>
+        protected override void OnTouchDown(TouchEventArgs e)
+        {
+            base.OnTouchDown(e);
+            if (this.touchDownDevice == null)
+            {
+                this.touchDownDevice = e.TouchDevice;
+                this.Focus();
+                this.MouseDownHitTest(e.GetTouchPoint(this).Position, e);
+            }
         }
 
         public void EmulateMouseDownByTouch(MouseButtonEventArgs e)
         {
             this.Focus();
-            this.MouseDownHitTest(e);
+            this.MouseDownHitTest(e.GetPosition(this), e);
         }
 
-        /// <summary>
-        /// Invoked when an unhandled MouseMove attached event reaches an element in its route that is derived from this class.
-        /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
-        /// </param>
+        /// <inheritdoc/>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            this.MouseMoveHitTest(e);
-            if (this.EnableCurrentPosition)
+            if (this.touchDownDevice == null)
             {
                 var pt = e.GetPosition(this);
+                this.MouseMoveHitTest(pt, e);
+                this.UpdateCurrentPosition(pt);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchMove(TouchEventArgs e)
+        {
+            base.OnPreviewTouchMove(e);
+            if (this.touchDownDevice == e.TouchDevice)
+            {
+                var tp = e.GetTouchPoint(this);
+                var pt = tp.Position;
+                this.MouseMoveHitTest(pt, e);
+                this.UpdateCurrentPosition(pt);
+            }
+        }
+
+        public void EmulateMouseMoveByTouch(Point pt)
+        {
+            this.MouseMoveHitTest(pt);
+            this.UpdateCurrentPosition(pt);
+        }
+
+        /// <summary>
+        /// Updates the property <see cref="CurrentPosition"/>.
+        /// </summary>
+        /// <param name="pt">The current mouse hit point.</param>
+        private void UpdateCurrentPosition(Point pt)
+        {
+            if (this.EnableCurrentPosition)
+            {
                 var pos = this.FindNearestPoint(pt);
                 if (pos != null)
                 {
@@ -1061,24 +1110,39 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public void EmulateMouseMoveByTouch(Point pt)
+        /// <inheritdoc/>
+        protected override void OnMouseUp(MouseButtonEventArgs e)
         {
-            this.MouseMoveHitTest(pt);
-            if (this.EnableCurrentPosition)
+            base.OnMouseUp(e);
+            this.MouseUpHitTest(e.GetPosition(this), e);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchUp(TouchEventArgs e)
+        {
+            base.OnPreviewTouchUp(e);
+            if (this.touchDownDevice == e.TouchDevice)
             {
-                var pos = this.FindNearestPoint(pt);
-                if (pos != null)
-                {
-                    this.CurrentPosition = pos.Value;
-                }
-                else
-                {
-                    var p = this.UnProjectOnPlane(pt);
-                    if (p != null)
-                    {
-                        this.CurrentPosition = p.Value;
-                    }
-                }
+                this.touchDownDevice = null;
+                this.MouseUpHitTest(e.GetTouchPoint(this).Position, e);
+            }
+        }
+
+        public void EmulateMouseUpByTouch(MouseButtonEventArgs e)
+        {
+            this.MouseUpHitTest(e.GetPosition(this), e);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        {
+            base.OnManipulationCompleted(e);
+            if (this.touchDownDevice != null)
+            {
+                // If this.touchDownDevice has not come up for some reason, do it now.
+                this.touchDownDevice = null;
+                var pt = e.ManipulationOrigin + e.TotalManipulation.Translation;
+                this.MouseUpHitTest(pt, e);
             }
         }
 
@@ -1110,16 +1174,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.AddZoomForce(-e.Delta * 0.001);
             e.Handled = true;
-        }
-
-        protected override void OnManipulationStarting(ManipulationStartingEventArgs e)
-        {
-            base.OnManipulationStarting(e);
-        }
-
-        protected override void OnPreviewTouchMove(TouchEventArgs e)
-        {
-            base.OnPreviewTouchMove(e);
         }
 
         /// <summary>
@@ -1713,27 +1767,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private List<HitTestResult> mouseHitModels = new List<HitTestResult>();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
-        private void MouseDownHitTest(MouseEventArgs e)
-        {            
-            var hits = this.FindHits(e.GetPosition(this));
-            if (hits.Count > 0)
-            {
-                Mouse.Capture(this, CaptureMode.SubTree);
-                foreach (var hit in hits.Where(x => x.IsValid))
-                {
-                    hit.ModelHit.RaiseEvent(new MouseDown3DEventArgs(hit.ModelHit, hit, e.GetPosition(this), this));
-                    this.mouseHitModels.Add(hit);
-
-                    // the winner takes it all: only the nearest hit is taken!
-                    break;
-                }                
-            }            
-        }
-
         public bool HittedSomething(MouseEventArgs e)
         {
             var hits = this.FindHits(e.GetPosition(this));
@@ -1742,40 +1775,44 @@ namespace HelixToolkit.Wpf.SharpDX
             return false;
         }
 
-
         /// <summary>
-        /// 
+        /// Handles hit testing on mouse down.
         /// </summary>
-        /// <param name="e"></param>
-        private void MouseUpHitTest(MouseEventArgs e)
+        /// <param name="pt">The hit point.</param>
+        /// <param name="originalInputEventArgs">
+        /// The original input event for future use (which mouse button pressed?)
+        /// </param>
+        private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (mouseHitModels.Count > 0)
+            var hits = this.FindHits(pt);
+            if (hits.Count > 0)
             {
-                Mouse.Capture(this, CaptureMode.None);
-                foreach (var hit in this.mouseHitModels)
+                // We can't capture Touch because that would disable the CameraController which uses Manipulation,
+                // but since Manipulation captures touch, we can be quite sure to get every relevant touch event.
+                if (this.touchDownDevice == null)
                 {
-                    hit.ModelHit.RaiseEvent(new MouseUp3DEventArgs(hit.ModelHit, hit, e.GetPosition(this), this));
-                }                
-                this.mouseHitModels.Clear();
-            }
-        }
+                    Mouse.Capture(this, CaptureMode.SubTree);
+                }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
-        private void MouseMoveHitTest(MouseEventArgs e)
-        {
-            if (mouseHitModels.Count > 0)
-            {
-                foreach (var hit in this.mouseHitModels)
+                foreach (var hit in hits.Where(x => x.IsValid))
                 {
-                    hit.ModelHit.RaiseEvent(new MouseMove3DEventArgs(hit.ModelHit, hit, e.GetPosition(this), this));
+                    hit.ModelHit.RaiseEvent(new MouseDown3DEventArgs(hit.ModelHit, hit, pt, this));
+                    this.mouseHitModels.Add(hit);
+
+                    // the winner takes it all: only the nearest hit is taken!
+                    break;
                 }
             }
         }
 
-        private void MouseMoveHitTest(Point pt)
+        /// <summary>
+        /// Handles hit testing on mouse move.
+        /// </summary>
+        /// <param name="pt">The hit point.</param>
+        /// <param name="originalInputEventArgs">
+        /// The original input event for future use (which mouse button pressed?)
+        /// </param>
+        private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
             if (mouseHitModels.Count > 0)
             {
@@ -1783,6 +1820,27 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     hit.ModelHit.RaiseEvent(new MouseMove3DEventArgs(hit.ModelHit, hit, pt, this));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Handles hit testing on mouse up.
+        /// </summary>
+        /// <param name="pt">The hit point.</param>
+        /// <param name="originalInputEventArgs">
+        /// The original input event for future use (which mouse button pressed?)
+        /// </param>
+        private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
+        {
+            if (mouseHitModels.Count > 0)
+            {
+                Mouse.Capture(this, CaptureMode.None);
+                foreach (var hit in this.mouseHitModels)
+                {
+                    hit.ModelHit.RaiseEvent(new MouseUp3DEventArgs(hit.ModelHit, hit, pt, this));
+                }
+
+                this.mouseHitModels.Clear();
             }
         }
     }

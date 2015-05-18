@@ -110,18 +110,46 @@
     <Compile Include="Utilities\MeshBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Models\obj\Triangle.obj">
+    <Content Include="..\..\Models\obj\obj_format_tests\face_relative_vertex_normals.obj">
+      <Link>Models\obj\face_relative_vertex_normals.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\face_relative_vertices.obj">
+      <Link>Models\obj\face_relative_vertices.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_normals.obj">
+      <Link>Models\obj\simple_triangle_with_normals.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\face_relative_texture_vertices.mtl">
+      <Link>Models\obj\face_relative_texture_vertices.mtl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\face_relative_texture_vertices.obj">
+      <Link>Models\obj\face_relative_texture_vertices.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_texture.mtl">
+      <Link>Models\obj\simple_triangle_with_texture.mtl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_texture.obj">
+      <Link>Models\obj\simple_triangle_with_texture.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Models\obj\Triangle.obj">
       <Link>Models\obj\Triangle.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Models\obj\cornell_box\cornell_box.mtl">
+    </Content>
+    <Content Include="..\..\Models\obj\cornell_box\cornell_box.mtl">
       <Link>Models\obj\cornell_box.mtl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Models\obj\cornell_box\cornell_box.obj">
+    </Content>
+    <Content Include="..\..\Models\obj\cornell_box\cornell_box.obj">
       <Link>Models\obj\cornell_box.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@
         private EffectTechnique effectTechnique;
         private EffectTransformVariables effectTransforms;
         private EffectVectorVariable vViewport;
+        private EffectVectorVariable vPointParams;
 
         public Color Color
         {
@@ -26,6 +27,33 @@
             DependencyProperty.Register("Color", typeof(Color), typeof(PointGeometryModel3D),
                 new UIPropertyMetadata(Color.Black, (o, e) => ((PointGeometryModel3D)o).OnColorChanged()));
 
+        public Size Size
+        {
+            get { return (Size)this.GetValue(SizeProperty); }
+            set { this.SetValue(SizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SizeProperty =
+            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new UIPropertyMetadata(new Size(1.0, 1.0)));
+
+        public PointFigure Figure
+        {
+            get { return (PointFigure)this.GetValue(FigureProperty); }
+            set { this.SetValue(FigureProperty, value); }
+        }
+
+        public static readonly DependencyProperty FigureProperty =
+            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new UIPropertyMetadata(PointFigure.Rect));
+
+        public double FigureRatio
+        {
+            get { return (double)this.GetValue(FigureRatioProperty); }
+            set { this.SetValue(FigureRatioProperty, value); }
+        }
+
+        public static readonly DependencyProperty FigureRatioProperty =
+            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(0.25));
+
         public double HitTestThickness
         {
             get { return (double)this.GetValue(HitTestThicknessProperty); }
@@ -33,11 +61,88 @@
         }
 
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
 
+        public static double DistanceRayToPoint(Ray r, Vector3 p)
+        {
+            Vector3 v = r.Direction;
+            Vector3 w = p - r.Position;
+
+            float c1 = Vector3.Dot(w, v);
+            float c2 = Vector3.Dot(v, v);
+            float b = c1 / c2;
+
+            Vector3 pb = r.Position + v * b;
+            return (p - pb).Length();
+        }
+
+        /// <summary>
+        /// Checks if the ray hits the geometry of the model.
+        /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
+        /// </summary>
+        /// <param name="rayWS">Hitring ray from the camera.</param>
+        /// <param name="result">results of the hit.</param>
+        /// <returns>True if the ray hits one or more times.</returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
-            return false; // No hit testing on point geometry -- yet.
+            PointGeometry3D pointGeometry3D;
+            Viewport3DX viewport;
+
+            if (this.Visibility == Visibility.Collapsed ||
+                this.IsHitTestVisible == false ||
+                (viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
+                (pointGeometry3D = this.Geometry as PointGeometry3D) == null)
+            {
+                return false;
+            }
+
+            var svpm = viewport.GetScreenViewProjectionMatrix();
+            var smvpm = this.modelMatrix * svpm;
+
+            var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
+            var pos4 = new Vector4(rayWS.Position, 1);
+            var dir3 = new Vector3();
+            Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
+            Vector4.Transform(ref pos4, ref svpm, out pos4);
+            Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
+            dir3.Normalize();
+
+            var clickPoint = clickPoint4.ToVector3();
+
+            var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
+            var maxDist = this.HitTestThickness;
+            var lastDist = double.MaxValue;
+            var index = 0;
+
+            foreach (var point in pointGeometry3D.Points)
+            {
+                var p0 = Vector3.TransformCoordinate(point.P0, smvpm);
+                var pv = p0 - clickPoint;
+                var dist = pv.Length();
+                if (dist < lastDist && dist <= maxDist)
+                {
+                    lastDist = dist;
+                    Vector4 res;
+                    var lp0 = point.P0;
+                    Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
+                    var pvv = res.ToVector3();
+                    var dst = DistanceRayToPoint(rayWS, pvv);
+                    result.Distance = dst;
+                    result.PointHit = pvv.ToPoint3D();
+                    result.ModelHit = this;
+                    result.IsValid = true;
+                    result.Tag = index;
+                }
+
+                index++;
+            }
+
+            if (result.IsValid)
+            {
+                hits.Add(result);
+            }
+
+            return result.IsValid;
         }
 
         protected override void OnRasterStateChanged(int depthBias)
@@ -109,6 +214,12 @@
 
             /// --- set up const variables
             this.vViewport = effect.GetVariableByName("vViewport").AsVector();
+            //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
+            this.vPointParams = effect.GetVariableByName("vPointParams").AsVector();
+
+            /// --- set effect per object const vars
+            var pointParams = new Vector4((float)this.Size.Width, (float)this.Size.Height, (float)this.Figure, (float)this.FigureRatio);
+            this.vPointParams.Set(pointParams);
 
             /// --- create raster state
             this.OnRasterStateChanged(this.DepthBias);
@@ -171,6 +282,10 @@
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
+            /// --- set effect per object const vars
+            var pointParams = new Vector4((float)this.Size.Width, (float)this.Size.Height, (float)this.Figure, (float)this.FigureRatio);
+            this.vPointParams.Set(pointParams);
+
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
@@ -231,6 +346,13 @@
             }
 
             return result;
+        }
+
+        public enum PointFigure
+        {
+            Rect,
+            Ellipse,
+            Cross,
         }
     }
 

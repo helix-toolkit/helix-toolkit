@@ -421,8 +421,8 @@ namespace HelixToolkit.Wpf
             }
             else
             {
-                int smoothingGroup;
-                if (int.TryParse(values, out smoothingGroup))
+                long smoothingGroup;
+                if (long.TryParse(values, out smoothingGroup))
                 {
                     this.currentSmoothingGroup = smoothingGroup;
                 }
@@ -489,17 +489,17 @@ namespace HelixToolkit.Wpf
                 // Handle relative indices (negative numbers)
                 if (vi < 0)
                 {
-                    vi = this.Points.Count + vi;
+                    vi = this.Points.Count + vi + 1;
                 }
 
                 if (vti < 0)
                 {
-                    vti = this.TextureCoordinates.Count + vti;
+                    vti = this.TextureCoordinates.Count + vti + 1;
                 }
 
                 if (vni < 0)
                 {
-                    vni = this.Normals.Count + vni;
+                    vni = this.Normals.Count + vni + 1;
                 }
 
                 // Check if the indices are valid
