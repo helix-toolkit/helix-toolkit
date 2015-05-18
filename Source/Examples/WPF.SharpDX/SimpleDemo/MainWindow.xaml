@@ -61,7 +61,7 @@
             <hx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}"  />
             <hx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
             <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
-            <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Transform="{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}"/>-->
+            <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Transform="{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
             <!--<hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>-->
         </hx:Viewport3DX>
         
