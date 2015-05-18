@@ -27,8 +27,9 @@ namespace Workitem10048
             }
 
             var result = base.HitTest(rayWS, ref hits);
+            var pressedMouseButtons = Viewport3DX.GetPressedMouseButtons();
 
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            if (pressedMouseButtons == 0 || pressedMouseButtons.HasFlag(MouseButton.Left))
             {
                 this.Color = result ? Color.Red : this.initialColor.Value;
             }
