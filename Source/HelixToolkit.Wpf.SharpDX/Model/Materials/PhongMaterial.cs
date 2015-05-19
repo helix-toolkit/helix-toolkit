@@ -11,7 +11,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using global::SharpDX;
-    using System.Windows;    
     using System.Windows.Media.Imaging;
     using System;    
 
@@ -34,12 +33,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public BitmapSource _displacementMap;
 
         /// <summary>
-        /// Constructs a Shading Material which correspnds with 
-        /// the Phong and BlinnPhong lighting models.
-        /// </summary>
-        public PhongMaterial() { }
-
-        /// <summary>
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
@@ -49,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _ambientColor = value;
-                OnPropertyChanged();
+                OnPropertyChanged("AmbientColor");
             }
         }
 
@@ -63,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _diffuseColor = value;
-                OnPropertyChanged();
+                OnPropertyChanged("DiffuseColor");
             }
         }
 
@@ -77,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _emissiveColor = value;
-                OnPropertyChanged();
+                OnPropertyChanged("EmissiveColor");
             }
         }
 
@@ -90,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _reflectiveColor = value;
-                OnPropertyChanged();
+                OnPropertyChanged("ReflectiveColor");
             }
         }
 
@@ -104,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _specularColor = value;
-                OnPropertyChanged();
+                OnPropertyChanged("SpecularColor");
             }
         }
 
@@ -118,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _specularShininess = value;
-                OnPropertyChanged();
+                OnPropertyChanged("SpecularShininess");
             }
         }
 
@@ -132,7 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _diffuseMap = value;
-                OnPropertyChanged();
+                OnPropertyChanged("DiffuseMap");
             }
         }
 
@@ -145,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _normalMap = value;
-                OnPropertyChanged();
+                OnPropertyChanged("NormalMap");
             }
         }
 
@@ -158,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _displacementMap = value;
-                OnPropertyChanged();
+                OnPropertyChanged("DisplacementMap");
             }
         }
 

@@ -6,7 +6,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -21,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 _name = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Name");
             }
         }
 
@@ -31,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+        protected virtual void OnPropertyChanged(string propertyName) {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
