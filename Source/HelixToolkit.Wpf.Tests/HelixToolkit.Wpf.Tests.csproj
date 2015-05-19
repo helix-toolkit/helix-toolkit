@@ -246,8 +246,8 @@
     </Content>
     <Content Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_texture.obj">
       <Link>Models\obj\simple_triangle_with_texture.obj</Link>
-    <Content Include="..\..\Models\obj\obj_format_tests\wrap_long_lines.mtl">
-      <Link>Models\obj\wrap_long_lines.mtl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Models\obj\obj_format_tests\line_continuation_comment.obj">
       <Link>Models\obj\line_continuation_comment.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
