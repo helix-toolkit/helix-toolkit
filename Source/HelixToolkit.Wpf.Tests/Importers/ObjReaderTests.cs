@@ -15,6 +15,9 @@ namespace HelixToolkit.Wpf.Tests
 
     using HelixToolkit.Wpf;
     using NUnit.Framework;
+    using System;
+    using System.Text;
+    using System.IO;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -218,6 +221,122 @@ namespace HelixToolkit.Wpf.Tests
 
             Assert.AreEqual(1, model.Children.Count);
             model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+
+        [Test]
+        public void BuildModel_SmoothingOff_Valid()
+        {
+            string content = @"
+s off
+
+v 0 0 0
+v 1 0 0
+v 0 1 0
+v 1 1 0
+
+vt 0.0 0.0
+vt 0.5 0.0
+vt 0.0 0.5
+vt 1.0 1.0
+vt 0.0 1.0
+vt 1.0 0.0
+
+f 1/1 2/2 3/3
+f 4/4 3/5 2/6
+";
+
+            var expectedPositions = new Point3D[]
+            {
+                new Point3D(0.0, 0.0, 0.0),
+                new Point3D(1.0, 0.0, 0.0),
+                new Point3D(0.0, 1.0, 0.0),
+                new Point3D(1.0, 1.0, 0.0),
+                new Point3D(0.0, 1.0, 0.0),
+                new Point3D(1.0, 0.0, 0.0)
+            };
+
+            var expectedTextureCoordinates = new Point[]
+            {
+                new Point(0.0, 1.0),
+                new Point(0.5, 1.0),
+                new Point(0.0, 0.5),
+                new Point(1.0, 0.0),
+                new Point(0.0, 0.0),
+                new Point(1.0, 1.0)
+            };
+
+            var buffer = Encoding.UTF8.GetBytes(content);
+
+            using (var stream = new MemoryStream(buffer, false))
+            {
+                var model = _objReader.Read(stream);
+                var mesh = model.Children[0].GetMesh();
+
+                Assert.AreEqual(6, mesh.TriangleIndices.Count);
+                Assert.AreEqual(6, mesh.Positions.Count);
+                Assert.AreEqual(6, mesh.TextureCoordinates.Count);
+
+                CollectionAssert.AreEqual(expectedPositions, mesh.Positions);
+                CollectionAssert.AreEqual(expectedTextureCoordinates, mesh.TextureCoordinates);
+            }
+        }
+
+        [Test]
+        public void BuildModel_SmoothingOn_Valid()
+        {
+            string content = @"
+s 1
+
+v 0 0 0
+v 1 0 0
+v 0 1 0
+v 1 1 0
+
+vt 0.0 0.0
+vt 0.5 0.0
+vt 0.0 0.5
+vt 1.0 1.0
+vt 0.0 1.0
+vt 1.0 0.0
+
+f 1/1 2/2 3/3
+f 4/4 3/5 2/6
+";
+
+            var expectedPositions = new Point3D[]
+            {
+                new Point3D(0.0, 0.0, 0.0),
+                new Point3D(1.0, 0.0, 0.0),
+                new Point3D(0.0, 1.0, 0.0),
+                new Point3D(1.0, 1.0, 0.0),
+                new Point3D(0.0, 1.0, 0.0),
+                new Point3D(1.0, 0.0, 0.0)
+            };
+
+            var expectedTextureCoordinates = new Point[]
+            {
+                new Point(0.0, 1.0),
+                new Point(0.5, 1.0),
+                new Point(0.0, 0.5),
+                new Point(1.0, 0.0),
+                new Point(0.0, 0.0),
+                new Point(1.0, 1.0)
+            };
+
+            var buffer = Encoding.UTF8.GetBytes(content);
+
+            using (var stream = new MemoryStream(buffer, false))
+            {
+                var model = _objReader.Read(stream);
+                var mesh = model.Children[0].GetMesh();
+
+                Assert.AreEqual(6, mesh.TriangleIndices.Count);
+                Assert.AreEqual(6, mesh.Positions.Count);
+                Assert.AreEqual(6, mesh.TextureCoordinates.Count);
+
+                CollectionAssert.AreEqual(expectedPositions, mesh.Positions);
+                CollectionAssert.AreEqual(expectedTextureCoordinates, mesh.TextureCoordinates);
+            }
         }
     }
 
