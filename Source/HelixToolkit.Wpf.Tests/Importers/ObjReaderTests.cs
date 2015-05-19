@@ -6,6 +6,7 @@
 
 using System.Windows;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace HelixToolkit.Wpf.Tests
 {
@@ -18,7 +19,7 @@ namespace HelixToolkit.Wpf.Tests
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
-    public class ObjReaderTests
+    public class ObjReaderTests 
     {
         private ObjReader _objReader;
 
@@ -31,8 +32,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test, Ignore]
         public void Read_Bunny_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\bunny.obj");
+            var model = _objReader.Read(@"Models\obj\bunny.obj");
             Assert.AreEqual(2, model.Children.Count);
             var gm1 = model.Children[1] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -44,8 +44,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_CornellBox_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\cornell_box.obj");
+            var model = _objReader.Read(@"Models\obj\cornell_box.obj");
             Assert.AreEqual(9, model.Children.Count);
             var gm1 = model.Children[1] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -57,8 +56,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test, Ignore]
         public void Read_Ducky_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\ducky.obj");
+            var model = _objReader.Read(@"Models\obj\ducky.obj");
             Assert.AreEqual(4, model.Children.Count);
             var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
             var m1 = (MeshGeometry3D)((GeometryModel3D)model.Children[1]).Geometry;
@@ -73,8 +71,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_Test_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\test.obj");
+            var model = _objReader.Read(@"Models\obj\test.obj");
             Assert.AreEqual(2, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -86,8 +83,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_SmoothingOff_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\SmoothingOff.obj");
+            var model = _objReader.Read(@"Models\obj\SmoothingOff.obj");
             Assert.AreEqual(1, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -99,8 +95,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_SmoothingGroup0_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\SmoothingGroup0.obj");
+            var model = _objReader.Read(@"Models\obj\SmoothingGroup0.obj");
             Assert.AreEqual(1, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -112,8 +107,7 @@ namespace HelixToolkit.Wpf.Tests
         [Test]
         public void Read_SmoothingGroup1_ValidModel()
         {
-            var r = new ObjReader();
-            var model = r.Read(@"Models\obj\SmoothingGroup1.obj");
+            var model = _objReader.Read(@"Models\obj\SmoothingGroup1.obj");
             Assert.AreEqual(1, model.Children.Count);
             var gm1 = model.Children[0] as GeometryModel3D;
             Assert.NotNull(gm1);
@@ -170,6 +164,72 @@ namespace HelixToolkit.Wpf.Tests
             Assert.AreEqual(1, model.Children.Count);
             var mesh = model.Children[0].GetMesh();
             mesh.TextureCoordinates.AssertContains(new[] {0d, 0d}, new[] {0d, 0d}, new[] {0d, 0d});
+        }
+
+        [Test]
+        public void CanParseSimpleTriangle() 
+        {
+            var model = _objReader.Read(@"Models\obj\simple_triangle.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+
+        [Test]
+        public void CanParseLineContinuations() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_single.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+
+        [Test]
+        public void CanParseLineContinuationsWithMultipleBreaks() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+
+        [Test]
+        public void CanParseLineContinuationsWithEmptyContinuations() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_empty_continuation.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+
+        [Test]
+        public void CanParseLineContinuationsWithEmptyLineInMiddle() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_empty_line.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+
+        [Test]
+        public void CanParseLineContinuationsInComments() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_comment.obj");
+
+            Assert.AreEqual(1, model.Children.Count);
+            model.Children[0].AssertHasVertices(new[] {-1d,0d,1d}, new[] {1d,0d,1d}, new[] {-1d,0d,-1d});
+        }
+    }
+
+    public static class Model3DTestExtensions 
+    {
+        public static void AssertHasVertices(this Model3D model, params double[][] vertices) 
+        {
+            var geometryModel = (GeometryModel3D) model;
+            var geometry = (MeshGeometry3D) geometryModel.Geometry;
+            Assert.AreEqual(vertices.Length, geometry.Positions.Count, "Expected to find {0} vertices in model", vertices.Length);
+            foreach (var vertex in vertices)
+                Assert.IsTrue(geometry.Positions.Contains(new Point3D(vertex[0], vertex[1], vertex[2])), "Expected geometry to contain vertex [{0},{1},{2}]", vertex[0],vertex[1],vertex[2]);
         }
     }
 

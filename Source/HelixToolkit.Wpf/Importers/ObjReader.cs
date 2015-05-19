@@ -195,6 +195,17 @@ namespace HelixToolkit.Wpf
                     }
 
                     line = line.Trim();
+                    while (line.EndsWith("\\")) 
+                    {
+                        var nextLine = this.Reader.ReadLine();
+                        while (nextLine.Length == 0) 
+                        {
+                            nextLine = this.Reader.ReadLine();
+                        }
+
+                        line = line.TrimEnd('\\') + nextLine;
+                    }
+
                     if (line.StartsWith("#") || line.Length == 0)
                     {
                         continue;

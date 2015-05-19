@@ -10,12 +10,14 @@
 
 using System;
 using System.Linq;
+using System.Windows.Media.Media3D;
 using NUnit.Framework;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 {
     [TestFixture]
-    class ObjReaderTests
+    class ObjReaderTests 
     {
         private ObjReader _objReader;
 
@@ -32,8 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
         [Test]
         public void LoadModelWithoutNormals()
         {
-            var reader = new ObjReader();
-            var objects = reader.Read(@"Models\obj\cornell_box.obj");
+            var objects = _objReader.Read(@"Models\obj\cornell_box.obj");
             
             Assert.IsNotNull(objects);
             Assert.AreEqual(9, objects.Count);
@@ -44,6 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
             Assert.AreEqual(4, floorGeometry.Positions.Count);
             Assert.AreEqual(4, floorGeometry.Normals.Count);
         }
+
 
         [Test]
         public void CanParseFaceWithRelativeIndices() 
@@ -93,6 +95,60 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
             Assert.AreEqual(1, model.Count);
             var geometry = (MeshGeometry3D)model[0].Geometry;
             geometry.TextureCoordinates.AssertContains(new[] { 0d, 0d }, new[] { 0d, 0d }, new[] { 0d, 0d });
+        }
+
+        [Test]
+        public void CanParseSimpleTriangle() 
+        {
+            var model = _objReader.Read(@"Models\obj\simple_triangle.obj");
+
+            Assert.AreEqual(1, model.Count);
+            model[0].Geometry.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+
+        [Test]
+        public void CanParseLineContinuations() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_single.obj");
+
+            Assert.AreEqual(1, model.Count);
+            model[0].Geometry.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+
+        [Test]
+        public void CanParseLineContinuationsWithMultipleBreaks() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_multiple_breaks.obj");
+
+            Assert.AreEqual(1, model.Count);
+            model[0].Geometry.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+
+        [Test]
+        public void CanParseLineContinuationsWithEmptyContinuations() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_empty_continuation.obj");
+
+            Assert.AreEqual(1, model.Count);
+            model[0].Geometry.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+
+        [Test]
+        public void CanParseLineContinuationsWithEmptyLineInMiddle() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_empty_line.obj");
+
+            Assert.AreEqual(1, model.Count);
+            model[0].Geometry.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+
+        [Test]
+        public void CanParseLineContinuationsInComments() 
+        {
+            var model = _objReader.Read(@"Models\obj\line_continuation_comment.obj");
+
+            Assert.AreEqual(1, model.Count);
+            model[0].Geometry.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
         }
     }
 
