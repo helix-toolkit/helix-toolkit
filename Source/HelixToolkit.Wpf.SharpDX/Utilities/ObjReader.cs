@@ -1178,9 +1178,9 @@ namespace HelixToolkit.Wpf.SharpDX
             private static BitmapImage LoadImage(string path)
             {
                 var bmp = new BitmapImage(new Uri(@"./Media/" + path, UriKind.RelativeOrAbsolute));
+                bmp.Freeze();
                 return bmp;
             }
-
         }
     }
 }
