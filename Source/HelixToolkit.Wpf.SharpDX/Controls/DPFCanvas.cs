@@ -587,7 +587,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 // Ensure that at least every other cycle is done at DispatcherPriority.Render.
                 // Uncomment if animation stutters, but no need as far as I can see.
-                this.lastRenderingDuration = TimeSpan.Zero;
+                // this.lastRenderingDuration = TimeSpan.Zero;
             }
 
             // If rendering took too long last time...
