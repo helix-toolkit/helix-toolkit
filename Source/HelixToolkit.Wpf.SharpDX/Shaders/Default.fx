@@ -353,6 +353,10 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 	{
 		I = cubeMapReflection( input, I );
 	}
+
+	if (bIsSelected){
+		I = vSelectionColor;
+	}
 	
 	return I;	
 }
