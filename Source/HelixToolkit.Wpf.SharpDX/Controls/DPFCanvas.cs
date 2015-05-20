@@ -161,8 +161,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Loaded += this.OnLoaded;
             this.Unloaded += this.OnUnloaded;
             this.ClearColor = global::SharpDX.Color.Gray;
-            this.IsShadowMapEnabled = false;            
-            this.IsMSAAEnabled = true;            
+            this.IsShadowMapEnabled = false;
+            this.IsMSAAEnabled = true;
         }
 
         /// <summary>
@@ -632,29 +632,40 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastRenderingDuration = this.renderTimer.Elapsed - t0;
         }
 
+        private bool queued = false;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sizeInfo"></param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            if (this.surfaceD3D != null)
+            if (queued) return;
+
+            queued = true;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
             {
-#if DEFERRED
-                if (this.RenderTechnique == Techniques.RenderDeferred)
-                {
-                    this.deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
-                }
-                if (this.RenderTechnique == Techniques.RenderGBuffer)
-                {
-                    this.deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
-                }
-#endif
-                this.CreateAndBindTargets();
-                this.SetDefaultRenderTargets();
-                this.InvalidateRender();
-            }
-            base.OnRenderSizeChanged(sizeInfo);
+
+                    if (this.surfaceD3D != null)
+                    {
+        #if DEFERRED
+                        if (this.RenderTechnique == Techniques.RenderDeferred)
+                        {
+                            this.deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                        }
+                        if (this.RenderTechnique == Techniques.RenderGBuffer)
+                        {
+                            this.deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                        }
+        #endif
+                        this.CreateAndBindTargets();
+                        this.SetDefaultRenderTargets();
+                        this.InvalidateRender();
+                    }
+
+                queued = false;
+            }));
         }
 
         /// <summary>
