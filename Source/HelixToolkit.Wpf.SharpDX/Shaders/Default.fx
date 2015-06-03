@@ -318,6 +318,8 @@ PSInput VShaderNudge(VSInput input)
 		output.t2 = 0.0f;
 	}
 
+	output.isSelected = input.isSelected;
+
 	return output;
 }
 
