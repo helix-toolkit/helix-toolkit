@@ -530,6 +530,10 @@ float4 PShaderPerVertexPhong( PSInput input ) : SV_Target
 	{
 		I = cubeMapReflection( input, I );
 	}
+
+	if (input.isSelected){
+		I = vSelectionColor;
+	}
 	
 	return I;	
 }
