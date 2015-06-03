@@ -246,8 +246,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.effectMaterial.bHasDisplacementMapVariable.Set(false);
                 }
 
-                this.effectMaterial.bIsSelectedVariable.Set(this.IsSelected);
-
                 this.effectMaterial.vSelectionColorVariable.Set(selectionColor);
             }
         }
@@ -310,12 +308,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.texNormalMapVariable = effect.GetVariableByName("texNormalMap").AsShaderResource();
                 this.texDisplacementMapVariable = effect.GetVariableByName("texDisplacementMap").AsShaderResource();
                 this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
-                this.bIsSelectedVariable = effect.GetVariableByName("bIsSelected").AsScalar();
                 this.vSelectionColorVariable = effect.GetVariableByName("vSelectionColor").AsVector();
             }
             public EffectVectorVariable vMaterialAmbientVariable, vMaterialDiffuseVariable, vMaterialEmissiveVariable, vMaterialSpecularVariable, vMaterialReflectVariable, vSelectionColorVariable;
             public EffectScalarVariable sMaterialShininessVariable;
-            public EffectScalarVariable bHasDiffuseMapVariable, bHasNormalMapVariable, bHasDisplacementMapVariable, bHasShadowMapVariable, bIsSelectedVariable;
+            public EffectScalarVariable bHasDiffuseMapVariable, bHasNormalMapVariable, bHasDisplacementMapVariable, bHasShadowMapVariable;
             public EffectShaderResourceVariable texDiffuseMapVariable, texNormalMapVariable, texDisplacementMapVariable, texShadowMapVariable;
 
             public void Dispose()
@@ -334,7 +331,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.texNormalMapVariable);
                 Disposer.RemoveAndDispose(ref this.texDisplacementMapVariable);
                 Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
-                Disposer.RemoveAndDispose(ref this.bIsSelectedVariable);
                 Disposer.RemoveAndDispose(ref this.vSelectionColorVariable);
             }
         }

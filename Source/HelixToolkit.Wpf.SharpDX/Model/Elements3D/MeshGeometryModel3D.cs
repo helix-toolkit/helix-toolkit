@@ -282,6 +282,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     Normal = normals != null ? normals[i] : Vector3.Zero,
                     Tangent = tangents != null ? tangents[i] : Vector3.Zero,
                     BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero,
+                    IsSelected = this.IsSelected
                 };
             }
 

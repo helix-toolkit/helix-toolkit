@@ -373,7 +373,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
                     new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
                     new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-           
+                    new InputElement("IS_SELECTED", 0, Format.R10G10B10A2_UInt,    InputElement.AppendAligned, 0),  
+
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                     new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
                     new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
@@ -696,8 +697,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Normal;
         public Vector3 Tangent;
         public Vector3 BiTangent;
+        public bool IsSelected;
 
-        public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3);
+        public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3 + 1);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

@@ -290,7 +290,6 @@
     <EmbeddedResource Include="Shaders\Lines.fx" />
     <EmbeddedResource Include="Shaders\_compile_instructions.txt" />
     <Content Include="Shaders\BillboardText.fx" />
-    <Content Include="Shaders\PerVertexPhong.fx" />
     <Content Include="Shaders\Points.fx" />
     <EmbeddedResource Include="Textures\arial.png" />
     <Content Include="sharpdx_direct3d11_effects_x64.dll">

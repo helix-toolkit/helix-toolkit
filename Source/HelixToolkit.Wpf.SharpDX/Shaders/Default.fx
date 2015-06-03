@@ -57,6 +57,7 @@ struct VSInput
 	float4 mr1			: TEXCOORD2;
 	float4 mr2			: TEXCOORD3;
 	float4 mr3			: TEXCOORD4;
+	bool isSelected : IS_SELECTED;
 };
 
 //--------------------------------------------------------------------------------------
@@ -70,6 +71,7 @@ struct PSInput
 	float3 t1			: TANGENT;		// tangent
     float3 t2			: BINORMAL;		// bi-tangent	
 	float4 c			: COLOR;		// solid color (for debug)
+	bool isSelected : IS_SELECTED;
 };
 
 
@@ -252,6 +254,8 @@ PSInput VShaderDefault( VSInput input )
 		output.t1 = 0.0f;
 		output.t2 = 0.0f;
 	}
+
+	output.isSelected = input.isSelected;
 	    
 	return output;  
 }
@@ -415,7 +419,7 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 		I = cubeMapReflection( input, I );
 	}
 
-	if (bIsSelected){
+	if (input.isSelected){
 		I = vSelectionColor;
 	}
 	
