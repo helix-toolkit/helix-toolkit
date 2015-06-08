@@ -117,22 +117,8 @@ namespace HelixToolkit.Wpf.SharpDX
             EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(IsSelectedChanged));
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
 
-        protected static void IsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((GeometryModel3D)d).OnIsSelectedChanged(e);
-        }
-
-        protected virtual void OnIsSelectedChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (IsAttached)
-            {
-                var host = this.renderHost;
-                Detach();
-                Attach(host);
-            }
-        }
 
         /// <summary>
         /// Provide CLR accessors for the event 
