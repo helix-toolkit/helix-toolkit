@@ -225,6 +225,11 @@ namespace HelixToolkit.Wpf.SharpDX
     public sealed class EffectsManager : IDisposable
     {
         /// <summary>
+        /// The minimum supported feature level.
+        /// </summary>
+        private const global::SharpDX.Direct3D.FeatureLevel MinimumFeatureLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
+
+        /// <summary>
         /// 
         /// </summary>
         public static readonly EffectsManager Instance = new EffectsManager();
@@ -269,17 +274,29 @@ namespace HelixToolkit.Wpf.SharpDX
             using (var f = new Factory())
             {
                 Adapter bestAdapter = null;
-                var bestLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
+                long bestVideoMemory = 0;
+                long bestSystemMemory = 0;
 
                 foreach (var item in f.Adapters)
                 {
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
-                    if (bestAdapter == null || level > bestLevel)
+
+                    if (level < EffectsManager.MinimumFeatureLevel)
+                    {
+                        continue;
+                    }
+
+                    long videoMemory = item.Description.DedicatedVideoMemory;
+                    long systemMemory = item.Description.DedicatedSystemMemory;
+
+                    if (videoMemory > bestVideoMemory || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
                     {
                         bestAdapter = item;
-                        bestLevel = level;
+                        bestVideoMemory = videoMemory;
+                        bestSystemMemory = systemMemory;
                     }
                 }
+
                 return bestAdapter;
             }
         }
