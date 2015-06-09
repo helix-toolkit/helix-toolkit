@@ -119,6 +119,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
 
+        public static readonly DependencyProperty RequiresPerVertexColorationProperty =
+            DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(false));
 
         /// <summary>
         /// Provide CLR accessors for the event 
@@ -176,6 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
             this.IsThrowingShadow = true;
+            this.RequiresPerVertexColoration = false;
             //count++;
         }
 
@@ -334,6 +337,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)this.GetValue(IsSelectedProperty); }
             set { this.SetValue(IsSelectedProperty, value); }
+        }
+
+        public bool RequiresPerVertexColoration
+        {
+            get
+            {
+                return (bool) this.GetValue(RequiresPerVertexColorationProperty);
+            }
+            set { this.SetValue(RequiresPerVertexColorationProperty, value); }
         }
     }
 

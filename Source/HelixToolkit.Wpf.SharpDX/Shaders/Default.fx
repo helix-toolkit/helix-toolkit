@@ -57,7 +57,8 @@ struct VSInput
 	float4 mr1			: TEXCOORD2;
 	float4 mr2			: TEXCOORD3;
 	float4 mr3			: TEXCOORD4;
-	bool isSelected : IS_SELECTED;
+	bool isSelected		: IS_SELECTED;
+	bool requiresPerVertexColoration	: REQUIRES_PER_VERTEX_COLORATION;
 };
 
 //--------------------------------------------------------------------------------------
@@ -71,7 +72,8 @@ struct PSInput
 	float3 t1			: TANGENT;		// tangent
     float3 t2			: BINORMAL;		// bi-tangent	
 	float4 c			: COLOR;		// solid color (for debug)
-	bool isSelected : IS_SELECTED;
+	bool isSelected		: IS_SELECTED;
+	bool requiresPerVertexColoration : REQUIRES_PER_VERTEX_COLORATION;
 };
 
 
@@ -256,6 +258,7 @@ PSInput VShaderDefault( VSInput input )
 	}
 
 	output.isSelected = input.isSelected;
+	output.requiresPerVertexColoration = input.requiresPerVertexColoration;
 	    
 	return output;  
 }
@@ -319,6 +322,7 @@ PSInput VShaderNudge(VSInput input)
 	}
 
 	output.isSelected = input.isSelected;
+	output.requiresPerVertexColoration = input.requiresPerVertexColoration;
 
 	return output;
 }
@@ -334,11 +338,6 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 
 	// get per pixel vector to eye-position
 	float3 eye = normalize( vEyePos - input.wp.xyz );
-
-	if(dot(input.n, eye) < 0)
-	{
-		input.n = -input.n;
-	}
 
 	// light emissive and ambient intensity
 	// this variable can be used for light accumulation
@@ -421,10 +420,6 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 		I = cubeMapReflection( input, I );
 	}
 
-	if (input.isSelected){
-		I = vSelectionColor;
-	}
-	
 	return I;	
 }
 
@@ -523,7 +518,10 @@ float4 PShaderPerVertexPhong( PSInput input ) : SV_Target
 	I.a = vMaterialDiffuse.a;
 
 	// multiply by vertex colors
-	I = I * input.c;
+	if (input.requiresPerVertexColoration)
+	{
+		I = I * input.c;
+	}
 
 	/// get reflection-color
 	if(bHasCubeMap)
@@ -531,8 +529,9 @@ float4 PShaderPerVertexPhong( PSInput input ) : SV_Target
 		I = cubeMapReflection( input, I );
 	}
 
-	if (input.isSelected){
-		I = vSelectionColor;
+	if (input.isSelected)
+	{
+		I = lerp(vSelectionColor,I,0.5);
 	}
 	
 	return I;	

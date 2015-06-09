@@ -374,6 +374,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
                     new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
                     new InputElement("IS_SELECTED", 0, Format.R10G10B10A2_UInt,    InputElement.AppendAligned, 0),  
+                    new InputElement("REQUIRES_PER_VERTEX_COLORATION", 0, Format.R10G10B10A2_UInt,    InputElement.AppendAligned, 0),  
 
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                     new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
@@ -698,7 +699,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Tangent;
         public Vector3 BiTangent;
         public bool IsSelected;
-
+        public bool RequiresPerVertexColoration;
         public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3 + 1);
     }
 
