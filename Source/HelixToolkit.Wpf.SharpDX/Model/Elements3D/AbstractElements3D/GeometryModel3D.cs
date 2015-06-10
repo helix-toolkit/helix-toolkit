@@ -117,15 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(IsSelectedChanged));
-
-        public static readonly DependencyProperty RequiresPerVertexColorationProperty =
-            DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(false));
-
-        protected static void IsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((GeometryModel3D)d).OnIsSelectedChanged(e);
-        }
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
 
         protected virtual void OnIsSelectedChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -193,7 +185,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
             this.IsThrowingShadow = true;
-            this.RequiresPerVertexColoration = false;
             //count++;
         }
 
@@ -352,15 +343,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)this.GetValue(IsSelectedProperty); }
             set { this.SetValue(IsSelectedProperty, value); }
-        }
-
-        public bool RequiresPerVertexColoration
-        {
-            get
-            {
-                return (bool) this.GetValue(RequiresPerVertexColorationProperty);
-            }
-            set { this.SetValue(RequiresPerVertexColorationProperty, value); }
         }
     }
 

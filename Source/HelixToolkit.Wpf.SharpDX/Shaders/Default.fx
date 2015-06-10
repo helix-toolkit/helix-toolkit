@@ -36,10 +36,7 @@ cbuffer cbPerFrame
 	float4 vLightColor[LIGHTS];	
 	matrix mLightView[LIGHTS];
 	matrix mLightProj[LIGHTS];
-	
 };
-
-
 
 //--------------------------------------------------------------------------------------
 // VERTEX AND PIXEL SHADER INPUTS
@@ -57,8 +54,6 @@ struct VSInput
 	float4 mr1			: TEXCOORD2;
 	float4 mr2			: TEXCOORD3;
 	float4 mr3			: TEXCOORD4;
-	bool isSelected		: IS_SELECTED;
-	bool requiresPerVertexColoration	: REQUIRES_PER_VERTEX_COLORATION;
 };
 
 //--------------------------------------------------------------------------------------
@@ -72,8 +67,35 @@ struct PSInput
 	float3 t1			: TANGENT;		// tangent
     float3 t2			: BINORMAL;		// bi-tangent	
 	float4 c			: COLOR;		// solid color (for debug)
-	bool isSelected		: IS_SELECTED;
-	bool requiresPerVertexColoration : REQUIRES_PER_VERTEX_COLORATION;
+};
+
+struct VSInputDynamo
+{
+	float4 p			: POSITION;
+	float4 c			: COLOR;
+	float2 t			: TEXCOORD;
+	float3 n			: NORMAL;
+	float3 t1			: TANGENT;
+	float3 t2			: BINORMAL;
+	float4 dynamoParams : COLOR1;
+	float4 mr0			: TEXCOORD2;
+	float4 mr1			: TEXCOORD3;
+	float4 mr2			: TEXCOORD4;
+	float4 mr3			: TEXCOORD5;
+};
+
+//--------------------------------------------------------------------------------------
+struct PSInputDynamo
+{
+	float4 p			: SV_POSITION;
+	float4 wp			: POSITION0;
+	float4 sp			: TEXCOORD1;
+	float3 n			: NORMAL;	    // normal
+	float2 t			: TEXCOORD0;	// tex coord	
+	float3 t1			: TANGENT;		// tangent
+	float3 t2			: BINORMAL;		// bi-tangent	
+	float4 c			: COLOR;		// solid color (for debug)
+	float4 dynamoParams : COLOR1;
 };
 
 
@@ -197,8 +219,6 @@ float shadowStrength(float4 sp)
 	return (fixTeil + nonTeil);		
 }
 
-
-
 //--------------------------------------------------------------------------------------
 // PER PIXEL LIGHTING  - Vertex Shader
 //--------------------------------------------------------------------------------------
@@ -257,74 +277,7 @@ PSInput VShaderDefault( VSInput input )
 		output.t2 = 0.0f;
 	}
 
-	output.isSelected = input.isSelected;
-	output.requiresPerVertexColoration = input.requiresPerVertexColoration;
-	    
 	return output;  
-}
-
-PSInput VShaderNudge(VSInput input)
-{
-	PSInput output = (PSInput)0;
-
-	// Nudge the vertex out slightly along its normal.
-	float3 nudge = input.n * 0.0001;
-	float4 inputp = float4(input.p.x + nudge.x, input.p.y + nudge.y, input.p.z + nudge.z , input.p.w);
-
-	// compose instance matrix
-	if (bHasInstances)
-	{
-		matrix mInstance =
-		{
-			input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
-			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
-			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
-			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
-		};
-		inputp = mul(mInstance, input.p);
-	}
-
-	//set position into camera clip space	
-	output.p = mul(inputp, mWorld);
-	output.wp = output.p;
-	output.p = mul(output.p, mView);
-	output.p = mul(output.p, mProjection);
-
-	//set position into light-clip space
-	if (bHasShadowMap)
-	{
-		//for (int i = 0; i < 1; i++)
-		{
-			output.sp = mul(inputp, mWorld);
-			output.sp = mul(output.sp, mLightView[0]);
-			output.sp = mul(output.sp, mLightProj[0]);
-		}
-	}
-
-	//set texture coords and color
-	output.t = input.t;
-	output.c = input.c;
-
-	//set normal for interpolation	
-	output.n = normalize(mul(input.n, (float3x3)mWorld));
-
-
-	if (bHasNormalMap)
-	{
-		// transform the tangents by the world matrix and normalize
-		output.t1 = normalize(mul(input.t1, (float3x3)mWorld));
-		output.t2 = normalize(mul(input.t2, (float3x3)mWorld));
-	}
-	else
-	{
-		output.t1 = 0.0f;
-		output.t2 = 0.0f;
-	}
-
-	output.isSelected = input.isSelected;
-	output.requiresPerVertexColoration = input.requiresPerVertexColoration;
-
-	return output;
 }
 
 //--------------------------------------------------------------------------------------
@@ -332,7 +285,6 @@ PSInput VShaderNudge(VSInput input)
 //------------------------------------------------------------------------------------
 float4 PShaderPhong( PSInput input ) : SV_Target
 {   
-
 	//calculate lighting vectors - renormalize vectors	
 	input.n = calcNormal( input );
 
@@ -423,16 +375,102 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 	return I;	
 }
 
-//--------------------------------------------------------------------------------------
-// PER PIXEL LIGHTING  - PHONG
-// This is an adaptation of the phong shader which blends the vertex
-// colors with the material colors.
 //------------------------------------------------------------------------------------
-float4 PShaderPerVertexPhong( PSInput input ) : SV_Target
+// DYNAMO - Vertex Shader
+//------------------------------------------------------------------------------------
+PSInputDynamo VShaderDynamo(VSInputDynamo input)
+{
+	PSInputDynamo output;
+
+	bool isSelected = input.dynamoParams.x;
+	bool requiresPerVertexColoration = input.dynamoParams.y;
+
+	float4 inputp;
+	if (isSelected || requiresPerVertexColoration)
+	{
+		// Nudge the vertex out slightly along its normal.
+		float3 nudge = input.n * 0.0001;
+		inputp = float4(input.p.x + nudge.x, input.p.y + nudge.y, input.p.z + nudge.z, input.p.w);
+	}
+	else
+	{
+		inputp = input.p;
+	}
+
+	// compose instance matrix
+	if (bHasInstances)
+	{
+		matrix mInstance =
+		{
+			input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
+			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
+			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
+			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+		};
+		inputp = mul(mInstance, input.p);
+	}
+
+	//set position into camera clip space	
+	output.p = mul(inputp, mWorld);
+	output.wp = output.p;
+	output.p = mul(output.p, mView);
+	output.p = mul(output.p, mProjection);
+
+	//set position into light-clip space
+	if (bHasShadowMap)
+	{
+		//for (int i = 0; i < 1; i++)
+		{
+			output.sp = mul(inputp, mWorld);
+			output.sp = mul(output.sp, mLightView[0]);
+			output.sp = mul(output.sp, mLightProj[0]);
+		}
+	}
+
+	//set texture coords and color
+	output.t = input.t;
+	output.c = input.c;
+
+	//set normal for interpolation	
+	output.n = normalize(mul(input.n, (float3x3)mWorld));
+
+
+	if (bHasNormalMap)
+	{
+		// transform the tangents by the world matrix and normalize
+		output.t1 = normalize(mul(input.t1, (float3x3)mWorld));
+		output.t2 = normalize(mul(input.t2, (float3x3)mWorld));
+	}
+	else
+	{
+		output.t1 = 0.0f;
+		output.t2 = 0.0f;
+	}
+
+	output.dynamoParams = input.dynamoParams;
+
+	return output;
+}
+
+//------------------------------------------------------------------------------------
+// DYNAMO - Pixel Shader
+//------------------------------------------------------------------------------------
+float4 PShaderDynamo( PSInputDynamo input ) : SV_Target
 {   
+	//convert a PSInputDynamo to a PSInput
+	PSInput standardInput = (PSInput)0;
+
+	standardInput.p = input.p;
+	standardInput.wp = input.wp;
+	standardInput.sp = input.sp;
+	standardInput.n = input.n;
+	standardInput.t = input.t;
+	standardInput.t1 = input.t1;
+	standardInput.t2 = input.t2;
+	standardInput.c = input.c;
 
 	//calculate lighting vectors - renormalize vectors	
-	input.n = calcNormal( input );
+	input.n = calcNormal(standardInput);
 
 	// get per pixel vector to eye-position
 	float3 eye = normalize( vEyePos - input.wp.xyz );
@@ -517,21 +555,23 @@ float4 PShaderPerVertexPhong( PSInput input ) : SV_Target
 	/// set diffuse alpha
 	I.a = vMaterialDiffuse.a;
 
-	// multiply by vertex colors
-	if (input.requiresPerVertexColoration)
+	/// get reflection-color
+	if(bHasCubeMap)
+	{
+		I = cubeMapReflection(standardInput, I);
+	}
+
+	bool isSelected = input.dynamoParams.x;
+	bool requiresPerVertexColoration = input.dynamoParams.y;
+
+	if (requiresPerVertexColoration)
 	{
 		I = I * input.c;
 	}
 
-	/// get reflection-color
-	if(bHasCubeMap)
+	if (isSelected)
 	{
-		I = cubeMapReflection( input, I );
-	}
-
-	if (input.isSelected)
-	{
-		I = lerp(vSelectionColor,I,0.5);
+		I = lerp(vSelectionColor,I,0.3);
 	}
 	
 	return I;	
@@ -755,29 +795,29 @@ technique11 RenderPhong
     }
 }
 
-technique11 RenderPerVertexPhong
+technique11 RenderDynamo
 {
     pass P0
     {
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-        SetVertexShader		( CompileShader( vs_4_0, VShaderNudge() ) );        
+        SetVertexShader		( CompileShader( vs_4_0, VShaderDynamo() ) );        
         SetHullShader		( NULL );
         SetDomainShader		( NULL );
         SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderPerVertexPhong() ) );        
+        SetPixelShader		( CompileShader( ps_4_0, PShaderDynamo() ) );        
     }
 	pass P1
     {
 		SetRasterizerState	( RSWire );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-        SetVertexShader		( CompileShader( vs_4_0, VShaderNudge() ) );
+        SetVertexShader		( CompileShader( vs_4_0, VShaderDynamo() ) );
         SetHullShader		( NULL );
         SetDomainShader		( NULL );
         SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderPerVertexPhong() ) );        
+        SetPixelShader		( CompileShader( ps_4_0, PShaderDynamo() ) );        
     }
 }
 

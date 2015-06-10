@@ -125,7 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderLines = new RenderTechnique("RenderLines");
             RenderPoints = new RenderTechnique("RenderPoints");
             RenderBillboard = new RenderTechnique("RenderBillboard");
-            RenderPerVertexPhong = new RenderTechnique("RenderPerVertexPhong");
+            RenderDynamo = new RenderTechnique("RenderDynamo");
 
             RenderTechniques = new List<RenderTechnique>
             { 
@@ -140,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderTangents, 
                 RenderTexCoords,
                 RenderWires,
-                RenderPerVertexPhong,
+                RenderDynamo,
 #if DEFERRED
                 RenderDeferred,
                 RenderGBuffer,  
@@ -168,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {     Techniques.RenderLines,      Properties.Resources._default}, 
                 {     Techniques.RenderPoints,     Properties.Resources._default},
                 {     Techniques.RenderBillboard,  Properties.Resources._default},
-                {     Techniques.RenderPerVertexPhong, Properties.Resources._default},
+                {     Techniques.RenderDynamo,      Properties.Resources._default},
     #if TESSELLATION                                        
                 {     Techniques.RenderPNTriangs,  Properties.Resources._default}, 
                 {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static RenderTechnique RenderLines { get; private set; }
         public static RenderTechnique RenderPoints { get; private set; }
         public static RenderTechnique RenderBillboard { get; private set; }
-        public static RenderTechnique RenderPerVertexPhong { get; private set; }
+        public static RenderTechnique RenderDynamo { get; private set; }
 
 #if TESSELLATION
         public static RenderTechnique RenderPNTriangs { get; private set; }
@@ -343,7 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderLines,
                     Techniques.RenderPoints,
                     Techniques.RenderBillboard,
-                    Techniques.RenderPerVertexPhong,
+                    Techniques.RenderDynamo,
 #if TESSELLATION
                     Techniques.RenderPNTriangs,
                     Techniques.RenderPNQuads,
@@ -373,8 +373,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
                     new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
                     new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-                    new InputElement("IS_SELECTED", 0, Format.R10G10B10A2_UInt,    InputElement.AppendAligned, 0),  
-                    new InputElement("REQUIRES_PER_VERTEX_COLORATION", 0, Format.R10G10B10A2_UInt,    InputElement.AppendAligned, 0),  
 
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                     new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
@@ -382,6 +380,27 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                 });
+                defaultInputLayout.DebugName = "Default";
+
+                // DYNAMO
+                var dynamoInputLayout = new InputLayout(device, GetEffect(Techniques.RenderDynamo).GetTechniqueByName(Techniques.RenderDynamo.Name).GetPassByIndex(0).Description.Signature, new[]
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
+                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
+                    new InputElement("COLOR", 1, Format.R32G32B32A32_Float,    InputElement.AppendAligned, 0),  
+                    //new InputElement("REQUIRES_PER_VERTEX_COLORATION", 0, Format.R32_UInt,    InputElement.AppendAligned, 0),  
+
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 5, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                });
+                dynamoInputLayout.DebugName = "Dynamo";
 
                 // ------------------------------------------------------------------------------------
                 var linesInputLayout = new InputLayout(device, GetEffect(Techniques.RenderLines).GetTechniqueByName(Techniques.RenderLines.Name).GetPassByIndex(0).Description.Signature, new[] 
@@ -445,6 +464,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 },
                 billboardInputLayout);
 
+                // DYNAMO
+                RegisterLayout(new []
+                {
+                    Techniques.RenderDynamo
+                }, dynamoInputLayout);
+
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
                 { 
@@ -460,7 +485,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderTexCoords, 
                     Techniques.RenderColors, 
                     Techniques.RenderWires,
-                    Techniques.RenderPerVertexPhong,
 #if DEFERRED 
                     Techniques.RenderDeferred,
                     Techniques.RenderGBuffer,
@@ -698,9 +722,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Normal;
         public Vector3 Tangent;
         public Vector3 BiTangent;
-        public bool IsSelected;
-        public bool RequiresPerVertexColoration;
-        public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3 + 1);
+        public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
