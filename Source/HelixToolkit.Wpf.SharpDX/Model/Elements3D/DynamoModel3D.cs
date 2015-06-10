@@ -19,6 +19,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Normal;
         public Vector3 Tangent;
         public Vector3 BiTangent;
+
+        /// <summary>
+        /// Store a number of parameters for Dynamo in a Vector4.
+        /// 0 - IsSelected
+        /// 1 - RequiresPerVertexColoration
+        /// </summary>
         public Vector4 DynamoParams;
 
         public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3 + 4);
@@ -259,8 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     Normal = normals != null ? normals[i] : Vector3.Zero,
                     Tangent = tangents != null ? tangents[i] : Vector3.Zero,
                     BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero,
-                    DynamoParams = new Vector4(this.IsSelected?1:0, 0,0,0)
-                    //RequiresPerVertexColoration = Convert.ToUInt32(this.RequiresPerVertexColoration)
+                    DynamoParams = new Vector4(this.IsSelected?1:0, this.RequiresPerVertexColoration?1:0,0,0)
                 };
             }
 
