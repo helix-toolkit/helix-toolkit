@@ -175,7 +175,7 @@
             if (this.IsAttached)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, PointsVertex.SizeInBytes, this.CreatePointVertexArray());
             }
         }
 
@@ -209,7 +209,7 @@
             if (geometry != null)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, PointsVertex.SizeInBytes, this.CreatePointVertexArray());
             }
 
             /// --- set up const variables
@@ -295,7 +295,7 @@
 
             /// --- bind buffer                
             this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0,
-                new VertexBufferBinding(this.vertexBuffer, Geometry3D.PointsVertex.SizeInBytes, 0));
+                new VertexBufferBinding(this.vertexBuffer, PointsVertex.SizeInBytes, 0));
 
             /// --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);
@@ -314,35 +314,32 @@
         /// <summary>
         /// Creates a <see cref="T:PointsVertex[]"/>.
         /// </summary>
-        private Geometry3D.PointsVertex[] CreatePointVertexArray()
+        private PointsVertex[] CreatePointVertexArray()
         {
             var positions = this.Geometry.Positions.Array;
             var vertexCount = this.Geometry.Positions.Count;
             var color = this.Color;
-            var result = new Geometry3D.PointsVertex[vertexCount];
+            var result = new PointsVertex[vertexCount];
 
-            if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
+            for (var i = 0; i < vertexCount; i++)
             {
-                var colors = this.Geometry.Colors;
-                for (var i = 0; i < vertexCount; i++)
+                Color4 finalColor;
+                if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
                 {
-                    result[i] = new Geometry3D.PointsVertex
-                    {
-                        Position = new Vector4(positions[i], 1f),
-                        Color = color * colors[i],
-                    };
+                    var colors = this.Geometry.Colors;
+                    finalColor = color*colors[i];
                 }
-            }
-            else
-            {
-                for (var i = 0; i < vertexCount; i++)
+                else
                 {
-                    result[i] = new Geometry3D.PointsVertex
-                    {
-                        Position = new Vector4(positions[i], 1f),
-                        Color = color,
-                    };
+                    finalColor = color;
                 }
+
+                result[i] = new PointsVertex
+                {
+                    Position = new Vector4(positions[i], 1f),
+                    Color = finalColor,
+                    Parameters = new Vector4(this.IsSelected?1:0,0,0,0)
+                };
             }
 
             return result;

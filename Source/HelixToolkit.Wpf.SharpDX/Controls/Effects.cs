@@ -424,7 +424,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 var pointsInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPoints).GetTechniqueByName(Techniques.RenderPoints.Name).GetPassByIndex(0).Description.Signature, new[] 
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
                 });
 
                 var billboardInputLayout = new InputLayout(device, GetEffect(Techniques.RenderBillboard).GetTechniqueByName(Techniques.RenderBillboard.Name).GetPassByIndex(0).Description.Signature, new[]
@@ -746,7 +747,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 Position;
         public Color4 Color;
         public Vector4 TexCoord;
-        //public Vector2 Offset;
+        public const int SizeInBytes = 4 * (4 + 4 + 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PointsVertex
+    {
+        public Vector4 Position;
+        public Color4 Color;
+        public Vector4 Parameters;
         public const int SizeInBytes = 4 * (4 + 4 + 4);
     }
 }

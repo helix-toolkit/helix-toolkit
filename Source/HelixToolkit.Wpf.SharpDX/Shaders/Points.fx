@@ -16,6 +16,7 @@ struct GSInputPS
 {
     float4 p	: POSITION;
     float4 c	: COLOR;
+	float4 parameters  : COLOR1;
 };
 
 struct PSInputPS
@@ -54,11 +55,20 @@ GSInputPS VShaderPoints( GSInputPS input )
     GSInputPS output = (GSInputPS)0;	
     output.p = input.p;
 
+	bool isSelected = input.parameters.x;
+
     //set position into clip space	
     output.p = mul( output.p, mWorld );		
     output.p = mul( output.p, mView );    
     output.p = mul( output.p, mProjection );	
-    output.c = input.c;
+
+	if (isSelected){
+		output.c = lerp(vSelectionColor, input.c, 0.3);
+	}
+	else{
+		output.c = input.c;
+	}
+    
     return output;
 }
 
