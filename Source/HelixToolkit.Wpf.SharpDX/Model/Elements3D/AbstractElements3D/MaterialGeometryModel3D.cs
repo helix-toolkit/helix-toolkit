@@ -34,10 +34,16 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isChanged = true;
         protected bool hasInstances = false;
         protected bool hasShadowMap = false;
-        protected Color4 selectionColor = new Color4(1.0f,0.0f,1.0f,1.0f);
+        private Color4 selectionColor = new Color4(1.0f,0.0f,1.0f,1.0f);
 
         public MaterialGeometryModel3D()
         {            
+        }
+
+        public Color4 SelectionColor
+        {
+            get { return selectionColor; }
+            set { selectionColor = value; }
         }
 
         /// <summary>
