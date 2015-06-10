@@ -9,7 +9,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Media.Media3D;
 using NUnit.Framework;
 using SharpDX;
@@ -149,6 +151,122 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 
             Assert.AreEqual(1, model.Count);
             model[0].Geometry.Positions.AssertContains(new[] { -1d, 0d, 1d }, new[] { 1d, 0d, 1d }, new[] { -1d, 0d, -1d });
+        }
+
+        [Test]
+        public void BuildModel_SmoothingOff_Valid()
+        {
+            string content = @"
+s off
+
+v 0 0 0
+v 1 0 0
+v 0 1 0
+v 1 1 0
+
+vt 0.0 0.0
+vt 0.5 0.0
+vt 0.0 0.5
+vt 1.0 1.0
+vt 0.0 1.0
+vt 1.0 0.0
+
+f 1/1 2/2 3/3
+f 4/4 3/5 2/6
+";
+
+            var expectedPositions = new Vector3[]
+            {
+                new Vector3(0.0f, 0.0f, 0.0f),
+                new Vector3(1.0f, 0.0f, 0.0f),
+                new Vector3(0.0f, 1.0f, 0.0f),
+                new Vector3(1.0f, 1.0f, 0.0f),
+                new Vector3(0.0f, 1.0f, 0.0f),
+                new Vector3(1.0f, 0.0f, 0.0f)
+            };
+
+            var expectedTextureCoordinates = new Vector2[]
+            {
+                new Vector2(0.0f, 1.0f),
+                new Vector2(0.5f, 1.0f),
+                new Vector2(0.0f, 0.5f),
+                new Vector2(1.0f, 0.0f),
+                new Vector2(0.0f, 0.0f),
+                new Vector2(1.0f, 1.0f)
+            };
+
+            var buffer = Encoding.UTF8.GetBytes(content);
+
+            using (var stream = new MemoryStream(buffer, false))
+            {
+                var model = _objReader.Read(stream);
+                var mesh = (MeshGeometry3D)model[0].Geometry;
+
+                Assert.AreEqual(6, mesh.Indices.Count);
+                Assert.AreEqual(6, mesh.Positions.Count);
+                Assert.AreEqual(6, mesh.TextureCoordinates.Count);
+
+                CollectionAssert.AreEqual(expectedPositions, mesh.Positions);
+                CollectionAssert.AreEqual(expectedTextureCoordinates, mesh.TextureCoordinates);
+            }
+        }
+
+        [Test]
+        public void BuildModel_SmoothingOn_Valid()
+        {
+            string content = @"
+s 1
+
+v 0 0 0
+v 1 0 0
+v 0 1 0
+v 1 1 0
+
+vt 0.0 0.0
+vt 0.5 0.0
+vt 0.0 0.5
+vt 1.0 1.0
+vt 0.0 1.0
+vt 1.0 0.0
+
+f 1/1 2/2 3/3
+f 4/4 3/5 2/6
+";
+
+            var expectedPositions = new Vector3[]
+            {
+                new Vector3(0.0f, 0.0f, 0.0f),
+                new Vector3(1.0f, 0.0f, 0.0f),
+                new Vector3(0.0f, 1.0f, 0.0f),
+                new Vector3(1.0f, 1.0f, 0.0f),
+                new Vector3(0.0f, 1.0f, 0.0f),
+                new Vector3(1.0f, 0.0f, 0.0f)
+            };
+
+            var expectedTextureCoordinates = new Vector2[]
+            {
+                new Vector2(0.0f, 1.0f),
+                new Vector2(0.5f, 1.0f),
+                new Vector2(0.0f, 0.5f),
+                new Vector2(1.0f, 0.0f),
+                new Vector2(0.0f, 0.0f),
+                new Vector2(1.0f, 1.0f)
+            };
+
+            var buffer = Encoding.UTF8.GetBytes(content);
+
+            using (var stream = new MemoryStream(buffer, false))
+            {
+                var model = _objReader.Read(stream);
+                var mesh = (MeshGeometry3D)model[0].Geometry;
+
+                Assert.AreEqual(6, mesh.Indices.Count);
+                Assert.AreEqual(6, mesh.Positions.Count);
+                Assert.AreEqual(6, mesh.TextureCoordinates.Count);
+
+                CollectionAssert.AreEqual(expectedPositions, mesh.Positions);
+                CollectionAssert.AreEqual(expectedTextureCoordinates, mesh.TextureCoordinates);
+            }
         }
     }
 

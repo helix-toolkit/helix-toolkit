@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.Tests
                     countVertices += mesh.Positions.Count;
                 });
 
-            Assert.AreEqual(8, countVertices);
+            Assert.AreEqual(17, countVertices);
         }
     }
 }
