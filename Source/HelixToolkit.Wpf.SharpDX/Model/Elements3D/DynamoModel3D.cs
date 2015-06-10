@@ -20,7 +20,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Tangent;
         public Vector3 BiTangent;
         public Vector4 DynamoParams;
-        //public float RequiresPerVertexColoration;
 
         public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3 + 4);
     }
@@ -35,10 +34,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set { this.SetValue(RequiresPerVertexColorationProperty, value); }
         }
-
-        public static new readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DynamoGeometryModel3D), new UIPropertyMetadata(IsSelectedChanged));
-
         public static readonly DependencyProperty RequiresPerVertexColorationProperty =
             DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(false));
 
@@ -70,11 +65,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                 }
             }
-        }
-
-        protected static void IsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((DynamoGeometryModel3D)d).OnIsSelectedChanged(e);
         }
 
         public override void Attach(IRenderHost host)
