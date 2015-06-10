@@ -316,17 +316,18 @@
         /// </summary>
         private PointsVertex[] CreatePointVertexArray()
         {
-            var positions = this.Geometry.Positions.Array;
-            var vertexCount = this.Geometry.Positions.Count;
-            var color = this.Color;
+            var positions = Geometry.Positions.Array;
+            var vertexCount = Geometry.Positions.Count;
+            var color = Color;
             var result = new PointsVertex[vertexCount];
+            var colors = Geometry.Colors;
 
             for (var i = 0; i < vertexCount; i++)
             {
                 Color4 finalColor;
-                if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
+                if (colors != null && colors.Any())
                 {
-                    var colors = this.Geometry.Colors;
+                    
                     finalColor = color*colors[i];
                 }
                 else
@@ -338,7 +339,7 @@
                 {
                     Position = new Vector4(positions[i], 1f),
                     Color = finalColor,
-                    Parameters = new Vector4(this.IsSelected?1:0,0,0,0)
+                    Parameters = new Vector4(IsSelected?1:0,0,0,0)
                 };
             }
 

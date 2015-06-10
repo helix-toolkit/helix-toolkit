@@ -407,6 +407,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
 
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                     new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
@@ -731,7 +732,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Vector4 Position;
         public Color4 Color;
-        public const int SizeInBytes = 4 * (4 + 4);
+        public Vector4 Parameters;
+        public const int SizeInBytes = 4 * (4 + 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
