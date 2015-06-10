@@ -251,11 +251,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var adapter = GetBestAdapter();
             if (adapter == null)
             {
-                System.Windows.MessageBox.Show("No DirectX 10 or higher adapter found, a software adapter will be used!", "Warning");
+                this.driverType = DriverType.Warp;
                 this.device = new global::SharpDX.Direct3D11.Device(DriverType.Warp, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
             }
             else
             {
+                this.driverType = DriverType.Hardware;
                 this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
                 //this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_11_0); 
             }
@@ -307,9 +308,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public static global::SharpDX.Direct3D11.Device Device { get { return Instance.device; } }
 
         /// <summary>
+        /// Gets the device's driver type.
+        /// </summary>
+        public static global::SharpDX.Direct3D.DriverType DriverType { get { return Instance.driverType; } }
+
+        /// <summary>
         /// 
         /// </summary>
         private global::SharpDX.Direct3D11.Device device;
+
+        /// <summary>
+        /// The driver type.
+        /// </summary>
+        private global::SharpDX.Direct3D.DriverType driverType;
 
         /// <summary>
         /// 
