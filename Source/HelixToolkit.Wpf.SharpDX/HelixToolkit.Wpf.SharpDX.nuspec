@@ -12,6 +12,7 @@
     <description>Provides custom controls for WPF and a scene graph based on SharpDX.</description>
     <tags>wpf SharpDX 3D</tags>
     <dependencies>
+      <dependency id="Cyotek.Drawing.BitmapFont" version="1.0.2.0" />
       <dependency id="HelixToolkit" version="2014.2" />
       <dependency id="HelixToolkit.Wpf" version="2014.2" />
       <dependency id="SharpDX" version="2.5.0" />
