@@ -18,7 +18,7 @@ build:
   verbosity: normal
 
 before_build:
-  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Dependency=HelixToolkit /ExtractReleaseNotes=CHANGELOG.md /Directory=Source
+  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /ExtractReleaseNotes=CHANGELOG.md /Directory=Source
 
 after_build:
   - cmd: gitlink c:\projects\helix-toolkit -u https://github.com/helix-toolkit/helix-toolkit -b master -f Source/HelixToolkit.AppVeyor.sln
