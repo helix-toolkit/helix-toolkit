@@ -249,16 +249,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
 #if DX11
             var adapter = GetBestAdapter();
-            if (adapter == null)
+
+            if (adapter != null)
             {
-                this.driverType = DriverType.Warp;
-                this.device = new global::SharpDX.Direct3D11.Device(DriverType.Warp, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
-            }
-            else
-            {
-                this.driverType = DriverType.Hardware;
-                this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
-                //this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_11_0); 
+                if (adapter.Description.VendorId == 0x1414 && adapter.Description.DeviceId == 0x8c)
+                {
+                    this.driverType = DriverType.Warp;
+                    this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
+                }
+                else
+                {
+                    this.driverType = DriverType.Hardware;
+                    this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+                }
             }
 #else
             this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_10_1);                        
@@ -290,7 +293,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     long videoMemory = item.Description.DedicatedVideoMemory;
                     long systemMemory = item.Description.DedicatedSystemMemory;
 
-                    if (videoMemory > bestVideoMemory || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
+                    if ((bestAdapter == null) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
                     {
                         bestAdapter = item;
                         bestVideoMemory = videoMemory;
