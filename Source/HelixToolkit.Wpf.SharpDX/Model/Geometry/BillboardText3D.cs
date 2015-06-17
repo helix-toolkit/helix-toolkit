@@ -47,31 +47,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            var texDescriptionFilePath = Path.GetTempFileName();
-            var texImageFilePath = Path.GetTempFileName();
-
             //Read the texture description           
-            var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
-            using (var fileStream = File.Create(texDescriptionFilePath))
+            using(var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt"))
             {
-                texDescriptionStream.CopyTo(fileStream);
+                bmpFont = new BitmapFont();
+                bmpFont.Load(texDescriptionStream);
             }
-
-            bmpFont = BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
 
             //Read the texture          
-            var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
-            using (var fileStream = File.Create(texImageFilePath))
+            using(var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png"))
             {
-                texImageStream.CopyTo(fileStream);
-            }
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.StreamSource = texImageStream;
+                image.EndInit();
 
-            Texture = new BitmapImage(new Uri(texImageFilePath));
-
-            //Cleanup the temp files
-            if (File.Exists(texDescriptionFilePath))
-            {
-                File.Delete(texDescriptionFilePath);
+                Texture = image;
             }
         }
 
