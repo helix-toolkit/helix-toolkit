@@ -225,6 +225,11 @@ namespace HelixToolkit.Wpf.SharpDX
     public sealed class EffectsManager : IDisposable
     {
         /// <summary>
+        /// The minimum supported feature level.
+        /// </summary>
+        private const global::SharpDX.Direct3D.FeatureLevel MinimumFeatureLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
+
+        /// <summary>
         /// 
         /// </summary>
         public static readonly EffectsManager Instance = new EffectsManager();
@@ -244,15 +249,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
 #if DX11
             var adapter = GetBestAdapter();
-            if (adapter == null)
+
+            if (adapter != null)
             {
-                System.Windows.MessageBox.Show("No DirectX 10 or higher adapter found, a software adapter will be used!", "Warning");
-                this.device = new global::SharpDX.Direct3D11.Device(DriverType.Warp, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
-            }
-            else
-            {
-                this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
-                //this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_11_0); 
+                if (adapter.Description.VendorId == 0x1414 && adapter.Description.DeviceId == 0x8c)
+                {
+                    this.driverType = DriverType.Warp;
+                    this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
+                }
+                else
+                {
+                    this.driverType = DriverType.Hardware;
+                    this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+                }
             }
 #else
             this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_10_1);                        
@@ -269,17 +278,29 @@ namespace HelixToolkit.Wpf.SharpDX
             using (var f = new Factory())
             {
                 Adapter bestAdapter = null;
-                var bestLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
+                long bestVideoMemory = 0;
+                long bestSystemMemory = 0;
 
                 foreach (var item in f.Adapters)
                 {
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
-                    if (bestAdapter == null || level > bestLevel)
+
+                    if (level < EffectsManager.MinimumFeatureLevel)
+                    {
+                        continue;
+                    }
+
+                    long videoMemory = item.Description.DedicatedVideoMemory;
+                    long systemMemory = item.Description.DedicatedSystemMemory;
+
+                    if ((bestAdapter == null) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
                     {
                         bestAdapter = item;
-                        bestLevel = level;
+                        bestVideoMemory = videoMemory;
+                        bestSystemMemory = systemMemory;
                     }
                 }
+
                 return bestAdapter;
             }
         }
@@ -290,9 +311,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public static global::SharpDX.Direct3D11.Device Device { get { return Instance.device; } }
 
         /// <summary>
+        /// Gets the device's driver type.
+        /// </summary>
+        public static global::SharpDX.Direct3D.DriverType DriverType { get { return Instance.driverType; } }
+
+        /// <summary>
         /// 
         /// </summary>
         private global::SharpDX.Direct3D11.Device device;
+
+        /// <summary>
+        /// The driver type.
+        /// </summary>
+        private global::SharpDX.Direct3D.DriverType driverType;
 
         /// <summary>
         /// 
