@@ -2,7 +2,7 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>HelixToolkit.Wpf</id>
-    <version>2014.2.1.1</version>
+    <version>$version$</version>
     <title>HelixToolkit.Wpf</title>
     <authors>objo</authors>
     <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
@@ -12,7 +12,7 @@
     <description>Provides custom controls and extensions for WPF 3D.</description>
     <tags>wpf wpf3d 3D</tags>
     <dependencies>
-      <dependency id="HelixToolkit" version="2014.2" />
+      <dependency id="HelixToolkit" version="$version$" />
     </dependencies>
   </metadata>
   <files>
