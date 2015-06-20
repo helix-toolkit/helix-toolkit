@@ -313,6 +313,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.Loaded += this.ControlLoaded;
             this.Unloaded += this.ControlUnloaded;
+
+            Items.SortDescriptions.Clear();
+            Items.SortDescriptions.Add(new SortDescription("HasTransparency", ListSortDirection.Ascending));
         }
 
         /// <summary>
@@ -925,7 +928,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Renders the scene.
         /// </summary>
         void IRenderer.Render(RenderContext context)
-        {            
+        {   
             context.Camera = this.Camera;
             foreach (IRenderable e in this.Items)
             {

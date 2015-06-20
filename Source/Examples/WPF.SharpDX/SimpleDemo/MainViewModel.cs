@@ -86,9 +86,9 @@ namespace SimpleDemo
             this.RedMaterial = PhongMaterials.Red;
             this.GreenMaterial = PhongMaterials.Green;
             this.BlueMaterial = PhongMaterials.Blue;
-            //var diffColor = this.RedMaterial.DiffuseColor;
-            //diffColor.Alpha = 0.5f;
-            //this.RedMaterial.DiffuseColor = diffColor;   
+            var diffColor = this.RedMaterial.DiffuseColor;
+            diffColor.Alpha = 0.5f;
+            this.RedMaterial.DiffuseColor = diffColor;   
 
             Points = new PointGeometry3D();
             var ptPos = new Vector3Collection();

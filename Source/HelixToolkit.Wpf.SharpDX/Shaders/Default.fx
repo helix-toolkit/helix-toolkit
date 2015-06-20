@@ -480,6 +480,20 @@ float4 PShaderDynamo( PSInputDynamo input ) : SV_Target
 		input.n = -input.n;
 	}
 
+	bool isSelected = input.dynamoParams.x;
+	bool requiresPerVertexColoration = input.dynamoParams.y;
+
+	if (bHasDiffuseMap)
+	{
+		float4 vMaterialTexture = 1.0f;
+		float4 I = vMaterialTexture = texDiffuseMap.Sample(LinearSampler, input.t);
+		if (isSelected){
+			I = lerp(vSelectionColor, I, 0.3);
+		}
+
+		return I;
+	}
+
 	// light emissive and ambient intensity
 	// this variable can be used for light accumulation
 	float4 I = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
@@ -501,7 +515,7 @@ float4 PShaderDynamo( PSInputDynamo input ) : SV_Target
 
 	// loop over lights
 	for (int i = 0; i < LIGHTS; i++)
-	{		
+	{	
 		// This framework calculates lighting in world space.
 		// For every light type, you should calculate the input values to the
 		// calcPhongLighting function, namely light direction and the reflection vector.
@@ -561,9 +575,6 @@ float4 PShaderDynamo( PSInputDynamo input ) : SV_Target
 		I = cubeMapReflection(standardInput, I);
 	}
 
-	bool isSelected = input.dynamoParams.x;
-	bool requiresPerVertexColoration = input.dynamoParams.y;
-
 	if (requiresPerVertexColoration)
 	{
 		I = I * input.c;
@@ -573,7 +584,7 @@ float4 PShaderDynamo( PSInputDynamo input ) : SV_Target
 	{
 		I = lerp(vSelectionColor,I,0.3);
 	}
-	
+
 	return I;	
 }
 

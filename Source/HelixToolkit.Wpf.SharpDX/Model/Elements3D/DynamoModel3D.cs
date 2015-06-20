@@ -32,6 +32,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class DynamoGeometryModel3D : MaterialGeometryModel3D
     {
+        public bool HasTransparency
+        {
+            get { return (bool) this.GetValue(HasTransparencyProperty); }
+            set { this.SetValue(HasTransparencyProperty, value);}
+        }
+
+        public static readonly DependencyProperty HasTransparencyProperty =
+            DependencyProperty.Register("HasTransparency", typeof(bool), typeof(DynamoGeometryModel3D), new UIPropertyMetadata(false));
+
         public bool RequiresPerVertexColoration
         {
             get
@@ -40,6 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set { this.SetValue(RequiresPerVertexColorationProperty, value); }
         }
+
         public static readonly DependencyProperty RequiresPerVertexColorationProperty =
             DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(false));
 
