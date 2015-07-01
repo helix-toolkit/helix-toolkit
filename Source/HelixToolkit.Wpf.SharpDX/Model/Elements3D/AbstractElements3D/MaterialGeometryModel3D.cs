@@ -34,17 +34,26 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isChanged = true;
         protected bool hasInstances = false;
         protected bool hasShadowMap = false;
-        private Color4 selectionColor = new Color4(1.0f,0.0f,1.0f,1.0f);
-
-        public MaterialGeometryModel3D()
-        {            
-        }
+        private Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
 
         public Color4 SelectionColor
         {
             get { return selectionColor; }
             set { selectionColor = value; }
         }
+
+        public MaterialGeometryModel3D()
+        {            
+        }
+
+        public bool HasTransparency
+        {
+            get { return (bool)this.GetValue(HasTransparencyProperty); }
+            set { this.SetValue(HasTransparencyProperty, value); }
+        }
+
+        public static readonly DependencyProperty HasTransparencyProperty =
+            DependencyProperty.Register("HasTransparency", typeof(bool), typeof(DynamoGeometryModel3D), new UIPropertyMetadata(false));
 
         /// <summary>
         /// 
@@ -252,7 +261,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.effectMaterial.bHasDisplacementMapVariable.Set(false);
                 }
 
-                this.effectMaterial.vSelectionColorVariable.Set(selectionColor);
+                this.effectMaterial.vSelectionColorVariable.Set(SelectionColor);
             }
         }
 
@@ -364,5 +373,18 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Detach();
         }
 
+        /// <summary>
+        /// Measure the squared distance to the provided camera.
+        /// 
+        /// This measurement is conducted against the un-transformed bounds of the object.
+        /// </summary>
+        /// <param name="camera"></param>
+        /// <returns></returns>
+        public double SquareDistanceToCamera(Camera camera)
+        {
+            var camLoc = camera.Position;
+            var center = ((this.Bounds.Maximum + this.Bounds.Minimum) / 2).ToPoint3D();
+            return camLoc.DistanceToSquared(center);
+        }
     }
 }

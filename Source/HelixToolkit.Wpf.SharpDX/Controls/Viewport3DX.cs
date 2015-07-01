@@ -313,9 +313,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.Loaded += this.ControlLoaded;
             this.Unloaded += this.ControlUnloaded;
-
-            Items.SortDescriptions.Clear();
-            Items.SortDescriptions.Add(new SortDescription("HasTransparency", ListSortDirection.Ascending));
         }
 
         /// <summary>
@@ -930,10 +927,35 @@ namespace HelixToolkit.Wpf.SharpDX
         void IRenderer.Render(RenderContext context)
         {   
             context.Camera = this.Camera;
-            foreach (IRenderable e in this.Items)
+
+            var sortedItems = SortItemsCollectionForTransparencyAndDistance();
+
+            foreach (IRenderable e in sortedItems)
             {
                 e.Render(context);
             }
+        }
+
+        private IEnumerable<Model3D> SortItemsCollectionForTransparencyAndDistance()
+        {
+            var models = this.Items.Cast<Model3D>().ToArray();
+            var geoms = models.Where(m => m is MaterialGeometryModel3D)
+                .Cast<MaterialGeometryModel3D>().ToArray();
+
+            // Don't transparency sort if there are
+            // no items marked as having transparency.
+            if (!geoms.Any(g => g.HasTransparency))
+            {
+                return models;
+            }
+
+            var nonGeoms = models.Where(m => !(m is MaterialGeometryModel3D));
+            var nonTrans = geoms.Where(g => !g.HasTransparency);
+            var transGeoms = geoms.Where(g => g.HasTransparency).OrderByDescending(g=>g.SquareDistanceToCamera(this.Camera));
+
+            var finalColl = nonGeoms.Concat(nonTrans).Concat(transGeoms);
+
+            return finalColl;
         }
 
         /// <summary>

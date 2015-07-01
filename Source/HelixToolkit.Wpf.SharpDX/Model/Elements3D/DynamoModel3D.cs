@@ -32,15 +32,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class DynamoGeometryModel3D : MaterialGeometryModel3D
     {
-        public bool HasTransparency
-        {
-            get { return (bool) this.GetValue(HasTransparencyProperty); }
-            set { this.SetValue(HasTransparencyProperty, value);}
-        }
-
-        public static readonly DependencyProperty HasTransparencyProperty =
-            DependencyProperty.Register("HasTransparency", typeof(bool), typeof(DynamoGeometryModel3D), new UIPropertyMetadata(false));
-
         public bool RequiresPerVertexColoration
         {
             get
@@ -62,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var rasterStateDesc = new RasterizerStateDescription()
                 {
                     FillMode = FillMode.Solid,
-                    CullMode = CullMode.None,
+                    CullMode = CullMode.Back,
                     DepthBias = depthBias,
                     DepthBiasClamp = -1000,
                     SlopeScaledDepthBias = +0,

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using SharpDX;
+
 namespace SimpleDemo
 {
     using System.Windows;
@@ -18,7 +20,7 @@ namespace SimpleDemo
     {
         public MainWindow()
         {
-            this.InitializeComponent();                                  
+            this.InitializeComponent();  
         }
     }
 
