@@ -34,10 +34,26 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isChanged = true;
         protected bool hasInstances = false;
         protected bool hasShadowMap = false;
+        private Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
+
+        public Color4 SelectionColor
+        {
+            get { return selectionColor; }
+            set { selectionColor = value; }
+        }
 
         public MaterialGeometryModel3D()
         {            
         }
+
+        public bool HasTransparency
+        {
+            get { return (bool)this.GetValue(HasTransparencyProperty); }
+            set { this.SetValue(HasTransparencyProperty, value); }
+        }
+
+        public static readonly DependencyProperty HasTransparencyProperty =
+            DependencyProperty.Register("HasTransparency", typeof(bool), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(false));
 
         /// <summary>
         /// 
@@ -147,7 +163,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TextureCoodScaleProperty =
             DependencyProperty.Register("TextureCoodScale", typeof(Vector2), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(new Vector2(1, 1)));
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -187,8 +202,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
             }
         }
-
-
 
         /// <summary>
         /// 
@@ -247,6 +260,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.effectMaterial.bHasDisplacementMapVariable.Set(false);
                 }
+
+                this.effectMaterial.vSelectionColorVariable.Set(SelectionColor);
             }
         }
 
@@ -308,8 +323,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.texNormalMapVariable = effect.GetVariableByName("texNormalMap").AsShaderResource();
                 this.texDisplacementMapVariable = effect.GetVariableByName("texDisplacementMap").AsShaderResource();
                 this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
+                this.vSelectionColorVariable = effect.GetVariableByName("vSelectionColor").AsVector();
             }
-            public EffectVectorVariable vMaterialAmbientVariable, vMaterialDiffuseVariable, vMaterialEmissiveVariable, vMaterialSpecularVariable, vMaterialReflectVariable;
+            public EffectVectorVariable vMaterialAmbientVariable, vMaterialDiffuseVariable, vMaterialEmissiveVariable, vMaterialSpecularVariable, vMaterialReflectVariable, vSelectionColorVariable;
             public EffectScalarVariable sMaterialShininessVariable;
             public EffectScalarVariable bHasDiffuseMapVariable, bHasNormalMapVariable, bHasDisplacementMapVariable, bHasShadowMapVariable;
             public EffectShaderResourceVariable texDiffuseMapVariable, texNormalMapVariable, texDisplacementMapVariable, texShadowMapVariable;
@@ -330,6 +346,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.texNormalMapVariable);
                 Disposer.RemoveAndDispose(ref this.texDisplacementMapVariable);
                 Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
+                Disposer.RemoveAndDispose(ref this.vSelectionColorVariable);
             }
         }
 
@@ -356,5 +373,18 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Detach();
         }
 
+        /// <summary>
+        /// Measure the squared distance to the provided camera.
+        /// 
+        /// This measurement is conducted against the un-transformed bounds of the object.
+        /// </summary>
+        /// <param name="camera"></param>
+        /// <returns></returns>
+        public double SquareDistanceToCamera(Camera camera)
+        {
+            var camLoc = camera.Position;
+            var center = ((this.Bounds.Maximum + this.Bounds.Minimum) / 2).ToPoint3D();
+            return camLoc.DistanceToSquared(center);
+        }
     }
 }

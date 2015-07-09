@@ -31,11 +31,13 @@ namespace HelixToolkit.Wpf.SharpDX
     [Serializable]
     public class BillboardText3D : MeshGeometry3D
     {
-        private BitmapFont bmpFont;
+        private static bool isInitialized = false;
+
+        private static BitmapFont bmpFont;
+
+        public static BitmapSource Texture { get; internal set; }
 
         public List<TextInfo> TextInfo { get; set; }
-
-        public BitmapSource Texture { get; internal set; }
 
         public BillboardText3D()
         {
@@ -45,25 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.TextInfo = new List<TextInfo>();
 
-            var assembly = Assembly.GetExecutingAssembly();
-
-            //Read the texture description           
-            using(var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt"))
-            {
-                bmpFont = new BitmapFont();
-                bmpFont.Load(texDescriptionStream);
-            }
-
-            //Read the texture          
-            using(var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png"))
-            {
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.StreamSource = texImageStream;
-                image.EndInit();
-
-                Texture = image;
-            }
+            Initialize();
         }
 
         internal void DrawText(TextInfo info)
@@ -152,6 +136,43 @@ namespace HelixToolkit.Wpf.SharpDX
             info.Offsets.Add(b);
             info.Offsets.Add(c);
             info.Offsets.Add(d);
+        }
+
+        private static void Initialize()
+        {
+            if (isInitialized)
+                return;
+
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var texDescriptionFilePath = Path.GetTempFileName();
+            var texImageFilePath = Path.GetTempFileName();
+
+            //Read the texture description           
+            var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
+            using (var fileStream = File.Create(texDescriptionFilePath))
+            {
+                texDescriptionStream.CopyTo(fileStream);
+            }
+
+            bmpFont = BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
+
+            //Read the texture          
+            var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
+            using (var fileStream = File.Create(texImageFilePath))
+            {
+                texImageStream.CopyTo(fileStream);
+            }
+
+            Texture = new BitmapImage(new Uri(texImageFilePath));
+
+            //Cleanup the temp files
+            if (File.Exists(texDescriptionFilePath))
+            {
+                File.Delete(texDescriptionFilePath);
+            }
+
+            isInitialized = true;
         }
     }
 }

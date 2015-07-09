@@ -105,6 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- init instances buffer            
             this.hasInstances = (this.Instances != null) && (this.Instances.Any());
             this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
+            
             if (this.hasInstances)
             {
                 this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
@@ -280,7 +281,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     TexCoord = textureCoordinates != null ? texScale * textureCoordinates[i] : Vector2.Zero,
                     Normal = normals != null ? normals[i] : Vector3.Zero,
                     Tangent = tangents != null ? tangents[i] : Vector3.Zero,
-                    BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero,
+                    BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero
                 };
             }
 

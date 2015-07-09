@@ -25,7 +25,6 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected RasterizerState rasterState;
 
-
         public Geometry3D Geometry
         {
             get { return (Geometry3D)this.GetValue(GeometryProperty); }
@@ -81,8 +80,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-
-
         public BoundingBox Bounds
         {
             get { return (BoundingBox)this.GetValue(BoundsProperty); }
@@ -93,7 +90,6 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.RegisterReadOnly("Bounds", typeof(BoundingBox), typeof(GeometryModel3D), new UIPropertyMetadata(new BoundingBox()));
 
         public static readonly DependencyProperty BoundsProperty = BoundsPropertyKey.DependencyProperty;
-
 
         public int DepthBias
         {
@@ -111,8 +107,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnRasterStateChanged(int depthBias) { }
 
-
-
         public static readonly RoutedEvent MouseDown3DEvent =
             EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
@@ -123,9 +117,22 @@ namespace HelixToolkit.Wpf.SharpDX
             EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(IsSelectedChanged));
 
+        protected static void IsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((GeometryModel3D)d).OnIsSelectedChanged(e);
+        }
 
+        protected virtual void OnIsSelectedChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (IsAttached)
+            {
+                var host = this.renderHost;
+                Detach();
+                Attach(host);
+            }
+        }
 
         /// <summary>
         /// Provide CLR accessors for the event 
@@ -343,9 +350,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(IsSelectedProperty, value); }
         }
     }
-  
-
-
 
     public abstract class Mouse3DEventArgs : RoutedEventArgs
     {
