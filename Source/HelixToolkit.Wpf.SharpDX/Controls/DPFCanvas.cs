@@ -470,6 +470,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             this.renderContext.Dispose();
                         }
+
+                        EffectsManager.Instance.OnInitializingEffects(new EffectInitializationEventArgs(device, Properties.Resources._default));
                         this.renderContext = new RenderContext(this, EffectsManager.Instance.GetEffect(this.RenderTechnique));
                         this.renderRenderable.Attach(this);
                         

@@ -90,7 +90,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public InputLayout InputLayout { get; private set; }
     }
 
-
     public sealed class Techniques
     {
         static Techniques()
@@ -220,7 +219,27 @@ namespace HelixToolkit.Wpf.SharpDX
         public static IEnumerable<RenderTechnique> RenderTechniques { get; private set; }
     }
 
+    public sealed class EffectInitializationEventArgs : EventArgs
+    {
+        private global::SharpDX.Direct3D11.Device device;
+        private byte[] shaderEffectBytecode;
 
+        public global::SharpDX.Direct3D11.Device Device
+        {
+            get { return device; }
+        }
+
+        public byte[] ShaderEffectBytecode
+        {
+            get { return shaderEffectBytecode;}
+        }
+
+        public EffectInitializationEventArgs(global::SharpDX.Direct3D11.Device device, byte[] shaderEffectBytecode)
+        {
+            this.device = device;
+            this.shaderEffectBytecode = shaderEffectBytecode;
+        }
+    }
 
     public sealed class EffectsManager : IDisposable
     {
@@ -229,17 +248,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private const global::SharpDX.Direct3D.FeatureLevel MinimumFeatureLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
 
+        private static EffectsManager instance;
+
         /// <summary>
         /// 
         /// </summary>
-        public static readonly EffectsManager Instance = new EffectsManager();
-
+        public static EffectsManager Instance
+        {
+            get { return instance ?? (instance = new EffectsManager()); }
+        } 
 
         /// <summary>
         /// 
         /// </summary>
         static EffectsManager()
         {
+        }
+
+        public event Action<EffectInitializationEventArgs> InitializingEffects;
+        internal void OnInitializingEffects(EffectInitializationEventArgs args)
+        {
+            if (InitializingEffects != null)
+                InitializingEffects(args);
         }
 
         /// <summary>
@@ -267,39 +297,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_10_1);                        
 #endif
             this.InitEffects();
-
-            RegisterDynamoTechnique();
-        }
-
-        private void RegisterDynamoTechnique()
-        {
-            var dynamoTechnique = new RenderTechnique("RenderDynamo");
-            RegisterEffect(Properties.Resources._default, new[] { dynamoTechnique });
-
-            // DYNAMO
-            var dynamoInputLayout = new InputLayout(device, GetEffect(dynamoTechnique).GetTechniqueByName(dynamoTechnique.Name).GetPassByIndex(0).Description.Signature, new[]
-            {
-                new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
-                new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
-                new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
-                new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-                new InputElement("COLOR", 1, Format.R32G32B32A32_Float,    InputElement.AppendAligned, 0),  
-                //new InputElement("REQUIRES_PER_VERTEX_COLORATION", 0, Format.R32_UInt,    InputElement.AppendAligned, 0),  
-
-                //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-                new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
-                new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 5, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            });
-            dynamoInputLayout.DebugName = "Dynamo";
-
-            // DYNAMO
-            RegisterLayout(new[]{dynamoTechnique}, dynamoInputLayout);
-
-            
         }
 
         /// <summary>
@@ -636,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="shaderEffectBytecode"></param>
         /// <param name="techniques"></param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
         {
             var effect = new Effect(device, shaderEffectBytecode, eFlags);
             foreach (var tech in techniques)
@@ -648,7 +645,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="technique"></param>
         /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique technique, InputLayout layout)
+        public void RegisterLayout(RenderTechnique technique, InputLayout layout)
         {
             data[technique.Name + "Layout"] = layout;
         }
@@ -658,7 +655,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="techniques"></param>
         /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
+        public void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
         {
             foreach (var tech in techniques)
                 data[tech.Name + "Layout"] = layout;
