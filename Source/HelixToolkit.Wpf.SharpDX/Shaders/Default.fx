@@ -816,5 +816,3 @@ technique11 RenderCubeMap
         SetPixelShader		( CompileShader( ps_4_0, PShaderCubeMap() ) );
     }    
 }
-
-#include "./Shaders/Dynamo.fx"
