@@ -1,6 +1,11 @@
 
 Texture2D billboardTexture; // billboard text image
 
+DepthStencilState DSSOff
+{
+	DepthEnable			= false;
+};
+
 //--------------------------------------------------------------------------------------
 // VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------
@@ -71,7 +76,7 @@ technique11 RenderBillboard
     pass P0
     {	        
 		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState( DSSDepthLessEqual, 0 );
+		SetDepthStencilState( DSSOff, 0 );
         SetRasterizerState	( RSSolid );
         SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
         SetVertexShader		( CompileShader( vs_4_0, VShaderBillboardText() ) );

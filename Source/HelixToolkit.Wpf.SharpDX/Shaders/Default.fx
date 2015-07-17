@@ -36,10 +36,7 @@ cbuffer cbPerFrame
 	float4 vLightColor[LIGHTS];	
 	matrix mLightView[LIGHTS];
 	matrix mLightProj[LIGHTS];
-	
 };
-
-
 
 //--------------------------------------------------------------------------------------
 // VERTEX AND PIXEL SHADER INPUTS
@@ -71,8 +68,6 @@ struct PSInput
     float3 t2			: BINORMAL;		// bi-tangent	
 	float4 c			: COLOR;		// solid color (for debug)
 };
-
-
 
 //--------------------------------------------------------------------------------------
 // Phong Lighting Reflection Model
@@ -193,8 +188,6 @@ float shadowStrength(float4 sp)
 	return (fixTeil + nonTeil);		
 }
 
-
-
 //--------------------------------------------------------------------------------------
 // PER PIXEL LIGHTING  - Vertex Shader
 //--------------------------------------------------------------------------------------
@@ -252,7 +245,7 @@ PSInput VShaderDefault( VSInput input )
 		output.t1 = 0.0f;
 		output.t2 = 0.0f;
 	}
-	    
+
 	return output;  
 }
 
@@ -261,7 +254,6 @@ PSInput VShaderDefault( VSInput input )
 //------------------------------------------------------------------------------------
 float4 PShaderPhong( PSInput input ) : SV_Target
 {   
-
 	//calculate lighting vectors - renormalize vectors	
 	input.n = calcNormal( input );
 
@@ -343,15 +335,12 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 	/// set diffuse alpha
 	I.a = vMaterialDiffuse.a;
 
-	// multiply by vertex colors
-	I = I * input.c;
-
 	/// get reflection-color
 	if(bHasCubeMap)
 	{
 		I = cubeMapReflection( input, I );
 	}
-	
+
 	return I;	
 }
 

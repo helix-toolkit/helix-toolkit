@@ -28,6 +28,7 @@ struct VSInputLS
 {
 	float4 p	: POSITION;
 	float4 c	: COLOR;
+	float4 parameters  : COLOR1;
 
 	float4 mr0	: TEXCOORD1;
 	float4 mr1	: TEXCOORD2;
@@ -123,12 +124,23 @@ GSInputLS VShaderLines( VSInputLS input )
 		};		
 		output.p = mul( mInstance, output.p );
 	}
-	
+
+	bool isSelected = input.parameters.x;
+	float4 finalColor;
+
+	if (isSelected){
+		finalColor = lerp(vSelectionColor, input.c, 0.3);
+	}
+	else{
+		finalColor = input.c;
+	}
+
 	//set position into clip space	
 	output.p = mul( output.p, mWorld );		
 	output.p = mul( output.p, mView );    
 	output.p = mul( output.p, mProjection );	
-	output.c = input.c;
+	output.c = finalColor;
+	
 	return output;
 }
 
@@ -141,7 +153,8 @@ void GSPassThru(line GSInputLS input[2], inout LineStream<PSInputLS> outStream )
 	for( uint i=0; i<2; i++ )
     {
         output.p = input[i].p;
-        output.c = input[i].c;
+		output.c = input[i].c;
+
         outStream.Append( output );
     }
 	outStream.RestartStrip();
@@ -151,7 +164,7 @@ void GSPassThru(line GSInputLS input[2], inout LineStream<PSInputLS> outStream )
 void GShaderLines(line GSInputLS input[2], inout TriangleStream<PSInputLS> outStream )
 {
 	PSInputLS output = (PSInputLS)0;
-		
+
     float4 lineCorners[4];
     makeLine(lineCorners, input[0].p, input[1].p, vLineParams.x);
 

@@ -90,7 +90,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public InputLayout InputLayout { get; private set; }
     }
 
-
     public sealed class Techniques
     {
         static Techniques()
@@ -220,7 +219,27 @@ namespace HelixToolkit.Wpf.SharpDX
         public static IEnumerable<RenderTechnique> RenderTechniques { get; private set; }
     }
 
+    public sealed class EffectInitializationEventArgs : EventArgs
+    {
+        private global::SharpDX.Direct3D11.Device device;
+        private byte[] shaderEffectBytecode;
 
+        public global::SharpDX.Direct3D11.Device Device
+        {
+            get { return device; }
+        }
+
+        public byte[] ShaderEffectBytecode
+        {
+            get { return shaderEffectBytecode;}
+        }
+
+        public EffectInitializationEventArgs(global::SharpDX.Direct3D11.Device device, byte[] shaderEffectBytecode)
+        {
+            this.device = device;
+            this.shaderEffectBytecode = shaderEffectBytecode;
+        }
+    }
 
     public sealed class EffectsManager : IDisposable
     {
@@ -229,17 +248,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private const global::SharpDX.Direct3D.FeatureLevel MinimumFeatureLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
 
+        private static EffectsManager instance;
+
         /// <summary>
         /// 
         /// </summary>
-        public static readonly EffectsManager Instance = new EffectsManager();
-
+        public static EffectsManager Instance
+        {
+            get { return instance ?? (instance = new EffectsManager()); }
+        } 
 
         /// <summary>
         /// 
         /// </summary>
         static EffectsManager()
         {
+        }
+
+        public event Action<EffectInitializationEventArgs> InitializingEffects;
+        internal void OnInitializingEffects(EffectInitializationEventArgs args)
+        {
+            if (InitializingEffects != null)
+                InitializingEffects(args);
         }
 
         /// <summary>
@@ -399,19 +429,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
                     new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
                     new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-           
+
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                     new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
                     new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                 });
+                defaultInputLayout.DebugName = "Default";
 
                 // ------------------------------------------------------------------------------------
                 var linesInputLayout = new InputLayout(device, GetEffect(Techniques.RenderLines).GetTechniqueByName(Techniques.RenderLines.Name).GetPassByIndex(0).Description.Signature, new[] 
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
 
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                     new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
@@ -429,7 +461,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 var pointsInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPoints).GetTechniqueByName(Techniques.RenderPoints.Name).GetPassByIndex(0).Description.Signature, new[] 
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
                 });
 
                 var billboardInputLayout = new InputLayout(device, GetEffect(Techniques.RenderBillboard).GetTechniqueByName(Techniques.RenderBillboard.Name).GetPassByIndex(0).Description.Signature, new[]
@@ -483,7 +516,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     Techniques.RenderTangents, 
                     Techniques.RenderTexCoords, 
                     Techniques.RenderColors, 
-                    Techniques.RenderWires, 
+                    Techniques.RenderWires,
 #if DEFERRED 
                     Techniques.RenderDeferred,
                     Techniques.RenderGBuffer,
@@ -600,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="shaderEffectBytecode"></param>
         /// <param name="techniques"></param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
         {
             var effect = new Effect(device, shaderEffectBytecode, eFlags);
             foreach (var tech in techniques)
@@ -612,7 +645,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="technique"></param>
         /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique technique, InputLayout layout)
+        public void RegisterLayout(RenderTechnique technique, InputLayout layout)
         {
             data[technique.Name + "Layout"] = layout;
         }
@@ -622,7 +655,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="techniques"></param>
         /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
+        public void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
         {
             foreach (var tech in techniques)
                 data[tech.Name + "Layout"] = layout;
@@ -721,7 +754,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Normal;
         public Vector3 Tangent;
         public Vector3 BiTangent;
-
         public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3);
     }
 
@@ -730,7 +762,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Vector4 Position;
         public Color4 Color;
-        public const int SizeInBytes = 4 * (4 + 4);
+        public Vector4 Parameters;
+        public const int SizeInBytes = 4 * (4 + 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -746,7 +779,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 Position;
         public Color4 Color;
         public Vector4 TexCoord;
-        //public Vector2 Offset;
+        public const int SizeInBytes = 4 * (4 + 4 + 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PointsVertex
+    {
+        public Vector4 Position;
+        public Color4 Color;
+        public Vector4 Parameters;
         public const int SizeInBytes = 4 * (4 + 4 + 4);
     }
 }
