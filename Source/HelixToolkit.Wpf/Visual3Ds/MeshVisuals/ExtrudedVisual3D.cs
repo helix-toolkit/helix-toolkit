@@ -224,7 +224,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
-            if (this.Path == null || this.Path.Count >= 2)
+            if (this.Path == null || this.Path.Count < 2)
             {
                 return null;
             }
