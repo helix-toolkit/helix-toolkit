@@ -711,21 +711,20 @@ namespace HelixToolkit.Wpf
         /// </param>
         public static void ZoomExtents(ProjectionCamera camera, Viewport3D viewport, Point3D center, double radius, double animationTime = 0)
         {
-            // var target = Camera.Position + Camera.LookDirection;
             if (camera is PerspectiveCamera)
             {
                 var pcam = camera as PerspectiveCamera;
                 double disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
-                double vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
+				double vfov = pcam.FieldOfView;
+				if (viewport.ActualWidth > 0 && viewport.ActualHeight > 0)
+					vfov *= viewport.ActualHeight / viewport.ActualWidth;
                 double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
-
                 double dist = Math.Max(disth, distv);
                 var dir = camera.LookDirection;
                 dir.Normalize();
                 LookAt(camera, center, dir * dist, animationTime);
             }
-
-            if (camera is OrthographicCamera)
+			else if (camera is OrthographicCamera)
             {
                 LookAt(camera, center, camera.LookDirection, animationTime);
                 double newWidth = radius * 2;
