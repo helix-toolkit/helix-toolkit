@@ -75,6 +75,45 @@
     <Compile Include="Utilities\MeshBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Models\obj\obj_format_tests\face_relative_texture_vertices.mtl">
+      <Link>Models\obj\face_relative_texture_vertices.mtl</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\face_relative_texture_vertices.obj">
+      <Link>Models\obj\face_relative_texture_vertices.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\face_relative_vertex_normals.obj">
+      <Link>Models\obj\face_relative_vertex_normals.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\face_relative_vertices.obj">
+      <Link>Models\obj\face_relative_vertices.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\line_continuation_comment.obj">
+      <Link>Models\obj\line_continuation_comment.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\line_continuation_empty_continuation.obj">
+      <Link>Models\obj\line_continuation_empty_continuation.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\line_continuation_empty_line.obj">
+      <Link>Models\obj\line_continuation_empty_line.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\line_continuation_multiple_breaks.obj">
+      <Link>Models\obj\line_continuation_multiple_breaks.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\line_continuation_single.obj">
+      <Link>Models\obj\line_continuation_single.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\simple_triangle.obj">
+      <Link>Models\obj\simple_triangle.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_normals.obj">
+      <Link>Models\obj\simple_triangle_with_normals.obj</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_texture.mtl">
+      <Link>Models\obj\simple_triangle_with_texture.mtl</Link>
+    </None>
+    <None Include="..\..\Models\obj\obj_format_tests\simple_triangle_with_texture.obj">
+      <Link>Models\obj\simple_triangle_with_texture.obj</Link>
+    </None>
     <None Include="..\..\Models\obj\Triangle.obj">
       <Link>Models\obj\Triangle.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
