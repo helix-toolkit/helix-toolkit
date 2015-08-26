@@ -48,8 +48,13 @@ namespace SimpleDemo
             this.SubTitle = "WPF & SharpDX";
 
             // camera setup
-            this.Camera = new PerspectiveCamera { Position = new Point3D(3, 3, 5), LookDirection = new Vector3D(-3, -3, -5), UpDirection = new Vector3D(0, 1, 0) };
-            ((PerspectiveCamera) this.Camera).FarPlaneDistance = 5000000;
+            this.Camera = new PerspectiveCamera { 
+                Position = new Point3D(3, 3, 5), 
+                LookDirection = new Vector3D(-3, -3, -5), 
+                UpDirection = new Vector3D(0, 1, 0),
+                FarPlaneDistance = 5000000
+            };
+
             // default render technique
             this.RenderTechnique = Techniques.RenderBlinn;
 
