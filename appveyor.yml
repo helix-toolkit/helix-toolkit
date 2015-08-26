@@ -18,7 +18,7 @@ build:
   verbosity: normal
 
 before_build:
-  - nuget restore
+  - nuget restore .\Source\HelixToolkit.Wpf.SharpDX.sln
   - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /ExtractReleaseNotes=CHANGELOG.md /Directory=Source
 
 after_build:
