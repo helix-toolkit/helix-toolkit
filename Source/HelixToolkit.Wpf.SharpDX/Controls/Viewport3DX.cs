@@ -24,6 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -259,6 +260,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private double zoomSpeed;
 
         /// <summary>
+        /// Fired whenever an exception occurred at rendering subsystem.
+        /// </summary>
+        public event EventHandler<RelayExceptionEventArgs> RenderExceptionOccurred = delegate { };
+
+        /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
         static Viewport3DX()
@@ -330,22 +336,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.SetValue(IsMoveEnabledProperty, value);
             }
-        }
-
-        public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(DPFCanvas), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
-
-        /// <summary>
-        /// Gets the canvas.
-        /// </summary>
-        /// <value>
-        /// The canvas.
-        /// </value>
-        //protected DPFCanvas RenderHost { get; private set; }
-        public DPFCanvas RenderHost
-        {
-            get { return (DPFCanvas)this.GetValue(RenderHostProperty); }
-            set { this.SetValue(RenderHostProperty, value); }
         }
 
         /// <summary>
@@ -643,9 +633,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.RenderHost = this.GetTemplateChild("PART_Canvas") as DPFCanvas;
+
             if (this.RenderHost != null)
             {
+                this.RenderHost.ExceptionOccurred -= this.HandleRenderException;
+            }
+
+            this.RenderHost = this.GetTemplateChild("PART_Canvas") as DPFCanvas;
+
+            if (this.RenderHost != null)
+            {
+                this.RenderHost.ExceptionOccurred += this.HandleRenderException;
                 this.RenderHost.Renderable = this;
             }
 
@@ -1534,6 +1532,33 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RefreshViewport()
         {
             // todo
+        }
+
+        /// <summary>
+        /// Handles a rendering exception.
+        /// </summary>
+        /// <param name="sender">The event source.</param>
+        /// <param name="e">The event arguments.</param>
+        private void HandleRenderException(object sender, RelayExceptionEventArgs e)
+        {
+            var bindingExpression = this.GetBindingExpression(RenderExceptionProperty);
+            if (bindingExpression != null)
+            {
+                // If RenderExceptionProperty is bound, we assume the exception will be handled.
+                this.RenderException = e.Exception;
+                e.Handled = true;
+            }
+
+            // Fire RenderExceptionOccurred event
+            this.RenderExceptionOccurred(sender, e);
+
+            // If the Exception is still unhandled...
+            if (!e.Handled)
+            {
+                // ... prevent a MessageBox.Show().
+                this.MessageText = e.Exception.ToString();
+                e.Handled = true;
+            }
         }
 
         /// <summary>
