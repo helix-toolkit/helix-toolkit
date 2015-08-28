@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using global::SharpDX;
     using global::SharpDX.DXGI;
@@ -230,17 +231,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private const global::SharpDX.Direct3D.FeatureLevel MinimumFeatureLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
 
         /// <summary>
-        /// 
+        /// Stores the singleton instance.
         /// </summary>
-        public static readonly EffectsManager Instance = new EffectsManager();
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        static EffectsManager()
-        {
-        }
+        private static EffectsManager instance;
 
         /// <summary>
         /// 
@@ -304,6 +297,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 return bestAdapter;
             }
         }
+
+        /// <summary>
+        /// Gets the singleton instance.
+        /// </summary>
+        public static EffectsManager Instance { get { return instance ?? (instance = new EffectsManager()); } }
 
         /// <summary>
         /// 
@@ -512,8 +510,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             catch (Exception ex)
             {
-
-                System.Windows.MessageBox.Show(string.Format("Error registering effect: {0}", ex.Message), "Error");
+                //System.Windows.MessageBox.Show(string.Format("Error registering effect: {0}", ex.Message), "Error");
+                Debug.WriteLine(string.Format("Error registering effect: {0}", ex.Message), "Error");
+                throw;
             }
 
         }
@@ -548,7 +547,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(string.Format("Error registering effect: {0}", ex.Message), "Error");
+                //System.Windows.MessageBox.Show(string.Format("Error registering effect: {0}", ex.Message), "Error");
+                Debug.WriteLine(string.Format("Error registering effect: {0}", ex.Message), "Error");
+                throw;
             }
 #else
 
@@ -572,7 +573,7 @@ namespace HelixToolkit.Wpf.SharpDX
     #endif
 #endif
             var preprocess = ShaderBytecode.Preprocess(shaderEffectString, preposessMacros.ToArray(), new IncludeHandler());
-			var hashCode = preprocess.GetHashCode();
+            var hashCode = preprocess.GetHashCode();
             if (!File.Exists(hashCode.ToString()))
             {
                 try
@@ -583,7 +584,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show(string.Format("Error compiling effect: {0}", ex.Message), "Error");
+                    //System.Windows.MessageBox.Show(string.Format("Error compiling effect: {0}", ex.Message), "Error");
+                    Debug.WriteLine(string.Format("Error compiling effect: {0}", ex.Message), "Error");
+                    throw;
                 }
             }
             else

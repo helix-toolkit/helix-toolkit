@@ -8,6 +8,8 @@
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:Workitem10051"
         mc:Ignorable="d"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         Title="SharpDX in WPF (Workitem 10051)" Height="500" Width="800">
     <Window.DataContext>
         <local:MainViewModel/>
@@ -56,7 +58,14 @@
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"
-            RenderTechnique="{Binding RenderTechnique}">
+            RenderTechnique="{Binding RenderTechnique}"
+            RenderException="{Binding RenderException, Mode=OneWayToSource}"
+            MessageText="{Binding ViewportMessage}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="RenderExceptionOccurred">
+                    <ei:CallMethodAction TargetObject="{Binding}" MethodName="HandleRenderException" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>

@@ -23,6 +23,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.DXGI;
 
+    using HelixToolkit.Wpf.SharpDX.Utilities;
+
     using Device = global::SharpDX.Direct3D11.Device;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
@@ -68,7 +70,12 @@ namespace HelixToolkit.Wpf.SharpDX
 #if MSAA
         private Texture2D renderTargetNMS;
 #endif
-    
+
+        /// <summary>
+        /// Fired whenever an exception occurred on this object.
+        /// </summary>
+        public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred = delegate { };
+
         /// <summary>
         /// 
         /// </summary>
@@ -192,16 +199,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.StartD3D();
                 this.StartRendering();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Exceptions in the Loaded event handler are silently swallowed by WPF.
                 // https://social.msdn.microsoft.com/Forums/vstudio/en-US/9ed3d13d-0b9f-48ac-ae8d-daf0845c9e8f/bug-in-wpf-windowloaded-exception-handling?forum=wpf
                 // http://stackoverflow.com/questions/19140593/wpf-exception-thrown-in-eventhandler-is-swallowed
                 // tl;dr: M$ says it's "by design" and "working as indended" but may change in the future :).
 
-                // This prevents a crash if no DX10 GPU is present (VMWare)
-                // ToDo: (MVVM friendly) exception handling
-                this.StopRendering();
+                if (!this.HandleExceptionOccured(ex))
+                {
+                    MessageBox.Show(string.Format("DPFCanvas: Error starting rendering: {0}", ex.Message), "Error");
+                }
             }
         }
 
@@ -227,7 +235,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void StartD3D()
         {   
             this.surfaceD3D = new DX11ImageSource();
-            this.surfaceD3D.IsFrontBufferAvailableChanged += this.OnIsFrontBufferAvailableChanged;            
+            this.surfaceD3D.IsFrontBufferAvailableChanged += this.OnIsFrontBufferAvailableChanged;
             this.device = EffectsManager.Device;
             this.deferredRenderer = new DeferredRenderer();
             this.renderRenderable.DeferredRenderer = this.deferredRenderer;
@@ -485,9 +493,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
 #endif
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
-                        System.Windows.MessageBox.Show("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
+                        //MessageBox.Show("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
+                        Debug.WriteLine("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
+                        throw;
                     }
                 }
 
@@ -608,28 +618,38 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            var t0 = this.renderTimer.Elapsed;
-
-            // Update all renderables before rendering 
-            // giving them the chance to invalidate the current render.
-            this.renderRenderable.Update(this.renderTimer.Elapsed);
-
-            if (this.pendingValidationCycles > 0)
+            try
             {
-                this.pendingValidationCycles--;
+                var t0 = this.renderTimer.Elapsed;
 
-                // Safety check because of dispatcher deferred render call
-                if (this.surfaceD3D != null)
+                // Update all renderables before rendering 
+                // giving them the chance to invalidate the current render.
+                this.renderRenderable.Update(t0);
+
+                if (this.pendingValidationCycles > 0)
                 {
-                    this.Render();
-#if MSAA            
-                    this.device.ImmediateContext.ResolveSubresource(this.colorBuffer, 0, this.renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif              
-                    this.surfaceD3D.InvalidateD3DImage();
+                    this.pendingValidationCycles--;
+
+                    // Safety check because of dispatcher deferred render call
+                    if (this.surfaceD3D != null)
+                    {
+                        this.Render();
+#if MSAA
+                        this.device.ImmediateContext.ResolveSubresource(this.colorBuffer, 0, this.renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif
+                        this.surfaceD3D.InvalidateD3DImage();
+                    }
+                }
+
+                this.lastRenderingDuration = this.renderTimer.Elapsed - t0;
+            }
+            catch (Exception ex)
+            {
+                if (!this.HandleExceptionOccured(ex))
+                {
+                    MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
                 }
             }
-
-            this.lastRenderingDuration = this.renderTimer.Elapsed - t0;
         }
 
         /// <summary>
@@ -655,6 +675,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.InvalidateRender();
             }
             base.OnRenderSizeChanged(sizeInfo);
+        }
+
+        /// <summary>
+        /// Invoked whenever an exception occurs. Stops rendering, frees resources and throws 
+        /// </summary>
+        /// <param name="exception">The exception that occured.</param>
+        /// <returns><c>true</c> if the exception has been handled, <c>false</c> otherwise.</returns>
+        private bool HandleExceptionOccured(Exception exception)
+        {
+            this.pendingValidationCycles = 0;
+            this.StopRendering();
+            this.EndD3D();
+
+            var args = new RelayExceptionEventArgs(exception);
+            this.ExceptionOccurred(this, args);
+            return args.Handled;
         }
 
         /// <summary>
