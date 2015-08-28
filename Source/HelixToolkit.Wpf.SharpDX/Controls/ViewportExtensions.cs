@@ -355,12 +355,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 var vp = GetScreenViewProjectionMatrix(viewport);
                 var vpi = Matrix.Invert(vp);
+
+                var test = 1f / ((p.X * vpi.M14) + (p.Y * vpi.M24) + (p.Z * vpi.M34) + vpi.M44);
+                if (double.IsInfinity(test))
+                {
+                    vpi.M44 = vpi.M44 + 0.000001f;
+                }
+
                 Vector3 zn, zf;
                 p.Z = 0;
                 Vector3.TransformCoordinate(ref p, ref vpi, out zn);
                 p.Z = 1;
                 Vector3.TransformCoordinate(ref p, ref vpi, out zf);
                 Vector3 r = zf - zn;
+
                 r.Normalize();
 
                 if (camera is PerspectiveCamera)
