@@ -26,6 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
+    using MouseButtons = System.Windows.Forms.MouseButtons;
+
     /// <summary>
     /// Provides a Viewport control.
     /// </summary>
@@ -1004,21 +1006,21 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets the pressed mouse buttons as flags of <see cref="MouseButton"/>.
-        /// If not button is pressed (result is zero), then it was a touch down.
+        /// Gets the pressed mouse buttons as flags of <see cref="MouseButtons"/>.
+        /// If no button is pressed (result is zero), then it was a touch down.
         /// </summary>
         /// <returns>
-        /// The pressed mouse buttons as flags of <see cref="MouseButton"/>.
+        /// The pressed mouse buttons as flags of <see cref="MouseButtons"/>.
         /// </returns>
-        public static MouseButton GetPressedMouseButtons()
+        public static MouseButtons GetPressedMouseButtons()
         {
             int flags = 0;
-            flags |= (int)Mouse.LeftButton << 0;
-            flags |= (int)Mouse.MiddleButton << 1;
-            flags |= (int)Mouse.RightButton << 2;
-            flags |= (int)Mouse.XButton1 << 3;
-            flags |= (int)Mouse.XButton2 << 4;
-            return (MouseButton)flags;
+            flags |= (int)Mouse.LeftButton << 20;
+            flags |= (int)Mouse.RightButton << 21;
+            flags |= (int)Mouse.MiddleButton << 22;
+            flags |= (int)Mouse.XButton1 << 23;
+            flags |= (int)Mouse.XButton2 << 24;
+            return (MouseButtons)flags;
         }
 
         /// <inheritdoc/>
