@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.ComponentModel;
     using System.Windows;
 
     using global::SharpDX;
@@ -15,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using global::SharpDX.DXGI;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     public class ShadowMap3D : Element3D
     {
@@ -55,6 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new UIPropertyMetadata(0.5));
 
 
+        [TypeConverter(typeof(Vector2Converter))]
         public Vector2 Resolution
         {
             get { return (Vector2)this.GetValue(ResolutionProperty); }

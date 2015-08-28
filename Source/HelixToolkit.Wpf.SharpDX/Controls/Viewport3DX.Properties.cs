@@ -10,10 +10,13 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color4 = global::SharpDX.Color4;
 
@@ -648,6 +651,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Background Color
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 BackgroundColor
         {
             get { return (Color4)this.GetValue(BackgroundColorProperty); }

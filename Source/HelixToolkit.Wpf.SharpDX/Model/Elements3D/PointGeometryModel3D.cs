@@ -1,11 +1,15 @@
 ﻿namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
     using global::SharpDX;
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
+
     using Color = global::SharpDX.Color;
 
     public class PointGeometryModel3D : GeometryModel3D
@@ -17,6 +21,7 @@
         private EffectVectorVariable vViewport;
         private EffectVectorVariable vPointParams;
 
+        [TypeConverter(typeof(ColorConverter))]
         public Color Color
         {
             get { return (Color)this.GetValue(ColorProperty); }

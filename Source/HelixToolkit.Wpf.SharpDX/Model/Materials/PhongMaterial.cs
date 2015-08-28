@@ -10,11 +10,14 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.ComponentModel;
+
     using global::SharpDX;
     using System.Windows;    
     using System.Windows.Media.Imaging;
-    using System;    
+    using System;
 
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     /// <summary>
     /// Implments a phong-material with its all properties
@@ -90,6 +93,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 AmbientColor
         {
             get { return (Color4)this.GetValue(AmbientColorProperty); }
@@ -100,6 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 DiffuseColor
         {
             get { return (Color4)this.GetValue(DiffuseColorProperty); }
@@ -110,6 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the emissive color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 EmissiveColor
         {
             get { return (Color4)this.GetValue(EmissiveColorProperty); }
@@ -119,6 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// A fake parameter for reflectivity of the environment map
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 ReflectiveColor
         {
             get { return (Color4)this.GetValue(ReflectiveColorProperty); }
@@ -129,6 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the specular color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 SpecularColor
         {
             get { return (Color4)this.GetValue(SpecularColorProperty); }
