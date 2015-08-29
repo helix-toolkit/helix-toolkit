@@ -9,10 +9,13 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Data;
 
     using global::SharpDX;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
 
@@ -103,6 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   Gets or sets the offset of the visual (this vector is added to the Position point).
         /// </summary>
         /// <value> The offset. </value>
+        [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Offset
         {
             get { return (Vector3)this.GetValue(OffsetProperty); }

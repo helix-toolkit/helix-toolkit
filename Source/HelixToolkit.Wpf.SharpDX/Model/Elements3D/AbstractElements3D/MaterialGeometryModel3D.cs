@@ -10,11 +10,14 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
 
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
@@ -135,6 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
+        [TypeConverter(typeof(Vector2Converter))]
         public Vector2 TextureCoodScale
         {
             get { return (Vector2)this.GetValue(TextureCoodScaleProperty); }

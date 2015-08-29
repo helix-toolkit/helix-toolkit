@@ -10,6 +10,7 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
 
@@ -20,6 +21,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using global::SharpDX.DXGI;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color = global::SharpDX.Color;
 
@@ -39,6 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool hasInstances = false;
         private bool isChanged = true;
 
+        [TypeConverter(typeof(ColorConverter))]
         public Color Color
         {
             get { return (Color)this.GetValue(ColorProperty); }

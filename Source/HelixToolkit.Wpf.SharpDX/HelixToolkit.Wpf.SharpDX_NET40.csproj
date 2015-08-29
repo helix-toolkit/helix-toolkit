@@ -193,7 +193,6 @@
     <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="Utilities\TokenizerHelper.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />
-    <Compile Include="Utilities\ValueConverter.cs" />
     <Compile Include="Extensions\Vector3DExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
