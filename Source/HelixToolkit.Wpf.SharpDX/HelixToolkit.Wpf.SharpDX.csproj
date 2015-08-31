@@ -192,6 +192,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\OffReader.cs" />
+    <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="Utilities\TokenizerHelper.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />
     <Compile Include="Utilities\ValueConverter.cs" />

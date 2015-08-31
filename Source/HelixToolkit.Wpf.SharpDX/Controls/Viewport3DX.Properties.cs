@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -244,6 +245,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InfoForegroundProperty = DependencyProperty.Register(
             "InfoForeground", typeof(Brush), typeof(Viewport3DX), new UIPropertyMetadata(Brushes.Black));
+
+        /// <summary>
+        /// The message text property.
+        /// </summary>
+        public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
+            "MessageText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// The render exception property.
+        /// </summary>
+        public static DependencyProperty RenderExceptionProperty = DependencyProperty.Register(
+            "RenderException", typeof(Exception), typeof(Viewport3DX), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The render host property.
+        /// </summary>
+        public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
+            "RenderHost", typeof(DPFCanvas), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// The is deferred shading enabled propery
@@ -1170,7 +1189,44 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(InfoForegroundProperty, value);
             }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the message text.
+        /// </summary>
+        /// <value>
+        /// The message text.
+        /// </value>
+        public string MessageText
+        {
+            get
+            {
+                return (string)this.GetValue(MessageTextProperty);
+            }
+
+            set
+            {
+                this.SetValue(MessageTextProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="System.Exception"/> that occured at rendering subsystem.
+        /// </summary>
+        public Exception RenderException
+        {
+            get { return (Exception)this.GetValue(RenderExceptionProperty); }
+            set { this.SetValue(RenderExceptionProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="DPFCanvas"/>.
+        /// </summary>
+        public DPFCanvas RenderHost
+        {
+            get { return (DPFCanvas)this.GetValue(RenderHostProperty); }
+            set { this.SetValue(RenderHostProperty, value); }
+        }
+
         /// <summary>
         /// Gets or sets value for the shading model shading is used
         /// </summary>
