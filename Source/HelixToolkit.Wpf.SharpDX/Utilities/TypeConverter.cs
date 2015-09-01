@@ -192,7 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Color(
-                    Convert.ToSingle(th.GetCurrentToken(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
@@ -230,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Color4(
-                    Convert.ToSingle(th.GetCurrentToken(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
@@ -268,7 +268,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Vector2(
-                    Convert.ToSingle(th.GetCurrentToken(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
                 return result;
             }
@@ -304,7 +304,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Vector3(
-                    Convert.ToSingle(th.GetCurrentToken(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
                 return result;
@@ -341,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Vector4(
-                    Convert.ToSingle(th.GetCurrentToken(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
@@ -379,7 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Quaternion(
-                    Convert.ToSingle(th.GetCurrentToken(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
                     Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
