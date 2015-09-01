@@ -1,4 +1,4 @@
-Helix Toolkit is a library that makes it easier to work with 3D in .NET
+Helix Toolkit is a collection of 3D components for .NET. Currently it contains one component that adds functionality to the WPF 3D model (Media3D namespace), and one WPF component that creates a similar scene graph for DirectX (based on SharpDX).
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7)](https://ci.appveyor.com/project/objorke/helix-toolkit)
 
