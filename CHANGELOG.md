@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file.
 - Obj export wrong texture type (#132)
 - SharpDX DPFCanvas safety check (#137)
 - GridLinesVisual3D normal issue (#136)
+- Switch left and right side of ViewCube (#183)
+- ViewCube not available after ModelUpDirection change (#4)
 
 ## [2014.2.452] - 2014-12-16
 ### Added

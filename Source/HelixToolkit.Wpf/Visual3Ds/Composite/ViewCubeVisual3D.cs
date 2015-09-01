@@ -339,33 +339,33 @@ namespace HelixToolkit.Wpf
         {
             this.Children.Clear();
             var frontColor = Brushes.Red;
-            var rightColor = Brushes.Green;
+            var leftColor = Brushes.Green;
             var upColor = Brushes.Blue;
-            var up = this.ModelUpDirection;
-            var right = new Vector3D(0, 1, 0);
-            if (up.Z < 1)
+            var vecUp = this.ModelUpDirection;
+            // create left vector 90° from up
+            var vecLeft = new Vector3D(vecUp.Y, vecUp.Z, vecUp.X);
+
+            // change the colors if not a positive Z vector is used for up
+            if (vecUp.Z < 1)
             {
-                right = new Vector3D(0, 0, 1);
-                rightColor = Brushes.Blue;
+                leftColor = Brushes.Blue;
                 upColor = Brushes.Green;
             }
 
-            var front = Vector3D.CrossProduct(right, up);
+            var vecFront = Vector3D.CrossProduct(vecLeft, vecUp);
 
-            this.AddCubeFace(front, up, frontColor, this.FrontText);
-            this.AddCubeFace(-front, up, frontColor, this.BackText);
-            this.AddCubeFace(right, up, rightColor, this.RightText);
-            this.AddCubeFace(-right, up, rightColor, this.LeftText);
-            this.AddCubeFace(up, right, upColor, this.TopText);
-            this.AddCubeFace(-up, -right, upColor, this.BottomText);
+            this.AddCubeFace(vecFront, vecUp, frontColor, this.FrontText);
+            this.AddCubeFace(-vecFront, vecUp, frontColor, this.BackText);
+            this.AddCubeFace(vecLeft, vecUp, leftColor, this.LeftText);
+            this.AddCubeFace(-vecLeft, vecUp, leftColor, this.RightText);
+            this.AddCubeFace(vecUp, vecLeft, upColor, this.TopText);
+            this.AddCubeFace(-vecUp, -vecLeft, upColor, this.BottomText);
 
             var circle = new PieSliceVisual3D();
             circle.BeginEdit();
             circle.Center = (this.ModelUpDirection * (-this.Size / 2)).ToPoint3D();
             circle.Normal = this.ModelUpDirection;
-            circle.UpVector = this.ModelUpDirection.Equals(new Vector3D(0, 0, 1))
-                                  ? new Vector3D(0, 1, 0)
-                                  : new Vector3D(0, 0, 1);
+            circle.UpVector = vecLeft; // rotate 90° so that it's at the bottom plane of the cube.
             circle.InnerRadius = this.Size;
             circle.OuterRadius = this.Size * 1.3;
             circle.StartAngle = 0;
