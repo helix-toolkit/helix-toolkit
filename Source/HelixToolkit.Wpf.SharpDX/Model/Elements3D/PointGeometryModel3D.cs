@@ -14,12 +14,12 @@
 
     public class PointGeometryModel3D : GeometryModel3D
     {
-        private InputLayout vertexLayout;
-        private Buffer vertexBuffer;
-        private EffectTechnique effectTechnique;
-        private EffectTransformVariables effectTransforms;
-        private EffectVectorVariable vViewport;
-        private EffectVectorVariable vPointParams;
+        protected InputLayout vertexLayout;
+        protected Buffer vertexBuffer;
+        protected EffectTechnique effectTechnique;
+        protected EffectTransformVariables effectTransforms;
+        protected EffectVectorVariable vViewport;
+        protected EffectVectorVariable vPointParams;
 
         [TypeConverter(typeof(ColorConverter))]
         public Color Color
@@ -190,7 +190,7 @@
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            this.renderTechnique = Techniques.RenderPoints;
+            renderTechnique = Techniques.RenderPoints;
             base.Attach(host);
 
             if (this.Geometry == null)
@@ -202,10 +202,10 @@
 #endif
 
             // --- get device
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
-            this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
+            effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
 
-            this.effectTransforms = new EffectTransformVariables(this.effect);
+            effectTransforms = new EffectTransformVariables(this.effect);
 
             // --- get geometry
             var geometry = this.Geometry as PointGeometry3D;
@@ -214,23 +214,23 @@
             if (geometry != null)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
+                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
             }
 
             /// --- set up const variables
-            this.vViewport = effect.GetVariableByName("vViewport").AsVector();
+            vViewport = effect.GetVariableByName("vViewport").AsVector();
             //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
-            this.vPointParams = effect.GetVariableByName("vPointParams").AsVector();
+            vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 
             /// --- set effect per object const vars
             var pointParams = new Vector4((float)this.Size.Width, (float)this.Size.Height, (float)this.Figure, (float)this.FigureRatio);
-            this.vPointParams.Set(pointParams);
+            vPointParams.Set(pointParams);
 
             /// --- create raster state
-            this.OnRasterStateChanged(this.DepthBias);
+            OnRasterStateChanged(this.DepthBias);
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            Device.ImmediateContext.Flush();
         }
 
         /// <summary>
