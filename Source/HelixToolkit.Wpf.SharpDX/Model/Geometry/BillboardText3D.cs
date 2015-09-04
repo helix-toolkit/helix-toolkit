@@ -31,39 +31,59 @@ namespace HelixToolkit.Wpf.SharpDX
     [Serializable]
     public class BillboardText3D : MeshGeometry3D
     {
-        private BitmapFont bmpFont;
+        private static bool isInitialized = false;
 
-        public List<TextInfo> TextInfo { get; set; }
+        private static BitmapFont bmpFont;
 
-        public BitmapSource Texture { get; internal set; }
+        public static BitmapSource Texture { get; private set; }
+
+        public List<TextInfo> TextInfo { get; private set; }
 
         public BillboardText3D()
         {
             Positions = new Vector3Collection();
             Colors = new Color4Collection();
             TextureCoordinates = new Vector2Collection();
+            TextInfo = new List<TextInfo>();
 
-            this.TextInfo = new List<TextInfo>();
+            Initialize();
+        }
+
+        private static void Initialize()
+        {
+            if (isInitialized)
+                return;
 
             var assembly = Assembly.GetExecutingAssembly();
 
+            var texDescriptionFilePath = Path.GetTempFileName();
+            var texImageFilePath = Path.GetTempFileName();
+
             //Read the texture description           
-            using(var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt"))
+            var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
+            using (var fileStream = File.Create(texDescriptionFilePath))
             {
-                bmpFont = new BitmapFont();
-                bmpFont.Load(texDescriptionStream);
+                texDescriptionStream.CopyTo(fileStream);
             }
+
+            bmpFont = BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
 
             //Read the texture          
-            using(var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png"))
+            var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
+            using (var fileStream = File.Create(texImageFilePath))
             {
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.StreamSource = texImageStream;
-                image.EndInit();
-
-                Texture = image;
+                texImageStream.CopyTo(fileStream);
             }
+
+            Texture = new BitmapImage(new Uri(texImageFilePath));
+
+            //Cleanup the temp files
+            if (File.Exists(texDescriptionFilePath))
+            {
+                File.Delete(texDescriptionFilePath);
+            }
+
+            isInitialized = true;
         }
 
         internal void DrawText(TextInfo info)
