@@ -193,7 +193,7 @@
             renderTechnique = Techniques.RenderPoints;
             base.Attach(host);
 
-            if (this.Geometry == null)
+            if (Geometry == null)
                 return;
 
 #if DEFERRED
@@ -202,19 +202,19 @@
 #endif
 
             // --- get device
-            vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            vertexLayout = EffectsManager.Instance.GetLayout(renderTechnique);
+            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
-            effectTransforms = new EffectTransformVariables(this.effect);
+            effectTransforms = new EffectTransformVariables(effect);
 
             // --- get geometry
-            var geometry = this.Geometry as PointGeometry3D;
+            var geometry = Geometry as PointGeometry3D;
 
             // -- set geometry if given
             if (geometry != null)
             {
                 /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
+                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, CreatePointVertexArray());
             }
 
             /// --- set up const variables
@@ -223,11 +223,11 @@
             vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 
             /// --- set effect per object const vars
-            var pointParams = new Vector4((float)this.Size.Width, (float)this.Size.Height, (float)this.Figure, (float)this.FigureRatio);
+            var pointParams = new Vector4((float)Size.Width, (float)Size.Height, (float)Figure, (float)FigureRatio);
             vPointParams.Set(pointParams);
 
             /// --- create raster state
-            OnRasterStateChanged(this.DepthBias);
+            OnRasterStateChanged(DepthBias);
 
             /// --- flush
             Device.ImmediateContext.Flush();

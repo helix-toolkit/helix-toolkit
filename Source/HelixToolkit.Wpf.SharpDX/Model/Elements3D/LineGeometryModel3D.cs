@@ -223,13 +223,13 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 
             // --- get device
-            vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            vertexLayout = EffectsManager.Instance.GetLayout(renderTechnique);
+            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
-            effectTransforms = new EffectTransformVariables(this.effect);
+            effectTransforms = new EffectTransformVariables(effect);
             
             // --- get geometry
-            var geometry = this.Geometry as LineGeometry3D;
+            var geometry = Geometry as LineGeometry3D;
 
             // -- set geometry if given
             if (geometry != null)
