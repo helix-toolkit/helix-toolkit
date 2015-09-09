@@ -91,7 +91,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public InputLayout InputLayout { get; private set; }
     }
 
-
     public sealed class Techniques
     {
         static Techniques()
@@ -220,8 +219,6 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public static IEnumerable<RenderTechnique> RenderTechniques { get; private set; }
     }
-
-
 
     public sealed class EffectsManager : IDisposable
     {
