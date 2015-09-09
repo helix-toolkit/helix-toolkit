@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
-        private const global::SharpDX.Direct3D.FeatureLevel MinimumFeatureLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
+        private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
 
         /// <summary>
         /// Stores the singleton instance.
@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets the device's driver type.
         /// </summary>
-        public static global::SharpDX.Direct3D.DriverType DriverType { get { return Instance.driverType; } }
+        public static DriverType DriverType { get { return Instance.driverType; } }
 
         /// <summary>
         /// 
@@ -118,7 +118,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The driver type.
         /// </summary>
-        private global::SharpDX.Direct3D.DriverType driverType;
+        private DriverType driverType;
 
         /// <summary>
         /// 
