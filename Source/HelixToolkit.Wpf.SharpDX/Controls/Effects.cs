@@ -518,32 +518,32 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Register an effect for a RenderTechnique.
         /// </summary>
-        /// <param name="shaderEffectString"></param>
+        /// <param name="shaderEffectString">A string representing the shader code.</param>
         /// <param name="techniqueName"></param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(string shaderEffectString, RenderTechnique techniqueName, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
-            RegisterEffect(shaderEffectString, new[] { techniqueName }, sFlags, eFlags);
+            RegisterEffect(shaderEffectString, new[] { technique }, sFlags, eFlags);
         }
 
         /// <summary>
-        /// 
+        /// Register an effect for a set of RenderTechniques.
         /// </summary>
-        /// <param name="shaderEffectString"></param>
-        /// <param name="techniqueNames"></param>
+        /// <param name="shaderEffectString">A string representing the shader code.</param>
+        /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(string shaderEffectString, RenderTechnique[] techniqueNames, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(string shaderEffectString, RenderTechnique[] techniques, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
 #if PRECOMPILED_SHADERS
 
             try
             {
-                var shaderBytes = Techniques.TechniquesSourceDict[techniqueNames[0]];
-                this.RegisterEffect(shaderBytes, techniqueNames);
+                var shaderBytes = Techniques.TechniquesSourceDict[techniques[0]];
+                this.RegisterEffect(shaderBytes, techniques);
             }
             catch (Exception ex)
             {
@@ -564,13 +564,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var preposessMacros = new List<ShaderMacro>();
 
 #if DEFERRED
-    #if DEFERRED_MSAA
+#if DEFERRED_MSAA
             preposessMacros.Add(new ShaderMacro("DEFERRED_MSAA", true));
-    #endif
+#endif
 
-    #if SSAO
+#if SSAO
             preposessMacros.Add(new ShaderMacro("SSAO", true));
-    #endif
+#endif
 #endif
             var preprocess = ShaderBytecode.Preprocess(shaderEffectString, preposessMacros.ToArray(), new IncludeHandler());
             var hashCode = preprocess.GetHashCode();
@@ -580,7 +580,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var shaderBytes = ShaderBytecode.Compile(preprocess, "fx_5_0", sFlags, eFlags);
                     shaderBytes.Bytecode.Save(hashCode.ToString());
-                    this.RegisterEffect(shaderBytes.Bytecode, techniqueNames);
+                    this.RegisterEffect(shaderBytes.Bytecode, techniques);
                 }
                 catch (Exception ex)
                 {
@@ -592,18 +592,18 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 var shaderBytes = ShaderBytecode.FromFile(hashCode.ToString());
-                this.RegisterEffect(shaderBytes, techniqueNames);
+                this.RegisterEffect(shaderBytes, techniques);
             }
 #endif
         }
 
         /// <summary>
-        /// 
+        /// Register an effect for a set of RenderTechniques.
         /// </summary>
-        /// <param name="shaderEffectBytecode"></param>
-        /// <param name="techniques"></param>
+        /// <param name="shaderEffectBytecode">A byte array representing the compiled shader.</param>
+        /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
         {
             var effect = new Effect(device, shaderEffectBytecode, eFlags);
             foreach (var tech in techniques)
@@ -611,30 +611,30 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Register an InputLayout for a RenderTechnique.
         /// </summary>
-        /// <param name="technique"></param>
-        /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique technique, InputLayout layout)
+        /// <param name="technique">A RenderTechnique object.</param>
+        /// <param name="layout">An InputLayout object.</param>
+        public void RegisterLayout(RenderTechnique technique, InputLayout layout)
         {
             data[technique.Name + "Layout"] = layout;
         }
 
         /// <summary>
-        /// 
+        /// Register an InputLayout for a set of RenderTechniques
         /// </summary>
-        /// <param name="techniques"></param>
-        /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
+        /// <param name="techniques">An array of RenderTechnique objects.</param>
+        /// <param name="layout">An InputLayout object.</param>
+        public void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
         {
             foreach (var tech in techniques)
                 data[tech.Name + "Layout"] = layout;
         }
 
         /// <summary>
-        /// 
+        /// Get the Effect associated with a RenderTechnique.
         /// </summary>
-        /// <param name="technique"></param>
+        /// <param name="technique">A RenderTechnique object.</param>
         /// <returns></returns>
         public Effect GetEffect(RenderTechnique technique)
         {
@@ -642,9 +642,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Get the InputLayout associated with a RenderTechnique
         /// </summary>
-        /// <param name="technique"></param>
+        /// <param name="technique">A RenderTechnique object.</param>
         /// <returns></returns>
         public InputLayout GetLayout(RenderTechnique technique)
         {
