@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.Input_NET40", "HelixToolkit.Wpf.Input\HelixToolkit.Wpf.Input_NET40.csproj", "{26FFEC80-5997-472C-9F58-1D9ECD45B70B}"
 EndProject
@@ -12,13 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser_NET40", "Examples\WPF\ExampleBrowser\ExampleBrowser_NET40.csproj", "{991A4C2B-D830-41CB-A810-047ADCF69219}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A57AF211-C4A3-4EF1-B8B5-5E152563C7C1}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

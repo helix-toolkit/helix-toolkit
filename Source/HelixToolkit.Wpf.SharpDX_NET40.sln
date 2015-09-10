@@ -5,8 +5,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{28817336-7865-4601-A72F-7ED7D738D8AE}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
@@ -247,3 +245,4 @@ Global
 		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22} = {C9AE8005-05A5-45CA-B575-30D9DE91176C}
 	EndGlobalSection
 EndGlobal
+
