@@ -37,11 +37,11 @@ namespace DemoCore
         {
             get
             {
-                return this.title;
+                return title;
             }
             set
             {
-                this.SetValue(ref title, value, "Title");
+                SetValue(ref title, value, "Title");
             }
         }
 
@@ -49,11 +49,11 @@ namespace DemoCore
         {
             get
             {
-                return this.subTitle;
+                return subTitle;
             }
             set
             {
-                this.SetValue(ref subTitle, value, "SubTitle");
+                SetValue(ref subTitle, value, "SubTitle");
             }
         }
 
@@ -61,11 +61,11 @@ namespace DemoCore
         {
             get
             {
-                return this.renderTechnique;
+                return renderTechnique;
             }
             set
             {
-                this.SetValue(ref renderTechnique, value, "RenderTechnique");
+                SetValue(ref renderTechnique, value, "RenderTechnique");
             }
         }
 
@@ -77,11 +77,11 @@ namespace DemoCore
         {
             get
             {
-                return this.cameraModel;
+                return cameraModel;
             }
             set
             {
-                if (this.SetValue(ref cameraModel, value, "CameraModel"))
+                if (SetValue(ref cameraModel, value, "CameraModel"))
                 {
                     OnCameraModelChanged();
                 }
@@ -92,17 +92,19 @@ namespace DemoCore
         {
             get
             {
-                return this.camera;
+                return camera;
             }
 
             protected set
             {
-                this.SetValue(ref this.camera, value, "Camera");
-                this.CameraModel = value is PerspectiveCamera
+                SetValue(ref camera, value, "Camera");
+                CameraModel = value is PerspectiveCamera
                                        ? Perspective
                                        : value is OrthographicCamera ? Orthographic : null;
             }
         }
+
+        public EffectsManager EffectsManager { get; }
 
         protected OrthographicCamera defaultOrthographicCamera = new OrthographicCamera { Position = new System.Windows.Media.Media3D.Point3D(0, 0, 5), LookDirection = new System.Windows.Media.Media3D.Vector3D(-0, -0, -5), UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0), NearPlaneDistance = 1, FarPlaneDistance = 100 };
 
@@ -120,9 +122,9 @@ namespace DemoCore
             };
 
             // on camera changed callback
-            this.CameraModelChanged += (s, e) =>
+            CameraModelChanged += (s, e) =>
             {
-                if (this.cameraModel == Orthographic)
+                if (cameraModel == Orthographic)
                 {
                     //if (this.Camera != null)
                     //{
@@ -135,10 +137,10 @@ namespace DemoCore
                     //}
                     //else
                     {
-                        this.Camera = this.defaultOrthographicCamera;
+                        Camera = defaultOrthographicCamera;
                     }
                 }
-                else if (this.cameraModel == Perspective)
+                else if (cameraModel == Perspective)
                 {
                     //if (this.Camera != null)
                     //{
@@ -150,7 +152,7 @@ namespace DemoCore
                     //}
                     //else
                     {
-                        this.Camera = this.defaultPerspectiveCamera;
+                        Camera = defaultPerspectiveCamera;
                     }
                 }
                 else
@@ -160,16 +162,18 @@ namespace DemoCore
             };
 
             // default camera model
-            this.CameraModel = Perspective;
+            CameraModel = Perspective;
 
-            this.Title = "Demo (HelixToolkitDX)";
-            this.SubTitle = "Default Base View Model";
-            this.RenderTechnique = Techniques.RenderPhong;
+            Title = "Demo (HelixToolkitDX)";
+            SubTitle = "Default Base View Model";
+            RenderTechnique = Techniques.RenderPhong;
+
+            EffectsManager = new EffectsManager();
         }
 
         protected virtual void OnCameraModelChanged()
         {
-            var eh = this.CameraModelChanged;
+            var eh = CameraModelChanged;
             if (eh != null)
             {
                 eh(this, new EventArgs());

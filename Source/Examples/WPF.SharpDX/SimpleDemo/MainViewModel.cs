@@ -40,16 +40,14 @@ namespace SimpleDemo
         public Color4 DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
 
-        public EffectsManager EffectsManager { get; }
-
         public MainViewModel()
         {
             // titles
-            this.Title = "Simple Demo";
-            this.SubTitle = "WPF & SharpDX";
+            Title = "Simple Demo";
+            SubTitle = "WPF & SharpDX";
 
             // camera setup
-            this.Camera = new PerspectiveCamera { 
+            Camera = new PerspectiveCamera { 
                 Position = new Point3D(3, 3, 5), 
                 LookDirection = new Vector3D(-3, -3, -5), 
                 UpDirection = new Vector3D(0, 1, 0),
@@ -57,17 +55,17 @@ namespace SimpleDemo
             };
 
             // default render technique
-            this.RenderTechnique = Techniques.RenderBlinn;
+            RenderTechnique = Techniques.RenderBlinn;
 
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection = new Vector3(-2, -5, -2);
+            AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
+            DirectionalLightColor = Color.White;
+            DirectionalLightDirection = new Vector3(-2, -5, -2);
 
             // floor plane grid
-            this.Grid = LineBuilder.GenerateGrid();
-            this.GridColor = SharpDX.Color.Black;
-            this.GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
+            Grid = LineBuilder.GenerateGrid();
+            GridColor = SharpDX.Color.Black;
+            GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
 
             // scene model3d
             var b1 = new MeshBuilder();            
@@ -76,22 +74,22 @@ namespace SimpleDemo
            
             var meshGeometry = b1.ToMeshGeometry3D();
             meshGeometry.Colors = new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
-            this.Model = meshGeometry;
+            Model = meshGeometry;
 
             // lines model3d
             var e1 = new LineBuilder();
             e1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 2);
-            this.Lines = e1.ToLineGeometry3D();
+            Lines = e1.ToLineGeometry3D();
 
             // model trafos
-            this.Model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
-            this.Model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
-            this.Model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
-            
+            Model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
+            Model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
+            Model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
+
             // model materials
-            this.RedMaterial = PhongMaterials.Red;
-            this.GreenMaterial = PhongMaterials.Green;
-            this.BlueMaterial = PhongMaterials.Blue;
+            RedMaterial = PhongMaterials.Red;
+            GreenMaterial = PhongMaterials.Green;
+            BlueMaterial = PhongMaterials.Blue;
             //var diffColor = this.RedMaterial.DiffuseColor;
             //diffColor.Alpha = 0.5f;
             //this.RedMaterial.DiffuseColor = diffColor;   
@@ -124,8 +122,6 @@ namespace SimpleDemo
                     Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
                 }
             }
-
-            EffectsManager = new EffectsManager();
         }
     }
 }
