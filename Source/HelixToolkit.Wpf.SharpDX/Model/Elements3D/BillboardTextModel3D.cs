@@ -28,11 +28,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // --- attach
             this.renderTechnique = Techniques.RenderBillboard;
-            this.effect = EffectsManager.Instance.GetEffect(renderTechnique);
+            this.effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             this.renderHost = host;            
 
             // --- get variables
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
+            this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
 
             // --- transformations

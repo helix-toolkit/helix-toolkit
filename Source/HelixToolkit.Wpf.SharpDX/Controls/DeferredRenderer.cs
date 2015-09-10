@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.targetHeight = Math.Max((int)host.ActualHeight, 100);
 
             /// variable containers
-            this.deferredLightingVariables = new DeferredLightingVariables(EffectsManager.Instance);
+            this.deferredLightingVariables = new DeferredLightingVariables(renderHost.EffectsManager);
             this.deferredLightingVariables.vBackgroundColor.Set(this.renderHost.ClearColor);
 
             /// clear old buffers
@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 #if SSAO
             /// variable containers
-            this.screenSpaceVariables = new ScreenSpaceProcessingVariables(EffectsManager.Instance);
+            this.screenSpaceVariables = new ScreenSpaceProcessingVariables(renderHost.EffectsManager);
 
             /// clear old buffers
             this.ClearSSBuffer();

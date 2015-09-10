@@ -27,12 +27,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool IsAttached
         {
-            get { return this.renderHost != null; }
+            get { return renderHost != null; }
         }
 
         protected global::SharpDX.Direct3D11.Device Device
         {
-            get { return this.renderHost.Device; }
+            get { return renderHost.Device; }
         }
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         public virtual void Attach(IRenderHost host)
         {
-            this.renderTechnique = this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
-            this.effect = EffectsManager.Instance.GetEffect(renderTechnique);
-            this.renderHost = host;
-            this.InvalidateRender();
+            renderTechnique = this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
+            effect = renderHost.EffectsManager.GetEffect(renderTechnique);
+            renderHost = host;
+            InvalidateRender();
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public virtual void Detach()
         {
-            this.renderTechnique = null;            
-            this.effect = null;
-            this.renderHost = null;           
+            renderTechnique = null;            
+            effect = null;
+            renderHost = null;           
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void InvalidateRender()
         {
             // ToDo: Add InvalidateRender() to IRenderHost?
-            var rh = this.renderHost as DPFCanvas;
+            var rh = renderHost as DPFCanvas;
             if (rh != null)
             {
                 rh.InvalidateRender();
@@ -106,8 +106,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsRendering
         {
-            get { return (bool)this.GetValue(IsRenderingProperty); }
-            set { this.SetValue(IsRenderingProperty, value); }
+            get { return (bool)GetValue(IsRenderingProperty); }
+            set { SetValue(IsRenderingProperty, value); }
         }
 
         /// <summary>

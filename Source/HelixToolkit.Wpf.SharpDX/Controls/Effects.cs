@@ -28,14 +28,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
 
         /// <summary>
-        /// Stores the singleton instance.
+        /// Construct an EffectsManager
         /// </summary>
-        private static EffectsManager instance;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private EffectsManager()
+        public EffectsManager()
         {
 #if DX11
             var adapter = GetBestAdapter();
@@ -44,19 +39,19 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (adapter.Description.VendorId == 0x1414 && adapter.Description.DeviceId == 0x8c)
                 {
-                    this.driverType = DriverType.Warp;
-                    this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
+                    driverType = DriverType.Warp;
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
                 }
                 else
                 {
-                    this.driverType = DriverType.Hardware;
-                    this.device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+                    driverType = DriverType.Hardware;
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
                 }
             }
 #else
             this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_10_1);                        
 #endif
-            this.InitEffects();
+            InitEffects();
         }
 
         /// <summary>
@@ -96,19 +91,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets the singleton instance.
-        /// </summary>
-        public static EffectsManager Instance { get { return instance ?? (instance = new EffectsManager()); } }
-
-        /// <summary>
         /// 
         /// </summary>
-        public static global::SharpDX.Direct3D11.Device Device { get { return Instance.device; } }
+        public global::SharpDX.Direct3D11.Device Device { get { return device; } }
 
         /// <summary>
         /// Gets the device's driver type.
         /// </summary>
-        public static DriverType DriverType { get { return Instance.driverType; } }
+        public DriverType DriverType { get { return driverType; } }
 
         /// <summary>
         /// 

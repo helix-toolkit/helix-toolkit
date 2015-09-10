@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
 
             // --- get variables
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
+            this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
 
             // --- transformations

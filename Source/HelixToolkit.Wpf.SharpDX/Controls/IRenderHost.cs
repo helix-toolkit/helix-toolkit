@@ -26,6 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
         void SetDefaultRenderTargets();
         void SetDefaultColorTargets(DepthStencilView dsv);
 
+        EffectsManager EffectsManager { get; }
+
         /// <summary>
         /// This technique is used for the entire render pass 
         /// by all Element3D if not specified otherwise in

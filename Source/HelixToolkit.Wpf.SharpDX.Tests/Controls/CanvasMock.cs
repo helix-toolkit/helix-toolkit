@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         {
             Device = EffectsManager.Device;
             RenderTechnique = Techniques.RenderPhong;
+            EffectsManager = new EffectsManager();
         }
 
         public Device Device { get; private set; }
@@ -26,6 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public RenderTechnique RenderTechnique { get; private set; }
         public double ActualHeight { get; private set; }
         public double ActualWidth { get; private set; }
+
+        public EffectsManager EffectsManager { get; private set; }
 
         public void SetDefaultRenderTargets()
         {

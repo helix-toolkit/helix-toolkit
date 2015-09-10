@@ -223,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 
             // --- get device
-            vertexLayout = EffectsManager.Instance.GetLayout(renderTechnique);
+            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
             effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
             effectTransforms = new EffectTransformVariables(effect);
