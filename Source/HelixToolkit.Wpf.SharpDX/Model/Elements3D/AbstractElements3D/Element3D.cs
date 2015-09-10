@@ -42,8 +42,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual void Attach(IRenderHost host)
         {
             renderTechnique = this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
-            effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             renderHost = host;
+            effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             InvalidateRender();
         }
 
