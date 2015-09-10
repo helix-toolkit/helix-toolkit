@@ -120,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         ~EffectsManager()
         {
-            this.Dispose();
+            Dispose();
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace HelixToolkit.Wpf.SharpDX
             try
             {
                 var shaderBytes = Techniques.TechniquesSourceDict[techniques[0]];
-                this.RegisterEffect(shaderBytes, techniques);
+                RegisterEffect(shaderBytes, techniques);
             }
             catch (Exception ex)
             {
@@ -451,10 +451,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     Disposer.RemoveAndDispose(ref o);
                 }
             }
-            this.data = null;
+            data = null;
 
-            Disposer.RemoveAndDispose(ref this.device);
-            this.device = null;
+            Disposer.RemoveAndDispose(ref device);
+            device = null;
         }
 
         /// <summary>
@@ -483,13 +483,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 get
                 {
-                    return this.stream;
+                    return stream;
                 }
                 set
                 {
-                    if (this.stream != null)
-                        this.stream.Dispose();
-                    this.stream = value as Stream;
+                    if (stream != null)
+                        stream.Dispose();
+                    stream = value as Stream;
                 }
             }
 
