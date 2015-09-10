@@ -15,15 +15,15 @@
       <dependency id="Cyotek.Drawing.BitmapFont" version="1.0.2.0" />
       <dependency id="HelixToolkit" version="$version" />
       <dependency id="HelixToolkit.Wpf" version="$version" />
-      <dependency id="SharpDX" version="2.5.0" />
-      <dependency id="SharpDX.D3DCompiler" version="2.5.0" />
-      <dependency id="SharpDX.Direct2D1" version="2.5.0" />
-      <dependency id="SharpDX.Direct3D11" version="2.5.0" />
-      <dependency id="SharpDX.Direct3D11.Effects" version="2.5.0" />
-      <dependency id="SharpDX.Direct3D9" version="2.5.0" />
-      <dependency id="SharpDX.DXGI" version="2.5.0" />
-      <dependency id="SharpDX.Toolkit" version="2.5.0" />
-      <dependency id="SharpDX.Toolkit.Graphics" version="2.5.0" />
+      <dependency id="SharpDX" version="2.6.3" />
+      <dependency id="SharpDX.D3DCompiler" version="2.6.3" />
+      <dependency id="SharpDX.Direct2D1" version="2.6.3" />
+      <dependency id="SharpDX.Direct3D11" version="2.6.3" />
+      <dependency id="SharpDX.Direct3D11.Effects" version="2.6.3" />
+      <dependency id="SharpDX.Direct3D9" version="2.6.3" />
+      <dependency id="SharpDX.DXGI" version="2.6.3" />
+      <dependency id="SharpDX.Toolkit" version="2.6.3" />
+      <dependency id="SharpDX.Toolkit.Graphics" version="2.6.3" />
     </dependencies>
   </metadata>
   <files>
