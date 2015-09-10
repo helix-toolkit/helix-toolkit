@@ -18,217 +18,14 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
     using global::SharpDX.D3DCompiler;
     using global::SharpDX.Direct3D;
-    using System.Runtime.InteropServices;
     using System.IO;
-
-    public sealed class RenderTechnique : IComparable
-    {
-        public RenderTechnique(string name)
-        {
-            this.Name = name;
-        }
-
-        public RenderTechnique(string name, Effect effect, InputLayout layout)
-        {
-            this.Name = name;
-            this.Device = effect.Device;
-            this.Effect = effect;
-            this.EffectTechnique = effect.GetTechniqueByName(this.Name);
-            this.InputLayout = layout;
-        }
-
-        public override string ToString()
-        {
-            return this.Name;
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Name.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Name.Equals(obj.ToString());
-        }
-
-        public int CompareTo(object obj)
-        {
-            return Name.CompareTo(obj.ToString());
-        }
-
-        public static bool operator ==(RenderTechnique a, RenderTechnique b)
-        {
-            // If both are null, or both are same instance, return true.
-            if (System.Object.ReferenceEquals(a, b))
-            {
-                return true;
-            }
-
-            // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
-            {
-                return false;
-            }
-
-            // Return true if the fields match:
-            return a.Name.Equals(b.Name);
-        }
-
-        public static bool operator !=(RenderTechnique a, RenderTechnique b)
-        {
-            return !(a == b);
-        }
-
-        public string Name { get; private set; }
-
-        public Effect Effect { get; private set; }
-
-        public EffectTechnique EffectTechnique { get; private set; }
-
-        public global::SharpDX.Direct3D11.Device Device { get; private set; }
-
-        public InputLayout InputLayout { get; private set; }
-    }
-
-
-    public sealed class Techniques
-    {
-        static Techniques()
-        {
-            /// <summary>
-            /// Names of techniques which are implemented by default
-            /// </summary>
-            RenderBlinn = new RenderTechnique("RenderBlinn");
-            RenderPhong = new RenderTechnique("RenderPhong");
-
-            RenderDiffuse = new RenderTechnique("RenderDiffuse");
-            RenderColors = new RenderTechnique("RenderColors");
-            RenderPositions = new RenderTechnique("RenderPositions");
-            RenderNormals = new RenderTechnique("RenderNormals");
-            RenderPerturbedNormals = new RenderTechnique("RenderPerturbedNormals");
-            RenderTangents = new RenderTechnique("RenderTangents");
-            RenderTexCoords = new RenderTechnique("RenderTexCoords");
-            RenderWires = new RenderTechnique("RenderWires");
-
-#if DEFERRED 
-            RenderDeferred = new RenderTechnique("RenderDeferred");
-            RenderGBuffer = new RenderTechnique("RenderGBuffer");
-            RenderDeferredLighting = new RenderTechnique("RenderDeferredLighting");
-            RenderScreenSpace = new RenderTechnique("RenderScreenSpace");
-#endif
-
-#if TESSELLATION 
-            RenderPNTriangs = new RenderTechnique("RenderPNTriangs");
-            RenderPNQuads = new RenderTechnique("RenderPNQuads");
-#endif
-            RenderCubeMap = new RenderTechnique("RenderCubeMap");
-            RenderLines = new RenderTechnique("RenderLines");
-            RenderPoints = new RenderTechnique("RenderPoints");
-            RenderBillboard = new RenderTechnique("RenderBillboard");
-
-            RenderTechniques = new List<RenderTechnique>
-            { 
-                RenderBlinn,
-                RenderPhong, 
-
-                RenderColors,
-                RenderDiffuse,
-                RenderPositions,
-                RenderNormals,
-                RenderPerturbedNormals,
-                RenderTangents, 
-                RenderTexCoords,
-                RenderWires,
-#if DEFERRED
-                RenderDeferred,
-                RenderGBuffer,  
-#endif
-                
-#if TESSELLATION 
-                RenderPNTriangs,
-                RenderPNQuads,
-#endif
-            };
-
-            TechniquesSourceDict = new Dictionary<RenderTechnique, byte[]>()
-            {
-                {     Techniques.RenderPhong,      Properties.Resources._default}, 
-                {     Techniques.RenderBlinn,      Properties.Resources._default}, 
-                {     Techniques.RenderCubeMap,    Properties.Resources._default}, 
-                {     Techniques.RenderColors,     Properties.Resources._default}, 
-                {     Techniques.RenderDiffuse,    Properties.Resources._default}, 
-                {     Techniques.RenderPositions,  Properties.Resources._default}, 
-                {     Techniques.RenderNormals,    Properties.Resources._default},
-                {     Techniques.RenderPerturbedNormals,    Properties.Resources._default}, 
-                {     Techniques.RenderTangents,   Properties.Resources._default}, 
-                {     Techniques.RenderTexCoords,  Properties.Resources._default}, 
-                {     Techniques.RenderWires,      Properties.Resources._default}, 
-                {     Techniques.RenderLines,      Properties.Resources._default}, 
-                {     Techniques.RenderPoints,     Properties.Resources._default},
-                {     Techniques.RenderBillboard,  Properties.Resources._default},
-    #if TESSELLATION                                        
-                {     Techniques.RenderPNTriangs,  Properties.Resources._default}, 
-                {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
-    #endif 
-    #if DEFERRED            
-                {     Techniques.RenderDeferred,   Properties.Resources._deferred},
-                {     Techniques.RenderGBuffer,    Properties.Resources._deferred},
-                {     Techniques.RenderDeferredLighting , Properties.Resources._deferred},
-    #endif
-            };
-        }
-
-        internal static readonly Techniques Instance = new Techniques();
-
-        internal static readonly Dictionary<RenderTechnique, byte[]> TechniquesSourceDict;
-
-        private Techniques()
-        {
-
-        }
-
-        /// <summary>
-        /// Names of techniques which are implemented by default
-        /// </summary>
-        public static RenderTechnique RenderBlinn { get; private set; }// = new RenderTechnique("RenderBlinn");
-        public static RenderTechnique RenderPhong { get; private set; }
-
-        public static RenderTechnique RenderDiffuse { get; private set; }
-        public static RenderTechnique RenderColors { get; private set; }
-        public static RenderTechnique RenderPositions { get; private set; }
-        public static RenderTechnique RenderNormals { get; private set; }
-        public static RenderTechnique RenderPerturbedNormals { get; private set; }
-        public static RenderTechnique RenderTangents { get; private set; }
-        public static RenderTechnique RenderTexCoords { get; private set; }
-        public static RenderTechnique RenderWires { get; private set; }
-        public static RenderTechnique RenderCubeMap { get; private set; }
-        public static RenderTechnique RenderLines { get; private set; }
-        public static RenderTechnique RenderPoints { get; private set; }
-        public static RenderTechnique RenderBillboard { get; private set; }
-
-#if TESSELLATION
-        public static RenderTechnique RenderPNTriangs { get; private set; }
-        public static RenderTechnique RenderPNQuads { get; private set; }
-#endif
-
-#if DEFERRED                 
-        public static RenderTechnique RenderDeferred { get; private set; }
-        public static RenderTechnique RenderGBuffer { get; private set; }
-        public static RenderTechnique RenderDeferredLighting { get; private set; }
-        public static RenderTechnique RenderScreenSpace { get; private set; }
-#endif
-        public static IEnumerable<RenderTechnique> RenderTechniques { get; private set; }
-    }
-
-
 
     public sealed class EffectsManager : IDisposable
     {
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
-        private const global::SharpDX.Direct3D.FeatureLevel MinimumFeatureLevel = global::SharpDX.Direct3D.FeatureLevel.Level_10_0;
+        private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
 
         /// <summary>
         /// Stores the singleton instance.
@@ -311,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets the device's driver type.
         /// </summary>
-        public static global::SharpDX.Direct3D.DriverType DriverType { get { return Instance.driverType; } }
+        public static DriverType DriverType { get { return Instance.driverType; } }
 
         /// <summary>
         /// 
@@ -321,7 +118,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The driver type.
         /// </summary>
-        private global::SharpDX.Direct3D.DriverType driverType;
+        private DriverType driverType;
 
         /// <summary>
         /// 
@@ -518,32 +315,32 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Register an effect for a RenderTechnique.
         /// </summary>
-        /// <param name="shaderEffectString"></param>
+        /// <param name="shaderEffectString">A string representing the shader code.</param>
         /// <param name="techniqueName"></param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(string shaderEffectString, RenderTechnique techniqueName, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
-            RegisterEffect(shaderEffectString, new[] { techniqueName }, sFlags, eFlags);
+            RegisterEffect(shaderEffectString, new[] { technique }, sFlags, eFlags);
         }
 
         /// <summary>
-        /// 
+        /// Register an effect for a set of RenderTechniques.
         /// </summary>
-        /// <param name="shaderEffectString"></param>
-        /// <param name="techniqueNames"></param>
+        /// <param name="shaderEffectString">A string representing the shader code.</param>
+        /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(string shaderEffectString, RenderTechnique[] techniqueNames, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(string shaderEffectString, RenderTechnique[] techniques, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
 #if PRECOMPILED_SHADERS
 
             try
             {
-                var shaderBytes = Techniques.TechniquesSourceDict[techniqueNames[0]];
-                this.RegisterEffect(shaderBytes, techniqueNames);
+                var shaderBytes = Techniques.TechniquesSourceDict[techniques[0]];
+                this.RegisterEffect(shaderBytes, techniques);
             }
             catch (Exception ex)
             {
@@ -564,13 +361,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var preposessMacros = new List<ShaderMacro>();
 
 #if DEFERRED
-    #if DEFERRED_MSAA
+#if DEFERRED_MSAA
             preposessMacros.Add(new ShaderMacro("DEFERRED_MSAA", true));
-    #endif
+#endif
 
-    #if SSAO
+#if SSAO
             preposessMacros.Add(new ShaderMacro("SSAO", true));
-    #endif
+#endif
 #endif
             var preprocess = ShaderBytecode.Preprocess(shaderEffectString, preposessMacros.ToArray(), new IncludeHandler());
             var hashCode = preprocess.GetHashCode();
@@ -580,7 +377,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var shaderBytes = ShaderBytecode.Compile(preprocess, "fx_5_0", sFlags, eFlags);
                     shaderBytes.Bytecode.Save(hashCode.ToString());
-                    this.RegisterEffect(shaderBytes.Bytecode, techniqueNames);
+                    this.RegisterEffect(shaderBytes.Bytecode, techniques);
                 }
                 catch (Exception ex)
                 {
@@ -592,18 +389,18 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 var shaderBytes = ShaderBytecode.FromFile(hashCode.ToString());
-                this.RegisterEffect(shaderBytes, techniqueNames);
+                this.RegisterEffect(shaderBytes, techniques);
             }
 #endif
         }
 
         /// <summary>
-        /// 
+        /// Register an effect for a set of RenderTechniques.
         /// </summary>
-        /// <param name="shaderEffectBytecode"></param>
-        /// <param name="techniques"></param>
+        /// <param name="shaderEffectBytecode">A byte array representing the compiled shader.</param>
+        /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="eFlags"></param>
-        internal void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
+        public void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
         {
             var effect = new Effect(device, shaderEffectBytecode, eFlags);
             foreach (var tech in techniques)
@@ -611,30 +408,30 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Register an InputLayout for a RenderTechnique.
         /// </summary>
-        /// <param name="technique"></param>
-        /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique technique, InputLayout layout)
+        /// <param name="technique">A RenderTechnique object.</param>
+        /// <param name="layout">An InputLayout object.</param>
+        public void RegisterLayout(RenderTechnique technique, InputLayout layout)
         {
             data[technique.Name + "Layout"] = layout;
         }
 
         /// <summary>
-        /// 
+        /// Register an InputLayout for a set of RenderTechniques
         /// </summary>
-        /// <param name="techniques"></param>
-        /// <param name="layout"></param>
-        internal void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
+        /// <param name="techniques">An array of RenderTechnique objects.</param>
+        /// <param name="layout">An InputLayout object.</param>
+        public void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
         {
             foreach (var tech in techniques)
                 data[tech.Name + "Layout"] = layout;
         }
 
         /// <summary>
-        /// 
+        /// Get the Effect associated with a RenderTechnique.
         /// </summary>
-        /// <param name="technique"></param>
+        /// <param name="technique">A RenderTechnique object.</param>
         /// <returns></returns>
         public Effect GetEffect(RenderTechnique technique)
         {
@@ -642,9 +439,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Get the InputLayout associated with a RenderTechnique
         /// </summary>
-        /// <param name="technique"></param>
+        /// <param name="technique">A RenderTechnique object.</param>
         /// <returns></returns>
         public InputLayout GetLayout(RenderTechnique technique)
         {
@@ -713,43 +510,5 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private Stream stream;
         }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct DefaultVertex
-    {
-        public Vector4 Position;
-        public Color4 Color;
-        public Vector2 TexCoord;
-        public Vector3 Normal;
-        public Vector3 Tangent;
-        public Vector3 BiTangent;
-
-        public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3);
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct LinesVertex
-    {
-        public Vector4 Position;
-        public Color4 Color;
-        public const int SizeInBytes = 4 * (4 + 4);
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct CubeVertex
-    {
-        public Vector4 Position;
-        public const int SizeInBytes = 4 * 4;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct BillboardVertex
-    {
-        public Vector4 Position;
-        public Color4 Color;
-        public Vector4 TexCoord;
-        //public Vector2 Offset;
-        public const int SizeInBytes = 4 * (4 + 4 + 4);
     }
 }
