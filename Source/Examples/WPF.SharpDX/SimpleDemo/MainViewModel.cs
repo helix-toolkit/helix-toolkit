@@ -40,6 +40,7 @@ namespace SimpleDemo
         public Color4 DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
 
+        public EffectsManager EffectsManager { get; }
 
         public MainViewModel()
         {
@@ -123,7 +124,8 @@ namespace SimpleDemo
                     Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
                 }
             }
-            
+
+            EffectsManager = new EffectsManager();
         }
     }
 }

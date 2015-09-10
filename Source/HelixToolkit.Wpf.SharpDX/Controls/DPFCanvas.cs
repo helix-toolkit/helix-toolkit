@@ -66,7 +66,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private int pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
         private DispatcherOperation updateAndRenderOperation;
-        private EffectsManager effectsManager;
 
 #if MSAA
         private Texture2D renderTargetNMS;
@@ -136,9 +135,14 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return device; }
         }
 
+        public static readonly DependencyProperty EffectsManagerProperty =
+            DependencyProperty.Register("EffectsManager", typeof(EffectsManager), typeof(DPFCanvas), null);
+
+
         public EffectsManager EffectsManager
         {
-            get { return effectsManager; }
+            get { return (EffectsManager)GetValue(EffectsManagerProperty); }
+            set { SetValue(EffectsManagerProperty, value); }
         }
 
         /// <summary>
@@ -177,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
             IsShadowMapEnabled = false;
             IsMSAAEnabled = true;
 
-            effectsManager = new EffectsManager();
+            //effectsManager = new EffectsManager();
         }
 
         /// <summary>
