@@ -138,10 +138,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <UsingTask TaskName="NotifyPropertyWeaverMsBuildTask.WeavingTask" AssemblyFile="$(SolutionDir)\..\Tools\NotifyPropertyWeaver\NotifyPropertyWeaverMsBuildTask.dll" />
-  <Target Name="AfterCompile">
-    <NotifyPropertyWeaverMsBuildTask.WeavingTask />
-  </Target>
   <Import Project="..\..\..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\..\..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
 </Project>
 
