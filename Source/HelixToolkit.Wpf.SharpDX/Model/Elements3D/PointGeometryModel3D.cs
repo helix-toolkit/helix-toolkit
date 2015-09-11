@@ -190,14 +190,15 @@
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            renderTechnique = Techniques.RenderPoints;
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
             base.Attach(host);
 
             if (Geometry == null)
                 return;
 
 #if DEFERRED
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
                 return;
 #endif
 
@@ -265,7 +266,8 @@
                 return;
 
 #if DEFERRED
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
                 return;
 #endif
 

@@ -55,7 +55,7 @@ namespace SimpleDemo
             };
 
             // default render technique
-            RenderTechnique = Techniques.RenderBlinn;
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
 
             // setup lighting            
             AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);

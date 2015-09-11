@@ -66,7 +66,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private int pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
         private DispatcherOperation updateAndRenderOperation;
-
+        private RenderTechnique deferred;
+        private RenderTechnique gbuffer;
 #if MSAA
         private Texture2D renderTargetNMS;
 #endif
@@ -145,6 +146,15 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(EffectsManagerProperty, value); }
         }
 
+        public static readonly DependencyProperty RenderTechniquesManagerProperty =
+            DependencyProperty.Register("RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(DPFCanvas), null);
+
+        public IRenderTechniquesManager RenderTechniquesManager
+        {
+            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
+            set { SetValue(RenderTechniquesManagerProperty, value); }
+        }
+
         /// <summary>
         /// Gets a value indicating whether the control is in design mode
         /// (running in Blend or Visual Studio).
@@ -180,8 +190,6 @@ namespace HelixToolkit.Wpf.SharpDX
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
             IsMSAAEnabled = true;
-
-            //effectsManager = new EffectsManager();
         }
 
         /// <summary>
@@ -205,6 +213,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
+
+            gbuffer = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer];
+            deferred = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
 
             try
             {
@@ -481,7 +492,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         sceneAttached = true;
                         ClearColor = renderRenderable.BackgroundColor;
                         IsShadowMapEnabled = renderRenderable.IsShadowMappingEnabled;
-                        RenderTechnique = renderRenderable.RenderTechnique == null ? Techniques.RenderBlinn : renderRenderable.RenderTechnique;
+
+                        var blinn = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+                        RenderTechnique = renderRenderable.RenderTechnique == null ? blinn : renderRenderable.RenderTechnique;
                             
                         if (renderContext != null)
                         {
@@ -489,14 +502,14 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique));
                         renderRenderable.Attach(this);
-                        
-#if DEFERRED  
-                        if(RenderTechnique == Techniques.RenderDeferred)
+
+#if DEFERRED
+                        if(RenderTechnique == deferred)
                         {
                             deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
                         }
-                        
-                        if(RenderTechnique == Techniques.RenderGBuffer)
+
+                        if (RenderTechnique == gbuffer)
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
@@ -515,7 +528,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// ---------------------------------------------------------------------------
                 /// this part is per frame                
 #if DEFERRED
-                if (RenderTechnique == Techniques.RenderDeferred)
+                
+                if (RenderTechnique == deferred)
                 {
                     /// set G-Buffer                    
                     deferredRenderer.SetGBufferTargets();
@@ -527,7 +541,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     deferredRenderer.RenderDeferred(renderContext, renderRenderable);
 
                 }
-                else if (RenderTechnique == Techniques.RenderGBuffer)
+                else if (RenderTechnique == gbuffer)
                 {
                     /// set G-Buffer
                     deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2);
@@ -673,11 +687,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (surfaceD3D != null)
                     {
         #if DEFERRED
-                        if (RenderTechnique == Techniques.RenderDeferred)
+                        if (RenderTechnique == deferred)
                         {
                         deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
                         }
-                        if (RenderTechnique == Techniques.RenderGBuffer)
+                        if (RenderTechnique == gbuffer)
                         {
                         deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }

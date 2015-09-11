@@ -28,6 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         EffectsManager EffectsManager { get; }
 
+        IRenderTechniquesManager RenderTechniquesManager { get; }
+
         /// <summary>
         /// This technique is used for the entire render pass 
         /// by all Element3D if not specified otherwise in

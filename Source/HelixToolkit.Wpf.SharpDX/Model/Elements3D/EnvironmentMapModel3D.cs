@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             /// --- attach
-            this.renderTechnique = Techniques.RenderCubeMap;
+            this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
             base.Attach(host);
 
             /// --- get variables               

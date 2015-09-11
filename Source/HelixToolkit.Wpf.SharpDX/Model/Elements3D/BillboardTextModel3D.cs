@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             // --- attach
-            this.renderTechnique = Techniques.RenderBillboard;
+            this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
             this.effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             this.renderHost = host;            
 

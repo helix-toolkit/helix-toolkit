@@ -27,11 +27,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
 
+        private IRenderTechniquesManager renderTechniquesManager;
+
         /// <summary>
         /// Construct an EffectsManager
         /// </summary>
-        public EffectsManager()
+        public EffectsManager(IRenderTechniquesManager renderTechniquesManager)
         {
+            this.renderTechniquesManager = renderTechniquesManager;
 #if DX11
             var adapter = GetBestAdapter();
 
@@ -131,8 +134,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-
-                // ------------------------------------------------------------------------------------
 #if TESSELLATION
                 RegisterEffect(Properties.Resources.Tessellation,
 #else                
@@ -141,42 +142,40 @@ namespace HelixToolkit.Wpf.SharpDX
  new[] 
                 { 
                     // put here the techniques which you want to use with this effect
-                    Techniques.RenderPhong, 
-                    Techniques.RenderBlinn, 
-                    Techniques.RenderCubeMap, 
-                    Techniques.RenderColors, 
-                    Techniques.RenderDiffuse,
-                    Techniques.RenderPositions,
-                    Techniques.RenderNormals,
-                    Techniques.RenderPerturbedNormals,
-                    Techniques.RenderTangents, 
-                    Techniques.RenderTexCoords, 
-                    Techniques.RenderWires, 
-                    Techniques.RenderLines,
-                    Techniques.RenderPoints,
-                    Techniques.RenderBillboard,
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Positions],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Normals],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.PerturbedNormals],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Tangents],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.TexCoords],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Wires],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText],
 #if TESSELLATION
-                    Techniques.RenderPNTriangs,
-                    Techniques.RenderPNQuads,
+                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
+                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads],
 #endif
                     
                 });
 
 #if DEFERRED  
-                // ------------------------------------------------------------------------------------                
-                RegisterEffect(Properties.Resources.Deferred, //Properties.Resources.Deferred,
+              
+                RegisterEffect(Properties.Resources.Deferred,
                 new[] 
-                { 
-                    Techniques.RenderDeferred, 
-                    Techniques.RenderGBuffer,
-                    Techniques.RenderDeferredLighting 
+                {
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting],
                 });
 #endif
 
-                // ##############################################################################################
-
-                // ------------------------------------------------------------------------------------
-                var defaultInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPhong).GetTechniqueByName(Techniques.RenderPhong.Name).GetPassByIndex(0).Description.Signature, new[]
+                var phong = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
+                var defaultInputLayout = new InputLayout(device, GetEffect(phong).GetTechniqueByName(DefaultRenderTechniqueNames.Phong).GetPassByIndex(0).Description.Signature, new[]
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
@@ -192,8 +191,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                 });
 
-                // ------------------------------------------------------------------------------------
-                var linesInputLayout = new InputLayout(device, GetEffect(Techniques.RenderLines).GetTechniqueByName(Techniques.RenderLines.Name).GetPassByIndex(0).Description.Signature, new[] 
+                var lines = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+                var linesInputLayout = new InputLayout(device, GetEffect(lines).GetTechniqueByName(DefaultRenderTechniqueNames.Lines).GetPassByIndex(0).Description.Signature, new[] 
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
@@ -205,52 +204,54 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                 });
 
-                // ------------------------------------------------------------------------------------
-                var cubeMapInputLayout = new InputLayout(device, GetEffect(Techniques.RenderCubeMap).GetTechniqueByName(Techniques.RenderCubeMap.Name).GetPassByIndex(0).Description.Signature, new[] 
+                var cubeMap = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
+                var cubeMapInputLayout = new InputLayout(device, GetEffect(cubeMap).GetTechniqueByName(DefaultRenderTechniqueNames.CubeMap).GetPassByIndex(0).Description.Signature, new[] 
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),                                                             
                 });
 
-                var pointsInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPoints).GetTechniqueByName(Techniques.RenderPoints.Name).GetPassByIndex(0).Description.Signature, new[] 
+                var points = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
+                var pointsInputLayout = new InputLayout(device, GetEffect(points).GetTechniqueByName(DefaultRenderTechniqueNames.Points).GetPassByIndex(0).Description.Signature, new[] 
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
                 });
 
-                var billboardInputLayout = new InputLayout(device, GetEffect(Techniques.RenderBillboard).GetTechniqueByName(Techniques.RenderBillboard.Name).GetPassByIndex(0).Description.Signature, new[]
+                var text = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
+                var billboardInputLayout = new InputLayout(device, GetEffect(text).GetTechniqueByName(DefaultRenderTechniqueNames.BillboardText).GetPassByIndex(0).Description.Signature, new[]
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
                     new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
                 });
 
-                // ------------------------------------------------------------------------------------
+                var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
                 RegisterLayout(new[] 
                 { 
-                    Techniques.RenderCubeMap, 
+                    cubeMap, 
 #if DEFERRED 
-                    Techniques.RenderDeferredLighting
+                    deferredLighting
 #endif
                 }, cubeMapInputLayout);
 
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
                 { 
-                    Techniques.RenderLines 
+                    lines
                 },
                 linesInputLayout);
 
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new[] 
                 { 
-                    Techniques.RenderPoints 
+                    points
                 },
                 pointsInputLayout);
 
                 // ------------------------------------------------------------------------------------
                 RegisterLayout(new []
                 {
-                    Techniques.RenderBillboard
+                    text
                 },
                 billboardInputLayout);
 
@@ -258,26 +259,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 RegisterLayout(new[] 
                 { 
                     // put here techniques which use the vertex layout below
-                    Techniques.RenderPhong, 
-                    Techniques.RenderBlinn,
-                                        
-                    Techniques.RenderDiffuse,
-                    Techniques.RenderPositions,
-                    Techniques.RenderNormals,
-                    Techniques.RenderPerturbedNormals,
-                    Techniques.RenderTangents, 
-                    Techniques.RenderTexCoords, 
-                    Techniques.RenderColors, 
-                    Techniques.RenderWires, 
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Positions],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Normals],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.PerturbedNormals],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Tangents],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.TexCoords],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Wires], 
 #if DEFERRED 
-                    Techniques.RenderDeferred,
-                    Techniques.RenderGBuffer,
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
 #endif
                 }, defaultInputLayout);
 
 #if TESSELLATION
-                // ------------------------------------------------------------------------------------
-                var tessellationInputLayout = new InputLayout(device, GetEffect(Techniques.RenderPNTriangs).GetTechniqueByName(Techniques.RenderPNTriangs.Name).GetPassByIndex(0).Description.Signature, new[] 
+
+                var tesselation = renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
+                var tessellationInputLayout = new InputLayout(device, GetEffect(tesselation).GetTechniqueByName(TessellationRenderTechniqueNames.PNTriangles).GetPassByIndex(0).Description.Signature, new[] 
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
@@ -290,8 +291,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 RegisterLayout(new[] 
                 { 
                     // put here techniques which use the vertex layout below
-                    Techniques.RenderPNTriangs,
-                    Techniques.RenderPNQuads, 
+                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
+                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads]
                 }, tessellationInputLayout);
 #endif
             }
@@ -329,7 +330,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             try
             {
-                var shaderBytes = Techniques.TechniquesSourceDict[techniques[0]];
+                var shaderBytes = ((RenderTechniquesManager)renderTechniquesManager).TechniquesSourceDict[techniques[0]];
                 RegisterEffect(shaderBytes, techniques);
             }
             catch (Exception ex)

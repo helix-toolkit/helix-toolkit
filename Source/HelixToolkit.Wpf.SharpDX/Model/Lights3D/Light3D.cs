@@ -136,14 +136,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The lighting model.
         /// </summary>
-        public static class Model
-        {
-            //PhongPerVertex,
-            //BlinnPhongPerVertex,
-            public static readonly RenderTechnique RenderPhong = Techniques.RenderPhong;
-            public static readonly RenderTechnique RenderBlinnPhong = Techniques.RenderBlinn;
-            public static readonly RenderTechnique RenderColors = Techniques.RenderColors;
-        }
+        //public static class Model
+        //{
+        //    //PhongPerVertex,
+        //    //BlinnPhongPerVertex,
+        //    public static readonly RenderTechnique RenderPhong = Techniques.RenderPhong;
+        //    public static readonly RenderTechnique RenderBlinnPhong = Techniques.RenderBlinn;
+        //    public static readonly RenderTechnique RenderColors = Techniques.RenderColors;
+        //}
 
         public Matrix LightViewMatrix
         {
@@ -222,8 +222,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectScalarVariable iLightType;
         protected int lightIndex = 0;
     }
-
-
 
     public abstract class PointLightBase3D : Light3D
     {

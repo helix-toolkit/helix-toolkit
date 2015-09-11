@@ -29,7 +29,7 @@
             this.SubTitle = "LineGeometryModel3D now works with OrthographicCamera and Intel HD 3000.";
 
             // default render technique
-            this.RenderTechnique = Techniques.RenderBlinn;
+            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
             this.PropertyChanged += this.OnPropertyChanged;
         }
 

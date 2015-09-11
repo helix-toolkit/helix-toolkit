@@ -1,133 +1,129 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public sealed class Techniques
+    public struct DefaultRenderTechniqueNames
     {
-        static Techniques()
+        public const string Blinn = "RenderBlinn";
+        public const string Phong = "RenderPhong";
+        public const string Diffuse = "RenderDiffuse";
+        public const string Colors = "RenderColors";
+        public const string Positions = "RenderPositions";
+        public const string Normals = "RenderNormals";
+        public const string PerturbedNormals = "RenderPerturbedNormals";
+        public const string Tangents = "RenderTangents";
+        public const string TexCoords = "RenderTexCoords";
+        public const string Wires = "RenderWires";
+        public const string Lines = "RenderLines";
+        public const string Points = "RenderPoints";
+        public const string CubeMap = "RenderCubeMap";
+        public const string BillboardText = "RenderBillboard";
+    }
+
+    public struct TessellationRenderTechniqueNames
+    {
+        public const string PNTriangles = "RenderPNTriangs";
+        public const string PNQuads = "RenderPNQuads";
+    }
+
+    public struct DeferredRenderTechniqueNames
+    {
+        public const string Deferred = "RenderDeferred";
+        public const string GBuffer = "RenderGBuffer";
+        public const string DeferredLighting = "RenderDeferredLighting";
+        public const string ScreenSpace = "RenderScreenSpace";
+    }
+
+    public interface IRenderTechniquesManager
+    {
+        void AddRenderTechnique(string techniqueName, byte[] techniqueSource);
+        IDictionary<string, RenderTechnique> RenderTechniques { get; }
+    }
+
+    public class RenderTechniquesManager: IRenderTechniquesManager
+    {
+        internal readonly Dictionary<RenderTechnique, byte[]> TechniquesSourceDict = new Dictionary<RenderTechnique, byte[]>();
+        private Dictionary<string, RenderTechnique> renderTechniques = new Dictionary<string, RenderTechnique>();
+
+        public IDictionary<string,RenderTechnique> RenderTechniques
         {
-            /// <summary>
-            /// Names of techniques which are implemented by default
-            /// </summary>
-            RenderBlinn = new RenderTechnique("RenderBlinn");
-            RenderPhong = new RenderTechnique("RenderPhong");
-
-            RenderDiffuse = new RenderTechnique("RenderDiffuse");
-            RenderColors = new RenderTechnique("RenderColors");
-            RenderPositions = new RenderTechnique("RenderPositions");
-            RenderNormals = new RenderTechnique("RenderNormals");
-            RenderPerturbedNormals = new RenderTechnique("RenderPerturbedNormals");
-            RenderTangents = new RenderTechnique("RenderTangents");
-            RenderTexCoords = new RenderTechnique("RenderTexCoords");
-            RenderWires = new RenderTechnique("RenderWires");
-
-#if DEFERRED 
-            RenderDeferred = new RenderTechnique("RenderDeferred");
-            RenderGBuffer = new RenderTechnique("RenderGBuffer");
-            RenderDeferredLighting = new RenderTechnique("RenderDeferredLighting");
-            RenderScreenSpace = new RenderTechnique("RenderScreenSpace");
-#endif
-
-#if TESSELLATION 
-            RenderPNTriangs = new RenderTechnique("RenderPNTriangs");
-            RenderPNQuads = new RenderTechnique("RenderPNQuads");
-#endif
-            RenderCubeMap = new RenderTechnique("RenderCubeMap");
-            RenderLines = new RenderTechnique("RenderLines");
-            RenderPoints = new RenderTechnique("RenderPoints");
-            RenderBillboard = new RenderTechnique("RenderBillboard");
-
-            RenderTechniques = new List<RenderTechnique>
-            {
-                RenderBlinn,
-                RenderPhong,
-
-                RenderColors,
-                RenderDiffuse,
-                RenderPositions,
-                RenderNormals,
-                RenderPerturbedNormals,
-                RenderTangents,
-                RenderTexCoords,
-                RenderWires,
-#if DEFERRED
-                RenderDeferred,
-                RenderGBuffer,  
-#endif
-                
-#if TESSELLATION 
-                RenderPNTriangs,
-                RenderPNQuads,
-#endif
-            };
-
-            TechniquesSourceDict = new Dictionary<RenderTechnique, byte[]>()
-            {
-                {     Techniques.RenderPhong,      Properties.Resources._default},
-                {     Techniques.RenderBlinn,      Properties.Resources._default},
-                {     Techniques.RenderCubeMap,    Properties.Resources._default},
-                {     Techniques.RenderColors,     Properties.Resources._default},
-                {     Techniques.RenderDiffuse,    Properties.Resources._default},
-                {     Techniques.RenderPositions,  Properties.Resources._default},
-                {     Techniques.RenderNormals,    Properties.Resources._default},
-                {     Techniques.RenderPerturbedNormals,    Properties.Resources._default},
-                {     Techniques.RenderTangents,   Properties.Resources._default},
-                {     Techniques.RenderTexCoords,  Properties.Resources._default},
-                {     Techniques.RenderWires,      Properties.Resources._default},
-                {     Techniques.RenderLines,      Properties.Resources._default},
-                {     Techniques.RenderPoints,     Properties.Resources._default},
-                {     Techniques.RenderBillboard,  Properties.Resources._default},
-    #if TESSELLATION                                        
-                {     Techniques.RenderPNTriangs,  Properties.Resources._default},
-                {     Techniques.RenderPNQuads,    Properties.Resources._default}, 
-    #endif 
-    #if DEFERRED            
-                {     Techniques.RenderDeferred,   Properties.Resources._deferred},
-                {     Techniques.RenderGBuffer,    Properties.Resources._deferred},
-                {     Techniques.RenderDeferredLighting , Properties.Resources._deferred},
-    #endif
-            };
+            get { return renderTechniques; }
         }
 
-        internal static readonly Techniques Instance = new Techniques();
-
-        internal static readonly Dictionary<RenderTechnique, byte[]> TechniquesSourceDict;
-
-        private Techniques()
+        public RenderTechniquesManager()
         {
+            renderTechniques = new Dictionary<string,RenderTechnique>();
 
-        }
-
-        /// <summary>
-        /// Names of techniques which are implemented by default
-        /// </summary>
-        public static RenderTechnique RenderBlinn { get; private set; }// = new RenderTechnique("RenderBlinn");
-        public static RenderTechnique RenderPhong { get; private set; }
-
-        public static RenderTechnique RenderDiffuse { get; private set; }
-        public static RenderTechnique RenderColors { get; private set; }
-        public static RenderTechnique RenderPositions { get; private set; }
-        public static RenderTechnique RenderNormals { get; private set; }
-        public static RenderTechnique RenderPerturbedNormals { get; private set; }
-        public static RenderTechnique RenderTangents { get; private set; }
-        public static RenderTechnique RenderTexCoords { get; private set; }
-        public static RenderTechnique RenderWires { get; private set; }
-        public static RenderTechnique RenderCubeMap { get; private set; }
-        public static RenderTechnique RenderLines { get; private set; }
-        public static RenderTechnique RenderPoints { get; private set; }
-        public static RenderTechnique RenderBillboard { get; private set; }
+            InitializeDefaultTechniques();
 
 #if TESSELLATION
-        public static RenderTechnique RenderPNTriangs { get; private set; }
-        public static RenderTechnique RenderPNQuads { get; private set; }
+            InitializeTessellationTechniques();
 #endif
+#if DEFERRED
+            InitializeDefferredTechniques();
+#endif
+        }
 
-#if DEFERRED                 
-        public static RenderTechnique RenderDeferred { get; private set; }
-        public static RenderTechnique RenderGBuffer { get; private set; }
-        public static RenderTechnique RenderDeferredLighting { get; private set; }
-        public static RenderTechnique RenderScreenSpace { get; private set; }
-#endif
-        public static IEnumerable<RenderTechnique> RenderTechniques { get; private set; }
+        private void InitializeDefaultTechniques()
+        {
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Phong);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Blinn);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.CubeMap);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Colors);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Diffuse);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Positions);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Normals);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.PerturbedNormals);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Tangents);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.TexCoords);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Wires);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Lines);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.Points);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.BillboardText);
+        }
+
+        private void InitializeTessellationTechniques()
+        {
+            AddDefaultTechnique(TessellationRenderTechniqueNames.PNTriangles);
+            AddDefaultTechnique(TessellationRenderTechniqueNames.PNQuads);
+        }
+
+        private void InitializeDefferredTechniques()
+        {
+            AddDeferredTechnique(DeferredRenderTechniqueNames.Deferred);
+            AddDeferredTechnique(DeferredRenderTechniqueNames.GBuffer);
+            AddDeferredTechnique(DeferredRenderTechniqueNames.DeferredLighting);
+        }
+
+        private void AddDefaultTechnique(string techniqueName)
+        {
+            AddRenderTechnique(techniqueName, Properties.Resources._default);
+        }
+
+        private void AddDeferredTechnique(string techniqueName)
+        {
+            AddRenderTechnique(techniqueName, Properties.Resources._deferred);
+        }
+
+        #region IRenderTechniqueManager interface
+
+        public void AddRenderTechnique(string techniqueName, byte[] techniqueSource)
+        {
+            var technique = new RenderTechnique(techniqueName);
+            if (!TechniquesSourceDict.ContainsKey(technique))
+            {
+                TechniquesSourceDict.Add(technique, techniqueSource);
+            }
+
+            renderTechniques.Add(techniqueName, technique);
+        }
+
+        //public RenderTechnique GetRenderTechniqueByName(string techniqueName)
+        //{
+        //    return renderTechniques.FirstOrDefault(t => t.Name == techniqueName);
+        //}
+
+        #endregion
     }
 }

@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.targetHeight = Math.Max((int)host.ActualHeight, 100);
 
             /// variable containers
-            this.deferredLightingVariables = new DeferredLightingVariables(renderHost.EffectsManager);
+            this.deferredLightingVariables = new DeferredLightingVariables(renderHost.EffectsManager, renderHost.RenderTechniquesManager);
             this.deferredLightingVariables.vBackgroundColor.Set(this.renderHost.ClearColor);
 
             /// clear old buffers
@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 #if SSAO
             /// variable containers
-            this.screenSpaceVariables = new ScreenSpaceProcessingVariables(renderHost.EffectsManager);
+            this.screenSpaceVariables = new ScreenSpaceProcessingVariables(renderHost.EffectsManager, renderHost.RenderTechniquesManager);
 
             /// clear old buffers
             this.ClearSSBuffer();
@@ -1153,11 +1153,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private class DeferredLightingVariables : IDisposable
         {
-            public DeferredLightingVariables(EffectsManager effectsContainer)
+            public DeferredLightingVariables(EffectsManager effectsContainer, IRenderTechniquesManager techniquesManager)
             {
-                this.screenGeometryEffect = effectsContainer.GetEffect(Techniques.RenderDeferredLighting);
-                this.screenGeometryLayout = effectsContainer.GetLayout(Techniques.RenderDeferredLighting);
-                this.screenGeometryTechnique = screenGeometryEffect.GetTechniqueByName(Techniques.RenderDeferredLighting.Name);
+                var deferredLightingTechnique = techniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
+
+                this.screenGeometryEffect = effectsContainer.GetEffect(deferredLightingTechnique);
+                this.screenGeometryLayout = effectsContainer.GetLayout(deferredLightingTechnique);
+                this.screenGeometryTechnique = screenGeometryEffect.GetTechniqueByName(deferredLightingTechnique.Name);
 
                 this.renderPassAmbient = this.screenGeometryTechnique.GetPassByName("AmbientPass");
                 this.renderPassDirectionalLight = this.screenGeometryTechnique.GetPassByName("DirectionalLightPass");
@@ -1268,12 +1270,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private class ScreenSpaceProcessingVariables : IDisposable
         {
-            public ScreenSpaceProcessingVariables(EffectsManager effectsContainer)
+            public ScreenSpaceProcessingVariables(EffectsManager effectsContainer, IRenderTechniquesManager renderTechniquesManager)
             {
 
-                this.screenSpaceEffect = effectsContainer.GetEffect(Techniques.RenderDeferredLighting);
-                this.screenSpaceLayout = effectsContainer.GetLayout(Techniques.RenderDeferredLighting);
-                this.screenSpaceTechnique = screenSpaceEffect.GetTechniqueByName(Techniques.RenderScreenSpace.Name);
+                var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
+                this.screenSpaceEffect = effectsContainer.GetEffect(deferredLighting);
+                this.screenSpaceLayout = effectsContainer.GetLayout(deferredLighting);
+                this.screenSpaceTechnique = screenSpaceEffect.GetTechniqueByName(DeferredRenderTechniqueNames.ScreenSpace);
 
                 this.ssBlurHPass = screenSpaceTechnique.GetPassByName("BlurHPass");
                 this.ssBlurVPass = screenSpaceTechnique.GetPassByName("BlurVPass");

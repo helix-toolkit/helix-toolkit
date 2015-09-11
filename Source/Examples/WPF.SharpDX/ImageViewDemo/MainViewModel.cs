@@ -80,7 +80,7 @@ namespace ImageViewDemo
             //this.PlaneMaterial.ReflectiveColor = Color.Black;
             this.PlaneTransform = new Media3D.TranslateTransform3D(0, 0, 0);
 
-            this.RenderTechnique = Techniques.RenderBlinn;
+            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
         }
 
         private void SetImages(BitmapSource img)
@@ -151,7 +151,7 @@ namespace ImageViewDemo
                 DiffuseMap = img,
             };                        
             this.PlaneMaterial = white;
-            this.RenderTechnique = Techniques.RenderDiffuse;
+            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse];
         }
 
         private void GetExif(string filename)

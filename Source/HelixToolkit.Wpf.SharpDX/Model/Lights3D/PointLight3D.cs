@@ -45,7 +45,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Render(RenderContext context)
         {
 #if DEFERRED  
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
             {
                 return;
             }

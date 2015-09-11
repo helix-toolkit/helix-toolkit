@@ -211,14 +211,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             /// --- attach            
-            renderTechnique = Techniques.RenderLines;
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
             base.Attach(host);
 
             if (Geometry == null)            
                 return;
 
 #if DEFERRED  
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
                 return;  
 #endif
 
@@ -324,7 +325,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
 
 #if DEFERRED
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
                 return;
 #endif
 

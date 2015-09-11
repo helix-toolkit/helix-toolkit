@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.width = (int)(Resolution.X + 0.5f); //faktor* oneK;
             this.height = (int)(this.Resolution.Y + 0.5f); // faktor* oneK;
 
-            base.renderTechnique = Techniques.RenderColors;
+            base.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
             base.Attach(host);
 
             if (!host.IsShadowMapEnabled)

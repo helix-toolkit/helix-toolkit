@@ -106,6 +106,8 @@ namespace DemoCore
 
         public EffectsManager EffectsManager { get; }
 
+        public IRenderTechniquesManager RenderTechniquesManager { get; }
+
         protected OrthographicCamera defaultOrthographicCamera = new OrthographicCamera { Position = new System.Windows.Media.Media3D.Point3D(0, 0, 5), LookDirection = new System.Windows.Media.Media3D.Vector3D(-0, -0, -5), UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0), NearPlaneDistance = 1, FarPlaneDistance = 100 };
 
         protected PerspectiveCamera defaultPerspectiveCamera = new PerspectiveCamera { Position = new System.Windows.Media.Media3D.Point3D(0, 0, 5), LookDirection = new System.Windows.Media.Media3D.Vector3D(-0, -0, -5), UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0), NearPlaneDistance = 0.5, FarPlaneDistance = 150 };
@@ -166,9 +168,10 @@ namespace DemoCore
 
             Title = "Demo (HelixToolkitDX)";
             SubTitle = "Default Base View Model";
-            RenderTechnique = Techniques.RenderPhong;
 
-            EffectsManager = new EffectsManager();
+            RenderTechniquesManager = new RenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
+            EffectsManager = new EffectsManager(RenderTechniquesManager);
         }
 
         protected virtual void OnCameraModelChanged()

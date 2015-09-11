@@ -146,6 +146,7 @@
     <Compile Include="Controls\IRenderHost.cs" />
     <Compile Include="Controls\Layouts.cs" />
     <Compile Include="Controls\RenderTechnique.cs" />
+    <Compile Include="Controls\RenderTechniqueConverter.cs" />
     <Compile Include="Controls\Techniques.cs" />
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
@@ -324,4 +325,3 @@
   <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
   <Import Project="..\packages\SharpDX.Toolkit.2.6.3\build\SharpDX.Toolkit.targets" Condition="Exists('..\packages\SharpDX.Toolkit.2.6.3\build\SharpDX.Toolkit.targets')" />
 </Project>
-

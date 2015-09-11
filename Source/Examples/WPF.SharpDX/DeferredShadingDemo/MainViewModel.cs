@@ -116,7 +116,7 @@ namespace DeferredShadingDemo
             this.Camera = new PerspectiveCamera { Position = new Point3D(18, 64, 30), LookDirection = new Vector3D(-18, -64, -30), UpDirection = new Vector3D(0, 1, 0) };
 
             // default render technique
-            this.RenderTechnique = Techniques.RenderDeferred;
+            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
 
             //load model
             var reader = new ObjReader();
