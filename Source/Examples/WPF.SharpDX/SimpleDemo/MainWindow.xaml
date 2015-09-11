@@ -80,10 +80,10 @@
                     </Grid.RowDefinitions>                    
                     <ComboBox  Grid.Row="0" 
                                DisplayMemberPath="Key" 
-                               SelectedValuePath="Value" 
-                               SelectedIndex="0"
+                               SelectedValuePath="Value"
+                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}" 
                                ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
-                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}" 
                                IsReadOnly="True" 
                                Margin="3" 
                                Grid.ColumnSpan="2"/>

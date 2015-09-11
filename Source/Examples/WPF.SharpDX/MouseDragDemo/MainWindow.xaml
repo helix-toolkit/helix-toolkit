@@ -13,7 +13,7 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
         <DataTemplate x:Key="Shape3DTemplate">
             <hx:DraggableGeometryModel3D 
                 Geometry="{Binding Geometry}" 
@@ -95,7 +95,16 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>                    
-                    <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" Grid.ColumnSpan="2"/>
+                    <ComboBox  
+                        Grid.Row="0" 
+                        IsReadOnly="True" 
+                        Margin="3" 
+                        Grid.ColumnSpan="2"
+                        DisplayMemberPath="Key" 
+                        SelectedValuePath="Value" 
+                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
+                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"/>
                 </Grid>
             </Expander>            
         </StackPanel>

@@ -9,7 +9,7 @@
         mc:Ignorable="d"         
         Title="Manipulator Demo (HelixToolkitDX)" Height="600" Width="1200">
     <Window.Resources>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>            
@@ -111,7 +111,15 @@
                         <ColumnDefinition Width="23*"/>
                         <ColumnDefinition Width="51*"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" Grid.ColumnSpan="2"/>
+                    <ComboBox  Grid.Row="0" 
+                               IsReadOnly="True" 
+                               Margin="3" 
+                               Grid.ColumnSpan="2"
+                               DisplayMemberPath="Key" 
+                               SelectedValuePath="Value" 
+                               ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
+                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"/>
                 </Grid>
             </Expander>
             <Expander Header="Camera Model"  HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
