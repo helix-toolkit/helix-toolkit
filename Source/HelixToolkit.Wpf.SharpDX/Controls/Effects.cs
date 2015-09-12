@@ -20,7 +20,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D;
     using System.IO;
 
-    public sealed class EffectsManager : IDisposable
+    /// <summary>
+    /// An Effects manager which includes all standard effects, 
+    /// tessellation, and deferred effects.
+    /// </summary>
+    public class EffectsManager : IDisposable
     {
         /// <summary>
         /// The minimum supported feature level.
@@ -54,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #else
             this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_10_1);                        
 #endif
-            InitEffects();
+            InitEffects(Properties.Resources.Tessellation);
         }
 
         /// <summary>
@@ -126,20 +130,14 @@ namespace HelixToolkit.Wpf.SharpDX
             Dispose();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="device"></param>
-        private void InitEffects()
+        private void RegisterDefaultLayoutsAndEffects(string shaderEffectString, 
+            out InputLayout defaultInputLayout, 
+            out InputLayout cubeMapInputLayout)
         {
             try
             {
-#if TESSELLATION
-                RegisterEffect(Properties.Resources.Tessellation,
-#else                
-                RegisterEffect(Properties.Resources.Default,                                    
-#endif
- new[] 
+                RegisterEffect(shaderEffectString,
+                new[]
                 { 
                     // put here the techniques which you want to use with this effect
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong],
@@ -156,62 +154,46 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText],
-#if TESSELLATION
-                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
-                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads],
-#endif
-                    
                 });
-
-#if DEFERRED  
-              
-                RegisterEffect(Properties.Resources.Deferred,
-                new[] 
-                {
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting],
-                });
-#endif
 
                 var phong = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
-                var defaultInputLayout = new InputLayout(device, GetEffect(phong).GetTechniqueByName(DefaultRenderTechniqueNames.Phong).GetPassByIndex(0).Description.Signature, new[]
+                defaultInputLayout = new InputLayout(device, GetEffect(phong).GetTechniqueByName(DefaultRenderTechniqueNames.Phong).GetPassByIndex(0).Description.Signature, new[]
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
-                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
-                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
                     new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
            
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                 });
 
                 var lines = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
-                var linesInputLayout = new InputLayout(device, GetEffect(lines).GetTechniqueByName(DefaultRenderTechniqueNames.Lines).GetPassByIndex(0).Description.Signature, new[] 
+                var linesInputLayout = new InputLayout(device, GetEffect(lines).GetTechniqueByName(DefaultRenderTechniqueNames.Lines).GetPassByIndex(0).Description.Signature, new[]
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
 
                     //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),                 
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                 });
 
                 var cubeMap = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
-                var cubeMapInputLayout = new InputLayout(device, GetEffect(cubeMap).GetTechniqueByName(DefaultRenderTechniqueNames.CubeMap).GetPassByIndex(0).Description.Signature, new[] 
+                cubeMapInputLayout = new InputLayout(device, GetEffect(cubeMap).GetTechniqueByName(DefaultRenderTechniqueNames.CubeMap).GetPassByIndex(0).Description.Signature, new[]
                 {
-                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),                                                             
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                 });
 
                 var points = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
-                var pointsInputLayout = new InputLayout(device, GetEffect(points).GetTechniqueByName(DefaultRenderTechniqueNames.Points).GetPassByIndex(0).Description.Signature, new[] 
+                var pointsInputLayout = new InputLayout(device, GetEffect(points).GetTechniqueByName(DefaultRenderTechniqueNames.Points).GetPassByIndex(0).Description.Signature, new[]
                 {
                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                     new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
@@ -226,37 +208,27 @@ namespace HelixToolkit.Wpf.SharpDX
                 });
 
                 var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
-                RegisterLayout(new[] 
-                { 
-                    cubeMap, 
-#if DEFERRED 
-                    deferredLighting
-#endif
-                }, cubeMapInputLayout);
+                RegisterLayout(new[] { cubeMap }, cubeMapInputLayout);
 
-                // ------------------------------------------------------------------------------------
-                RegisterLayout(new[] 
-                { 
+                RegisterLayout(new[]
+                {
                     lines
                 },
                 linesInputLayout);
 
-                // ------------------------------------------------------------------------------------
-                RegisterLayout(new[] 
-                { 
+                RegisterLayout(new[]
+                {
                     points
                 },
                 pointsInputLayout);
 
-                // ------------------------------------------------------------------------------------
-                RegisterLayout(new []
+                RegisterLayout(new[]
                 {
                     text
                 },
                 billboardInputLayout);
 
-                // ------------------------------------------------------------------------------------
-                RegisterLayout(new[] 
+                RegisterLayout(new[]
                 { 
                     // put here techniques which use the vertex layout below
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong],
@@ -268,41 +240,74 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Tangents],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.TexCoords],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors],
-                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Wires], 
-#if DEFERRED 
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
-#endif
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Wires],
                 }, defaultInputLayout);
-
-#if TESSELLATION
-
-                var tesselation = renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
-                var tessellationInputLayout = new InputLayout(device, GetEffect(tesselation).GetTechniqueByName(TessellationRenderTechniqueNames.PNTriangles).GetPassByIndex(0).Description.Signature, new[] 
-                {
-                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
-                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
-                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),             
-                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),            
-                });
-
-                RegisterLayout(new[] 
-                { 
-                    // put here techniques which use the vertex layout below
-                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
-                    renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads]
-                }, tessellationInputLayout);
-#endif
             }
             catch (Exception ex)
             {
-                //System.Windows.MessageBox.Show(string.Format("Error registering effect: {0}", ex.Message), "Error");
                 Debug.WriteLine(string.Format("Error registering effect: {0}", ex.Message), "Error");
                 throw;
             }
+        }
 
+        private void RegisterTessellationLayoutsAndEffects(string shaderEffectString)
+        {
+            RegisterEffect(shaderEffectString,
+            new[]
+            {
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads],
+            });
+
+            var tesselation = renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
+            var tessellationInputLayout = new InputLayout(device, GetEffect(tesselation).GetTechniqueByName(TessellationRenderTechniqueNames.PNTriangles).GetPassByIndex(0).Description.Signature, new[]
+            {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                });
+
+            RegisterLayout(new[]
+            {
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads]
+            }, tessellationInputLayout);
+        }
+
+        private void RegisterDeferredLayoutsAndEffects(string shaderEffectString, InputLayout defaultInputLayout, InputLayout cubeMapInputLayout)
+        {
+            RegisterEffect(shaderEffectString,
+                new[]
+                {
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting],
+                });
+
+            RegisterLayout(new[]
+                {
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
+                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
+                }, defaultInputLayout);
+
+            var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
+            RegisterLayout(new[]{deferredLighting}, cubeMapInputLayout);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        protected virtual void InitEffects(string shaderEffectString)
+        {
+            InputLayout defaultInputLayout;
+            InputLayout cubeMapInputLayout;
+            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterTessellationLayoutsAndEffects(Properties.Resources.Tessellation);
+            RegisterDeferredLayoutsAndEffects(Properties.Resources.Tessellation, defaultInputLayout, cubeMapInputLayout);
         }
 
         /// <summary>
