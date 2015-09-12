@@ -14,10 +14,10 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
     {
         public CanvasMock()
         {
-            Device = EffectsManager.Device;
             RenderTechniquesManager = new RenderTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
             EffectsManager = new EffectsManager(RenderTechniquesManager);
+            Device = EffectsManager.Device;
         }
 
         public Device Device { get; private set; }
