@@ -241,7 +241,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- bind buffer                
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, DefaultVertex.SizeInBytes, 0));
                 /// --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+                /// 
+                var pass = this.effectTechnique.GetPassByIndex(0);
+                pass.Apply(Device.ImmediateContext);
                 /// --- draw
                 this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
             }

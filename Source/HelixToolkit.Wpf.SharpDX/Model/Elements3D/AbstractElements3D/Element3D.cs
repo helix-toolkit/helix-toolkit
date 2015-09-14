@@ -30,6 +30,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderHost != null; }
         }
 
+        public IRenderHost RenderHost
+        {
+            get { return renderHost; }
+        }
+
         protected global::SharpDX.Direct3D11.Device Device
         {
             get { return renderHost.Device; }

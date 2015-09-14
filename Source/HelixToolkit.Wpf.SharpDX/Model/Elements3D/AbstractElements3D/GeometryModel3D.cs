@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Bounds = new BoundingBox();
                 return;
             }            
-
+            
             //var m = this.Transform.ToMatrix();
             //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
             var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
@@ -81,8 +81,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-
-
         public BoundingBox Bounds
         {
             get { return (BoundingBox)this.GetValue(BoundsProperty); }
@@ -111,8 +109,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnRasterStateChanged(int depthBias) { }
 
-
-
         public static readonly RoutedEvent MouseDown3DEvent =
             EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
@@ -124,8 +120,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
-
-
 
         /// <summary>
         /// Provide CLR accessors for the event 

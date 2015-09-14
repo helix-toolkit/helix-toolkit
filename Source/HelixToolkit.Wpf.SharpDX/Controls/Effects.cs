@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
 
-        private IRenderTechniquesManager renderTechniquesManager;
+        protected IRenderTechniquesManager renderTechniquesManager;
 
         /// <summary>
         /// Construct an EffectsManager
@@ -59,13 +59,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     driverType = DriverType.Hardware;
-                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.Debug);
                 }
             }
 #else
             this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_10_1);                        
 #endif
-            InitEffects(Properties.Resources.Tessellation);
+            InitEffects();
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private global::SharpDX.Direct3D11.Device device;
+        protected global::SharpDX.Direct3D11.Device device;
 
         /// <summary>
         /// The driver type.
@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Override in a derived class to control how effects are initialized.
         /// </summary>
         /// <param name="shaderEffectString">The string representing the shader source.</param>
-        protected virtual void InitEffects(string shaderEffectString)
+        protected virtual void InitEffects()
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
@@ -155,17 +155,16 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Register an effect for a RenderTechnique.
-        /// 
-        /// Override in a derived class to control how effects are registered.
+        /// Register an effect for a set of RenderTechniques.
         /// </summary>
-        /// <param name="shaderEffectString">A string representing the shader code.</param>
-        /// <param name="techniqueName"></param>
-        /// <param name="sFlags"></param>
+        /// <param name="shaderEffectBytecode">A byte array representing the compiled shader.</param>
+        /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="eFlags"></param>
-        protected virtual void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        protected void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
         {
-            RegisterEffect(shaderEffectString, new[] { technique }, sFlags, eFlags);
+            var effect = new Effect(device, shaderEffectBytecode, eFlags);
+            foreach (var tech in techniques)
+                data[tech.Name] = effect;
         }
 
         #endregion
@@ -408,18 +407,19 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Register an effect for a set of RenderTechniques.
+        /// Register an effect for a RenderTechnique.
+        /// 
+        /// Override in a derived class to control how effects are registered.
         /// </summary>
-        /// <param name="shaderEffectBytecode">A byte array representing the compiled shader.</param>
-        /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
+        /// <param name="shaderEffectString">A string representing the shader code.</param>
+        /// <param name="techniqueName"></param>
+        /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        private void RegisterEffect(byte[] shaderEffectBytecode, RenderTechnique[] techniques, EffectFlags eFlags = EffectFlags.None)
+        private void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
-            var effect = new Effect(device, shaderEffectBytecode, eFlags);
-            foreach (var tech in techniques)
-                data[tech.Name] = effect;
+            RegisterEffect(shaderEffectString, new[] { technique }, sFlags, eFlags);
         }
-
+        
         /// <summary>
         /// Register an InputLayout for a RenderTechnique.
         /// </summary>
@@ -435,7 +435,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="techniques">An array of RenderTechnique objects.</param>
         /// <param name="layout">An InputLayout object.</param>
-        private void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
+        protected void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
         {
             foreach (var tech in techniques)
                 data[tech.Name + "Layout"] = layout;

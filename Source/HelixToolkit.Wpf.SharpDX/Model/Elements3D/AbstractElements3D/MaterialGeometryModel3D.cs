@@ -197,7 +197,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        protected void AttachMaterial()
+        protected virtual void AttachMaterial()
         {
             this.phongMaterial = Material as PhongMaterial;
             if (phongMaterial != null)

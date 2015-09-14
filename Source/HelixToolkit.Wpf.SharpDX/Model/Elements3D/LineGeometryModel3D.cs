@@ -216,12 +216,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (Geometry == null)            
                 return;
-
-#if DEFERRED  
-            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
-                return;  
-#endif
+ 
+            if (host.IsDeferredRender)
+            {
+                if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                    renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+                    return;
+            }
 
             // --- get device
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
@@ -324,11 +325,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-#if DEFERRED
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
-                return;
-#endif
+            if (renderHost.IsDeferredRender)
+            {
+                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+                    return;
+            }
 
             if (renderContext.IsShadowPass)
                 if (!this.IsThrowingShadow)

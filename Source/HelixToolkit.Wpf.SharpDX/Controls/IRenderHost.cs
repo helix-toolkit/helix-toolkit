@@ -39,5 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         double ActualHeight { get; }
         double ActualWidth { get; }
+
+        bool IsDeferredRender { get; }
     }
 }
