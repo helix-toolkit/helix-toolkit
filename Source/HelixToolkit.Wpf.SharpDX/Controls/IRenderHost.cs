@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
         void SetDefaultRenderTargets();
         void SetDefaultColorTargets(DepthStencilView dsv);
 
-        EffectsManager EffectsManager { get; }
+        IEffectsManager EffectsManager { get; }
 
         IRenderTechniquesManager RenderTechniquesManager { get; }
 

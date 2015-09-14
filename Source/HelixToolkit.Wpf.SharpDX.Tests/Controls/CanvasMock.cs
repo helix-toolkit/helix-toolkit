@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public double ActualHeight { get; private set; }
         public double ActualWidth { get; private set; }
 
-        public EffectsManager EffectsManager { get; private set; }
+        public IEffectsManager EffectsManager { get; private set; }
 
         public IRenderTechniquesManager RenderTechniquesManager { get; private set; }
 

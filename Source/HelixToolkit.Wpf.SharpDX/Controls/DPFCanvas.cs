@@ -140,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EffectsManager", typeof(EffectsManager), typeof(DPFCanvas), null);
 
 
-        public EffectsManager EffectsManager
+        public IEffectsManager EffectsManager
         {
             get { return (EffectsManager)GetValue(EffectsManagerProperty); }
             set { SetValue(EffectsManagerProperty, value); }

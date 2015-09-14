@@ -1153,7 +1153,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private class DeferredLightingVariables : IDisposable
         {
-            public DeferredLightingVariables(EffectsManager effectsContainer, IRenderTechniquesManager techniquesManager)
+            public DeferredLightingVariables(IEffectsManager effectsContainer, IRenderTechniquesManager techniquesManager)
             {
                 var deferredLightingTechnique = techniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
 
@@ -1270,7 +1270,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private class ScreenSpaceProcessingVariables : IDisposable
         {
-            public ScreenSpaceProcessingVariables(EffectsManager effectsContainer, IRenderTechniquesManager renderTechniquesManager)
+            public ScreenSpaceProcessingVariables(IEffectsManager effectsContainer, IRenderTechniquesManager renderTechniquesManager)
             {
 
                 var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
