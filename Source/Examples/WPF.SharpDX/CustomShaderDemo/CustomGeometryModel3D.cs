@@ -34,6 +34,14 @@ namespace CustomShaderDemo
 
     public class CustomGeometryModel3D : MaterialGeometryModel3D
     {
+        public override int VertexSizeInBytes
+        {
+            get
+            {
+                return CustomVertex.SizeInBytes;
+            }
+        }
+
         protected Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
 
         public static readonly DependencyProperty RequiresPerVertexColorationProperty =
@@ -101,7 +109,7 @@ namespace CustomShaderDemo
                 throw new Exception("Geometry must not be null");
             }
 
-            vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, CustomVertex.SizeInBytes,
+            vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes,
                 CreateCustomVertexArray());
             indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int),
                 Geometry.Indices.ToArray());
@@ -222,7 +230,7 @@ namespace CustomShaderDemo
                 /// --- INSTANCING: need to set 2 buffers            
                 Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
-                    new VertexBufferBinding(vertexBuffer, CustomVertex.SizeInBytes, 0),
+                    new VertexBufferBinding(vertexBuffer, VertexSizeInBytes, 0),
                     new VertexBufferBinding(instanceBuffer, Matrix.SizeInBytes, 0),
                 });
 
@@ -234,7 +242,7 @@ namespace CustomShaderDemo
             else
             {
                 /// --- bind buffer                
-                Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, CustomVertex.SizeInBytes, 0));
+                Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, VertexSizeInBytes, 0));
                 /// --- render the geometry
                 effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw

@@ -24,7 +24,7 @@ namespace CustomShaderDemo
 
         private static void ShowSelectedPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            if(obj is GeometryModel3D)
+            if(obj is GeometryModel3D && obj.GetType() != typeof(BillboardTextModel3D))
             {
                 var geom = (GeometryModel3D)obj;
                 

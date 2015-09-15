@@ -27,22 +27,22 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             // --- attach
-            this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
-            this.effect = renderHost.EffectsManager.GetEffect(renderTechnique);
-            this.renderHost = host;            
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
+            effect = host.EffectsManager.GetEffect(renderTechnique);
+            renderHost = host;
 
             // --- get variables
-            this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
-            this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
+            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
             // --- transformations
-            this.effectTransforms = new EffectTransformVariables(this.effect);
+            effectTransforms = new EffectTransformVariables(effect);
 
             // --- shader variables
-            this.vViewport = effect.GetVariableByName("vViewport").AsVector();
+            vViewport = effect.GetVariableByName("vViewport").AsVector();
 
             // --- get geometry
-            var geometry = this.Geometry as BillboardText3D;
+            var geometry = Geometry as BillboardText3D;
             if (geometry == null)
             {
                 return;
@@ -58,13 +58,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // -- set geometry if given
             vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
-                DefaultVertex.SizeInBytes, CreateBillboardVertexArray());
+                VertexSizeInBytes, CreateBillboardVertexArray());
 
             /// --- set rasterstate
-            this.OnRasterStateChanged(this.DepthBias);
+            OnRasterStateChanged(DepthBias);
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            Device.ImmediateContext.Flush();
         }
 
         public override void Detach()
@@ -79,17 +79,17 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             /// --- check to render the model
             {
-                if (!this.IsRendering)
+                if (!IsRendering)
                     return;
 
-                if (this.Geometry == null)
+                if (Geometry == null)
                     return;
 
-                if (this.Visibility != System.Windows.Visibility.Visible)
+                if (Visibility != System.Windows.Visibility.Visible)
                     return;
 
                 if (renderContext.IsShadowPass)
-                    if (!this.IsThrowingShadow)
+                    if (!IsThrowingShadow)
                         return;
             }
 
@@ -99,31 +99,31 @@ namespace HelixToolkit.Wpf.SharpDX
                 var width = ((float)renderContext.Canvas.ActualWidth);
                 var height = ((float) renderContext.Canvas.ActualHeight);
                 var viewport = new Vector4(width, height, 0, 0);
-                this.vViewport.Set(ref viewport);
+                vViewport.Set(ref viewport);
             }
 
             /// --- set constant paramerers             
-            var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            var worldMatrix = modelMatrix * renderContext.worldMatrix;
+            effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             /// --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
             /// --- set context
-            this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
-            this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
+            Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
             /// --- set rasterstate            
-            this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
+            Device.ImmediateContext.Rasterizer.State = rasterState;
 
             /// --- bind buffer                
-            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, BillboardVertex.SizeInBytes, 0));
+            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
             /// --- render the geometry
-            this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-            
+            effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+
             /// --- draw
-            this.Device.ImmediateContext.Draw(Geometry.Positions.Count, 0);
+            Device.ImmediateContext.Draw(Geometry.Positions.Count, 0);
         }
 
         #endregion

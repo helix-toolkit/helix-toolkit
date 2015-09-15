@@ -25,6 +25,14 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected RasterizerState rasterState;
 
+        /// <summary>
+        /// Override in derived classes to specify the
+        /// size, in bytes, of the vertices used for rendering.
+        /// </summary>
+        public virtual int VertexSizeInBytes
+        {
+            get { return DefaultVertex.SizeInBytes; }
+        }
 
         public Geometry3D Geometry
         {

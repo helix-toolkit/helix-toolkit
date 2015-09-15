@@ -21,6 +21,11 @@
         protected EffectVectorVariable vViewport;
         protected EffectVectorVariable vPointParams;
 
+        public override int VertexSizeInBytes
+        {
+            get { return Geometry3D.PointsVertex.SizeInBytes; }
+        }
+
         [TypeConverter(typeof(ColorConverter))]
         public Color Color
         {
@@ -180,7 +185,7 @@
             if (this.IsAttached)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
             }
         }
 
@@ -196,11 +201,12 @@
             if (Geometry == null)
                 return;
 
-#if DEFERRED
-            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (host.IsDeferredRender)
+            {
+                if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                    renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
                 return;
-#endif
+            }
 
             // --- get device
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
@@ -215,7 +221,7 @@
             if (geometry != null)
             {
                 /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, CreatePointVertexArray());
+                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
             }
 
             /// --- set up const variables
@@ -265,11 +271,12 @@
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-#if DEFERRED
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+            if (renderHost.IsDeferredRender)
+            {
+                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
-                return;
-#endif
+                    return;
+            }
 
             if (renderContext.IsShadowPass)
                 if (!this.IsThrowingShadow)
@@ -302,7 +309,7 @@
 
             /// --- bind buffer                
             this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0,
-                new VertexBufferBinding(this.vertexBuffer, Geometry3D.PointsVertex.SizeInBytes, 0));
+                new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
 
             /// --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);
@@ -321,7 +328,7 @@
         /// <summary>
         /// Creates a <see cref="T:PointsVertex[]"/>.
         /// </summary>
-        private Geometry3D.PointsVertex[] CreatePointVertexArray()
+        private Geometry3D.PointsVertex[] CreateVertexArray()
         {
             var positions = this.Geometry.Positions.Array;
             var vertexCount = this.Geometry.Positions.Count;

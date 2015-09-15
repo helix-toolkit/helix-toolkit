@@ -80,6 +80,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SelectableLineGeometryModel3D.cs" />
+    <Compile Include="SelectablePointGeometryModel3D.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttachedProperties.cs" />

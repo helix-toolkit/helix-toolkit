@@ -6,7 +6,6 @@
 
 namespace CustomShaderDemo
 {
-    using System;
     using System.Linq;
 
     using DemoCore;
@@ -68,7 +67,7 @@ namespace CustomShaderDemo
 
             // floor plane grid
             Grid = LineBuilder.GenerateGrid();
-            GridColor = SharpDX.Color.Black;
+            GridColor = Color.Black;
             GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
 
             // scene model3d
@@ -94,38 +93,25 @@ namespace CustomShaderDemo
             RedMaterial = PhongMaterials.Red;
             GreenMaterial = PhongMaterials.Green;
             BlueMaterial = PhongMaterials.Blue;
-            //var diffColor = this.RedMaterial.DiffuseColor;
-            //diffColor.Alpha = 0.5f;
-            //this.RedMaterial.DiffuseColor = diffColor;   
 
             Points = new PointGeometry3D();
             var ptPos = new Vector3Collection();
             var ptIdx = new IntCollection();
 
-            for (int x = 0; x < 10; x++)
+            Text = new BillboardText3D();
+
+            for (int x = -5; x <= 5; x++)
             {
-                for (int y = 0; y < 10; y++)
+                for (int y = -5; y <= 5; y++)
                 {
-                    for (int z = 0; z < 10; z++)
-                    {
-                        ptIdx.Add(ptPos.Count);
-                        ptPos.Add(new Vector3(x, y, z));
-                    }
+                    ptIdx.Add(ptPos.Count);
+                    ptPos.Add(new Vector3(x, -1, y));
+                    Text.TextInfo.Add(new TextInfo(string.Format("{0}:{1}", x, y), new Vector3(x, -1, y)));
                 }
             }
 
             Points.Positions = ptPos;
             Points.Indices = ptIdx;
-
-            Text = new BillboardText3D();
-
-            for (var i = 0; i < 50; i++)
-            {
-                for (var j = 0; j < 50; j++)
-                {
-                    Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
-                }
-            }
         }
     }
 }
