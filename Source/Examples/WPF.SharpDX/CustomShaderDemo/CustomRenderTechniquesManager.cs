@@ -4,7 +4,7 @@ using HelixToolkit.Wpf.SharpDX;
 
 namespace CustomShaderDemo
 {
-    public class CustomRenderTechniquesManager : RenderTechniquesManager
+    public class CustomRenderTechniquesManager : DefaultRenderTechniquesManager
     {
         private Dictionary<string, RenderTechnique> renderTechniques = new Dictionary<string, RenderTechnique>();
 

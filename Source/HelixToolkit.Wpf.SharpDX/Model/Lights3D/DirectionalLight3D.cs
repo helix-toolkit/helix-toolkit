@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Render(RenderContext context)
         {
-            if (renderHost.IsDeferredRender)
+            if (renderHost.SupportDeferredRender)
             {
                 var manager = renderHost.RenderTechniquesManager;
                 if (renderHost.RenderTechnique == manager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||

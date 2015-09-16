@@ -114,8 +114,12 @@ namespace DemoCore
 
         public event EventHandler CameraModelChanged;
 
+        public bool SupportDeferredRender { get; set; }
+
         protected BaseViewModel()
         {
+            SupportDeferredRender = false;
+
             // camera models
             CameraModelCollection = new List<string>()
             {
@@ -168,10 +172,6 @@ namespace DemoCore
 
             Title = "Demo (HelixToolkitDX)";
             SubTitle = "Default Base View Model";
-
-            RenderTechniquesManager = new RenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
-            EffectsManager = new EffectsManager(RenderTechniquesManager);
         }
 
         protected virtual void OnCameraModelChanged()

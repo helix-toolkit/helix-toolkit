@@ -138,12 +138,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty EffectsManagerProperty =
-            DependencyProperty.Register("EffectsManager", typeof(EffectsManager), typeof(DPFCanvas), null);
+            DependencyProperty.Register("EffectsManager", typeof(DefaultEffectsManager), typeof(DPFCanvas), null);
 
 
         public IEffectsManager EffectsManager
         {
-            get { return (EffectsManager)GetValue(EffectsManagerProperty); }
+            get { return (DefaultEffectsManager)GetValue(EffectsManagerProperty); }
             set { SetValue(EffectsManagerProperty, value); }
         }
 
@@ -169,13 +169,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty IsDeferredRenderProperty =
-            DependencyProperty.Register("IsDeferredRender", typeof(bool), typeof(DPFCanvas), new PropertyMetadata(false));
+        public static readonly DependencyProperty SupportDeferredRenderProperty =
+            DependencyProperty.Register("SupportDeferredRender", typeof(bool), typeof(DPFCanvas), new PropertyMetadata(false));
 
-        public bool IsDeferredRender
+        public bool SupportDeferredRender
         {
-            get { return (bool)GetValue(IsDeferredRenderProperty); }
-            set { SetValue(IsDeferredRenderProperty, value); }
+            get { return (bool)GetValue(SupportDeferredRenderProperty); }
+            set { SetValue(SupportDeferredRenderProperty, value); }
         }
 
         /// <summary>
@@ -200,7 +200,6 @@ namespace HelixToolkit.Wpf.SharpDX
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
             IsMSAAEnabled = true;
-            IsDeferredRender = false;
         }
 
         /// <summary>
@@ -511,7 +510,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique));
                         renderRenderable.Attach(this);
 
-                        if (IsDeferredRender)
+                        if (SupportDeferredRender)
                         {
                             gbuffer = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer];
                             deferred = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
@@ -539,7 +538,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 /// ---------------------------------------------------------------------------
                 /// this part is per frame                
-                if (IsDeferredRender)
+                if (SupportDeferredRender)
                 {
                     if (RenderTechnique == deferred)
                     {
@@ -697,7 +696,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (surfaceD3D != null)
                 {
-                    if (IsDeferredRender)
+                    if (SupportDeferredRender)
                     {
                         if (RenderTechnique == deferred)
                         {

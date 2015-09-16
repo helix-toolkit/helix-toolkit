@@ -5,7 +5,7 @@ using SharpDX.DXGI;
 
 namespace CustomShaderDemo
 {
-    public class CustomEffectsManager : EffectsManager
+    public class CustomEffectsManager : DefaultEffectsManager
     {
         public CustomEffectsManager(IRenderTechniquesManager renderTechniquesManager) : base(renderTechniquesManager) { }
 

@@ -201,7 +201,7 @@
             if (Geometry == null)
                 return;
 
-            if (host.IsDeferredRender)
+            if (host.SupportDeferredRender)
             {
                 if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
                     renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
@@ -271,7 +271,7 @@
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-            if (renderHost.IsDeferredRender)
+            if (renderHost.SupportDeferredRender)
             {
                 if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])

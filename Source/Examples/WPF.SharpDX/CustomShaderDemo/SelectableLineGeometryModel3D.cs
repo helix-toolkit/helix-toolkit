@@ -37,7 +37,7 @@ namespace CustomShaderDemo
             if (Geometry == null)
                 return;
 
-            if (host.IsDeferredRender)
+            if (host.SupportDeferredRender)
             {
                 if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
                     renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])

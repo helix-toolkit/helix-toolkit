@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
         IDictionary<string, RenderTechnique> RenderTechniques { get; }
     }
 
-    public class RenderTechniquesManager: IRenderTechniquesManager
+    public class DefaultRenderTechniquesManager: IRenderTechniquesManager
     {
         internal readonly Dictionary<RenderTechnique, byte[]> TechniquesSourceDict = new Dictionary<RenderTechnique, byte[]>();
         private Dictionary<string, RenderTechnique> renderTechniques = new Dictionary<string, RenderTechnique>();
@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderTechniques; }
         }
 
-        public RenderTechniquesManager()
+        public DefaultRenderTechniquesManager()
         {
             InitTechniques();
         }
@@ -62,16 +62,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void InitTechniques()
         {
             InitializeDefaultTechniques();
-
-#if TESSELLATION
-            InitializeTessellationTechniques();
-#endif
-#if DEFERRED
-            InitializeDefferredTechniques();
-#endif
         }
 
-        private void InitializeDefaultTechniques()
+        protected void InitializeDefaultTechniques()
         {
             AddDefaultTechnique(DefaultRenderTechniqueNames.Phong);
             AddDefaultTechnique(DefaultRenderTechniqueNames.Blinn);
@@ -89,27 +82,9 @@ namespace HelixToolkit.Wpf.SharpDX
             AddDefaultTechnique(DefaultRenderTechniqueNames.BillboardText);
         }
 
-        private void InitializeTessellationTechniques()
-        {
-            AddDefaultTechnique(TessellationRenderTechniqueNames.PNTriangles);
-            AddDefaultTechnique(TessellationRenderTechniqueNames.PNQuads);
-        }
-
-        private void InitializeDefferredTechniques()
-        {
-            AddDeferredTechnique(DeferredRenderTechniqueNames.Deferred);
-            AddDeferredTechnique(DeferredRenderTechniqueNames.GBuffer);
-            AddDeferredTechnique(DeferredRenderTechniqueNames.DeferredLighting);
-        }
-
-        private void AddDefaultTechnique(string techniqueName)
+        protected void AddDefaultTechnique(string techniqueName)
         {
             AddRenderTechnique(techniqueName, Properties.Resources._default);
-        }
-
-        private void AddDeferredTechnique(string techniqueName)
-        {
-            AddRenderTechnique(techniqueName, Properties.Resources._deferred);
         }
 
         #region IRenderTechniqueManager interface
@@ -125,11 +100,42 @@ namespace HelixToolkit.Wpf.SharpDX
             renderTechniques.Add(techniqueName, technique);
         }
 
-        //public RenderTechnique GetRenderTechniqueByName(string techniqueName)
-        //{
-        //    return renderTechniques.FirstOrDefault(t => t.Name == techniqueName);
-        //}
-
         #endregion
+    }
+
+    public class DeferredTechniquesManager : DefaultRenderTechniquesManager
+    {
+        protected override void InitTechniques()
+        {
+            InitializeDefaultTechniques();
+            InitializeDefferredTechniques();
+        }
+
+        private void InitializeDefferredTechniques()
+        {
+            AddDeferredTechnique(DeferredRenderTechniqueNames.Deferred);
+            AddDeferredTechnique(DeferredRenderTechniqueNames.GBuffer);
+            AddDeferredTechnique(DeferredRenderTechniqueNames.DeferredLighting);
+        }
+
+        private void AddDeferredTechnique(string techniqueName)
+        {
+            AddRenderTechnique(techniqueName, Properties.Resources._deferred);
+        }
+    }
+
+    public class TessellationTechniquesManager : DefaultRenderTechniquesManager
+    {
+        protected override void InitTechniques()
+        {
+            InitializeDefaultTechniques();
+            InitializeTessellationTechniques();
+        }
+
+        protected void InitializeTessellationTechniques()
+        {
+            AddDefaultTechnique(TessellationRenderTechniqueNames.PNTriangles);
+            AddDefaultTechnique(TessellationRenderTechniqueNames.PNQuads);
+        }
     }
 }

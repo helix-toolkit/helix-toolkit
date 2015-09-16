@@ -44,13 +44,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Render(RenderContext context)
         {
-#if DEFERRED  
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (RenderHost.SupportDeferredRender)
             {
-                return;
+                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+                {
+                    return;
+                }
             }
-#endif
 
             if (this.IsRendering)
             {

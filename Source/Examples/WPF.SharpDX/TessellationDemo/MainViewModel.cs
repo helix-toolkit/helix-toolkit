@@ -20,7 +20,6 @@ namespace TessellationDemo
     using System.Windows.Media.Imaging;
     using HelixToolkit.Wpf.SharpDX.Core;
 
-
     public class MainViewModel : BaseViewModel
     {
         public Geometry3D DefaultModel { get; private set; }
@@ -59,9 +58,12 @@ namespace TessellationDemo
             }
         }
 
-  
         public MainViewModel()
         {
+            RenderTechniquesManager = new TessellationTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads];
+            EffectsManager = new TessellationEffectsManager(RenderTechniquesManager);
+
             // ----------------------------------------------
             // titles
             this.Title = "Hardware Tessellation Demo";

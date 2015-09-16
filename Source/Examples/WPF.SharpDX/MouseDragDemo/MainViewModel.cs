@@ -51,6 +51,10 @@ namespace MouseDragDemo
 
         public MainViewModel()
         {
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+
             // titles
             this.Title = "Mouse Drag Demo";
             this.SubTitle = "WPF & SharpDX";

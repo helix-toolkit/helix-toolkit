@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// An Effects manager which includes all standard effects, 
     /// tessellation, and deferred effects.
     /// </summary>
-    public class EffectsManager : IEffectsManager, IDisposable
+    public class DefaultEffectsManager : IEffectsManager, IDisposable
     {
         /// <summary>
         /// The minimum supported feature level.
@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Construct an EffectsManager
         /// </summary>
-        public EffectsManager(IRenderTechniquesManager renderTechniquesManager)
+        public DefaultEffectsManager(IRenderTechniquesManager renderTechniquesManager)
         {
             this.renderTechniquesManager = renderTechniquesManager;
 #if DX11
@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
 
-                    if (level < EffectsManager.MinimumFeatureLevel)
+                    if (level < DefaultEffectsManager.MinimumFeatureLevel)
                     {
                         continue;
                     }
@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        ~EffectsManager()
+        ~DefaultEffectsManager()
         {
             Dispose();
         }
@@ -150,8 +150,6 @@ namespace HelixToolkit.Wpf.SharpDX
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
             RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
-            RegisterTessellationLayoutsAndEffects(Properties.Resources.Tessellation);
-            RegisterDeferredLayoutsAndEffects(Properties.Resources.Tessellation, defaultInputLayout, cubeMapInputLayout);
         }
 
         /// <summary>
@@ -171,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region private methods
 
-        private void RegisterDefaultLayoutsAndEffects(string shaderEffectString,
+        protected void RegisterDefaultLayoutsAndEffects(string shaderEffectString,
             out InputLayout defaultInputLayout,
             out InputLayout cubeMapInputLayout)
         {
@@ -248,7 +246,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
                 });
 
-                var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
                 RegisterLayout(new[] { cubeMap }, cubeMapInputLayout);
 
                 RegisterLayout(new[]
@@ -291,53 +288,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void RegisterTessellationLayoutsAndEffects(string shaderEffectString)
-        {
-            RegisterEffect(shaderEffectString,
-            new[]
-            {
-                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
-                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads],
-            });
-
-            var tesselation = renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
-            var tessellationInputLayout = new InputLayout(device, GetEffect(tesselation).GetTechniqueByName(TessellationRenderTechniqueNames.PNTriangles).GetPassByIndex(0).Description.Signature, new[]
-            {
-                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
-                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                });
-
-            RegisterLayout(new[]
-            {
-                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
-                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads]
-            }, tessellationInputLayout);
-        }
-
-        private void RegisterDeferredLayoutsAndEffects(string shaderEffectString, InputLayout defaultInputLayout, InputLayout cubeMapInputLayout)
-        {
-            RegisterEffect(shaderEffectString,
-                new[]
-                {
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting],
-                });
-
-            RegisterLayout(new[]
-                {
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
-                    renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
-                }, defaultInputLayout);
-
-            var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
-            RegisterLayout(new[] { deferredLighting }, cubeMapInputLayout);
-        }
-
         /// <summary>
         /// Register an effect for a set of RenderTechniques.
         /// </summary>
@@ -345,13 +295,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        private void RegisterEffect(string shaderEffectString, RenderTechnique[] techniques, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        protected void RegisterEffect(string shaderEffectString, RenderTechnique[] techniques, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
 #if PRECOMPILED_SHADERS
 
             try
             {
-                var shaderBytes = ((RenderTechniquesManager)renderTechniquesManager).TechniquesSourceDict[techniques[0]];
+                var shaderBytes = ((DefaultRenderTechniquesManager)renderTechniquesManager).TechniquesSourceDict[techniques[0]];
                 RegisterEffect(shaderBytes, techniques);
             }
             catch (Exception ex)
@@ -415,7 +365,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="techniqueName"></param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        private void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        protected void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
             RegisterEffect(shaderEffectString, new[] { technique }, sFlags, eFlags);
         }
@@ -522,6 +472,79 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             private Stream stream;
+        }
+    }
+
+    public class DeferredEffectsManager : DefaultEffectsManager
+    {
+        public DeferredEffectsManager(IRenderTechniquesManager renderTechniquesManager) : base(renderTechniquesManager) { }
+
+        protected override void InitEffects()
+        {
+            InputLayout defaultInputLayout;
+            InputLayout cubeMapInputLayout;
+            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterDeferredLayoutsAndEffects(Properties.Resources.Tessellation, defaultInputLayout, cubeMapInputLayout);
+        }
+
+        private void RegisterDeferredLayoutsAndEffects(string shaderEffectString, InputLayout defaultInputLayout, InputLayout cubeMapInputLayout)
+        {
+            RegisterEffect(shaderEffectString,
+            new[]
+            {
+                renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
+                renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
+                renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting],
+            });
+
+            RegisterLayout(new[]
+            {
+                renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred],
+                renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer],
+            }, defaultInputLayout);
+
+            var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
+            RegisterLayout(new[] { deferredLighting }, cubeMapInputLayout);
+        }
+    }
+
+    public class TessellationEffectsManager : DefaultEffectsManager
+    {
+        public TessellationEffectsManager(IRenderTechniquesManager renderTechniquesManager) : base(renderTechniquesManager) { }
+
+        protected override void InitEffects()
+        {
+            InputLayout defaultInputLayout;
+            InputLayout cubeMapInputLayout;
+            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterTessellationLayoutsAndEffects(Properties.Resources.Tessellation);
+        }
+
+        private void RegisterTessellationLayoutsAndEffects(string shaderEffectString)
+        {
+            RegisterEffect(shaderEffectString,
+            new[]
+            {
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads],
+            });
+
+            var tesselation = renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
+            var tessellationInputLayout = new InputLayout(device, GetEffect(tesselation).GetTechniqueByName(TessellationRenderTechniqueNames.PNTriangles).GetPassByIndex(0).Description.Signature, new[]
+            {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                });
+
+            RegisterLayout(new[]
+            {
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles],
+                renderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads]
+            }, tessellationInputLayout);
         }
     }
 }
