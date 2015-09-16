@@ -19,7 +19,7 @@
             this.SubTitle = "Please note that this scene is defined completely in XAML.";
 
             // default render technique
-            this.RenderTechnique = Techniques.RenderBlinn;
+            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
         }
     }
 }

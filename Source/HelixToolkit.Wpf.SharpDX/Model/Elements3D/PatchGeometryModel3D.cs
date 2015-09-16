@@ -40,20 +40,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static IEnumerable<string> Shading { get { return shading; } }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private static readonly RenderTechnique[] technique = new[]
-        {
-            Techniques.RenderPNTriangs,
-            Techniques.RenderPNQuads,
-        };
-
-        /// <summary>
-        /// Techniqes available for this Model3D
-        /// </summary>
-        public static IEnumerable<RenderTechnique> RenderTechniques { get { return technique; } }
-
 #endif
     }
 
@@ -65,8 +51,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public string Shading
         {
-            get { return (string)this.GetValue(ShadingProperty); }
-            set { this.SetValue(ShadingProperty, value); }
+            get { return (string)GetValue(ShadingProperty); }
+            set { SetValue(ShadingProperty, value); }
         }
 
         /// <summary>
@@ -99,8 +85,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public double TessellationFactor
         {
-            get { return (double)this.GetValue(TessellationFactorProperty); }
-            set { this.SetValue(TessellationFactorProperty, value); }
+            get { return (double)GetValue(TessellationFactorProperty); }
+            set { SetValue(TessellationFactorProperty, value); }
         }
 
         /// <summary>
@@ -137,24 +123,24 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             /// --- attach
-            this.renderTechnique = host.RenderTechnique;
+            renderTechnique = host.RenderTechnique;
             base.Attach(host);
 
             // --- get variables
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
-            this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
+            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
             // --- get the pass
-            this.shaderPass = this.effectTechnique.GetPassByName(this.Shading);
+            shaderPass = effectTechnique.GetPassByName(Shading);
 
             /// --- model transformation
-            this.effectTransforms = new EffectTransformVariables(this.effect);
+            effectTransforms = new EffectTransformVariables(effect);
 
             /// --- material 
-            this.AttachMaterial();
+            AttachMaterial();
 
             // -- get geometry
-            var geometry = this.Geometry as MeshGeometry3D;
+            var geometry = Geometry as MeshGeometry3D;
 
             // -- get geometry
             if (geometry != null)
@@ -162,7 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");
 
                 /// --- init vertex buffer
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, geometry.Positions.Select((x, ii) => new DefaultVertex()
+                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, geometry.Positions.Select((x, ii) => new DefaultVertex()
                 {
                     Position = new Vector4(x, 1f),
                     Color = geometry.Colors != null ? geometry.Colors[ii] : new Color4(1f, 0f, 0f, 1f),
@@ -173,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }).ToArray());
 
                 /// --- init index buffer
-                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array);
             }
             else
             {
@@ -190,11 +176,11 @@ namespace HelixToolkit.Wpf.SharpDX
             //}
 
             /// --- init tessellation vars
-            this.vTessellationVariables = effect.GetVariableByName("vTessellation").AsVector();
-            this.vTessellationVariables.Set(new Vector4((float)this.TessellationFactor, 0, 0, 0));
+            vTessellationVariables = effect.GetVariableByName("vTessellation").AsVector();
+            vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            Device.ImmediateContext.Flush();
         }
 
         /// <summary>
@@ -202,8 +188,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public override void Detach()
         {
-            Disposer.RemoveAndDispose(ref this.vTessellationVariables);
-            Disposer.RemoveAndDispose(ref this.shaderPass);
+            Disposer.RemoveAndDispose(ref vTessellationVariables);
+            Disposer.RemoveAndDispose(ref shaderPass);
             base.Detach();
         }
 
@@ -221,62 +207,62 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             /// --- check if to render the model
             {
-                if (!this.IsRendering)
+                if (!IsRendering)
                     return;
 
-                if (this.Geometry == null)
+                if (Geometry == null)
                     return;
 
-                if (this.Visibility != System.Windows.Visibility.Visible)
+                if (Visibility != System.Windows.Visibility.Visible)
                     return;
 
                 if (renderContext.IsShadowPass)
-                    if (!this.IsThrowingShadow)
+                    if (!IsThrowingShadow)
                         return;
             }
 
             /// --- set model transform paramerers                         
-            this.effectTransforms.mWorld.SetMatrix(ref this.modelMatrix);
+            effectTransforms.mWorld.SetMatrix(ref modelMatrix);
 
             /// --- set material props
             if (phongMaterial != null)
             {
                 /// --- set material lighting-params      
-                this.effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                this.effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                this.effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                this.effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                this.effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                this.effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
+                effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
+                effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
+                effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
+                effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
+                effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
+                effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
 
                 /// --- set samplers boolean flags
-                this.effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null && this.RenderDiffuseMap);
-                this.effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null && this.RenderNormalMap);
-                this.effectMaterial.bHasDisplacementMapVariable.Set(phongMaterial.DisplacementMap != null && this.RenderDisplacementMap);
+                effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null && RenderDiffuseMap);
+                effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null && RenderNormalMap);
+                effectMaterial.bHasDisplacementMapVariable.Set(phongMaterial.DisplacementMap != null && RenderDisplacementMap);
 
                 /// --- set samplers
                 if (phongMaterial.DiffuseMap != null)
                 {
-                    this.effectMaterial.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
+                    effectMaterial.texDiffuseMapVariable.SetResource(texDiffuseMapView);
                 }
                 if (phongMaterial.NormalMap != null)
                 {
-                    this.effectMaterial.texNormalMapVariable.SetResource(this.texNormalMapView);
+                    effectMaterial.texNormalMapVariable.SetResource(texNormalMapView);
                 }
                 if (phongMaterial.DisplacementMap != null)
                 {
-                    this.effectMaterial.texDisplacementMapVariable.SetResource(this.texDisplacementMapView);
+                    effectMaterial.texDisplacementMapVariable.SetResource(texDisplacementMapView);
                 }
             }
 
             /// --- set primitive type
-            if (this.renderTechnique == Techniques.RenderPNTriangs)
+            if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles])
             {
-                this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
+                Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
             }
-            else if (this.renderTechnique == Techniques.RenderPNQuads)
+            else if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads])
             {
-                this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
+                Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
             }
             else
             {
@@ -284,19 +270,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             /// --- set vertex layout
-            this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
+            Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
 
             /// --- set index buffer
-            this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
+            Device.ImmediateContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
 
             /// --- set vertex buffer                
-            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, DefaultVertex.SizeInBytes, 0));
+            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, DefaultVertex.SizeInBytes, 0));
 
             /// --- apply chosen pass
-            this.shaderPass.Apply(Device.ImmediateContext);
+            shaderPass.Apply(Device.ImmediateContext);
 
             /// --- render the geometry
-            this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
+            Device.ImmediateContext.DrawIndexed(Geometry.Indices.Count, 0, 0);
         }
 
         /// <summary>
@@ -317,7 +303,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public override void Dispose()
         {
-            this.Detach();
+            Detach();
         }
 
 

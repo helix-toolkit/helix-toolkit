@@ -44,6 +44,10 @@ namespace ManipulatorDemo
 
         public MainViewModel()
         {
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+
             this.Title = "Manipulator Demo";
             this.SubTitle = null;
 

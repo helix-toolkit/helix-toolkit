@@ -19,7 +19,7 @@
             this.SubTitle = "Select lines with left mouse button.\nRotate or zoom around a point on a line if the cursor is above one.";
 
             // default render technique
-            this.RenderTechnique = Techniques.RenderBlinn;
+            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
         }
     }
 }

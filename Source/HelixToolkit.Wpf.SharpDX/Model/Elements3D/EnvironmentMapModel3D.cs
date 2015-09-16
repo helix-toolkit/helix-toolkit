@@ -84,11 +84,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             /// --- attach
-            this.renderTechnique = Techniques.RenderCubeMap;
+            this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
             base.Attach(host);
 
             /// --- get variables               
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
+            this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
             this.effectTransforms = new EffectTransformVariables(this.effect);
 

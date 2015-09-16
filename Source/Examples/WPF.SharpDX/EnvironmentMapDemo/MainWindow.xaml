@@ -16,7 +16,7 @@
     <Window.Resources>
         <Thickness x:Key="MarginLarge">10</Thickness>
         <Thickness x:Key="MarginSmall">2</Thickness>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
         <x:StaticExtension Member="hx:PhongMaterials.Materials" x:Key="PhongMaterials"/>        
     </Window.Resources>
     <Grid d:IsLocked="True">
@@ -58,7 +58,15 @@
                 <Expander.Background>
                 <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
             </Expander.Background>
-                <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" Grid.ColumnSpan="2"/>            
+                <ComboBox  Grid.Row="0" 
+                           IsReadOnly="True" 
+                           Margin="3" 
+                           Grid.ColumnSpan="2"
+                           DisplayMemberPath="Key" 
+                           SelectedValuePath="Value" 
+                           ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
+                           SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                           SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" />            
             </Expander>
             
             <Expander Header="Enviroment Map Properties" x:Name="propertiesPanel" Width="200" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="{StaticResource MarginLarge}">

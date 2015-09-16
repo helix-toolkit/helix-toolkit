@@ -268,10 +268,10 @@ namespace HelixToolkit.Wpf.SharpDX
             "RenderHost", typeof(DPFCanvas), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
 
         /// <summary>
-        /// The is deferred shading enabled propery
+        /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(Techniques.RenderPhong, (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
+            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null, (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
 
         /// <summary>
         /// The is deferred shading enabled propery

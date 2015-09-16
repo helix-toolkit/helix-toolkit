@@ -11,6 +11,7 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using System.Linq;
 
     using global::SharpDX;
@@ -21,8 +22,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.DXGI;
 
+    using Buffer = global::SharpDX.Direct3D11.Buffer;
+
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
+        public override int VertexSizeInBytes
+        {
+            get
+            {
+                return DefaultVertex.SizeInBytes;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -71,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
 
             // --- get variables
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
+            this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
 
             // --- transformations
@@ -92,7 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");                
 
                 /// --- init vertex buffer
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, this.CreateDefaultVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateDefaultVertexArray());
 
                 /// --- init index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
@@ -227,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- INSTANCING: need to set 2 buffers            
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[] 
                 {
-                    new VertexBufferBinding(this.vertexBuffer, DefaultVertex.SizeInBytes, 0),
+                    new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
                     new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
                 });
 
@@ -239,9 +250,11 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 /// --- bind buffer                
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, DefaultVertex.SizeInBytes, 0));
+                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
                 /// --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+                /// 
+                var pass = this.effectTechnique.GetPassByIndex(0);
+                pass.Apply(Device.ImmediateContext);
                 /// --- draw
                 this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
             }

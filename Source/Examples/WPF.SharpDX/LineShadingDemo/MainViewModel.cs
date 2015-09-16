@@ -44,6 +44,10 @@ namespace LineShadingDemo
       
         public MainViewModel()
         {
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+
             this.Title = "Line Shading Demo (HelixToolkitDX)";
             this.SubTitle = null;
 

@@ -7,7 +7,7 @@
         mc:Ignorable="d"               
         Title="LightingDemo SharpDX" Height="700" Width="1200">
     <Window.Resources>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
     </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
@@ -63,7 +63,13 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <!--<ComboBox  Grid.Row="3" Text="- Select Model -" ItemsSource="{Binding ShadingModelCollection}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3"/>-->
-                    <ComboBox Grid.Row="3" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" Margin="3"/>
+                    <ComboBox Grid.Row="3" 
+                              Margin="3"
+                              DisplayMemberPath="Key" 
+                              SelectedValuePath="Value" 
+                              ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
+                              SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                              SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"/>
                 </Grid>
             </Expander>
             <Expander Grid.Row="0" Width="Auto"  MinWidth="200" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Header="Lighting Settings" BorderBrush="LightGray" IsExpanded="True" Margin="10">

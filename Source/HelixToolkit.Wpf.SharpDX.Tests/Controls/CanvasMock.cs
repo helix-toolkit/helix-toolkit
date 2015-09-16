@@ -14,8 +14,10 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
     {
         public CanvasMock()
         {
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
             Device = EffectsManager.Device;
-            RenderTechnique = Techniques.RenderPhong;
         }
 
         public Device Device { get; private set; }
@@ -27,6 +29,10 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public double ActualHeight { get; private set; }
         public double ActualWidth { get; private set; }
 
+        public IEffectsManager EffectsManager { get; private set; }
+
+        public IRenderTechniquesManager RenderTechniquesManager { get; private set; }
+
         public void SetDefaultRenderTargets()
         {
             throw new NotImplementedException();
@@ -36,5 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         {
             throw new NotImplementedException();
         }
+
+        public bool SupportDeferredRender { get; }
     }
 }
