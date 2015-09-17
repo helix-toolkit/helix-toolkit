@@ -24,14 +24,14 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public Color4 ClearColor { get; private set; }
         public bool IsShadowMapEnabled { get; private set; }
         public bool IsMSAAEnabled { get; private set; }
-        public IRenderer Renderable { get; private set; }
+        public IRenderer Renderable { get; set; }
         public RenderTechnique RenderTechnique { get; private set; }
         public double ActualHeight { get; private set; }
         public double ActualWidth { get; private set; }
 
-        public IEffectsManager EffectsManager { get; private set; }
+        public IEffectsManager EffectsManager { get; set; }
 
-        public IRenderTechniquesManager RenderTechniquesManager { get; private set; }
+        public IRenderTechniquesManager RenderTechniquesManager { get; set; }
 
         public void SetDefaultRenderTargets()
         {
@@ -43,6 +43,14 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             throw new NotImplementedException();
         }
 
-        public bool SupportDeferredRender { get; private set; }
+        public bool SupportDeferredRender { get; set; }
+
+
+        public event EventHandler<SharpDX.Utilities.RelayExceptionEventArgs> ExceptionOccurred;
+
+        public void InvalidateRender()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

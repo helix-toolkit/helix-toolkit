@@ -265,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render host property.
         /// </summary>
         public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(DPFCanvas), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
+            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// The Render Technique property
@@ -1223,11 +1223,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="DPFCanvas"/>.
+        /// Gets or sets the <see cref="IRenderHost"/>.
         /// </summary>
-        public DPFCanvas RenderHost
+        public IRenderHost RenderHost
         {
-            get { return (DPFCanvas)this.GetValue(RenderHostProperty); }
+            get { return (IRenderHost)this.GetValue(RenderHostProperty); }
             set { this.SetValue(RenderHostProperty, value); }
         }
 

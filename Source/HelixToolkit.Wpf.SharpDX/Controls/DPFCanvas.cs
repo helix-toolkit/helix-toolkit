@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The instance of currently attached IRenderable - this is in general the Viewport3DX
         /// </summary>
-        public IRenderer Renderable
+        IRenderer IRenderHost.Renderable
         {
             get { return renderRenderable; }
             set
@@ -138,12 +138,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty EffectsManagerProperty =
-            DependencyProperty.Register("EffectsManager", typeof(DefaultEffectsManager), typeof(DPFCanvas), null);
+            DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas), null);
 
 
         public IEffectsManager EffectsManager
         {
-            get { return (DefaultEffectsManager)GetValue(EffectsManagerProperty); }
+            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
             set { SetValue(EffectsManagerProperty, value); }
         }
 
@@ -205,11 +205,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Invalidates the current render and requests an update.
         /// </summary>
-        public void InvalidateRender()
+        private void InvalidateRender()
         {
             // For some reason, we need two render cycles to recover from 
             // UAC popup or sleep when MSAA is enabled.
             pendingValidationCycles = 2;
+        }
+
+
+        /// <summary>
+        /// Invalidates the current render and requests an update.
+        /// </summary>
+        void IRenderHost.InvalidateRender()
+        {
+            InvalidateRender();
         }
 
         /// <summary>
@@ -486,7 +495,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (renderTarget == null)
                 return;
 
-            if (Renderable != null)
+            if (renderRenderable != null)
             {
                 /// ---------------------------------------------------------------------------
                 /// this part is done only if the scene is not attached

@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [DefaultProperty("Children")]
     [ContentProperty("Items")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
-    [TemplatePart(Name = "PART_Canvas", Type = typeof(DPFCanvas))]
+    [TemplatePart(Name = "PART_Canvas", Type = typeof(IRenderHost))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCubeViewport", Type = typeof(Viewport3D))]
@@ -511,7 +511,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideTargetAdorner()
         {
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
+            var visual = this.RenderHost as Visual;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
             if (this.targetAdorner != null)
             {
                 myAdornerLayer.Remove(this.targetAdorner);
@@ -528,7 +534,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideZoomRectangle()
         {
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
+            var visual = this.RenderHost as Visual;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -641,7 +653,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.RenderHost.ExceptionOccurred -= this.HandleRenderException;
             }
 
-            this.RenderHost = this.GetTemplateChild("PART_Canvas") as DPFCanvas;
+            this.RenderHost = this.GetTemplateChild("PART_Canvas") as IRenderHost;
 
             if (this.RenderHost != null)
             {
@@ -821,8 +833,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
-            this.targetAdorner = new TargetSymbolAdorner(this.RenderHost, position);
+            var visual = this.RenderHost as UIElement;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            this.targetAdorner = new TargetSymbolAdorner(visual, position);
             myAdornerLayer.Add(this.targetAdorner);
         }
 
@@ -837,9 +855,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
+            var visual = this.RenderHost as UIElement;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
             this.rectangleAdorner = new RectangleAdorner(
-                this.RenderHost, rect, Colors.LightGray, Colors.Black, 3, 1, 10, DashStyles.Solid);
+                visual, rect, Colors.LightGray, Colors.Black, 3, 1, 10, DashStyles.Solid);
             myAdornerLayer.Add(this.rectangleAdorner);
         }
 
