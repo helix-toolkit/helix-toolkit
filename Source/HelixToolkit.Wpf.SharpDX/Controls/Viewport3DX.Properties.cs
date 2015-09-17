@@ -196,6 +196,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 "EnableCurrentPosition", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// The EffectsManager property.
+        /// </summary>
+        public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
+            "EffectsManager", typeof(IEffectsManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
+                DefaultEffectsManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender,
+                (s, e) => ((Viewport3DX)s).EffectsManagerPropertyChanged()));
+
+        /// <summary>
         /// The field of view text property.
         /// </summary>
         public static readonly DependencyProperty FieldOfViewTextProperty = DependencyProperty.Register(
@@ -271,7 +279,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null, (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
+            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null, 
+                (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
+
+        /// <summary>
+        /// The RenderTechniquesManager property.
+        /// </summary>
+        public static readonly DependencyProperty RenderTechniquesManagerProperty = DependencyProperty.Register(
+            "RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
+                DefaultRenderTechniquesManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender, 
+                (s, e) => ((Viewport3DX)s).RenderTechniquesManagerPropertyChanged()));
 
         /// <summary>
         /// The is deferred shading enabled propery
@@ -1043,6 +1060,15 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="IEffectsManager"/>.
+        /// </summary>
+        public IEffectsManager EffectsManager
+        {
+            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
+            set { SetValue(EffectsManagerProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
         /// </summary>
         /// <value>
@@ -1241,6 +1267,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (RenderTechnique)this.GetValue(RenderTechniqueProperty); }
             set { this.SetValue(RenderTechniqueProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IRenderTechniquesManager"/>.
+        /// </summary>
+        public IRenderTechniquesManager RenderTechniquesManager
+        {
+            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
+            set { SetValue(RenderTechniquesManagerProperty, value); }
         }
 
         /// <summary>

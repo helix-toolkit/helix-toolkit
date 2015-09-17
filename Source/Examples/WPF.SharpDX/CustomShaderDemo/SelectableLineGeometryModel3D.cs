@@ -11,6 +11,8 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace CustomShaderDemo
 {
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct CustomLinesVertex
     {
@@ -37,8 +39,8 @@ namespace CustomShaderDemo
             if (Geometry == null)
                 return;
 
-            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return;
 
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);

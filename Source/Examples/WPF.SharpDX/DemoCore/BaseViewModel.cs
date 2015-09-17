@@ -116,6 +116,9 @@ namespace DemoCore
 
         protected BaseViewModel()
         {
+            RenderTechniquesManager = DefaultRenderTechniquesManager.Instance;
+            EffectsManager = DefaultEffectsManager.Instance;
+
             // camera models
             CameraModelCollection = new List<string>()
             {

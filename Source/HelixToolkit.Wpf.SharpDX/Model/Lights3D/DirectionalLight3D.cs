@@ -6,6 +6,8 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     public sealed class DirectionalLight3D : Light3D
     {
         public DirectionalLight3D()
@@ -42,8 +44,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Render(RenderContext context)
         {
             var manager = renderHost.RenderTechniquesManager;
-            if (renderHost.RenderTechnique == manager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == manager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
             {
                 return;
             }

@@ -8,6 +8,8 @@ namespace HelixToolkit.Wpf.SharpDX
 {    
     using global::SharpDX;
 
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     public sealed class PointLight3D : PointLightBase3D
     {
         public PointLight3D()
@@ -44,8 +46,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Render(RenderContext context)
         {
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
             {
                 return;
             }

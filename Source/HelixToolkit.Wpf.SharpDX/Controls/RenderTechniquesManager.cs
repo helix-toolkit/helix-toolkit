@@ -43,6 +43,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class DefaultRenderTechniquesManager: IRenderTechniquesManager
     {
+        /// <summary>
+        /// The default instance.
+        /// </summary>
+        public static readonly DefaultRenderTechniquesManager Instance = new DefaultRenderTechniquesManager();
+
         internal readonly Dictionary<RenderTechnique, byte[]> TechniquesSourceDict = new Dictionary<RenderTechnique, byte[]>();
         private Dictionary<string, RenderTechnique> renderTechniques = new Dictionary<string, RenderTechnique>();
 

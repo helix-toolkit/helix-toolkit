@@ -23,6 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.DXGI;
 
+    using HelixToolkit.Wpf.SharpDX.Extensions;
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color = global::SharpDX.Color;
@@ -228,8 +229,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Geometry == null)            
                 return;
 
-            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return;
 
             // --- get device
@@ -333,8 +334,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return;
 
             if (renderContext.IsShadowPass)

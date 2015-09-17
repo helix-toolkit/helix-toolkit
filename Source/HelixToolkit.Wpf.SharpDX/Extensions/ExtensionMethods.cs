@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
     using System.Reflection;
     using System.Reflection.Emit;
 
-    public static class ListExtensions
+    public static class ExtensionMethods
     {
         static class ArrayAccessor<T>
         {
@@ -40,6 +40,17 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         public static T[] GetInternalArray<T>(this List<T> list)
         {
             return ArrayAccessor<T>.Getter(list);
+        }
+
+        public static V Get<K, V>(this IDictionary<K, V> dict, K key)
+        {
+            V val;
+            if (dict.TryGetValue(key, out val))
+            {
+                return val;
+            }
+
+            return default(V);
         }
     }
 }

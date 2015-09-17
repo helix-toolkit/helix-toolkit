@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace CustomShaderDemo
 {
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     /// <summary>
     /// Our CustomPointsVertex class has an additional Vector4
     /// to store data to be used by the shader.
@@ -47,8 +49,8 @@ namespace CustomShaderDemo
             if (Geometry == null)
                 return;
 
-            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return;
 
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);

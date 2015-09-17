@@ -10,9 +10,9 @@
         Title="SharpDX in WPF (Workitem 10048 and 10052)" Height="500" Width="800">
     <Window.DataContext>
         <local:MainViewModel/>
-    </Window.DataContext>    
+    </Window.DataContext>
     <Window.Resources>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
         <hx:LineGeometry3D x:Key="Lines"
                             Positions="-6.0,0.0,0.0 3.0,0.0,0.0"
                             Indices="0 1"/>
@@ -87,7 +87,15 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ComboBox Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" Grid.ColumnSpan="2"/>
+                    <ComboBox  Grid.Row="0"
+                               DisplayMemberPath="Key"
+                               SelectedValuePath="Value"
+                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
+                               ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
+                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
+                               IsReadOnly="True"
+                               Margin="3"
+                               Grid.ColumnSpan="2"/>
                 </Grid>
             </Expander>
         </StackPanel>

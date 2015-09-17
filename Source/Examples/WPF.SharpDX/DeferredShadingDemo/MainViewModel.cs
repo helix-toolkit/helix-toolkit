@@ -11,6 +11,8 @@ namespace DeferredShadingDemo
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     using SharpDX;
     using System;
     using System.Collections.Generic;
@@ -115,7 +117,7 @@ namespace DeferredShadingDemo
 
             // deferred render technique
             RenderTechniquesManager = new DeferredTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
+            RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred);
             EffectsManager = new DeferredEffectsManager(RenderTechniquesManager);
 
             //load model

@@ -138,8 +138,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty EffectsManagerProperty =
-            DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas), null);
-
+            DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas),
+                new FrameworkPropertyMetadata(DefaultEffectsManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender,
+                (s, e) => ((DPFCanvas)s).EffectsManagerPropertyChanged()));
 
         public IEffectsManager EffectsManager
         {
@@ -148,7 +149,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty RenderTechniquesManagerProperty =
-            DependencyProperty.Register("RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(DPFCanvas), null);
+            DependencyProperty.Register("RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(DPFCanvas),
+                new FrameworkPropertyMetadata(DefaultRenderTechniquesManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender,
+                (s, e) => ((DPFCanvas)s).RenderTechniquesManagerPropertyChanged()));
 
         public IRenderTechniquesManager RenderTechniquesManager
         {
@@ -510,8 +513,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique));
                         renderRenderable.Attach(this);
 
-                        gbuffer = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer];
-                        deferred = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
+                        RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.GBuffer, out gbuffer);
+                        RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.Deferred, out deferred);
 
                         if (RenderTechnique == deferred)
                         {
@@ -710,6 +713,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Handles the change of the effects manager.
+        /// </summary>
+        private void EffectsManagerPropertyChanged()
+        {
+            this.EffectsManager = this.EffectsManager ?? DefaultEffectsManager.Instance;
+        }
+
+        /// <summary>
         /// Invoked whenever an exception occurs. Stops rendering, frees resources and throws 
         /// </summary>
         /// <param name="exception">The exception that occured.</param>
@@ -750,6 +761,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.StopRendering();
             }
 #endif
+        }
+
+        /// <summary>
+        /// Handles the change of the render techniques manager.       
+        /// </summary>
+        private void RenderTechniquesManagerPropertyChanged()
+        {
+            this.RenderTechniquesManager = this.RenderTechniquesManager ?? DefaultRenderTechniquesManager.Instance;
         }
     }
 }
