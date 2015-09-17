@@ -56,8 +56,7 @@
                                 <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <hx:DPFCanvas x:Name="PART_Canvas" 
                                                   EffectsManager="{Binding EffectsManager}" 
-                                                  RenderTechniquesManager="{Binding RenderTechniquesManager}"
-                                                  SupportDeferredRender="{Binding SupportDeferredRender}"/>
+                                                  RenderTechniquesManager="{Binding RenderTechniquesManager}"/>
                                 </AdornerDecorator>
                             </hx:CameraController>
 

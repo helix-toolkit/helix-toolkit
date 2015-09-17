@@ -117,7 +117,6 @@ namespace DeferredShadingDemo
             RenderTechniquesManager = new DeferredTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
             EffectsManager = new DeferredEffectsManager(RenderTechniquesManager);
-            SupportDeferredRender = true;
 
             //load model
             var reader = new ObjReader();

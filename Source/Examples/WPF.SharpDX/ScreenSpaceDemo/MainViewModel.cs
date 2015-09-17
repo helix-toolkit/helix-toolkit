@@ -58,7 +58,6 @@ namespace ScreenSpaceDemo
             RenderTechniquesManager = new DeferredTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
             EffectsManager = new DeferredEffectsManager(RenderTechniquesManager);
-            SupportDeferredRender = true;
 
             // background
             this.BackgroundColor = (Color4)Color.White;

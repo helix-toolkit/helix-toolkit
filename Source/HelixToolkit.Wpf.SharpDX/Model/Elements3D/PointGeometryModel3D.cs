@@ -201,12 +201,9 @@
             if (Geometry == null)
                 return;
 
-            if (host.SupportDeferredRender)
-            {
-                if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                    renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
+            if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+                renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
                 return;
-            }
 
             // --- get device
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
@@ -271,12 +268,9 @@
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-            if (renderHost.SupportDeferredRender)
-            {
-                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
-                    return;
-            }
+                return;
 
             if (renderContext.IsShadowPass)
                 if (!this.IsThrowingShadow)

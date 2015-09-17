@@ -169,15 +169,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty SupportDeferredRenderProperty =
-            DependencyProperty.Register("SupportDeferredRender", typeof(bool), typeof(DPFCanvas), new PropertyMetadata(false));
-
-        public bool SupportDeferredRender
-        {
-            get { return (bool)GetValue(SupportDeferredRenderProperty); }
-            set { SetValue(SupportDeferredRenderProperty, value); }
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -519,20 +510,16 @@ namespace HelixToolkit.Wpf.SharpDX
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique));
                         renderRenderable.Attach(this);
 
-                        if (SupportDeferredRender)
+                        gbuffer = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer];
+                        deferred = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
+
+                        if (RenderTechnique == deferred)
                         {
-                            gbuffer = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer];
-                            deferred = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
-
-                            if (RenderTechnique == deferred)
-                            {
-                                deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
-                            }
-
-                            if (RenderTechnique == gbuffer)
-                            {
-                                deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
-                            }
+                            deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                        }
+                        else if (RenderTechnique == gbuffer)
+                        {
+                            deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
                     }
                     catch (Exception ex)
@@ -543,39 +530,38 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
 
+                // ---------------------------------------------------------------------------
+                // this part is per frame
+                // ---------------------------------------------------------------------------
+
                 SetDefaultRenderTargets();
-
-                /// ---------------------------------------------------------------------------
-                /// this part is per frame                
-                if (SupportDeferredRender)
+                
+                if (RenderTechnique == deferred)
                 {
-                    if (RenderTechnique == deferred)
-                    {
-                        /// set G-Buffer                    
-                        deferredRenderer.SetGBufferTargets();
+                    /// set G-Buffer                    
+                    deferredRenderer.SetGBufferTargets();
 
-                        /// render G-Buffer pass                
-                        renderRenderable.Render(renderContext);
+                    /// render G-Buffer pass                
+                    renderRenderable.Render(renderContext);
 
-                        /// call deferred render 
-                        deferredRenderer.RenderDeferred(renderContext, renderRenderable);
+                    /// call deferred render 
+                    deferredRenderer.RenderDeferred(renderContext, renderRenderable);
 
-                    }
-                    else if (RenderTechnique == gbuffer)
-                    {
-                        /// set G-Buffer
-                        deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2);
+                }
+                else if (RenderTechnique == gbuffer)
+                {
+                    /// set G-Buffer
+                    deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2);
 
-                        /// render G-Buffer pass                    
-                        renderRenderable.Render(renderContext);
+                    /// render G-Buffer pass                    
+                    renderRenderable.Render(renderContext);
 
-                        /// reset render targets and run lighting pass                                         
+                    /// reset render targets and run lighting pass                                         
 #if MSAA
-                        deferredRenderer.RenderGBufferOutput(ref renderTargetNMS);
+                    deferredRenderer.RenderGBufferOutput(ref renderTargetNMS);
 #else
                     this.deferredRenderer.RenderGBufferOutput(ref this.colorBuffer);
 #endif
-                    }
                 }
                 else
                 {
@@ -705,16 +691,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (surfaceD3D != null)
                 {
-                    if (SupportDeferredRender)
+                    if (RenderTechnique == deferred)
                     {
-                        if (RenderTechnique == deferred)
-                        {
-                            deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
-                        }
-                        if (RenderTechnique == gbuffer)
-                        {
-                            deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
-                        }
+                        deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                    }
+                    if (RenderTechnique == gbuffer)
+                    {
+                        deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                     }
 
                     CreateAndBindTargets();
