@@ -43,6 +43,6 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             throw new NotImplementedException();
         }
 
-        public bool SupportDeferredRender { get; }
+        public bool SupportDeferredRender { get; private set; }
     }
 }
