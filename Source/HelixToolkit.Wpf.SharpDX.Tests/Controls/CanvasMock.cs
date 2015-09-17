@@ -40,17 +40,12 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
 
         public void SetDefaultColorTargets(DepthStencilView dsv)
         {
-            throw new NotImplementedException();
         }
-
-        public bool SupportDeferredRender { get; set; }
-
 
         public event EventHandler<SharpDX.Utilities.RelayExceptionEventArgs> ExceptionOccurred;
 
         public void InvalidateRender()
         {
-            throw new NotImplementedException();
         }
     }
 }
