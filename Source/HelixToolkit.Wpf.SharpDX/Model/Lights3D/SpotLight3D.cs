@@ -17,6 +17,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX;
 
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     public sealed class SpotLight3D : PointLightBase3D
     {
         public static readonly DependencyProperty FalloffProperty =
@@ -101,13 +103,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Render(RenderContext context)
         {
-            if (renderHost.SupportDeferredRender)
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
             {
-                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
-                {
-                    return;
-                }
+                return;
             }
 
             if (this.IsRendering)

@@ -28,8 +28,10 @@
             TextBrush="Black"           
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"              
-            RenderTechnique="{Binding RenderTechnique}">
+            UseDefaultGestures="False"
+            RenderTechnique="{Binding RenderTechnique}"
+            RenderTechniquesManager="{Binding RenderTechniquesManager}"
+            EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
                 <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>

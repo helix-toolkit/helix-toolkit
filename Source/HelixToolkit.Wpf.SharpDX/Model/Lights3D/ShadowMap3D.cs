@@ -165,7 +165,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
             this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
             this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
-            this.shadowPassContext = new RenderContext((DPFCanvas)host, this.effect);
+            this.shadowPassContext = new RenderContext(host, this.effect);
         }
 
         public override void Detach()

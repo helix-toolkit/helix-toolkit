@@ -14,6 +14,7 @@
     using DemoCore;
 
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     public class MainViewModel : BaseViewModel
@@ -27,10 +28,13 @@
             // titles
             this.Title = "Simple Demo (Workitem 10051)";
             this.SubTitle = "LineGeometryModel3D now works with OrthographicCamera and Intel HD 3000.";
-
-            // default render technique
-            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
             this.PropertyChanged += this.OnPropertyChanged;
+
+            if (this.RenderTechniquesManager != null)
+            {
+                // default render technique
+                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
+            }
         }
 
         /// <summary>
@@ -53,6 +57,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets the viewport message.
+        /// </summary>
         public string ViewportMessage
         {
             get

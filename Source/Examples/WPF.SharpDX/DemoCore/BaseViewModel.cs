@@ -11,6 +11,7 @@ namespace DemoCore
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using HelixToolkit.Wpf.SharpDX;
 
@@ -114,12 +115,8 @@ namespace DemoCore
 
         public event EventHandler CameraModelChanged;
 
-        public bool SupportDeferredRender { get; set; }
-
         protected BaseViewModel()
         {
-            SupportDeferredRender = false;
-
             // camera models
             CameraModelCollection = new List<string>()
             {

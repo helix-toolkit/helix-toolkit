@@ -10,7 +10,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
-    using System.Threading;
     using System.Windows;
     using System.Windows.Media;
 
@@ -67,9 +66,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateRender()
         {
-            // ToDo: Add InvalidateRender() to IRenderHost?
-            var rh = renderHost as DPFCanvas;
-            if (rh != null)
+            var rh = renderHost;
+            if (renderHost != null)
             {
                 rh.InvalidateRender();
             }

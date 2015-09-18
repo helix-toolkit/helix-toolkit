@@ -9,6 +9,7 @@
     using DemoCore;
 
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
 
     public class MainViewModel : BaseViewModel
     {
@@ -18,8 +19,11 @@
             this.Title = "Simple Demo (Workitem 10048 and 10052)";
             this.SubTitle = "Select lines with left mouse button.\nRotate or zoom around a point on a line if the cursor is above one.";
 
-            // default render technique
-            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            if (this.RenderTechniquesManager != null)
+            {
+                // default render technique
+                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
+            }
         }
     }
 }

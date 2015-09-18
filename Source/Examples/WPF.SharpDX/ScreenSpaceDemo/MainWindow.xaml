@@ -30,7 +30,9 @@
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"  
             BackgroundColor="{Binding BackgroundColor}"
-            RenderTechnique="{Binding RenderTechnique}">
+            RenderTechnique="{Binding RenderTechnique}"
+            RenderTechniquesManager="{Binding RenderTechniquesManager}"
+            EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
                 <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>

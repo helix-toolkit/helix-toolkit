@@ -8,6 +8,8 @@ namespace ScreenSpaceDemo
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     using SharpDX;
     using System;
     using System.Collections.Generic;
@@ -56,9 +58,8 @@ namespace ScreenSpaceDemo
 
             // default render technique
             RenderTechniquesManager = new DeferredTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred];
+            RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred);
             EffectsManager = new DeferredEffectsManager(RenderTechniquesManager);
-            SupportDeferredRender = true;
 
             // background
             this.BackgroundColor = (Color4)Color.White;

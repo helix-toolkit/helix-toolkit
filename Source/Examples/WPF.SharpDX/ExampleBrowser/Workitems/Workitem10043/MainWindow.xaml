@@ -13,7 +13,7 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -108,7 +108,15 @@
                         <ColumnDefinition Width="25"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" Grid.ColumnSpan="2"/>
+                    <ComboBox  Grid.Row="0"
+                               DisplayMemberPath="Key"
+                               SelectedValuePath="Value"
+                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
+                               ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
+                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
+                               IsReadOnly="True"
+                               Margin="3"
+                               Grid.ColumnSpan="2"/>
                 </Grid>
             </Expander>
         </StackPanel>

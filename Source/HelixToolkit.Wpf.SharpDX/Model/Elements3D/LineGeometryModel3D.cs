@@ -23,6 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.DXGI;
 
+    using HelixToolkit.Wpf.SharpDX.Extensions;
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color = global::SharpDX.Color;
@@ -227,13 +228,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (Geometry == null)            
                 return;
- 
-            if (host.SupportDeferredRender)
-            {
-                if (renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                    renderHost.RenderTechnique == host.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
-                    return;
-            }
+
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                return;
 
             // --- get device
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
@@ -336,12 +334,9 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-            if (renderHost.SupportDeferredRender)
-            {
-                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.Deferred] ||
-                    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.GBuffer])
-                    return;
-            }
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                return;
 
             if (renderContext.IsShadowPass)
                 if (!this.IsThrowingShadow)
