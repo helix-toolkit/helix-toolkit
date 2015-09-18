@@ -35,7 +35,6 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
 
         public void SetDefaultRenderTargets()
         {
-            throw new NotImplementedException();
         }
 
         public void SetDefaultColorTargets(DepthStencilView dsv)

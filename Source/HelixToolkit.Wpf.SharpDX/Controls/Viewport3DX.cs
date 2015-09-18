@@ -1295,7 +1295,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.RenderHost != null)
             {
-                this.RenderHost.EffectsManager = this.EffectsManager ?? DefaultEffectsManager.Instance;
+                this.RenderHost.EffectsManager = this.EffectsManager;
             }
         }
 
@@ -1324,7 +1324,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.RenderHost != null)
             {
-                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager ?? DefaultRenderTechniquesManager.Instance;
+                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager;
             }
         }
 

@@ -34,11 +34,6 @@ namespace HelixToolkit.Wpf.SharpDX
     public class DefaultEffectsManager : IEffectsManager, IDisposable
     {
         /// <summary>
-        /// The default instance.
-        /// </summary>
-        public static readonly DefaultEffectsManager Instance = new DefaultEffectsManager(DefaultRenderTechniquesManager.Instance);
-
-        /// <summary>
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;

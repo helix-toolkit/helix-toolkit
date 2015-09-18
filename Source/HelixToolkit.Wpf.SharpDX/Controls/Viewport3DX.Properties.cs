@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
             "EffectsManager", typeof(IEffectsManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
-                DefaultEffectsManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender,
+                null, FrameworkPropertyMetadataOptions.AffectsRender,
                 (s, e) => ((Viewport3DX)s).EffectsManagerPropertyChanged()));
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty RenderTechniquesManagerProperty = DependencyProperty.Register(
             "RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
-                DefaultRenderTechniquesManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender, 
+                null, FrameworkPropertyMetadataOptions.AffectsRender, 
                 (s, e) => ((Viewport3DX)s).RenderTechniquesManagerPropertyChanged()));
 
         /// <summary>

@@ -139,7 +139,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty EffectsManagerProperty =
             DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas),
-                new FrameworkPropertyMetadata(DefaultEffectsManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender,
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
                 (s, e) => ((DPFCanvas)s).EffectsManagerPropertyChanged()));
 
         public IEffectsManager EffectsManager
@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty RenderTechniquesManagerProperty =
             DependencyProperty.Register("RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(DPFCanvas),
-                new FrameworkPropertyMetadata(DefaultRenderTechniquesManager.Instance, FrameworkPropertyMetadataOptions.AffectsRender,
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
                 (s, e) => ((DPFCanvas)s).RenderTechniquesManagerPropertyChanged()));
 
         public IRenderTechniquesManager RenderTechniquesManager
@@ -267,6 +267,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void StartD3D()
         {
+            if (EffectsManager == null || RenderTechniquesManager == null)
+            {
+                // Make sure both are null
+                RenderTechniquesManager = null;
+                EffectsManager = null;
+                RenderTechniquesManager = new DefaultRenderTechniquesManager();
+                EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+                return; // StardD3D() is called from DP changed handler
+            }
+
             surfaceD3D = new DX11ImageSource();
             surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             device = EffectsManager.Device;
@@ -717,7 +727,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EffectsManagerPropertyChanged()
         {
-            this.EffectsManager = this.EffectsManager ?? DefaultEffectsManager.Instance;
+            if (EffectsManager != null && RenderTechniquesManager != null)
+            {
+                StartD3D();
+            }
         }
 
         /// <summary>
@@ -768,7 +781,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void RenderTechniquesManagerPropertyChanged()
         {
-            this.RenderTechniquesManager = this.RenderTechniquesManager ?? DefaultRenderTechniquesManager.Instance;
+            if (EffectsManager != null && RenderTechniquesManager != null)
+            {
+                StartD3D();
+            }
         }
     }
 }

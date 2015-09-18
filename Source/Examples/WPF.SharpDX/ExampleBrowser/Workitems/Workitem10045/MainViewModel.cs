@@ -12,6 +12,7 @@
 
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Core;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
 
     using SharpDX;    
     using Media3D = System.Windows.Media.Media3D;
@@ -48,8 +49,11 @@
             // camera setup
             this.Camera = new PerspectiveCamera { Position = new Point3D(3, 3, 5), LookDirection = new Vector3D(-3, -3, -5), UpDirection = new Vector3D(0, 1, 0) };
 
-            // default render technique
-            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            if (this.RenderTechniquesManager != null)
+            {
+                // default render technique
+                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
+            }
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);

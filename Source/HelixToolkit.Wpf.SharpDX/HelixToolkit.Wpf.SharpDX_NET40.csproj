@@ -180,7 +180,7 @@
     <Compile Include="Controls\ViewportCommands.cs" />
     <Compile Include="Core\Vector2Collection.cs" />
     <Compile Include="Core\Vector3Collection.cs" />
-    <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Model\Geometry\BillboardText3D.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
