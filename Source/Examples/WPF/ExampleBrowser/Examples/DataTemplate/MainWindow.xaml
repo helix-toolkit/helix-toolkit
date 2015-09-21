@@ -1,4 +1,4 @@
-﻿<Window x:Class="DataTemplateDemo.MainWindow"
+<Window x:Class="DataTemplateDemo.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" xmlns:local="clr-namespace:DataTemplateDemo"
@@ -8,11 +8,23 @@
         <local:DataTemplate3D x:Key="Template1">
             <h:SphereVisual3D Center="{Binding Position}" Material="{Binding Material}" Radius="{Binding Radius}"/>
         </local:DataTemplate3D>
+        <local:DataTemplate3D x:Key="Template2">
+            <h:TubeVisual3D Path="{Binding Points}" Diameter="0.25" Fill="Blue"/>
+        </local:DataTemplate3D>
     </Window.Resources>
     <Grid>
-        <h:HelixViewport3D ZoomExtentsWhenLoaded="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*" />                 
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="AddElemButton" Click="AddElemButton_Click" >Add Element</Button>
+            <Button x:Name="RemoveElemButton" Click="RemoveElemButton_Click">Remove Element</Button>
+        </StackPanel>
+        <h:HelixViewport3D Grid.Row="1" ZoomExtentsWhenLoaded="True">
             <h:SunLight/>
             <local:ItemsVisual3D ItemTemplate="{StaticResource Template1}" ItemsSource="{Binding Elements}"/>
+            <local:ItemsVisual3D ItemTemplate="{StaticResource Template2}" ItemsSource="{Binding Elements2}"/>
         </h:HelixViewport3D>
     </Grid>
 </Window>
