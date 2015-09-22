@@ -59,7 +59,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     driverType = DriverType.Hardware;
-                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.Debug);
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+                    // DeviceCreationFlags.Debug should not be used in productive mode!
+                    // See: http://sharpdx.org/forum/4-general/1774-how-to-debug-a-sharpdxexception
+                    // See: http://stackoverflow.com/questions/19810462/launching-sharpdx-directx-app-with-devicecreationflags-debug
                 }
             }
 #else
