@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 #else
-            this.device = new Direct3D11.Device(Direct3D.DriverType.Hardware, DeviceCreationFlags.BgraSupport, Direct3D.FeatureLevel.Level_10_1);                        
+            this.device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
             InitEffects();
         }
@@ -85,6 +85,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 foreach (var item in f.Adapters)
                 {
+                    // nVidia Optimus Windows 10 fix
+                    if (item.Outputs == null || item.Outputs.Length == 0)
+                    {
+                        continue;
+                    }
+
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
 
                     if (level < DefaultEffectsManager.MinimumFeatureLevel)
