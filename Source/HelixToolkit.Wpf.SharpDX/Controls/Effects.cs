@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 foreach (var item in f.Adapters)
                 {
-                    // nVidia Optimus Windows 10 fix
+                    // Windows 10 fix
                     if (item.Outputs == null || item.Outputs.Length == 0)
                     {
                         continue;
