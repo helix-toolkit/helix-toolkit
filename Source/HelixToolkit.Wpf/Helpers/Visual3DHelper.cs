@@ -79,6 +79,12 @@ namespace HelixToolkit.Wpf
             var bounds = Rect3D.Empty;
             foreach (var visual in children)
             {
+                if (visual.GetType() == typeof(BillboardTextGroupVisual3D)
+                    || visual.GetType() == typeof(BillboardTextVisual3D))
+                {
+                    continue;
+                }
+                
                 var b = FindBounds(visual, Transform3D.Identity);
                 bounds.Union(b);
             }
