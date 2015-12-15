@@ -71,16 +71,18 @@ namespace HelixToolkit.Wpf
         /// <param name="children">
         /// The children.
         /// </param>
+        /// <param name="ignoredTypes">
+        /// The ignored Types.
+        /// </param>
         /// <returns>
         /// A <see cref="Rect3D"/>.
         /// </returns>
-        public static Rect3D FindBounds(this Visual3DCollection children)
+        public static Rect3D FindBounds(this Visual3DCollection children, IEnumerable<Type> ignoredTypes = null)
         {
             var bounds = Rect3D.Empty;
             foreach (var visual in children)
             {
-                if (visual.GetType() == typeof(BillboardTextGroupVisual3D)
-                    || visual.GetType() == typeof(BillboardTextVisual3D))
+                if (ignoredTypes != null && ignoredTypes.Contains(visual.GetType()))
                 {
                     continue;
                 }
