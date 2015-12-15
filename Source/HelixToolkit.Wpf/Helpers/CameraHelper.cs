@@ -10,6 +10,7 @@
 namespace HelixToolkit.Wpf
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
     using System.Windows;
@@ -657,7 +658,9 @@ namespace HelixToolkit.Wpf
         /// </param>
         public static void ZoomExtents(this ProjectionCamera camera, Viewport3D viewport, double animationTime = 0)
         {
-            var bounds = Visual3DHelper.FindBounds(viewport.Children);
+            var bounds =
+                viewport.Children.FindBounds(
+                    new List<Type> { typeof(BillboardTextGroupVisual3D), typeof(BillboardTextVisual3D) });
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
 
             if (bounds.IsEmpty || diagonal.LengthSquared < double.Epsilon)
