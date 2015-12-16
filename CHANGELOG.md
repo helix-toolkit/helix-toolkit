@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - PointSelectionCommand (Wpf)
 - Support subtract mode in CuttingPlaneGroup (Wpf)
 - Handle collection changes for ScreenSpaceVisual3D.Points (Wpf.SharpDX)
+- Ignore visuals that implement IBoundsIgnoredVisual3D in the bounds calculation (#229)
 
 ### Changed
 - XAML namespace prefix changed to `http://helix-toolkit.org/wpf` (Wpf)
