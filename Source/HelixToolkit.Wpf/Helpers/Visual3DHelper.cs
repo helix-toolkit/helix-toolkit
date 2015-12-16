@@ -79,6 +79,11 @@ namespace HelixToolkit.Wpf
             var bounds = Rect3D.Empty;
             foreach (var visual in children)
             {
+                if (visual is IBoundsIgnoredVisual3D)
+                {
+                    continue;    
+                }
+
                 var b = FindBounds(visual, Transform3D.Identity);
                 bounds.Union(b);
             }
