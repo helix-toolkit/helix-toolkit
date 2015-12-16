@@ -116,6 +116,7 @@
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\ContourHelper.cs" />
     <Compile Include="Helpers\DependencyPropertyEx.cs" />
+    <Compile Include="Helpers\IBoundsIgnoredVisual3D.cs" />
     <Compile Include="Helpers\Model3DHelper.cs" />
     <Compile Include="Helpers\ScreenSpace\Billboard.cs" />
     <Compile Include="Helpers\ScreenSpace\BillboardGeometryBuilder.cs" />
@@ -341,5 +342,3 @@
   </Target>
   -->
 </Project>
-
-
