@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf
     /// A visual element that contains a collection of text billboards.
     /// </summary>
     [ContentProperty("Items")]
-    public class BillboardTextGroupVisual3D : RenderingModelVisual3D
+    public class BillboardTextGroupVisual3D : RenderingModelVisual3D, IBoundsIgnoredVisual3D
     {
         /// <summary>
         /// Identifies the <see cref="Background"/> dependency property.
