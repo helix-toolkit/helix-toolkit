@@ -52,6 +52,7 @@ namespace HelixToolkit.Wpf
             : base(dispatcher)
         {
             this.IgnoreErrors = false;
+            this.SwitchYZ = true;
 
             this.IsSmoothingDefault = true;
             this.SkipTransparencyValues = true;
@@ -80,6 +81,11 @@ namespace HelixToolkit.Wpf
         /// The default value is on (true).
         /// </remarks>
         public bool IgnoreErrors { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to switch Y and Z coordinates.
+        /// </summary>
+        public bool SwitchYZ { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to skip transparency values in the material files.
@@ -629,7 +635,14 @@ namespace HelixToolkit.Wpf
         private void AddNormal(string values)
         {
             var fields = Split(values);
-            this.Normals.Add(new Vector3D(fields[0], fields[1], fields[2]));
+            if (SwitchYZ)
+            {
+                this.Normals.Add(new Vector3D(fields[0], -fields[2], fields[1]));
+            }
+            else
+            {
+                this.Normals.Add(new Vector3D(fields[0], fields[1], fields[2]));
+            }
         }
 
         /// <summary>
@@ -653,7 +666,14 @@ namespace HelixToolkit.Wpf
         private void AddVertex(string values)
         {
             var fields = Split(values);
-            this.Points.Add(new Point3D(fields[0], fields[1], fields[2]));
+            if (SwitchYZ)
+            {
+                this.Points.Add(new Point3D(fields[0], -fields[2], fields[1]));
+            }
+            else
+            {
+                this.Points.Add(new Point3D(fields[0], fields[1], fields[2]));
+            }
         }
 
         /// <summary>
