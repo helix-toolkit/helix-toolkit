@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf
         /// File filter for all the supported exporters.
         /// </summary>
         public static readonly string Filter =
-            "Bitmap Files (*.png;*.jpg)|*.png;*.jpg|XAML Files (*.xaml)|*.xml|Kerkythea Files (*.xml)|*.xml|Wavefront Files (*.obj)|*.obj|Wavefront Files zipped (*.objz)|*.objz|Extensible 3D Graphics Files (*.x3d)|*.x3d|Collada Files (*.dae)|*.dae|STereoLithography (*.stl)|*.stl";
+            "Bitmap Files (*.png;*.jpg)|*.png;*.jpg|XAML Files (*.xaml)|*.xaml|Kerkythea Files (*.xml)|*.xml|Wavefront Files (*.obj)|*.obj|Wavefront Files zipped (*.objz)|*.objz|Extensible 3D Graphics Files (*.x3d)|*.x3d|Collada Files (*.dae)|*.dae|STereoLithography (*.stl)|*.stl";
 
         /// <summary>
         /// Creates an exporter based on the extension of the specified path.
@@ -58,6 +58,8 @@ namespace HelixToolkit.Wpf
                 case ".obj":
                 case ".objz":
                     return new ObjExporter();
+                case ".xaml":
+                    return new XamlExporter();
                 case ".xml":
                     return new KerkytheaExporter();
                 case ".x3d":
