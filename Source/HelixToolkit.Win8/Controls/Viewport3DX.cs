@@ -85,7 +85,7 @@ namespace HelixToolkit.Win8
         /// <param name="sender">The sender.</param>
         private void DisplayPropertiesLogicalDpiChanged(object sender)
         {
-            this.deviceManager.Dpi = DisplayProperties.LogicalDpi;
+            this.deviceManager.Dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
         }
 
         /// <summary>
@@ -119,8 +119,9 @@ namespace HelixToolkit.Win8
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void Viewport3DXLoaded(object sender, RoutedEventArgs e)
         {
-            int pixelWidth = (int)(this.ActualWidth * DisplayProperties.LogicalDpi / 96.0);
-            int pixelHeight = (int)(this.ActualHeight * DisplayProperties.LogicalDpi / 96.0);
+            var logicalDpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+            int pixelWidth = (int)(this.ActualWidth * logicalDpi / 96.0);
+            int pixelHeight = (int)(this.ActualHeight * logicalDpi / 96.0);
 
             // Safely dispose any previous instance
             // Creates a new DeviceManager (Direct3D, Direct2D, DirectWrite, WIC)
@@ -138,7 +139,7 @@ namespace HelixToolkit.Win8
             this.d3dTarget.OnRender += this.Render;
 
             // Initialize the device manager and all registered deviceManager.OnInitialize 
-            this.deviceManager.Initialize(DisplayProperties.LogicalDpi);
+            this.deviceManager.Initialize(DisplayInformation.GetForCurrentView().LogicalDpi);
 
             // Setup rendering callback
             CompositionTarget.Rendering += this.CompositionTargetRendering;
