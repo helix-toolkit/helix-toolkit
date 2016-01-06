@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf
             this.Mesh = new MeshGeometry3D();
             this.Model = new GeometryModel3D { Geometry = this.Mesh };
             this.Content = this.Model;
-            this.Points = new List<Point3D>();
+            this.Points = new Point3DCollection();
             this.ColorChanged();
         }
 
@@ -129,11 +129,11 @@ namespace HelixToolkit.Wpf
         /// <value>
         /// The points collection.
         /// </value>
-        public IList<Point3D> Points
+        public Point3DCollection Points
         {
             get
             {
-                return (IList<Point3D>)this.GetValue(PointsProperty);
+                return (Point3DCollection)this.GetValue(PointsProperty);
             }
 
             set
