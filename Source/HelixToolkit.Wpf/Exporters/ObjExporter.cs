@@ -253,7 +253,7 @@ namespace HelixToolkit.Wpf
                 writer.WriteLine("# {0}", this.Comment);
             }
 
-            if (this.MaterialsFile == null)
+            if (this.MaterialsFile == null && stream is FileStream)
             {
                 this.MaterialsFile = Path.ChangeExtension((stream as FileStream).Name, ".mtl");
             }
