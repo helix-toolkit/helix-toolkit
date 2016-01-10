@@ -85,10 +85,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 foreach (var item in f.Adapters)
                 {
-                    // Windows 10 fix
-                    if (item.Outputs == null || item.Outputs.Length == 0)
+                    // not skip the render only WARP device
+                    if (item.Description.VendorId != 0x1414 || item.Description.DeviceId != 0x8c)
                     {
-                        continue;
+                        // Windows 10 fix
+                        if (item.Outputs == null || item.Outputs.Length == 0)
+                        {
+                            continue;
+                        }
                     }
 
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
