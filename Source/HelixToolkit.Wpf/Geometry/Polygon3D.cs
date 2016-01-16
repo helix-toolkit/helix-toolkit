@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf
             for (int i = 2; i < this.Points.Count; i++)
             {
                 var n = Vector3D.CrossProduct(v1, this.Points[i] - this.Points[0]);
-                if (n.LengthSquared > 1e-8)
+                if (n.LengthSquared > 1e-10)
                 {
                     n.Normalize();
                     return n;
