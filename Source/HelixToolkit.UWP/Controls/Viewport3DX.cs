@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The image source target
         /// </summary>
-        private SurfaceImageSourceTarget d3dTarget;
+        private SwapChainTarget d3dTarget;
 
         /// <summary>
         /// The device manager
@@ -128,10 +128,7 @@ namespace HelixToolkit.UWP
             this.deviceManager = new DeviceManager();
 
             // Use CoreWindowTarget as the rendering target (Initialize SwapChain, RenderTargetView, DepthStencilView, BitmapTarget)
-            this.d3dTarget = new SurfaceImageSourceTarget(pixelWidth, pixelHeight);
-            this.imageBrush = new ImageBrush();
-            this.imageBrush.ImageSource = this.d3dTarget.ImageSource;
-            this.Background = this.imageBrush;
+            this.d3dTarget = new SwapChainTarget((SwapChainPanel)this.ItemsPanelRoot, pixelWidth, pixelHeight);
 
             this.deviceManager.OnInitialize += this.d3dTarget.Initialize;
             this.deviceManager.OnInitialize += this.Initialize;

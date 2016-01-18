@@ -15,7 +15,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="HelixToolkit + SharpDX in Windows 8" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="64" FontStretch="Condensed"/>
+        <TextBlock Text="HelixToolkit + SharpDX in Windows 10" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="64" FontStretch="Condensed"/>
 
         <helix:Viewport3DX Grid.Row="1">
             <helix:ExampleCube3D RotationSpeed="0.5" />

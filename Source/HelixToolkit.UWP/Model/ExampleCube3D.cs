@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
             context.ClearDepthStencilView(render.DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
             if (this.EnableClear)
             {
-                context.ClearRenderTargetView(render.RenderTargetView, Color.Black);
+                context.ClearRenderTargetView(render.RenderTargetView, Color.LightGray);
             }
 
             if (this.ShowCube)

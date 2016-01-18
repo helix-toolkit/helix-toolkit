@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="CommonDX\DeviceManager.cs" />
     <Compile Include="CommonDX\SurfaceImageSourceTarget.cs" />
+    <Compile Include="CommonDX\SwapChainTarget.cs" />
     <Compile Include="CommonDX\TargetBase.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Model\Element3D.cs" />
@@ -124,6 +125,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MiniCube.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
