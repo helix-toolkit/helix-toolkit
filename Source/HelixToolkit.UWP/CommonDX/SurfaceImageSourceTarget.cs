@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP.CommonDX
         private int pixelHeight;
         private SurfaceImageSource surfaceImageSource;
         private ISurfaceImageSourceNative surfaceImageSourceNative;
-        private SharpDX.Mathematics.Interop.RawPoint position;
+        private SharpDX.Point position;
 
         /// <summary>
         /// Initialzes a new <see cref="SurfaceImageSourceTarget"/> instance.
@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP.CommonDX
         /// <summary>
         /// Gets the relative position to use to draw on the surface.
         /// </summary>
-        public SharpDX.Mathematics.Interop.RawPoint DrawingPosition { get { return position; } }
+        public SharpDX.Point DrawingPosition { get { return position; } }
 
         /// <inveritdoc/>
         public override void RenderAll()
@@ -87,8 +87,13 @@ namespace HelixToolkit.UWP.CommonDX
 
             // Unlike other targets, we can only get the DXGI surface to render to
             // just before rendering.
-            using (var surface = surfaceImageSourceNative.BeginDraw(regionToDraw, out position))
+
+            SharpDX.Mathematics.Interop.RawPoint rawPoint;
+
+            using (var surface = surfaceImageSourceNative.BeginDraw(regionToDraw, out rawPoint))
             {
+                position = rawPoint;
+
                 // Cache DXGI surface in order to avoid recreate all render target view, depth stencil...etc.
                 // Is it the right way to do it?
                 // It seems that ISurfaceImageSourceNative.BeginDraw is returning 2 different DXGI surfaces
@@ -136,7 +141,7 @@ namespace HelixToolkit.UWP.CommonDX
                     viewData.BitmapTarget = Collect(new SharpDX.Direct2D1.Bitmap1(DeviceManager.ContextDirect2D, surface, bitmapProperties));
 
                     // Create a viewport descriptor of the full window size.
-                    viewData.Viewport = new SharpDX.Mathematics.Interop.RawViewportF() { X = position.X, Y = position.Y, Width = (float)viewData.RenderTargetSize.Width - position.X, Height = (float)viewData.RenderTargetSize.Height - position.Y, MinDepth = 0.0f, MaxDepth = 1.0f };
+                    viewData.Viewport = new SharpDX.ViewportF(position.X, position.Y, (float)viewData.RenderTargetSize.Width - position.X, (float)viewData.RenderTargetSize.Height - position.Y, 0.0f, 1.0f);
                 }
 
                 backBuffer = viewData.BackBuffer;
@@ -166,8 +171,7 @@ namespace HelixToolkit.UWP.CommonDX
             public SharpDX.Direct3D11.RenderTargetView RenderTargetView;
             public SharpDX.Direct3D11.DepthStencilView DepthStencilView;
             public SharpDX.Direct2D1.Bitmap1 BitmapTarget;
-            public SharpDX.Mathematics.Interop.RawViewportF Viewport;
-
+            public SharpDX.ViewportF Viewport;
             public Size RenderTargetSize;
         }
     }

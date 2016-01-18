@@ -171,7 +171,7 @@ namespace HelixToolkit.UWP
                     });
 
             this.vertexBufferBinding = new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() * 2, 0);
-            
+
             // Create Constant Buffer
             this.constantBuffer = new SharpDX.Direct3D11.Buffer(
                 d3dDevice,

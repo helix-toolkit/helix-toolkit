@@ -142,7 +142,6 @@ namespace HelixToolkit.UWP.CommonDX
         protected virtual void CreateDeviceResources()
         {
             // Dispose previous references and set to null
-
             if (d3dDevice != null)
             {
                 RemoveAndDispose(ref d3dDevice);
@@ -162,7 +161,7 @@ namespace HelixToolkit.UWP.CommonDX
             {
                 RemoveAndDispose(ref d2dContext);
             }
-            
+
             // Allocate new references
             // Enable compatibility with Direct2D
             // Retrieve the Direct3D 11.1 device amd device context
