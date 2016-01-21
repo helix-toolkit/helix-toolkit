@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf
             : base(dispatcher)
         {
             this.IgnoreErrors = false;
-            this.SwitchYZ = true;
+            this.SwitchYZ = false;
 
             this.IsSmoothingDefault = true;
             this.SkipTransparencyValues = true;
