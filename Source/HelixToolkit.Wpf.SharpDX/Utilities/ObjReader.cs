@@ -57,6 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public ObjReader()
         {
             this.IgnoreErrors = false;
+            this.SwitchYZ = false;
 
             this.IsSmoothingDefault = true;
             this.SkipTransparencyValues = true;
@@ -90,6 +91,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The default value is on (true).
         /// </remarks>
         public bool IgnoreErrors { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to switch Y and Z coordinates.
+        /// </summary>
+        public bool SwitchYZ { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to skip transparency values ("Tr") in the material files.
@@ -730,7 +736,14 @@ namespace HelixToolkit.Wpf.SharpDX
         private void AddNormal(string values)
         {
             var fields = Split(values);
-            this.Normals.Add(new Vector3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            if (SwitchYZ)
+            {
+                this.Normals.Add(new Vector3D((float)fields[0], (float)-fields[2], (float)fields[1]));
+            }
+            else
+            {
+                this.Normals.Add(new Vector3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            }
         }
 
         /// <summary>
@@ -754,7 +767,14 @@ namespace HelixToolkit.Wpf.SharpDX
         private void AddVertex(string values)
         {
             var fields = Split(values);
-            this.Points.Add(new Point3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            if (SwitchYZ)
+            {
+                this.Points.Add(new Point3D((float)fields[0], (float)-fields[2], (float)fields[1]));
+            }
+            else
+            {
+                this.Points.Add(new Point3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            }
         }
 
         /// <summary>
