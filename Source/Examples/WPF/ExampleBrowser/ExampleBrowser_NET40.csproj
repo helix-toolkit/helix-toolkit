@@ -51,10 +51,10 @@
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net40\PropertyTools.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net40\PropertyTools.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net40\PropertyTools.Wpf.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net40\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
