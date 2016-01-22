@@ -15,6 +15,7 @@ namespace BuildingDemo
     using HelixToolkit.Wpf;
 
     using PropertyTools.DataAnnotations;
+    using BrowsableAttribute = System.ComponentModel.BrowsableAttribute;
 
     public class KerbVisual3D : UIElement3D
     {

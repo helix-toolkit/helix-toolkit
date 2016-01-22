@@ -14,6 +14,7 @@ namespace BuildingDemo
     using HelixToolkit.Wpf;
 
     using PropertyTools.DataAnnotations;
+    using BrowsableAttribute = System.ComponentModel.BrowsableAttribute;
 
     public class FenceVisual3D : UIElement3D
     {
