@@ -1027,7 +1027,10 @@ namespace HelixToolkit.Wpf
 
             string filename = name + ".png";
             string path = Path.Combine(this.TexturePath, filename);
-            this.RenderBrush(path, brush, this.TextureWidth, this.TextureHeight);
+            using (var s = this.FileCreator(path))
+            {
+                this.RenderBrush(s, brush, this.TextureWidth, this.TextureHeight);
+            }
 
             writer.AddTexture(brush, filename);
             return filename;

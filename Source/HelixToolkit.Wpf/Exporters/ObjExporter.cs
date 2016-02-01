@@ -355,9 +355,18 @@ namespace HelixToolkit.Wpf
                 {
                     var textureFilename = matName + this.TextureExtension;
                     var texturePath = Path.Combine(this.TextureFolder, textureFilename);
-
-                    // create .png bitmap file for the brush
-                    this.RenderBrush(texturePath, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
+                    using (var s = this.FileCreator(texturePath))
+                    {
+                        // create bitmap file for the brush
+                        if (this.TextureExtension == ".jpg")
+                        {
+                            this.RenderBrush(s, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
+                        }
+                        else
+                        {
+                            this.RenderBrush(s, dm.Brush, this.TextureSize, this.TextureSize);
+                        }
+                    }
                     materialWriter.WriteLine(string.Format("map_Kd {0}", textureFilename));
                 }
             }
