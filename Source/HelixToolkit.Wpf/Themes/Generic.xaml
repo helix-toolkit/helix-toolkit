@@ -91,7 +91,7 @@
                                     <local:InputBindingX Gezture="{Binding OrthographicToggleGesture, RelativeSource={RelativeSource TemplatedParent}}"  Command="{x:Static local:HelixViewport3D.OrthographicToggleCommand}"/>
                                 </local:CameraController.InputBindings>
 
-                                <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="False">
                                     <!-- the main viewport3D is inserted here -->
                                 </AdornerDecorator>
                             </local:CameraController>
