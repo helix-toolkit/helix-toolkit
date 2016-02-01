@@ -45,11 +45,6 @@ namespace HelixToolkit.Wpf
             }
 
             string ext = Path.GetExtension(path);
-            if (ext == null)
-            {
-                return null;
-            }
-
             switch (ext.ToLower())
             {
                 case ".png":

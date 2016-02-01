@@ -4,6 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace HelixToolkit.Wpf.Tests
 {
     using System.Diagnostics.CodeAnalysis;
@@ -18,10 +20,21 @@ namespace HelixToolkit.Wpf.Tests
     public class ObjExporterTests : ExporterTests
     {
         [Test]
-        public void Export_SimpleModel_ValidOutput()
+        public void ShouldThrowExceptionIfMaterialsFileIsNotSpecified()
         {
             string path = "temp.obj";
             var e = new ObjExporter();
+            using (var stream = File.Create(path))
+            {
+                Assert.Throws<InvalidOperationException>(() => this.ExportSimpleModel(e, stream));
+            }
+        }
+
+        [Test]
+        public void Export_SimpleModel_ValidOutput()
+        {
+            string path = "temp.obj";
+            var e = new ObjExporter { MaterialsFile = Path.ChangeExtension(path, ".mtl") };
             using (var stream = File.Create(path))
             {
                 this.ExportSimpleModel(e, stream);
@@ -32,7 +45,7 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_BoxWithGradientTexture_TextureExportedAsPng()
         {
             var path = "box_gradient_png.obj";
-            var e = new ObjExporter();
+            var e = new ObjExporter { MaterialsFile = Path.ChangeExtension(path, ".mtl") };
             using (var stream = File.Create(path))
             {
                 this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
@@ -43,7 +56,7 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_BoxWithGradientTexture_TextureExportedAsJpg()
         {
             var path = "box_gradient_jpg.obj";
-            var e = new ObjExporter { TextureExtension = ".jpg" };
+            var e = new ObjExporter { TextureExtension = ".jpg", MaterialsFile = Path.ChangeExtension(path, ".mtl") };
             using (var stream = File.Create(path))
             {
                 this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });

@@ -9,7 +9,6 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System;
     using System.IO;
     using System.Windows;
     using System.Windows.Controls;
@@ -23,83 +22,6 @@ namespace HelixToolkit.Wpf
     /// <typeparam name="T">The type of the output writer.</typeparam>
     public abstract class Exporter<T> : IExporter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Exporter{T}"/> class.
-        /// </summary>
-        protected Exporter()
-        {
-            this.FileCreator = File.Create;
-        }
-
-        /// <summary>
-        /// Gets or sets the file creator.
-        /// </summary>
-        /// <value>The file creator.</value>
-        public Func<string, Stream> FileCreator { get; set; }
-
-        /// <summary>
-        /// Renders the brush to an image.
-        /// </summary>
-        /// <param name="path">
-        /// The output path. If the path extension is .png, a PNG image is generated, otherwise a JPEG image.
-        /// </param>
-        /// <param name="brush">
-        /// The brush to render.
-        /// </param>
-        /// <param name="w">
-        /// The width of the output image.
-        /// </param>
-        /// <param name="h">
-        /// The height of the output image.
-        /// </param>
-        /// <param name="qualityLevel">
-        /// The quality level of the image (only used if an JPEG image is exported). 
-        /// The value range is 1 (lowest quality) to 100 (highest quality). 
-        /// </param>
-        public void RenderBrush(string path, Brush brush, int w, int h, int qualityLevel = 90)
-        {
-            var ib = brush as ImageBrush;
-            if (ib != null)
-            {
-                var bi = ib.ImageSource as BitmapImage;
-                if (bi != null)
-                {
-                    w = bi.PixelWidth;
-                    h = bi.PixelHeight;
-                }
-            }
-
-            var bmp = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
-            var rect = new Grid
-                {
-                    Background = brush,
-                    Width = 1,
-                    Height = 1,
-                    LayoutTransform = new ScaleTransform(w, h)
-                };
-            rect.Arrange(new Rect(0, 0, w, h));
-            bmp.Render(rect);
-
-            var ext = (Path.GetExtension(path) ?? string.Empty).ToLower();
-
-            BitmapEncoder encoder;
-            if (ext == ".png")
-            {
-                encoder = new PngBitmapEncoder();
-            }
-            else
-            {
-                encoder = new JpegBitmapEncoder { QualityLevel = qualityLevel };
-            }
-
-            encoder.Frames.Add(BitmapFrame.Create(bmp));
-
-            using (var stm = this.FileCreator(path))
-            {
-                encoder.Save(stm);
-            }
-        }
-
         /// <summary>
         /// Exports the specified viewport.
         /// </summary>
@@ -208,6 +130,90 @@ namespace HelixToolkit.Wpf
         /// <param name="viewport">The viewport.</param>
         protected virtual void ExportViewport(T writer, Viewport3D viewport)
         {
+        }
+
+        /// <summary>
+        /// Renders the brush to a JPG image.
+        /// </summary>
+        /// <param name="stm">The output stream.</param>
+        /// <param name="brush">The brush to render.</param>
+        /// <param name="w">The width of the output image.</param>
+        /// <param name="h">The height of the output image.</param>
+        /// <param name="qualityLevel">The quality level of the JPG image. E.g. 90.
+        /// The value range is 1 (lowest quality) to 100 (highest quality).</param>
+        protected void RenderBrush(Stream stm, Brush brush, int w, int h, int qualityLevel)
+        {
+            this.Encode(this.RenderBrush(brush, w, h), stm, qualityLevel);
+        }
+
+        /// <summary>
+        /// Renders the brush to a PNG image.
+        /// </summary>
+        /// <param name="stm">The output stream.</param>
+        /// <param name="brush">The brush to render.</param>
+        /// <param name="w">The width of the output image.</param>
+        /// <param name="h">The height of the output image.</param>
+        protected void RenderBrush(Stream stm, Brush brush, int w, int h)
+        {
+            this.Encode(this.RenderBrush(brush, w, h), stm);
+        }
+
+        /// <summary>
+        /// Renders the specified brush.
+        /// </summary>
+        /// <param name="brush">The brush.</param>
+        /// <param name="w">The width.</param>
+        /// <param name="h">The height.</param>
+        /// <returns>RenderTargetBitmap.</returns>
+        protected RenderTargetBitmap RenderBrush(Brush brush, int w, int h)
+        {
+            var ib = brush as ImageBrush;
+            if (ib != null)
+            {
+                var bi = ib.ImageSource as BitmapImage;
+                if (bi != null)
+                {
+                    w = bi.PixelWidth;
+                    h = bi.PixelHeight;
+                }
+            }
+
+            var bmp = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
+            var rect = new Grid
+            {
+                Background = brush,
+                Width = 1,
+                Height = 1,
+                LayoutTransform = new ScaleTransform(w, h)
+            };
+            rect.Arrange(new Rect(0, 0, w, h));
+            bmp.Render(rect);
+            return bmp;
+        }
+
+        /// <summary>
+        /// Encodes the specified bitmap as a PNG image.
+        /// </summary>
+        /// <param name="bmp">The bitmap.</param>
+        /// <param name="stm">The output stream.</param>
+        protected void Encode(RenderTargetBitmap bmp, Stream stm)
+        {
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bmp));
+            encoder.Save(stm);
+        }
+
+        /// <summary>
+        /// Encodes the specified bitmap as a Jpeg image.
+        /// </summary>
+        /// <param name="bmp">The bitmap.</param>
+        /// <param name="stm">The output stream.</param>
+        /// <param name="qualityLevel">The jpeg quality level.</param>
+        protected void Encode(RenderTargetBitmap bmp, Stream stm, int qualityLevel)
+        {
+            var encoder = new JpegBitmapEncoder { QualityLevel = qualityLevel };
+            encoder.Frames.Add(BitmapFrame.Create(bmp));
+            encoder.Save(stm);
         }
     }
 }

@@ -15,7 +15,6 @@ namespace HelixToolkit.Wpf
     using System.IO;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
-    using System.Xml;
 
     /// <summary>
     /// Export the 3D visual tree to a Wavefront OBJ file
@@ -27,16 +26,6 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class ObjExporter : Exporter<ObjExporter.ObjWriters>
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether to export normals.
-        /// </summary>
-        public bool ExportNormals { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use "d" for transparency (default is "Tr").
-        /// </summary>
-        public bool UseDissolveForTransparency { get; set; }
-
         /// <summary>
         /// The exported materials.
         /// </summary>
@@ -80,10 +69,28 @@ namespace HelixToolkit.Wpf
             this.TextureExtension = ".png";
             this.TextureSize = 1024;
             this.TextureQualityLevel = 90;
+            this.TextureFolder = ".";
 
             this.SwitchYZ = true;
             this.ExportNormals = false;
+            this.FileCreator = File.Create;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to export normals.
+        /// </summary>
+        public bool ExportNormals { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture image and materials file creator.
+        /// </summary>
+        /// <value>A function used to create streams for texture images and material files.</value>
+        public Func<string, Stream> FileCreator { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use "d" for transparency (default is "Tr").
+        /// </summary>
+        public bool UseDissolveForTransparency { get; set; }
 
         /// <summary>
         /// Gets or sets the comment.
@@ -246,6 +253,11 @@ namespace HelixToolkit.Wpf
         /// <returns>StreamWriter.</returns>
         protected override ObjWriters Create(Stream stream)
         {
+            if (this.MaterialsFile == null)
+            {
+                throw new InvalidOperationException("The `MaterialsFile` property must be set.");
+            }
+
             var writer = new StreamWriter(stream);
 
             if (!string.IsNullOrEmpty(this.Comment))
@@ -355,9 +367,19 @@ namespace HelixToolkit.Wpf
                 {
                     var textureFilename = matName + this.TextureExtension;
                     var texturePath = Path.Combine(this.TextureFolder, textureFilename);
+                    using (var s = this.FileCreator(texturePath))
+                    {
+                        // create bitmap file for the brush
+                        if (this.TextureExtension == ".jpg")
+                        {
+                            this.RenderBrush(s, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
+                        }
+                        else
+                        {
+                            this.RenderBrush(s, dm.Brush, this.TextureSize, this.TextureSize);
+                        }
+                    }
 
-                    // create .png bitmap file for the brush
-                    this.RenderBrush(texturePath, dm.Brush, this.TextureSize, this.TextureSize, this.TextureQualityLevel);
                     materialWriter.WriteLine(string.Format("map_Kd {0}", textureFilename));
                 }
             }
