@@ -9,7 +9,6 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System;
     using System.IO;
     using System.Windows;
     using System.Windows.Controls;
@@ -23,20 +22,6 @@ namespace HelixToolkit.Wpf
     /// <typeparam name="T">The type of the output writer.</typeparam>
     public abstract class Exporter<T> : IExporter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Exporter{T}"/> class.
-        /// </summary>
-        protected Exporter()
-        {
-            this.FileCreator = File.Create;
-        }
-
-        /// <summary>
-        /// Gets or sets the file creator.
-        /// </summary>
-        /// <value>The file creator.</value>
-        public Func<string, Stream> FileCreator { get; set; }
-
         /// <summary>
         /// Exports the specified viewport.
         /// </summary>

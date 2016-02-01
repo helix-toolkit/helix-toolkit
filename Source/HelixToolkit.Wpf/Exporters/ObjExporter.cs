@@ -73,12 +73,19 @@ namespace HelixToolkit.Wpf
 
             this.SwitchYZ = true;
             this.ExportNormals = false;
+            this.FileCreator = File.Create;
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether to export normals.
         /// </summary>
         public bool ExportNormals { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture image and materials file creator.
+        /// </summary>
+        /// <value>A function used to create streams for texture images and material files.</value>
+        public Func<string, Stream> FileCreator { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use "d" for transparency (default is "Tr").

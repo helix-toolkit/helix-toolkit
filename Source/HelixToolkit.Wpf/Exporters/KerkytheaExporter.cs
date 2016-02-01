@@ -54,6 +54,7 @@ namespace HelixToolkit.Wpf
 
             this.TextureWidth = 1024;
             this.TextureHeight = 1024;
+            this.FileCreator = File.Create;
         }
 
         /// <summary>
@@ -88,6 +89,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <value>The color of the background.</value>
         public Color BackgroundColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture file creator.
+        /// </summary>
+        /// <value>The file creator.</value>
+        public Func<string, Stream> FileCreator { get; set; }
 
         /// <summary>
         /// Gets or sets the length of the focal.
