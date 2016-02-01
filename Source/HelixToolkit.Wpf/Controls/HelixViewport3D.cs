@@ -3224,7 +3224,6 @@ namespace HelixToolkit.Wpf
                 if (this.adornerLayer != null)
                 {
                     this.adornerLayer.Child = this.viewport;
-                    adornerLayer.IsHitTestVisible = false;
                 }
             }
 
