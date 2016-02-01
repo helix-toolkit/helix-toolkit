@@ -4,27 +4,36 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System;
-    using System.Windows;
 
     [Serializable]
-    public abstract class Material : DependencyObject
+    public abstract class Material : INotifyPropertyChanged
     {
-        public static readonly DependencyProperty NameProperty =
-            DependencyProperty.Register("Name", typeof(string), typeof(Material), new UIPropertyMetadata(null));
-
+        private string _name;
         public string Name
         {
-            get { return (string)this.GetValue(NameProperty); }
-            set { this.SetValue(NameProperty, value); }
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged("Name");
+            }
         }
 
         public override string ToString()
         {
             return Name;
-        }       
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName) {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
 }

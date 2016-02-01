@@ -13,7 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
 
     using global::SharpDX;
-    using System.Windows;    
     using System.Windows.Media.Imaging;
     using System;
 
@@ -26,68 +25,15 @@ namespace HelixToolkit.Wpf.SharpDX
     [Serializable]
     public partial class PhongMaterial : Material
     {
-        /// <summary>
-        /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.AmbientColor�dependency
-        /// property.
-        /// </summary>
-        public static readonly DependencyProperty AmbientColorProperty =
-            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new UIPropertyMetadata((Color4)Color.Gray));
-
-        /// <summary>
-        /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.Color�dependency
-        /// property.
-        /// </summary>
-        public static readonly DependencyProperty DiffuseColorProperty =
-            DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(PhongMaterial), new UIPropertyMetadata((Color4)Color.Gray));
-
-        /// <summary>
-        ///         
-        /// </summary>
-        public static readonly DependencyProperty EmissiveColorProperty =
-            DependencyProperty.Register("EmissiveColor", typeof(Color4), typeof(PhongMaterial), new UIPropertyMetadata((Color4)Color.Black));
-
-        /// <summary>
-        ///         
-        /// </summary>
-        public static readonly DependencyProperty SpecularColorProperty =
-            DependencyProperty.Register("SpecularColor", typeof(Color4), typeof(PhongMaterial), new UIPropertyMetadata((Color4)Color.Black));
-
-        /// <summary>
-        ///         
-        /// </summary>
-        public static readonly DependencyProperty SpecularShininessProperty =
-            DependencyProperty.Register("SpecularShininess", typeof(float), typeof(PhongMaterial), new UIPropertyMetadata(30f));
-
-        /// <summary>
-        ///         
-        /// </summary>
-        public static readonly DependencyProperty ReflectiveColorProperty =
-            DependencyProperty.Register("ReflectiveColor", typeof(Color4), typeof(PhongMaterial), new UIPropertyMetadata(new Color4(0.1f, 0.1f, 0.1f, 1.0f)));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(BitmapSource), typeof(PhongMaterial), new UIPropertyMetadata(null));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty NormalMapProperty =
-            DependencyProperty.Register("NormalMap", typeof(BitmapSource), typeof(PhongMaterial), new UIPropertyMetadata(null));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty DisplacementMapProperty =
-            DependencyProperty.Register("DisplacementMap", typeof(BitmapSource), typeof(PhongMaterial), new UIPropertyMetadata(null));
-
-
-        /// <summary>
-        /// Constructs a Shading Material which correspnds with 
-        /// the Phong and BlinnPhong lighting models.
-        /// </summary>
-        public PhongMaterial() { }
+        private Color4 _ambientColor = Color.Gray;
+        public Color4 _diffuseColor = Color.Gray;
+        public Color4 _emissiveColor = Color.Black;
+        public Color4 _reflectiveColor = new Color4(0.1f, 0.1f, 0.1f, 1f);
+        public Color4 _specularColor = Color.Black;
+        public float _specularShininess = 30f;
+        public BitmapSource _diffuseMap;
+        public BitmapSource _normalMap;
+        public BitmapSource _displacementMap;
 
         /// <summary>
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
@@ -96,8 +42,12 @@ namespace HelixToolkit.Wpf.SharpDX
         [TypeConverter(typeof(Color4Converter))]
         public Color4 AmbientColor
         {
-            get { return (Color4)this.GetValue(AmbientColorProperty); }
-            set { this.SetValue(AmbientColorProperty, value); }
+            get { return _ambientColor; }
+            set
+            {
+                _ambientColor = value;
+                OnPropertyChanged("AmbientColor");
+            }
         }
 
         /// <summary>
@@ -107,8 +57,12 @@ namespace HelixToolkit.Wpf.SharpDX
         [TypeConverter(typeof(Color4Converter))]
         public Color4 DiffuseColor
         {
-            get { return (Color4)this.GetValue(DiffuseColorProperty); }
-            set { this.SetValue(DiffuseColorProperty, value); }
+            get { return _diffuseColor; }
+            set
+            {
+                _diffuseColor = value;
+                OnPropertyChanged("DiffuseColor");
+            }
         }
 
         /// <summary>
@@ -118,8 +72,12 @@ namespace HelixToolkit.Wpf.SharpDX
         [TypeConverter(typeof(Color4Converter))]
         public Color4 EmissiveColor
         {
-            get { return (Color4)this.GetValue(EmissiveColorProperty); }
-            set { this.SetValue(EmissiveColorProperty, value); }
+            get { return _emissiveColor; }
+            set
+            {
+                _emissiveColor = value;
+                OnPropertyChanged("EmissiveColor");
+            }
         }
 
         /// <summary>
@@ -128,8 +86,12 @@ namespace HelixToolkit.Wpf.SharpDX
         [TypeConverter(typeof(Color4Converter))]
         public Color4 ReflectiveColor
         {
-            get { return (Color4)this.GetValue(ReflectiveColorProperty); }
-            set { this.SetValue(ReflectiveColorProperty, value); }
+            get { return _reflectiveColor; }
+            set
+            {
+                _reflectiveColor = value;
+                OnPropertyChanged("ReflectiveColor");
+            }
         }
 
         /// <summary>
@@ -139,8 +101,12 @@ namespace HelixToolkit.Wpf.SharpDX
         [TypeConverter(typeof(Color4Converter))]
         public Color4 SpecularColor
         {
-            get { return (Color4)this.GetValue(SpecularColorProperty); }
-            set { this.SetValue(SpecularColorProperty, value); }
+            get { return _specularColor; }
+            set
+            {
+                _specularColor = value;
+                OnPropertyChanged("SpecularColor");
+            }
         }
 
         /// <summary>
@@ -149,8 +115,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public float SpecularShininess
         {
-            get { return (float)this.GetValue(SpecularShininessProperty); }
-            set { this.SetValue(SpecularShininessProperty, value); }
+            get { return _specularShininess; }
+            set
+            {
+                _specularShininess = value;
+                OnPropertyChanged("SpecularShininess");
+            }
         }
 
         /// <summary>
@@ -159,8 +129,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public BitmapSource DiffuseMap
         {
-            get { return (BitmapSource)this.GetValue(DiffuseMapProperty); }
-            set { this.SetValue(DiffuseMapProperty, value); }
+            get { return _diffuseMap; }
+            set
+            {
+                _diffuseMap = value;
+                OnPropertyChanged("DiffuseMap");
+            }
         }
 
         /// <summary>
@@ -168,8 +142,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public BitmapSource NormalMap
         {
-            get { return (BitmapSource)this.GetValue(NormalMapProperty); }
-            set { this.SetValue(NormalMapProperty, value); }
+            get { return _normalMap; }
+            set
+            {
+                _normalMap = value;
+                OnPropertyChanged("NormalMap");
+            }
         }
 
         /// <summary>
@@ -177,8 +155,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public BitmapSource DisplacementMap
         {
-            get { return (BitmapSource)this.GetValue(DisplacementMapProperty); }
-            set { this.SetValue(DisplacementMapProperty, value); }
+            get { return _displacementMap; }
+            set
+            {
+                _displacementMap = value;
+                OnPropertyChanged("DisplacementMap");
+            }
         }
 
         public PhongMaterial Clone()
@@ -197,5 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = this.DiffuseMap,
             };
         }
+
+
     }
 }
