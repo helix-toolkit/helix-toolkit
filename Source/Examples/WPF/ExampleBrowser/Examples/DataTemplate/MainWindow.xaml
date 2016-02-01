@@ -9,22 +9,22 @@
             <h:SphereVisual3D Center="{Binding Position}" Material="{Binding Material}" Radius="{Binding Radius}"/>
         </local:DataTemplate3D>
         <local:DataTemplate3D x:Key="Template2">
-            <h:TubeVisual3D Path="{Binding Points}" Diameter="0.25" Fill="Blue"/>
+            <h:CubeVisual3D Center="{Binding Position}" SideLength="{Binding Radius}" Fill="Blue"/>
         </local:DataTemplate3D>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="*" />                 
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <Button x:Name="AddElemButton" Click="AddElemButton_Click" >Add Element</Button>
-            <Button x:Name="RemoveElemButton" Click="RemoveElemButton_Click">Remove Element</Button>
+            <Button Command="{Binding AddElementCommand}">Add Element</Button>
+            <Button Command="{Binding DeleteElementCommand}">Remove Element</Button>
         </StackPanel>
         <h:HelixViewport3D Grid.Row="1" ZoomExtentsWhenLoaded="True">
             <h:SunLight/>
-            <local:ItemsVisual3D ItemTemplate="{StaticResource Template1}" ItemsSource="{Binding Elements}"/>
-            <local:ItemsVisual3D ItemTemplate="{StaticResource Template2}" ItemsSource="{Binding Elements2}"/>
+            <local:ItemsVisual3D ItemTemplate="{StaticResource Template1}" ItemsSource="{Binding FixedElements}"/>
+            <local:ItemsVisual3D ItemTemplate="{StaticResource Template2}" ItemsSource="{Binding ObservableElements}"/>
         </h:HelixViewport3D>
     </Grid>
 </Window>

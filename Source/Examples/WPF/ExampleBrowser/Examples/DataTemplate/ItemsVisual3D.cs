@@ -82,13 +82,10 @@ namespace DataTemplateDemo
         }
 
 
-        private Dictionary<object, Visual3D> models;
-
-        public ItemsVisual3D()
-        {
-            this.models = new Dictionary<object, Visual3D>();
-        }
-
+        /// <summary>
+        /// Keeps track of the visuals created for each item.
+        /// </summary>
+        private readonly Dictionary<object, Visual3D> visuals = new Dictionary<object, Visual3D>();
 
         /// <summary>
         /// Handles changes in the ItemsSource property.
@@ -101,10 +98,12 @@ namespace DataTemplateDemo
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            // if collection implements INotifyCollectionChanged
-            INotifyCollectionChanged collec = ItemsSource as INotifyCollectionChanged;
-            if (collec != null)
-                collec.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChanged);
+            var observableCollection = this.ItemsSource as INotifyCollectionChanged;
+            if (observableCollection != null)
+            {
+                // TODO: should also unsubscribe to avoid leaks.
+                observableCollection.CollectionChanged += this.CollectionChanged;
+            }
 
             if (this.ItemsSource != null)
             {
@@ -112,7 +111,7 @@ namespace DataTemplateDemo
                 {
                     this.AddItem(item);
                 }
-            }          
+            }
         }
 
         private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -124,15 +123,16 @@ namespace DataTemplateDemo
                     {
                         this.AddItem(item);
                     }
+
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     foreach (var rem in e.OldItems)
                     {
-                        if (this.models.ContainsKey(rem))
+                        if (this.visuals.ContainsKey(rem))
                         {
-                            if (this.models[rem] != null)
+                            if (this.visuals[rem] != null)
                             {
-                                this.Children.Remove(this.models[rem]);
+                                this.Children.Remove(this.visuals[rem]);
                             }
                         }
                     }
@@ -145,30 +145,28 @@ namespace DataTemplateDemo
 
         private void AddItem(object item)
         {
-            Visual3D visObject;
+            Visual3D visual;
             if (this.ItemTemplate != null)
             {
-                visObject = this.ItemTemplate.CreateItem(item);                
+                visual = this.ItemTemplate.CreateItem(item);
             }
             else
-                visObject = item as Visual3D;
+                visual = item as Visual3D;
 
-            if (visObject != null)
+            if (visual != null)
             {
 
                 // todo: set up bindings?
                 // Cannot set DataContext, set bindings manually
                 // http://stackoverflow.com/questions/7725313/how-can-i-use-databinding-for-3d-elements-like-visual3d-or-uielement3d
-                this.Children.Add(visObject);
+                this.Children.Add(visual);
 
-                this.models[item] = visObject;
-
+                this.visuals[item] = visual;
             }
             else
             {
                 throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
             }
         }
-
     }
 }
