@@ -120,6 +120,11 @@ namespace HelixToolkit.Wpf
 
             foreach (var child in GetChildren(visual))
             {
+                if (child is IBoundsIgnoredVisual3D)
+                {
+                    continue;
+                }
+
                 var b = FindBounds(child, childTransform);
                 bounds.Union(b);
             }
