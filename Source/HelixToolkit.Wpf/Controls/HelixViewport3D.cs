@@ -26,6 +26,7 @@ namespace HelixToolkit.Wpf
     /// </summary>
     [ContentProperty("Children")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
+    [TemplatePart(Name = "PART_ViewportGrid", Type = typeof(Grid))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCubeViewport", Type = typeof(Viewport3D))]
@@ -855,6 +856,11 @@ namespace HelixToolkit.Wpf
         /// The adorner layer name.
         /// </summary>
         private const string PartAdornerLayer = "PART_AdornerLayer";
+
+        /// <summary>
+        /// The viewport grid name.
+        /// </summary>
+        private const string PartViewportGrid = "PART_ViewportGrid";
 
         /// <summary>
         /// The camera controller name.
@@ -3221,11 +3227,15 @@ namespace HelixToolkit.Wpf
             if (this.adornerLayer == null)
             {
                 this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-                if (this.adornerLayer != null)
-                {
-                    this.adornerLayer.Child = this.viewport;
-                }
             }
+
+            var grid = this.Template.FindName(PartViewportGrid, this) as Grid;
+            if (grid == null)
+            {
+                throw new HelixToolkitException("{0} is missing from the template.", PartViewportGrid);
+            }
+
+            grid.Children.Add(this.viewport);
 
             if (this.adornerLayer == null)
             {

@@ -26,7 +26,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <local:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
 
@@ -90,10 +90,10 @@
                                     <local:InputBindingX Gezture="{Binding BackViewGesture, RelativeSource={RelativeSource TemplatedParent}}"  Command="{x:Static local:CameraController.BackViewCommand}"/>
                                     <local:InputBindingX Gezture="{Binding OrthographicToggleGesture, RelativeSource={RelativeSource TemplatedParent}}"  Command="{x:Static local:HelixViewport3D.OrthographicToggleCommand}"/>
                                 </local:CameraController.InputBindings>
-
-                                <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="False">
+                                <Grid x:Name="PART_ViewportGrid">
+                                    <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="False" />
                                     <!-- the main viewport3D is inserted here -->
-                                </AdornerDecorator>
+                                </Grid>
                             </local:CameraController>
 
                             <!-- Coordinate system -->
