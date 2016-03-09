@@ -547,7 +547,6 @@ namespace HelixToolkit.Wpf
                         }
 
                         mg.Children.Add(new SpecularMaterial(new SolidColorBrush(specular), specularPower));
-                        mg.Children.Add(new EmissiveMaterial((new SolidColorBrush( luminance))));
                         if (name != null)
                         {
                             this.materials[name] = mg;
