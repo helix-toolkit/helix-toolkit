@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Gitlink build step (#123)
 - HelixViewport3D.CursorPosition (#133)
+- FitView method on CameraHelper and HelixViewport3D (#264)
 
 ### Fixed
 - ScreenGeometryBuilder (#106)
