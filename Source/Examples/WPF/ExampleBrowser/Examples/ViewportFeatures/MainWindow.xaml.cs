@@ -11,11 +11,14 @@ namespace ViewportFeaturesDemo
 {
     using System.Diagnostics;
     using System.Windows;
+    using System.Windows.Input;
     using System.Windows.Media.Media3D;
 
     using ExampleBrowser;
 
     using HelixToolkit.Wpf;
+
+    using PropertyTools.Wpf;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -30,9 +33,13 @@ namespace ViewportFeaturesDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            view2.Loaded += this.View2Loaded;
-            view7.Loaded += this.View7Loaded;
+            this.DataContext = this;
+            this.view2.Loaded += this.View2Loaded;
+            this.view7.Loaded += this.View7Loaded;
+            this.ResetCommand = new DelegateCommand(() => this.view8.FitView(new Vector3D(1, -1, -1), new Vector3D(0, 0, 1), 500));
         }
+
+        public ICommand ResetCommand { get; private set; }
 
         private void View2Loaded(object sender, RoutedEventArgs e)
         {
@@ -41,7 +48,7 @@ namespace ViewportFeaturesDemo
                 _firstTime2 = false;
                 // add visuals for all lights in the scene
                 foreach (Light light in Viewport3DHelper.GetLights(view2.Viewport))
-                    view2.Children.Add(new LightVisual3D {Light = light});
+                    view2.Children.Add(new LightVisual3D { Light = light });
             }
         }
 
@@ -55,7 +62,7 @@ namespace ViewportFeaturesDemo
 
                     // add a box that shows the bounds
                     Rect3D bounds = Visual3DHelper.FindBounds(view7.Children);
-                    view7.Children.Add(new BoundingBoxVisual3D {BoundingBox = bounds});
+                    view7.Children.Add(new BoundingBoxVisual3D { BoundingBox = bounds });
 
                     // add a coordinate system that shows the origin
                     view7.Children.Add(new CoordinateSystemVisual3D());
@@ -67,6 +74,11 @@ namespace ViewportFeaturesDemo
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
+        }
+
+        public class ViewModel
+        {
+
         }
     }
 }
