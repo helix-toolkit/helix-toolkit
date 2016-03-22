@@ -1180,13 +1180,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     //AmbientMap = this.AmbientMap,
 
                     DiffuseColor = this.Diffuse,
-                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(this.DiffuseMap),
+                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(Path.Combine(texturePath, this.DiffuseMap)),
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
                     //SpecularMap = this.SpecularMap,
 
-                    NormalMap = (this.BumpMap == null) ? null : LoadImage(this.BumpMap),
+                    NormalMap = (this.BumpMap == null) ? null : LoadImage(Path.Combine(texturePath, this.BumpMap)),
                     //Dissolved = this.Dissolved,
                     //Illumination = this.Illumination,
 
@@ -1199,7 +1199,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private static BitmapImage LoadImage(string path)
             {
-                var bmp = new BitmapImage(new Uri(@"./Media/" + path, UriKind.RelativeOrAbsolute));
+                var bmp = new BitmapImage(new Uri(path,UriKind.RelativeOrAbsolute));
                 return bmp;
             }
 
