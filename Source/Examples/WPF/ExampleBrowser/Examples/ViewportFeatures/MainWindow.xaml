@@ -151,5 +151,22 @@
                 </ModelVisual3D>
             </helix:HelixViewport3D>
         </TabItem>
+        <TabItem Header="Fit view">
+            <helix:HelixViewport3D 
+                x:Name="view8" 
+                Title="Press Home to call FitView" 
+                SubTitle="LookDirection will be set to 1,-1,-1 and then scaled to fit the model into the view"
+                ResetCameraKeyGesture="{x:Null}"
+                IsHeadLightEnabled="True" 
+                ZoomExtentsWhenLoaded="True" 
+                ShowCameraInfo="True">
+                <helix:HelixViewport3D.InputBindings>
+                    <KeyBinding Command="{Binding ResetCommand}" Key="Home"/>
+                </helix:HelixViewport3D.InputBindings>
+                <ModelVisual3D>
+                    <helix:CubeVisual3D SideLength="4" Fill="Gold"/>
+                </ModelVisual3D>
+            </helix:HelixViewport3D>
+        </TabItem>
     </TabControl>
 </Window>

@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsVisual3D.cs" company="Helix Toolkit">
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
@@ -14,6 +14,8 @@ namespace DataTemplateDemo
     using System.Collections;
     using System.Windows;
     using System.Windows.Media.Media3D;
+    using System.Collections.Specialized;
+    using System.Collections.Generic;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items.supports generating child items by a
@@ -79,6 +81,12 @@ namespace DataTemplateDemo
             }
         }
 
+
+        /// <summary>
+        /// Keeps track of the visuals created for each item.
+        /// </summary>
+        private readonly Dictionary<object, Visual3D> visuals = new Dictionary<object, Visual3D>();
+
         /// <summary>
         /// Handles changes in the ItemsSource property.
         /// </summary>
@@ -90,20 +98,74 @@ namespace DataTemplateDemo
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            foreach (var item in this.ItemsSource)
+            var observableCollection = this.ItemsSource as INotifyCollectionChanged;
+            if (observableCollection != null)
             {
-                var model = this.ItemTemplate.CreateItem(item);
-                if (model != null)
+                // TODO: should also unsubscribe to avoid leaks.
+                observableCollection.CollectionChanged += this.CollectionChanged;
+            }
+
+            if (this.ItemsSource != null)
+            {
+                foreach (var item in this.ItemsSource)
                 {
-                    // todo: set up bindings?
-                    // Cannot set DataContext, set bindings manually
-                    // http://stackoverflow.com/questions/7725313/how-can-i-use-databinding-for-3d-elements-like-visual3d-or-uielement3d
-                    this.Children.Add(model);
+                    this.AddItem(item);
                 }
-                else
-                {
-                    throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                }
+            }
+        }
+
+        private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    foreach (var item in e.NewItems)
+                    {
+                        this.AddItem(item);
+                    }
+
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (var rem in e.OldItems)
+                    {
+                        if (this.visuals.ContainsKey(rem))
+                        {
+                            if (this.visuals[rem] != null)
+                            {
+                                this.Children.Remove(this.visuals[rem]);
+                            }
+                        }
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void AddItem(object item)
+        {
+            Visual3D visual;
+            if (this.ItemTemplate != null)
+            {
+                visual = this.ItemTemplate.CreateItem(item);
+            }
+            else
+                visual = item as Visual3D;
+
+            if (visual != null)
+            {
+
+                // todo: set up bindings?
+                // Cannot set DataContext, set bindings manually
+                // http://stackoverflow.com/questions/7725313/how-can-i-use-databinding-for-3d-elements-like-visual3d-or-uielement3d
+                this.Children.Add(visual);
+
+                this.visuals[item] = visual;
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
             }
         }
     }

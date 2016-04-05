@@ -28,9 +28,9 @@ namespace PointsAndLinesBinding
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public partial class MainWindow : INotifyPropertyChanged
     {
-        private readonly ObservableCollection<Point3D> linePoints = new ObservableCollection<Point3D>();
+        private Point3DCollection linePoints = new Point3DCollection();
 
-        private readonly ObservableCollection<Point3D> points = new ObservableCollection<Point3D>();
+        private Point3DCollection points = new Point3DCollection();
 
         private readonly Stopwatch watch = new Stopwatch();
 
@@ -67,19 +67,30 @@ namespace PointsAndLinesBinding
 
         public bool ShowPointsVisual3D { get; set; }
 
-        public ObservableCollection<Point3D> LinePoints
+        public Point3DCollection LinePoints
         {
             get
             {
                 return this.linePoints;
             }
+            set
+            {
+                this.linePoints = value;
+                this.RaisePropertyChanged("LinePoints");
+            }
         }
 
-        public ObservableCollection<Point3D> Points
+        public Point3DCollection Points
         {
             get
             {
                 return this.points;
+            }
+
+            set
+            {
+                this.points = value;
+                this.RaisePropertyChanged("Points");
             }
         }
 
@@ -107,22 +118,14 @@ namespace PointsAndLinesBinding
             if (this.ShowLinesVisual3D || this.ShowPointsVisual3D)
             {
                 var newPoints = PointsAndLinesDemo.MainWindow.GeneratePoints(this.NumberOfPoints, this.watch.ElapsedMilliseconds * 0.001).ToArray();
-                this.Points.Clear();
-                this.LinePoints.Clear();
                 if (this.ShowPointsVisual3D)
                 {
-                    foreach (var newPoint in newPoints)
-                    {
-                        this.Points.Add(newPoint);
-                    }
+                    this.Points = new Point3DCollection(newPoints);
                 }
 
                 if (this.ShowLinesVisual3D)
                 {
-                    foreach (var newPoint in newPoints)
-                    {
-                        this.LinePoints.Add(newPoint);
-                    }
+                    this.LinePoints = new Point3DCollection(newPoints);
                 }
             }
         }

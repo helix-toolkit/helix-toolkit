@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.Tests
         /// <param name="stream">The stream.</param>
         protected void ExportSimpleModel(IExporter e, Stream stream)
         {
+            Exception exception = null;
             CrossThreadTestRunner.RunInSTA(
                 () =>
                 {
@@ -38,9 +39,20 @@ namespace HelixToolkit.Wpf.Tests
                     var box = new BoxVisual3D();
                     box.UpdateModel();
                     vp.Children.Add(box);
-
-                    e.Export(vp, stream);
+                    try
+                    {
+                        e.Export(vp, stream);
+                    }
+                    catch (Exception ex)
+                    {
+                        exception = ex;
+                    }
                 });
+
+            if (exception != null)
+            {
+                throw exception;
+            }
         }
 
         /// <summary>
@@ -51,14 +63,27 @@ namespace HelixToolkit.Wpf.Tests
         /// <param name="visual">The visual to export.</param>
         protected void ExportModel(IExporter e, Stream stream, Func<Visual3D> visual)
         {
+            Exception exception = null;
             CrossThreadTestRunner.RunInSTA(
                 () =>
                 {
                     var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
                     vp.Children.Add(new DefaultLights());
                     vp.Children.Add(visual());
-                    e.Export(vp, stream);
+                    try
+                    {
+                        e.Export(vp, stream);
+                    }
+                    catch (Exception ex)
+                    {
+                        exception = ex;
+                    }
                 });
+
+            if (exception != null)
+            {
+                throw exception;
+            }
         }
 
         /// <summary>

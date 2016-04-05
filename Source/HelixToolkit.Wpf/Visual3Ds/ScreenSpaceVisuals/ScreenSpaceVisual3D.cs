@@ -10,8 +10,6 @@
 namespace HelixToolkit.Wpf
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -19,7 +17,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// An abstract base class for visuals that use screen space dimensions when rendering.
     /// </summary>
-    public abstract class ScreenSpaceVisual3D : RenderingModelVisual3D, IWeakEventListener
+    public abstract class ScreenSpaceVisual3D : RenderingModelVisual3D
     {
         /// <summary>
         /// Identifies the <see cref="Color"/> dependency property.
@@ -37,7 +35,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-            "Points", typeof(IList<Point3D>), typeof(ScreenSpaceVisual3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure, PointsChanged));
+            "Points", typeof(Point3DCollection), typeof(ScreenSpaceVisual3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure, PointsChanged));
 
         /// <summary>
         /// The is rendering flag.
@@ -52,7 +50,7 @@ namespace HelixToolkit.Wpf
             this.Mesh = new MeshGeometry3D();
             this.Model = new GeometryModel3D { Geometry = this.Mesh };
             this.Content = this.Model;
-            this.Points = new List<Point3D>();
+            this.Points = new Point3DCollection();
             this.ColorChanged();
         }
 
@@ -129,11 +127,11 @@ namespace HelixToolkit.Wpf
         /// <value>
         /// The points collection.
         /// </value>
-        public IList<Point3D> Points
+        public Point3DCollection Points
         {
             get
             {
-                return (IList<Point3D>)this.GetValue(PointsProperty);
+                return (Point3DCollection)this.GetValue(PointsProperty);
             }
 
             set
@@ -184,15 +182,18 @@ namespace HelixToolkit.Wpf
         {
             var screenSpaceVisual3D = (ScreenSpaceVisual3D)sender;
             screenSpaceVisual3D.UpdateGeometry();
-            var newNotifyCollectionChanged = e.NewValue as INotifyCollectionChanged;
-            if (newNotifyCollectionChanged != null)
+
+            var opc = e.OldValue as Point3DCollection;
+            if (opc != null)
             {
-                CollectionChangedEventManager.AddListener(newNotifyCollectionChanged, screenSpaceVisual3D);
+                opc.Changed -= screenSpaceVisual3D.HandlePointsChanged;
             }
-            var oldNotifyCollectionChanged = e.OldValue as INotifyCollectionChanged;
-            if (oldNotifyCollectionChanged != null)
+
+            var pc = e.NewValue as Point3DCollection;
+            if (pc != null)
             {
-                CollectionChangedEventManager.RemoveListener(oldNotifyCollectionChanged, screenSpaceVisual3D);
+                // TODO: use a weak event manager
+                pc.Changed += screenSpaceVisual3D.HandlePointsChanged;
             }
         }
 
@@ -263,6 +264,16 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Handles changes in the <see cref="Points" /> collection.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void HandlePointsChanged(object sender, EventArgs e)
+        {
+            this.UpdateGeometry();
+        }
+
+        /// <summary>
         /// Changes the material when the color changed.
         /// </summary>
         private void ColorChanged()
@@ -279,31 +290,13 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private void UpdateClipping()
         {
-            var vp = Visual3DHelper.GetViewport3D(this);
+            var vp = this.GetViewport3D();
             if (vp == null)
             {
                 return;
             }
 
             this.Clipping = new CohenSutherlandClipping(10, vp.ActualWidth - 20, 10, vp.ActualHeight - 20);
-        }
-
-        /// <summary>
-        /// The bound list raised CollectionChanged
-        /// </summary>
-        /// <param name="managerType"></param>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
-        {
-            var args = e as NotifyCollectionChangedEventArgs;
-            if (args == null)
-            {
-                return false;
-            }
-            UpdateGeometry();
-            return true;
         }
     }
 }
