@@ -277,7 +277,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return; // StardD3D() is called from DP changed handler
             }
 
-            surfaceD3D = new DX11ImageSource();
+            surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
             surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             device = EffectsManager.Device;
             deferredRenderer = new DeferredRenderer();
