@@ -43,10 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX
         private static int activeClients;
         private static Direct3DEx context;
         private static DeviceEx device;
+
+        private readonly int adapterIndex;
         private Texture renderTarget;
 
-        public DX11ImageSource()
+        public DX11ImageSource(int adapterIndex = 0)
         {
+            this.adapterIndex = adapterIndex;
             this.StartD3D();
             activeClients++;
         }
@@ -129,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 PresentationInterval = PresentInterval.Default,    
             };
                         
-            device = new DeviceEx(context, 0, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
+            device = new DeviceEx(context, this.adapterIndex, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
         }
 
         private void EndD3D()
