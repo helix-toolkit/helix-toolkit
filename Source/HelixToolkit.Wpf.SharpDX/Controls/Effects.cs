@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
         InputLayout GetLayout(RenderTechnique technique);
         Effect GetEffect(RenderTechnique technique);
         global::SharpDX.Direct3D11.Device Device { get; }
+        int AdapterIndex { get; }
     }
 
     /// <summary>
@@ -47,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.renderTechniquesManager = renderTechniquesManager;
 #if DX11
-            var adapter = GetBestAdapter();
+            var adapter = GetBestAdapter(out adapterIndex);
 
             if (adapter != null)
             {
@@ -75,16 +76,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <returns></returns>
-        private static Adapter GetBestAdapter()
+        private static Adapter GetBestAdapter(out int bestAdapterIndex)
         {
             using (var f = new Factory())
             {
                 Adapter bestAdapter = null;
+                bestAdapterIndex = -1;
+                int adapterIndex = -1;
                 long bestVideoMemory = 0;
                 long bestSystemMemory = 0;
 
                 foreach (var item in f.Adapters)
                 {
+                    adapterIndex++;
+
                     // not skip the render only WARP device
                     if (item.Description.VendorId != 0x1414 || item.Description.DeviceId != 0x8c)
                     {
@@ -108,6 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if ((bestAdapter == null) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
                     {
                         bestAdapter = item;
+                        bestAdapterIndex = adapterIndex;
                         bestVideoMemory = videoMemory;
                         bestSystemMemory = systemMemory;
                     }
@@ -123,6 +129,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public global::SharpDX.Direct3D11.Device Device { get { return device; } }
 
         /// <summary>
+        /// Gets the index of the adapter in use.
+        /// </summary>
+        public int AdapterIndex { get { return adapterIndex; } }
+
+        /// <summary>
         /// Gets the device's driver type.
         /// </summary>
         public DriverType DriverType { get { return driverType; } }
@@ -131,6 +142,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         protected global::SharpDX.Direct3D11.Device device;
+
+        /// <summary>
+        /// The index of the adapter in use.
+        /// </summary>
+        private int adapterIndex;
 
         /// <summary>
         /// The driver type.
