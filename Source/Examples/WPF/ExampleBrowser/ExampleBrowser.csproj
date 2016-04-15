@@ -112,6 +112,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
+    <Compile Include="Workitems\Workitem10271\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem10054\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -447,6 +450,10 @@
     </Compile>
     <Compile Include="Examples\Fractal\Observable.cs" />
     <Compile Include="Examples\HalfEdgeMesh\HalfEdgeMesh.cs" />
+    <Page Include="Workitems\Workitem10271\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Workitems\Workitem10054\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -591,6 +598,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\Workitem10271_small.png" />
     <Resource Include="Images\CursorPositionDemo_small.png" />
     <Resource Include="Images\ExtrudedTextDemo_small.png" />
     <Resource Include="Images\PointsAndLinesBinding_small.png" />
