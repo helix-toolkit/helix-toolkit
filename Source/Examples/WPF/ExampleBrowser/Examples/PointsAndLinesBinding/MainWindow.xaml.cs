@@ -10,7 +10,6 @@
 namespace PointsAndLinesBinding
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
@@ -66,6 +65,7 @@ namespace PointsAndLinesBinding
         public bool ShowLinesVisual3D { get; set; }
 
         public bool ShowPointsVisual3D { get; set; }
+        public bool ReplacePoints { get; set; }
 
         public Point3DCollection LinePoints
         {
@@ -73,6 +73,7 @@ namespace PointsAndLinesBinding
             {
                 return this.linePoints;
             }
+
             set
             {
                 this.linePoints = value;
@@ -105,6 +106,18 @@ namespace PointsAndLinesBinding
 
         private void OnCompositionTargetRendering(object sender, EventArgs e)
         {
+            if (this.ReplacePoints)
+            {
+                this.SetPoints();
+            }
+            else
+            {
+                this.UpdatePoints();
+            }
+        }
+
+        private void SetPoints()
+        {
             if (!this.ShowLinesVisual3D)
             {
                 this.LinePoints.Clear();
@@ -117,15 +130,64 @@ namespace PointsAndLinesBinding
 
             if (this.ShowLinesVisual3D || this.ShowPointsVisual3D)
             {
-                var newPoints = PointsAndLinesDemo.MainWindow.GeneratePoints(this.NumberOfPoints, this.watch.ElapsedMilliseconds * 0.001).ToArray();
+                var newPoints =
+                    PointsAndLinesDemo.MainWindow.GeneratePoints(this.NumberOfPoints, this.watch.ElapsedMilliseconds * 0.001)
+                        .ToArray();
                 if (this.ShowPointsVisual3D)
                 {
-                    this.Points = new Point3DCollection(newPoints);
+                    var pc = new Point3DCollection(newPoints);
+                    pc.Freeze();
+                    this.Points = pc;
                 }
 
                 if (this.ShowLinesVisual3D)
                 {
-                    this.LinePoints = new Point3DCollection(newPoints);
+                    var pc = new Point3DCollection(newPoints);
+                    pc.Freeze();
+                    this.LinePoints = pc;
+                }
+            }
+        }
+
+        private void UpdatePoints()
+        {
+            if (this.ShowLinesVisual3D || this.ShowPointsVisual3D)
+            {
+                var newPoints =
+                    PointsAndLinesDemo.MainWindow.GeneratePoints(this.NumberOfPoints, this.watch.ElapsedMilliseconds * 0.001)
+                        .ToArray();
+                if (this.ShowPointsVisual3D)
+                {
+                    if (this.Points.IsFrozen)
+                    {
+                        this.Points = new Point3DCollection();
+                    }
+                    else
+                    {
+                        this.Points.Clear();
+                    }
+
+                    foreach (var p in newPoints)
+                    {
+                        this.Points.Add(p);
+                    }
+                }
+
+                if (this.ShowLinesVisual3D)
+                {
+                    if (this.LinePoints.IsFrozen)
+                    {
+                        this.LinePoints = new Point3DCollection();
+                    }
+                    else
+                    {
+                        this.LinePoints.Clear();
+                    }
+
+                    foreach (var p in newPoints)
+                    {
+                        this.LinePoints.Add(p);
+                    }
                 }
             }
         }

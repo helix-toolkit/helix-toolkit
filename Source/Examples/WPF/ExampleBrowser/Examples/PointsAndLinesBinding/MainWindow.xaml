@@ -19,6 +19,7 @@
             <MenuItem Header="Content">
                 <MenuItem Header="HelixToolkit.LinesVisual3D" IsCheckable="True" IsChecked="{Binding ShowLinesVisual3D}"/>
                 <MenuItem Header="HelixToolkit.PointsVisual3D" IsCheckable="True" IsChecked="{Binding ShowPointsVisual3D}"/>
+                <MenuItem Header="Replace points" IsCheckable="True" IsChecked="{Binding ReplacePoints}"/>
             </MenuItem>
         </Menu>
         <DockPanel DockPanel.Dock="Bottom">
