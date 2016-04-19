@@ -43,6 +43,11 @@ namespace HelixToolkit.Wpf
         private bool isRendering;
 
         /// <summary>
+        /// The listening to collection
+        /// </summary>
+        private Point3DCollection collectionBeingListenedTo;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref = "ScreenSpaceVisual3D" /> class.
         /// </summary>
         protected ScreenSpaceVisual3D()
@@ -183,17 +188,22 @@ namespace HelixToolkit.Wpf
             var screenSpaceVisual3D = (ScreenSpaceVisual3D)sender;
             screenSpaceVisual3D.UpdateGeometry();
 
-            var opc = e.OldValue as Point3DCollection;
-            if (opc != null)
+            if (screenSpaceVisual3D.collectionBeingListenedTo != null && !screenSpaceVisual3D.collectionBeingListenedTo.IsFrozen)
             {
-                opc.Changed -= screenSpaceVisual3D.HandlePointsChanged;
+                screenSpaceVisual3D.collectionBeingListenedTo.Changed -= screenSpaceVisual3D.HandlePointsChanged;
             }
 
             var pc = e.NewValue as Point3DCollection;
-            if (pc != null)
+            if (pc != null && !pc.IsFrozen)
             {
+                screenSpaceVisual3D.collectionBeingListenedTo = pc;
+
                 // TODO: use a weak event manager
                 pc.Changed += screenSpaceVisual3D.HandlePointsChanged;
+            }
+            else
+            {
+                screenSpaceVisual3D.collectionBeingListenedTo = pc;
             }
         }
 
