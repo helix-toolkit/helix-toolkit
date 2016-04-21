@@ -54,12 +54,15 @@ namespace ImageViewDemo
             Title = "ImageViewDemo";
             SubTitle = "WPF & SharpDX";
 
+            this.RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            this.RenderTechnique = this.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse];
+
             this.OpenCommand = new RelayCommand((x) => OnOpenClick());
 
             // camera setup
             this.defaultPerspectiveCamera = new PerspectiveCamera { Position = new Point3D(0, 0, 5), LookDirection = new Vector3D(0, 0, -5), UpDirection = new Vector3D(0, 1, 0), NearPlaneDistance = 0.5, FarPlaneDistance = 150 };
             this.defaultOrthographicCamera = new OrthographicCamera { Position = new Point3D(0, 0, 5), LookDirection = new Vector3D(0, 0, -5), UpDirection = new Vector3D(0, 1, 0), NearPlaneDistance = 0, FarPlaneDistance = 100 };
-            this.Camera = defaultPerspectiveCamera;
+            this.Camera = this.defaultPerspectiveCamera;
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0f, 0f, 0f, 0f);
@@ -80,7 +83,7 @@ namespace ImageViewDemo
             //this.PlaneMaterial.ReflectiveColor = Color.Black;
             this.PlaneTransform = new Media3D.TranslateTransform3D(0, 0, 0);
 
-            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            this.RenderTechnique = this.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
         }
 
         private void SetImages(BitmapSource img)
