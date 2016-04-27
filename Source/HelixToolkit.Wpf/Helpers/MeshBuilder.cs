@@ -1809,12 +1809,12 @@ namespace HelixToolkit.Wpf
                 throw new ArgumentNullException("fanPositions");
             }
 
-            if (this.normals != null && this.normals == null)
+            if (this.normals != null && fanNormals == null)
             {
                 throw new ArgumentNullException("fanNormals");
             }
 
-            if (this.textureCoordinates != null && this.textureCoordinates == null)
+            if (this.textureCoordinates != null && fanTextureCoordinates == null)
             {
                 throw new ArgumentNullException("fanTextureCoordinates");
             }
