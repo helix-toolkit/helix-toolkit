@@ -43,7 +43,7 @@
 
         </StackPanel>
         <Grid>
-            <helix:HelixViewport3D x:Name="view1" CalculateCursorPosition="True" ShowCameraInfo="True" >
+            <helix:HelixViewport3D x:Name="view1" CalculateCursorPosition="True" ShowCameraInfo="True">
                 <helix:HelixViewport3D.DefaultCamera>
                     <PerspectiveCamera Position="100,100,100" LookDirection="-100,-100,-100" UpDirection="0,0,1" FieldOfView="61" NearPlaneDistance="0.001"/>
                 </helix:HelixViewport3D.DefaultCamera>                
