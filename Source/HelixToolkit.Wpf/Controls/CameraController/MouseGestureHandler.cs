@@ -487,11 +487,13 @@ namespace HelixToolkit.Wpf
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }
-            
-            var pos = this.Viewport.UnProject(this.MouseDownPoint);
-            if (pos.HasValue)
+            else
             {
-                this.MouseDownNearestPoint3D = pos.Value;
+                var pos = this.Viewport.UnProject(this.MouseDownPoint);
+                if (pos.HasValue)
+                {
+                    this.MouseDownNearestPoint3D = pos.Value;
+                }
             }
 
             this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
