@@ -57,12 +57,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.Bounds = new BoundingBox();
                 return;
-            }            
-            
+            }
+
             //var m = this.Transform.ToMatrix();
             //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
             var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-            
+
             //var b = BoundingBox.FromPoints(this.Geometry.Positions);
             //b.Minimum = Vector3.TransformCoordinate(b.Minimum, m);
             //b.Maximum = Vector3.TransformCoordinate(b.Maximum, m);
@@ -79,12 +79,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
         {
-            base.OnTransformChanged(e);            
+            base.OnTransformChanged(e);
             if (this.Geometry != null)
-            {                
+            {
                 //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
-                var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-                this.Bounds = b;
+                //var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
+                //this.Bounds = b;
                 //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
             }
         }
@@ -223,17 +223,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var g = this.Geometry as MeshGeometry3D;
-            var h = false;
+            var isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
 
             if (g != null)
             {
                 var m = this.modelMatrix;
+
                 // put bounds to world space
-                var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+                var b = BoundingBox.FromPoints(this.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+
                 //var b = this.Bounds;
-    
+
                 // this all happens now in world space now:
                 if (rayWS.Intersects(ref b))
                 {
@@ -245,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         var p2 = Vector3.TransformCoordinate(t.P2, m);
                         if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
                         {
-                            if (d < result.Distance) // If d is NaN, the condition is false.
+                            if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
                             {
                                 result.IsValid = true;
                                 result.ModelHit = this;
@@ -257,19 +259,20 @@ namespace HelixToolkit.Wpf.SharpDX
                                 n.Normalize();
                                 // transform hit-info to world space now:
                                 result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
-                                h = true;
+                                isHit = true;
+
                             }
                         }
                     }
                 }
             }
-            if (h)
+            if (isHit)
             {
-                hits.Add(result);                
+                hits.Add(result);
             }
-            return h;
+            return isHit;
         }
-        
+
         /*
         public virtual bool HitTestMS(Ray rayWS, ref List<HitTestResult> hits)
         {
@@ -345,7 +348,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(IsSelectedProperty, value); }
         }
     }
-  
+
 
 
 
@@ -355,7 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Viewport3DX Viewport { get; private set; }
         public Point Position { get; private set; }
 
-        public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position,  Viewport3DX viewport = null)
+        public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
             : base(routedEvent, source)
         {
             this.HitTestResult = hitTestResult;
