@@ -373,7 +373,147 @@ namespace HelixToolkit.Wpf
             circle.Fill = Brushes.Gray;
             circle.EndEdit();
             this.Children.Add(circle);
+
+            AddCorners();
+            AddEdges();
         }
+
+        private void AddEdges()
+        {
+            var a = this.Size / 2;
+            var sideLength = a / 2;
+
+            Point3D[] xAligned = { new Point3D(0, -1, -1), new Point3D(0, 1, -1), new Point3D(0, -1, 1), new Point3D(0, 1, 1) }; //x
+            foreach (var p in xAligned)
+            {
+                var builder = new MeshBuilder(false, true);
+
+                Point3D center = p.Multiply(a);
+                builder.AddBox(center, 1.5 * a, sideLength, sideLength);
+
+                var geometry = builder.ToMesh();
+                geometry.Freeze();
+
+                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Silver) };
+                var element = new ModelUIElement3D { Model = model };
+                element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
+
+                this.faceNormals.Add(element, p.ToVector3D());
+                this.faceUpVectors.Add(element, ModelUpDirection);
+
+                element.MouseEnter += EdggesMouseEnters;
+                element.MouseLeave += EdgesMouseLeaves;
+
+                this.Children.Add(element);
+            }
+
+            Point3D[] yAligned = { new Point3D(-1, 0, -1), new Point3D(1, 0, -1), new Point3D(-1, 0, 1), new Point3D(1, 0, 1) };//y
+            foreach (var p in yAligned)
+            {
+                var builder = new MeshBuilder(false, true);
+
+                Point3D center = p.Multiply(a);
+                builder.AddBox(center, sideLength, 1.5 * a, sideLength);
+
+                var geometry = builder.ToMesh();
+                geometry.Freeze();
+
+                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Silver) };
+                var element = new ModelUIElement3D { Model = model };
+                element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
+
+                this.faceNormals.Add(element, p.ToVector3D());
+                this.faceUpVectors.Add(element, ModelUpDirection);
+
+                element.MouseEnter += EdggesMouseEnters;
+                element.MouseLeave += EdgesMouseLeaves;
+
+                this.Children.Add(element);
+            }
+
+            Point3D[] zAligned = { new Point3D(-1, -1, 0), new Point3D(-1, 1, 0), new Point3D(1, -1, 0), new Point3D(1, 1, 0) };//z
+            foreach (var p in zAligned)
+            {
+                var builder = new MeshBuilder(false, true);
+
+                Point3D center = p.Multiply(a);
+                builder.AddBox(center, sideLength, sideLength, 1.5 * a);
+
+                var geometry = builder.ToMesh();
+                geometry.Freeze();
+
+                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Silver) };
+                var element = new ModelUIElement3D { Model = model };
+                element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
+
+                this.faceNormals.Add(element, p.ToVector3D());
+                this.faceUpVectors.Add(element, ModelUpDirection);
+
+                element.MouseEnter += EdggesMouseEnters;
+                element.MouseLeave += EdgesMouseLeaves;
+
+                this.Children.Add(element);
+            }
+        }
+
+        private void AddCorners()
+        {
+            var a = this.Size / 2;
+            var sideLength = a / 2;
+
+            Point3D[] points =   {
+                new Point3D(-1,-1,-1 ), new Point3D(1, -1, -1), new Point3D(1, 1, -1), new Point3D(-1, 1, -1),
+                new Point3D(-1,-1,1 ),new Point3D(1,-1,1 ),new Point3D(1,1,1 ),new Point3D(-1,1,1 )};
+
+            foreach (var p in points)
+            {
+                var builder = new MeshBuilder(false, true);
+
+                Point3D center = p.Multiply(a);
+                builder.AddBox(center, sideLength, sideLength, sideLength);
+                var geometry = builder.ToMesh();
+                geometry.Freeze();
+
+                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Gold) };
+                var element = new ModelUIElement3D { Model = model };
+                element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
+
+                this.faceNormals.Add(element, p.ToVector3D());
+                this.faceUpVectors.Add(element, ModelUpDirection);
+
+                element.MouseEnter += CornersMouseEnters;
+                element.MouseLeave += CornersMouseLeave;
+
+                this.Children.Add(element);
+            }
+        }
+
+
+        private void EdgesMouseLeaves(object sender, MouseEventArgs e)
+        {
+            ModelUIElement3D s = sender as ModelUIElement3D;
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Silver);
+        }
+
+        private void EdggesMouseEnters(object sender, MouseEventArgs e)
+        {
+            ModelUIElement3D s = sender as ModelUIElement3D;
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
+        }
+
+        private void CornersMouseLeave(object sender, MouseEventArgs e)
+        {
+            ModelUIElement3D s = sender as ModelUIElement3D;
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Gold);
+        }
+
+        private void CornersMouseEnters(object sender, MouseEventArgs e)
+        {
+            ModelUIElement3D s = sender as ModelUIElement3D;
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
+        }
+
+
 
         /// <summary>
         /// Adds a cube face.
@@ -395,13 +535,13 @@ namespace HelixToolkit.Wpf
             var grid = new Grid { Width = 20, Height = 20, Background = b };
             grid.Children.Add(
                 new TextBlock
-                    {
-                        Text = text,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        FontSize = 15,
-                        Foreground = Brushes.White
-                    });
+                {
+                    Text = text,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontSize = 15,
+                    Foreground = Brushes.White
+                });
             grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
 
             var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
