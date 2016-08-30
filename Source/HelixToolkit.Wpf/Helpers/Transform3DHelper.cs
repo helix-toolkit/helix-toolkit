@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf
     {
         /// <summary>
         /// Combines two transforms.
+        /// Null Values are treated like the Identity transform.
         /// </summary>
         /// <param name="t1">
         /// The first transform.
@@ -30,6 +31,12 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static Transform3D CombineTransform(Transform3D t1, Transform3D t2)
         {
+            if (t1 == null && t2 == null)
+                return Transform3D.Identity;
+            if (t1 == null && t2 != null)
+                return t2;
+            if (t1 != null && t2 == null)
+                return t1;
             var g = new Transform3DGroup();
             g.Children.Add(t1);
             g.Children.Add(t2);

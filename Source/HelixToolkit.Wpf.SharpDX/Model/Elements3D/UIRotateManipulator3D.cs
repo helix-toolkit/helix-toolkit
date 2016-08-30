@@ -10,9 +10,12 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
 
     using global::SharpDX;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     /// <summary>
     ///   A translate manipulator.
@@ -53,6 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the rotation axis.
         /// </summary>
         /// <value>The axis.</value>
+        [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Axis
         {
             get { return (Vector3)this.GetValue(AxisProperty); }
@@ -93,6 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the pivot point of the manipulator.
         /// </summary>
         /// <value> The position. </value>
+        [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Pivot
         {
             get { return (Vector3)this.GetValue(PivotProperty); }

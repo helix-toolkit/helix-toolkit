@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf
     /// Builds MeshGeometry3D objects.
     /// </summary>
     /// <remarks>
-    /// Performance tips for MeshGeometry3D (See <a href="http://msdn.microsoft.com/en-us/library/bb613553.aspx">MSDN</a>)
+    /// Performance tips for MeshGeometry3D (See <a href="https://msdn.microsoft.com/en-us/library/bb613553(v=vs.100).aspx">MSDN</a>)
     /// <para>
     /// High impact:
     /// Mesh animation—changing the individual vertices of a mesh on a per-frame basis—is not always efficient in
@@ -1183,7 +1183,7 @@ namespace HelixToolkit.Wpf
 
             if (this.normals != null)
             {
-                var w = Vector3D.CrossProduct(p3 - p0, p1 - p0);
+                var w = Vector3D.CrossProduct(p1 - p0, p3 - p0);
                 w.Normalize();
                 this.normals.Add(w);
                 this.normals.Add(w);
@@ -1809,12 +1809,12 @@ namespace HelixToolkit.Wpf
                 throw new ArgumentNullException("fanPositions");
             }
 
-            if (this.normals != null && this.normals == null)
+            if (this.normals != null && fanNormals == null)
             {
                 throw new ArgumentNullException("fanNormals");
             }
 
-            if (this.textureCoordinates != null && this.textureCoordinates == null)
+            if (this.textureCoordinates != null && fanTextureCoordinates == null)
             {
                 throw new ArgumentNullException("fanTextureCoordinates");
             }
@@ -2536,7 +2536,7 @@ namespace HelixToolkit.Wpf
         /// Checks the performance limits.
         /// </summary>
         /// <remarks>
-        /// See <a href="http://msdn.microsoft.com/en-us/library/bb613553.aspx">MSDN</a>.
+        /// See <a href="https://msdn.microsoft.com/en-us/library/bb613553(v=vs.100).aspx">MSDN</a>.
         /// Try to keep mesh sizes under these limits:
         /// Positions : 20,001 point instances
         /// TriangleIndices : 60,003 integer instances

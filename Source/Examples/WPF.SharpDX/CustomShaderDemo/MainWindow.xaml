@@ -1,0 +1,130 @@
+﻿<Window x:Class="CustomShaderDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:CustomShaderDemo"
+        mc:Ignorable="d"         
+        Title="SharpDX in WPF" Height="500" Width="800">
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
+    </Window.Resources>    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <!--<RowDefinition Height="Auto"/>-->
+        </Grid.RowDefinitions>
+        
+        <Menu Grid.Row="0" VerticalAlignment="Top">
+            <Menu.Background>
+                <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
+            </Menu.Background>
+            <MenuItem Header="View">
+                <MenuItem Header="Zoom extents" Command="hx:ViewportCommands.ZoomExtents"/>
+            </MenuItem>
+        </Menu>
+
+        <hx:Viewport3DX 
+            Grid.Row="1" 
+            x:Name="view1" 
+            Camera="{Binding Camera}"
+            Title="{Binding Title}"
+            SubTitle="{Binding SubTitle}"
+            TextBrush="Black"           
+            ShowCoordinateSystem="False"
+            CoordinateSystemLabelForeground="White"
+            UseDefaultGestures="False"  
+            RenderTechnique="{Binding RenderTechnique}"
+            RenderTechniquesManager="{Binding RenderTechniquesManager}"
+            EffectsManager="{Binding EffectsManager}">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
+                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
+                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+            </hx:Viewport3DX.InputBindings>
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
+            <local:CustomGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}" local:AttachedProperties.ShowSelected="False" />
+            <local:CustomGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" local:AttachedProperties.ShowSelected="False"/>
+            <local:CustomGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}" local:AttachedProperties.ShowSelected="False"/>
+            <local:SelectableLineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5" local:AttachedProperties.ShowSelected="True"/>
+            <hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}" local:AttachedProperties.ShowSelected="False"/>
+            <local:SelectablePointGeometryModel3D x:Name="points" 
+                                                  Geometry="{Binding Points}" Transform="{Binding Model1Transform}" 
+                                                  Color="{x:Static sdx:Color.Black}" 
+                                                  Size="10 10" 
+                                                  Figure="Ellipse" 
+                                                  HitTestThickness="5"
+                                                  local:AttachedProperties.ShowSelected="False"/>
+            <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>
+        </hx:Viewport3DX>
+
+        <Button Click="Button_Click" Content="Change Selection"/>
+
+        <StackPanel Grid.Row="1" >
+            <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
+                </Expander.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>                    
+                    <ComboBox  Grid.Row="0" 
+                               DisplayMemberPath="Key" 
+                               SelectedValuePath="Value"
+                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}" 
+                               ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
+                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}" 
+                               IsReadOnly="True" 
+                               Margin="3" 
+                               Grid.ColumnSpan="2"/>
+                </Grid>
+            </Expander>            
+        </StackPanel>
+        
+        <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
+            <StatusBar.Background>
+                <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
+            </StatusBar.Background>
+            <StatusBarItem>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.Position, StringFormat=Position: \{0:0.0\}}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.LookDirection, StringFormat=LookDirection: \{0:0.0\}}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.UpDirection, StringFormat=UpDirection: \{0:0.0\}}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}"/>
+            </StatusBarItem>
+        </StatusBar>
+    
+    </Grid>
+</Window>

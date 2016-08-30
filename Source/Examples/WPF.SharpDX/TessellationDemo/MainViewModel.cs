@@ -20,7 +20,6 @@ namespace TessellationDemo
     using System.Windows.Media.Imaging;
     using HelixToolkit.Wpf.SharpDX.Core;
 
-
     public class MainViewModel : BaseViewModel
     {
         public Geometry3D DefaultModel { get; private set; }
@@ -42,6 +41,9 @@ namespace TessellationDemo
         public string[] MeshTopologyList { get; set; }
         
         private string meshTopology = MeshFaces.Default.ToString();
+        private RenderTechnique pnQuads;
+        private RenderTechnique pnTriangles;
+
         public string MeshTopology
         {
             get { return this.meshTopology; }
@@ -49,14 +51,19 @@ namespace TessellationDemo
             {
                 /// if topology is changes, reload the model with proper type of faces
                 this.meshTopology = value;
-                this.RenderTechnique = this.meshTopology == "Quads" ? Techniques.RenderPNQuads : Techniques.RenderPNTriangs;
+                this.RenderTechnique = this.meshTopology == "Quads" ? 
+                    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads] :
+                    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
                 this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Quads" ? MeshFaces.QuadPatches : MeshFaces.Default);                                               
             }
         }
 
-  
         public MainViewModel()
         {
+            RenderTechniquesManager = new TessellationTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads];
+            EffectsManager = new TessellationEffectsManager(RenderTechniquesManager);
+
             // ----------------------------------------------
             // titles
             this.Title = "Hardware Tessellation Demo";

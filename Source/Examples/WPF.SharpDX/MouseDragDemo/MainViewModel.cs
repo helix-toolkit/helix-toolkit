@@ -51,6 +51,10 @@ namespace MouseDragDemo
 
         public MainViewModel()
         {
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+
             // titles
             this.Title = "Mouse Drag Demo";
             this.SubTitle = "WPF & SharpDX";
@@ -59,7 +63,7 @@ namespace MouseDragDemo
             this.Camera = new PerspectiveCamera { Position = new Point3D(0, 0, 9), LookDirection = new Vector3D(-0, -0, -9), UpDirection = new Vector3D(0, 1, 0) };
 
             // default render technique
-            this.RenderTechnique = Techniques.RenderBlinn;
+            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);

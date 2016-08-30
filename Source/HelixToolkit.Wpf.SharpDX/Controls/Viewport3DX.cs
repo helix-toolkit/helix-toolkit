@@ -24,6 +24,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
+
+    using MouseButtons = System.Windows.Forms.MouseButtons;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -32,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [DefaultProperty("Children")]
     [ContentProperty("Items")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
-    [TemplatePart(Name = "PART_Canvas", Type = typeof(DPFCanvas))]
+    [TemplatePart(Name = "PART_Canvas", Type = typeof(IRenderHost))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCubeViewport", Type = typeof(Viewport3D))]
@@ -259,6 +262,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private double zoomSpeed;
 
         /// <summary>
+        /// Fired whenever an exception occurred at rendering subsystem.
+        /// </summary>
+        public event EventHandler<RelayExceptionEventArgs> RenderExceptionOccurred = delegate { };
+
+        /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
         static Viewport3DX()
@@ -330,22 +338,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.SetValue(IsMoveEnabledProperty, value);
             }
-        }
-
-        public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(DPFCanvas), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
-
-        /// <summary>
-        /// Gets the canvas.
-        /// </summary>
-        /// <value>
-        /// The canvas.
-        /// </value>
-        //protected DPFCanvas RenderHost { get; private set; }
-        public DPFCanvas RenderHost
-        {
-            get { return (DPFCanvas)this.GetValue(RenderHostProperty); }
-            set { this.SetValue(RenderHostProperty, value); }
         }
 
         /// <summary>
@@ -519,7 +511,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideTargetAdorner()
         {
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
+            var visual = this.RenderHost as Visual;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
             if (this.targetAdorner != null)
             {
                 myAdornerLayer.Remove(this.targetAdorner);
@@ -536,7 +534,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideZoomRectangle()
         {
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
+            var visual = this.RenderHost as Visual;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -643,10 +647,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.RenderHost = this.GetTemplateChild("PART_Canvas") as DPFCanvas;
+
             if (this.RenderHost != null)
             {
+                this.RenderHost.ExceptionOccurred -= this.HandleRenderException;
+            }
+
+            this.RenderHost = this.GetTemplateChild("PART_Canvas") as IRenderHost;
+
+            if (this.RenderHost != null)
+            {
+                this.RenderHost.ExceptionOccurred += this.HandleRenderException;
                 this.RenderHost.Renderable = this;
+                this.RenderHost.EffectsManager = this.EffectsManager;
+                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager;
             }
 
             if (this.adornerLayer == null)
@@ -821,8 +835,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            AdornerLayer myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
-            this.targetAdorner = new TargetSymbolAdorner(this.RenderHost, position);
+            var visual = this.RenderHost as UIElement;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            this.targetAdorner = new TargetSymbolAdorner(visual, position);
             myAdornerLayer.Add(this.targetAdorner);
         }
 
@@ -837,9 +857,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.RenderHost);
+            var visual = this.RenderHost as UIElement;
+            if (visual == null)
+            {
+                return;
+            }
+
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
             this.rectangleAdorner = new RectangleAdorner(
-                this.RenderHost, rect, Colors.LightGray, Colors.Black, 3, 1, 10, DashStyles.Solid);
+                visual, rect, Colors.LightGray, Colors.Black, 3, 1, 10, DashStyles.Solid);
             myAdornerLayer.Add(this.rectangleAdorner);
         }
 
@@ -1006,21 +1032,21 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets the pressed mouse buttons as flags of <see cref="MouseButton"/>.
-        /// If not button is pressed (result is zero), then it was a touch down.
+        /// Gets the pressed mouse buttons as flags of <see cref="MouseButtons"/>.
+        /// If no button is pressed (result is zero), then it was a touch down.
         /// </summary>
         /// <returns>
-        /// The pressed mouse buttons as flags of <see cref="MouseButton"/>.
+        /// The pressed mouse buttons as flags of <see cref="MouseButtons"/>.
         /// </returns>
-        public static MouseButton GetPressedMouseButtons()
+        public static MouseButtons GetPressedMouseButtons()
         {
             int flags = 0;
-            flags |= (int)Mouse.LeftButton << 0;
-            flags |= (int)Mouse.MiddleButton << 1;
-            flags |= (int)Mouse.RightButton << 2;
-            flags |= (int)Mouse.XButton1 << 3;
-            flags |= (int)Mouse.XButton2 << 4;
-            return (MouseButton)flags;
+            flags |= (int)Mouse.LeftButton << 20;
+            flags |= (int)Mouse.RightButton << 21;
+            flags |= (int)Mouse.MiddleButton << 22;
+            flags |= (int)Mouse.XButton1 << 23;
+            flags |= (int)Mouse.XButton2 << 24;
+            return (MouseButtons)flags;
         }
 
         /// <inheritdoc/>
@@ -1263,6 +1289,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
+        /// Handles the change of the effects manager.
+        /// </summary>
+        private void EffectsManagerPropertyChanged()
+        {
+            if (this.RenderHost != null)
+            {
+                this.RenderHost.EffectsManager = this.EffectsManager;
+            }
+        }
+
+        /// <summary>
         /// Handles the change of the render technique        
         /// </summary>
         private void RenderTechniquePropertyChanged()
@@ -1277,6 +1314,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.RenderHost.Renderable = this;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Handles the change of the render techniques manager.       
+        /// </summary>
+        private void RenderTechniquesManagerPropertyChanged()
+        {
+            if (this.RenderHost != null)
+            {
+                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager;
             }
         }
 
@@ -1534,6 +1582,33 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RefreshViewport()
         {
             // todo
+        }
+
+        /// <summary>
+        /// Handles a rendering exception.
+        /// </summary>
+        /// <param name="sender">The event source.</param>
+        /// <param name="e">The event arguments.</param>
+        private void HandleRenderException(object sender, RelayExceptionEventArgs e)
+        {
+            var bindingExpression = this.GetBindingExpression(RenderExceptionProperty);
+            if (bindingExpression != null)
+            {
+                // If RenderExceptionProperty is bound, we assume the exception will be handled.
+                this.RenderException = e.Exception;
+                e.Handled = true;
+            }
+
+            // Fire RenderExceptionOccurred event
+            this.RenderExceptionOccurred(sender, e);
+
+            // If the Exception is still unhandled...
+            if (!e.Handled)
+            {
+                // ... prevent a MessageBox.Show().
+                this.MessageText = e.Exception.ToString();
+                e.Handled = true;
+            }
         }
 
         /// <summary>

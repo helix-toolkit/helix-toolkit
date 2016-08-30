@@ -8,7 +8,7 @@
         mc:Ignorable="d"         
         Title="Line Shading Demo (HelixToolkitDX)" Height="600" Width="900">
     <Window.Resources>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>            
@@ -61,7 +61,14 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ComboBox  Grid.Row="0" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3"/>
+                    <ComboBox  Grid.Row="0" 
+                               IsReadOnly="True" 
+                               Margin="3"
+                               DisplayMemberPath="Key" 
+                               SelectedValuePath="Value" 
+                               ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
+                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"/>
                 </Grid>
             </Expander>
             <Expander Header="Line Drawing" x:Name="linesPanel" HorizontalAlignment="Right" Width="200" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">

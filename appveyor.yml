@@ -3,9 +3,8 @@ version: 2015.1.{build}
 environment:
   nuget_api_key:
     secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
-      
+
 install:
-  - cinst stylecop -y
   - cinst LynxToolkit -y
   - cinst gitlink -Pre -y
 
@@ -18,6 +17,7 @@ build:
   verbosity: normal
 
 before_build:
+  - nuget restore .\Source\HelixToolkit.AppVeyor.sln
   - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /ExtractReleaseNotes=CHANGELOG.md /Directory=Source
 
 after_build:

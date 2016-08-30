@@ -9,8 +9,8 @@
         mc:Ignorable="d"         
         Title="{Binding Title}" Height="500" Width="800">
     <Window.Resources>
-        <x:StaticExtension Member="hx:Techniques.RenderTechniques" x:Key="RenderTechniques"/>
         <local:ColorVectorConverter x:Key="ColorConverter"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -28,8 +28,10 @@
             TextBrush="Black"           
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"              
-            RenderTechnique="{Binding RenderTechnique}">
+            UseDefaultGestures="False"
+            RenderTechnique="{Binding RenderTechnique}"
+            RenderTechniquesManager="{Binding RenderTechniquesManager}"
+            EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
                 <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
@@ -62,7 +64,16 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <ComboBox  Grid.Row="0" Grid.ColumnSpan="2" Text="--- Select Model ---" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" Margin="3"/>
+                    <ComboBox  Grid.Row="0" 
+                               Text="--- Select Model ---" 
+                               Grid.ColumnSpan="2"
+                               Margin="3" 
+                               DisplayMemberPath="Key" 
+                               SelectedValuePath="Value" 
+                               ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
+                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}" 
+                               IsReadOnly="True"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Margin="3" VerticalAlignment="Center">MSAA</TextBlock>
                     <ComboBox  Grid.Row="1" Grid.Column="1" Text="--- Select Num Sample ---" SelectedItem="{Binding DeferredRenderer.NumberSamplesMSAA, ElementName=view1}" ItemsSource="{Binding SamplesMSAA}" Margin="3">
                     </ComboBox>

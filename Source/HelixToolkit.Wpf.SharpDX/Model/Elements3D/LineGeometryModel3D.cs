@@ -9,7 +9,9 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
 
@@ -21,24 +23,38 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.DXGI;
 
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
+
     using Color = global::SharpDX.Color;
+
+    using Buffer = global::SharpDX.Direct3D11.Buffer;
 
     public class LineGeometryModel3D : GeometryModel3D
     {
-        private InputLayout vertexLayout;        
-        private Buffer vertexBuffer;
-        private Buffer indexBuffer;
-        private Buffer instanceBuffer;
-        private EffectTechnique effectTechnique;
-        private EffectTransformVariables effectTransforms;
-        private EffectVectorVariable vViewport, vLineParams; // vFrustum, 
+        protected InputLayout vertexLayout;
+        protected Buffer vertexBuffer;
+        protected Buffer indexBuffer;
+        protected Buffer instanceBuffer;
+        protected EffectTechnique effectTechnique;
+        protected EffectTransformVariables effectTransforms;
+        protected EffectVectorVariable vViewport, vLineParams; // vFrustum, 
         //private DepthStencilState depthStencilState;
         //private LineGeometry3D geometry;
-        private EffectScalarVariable bHasInstances;
-        private Matrix[] instanceArray;
-        private bool hasInstances = false;
-        private bool isChanged = true;
+        protected EffectScalarVariable bHasInstances;
+        protected Matrix[] instanceArray;
+        protected bool hasInstances = false;
+        protected bool isChanged = true;
 
+        public override int VertexSizeInBytes
+        {
+            get
+            {
+                return LinesVertex.SizeInBytes;
+            }
+        }
+
+        [TypeConverter(typeof(ColorConverter))]
         public Color Color
         {
             get { return (Color)this.GetValue(ColorProperty); }
@@ -196,11 +212,9 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.IsAttached)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, LinesVertex.SizeInBytes, this.CreateLinesVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateLinesVertexArray());
             }
         }
-
-
 
         /// <summary>
         /// 
@@ -209,52 +223,51 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             /// --- attach            
-            this.renderTechnique = Techniques.RenderLines;
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
             base.Attach(host);
 
-            if (this.Geometry == null)            
+            if (Geometry == null)            
                 return;
 
-#if DEFERRED  
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
-                return;  
-#endif
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                return;
 
             // --- get device
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
-            this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
+            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
-            this.effectTransforms = new EffectTransformVariables(this.effect);
+            effectTransforms = new EffectTransformVariables(effect);
             
             // --- get geometry
-            var geometry = this.Geometry as LineGeometry3D;
+            var geometry = Geometry as LineGeometry3D;
 
             // -- set geometry if given
             if (geometry != null)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, LinesVertex.SizeInBytes, this.CreateLinesVertexArray());
+                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateLinesVertexArray());
 
                 /// --- set up indexbuffer
-                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
             }
 
             /// --- init instances buffer            
-            this.hasInstances = (this.Instances != null)&&(this.Instances.Any());
-            this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
-            if (this.hasInstances)
+            hasInstances = (Instances != null)&&(Instances.Any());
+            bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
+            if (hasInstances)
             {
-                this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
             }
 
             /// --- set up const variables
-            this.vViewport = effect.GetVariableByName("vViewport").AsVector();
+            vViewport = effect.GetVariableByName("vViewport").AsVector();
             //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
-            this.vLineParams = effect.GetVariableByName("vLineParams").AsVector();
+            vLineParams = effect.GetVariableByName("vLineParams").AsVector();
 
             /// --- set effect per object const vars
-            var lineParams = new Vector4((float)this.Thickness, (float)this.Smoothness, 0, 0);
-            this.vLineParams.Set(lineParams);
+            var lineParams = new Vector4((float)Thickness, (float)Smoothness, 0, 0);
+            vLineParams.Set(lineParams);
 
             /// === debug hack
             //{
@@ -264,7 +277,7 @@ namespace HelixToolkit.Wpf.SharpDX
             //}
 
             /// --- create raster state
-            this.OnRasterStateChanged(this.DepthBias);
+            OnRasterStateChanged(DepthBias);
             
 
             
@@ -281,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
            
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            Device.ImmediateContext.Flush();
         }        
 
         /// <summary>
@@ -321,10 +334,9 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-#if DEFERRED
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return;
-#endif
 
             if (renderContext.IsShadowPass)
                 if (!this.IsThrowingShadow)
@@ -391,7 +403,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- INSTANCING: need to set 2 buffers            
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[] 
                 {
-                    new VertexBufferBinding(this.vertexBuffer, LinesVertex.SizeInBytes, 0),
+                    new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
                     new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
                 });
 
@@ -405,7 +417,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 /// --- bind buffer                
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, LinesVertex.SizeInBytes, 0));
+                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
 
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);

@@ -13,7 +13,6 @@ namespace EnvironmentMapDemo
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    
 
     public class MainViewModel : BaseViewModel
     {        
@@ -45,7 +44,11 @@ namespace EnvironmentMapDemo
 
             this.Model = b1.ToMeshGeometry3D();
             this.ModelTransform = new Media3D.TranslateTransform3D();
-            this.ModelMaterial = PhongMaterials.Copper;            
+            this.ModelMaterial = PhongMaterials.Copper;
+
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
         }
     }
 

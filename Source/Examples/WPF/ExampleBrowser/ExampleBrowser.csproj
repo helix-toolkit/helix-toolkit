@@ -15,7 +15,6 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,11 +49,13 @@
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
-    <Reference Include="PropertyTools">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.dll</HintPath>
+    <Reference Include="PropertyTools, Version=2015.2.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net45\PropertyTools.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2014.2.16\lib\net45\PropertyTools.Wpf.dll</HintPath>
+    <Reference Include="PropertyTools.Wpf, Version=2015.2.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net45\PropertyTools.Wpf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -111,6 +112,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
+    <Compile Include="Workitems\Workitem10271\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem10054\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -446,6 +450,10 @@
     </Compile>
     <Compile Include="Examples\Fractal\Observable.cs" />
     <Compile Include="Examples\HalfEdgeMesh\HalfEdgeMesh.cs" />
+    <Page Include="Workitems\Workitem10271\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Workitems\Workitem10054\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -590,6 +598,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\Workitem10271_small.png" />
     <Resource Include="Images\CursorPositionDemo_small.png" />
     <Resource Include="Images\ExtrudedTextDemo_small.png" />
     <Resource Include="Images\PointsAndLinesBinding_small.png" />
@@ -760,5 +769,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

@@ -1,14 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{78DEE658-114C-49AF-96E8-B02B34585622}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Tests", "HelixToolkit.Tests\HelixToolkit.Tests.csproj", "{E86BB7C0-A453-4923-916C-1AA32FF068F9}"
@@ -50,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TessellationDemo", "Examples\WPF.SharpDX\TessellationDemo\TessellationDemo.csproj", "{82BB6745-9D34-453A-851C-01C8FD7A0F20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSpaceDemo", "Examples\WPF.SharpDX\ScreenSpaceDemo\ScreenSpaceDemo.csproj", "{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomShaderDemo", "Examples\WPF.SharpDX\CustomShaderDemo\CustomShaderDemo.csproj", "{829730D4-B471-4D12-B8B8-4900761E0722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -225,6 +221,18 @@ Global
 		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|x64.ActiveCfg = Release|Any CPU
 		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|x86.ActiveCfg = Release|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|x64.Build.0 = Debug|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|x86.Build.0 = Debug|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Release|x64.ActiveCfg = Release|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Release|x64.Build.0 = Release|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Release|x86.ActiveCfg = Release|Any CPU
+		{829730D4-B471-4D12-B8B8-4900761E0722}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -245,5 +253,6 @@ Global
 		{991A4C2B-D830-41CB-A810-047ADCF69219} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{829730D4-B471-4D12-B8B8-4900761E0722} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 	EndGlobalSection
 EndGlobal

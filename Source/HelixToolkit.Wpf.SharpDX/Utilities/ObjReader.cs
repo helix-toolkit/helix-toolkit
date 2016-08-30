@@ -57,6 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public ObjReader()
         {
             this.IgnoreErrors = false;
+            this.SwitchYZ = false;
 
             this.IsSmoothingDefault = true;
             this.SkipTransparencyValues = true;
@@ -90,6 +91,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The default value is on (true).
         /// </remarks>
         public bool IgnoreErrors { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to switch Y and Z coordinates.
+        /// </summary>
+        public bool SwitchYZ { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to skip transparency values ("Tr") in the material files.
@@ -730,7 +736,14 @@ namespace HelixToolkit.Wpf.SharpDX
         private void AddNormal(string values)
         {
             var fields = Split(values);
-            this.Normals.Add(new Vector3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            if (SwitchYZ)
+            {
+                this.Normals.Add(new Vector3D((float)fields[0], (float)-fields[2], (float)fields[1]));
+            }
+            else
+            {
+                this.Normals.Add(new Vector3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            }
         }
 
         /// <summary>
@@ -754,7 +767,14 @@ namespace HelixToolkit.Wpf.SharpDX
         private void AddVertex(string values)
         {
             var fields = Split(values);
-            this.Points.Add(new Point3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            if (SwitchYZ)
+            {
+                this.Points.Add(new Point3D((float)fields[0], (float)-fields[2], (float)fields[1]));
+            }
+            else
+            {
+                this.Points.Add(new Point3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            }
         }
 
         /// <summary>
@@ -1160,13 +1180,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     //AmbientMap = this.AmbientMap,
 
                     DiffuseColor = this.Diffuse,
-                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(this.DiffuseMap),
+                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(Path.Combine(texturePath, this.DiffuseMap)),
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
                     //SpecularMap = this.SpecularMap,
 
-                    NormalMap = (this.BumpMap == null) ? null : LoadImage(this.BumpMap),
+                    NormalMap = (this.BumpMap == null) ? null : LoadImage(Path.Combine(texturePath, this.BumpMap)),
                     //Dissolved = this.Dissolved,
                     //Illumination = this.Illumination,
 
@@ -1179,7 +1199,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private static BitmapImage LoadImage(string path)
             {
-                var bmp = new BitmapImage(new Uri(@"./Media/" + path, UriKind.RelativeOrAbsolute));
+                var bmp = new BitmapImage(new Uri(path,UriKind.RelativeOrAbsolute));
                 return bmp;
             }
 

@@ -1,22 +1,33 @@
 ﻿namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
     using global::SharpDX;
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
+
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
+
     using Color = global::SharpDX.Color;
 
     public class PointGeometryModel3D : GeometryModel3D
     {
-        private InputLayout vertexLayout;
-        private Buffer vertexBuffer;
-        private EffectTechnique effectTechnique;
-        private EffectTransformVariables effectTransforms;
-        private EffectVectorVariable vViewport;
-        private EffectVectorVariable vPointParams;
+        protected InputLayout vertexLayout;
+        protected Buffer vertexBuffer;
+        protected EffectTechnique effectTechnique;
+        protected EffectTransformVariables effectTransforms;
+        protected EffectVectorVariable vViewport;
+        protected EffectVectorVariable vPointParams;
 
+        public override int VertexSizeInBytes
+        {
+            get { return Geometry3D.PointsVertex.SizeInBytes; }
+        }
+
+        [TypeConverter(typeof(ColorConverter))]
         public Color Color
         {
             get { return (Color)this.GetValue(ColorProperty); }
@@ -175,7 +186,7 @@
             if (this.IsAttached)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
             }
         }
 
@@ -185,47 +196,46 @@
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            this.renderTechnique = Techniques.RenderPoints;
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
             base.Attach(host);
 
-            if (this.Geometry == null)
+            if (Geometry == null)
                 return;
 
-#if DEFERRED
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return;
-#endif
 
             // --- get device
-            this.vertexLayout = EffectsManager.Instance.GetLayout(this.renderTechnique);
-            this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
+            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
-            this.effectTransforms = new EffectTransformVariables(this.effect);
+            effectTransforms = new EffectTransformVariables(effect);
 
             // --- get geometry
-            var geometry = this.Geometry as PointGeometry3D;
+            var geometry = Geometry as PointGeometry3D;
 
             // -- set geometry if given
             if (geometry != null)
             {
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, Geometry3D.PointsVertex.SizeInBytes, this.CreatePointVertexArray());
+                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
             }
 
             /// --- set up const variables
-            this.vViewport = effect.GetVariableByName("vViewport").AsVector();
+            vViewport = effect.GetVariableByName("vViewport").AsVector();
             //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
-            this.vPointParams = effect.GetVariableByName("vPointParams").AsVector();
+            vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 
             /// --- set effect per object const vars
-            var pointParams = new Vector4((float)this.Size.Width, (float)this.Size.Height, (float)this.Figure, (float)this.FigureRatio);
-            this.vPointParams.Set(pointParams);
+            var pointParams = new Vector4((float)Size.Width, (float)Size.Height, (float)Figure, (float)FigureRatio);
+            vPointParams.Set(pointParams);
 
             /// --- create raster state
-            this.OnRasterStateChanged(this.DepthBias);
+            OnRasterStateChanged(DepthBias);
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            Device.ImmediateContext.Flush();
         }
 
         /// <summary>
@@ -259,10 +269,9 @@
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
 
-#if DEFERRED
-            if (renderHost.RenderTechnique == Techniques.RenderDeferred || renderHost.RenderTechnique == Techniques.RenderGBuffer)
+            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return;
-#endif
 
             if (renderContext.IsShadowPass)
                 if (!this.IsThrowingShadow)
@@ -295,7 +304,7 @@
 
             /// --- bind buffer                
             this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0,
-                new VertexBufferBinding(this.vertexBuffer, Geometry3D.PointsVertex.SizeInBytes, 0));
+                new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
 
             /// --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);
@@ -314,7 +323,7 @@
         /// <summary>
         /// Creates a <see cref="T:PointsVertex[]"/>.
         /// </summary>
-        private Geometry3D.PointsVertex[] CreatePointVertexArray()
+        private Geometry3D.PointsVertex[] CreateVertexArray()
         {
             var positions = this.Geometry.Positions.Array;
             var vertexCount = this.Geometry.Positions.Count;

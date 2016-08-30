@@ -109,15 +109,22 @@
                                         HorizontalAlignment="{TemplateBinding ViewCubeHorizontalPosition}" VerticalAlignment="{TemplateBinding ViewCubeVerticalPosition}" 
                                         Opacity="0.5" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <h:ViewCubeVisual3D x:Name="PART_ViewCube" 
-                                                        ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}" 
-                                                        TopText="{Binding ViewCubeTopText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        BottomText="{Binding ViewCubeBottomText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        FrontText="{Binding ViewCubeFrontText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        BackText="{Binding ViewCubeBackText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        LeftText="{Binding ViewCubeLeftText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        RightText="{Binding ViewCubeRightText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        />
+                                                    ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                    TopText="{Binding ViewCubeTopText, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    BottomText="{Binding ViewCubeBottomText, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    FrontText="{Binding ViewCubeFrontText, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    BackText="{Binding ViewCubeBackText, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    LeftText="{Binding ViewCubeLeftText, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    RightText="{Binding ViewCubeRightText, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    />
                             </Viewport3D>
+
+                            <!-- Message TextBox -->
+                            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6" 
+                                     Background="{TemplateBinding InfoBackground}" BorderThickness="2" BorderBrush="Tomato"
+                                     Text="{TemplateBinding MessageText}" IsReadOnly="True" TextWrapping="Wrap" 
+                                     Visibility="{TemplateBinding MessageText, Converter={StaticResource NotNullToVisibilityConverter}}"
+                                     HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

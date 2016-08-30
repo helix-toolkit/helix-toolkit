@@ -26,6 +26,7 @@ namespace HelixToolkit.Wpf
     /// </summary>
     [ContentProperty("Children")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
+    [TemplatePart(Name = "PART_ViewportGrid", Type = typeof(Grid))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCubeViewport", Type = typeof(Viewport3D))]
@@ -855,6 +856,11 @@ namespace HelixToolkit.Wpf
         /// The adorner layer name.
         /// </summary>
         private const string PartAdornerLayer = "PART_AdornerLayer";
+
+        /// <summary>
+        /// The viewport grid name.
+        /// </summary>
+        private const string PartViewportGrid = "PART_ViewportGrid";
 
         /// <summary>
         /// The camera controller name.
@@ -3221,11 +3227,15 @@ namespace HelixToolkit.Wpf
             if (this.adornerLayer == null)
             {
                 this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-                if (this.adornerLayer != null)
-                {
-                    this.adornerLayer.Child = this.viewport;
-                }
             }
+
+            var grid = this.Template.FindName(PartViewportGrid, this) as Grid;
+            if (grid == null)
+            {
+                throw new HelixToolkitException("{0} is missing from the template.", PartViewportGrid);
+            }
+
+            grid.Children.Add(this.viewport);
 
             if (this.adornerLayer == null)
             {
@@ -3325,9 +3335,20 @@ namespace HelixToolkit.Wpf
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void SetView(Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
+        public void SetView(Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime = 0)
         {
             this.Camera.AnimateTo(newPosition, newDirection, newUpDirection, animationTime);
+        }
+
+        /// <summary>
+        /// Sets the camera orientation and adjusts the camera position to fit the model into the view.
+        /// </summary>
+        /// <param name="newDirection">The new camera look direction.</param>
+        /// <param name="newUpDirection">The new camera up direction.</param>
+        /// <param name="animationTime">The animation time.</param>
+        public void FitView(Vector3D newDirection, Vector3D newUpDirection, double animationTime = 0)
+        {
+            this.Camera.FitView(this.Viewport, newDirection, newUpDirection, animationTime);
         }
 
         /// <summary>

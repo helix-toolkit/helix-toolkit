@@ -11,10 +11,11 @@ namespace DeferredShadingDemo
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
+
     using SharpDX;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Windows.Data;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
@@ -102,7 +103,6 @@ namespace DeferredShadingDemo
             get { yield return 1; yield return 2; yield return 4; yield return 8; }
         }
 
-
         /// <summary>
         /// Constructor of the MainViewModel
         /// </summary>
@@ -115,8 +115,10 @@ namespace DeferredShadingDemo
             // camera setup
             this.Camera = new PerspectiveCamera { Position = new Point3D(18, 64, 30), LookDirection = new Vector3D(-18, -64, -30), UpDirection = new Vector3D(0, 1, 0) };
 
-            // default render technique
-            this.RenderTechnique = Techniques.RenderDeferred;
+            // deferred render technique
+            RenderTechniquesManager = new DeferredTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred);
+            EffectsManager = new DeferredEffectsManager(RenderTechniquesManager);
 
             //load model
             var reader = new ObjReader();
@@ -362,7 +364,6 @@ namespace DeferredShadingDemo
 
         private string meshTopology = MeshFaces.Default.ToString();
     }
-
 
     public class ColorVectorConverter : IValueConverter
     {

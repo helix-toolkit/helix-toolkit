@@ -69,6 +69,10 @@ namespace InstancingDemo
 
             // model material
             ModelMaterial = PhongMaterials.Glass;
+
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
         }
     }
 }

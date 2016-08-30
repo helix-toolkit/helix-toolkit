@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.ComponentModel;
     using System.Windows;
 
     using global::SharpDX;
@@ -15,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using global::SharpDX.DXGI;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     public class ShadowMap3D : Element3D
     {
@@ -55,6 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new UIPropertyMetadata(0.5));
 
 
+        [TypeConverter(typeof(Vector2Converter))]
         public Vector2 Resolution
         {
             get { return (Vector2)this.GetValue(ResolutionProperty); }
@@ -84,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.width = (int)(Resolution.X + 0.5f); //faktor* oneK;
             this.height = (int)(this.Resolution.Y + 0.5f); // faktor* oneK;
 
-            base.renderTechnique = Techniques.RenderColors;
+            base.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
             base.Attach(host);
 
             if (!host.IsShadowMapEnabled)
@@ -161,7 +165,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
             this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
             this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
-            this.shadowPassContext = new RenderContext((DPFCanvas)host, this.effect);
+            this.shadowPassContext = new RenderContext(host, this.effect);
         }
 
         public override void Detach()

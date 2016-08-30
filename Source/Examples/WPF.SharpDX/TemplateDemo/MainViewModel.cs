@@ -14,7 +14,11 @@ namespace TemplateDemo
 
     public class MainViewModel
     {
-        public IList<Shape> Items { get; set; }         
+        public IList<Shape> Items { get; set; }   
+        
+        public DefaultEffectsManager EffectsManager { get; private set; }      
+
+        public DefaultRenderTechniquesManager RenderTechniquesManager { get; private set; }
         public MainViewModel()
         {
             this.Items = new ObservableCollection<Shape>
@@ -35,6 +39,9 @@ namespace TemplateDemo
                                          Material = PhongMaterials.Blue
                                      }
                              };
+
+            RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
         }
     }
 }

@@ -26,24 +26,78 @@ namespace ImageViewDemo
 
     public class MainViewModel : BaseViewModel
     {
-        
-        public MeshGeometry3D Plane { get; private set; }
+        private MeshGeometry3D plane;
+        private LineGeometry3D grid;
+        private PhongMaterial planeMaterial;
+        private Color gridColor;
+        private Media3D.Transform3D planeTransform;
+        private Media3D.Transform3D gridTransform;
+        private Vector3 directionalLightDirection;
+        private Color4 directionalLightColor;
+        private Color4 ambientLightColor;
 
-        public LineGeometry3D Grid { get; private set; }
+        public MeshGeometry3D Plane
+        {
+            get { return this.plane; }
+            set {
+                this.SetValue(ref this.plane, value, nameof(this.Plane)); }
+        }
 
-        public PhongMaterial PlaneMaterial { get; private set; }
-        
-        public SharpDX.Color GridColor { get; private set; }
+        public LineGeometry3D Grid
+        {
+            get { return this.grid; }
+            set {
+                this.SetValue(ref this.grid, value, nameof(this.Grid)); }
+        }
 
-        public Media3D.Transform3D PlaneTransform { get; private set; }
-        
-        public Media3D.Transform3D GridTransform { get; private set; }        
+        public PhongMaterial PlaneMaterial
+        {
+            get { return this.planeMaterial; }
+            set {
+                this.SetValue(ref this.planeMaterial, value, nameof(this.PlaneMaterial)); }
+        }
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        
-        public Color4 DirectionalLightColor { get; private set; }
-        
-        public Color4 AmbientLightColor { get; private set; }
+        public Color GridColor
+        {
+            get { return this.gridColor; }
+            set {
+                this.SetValue(ref this.gridColor, value, nameof(this.GridColor)); }
+        }
+
+        public Media3D.Transform3D PlaneTransform
+        {
+            get { return this.planeTransform; }
+            set {
+                this.SetValue(ref this.planeTransform, value, nameof(this.PlaneTransform)); }
+        }
+
+        public Media3D.Transform3D GridTransform
+        {
+            get { return this.gridTransform; }
+            set {
+                this.SetValue(ref this.gridTransform, value, nameof(this.GridTransform)); }
+        }
+
+        public Vector3 DirectionalLightDirection
+        {
+            get { return this.directionalLightDirection; }
+            set {
+                this.SetValue(ref this.directionalLightDirection, value, nameof(this.DirectionalLightDirection)); }
+        }
+
+        public Color4 DirectionalLightColor
+        {
+            get { return this.directionalLightColor; }
+            set {
+                this.SetValue(ref this.directionalLightColor, value, nameof(this.DirectionalLightColor)); }
+        }
+
+        public Color4 AmbientLightColor
+        {
+            get { return this.ambientLightColor; }
+            set {
+                this.SetValue(ref this.ambientLightColor, value, nameof(this.AmbientLightColor)); }
+        }
 
         public ICommand OpenCommand { get; private set; }
 
@@ -51,15 +105,19 @@ namespace ImageViewDemo
 
         public MainViewModel()
         {
-            Title = "ImageViewDemo";
-            SubTitle = "WPF & SharpDX";
+            this.Title = "ImageViewDemo";
+            this.SubTitle = "WPF & SharpDX";
 
-            this.OpenCommand = new RelayCommand((x) => OnOpenClick());
+            this.RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            this.RenderTechnique = this.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            this.EffectsManager = new DefaultEffectsManager(this.RenderTechniquesManager);
+
+            this.OpenCommand = new RelayCommand((x) => this.OnOpenClick());
 
             // camera setup
             this.defaultPerspectiveCamera = new PerspectiveCamera { Position = new Point3D(0, 0, 5), LookDirection = new Vector3D(0, 0, -5), UpDirection = new Vector3D(0, 1, 0), NearPlaneDistance = 0.5, FarPlaneDistance = 150 };
             this.defaultOrthographicCamera = new OrthographicCamera { Position = new Point3D(0, 0, 5), LookDirection = new Vector3D(0, 0, -5), UpDirection = new Vector3D(0, 1, 0), NearPlaneDistance = 0, FarPlaneDistance = 100 };
-            this.Camera = defaultPerspectiveCamera;
+            this.Camera = this.defaultPerspectiveCamera;
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0f, 0f, 0f, 0f);
@@ -67,8 +125,8 @@ namespace ImageViewDemo
             this.DirectionalLightDirection = new Vector3(-0, -0, -10);
 
             // floor plane grid
-            this.Grid = LineBuilder.GenerateGrid(Vector3.UnitZ, -5, 5, -5, 5);           
-            this.GridColor = SharpDX.Color.Black;
+            this.Grid = LineBuilder.GenerateGrid(Vector3.UnitZ, -5, 5, -5, 5);
+            this.GridColor = Color.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(0, 0, 0);
 
             // plane
@@ -76,11 +134,9 @@ namespace ImageViewDemo
             b2.AddBox(new Vector3(0, 0, 0), 10, 10, 0, BoxFaces.PositiveZ);
             this.Plane = b2.ToMeshGeometry3D();
             this.PlaneMaterial = PhongMaterials.Blue;
-            this.PlaneTransform = new Media3D.TranslateTransform3D(-0, -0, -0);            
+            this.PlaneTransform = new Media3D.TranslateTransform3D(-0, -0, -0);
             //this.PlaneMaterial.ReflectiveColor = Color.Black;
             this.PlaneTransform = new Media3D.TranslateTransform3D(0, 0, 0);
-
-            this.RenderTechnique = Techniques.RenderBlinn;
         }
 
         private void SetImages(BitmapSource img)
@@ -88,7 +144,7 @@ namespace ImageViewDemo
             var ratio = img.PixelWidth / (double)img.PixelHeight;
             var transform = Media3D.Transform3D.Identity;
             ushort orientation = 1;
-            if (this.ExifReader.GetTagValue(ExifTags.Orientation, out orientation))
+            if (this.ExifReader != null && this.ExifReader.GetTagValue(ExifTags.Orientation, out orientation))
             {
                 switch (orientation)
                 {
@@ -123,7 +179,7 @@ namespace ImageViewDemo
                 }
 
                 this.PlaneTransform = transform;
-                this.GridTransform = transform;                
+                this.GridTransform = transform;
             }
             else
             {
@@ -131,13 +187,13 @@ namespace ImageViewDemo
                 {
                     transform = transform.AppendTransform(new Media3D.ScaleTransform3D(ratio, 1.0, 1.0));
                     this.PlaneTransform = transform;
-                    this.GridTransform = PlaneTransform;
+                    this.GridTransform = this.PlaneTransform;
                 }
                 else
                 {
                     transform = transform.AppendTransform(new Media3D.ScaleTransform3D(1.0, 1.0 / ratio, 1.0));
                     this.PlaneTransform = transform;
-                    this.GridTransform = PlaneTransform;
+                    this.GridTransform = this.PlaneTransform;
                 }
             }
 
@@ -149,16 +205,24 @@ namespace ImageViewDemo
                 EmissiveColor = Color.Black,
                 SpecularColor = Color.Black,
                 DiffuseMap = img,
-            };                        
+            };
+
             this.PlaneMaterial = white;
-            this.RenderTechnique = Techniques.RenderDiffuse;
+            this.RenderTechnique = this.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
         }
 
-        private void GetExif(string filename)
+        private void TryGetExif(string filename)
         {
-            this.ExifReader = new ExifReader(filename);
-            DateTime dateTime;
-            this.ExifReader.GetTagValue(ExifTags.DateTime, out dateTime);            
+            try
+            {
+                this.ExifReader = new ExifReader(filename);
+                DateTime dateTime;
+                this.ExifReader.GetTagValue(ExifTags.DateTime, out dateTime);
+            }
+            catch (Exception ex)
+            {
+                this.ExifReader = null;
+            }
         }
 
         private void OnOpenClick()
@@ -166,15 +230,15 @@ namespace ImageViewDemo
             try
             {
                 var d = new Microsoft.Win32.OpenFileDialog()
-                {                                  
+                {
                     Filter = "image files|*.jpg; *.png; *.bmp; *.gif",
                 };
                 if (d.ShowDialog().Value)
                 {
                     if (File.Exists(d.FileName))
                     {
-                        var img = new BitmapImage(new System.Uri(d.FileName, System.UriKind.RelativeOrAbsolute));
-                        this.GetExif(d.FileName);
+                        var img = new BitmapImage(new Uri(d.FileName, UriKind.RelativeOrAbsolute));
+                        this.TryGetExif(d.FileName);
                         this.SetImages(img);
                         this.Title = d.FileName;
                     }

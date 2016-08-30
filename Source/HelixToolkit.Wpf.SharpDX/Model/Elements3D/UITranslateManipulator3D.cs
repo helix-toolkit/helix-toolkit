@@ -9,9 +9,12 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.ComponentModel;
     using System.Windows;
 
     using global::SharpDX;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
 
@@ -52,6 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the direction of the translation.
         /// </summary>
         /// <value> The direction. </value>
+        [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Direction
         {
             get { return (Vector3)this.GetValue(DirectionProperty); }

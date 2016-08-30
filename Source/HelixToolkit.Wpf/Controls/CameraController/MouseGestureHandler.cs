@@ -478,6 +478,8 @@ namespace HelixToolkit.Wpf
         {
             this.MouseDownPoint = position;
 
+            this.MouseDownNearestPoint3D = null;
+
             Point3D nearestPoint;
             Vector3D normal;
             DependencyObject visual;
@@ -487,7 +489,11 @@ namespace HelixToolkit.Wpf
             }
             else
             {
-                this.MouseDownNearestPoint3D = null;
+                var pos = this.Viewport.UnProject(this.MouseDownPoint);
+                if (pos.HasValue)
+                {
+                    this.MouseDownNearestPoint3D = pos.Value;
+                }
             }
 
             this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);

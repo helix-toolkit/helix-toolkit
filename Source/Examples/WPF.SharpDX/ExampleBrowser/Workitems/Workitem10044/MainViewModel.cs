@@ -9,6 +9,7 @@
     using DemoCore;
 
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
 
     public class MainViewModel : BaseViewModel
     {
@@ -18,8 +19,11 @@
             this.Title = "Simple Demo (Workitem 10044)";
             this.SubTitle = "Please note that this scene is defined completely in XAML.";
 
-            // default render technique
-            this.RenderTechnique = Techniques.RenderBlinn;
+            if (this.RenderTechniquesManager != null)
+            {
+                // default render technique
+                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
+            }
         }
     }
 }

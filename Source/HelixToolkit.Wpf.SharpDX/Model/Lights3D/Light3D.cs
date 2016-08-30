@@ -12,12 +12,15 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media.Media3D;
 
     using global::SharpDX;
 
     using global::SharpDX.Direct3D11;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Matrix = global::SharpDX.Matrix;
 
@@ -68,6 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// It applies to Directional Light and to Spot Light,
         /// for all other lights it is ignored.
         /// </summary>
+        [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Direction
         {
             get { return (Vector3)this.GetValue(DirectionProperty); }
@@ -87,6 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Color of the light.
         /// For simplicity, this color applies to the diffuse and specular properties of the light.
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 Color
         {
             get { return (Color4)this.GetValue(ColorProperty); }
@@ -131,14 +136,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The lighting model.
         /// </summary>
-        public static class Model
-        {
-            //PhongPerVertex,
-            //BlinnPhongPerVertex,
-            public static readonly RenderTechnique RenderPhong = Techniques.RenderPhong;
-            public static readonly RenderTechnique RenderBlinnPhong = Techniques.RenderBlinn;
-            public static readonly RenderTechnique RenderColors = Techniques.RenderColors;
-        }
+        //public static class Model
+        //{
+        //    //PhongPerVertex,
+        //    //BlinnPhongPerVertex,
+        //    public static readonly RenderTechnique RenderPhong = Techniques.RenderPhong;
+        //    public static readonly RenderTechnique RenderBlinnPhong = Techniques.RenderBlinn;
+        //    public static readonly RenderTechnique RenderColors = Techniques.RenderColors;
+        //}
 
         public Matrix LightViewMatrix
         {
@@ -217,8 +222,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectScalarVariable iLightType;
         protected int lightIndex = 0;
     }
-
-
 
     public abstract class PointLightBase3D : Light3D
     {

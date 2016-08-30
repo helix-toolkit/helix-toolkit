@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.targetHeight = Math.Max((int)host.ActualHeight, 100);
 
             /// variable containers
-            this.deferredLightingVariables = new DeferredLightingVariables(EffectsManager.Instance);
+            this.deferredLightingVariables = new DeferredLightingVariables(renderHost.EffectsManager, renderHost.RenderTechniquesManager);
             this.deferredLightingVariables.vBackgroundColor.Set(this.renderHost.ClearColor);
 
             /// clear old buffers
@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 #if SSAO
             /// variable containers
-            this.screenSpaceVariables = new ScreenSpaceProcessingVariables(EffectsManager.Instance);
+            this.screenSpaceVariables = new ScreenSpaceProcessingVariables(renderHost.EffectsManager, renderHost.RenderTechniquesManager);
 
             /// clear old buffers
             this.ClearSSBuffer();
@@ -511,7 +511,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         private static double EstimateRadius(Vector3 attenuation, double tolerance = 0.01)
         {
-			double a = attenuation.Z;
+            double a = attenuation.Z;
             double b = attenuation.Y;
             double c = attenuation.X;
             if ((a == 0) && (b == 0))
@@ -569,19 +569,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void RenderScreenSpaceAO(RenderContext contxt)
         {
-			var aspectRatio = contxt.Canvas.ActualWidth / contxt.Canvas.ActualHeight;
-			Matrix projectionMatrix = contxt.Camera.CreateProjectionMatrix(aspectRatio);
-			Matrix inverseProjectionMatrix = projectionMatrix.Inverted();
+            var aspectRatio = contxt.Canvas.ActualWidth / contxt.Canvas.ActualHeight;
+            Matrix projectionMatrix = contxt.Camera.CreateProjectionMatrix(aspectRatio);
+            Matrix inverseProjectionMatrix = projectionMatrix.Inverted();
 
-			Matrix viewProjectionMatrix = contxt.Camera.GetViewProjectionMatrix(aspectRatio);
-			Matrix inverseViewProjectionMatrix = viewProjectionMatrix.Inverted();
-			Matrix inverseViewMatrix = contxt.Camera.GetViewMatrix().Inverted();
+            Matrix viewProjectionMatrix = contxt.Camera.GetViewProjectionMatrix(aspectRatio);
+            Matrix inverseViewProjectionMatrix = viewProjectionMatrix.Inverted();
+            Matrix inverseViewMatrix = contxt.Camera.GetViewMatrix().Inverted();
 
-			this.deferredLightingVariables.mLightProj.SetMatrix(projectionMatrix);
-			this.deferredLightingVariables.mInvProjection.SetMatrix(inverseProjectionMatrix);
-			this.deferredLightingVariables.mInvView.SetMatrix(inverseViewMatrix);
-			this.deferredLightingVariables.mViewProjection.SetMatrix(viewProjectionMatrix);
-			this.deferredLightingVariables.vInvViewportSize.Set(new Vector4(1.0f / (float)contxt.Canvas.ActualWidth, 1.0f / (float)contxt.Canvas.ActualHeight, 0.0f, 0.0f));
+            this.deferredLightingVariables.mLightProj.SetMatrix(projectionMatrix);
+            this.deferredLightingVariables.mInvProjection.SetMatrix(inverseProjectionMatrix);
+            this.deferredLightingVariables.mInvView.SetMatrix(inverseViewMatrix);
+            this.deferredLightingVariables.mViewProjection.SetMatrix(viewProjectionMatrix);
+            this.deferredLightingVariables.vInvViewportSize.Set(new Vector4(1.0f / (float)contxt.Canvas.ActualWidth, 1.0f / (float)contxt.Canvas.ActualHeight, 0.0f, 0.0f));
 
             /// --- perform screen-space processing
             this.screenSpaceVariables.ssSSAOPass.Apply(this.device.ImmediateContext);
@@ -779,7 +779,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 this.deferredLightingVariables.gDepthStencilShaderResourceVariables.SetResource(this.gBufferDepthStencilResourceView);    
 #else
-			/// Create the render targets for our unoptimized G-Buffer, 
+            /// Create the render targets for our unoptimized G-Buffer, 
             /// which just uses 32-bit floats for everything
             for (int i = 0; i < NUMGBUFFER; i++)
             {
@@ -845,17 +845,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             });
 
-			this.gBufferDepthStencilResourceView = new ShaderResourceView(device, depthStencilBuffer, new ShaderResourceViewDescription()
-			{
-				Format = Format.R24_UNorm_X8_Typeless,
-				Dimension = ShaderResourceViewDimension.Texture2D,
-				Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+            this.gBufferDepthStencilResourceView = new ShaderResourceView(device, depthStencilBuffer, new ShaderResourceViewDescription()
+            {
+                Format = Format.R24_UNorm_X8_Typeless,
+                Dimension = ShaderResourceViewDimension.Texture2D,
+                Texture2D = new ShaderResourceViewDescription.Texture2DResource()
                 {
                     MipLevels = 1
                 }
-			});
+            });
 
-			this.deferredLightingVariables.gDepthStencilShaderResourceVariables.SetResource(this.gBufferDepthStencilResourceView);
+            this.deferredLightingVariables.gDepthStencilShaderResourceVariables.SetResource(this.gBufferDepthStencilResourceView);
 #endif
         }
 
@@ -1153,11 +1153,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private class DeferredLightingVariables : IDisposable
         {
-            public DeferredLightingVariables(EffectsManager effectsContainer)
+            public DeferredLightingVariables(IEffectsManager effectsContainer, IRenderTechniquesManager techniquesManager)
             {
-                this.screenGeometryEffect = effectsContainer.GetEffect(Techniques.RenderDeferredLighting);
-                this.screenGeometryLayout = effectsContainer.GetLayout(Techniques.RenderDeferredLighting);
-                this.screenGeometryTechnique = screenGeometryEffect.GetTechniqueByName(Techniques.RenderDeferredLighting.Name);
+                var deferredLightingTechnique = techniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
+
+                this.screenGeometryEffect = effectsContainer.GetEffect(deferredLightingTechnique);
+                this.screenGeometryLayout = effectsContainer.GetLayout(deferredLightingTechnique);
+                this.screenGeometryTechnique = screenGeometryEffect.GetTechniqueByName(deferredLightingTechnique.Name);
 
                 this.renderPassAmbient = this.screenGeometryTechnique.GetPassByName("AmbientPass");
                 this.renderPassDirectionalLight = this.screenGeometryTechnique.GetPassByName("DirectionalLightPass");
@@ -1178,11 +1180,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.mLightProj = this.screenGeometryEffect.GetVariableByName("mLightProj").AsMatrix();
                 this.nMsaaSamples = this.screenGeometryEffect.GetVariableByName("nMsaaSamples").AsScalar();
 
-				// for SSAO
-				this.vInvViewportSize = this.screenGeometryEffect.GetVariableByName("vInvViewportSize").AsVector();
-				this.mInvProjection = this.screenGeometryEffect.GetVariableByName("mInvProjection").AsMatrix();
-				this.mInvView = this.screenGeometryEffect.GetVariableByName("mInvView").AsMatrix();
-				this.mViewProjection = this.screenGeometryEffect.GetVariableByName("mViewProjection").AsMatrix();
+                // for SSAO
+                this.vInvViewportSize = this.screenGeometryEffect.GetVariableByName("vInvViewportSize").AsVector();
+                this.mInvProjection = this.screenGeometryEffect.GetVariableByName("mInvProjection").AsMatrix();
+                this.mInvView = this.screenGeometryEffect.GetVariableByName("mInvView").AsMatrix();
+                this.mViewProjection = this.screenGeometryEffect.GetVariableByName("mViewProjection").AsMatrix();
 
                 this.gDepthStencilShaderResourceVariables = this.screenGeometryEffect.GetVariableByName("DepthTexture").AsShaderResource();
 
@@ -1216,11 +1218,11 @@ namespace HelixToolkit.Wpf.SharpDX
             public EffectMatrixVariable mLightProj;
             public EffectScalarVariable nMsaaSamples;
 
-			// for SSAO
-			public EffectVectorVariable vInvViewportSize;
-			public EffectMatrixVariable mInvProjection;
-			public EffectMatrixVariable mInvView;
-			public EffectMatrixVariable mViewProjection;
+            // for SSAO
+            public EffectVectorVariable vInvViewportSize;
+            public EffectMatrixVariable mInvProjection;
+            public EffectMatrixVariable mInvView;
+            public EffectMatrixVariable mViewProjection;
 
             public EffectShaderResourceVariable[] gBufferShaderResourceVariables;
             public EffectShaderResourceVariable gDepthStencilShaderResourceVariables;
@@ -1244,11 +1246,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.mLightProj);
                 Disposer.RemoveAndDispose(ref this.nMsaaSamples);
 
-				// for SSAO
-				Disposer.RemoveAndDispose(ref this.vInvViewportSize);
-				Disposer.RemoveAndDispose(ref this.mInvProjection);
-				Disposer.RemoveAndDispose(ref this.mInvView);
-				Disposer.RemoveAndDispose(ref this.mViewProjection);
+                // for SSAO
+                Disposer.RemoveAndDispose(ref this.vInvViewportSize);
+                Disposer.RemoveAndDispose(ref this.mInvProjection);
+                Disposer.RemoveAndDispose(ref this.mInvView);
+                Disposer.RemoveAndDispose(ref this.mViewProjection);
 
                 if (this.gBufferShaderResourceVariables != null)
                 {
@@ -1268,12 +1270,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private class ScreenSpaceProcessingVariables : IDisposable
         {
-            public ScreenSpaceProcessingVariables(EffectsManager effectsContainer)
+            public ScreenSpaceProcessingVariables(IEffectsManager effectsContainer, IRenderTechniquesManager renderTechniquesManager)
             {
 
-                this.screenSpaceEffect = effectsContainer.GetEffect(Techniques.RenderDeferredLighting);
-                this.screenSpaceLayout = effectsContainer.GetLayout(Techniques.RenderDeferredLighting);
-                this.screenSpaceTechnique = screenSpaceEffect.GetTechniqueByName(Techniques.RenderScreenSpace.Name);
+                var deferredLighting = renderTechniquesManager.RenderTechniques[DeferredRenderTechniqueNames.DeferredLighting];
+                this.screenSpaceEffect = effectsContainer.GetEffect(deferredLighting);
+                this.screenSpaceLayout = effectsContainer.GetLayout(deferredLighting);
+                this.screenSpaceTechnique = screenSpaceEffect.GetTechniqueByName(DeferredRenderTechniqueNames.ScreenSpace);
 
                 this.ssBlurHPass = screenSpaceTechnique.GetPassByName("BlurHPass");
                 this.ssBlurVPass = screenSpaceTechnique.GetPassByName("BlurVPass");

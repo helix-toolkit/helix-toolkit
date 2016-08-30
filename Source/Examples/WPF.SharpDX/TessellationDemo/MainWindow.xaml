@@ -11,7 +11,7 @@
         Title="{Binding Title}" Height="500" Width="800">
     <Window.Resources>        
         <x:StaticExtension Member="hx:TessellationTechniques.Shading" x:Key="Shading"/>
-        <x:StaticExtension Member="hx:TessellationTechniques.RenderTechniques" x:Key="RenderTechniques" />
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
     </Window.Resources>    
     <Grid>
         <Grid.RowDefinitions>
@@ -28,8 +28,10 @@
             TextBrush="Black"           
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"  
-            RenderTechnique="{Binding RenderTechnique}">
+            UseDefaultGestures="False"
+            RenderTechnique="{Binding RenderTechnique}"
+            RenderTechniquesManager="{Binding RenderTechniquesManager}"
+            EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
                 <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>

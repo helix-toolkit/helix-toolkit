@@ -9,10 +9,14 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
+
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color4 = global::SharpDX.Color4;
 
@@ -192,6 +196,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 "EnableCurrentPosition", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// The EffectsManager property.
+        /// </summary>
+        public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
+            "EffectsManager", typeof(IEffectsManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
+                null, FrameworkPropertyMetadataOptions.AffectsRender,
+                (s, e) => ((Viewport3DX)s).EffectsManagerPropertyChanged()));
+
+        /// <summary>
         /// The field of view text property.
         /// </summary>
         public static readonly DependencyProperty FieldOfViewTextProperty = DependencyProperty.Register(
@@ -246,10 +258,37 @@ namespace HelixToolkit.Wpf.SharpDX
             "InfoForeground", typeof(Brush), typeof(Viewport3DX), new UIPropertyMetadata(Brushes.Black));
 
         /// <summary>
-        /// The is deferred shading enabled propery
+        /// The message text property.
+        /// </summary>
+        public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
+            "MessageText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// The render exception property.
+        /// </summary>
+        public static DependencyProperty RenderExceptionProperty = DependencyProperty.Register(
+            "RenderException", typeof(Exception), typeof(Viewport3DX), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The render host property.
+        /// </summary>
+        public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
+            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
+
+        /// <summary>
+        /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(Techniques.RenderPhong, (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
+            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null, 
+                (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
+
+        /// <summary>
+        /// The RenderTechniquesManager property.
+        /// </summary>
+        public static readonly DependencyProperty RenderTechniquesManagerProperty = DependencyProperty.Register(
+            "RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
+                null, FrameworkPropertyMetadataOptions.AffectsRender, 
+                (s, e) => ((Viewport3DX)s).RenderTechniquesManagerPropertyChanged()));
 
         /// <summary>
         /// The is deferred shading enabled propery
@@ -629,6 +668,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Background Color
         /// </summary>
+        [TypeConverter(typeof(Color4Converter))]
         public Color4 BackgroundColor
         {
             get { return (Color4)this.GetValue(BackgroundColorProperty); }
@@ -1020,6 +1060,15 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="IEffectsManager"/>.
+        /// </summary>
+        public IEffectsManager EffectsManager
+        {
+            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
+            set { SetValue(EffectsManagerProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
         /// </summary>
         /// <value>
@@ -1170,7 +1219,44 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(InfoForegroundProperty, value);
             }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the message text.
+        /// </summary>
+        /// <value>
+        /// The message text.
+        /// </value>
+        public string MessageText
+        {
+            get
+            {
+                return (string)this.GetValue(MessageTextProperty);
+            }
+
+            set
+            {
+                this.SetValue(MessageTextProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="System.Exception"/> that occured at rendering subsystem.
+        /// </summary>
+        public Exception RenderException
+        {
+            get { return (Exception)this.GetValue(RenderExceptionProperty); }
+            set { this.SetValue(RenderExceptionProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IRenderHost"/>.
+        /// </summary>
+        public IRenderHost RenderHost
+        {
+            get { return (IRenderHost)this.GetValue(RenderHostProperty); }
+            set { this.SetValue(RenderHostProperty, value); }
+        }
+
         /// <summary>
         /// Gets or sets value for the shading model shading is used
         /// </summary>
@@ -1181,6 +1267,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (RenderTechnique)this.GetValue(RenderTechniqueProperty); }
             set { this.SetValue(RenderTechniqueProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IRenderTechniquesManager"/>.
+        /// </summary>
+        public IRenderTechniquesManager RenderTechniquesManager
+        {
+            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
+            set { SetValue(RenderTechniquesManagerProperty, value); }
         }
 
         /// <summary>
