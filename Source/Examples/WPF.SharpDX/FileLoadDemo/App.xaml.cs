@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Windows;
 
-namespace TemplateDemo
+namespace FileLoadDemo
 {
     /// <summary>
     /// Interaction logic for App.xaml

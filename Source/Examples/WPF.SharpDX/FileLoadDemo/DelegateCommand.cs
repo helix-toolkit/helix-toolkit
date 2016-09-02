@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace TemplateDemo
+namespace FileLoadDemo
 {
   public class DelegateCommand : ICommand
   {

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TemplateDemo
+namespace FileLoadDemo
 {
     using System.Windows;
 

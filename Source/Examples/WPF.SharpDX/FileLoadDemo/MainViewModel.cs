@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TemplateDemo
+namespace FileLoadDemo
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

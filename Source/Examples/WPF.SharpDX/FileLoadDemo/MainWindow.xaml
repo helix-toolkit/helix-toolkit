@@ -1,13 +1,9 @@
-﻿<Window x:Class="TemplateDemo.MainWindow"
+﻿<Window x:Class="FileLoadDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        Title="Template demo" Height="350" Width="525">
-    <Window.Resources>
-        <DataTemplate x:Key="Template1">
-            <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Transform="{Binding Transform}" Material="{Binding Material}"/>
-        </DataTemplate>
-    </Window.Resources>
+        Title="FileLoadDemo" Height="350" Width="525">
+    
   
     <Grid>
     
