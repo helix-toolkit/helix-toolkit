@@ -10,6 +10,7 @@
 namespace FileLoadDemo
 {
     using System.Windows;
+    using HelixToolkit.Wpf.SharpDX;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -22,7 +23,12 @@ namespace FileLoadDemo
             var Main = new MainViewModel();
              Main.modelView = this.view;
       this.DataContext = Main;
-            
+            this.MouseMove += MainWindow_MouseMove;
+        }
+
+        private void MainWindow_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+           var hits= view.FindHits(e.GetPosition(view));
         }
     }
 }
