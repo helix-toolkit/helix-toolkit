@@ -1,12 +1,9 @@
-version: 2015.1.{build}
-
-environment:
-  nuget_api_key:
-    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+pull_requests:
+  do_not_increment_build_number: true
 
 install:
-  - cinst LynxToolkit -y
-  - cinst gitlink -Pre -y
+  - cinst gitversion.portable --version=3.4.1 -y
+  - cinst gitlink --version=2.2.0 -y
 
 platform: Any CPU
 
@@ -17,20 +14,32 @@ build:
   verbosity: normal
 
 before_build:
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - nuget restore .\Source\HelixToolkit.AppVeyor.sln
-  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /ExtractReleaseNotes=CHANGELOG.md /Directory=Source
+  - gitversion /l console /output buildserver /updateAssemblyInfo
 
 after_build:
   - cmd: gitlink c:\projects\helix-toolkit -u https://github.com/helix-toolkit/helix-toolkit -b master -f Source/HelixToolkit.AppVeyor.sln
 
 deploy_script:
   - cmd: mkdir Packages
-  - cmd: NuGet.exe pack Source\HelixToolkit\HelixToolkit.nuspec -OutputDirectory Packages
-  - cmd: NuGet.exe pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -OutputDirectory Packages
-  - cmd: NuGet.exe pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -OutputDirectory Packages
+  - cmd: NuGet.exe pack Source\HelixToolkit\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet.exe pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
+  - cmd: NuGet.exe pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%"
   - cmd: for %%G in (Packages\*.nupkg) do NuGet.exe push %%G %nuget_api_key%
 artifacts:
   - path: Output
-    name: HelixToolkit-$(APPVEYOR_BUILD_VERSION)
+    name: HelixToolkit-$(GitVersion_SemVer)
     type: zip
-  - path: Packages\*.nupkg
+  - path: '*.nupkg'
+    name: HelixToolkit-packages-$(GitVersion_SemVer)
+    type: zip
+    
+deploy:
+  provider: NuGet
+  server: https://www.myget.org/F/helix-toolkit/api/v2/package
+  api_key:
+    secure: 2GnqgfpkOUH6Umfn1WWlun0b021+QeInBXkgQOQfa4/wDOYHLT757rrjTsb0lmon
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/
