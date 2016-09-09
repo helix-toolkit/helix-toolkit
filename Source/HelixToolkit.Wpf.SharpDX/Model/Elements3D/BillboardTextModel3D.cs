@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
             billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
 
             var textureBytes = BillboardText3D.Texture.ToByteArray();
-            billboardTextureView = ShaderResourceView.FromMemory(Device, textureBytes);
+         //   billboardTextureView =new ShaderResourceView(Device, BillboardText3D.Texture);
             billboardTextureVariable.SetResource(billboardTextureView);
 
             // -- set geometry if given

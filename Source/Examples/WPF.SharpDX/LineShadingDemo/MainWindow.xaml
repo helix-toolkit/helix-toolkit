@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
         xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
+         xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"         
         Title="Line Shading Demo (HelixToolkitDX)" Height="600" Width="900">
@@ -46,9 +47,9 @@
             <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding Material2}" />
             <hx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding Material3}"  />
 
-            <hx:LineGeometryModel3D x:Name="lines1" Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Blue}"    Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
-            <hx:LineGeometryModel3D x:Name="lines2" Geometry="{Binding Lines}" Transform = "{Binding Model2Transform}" Color="{x:Static sdx:Color.Yellow}"  Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
-            <hx:LineGeometryModel3D x:Name="lines3" Geometry="{Binding Lines}" Transform = "{Binding Model3Transform}" Color="{x:Static sdx:Color.White}"   Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
+            <hx:LineGeometryModel3D x:Name="lines1" Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdxm:Color.Blue}"    Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
+            <hx:LineGeometryModel3D x:Name="lines2" Geometry="{Binding Lines}" Transform = "{Binding Model2Transform}" Color="{x:Static sdxm:Color.Yellow}"  Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
+            <hx:LineGeometryModel3D x:Name="lines3" Geometry="{Binding Lines}" Transform = "{Binding Model3Transform}" Color="{x:Static sdxm:Color.White}"   Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}"  IsRendering="{Binding LinesEnabled}"/>
 
             <hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"  Thickness="{Binding LineThickness}" Smoothness="{Binding LineSmoothness}" IsRendering="{Binding GridEnabled}"/>
         </hx:Viewport3DX>

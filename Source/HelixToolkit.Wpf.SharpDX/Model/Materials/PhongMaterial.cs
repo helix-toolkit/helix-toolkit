@@ -13,10 +13,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
 
     using global::SharpDX;
+
     using System.Windows;    
     using System.Windows.Media.Imaging;
     using System;
-
+   
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     /// <summary>

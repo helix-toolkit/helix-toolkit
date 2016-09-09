@@ -14,13 +14,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
-
+    using global::SharpDX.Direct2D1;
     using global::SharpDX.DXGI;
+    using global::SharpDX.WIC;
 
     using Direct3D = global::SharpDX.Direct3D;
     using Matrix = global::SharpDX.Matrix;
     using Texture2D = global::SharpDX.Direct3D11.Texture2D;
-
+    using global::SharpDX.Direct3D9;
+    using FillMode = global::SharpDX.Direct3D11.FillMode;
+    using Format = global::SharpDX.DXGI.Format;
     public sealed class EnvironmentMap3D : Model3D
     {
         // members to dispose          
@@ -96,7 +99,9 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Filename != null)
             {
                 /// -- attach texture
-                using (var texture = Texture2D.FromFile<Texture2D>(this.Device, this.Filename))
+                ///
+           
+                using (var texture = TextureLoader.CreateTexture2DFromMediaBitamp(Device, TextureLoader.LoadBitmap( this.Filename)))
                 {
                     this.texCubeMapView = new ShaderResourceView(this.Device, texture);
                 }
@@ -146,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (!this.IsAttached)
                 return;
 
-            this.bHasCubeMap.Set(false);
+            this.bHasCubeMap?.Set(false);
 
             this.effectTechnique = null;
             this.effectTechnique = null;

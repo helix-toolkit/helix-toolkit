@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
     using global::SharpDX.DXGI;
+    using global::SharpDX.WIC;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -1076,7 +1077,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
             // init random normals texture
-            this.randNormalMapShaderResourceView = ShaderResourceView.FromFile(device, @"./Textures/random4x4_dot3.png");
+            var texture=TextureLoader.CreateTexture2DFromMediaBitamp(device,TextureLoader.LoadBitmap( @"./Textures/random4x4_dot3.png"));
+            this.randNormalMapShaderResourceView = new ShaderResourceView(device, texture);
             //this.randNormalMapShaderResourceView = ShaderResourceView.FromFile(device, @"./Textures/random_dot3.jpg");
             // set shader resources
             this.screenSpaceVariables.randNormalsShaderResourceVariable.SetResource(this.randNormalMapShaderResourceView);

@@ -78,7 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         private static Adapter GetBestAdapter(out int bestAdapterIndex)
         {
-            using (var f = new Factory())
+            using (var f = new Factory1())
             {
                 Adapter bestAdapter = null;
                 bestAdapterIndex = -1;
