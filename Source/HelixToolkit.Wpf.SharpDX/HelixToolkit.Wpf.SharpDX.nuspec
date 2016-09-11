@@ -13,8 +13,8 @@
     <tags>wpf SharpDX 3D</tags>
     <dependencies>
       <dependency id="Cyotek.Drawing.BitmapFont" version="1.0.2.0" />
-      <dependency id="HelixToolkit" version="$version" />
-      <dependency id="HelixToolkit.Wpf" version="$version" />
+      <dependency id="HelixToolkit" version="[$version$]" />
+      <dependency id="HelixToolkit.Wpf" version="[$version$]" />
       <dependency id="SharpDX" version="2.6.3" />
       <dependency id="SharpDX.D3DCompiler" version="2.6.3" />
       <dependency id="SharpDX.Direct2D1" version="2.6.3" />
