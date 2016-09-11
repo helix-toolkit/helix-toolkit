@@ -2,8 +2,8 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>HelixToolkit.Wpf</id>
-    <version>$version</version>
-    <title>HelixToolkit.Wpf</title>
+    <version>$version$</version>
+    <title>Helix Toolkit for WPF</title>
     <authors>objo</authors>
     <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
     <projectUrl>http://helix-toolkit.github.io/</projectUrl>
