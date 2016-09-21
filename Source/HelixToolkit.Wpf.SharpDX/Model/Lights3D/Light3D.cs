@@ -258,6 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Z = quadratic attenuation.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
         /// </summary>
+        [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Attenuation
         {
             get { return (Vector3)this.GetValue(AttenuationProperty); }
