@@ -38,6 +38,8 @@
                 <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
                          Text="{Binding Path=ConstructionPlane.Normal, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
+            <Separator/>
+            <CheckBox x:Name="cbZoomPoint" Content="Zoom to Mouse Point" Margin="5" IsChecked="{Binding Path=ZoomAroundMouseDownPoint, ElementName=view1}"/>
 
         </StackPanel>
         <Grid>

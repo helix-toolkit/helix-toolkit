@@ -1,0 +1,21 @@
+﻿<Window x:Class="FileLoadDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        Title="FileLoadDemo" Height="350" Width="525">
+    
+  
+    <Grid>
+    
+        <hx:Viewport3DX x:Name="view">
+            <hx:AmbientLight3D />
+            <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
+      <hx:GroupModel3D x:Name="group"   Children="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
+    </hx:Viewport3DX>
+    <Menu Height="20" VerticalAlignment="Top">
+      <MenuItem Header="File"  >
+        <MenuItem Command="{Binding OpenFileCommand}" Header="Open File"></MenuItem>
+      </MenuItem>
+    </Menu>
+  </Grid>
+</Window>

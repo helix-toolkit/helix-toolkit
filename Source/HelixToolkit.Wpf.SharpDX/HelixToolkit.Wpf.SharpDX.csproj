@@ -135,8 +135,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\CameraController.cs" />
     <Compile Include="Controls\DeferredRenderer.cs" />
@@ -189,6 +189,7 @@
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Geometry\BillboardText3D.cs" />
     <Compile Include="Model\Geometry\PointGeometry3D.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -196,6 +197,7 @@
     </Compile>
     <Compile Include="Utilities\OffReader.cs" />
     <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
+    <Compile Include="Utilities\StudioReader.cs" />
     <Compile Include="Utilities\TokenizerHelper.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />
     <Compile Include="Extensions\Vector3DExtensions.cs" />
@@ -256,9 +258,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
