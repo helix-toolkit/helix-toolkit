@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
             char previousCharacter;
 
             previousCharacter = ' ';
-            var normalizedText = bmpFont.NormalizeLineBreaks(info.Text);
+            var normalizedText = info.Text;
 
             foreach (char character in normalizedText)
             {
