@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OnColorChanged()
         {
-            if (this.IsAttached)
+            if (this.IsAttached && Geometry!=null)
             {
                 /// --- set up buffers            
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateLinesVertexArray());
