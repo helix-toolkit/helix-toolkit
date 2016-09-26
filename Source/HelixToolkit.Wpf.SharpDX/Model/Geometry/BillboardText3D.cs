@@ -38,7 +38,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static BitmapSource Texture { get; private set; }
 
         public List<TextInfo> TextInfo { get; private set; }
-
+        
+        private Color4 mFontColor = Color.Black;
+        public Color4 FontColor 
+        {
+            set { mFontColor = value; }
+            get { return mFontColor; }
+        }
+        
         public BillboardText3D()
         {
             Positions = new Vector3Collection();
@@ -152,12 +159,12 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
 
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
+            Colors.Add(FontColor);
+            Colors.Add(FontColor);
+            Colors.Add(FontColor);
+            Colors.Add(FontColor);
+            Colors.Add(FontColor);
+            Colors.Add(FontColor);
 
             TextureCoordinates.Add(uv_b);
             TextureCoordinates.Add(uv_d);
