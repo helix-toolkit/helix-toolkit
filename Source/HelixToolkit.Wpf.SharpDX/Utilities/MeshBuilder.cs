@@ -568,11 +568,17 @@ namespace HelixToolkit.Wpf.SharpDX
             if (!CircleCache.TryGetValue(thetaDiv, out circle))
             {
                 circle = new Vector2Collection();
-                CircleCache.Add(thetaDiv, circle);
                 for (int i = 0; i < thetaDiv; i++)
                 {
                     double theta = Math.PI * 2 * ((double)i / (thetaDiv - 1));
                     circle.Add(new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta)));
+                }
+                lock (CircleCache)
+                {
+                    if (!CircleCache.ContainsKey(thetaDiv))
+                    {
+                        CircleCache.Add(thetaDiv, circle);
+                    }
                 }
             }
 
@@ -2863,7 +2869,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var mesh = mb.ToMeshGeometry3D();
-            UnitSphereCache[subdivisions] = mesh;
+            lock (UnitSphereCache)
+            {
+                if(!UnitSphereCache.ContainsKey(subdivisions))
+                {
+                    UnitSphereCache.Add(subdivisions, mesh);
+                }
+            }
             return mesh;
         }
 
