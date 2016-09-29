@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
-            return false; // No hit testing on text geometry.
+            return false;
         }
 
         public override void Attach(IRenderHost host)
@@ -42,23 +42,20 @@ namespace HelixToolkit.Wpf.SharpDX
             vViewport = effect.GetVariableByName("vViewport").AsVector();
 
             // --- get geometry
-            var geometry = Geometry as BillboardText3D;
+            var geometry = Geometry as IBillboardText;
             if (geometry == null)
             {
                 return;
             }
-
+            // -- set geometry if given
+            vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
+                VertexSizeInBytes, CreateBillboardVertexArray());
             // --- material 
             // this.AttachMaterial();
             billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
 
-            var textureBytes = BillboardText3D.Texture.ToByteArray();
+            var textureBytes = geometry.Texture.ToByteArray();
             billboardTextureView = ShaderResourceView.FromMemory(Device, textureBytes);
-            billboardTextureVariable.SetResource(billboardTextureView);
-
-            // -- set geometry if given
-            vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
-                VertexSizeInBytes, CreateBillboardVertexArray());
 
             /// --- set rasterstate
             OnRasterStateChanged(DepthBias);
@@ -97,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var c = renderContext.Camera as ProjectionCamera;
                 var width = ((float)renderContext.Canvas.ActualWidth);
-                var height = ((float) renderContext.Canvas.ActualHeight);
+                var height = ((float)renderContext.Canvas.ActualHeight);
                 var viewport = new Vector4(width, height, 0, 0);
                 vViewport.Set(ref viewport);
             }
@@ -119,7 +116,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- bind buffer                
             Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
-            /// --- render the geometry
+            /// --- render the geometry 
+            billboardTextureVariable.SetResource(billboardTextureView);
             effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
 
             /// --- draw
@@ -132,20 +130,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private BillboardVertex[] CreateBillboardVertexArray()
         {
-            var billboardGeometry = Geometry as BillboardText3D;
+            var billboardGeometry = Geometry as IBillboardText;
 
             // Gather all of the textInfo offsets.
             // These should be equal in number to the positions.
-            foreach (var ti in billboardGeometry.TextInfo)
-            {
-                billboardGeometry.DrawText(ti);
-            }
+
+            billboardGeometry.DrawText();
 
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
             var result = new List<BillboardVertex>();
 
-            var allOffsets = billboardGeometry.TextInfo.SelectMany(ti => ti.Offsets).ToArray();
+            var allOffsets = billboardGeometry.TextInfoOffsets;
 
             for (var i = 0; i < vertexCount; i++)
             {
@@ -154,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     Position = new Vector4(position[i], 1.0f),
                     Color = billboardGeometry.Colors[i],
-                    TexCoord = new Vector4(tc.X,tc.Y, allOffsets[i].X, allOffsets[i].Y)
+                    TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y)
                 };
 
                 result.Add(vtx);
