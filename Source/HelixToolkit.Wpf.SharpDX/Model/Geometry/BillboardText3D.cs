@@ -50,6 +50,16 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return mFontColor; }
         }
 
+        public float Width
+        {
+            get { return 0; }
+        }
+
+        public float Height
+        {
+            get { return 0; }
+        }
+
         public BillboardText3D()
         {
             Positions = new Vector3Collection();

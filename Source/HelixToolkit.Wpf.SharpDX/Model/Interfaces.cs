@@ -88,5 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
         IList<Vector2> TextInfoOffsets { get; }
         Vector2Collection TextureCoordinates { get; }
         Color4Collection Colors { get; }
+        float Width { get; }
+        float Height { get; }
     }
 }
