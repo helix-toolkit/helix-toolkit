@@ -90,6 +90,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     (ItemsSource as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
                 }
+                mDictionary.Clear();
+                if (ItemsSource == null)
+                {
+                    return;
+                }
                 if (this.ItemTemplate == null)
                 {
                     foreach (var item in this.ItemsSource)
