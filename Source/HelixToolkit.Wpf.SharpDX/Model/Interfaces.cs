@@ -17,6 +17,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using Matrix = global::SharpDX.Matrix;
+    using System.Windows.Media.Imaging;
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     public interface ITraversable
     {
@@ -76,5 +78,17 @@ namespace HelixToolkit.Wpf.SharpDX
         event RoutedEventHandler MouseDown3D;
         event RoutedEventHandler MouseUp3D;
         event RoutedEventHandler MouseMove3D;
+    }
+
+    public interface IBillboardText
+    {
+        BitmapSource Texture { get; }
+        void DrawText();
+        Vector3Collection Positions { get; }
+        IList<Vector2> TextInfoOffsets { get; }
+        Vector2Collection TextureCoordinates { get; }
+        Color4Collection Colors { get; }
+        float Width { get; }
+        float Height { get; }
     }
 }

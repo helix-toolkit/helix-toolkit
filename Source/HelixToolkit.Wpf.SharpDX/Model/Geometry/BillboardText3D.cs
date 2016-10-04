@@ -6,7 +6,7 @@ using Cyotek.Drawing.BitmapFont;
 using System;
 using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
-
+using System.Linq;
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class TextInfo
@@ -29,15 +29,36 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [Serializable]
-    public class BillboardText3D : MeshGeometry3D
+    public class BillboardText3D : MeshGeometry3D, IBillboardText
     {
         private static bool isInitialized = false;
 
         private static BitmapFont bmpFont;
 
-        public static BitmapSource Texture { get; private set; }
+        public static BitmapSource TextureStatic { get; private set; }
+
+        public BitmapSource Texture { get { return TextureStatic; } }
 
         public List<TextInfo> TextInfo { get; private set; }
+
+        public IList<Vector2> TextInfoOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
+
+        private System.Windows.Media.Color mFontColor = System.Windows.Media.Colors.Black;
+        public System.Windows.Media.Color FontColor
+        {
+            set { mFontColor = value; }
+            get { return mFontColor; }
+        }
+
+        public float Width
+        {
+            get { return 0; }
+        }
+
+        public float Height
+        {
+            get { return 0; }
+        }
 
         public BillboardText3D()
         {
@@ -75,8 +96,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 texImageStream.CopyTo(fileStream);
             }
 
-            Texture = new BitmapImage(new Uri(texImageFilePath));
-
+            TextureStatic = new BitmapImage(new Uri(texImageFilePath));
+            TextureStatic.Freeze();
             //Cleanup the temp files
             if (File.Exists(texDescriptionFilePath))
             {
@@ -86,48 +107,50 @@ namespace HelixToolkit.Wpf.SharpDX
             isInitialized = true;
         }
 
-        internal void DrawText(TextInfo info)
+        public void DrawText()
         {
             //Positions.Clear();
             //Colors.Clear();
             //TextureCoordinates.Clear();
 
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
-
-            int x = 0;
-            int y = 0;
-            var w = bmpFont.TextureSize.Width;
-            var h = bmpFont.TextureSize.Height;
-
-            char previousCharacter;
-
-            previousCharacter = ' ';
-            var normalizedText = bmpFont.NormalizeLineBreaks(info.Text);
-
-            foreach (char character in normalizedText)
+            foreach (var textInfo in TextInfo)
             {
-                switch (character)
+                int x = 0;
+                int y = 0;
+                var w = bmpFont.TextureSize.Width;
+                var h = bmpFont.TextureSize.Height;
+
+                char previousCharacter;
+
+                previousCharacter = ' ';
+                var normalizedText = textInfo.Text;
+
+                foreach (char character in normalizedText)
                 {
-                    case '\n':
-                        x = 0;
-                        y -= bmpFont.LineHeight;
-                        break;
-                    default:
-                        Character data = bmpFont[character];
-                        int kerning = bmpFont.GetKerning(previousCharacter, character);
+                    switch (character)
+                    {
+                        case '\n':
+                            x = 0;
+                            y -= bmpFont.LineHeight;
+                            break;
+                        default:
+                            Character data = bmpFont[character];
+                            int kerning = bmpFont.GetKerning(previousCharacter, character);
 
-                        //DrawCharacter(data, x + data.Offset.X + kerning, y + data.Offset.Y, builder);
-                        DrawCharacter(data, new Vector3(x,y,0), w, h, kerning, info);
+                            //DrawCharacter(data, x + data.Offset.X + kerning, y + data.Offset.Y, builder);
+                            DrawCharacter(data, new Vector3(x, y, 0), w, h, kerning, textInfo);
 
-                        x += data.XAdvance + kerning;
-                        break;
+                            x += data.XAdvance + kerning;
+                            break;
+                    }
+
+                    previousCharacter = character;
                 }
-
-                previousCharacter = character;
             }
         }
 
-        internal void DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
+        private void DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
         {
             var cw = character.Bounds.Width;
             var ch = character.Bounds.Height;
@@ -140,10 +163,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var c = new Vector2(origin.X + cw + kerning, origin.Y);
             var d = new Vector2(origin.X + cw + kerning, origin.Y + ch);
 
-            var uv_a = new Vector2(cu/w, cv/h);
-            var uv_b = new Vector2(cu/w, (cv + ch)/h);
-            var uv_c = new Vector2((cu + cw)/w, cv/h);
-            var uv_d = new Vector2((cu + cw)/w, (cv + ch)/h);
+            var uv_a = new Vector2(cu / w, cv / h);
+            var uv_b = new Vector2(cu / w, (cv + ch) / h);
+            var uv_c = new Vector2((cu + cw) / w, cv / h);
+            var uv_d = new Vector2((cu + cw) / w, (cv + ch) / h);
 
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
@@ -152,12 +175,13 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
 
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
-            Colors.Add(new Color4(0, 0, 0, 1));
+            var color = FontColor.ToColor4();
+            Colors.Add(color);
+            Colors.Add(color);
+            Colors.Add(color);
+            Colors.Add(color);
+            Colors.Add(color);
+            Colors.Add(color);
 
             TextureCoordinates.Add(uv_b);
             TextureCoordinates.Add(uv_d);
