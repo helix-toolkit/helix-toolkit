@@ -126,6 +126,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public override void Render(RenderContext context)
         {
+            if (!this.IsRendering)
+                return;
+
+            if (this.Visibility != System.Windows.Visibility.Visible)
+                return;
+
             base.Render(context);
 
             // you mean like this?
