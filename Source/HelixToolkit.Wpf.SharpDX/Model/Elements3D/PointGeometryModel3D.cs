@@ -156,7 +156,7 @@
             return result.IsValid;
         }
 
-        protected override void OnRasterStateChanged(int depthBias)
+        protected override void OnRasterStateChanged()
         {
             if (this.IsAttached)
             {
@@ -166,7 +166,7 @@
                 {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.None,
-                    DepthBias = depthBias,
+                    DepthBias = DepthBias,
                     DepthBiasClamp = -1000,
                     SlopeScaledDepthBias = -2,
                     IsDepthClipEnabled = true,
@@ -232,7 +232,7 @@
             vPointParams.Set(pointParams);
 
             /// --- create raster state
-            OnRasterStateChanged(DepthBias);
+            OnRasterStateChanged();
 
             /// --- flush
             Device.ImmediateContext.Flush();

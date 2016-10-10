@@ -110,12 +110,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty DepthBiasProperty =
             DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new UIPropertyMetadata(0, RasterStateChanged));
 
-        private static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((GeometryModel3D)d).OnRasterStateChanged((int)e.NewValue);
+            ((GeometryModel3D)d).OnRasterStateChanged();
         }
 
-        protected virtual void OnRasterStateChanged(int depthBias) { }
+        protected virtual void OnRasterStateChanged() { }
 
         public static readonly RoutedEvent MouseDown3DEvent =
             EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
