@@ -26,6 +26,62 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
+        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+
+        public bool FrontCounterClockwise
+        {
+            set
+            {
+                SetValue(FrontCounterClockwiseProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FrontCounterClockwiseProperty);
+            }
+        }
+
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D), new PropertyMetadata(CullMode.None, RasterStateChanged));
+
+        public CullMode CullMode
+        {
+            set
+            {
+                SetValue(CullModeProperty, value);
+            }
+            get
+            {
+                return (CullMode)GetValue(CullModeProperty);
+            }
+        }
+
+        public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(MeshGeometryModel3D), new PropertyMetadata(FillMode.Solid, RasterStateChanged));
+
+        public FillMode FillMode
+        {
+            set
+            {
+                SetValue(FillModeProperty, value);
+            }
+            get
+            {
+                return (FillMode)GetValue(FillModeProperty);
+            }
+        }
+
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+
+        public bool IsDepthClipEnabled
+        {
+            set
+            {
+                SetValue(IsDepthClipEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsDepthClipEnabledProperty);
+            }
+        }
+
         public override int VertexSizeInBytes
         {
             get
@@ -34,11 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="depthBias"></param>
-        protected override void OnRasterStateChanged(int depthBias)
+        protected override void OnRasterStateChanged()
         {
             if (this.IsAttached)
             {
@@ -46,13 +98,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- set up rasterizer states
                 var rasterStateDesc = new RasterizerStateDescription()
                 {
-                    FillMode = FillMode.Solid,
-                    CullMode = CullMode.None,
-                    DepthBias = depthBias,
+                    FillMode = FillMode,
+                    CullMode = CullMode,
+                    DepthBias = DepthBias,
                     DepthBiasClamp = -1000,
                     SlopeScaledDepthBias = +0,
-                    IsDepthClipEnabled = true,
-                    IsFrontCounterClockwise = true,
+                    IsDepthClipEnabled = IsDepthClipEnabled,
+                    IsFrontCounterClockwise = FrontCounterClockwise,
 
                     //IsMultisampleEnabled = true,
                     //IsAntialiasedLineEnabled = true,                    
@@ -122,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             /// --- set rasterstate
-            this.OnRasterStateChanged(this.DepthBias);
+            this.OnRasterStateChanged();
 
             /// --- flush
             this.Device.ImmediateContext.Flush();

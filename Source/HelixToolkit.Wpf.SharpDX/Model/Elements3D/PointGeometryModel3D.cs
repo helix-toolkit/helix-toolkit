@@ -156,7 +156,7 @@
             return result.IsValid;
         }
 
-        protected override void OnRasterStateChanged(int depthBias)
+        protected override void OnRasterStateChanged()
         {
             if (this.IsAttached)
             {
@@ -166,7 +166,7 @@
                 {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.None,
-                    DepthBias = depthBias,
+                    DepthBias = DepthBias,
                     DepthBiasClamp = -1000,
                     SlopeScaledDepthBias = -2,
                     IsDepthClipEnabled = true,
@@ -183,7 +183,7 @@
 
         private void OnColorChanged()
         {
-            if (this.IsAttached)
+            if (this.IsAttached && Geometry != null && Geometry.Positions != null)
             {
                 /// --- set up buffers            
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
@@ -199,7 +199,7 @@
             renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
             base.Attach(host);
 
-            if (Geometry == null)
+            if (Geometry == null || Geometry.Positions == null)
                 return;
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
@@ -232,7 +232,7 @@
             vPointParams.Set(pointParams);
 
             /// --- create raster state
-            OnRasterStateChanged(DepthBias);
+            OnRasterStateChanged();
 
             /// --- flush
             Device.ImmediateContext.Flush();

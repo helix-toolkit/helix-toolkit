@@ -179,7 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return result.IsValid;
         }
 
-        protected override void OnRasterStateChanged(int depthBias)
+        protected override void OnRasterStateChanged()
         {
             if (this.IsAttached)
             {
@@ -189,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.None,
-                    DepthBias = depthBias,
+                    DepthBias = DepthBias,
                     DepthBiasClamp = -1000,
                     SlopeScaledDepthBias = -2,
                     IsDepthClipEnabled = true,
@@ -277,7 +277,7 @@ namespace HelixToolkit.Wpf.SharpDX
             //}
 
             /// --- create raster state
-            OnRasterStateChanged(DepthBias);
+            OnRasterStateChanged();
             
 
             

@@ -51,20 +51,28 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Direct3D11.Buffer CreateBuffer<T>(this Direct3D11.Device device, BindFlags flags, int sizeofT, T[] range)
             where T : struct
         {
-            //sizeofT = sizeofT == 0 ? sizeofT = Marshal.SizeOf(typeof(T)) : sizeofT;
-            using (var stream = new DataStream(range.Length * sizeofT, true, true))
-            {                
-                stream.WriteRange(range);
-                stream.Position = 0;
-                return new Direct3D11.Buffer(device, stream, new BufferDescription
-                {
-                    BindFlags = flags,
-                    SizeInBytes = (int)stream.Length,
-                    CpuAccessFlags = CpuAccessFlags.None,
-                    OptionFlags = ResourceOptionFlags.None,
-                    Usage = ResourceUsage.Default,
-                });
-            }
+            return Direct3D11.Buffer.Create<T>(device, range, new BufferDescription()
+            {
+                BindFlags = flags,
+                SizeInBytes = (int)range.Length * sizeofT,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = ResourceOptionFlags.None,
+                Usage = ResourceUsage.Default,
+            });
+            ////sizeofT = sizeofT == 0 ? sizeofT = Marshal.SizeOf(typeof(T)) : sizeofT;
+            //using (var stream = new DataStream(range.Length * sizeofT, true, true))
+            //{                
+            //    stream.WriteRange(range);
+            //    stream.Position = 0;
+            //    return new Direct3D11.Buffer(device, stream, new BufferDescription
+            //    {
+            //        BindFlags = flags,
+            //        SizeInBytes = (int)stream.Length,
+            //        CpuAccessFlags = CpuAccessFlags.None,
+            //        OptionFlags = ResourceOptionFlags.None,
+            //        Usage = ResourceUsage.Default,
+            //    });
+            //}
         }
     }
 }

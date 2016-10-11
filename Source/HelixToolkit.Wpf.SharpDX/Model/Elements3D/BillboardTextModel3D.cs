@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
             billboardTextureView = ShaderResourceView.FromMemory(Device, textureBytes);
 
             /// --- set rasterstate
-            OnRasterStateChanged(DepthBias);
+            OnRasterStateChanged();
 
             /// --- flush
             Device.ImmediateContext.Flush();
