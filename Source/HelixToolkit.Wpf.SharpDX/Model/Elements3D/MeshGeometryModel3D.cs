@@ -130,8 +130,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderTechnique = host.RenderTechnique;
             base.Attach(host);
 
-            if (this.Geometry == null)
-                return;
+            if (this.Geometry == null
+                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
+                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+            { return; }
 
             // --- get variables
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);

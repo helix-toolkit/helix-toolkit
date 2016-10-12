@@ -226,8 +226,10 @@ namespace HelixToolkit.Wpf.SharpDX
             renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
             base.Attach(host);
 
-            if (Geometry == null)            
-                return;
+            if (this.Geometry == null
+                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
+                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+            { return; }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
