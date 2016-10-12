@@ -56,7 +56,7 @@ namespace CustomShaderDemo
             set { SetValue(RequiresPerVertexColorationProperty, value); }
         }
 
-        protected override void OnRasterStateChanged(int depthBias)
+        protected override void OnRasterStateChanged()
         {
             if (IsAttached)
             {
@@ -66,7 +66,7 @@ namespace CustomShaderDemo
                 {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.Back,
-                    DepthBias = depthBias,
+                    DepthBias = DepthBias,
                     DepthBiasClamp = -1000,
                     SlopeScaledDepthBias = +0,
                     IsDepthClipEnabled = true,
@@ -121,7 +121,7 @@ namespace CustomShaderDemo
                 instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
             }
 
-            OnRasterStateChanged(DepthBias);
+            OnRasterStateChanged();
 
             Device.ImmediateContext.Flush();
         }
