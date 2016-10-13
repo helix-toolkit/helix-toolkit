@@ -264,8 +264,9 @@
             if (!this.IsRendering)
                 return;
 
-            if (this.Geometry == null)
-                return;
+            if (this.Geometry == null
+                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
+            { return; }
 
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;

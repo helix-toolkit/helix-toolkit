@@ -214,8 +214,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (!IsRendering)
                     return;
 
-                if (Geometry == null)
-                    return;
+                if (this.Geometry == null
+                    || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
+                    || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+                { return; }
 
                 if (Visibility != System.Windows.Visibility.Visible)
                     return;
