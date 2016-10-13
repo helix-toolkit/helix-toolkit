@@ -166,7 +166,11 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    if (this.ItemTemplate == null)
+                    if (this.ItemsSource == null)
+                    {
+                        break;
+                    }
+                    else if (this.ItemTemplate == null)
                     {
                         foreach (var item in this.ItemsSource)
                         {
