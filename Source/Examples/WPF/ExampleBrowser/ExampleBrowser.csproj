@@ -140,6 +140,13 @@
     </Compile>
     <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
     <Compile Include="Examples\Torus\MainWindow.xaml.cs" />
+    <Compile Include="Examples\SolarSystemDemo\Planet3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\Satellite3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\SolarSystem3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\TexturedObject3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem10271\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -251,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\ScatterPlot\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\SolarSystemDemo\Window1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -872,6 +883,42 @@
     <Resource Include="Examples\HippoDemo\Icons\Toolbars\229.png" />
     <Resource Include="Examples\HippoDemo\Icons\Toolbars\230.png" />
     <Resource Include="Examples\HippoDemo\Application.ico" />
+    <Resource Include="Examples\SolarSystemDemo\Textures\deimos.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\earth.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\jupiter.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\mars.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\mercury.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\moon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\neptune.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\phobos.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\saturn.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\sun.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\uranus.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\venus.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Examples\Terrain\Models\crater_0513.btz">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
