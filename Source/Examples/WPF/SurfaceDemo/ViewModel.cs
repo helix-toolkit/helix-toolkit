@@ -17,7 +17,8 @@ namespace SurfaceDemo
     {
         Normal,
         Stereo,
-        Anaglyph
+        Anaglyph,
+        Interlaced
     } ;
 
     public class ViewModel : INotifyPropertyChanged

@@ -68,6 +68,9 @@ namespace SurfaceDemo
             view3.LeftViewport.Children.Add(new DefaultLights());
             view3.RightViewport.Children.Add(new DefaultLights());
 
+            view4.LeftViewport.Children.Add(new DefaultLights());
+            view4.RightViewport.Children.Add(new DefaultLights());
+
             surface2 = new ClonedVisual3D();
 
             patternBrush = CreateDrawingBrush(0.02, 0.05);
@@ -297,6 +300,9 @@ namespace SurfaceDemo
                 case ViewMode.Anaglyph:
                     currentView = view3;
                     break;
+                case ViewMode.Interlaced:
+                    currentView = view4;
+                    break;
             }
             currentView.Visibility = Visibility.Visible;
 
@@ -319,6 +325,10 @@ namespace SurfaceDemo
                     v1 = view3.LeftViewport;
                     v2 = view3.RightViewport;
                     break;
+                case ViewMode.Interlaced:
+                    v1 = view4.LeftViewport;
+                    v2 = view4.RightViewport;
+                    break;
             }
             if (v1 != null)
                 v1.Children.Add(surface1);
@@ -335,9 +345,11 @@ namespace SurfaceDemo
                 Grid.SetColumn(view1, 1);
                 Grid.SetColumn(view2, 1);
                 Grid.SetColumn(view3, 1);
+                Grid.SetColumn(view4, 1);
                 Grid.SetColumnSpan(view1, 1);
                 Grid.SetColumnSpan(view2, 1);
                 Grid.SetColumnSpan(view3, 1);
+                Grid.SetColumnSpan(view4, 1);
             }
             else
             {
@@ -345,9 +357,11 @@ namespace SurfaceDemo
                 Grid.SetColumn(view1, 0);
                 Grid.SetColumn(view2, 0);
                 Grid.SetColumn(view3, 0);
+                Grid.SetColumn(view4, 0);
                 Grid.SetColumnSpan(view1, 2);
                 Grid.SetColumnSpan(view2, 2);
                 Grid.SetColumnSpan(view3, 2);
+                Grid.SetColumnSpan(view4, 2);
             }
         }
 
