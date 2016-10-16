@@ -97,6 +97,12 @@
     <Compile Include="Examples\ExtrudedText\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\HippoDemo\CanvasSourceExtension.cs" />
+    <Compile Include="Examples\HippoDemo\GridLines.cs" />
+    <Compile Include="Examples\HippoDemo\ImageExtension.cs" />
+    <Compile Include="Examples\HippoDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ParticleSystemDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -111,7 +117,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
-    <Compile Include="Workitems\Workitem73\MainWindow.xaml.cs">
+    <Compile Include="Workitems\Workitem10271\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Workitems\Workitem10054\MainWindow.xaml.cs">
@@ -173,6 +179,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\ExtrudedText\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\HippoDemo\Icons\Open.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\HippoDemo\Icons\Save.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\HippoDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -446,7 +464,7 @@
     </Compile>
     <Compile Include="Examples\Fractal\Observable.cs" />
     <Compile Include="Examples\HalfEdgeMesh\HalfEdgeMesh.cs" />
-    <Page Include="Workitems\Workitem73\MainWindow.xaml">
+    <Page Include="Workitems\Workitem10271\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -594,6 +612,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\HippoDemo_small.png" />
+    <Resource Include="Images\Workitem10271_small.png" />
     <Resource Include="Images\CursorPositionDemo_small.png" />
     <Resource Include="Images\ExtrudedTextDemo_small.png" />
     <Resource Include="Images\PointsAndLinesBinding_small.png" />
@@ -720,6 +740,72 @@
       <Link>Examples\Subdivision\Models\seashell.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Examples\HippoDemo\Cursors\PanCursor.cur" />
+    <Resource Include="Examples\HippoDemo\Cursors\RotateCursor.cur" />
+    <Resource Include="Examples\HippoDemo\Cursors\ZoomCursor.cur" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\101.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\102.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\103.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\104.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\105.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\106.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\107.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\108.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\109.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\110.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\111.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\112.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\113.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\114.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\115.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\116.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\117.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\118.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\119.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\120.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\121.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\122.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\123.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\124.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\125.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\126.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\127.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\128.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\129.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\130.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\131.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\132.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\201.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\202.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\203.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\204.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\205.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\206.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\207.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\208.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\209.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\210.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\211.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\212.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\213.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\214.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\215.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\216.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\217.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\218.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\219.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\220.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\221.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\222.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\223.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\224.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\225.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\226.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\227.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\228.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\229.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\230.png" />
+    <Resource Include="Examples\HippoDemo\Application.ico" />
     <Content Include="Examples\Terrain\Models\crater_0513.btz">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

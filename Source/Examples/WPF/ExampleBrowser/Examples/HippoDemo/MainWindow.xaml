@@ -1,0 +1,336 @@
+﻿<Window x:Class="HippoDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        xmlns:local="clr-namespace:HippoDemo" Title="Untitled - Hippopotamus (Evaluation)" Height="750" Width="1000" FontFamily="Arial" Icon="Application.ico">
+    <Window.Resources>
+        <Style TargetType="h:HelixViewport3D">
+            <Setter Property="ShowViewCube" Value="False"/>
+            <Setter Property="ShowCoordinateSystem" Value="True"/>
+            <Setter Property="Background" Value="#9F9F9F"/>
+            <Setter Property="IsRotationEnabled" Value="False"/>
+            <Setter Property="RotateCursor" Value="Cursors\RotateCursor.cur"/>
+            <Setter Property="ZoomCursor" Value="Cursors\ZoomCursor.cur"/>
+            <Setter Property="PanCursor" Value="Cursors\PanCursor.cur"/>
+            <Setter Property="CurrentPosition" Value="{Binding CurrentPosition}"/>
+            <Setter Property="EnableCurrentPosition" Value="true"/>
+        </Style>
+        <Style x:Key="NoButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <ContentPresenter HorizontalAlignment="Center"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ViewButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <!--<TextBlock FontWeight="Bold" Padding="2" HorizontalAlignment="Left" VerticalAlignment="Top">-->
+                            <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                            <!--</TextBlock>-->
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background" Value="#bfcddb"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Padding" Value="4"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"  Value="True">
+                    <Setter Property="Background" Value="#99b4d1" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ViewMaximizeStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked}"  Value="True">
+                    <Setter Property="Grid.Column" Value="0"/>
+                    <Setter Property="Grid.ColumnSpan" Value="2"/>
+                    <Setter Property="Grid.Row" Value="0"/>
+                    <Setter Property="Grid.RowSpan" Value="2"/>
+                    <Setter Property="Grid.ZIndex" Value="1"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="68"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="Menu1" DockPanel.Dock="Top">
+            <MenuItem Header="File"/>
+            <MenuItem Header="Edit"/>
+            <MenuItem Header="View"/>
+            <MenuItem Header="Curve"/>
+            <MenuItem Header="Surface"/>
+            <MenuItem Header="Solid"/>
+            <MenuItem Header="Mesh"/>
+            <MenuItem Header="Dimension"/>
+            <MenuItem Header="Transform"/>
+            <MenuItem Header="Tools"/>
+            <MenuItem Header="Analyze"/>
+            <MenuItem Header="Render"/>
+            <MenuItem Header="Help"/>
+        </Menu>
+        <DockPanel Grid.Row="1" Margin="0 0 0 8" HorizontalAlignment="Stretch" Background="White" TextOptions.TextFormattingMode="Display">
+            <DockPanel DockPanel.Dock="Bottom">
+                <TextBlock Text="Command:" FontWeight="Bold" DockPanel.Dock="Left" Margin="3" VerticalAlignment="Center"/>
+                <TextBox BorderThickness="0" Margin="3"/>
+            </DockPanel>
+            <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="Hipposcript loaded.&#x0a;Loading Hippo Render, version 1.00, May 12 2010, 18:13:45" BorderThickness="0 0 0 1"  BorderBrush="Black" />
+        </DockPanel>
+        <GridSplitter Grid.Row="1" Height="8" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+        <DockPanel Grid.Row="2">
+            <ToolBarTray DockPanel.Dock="Top">
+                <ToolBar>
+                    <!--<Button Content="{local:CanvasSource /Examples/HippoDemo/Icons/Open.xaml,16}"/>-->
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/101.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/102.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/103.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/104.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/105.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/106.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/107.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/108.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/109.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/110.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/111.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/112.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/113.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/114.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/115.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/116.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/117.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/118.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/119.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/120.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/121.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/122.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/123.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/124.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/125.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/126.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/127.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/128.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/129.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/130.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/131.png}"/>
+                    <Button Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/132.png}"/>
+                </ToolBar>
+            </ToolBarTray>
+
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem>
+                    <ToggleButton Width="60">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource NoButtonStyle}">
+                                <Setter Property="Content" Value="CPlane"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <TextBlock Text="World"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal" Width="60">
+                        <TextBlock Text="x" Margin="0 0 4 0"/>
+                        <TextBlock Text="{Binding CurrentPosition.X, StringFormat='{}{0:0.00}'}"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal" Width="60">
+                        <TextBlock Text="y" Margin="0 0 4 0"/>
+                        <TextBlock Text="{Binding CurrentPosition.Y, StringFormat='{}{0:0.00}'}"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal" Width="60">
+                        <TextBlock Text="z" Margin="0 0 4 0"/>
+                        <TextBlock Text="{Binding CurrentPosition.Z, StringFormat='{}{0:0.00}'}"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal" Width="80">
+                        <Rectangle Width="12" Height="12" Margin="4" Fill="Black"/>
+                        <TextBlock Text="Default" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                    <ToggleButton Content="Snap" IsChecked="True" Style="{StaticResource NoButtonStyle}" Width="40"/>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                    <ToggleButton Content="Ortho" IsChecked="True" Style="{StaticResource NoButtonStyle}" Width="40"/>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                    <ToggleButton Content="Planar" Style="{StaticResource NoButtonStyle}" Width="40"/>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                    <ToggleButton Content="Osnap" Style="{StaticResource NoButtonStyle}" Width="40"/>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                    <ToggleButton Content="Record history" Style="{StaticResource NoButtonStyle}" Width="100"/>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem>
+                </StatusBarItem>
+            </StatusBar>
+
+            <ToolBarTray DockPanel.Dock="Left" Orientation="Vertical">
+                <ToolBar Band="1">
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/201.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/202.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/203.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/204.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/205.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/206.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/207.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/208.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/209.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/210.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/211.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/212.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/213.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/214.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/215.png}"/>
+                </ToolBar>
+                <ToolBar Band="2">
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/216.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/217.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/218.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/219.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/220.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/221.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/222.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/223.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/224.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/225.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/226.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/227.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/228.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/229.png}"/>
+                    <ToggleButton Content="{local:Image /Examples/HippoDemo/Icons/Toolbars/230.png}"/>
+                </ToolBar>
+            </ToolBarTray>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid x:Name="TopLeftView" DataContext="{Binding ElementName=TopLeftLabel}">
+                    <Grid.Style>
+                        <Style BasedOn="{StaticResource ViewMaximizeStyle}">
+                        </Style>
+                    </Grid.Style>
+                    <h:HelixViewport3D RotateGesture="Alt+RightClick" PanGesture="RightClick" IsHeadLightEnabled="False" CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                        <h:HelixViewport3D.Camera>
+                            <OrthographicCamera Position="0,0,80.22" LookDirection="0,0,-80.22" UpDirection="0,1,0" Width="56"/>
+                        </h:HelixViewport3D.Camera>
+                        <local:GridLines/>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <AmbientLight Color="#FFFFFF"/>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                    </h:HelixViewport3D>
+                    <ToggleButton x:Name="TopLeftLabel" Content="Top" Style="{StaticResource ViewButtonStyle}"/>
+                </Grid>
+
+                <Grid x:Name="TopRightView" DataContext="{Binding ElementName=TopRightLabel}">
+                    <Grid.Style>
+                        <Style BasedOn="{StaticResource ViewMaximizeStyle}">
+                            <Setter Property="Grid.Column" Value="1"/>
+                        </Style>
+                    </Grid.Style>
+                    <h:HelixViewport3D IsRotationEnabled="True" Camera="{h:PerspectiveCamera 43.11,-74.67,49.78}" CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                        <local:GridLines/>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <AmbientLight Color="#FFFFFF"/>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                    </h:HelixViewport3D>
+                    <ToggleButton x:Name="TopRightLabel" Content="Perspective" Style="{StaticResource ViewButtonStyle}"/>
+                </Grid>
+                <Grid x:Name="BottomLeftView" DataContext="{Binding ElementName=BottomLeftLabel}">
+                    <Grid.Style>
+                        <Style BasedOn="{StaticResource ViewMaximizeStyle}">
+                            <Setter Property="Grid.Row" Value="1"/>
+                        </Style>
+                    </Grid.Style>
+                    <h:HelixViewport3D RotateGesture="Alt+RightClick" PanGesture="RightClick" CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                        <h:HelixViewport3D.Camera>
+                            <OrthographicCamera Position="0,-80.22,0" LookDirection="0,80.22,0" UpDirection="0,0,1" Width="56"/>
+                        </h:HelixViewport3D.Camera>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <AmbientLight Color="#FFFFFF"/>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                        <local:GridLines YAxisLineColor="#4B4B96" LengthDirection="1,0,0" Normal="0,-1,0" />
+                    </h:HelixViewport3D>
+                    <ToggleButton x:Name="BottomLeftLabel" Content="Front" Style="{StaticResource ViewButtonStyle}"/>
+                </Grid>
+                <Grid x:Name="BottomRightView" DataContext="{Binding ElementName=BottomRightLabel}">
+                    <Grid.Style>
+                        <Style BasedOn="{StaticResource ViewMaximizeStyle}">
+                            <Setter Property="Grid.Row" Value="1"/>
+                            <Setter Property="Grid.Column" Value="1"/>
+                        </Style>
+                    </Grid.Style>
+                    <h:HelixViewport3D RotateGesture="Alt+RightClick" PanGesture="RightClick" CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                        <h:HelixViewport3D.Camera>
+                            <OrthographicCamera Position="80.22,0,0" LookDirection="-80.22,0,0" UpDirection="0,0,1" Width="56"/>
+                        </h:HelixViewport3D.Camera>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <AmbientLight Color="#FFFFFF"/>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                        <local:GridLines XAxisLineColor="#4B964B" YAxisLineColor="#4B4B96" LengthDirection="0,1,0" Normal="1,0,0" />
+                    </h:HelixViewport3D>
+                    <ToggleButton x:Name="BottomRightLabel" Content="Right" Style="{StaticResource ViewButtonStyle}"/>
+                </Grid>
+                <GridSplitter Grid.Column="0" Grid.RowSpan="2" Width="4" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+                <GridSplitter Grid.Row="0" Grid.ColumnSpan="2" Height="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>
