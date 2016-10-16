@@ -30,7 +30,7 @@ namespace MvvmDemo
 
         public ShellViewModel()
         {
-            this.Title = "MVVM demo (using Caliburn.Micro)";
+            this.Title = "MVVM demo";
             this.Objects = new ObservableCollection<Visual3D>();
             this.AddCommand = new DelegateCommand(this.Add, this.CanAdd);
             this.RemoveCommand = new DelegateCommand(this.Remove, this.CanRemove);

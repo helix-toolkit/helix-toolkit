@@ -125,6 +125,16 @@
     <Compile Include="Examples\ModelViewer\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\MvvmCameraDemo\BindingProxy.cs" />
+    <Compile Include="Examples\MvvmCameraDemo\Observable.cs" />
+    <Compile Include="Examples\MvvmCameraDemo\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MvvmCameraDemo\ShellViewModel.cs" />
+    <Compile Include="Examples\MvvmCameraDemo\ViewportView.xaml.cs">
+      <DependentUpon>ViewportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MvvmCameraDemo\ViewportViewModel.cs" />
     <Compile Include="Examples\MvvmDemo\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -171,6 +181,7 @@
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Images\MvvmCameraDemo_small.png" />
     <Resource Include="Images\MvvmDemo_small.png" />
     <Resource Include="Images\MvvmManipulatorDemo_small.png" />
     <Resource Include="Images\ModelViewer_small.png" />
@@ -255,6 +266,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ModelViewer\Window1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MvvmCameraDemo\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MvvmCameraDemo\ViewportView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
