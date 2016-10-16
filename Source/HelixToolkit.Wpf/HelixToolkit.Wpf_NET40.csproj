@@ -150,6 +150,7 @@
     <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />
     <Compile Include="MarkupExtensions\PerspectiveCameraExtension.cs" />
     <Compile Include="MarkupExtensions\TranslateExtension.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedByPointEventArgs.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedByRectangleEventArgs.cs" />
     <Compile Include="SelectionCommands\ModelsSelectedEventArgs.cs" />
@@ -243,9 +244,6 @@
     <Compile Include="Helpers\Viewport3DHelper.cs" />
     <Compile Include="Helpers\Visual3DHelper.cs" />
     <Compile Include="Importers\StudioReader.cs" />
-    <Compile Include="Properties\AssemblyDescription.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
