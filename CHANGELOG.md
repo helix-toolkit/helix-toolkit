@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Threshold of Polygon3D.GetNormal() changed to 1e-10 (#246)
 - Disable hit testing on adorner layer (#250)
 - Frozen ScreenSpaceVisual3D.Points (#275)
+- Fix material file exception in the ExportObj extension method (#303)
 
 ## [2014.2.452] - 2014-12-16
 ### Added
