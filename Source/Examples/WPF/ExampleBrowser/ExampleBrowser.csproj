@@ -43,8 +43,9 @@
     <Reference Include="3DTools">
       <HintPath>..\..\..\..\Components\3DTools.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio">
-      <HintPath>..\..\..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
