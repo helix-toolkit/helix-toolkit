@@ -116,6 +116,15 @@
     <Compile Include="Examples\MemoryLeakTest\Window3.xaml.cs">
       <DependentUpon>Window3.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ModelViewer\DelegateCommand.cs" />
+    <Compile Include="Examples\ModelViewer\FileDialogService.cs" />
+    <Compile Include="Examples\ModelViewer\IFileDialogService.cs" />
+    <Compile Include="Examples\ModelViewer\MainViewModel.cs" />
+    <Compile Include="Examples\ModelViewer\Observable.cs" />
+    <Compile Include="Examples\ModelViewer\VisualViewModel.cs" />
+    <Compile Include="Examples\ModelViewer\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ParticleSystemDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -144,6 +153,7 @@
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Images\ModelViewer_small.png" />
     <Page Include="Examples\Anaglyph\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -221,6 +231,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\MemoryLeakTest\Window3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ModelViewer\Window1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -517,6 +531,22 @@
     <Resource Include="Examples\Flights\airports.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Content Include="..\..\..\..\models\3ds\Ferarri40.3ds">
+      <Link>Examples\ModelViewer\Models\Ferarri40.3ds</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\models\3ds\LeonardoVehicle.3ds">
+      <Link>Examples\ModelViewer\Models\LeonardoVehicle.3ds</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\models\3ds\Moose.3ds">
+      <Link>Examples\ModelViewer\Models\Moose.3ds</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\models\obj\tour.obj">
+      <Link>Examples\ModelViewer\Models\tour.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Examples\HalfEdgeMesh\HalfEdgeMeshTests.cs" />
     <Compile Include="Examples\HalfEdgeMesh\HalfEdgeMeshVisual3D.cs" />
     <Compile Include="Examples\HalfEdgeMesh\MainWindow.xaml.cs">
