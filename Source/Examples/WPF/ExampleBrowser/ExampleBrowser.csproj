@@ -125,6 +125,9 @@
     <Compile Include="Examples\ModelViewer\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\PanoramaDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ParticleSystemDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -242,6 +245,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ModelViewer\Window1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\PanoramaDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -919,6 +926,42 @@
     <Resource Include="Examples\SolarSystemDemo\Textures\venus.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_b.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_d.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_f.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_l.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_r.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_u.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_b.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_d.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_f.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_l.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_r.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_u.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Examples\Terrain\Models\crater_0513.btz">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
