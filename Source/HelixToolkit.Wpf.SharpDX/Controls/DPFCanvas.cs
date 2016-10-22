@@ -336,36 +336,21 @@ namespace HelixToolkit.Wpf.SharpDX
 #if MSAA
             Disposer.RemoveAndDispose(ref renderTargetNMS);
 
-            // check 8,4,2,1
-            int sampleCount = 8;
+            int sampleCount = 1;
             int sampleQuality = 0;
-
             if (IsMSAAEnabled)
             {
                 do
                 {
-                    sampleQuality = device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, sampleCount) - 1;
-                    if (sampleQuality > 0)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        sampleCount /= 2;
-                    }
+                    var newSampleCount = sampleCount * 2;
+                    var newSampleQuality = device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, newSampleCount) - 1;
 
-                    if (sampleCount == 1)
-                    {
-                        sampleQuality = 0;
+                    if (newSampleQuality < 0)
                         break;
-                    }
-                }
-                while (true);
-            }
-            else
-            {
-                sampleCount = 1;
-                sampleQuality = 0;
+
+                    sampleCount = newSampleCount;
+                    sampleQuality = newSampleQuality;
+                } while (sampleCount < 32);
             }
 
             var sampleDesc = new SampleDescription(sampleCount, sampleQuality);
