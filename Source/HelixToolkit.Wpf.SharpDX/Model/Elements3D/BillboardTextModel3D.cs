@@ -19,6 +19,13 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Overridable Methods
+        public override int VertexSizeInBytes
+        {
+            get
+            {
+                return BillboardVertex.SizeInBytes;
+            }
+        }
         /// <summary>
         /// Initial implementation of hittest for billboard. Needs further improvement.
         /// </summary>
@@ -27,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {            
-            if (this.Visibility == Visibility.Collapsed)
+            if (this.Visibility == Visibility.Collapsed || this.Visibility==Visibility.Hidden)
             {
                 return false;
             }
@@ -143,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- get geometry
             var geometry = Geometry as IBillboardText;
-            if (geometry == null)
+            if (geometry == null || geometry.Positions.Count==0)
             {
                 return;
             }
@@ -239,21 +246,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
-            var result = new List<BillboardVertex>();
+            var result = new BillboardVertex[vertexCount];
 
             var allOffsets = billboardGeometry.TextInfoOffsets;
 
             for (var i = 0; i < vertexCount; i++)
             {
                 var tc = billboardGeometry.TextureCoordinates[i];
-                var vtx = new BillboardVertex
+                result[i] = new BillboardVertex
                 {
                     Position = new Vector4(position[i], 1.0f),
                     Color = billboardGeometry.Colors[i],
                     TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y)
                 };
-
-                result.Add(vtx);
             }
 
             return result.ToArray();
