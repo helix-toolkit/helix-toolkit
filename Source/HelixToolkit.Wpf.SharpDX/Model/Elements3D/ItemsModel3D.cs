@@ -80,6 +80,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
+            mDictionary.Clear();
+            Children.Clear();
             if (this.ItemsSource != null)
             {
                 if (e.OldValue is INotifyCollectionChanged)
@@ -90,8 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     (ItemsSource as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
                 }
-                mDictionary.Clear();
-                Children.Clear();                
+
                 if (ItemsSource == null)
                 {
                     return;
@@ -100,6 +101,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     foreach (var item in this.ItemsSource)
                     {
+                        if (mDictionary.ContainsKey(item))
+                        {
+                            continue;
+                        }
                         var model = item as Model3D;
                         if (model != null)
                         {
@@ -116,6 +121,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     foreach (var item in this.ItemsSource)
                     {
+                        if (mDictionary.ContainsKey(item))
+                        {
+                            continue;
+                        }
                         var model = this.ItemTemplate.LoadContent() as Model3D;
                         if (model != null)
                         {
@@ -150,6 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 mDictionary.Remove(item);
                             }
                         }
+                        InvalidateRender();
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
@@ -160,6 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         this.Children.Remove(item);
                     }
                     mDictionary.Clear();
+                    InvalidateRender();
                     break;
             }
 
@@ -174,6 +185,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         foreach (var item in this.ItemsSource)
                         {
+                            if (mDictionary.ContainsKey(item))
+                            {
+                                continue;
+                            }
                             var model = item as Model3D;
                             if (model != null)
                             {
@@ -190,6 +205,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         foreach (var item in this.ItemsSource)
                         {
+                            if (mDictionary.ContainsKey(item))
+                            {
+                                continue;
+                            }
                             var model = this.ItemTemplate.LoadContent() as Model3D;
                             if (model != null)
                             {
@@ -212,6 +231,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
+                                if (mDictionary.ContainsKey(item))
+                                {
+                                    continue;
+                                }
                                 var model = this.ItemTemplate.LoadContent() as Model3D;
                                 if (model != null)
                                 {
@@ -229,6 +252,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
+                                if (mDictionary.ContainsKey(item))
+                                {
+                                    continue;
+                                }
                                 var model = item as Model3D;
                                 if (model != null)
                                 {
@@ -244,7 +271,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
-            InvalidateRender();
         }
     }
 }
