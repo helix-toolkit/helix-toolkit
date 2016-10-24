@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- get geometry
             var geometry = Geometry as IBillboardText;
-            if (geometry == null || geometry.Positions.Count==0)
+            if (geometry == null)
             {
                 return;
             }
