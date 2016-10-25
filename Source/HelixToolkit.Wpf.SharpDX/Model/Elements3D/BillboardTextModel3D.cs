@@ -56,25 +56,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (g != null)
             {
-                var visualToScreen = viewport.GetViewportMatrix();
+                var visualToScreen = viewport.GetViewProjectionMatrix() * viewport.GetViewportMatrix();
                 float heightScale = 1;
-                if (viewport.Camera is PerspectiveCamera)
-                {
-                    var viewProjection = viewport.GetViewProjectionMatrix();
-                    visualToScreen.M44 = viewProjection.M44;
-                }
-                else if (viewport.Camera is OrthographicCamera)
-                {
-                    var screenView = viewport.GetScreenViewProjectionMatrix();
-                    screenView.Invert();
-                    visualToScreen.M44 = screenView.M43;
-                    heightScale = 0.5f; //Not sure why the height needs to be half size. Need further investigation.
-                }
-                else
-                {
-                    return false;
-                }
-
                 var screenToVisual = visualToScreen.Inverted();
 
                 var center = new Vector4(g.Positions[0], 1);
