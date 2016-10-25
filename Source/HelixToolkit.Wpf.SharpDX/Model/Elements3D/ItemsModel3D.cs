@@ -82,60 +82,58 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             mDictionary.Clear();
             Children.Clear();
-            if (this.ItemsSource != null)
-            {
-                if (e.OldValue is INotifyCollectionChanged)
-                {
-                    (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
-                }
-                if (ItemsSource is INotifyCollectionChanged)
-                {
-                    (ItemsSource as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
-                }
 
-                if (ItemsSource == null)
+            if (e.OldValue is INotifyCollectionChanged)
+            {
+                (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
+            }
+            if (e.NewValue is INotifyCollectionChanged)
+            {
+                (e.NewValue as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
+            }
+
+            if (ItemsSource == null)
+            {
+                return;
+            }
+            if (this.ItemTemplate == null)
+            {
+                foreach (var item in this.ItemsSource)
                 {
-                    return;
-                }
-                if (this.ItemTemplate == null)
-                {
-                    foreach (var item in this.ItemsSource)
+                    if (mDictionary.ContainsKey(item))
                     {
-                        if (mDictionary.ContainsKey(item))
-                        {
-                            continue;
-                        }
-                        var model = item as Model3D;
-                        if (model != null)
-                        {
-                            this.Children.Add(model);
-                            mDictionary.Add(item, model);
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                        }
+                        continue;
+                    }
+                    var model = item as Model3D;
+                    if (model != null)
+                    {
+                        this.Children.Add(model);
+                        mDictionary.Add(item, model);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
                     }
                 }
-                else
+            }
+            else
+            {
+                foreach (var item in this.ItemsSource)
                 {
-                    foreach (var item in this.ItemsSource)
+                    if (mDictionary.ContainsKey(item))
                     {
-                        if (mDictionary.ContainsKey(item))
-                        {
-                            continue;
-                        }
-                        var model = this.ItemTemplate.LoadContent() as Model3D;
-                        if (model != null)
-                        {
-                            model.DataContext = item;
-                            this.Children.Add(model);
-                            mDictionary.Add(item, model);
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                        }
+                        continue;
+                    }
+                    var model = this.ItemTemplate.LoadContent() as Model3D;
+                    if (model != null)
+                    {
+                        model.DataContext = item;
+                        this.Children.Add(model);
+                        mDictionary.Add(item, model);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
                     }
                 }
             }
