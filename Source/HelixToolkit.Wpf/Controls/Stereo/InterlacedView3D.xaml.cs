@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void UpdateEvenLeft()
         {
-            if (this.IsLoaded)
+            if (this.IsLoaded && this.IsVisible)
             {
                 int y = (int)this.PointToScreen(default(Point)).Y;
                 this.EvenLeft = y % 2 == 0;

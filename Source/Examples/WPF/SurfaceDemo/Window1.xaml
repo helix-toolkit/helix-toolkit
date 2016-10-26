@@ -28,6 +28,7 @@
                 <MenuItem Header="Normal" IsCheckable="True"  IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Normal}" Click="Stereo_Click"/>
                 <MenuItem Header="Stereo" IsCheckable="True" IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Stereo}" Click="Stereo_Click"/>
                 <MenuItem Header="Anaglyph" IsCheckable="True" IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Anaglyph}" Click="Stereo_Click"/>
+                <MenuItem Header="Interlaced" IsCheckable="True" IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Interlaced}" Click="Stereo_Click"/>
             </MenuItem>
             <MenuItem Header="Brush">
                 <MenuItem Header="Hue" Click="BrushHue_Click"/>
@@ -101,6 +102,7 @@
             </helix:HelixViewport3D>
             <helix:StereoView3D x:Name="view2" Visibility="Hidden" Grid.Column="1" Background="Black" StereoBase="{Binding StereoBase}" CameraRotationMode="Trackball"/>
             <helix:AnaglyphView3D x:Name="view3" Visibility="Hidden" Grid.Column="1" Background="Black" StereoBase="{Binding StereoBase}" CameraRotationMode="Trackball"/>
+            <helix:InterlacedView3D x:Name="view4" Visibility="Hidden" Grid.Column="1" Background="Black" StereoBase="{Binding StereoBase}" CameraRotationMode="Trackball"/>
         </Grid>
     </DockPanel>
 </Window>

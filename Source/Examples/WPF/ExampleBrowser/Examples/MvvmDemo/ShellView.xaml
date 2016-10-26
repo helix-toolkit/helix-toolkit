@@ -1,0 +1,26 @@
+﻿<Window x:Class="MvvmDemo.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:MvvmDemo"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="480" Width="640">
+    <Window.DataContext>
+        <local:ShellViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Add" Command="{Binding AddCommand}"/>
+            <MenuItem Header="Remove" Command="{Binding RemoveCommand}"/>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding Objects.Count, StringFormat='{}{0} items'}"/>
+            </StatusBarItem>
+        </StatusBar>
+        <ListBox DockPanel.Dock="Left" Width="220" ItemsSource="{Binding Objects}" BorderThickness="0" Padding="2"/>
+        <h:HelixViewport3D ItemsSource="{Binding Objects}" Background="{h:LinearGradientBrush Gray, White}"/>
+    </DockPanel>
+</Window>

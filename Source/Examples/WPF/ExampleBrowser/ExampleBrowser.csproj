@@ -43,18 +43,19 @@
     <Reference Include="3DTools">
       <HintPath>..\..\..\..\Components\3DTools.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio">
-      <HintPath>..\..\..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
-    <Reference Include="PropertyTools, Version=2015.2.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net45\PropertyTools.dll</HintPath>
+    <Reference Include="PropertyTools, Version=2.0.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.0\lib\net45\PropertyTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PropertyTools.Wpf, Version=2015.2.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2015.2.0\lib\net45\PropertyTools.Wpf.dll</HintPath>
+    <Reference Include="PropertyTools.Wpf, Version=2.0.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.0\lib\net45\PropertyTools.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -98,6 +99,54 @@
     <Compile Include="Examples\ExtrudedText\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\HippoDemo\CanvasSourceExtension.cs" />
+    <Compile Include="Examples\HippoDemo\GridLines.cs" />
+    <Compile Include="Examples\HippoDemo\ImageExtension.cs" />
+    <Compile Include="Examples\HippoDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MemoryLeakTest\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MemoryLeakTest\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MemoryLeakTest\Window2.xaml.cs">
+      <DependentUpon>Window2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MemoryLeakTest\Window3.xaml.cs">
+      <DependentUpon>Window3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ModelViewer\DelegateCommand.cs" />
+    <Compile Include="Examples\ModelViewer\FileDialogService.cs" />
+    <Compile Include="Examples\ModelViewer\IFileDialogService.cs" />
+    <Compile Include="Examples\ModelViewer\MainViewModel.cs" />
+    <Compile Include="Examples\ModelViewer\Observable.cs" />
+    <Compile Include="Examples\ModelViewer\VisualViewModel.cs" />
+    <Compile Include="Examples\ModelViewer\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MvvmCameraDemo\BindingProxy.cs" />
+    <Compile Include="Examples\MvvmCameraDemo\Observable.cs" />
+    <Compile Include="Examples\MvvmCameraDemo\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MvvmCameraDemo\ShellViewModel.cs" />
+    <Compile Include="Examples\MvvmCameraDemo\ViewportView.xaml.cs">
+      <DependentUpon>ViewportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MvvmCameraDemo\ViewportViewModel.cs" />
+    <Compile Include="Examples\MvvmDemo\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MvvmDemo\ShellViewModel.cs" />
+    <Compile Include="Examples\MvvmManipulatorDemo\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\MvvmManipulatorDemo\ShellViewModel.cs" />
+    <Compile Include="Examples\PanoramaDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ParticleSystemDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -113,6 +162,13 @@
     </Compile>
     <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
     <Compile Include="Examples\Torus\MainWindow.xaml.cs" />
+    <Compile Include="Examples\SolarSystemDemo\Planet3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\Satellite3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\SolarSystem3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\TexturedObject3D.cs" />
+    <Compile Include="Examples\SolarSystemDemo\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem10271\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -126,6 +182,10 @@
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Images\MvvmCameraDemo_small.png" />
+    <Resource Include="Images\MvvmDemo_small.png" />
+    <Resource Include="Images\MvvmManipulatorDemo_small.png" />
+    <Resource Include="Images\ModelViewer_small.png" />
     <Page Include="Examples\Anaglyph\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -178,6 +238,58 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\HippoDemo\Icons\Open.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\HippoDemo\Icons\Save.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\HippoDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MemoryLeakTest\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MemoryLeakTest\Window1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MemoryLeakTest\Window2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MemoryLeakTest\Window3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ModelViewer\Window1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MvvmCameraDemo\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MvvmCameraDemo\ViewportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\MvvmDemo\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\MvvmManipulatorDemo\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\PanoramaDemo\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\ParticleSystemDemo\Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -191,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\ScatterPlot\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\SolarSystemDemo\Window1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -471,6 +587,22 @@
     <Resource Include="Examples\Flights\airports.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Content Include="..\..\..\..\models\3ds\Ferarri40.3ds">
+      <Link>Examples\ModelViewer\Models\Ferarri40.3ds</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\models\3ds\LeonardoVehicle.3ds">
+      <Link>Examples\ModelViewer\Models\LeonardoVehicle.3ds</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\models\3ds\Moose.3ds">
+      <Link>Examples\ModelViewer\Models\Moose.3ds</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\models\obj\tour.obj">
+      <Link>Examples\ModelViewer\Models\tour.obj</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Examples\HalfEdgeMesh\HalfEdgeMeshTests.cs" />
     <Compile Include="Examples\HalfEdgeMesh\HalfEdgeMeshVisual3D.cs" />
     <Compile Include="Examples\HalfEdgeMesh\MainWindow.xaml.cs">
@@ -601,6 +733,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Images\TorusDemo_small.png" />
+    <Resource Include="Images\MemoryLeakTest_small.png" />
+    <Resource Include="Images\HippoDemo_small.png" />
     <Resource Include="Images\Workitem10271_small.png" />
     <Resource Include="Images\CursorPositionDemo_small.png" />
     <Resource Include="Images\ExtrudedTextDemo_small.png" />
@@ -728,6 +862,144 @@
       <Link>Examples\Subdivision\Models\seashell.off</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Examples\HippoDemo\Cursors\PanCursor.cur" />
+    <Resource Include="Examples\HippoDemo\Cursors\RotateCursor.cur" />
+    <Resource Include="Examples\HippoDemo\Cursors\ZoomCursor.cur" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\101.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\102.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\103.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\104.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\105.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\106.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\107.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\108.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\109.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\110.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\111.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\112.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\113.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\114.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\115.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\116.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\117.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\118.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\119.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\120.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\121.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\122.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\123.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\124.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\125.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\126.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\127.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\128.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\129.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\130.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\131.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\132.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\201.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\202.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\203.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\204.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\205.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\206.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\207.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\208.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\209.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\210.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\211.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\212.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\213.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\214.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\215.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\216.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\217.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\218.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\219.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\220.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\221.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\222.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\223.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\224.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\225.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\226.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\227.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\228.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\229.png" />
+    <Resource Include="Examples\HippoDemo\Icons\Toolbars\230.png" />
+    <Resource Include="Examples\HippoDemo\Application.ico" />
+    <Resource Include="Examples\SolarSystemDemo\Textures\deimos.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\earth.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\jupiter.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\mars.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\mercury.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\moon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\neptune.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\phobos.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\saturn.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\sun.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\uranus.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Examples\SolarSystemDemo\Textures\venus.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_b.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_d.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_f.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_l.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_r.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\GrandHotel\cube_u.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_b.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_d.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_f.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_l.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_r.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\PanoramaDemo\Models\Opera\cube_u.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Examples\Terrain\Models\crater_0513.btz">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -754,7 +1026,9 @@
       <Link>Examples\CuttingPlanes\Astronaut.3ds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -771,5 +1045,6 @@
       <Name>HelixToolkit.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
