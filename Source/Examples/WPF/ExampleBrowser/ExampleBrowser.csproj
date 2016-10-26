@@ -112,6 +112,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ScatterPlot\ScatterPlotVisual3D.cs" />
+    <Compile Include="Examples\Torus\MainWindow.xaml.cs" />
     <Compile Include="Workitems\Workitem10271\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -196,6 +197,10 @@
     <Page Include="Examples\SurfacePlotCuttingPlanes\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\Torus\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ViewMatrix\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -595,6 +600,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\TorusDemo_small.png" />
     <Resource Include="Images\Workitem10271_small.png" />
     <Resource Include="Images\CursorPositionDemo_small.png" />
     <Resource Include="Images\ExtrudedTextDemo_small.png" />
