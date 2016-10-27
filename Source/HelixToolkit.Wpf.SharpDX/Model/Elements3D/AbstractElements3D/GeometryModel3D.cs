@@ -83,6 +83,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Geometry != null)
             {
                 //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
+
+                //Bounds do not change when transformation changes, only the position of it changes.
                 //var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
                 //this.Bounds = b;
                 //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
@@ -260,6 +262,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 // transform hit-info to world space now:
                                 result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
                                 isHit = true;
+
 
                             }
                         }
