@@ -116,6 +116,7 @@
                                                     BackText="{Binding ViewCubeBackText, RelativeSource={RelativeSource TemplatedParent}}"
                                                     LeftText="{Binding ViewCubeLeftText, RelativeSource={RelativeSource TemplatedParent}}"
                                                     RightText="{Binding ViewCubeRightText, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    EnableEdgeClicks="{Binding IsViewCubeEdgeClicksEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                                     />
                             </Viewport3D>
 

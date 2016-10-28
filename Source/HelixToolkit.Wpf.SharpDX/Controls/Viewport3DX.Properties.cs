@@ -60,18 +60,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The camera property
         /// </summary>
         public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
-            "Camera", 
-            typeof(Camera), 
-            typeof(Viewport3DX), 
+            "Camera",
+            typeof(Camera),
+            typeof(Viewport3DX),
             new UIPropertyMetadata((s, e) => ((Viewport3DX)s).CameraPropertyChanged()));
 
         /// <summary>
         /// The camera rotation mode property
         /// </summary>
         public static readonly DependencyProperty CameraRotationModeProperty = DependencyProperty.Register(
-                "CameraRotationMode", 
-                typeof(CameraRotationMode), 
-                typeof(Viewport3DX), 
+                "CameraRotationMode",
+                typeof(CameraRotationMode),
+                typeof(Viewport3DX),
                 new PropertyMetadata(CameraRotationMode.Turntable));
 
         /// <summary>
@@ -84,18 +84,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The change field of view gesture property.
         /// </summary>
         public static readonly DependencyProperty ChangeFieldOfViewGestureProperty = DependencyProperty.Register(
-                "ChangeFieldOfViewGesture", 
-                typeof(MouseGesture), 
-                typeof(Viewport3DX), 
+                "ChangeFieldOfViewGesture",
+                typeof(MouseGesture),
+                typeof(Viewport3DX),
                 new UIPropertyMetadata(new MouseGesture(MouseAction.RightClick, ModifierKeys.Alt)));
 
         /// <summary>
         /// The change field of view gesture property.
         /// </summary>
         public static readonly DependencyProperty ChangeLookAtGestureProperty = DependencyProperty.Register(
-                "ChangeLookAtGesture", 
-                typeof(MouseGesture), 
-                typeof(Viewport3DX), 
+                "ChangeLookAtGesture",
+                typeof(MouseGesture),
+                typeof(Viewport3DX),
                 new UIPropertyMetadata(new MouseGesture(MouseAction.RightDoubleClick)));
 
         /// <summary>
@@ -114,18 +114,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The coordinate system horizontal position property.
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemHorizontalPositionProperty = DependencyProperty.Register(
-                "CoordinateSystemHorizontalPosition", 
-                typeof(HorizontalAlignment), 
-                typeof(Viewport3DX), 
+                "CoordinateSystemHorizontalPosition",
+                typeof(HorizontalAlignment),
+                typeof(Viewport3DX),
                 new UIPropertyMetadata(HorizontalAlignment.Left));
 
         /// <summary>
         /// The coordinate system label foreground property
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelForegroundProperty = DependencyProperty.Register(
-                "CoordinateSystemLabelForeground", 
-                typeof(Brush), 
-                typeof(Viewport3DX), 
+                "CoordinateSystemLabelForeground",
+                typeof(Brush),
+                typeof(Viewport3DX),
                 new PropertyMetadata(Brushes.Black));
 
         /// <summary>
@@ -150,9 +150,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The coordinate system vertical position property.
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemVerticalPositionProperty = DependencyProperty.Register(
-                "CoordinateSystemVerticalPosition", 
-                typeof(VerticalAlignment), 
-                typeof(Viewport3DX), 
+                "CoordinateSystemVerticalPosition",
+                typeof(VerticalAlignment),
+                typeof(Viewport3DX),
                 new UIPropertyMetadata(VerticalAlignment.Bottom));
 
         /// <summary>
@@ -165,9 +165,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The current position property.
         /// </summary>
         public static readonly DependencyProperty CurrentPositionProperty = DependencyProperty.Register(
-                "CurrentPosition", 
-                typeof(Point3D), 
-                typeof(Viewport3DX), 
+                "CurrentPosition",
+                typeof(Point3D),
+                typeof(Viewport3DX),
                 new FrameworkPropertyMetadata(
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DeferredRendererProperty = DependencyProperty.Register(
             "DeferredRenderer", typeof(DeferredRenderer), typeof(Viewport3DX), new PropertyMetadata(null));
-        
+
         /// <summary>
         /// The default camera property.
         /// </summary>
@@ -231,9 +231,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The front view gesture property.
         /// </summary>
         public static readonly DependencyProperty FrontViewGestureProperty = DependencyProperty.Register(
-                "FrontViewGesture", 
-                typeof(InputGesture), 
-                typeof(Viewport3DX), 
+                "FrontViewGesture",
+                typeof(InputGesture),
+                typeof(Viewport3DX),
                 new UIPropertyMetadata(new KeyGesture(Key.F, ModifierKeys.Control)));
 
         /// <summary>
@@ -246,9 +246,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The info background property.
         /// </summary>
         public static readonly DependencyProperty InfoBackgroundProperty = DependencyProperty.Register(
-            "InfoBackground", 
-            typeof(Brush), 
-            typeof(Viewport3DX), 
+            "InfoBackground",
+            typeof(Brush),
+            typeof(Viewport3DX),
             new UIPropertyMetadata(new SolidColorBrush(Color.FromArgb(0x80, 0xff, 0xff, 0xff))));
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null, 
+            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
                 (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty RenderTechniquesManagerProperty = DependencyProperty.Register(
             "RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.AffectsRender, 
+                null, FrameworkPropertyMetadataOptions.AffectsRender,
                 (s, e) => ((Viewport3DX)s).RenderTechniquesManagerPropertyChanged()));
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         //public static readonly DependencyProperty IsDeferredShadingEnabledProperty = DependencyProperty.Register(
         //    "IsDeferredShadingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) => ((Viewport3DX)s).ReAttach()));
-        
+
         /// <summary>
         /// The is deferred shading enabled propery
         /// </summary>
@@ -373,18 +373,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The orthographic property.
         /// </summary>
         public static readonly DependencyProperty OrthographicProperty = DependencyProperty.Register(
-            "Orthographic", 
-            typeof(bool), 
-            typeof(Viewport3DX), 
+            "Orthographic",
+            typeof(bool),
+            typeof(Viewport3DX),
             new UIPropertyMetadata(false, (s, e) => ((Viewport3DX)s).OrthographicChanged()));
 
         /// <summary>
         /// The orthographic toggle gesture property.
         /// </summary>
         public static readonly DependencyProperty OrthographicToggleGestureProperty = DependencyProperty.Register(
-            "OrthographicToggleGesture", 
-            typeof(InputGesture), 
-            typeof(Viewport3DX), 
+            "OrthographicToggleGesture",
+            typeof(InputGesture),
+            typeof(Viewport3DX),
             new UIPropertyMetadata(new KeyGesture(Key.O, ModifierKeys.Control | ModifierKeys.Shift)));
 
         /// <summary>
@@ -421,9 +421,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The show camera info property.
         /// </summary>
         public static readonly DependencyProperty ShowCameraInfoProperty = DependencyProperty.Register(
-            "ShowCameraInfo", 
-            typeof(bool), 
-            typeof(Viewport3DX), 
+            "ShowCameraInfo",
+            typeof(bool),
+            typeof(Viewport3DX),
             new UIPropertyMetadata(false, (s, e) => ((Viewport3DX)s).UpdateCameraInfo()));
 
         /// <summary>
@@ -442,9 +442,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The show field of view property.
         /// </summary>
         public static readonly DependencyProperty ShowFieldOfViewProperty = DependencyProperty.Register(
-            "ShowFieldOfView", 
-            typeof(bool), 
-            typeof(Viewport3DX), 
+            "ShowFieldOfView",
+            typeof(bool),
+            typeof(Viewport3DX),
             new UIPropertyMetadata(false, (s, e) => ((Viewport3DX)s).UpdateFieldOfViewInfo()));
 
         /// <summary>
@@ -547,9 +547,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The use default gestures property
         /// </summary>
         public static readonly DependencyProperty UseDefaultGesturesProperty = DependencyProperty.Register(
-                "UseDefaultGestures", 
-                typeof(bool), 
-                typeof(Viewport3DX), 
+                "UseDefaultGestures",
+                typeof(bool),
+                typeof(Viewport3DX),
                 new PropertyMetadata(true, (s, e) => ((Viewport3DX)s).UseDefaultGesturesChanged()));
 
         /// <summary>
@@ -580,9 +580,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube horizontal position property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeHorizontalPositionProperty = DependencyProperty.Register(
-                "ViewCubeHorizontalPosition", 
-                typeof(HorizontalAlignment), 
-                typeof(Viewport3DX), 
+                "ViewCubeHorizontalPosition",
+                typeof(HorizontalAlignment),
+                typeof(Viewport3DX),
                 new UIPropertyMetadata(HorizontalAlignment.Right));
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The view cube opacity property.
         /// </summary>
-        public static readonly DependencyProperty ViewCubeOpacityProperty =  DependencyProperty.Register(
+        public static readonly DependencyProperty ViewCubeOpacityProperty = DependencyProperty.Register(
                 "ViewCubeOpacity", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.5));
 
         /// <summary>
@@ -609,13 +609,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ViewCubeTopTextProperty = DependencyProperty.Register(
                 "ViewCubeTopText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("U"));
 
+        // <summary>
+        /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsViewCubeEdgeClicksEnabledProperty =
+            DependencyProperty.Register("IsViewCubeEdgeClicksEnabled", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(false));
+
+
         /// <summary>
         /// The view cube vertical position property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeVerticalPositionProperty = DependencyProperty.Register(
-                "ViewCubeVerticalPosition", 
-                typeof(VerticalAlignment), 
-                typeof(Viewport3DX), 
+                "ViewCubeVerticalPosition",
+                typeof(VerticalAlignment),
+                typeof(Viewport3DX),
                 new UIPropertyMetadata(VerticalAlignment.Bottom));
 
         /// <summary>
@@ -652,9 +659,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The zoom rectangle gesture property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleGestureProperty = DependencyProperty.Register(
-            "ZoomRectangleGesture", 
-            typeof(MouseGesture), 
-            typeof(Viewport3DX), 
+            "ZoomRectangleGesture",
+            typeof(MouseGesture),
+            typeof(Viewport3DX),
             new UIPropertyMetadata(
                 new MouseGesture(MouseAction.RightClick, ModifierKeys.Control | ModifierKeys.Shift)));
 
@@ -1038,7 +1045,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (DeferredRenderer)this.GetValue(DeferredRendererProperty); }
             set { this.SetValue(DeferredRendererProperty, value); }
         }
-             
+
 
         /// <summary>
         /// Gets or sets the default camera.
@@ -2198,6 +2205,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(ViewCubeTopTextProperty, value);
             }
         }
+
+
+        public bool IsViewCubeEdgeClicksEnabled
+        {
+            get { return (bool)GetValue(IsViewCubeEdgeClicksEnabledProperty); }
+            set { SetValue(IsViewCubeEdgeClicksEnabledProperty, value); }
+        }
+
 
         /// <summary>
         /// Gets or sets the vertical position of view cube viewport.

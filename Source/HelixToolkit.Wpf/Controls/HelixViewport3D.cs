@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf
                 "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="CalculateCursorPosition"/> dependency property. 
+        /// Identifies the <see cref="CalculateCursorPosition"/> dependency property.
         /// It enables (true) or disables (false) the calculation of the cursor position in the 3D Viewport
         /// </summary>
         public static readonly DependencyProperty CalculateCursorPositionProperty =
@@ -211,7 +211,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="CursorPosition"/> dependency property.
         /// </summary>
-        /// <remarks> 
+        /// <remarks>
         /// The return value equals ConstructionPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
         /// </remarks>
         public static readonly DependencyProperty CursorPositionProperty =
@@ -224,7 +224,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="CursorOnElementPosition"/> dependency property.
         /// </summary>
-        /// <remarks> 
+        /// <remarks>
         /// This property returns the position of the nearest model.
         /// </remarks>
         public static readonly DependencyProperty CursorOnElementPositionProperty =
@@ -238,7 +238,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Identifies the <see cref="CursorOnConstructionPlanePosition"/> dependency property.
         /// </summary>
-        /// <remarks> 
+        /// <remarks>
         /// This property returns the point on the cursor plane..
         /// </remarks>
         public static readonly DependencyProperty CursorOnConstructionPlanePositionProperty =
@@ -368,6 +368,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
             "IsMoveEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsViewCubeEdgeClicksEnabledProperty =
+            DependencyProperty.Register("IsViewCubeEdgeClicksEnabled", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="IsRotationEnabled"/> dependency property.
@@ -1865,6 +1871,12 @@ namespace HelixToolkit.Wpf
             {
                 this.SetValue(IsMoveEnabledProperty, value);
             }
+        }
+
+        public bool IsViewCubeEdgeClicksEnabled
+        {
+            get { return (bool)GetValue(IsViewCubeEdgeClicksEnabledProperty); }
+            set { SetValue(IsViewCubeEdgeClicksEnabledProperty, value); }
         }
 
         /// <summary>
@@ -3480,11 +3492,13 @@ namespace HelixToolkit.Wpf
                 case NotifyCollectionChangedAction.Add:
                     this.AddItems(e.NewItems);
                     break;
+
                 case NotifyCollectionChangedAction.Move:
                     throw new NotImplementedException("Move operation not implemented.");
                 case NotifyCollectionChangedAction.Remove:
                     this.RemoveItems(e.OldItems);
                     break;
+
                 case NotifyCollectionChangedAction.Replace:
                     throw new NotImplementedException("Replace operation not implemented.");
                 case NotifyCollectionChangedAction.Reset:
