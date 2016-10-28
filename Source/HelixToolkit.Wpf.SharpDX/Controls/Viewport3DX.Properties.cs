@@ -613,7 +613,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsViewCubeEdgeClicksEnabledProperty =
-            DependencyProperty.Register("IsViewCubeEdgeClicksEnabled", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(false));
+            DependencyProperty.Register("IsViewCubeEdgeClicksEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
 
         /// <summary>
