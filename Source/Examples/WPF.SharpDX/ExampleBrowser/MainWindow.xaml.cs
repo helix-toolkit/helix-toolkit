@@ -31,6 +31,15 @@ namespace ExampleBrowser
             this.InitializeComponent();
             this.DataContext = this;
             this.Examples = this.GetExamples(this.GetType().Assembly).ToArray();
+            var polygon = new List<SharpDX.Vector2>(){
+                new SharpDX.Vector2(10, 10),
+                new SharpDX.Vector2(30, 10),
+                new SharpDX.Vector2(30, 30),
+                new SharpDX.Vector2(10, 30)
+            };
+
+            var triangulationIndices = HelixToolkit.Wpf.SharpDX.SweepLinePolygonTriangulation.Triangulate(polygon);
+
         }
 
         /// <summary>
