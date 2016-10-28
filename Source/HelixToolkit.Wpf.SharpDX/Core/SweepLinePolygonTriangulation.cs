@@ -13,6 +13,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using Point = global::SharpDX.Vector2;
     using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
     using Int32Collection = System.Collections.Generic.List<int>;
+    using System;
+    using System.Linq;
+    using System.Collections;
     
     /// <summary>
     /// 
@@ -28,34 +31,31 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // Allocate and initialize List of Indices in Polygon
             var result = new Int32Collection();
-            var points = new List<Point>(polygon);
+            var points = polygon.ToList();
 
             // Make the Polygon CounterClockWise
             if (!isCCW(polygon))
                 points.Reverse();
 
+            // Create Polygon Data Structure
+            var poly = new PolygonData(polygon.ToList());
+
             // Sort Points from highest y to lowest y
             // and if two or more Points have the same y Value from lowest x to highest x Value
-            var events = points;
-            events.Sort(delegate(Point first, Point second)
-            {
-                /*if (first == null && second == null) return 0;
-                else if (first == null) return -1;
-                else if (second == null) return 1;
-                else */if (first.Y > second.Y || (first.Y == second.Y && first.X < second.X)) return 1;
-                else if (first.Y == second.Y && first.X == second.X) return 0;
-                else return -1;
-            });
+            var events = poly.Points;
+            events.Sort();
 
             // Construct Status, a List of Edges left of every Point of the Polygon
             // by shooting a Ray from the Vertex to the left.
             // The Helper Point of that Edge will be used to create Monotone Polygons
             // by adding Diagonals from/to Split- and Merge-Points
-
-
+            var statusAndHelper = new List<Tuple<PolygonEdge, PolygonPoint>>();
 
             // Sweep through the Polygon using the sorted Polygon Points
+            foreach (var ev in events)
+            {
 
+            }
 
             // Update the Helpers for the left Edges of the Polygon Points
 
@@ -83,5 +83,186 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return area > 0.0f;
         }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class PolygonEdge
+    {
+        private PolygonPoint mPointOne;
+
+        public PolygonPoint PointOne
+        {
+            get { return mPointOne; }
+            set { mPointOne = value; }
+        }
+        private PolygonPoint mPointTwo;
+
+        public PolygonPoint PointTwo
+        {
+            get { return mPointTwo; }
+            set { mPointTwo = value; }
+        }
+        public PolygonEdge Last
+        {
+            get
+            {
+                if (mPointOne != null && mPointOne.EdgeOne != null)
+                    return mPointOne.EdgeOne;
+                else
+                    return null;
+            }
+        }
+        public PolygonEdge Next
+        {
+            get
+            {
+                if (mPointTwo != null && mPointTwo.EdgeTwo != null)
+                    return mPointTwo.EdgeTwo;
+                else
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="one"></param>
+        /// <param name="two"></param>
+        internal PolygonEdge(PolygonPoint one, PolygonPoint two)
+        {
+            this.mPointOne = one;
+            this.mPointTwo = two;
+        }
+
+        public override string ToString()
+        {
+            return "From: " + mPointOne + " To: " + mPointTwo;
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class PolygonPoint: IComparable<PolygonPoint>
+    {
+        private Point mPoint;
+	    public Point Point
+	    {
+		    get { return mPoint;}
+		    set { mPoint = value;}
+	    }
+        public float X { get { return this.mPoint.X; } set { this.mPoint.X = value; } }
+        public float Y { get { return this.mPoint.Y; } set { this.mPoint.Y = value; } }
+        private PolygonEdge mEdgeOne;
+
+        public PolygonEdge EdgeOne
+        {
+            get { return mEdgeOne; }
+            set { mEdgeOne = value; }
+        }
+        private PolygonEdge mEdgeTwo;
+        public PolygonEdge EdgeTwo
+        {
+            get { return mEdgeTwo; }
+            set { mEdgeTwo = value; }
+        }
+        public PolygonPoint Last {
+            get
+            {
+                if (mEdgeOne != null && mEdgeOne.PointOne != null)
+                    return mEdgeOne.PointOne;
+                else
+                    return null;
+            }
+        }
+        public PolygonPoint Next
+        {
+            get
+            {
+                if (mEdgeTwo != null && mEdgeTwo.PointTwo != null)
+                    return mEdgeTwo.PointTwo;
+                else
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p"></param>
+        internal PolygonPoint(Point p){
+            this.mPoint = p;
+        }
+
+        internal PolygonPointClass PointClass()
+        {
+            if (Next == null || Last == null)
+                throw new HelixToolkitException("No closed Polygon");
+            
+            /*if (Last < this && Next < this)*/
+                return PolygonPointClass.Start;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "X:" + this.X + " Y:" + this.Y;
+        }
+
+        public int CompareTo(PolygonPoint second)
+        {
+            if (this == null || second == null)
+                return 0;
+            if (this.Y > second.Y || (this.Y == second.Y && this.X < second.X)) return -1;
+            else if (this.Y == second.Y && this.X == second.X) return 0;
+            else return 1;
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class PolygonData
+    {
+        private List<PolygonPoint> mPoints;
+
+        public List<PolygonPoint> Points
+        {
+            get { return mPoints; }
+            set { mPoints = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points"></param>
+        internal PolygonData(List<Point> points)
+        {
+            // Add Points
+            mPoints = new List<PolygonPoint>(points.Select(p => new PolygonPoint(p)));
+
+            // Add Edges to Points
+            var cnt = mPoints.Count;
+            for (int i = 0; i < cnt; i++)
+			{
+                var lastIdx = (i + cnt - 1) % cnt;
+                var edge = new PolygonEdge(mPoints[lastIdx], mPoints[i]);
+                mPoints[lastIdx].EdgeTwo = edge;
+                mPoints[i].EdgeOne = edge;
+			}
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    internal enum PolygonPointClass : byte
+    {
+        Start,
+        Stop,
+        Split,
+        Merge,
+        Regular
     }
 }
