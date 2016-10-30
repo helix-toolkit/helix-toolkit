@@ -32,10 +32,32 @@ namespace ExampleBrowser
             this.DataContext = this;
             this.Examples = this.GetExamples(this.GetType().Assembly).ToArray();
             var polygon = new List<SharpDX.Vector2>(){
-                new SharpDX.Vector2(10, 10),
-                new SharpDX.Vector2(30, 10),
-                new SharpDX.Vector2(30, 30),
-                new SharpDX.Vector2(10, 30)
+                new SharpDX.Vector2(5.2f, 1f),
+                new SharpDX.Vector2(2.8f, 11.4f),
+                new SharpDX.Vector2(6.7f, 5.6f),
+                new SharpDX.Vector2(5.2f, 5.2f),
+                new SharpDX.Vector2(13.2f, 1f),
+                new SharpDX.Vector2(6.6f, 8.8f),
+                new SharpDX.Vector2(11.2f, 9.8f),
+                new SharpDX.Vector2(12.2f, 6.2f),
+                new SharpDX.Vector2(9.6f, 8.2f),
+                new SharpDX.Vector2(12.1f, 3.6f),
+                new SharpDX.Vector2(14.2f, 5.7f),
+                new SharpDX.Vector2(12.1f, 13.9f),
+                new SharpDX.Vector2(6.7f, 10.3f),
+                new SharpDX.Vector2(5.2f, 12.8f),
+                new SharpDX.Vector2(9.2f, 13.9f),
+                new SharpDX.Vector2(12.2f, 18.1f),
+                new SharpDX.Vector2(10.6f, 21.7f),
+                new SharpDX.Vector2(8.7f, 18.7f),
+                new SharpDX.Vector2(6.2f, 20.7f),
+                new SharpDX.Vector2(8.7f, 22.2f),
+                new SharpDX.Vector2(2.7f, 21.6f),
+                new SharpDX.Vector2(5.3f, 18f),
+                new SharpDX.Vector2(7.7f, 17.6f),
+                new SharpDX.Vector2(3.7f, 15.4f),
+                new SharpDX.Vector2(3.2f, 19.6f),
+                new SharpDX.Vector2(.8f, 8.8f),
             };
 
             var triangulationIndices = HelixToolkit.Wpf.SharpDX.SweepLinePolygonTriangulation.Triangulate(polygon);

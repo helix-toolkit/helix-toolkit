@@ -49,18 +49,58 @@ namespace HelixToolkit.Wpf.SharpDX
             // by shooting a Ray from the Vertex to the left.
             // The Helper Point of that Edge will be used to create Monotone Polygons
             // by adding Diagonals from/to Split- and Merge-Points
-            var statusAndHelper = new List<Tuple<PolygonEdge, PolygonPoint>>();
-
+            // var statusAndHelper = new BinarySearchTree<Tuple<PolygonEdge, PolygonPoint>, Double>();
+            var statusAndHelper = new StatusHelper();
+            var diagonals = new List<PolygonEdge>();
+            
             // Sweep through the Polygon using the sorted Polygon Points
             foreach (var ev in events)
             {
+                var evClass = ev.PointClass();
+                StatusHelperElement she = null;
+                // Start
+                switch (evClass)
+                {
+                    case PolygonPointClass.Start:
+                        statusAndHelper.Add(new StatusHelperElement(ev.EdgeTwo, ev));
+                        break;
+                    case PolygonPointClass.Stop:
+                        statusAndHelper.Remove(ev.EdgeOne);
+                        break;
+                    case PolygonPointClass.Regular:
+                        if (ev.Last > ev.Next)
+                        {
+                            statusAndHelper.Remove(ev.EdgeOne);
+                            statusAndHelper.Add(new StatusHelperElement(ev.EdgeTwo, ev));
+                        }
+                        else
+                        {
+                            // Search Edge left of ev and set ev as it's Helper
+                            she = statusAndHelper.SearchLeft(ev);
+                            she.Helper = ev;
+                        }
+                        break;
+                    case PolygonPointClass.Merge:
+                        statusAndHelper.Remove(ev.EdgeOne);
+                        // Search Edge left of ev and set ev as it's Helper
+                        she = statusAndHelper.SearchLeft(ev);
+                        she.Helper = ev;
+                        break;
+                    case PolygonPointClass.Split:
+                        // Search Edge left of ev and set ev as it's Helper
+                        she = statusAndHelper.SearchLeft(ev);
 
+                        // Chose diagonal from Helper of Edge to Event
+                        diagonals.Add(new PolygonEdge(she.Helper, ev));
+
+                        // Replace Helper of Edge by Event
+                        she.Helper = ev;
+
+                        // Insert the Edge Counterclockwise from ev, with ev as its Helper
+                        statusAndHelper.Add(new StatusHelperElement(ev.EdgeTwo, ev));
+                        break;
+                }
             }
-
-            // Update the Helpers for the left Edges of the Polygon Points
-
-
-            // 
 
 
             return result;
@@ -84,6 +124,71 @@ namespace HelixToolkit.Wpf.SharpDX
             return area > 0.0f;
         }
     }
+
+    internal class StatusHelper
+    {
+        public List<StatusHelperElement> EdgesHelpers { get; set; }
+
+        internal StatusHelper(){
+            this.EdgesHelpers = new List<StatusHelperElement>();
+        }
+
+        internal void Add(StatusHelperElement element)
+        {
+            this.EdgesHelpers.Add(element);
+        }
+        internal void Remove(PolygonEdge edge)
+        {
+            this.EdgesHelpers.RemoveAll(she => she.Edge == edge);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        internal StatusHelperElement SearchLeft(PolygonPoint point)
+        {
+            StatusHelperElement result = null;
+            var dist = Double.PositiveInfinity;
+            foreach (var she in this.EdgesHelpers)
+            {
+                Double xValue = Double.NaN;
+                if (point.Y == she.Edge.PointOne.Y)
+                    xValue = she.Edge.PointOne.X;
+                else if (point.Y == she.Edge.PointTwo.Y)
+                    xValue = she.Edge.PointTwo.X;
+                else
+                    xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / (she.Edge.PointTwo.Y - she.Edge.PointOne.Y)) * (she.Edge.PointTwo.X - she.Edge.PointOne.X);
+                if (xValue < point.X){
+                    var sheDist = point.X - xValue;
+                    if (sheDist < dist)
+                    {
+                        dist = sheDist;
+                        result = she;
+                    }
+                }
+            }
+            return result;
+        }
+    }
+
+    internal class StatusHelperElement
+    {
+        public PolygonEdge Edge { get; set; }
+        public PolygonPoint Helper { get; set; }
+
+        internal StatusHelperElement()
+        {
+            this.Edge = null;
+            this.Helper = null;
+        }
+        internal StatusHelperElement(PolygonEdge edge, PolygonPoint point)
+        {
+            this.Edge = edge;
+            this.Helper = point;
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -166,6 +271,15 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return mEdgeTwo; }
             set { mEdgeTwo = value; }
         }
+        private int mIndex;
+
+        public int Index
+        {
+            get { return mIndex; }
+            set { mIndex = value; }
+        }
+
+
         public PolygonPoint Last {
             get
             {
@@ -185,6 +299,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     return null;
             }
         }
+        public static Boolean operator <(PolygonPoint first, PolygonPoint second)
+        {
+            return first.CompareTo(second) == 1;
+        }
+        public static Boolean operator >(PolygonPoint first, PolygonPoint second)
+        {
+            return first.CompareTo(second) == -1;
+        }
 
         /// <summary>
         /// 
@@ -192,6 +314,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p"></param>
         internal PolygonPoint(Point p){
             this.mPoint = p;
+            this.mIndex = -1;
         }
 
         internal PolygonPointClass PointClass()
@@ -199,8 +322,16 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Next == null || Last == null)
                 throw new HelixToolkitException("No closed Polygon");
             
-            /*if (Last < this && Next < this)*/
+            if (Last < this && Next < this && Last.X > Next.X)
                 return PolygonPointClass.Start;
+            else if (Last > this && Next > this && Last.X < Next.X)
+                return PolygonPointClass.Stop;
+            else if (Last < this && Next < this)
+                return PolygonPointClass.Split;
+            else if (Last > this && Next > this)
+                return PolygonPointClass.Merge;
+            else
+                return PolygonPointClass.Regular;
         }
 
         /// <summary>
@@ -238,10 +369,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="points"></param>
-        internal PolygonData(List<Point> points)
+        internal PolygonData(List<Point> points, List<int> indices = null)
         {
             // Add Points
             mPoints = new List<PolygonPoint>(points.Select(p => new PolygonPoint(p)));
+            if (indices == null)
+                for (int i = 0; i < mPoints.Count; i++)
+                    mPoints[i].Index = i;
+            else
+                for (int i = 0; i < mPoints.Count; i++)
+                    mPoints[i].Index = indices[i];
 
             // Add Edges to Points
             var cnt = mPoints.Count;
@@ -253,6 +390,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 mPoints[i].EdgeOne = edge;
 			}
         }
+        internal PolygonData(List<PolygonPoint> points)
+            : this(points.Select(p => p.Point).ToList(), points.Select(p => p.Index).ToList())
+        { }
     }
     /// <summary>
     /// 
