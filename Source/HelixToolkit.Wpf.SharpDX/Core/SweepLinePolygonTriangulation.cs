@@ -33,26 +33,25 @@ namespace HelixToolkit.Wpf.SharpDX
             var result = new Int32Collection();
             var points = polygon.ToList();
 
+            // Sort the Input and create the Datastructures
             // Make the Polygon CounterClockWise
             if (!isCCW(polygon))
                 points.Reverse();
-
             // Create Polygon Data Structure
             var poly = new PolygonData(polygon.ToList());
-
             // Sort Points from highest y to lowest y
             // and if two or more Points have the same y Value from lowest x to highest x Value
-            var events = poly.Points;
+            var events = new List<PolygonPoint>(poly.Points);
             events.Sort();
-
             // Construct Status, a List of Edges left of every Point of the Polygon
             // by shooting a Ray from the Vertex to the left.
             // The Helper Point of that Edge will be used to create Monotone Polygons
             // by adding Diagonals from/to Split- and Merge-Points
             // var statusAndHelper = new BinarySearchTree<Tuple<PolygonEdge, PolygonPoint>, Double>();
             var statusAndHelper = new StatusHelper();
-            var diagonals = new List<PolygonEdge>();
+            var diagonals = new SortedList<int, PolygonEdge>();
             
+            // Down Sweep
             // Sweep through the Polygon using the sorted Polygon Points
             foreach (var ev in events)
             {
@@ -91,7 +90,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         she = statusAndHelper.SearchLeft(ev);
 
                         // Chose diagonal from Helper of Edge to Event
-                        diagonals.Add(new PolygonEdge(she.Helper, ev));
+                        // Add sorted (from lowest Index to biggest)
+                        diagonals.Add(Math.Min(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
+                        diagonals.Add(Math.Max(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
 
                         // Replace Helper of Edge by Event
                         she.Helper = ev;
@@ -101,11 +102,224 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
             }
+            // Split the Polygon
+            var subPolygons = SplitPolygonWithDiagonals(poly, diagonals);
 
+            var monotonePolygons = new List<PolygonData>();
+            // Up Sweep for all Sub-Polygons
+            foreach (var subPoly in subPolygons)
+            {
+                events = new List<PolygonPoint>(subPoly.Points);
+                events.Sort();
+                events.Reverse();
+                statusAndHelper = new StatusHelper();
+                diagonals = new SortedList<int, PolygonEdge>();
+
+                // Sweep through the Polygon using the sorted Polygon Points
+                foreach (var ev in events)
+                {
+                    var evClass = ev.PointClass(true);
+                    StatusHelperElement she = null;
+                    // Start
+                    switch (evClass)
+                    {
+                        case PolygonPointClass.Start:
+                            statusAndHelper.Add(new StatusHelperElement(ev.EdgeOne, ev));
+                            break;
+                        case PolygonPointClass.Stop:
+                            statusAndHelper.Remove(ev.EdgeTwo);
+                            break;
+                        case PolygonPointClass.Regular:
+                            if (ev.Last > ev.Next)
+                            {
+                                statusAndHelper.Remove(ev.EdgeTwo);
+                                statusAndHelper.Add(new StatusHelperElement(ev.EdgeOne, ev));
+                            }
+                            else
+                            {
+                                // Search Edge left of ev and set ev as it's Helper
+                                she = statusAndHelper.SearchLeft(ev);
+                                she.Helper = ev;
+                            }
+                            break;
+                        case PolygonPointClass.Merge:
+                            statusAndHelper.Remove(ev.EdgeTwo);
+                            // Search Edge left of ev and set ev as it's Helper
+                            she = statusAndHelper.SearchLeft(ev);
+                            she.Helper = ev;
+                            break;
+                        case PolygonPointClass.Split:
+                            // Search Edge left of ev and set ev as it's Helper
+                            she = statusAndHelper.SearchLeft(ev);
+
+                            // Chose diagonal from Helper of Edge to Event
+                            // Add sorted (from lowest Index to biggest)
+                            diagonals.Add(Math.Min(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
+                            diagonals.Add(Math.Max(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
+
+                            // Replace Helper of Edge by Event
+                            she.Helper = ev;
+
+                            // Insert the Edge Counterclockwise from ev, with ev as its Helper
+                            statusAndHelper.Add(new StatusHelperElement(ev.EdgeOne, ev));
+                            break;
+                    }
+                }
+                // Split the Polygon
+                var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, diagonals);
+                // Add to List of monotone Polygons
+                monotonePolygons.AddRange(monotoneSubPolygons);
+            }
+
+            // y-Monotone Polygons
+            // Triangulate
+            foreach (var monoton in monotonePolygons)
+            {
+                events = new List<PolygonPoint>(monoton.Points);
+                events.Sort();
+                var pointStack = new Stack<PolygonPoint>();
+                pointStack.Push(events[0]);
+                pointStack.Push(events[1]);
+                
+                var pointCnt = monoton.Points.Count;
+                var leftChain = new HashSet<PolygonPoint>();
+                var p = events[0];
+                do
+                {
+                    leftChain.Add(p);
+                    p = p.Next;
+                } while (p != events.Last());
+                leftChain.Add(p);
+                var rightChain = new HashSet<PolygonPoint>();
+                p = events[0];
+                do
+                {
+                    rightChain.Add(p);
+                    p = p.Last;
+                } while (p != events.Last());
+                rightChain.Add(p);
+                for (int i = 2; i < pointCnt; i++)
+                {
+                    var newPoint = events[i];
+                    var top = pointStack.Peek();
+                    if (!(leftChain.Contains(top) && leftChain.Contains(newPoint) || rightChain.Contains(top) && rightChain.Contains(newPoint)))
+                    {
+                        var p2 = top;
+                        while (pointStack.Count != 0)
+                        {
+                            top = pointStack.Pop();
+                            p2 = top;
+                            if (pointStack.Count != 0)
+                            {
+                                top = pointStack.Pop();
+                                if (leftChain.Contains(newPoint))
+                                {
+                                    result.Add(newPoint.Index);
+                                    result.Add(p2.Index);
+                                    result.Add(top.Index);
+                                }
+                                else
+                                {
+                                    result.Add(newPoint.Index);
+                                    result.Add(top.Index);
+                                    result.Add(p2.Index);
+                                }
+                            }
+                            if (pointStack.Count != 0)
+                                pointStack.Push(top);
+                        }
+                        pointStack.Push(events[i - 1]);
+                        pointStack.Push(newPoint);
+                    }
+                    else
+                    {
+                        top = pointStack.Pop();
+                        var p2 = top;
+                        while (pointStack.Count != 0)
+                        {
+                            if (rightChain.Contains(top) && isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
+                            {
+                                top = pointStack.Pop();
+                                result.Add(newPoint.Index);
+                                result.Add(p2.Index);
+                                result.Add(top.Index);
+                                p2 = top;
+                            }
+                            else if (leftChain.Contains(top) && !isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
+                            {
+                                top = pointStack.Pop();
+                                result.Add(newPoint.Index);
+                                result.Add(top.Index);
+                                result.Add(p2.Index);
+                                p2 = top;
+                            }
+                            else
+                                break;
+                        }
+                        pointStack.Push(p2);
+                        pointStack.Push(newPoint);
+                    }
+                }
+            }
 
             return result;
         }
 
+        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, SortedList<int, PolygonEdge> diagonals)
+        {
+            var startIndex = poly.Points[0].Index;
+            var subPolygonCount = diagonals.Count / 2 + 1;
+            var subPolygons = new PolygonData[subPolygonCount];
+            if (subPolygonCount == 1)
+                return new PolygonData[] { poly };
+            for (int i = 0; i < subPolygonCount; i++)
+            {
+                var polygonStart = startIndex;
+                var currentPoint = poly.Points.FirstOrDefault(p => p.Index == polygonStart);
+                var subPolyPoints = new List<PolygonPoint>();
+                var newStart = false;
+                var diagonalNotAllowed = -1;
+                do
+                {
+                    subPolyPoints.Add(currentPoint);
+                    if (diagonals.ContainsKey(currentPoint.Index) &&
+                        diagonals[currentPoint.Index].PointOne.Index == currentPoint.Index && currentPoint.Index != diagonalNotAllowed)
+                    {
+                        var idx = currentPoint.Index;
+                        if (!newStart)
+                        {
+                            startIndex = currentPoint.Index;
+                            newStart = true;
+                        }
+                        currentPoint = poly.Points.FirstOrDefault(p => p.Index == diagonals[currentPoint.Index].PointTwo.Index);
+                        diagonals.Remove(idx);
+                        diagonalNotAllowed = currentPoint.Index;
+                    }
+                    else if (diagonals.ContainsKey(currentPoint.Index) &&
+                        diagonals[currentPoint.Index].PointTwo.Index == currentPoint.Index && currentPoint.Index != diagonalNotAllowed)
+                    {
+                        var idx = currentPoint.Index;
+                        if (!newStart)
+                        {
+                            startIndex = currentPoint.Index;
+                            newStart = true;
+                        }
+                        currentPoint = poly.Points.FirstOrDefault(p => p.Index == diagonals[currentPoint.Index].PointOne.Index);
+                        diagonals.Remove(idx);
+                        diagonalNotAllowed = currentPoint.Index;
+                    }
+                    else
+                    {
+                        currentPoint = currentPoint.Next;
+                        diagonalNotAllowed = -1;
+                    }
+                }
+                while (currentPoint.Index != polygonStart);
+                subPolygons[i] = new PolygonData(subPolyPoints);
+            }
+
+            return subPolygons;
+        }
 
         // Compute the Orientation of the Polygon.
         /// <summary>
@@ -317,21 +531,37 @@ namespace HelixToolkit.Wpf.SharpDX
             this.mIndex = -1;
         }
 
-        internal PolygonPointClass PointClass()
+        internal PolygonPointClass PointClass(Boolean reverse = false)
         {
             if (Next == null || Last == null)
                 throw new HelixToolkitException("No closed Polygon");
-            
-            if (Last < this && Next < this && Last.X > Next.X)
-                return PolygonPointClass.Start;
-            else if (Last > this && Next > this && Last.X < Next.X)
-                return PolygonPointClass.Stop;
-            else if (Last < this && Next < this)
-                return PolygonPointClass.Split;
-            else if (Last > this && Next > this)
-                return PolygonPointClass.Merge;
+
+            if (reverse)
+            {
+                if (Last < this && Next < this && Last.X > Next.X)
+                    return PolygonPointClass.Stop;
+                else if (Last > this && Next > this && Last.X < Next.X)
+                    return PolygonPointClass.Start;
+                else if (Last < this && Next < this)
+                    return PolygonPointClass.Merge;
+                else if (Last > this && Next > this)
+                    return PolygonPointClass.Split;
+                else
+                    return PolygonPointClass.Regular;
+            }
             else
-                return PolygonPointClass.Regular;
+            {
+                if (Last < this && Next < this && Last.X > Next.X)
+                    return PolygonPointClass.Start;
+                else if (Last > this && Next > this && Last.X < Next.X)
+                    return PolygonPointClass.Stop;
+                else if (Last < this && Next < this)
+                    return PolygonPointClass.Split;
+                else if (Last > this && Next > this)
+                    return PolygonPointClass.Merge;
+                else
+                    return PolygonPointClass.Regular;
+            }
         }
 
         /// <summary>
