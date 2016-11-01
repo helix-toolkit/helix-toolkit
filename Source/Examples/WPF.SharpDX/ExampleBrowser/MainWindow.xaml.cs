@@ -60,7 +60,22 @@ namespace ExampleBrowser
                 new SharpDX.Vector2(.8f, 8.8f),
             };
 
-            var triangulationIndices = HelixToolkit.Wpf.SharpDX.SweepLinePolygonTriangulation.Triangulate(polygon);
+            /*var polygon = new List<SharpDX.Vector2>(){
+                new SharpDX.Vector2(2, 3),
+                new SharpDX.Vector2(0, 1),
+                new SharpDX.Vector2(1, 0),
+                new SharpDX.Vector2(3, 2),
+                new SharpDX.Vector2(5, 0),
+                new SharpDX.Vector2(6, 1),
+                new SharpDX.Vector2(4, 3),
+                new SharpDX.Vector2(6, 5),
+                new SharpDX.Vector2(5, 6),
+                new SharpDX.Vector2(3, 4),
+                new SharpDX.Vector2(1, 6),
+                new SharpDX.Vector2(0, 5),
+            };*/
+
+            var triangulationIndices = HelixToolkit.Wpf.SharpDX.SweepLinePolygonTriangulator.Triangulate(polygon);
 
         }
 
