@@ -265,10 +265,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="mapping">Mapping from main Polygon to the current Polygon</param>
         /// <param name="sweepDown">True in the first Stage (sweeping down), false in the following Stages (sweeping up)</param>
         /// <returns></returns>
-        private static SortedList<int, PolygonEdge> CalculateDiagonals(List<PolygonPoint> events, Dictionary<int, int> mapping, Boolean sweepDown = true)
+        private static List<Tuple<int, int>> CalculateDiagonals(List<PolygonPoint> events, Dictionary<int, int> mapping, Boolean sweepDown = true)
         {
             // Diagonals to add to the Polygon to make it monotone after the Down- and Up-Sweeps
-            var diagonals = new SortedList<int, PolygonEdge>();
+            var diagonals = new List<Tuple<int, int>>();
             
             // Construct Status and Helper, a List of Edges left of every Point of the Polygon
             // by shooting a Ray from the Vertex to the left.
@@ -328,10 +328,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         // This is helpful for the Triangulation later
                         var hIdxMapped = mapping[she.Helper.Index];
                         var evIdxMapped = mapping[ev.Index];
-                        diagonals.Add(Math.Min(hIdxMapped, evIdxMapped), new PolygonEdge(she.Helper, ev));
-                        diagonals.Add(Math.Max(hIdxMapped, evIdxMapped), new PolygonEdge(she.Helper, ev));
-                        ///diagonals.Add(Math.Min(mapping[she.Helper.Index], ev.Index), new PolygonEdge(she.Helper, ev));
-                        ///diagonals.Add(Math.Max(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
+                        var minP = Math.Min(hIdxMapped, evIdxMapped);
+                        var maxP = Math.Max(hIdxMapped, evIdxMapped);
+                        diagonals.Add(new Tuple<int, int>(minP, maxP));
+                        diagonals.Add(new Tuple<int, int>(maxP, minP));
 
                         // Replace the Helper of the StatusHelperElement by Event
                         she.Helper = ev;
@@ -341,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
             }
-
+            diagonals = diagonals.OrderBy(t => t.Item1).ThenBy(t => t.Item2).ToList();
             return diagonals;
         }
 
@@ -353,7 +353,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="mapping">Mapping from main Polygon to the current Polygon</param>
         /// <param name="diagonals">The Diagonals inside the Polygon, that are used to split it</param>
         /// <returns></returns>
-        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, Dictionary<int, int> mapping, SortedList<int, PolygonEdge> diagonals)
+        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, Dictionary<int, int> mapping, List<Tuple<int, int>> diagonals)
         {
             // Create some helping Variables
             var startIndex = poly.Points[0].Index;
@@ -383,7 +383,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Indicates which Diagonal may not be used in the following Step
                 // Diagonals are the preferred Connection to the next Polygonpoint, since they exist "in both direction",
                 // the algorithm would always "go back" and not "move on"
-                var diagonalNotAllowed = -1;
+                // var diagonalNotAllowed = -1;
+                Tuple<int, int> diagonalNotAllowed = null;
                 
                 // Loop until we've reached the polygonStart again
                 do
@@ -395,8 +396,52 @@ namespace HelixToolkit.Wpf.SharpDX
                     var mappedIdx = mapping[currentPoint.Index];
 
                     // If a Diagonal for this Point exists (i.e. with this Key) and the Diagonal is allowed to be used
-                    ///if (diagonals.ContainsKey(currentPoint.Index) && currentPoint.Index != diagonalNotAllowed)
-                    if (diagonals.ContainsKey(mappedIdx) && currentPoint.Index != diagonalNotAllowed)
+                    var possibleDiags = diagonals.Where(t => t.Item1 == mappedIdx && !t.Equals(diagonalNotAllowed)).ToList();
+                    Tuple<int, int> diag = null;
+                    if (possibleDiags.Count == 1)
+                        diag = possibleDiags[0];
+                    else if (possibleDiags.Count > 1)
+                    {
+                        Point vectorLast = new Point();
+                        if (subPolyPoints.Count > 1)
+                            vectorLast = subPolyPoints[subPolyPoints.Count - 1].Point - subPolyPoints[subPolyPoints.Count - 2].Point;
+                        else
+                            vectorLast = currentPoint.Point - currentPoint.Last.Point;
+                        vectorLast.Normalize();
+                        var vectorLeft = new Point(-vectorLast.Y, vectorLast.X);
+                        var otherVectors = new List<Point>();
+                        foreach (var possibleDiag in possibleDiags)
+                        {
+                            var vec = poly.Points[possibleDiag.Item2].Point - poly.Points[possibleDiag.Item1].Point;
+                            vec.Normalize();
+                            otherVectors.Add(vec);
+                        }
+                        var bestAngle = float.NegativeInfinity;
+                        for (int j = 0; j < otherVectors.Count; j++)
+                        {
+                            var dot = Point.Dot(vectorLast, otherVectors[j]);
+                            // left
+                            if (Point.Dot(vectorLeft, otherVectors[j]) >= 0)
+                            {
+                                var angle = Math.Acos(dot);
+                                if (angle > bestAngle){
+                                    bestAngle = (float)angle;
+                                    diag = possibleDiags[j];
+                                }
+                            }
+                            // right
+                            else if (Point.Dot(vectorLeft, otherVectors[j]) < 0)
+                            {
+                                var angle = -Math.Acos(dot);
+                                if (angle > bestAngle)
+                                {
+                                    bestAngle = (float)angle;
+                                    diag = possibleDiags[j];
+                                }
+                            }
+                        }
+                    }
+                    if (diag != null)
                     {
                         // Set the new startIndex, if it wasn't set before
                         if (!newStart)
@@ -406,24 +451,24 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         
                         // Get the next Point
-                        if (diagonals[mappedIdx].PointOne.Index == currentPoint.Index)
+                        if (diag.Item1 == mappedIdx)
                         {
-                            currentPoint = poly.Points[mapping[diagonals[mappedIdx].PointTwo.Index]];
+                            currentPoint = poly.Points[diag.Item2];
                         }
                         else
                         {
-                            currentPoint = poly.Points[mapping[diagonals[mappedIdx].PointOne.Index]];
+                            currentPoint = poly.Points[diag.Item1];
                         }
                         
                         // Remove the Diagonal and don't allow the Diagonal that would lead back
-                        diagonals.Remove(mappedIdx);
-                        diagonalNotAllowed = currentPoint.Index;
+                        diagonals.Remove(diag);
+                        diagonalNotAllowed = new Tuple<int,int>(diag.Item2, diag.Item1);
                     }
                     // If no Diagonal exists for this Point, just add it and re-allow all Diagonals
                     else
                     {
                         currentPoint = currentPoint.Next;
-                        diagonalNotAllowed = -1;
+                        diagonalNotAllowed = null;
                     }
                 }
                 while (currentPoint.Index != polygonStart);
