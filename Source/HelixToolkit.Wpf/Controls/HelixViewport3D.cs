@@ -1872,7 +1872,10 @@ namespace HelixToolkit.Wpf
                 this.SetValue(IsMoveEnabledProperty, value);
             }
         }
-
+        
+        /// <summary>
+        /// Gets or sets the view cube edge clickable.
+        /// </summary>
         public bool IsViewCubeEdgeClicksEnabled
         {
             get { return (bool)GetValue(IsViewCubeEdgeClicksEnabledProperty); }
