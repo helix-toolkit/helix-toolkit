@@ -93,7 +93,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(
             "Viewport", typeof(Viewport3D), typeof(ViewCubeVisual3D), new PropertyMetadata(null));
-
+            
+        /// <summary>
+        /// Set or Get if view cube edge clickable.
+        /// </summary>
         public bool EnableEdgeClicks
         {
             get { return (bool)GetValue(EnableEdgeClicksProperty); }
