@@ -11,6 +11,7 @@ namespace ExampleBrowser
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -31,7 +32,7 @@ namespace ExampleBrowser
             this.InitializeComponent();
             this.DataContext = this;
             this.Examples = this.GetExamples(this.GetType().Assembly).ToArray();
-            var polygon = new List<SharpDX.Vector2>(){
+            /*var polygon = new List<SharpDX.Vector2>(){
                 new SharpDX.Vector2(5.2f, 1f),
                 new SharpDX.Vector2(2.8f, 11.4f),
                 new SharpDX.Vector2(6.7f, 5.6f),
@@ -58,7 +59,7 @@ namespace ExampleBrowser
                 new SharpDX.Vector2(3.7f, 15.4f),
                 new SharpDX.Vector2(3.2f, 19.6f),
                 new SharpDX.Vector2(.8f, 8.8f),
-            };
+            };*/
 
             /*var polygon = new List<SharpDX.Vector2>(){
                 new SharpDX.Vector2(2, 3),
@@ -75,8 +76,73 @@ namespace ExampleBrowser
                 new SharpDX.Vector2(0, 5),
             };*/
 
-            var triangulationIndices = HelixToolkit.Wpf.SharpDX.SweepLinePolygonTriangulator.Triangulate(polygon);
+            /*var polygon = new List<SharpDX.Vector2>(){
+                new SharpDX.Vector2(0, 0),
+                new SharpDX.Vector2(2, 0),
+                new SharpDX.Vector2(5, 1),
+                new SharpDX.Vector2(5, 0),
+                new SharpDX.Vector2(8, 0),
+                new SharpDX.Vector2(8, 3),
+                new SharpDX.Vector2(10, 3),
+                new SharpDX.Vector2(10, 0),
+                new SharpDX.Vector2(12, 2),
+                new SharpDX.Vector2(10, 5),
+                new SharpDX.Vector2(6.5f, 5),
+                new SharpDX.Vector2(3, 6.5f),
+                new SharpDX.Vector2(1.5f, 5),
+                new SharpDX.Vector2(5, 5),
+                new SharpDX.Vector2(3, 3),
+                new SharpDX.Vector2(1.5f, 2.5f),
+                new SharpDX.Vector2(0, 8),
+                new SharpDX.Vector2(0, 2.5f),
+                new SharpDX.Vector2(1.5f, 1),
+            };*/
 
+            /*var polygon = new List<SharpDX.Vector2>(){
+                new SharpDX.Vector2(0, 0),
+                new SharpDX.Vector2(4, -1),
+                new SharpDX.Vector2(5, -5),
+                new SharpDX.Vector2(11, -3),
+                new SharpDX.Vector2(12, -7),
+                new SharpDX.Vector2(15, -4),
+                new SharpDX.Vector2(12, 0),
+                new SharpDX.Vector2(7, -2),
+                new SharpDX.Vector2(6, 6),
+                new SharpDX.Vector2(10, 7),
+                new SharpDX.Vector2(6, 9),
+                new SharpDX.Vector2(2, 8),
+                new SharpDX.Vector2(4, 3),
+                new SharpDX.Vector2(-2, 2),
+                new SharpDX.Vector2(-1, 7),
+                new SharpDX.Vector2(-6, 5),
+                new SharpDX.Vector2(-4, 1),
+                new SharpDX.Vector2(-8, -1),
+                new SharpDX.Vector2(1, -4),
+            };*/
+
+            var cnt = 500000;
+            var polygon = new List<SharpDX.Vector2>();
+            var angle = 0f;
+            var radius = 5f;
+            var angleDiff = 2f * (Single)Math.PI / cnt;
+            for (int i = 0; i < cnt; i++)
+            {
+                polygon.Add(new SharpDX.Vector2(radius * (Single)Math.Cos(angle), radius * (Single)Math.Sin(angle)));
+                angle += angleDiff;
+            }
+
+            var watchCET = new Stopwatch();
+            var watchSLT = new Stopwatch();
+            /*watchCET.Start();
+            var cETI = HelixToolkit.Wpf.SharpDX.CuttingEarsTriangulator.Triangulate(polygon);
+            watchCET.Stop();*/
+            watchSLT.Start();
+            var sLTI = HelixToolkit.Wpf.SharpDX.SweepLinePolygonTriangulator.Triangulate(polygon);
+            watchSLT.Stop();
+
+            ///MessageBox.Show("CuttingEarsTriangulator needed " + watchCET.ElapsedMilliseconds +
+            ///    " Milliseconds\nSweepLineTriangulator needed " + watchSLT.ElapsedMilliseconds + " Milliseconds\nto execute");
+            this.Close();
         }
 
         /// <summary>

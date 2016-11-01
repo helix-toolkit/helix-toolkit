@@ -57,12 +57,18 @@ namespace HelixToolkit.Wpf.SharpDX
             // and if two or more Points have the same y Value from lowest x to highest x Value
             var events = new List<PolygonPoint>(poly.Points);
             events.Sort();
-                        
+
+            // Mapping from the main Polygon to the current Polygon
+            var mainMapping = new Dictionary<int, int>();
+            for (int i = 0; i < count; i++)
+			{
+                mainMapping[i] = i;
+			}
             // Calculate the Diagonals in the Down Sweep
-            var diagonals = CalculateDiagonals(events);
+            var diagonals = CalculateDiagonals(events, mainMapping);
 
             // Split the Polygon
-            var subPolygons = SplitPolygonWithDiagonals(poly, diagonals);
+            var subPolygons = SplitPolygonWithDiagonals(poly, mainMapping, diagonals);
 
             var monotonePolygons = new List<PolygonData>();
             // Up Sweep for all Sub-Polygons
@@ -73,11 +79,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 events.Sort();
                 events.Reverse();
 
+                // Mapping from the main Polygon to the current Polygon
+                var polyMapping = new Dictionary<int, int>();
+                for (int i = 0; i < subPoly.Points.Count; i++)
+                {
+                    polyMapping[subPoly.Points[i].Index] = i;
+                }
                 // Calculate the Diagonals in the Up Sweep
-                diagonals = CalculateDiagonals(events, false);
+                diagonals = CalculateDiagonals(events, polyMapping, false);
 
                 // Split the Polygon
-                var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, diagonals);
+                var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, polyMapping, diagonals);
                 // Add to List of monotone Polygons
                 monotonePolygons.AddRange(monotoneSubPolygons);
             }
@@ -250,9 +262,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Calculate the Diagonals to add inside the Polygon.
         /// </summary>
         /// <param name="events">The Events in sorted Form</param>
+        /// <param name="mapping">Mapping from main Polygon to the current Polygon</param>
         /// <param name="sweepDown">True in the first Stage (sweeping down), false in the following Stages (sweeping up)</param>
         /// <returns></returns>
-        private static SortedList<int, PolygonEdge> CalculateDiagonals(List<PolygonPoint> events, Boolean sweepDown = true)
+        private static SortedList<int, PolygonEdge> CalculateDiagonals(List<PolygonPoint> events, Dictionary<int, int> mapping, Boolean sweepDown = true)
         {
             // Diagonals to add to the Polygon to make it monotone after the Down- and Up-Sweeps
             var diagonals = new SortedList<int, PolygonEdge>();
@@ -264,8 +277,9 @@ namespace HelixToolkit.Wpf.SharpDX
             var statusAndHelper = new StatusHelper();
             
             // Sweep through the Polygon using the sorted Polygon Points
-            foreach (var ev in events)
+            for(int i = 0; i < events.Count; i++)
             {
+                var ev = events[i];
                 // Get the Class of this event (depending on the sweeping direction)
                 var evClass = ev.PointClass(!sweepDown);
                 
@@ -312,8 +326,12 @@ namespace HelixToolkit.Wpf.SharpDX
                         // Chose diagonal from Helper of Edge to Event.
                         // Add two Diagonals sorted (from lowest Index to biggest)
                         // This is helpful for the Triangulation later
-                        diagonals.Add(Math.Min(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
-                        diagonals.Add(Math.Max(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
+                        var hIdxMapped = mapping[she.Helper.Index];
+                        var evIdxMapped = mapping[ev.Index];
+                        diagonals.Add(Math.Min(hIdxMapped, evIdxMapped), new PolygonEdge(she.Helper, ev));
+                        diagonals.Add(Math.Max(hIdxMapped, evIdxMapped), new PolygonEdge(she.Helper, ev));
+                        ///diagonals.Add(Math.Min(mapping[she.Helper.Index], ev.Index), new PolygonEdge(she.Helper, ev));
+                        ///diagonals.Add(Math.Max(she.Helper.Index, ev.Index), new PolygonEdge(she.Helper, ev));
 
                         // Replace the Helper of the StatusHelperElement by Event
                         she.Helper = ev;
@@ -332,9 +350,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// For every Diagonal there exist two Entries due to simplicity Reasons.
         /// </summary>
         /// <param name="poly">The Polygon to split</param>
+        /// <param name="mapping">Mapping from main Polygon to the current Polygon</param>
         /// <param name="diagonals">The Diagonals inside the Polygon, that are used to split it</param>
         /// <returns></returns>
-        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, SortedList<int, PolygonEdge> diagonals)
+        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, Dictionary<int, int> mapping, SortedList<int, PolygonEdge> diagonals)
         {
             // Create some helping Variables
             var startIndex = poly.Points[0].Index;
@@ -354,7 +373,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 var polygonStart = startIndex;
                 
                 // We need to query the Point, because we are dealing with Indices relevant to the original Polygon
-                var currentPoint = poly.Points.FirstOrDefault(p => p.Index == polygonStart);
+                ///var currentPoint = poly.Points.FirstOrDefault(p => p.Index == polygonStart);
+                var currentPoint = poly.Points[mapping[polygonStart]];
                 var subPolyPoints = new List<PolygonPoint>();
                 
                 // Indicator that ensures, we reset the startIndex for the next Subpolygon only once
@@ -370,12 +390,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     // Add the currentPoint of the Polygon
                     subPolyPoints.Add(currentPoint);
+                    
+                    // Index of the current Point
+                    var mappedIdx = mapping[currentPoint.Index];
+
                     // If a Diagonal for this Point exists (i.e. with this Key) and the Diagonal is allowed to be used
-                    if (diagonals.ContainsKey(currentPoint.Index) && currentPoint.Index != diagonalNotAllowed)
+                    ///if (diagonals.ContainsKey(currentPoint.Index) && currentPoint.Index != diagonalNotAllowed)
+                    if (diagonals.ContainsKey(mappedIdx) && currentPoint.Index != diagonalNotAllowed)
                     {
-                        // Index of the current Point
-                        var idx = currentPoint.Index;
-                        
                         // Set the new startIndex, if it wasn't set before
                         if (!newStart)
                         {
@@ -384,17 +406,17 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         
                         // Get the next Point
-                        if (diagonals[currentPoint.Index].PointOne.Index == idx)
+                        if (diagonals[mappedIdx].PointOne.Index == currentPoint.Index)
                         {
-                            currentPoint = poly.Points.FirstOrDefault(p => p.Index == diagonals[currentPoint.Index].PointTwo.Index);
+                            currentPoint = poly.Points[mapping[diagonals[mappedIdx].PointTwo.Index]];
                         }
                         else
                         {
-                            currentPoint = poly.Points.FirstOrDefault(p => p.Index == diagonals[currentPoint.Index].PointOne.Index);
+                            currentPoint = poly.Points[mapping[diagonals[mappedIdx].PointOne.Index]];
                         }
                         
                         // Remove the Diagonal and don't allow the Diagonal that would lead back
-                        diagonals.Remove(idx);
+                        diagonals.Remove(mappedIdx);
                         diagonalNotAllowed = currentPoint.Index;
                     }
                     // If no Diagonal exists for this Point, just add it and re-allow all Diagonals
