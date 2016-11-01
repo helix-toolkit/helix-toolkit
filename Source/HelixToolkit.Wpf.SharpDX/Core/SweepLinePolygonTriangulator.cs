@@ -3,7 +3,7 @@
 //   Copyright (c) 2016 Franz Spitaler
 // </copyright>
 // <summary>
-//   A polygon triangulator for simple polygons with no holes. Expected runtime is O(n)
+//   A polygon triangulator for simple polygons with no holes. Expected runtime is O(n log n)
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -126,24 +126,12 @@ namespace HelixToolkit.Wpf.SharpDX
             pointStack.Push(events[1]);
 
             // Left- and right Chain for Triangulation
+            var left = (events[0].Next == events[1]) ? events[1] : events[0];
+            var right = (events[0].Last == events[1]) ? events[1] : events[0];
+
+            // Count of Points
             var pointCnt = monoton.Points.Count;
-            var leftChain = new HashSet<PolygonPoint>();
-            var p = events[0];
-            do
-            {
-                leftChain.Add(p);
-                p = p.Next;
-            } while (p != events.Last());
-            leftChain.Add(p);
-            var rightChain = new HashSet<PolygonPoint>();
-            p = events[0];
-            do
-            {
-                rightChain.Add(p);
-                p = p.Last;
-            } while (p != events.Last());
-            rightChain.Add(p);
-            
+
             // Handle the 3rd...n-th Point to triangle
             for (int i = 2; i < pointCnt; i++)
             {
@@ -154,6 +142,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 //if (!(leftChain.Contains(top) && leftChain.Contains(newPoint) || rightChain.Contains(top) && rightChain.Contains(newPoint)))
                 if (!(top.Last == newPoint || top.Next == newPoint))
                 {
+                    // Determine this Point's Chain (left or right)
+                    if (left.Next == newPoint)
+                    {
+                        left = newPoint;
+                    }
+                    else if (right.Last == newPoint)
+                    {
+                        right = newPoint;
+                    }
+
                     // Third triangle Point
                     var p2 = top;
                     // While there is a Point on the Stack
@@ -168,8 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             top = pointStack.Pop();
                             
                             // Add to the result. The Order is depending on the Side
-                            if (leftChain.Contains(newPoint))
-                            ///if (top.Next == newPoint)
+                            if (left == newPoint)
                             {
                                 result.Add(newPoint.Index);
                                 result.Add(p2.Index);
@@ -197,11 +194,30 @@ namespace HelixToolkit.Wpf.SharpDX
                     // Get to Point on the Stack
                     top = pointStack.Pop();
                     var p2 = top;
+
+                    // Determine this Point's Chain (left or right)
+                    if (left.Next == newPoint && right.Last == newPoint)
+                    {
+                        if (top.Last == newPoint)
+                            right = newPoint;
+                        else if (top.Next == newPoint)
+                            left = newPoint;
+                        else
+                            throw new HelixToolkitException("Triangulation error");
+                    }
+                    else if (left.Next == newPoint)
+                    {
+                        left = newPoint;
+                    }
+                    else if (right.Last == newPoint)
+                    {
+                        right = newPoint;
+                    }
+                    
                     while (pointStack.Count != 0)
                     {
                         // If the Triangle is possible, add it to the result (Point Order depends on the Side)
-                        ///if (rightChain.Contains(top) && isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
-                        if (rightChain.Contains(top) && isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
+                        if (right == newPoint && isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
                         {
                             top = pointStack.Pop();
                             result.Add(newPoint.Index);
@@ -209,8 +225,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             result.Add(top.Index);
                             p2 = top;
                         }
-                        ///else if (leftChain.Contains(top) && !isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
-                        else if (leftChain.Contains(top) && !isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
+                        else if (left == newPoint && !isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
                         {
                             top = pointStack.Pop();
                             result.Add(newPoint.Index);
@@ -356,8 +371,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     // Add the currentPoint of the Polygon
                     subPolyPoints.Add(currentPoint);
                     // If a Diagonal for this Point exists (i.e. with this Key) and the Diagonal is allowed to be used
-                    if (diagonals.ContainsKey(currentPoint.Index) &&
-                        /*diagonals[currentPoint.Index].PointOne.Index == currentPoint.Index && */currentPoint.Index != diagonalNotAllowed)
+                    if (diagonals.ContainsKey(currentPoint.Index) && currentPoint.Index != diagonalNotAllowed)
                     {
                         // Index of the current Point
                         var idx = currentPoint.Index;
@@ -383,19 +397,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         diagonals.Remove(idx);
                         diagonalNotAllowed = currentPoint.Index;
                     }
-                    /*else if (diagonals.ContainsKey(currentPoint.Index) &&
-                        diagonals[currentPoint.Index].PointTwo.Index == currentPoint.Index && currentPoint.Index != diagonalNotAllowed)
-                    {
-                        var idx = currentPoint.Index;
-                        if (!newStart)
-                        {
-                            startIndex = currentPoint.Index;
-                            newStart = true;
-                        }
-                        currentPoint = poly.Points.FirstOrDefault(p => p.Index == diagonals[currentPoint.Index].PointOne.Index);
-                        diagonals.Remove(idx);
-                        diagonalNotAllowed = currentPoint.Index;
-                    }*/
                     // If no Diagonal exists for this Point, just add it and re-allow all Diagonals
                     else
                     {
