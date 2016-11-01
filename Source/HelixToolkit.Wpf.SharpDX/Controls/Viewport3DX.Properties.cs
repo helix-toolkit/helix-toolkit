@@ -609,7 +609,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ViewCubeTopTextProperty = DependencyProperty.Register(
                 "ViewCubeTopText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("U"));
 
-        // <summary>
+        /// <summary>
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsViewCubeEdgeClicksEnabledProperty =
@@ -2206,7 +2206,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets if the view cube edge clickable.
+        /// </summary>
+        /// <value>
+        /// Boolean for enable or disable.
+        /// </value>
         public bool IsViewCubeEdgeClicksEnabled
         {
             get { return (bool)GetValue(IsViewCubeEdgeClicksEnabledProperty); }
