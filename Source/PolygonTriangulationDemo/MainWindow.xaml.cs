@@ -11,6 +11,7 @@ namespace PolygonTriangulationDemo
     using System;
     using DemoCore;
     using System.Windows.Media.Media3D;
+    using System.Globalization;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -18,8 +19,7 @@ namespace PolygonTriangulationDemo
     public partial class MainWindow : Window
     {
         List<Vector2> mPolygonPoints;
-        System.Windows.Point start;
-        System.Windows.Point origin;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -144,7 +144,7 @@ namespace PolygonTriangulationDemo
                 new Vector2(3.597711f, -1.601804f),
             };*/
             
-            mPolygonPoints = new List<Vector2>(){
+            /*mPolygonPoints = new List<Vector2>(){
                 new Vector2(2.100612f, 0),
                 new Vector2(1.875363f, 0.8349656f),
                 new Vector2(0.9324085f, 1.035545f),
@@ -160,61 +160,89 @@ namespace PolygonTriangulationDemo
                 new Vector2(0.3424261f, -1.053879f),
                 new Vector2(2.696841f, -2.995144f),
                 new Vector2(2.698487f, -1.201443f),
-            };
+            };*/
+
+            /*mPolygonPoints = new List<Vector2>(){
+                new Vector2(1.641862f, 0f),
+                new Vector2(4.099607f, 0.8713984f),
+                new Vector2(1.347752f, 0.6000577f),
+                new Vector2(1.247217f, 0.9061562f),
+                new Vector2(0.8838347f, 0.981598f),
+                new Vector2(1.311946f, 2.272357f),
+                new Vector2(0.4339415f, 1.335535f),
+                new Vector2(0.355141f, 3.378943f),
+                new Vector2(-0.397462f, 3.781597f),
+                new Vector2(-1.43475f, 4.415705f),
+                new Vector2(-1.50873f, 2.613196f),
+                new Vector2(-3.240577f, 3.599025f),
+                new Vector2(-1.21874f, 0.8854663f),
+                new Vector2(-1.60823f, 0.7160301f),
+                new Vector2(-2.125828f, 0.4518586f),
+                new Vector2(-4.620011f, -4.038942E-07f),
+                new Vector2(-3.726473f, -0.7920868f),
+                new Vector2(-2.43131f, -1.082489f),
+                new Vector2(-3.057129f, -2.221135f),
+                new Vector2(-2.395318f, -2.660271f),
+                new Vector2(-0.7229493f, -1.252185f),
+                new Vector2(-1.415548f, -4.356607f),
+                new Vector2(-0.1778596f, -1.692215f),
+                new Vector2(0.2391118f, -2.27501f),
+                new Vector2(0.3844887f, -1.183338f),
+                new Vector2(2.41742f, -4.187105f),
+                new Vector2(1.770007f, -1.965797f),
+                new Vector2(2.440195f, -1.772911f),
+                new Vector2(4.416437f, -1.966334f),
+                new Vector2(1.888062f, -0.4013238f),
+            };*/
         }
 
         private void generatePolygonButton_Click(object sender, RoutedEventArgs e)
         {
-            /*var cnt = 15;
             var random = new Random();
+            var cnt = random.Next(15, 2000);
             mPolygonPoints = new List<Vector2>();
             var angle = 0f;
             var angleDiff = 2f * (Single)Math.PI / cnt;
             for (int i = 0; i < cnt; i++)
             {
-                var radius = random.NextFloat(1f, 5f);
+                var radius = random.NextFloat(3f, 5f);
                 mPolygonPoints.Add(new Vector2(radius * (Single)Math.Cos(angle), radius * (Single)Math.Sin(angle)));
                 angle += angleDiff;
-            }*/
-
-            polygon.Points.Clear();
-
-            var minx = float.PositiveInfinity;
-            var maxx = float.NegativeInfinity;
-            var miny = float.PositiveInfinity;
-            var maxy = float.NegativeInfinity;
-            foreach (var point in mPolygonPoints)
-            {
-                minx = (float)Math.Min(point.X, minx);
-                maxx = (float)Math.Max(point.X, maxx);
-                miny = (float)Math.Min(point.Y, miny);
-                maxy = (float)Math.Max(point.Y, maxy);
             }
-            var width = (float)polygonCanvas.ActualWidth;
-            var height = (float)polygonCanvas.ActualHeight;
-
-            var xFact = width / (maxx - minx);
-            var yFact = height / (maxy - miny);
-            var middlex = (maxx + minx) / 2f;
-            var middley = (maxy + miny) / 2f;
-
-            var factToUse = (float)Math.Min(xFact, yFact) * 0.8f;
-
-            foreach (var point in mPolygonPoints)
+            /*var pointsParts = GetTextOutlines("cCEfFGhHIJkKlLmMnNrsStTuUvVwWxXyYzZ", "Times new Roman", FontStyles.Normal, FontWeights.Normal, 1).Select(ch => ch.ElementAt(0).Select(p => p.ToVector2()).ToList());
+            var cnt = 0;
+            var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
+            geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
+            geometry.Indices = new HelixToolkit.Wpf.SharpDX.Core.IntCollection();
+            var lb = new LineBuilder();
+            var before = DateTime.Now; 
+            foreach (var outline in pointsParts)
             {
-                polygon.Points.Add(new System.Windows.Point((point.X - middlex) * factToUse, (maxy - point.Y - middley) * factToUse));
+                var sLTI = SweepLinePolygonTriangulator.Triangulate(outline);
+                foreach (var point in outline)
+                    geometry.Positions.Add(new Vector3(point.X - 5, 0, point.Y + 5));
+                geometry.Indices.AddRange(sLTI.Select(i => i + cnt));
+                for (int i = 0; i < sLTI.Count; i += 3)
+                {
+                    lb.AddLine(geometry.Positions[sLTI[i] + cnt], geometry.Positions[sLTI[i + 1] + cnt]);
+                    lb.AddLine(geometry.Positions[sLTI[i + 1] + cnt], geometry.Positions[sLTI[i + 2] + cnt]);
+                    lb.AddLine(geometry.Positions[sLTI[i + 2] + cnt], geometry.Positions[sLTI[i] + cnt]);
+                }
+                cnt += outline.Count;
             }
+            var after = DateTime.Now;
+            triangulatedPolygon.Geometry = geometry;
+            lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();*/
 
+            var before = DateTime.Now;
             var sLTI = SweepLinePolygonTriangulator.Triangulate(mPolygonPoints);
+            var after = DateTime.Now;
             if (sLTI.Count > 0)
             {
                 var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
                 geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
-                xFact = 10f / (maxx - minx);
-                yFact = 10f / (maxy - miny);
-                factToUse = (float)Math.Min(xFact, yFact) * 0.8f;
                 foreach (var point in mPolygonPoints)
-                    geometry.Positions.Add(new Vector3((point.X - middlex) * factToUse, 0, (maxy - (point.Y - middley)) * factToUse));
+                    geometry.Positions.Add(new Vector3(point.X, 0, point.Y + 5));
                 geometry.Indices = new HelixToolkit.Wpf.SharpDX.Core.IntCollection(sLTI);
                 triangulatedPolygon.Geometry = geometry;
                 var lb = new LineBuilder();
@@ -226,56 +254,109 @@ namespace PolygonTriangulationDemo
                 }
                 lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();
             }
-            
-            var tt = (TranslateTransform)((TransformGroup)polygonCanvas.RenderTransform)
-                .Children.First(tr => tr is TranslateTransform);
-            Vector v = new Vector(width / 2f, height / 2f);
-            origin = new System.Windows.Point(v.X, v.Y);
-            tt.X = origin.X;
-            tt.Y = origin.Y;
-        }
 
-        private void polygonCanvas_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-            var st = (ScaleTransform)((TransformGroup)polygonCanvas.RenderTransform)
-                .Children.First(tr => tr is ScaleTransform); ;
-            double zoom = e.Delta > 0 ? .2 : -.2;
-            st.ScaleX += zoom;
-            st.ScaleY += zoom;
+            infoLabel.Content = String.Format("Last triangulation of {0} Points took {1:#.##} Milliseconds!", triangulatedPolygon.Geometry.Positions.Count, (after - before).TotalMilliseconds);
         }
-
-        private void polygonCanvas_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public IEnumerable<IList<System.Windows.Point[]>> GetTextOutlines(string text, string fontName, FontStyle fontStyle, FontWeight fontWeight, double fontSize)
         {
-            start = e.GetPosition(border);
-            polygonCanvas.CaptureMouse();
-            var tt = (TranslateTransform)((TransformGroup)polygonCanvas.RenderTransform)
-                .Children.First(tr => tr is TranslateTransform);
+            var formattedText = new FormattedText(
+                text,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(new FontFamily(fontName), fontStyle, fontWeight, FontStretches.Normal),
+                fontSize,
+                Brushes.Black);
+
+            var textGeometry = formattedText.BuildGeometry(new System.Windows.Point(0, 0));
+            var outlines = new List<List<System.Windows.Point[]>>();
+            AppendOutlines(textGeometry, outlines);
+            return outlines;
         }
-
-        private void polygonCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void AppendOutlines(Geometry geometry, List<List<System.Windows.Point[]>> outlines)
         {
-            if (polygonCanvas.IsMouseCaptured)
+            var group = geometry as GeometryGroup;
+            if (group != null)
             {
-                var tt = (TranslateTransform)((TransformGroup)polygonCanvas.RenderTransform)
-                    .Children.First(tr => tr is TranslateTransform);
-                Vector v = start - e.GetPosition(border);
-                tt.X = origin.X - v.X;
-                tt.Y = origin.Y - v.Y;
+                foreach (var g in group.Children)
+                {
+                    AppendOutlines(g, outlines);
+                }
+
+                return;
             }
-        }
 
-        private void polygonCanvas_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            polygonCanvas.ReleaseMouseCapture();
-            var tt = (TranslateTransform)((TransformGroup)polygonCanvas.RenderTransform)
-                .Children.First(tr => tr is TranslateTransform);
-            Vector v = start - e.GetPosition(border);
-            origin -= v;
-        }
+            var pathGeometry = geometry as PathGeometry;
+            if (pathGeometry != null)
+            {
+                var figures = pathGeometry.Figures.Select(figure => figure.ToPolyLine()).ToList();
+                outlines.Add(figures);
+                return;
+            }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+            throw new NotImplementedException();
+        }
+    }
+    public static class Extensions{
+        public static System.Windows.Point[] ToPolyLine(this PathFigure figure)
         {
-            ///generatePolygonButton_Click(sender, new RoutedEventArgs());
+            var outline = new List<System.Windows.Point> { figure.StartPoint };
+            var previousPoint = figure.StartPoint;
+            foreach (var segment in figure.Segments)
+            {
+                var polyline = segment as PolyLineSegment;
+                if (polyline != null)
+                {
+                    outline.AddRange(polyline.Points);
+                    previousPoint = polyline.Points.Last();
+                    continue;
+                }
+
+                var polybezier = segment as PolyBezierSegment;
+                if (polybezier != null)
+                {
+                    for (int i = -1; i + 3 < polybezier.Points.Count; i += 3)
+                    {
+                        var p1 = i == -1 ? previousPoint : polybezier.Points[i];
+                        outline.AddRange(FlattenBezier(p1, polybezier.Points[i + 1], polybezier.Points[i + 2], polybezier.Points[i + 3], 10));
+                    }
+
+                    previousPoint = polybezier.Points.Last();
+                    continue;
+                }
+
+                var lineSegment = segment as LineSegment;
+                if (lineSegment != null)
+                {
+                    outline.Add(lineSegment.Point);
+                    previousPoint = lineSegment.Point;
+                    continue;
+                }
+
+                var bezierSegment = segment as BezierSegment;
+                if (bezierSegment != null)
+                {
+                    outline.AddRange(FlattenBezier(previousPoint, bezierSegment.Point1, bezierSegment.Point2, bezierSegment.Point3, 10));
+                    previousPoint = bezierSegment.Point3;
+                    continue;
+                }
+
+                throw new NotImplementedException();
+            }
+
+            return outline.ToArray();
+        }
+        private static IEnumerable<System.Windows.Point> FlattenBezier(System.Windows.Point p1, System.Windows.Point p2, System.Windows.Point p3, System.Windows.Point p4, int n)
+        {
+            // http://tsunami.cis.usouthal.edu/~hain/general/Publications/Bezier/bezier%20cccg04%20paper.pdf
+            // http://en.wikipedia.org/wiki/De_Casteljau's_algorithm
+            for (int i = 1; i <= n; i++)
+            {
+                var t = (double)i / n;
+                var u = 1 - t;
+                yield return new System.Windows.Point(
+                    (u * u * u * p1.X) + (3 * t * u * u * p2.X) + (3 * t * t * u * p3.X) + (t * t * t * p4.X),
+                    (u * u * u * p1.Y) + (3 * t * u * u * p2.Y) + (3 * t * t * u * p3.Y) + (t * t * t * p4.Y));
+            }
         }
     }
 }

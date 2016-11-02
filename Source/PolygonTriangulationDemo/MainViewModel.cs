@@ -45,7 +45,7 @@ namespace PolygonTriangulationDemo
             this.SubTitle = null;
 
             // camera setup
-            this.Camera = new PerspectiveCamera { Position = new Point3D(0, 5, 5), LookDirection = new Vector3D(-0, -5, -5), UpDirection = new Vector3D(0, 1, 0) };
+            this.Camera = new PerspectiveCamera { Position = new Point3D(0, 5, 9), LookDirection = new Vector3D(0, -5, -4), UpDirection = new Vector3D(0, 1, 0) };
             
             // lines params
             this.LineThickness = 2;
@@ -67,7 +67,7 @@ namespace PolygonTriangulationDemo
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid();
             this.GridColor = SharpDX.Color.Black;
-            this.GridTransform = new TranslateTransform3D(-5, -1, -1);
+            this.GridTransform = new TranslateTransform3D(-5, -0.01, -0);
         }
     }
 }
