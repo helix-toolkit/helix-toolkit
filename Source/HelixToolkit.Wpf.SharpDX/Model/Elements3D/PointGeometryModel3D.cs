@@ -199,8 +199,9 @@
             renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
             base.Attach(host);
 
-            if (Geometry == null || Geometry.Positions == null)
-                return;
+            if (this.Geometry == null
+                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
+            { return; }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
@@ -263,8 +264,9 @@
             if (!this.IsRendering)
                 return;
 
-            if (this.Geometry == null)
-                return;
+            if (this.Geometry == null
+                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
+            { return; }
 
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;

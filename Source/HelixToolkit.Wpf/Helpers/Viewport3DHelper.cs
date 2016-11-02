@@ -169,12 +169,12 @@ namespace HelixToolkit.Wpf
 
                             result.Add(
                                 new HitResult
-                                    {
-                                        Distance = (camera.Position - p).Length,
-                                        RayHit = rayHit,
-                                        Normal = n,
-                                        Position = p
-                                    });
+                                {
+                                    Distance = (camera.Position - p).Length,
+                                    RayHit = rayHit,
+                                    Normal = n,
+                                    Position = p
+                                });
                         }
                     }
 
@@ -310,7 +310,7 @@ namespace HelixToolkit.Wpf
             VisualTreeHelper.HitTest(
                 viewport,
                 null,
-                delegate(HitTestResult hit)
+                delegate (HitTestResult hit)
                 {
                     var rayHit = hit as RayMeshGeometry3DHitTestResult;
                     if (rayHit != null)
@@ -1009,12 +1009,12 @@ namespace HelixToolkit.Wpf
             var scb = background as SolidColorBrush;
             var backgroundColor = scb != null ? scb.Color : Colors.White;
             var e = new KerkytheaExporter
-                        {
-                            Width = width,
-                            Height = height,
-                            BackgroundColor = backgroundColor,
-                            TexturePath = System.IO.Path.GetDirectoryName(fileName)
-                        };
+            {
+                Width = width,
+                Height = height,
+                BackgroundColor = backgroundColor,
+                TexturePath = System.IO.Path.GetDirectoryName(fileName)
+            };
             using (var stream = File.Create(fileName))
             {
                 e.Export(view, stream);
@@ -1027,14 +1027,21 @@ namespace HelixToolkit.Wpf
         /// <param name="view">
         /// The viewport.
         /// </param>
-        /// <param name="fileName">
+        /// <param name="path">
         /// Name of the file.
         /// </param>
-        private static void ExportObj(this Viewport3D view, string fileName)
+        private static void ExportObj(this Viewport3D view, string path)
         {
-            var e = new ObjExporter { TextureFolder = System.IO.Path.GetDirectoryName(fileName) };
-            using (var stream = File.Create(fileName))
+            var dir = System.IO.Path.GetDirectoryName(path) ?? ".";
+            var filename = System.IO.Path.GetFileName(path);
+            var e = new ObjExporter
             {
+                TextureFolder = dir,
+                FileCreator = f => File.Create(System.IO.Path.Combine(dir, f))
+            };
+            using (var stream = File.Create(path))
+            {
+                e.MaterialsFile = System.IO.Path.ChangeExtension(filename, ".mtl");
                 e.Export(view, stream);
             }
         }

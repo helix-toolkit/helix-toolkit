@@ -19,6 +19,13 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Overridable Methods
+        public override int VertexSizeInBytes
+        {
+            get
+            {
+                return BillboardVertex.SizeInBytes;
+            }
+        }
         /// <summary>
         /// Initial implementation of hittest for billboard. Needs further improvement.
         /// </summary>
@@ -27,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {            
-            if (this.Visibility == Visibility.Collapsed)
+            if (this.Visibility == Visibility.Collapsed || this.Visibility==Visibility.Hidden)
             {
                 return false;
             }
@@ -49,25 +56,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (g != null)
             {
-                var visualToScreen = viewport.GetViewportMatrix();
+                var visualToScreen = viewport.GetViewProjectionMatrix() * viewport.GetViewportMatrix();
                 float heightScale = 1;
-                if (viewport.Camera is PerspectiveCamera)
-                {
-                    var viewProjection = viewport.GetViewProjectionMatrix();
-                    visualToScreen.M44 = viewProjection.M44;
-                }
-                else if (viewport.Camera is OrthographicCamera)
-                {
-                    var screenView = viewport.GetScreenViewProjectionMatrix();
-                    screenView.Invert();
-                    visualToScreen.M44 = screenView.M43;
-                    heightScale = 0.5f; //Not sure why the height needs to be half size. Need further investigation.
-                }
-                else
-                {
-                    return false;
-                }
-
                 var screenToVisual = visualToScreen.Inverted();
 
                 var center = new Vector4(g.Positions[0], 1);
@@ -239,21 +229,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
-            var result = new List<BillboardVertex>();
+            var result = new BillboardVertex[vertexCount];
 
             var allOffsets = billboardGeometry.TextInfoOffsets;
 
             for (var i = 0; i < vertexCount; i++)
             {
                 var tc = billboardGeometry.TextureCoordinates[i];
-                var vtx = new BillboardVertex
+                result[i] = new BillboardVertex
                 {
                     Position = new Vector4(position[i], 1.0f),
                     Color = billboardGeometry.Colors[i],
                     TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y)
                 };
-
-                result.Add(vtx);
             }
 
             return result.ToArray();

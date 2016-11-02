@@ -350,7 +350,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static Matrix3D GetInverseViewProjectionMatrix3D(this Camera camera, double aspectRatio)
         {
-            return GetViewProjectionMatrix(camera, aspectRatio).ToMatrix3D();
+            return GetInverseViewProjectionMatrix(camera, aspectRatio).ToMatrix3D();
         }
 
         /// <summary>

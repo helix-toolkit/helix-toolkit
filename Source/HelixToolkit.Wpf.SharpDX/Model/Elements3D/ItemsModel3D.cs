@@ -80,52 +80,60 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (this.ItemsSource != null)
+            mDictionary.Clear();
+            Children.Clear();
+
+            if (e.OldValue is INotifyCollectionChanged)
             {
-                if (e.OldValue is INotifyCollectionChanged)
+                (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
+            }
+            if (e.NewValue is INotifyCollectionChanged)
+            {
+                (e.NewValue as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
+            }
+
+            if (ItemsSource == null)
+            {
+                return;
+            }
+            if (this.ItemTemplate == null)
+            {
+                foreach (var item in this.ItemsSource)
                 {
-                    (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
-                }
-                if (ItemsSource is INotifyCollectionChanged)
-                {
-                    (ItemsSource as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
-                }
-                mDictionary.Clear();
-                if (ItemsSource == null)
-                {
-                    return;
-                }
-                if (this.ItemTemplate == null)
-                {
-                    foreach (var item in this.ItemsSource)
+                    if (mDictionary.ContainsKey(item))
                     {
-                        var model = item as Model3D;
-                        if (model != null)
-                        {
-                            this.Children.Add(model);
-                            mDictionary.Add(item, model);
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                        }
+                        continue;
+                    }
+                    var model = item as Model3D;
+                    if (model != null)
+                    {
+                        this.Children.Add(model);
+                        mDictionary.Add(item, model);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
                     }
                 }
-                else
+            }
+            else
+            {
+                foreach (var item in this.ItemsSource)
                 {
-                    foreach (var item in this.ItemsSource)
+                    if (mDictionary.ContainsKey(item))
                     {
-                        var model = this.ItemTemplate.LoadContent() as Model3D;
-                        if (model != null)
-                        {
-                            model.DataContext = item;
-                            this.Children.Add(model);
-                            mDictionary.Add(item, model);
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                        }
+                        continue;
+                    }
+                    var model = this.ItemTemplate.LoadContent() as Model3D;
+                    if (model != null)
+                    {
+                        model.DataContext = item;
+                        this.Children.Add(model);
+                        mDictionary.Add(item, model);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
                     }
                 }
             }
@@ -149,6 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 mDictionary.Remove(item);
                             }
                         }
+                        InvalidateRender();
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
@@ -165,39 +174,43 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    if (this.ItemTemplate == null)
+                    if (this.ItemsSource != null)
                     {
-                        foreach (var item in this.ItemsSource)
+                        if (this.ItemTemplate == null)
                         {
-                            var model = item as Model3D;
-                            if (model != null)
+                            foreach (var item in this.ItemsSource)
                             {
-                                this.Children.Add(model);
-                                mDictionary.Add(item, model);
+                                var model = item as Model3D;
+                                if (model != null)
+                                {
+                                    this.Children.Add(model);
+                                    mDictionary.Add(item, model);
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
+                                }
                             }
-                            else
+                        }
+                        else
+                        {
+                            foreach (var item in this.ItemsSource)
                             {
-                                throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
+                                var model = this.ItemTemplate.LoadContent() as Model3D;
+                                if (model != null)
+                                {
+                                    model.DataContext = item;
+                                    this.Children.Add(model);
+                                    mDictionary.Add(item, model);
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
+                                }
                             }
                         }
                     }
-                    else
-                    {
-                        foreach (var item in this.ItemsSource)
-                        {
-                            var model = this.ItemTemplate.LoadContent() as Model3D;
-                            if (model != null)
-                            {
-                                model.DataContext = item;
-                                this.Children.Add(model);
-                                mDictionary.Add(item, model);
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                            }
-                        }
-                    }
+                    InvalidateRender();
                     break;
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
@@ -207,6 +220,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
+                                if (mDictionary.ContainsKey(item))
+                                {
+                                    continue;
+                                }
                                 var model = this.ItemTemplate.LoadContent() as Model3D;
                                 if (model != null)
                                 {
@@ -224,6 +241,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
+                                if (mDictionary.ContainsKey(item))
+                                {
+                                    continue;
+                                }
                                 var model = item as Model3D;
                                 if (model != null)
                                 {
@@ -239,7 +260,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
-            InvalidateRender();
         }
     }
 }
