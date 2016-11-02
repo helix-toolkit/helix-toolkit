@@ -148,6 +148,7 @@
                                         Opacity="0.5" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <local:ViewCubeVisual3D x:Name="PART_ViewCube" 
                                                         IsEnabled="{Binding IsRotationEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        EnableEdgeClicks="{Binding IsViewCubeEdgeClicksEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                                         ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}" 
                                                         TopText="{Binding ViewCubeTopText, RelativeSource={RelativeSource TemplatedParent}}"
                                                         BottomText="{Binding ViewCubeBottomText, RelativeSource={RelativeSource TemplatedParent}}"
