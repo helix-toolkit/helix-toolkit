@@ -1,0 +1,17 @@
+﻿<Window x:Class="MvvmCameraDemo.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MvvmCameraDemo"
+        Title="MvvmCameraDemo" Height="350" Width="525">
+    <Window.DataContext>
+        <local:ShellViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <local:ViewportView Grid.Column="0" DataContext="{Binding Viewport1}"/>
+        <local:ViewportView Grid.Column="1" DataContext="{Binding Viewport2}"/>
+    </Grid>
+</Window>

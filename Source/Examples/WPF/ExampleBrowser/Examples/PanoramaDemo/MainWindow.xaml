@@ -1,0 +1,15 @@
+﻿<Window x:Class="PanoramaDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="360º Panorama demo" 
+        Height="480" Width="640">
+    <Grid>
+        <ht:HelixViewport3D x:Name="view1" ShowViewCube="False" ShowCameraTarget="False" CameraMode="FixedPosition" RotationSensitivity="0.6">
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <AmbientLight Color="White"/>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+            <ht:PanoramaCube3D Source="Examples\PanoramaDemo\Models\GrandHotel\"/>
+        </ht:HelixViewport3D>
+    </Grid>
+</Window>

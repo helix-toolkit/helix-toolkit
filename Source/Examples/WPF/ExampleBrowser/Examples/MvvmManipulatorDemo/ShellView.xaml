@@ -1,0 +1,50 @@
+﻿<Window x:Class="MvvmManipulatorDemo.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        xmlns:local="clr-namespace:MvvmManipulatorDemo"
+        Title="MvvmManipulatorDemo" Height="600" Width="800">
+    <Window.DataContext>
+        <local:ShellViewModel/>
+    </Window.DataContext>
+    <Grid>        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <GroupBox Header="Translate Value">
+                <StackPanel>
+                <TextBox Text="{Binding TranslateValue, UpdateSourceTrigger=PropertyChanged}" MinWidth="70"/>
+                <Slider Minimum="-20" Maximum="20" Value="{Binding TranslateValue}" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Rotate Value">
+                <StackPanel>
+                    <TextBox Text="{Binding RotateValue, UpdateSourceTrigger=PropertyChanged}" MinWidth="70"/>
+                    <Slider Minimum="0" Maximum="360" Value="{Binding RotateValue}" />
+                </StackPanel>
+            </GroupBox>
+
+        </StackPanel>
+        <ht:HelixViewport3D Grid.Column="1"  Background="{ht:LinearGradientBrush Gray, White}"   ShowCameraInfo="True"
+                            >
+            <ht:HelixViewport3D.DefaultCamera>
+                <PerspectiveCamera Position="-20 -40 20" LookDirection="17 34 -17" UpDirection="0 0 1"/>
+            </ht:HelixViewport3D.DefaultCamera>
+            <ht:SunLight/>
+            <ht:GridLinesVisual3D/>
+            <ht:BindableTranslateManipulator Direction="1 0 0"  Length="5" Diameter="1" Color="Black" 
+                                     Value="{Binding TranslateValue}"
+                                     TargetTransform="{Binding ElementName=sphere1, Path=Transform}"/>
+
+            <ht:BindableRotateManipulator Position="20 15 0"  Diameter="10" InnerDiameter="7" Axis="0 1 0" Color="Green"
+                                  Value="{Binding RotateValue}"  
+                                  TargetTransform="{Binding ElementName=cube1, Path=Transform}"/>            
+            <ht:SphereVisual3D x:Name="sphere1" Radius="1" Fill="Gold" />
+            <ht:ArrowVisual3D Origin="15 10 0"  Point1="15 10 0" Point2="19 10 0"   x:Name="cube1"  Fill="Gold"/> 
+
+        </ht:HelixViewport3D>
+    </Grid>
+</Window>

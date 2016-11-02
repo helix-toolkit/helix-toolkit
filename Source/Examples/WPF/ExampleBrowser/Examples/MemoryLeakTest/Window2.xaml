@@ -1,0 +1,16 @@
+﻿<Window x:Class="MemoryLeakTest.Window2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="Window2" Height="300" Width="600">
+    <TabControl>
+        <TabItem Header="ShowFrameRate=True">
+            <h:HelixViewport3D ShowFrameRate="True"/>
+        </TabItem>
+        <TabItem Header="ShowCameraInfo=True">
+            <h:HelixViewport3D ShowCameraInfo="True"/>
+        </TabItem>
+        <TabItem Header="Clean HelixViewport3D">
+            <h:HelixViewport3D/>
+        </TabItem>
+    </TabControl>
+</Window>

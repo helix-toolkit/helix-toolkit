@@ -76,7 +76,7 @@ namespace CustomShaderDemo
             vPointParams.Set(pointParams);
 
             /// --- create raster state
-            OnRasterStateChanged(DepthBias);
+            OnRasterStateChanged();
 
             /// --- flush
             Device.ImmediateContext.Flush();

@@ -110,7 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The total transform.</returns>        
         public static Matrix3D GetScreenViewProjectionMatrix3D(this Viewport3DX viewport)
         {
-            return GetViewProjectionMatrix(viewport).ToMatrix3D();
+            return GetScreenViewProjectionMatrix(viewport).ToMatrix3D();
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static Matrix3D GetViewportMatrix3D(this Viewport3DX viewport)
         {
-            return GetViewProjectionMatrix(viewport).ToMatrix3D();
+            return GetViewportMatrix(viewport).ToMatrix3D();
         }
 
         /// <summary>
