@@ -27,6 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </remarks>
     public class SweepLinePolygonTriangulator
     {
+        public static float Epsilon = 0.0000001f;
+
         /// <summary>
         /// Perform the Triangulation of the Input.
         /// </summary>
@@ -309,10 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             // Search Edge left of the Event and set Event as it's Helper
                             she = statusAndHelper.SearchLeft(ev);
-                            if (she != null)
-                            {
-                                she.Helper = ev;
-                            }
+                            she.Helper = ev;
                         }
                         break;
                     case PolygonPointClass.Merge:
@@ -583,7 +582,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / (she.Edge.PointTwo.Y - she.Edge.PointOne.Y)) * (she.Edge.PointTwo.X - she.Edge.PointOne.X);
                 
                 // If the xValue is smaller than the Point's x-Coordinate (i.e. it lies on the left Side of it)
-                if (xValue < point.X){
+                if (xValue <= (point.X + SweepLinePolygonTriangulator.Epsilon))
+                {
                     // Calculate the Distance
                     var sheDist = point.X - xValue;
                     

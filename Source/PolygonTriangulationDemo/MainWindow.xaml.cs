@@ -198,7 +198,7 @@ namespace PolygonTriangulationDemo
 
         private void generatePolygonButton_Click(object sender, RoutedEventArgs e)
         {
-            var random = new Random();
+            /*var random = new Random();
             var cnt = random.Next(15, 2000);
             mPolygonPoints = new List<Vector2>();
             var angle = 0f;
@@ -208,8 +208,8 @@ namespace PolygonTriangulationDemo
                 var radius = random.NextFloat(3f, 5f);
                 mPolygonPoints.Add(new Vector2(radius * (Single)Math.Cos(angle), radius * (Single)Math.Sin(angle)));
                 angle += angleDiff;
-            }
-            /*var pointsParts = GetTextOutlines("cCEfFGhHIJkKlLmMnNrsStTuUvVwWxXyYzZ", "Times new Roman", FontStyles.Normal, FontWeights.Normal, 1).Select(ch => ch.ElementAt(0).Select(p => p.ToVector2()).ToList());
+            }*/
+            var pointsParts = GetTextOutlines("cCEfFGhHIJkKlLmMnNrsStTuUvVwWxXyYzZ", "Times new Roman", FontStyles.Normal, FontWeights.Normal, 1).Select(ch => ch.ElementAt(0).Select(p => p.ToVector2()).ToList());
             var cnt = 0;
             var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
             geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
@@ -232,9 +232,9 @@ namespace PolygonTriangulationDemo
             }
             var after = DateTime.Now;
             triangulatedPolygon.Geometry = geometry;
-            lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();*/
+            lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();
 
-            var before = DateTime.Now;
+            /*var before = DateTime.Now;
             var sLTI = SweepLinePolygonTriangulator.Triangulate(mPolygonPoints);
             var after = DateTime.Now;
             if (sLTI.Count > 0)
@@ -253,7 +253,7 @@ namespace PolygonTriangulationDemo
                     lb.AddLine(geometry.Positions[sLTI[i + 2]], geometry.Positions[sLTI[i]]);
                 }
                 lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();
-            }
+            }*/
 
             infoLabel.Content = String.Format("Last triangulation of {0} Points took {1:#.##} Milliseconds!", triangulatedPolygon.Geometry.Positions.Count, (after - before).TotalMilliseconds);
         }
