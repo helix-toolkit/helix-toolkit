@@ -53,5 +53,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// This is a tag to add additional data.
         /// </summary>
         public object Tag { get; set; }
+
+        /// <summary>
+        /// The hitted triangle vertex indices.
+        /// </summary>
+        public System.Tuple<int, int, int> TriangleIndices { set; get; }
     }
 }
