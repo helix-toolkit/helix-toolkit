@@ -40,7 +40,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var result = new Int32Collection();
             
             // Point-List from Input
+            // (we don't want the first and last Point to be present two times)
             var points = polygon.ToList();
+            if (points[0] == points[points.Count - 1])
+            {
+                points.RemoveAt(points.Count - 1);
+            }
             var count = points.Count;
             
             // Sort the Input and create the Datastructures
@@ -400,18 +405,24 @@ namespace HelixToolkit.Wpf.SharpDX
                     // If a Diagonal for this Point exists (i.e. with this Key) and the Diagonal is allowed to be used
                     var possibleDiags = diagonals.Where(t => t.Item1 == mappedIdx && !t.Equals(diagonalNotAllowed)).ToList();
                     Tuple<int, int> diag = null;
+                    // If possible Diagonal(s) were found, check them
+                    // (only if we don't navigate from the first Point on)
                     if (possibleDiags.Count > 0 && subPolyPoints.Count > 1)
                     {
+                        // Vector from last Point to this Point
                         Point vectorLast = new Point();
                         if (subPolyPoints.Count > 1)
                             vectorLast = subPolyPoints[subPolyPoints.Count - 1].Point - subPolyPoints[subPolyPoints.Count - 2].Point;
                         else
                             vectorLast = currentPoint.Point - currentPoint.Last.Point;
                         vectorLast.Normalize();
+                        // Vector to the next Polygon Point
                         Point vectorNext = currentPoint.Next.Point - currentPoint.Point;
                         vectorNext.Normalize();
-
+                        // "Left" Vector to check, if the other Vectors lie left or right to the "vectorLast"
+                        // (the more left, the more "inner" that Vector will be, because we have a CCW-Polygon order).
                         var vectorLeft = new Point(-vectorLast.Y, vectorLast.X);
+                        // The Diagonal Vectors
                         var otherVectors = new List<Point>();
                         foreach (var possibleDiag in possibleDiags)
                         {
@@ -420,11 +431,11 @@ namespace HelixToolkit.Wpf.SharpDX
                             otherVectors.Add(vec);
                         }
                         var bestAngle = float.NegativeInfinity;
-                        // The all Diagonals
+                        // Get the "best" (i.e. the left-most) Diagonal from all possible one's
                         for (int j = 0; j < otherVectors.Count; j++)
                         {
                             var dot = Point.Dot(vectorLast, otherVectors[j]);
-                            // left
+                            // Diagonal points to the left
                             if (Point.Dot(vectorLeft, otherVectors[j]) >= 0)
                             {
                                 var angle = Math.Acos(dot);
@@ -433,7 +444,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                     diag = possibleDiags[j];
                                 }
                             }
-                            // right
+                            // Diagonal points to the right
                             else if (Point.Dot(vectorLeft, otherVectors[j]) < 0)
                             {
                                 var angle = -Math.Acos(dot);
@@ -446,7 +457,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         // Also test the next Line-Segment
                         var nDot = Point.Dot(vectorLast, vectorNext);
-                        // left Side
+                        // It points to the left
                         if (Point.Dot(vectorLeft, vectorNext) >= 0)
                         {
                             var angle = Math.Acos(nDot);
@@ -456,7 +467,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 diag = null;
                             }
                         }
-                        // right Side
+                        // It points to the right
                         else if (Point.Dot(vectorLeft, vectorNext) < 0)
                         {
                             var angle = -Math.Acos(nDot);
@@ -466,42 +477,39 @@ namespace HelixToolkit.Wpf.SharpDX
                                 diag = null;
                             }
                         }
-
+                        // We now have Information about the best next Polygon Segment
                     }
+                    // If the next Segment is a Diagonal
                     if (diag != null)
                     {
+                        // Enqueue this Point as a Startpoint for the 2nd Part of the split Polygon
                         if (diagonals.Contains(new Tuple<int, int>(diag.Item2, diag.Item1)))
                         {
                             startIndices.Enqueue(diag.Item1);
                         }
                         
-                        // Get the next Point
-                        /*if (diag.Item1 == mappedIdx)
-                        {*/
-                            currentPoint = poly.Points[diag.Item2];
-                        /*}
-                        else
-                        {
-                            currentPoint = poly.Points[diag.Item1];
-                        }*/
+                        // Get the next Point from the Diagonal
+                        currentPoint = poly.Points[diag.Item2];
                         
-                        // Remove the Diagonal and don't allow the Diagonal that would lead back
+                        // Remove the Diagonal and don't allow the Diagonal in the next Step (this would lead back)
                         diagonals.Remove(diag);
                         diagonalNotAllowed = new Tuple<int,int>(diag.Item2, diag.Item1);
                     }
-                    // If no Diagonal exists for this Point, just add it and re-allow all Diagonals
+                    // If no Diagonal was selected for this Point, just add it and re-allow all Diagonals
+                    // if previously disallowed
                     else
                     {
                         currentPoint = currentPoint.Next;
                         diagonalNotAllowed = null;
                     }
                 }
+                // Stop when we encounter the StartPoint again
                 while (currentPoint.Index != polygonStart);
                 
                 // Create a new Polygon from the found Points
                 subPolygons[i] = new PolygonData(subPolyPoints);
             }
-
+            // Return all created sub-Polygons
             return subPolygons;
         }
 
@@ -581,7 +589,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                     xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / (she.Edge.PointTwo.Y - she.Edge.PointOne.Y)) * (she.Edge.PointTwo.X - she.Edge.PointOne.X);
                 
-                // If the xValue is smaller than the Point's x-Coordinate (i.e. it lies on the left Side of it)
+                // If the xValue is smaller than or equal to the Point's x-Coordinate
+                // (i.e. it lies on the left Side of it - allows a small Error)
                 if (xValue <= (point.X + SweepLinePolygonTriangulator.Epsilon))
                 {
                     // Calculate the Distance
@@ -787,18 +796,16 @@ namespace HelixToolkit.Wpf.SharpDX
             // If we use the normal Order (top-to-bottom)
             if (!reverse)
             {
-                // Both neighboring PolygonPoints are below this Point means this Point is a Start - Point
-                ///if (Last < this && Next < this && Last.X > Next.X)
+                // Both neighboring PolygonPoints are below this Point and the Point is concave
                 if (Last < this && Next < this && this.isConcavePoint())
                     return PolygonPointClass.Start;
-                // Both neighboring PolygonPoints are above this Point means this Point is a Stop - Point
-                ///else if (Last > this && Next > this && Last.X < Next.X)
+                // Both neighboring PolygonPoints are above this Point and the Point is concave
                 else if (Last > this && Next > this && this.isConcavePoint())
                     return PolygonPointClass.Stop;
-                // Both neighboring PolygonPoints are below this Point (in another Order) means this Point is a Split - Point
+                // Both neighboring PolygonPoints are below this Point and the Point is convex
                 else if (Last < this && Next < this)
                     return PolygonPointClass.Split;
-                // Both neighboring PolygonPoints are above this Point (in another Order) means this Point is a Merge - Point
+                // Both neighboring PolygonPoints are above this Point and the Point is convex
                 else if (Last > this && Next > this)
                     return PolygonPointClass.Merge;
                 // Regular Point in all other Cases
@@ -807,16 +814,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                // Both neighboring PolygonPoints are below this Point means this Point is a Stop - Point
+                // Both neighboring PolygonPoints are below this Point and the Point is concave
                 if (Last < this && Next < this && this.isConcavePoint())
                     return PolygonPointClass.Stop;
-                // Both neighboring PolygonPoints are above this Point means this Point is a Start - Point
+                // Both neighboring PolygonPoints are above this Point and the Point is concave
                 else if (Last > this && Next > this && this.isConcavePoint())
                     return PolygonPointClass.Start;
-                // Both neighboring PolygonPoints are below this Point (in another Order) means this Point is a Merge - Point
+                // Both neighboring PolygonPoints are below this Point and the Point is convex
                 else if (Last < this && Next < this)
                     return PolygonPointClass.Merge;
-                // Both neighboring PolygonPoints are above this Point (in another Order) means this Point is a Split - Point
+                // Both neighboring PolygonPoints are above this Point and the Point is convex
                 else if (Last > this && Next > this)
                     return PolygonPointClass.Split;
                 // Regular Point in all other Cases
@@ -826,19 +833,26 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// (assumption CCW)
+        /// Calculates for a Point, if it is a concave Point or not
+        /// (the assumption is, that we are dealing with a CCW Polygon orientation!)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true, if concave, false if convex (or "reflex" Vertex)</returns>
         private bool isConcavePoint()
         {
             // If the Point has no Next- and Last-PolygonPoint, there's an Error
             if (Next == null || Last == null)
                 throw new HelixToolkitException("No closed Polygon");
+            // Calculate the necessary Vectors
+            // From-last-to-this Vector
             var vecFromLast = this.Point - this.Last.Point;
             vecFromLast.Normalize();
+            // "Left" Vector (pointing "inward")
             var vecLeft = new Point(-vecFromLast.Y, vecFromLast.X);
+            // From-this-to-next Vector
             var vecToNext = this.Next.Point - this.Point;
             vecToNext.Normalize();
+            // If the next Vector is pointing to the left Vector's direction,
+            // the current Point is a concave Point (Dot-Product bigger than 0)
             if (Point.Dot(vecLeft, vecToNext) >= 0)
                 return true;
             else

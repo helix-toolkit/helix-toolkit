@@ -161,39 +161,6 @@ namespace PolygonTriangulationDemo
                 new Vector2(2.696841f, -2.995144f),
                 new Vector2(2.698487f, -1.201443f),
             };*/
-
-            /*mPolygonPoints = new List<Vector2>(){
-                new Vector2(1.641862f, 0f),
-                new Vector2(4.099607f, 0.8713984f),
-                new Vector2(1.347752f, 0.6000577f),
-                new Vector2(1.247217f, 0.9061562f),
-                new Vector2(0.8838347f, 0.981598f),
-                new Vector2(1.311946f, 2.272357f),
-                new Vector2(0.4339415f, 1.335535f),
-                new Vector2(0.355141f, 3.378943f),
-                new Vector2(-0.397462f, 3.781597f),
-                new Vector2(-1.43475f, 4.415705f),
-                new Vector2(-1.50873f, 2.613196f),
-                new Vector2(-3.240577f, 3.599025f),
-                new Vector2(-1.21874f, 0.8854663f),
-                new Vector2(-1.60823f, 0.7160301f),
-                new Vector2(-2.125828f, 0.4518586f),
-                new Vector2(-4.620011f, -4.038942E-07f),
-                new Vector2(-3.726473f, -0.7920868f),
-                new Vector2(-2.43131f, -1.082489f),
-                new Vector2(-3.057129f, -2.221135f),
-                new Vector2(-2.395318f, -2.660271f),
-                new Vector2(-0.7229493f, -1.252185f),
-                new Vector2(-1.415548f, -4.356607f),
-                new Vector2(-0.1778596f, -1.692215f),
-                new Vector2(0.2391118f, -2.27501f),
-                new Vector2(0.3844887f, -1.183338f),
-                new Vector2(2.41742f, -4.187105f),
-                new Vector2(1.770007f, -1.965797f),
-                new Vector2(2.440195f, -1.772911f),
-                new Vector2(4.416437f, -1.966334f),
-                new Vector2(1.888062f, -0.4013238f),
-            };*/
         }
 
         private void generatePolygonButton_Click(object sender, RoutedEventArgs e)
@@ -237,23 +204,20 @@ namespace PolygonTriangulationDemo
             /*var before = DateTime.Now;
             var sLTI = SweepLinePolygonTriangulator.Triangulate(mPolygonPoints);
             var after = DateTime.Now;
-            if (sLTI.Count > 0)
+            var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
+            geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
+            foreach (var point in mPolygonPoints)
+                geometry.Positions.Add(new Vector3(point.X, 0, point.Y + 5));
+            geometry.Indices = new HelixToolkit.Wpf.SharpDX.Core.IntCollection(sLTI);
+            triangulatedPolygon.Geometry = geometry;
+            var lb = new LineBuilder();
+            for (int i = 0; i < sLTI.Count; i += 3)
             {
-                var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
-                geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
-                foreach (var point in mPolygonPoints)
-                    geometry.Positions.Add(new Vector3(point.X, 0, point.Y + 5));
-                geometry.Indices = new HelixToolkit.Wpf.SharpDX.Core.IntCollection(sLTI);
-                triangulatedPolygon.Geometry = geometry;
-                var lb = new LineBuilder();
-                for (int i = 0; i < sLTI.Count; i += 3)
-                {
-                    lb.AddLine(geometry.Positions[sLTI[i]], geometry.Positions[sLTI[i + 1]]);
-                    lb.AddLine(geometry.Positions[sLTI[i + 1]], geometry.Positions[sLTI[i + 2]]);
-                    lb.AddLine(geometry.Positions[sLTI[i + 2]], geometry.Positions[sLTI[i]]);
-                }
-                lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();
-            }*/
+                lb.AddLine(geometry.Positions[sLTI[i]], geometry.Positions[sLTI[i + 1]]);
+                lb.AddLine(geometry.Positions[sLTI[i + 1]], geometry.Positions[sLTI[i + 2]]);
+                lb.AddLine(geometry.Positions[sLTI[i + 2]], geometry.Positions[sLTI[i]]);
+            }
+            lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();*/
 
             infoLabel.Content = String.Format("Last triangulation of {0} Points took {1:#.##} Milliseconds!", triangulatedPolygon.Geometry.Positions.Count, (after - before).TotalMilliseconds);
         }
