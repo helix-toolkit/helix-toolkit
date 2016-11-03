@@ -241,6 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // this all happens now in world space now:
                 if (rayWS.Intersects(ref b))
                 {
+                    int index = 0;
                     foreach (var t in g.Triangles)
                     {
                         float d;
@@ -261,11 +262,11 @@ namespace HelixToolkit.Wpf.SharpDX
                                 n.Normalize();
                                 // transform hit-info to world space now:
                                 result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
+                                result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
                                 isHit = true;
-
-
                             }
                         }
+                        index += 3;
                     }
                 }
             }
