@@ -174,8 +174,8 @@ namespace PolygonTriangulationDemo
             var angleDiff = 2f * (Single)Math.PI / cnt;
             for (int i = 0; i < cnt; i++)
             {
-                //var radius = random.NextFloat(3f, 5f);
-                var radius = 100;
+                var radius = random.NextFloat(3f, 5f);
+                //var radius = 100;
                 mPolygonPoints.Add(new Vector2(radius * (Single)Math.Cos(angle), radius * (Single)Math.Sin(angle)));
                 angle += angleDiff;
             }*/
