@@ -58,7 +58,7 @@ namespace PolygonTriangulationDemo
             
             // model trafos
             this.ModelTransform = new TranslateTransform3D(0, 0, 0);
-            this.ModelLineTransform = new TranslateTransform3D(0, 0.01, 0);
+            this.ModelLineTransform = new TranslateTransform3D(0, 0.001, 0);
             
             // model materials
             this.Material = PhongMaterials.PolishedGold;

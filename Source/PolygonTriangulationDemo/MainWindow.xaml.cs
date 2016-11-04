@@ -161,18 +161,21 @@ namespace PolygonTriangulationDemo
                 new Vector2(2.696841f, -2.995144f),
                 new Vector2(2.698487f, -1.201443f),
             };*/
+            generatePolygonButton_Click(this, new RoutedEventArgs());
+            //this.Close();
         }
 
         private void generatePolygonButton_Click(object sender, RoutedEventArgs e)
         {
             /*var random = new Random();
-            var cnt = random.Next(15, 2000);
+            var cnt = 500000;
             mPolygonPoints = new List<Vector2>();
             var angle = 0f;
             var angleDiff = 2f * (Single)Math.PI / cnt;
             for (int i = 0; i < cnt; i++)
             {
-                var radius = random.NextFloat(3f, 5f);
+                //var radius = random.NextFloat(3f, 5f);
+                var radius = 100;
                 mPolygonPoints.Add(new Vector2(radius * (Single)Math.Cos(angle), radius * (Single)Math.Sin(angle)));
                 angle += angleDiff;
             }*/
@@ -203,6 +206,7 @@ namespace PolygonTriangulationDemo
 
             /*var before = DateTime.Now;
             var sLTI = SweepLinePolygonTriangulator.Triangulate(mPolygonPoints);
+            //var sLTI = CuttingEarsTriangulator.Triangulate(mPolygonPoints);
             var after = DateTime.Now;
             var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
             geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
@@ -210,15 +214,15 @@ namespace PolygonTriangulationDemo
                 geometry.Positions.Add(new Vector3(point.X, 0, point.Y + 5));
             geometry.Indices = new HelixToolkit.Wpf.SharpDX.Core.IntCollection(sLTI);
             triangulatedPolygon.Geometry = geometry;
-            var lb = new LineBuilder();
-            for (int i = 0; i < sLTI.Count; i += 3)
-            {
-                lb.AddLine(geometry.Positions[sLTI[i]], geometry.Positions[sLTI[i + 1]]);
-                lb.AddLine(geometry.Positions[sLTI[i + 1]], geometry.Positions[sLTI[i + 2]]);
-                lb.AddLine(geometry.Positions[sLTI[i + 2]], geometry.Positions[sLTI[i]]);
-            }
-            lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();*/
-
+            //var lb = new LineBuilder();
+            //for (int i = 0; i < sLTI.Count; i += 3)
+            //{
+            //    lb.AddLine(geometry.Positions[sLTI[i]], geometry.Positions[sLTI[i + 1]]);
+            //    lb.AddLine(geometry.Positions[sLTI[i + 1]], geometry.Positions[sLTI[i + 2]]);
+            //    lb.AddLine(geometry.Positions[sLTI[i + 2]], geometry.Positions[sLTI[i]]);
+            //}
+            //lineTriangulatedPolygon.Geometry = lb.ToLineGeometry3D();*/
+            
             infoLabel.Content = String.Format("Last triangulation of {0} Points took {1:#.##} Milliseconds!", triangulatedPolygon.Geometry.Positions.Count, (after - before).TotalMilliseconds);
         }
         public IEnumerable<IList<System.Windows.Point[]>> GetTextOutlines(string text, string fontName, FontStyle fontStyle, FontWeight fontWeight, double fontSize)

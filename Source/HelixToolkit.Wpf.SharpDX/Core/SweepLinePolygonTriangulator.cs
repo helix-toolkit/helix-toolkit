@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var diagonals = CalculateDiagonals(events, mainMapping);
 
             // Split the Polygon
-            var subPolygons = SplitPolygonWithDiagonals(poly, mainMapping, diagonals);
+            var subPolygons = SplitPolygonWithDiagonals(poly, diagonals);
 
             var monotonePolygons = new List<PolygonData>();
             // Up Sweep for all Sub-Polygons
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 diagonals = CalculateDiagonals(events, polyMapping, false);
 
                 // Split the Polygon
-                var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, polyMapping, diagonals);
+                var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, diagonals);
                 // Add to List of monotone Polygons
                 monotonePolygons.AddRange(monotoneSubPolygons);
             }
@@ -329,188 +329,71 @@ namespace HelixToolkit.Wpf.SharpDX
                     case PolygonPointClass.Split:
                         // Search Edge left of the Event
                         she = statusAndHelper.SearchLeft(ev);
-
                         // Chose diagonal from Helper of Edge to Event.
-                        // Add two Diagonals sorted (from lowest Index to biggest)
-                        // This is helpful for the Triangulation later
-                        var hIdxMapped = mapping[she.Helper.Index];
-                        var evIdxMapped = mapping[ev.Index];
-                        var minP = Math.Min(hIdxMapped, evIdxMapped);
-                        var maxP = Math.Max(hIdxMapped, evIdxMapped);
+                        var minP = Math.Min(she.Helper.Index, ev.Index);
+                        var maxP = Math.Max(she.Helper.Index, ev.Index);
                         diagonals.Add(new Tuple<int, int>(minP, maxP));
-                        diagonals.Add(new Tuple<int, int>(maxP, minP));
 
                         // Replace the Helper of the StatusHelperElement by Event
                         she.Helper = ev;
-
                         // Insert the right Edge from Event
                         statusAndHelper.Add(new StatusHelperElement(sweepDown ? ev.EdgeTwo : ev.EdgeOne, ev));
                         break;
                 }
             }
-            // diagonals = diagonals.OrderBy(t => t.Item1).ThenBy(t => t.Item2).ToList();
             return diagonals;
         }
 
         /// <summary>
         /// Split up a Polygon with the Diagonals.
-        /// For every Diagonal there exist two Entries due to simplicity Reasons.
+        /// This function splits the Polygon into two SubPolygons using the first Diagonal
+        /// and then calls itself recursively.
         /// </summary>
         /// <param name="poly">The Polygon to split</param>
-        /// <param name="mapping">Mapping from main Polygon to the current Polygon</param>
         /// <param name="diagonals">The Diagonals inside the Polygon, that are used to split it</param>
-        /// <returns></returns>
-        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, Dictionary<int, int> mapping, List<Tuple<int, int>> diagonals)
+        /// <returns>The SubPolygons that were created by splitting the input Polygon</returns>
+        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, List<Tuple<int, int>> diagonals)
         {
-            // Create some helping Variables
-            // var startIndex = poly.Points[0].Index;
-            var subPolygonCount = diagonals.Count / 2 + 1;
-            var subPolygons = new PolygonData[subPolygonCount];
-
-            // Start-Indices for the Polygon-Splitting
-            var startIndices = new Queue<int>();
-            startIndices.Enqueue(0/*poly.Points[0].Index*/);
-
-            // If we don't have any Diagonals, we don't need to split the Polygon at all,
-            // so just return it
+            // Count of the SubPolygons to create
+            var subPolygonCount = diagonals.Count + 1;
             if (subPolygonCount == 1)
                 return new PolygonData[] { poly };
-            
-            // We need to create Subpolygons, so loop through them
-            // by using the startIndex
-            for (int i = 0; i < subPolygonCount; i++)
+            var subPolygons = new List<PolygonData>();
+            // Subdivide with with first Diagonal
+            var diagonal = diagonals[0];
+            // Create the first SubPolygon
+            var firstSubPolygonPoints = poly.Points.TakeWhile(p => p.Index != diagonal.Item1).ToList();
+            firstSubPolygonPoints.Add(poly.Points.First(p => p.Index == diagonal.Item1));
+            firstSubPolygonPoints.AddRange(poly.Points.SkipWhile(p => p.Index != diagonal.Item2).ToList());
+            // HashSet of the Indices of the first SubPolygon
+            // Used to split the remaining Diagonals
+            var firstSubPolygonIndices = new HashSet<int>(firstSubPolygonPoints.Select(p => p.Index));
+            // Create the second SubPolygon
+            var secondSubPolygonPoints = poly.Points.SkipWhile(p => p.Index != diagonal.Item1).ToList();
+            secondSubPolygonPoints = secondSubPolygonPoints.TakeWhile(p => p.Index != diagonal.Item2).ToList();
+            secondSubPolygonPoints.Add(poly.Points.First(p => p.Index == diagonal.Item2));
+            // We don't need this Diagonal any more
+            diagonals.Remove(diagonal);
+            // Split the Diagonals into two sets of Diagonals
+            // Depending on in which SupPolygon it is located
+            var diagsFirst = new List<Tuple<int, int>>();
+            var diagsSecond = new List<Tuple<int, int>>();
+            foreach (var diag in diagonals)
             {
-                // Start the Polygon at the startIndex
-                var polygonStart = poly.Points[startIndices.Dequeue()].Index;
-                
-                // We need to query the Point, because we are dealing with Indices relevant to the original Polygon
-                var currentPoint = poly.Points[mapping[polygonStart]];
-                var subPolyPoints = new List<PolygonPoint>();
-                
-                // Indicates which Diagonal may not be used in the following Step
-                // Diagonals are the preferred Connection to the next Polygonpoint, since they exist "in both direction",
-                // the algorithm would always "go back" and not "move on"
-                // var diagonalNotAllowed = -1;
-                Tuple<int, int> diagonalNotAllowed = null;
-                
-                // Loop until we've reached the polygonStart again
-                do
-                {
-                    // Add the currentPoint of the Polygon
-                    subPolyPoints.Add(currentPoint);
-                    
-                    // Index of the current Point
-                    var mappedIdx = mapping[currentPoint.Index];
-
-                    // If a Diagonal for this Point exists (i.e. with this Key) and the Diagonal is allowed to be used
-                    var possibleDiags = diagonals.Where(t => t.Item1 == mappedIdx && !t.Equals(diagonalNotAllowed)).ToList();
-                    Tuple<int, int> diag = null;
-                    // If possible Diagonal(s) were found, check them
-                    // (only if we don't navigate from the first Point on)
-                    if (possibleDiags.Count > 0 && subPolyPoints.Count > 1)
-                    {
-                        // Vector from last Point to this Point
-                        Point vectorLast = new Point();
-                        if (subPolyPoints.Count > 1)
-                            vectorLast = subPolyPoints[subPolyPoints.Count - 1].Point - subPolyPoints[subPolyPoints.Count - 2].Point;
-                        else
-                            vectorLast = currentPoint.Point - currentPoint.Last.Point;
-                        vectorLast.Normalize();
-                        // Vector to the next Polygon Point
-                        Point vectorNext = currentPoint.Next.Point - currentPoint.Point;
-                        vectorNext.Normalize();
-                        // "Left" Vector to check, if the other Vectors lie left or right to the "vectorLast"
-                        // (the more left, the more "inner" that Vector will be, because we have a CCW-Polygon order).
-                        var vectorLeft = new Point(-vectorLast.Y, vectorLast.X);
-                        // The Diagonal Vectors
-                        var otherVectors = new List<Point>();
-                        foreach (var possibleDiag in possibleDiags)
-                        {
-                            var vec = poly.Points[possibleDiag.Item2].Point - poly.Points[possibleDiag.Item1].Point;
-                            vec.Normalize();
-                            otherVectors.Add(vec);
-                        }
-                        var bestAngle = float.NegativeInfinity;
-                        // Get the "best" (i.e. the left-most) Diagonal from all possible one's
-                        for (int j = 0; j < otherVectors.Count; j++)
-                        {
-                            var dot = Point.Dot(vectorLast, otherVectors[j]);
-                            // Diagonal points to the left
-                            if (Point.Dot(vectorLeft, otherVectors[j]) >= 0)
-                            {
-                                var angle = Math.Acos(dot);
-                                if (angle > bestAngle){
-                                    bestAngle = (float)angle;
-                                    diag = possibleDiags[j];
-                                }
-                            }
-                            // Diagonal points to the right
-                            else if (Point.Dot(vectorLeft, otherVectors[j]) < 0)
-                            {
-                                var angle = -Math.Acos(dot);
-                                if (angle > bestAngle)
-                                {
-                                    bestAngle = (float)angle;
-                                    diag = possibleDiags[j];
-                                }
-                            }
-                        }
-                        // Also test the next Line-Segment
-                        var nDot = Point.Dot(vectorLast, vectorNext);
-                        // It points to the left
-                        if (Point.Dot(vectorLeft, vectorNext) >= 0)
-                        {
-                            var angle = Math.Acos(nDot);
-                            if (angle > bestAngle)
-                            {
-                                bestAngle = (float)angle;
-                                diag = null;
-                            }
-                        }
-                        // It points to the right
-                        else if (Point.Dot(vectorLeft, vectorNext) < 0)
-                        {
-                            var angle = -Math.Acos(nDot);
-                            if (angle > bestAngle)
-                            {
-                                bestAngle = (float)angle;
-                                diag = null;
-                            }
-                        }
-                        // We now have Information about the best next Polygon Segment
-                    }
-                    // If the next Segment is a Diagonal
-                    if (diag != null)
-                    {
-                        // Enqueue this Point as a Startpoint for the 2nd Part of the split Polygon
-                        if (diagonals.Contains(new Tuple<int, int>(diag.Item2, diag.Item1)))
-                        {
-                            startIndices.Enqueue(diag.Item1);
-                        }
-                        
-                        // Get the next Point from the Diagonal
-                        currentPoint = poly.Points[diag.Item2];
-                        
-                        // Remove the Diagonal and don't allow the Diagonal in the next Step (this would lead back)
-                        diagonals.Remove(diag);
-                        diagonalNotAllowed = new Tuple<int,int>(diag.Item2, diag.Item1);
-                    }
-                    // If no Diagonal was selected for this Point, just add it and re-allow all Diagonals
-                    // if previously disallowed
-                    else
-                    {
-                        currentPoint = currentPoint.Next;
-                        diagonalNotAllowed = null;
-                    }
-                }
-                // Stop when we encounter the StartPoint again
-                while (currentPoint.Index != polygonStart);
-                
-                // Create a new Polygon from the found Points
-                subPolygons[i] = new PolygonData(subPolyPoints);
+                if (firstSubPolygonIndices.Contains(diag.Item1) && firstSubPolygonIndices.Contains(diag.Item2))
+                    diagsFirst.Add(diag);
+                else
+                    diagsSecond.Add(diag);
             }
-            // Return all created sub-Polygons
-            return subPolygons;
+
+            // Calculate the Diagonals that are positioned in first and second Subpolygon
+            subPolygons.AddRange(SplitPolygonWithDiagonals(new PolygonData(firstSubPolygonPoints), diagsFirst).ToList());
+
+            // Recursively call Function for first Subpolygon and second Subpolygon
+            subPolygons.AddRange(SplitPolygonWithDiagonals(new PolygonData(secondSubPolygonPoints), diagsSecond).ToList());
+
+            // Return the split-up Polygons
+            return subPolygons.ToArray();
         }
 
         /// <summary>
@@ -538,7 +421,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// List of StatusHelperElements that are currently present at the Sweeper's Position
         /// </summary>
-        public List<StatusHelperElement> EdgesHelpers { get; set; }
+        internal List<StatusHelperElement> EdgesHelpers { get; set; }
 
         /// <summary>
         /// Default Constructor
@@ -652,7 +535,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Helper Class for the PolygonData Object.
     /// </summary>
-    internal class PolygonPoint : IComparable<PolygonPoint>
+    public class PolygonPoint : IComparable<PolygonPoint>
     {
         /// <summary>
         /// The actual Point of this PolygonPoint
@@ -886,7 +769,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Helper Class for the PolygonData Object.
     /// </summary>
-    internal class PolygonEdge
+    public class PolygonEdge
     {
         /// <summary>
         /// The "starting" Point of this Edge
@@ -968,7 +851,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Helper Class for the Polygon-Triangulation.
     /// </summary>
-    internal class PolygonData
+    public class PolygonData
     {
         /// <summary>
         /// The List of Polygonpoints that define this Polygon
@@ -989,7 +872,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="points">The Polygon-Defining Points</param>
         /// <param name="indices">Optional List of Point-Indices</param>
-        internal PolygonData(List<Point> points, List<int> indices = null)
+        public PolygonData(List<Point> points, List<int> indices = null)
         {
             // Create and add PolygonPoints for this Polygon Object
             mPoints = new List<PolygonPoint>(points.Select(p => new PolygonPoint(p)));
@@ -1019,8 +902,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Calls the first Constructor by splitting the Input-Information (Points and Indices)
         /// </summary>
         /// <param name="points">The PolygonPoints</param>
-        internal PolygonData(List<PolygonPoint> points)
+        public PolygonData(List<PolygonPoint> points)
             : this(points.Select(p => p.Point).ToList(), points.Select(p => p.Index).ToList())
         { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points"></param>
+        public void AddHole(List<Point> points)
+        {
+            // TODO
+        }
     }
 }
