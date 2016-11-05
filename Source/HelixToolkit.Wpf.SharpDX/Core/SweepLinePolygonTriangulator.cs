@@ -33,8 +33,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Perform the Triangulation of the Input.
         /// </summary>
         /// <param name="polygon">The Input Polygon</param>
+        /// <param name="holes">The Input Polygon</param>
         /// <returns>List of Indices representing the Triangulation of the Polygon</returns>
-        public static Int32Collection Triangulate(IList<Point> polygon)
+        public static Int32Collection Triangulate(IList<Point> polygon, List<List<Point>> holes = null)
         {
             // Allocate and initialize List of Indices in Polygon
             var result = new Int32Collection();
@@ -57,6 +58,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 didReverse = true;
             }
             
+            // Skip Polygons that don't need Triangulation
+            if (count < 3)
+                return null;
+            else if (count == 3)
+            {
+                if (!didReverse)
+                {
+                    return new Int32Collection{ 0, 1, 2};
+                }
+                else
+                {
+                    return new Int32Collection { 2, 1, 1 };
+                }
+            }
+
             // Create Polygon Data Structure
             var poly = new PolygonData(points);
             
@@ -71,6 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
 			{
                 mainMapping[i] = i;
 			}
+
             // Calculate the Diagonals in the Down Sweep
             var diagonals = CalculateDiagonals(events, mainMapping);
 
@@ -412,6 +429,18 @@ namespace HelixToolkit.Wpf.SharpDX
             return area > 0.0f;
         }
     }
+    
+    /// <summary>
+    /// Enumeration of PolygonPoint - Classes
+    /// </summary>
+    internal enum PolygonPointClass : byte
+    {
+        Start,
+        Stop,
+        Split,
+        Merge,
+        Regular
+    }
 
     /// <summary>
     /// Helper Class that is used in the calculation Process of the Diagonals.
@@ -521,21 +550,9 @@ namespace HelixToolkit.Wpf.SharpDX
     }
     
     /// <summary>
-    /// Enumeration of PolygonPoint - Classes
-    /// </summary>
-    internal enum PolygonPointClass : byte
-    {
-        Start,
-        Stop,
-        Split,
-        Merge,
-        Regular
-    }
-    
-    /// <summary>
     /// Helper Class for the PolygonData Object.
     /// </summary>
-    public class PolygonPoint : IComparable<PolygonPoint>
+    internal class PolygonPoint : IComparable<PolygonPoint>
     {
         /// <summary>
         /// The actual Point of this PolygonPoint
@@ -769,7 +786,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Helper Class for the PolygonData Object.
     /// </summary>
-    public class PolygonEdge
+    internal class PolygonEdge
     {
         /// <summary>
         /// The "starting" Point of this Edge
@@ -851,7 +868,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Helper Class for the Polygon-Triangulation.
     /// </summary>
-    public class PolygonData
+    internal class PolygonData
     {
         /// <summary>
         /// The List of Polygonpoints that define this Polygon
@@ -905,14 +922,5 @@ namespace HelixToolkit.Wpf.SharpDX
         public PolygonData(List<PolygonPoint> points)
             : this(points.Select(p => p.Point).ToList(), points.Select(p => p.Index).ToList())
         { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="points"></param>
-        public void AddHole(List<Point> points)
-        {
-            // TODO
-        }
     }
 }
