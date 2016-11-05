@@ -25,8 +25,11 @@ namespace HelixToolkit.Wpf.SharpDX
     /// References
     /// https://www.cs.ucsb.edu/~suri/cs235/Triangulation.pdf
     /// </remarks>
-    public class SweepLinePolygonTriangulator
+    public static class SweepLinePolygonTriangulator
     {
+        /// <summary>
+        /// Range Extension when searching for the Helper and Edge
+        /// </summary>
         public static float Epsilon = 0.0000001f;
 
         /// <summary>
