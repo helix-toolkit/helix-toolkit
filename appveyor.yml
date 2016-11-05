@@ -20,13 +20,9 @@ before_build:
 
 after_build:
   - gitlink c:\projects\helix-toolkit -u https://github.com/helix-toolkit/helix-toolkit -b master -f Source/HelixToolkit.AppVeyor.sln
-
-deploy_script:
-  - mkdir Packages
   - nuget pack Source\HelixToolkit\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%"
-  - for %%G in (Packages\*.nupkg) do NuGet.exe push %%G %nuget_api_key%
 
 artifacts:
   - path: Output
