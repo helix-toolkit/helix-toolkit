@@ -622,7 +622,7 @@ namespace HelixToolkit.Wpf
             {
                 // add triangles by cutting ears algorithm
                 // this algorithm is quite expensive...
-                builder.AddPolygonByCuttingEars(faceIndices);
+                builder.AddPolygonBySweepLine(faceIndices);
             }
         }
 

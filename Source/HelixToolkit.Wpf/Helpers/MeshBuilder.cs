@@ -1966,10 +1966,10 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a polygon defined by vertex indices (uses the cutting ears algorithm).
+        /// Adds a polygon defined by vertex indices (uses the sweep line algorithm).
         /// </summary>
         /// <param name="vertexIndices">The vertex indices.</param>
-        public void AddPolygonByCuttingEars(IList<int> vertexIndices)
+        public void AddPolygonBySweepLine(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
 
