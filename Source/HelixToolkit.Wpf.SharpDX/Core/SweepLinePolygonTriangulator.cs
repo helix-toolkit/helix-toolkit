@@ -768,7 +768,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>String representing this Point</returns>
         public override string ToString()
         {
-            return ((this.Index != null) ? this.Index + ": " : "") + "X:" + this.X + " Y:" + this.Y;
+            return this.Index + "X:" + this.X + " Y:" + this.Y;
         }
 
         /// <summary>
