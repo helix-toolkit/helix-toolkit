@@ -84,8 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (0 >= (count--))
                 {
                     // ERROR - probable bad polygon!
-                    ///return null;
-                    return result;
+                    return null;
                 }
 
                 // three consecutive vertices in current polygon, <u,v,w>
