@@ -700,10 +700,10 @@ namespace HelixToolkit.Wpf.SharpDX
             if (!reverse)
             {
                 // Both neighboring PolygonPoints are below this Point and the Point is concave
-                if (Last < this && Next < this && this.isConcavePoint())
+                if (Last < this && Next < this && this.isConvexPoint())
                     return PolygonPointClass.Start;
                 // Both neighboring PolygonPoints are above this Point and the Point is concave
-                else if (Last > this && Next > this && this.isConcavePoint())
+                else if (Last > this && Next > this && this.isConvexPoint())
                     return PolygonPointClass.Stop;
                 // Both neighboring PolygonPoints are below this Point and the Point is convex
                 else if (Last < this && Next < this)
@@ -718,10 +718,10 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 // Both neighboring PolygonPoints are below this Point and the Point is concave
-                if (Last < this && Next < this && this.isConcavePoint())
+                if (Last < this && Next < this && this.isConvexPoint())
                     return PolygonPointClass.Stop;
                 // Both neighboring PolygonPoints are above this Point and the Point is concave
-                else if (Last > this && Next > this && this.isConcavePoint())
+                else if (Last > this && Next > this && this.isConvexPoint())
                     return PolygonPointClass.Start;
                 // Both neighboring PolygonPoints are below this Point and the Point is convex
                 else if (Last < this && Next < this)
@@ -736,11 +736,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Calculates for a Point, if it is a concave Point or not
+        /// Calculates for a Point, if it is a convex Point or not
         /// (the assumption is, that we are dealing with a CCW Polygon orientation!)
         /// </summary>
-        /// <returns>Returns true, if concave, false if convex (or "reflex" Vertex)</returns>
-        private bool isConcavePoint()
+        /// <returns>Returns true, if convex, false if concave (or "reflex" Vertex)</returns>
+        private bool isConvexPoint()
         {
             // If the Point has no Next- and Last-PolygonPoint, there's an Error
             if (Next == null || Last == null)
@@ -755,7 +755,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var vecToNext = this.Next.Point - this.Point;
             vecToNext.Normalize();
             // If the next Vector is pointing to the left Vector's direction,
-            // the current Point is a concave Point (Dot-Product bigger than 0)
+            // the current Point is a convex Point (Dot-Product bigger than 0)
             if (Point.Dot(vecLeft, vecToNext) >= 0)
                 return true;
             else
