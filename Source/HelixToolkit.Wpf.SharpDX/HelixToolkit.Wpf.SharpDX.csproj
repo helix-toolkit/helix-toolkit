@@ -180,6 +180,7 @@
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Controls\ViewportCommands.cs" />
+    <Compile Include="Core\SweepLinePolygonTriangulator.cs" />
     <Compile Include="Core\Vector2Collection.cs" />
     <Compile Include="Core\Vector3Collection.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
