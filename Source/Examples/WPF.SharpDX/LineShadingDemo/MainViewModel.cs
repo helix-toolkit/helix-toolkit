@@ -52,7 +52,7 @@ namespace LineShadingDemo
             this.SubTitle = null;
 
             // camera setup
-            this.Camera = new PerspectiveCamera { Position = new Point3D(0, -20, 20), LookDirection = new Vector3D(-0, 5, -5), UpDirection = new Vector3D(0, 1, 0) };
+            this.Camera = new PerspectiveCamera { Position = new Point3D(0, 5, 5), LookDirection = new Vector3D(-0, -5, -5), UpDirection = new Vector3D(0, 1, 0) };
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
