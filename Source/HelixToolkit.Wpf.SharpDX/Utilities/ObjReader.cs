@@ -696,9 +696,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        // add triangles by cutting ears algorithm
-                        // this algorithm is quite expensive...
-                        builder.AddPolygonBySweepLine(faceIndices);
+                        // add triangles by sweep line algorithm
+                        builder.AddPolygonByTriangulation(faceIndices);
                     }
                 }
                 else
@@ -714,9 +713,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        // add triangles by cutting ears algorithm
-                        // this algorithm is quite expensive...
-                        builder.AddPolygonBySweepLine(faceIndices);
+                        // add triangles by sweep line algorithm
+                        builder.AddPolygonByTriangulation(faceIndices);
                     }
                 }
             }

@@ -2311,10 +2311,35 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Adds a polygon defined by vertex indices (uses the cutting ears algorithm).
+        /// </summary>
+        /// <param name="vertexIndices">The vertex indices.</param>
+        [Obsolete("Please use the faster version AddPolygon instead")]
+        public void AddPolygonByCuttingEars(IList<int> vertexIndices)
+        {
+            var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
+
+            var poly3D = new Polygon3D(points);
+
+            // Transform the polygon to 2D
+            var poly2D = poly3D.Flatten();
+
+            // Triangulate
+            var triangulatedIndices = CuttingEarsTriangulator.Triangulate(poly2D.Points);
+            if (triangulatedIndices != null)
+            {
+                foreach (var i in triangulatedIndices)
+                {
+                    this.triangleIndices.Add(vertexIndices[i]);
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds a polygon defined by vertex indices (uses the sweep line algorithm).
         /// </summary>
         /// <param name="vertexIndices">The vertex indices.</param>
-        public void AddPolygonBySweepLine(IList<int> vertexIndices)
+        public void AddPolygonByTriangulation(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
 
