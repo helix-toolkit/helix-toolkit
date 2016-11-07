@@ -1068,54 +1068,66 @@ namespace HelixToolkit.Wpf
         /// <param name="height">
         /// The height of the pyramid.
         /// </param>
+        /// <param name="height">
+        /// Add triangles to the base of the pyramid or not.
+        /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Pyramid_(geometry).
         /// </remarks>
-        public void AddPyramid(Point3D center, double sideLength, double height)
+        public void AddPyramid(Point3D center, double sideLength, double height, bool closeBase = false)
         {
-            this.AddPyramid(center, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), sideLength, height);
+            this.AddPyramid(center, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), sideLength, height, closeBase);
         }
 
         /// <summary>
         /// Adds a pyramid.
         /// </summary>
         /// <param name="center">The center.</param>
-        /// <param name="normal">The normal vector (normalized).</param>
+        /// <param name="forward">The normal vector (normalized).</param>
         /// <param name="up">The 'up' vector (normalized).</param>
         /// <param name="sideLength">Length of the sides of the pyramid.</param>
         /// <param name="height">The height of the pyramid.</param>
-        public void AddPyramid(Point3D center, Vector3D normal, Vector3D up, double sideLength, double height)
+        /// <param name="height">Add triangles to the base of the pyramid or not.</param>
+        public void AddPyramid(Point3D center, Vector3D forward, Vector3D up, double sideLength, double height, bool closeBase = false)
         {
-            var right = Vector3D.CrossProduct(normal, up);
-            var n = normal * sideLength / 2;
+            var right = Vector3D.CrossProduct(forward, up);
+            var n = forward * sideLength / 2;
             up *= height;
             right *= sideLength / 2;
 
-            var p1 = center - n - right;
-            var p2 = center - n + right;
-            var p3 = center + n + right;
-            var p4 = center + n - right;
-            var p5 = center + up;
+            var down = -up * 1.0 / 3.0;
+            var realup = up * 2.0 / 3.0;
+
+            var p1 = center - n - right + down;
+            var p2 = center - n + right + down;
+            var p3 = center + n + right + down;
+            var p4 = center + n - right + down;
+            var p5 = center + realup;
 
             this.AddTriangle(p1, p2, p5);
             this.AddTriangle(p2, p3, p5);
             this.AddTriangle(p3, p4, p5);
             this.AddTriangle(p4, p1, p5);
+            if (closeBase)
+            {
+                this.AddTriangle(p1, p3, p2);
+                this.AddTriangle(p3, p1, p4);
+            }
         }
 
         /// <summary>
         /// Adds an octahedron.
         /// </summary>
         /// <param name="center">The center.</param>
-        /// <param name="normal">The normal vector.</param>
+        /// <param name="forward">The normal vector.</param>
         /// <param name="up">The up vector.</param>
         /// <param name="sideLength">Length of the side.</param>
         /// <param name="height">The half height of the octahedron.</param>
         /// <remarks>See <a href="http://en.wikipedia.org/wiki/Octahedron">Octahedron</a>.</remarks>
-        public void AddOctahedron(Point3D center, Vector3D normal, Vector3D up, double sideLength, double height)
+        public void AddOctahedron(Point3D center, Vector3D forward, Vector3D up, double sideLength, double height)
         {
-            var right = Vector3D.CrossProduct(normal, up);
-            var n = normal * sideLength / 2;
+            var right = Vector3D.CrossProduct(forward, up);
+            var n = forward * sideLength / 2;
             up *= height / 2;
             right *= sideLength / 2;
 
@@ -1135,6 +1147,35 @@ namespace HelixToolkit.Wpf
             this.AddTriangle(p3, p2, p6);
             this.AddTriangle(p4, p3, p6);
             this.AddTriangle(p1, p4, p6);
+        }
+
+        /// <summary>
+        /// Add a tetrahedron.
+        /// </summary>
+        /// <param name="center">The Center of Mass.</param>
+        /// <param name="forward">Direction to first Base-Point (in Base-Plane).</param>
+        /// <param name="up">Up Vector.</param>
+        /// <param name="sideLength">The Sidelength.</param>
+        public void AddTetrahedron(Point3D center, Vector3D forward, Vector3D up, double sideLength)
+        {
+            // Helper Variables
+            var right = Vector3D.CrossProduct(up, forward);
+            var height = Math.Sqrt(3) / 2.0 * sideLength;
+            var bigHeight = height * 2.0 / 3.0;
+            var smallHeight = bigHeight * 0.5;
+            var halfLength = sideLength * 0.5;
+
+            // The Vertex Positions
+            var p1 = center + forward * bigHeight - up * smallHeight;
+            var p2 = center - forward * smallHeight - right * halfLength - up * smallHeight;
+            var p3 = center - forward * smallHeight + right * halfLength - up * smallHeight;
+            var p4 = center + up * bigHeight;
+
+            // Triangles
+            this.AddTriangle(p1, p2, p3);
+            this.AddTriangle(p1, p4, p2);
+            this.AddTriangle(p2, p4, p3);
+            this.AddTriangle(p3, p4, p1);
         }
 
         /// <summary>
