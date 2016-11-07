@@ -626,10 +626,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (surfaceD3D != null)
                     {
                         Render();
+                        if (pendingValidationCycles == 1)
+                        {
 #if MSAA
-                        device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+                            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
 #endif
-                        surfaceD3D.InvalidateD3DImage();
+                        }
+                        else
+                        {                           
+                            surfaceD3D.InvalidateD3DImage();
+                        }
                     }
                 }
 
