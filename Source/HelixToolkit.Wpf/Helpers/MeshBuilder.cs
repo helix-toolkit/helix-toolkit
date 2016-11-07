@@ -1068,7 +1068,7 @@ namespace HelixToolkit.Wpf
         /// <param name="height">
         /// The height of the pyramid.
         /// </param>
-        /// <param name="height">
+        /// <param name="closeBase">
         /// Add triangles to the base of the pyramid or not.
         /// </param>
         /// <remarks>
@@ -1087,7 +1087,7 @@ namespace HelixToolkit.Wpf
         /// <param name="up">The 'up' vector (normalized).</param>
         /// <param name="sideLength">Length of the sides of the pyramid.</param>
         /// <param name="height">The height of the pyramid.</param>
-        /// <param name="height">Add triangles to the base of the pyramid or not.</param>
+        /// <param name="closeBase">Add triangles to the base of the pyramid or not.</param>
         public void AddPyramid(Point3D center, Vector3D forward, Vector3D up, double sideLength, double height, bool closeBase = false)
         {
             var right = Vector3D.CrossProduct(forward, up);
@@ -1095,6 +1095,7 @@ namespace HelixToolkit.Wpf
             up *= height;
             right *= sideLength / 2;
 
+            
             var down = -up * 1.0 / 3.0;
             var realup = up * 2.0 / 3.0;
 
@@ -1156,20 +1157,28 @@ namespace HelixToolkit.Wpf
         /// <param name="forward">Direction to first Base-Point (in Base-Plane).</param>
         /// <param name="up">Up Vector.</param>
         /// <param name="sideLength">The Sidelength.</param>
+        /// <remarks>
+        /// See https://en.wikipedia.org/wiki/Tetrahedron and
+        /// https://en.wikipedia.org/wiki/Equilateral_triangle.
+        /// </remarks>
         public void AddTetrahedron(Point3D center, Vector3D forward, Vector3D up, double sideLength)
         {
             // Helper Variables
             var right = Vector3D.CrossProduct(up, forward);
-            var height = Math.Sqrt(3) / 2.0 * sideLength;
-            var bigHeight = height * 2.0 / 3.0;
-            var smallHeight = bigHeight * 0.5;
+            var heightSphere = Math.Sqrt(6) / 3.0 * sideLength;
+            var radiusSphere = Math.Sqrt(6) / 4.0 * sideLength;
+            var heightFace = Math.Sqrt(3) / 2.0 * sideLength;
+            var radiusFace = Math.Sqrt(3) / 3.0 * sideLength;
+            var smallHeightSphere = heightSphere - radiusSphere;
+            var smallHeightFace = heightFace - radiusFace;
             var halfLength = sideLength * 0.5;
 
             // The Vertex Positions
-            var p1 = center + forward * bigHeight - up * smallHeight;
-            var p2 = center - forward * smallHeight - right * halfLength - up * smallHeight;
-            var p3 = center - forward * smallHeight + right * halfLength - up * smallHeight;
-            var p4 = center + up * bigHeight;
+            var p1 = center + forward * radiusFace - up * smallHeightSphere;
+            var p2 = center - forward * smallHeightFace - right * halfLength - up * smallHeightSphere;
+            var p3 = center - forward * smallHeightFace + right * halfLength - up * smallHeightSphere;
+            var p4 = center + up * radiusSphere;
+
 
             // Triangles
             this.AddTriangle(p1, p2, p3);
