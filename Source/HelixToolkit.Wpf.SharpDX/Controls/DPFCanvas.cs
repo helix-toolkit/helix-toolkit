@@ -570,7 +570,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderRenderable.Render(renderContext);
                 }
             }
-
+#if MSAA
+            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif
             this.device.ImmediateContext.Flush();
         }
 
@@ -620,17 +622,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (pendingValidationCycles > 0)
                 {
-                    System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
+                    var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
 
                     // Safety check because of dispatcher deferred render call
                     if (surfaceD3D != null)
                     {
-                        Render();
-                        if (pendingValidationCycles == 1)
+                        if (cycle == 1)
                         {
-#if MSAA
-                            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
+                            Render();
                         }
                         else
                         {                           
