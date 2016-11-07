@@ -70,6 +70,7 @@
     <Compile Include="Exporters\StlExporter.cs" />
     <Compile Include="ExtensionMethods\AnimationExtensions.cs" />
     <Compile Include="Geometry\LineSegment.cs" />
+    <Compile Include="Geometry\SweepLinePolygonTriangulator.cs" />
     <Compile Include="Geometry\Triangle.cs" />
     <Compile Include="Helpers\AttachedProperties.cs" />
     <Compile Include="Controls\CameraController\CameraMode.cs" />

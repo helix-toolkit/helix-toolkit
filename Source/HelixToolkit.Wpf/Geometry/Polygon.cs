@@ -41,12 +41,12 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Triangulate the polygon by cutting ears
+        /// Triangulate the polygon by using the sweep line algorithm
         /// </summary>
         /// <returns>An index collection.</returns>
         public Int32Collection Triangulate()
         {
-            return CuttingEarsTriangulator.Triangulate(this.points);
+            return SweepLinePolygonTriangulator.Triangulate(this.points);
         }
     }
 }
