@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf
 {
     using System.Windows;
     using System.Windows.Media;
+    using System.Windows.Media.Media3D;
 
     /// <summary>
     /// A visual element that shows a tube along a specified path.
@@ -31,6 +32,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
             "ThetaDiv", typeof(int), typeof(TubeVisual3D), new UIPropertyMetadata(36, SectionChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AddCaps"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty AddCapsProperty = DependencyProperty.Register(
+            "AddCaps", typeof(bool), typeof(TubeVisual3D), new UIPropertyMetadata(false, SectionChanged));
 
         /// <summary>
         /// Initializes static members of the <see cref="TubeVisual3D"/> class.
@@ -83,6 +90,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the create Caps indicator.
+        /// </summary>
+        /// <value>True if Caps should be generated.</value>
+        public bool AddCaps
+        {
+            get
+            {
+                return (bool)this.GetValue(AddCapsProperty);
+            }
+
+            set
+            {
+                this.SetValue(AddCapsProperty, value);
+            }
+        }
+
+        /// <summary>
         /// The section changed.
         /// </summary>
         /// <param name="d">
@@ -115,6 +139,70 @@ namespace HelixToolkit.Wpf
             this.Section = pc;
 
             this.OnGeometryChanged();
+        }
+
+        /// <summary>
+        /// Do the tessellation and return the <see cref="MeshGeometry3D"/> .
+        /// </summary>
+        /// <returns>
+        /// A triangular mesh geometry.
+        /// </returns>
+        protected override MeshGeometry3D Tessellate()
+        {
+            if (this.Path == null || this.Path.Count < 2)
+            {
+                return null;
+            }
+
+            // See also "The GLE Tubing and Extrusion Library":
+            // http://linas.org/gle/
+            // http://sharpmap.codeplex.com/Thread/View.aspx?ThreadId=18864
+            var builder = new MeshBuilder(false, this.TextureCoordinates != null);
+
+            var sectionXAxis = this.SectionXAxis;
+            if (sectionXAxis.Length < 1e-6)
+            {
+                sectionXAxis = new Vector3D(1, 0, 0);
+            }
+
+            var forward = this.Path[1] - this.Path[0];
+            var up = Vector3D.CrossProduct(forward, sectionXAxis);
+            if (up.LengthSquared < 1e-6)
+            {
+                sectionXAxis = forward.FindAnyPerpendicular();
+            }
+
+            builder.AddTube(
+                this.Path,
+                this.Angles,
+                this.TextureCoordinates,
+                this.Diameters,
+                this.Section,
+                sectionXAxis,
+                this.IsPathClosed,
+                this.IsSectionClosed);
+
+            // Add Caps if wanted
+            if (this.AddCaps)
+            {
+                // Start Cap
+                var startPoints = new int[this.Section.Count];
+                for (int i = 0; i < this.Section.Count; i++)
+                {
+                    startPoints[i] = i;
+                }
+                builder.AddTriangleFan(startPoints);
+                
+                // End Cap
+                var endPoints = new int[this.Section.Count];
+                for (int i = 0; i < this.Section.Count; i++)
+                {
+                    endPoints[i] = builder.Positions.Count - 1 - i;
+                }
+                builder.AddTriangleFan(endPoints);
+            }
+
+            return builder.ToMesh();
         }
     }
 }
