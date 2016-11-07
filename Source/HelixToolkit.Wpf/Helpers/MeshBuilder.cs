@@ -93,6 +93,10 @@ namespace HelixToolkit.Wpf
         /// The circle cache.
         /// </summary>
         private static readonly ThreadLocal<Dictionary<int, IList<Point>>> CircleCache = new ThreadLocal<Dictionary<int, IList<Point>>>(() => new Dictionary<int, IList<Point>>());
+        /// <summary>
+        /// The closed circle cache.
+        /// </summary>
+        private static readonly ThreadLocal<Dictionary<int, IList<Point>>> ClosedCircleCache = new ThreadLocal<Dictionary<int, IList<Point>>>(() => new Dictionary<int, IList<Point>>());
 
         /// <summary>
         /// The unit sphere cache.
@@ -305,19 +309,35 @@ namespace HelixToolkit.Wpf
         /// <param name="thetaDiv">
         /// The number of division.
         /// </param>
+        /// <param name="closed">
+        /// Is the circle closed?
+        /// If true, the last point will not be at the same position than the first one.
+        /// </param>
         /// <returns>
         /// A circle.
         /// </returns>
-        public static IList<Point> GetCircle(int thetaDiv)
+        public static IList<Point> GetCircle(int thetaDiv, bool closed = false)
         {
-            IList<Point> circle;
-            if (!CircleCache.Value.TryGetValue(thetaDiv, out circle))
+            IList<Point> circle = null;
+            // If the circle can't be found in one of the two caches
+            if ((!closed && !CircleCache.Value.TryGetValue(thetaDiv, out circle)) ||
+                (closed && !ClosedCircleCache.Value.TryGetValue(thetaDiv, out circle)))
             {
                 circle = new PointCollection();
-                CircleCache.Value.Add(thetaDiv, circle);
+                // Add to the cache
+                if (!closed)
+                {
+                    CircleCache.Value.Add(thetaDiv, circle);
+                }
+                else
+                {
+                    ClosedCircleCache.Value.Add(thetaDiv, circle);
+                }
+                // Determine the angle steps
+                var num = closed ? thetaDiv : thetaDiv - 1;
                 for (int i = 0; i < thetaDiv; i++)
                 {
-                    double theta = Math.PI * 2 * ((double)i / (thetaDiv - 1));
+                    double theta = Math.PI * 2 * ((double)i / num);
                     circle.Add(new Point(Math.Cos(theta), -Math.Sin(theta)));
                 }
 
@@ -3215,7 +3235,8 @@ namespace HelixToolkit.Wpf
                 // Points of the Cross-Section of the torus "tube"
                 IList<Point> crossSectionPoints;
                 // Self-intersecting Torus, if the "Tube" Diameter is bigger than the Torus Diameter
-                if (tubeDiameter > torusDiameter)
+                var selfIntersecting = tubeDiameter > torusDiameter;
+                if (selfIntersecting)
                 {
                     // Angle-Calculations for Circle Segment https://de.wikipedia.org/wiki/Gleichschenkliges_Dreieck
                     var angleIcoTriangle = Math.Acos(1 - ((torusDiameter * torusDiameter) / (2 * (tubeDiameter * tubeDiameter * .25))));
@@ -3226,21 +3247,30 @@ namespace HelixToolkit.Wpf
                 }
                 // "normal" Torus (with a Circle as Cross-Section of the Torus
                 else
-                    crossSectionPoints = GetCircle(phiDiv);
+                {
+                    crossSectionPoints = GetCircle(phiDiv, true);
+                }
                 // Transform Crosssection to real Size
                 crossSectionPoints = crossSectionPoints.Select(p => new Point(p.X * tubeDiameter * .5, p.Y * tubeDiameter * .5)).ToList();
                 // Transform the Cross-Section Points to 3D Space
                 var crossSection3DPoints = crossSectionPoints.Select(p => new Point3D(p.X, 0, p.Y)).ToList();
-                
-                // Add all Vertex-Positions of the Torus
+
+                // Add the needed Vertex-Positions of the Torus
                 for (int i = 0; i < thetaDiv; i++)
                 {
                     // Angle of the current Cross-Section in the XY-Plane
-                    var angle = Math.PI * 2 * ((double)i / (thetaDiv - 1));
+                    var angle = Math.PI * 2 * ((double)i / thetaDiv);
                     // Rotate the Cross-Section around the Origin by using the angle and the defined torusDiameter
-                    var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D(Math.Cos(angle) * (p3D.X + torusDiameter * .5), Math.Sin(angle) * (p3D.X + torusDiameter * .5), p3D.Z));
-                    foreach (var point3D in rotatedPoints)
-                        this.positions.Add(point3D);
+                    var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D(Math.Cos(angle) * (p3D.X + torusDiameter * .5), Math.Sin(angle) * (p3D.X + torusDiameter * .5), p3D.Z)).ToList();
+                    for (int j = 0; j < phiDiv; j++)
+                    {
+                        // If selfintersecting Torus, skip the first and last Point of the Cross-Sections, when not the first Cross Section.
+                        // We only need the first and last Point of the first Cross-Section once!
+                        if (selfIntersecting && i > 0 && (j == 0 || j == (phiDiv - 1)))
+                            continue;
+                        // Add the Position
+                        this.positions.Add(rotatedPoints[j]);
+                    }
                 }
                 // Add all Normals, if they need to be calculated
                 if (this.normals != null)
@@ -3248,14 +3278,35 @@ namespace HelixToolkit.Wpf
                     for (int i = 0; i < thetaDiv; i++)
                     {
                         // Transform the Cross-Section as well as the Origin of the Cross-Section
-                        var angle = Math.PI * 2 * ((double)i / (thetaDiv - 1));
-                        var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D(Math.Cos(angle) * (p3D.X + torusDiameter * .5), Math.Sin(angle) * (p3D.X + torusDiameter * .5), p3D.Z));
+                        var angle = Math.PI * 2 * ((double)i / thetaDiv);
+                        var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D(Math.Cos(angle) * (p3D.X + torusDiameter * .5), Math.Sin(angle) * (p3D.X + torusDiameter * .5), p3D.Z)).ToList();
+                        // We don't need the first and last Point of the rotated Points, if we are not in the first Cross-Section
+                        if (selfIntersecting && i > 0)
+                        {
+                            rotatedPoints.RemoveAt(0);
+                            rotatedPoints.RemoveAt(rotatedPoints.Count - 1);
+                        }
+                        // Transform the Center of the Cross-Section
                         var rotatedOrigin = new Point3D(Math.Cos(angle) * torusDiameter * .5, Math.Sin(angle) * torusDiameter * .5, 0);
                         // Add the Normal of the Vertex
-                        foreach (var point3D in rotatedPoints)
+                        for (int j = 0; j < rotatedPoints.Count; j++)
                         {
-                            var normal = point3D - rotatedOrigin;
+                            // The default Normal has the same Direction as the Vector from the Center to the Vertex
+                            var normal = rotatedPoints[j] - rotatedOrigin;
                             normal.Normalize();
+                            // If self-intersecting Torus and first Point of first Cross-Section,
+                            // modify Normal
+                            if (selfIntersecting && i == 0 && j == 0)
+                            {
+                                normal = new Vector3D(0, 0, -1);
+                            }
+                            // If self-intersecting Torus and last Point of first Cross-Section
+                            // modify Normal
+                            else if (selfIntersecting && i == 0 && j == (phiDiv - 1))
+                            {
+                                normal = new Vector3D(0, 0, 1);
+                            }
+                            // Add the Normal
                             this.normals.Add(normal);
                         }
                     }
@@ -3266,25 +3317,111 @@ namespace HelixToolkit.Wpf
                     // For all Points, calculate a simple uv Coordinate
                     for (int i = 0; i < thetaDiv; i++)
                     {
-                        for (int j = 0; j < phiDiv; j++)
-                            this.textureCoordinates.Add(new Point((double)i / thetaDiv, (double)j / phiDiv));
+                        // Determine the Number of Vertices of this Cross-Section present in the positions Collection
+                        var numCS = (selfIntersecting && i > 0) ? phiDiv - 2 : phiDiv;
+                        for (int j = 0; j < numCS; j++)
+                        {
+                            // Calculate u- and v- Coordinates for the Points
+                            var u = (double)i / thetaDiv;
+                            double v = 0;
+                            if (i > 0 && selfIntersecting)
+                                v = (double)(j + 1) / phiDiv;
+                            else
+                                v = (double)j / phiDiv;
+                            // Add the Texture-Coordinate
+                            this.textureCoordinates.Add(new Point(u, v));
+                        }
                     }
                 }
                 // Add Triangle-Indices
                 for (int i = 0; i < thetaDiv; i++)
                 {
-                    var firstPointIdx = i * phiDiv;
-                    var firstPointIdxNextCircle = ((i + 1) % thetaDiv) * phiDiv;
-                    for (int j = 0; j < phiDiv - 1; j++)
+                    // Normal non-selfintersecting Torus
+                    // Just add Triangle-Strips between all neighboring Cross-Sections
+                    if (!selfIntersecting)
                     {
-                        this.triangleIndices.Add(firstPointIdx + j);
-                        this.triangleIndices.Add(firstPointIdx + j + 1);
-                        this.triangleIndices.Add(firstPointIdxNextCircle + j);
+                        var firstPointIdx = i * phiDiv;
+                        var firstPointIdxNextCircle = ((i + 1) % thetaDiv) * phiDiv;
+                        for (int j = 0; j < phiDiv; j++)
+                        {
+                            var jNext = (j + 1) % phiDiv;
+                            this.triangleIndices.Add(firstPointIdx + j);
+                            this.triangleIndices.Add(firstPointIdx + jNext);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j);
 
-                        this.triangleIndices.Add(firstPointIdxNextCircle + j);
-                        this.triangleIndices.Add(firstPointIdx + j + 1);
-                        this.triangleIndices.Add(firstPointIdxNextCircle + j + 1);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j);
+                            this.triangleIndices.Add(firstPointIdx + jNext);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + jNext);
+                        }
                     }
+                    // Selfintersecting Torus
+                    else
+                    {
+                        // Add intermediate Triangles like for the non-selfintersecting Torus
+                        // Skip the first and last Triangles, the "Caps" will be added later
+                        // Determine the Index of the first Point of the first Cross-Section
+                        var firstPointIdx = i * (phiDiv - 2) + 1;
+                        firstPointIdx += i > 0 ? 1 : 0;
+                        // Determine the Index of the first Point of the next Cross-Section
+                        var firstPointIdxNextCircle = phiDiv + firstPointIdx - 1;
+                        firstPointIdxNextCircle -= i > 0 ? 1 : 0;
+                        if (firstPointIdxNextCircle >= this.positions.Count)
+                        {
+                            firstPointIdxNextCircle %= this.positions.Count;
+                            firstPointIdxNextCircle++;
+                        }
+                        // Add Triangles between the "middle" Parts of the neighboring Cross-Sections
+                        for (int j = 1; j < phiDiv - 2; j++)
+                        {
+                            this.triangleIndices.Add(firstPointIdx + j - 1);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j - 1);
+                            this.triangleIndices.Add(firstPointIdx + j);
+
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j - 1);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j);
+                            this.triangleIndices.Add(firstPointIdx + j);
+                        }
+                    }
+                }
+                // For selfintersecting Tori
+                if (selfIntersecting)
+                {
+                    // Add bottom Cap by creating a List of Vertex-Indices
+                    // and using them to create a Triangle-Fan
+                    var verts = new List<int>();
+                    verts.Add(0);
+                    for (int i = 0; i < thetaDiv; i++)
+                    {
+                        if (i == 0)
+                        {
+                            verts.Add(1);
+                        }
+                        else
+                        {
+                            verts.Add(phiDiv + (i - 1) * (phiDiv - 2));
+                        }
+                    }
+                    verts.Add(1);
+                    verts.Reverse();
+                    AddTriangleFan(verts);
+
+                    // Add top Cap by creating a List of Vertex-Indices
+                    // and using them to create a Triangle-Fan
+                    verts = new List<int>();
+                    verts.Add(phiDiv - 1);
+                    for (int i = 0; i < thetaDiv; i++)
+                    {
+                        if (i == 0)
+                        {
+                            verts.Add(phiDiv - 2);
+                        }
+                        else
+                        {
+                            verts.Add(phiDiv + i * (phiDiv - 2) - 1);
+                        }
+                    }
+                    verts.Add(phiDiv - 2);
+                    AddTriangleFan(verts);
                 }
             }
         }

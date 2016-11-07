@@ -16,8 +16,8 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" >
             <Slider x:Name="torusDiameterSlider" Value="3" Minimum="0.1" Maximum="10" Width="150" Margin="10"/>
             <Slider x:Name="tubeDiameterSlider" Value="1" Minimum="0.1" Maximum="5" Width="150" Margin="10"/>
-            <Slider x:Name="thetaDivSlider" Value="36" Minimum="4" Maximum="256" Width="150" Margin="10"/>
-            <Slider x:Name="phiDivSlider" Value="24" Minimum="4" Maximum="256" Width="150" Margin="10"/>
+            <Slider x:Name="thetaDivSlider" Value="36" Minimum="3" Maximum="256" Width="150" Margin="10"/>
+            <Slider x:Name="phiDivSlider" Value="24" Minimum="3" Maximum="256" Width="150" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>
