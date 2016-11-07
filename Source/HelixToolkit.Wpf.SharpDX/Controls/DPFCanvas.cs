@@ -50,7 +50,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class DPFCanvas : Image, IRenderHost
     {
-        private readonly Action updateAndRenderAction;
         private readonly Stopwatch renderTimer;
         private Device device;
         private Texture2D colorBuffer;
@@ -65,7 +64,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private int targetWidth, targetHeight;
         private int pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
-        private DispatcherOperation updateAndRenderOperation;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
 
@@ -190,8 +188,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public DPFCanvas()
         {
-            updateAndRenderAction = UpdateAndRender;
-            updateAndRenderOperation = null;
             renderTimer = new Stopwatch();
             MaxRenderingDuration = TimeSpan.FromMilliseconds(20.0);
             Loaded += OnLoaded;

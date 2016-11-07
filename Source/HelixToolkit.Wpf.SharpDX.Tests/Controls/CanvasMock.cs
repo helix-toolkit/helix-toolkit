@@ -33,6 +33,11 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
 
         public IRenderTechniquesManager RenderTechniquesManager { get; set; }
 
+        public bool IsBusy
+        {
+            get;private set;
+        }
+
         public void SetDefaultRenderTargets()
         {
         }
