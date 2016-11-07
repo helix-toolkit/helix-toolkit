@@ -329,7 +329,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
-            this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+            if (!this.Viewport.RenderHost.IsBusy)
+            {
+                this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+            }
         }
 
         /// <summary>

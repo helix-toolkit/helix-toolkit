@@ -172,6 +172,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public bool IsBusy { get { return pendingValidationCycles > 0; } }
+
         /// <summary>
         /// 
         /// </summary>
@@ -203,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // For some reason, we need two render cycles to recover from 
             // UAC popup or sleep when MSAA is enabled.
-            pendingValidationCycles = 2;
+            System.Threading.Interlocked.Exchange(ref pendingValidationCycles, 2);
         }
 
 
@@ -601,37 +603,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!renderTimer.IsRunning)
                 return;
-
-            // Check if there is a deferred updateAndRenderOperation in progress.
-            if (updateAndRenderOperation != null)
-            {
-                // If the deferred updateAndRenderOperation has not yet ended...
-                var status = updateAndRenderOperation.Status;
-                if (status == DispatcherOperationStatus.Pending ||
-                    status == DispatcherOperationStatus.Executing)
-                {
-                    // ... return immediately.
-                    return;
-                }
-
-                updateAndRenderOperation = null;
-
-                // Ensure that at least every other cycle is done at DispatcherPriority.Render.
-                // Uncomment if animation stutters, but no need as far as I can see.
-                // this.lastRenderingDuration = TimeSpan.Zero;
-            }
-
-            // If rendering took too long last time...
-            if (lastRenderingDuration > MaxRenderingDuration)
-            {
-                // ... enqueue an updateAndRenderAction at DispatcherPriority.Input.
-                updateAndRenderOperation = Dispatcher.BeginInvoke(
-                    updateAndRenderAction, DispatcherPriority.Input);
-            }
-            else
-            {
-                UpdateAndRender();
-            }
+            UpdateAndRender();
         }
 
         /// <summary>
@@ -649,7 +621,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (pendingValidationCycles > 0)
                 {
-                    pendingValidationCycles--;
+                    System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
 
                     // Safety check because of dispatcher deferred render call
                     if (surfaceD3D != null)
