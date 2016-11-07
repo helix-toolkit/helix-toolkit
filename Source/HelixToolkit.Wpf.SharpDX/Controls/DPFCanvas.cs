@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // For some reason, we need two render cycles to recover from 
             // UAC popup or sleep when MSAA is enabled.
-            System.Threading.Interlocked.Exchange(ref pendingValidationCycles, 2);
+            System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
         }
 
 
