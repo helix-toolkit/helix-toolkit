@@ -171,7 +171,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
             }
         }
-
+        
+        /// <summary>
+        /// Indicates if DPFCanvas busy on rendering.
+        /// </summary>
         public bool IsBusy { get { return pendingValidationCycles > 0; } }
 
         /// <summary>

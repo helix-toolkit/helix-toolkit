@@ -54,6 +54,9 @@ namespace HelixToolkit.Wpf.SharpDX
         double ActualHeight { get; }
         double ActualWidth { get; }
 
+        /// <summary>
+        /// Indicates if DPFCanvas busy on rendering.
+        /// </summary>
         bool IsBusy { get; }
     }
 }
