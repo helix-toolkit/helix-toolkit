@@ -718,7 +718,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="center">The Center of the Dodecahedron</param>
         /// <param name="forward">The Direction to the first Point (normalized).</param>
-        /// <param name="up">The Up-Dirextion (normalized, perpendicular to the <see cref="forward"/> Direction)</param>
+        /// <param name="up">The Up-Dirextion (normalized, perpendicular to the forward Direction)</param>
         /// <param name="sideLength">Length of the Edges of the Dodecahedron</param>
         /// <remarks>
         /// See:
@@ -728,7 +728,7 @@ namespace HelixToolkit.Wpf
         /// </remarks>
         public void AddDodecahedron(Point3D center, Vector3D forward, Vector3D up, double sideLength)
         {
-            /// If points already exist in the MeshBuilder
+            // If points already exist in the MeshBuilder
             var positionsCount = this.positions.Count;
 
             var right = Vector3D.CrossProduct(up, forward);
