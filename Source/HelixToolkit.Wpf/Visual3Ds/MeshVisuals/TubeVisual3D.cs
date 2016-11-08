@@ -182,8 +182,8 @@ namespace HelixToolkit.Wpf
                 this.IsPathClosed,
                 this.IsSectionClosed);
 
-            // Add Caps if wanted
-            if (this.AddCaps)
+            // Add Caps if wanted and needed
+            if (this.AddCaps && !this.IsPathClosed)
             {
                 // Start Cap
                 var startPoints = new int[this.Section.Count];

@@ -714,6 +714,36 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="forward"></param>
+        /// <param name="up"></param>
+        /// <param name="sideLength"></param>
+        /// <remarks>
+        /// See: https://de.wikipedia.org/wiki/Dodekaeder for radius calculation,
+        /// Spherical coordinates:
+        /// http://mathworld.wolfram.com/SphericalCoordinates.html
+        /// </remarks>
+        public void AddDodecahedron(Point3D center, Vector3D forward, Vector3D up, double sideLength)
+        {
+            // Distance from the Center to the Dodekaeder-Points
+            /*var radius = 0.25 * Math.Sqrt(3) * (1 + Math.Sqrt(5)) * sideLength;
+
+            var upVectorToBaseAngle = 3.0 / 5 * Math.PI;
+            var theta = upVectorToBaseAngle;
+            for (int i = 0; i < 5; i++)
+            {
+                var phi = Math.PI * 2 * i / 5;
+                double x = Math.Cos(theta) * Math.Sin(phi);
+                double y = Math.Sin(theta) * Math.Sin(phi);
+                double z = Math.Cos(phi);
+
+                this.positions.Add(center + new Vector3D(x, y, z));
+            }*/
+        }
+
+        /// <summary>
         /// Adds a collection of edges as cylinders.
         /// </summary>
         /// <param name="points">
@@ -803,7 +833,7 @@ namespace HelixToolkit.Wpf
         /// <param name="origin">The origin.</param>
         public void AddPolygon(IList<Point> points, Vector3D axisX, Vector3D axisY, Point3D origin)
         {
-            var indices = CuttingEarsTriangulator.Triangulate(points);
+            var indices = SweepLinePolygonTriangulator.Triangulate(points);
             var index0 = this.positions.Count;
             foreach (var p in points)
             {
