@@ -671,7 +671,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ZoomSensitivityProperty = DependencyProperty.Register(
             "ZoomSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
 
-
+#if MSAA
+        /// <summary>
+        /// Set MSAA Level
+        /// </summary>
+        public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX), 
+            new PropertyMetadata(MSAALevel.Maximum, (s,e)=> 
+            {
+                var viewport = s as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.RenderHost.MSAA = (MSAALevel)e.NewValue;
+                }
+            }));
+#endif
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2346,6 +2359,18 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(ZoomSensitivityProperty, value);
+            }
+        }
+
+        public MSAALevel MSAA
+        {
+            get
+            {
+                return (MSAALevel)this.GetValue(MSAAProperty);
+            }
+            set
+            {
+                this.SetValue(MSAAProperty, value);
             }
         }
     }

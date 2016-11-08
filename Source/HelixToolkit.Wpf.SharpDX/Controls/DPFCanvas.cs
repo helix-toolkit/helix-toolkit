@@ -60,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private IRenderer renderRenderable;
         private RenderContext renderContext;
         private DeferredRenderer deferredRenderer;
-        private bool sceneAttached;        
+        private bool sceneAttached;
         private int targetWidth, targetHeight;
         private int pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
@@ -86,11 +86,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsShadowMapEnabled { get; private set; }
 
+#if MSAA
         /// <summary>
-        /// 
+        /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
         /// </summary>
-        public bool IsMSAAEnabled { get; private set; }
-
+        public MSAALevel MSAA { get; set; }
+#endif
         /// <summary>
         /// Gets or sets the maximum time that rendering is allowed to take. When exceeded,
         /// the next cycle will be enqueued at <see cref="DispatcherPriority.Input"/> to reduce input lag.
@@ -169,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
             }
         }
-        
+
         /// <summary>
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
@@ -194,7 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Unloaded += OnUnloaded;
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
-            IsMSAAEnabled = true;
+            MSAA = MSAALevel.Maximum;
         }
 
         /// <summary>
@@ -339,7 +340,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int sampleCount = 1;
             int sampleQuality = 0;
-            if (IsMSAAEnabled)
+            if (MSAA != MSAALevel.Disable)
             {
                 do
                 {
@@ -351,6 +352,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
                     sampleCount = newSampleCount;
                     sampleQuality = newSampleQuality;
+                    if (sampleCount == (int)MSAA)
+                    {
+                        break;
+                    }
                 } while (sampleCount < 32);
             }
 
@@ -501,7 +506,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                         var blinn = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
                         RenderTechnique = renderRenderable.RenderTechnique == null ? blinn : renderRenderable.RenderTechnique;
-                            
+
                         if (renderContext != null)
                         {
                             renderContext.Dispose();
@@ -534,7 +539,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
 
                 SetDefaultRenderTargets();
-                
+
                 if (RenderTechnique == deferred)
                 {
                     /// set G-Buffer                    
@@ -610,17 +615,16 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UpdateAndRender()
         {
             try
-            {
-                var t0 = renderTimer.Elapsed;
-
-                // Update all renderables before rendering 
-                // giving them the chance to invalidate the current render.
-                renderRenderable.Update(t0);
-
+            {                
                 if (pendingValidationCycles > 0)
                 {
                     var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
 
+                    var t0 = renderTimer.Elapsed;
+                    // Update all renderables before rendering 
+                    // giving them the chance to invalidate the current render.
+                    renderRenderable.Update(t0);
+                                        
                     // Safety check because of dispatcher deferred render call
                     if (surfaceD3D != null)
                     {
@@ -629,13 +633,13 @@ namespace HelixToolkit.Wpf.SharpDX
                             Render();
                         }
                         else
-                        {                           
+                        {
                             surfaceD3D.InvalidateD3DImage();
                         }
                     }
-                }
 
-                lastRenderingDuration = renderTimer.Elapsed - t0;
+                    lastRenderingDuration = renderTimer.Elapsed - t0;
+                }
             }
             catch (Exception ex)
             {

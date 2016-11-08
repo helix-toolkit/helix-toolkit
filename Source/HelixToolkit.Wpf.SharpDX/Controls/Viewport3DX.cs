@@ -654,7 +654,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             this.RenderHost = this.GetTemplateChild("PART_Canvas") as IRenderHost;
-
+            this.RenderHost.MSAA = this.MSAA;
             if (this.RenderHost != null)
             {
                 this.RenderHost.ExceptionOccurred += this.HandleRenderException;
