@@ -2362,6 +2362,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
+        /// </summary>
         public MSAALevel MSAA
         {
             get
