@@ -564,9 +564,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-                    this.device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-
                     renderRenderable.Render(renderContext);
                 }
             }
