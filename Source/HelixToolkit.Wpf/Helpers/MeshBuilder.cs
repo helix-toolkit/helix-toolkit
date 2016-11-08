@@ -714,33 +714,135 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// 
+        /// Generate a Dodecahedron
         /// </summary>
-        /// <param name="center"></param>
-        /// <param name="forward"></param>
-        /// <param name="up"></param>
-        /// <param name="sideLength"></param>
+        /// <param name="center">The Center of the Dodecahedron</param>
+        /// <param name="forward">The Direction to the first Point (normalized).</param>
+        /// <param name="up">The Up-Dirextion (normalized, perpendicular to the <see cref="forward"/> Direction)</param>
+        /// <param name="sideLength">Length of the Edges of the Dodecahedron</param>
         /// <remarks>
-        /// See: https://de.wikipedia.org/wiki/Dodekaeder for radius calculation,
-        /// Spherical coordinates:
-        /// http://mathworld.wolfram.com/SphericalCoordinates.html
+        /// See:
+        /// https://en.wikipedia.org/wiki/Dodecahedron
+        /// https://en.wikipedia.org/wiki/Pentagon
+        /// https://en.wikipedia.org/wiki/Isosceles_triangle
         /// </remarks>
         public void AddDodecahedron(Point3D center, Vector3D forward, Vector3D up, double sideLength)
         {
-            // Distance from the Center to the Dodekaeder-Points
-            /*var radius = 0.25 * Math.Sqrt(3) * (1 + Math.Sqrt(5)) * sideLength;
+            /// If points already exist in the MeshBuilder
+            var positionsCount = this.positions.Count;
 
-            var upVectorToBaseAngle = 3.0 / 5 * Math.PI;
-            var theta = upVectorToBaseAngle;
+            var right = Vector3D.CrossProduct(up, forward);
+            // Distance from the Center to the Dodekaeder-Points
+            var radiusSphere = 0.25 * Math.Sqrt(3) * (1 + Math.Sqrt(5)) * sideLength;
+            var radiusFace = 0.1 * Math.Sqrt(50 + 10 * Math.Sqrt(5)) * sideLength;
+            var vectorDown = Math.Sqrt(radiusSphere * radiusSphere - radiusFace * radiusFace);
+
+            // Add Points
+            var baseCenter = center - up * vectorDown;
+            var pentagonPoints = GetCircle(5, true);
+            // Base Points
+            var basePoints = new List<Point3D>();
+            foreach (var point in pentagonPoints)
+            {
+                var newPoint = baseCenter + forward * point.X * radiusFace + right * point.Y * radiusFace;
+                basePoints.Add(newPoint);
+                this.positions.Add(newPoint);
+            }
+            // Angle of Projected Isosceles triangle
+            var gamma = Math.Acos(1 - (sideLength * sideLength / (2 * radiusSphere * radiusSphere)));
+            // Base Upper Points
+            foreach (var point in basePoints)
+            {
+                var baseCenterToPoint = point - baseCenter;
+                baseCenterToPoint.Normalize();
+                var centerToPoint = point - center;
+                centerToPoint.Normalize();
+                var tempRight = Vector3D.CrossProduct(up, baseCenterToPoint);
+                var newPoint = new Point3D(radiusSphere * Math.Cos(gamma), 0, radiusSphere * Math.Sin(gamma));
+                var tempUp = Vector3D.CrossProduct(centerToPoint, tempRight);
+                this.positions.Add(center + centerToPoint * newPoint.X + tempUp * newPoint.Z);
+            }
+
+            // Top Points
+            var topCenter = center + up * vectorDown;
+            var topPoints = new List<Point3D>();
+            foreach (var point in pentagonPoints)
+            {
+                var newPoint = topCenter - forward * point.X * radiusFace + right * point.Y * radiusFace;
+                topPoints.Add(newPoint);
+            }
+            // Top Lower Points
+            foreach (var point in topPoints)
+            {
+                var topCenterToPoint = point - topCenter;
+                topCenterToPoint.Normalize();
+                var centerToPoint = point - center;
+                centerToPoint.Normalize();
+                var tempRight = Vector3D.CrossProduct(up, topCenterToPoint);
+                var newPoint = new Point3D(radiusSphere * Math.Cos(gamma), 0, radiusSphere * Math.Sin(gamma));
+                var tempUp = Vector3D.CrossProduct(tempRight, centerToPoint);
+                this.positions.Add(center + centerToPoint * newPoint.X + tempUp * newPoint.Z);
+            }
+            // Add top Points at last
+            foreach (var point in topPoints)
+            {
+                this.positions.Add(point);                
+            }
+
+            // Add Normals if wanted
+            if (this.normals != null)
+            {
+                for(int i = positionsCount; i < this.positions.Count; i++)
+                {
+                    var centerToPoint = this.positions[i] - center;
+                    centerToPoint.Normalize();
+                    this.normals.Add(centerToPoint);
+                }
+            }
+
+            // Add Texture Coordinates
+            if (this.textureCoordinates != null)
+            {
+                for (int i = positionsCount; i < this.positions.Count; i++)
+                {
+                    var centerToPoint = this.positions[i] - center;
+                    centerToPoint.Normalize();
+                    var cTPUpValue = Vector3D.DotProduct(centerToPoint, up);
+                    var planeCTP = centerToPoint - up * cTPUpValue;
+                    planeCTP.Normalize();
+                    var u = Math.Atan2(Vector3D.DotProduct(planeCTP, forward), Vector3D.DotProduct(planeCTP, right));
+                    var v = cTPUpValue * 0.5 + 0.5;
+                    this.textureCoordinates.Add(new Point(u, v));
+                }
+            }
+
+            // Add Faces
+            // Base Polygon
+            this.AddPolygonByTriangulation(this.positions.Skip(positionsCount).Take(5).Select((p, i) => i).ToList());
+            // Top Polygon
+            this.AddPolygonByTriangulation(this.positions.Skip(positionsCount + 15).Select((p, i) => 15 + i).ToList());
+            // SidePolygons
             for (int i = 0; i < 5; i++)
             {
-                var phi = Math.PI * 2 * i / 5;
-                double x = Math.Cos(theta) * Math.Sin(phi);
-                double y = Math.Sin(theta) * Math.Sin(phi);
-                double z = Math.Cos(phi);
+                // Polygon one
+                var pIndices = new List<int>() {
+                    (i + 1) % 5 + positionsCount,
+                    i, i + 5 + positionsCount,
+                    (5 - i + 2) % 5 + 10 + positionsCount,
+                    (i + 1) % 5 + 5 + positionsCount
+                };
+                this.AddPolygonByTriangulation(pIndices);
 
-                this.positions.Add(center + new Vector3D(x, y, z));
-            }*/
+                // Polygon two
+                pIndices = new List<int>() {
+                    i + 15 + positionsCount,
+                    i + 10 + positionsCount,
+                    (5 - i + 2) % 5 + 5 + positionsCount,
+                    (i + 1) % 5 + 10 + positionsCount,
+                    (i + 1) % 5 + 15 + positionsCount
+                };
+                this.AddPolygonByTriangulation(pIndices);
+            }
         }
 
         /// <summary>
@@ -3301,6 +3403,7 @@ namespace HelixToolkit.Wpf
         /// <param name="phiDiv">The number of subdividions of the torus' "tube.</param>
         public void AddTorus(double torusDiameter, double tubeDiameter, int thetaDiv = 36, int phiDiv = 24)
         {
+            var positionsCount = this.positions.Count;
             // No Torus Diameter means we treat the Visual3D like a Sphere
             if (torusDiameter == 0.0)
             {
@@ -3425,13 +3528,13 @@ namespace HelixToolkit.Wpf
                         for (int j = 0; j < phiDiv; j++)
                         {
                             var jNext = (j + 1) % phiDiv;
-                            this.triangleIndices.Add(firstPointIdx + j);
-                            this.triangleIndices.Add(firstPointIdx + jNext);
-                            this.triangleIndices.Add(firstPointIdxNextCircle + j);
+                            this.triangleIndices.Add(firstPointIdx + j + positionsCount);
+                            this.triangleIndices.Add(firstPointIdx + jNext + positionsCount);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j + positionsCount);
 
-                            this.triangleIndices.Add(firstPointIdxNextCircle + j);
-                            this.triangleIndices.Add(firstPointIdx + jNext);
-                            this.triangleIndices.Add(firstPointIdxNextCircle + jNext);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j + positionsCount);
+                            this.triangleIndices.Add(firstPointIdx + jNext + positionsCount);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + jNext + positionsCount);
                         }
                     }
                     // Selfintersecting Torus
@@ -3453,13 +3556,13 @@ namespace HelixToolkit.Wpf
                         // Add Triangles between the "middle" Parts of the neighboring Cross-Sections
                         for (int j = 1; j < phiDiv - 2; j++)
                         {
-                            this.triangleIndices.Add(firstPointIdx + j - 1);
-                            this.triangleIndices.Add(firstPointIdxNextCircle + j - 1);
-                            this.triangleIndices.Add(firstPointIdx + j);
+                            this.triangleIndices.Add(firstPointIdx + j - 1 + positionsCount);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j - 1 + positionsCount);
+                            this.triangleIndices.Add(firstPointIdx + j + positionsCount);
 
-                            this.triangleIndices.Add(firstPointIdxNextCircle + j - 1);
-                            this.triangleIndices.Add(firstPointIdxNextCircle + j);
-                            this.triangleIndices.Add(firstPointIdx + j);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j - 1 + positionsCount);
+                            this.triangleIndices.Add(firstPointIdxNextCircle + j + positionsCount);
+                            this.triangleIndices.Add(firstPointIdx + j + positionsCount);
                         }
                     }
                 }
@@ -3474,33 +3577,33 @@ namespace HelixToolkit.Wpf
                     {
                         if (i == 0)
                         {
-                            verts.Add(1);
+                            verts.Add(1 + positionsCount);
                         }
                         else
                         {
-                            verts.Add(phiDiv + (i - 1) * (phiDiv - 2));
+                            verts.Add(phiDiv + (i - 1) * (phiDiv - 2) + positionsCount);
                         }
                     }
-                    verts.Add(1);
+                    verts.Add(1 + positionsCount);
                     verts.Reverse();
                     AddTriangleFan(verts);
 
                     // Add top Cap by creating a List of Vertex-Indices
                     // and using them to create a Triangle-Fan
                     verts = new List<int>();
-                    verts.Add(phiDiv - 1);
+                    verts.Add(phiDiv - 1 + positionsCount);
                     for (int i = 0; i < thetaDiv; i++)
                     {
                         if (i == 0)
                         {
-                            verts.Add(phiDiv - 2);
+                            verts.Add(phiDiv - 2 + positionsCount);
                         }
                         else
                         {
-                            verts.Add(phiDiv + i * (phiDiv - 2) - 1);
+                            verts.Add(phiDiv + i * (phiDiv - 2) - 1 + positionsCount);
                         }
                     }
-                    verts.Add(phiDiv - 2);
+                    verts.Add(phiDiv - 2 + positionsCount);
                     AddTriangleFan(verts);
                 }
             }
