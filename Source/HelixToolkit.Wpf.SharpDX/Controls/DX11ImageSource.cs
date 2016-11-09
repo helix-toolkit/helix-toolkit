@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using global::SharpDX.Direct3D9;
+    using System.Threading;
 
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
 // 
@@ -51,13 +52,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.adapterIndex = adapterIndex;
             this.StartD3D();
-            activeClients++;
+            Interlocked.Increment(ref adapterIndex);
         }
 
         public void Dispose()
         {
             this.SetRenderTargetDX11(null);
-            activeClients--;
+            Interlocked.Decrement(ref adapterIndex);
             this.EndD3D();
         }
 
