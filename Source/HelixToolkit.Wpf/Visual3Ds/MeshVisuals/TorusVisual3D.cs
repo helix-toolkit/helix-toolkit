@@ -81,7 +81,7 @@
 
             set
             {
-                if (value >= 4)
+                if (value >= 3)
                     this.SetValue(ThetaDivProperty, value);
             }
         }
@@ -99,7 +99,7 @@
 
             set
             {
-                if (value >= 4)
+                if (value >= 3)
                     this.SetValue(PhiDivProperty, value);
             }
         }
