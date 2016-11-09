@@ -52,13 +52,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.adapterIndex = adapterIndex;
             this.StartD3D();
-            Interlocked.Increment(ref adapterIndex);
+            Interlocked.Increment(ref activeClients);
         }
 
         public void Dispose()
         {
             this.SetRenderTargetDX11(null);
-            Interlocked.Decrement(ref adapterIndex);
+            Interlocked.Decrement(ref activeClients);
             this.EndD3D();
         }
 
