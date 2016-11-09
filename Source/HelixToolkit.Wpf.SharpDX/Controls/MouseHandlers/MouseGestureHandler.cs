@@ -156,6 +156,16 @@ namespace HelixToolkit.Wpf.SharpDX
         private Cursor OldCursor { get; set; }
 
         /// <summary>
+        /// Use to limit the mouse move event frequency
+        /// </summary>
+        private readonly Stopwatch watch = new Stopwatch();
+
+        /// <summary>
+        /// Previous mouse event time
+        /// </summary>
+        private long previousMS = 0;
+
+        /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">
@@ -312,6 +322,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
         {
+            previousMS = 0;
+            watch.Start();
             this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
 
             this.OldCursor = this.Viewport.Cursor;
@@ -329,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.Viewport.RenderHost.IsBusy)
+            if (watch.ElapsedMilliseconds - previousMS >= 15 && !this.Viewport.RenderHost.IsBusy)
             {
                 this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
             }
@@ -346,6 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
+            watch.Stop();
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.ReleaseMouseCapture();
