@@ -343,6 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (watch.ElapsedMilliseconds - previousMS >= 15 && !this.Viewport.RenderHost.IsBusy)
             {
+                previousMS = watch.ElapsedMilliseconds;
                 this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
             }
         }
