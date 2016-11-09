@@ -179,6 +179,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
+        private DispatcherOperation pendingInvalidateOperation = null;
+
+        /// <summary>
+        /// 
+        /// </summary>
         static DPFCanvas()
         {
             StretchProperty.OverrideMetadata(typeof(DPFCanvas), new FrameworkPropertyMetadata(Stretch.Fill));
@@ -203,9 +208,33 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
+            //Use pendingInvalidateOperation to check if there is a pending operation.
+            if (pendingInvalidateOperation != null)
+            {
+                if (pendingInvalidateOperation.Status == DispatcherOperationStatus.Pending)
+                {
+                    //If there is a pending invalidation operation, try to set cycle to 2.
+                    //Does not matter if it is failed or not, since the pending one will eventually invalidate.
+                    //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
+                    System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
+                    return;
+                }
+                else
+                {
+                    pendingInvalidateOperation = null;
+                }
+            }
             // For some reason, we need two render cycles to recover from 
             // UAC popup or sleep when MSAA is enabled.
-            System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
+            if (System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0) != 0)
+            {
+                //If invalidate failed, schedule an async operation to invalidate in future
+                pendingInvalidateOperation
+                    = Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        InvalidateRender();
+                    }), DispatcherPriority.Background);
+            }
         }
 
 
