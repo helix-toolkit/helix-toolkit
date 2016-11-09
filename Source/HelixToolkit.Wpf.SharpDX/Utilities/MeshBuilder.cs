@@ -21,6 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Ray3D = global::SharpDX.Ray;
     using Ray = global::SharpDX.Ray;
     using Rect3D = System.Windows.Media.Media3D.Rect3D;
+    using System.Collections.Concurrent;
 
     // TODO
     //[Flags]
@@ -142,11 +143,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The circle cache.
         /// </summary>
-        private static readonly Dictionary<int, IList<Vector2>> CircleCache = new Dictionary<int, IList<Vector2>>();
+        private static readonly ConcurrentDictionary<int, IList<Vector2>> CircleCache = new ConcurrentDictionary<int, IList<Vector2>>();
         /// <summary>
         /// The circle cache.
         /// </summary>
-        private static readonly Dictionary<int, IList<Vector2>> ClosedCircleCache = new Dictionary<int, IList<Vector2>>();
+        private static readonly ConcurrentDictionary<int, IList<Vector2>> ClosedCircleCache = new ConcurrentDictionary<int, IList<Vector2>>();
 
         /// <summary>
         /// The unit sphere cache.
@@ -581,11 +582,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Add to the cache
                 if (!closed)
                 {
-                    CircleCache.Add(thetaDiv, circle);
+                    CircleCache.TryAdd(thetaDiv, circle);
                 }
                 else
                 {
-                    ClosedCircleCache.Add(thetaDiv, circle);
+                    ClosedCircleCache.TryAdd(thetaDiv, circle);
                 }
                 // Determine the angle steps
                 var num = closed ? thetaDiv : thetaDiv - 1;
@@ -596,8 +597,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
-            return circle;
+            // Since Vector2Collection is not Freezable,
+            // return new IList<Vector> to avoid manipulation of the Cached Values
+            IList<Vector2> result = null;
+            foreach (var point in circle)
+            {
+                result.Add(new Vector2(point.X, point.Y));
+            }
+            return result;
         }
+        
         /// <summary>
         /// Gets a circle segment section.
         /// </summary>
