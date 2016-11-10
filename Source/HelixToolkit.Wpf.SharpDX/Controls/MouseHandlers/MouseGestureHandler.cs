@@ -341,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (watch.ElapsedMilliseconds - previousMS >= 15 && !this.Viewport.RenderHost.IsBusy)
+            if (watch.ElapsedMilliseconds - previousMS >= 15)
             {
                 previousMS = watch.ElapsedMilliseconds;
                 this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));

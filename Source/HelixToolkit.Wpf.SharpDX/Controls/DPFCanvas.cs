@@ -180,7 +180,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         private DispatcherOperation pendingInvalidateOperation = null;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly Action invalidAction;
         /// <summary>
         /// 
         /// </summary>
@@ -201,6 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
             MSAA = MSAALevel.Maximum;
+            invalidAction = new Action(InvalidateRender);
         }
 
         /// <summary>
@@ -208,21 +212,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
+          //  System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
+
             //Use pendingInvalidateOperation to check if there is a pending operation.
             if (pendingInvalidateOperation != null)
             {
-                if (pendingInvalidateOperation.Status == DispatcherOperationStatus.Pending)
+                switch (pendingInvalidateOperation.Status)
                 {
-                    //If there is a pending invalidation operation, try to set cycle to 2.
-                    //Does not matter if it is failed or not, since the pending one will eventually invalidate.
-                    //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
-                    System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
-                    return;
+                    case DispatcherOperationStatus.Pending:
+                        //If there is a pending invalidation operation, try to set cycle to 2.
+                        //Does not matter if it is failed or not, since the pending one will eventually invalidate.
+                        //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
+                        System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
+                        return;
+                    case DispatcherOperationStatus.Executing:
+                        pendingInvalidateOperation.Abort();
+                        break;
                 }
-                else
-                {
-                    pendingInvalidateOperation = null;
-                }
+                pendingInvalidateOperation = null;
             }
             // For some reason, we need two render cycles to recover from 
             // UAC popup or sleep when MSAA is enabled.
@@ -230,10 +237,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 //If invalidate failed, schedule an async operation to invalidate in future
                 pendingInvalidateOperation
-                    = Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        InvalidateRender();
-                    }), DispatcherPriority.Background);
+                    = Dispatcher.BeginInvoke(invalidAction, DispatcherPriority.Background);
             }
         }
 
