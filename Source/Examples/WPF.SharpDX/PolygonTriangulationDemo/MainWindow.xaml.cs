@@ -111,8 +111,8 @@ namespace PolygonTriangulationDemo
             }
             var holes = new List<List<Vector2>>();
             var offset = new Vector2(random.NextFloat(-2, 2), random.NextFloat(-2, 2));
-            holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + offset).ToList());
-            //holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + new Vector2(0.4562409f-1, 0.978230834f)).ToList());
+            holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + new Vector2(.5f, .5f)).ToList());
+            //holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + new Vector2(-2, -2)).ToList());
 
             // Triangulate and measure the Time needed for the Triangulation
             var before = DateTime.Now;

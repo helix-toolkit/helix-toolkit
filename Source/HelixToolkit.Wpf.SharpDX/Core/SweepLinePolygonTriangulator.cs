@@ -77,92 +77,86 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var poly = new PolygonData(polygon.ToList());
-            List<PolygonData> polygonsWithoutHoles = new List<PolygonData>(){ poly };
             var holeCount = 0;
+            var events = new List<PolygonPoint>();
+            var mapping = new Dictionary<int, int>();
             while (holeCount < ((holes == null) ? 0 : holes.Count))
             {
-                var polyToUse = polygonsWithoutHoles[0];
-                polygonsWithoutHoles.Remove(polyToUse);
-                polyToUse.AddHole(holes[holeCount]);
+                poly.AddHole(holes[holeCount]);
 
                 // Sort Points from highest y to lowest y
                 // and if two or more Points have the same y Value from lowest x to highest x Value
-                var events = new List<PolygonPoint>(polyToUse.Points);
+                events = new List<PolygonPoint>(poly.Points);
                 events.Sort();
 
                 // Mapping from the main Polygon to the current Polygon
-                var mapping = new Dictionary<int, int>();
-                for (int i = 0; i < polyToUse.Points.Count; i++)
+                mapping = new Dictionary<int, int>();
+                for (int i = 0; i < poly.Points.Count; i++)
                 {
-                    mapping[polyToUse.Points[i].Index] = i;
+                    mapping[poly.Points[i].Index] = i;
                 }
 
                 var first = CalculateDiagonals(events, mapping, true, true)[0];
-                events.Reverse();
-                var second = CalculateDiagonals(events, mapping, false, true)[0];
 
-                polygonsWithoutHoles.AddRange(SplitPolygonWithHole(polyToUse, first, second));
+                poly = MergeHoleIntoPolygon(poly, first);
                 holeCount++;
             }
 
-            foreach (var simplePolygon in polygonsWithoutHoles)
+            // Sort Points from highest y to lowest y
+            // and if two or more Points have the same y Value from lowest x to highest x Value
+            events = new List<PolygonPoint>(poly.Points);
+            events.Sort();
+            mapping = new Dictionary<int, int>();
+            for (int i = 0; i < poly.Points.Count; i++)
             {
-                // Sort Points from highest y to lowest y
-                // and if two or more Points have the same y Value from lowest x to highest x Value
-                var events = new List<PolygonPoint>(simplePolygon.Points);
-                events.Sort();
-                var mapping = new Dictionary<int, int>();
-                for (int i = 0; i < simplePolygon.Points.Count; i++)
-                {
-                    mapping[simplePolygon.Points[i].Index] = i;
-                }
+                mapping[poly.Points[i].Index] = i;
+            }
 
-                // Calculate the Diagonals in the Down Sweep
-                var diagonals = CalculateDiagonals(events, mapping);
+            // Calculate the Diagonals in the Down Sweep
+            var diagonals = CalculateDiagonals(events, mapping);
+
+            // Split the Polygon
+            var subPolygons = SplitPolygonWithDiagonals(poly, diagonals);
+
+            var monotonePolygons = new List<PolygonData>();
+            // Up Sweep for all Sub-Polygons
+            foreach (var subPoly in subPolygons)
+            {
+                // Sort the Events from Bottom to Top
+                events = new List<PolygonPoint>(subPoly.Points);
+                events.Sort();
+                events.Reverse();
+
+                // Mapping from the main Polygon to the current Polygon
+                mapping = new Dictionary<int, int>();
+                for (int i = 0; i < subPoly.Points.Count; i++)
+                {
+                    mapping[subPoly.Points[i].Index] = i;
+                }
+                // Calculate the Diagonals in the Up Sweep
+                diagonals = CalculateDiagonals(events, mapping, false);
 
                 // Split the Polygon
-                var subPolygons = SplitPolygonWithDiagonals(simplePolygon, diagonals);
+                var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, diagonals);
+                // Add to List of monotone Polygons
+                monotonePolygons.AddRange(monotoneSubPolygons);
+            }
 
-                var monotonePolygons = new List<PolygonData>();
-                // Up Sweep for all Sub-Polygons
-                foreach (var subPoly in subPolygons)
+            // y-Monotone Polygons
+            // Triangulate
+            foreach (var monoton in monotonePolygons)
+            {
+                result.AddRange(TriangulateMonotone(monoton));
+            }
+
+            // If we reversed the Polygon,
+            // we need to reverse the result also to get a correct Triangulation
+            if (didReverse)
+            {
+                // Transform back every calculated Index
+                for (int i = 0; i < result.Count; i++)
                 {
-                    // Sort the Events from Bottom to Top
-                    events = new List<PolygonPoint>(subPoly.Points);
-                    events.Sort();
-                    events.Reverse();
-
-                    // Mapping from the main Polygon to the current Polygon
-                    mapping = new Dictionary<int, int>();
-                    for (int i = 0; i < subPoly.Points.Count; i++)
-                    {
-                        mapping[subPoly.Points[i].Index] = i;
-                    }
-                    // Calculate the Diagonals in the Up Sweep
-                    diagonals = CalculateDiagonals(events, mapping, false);
-
-                    // Split the Polygon
-                    var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, diagonals);
-                    // Add to List of monotone Polygons
-                    monotonePolygons.AddRange(monotoneSubPolygons);
-                }
-
-                // y-Monotone Polygons
-                // Triangulate
-                foreach (var monoton in monotonePolygons)
-                {
-                    result.AddRange(TriangulateMonotone(monoton));
-                }
-
-                // If we reversed the Polygon,
-                // we need to reverse the result also to get a correct Triangulation
-                if (didReverse)
-                {
-                    // Transform back every calculated Index
-                    for (int i = 0; i < result.Count; i++)
-                    {
-                        result[i] = count - result[i] - 1;
-                    }
+                    result[i] = count - result[i] - 1;
                 }
             }
 
@@ -450,22 +444,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="firstDiagonal">First found Diagonal (from top to bottom)</param>
         /// <param name="secondDiagonal">First found Diagonal (from bottom to top)</param>
         /// <returns></returns>
-        private static PolygonData[] SplitPolygonWithHole(PolygonData poly, Tuple<int, int> firstDiagonal, Tuple<int, int> secondDiagonal)
+        private static PolygonData MergeHoleIntoPolygon(PolygonData poly, Tuple<int, int> diagonal)
         {
-            // The two split Polygons
-            var result = new PolygonData[2];
-
+            PolygonData newPoly = null;
             // Create the first SubPolygon
-            var firstSubPolygonPoints = poly.GetEdgePoints(secondDiagonal.Item1, firstDiagonal.Item1);
-            firstSubPolygonPoints.AddRange(poly.GetEdgePoints(firstDiagonal.Item2, secondDiagonal.Item2));
-            result[0] = new PolygonData(firstSubPolygonPoints);
+            var polygonPoints = poly.GetEdgePoints(diagonal.Item1, diagonal.Item1);
+            polygonPoints.AddRange(poly.GetEdgePoints(diagonal.Item2, diagonal.Item2));
+            newPoly = new PolygonData(polygonPoints);
 
-            // Create the second SubPolygon
-            var secondSubPolygonPoints = poly.GetEdgePoints(firstDiagonal.Item1, secondDiagonal.Item1);
-            secondSubPolygonPoints.AddRange(poly.GetEdgePoints(secondDiagonal.Item2, firstDiagonal.Item2));
-            result[1] = new PolygonData(secondSubPolygonPoints);
-
-            return result;
+            return newPoly;
         }
 
         /// <summary>
@@ -996,7 +983,9 @@ namespace HelixToolkit.Wpf.SharpDX
             // If no Indices were specified, add them manually
             if (indices == null)
                 for (int i = 0; i < mPoints.Count; i++)
+                {
                     mPoints[i].Index = i;
+                }
             // If there were Indices specified, use them to set the PolygonPoint's Index Property
             else
                 for (int i = 0; i < mPoints.Count; i++)
@@ -1044,7 +1033,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // Add the Indices
             for (int i = cntBefore; i < mPoints.Count; i++)
+            {
                 polyPoints[i - cntBefore].Index = i;
+            }
             
             // Add Edges between the Points (to be able to navigate along the Polygon easily later)
             var cnt = mPoints.Count;
@@ -1067,11 +1058,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var result = new List<PolygonPoint>();
             var currentPoint = mPoints.FirstOrDefault(p => p.Index == from);
-            while(currentPoint.Index != to)
+            do
             {
                 result.Add(currentPoint);
                 currentPoint = currentPoint.Next;
             }
+            while (currentPoint.Index != to) ;
             result.Add(currentPoint);
             return result;
         }
