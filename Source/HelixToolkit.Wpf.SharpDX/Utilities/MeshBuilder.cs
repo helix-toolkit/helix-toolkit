@@ -599,7 +599,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // Since Vector2Collection is not Freezable,
             // return new IList<Vector> to avoid manipulation of the Cached Values
-            IList<Vector2> result = null;
+            IList<Vector2> result = new List<Vector2>();
             foreach (var point in circle)
             {
                 result.Add(new Vector2(point.X, point.Y));
