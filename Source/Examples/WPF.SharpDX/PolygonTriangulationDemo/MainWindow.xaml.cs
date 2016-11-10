@@ -22,10 +22,12 @@ namespace PolygonTriangulationDemo
         /// List of Polygon Points to display
         /// </summary>
         List<Vector2> mPolygonPoints;
+        
         /// <summary>
         /// The ViewModel
         /// </summary>
         MainViewModel mViewModel;
+        
         /// <summary>
         /// Constructor for the MainWindow
         /// </summary>
@@ -95,29 +97,33 @@ namespace PolygonTriangulationDemo
             var radius = 4f;
             // Random Radii for the Polygon
             var radii = new List<float>();
+            var innerRadii = new List<float>();
             for (int i = 0; i < cnt; i++)
             {
-                radii.Add(radius + random.NextFloat(-radius, radius));
+                radii.Add(radius + random.NextFloat(-radius / 10, radius / 10));
+                innerRadii.Add(radius/2 + random.NextFloat(-radius / 10, radius / 10));
             }
+            var hole = new List<Vector2>();
             for (int i = 0; i < cnt; i++)
             {
-                var last = i > 0 ? i - 1 : cnt - 1;
-                var next = i < cnt - 1 ? i + 1 : 0;
                 // Flatten a bit
-                var radiusUse = radii[last] * 0.25f + radii[i] * 0.5f + radii[next] * 0.25f;
+                var radiusUse = radii[i];
                 mPolygonPoints.Add(new Vector2(radiusUse * (Single)Math.Cos(angle), radiusUse * (Single)Math.Sin(angle)));
+                hole.Add(new Vector2(innerRadii[i] * (Single)Math.Cos(angle), innerRadii[i] * (Single)Math.Sin(angle)));
                 angle += angleDiff;
             }
+            var holes = new List<List<Vector2>>() { hole };
+
             // Triangulate and measure the Time needed for the Triangulation
             var before = DateTime.Now;
-            var sLTI = SweepLinePolygonTriangulator.Triangulate(mPolygonPoints);
+            var sLTI = SweepLinePolygonTriangulator.Triangulate(mPolygonPoints, holes);
             var after = DateTime.Now;
             
             // Generate the Output
             var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
             geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
             geometry.Normals = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
-            foreach (var point in mPolygonPoints)
+            foreach (var point in mPolygonPoints.Union(holes.SelectMany(h => h)))
             {
                 geometry.Positions.Add(new Vector3(point.X, 0, point.Y + 5));
                 geometry.Normals.Add(new Vector3(0, 1, 0));
