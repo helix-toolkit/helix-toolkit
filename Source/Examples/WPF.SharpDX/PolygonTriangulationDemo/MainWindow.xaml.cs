@@ -90,18 +90,16 @@ namespace PolygonTriangulationDemo
         {
             // Generate random Polygon
             var random = new Random();
-            var cnt = mViewModel.PointCount;
+            var cnt = /*mViewModel.PointCount*/12;
             mPolygonPoints = new List<Vector2>();
             var angle = 0f;
             var angleDiff = 2f * (Single)Math.PI / cnt;
             var radius = 4f;
             // Random Radii for the Polygon
             var radii = new List<float>();
-            var innerRadii = new List<float>();
             for (int i = 0; i < cnt; i++)
             {
-                radii.Add(radius + random.NextFloat(-radius / 10, radius / 10));
-                innerRadii.Add(radius/2 + random.NextFloat(-radius / 10, radius / 10));
+                radii.Add(radius/* + random.NextFloat(-radius / 10, radius / 10)*/);
             }
             var hole = new List<Vector2>();
             for (int i = 0; i < cnt; i++)
@@ -109,10 +107,12 @@ namespace PolygonTriangulationDemo
                 // Flatten a bit
                 var radiusUse = radii[i];
                 mPolygonPoints.Add(new Vector2(radiusUse * (Single)Math.Cos(angle), radiusUse * (Single)Math.Sin(angle)));
-                hole.Add(new Vector2(innerRadii[i] * (Single)Math.Cos(angle), innerRadii[i] * (Single)Math.Sin(angle)));
                 angle += angleDiff;
             }
-            var holes = new List<List<Vector2>>() { hole };
+            var holes = new List<List<Vector2>>();
+            var offset = new Vector2(random.NextFloat(-2, 2), random.NextFloat(-2, 2));
+            holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + offset).ToList());
+            //holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + new Vector2(0.4562409f-1, 0.978230834f)).ToList());
 
             // Triangulate and measure the Time needed for the Triangulation
             var before = DateTime.Now;

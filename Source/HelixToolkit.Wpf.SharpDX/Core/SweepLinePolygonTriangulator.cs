@@ -76,45 +76,42 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
-            // Create Polygon Data Structure
-            var poly = new PolygonData(points);
-            if (holes != null)
+            var poly = new PolygonData(polygon.ToList());
+            List<PolygonData> polygonsWithoutHoles = new List<PolygonData>(){ poly };
+            var holeCount = 0;
+            while (holeCount < ((holes == null) ? 0 : holes.Count))
             {
-                foreach (var hole in holes)
+                var polyToUse = polygonsWithoutHoles[0];
+                polygonsWithoutHoles.Remove(polyToUse);
+                polyToUse.AddHole(holes[holeCount]);
+
+                // Sort Points from highest y to lowest y
+                // and if two or more Points have the same y Value from lowest x to highest x Value
+                var events = new List<PolygonPoint>(polyToUse.Points);
+                events.Sort();
+
+                // Mapping from the main Polygon to the current Polygon
+                var mapping = new Dictionary<int, int>();
+                for (int i = 0; i < polyToUse.Points.Count; i++)
                 {
-                    poly.AddHole(hole);
+                    mapping[polyToUse.Points[i].Index] = i;
                 }
-            }
 
-            // Sort Points from highest y to lowest y
-            // and if two or more Points have the same y Value from lowest x to highest x Value
-            var events = new List<PolygonPoint>(poly.Points);
-            events.Sort();
-
-            // Mapping from the main Polygon to the current Polygon
-            var mapping = new Dictionary<int, int>();
-            for (int i = 0; i < count; i++)
-            {
-                mapping[i] = i;
-            }
-
-            var polygonsWithoutHoles = new List<PolygonData>() { poly };
-            if (poly.HasHoles)
-            {
                 var first = CalculateDiagonals(events, mapping, true, true)[0];
                 events.Reverse();
                 var second = CalculateDiagonals(events, mapping, false, true)[0];
 
-                polygonsWithoutHoles = SplitPolygonWithHole(poly, first, second).ToList();
+                polygonsWithoutHoles.AddRange(SplitPolygonWithHole(polyToUse, first, second));
+                holeCount++;
             }
 
             foreach (var simplePolygon in polygonsWithoutHoles)
             {
                 // Sort Points from highest y to lowest y
                 // and if two or more Points have the same y Value from lowest x to highest x Value
-                events = new List<PolygonPoint>(simplePolygon.Points);
+                var events = new List<PolygonPoint>(simplePolygon.Points);
                 events.Sort();
-                mapping = new Dictionary<int, int>();
+                var mapping = new Dictionary<int, int>();
                 for (int i = 0; i < simplePolygon.Points.Count; i++)
                 {
                     mapping[simplePolygon.Points[i].Index] = i;
@@ -958,17 +955,26 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Does the PolygonData Object have Holes inside or not
-        /// </summary>
-        private Boolean mHasHoles;
-
-        /// <summary>
-        /// Accessor for the HasHoles Indicator
+        /// Are there Holes present
         /// </summary>
         public Boolean HasHoles
         {
-            get { return mHasHoles; }
+            get { return mHoles.Count > 0; }
         }
+
+        /// <summary>
+        /// The Holes of the Polygon
+        /// </summary>
+        private List<List<PolygonPoint>> mHoles;
+
+        /// <summary>
+        /// Access to the Holes
+        /// </summary>
+        public List<List<PolygonPoint>> Holes
+        {
+            get { return mHoles; }
+        }
+
 
         /// <summary>
         /// Number of initial Points on the Polygon Boundary
@@ -982,9 +988,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="indices">Optional List of Point-Indices</param>
         public PolygonData(List<Point> points, List<int> indices = null)
         {
-            // Create and add PolygonPoints for this Polygon Object
+            // Initialize
             mPoints = new List<PolygonPoint>(points.Select(p => new PolygonPoint(p)));
-            mHasHoles = false;
+            mHoles = new List<List<PolygonPoint>>();
             mNumBoundaryPoints = mPoints.Count;
             
             // If no Indices were specified, add them manually
@@ -1022,8 +1028,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="points">The Points that define the Hole in the Polygon</param>
         internal void AddHole(List<Point> points)
         {
-            // Set to true
-            mHasHoles = true;
+            // The Hole Points
+            var polyPoints = points.Select(p => new PolygonPoint(p) { IsBoundary = false }).ToList();
+            mHoles.Add(polyPoints);
 
             // Make Hole Clockwise
             if (SweepLinePolygonTriangulator.IsCCW(points))
@@ -1033,20 +1040,20 @@ namespace HelixToolkit.Wpf.SharpDX
             var cntBefore = mPoints.Count;
             var pointCount = points.Count;
             // Add the PolygonPoints for this Polygon Object
-            mPoints.AddRange(points.Select(p => new PolygonPoint(p) { IsBoundary = false }));
+            mPoints.AddRange(polyPoints);
 
             // Add the Indices
             for (int i = cntBefore; i < mPoints.Count; i++)
-                mPoints[i].Index = i;
+                polyPoints[i - cntBefore].Index = i;
             
             // Add Edges between the Points (to be able to navigate along the Polygon easily later)
             var cnt = mPoints.Count;
             for (int i = 0; i < pointCount; i++)
             {
-                var lastIdx = (i + pointCount  - 1) % pointCount + cntBefore;
-                var edge = new PolygonEdge(mPoints[lastIdx], mPoints[i + cntBefore]);
-                mPoints[lastIdx].EdgeTwo = edge;
-                mPoints[i + cntBefore].EdgeOne = edge;
+                var lastIdx = (i + pointCount  - 1) % pointCount;
+                var edge = new PolygonEdge(polyPoints[lastIdx], polyPoints[i]);
+                polyPoints[lastIdx].EdgeTwo = edge;
+                polyPoints[i].EdgeOne = edge;
             }
         }
 
