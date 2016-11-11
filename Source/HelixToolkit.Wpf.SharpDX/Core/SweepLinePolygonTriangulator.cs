@@ -1104,50 +1104,5 @@ namespace HelixToolkit.Wpf.SharpDX
                 polyPoints[i].EdgeOne = edge;
             }
         }
-
-        /// <summary>
-        /// Get all Points (including) between the Points with the provided Indices.
-        /// </summary>
-        /// <param name="from">Startpoint</param>
-        /// <param name="to">Endpoint</param>
-        /// <returns>List of PolygonPoints between the two Points</returns>
-        internal List<PolygonPoint> GetEdgePoints(int from, int to)
-        {
-            var result = new List<PolygonPoint>();
-            var currentPoint = mPoints.FirstOrDefault(p => p.Index == from);
-            do
-            {
-                result.Add(currentPoint);
-                currentPoint = currentPoint.Next;
-            }
-            while (currentPoint.Index != to) ;
-            result.Add(currentPoint);
-            return result;
-        }
-
-        /// <summary>
-        /// Check if two Points defined by their Indices are connected
-        /// </summary>
-        /// <param name="from">The First Point Index</param>
-        /// <param name="to">The second Point Index</param>
-        /// <returns></returns>
-        /*internal Boolean Connected(int from, int to)
-        {
-            // Save the visited Points (to be able to abort the Search)
-            var visited = new HashSet<int>();
-            // Get the first Point
-            var currentPoint = mPoints.FirstOrDefault(p => p.Index == from);
-            // Loop until the Point was found or the Point already exists in the visited List
-            while (!visited.Contains(currentPoint.Index) && currentPoint.Index != to)
-            {
-                visited.Add(currentPoint.Index);
-                currentPoint = currentPoint.Next;
-            }
-            // If the current Point has the searched Index, they are connected
-            if (currentPoint.Index == to)
-                return true;
-            // Not connected
-            return false;
-        }*/
     }
 }
