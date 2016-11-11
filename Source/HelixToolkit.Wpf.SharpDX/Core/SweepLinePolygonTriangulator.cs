@@ -404,18 +404,34 @@ namespace HelixToolkit.Wpf.SharpDX
                 return new List<PolygonData>() { poly };
 
             diagonals = diagonals.OrderBy(d => d.Item1).ThenBy(d => d.Item2).ToList();
-            var edges = new HashSet<PolygonEdge>(poly.Points.Select(p => p.EdgeTwo)
+            var edges = new Dictionary<int, HashSet<PolygonEdge>>();
+            foreach (var edge in poly.Points.Select(p => p.EdgeTwo)
                 .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item1], poly.Points[d.Item2])))
-                .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item2], poly.Points[d.Item1]))));
+                .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item2], poly.Points[d.Item1]))))
+            {
+                if (!edges.ContainsKey(edge.PointOne.Index))
+                {
+                    edges.Add(edge.PointOne.Index, new HashSet<PolygonEdge>() { edge });
+                }
+                else
+                {
+                    edges[edge.PointOne.Index].Add(edge);
+                }
+            }
+
             var subPolygons = new List<PolygonData>();
 
+            var cnt = 0;
+            foreach (var edge in edges)
+            {
+                cnt += edge.Value.Count;
+            }
+
             // For each Diagonal
-            ///foreach(var diagonal in diagonals)
             while(edges.Count > 0)
             {
                 // Start at first Diagonal Point
-                ///var currentPoint = poly.Points[diagonal.Item1];
-                var currentPoint = edges.First().PointOne;
+                var currentPoint = edges.First().Value.First().PointOne;
                 var nextEdge = new PolygonEdge(null, null);
                 var subPolygonPoints = new List<PolygonPoint>();
                 // March along the edges to form a monotone Polygon
@@ -425,10 +441,15 @@ namespace HelixToolkit.Wpf.SharpDX
                     // Add the current Point
                     subPolygonPoints.Add(currentPoint);
                     // Select the next Edge
-                    var possibleEdges = edges.Where(e => e.PointOne.Index == currentPoint.Index).ToList();
-                     nextEdge = BestEdge(currentPoint, nextEdge, possibleEdges);
+                    var possibleEdges = edges[currentPoint.Index].ToList();
+                    nextEdge = BestEdge(currentPoint, nextEdge, possibleEdges);
                     // Remove Edge from possible Edges
-                    edges.Remove(nextEdge);
+                    edges[currentPoint.Index].Remove(nextEdge);
+                    if (edges[currentPoint.Index].Count == 0)
+                    {
+                        edges.Remove(currentPoint.Index);
+                    }
+
                     // Move to the next Point
                     currentPoint = nextEdge.PointTwo;
                 }
@@ -449,13 +470,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>Best next Edge</returns>
         internal static PolygonEdge BestEdge(PolygonPoint point, PolygonEdge lastEdge, List<PolygonEdge> possibleEdges)
         {
-            // If just Starting, return the outgoing Edge of the Point
-            if (lastEdge.PointOne == null && lastEdge.PointTwo == null)
-            {
-                return point.EdgeTwo;
-            }
+            // If just Starting, return the first possible Edge of the Point
             // If only one possibility, return that
-            else if (possibleEdges.Count == 1)
+            if ((lastEdge.PointOne == null && lastEdge.PointTwo == null) || possibleEdges.Count == 1)
             {
                 return possibleEdges[0];
             }
@@ -1051,6 +1068,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             // The Hole Points
             var polyPoints = points.Select(p => new PolygonPoint(p)).ToList();
+            // If Endpoint equals Startpoint
+            if (polyPoints[0].Equals(polyPoints[polyPoints.Count - 1]))
+                polyPoints.RemoveAt(polyPoints.Count - 1);
             mHoles.Add(polyPoints);
 
             var cntBefore = mPoints.Count;

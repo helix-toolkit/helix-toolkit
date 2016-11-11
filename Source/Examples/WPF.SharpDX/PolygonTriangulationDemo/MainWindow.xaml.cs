@@ -59,7 +59,7 @@ namespace PolygonTriangulationDemo
                         lineTriangulatedPolygon.Geometry = null;
                     }
                 }
-            }); 
+            });
         }
 
         /// <summary>
