@@ -595,13 +595,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 // Calculate the x-Coordinate of the Intersection between
                 // a horizontal Line from the Point to the Left and the Edge of the StatusHelperElement
-                Double xValue = Double.NaN;
-                if (point.Y == she.Edge.PointOne.Y)
-                    xValue = she.Edge.PointOne.X;
-                else if (point.Y == she.Edge.PointTwo.Y)
-                    xValue = she.Edge.PointTwo.X;
-                else
-                    xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / (she.Edge.PointTwo.Y - she.Edge.PointOne.Y)) * (she.Edge.PointTwo.X - she.Edge.PointOne.X);
+                Double xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / she.Vector.Y) * she.Vector.X;
                 
                 // If the xValue is smaller than or equal to the Point's x-Coordinate
                 // (i.e. it lies on the left Side of it - allows a small Error)
@@ -640,6 +634,21 @@ namespace HelixToolkit.Wpf.SharpDX
         public PolygonPoint Helper { get; set; }
 
         /// <summary>
+        /// Vector that points From the Edge's Start to Endpoint
+        /// </summary>
+        private Point mVector;
+
+        /// <summary>
+        /// Accessor to the Vector
+        /// </summary>
+        public Point Vector
+        {
+            get { return mVector; }
+            set { mVector = value; }
+        }
+
+
+        /// <summary>
         /// Constructor taking an Edge and a Helper
         /// </summary>
         /// <param name="edge">The Edge of the StatusHelperElement</param>
@@ -648,6 +657,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.Edge = edge;
             this.Helper = point;
+            this.mVector = edge.PointTwo.Point - edge.PointOne.Point;
         }
     }
     
