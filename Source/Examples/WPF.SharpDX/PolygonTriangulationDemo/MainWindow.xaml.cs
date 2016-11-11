@@ -90,29 +90,38 @@ namespace PolygonTriangulationDemo
         {
             // Generate random Polygon
             var random = new Random();
-            var cnt = /*mViewModel.PointCount*/12;
+            var cnt = mViewModel.PointCount;
             mPolygonPoints = new List<Vector2>();
             var angle = 0f;
             var angleDiff = 2f * (Single)Math.PI / cnt;
             var radius = 4f;
             // Random Radii for the Polygon
             var radii = new List<float>();
+            var innerRadii = new List<float>();
             for (int i = 0; i < cnt; i++)
             {
-                radii.Add(radius/* + random.NextFloat(-radius / 10, radius / 10)*/);
+                radii.Add(random.NextFloat(radius * 0.9f, radius * 1.1f));
+                innerRadii.Add(random.NextFloat(radius * 0.2f, radius * 0.3f));
             }
-            var hole = new List<Vector2>();
+            var hole1 = new List<Vector2>();
+            var hole2 = new List<Vector2>();
+            var holeDistance = 2f;
+            var holeAngle = random.NextFloat(0, (float)Math.PI * 2);
+            var cos = (float)Math.Cos(holeAngle);
+            var sin = (float)Math.Sin(holeAngle);
+            var offset1 = new Vector2(holeDistance * cos, holeDistance * sin);
+            var offset2 = new Vector2(-holeDistance * cos, -holeDistance * sin);
             for (int i = 0; i < cnt; i++)
             {
                 // Flatten a bit
                 var radiusUse = radii[i];
-                mPolygonPoints.Add(new Vector2(radiusUse * (Single)Math.Cos(angle), radiusUse * (Single)Math.Sin(angle)));
+                mPolygonPoints.Add(new Vector2(radii[i] * (Single)Math.Cos(angle), radii[i] * (Single)Math.Sin(angle)));
+                hole1.Add(offset1 + new Vector2(innerRadii[i] * (Single)Math.Cos(-angle), innerRadii[i] * (Single)Math.Sin(-angle)));
+                hole2.Add(offset2 + new Vector2(innerRadii[i] * (Single)Math.Cos(-angle), innerRadii[i] * (Single)Math.Sin(-angle)));
                 angle += angleDiff;
             }
-            var holes = new List<List<Vector2>>();
-            var offset = new Vector2(random.NextFloat(-2, 2), random.NextFloat(-2, 2));
-            holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + new Vector2(.5f, .5f)).ToList());
-            //holes.Add(MeshBuilder.GetCircle(12, true).Select(p => p + new Vector2(-2, -2)).ToList());
+
+            var holes = new List<List<Vector2>>() { hole1, hole2 };
 
             // Triangulate and measure the Time needed for the Triangulation
             var before = DateTime.Now;
