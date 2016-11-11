@@ -78,12 +78,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var poly = new PolygonData(points);
 
-            var mapping = new Dictionary<int, int>();
-            for (int i = 0; i < poly.Points.Count; i++)
-            {
-                mapping[poly.Points[i].Index] = i;
-            }
-
             if (holes != null)
             {
                 foreach (var hole in holes)
@@ -97,13 +91,11 @@ namespace HelixToolkit.Wpf.SharpDX
             events.Sort();
 
             // Calculate the Diagonals in the Down Sweep
-            var diagonals = CalculateDiagonals(events, mapping);
-
+            var diagonals = CalculateDiagonals(events);
             // Reverse the Order of the Events
             events.Reverse();
-            
             // Add the Diagonals in the Up Sweep (and remove duplicates)
-            diagonals.AddRange(CalculateDiagonals(events, mapping, false));
+            diagonals.AddRange(CalculateDiagonals(events,  false));
             diagonals = diagonals.Distinct().ToList();
 
             // Use Diagonals to split into nonotone Polygons
@@ -277,10 +269,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Calculate the Diagonals to add inside the Polygon.
         /// </summary>
         /// <param name="events">The Events in sorted Form</param>
-        /// <param name="mapping">Mapping from main Polygon to the current Polygon</param>
         /// <param name="sweepDown">True in the first Stage (sweeping down), false in the following Stages (sweeping up)</param>
         /// <returns></returns>
-        private static List<Tuple<int, int>> CalculateDiagonals(List<PolygonPoint> events, Dictionary<int, int> mapping, Boolean sweepDown = true)
+        private static List<Tuple<int, int>> CalculateDiagonals(List<PolygonPoint> events, Boolean sweepDown = true)
         {
             // Diagonals to add to the Polygon to make it monotone after the Down- and Up-Sweeps
             var diagonals = new List<Tuple<int, int>>();
