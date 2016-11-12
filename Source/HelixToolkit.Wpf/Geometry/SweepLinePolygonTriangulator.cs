@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf
     using System.Collections;
     using System.Windows;
     using System.Windows.Media;
-    
+
     /// <summary>
     /// Triangulate a simple Polygon with the Sweep-Line Algorithm
     /// </summary>
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf
         {
             // Allocate and initialize List of Indices in Polygon
             var result = new Int32Collection();
-            
+
             // Point-List from Input
             // (we don't want the first and last Point to be present two times)
             var points = polygon.ToList();
@@ -50,16 +50,16 @@ namespace HelixToolkit.Wpf
                 points.RemoveAt(points.Count - 1);
             }
             var count = points.Count;
-            
+
             // Sort the Input and create the Datastructures
             // Make the Polygon CounterClockWise
             var didReverse = false;
-            if (!isCCW(polygon))
+            if (!IsCCW(polygon))
             {
                 points.Reverse();
                 didReverse = true;
             }
-            
+
             // Skip Polygons that don't need Triangulation
             if (count < 3)
                 return null;
@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf
             {
                 if (!didReverse)
                 {
-                    return new Int32Collection{ 0, 1, 2};
+                    return new Int32Collection { 0, 1, 2 };
                 }
                 else
                 {
@@ -75,54 +75,34 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            // Create Polygon Data Structure
             var poly = new PolygonData(points);
-            
+
+            if (holes != null)
+            {
+                foreach (var hole in holes)
+                {
+                    poly.AddHole(hole);
+                }
+            }
             // Sort Points from highest y to lowest y
             // and if two or more Points have the same y Value from lowest x to highest x Value
             var events = new List<PolygonPoint>(poly.Points);
             events.Sort();
 
-            // Mapping from the main Polygon to the current Polygon
-            var mainMapping = new Dictionary<int, int>();
-            for (int i = 0; i < count; i++)
-			{
-                mainMapping[i] = i;
-			}
-
             // Calculate the Diagonals in the Down Sweep
-            var diagonals = CalculateDiagonals(events, mainMapping);
+            var diagonals = CalculateDiagonals(events);
+            // Reverse the Order of the Events
+            events.Reverse();
+            // Add the Diagonals in the Up Sweep (and remove duplicates)
+            diagonals.AddRange(CalculateDiagonals(events, false));
+            diagonals = diagonals.Distinct().ToList();
 
-            // Split the Polygon
-            var subPolygons = SplitPolygonWithDiagonals(poly, diagonals);
-
-            var monotonePolygons = new List<PolygonData>();
-            // Up Sweep for all Sub-Polygons
-            foreach (var subPoly in subPolygons)
-            {
-                // Sort the Events from Bottom to Top
-                events = new List<PolygonPoint>(subPoly.Points);
-                events.Sort();
-                events.Reverse();
-
-                // Mapping from the main Polygon to the current Polygon
-                var polyMapping = new Dictionary<int, int>();
-                for (int i = 0; i < subPoly.Points.Count; i++)
-                {
-                    polyMapping[subPoly.Points[i].Index] = i;
-                }
-                // Calculate the Diagonals in the Up Sweep
-                diagonals = CalculateDiagonals(events, polyMapping, false);
-
-                // Split the Polygon
-                var monotoneSubPolygons = SplitPolygonWithDiagonals(subPoly, diagonals);
-                // Add to List of monotone Polygons
-                monotonePolygons.AddRange(monotoneSubPolygons);
-            }
+            // Use Diagonals to split into nonotone Polygons
+            var monotonePolygons = SplitIntoPolygons(poly, diagonals);
 
             // y-Monotone Polygons
             // Triangulate
-            foreach (var monoton in monotonePolygons)
+            foreach (var monoton in monotonePolygons.Where(m => m != null))
             {
                 var indices = TriangulateMonotone(monoton);
                 foreach (var index in indices)
@@ -155,14 +135,14 @@ namespace HelixToolkit.Wpf
         {
             // Collection to return
             Int32Collection result = new Int32Collection();
-            
+
             // Sort the Events
             var events = new List<PolygonPoint>(monoton.Points);
             events.Sort();
-            
+
             // Stack of Events to push to and pop from
             var pointStack = new Stack<PolygonPoint>();
-            
+
             // Push the first two Events
             pointStack.Push(events[0]);
             pointStack.Push(events[1]);
@@ -206,7 +186,7 @@ namespace HelixToolkit.Wpf
                         {
                             // Pop again
                             top = pointStack.Pop();
-                            
+
                             // Add to the result. The Order is depending on the Side
                             if (left == newPoint)
                             {
@@ -255,11 +235,11 @@ namespace HelixToolkit.Wpf
                     {
                         right = newPoint;
                     }
-                    
+
                     while (pointStack.Count != 0)
                     {
                         // If the Triangle is possible, add it to the result (Point Order depends on the Side)
-                        if (right == newPoint && isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
+                        if (right == newPoint && IsCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
                         {
                             top = pointStack.Pop();
                             result.Add(newPoint.Index);
@@ -267,7 +247,7 @@ namespace HelixToolkit.Wpf
                             result.Add(top.Index);
                             p2 = top;
                         }
-                        else if (left == newPoint && !isCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
+                        else if (left == newPoint && !IsCCW(new List<Point> { newPoint.Point, p2.Point, pointStack.Peek().Point }))
                         {
                             top = pointStack.Pop();
                             result.Add(newPoint.Index);
@@ -292,30 +272,29 @@ namespace HelixToolkit.Wpf
         /// Calculate the Diagonals to add inside the Polygon.
         /// </summary>
         /// <param name="events">The Events in sorted Form</param>
-        /// <param name="mapping">Mapping from main Polygon to the current Polygon</param>
         /// <param name="sweepDown">True in the first Stage (sweeping down), false in the following Stages (sweeping up)</param>
         /// <returns></returns>
-        private static List<Tuple<int, int>> CalculateDiagonals(List<PolygonPoint> events, Dictionary<int, int> mapping, Boolean sweepDown = true)
+        private static List<Tuple<int, int>> CalculateDiagonals(List<PolygonPoint> events, Boolean sweepDown = true)
         {
             // Diagonals to add to the Polygon to make it monotone after the Down- and Up-Sweeps
             var diagonals = new List<Tuple<int, int>>();
-            
+
             // Construct Status and Helper, a List of Edges left of every Point of the Polygon
             // by shooting a Ray from the Vertex to the left.
             // The Helper Point of that Edge will be used to create Monotone Polygons
             // by adding Diagonals from/to Split- and Merge-Points
             var statusAndHelper = new StatusHelper();
-            
+
             // Sweep through the Polygon using the sorted Polygon Points
-            for(int i = 0; i < events.Count; i++)
+            for (int i = 0; i < events.Count; i++)
             {
                 var ev = events[i];
                 // Get the Class of this event (depending on the sweeping direction)
                 var evClass = ev.PointClass(!sweepDown);
-                
+
                 // Temporary StatusHelperElement
                 StatusHelperElement she = null;
-                
+
                 // Handle the different Point-Classes
                 switch (evClass)
                 {
@@ -355,7 +334,8 @@ namespace HelixToolkit.Wpf
                         // Chose diagonal from Helper of Edge to Event.
                         var minP = Math.Min(she.Helper.Index, ev.Index);
                         var maxP = Math.Max(she.Helper.Index, ev.Index);
-                        diagonals.Add(new Tuple<int, int>(minP, maxP));
+                        var diagonal = new Tuple<int, int>(minP, maxP);
+                        diagonals.Add(diagonal);
 
                         // Replace the Helper of the StatusHelperElement by Event
                         she.Helper = ev;
@@ -368,55 +348,126 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Split up a Polygon with the Diagonals.
-        /// This function splits the Polygon into two SubPolygons using the first Diagonal
-        /// and then calls itself recursively.
+        /// Split Polygon into subpolagons using the calculated Diagonals
         /// </summary>
-        /// <param name="poly">The Polygon to split</param>
-        /// <param name="diagonals">The Diagonals inside the Polygon, that are used to split it</param>
-        /// <returns>The SubPolygons that were created by splitting the input Polygon</returns>
-        private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, List<Tuple<int, int>> diagonals)
+        /// <param name="poly">The Base-Polygon</param>
+        /// <param name="diagonals">The Split-Diagonals</param>
+        /// <returns>List of Subpolygons</returns>
+        private static List<PolygonData> SplitIntoPolygons(PolygonData poly, List<Tuple<int, int>> diagonals)
         {
-            // Count of the SubPolygons to create
-            var subPolygonCount = diagonals.Count + 1;
-            if (subPolygonCount == 1)
-                return new PolygonData[] { poly };
-            var subPolygons = new List<PolygonData>();
-            // Subdivide with with first Diagonal
-            var diagonal = diagonals[0];
-            // Create the first SubPolygon
-            var firstSubPolygonPoints = poly.Points.TakeWhile(p => p.Index != diagonal.Item1).ToList();
-            firstSubPolygonPoints.Add(poly.Points.First(p => p.Index == diagonal.Item1));
-            firstSubPolygonPoints.AddRange(poly.Points.SkipWhile(p => p.Index != diagonal.Item2).ToList());
-            // HashSet of the Indices of the first SubPolygon
-            // Used to split the remaining Diagonals
-            var firstSubPolygonIndices = new HashSet<int>(firstSubPolygonPoints.Select(p => p.Index));
-            // Create the second SubPolygon
-            var secondSubPolygonPoints = poly.Points.SkipWhile(p => p.Index != diagonal.Item1).ToList();
-            secondSubPolygonPoints = secondSubPolygonPoints.TakeWhile(p => p.Index != diagonal.Item2).ToList();
-            secondSubPolygonPoints.Add(poly.Points.First(p => p.Index == diagonal.Item2));
-            // We don't need this Diagonal any more
-            diagonals.Remove(diagonal);
-            // Split the Diagonals into two sets of Diagonals
-            // Depending on in which SupPolygon it is located
-            var diagsFirst = new List<Tuple<int, int>>();
-            var diagsSecond = new List<Tuple<int, int>>();
-            foreach (var diag in diagonals)
+            if (diagonals.Count == 0)
+                return new List<PolygonData>() { poly };
+
+            diagonals = diagonals.OrderBy(d => d.Item1).ThenBy(d => d.Item2).ToList();
+            var edges = new Dictionary<int, HashSet<PolygonEdge>>();
+            foreach (var edge in poly.Points.Select(p => p.EdgeTwo)
+                .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item1], poly.Points[d.Item2])))
+                .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item2], poly.Points[d.Item1]))))
             {
-                if (firstSubPolygonIndices.Contains(diag.Item1) && firstSubPolygonIndices.Contains(diag.Item2))
-                    diagsFirst.Add(diag);
+                if (!edges.ContainsKey(edge.PointOne.Index))
+                {
+                    edges.Add(edge.PointOne.Index, new HashSet<PolygonEdge>() { edge });
+                }
                 else
-                    diagsSecond.Add(diag);
+                {
+                    edges[edge.PointOne.Index].Add(edge);
+                }
             }
 
-            // Calculate the Diagonals that are positioned in first and second Subpolygon
-            subPolygons.AddRange(SplitPolygonWithDiagonals(new PolygonData(firstSubPolygonPoints), diagsFirst).ToList());
+            var subPolygons = new List<PolygonData>();
 
-            // Recursively call Function for first Subpolygon and second Subpolygon
-            subPolygons.AddRange(SplitPolygonWithDiagonals(new PolygonData(secondSubPolygonPoints), diagsSecond).ToList());
+            var cnt = 0;
+            foreach (var edge in edges)
+            {
+                cnt += edge.Value.Count;
+            }
 
-            // Return the split-up Polygons
-            return subPolygons.ToArray();
+            // For each Diagonal
+            while (edges.Count > 0)
+            {
+                // Start at first Diagonal Point
+                var currentPoint = edges.First().Value.First().PointOne;
+                var nextEdge = new PolygonEdge(null, null);
+                var subPolygonPoints = new List<PolygonPoint>();
+                // March along the edges to form a monotone Polygon
+                // Until the current Point equals the StartPoint
+                do
+                {
+                    // Add the current Point
+                    subPolygonPoints.Add(currentPoint);
+                    // Select the next Edge
+                    var possibleEdges = edges[currentPoint.Index].ToList();
+                    nextEdge = BestEdge(currentPoint, nextEdge, possibleEdges);
+                    // Remove Edge from possible Edges
+                    edges[currentPoint.Index].Remove(nextEdge);
+                    if (edges[currentPoint.Index].Count == 0)
+                    {
+                        edges.Remove(currentPoint.Index);
+                    }
+
+                    // Move to the next Point
+                    currentPoint = nextEdge.PointTwo;
+                }
+                while (subPolygonPoints[0].Index != currentPoint.Index);
+                // Add the new SubPolygon
+                subPolygons.Add(new PolygonData(subPolygonPoints));
+            }
+
+            return subPolygons;
+        }
+
+        /// <summary>
+        /// For a Point, last used Edge and possible Edges, retrieve the best next Edge
+        /// </summary>
+        /// <param name="point">The current Point</param>
+        /// <param name="lastEdge">The last used Edge</param>
+        /// <param name="possibleEdges">The possible next Edges</param>
+        /// <returns>Best next Edge</returns>
+        internal static PolygonEdge BestEdge(PolygonPoint point, PolygonEdge lastEdge, List<PolygonEdge> possibleEdges)
+        {
+            // If just Starting, return the first possible Edge of the Point
+            // If only one possibility, return that
+            if ((lastEdge.PointOne == null && lastEdge.PointTwo == null) || possibleEdges.Count == 1)
+            {
+                return possibleEdges[0];
+            }
+
+            // Variables needed to determine the next Edge
+            var bestEdge = possibleEdges[0];
+            var bestAngle = (float)Math.PI * 2;
+            // Vector from last Point to current Point
+            var lastVector = (lastEdge.PointTwo.Point - lastEdge.PointOne.Point);
+            lastVector.Normalize();
+            // Using CCW Point Order, so the left Vector always points towards the Polygon Center
+            var insideVector = new Point(-lastVector.Y, lastVector.X);
+            // Check all possible Edges
+            foreach (var possibleEdge in possibleEdges)
+            {
+                // Next Edge Vector
+                var edgeVector = (possibleEdge.PointTwo.Point - possibleEdge.PointOne.Point);
+                edgeVector.Normalize();
+                // Dot determines if the Vector also points towards the Polygon Center or not (> 0, yes, < 0, no)
+                var dot =  insideVector.X * edgeVector.X + insideVector.Y * edgeVector.Y;
+                // Cos represents the Angle between the last Edge and the next Edge
+                var cos = lastVector.X * edgeVector.X + lastVector.Y * edgeVector.Y;
+                var angle = 0f;
+                // Depending on the Dot-Value, calculate the actual "inner" Angle
+                if ((insideVector.X * edgeVector.X + insideVector.Y * edgeVector.Y) > 0)
+                {
+                    angle = (float)Math.PI - (float)Math.Acos(cos);
+                }
+                else
+                {
+                    angle = (float)Math.PI + (float)Math.Acos(cos);
+                }
+                // Replace the old Values if a better Edge was found
+                if (angle < bestAngle)
+                {
+                    bestAngle = angle;
+                    bestEdge = possibleEdge;
+                }
+            }
+            return bestEdge;
         }
 
         /// <summary>
@@ -424,7 +475,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="polygon">The Polygon.</param>
         /// <returns>True if the Polygon is present in a CCW manner.</returns>
-        private static bool isCCW(IList<Point> polygon)
+        internal static Boolean IsCCW(IList<Point> polygon)
         {
             int n = polygon.Count;
             double area = 0.0;
@@ -435,7 +486,7 @@ namespace HelixToolkit.Wpf
             return area > 0.0f;
         }
     }
-    
+
     /// <summary>
     /// Enumeration of PolygonPoint - Classes
     /// </summary>
@@ -461,7 +512,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Default Constructor
         /// </summary>
-        internal StatusHelper(){
+        internal StatusHelper()
+        {
             this.EdgesHelpers = new List<StatusHelperElement>();
         }
 
@@ -499,21 +551,15 @@ namespace HelixToolkit.Wpf
             {
                 // Calculate the x-Coordinate of the Intersection between
                 // a horizontal Line from the Point to the Left and the Edge of the StatusHelperElement
-                Double xValue = Double.NaN;
-                if (point.Y == she.Edge.PointOne.Y)
-                    xValue = she.Edge.PointOne.X;
-                else if (point.Y == she.Edge.PointTwo.Y)
-                    xValue = she.Edge.PointTwo.X;
-                else
-                    xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / (she.Edge.PointTwo.Y - she.Edge.PointOne.Y)) * (she.Edge.PointTwo.X - she.Edge.PointOne.X);
-                
+                Double xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / she.Vector.Y) * she.Vector.X;
+
                 // If the xValue is smaller than or equal to the Point's x-Coordinate
                 // (i.e. it lies on the left Side of it - allows a small Error)
                 if (xValue <= (point.X + SweepLinePolygonTriangulator.Epsilon))
                 {
                     // Calculate the Distance
                     var sheDist = point.X - xValue;
-                    
+
                     // Update, if the Distance is smaller than a previously found Result
                     if (sheDist < dist)
                     {
@@ -544,6 +590,21 @@ namespace HelixToolkit.Wpf
         public PolygonPoint Helper { get; set; }
 
         /// <summary>
+        /// Vector that points From the Edge's Start to Endpoint
+        /// </summary>
+        private Vector mVector;
+
+        /// <summary>
+        /// Accessor to the Vector
+        /// </summary>
+        public Vector Vector
+        {
+            get { return mVector; }
+            set { mVector = value; }
+        }
+
+
+        /// <summary>
         /// Constructor taking an Edge and a Helper
         /// </summary>
         /// <param name="edge">The Edge of the StatusHelperElement</param>
@@ -552,9 +613,10 @@ namespace HelixToolkit.Wpf
         {
             this.Edge = edge;
             this.Helper = point;
+            this.mVector = edge.PointTwo.Point - edge.PointOne.Point;
         }
     }
-    
+
     /// <summary>
     /// Helper Class for the PolygonData Object.
     /// </summary>
@@ -564,7 +626,7 @@ namespace HelixToolkit.Wpf
         /// The actual Point of this PolygonPoint
         /// </summary>
         private Point mPoint;
-        
+
         /// <summary>
         /// Accessor for the Point-Data
         /// </summary>
@@ -573,22 +635,22 @@ namespace HelixToolkit.Wpf
             get { return mPoint; }
             set { mPoint = value; }
         }
-        
+
         /// <summary>
         /// Accessor for the X-Coordinate of the Point
         /// </summary>
         public double X { get { return this.mPoint.X; } set { this.mPoint.X = value; } }
-        
+
         /// <summary>
         /// Accessor for the Y-Coordinate of the Point
         /// </summary>
         public double Y { get { return this.mPoint.Y; } set { this.mPoint.Y = value; } }
-        
+
         /// <summary>
         /// The "incoming" Edge of this PolygonPoint
         /// </summary>
         private PolygonEdge mEdgeOne;
-        
+
         /// <summary>
         /// Accessor for the incoming Edge
         /// </summary>
@@ -640,7 +702,7 @@ namespace HelixToolkit.Wpf
                     return null;
             }
         }
-        
+
         /// <summary>
         /// The "next" neighboring Point, which is connected throught the outgoing Edge
         /// </summary>
@@ -654,7 +716,7 @@ namespace HelixToolkit.Wpf
                     return null;
             }
         }
-        
+
         /// <summary>
         /// Comparison Operator, that is used to determine the Class of the PolygonPoints
         /// </summary>
@@ -665,7 +727,7 @@ namespace HelixToolkit.Wpf
         {
             return first.CompareTo(second) == 1;
         }
-        
+
         /// <summary>
         /// Comparison Operator, that is used to determine the Class of the PolygonPoints
         /// </summary>
@@ -743,7 +805,7 @@ namespace HelixToolkit.Wpf
         /// (the assumption is, that we are dealing with a CCW Polygon orientation!)
         /// </summary>
         /// <returns>Returns true, if convex, false if concave (or "reflex" Vertex)</returns>
-        private bool isConvexPoint()
+        private Boolean isConvexPoint()
         {
             // If the Point has no Next- and Last-PolygonPoint, there's an Error
             if (Next == null || Last == null)
@@ -759,8 +821,7 @@ namespace HelixToolkit.Wpf
             vecToNext.Normalize();
             // If the next Vector is pointing to the left Vector's direction,
             // the current Point is a convex Point (Dot-Product bigger than 0)
-            var dotProduct = vecLeft.X * vecToNext.X + vecLeft.Y * vecToNext.Y;
-            if (dotProduct >= 0)
+            if ((vecLeft.X * vecToNext.X + vecLeft.Y * vecToNext.Y) >= 0)
                 return true;
             else
                 return false;
@@ -772,7 +833,7 @@ namespace HelixToolkit.Wpf
         /// <returns>String representing this Point</returns>
         public override string ToString()
         {
-            return this.Index + "X:" + this.X + " Y:" + this.Y;
+            return this.Index + " X:" + this.X + " Y:" + this.Y;
         }
 
         /// <summary>
@@ -822,7 +883,7 @@ namespace HelixToolkit.Wpf
             get { return mPointTwo; }
             set { mPointTwo = value; }
         }
-        
+
         /// <summary>
         /// The "last" neighboring Edge, which both share the Startpoint of this Edge
         /// </summary>
@@ -868,7 +929,7 @@ namespace HelixToolkit.Wpf
         /// <returns>String representing this Edge</returns>
         public override string ToString()
         {
-            return "From: " + mPointOne + " To: " + mPointTwo;
+            return "From: {" + mPointOne + "} To: {" + mPointTwo + "}";
         }
     }
 
@@ -892,19 +953,49 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Are there Holes present
+        /// </summary>
+        public Boolean HasHoles
+        {
+            get { return mHoles.Count > 0; }
+        }
+
+        /// <summary>
+        /// The Holes of the Polygon
+        /// </summary>
+        private List<List<PolygonPoint>> mHoles;
+
+        /// <summary>
+        /// Access to the Holes
+        /// </summary>
+        public List<List<PolygonPoint>> Holes
+        {
+            get { return mHoles; }
+        }
+
+        /// <summary>
+        /// Number of initial Points on the Polygon Boundary
+        /// </summary>
+        private int mNumBoundaryPoints;
+
+        /// <summary>
         /// Constructor that uses a List of Points and an optional List of Point-Indices
         /// </summary>
         /// <param name="points">The Polygon-Defining Points</param>
         /// <param name="indices">Optional List of Point-Indices</param>
         public PolygonData(List<Point> points, List<int> indices = null)
         {
-            // Create and add PolygonPoints for this Polygon Object
+            // Initialize
             mPoints = new List<PolygonPoint>(points.Select(p => new PolygonPoint(p)));
-            
+            mHoles = new List<List<PolygonPoint>>();
+            mNumBoundaryPoints = mPoints.Count;
+
             // If no Indices were specified, add them manually
             if (indices == null)
                 for (int i = 0; i < mPoints.Count; i++)
+                {
                     mPoints[i].Index = i;
+                }
             // If there were Indices specified, use them to set the PolygonPoint's Index Property
             else
                 for (int i = 0; i < mPoints.Count; i++)
@@ -913,14 +1004,14 @@ namespace HelixToolkit.Wpf
             // Add Edges between the Points (to be able to navigate along the Polygon easily later)
             var cnt = mPoints.Count;
             for (int i = 0; i < cnt; i++)
-			{
+            {
                 var lastIdx = (i + cnt - 1) % cnt;
                 var edge = new PolygonEdge(mPoints[lastIdx], mPoints[i]);
                 mPoints[lastIdx].EdgeTwo = edge;
                 mPoints[i].EdgeOne = edge;
-			}
+            }
         }
-        
+
         /// <summary>
         /// Constructor that takes a List of PolygonPoints
         /// Calls the first Constructor by splitting the Input-Information (Points and Indices)
@@ -929,5 +1020,45 @@ namespace HelixToolkit.Wpf
         public PolygonData(List<PolygonPoint> points)
             : this(points.Select(p => p.Point).ToList(), points.Select(p => p.Index).ToList())
         { }
+
+        /// <summary>
+        /// Add Points of a Hole to the PolygonData
+        /// </summary>
+        /// <param name="points">The Points that define the Hole in the Polygon</param>
+        internal void AddHole(List<Point> points)
+        {
+            // Make Hole Clockwise
+            if (SweepLinePolygonTriangulator.IsCCW(points))
+            {
+                points.Reverse();
+            }
+            // The Hole Points
+            var polyPoints = points.Select(p => new PolygonPoint(p)).ToList();
+            // If Endpoint equals Startpoint
+            if (polyPoints[0].Equals(polyPoints[polyPoints.Count - 1]))
+                polyPoints.RemoveAt(polyPoints.Count - 1);
+            mHoles.Add(polyPoints);
+
+            var cntBefore = mPoints.Count;
+            var pointCount = points.Count;
+            // Add the PolygonPoints for this Polygon Object
+            mPoints.AddRange(polyPoints);
+
+            // Add the Indices
+            for (int i = cntBefore; i < mPoints.Count; i++)
+            {
+                polyPoints[i - cntBefore].Index = i;
+            }
+
+            // Add Edges between the Points (to be able to navigate along the Polygon easily later)
+            var cnt = mPoints.Count;
+            for (int i = 0; i < pointCount; i++)
+            {
+                var lastIdx = (i + pointCount - 1) % pointCount;
+                var edge = new PolygonEdge(polyPoints[lastIdx], polyPoints[i]);
+                polyPoints[lastIdx].EdgeTwo = edge;
+                polyPoints[i].EdgeOne = edge;
+            }
+        }
     }
 }

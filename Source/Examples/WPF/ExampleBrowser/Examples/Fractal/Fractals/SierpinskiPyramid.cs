@@ -36,7 +36,7 @@ namespace FractalDemo
 
             foreach (var center in centers)
             {
-                builder.AddPyramid(center, l, l);
+                builder.AddPyramid(center, l, l, true);
             }
 
             var mv = new GeometryModel3D
