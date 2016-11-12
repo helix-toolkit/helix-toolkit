@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Helpers;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
@@ -154,6 +155,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the old cursor.
         /// </summary>
         private Cursor OldCursor { get; set; }
+
+        /// <summary>
+        /// Use to limit the mouse move event frequency
+        /// </summary>
+        private readonly EventSkipper skipper = new EventSkipper();
 
         /// <summary>
         /// Occurs when the manipulation is completed.
@@ -311,7 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
-        {
+        {           
             this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
 
             this.OldCursor = this.Viewport.Cursor;
@@ -329,6 +335,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
+            if (skipper.IsSkip())
+            {
+                return;
+            }
             this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
         }
 
