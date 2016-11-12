@@ -225,9 +225,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
                         System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
                         return;
-                    case DispatcherOperationStatus.Executing:
-                        pendingInvalidateOperation.Abort();
-                        break;
                 }
                 pendingInvalidateOperation = null;
             }
