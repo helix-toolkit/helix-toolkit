@@ -9,8 +9,10 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Helpers;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -405,6 +407,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The zoom speed.
         /// </summary>
         private double zoomSpeed;
+
+        /// <summary>
+        /// To skip the composite rendering event
+        /// </summary>
+        private readonly EventSkipper skipper = new EventSkipper();
 
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
@@ -2103,6 +2110,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
+            if (skipper.IsSkip())
+            {
+                return;
+            }
             var ticks = e.RenderingTime.Ticks;
             var time = 100e-9 * (ticks - this.lastTick);
 

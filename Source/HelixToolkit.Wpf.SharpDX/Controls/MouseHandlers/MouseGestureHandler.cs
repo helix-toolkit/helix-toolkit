@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Helpers;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
@@ -158,12 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Use to limit the mouse move event frequency
         /// </summary>
-        private readonly Stopwatch watch = new Stopwatch();
-
-        /// <summary>
-        /// Previous mouse event time
-        /// </summary>
-        private long previousMS = 0;
+        private readonly EventSkipper skipper = new EventSkipper();
 
         /// <summary>
         /// Occurs when the manipulation is completed.
@@ -321,9 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
-        {
-            previousMS = 0;
-            watch.Start();
+        {           
             this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
 
             this.OldCursor = this.Viewport.Cursor;
@@ -341,11 +335,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (watch.ElapsedMilliseconds - previousMS >= 15)
+            if (skipper.IsSkip())
             {
-                previousMS = watch.ElapsedMilliseconds;
-                this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+                return;
             }
+            this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
         }
 
         /// <summary>
@@ -359,7 +353,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            watch.Stop();
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.ReleaseMouseCapture();
