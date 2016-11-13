@@ -345,54 +345,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Split up a Polygon with the Diagonals.
-        /// This function splits the Polygon into two SubPolygons using the first Diagonal
-        /// and then calls itself recursively.
-        /// </summary>
-        /// <param name="poly">The Polygon to split</param>
-        /// <param name="diagonals">The Diagonals inside the Polygon, that are used to split it</param>
-        /// <returns>The SubPolygons that were created by splitting the input Polygon</returns>
-        /*private static PolygonData[] SplitPolygonWithDiagonals(PolygonData poly, List<Tuple<int, int>> diagonals)
-        {
-            // Count of the SubPolygons to create
-            var subPolygonCount = diagonals.Count + 1;
-            if (subPolygonCount == 1)
-                return new PolygonData[] { poly };
-            var subPolygons = new List<PolygonData>();
-            // Subdivide with with first Diagonal
-            var diagonal = diagonals[0];
-            // Create the first SubPolygon
-            var firstSubPolygonPoints = poly.GetEdgePoints(diagonal.Item1, diagonal.Item2);
-            // HashSet of the Indices of the first SubPolygon
-            // Used to split the remaining Diagonals
-            var firstSubPolygonIndices = new HashSet<int>(firstSubPolygonPoints.Select(p => p.Index));
-            // Create the second SubPolygon
-            var secondSubPolygonPoints = poly.GetEdgePoints(diagonal.Item2, diagonal.Item1);
-            // We don't need this Diagonal any more
-            diagonals.Remove(diagonal);
-            // Split the Diagonals into two sets of Diagonals
-            // Depending on in which SupPolygon it is located
-            var diagsFirst = new List<Tuple<int, int>>();
-            var diagsSecond = new List<Tuple<int, int>>();
-            foreach (var diag in diagonals)
-            {
-                if (firstSubPolygonIndices.Contains(diag.Item1) && firstSubPolygonIndices.Contains(diag.Item2))
-                    diagsFirst.Add(diag);
-                else
-                    diagsSecond.Add(diag);
-            }
-
-            // Calculate the Diagonals that are positioned in first and second Subpolygon
-            subPolygons.AddRange(SplitPolygonWithDiagonals(new PolygonData(firstSubPolygonPoints), diagsFirst).ToList());
-
-            // Recursively call Function for first Subpolygon and second Subpolygon
-            subPolygons.AddRange(SplitPolygonWithDiagonals(new PolygonData(secondSubPolygonPoints), diagsSecond).ToList());
-
-            // Return the split-up Polygons
-            return subPolygons.ToArray();
-        }*/
-
-        /// <summary>
         /// Split Polygon into subpolagons using the calculated Diagonals
         /// </summary>
         /// <param name="poly">The Base-Polygon</param>
@@ -404,14 +356,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 return new List<PolygonData>() { poly };
 
             diagonals = diagonals.OrderBy(d => d.Item1).ThenBy(d => d.Item2).ToList();
-            var edges = new Dictionary<int, HashSet<PolygonEdge>>();
+            var edges = new SortedDictionary<int, List<PolygonEdge>>();
             foreach (var edge in poly.Points.Select(p => p.EdgeTwo)
                 .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item1], poly.Points[d.Item2])))
                 .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item2], poly.Points[d.Item1]))))
             {
                 if (!edges.ContainsKey(edge.PointOne.Index))
                 {
-                    edges.Add(edge.PointOne.Index, new HashSet<PolygonEdge>() { edge });
+                    edges.Add(edge.PointOne.Index, new List<PolygonEdge>() { edge });
                 }
                 else
                 {
@@ -590,19 +542,25 @@ namespace HelixToolkit.Wpf.SharpDX
             StatusHelperElement result = null;
             var dist = Double.PositiveInfinity;
 
+            var px = point.X;
+            var py = point.Y;
             // Search for the right StatusHelperElement
             foreach (var she in this.EdgesHelpers)
             {
+                // No need to calculate the X-Value
+                if (she.MinX > px)
+                    continue;
+
                 // Calculate the x-Coordinate of the Intersection between
                 // a horizontal Line from the Point to the Left and the Edge of the StatusHelperElement
-                Double xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / she.Vector.Y) * she.Vector.X;
+                float xValue = she.Edge.PointOne.X + (py - she.Edge.PointOne.Y) * she.Factor;
                 
                 // If the xValue is smaller than or equal to the Point's x-Coordinate
                 // (i.e. it lies on the left Side of it - allows a small Error)
-                if (xValue <= (point.X + SweepLinePolygonTriangulator.Epsilon))
+                if (xValue <= (px + SweepLinePolygonTriangulator.Epsilon))
                 {
                     // Calculate the Distance
-                    var sheDist = point.X - xValue;
+                    var sheDist = px - xValue;
                     
                     // Update, if the Distance is smaller than a previously found Result
                     if (sheDist < dist)
@@ -634,19 +592,26 @@ namespace HelixToolkit.Wpf.SharpDX
         public PolygonPoint Helper { get; set; }
 
         /// <summary>
-        /// Vector that points From the Edge's Start to Endpoint
+        /// Factor used for x-Value Calculation
         /// </summary>
-        private Point mVector;
+        private float mFactor;
 
         /// <summary>
-        /// Accessor to the Vector
+        /// Accessor for the Factor
         /// </summary>
-        public Point Vector
+        public float Factor
         {
-            get { return mVector; }
-            set { mVector = value; }
+            get { return mFactor; }
         }
 
+        /// <summary>
+        /// Used to early-skip the Search for the right Status and Helper
+        /// </summary>
+        public float MinX
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Constructor taking an Edge and a Helper
@@ -657,7 +622,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.Edge = edge;
             this.Helper = point;
-            this.mVector = edge.PointTwo.Point - edge.PointOne.Point;
+            var vector = edge.PointTwo.Point - edge.PointOne.Point;
+            this.mFactor = vector.X / vector.Y;
+            this.MinX = Math.Min(edge.PointOne.X, edge.PointTwo.X);
         }
     }
     

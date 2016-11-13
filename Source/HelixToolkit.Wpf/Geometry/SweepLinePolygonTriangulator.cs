@@ -359,14 +359,14 @@ namespace HelixToolkit.Wpf
                 return new List<PolygonData>() { poly };
 
             diagonals = diagonals.OrderBy(d => d.Item1).ThenBy(d => d.Item2).ToList();
-            var edges = new Dictionary<int, HashSet<PolygonEdge>>();
+            var edges = new SortedDictionary<int, List<PolygonEdge>>();
             foreach (var edge in poly.Points.Select(p => p.EdgeTwo)
                 .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item1], poly.Points[d.Item2])))
                 .Union(diagonals.Select(d => new PolygonEdge(poly.Points[d.Item2], poly.Points[d.Item1]))))
             {
                 if (!edges.ContainsKey(edge.PointOne.Index))
                 {
-                    edges.Add(edge.PointOne.Index, new HashSet<PolygonEdge>() { edge });
+                    edges.Add(edge.PointOne.Index, new List<PolygonEdge>() { edge });
                 }
                 else
                 {
@@ -546,19 +546,25 @@ namespace HelixToolkit.Wpf
             StatusHelperElement result = null;
             var dist = Double.PositiveInfinity;
 
+            var px = point.X;
+            var py = point.Y;
             // Search for the right StatusHelperElement
             foreach (var she in this.EdgesHelpers)
             {
+                // No need to calculate the X-Value
+                if (she.MinX > px)
+                    continue;
+
                 // Calculate the x-Coordinate of the Intersection between
                 // a horizontal Line from the Point to the Left and the Edge of the StatusHelperElement
-                Double xValue = she.Edge.PointOne.X + ((point.Y - she.Edge.PointOne.Y) / she.Vector.Y) * she.Vector.X;
+                Double xValue = she.Edge.PointOne.X + (py - she.Edge.PointOne.Y) * she.Factor;
 
                 // If the xValue is smaller than or equal to the Point's x-Coordinate
                 // (i.e. it lies on the left Side of it - allows a small Error)
-                if (xValue <= (point.X + SweepLinePolygonTriangulator.Epsilon))
+                if (xValue <= (px + SweepLinePolygonTriangulator.Epsilon))
                 {
                     // Calculate the Distance
-                    var sheDist = point.X - xValue;
+                    var sheDist = px - xValue;
 
                     // Update, if the Distance is smaller than a previously found Result
                     if (sheDist < dist)
@@ -590,17 +596,25 @@ namespace HelixToolkit.Wpf
         public PolygonPoint Helper { get; set; }
 
         /// <summary>
-        /// Vector that points From the Edge's Start to Endpoint
+        /// Factor used for x-Value Calculation
         /// </summary>
-        private Vector mVector;
+        private Double mFactor;
 
         /// <summary>
-        /// Accessor to the Vector
+        /// Accessor for the Factor
         /// </summary>
-        public Vector Vector
+        public Double Factor
         {
-            get { return mVector; }
-            set { mVector = value; }
+            get { return mFactor; }
+        }
+
+        /// <summary>
+        /// Used to early-skip the Search for the right Status and Helper
+        /// </summary>
+        public Double MinX
+        {
+            get;
+            private set;
         }
 
 
@@ -613,7 +627,9 @@ namespace HelixToolkit.Wpf
         {
             this.Edge = edge;
             this.Helper = point;
-            this.mVector = edge.PointTwo.Point - edge.PointOne.Point;
+            var vector = edge.PointTwo.Point - edge.PointOne.Point;
+            this.mFactor = vector.X / vector.Y;
+            this.MinX = Math.Min(edge.PointOne.X, edge.PointTwo.X);
         }
     }
 
