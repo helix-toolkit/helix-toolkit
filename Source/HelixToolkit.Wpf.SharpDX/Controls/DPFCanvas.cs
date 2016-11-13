@@ -50,7 +50,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class DPFCanvas : Image, IRenderHost
     {
-        private readonly Action updateAndRenderAction;
         private readonly Stopwatch renderTimer;
         private Device device;
         private Texture2D colorBuffer;
@@ -61,11 +60,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private IRenderer renderRenderable;
         private RenderContext renderContext;
         private DeferredRenderer deferredRenderer;
-        private bool sceneAttached;        
+        private bool sceneAttached;
         private int targetWidth, targetHeight;
         private int pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
-        private DispatcherOperation updateAndRenderOperation;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
 
@@ -88,11 +86,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsShadowMapEnabled { get; private set; }
 
+#if MSAA
         /// <summary>
-        /// 
+        /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
         /// </summary>
-        public bool IsMSAAEnabled { get; private set; }
-
+        public MSAALevel MSAA { get; set; }
+#endif
         /// <summary>
         /// Gets or sets the maximum time that rendering is allowed to take. When exceeded,
         /// the next cycle will be enqueued at <see cref="DispatcherPriority.Input"/> to reduce input lag.
@@ -173,6 +172,19 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Indicates if DPFCanvas busy on rendering.
+        /// </summary>
+        public bool IsBusy { get { return pendingValidationCycles > 0; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private DispatcherOperation pendingInvalidateOperation = null;
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly Action invalidAction;
+        /// <summary>
         /// 
         /// </summary>
         static DPFCanvas()
@@ -185,15 +197,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public DPFCanvas()
         {
-            updateAndRenderAction = UpdateAndRender;
-            updateAndRenderOperation = null;
             renderTimer = new Stopwatch();
             MaxRenderingDuration = TimeSpan.FromMilliseconds(20.0);
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
-            IsMSAAEnabled = true;
+            MSAA = MSAALevel.Maximum;
+            invalidAction = new Action(InvalidateRender);
         }
 
         /// <summary>
@@ -201,9 +212,30 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
+          //  System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
+
+            //Use pendingInvalidateOperation to check if there is a pending operation.
+            if (pendingInvalidateOperation != null)
+            {
+                switch (pendingInvalidateOperation.Status)
+                {
+                    case DispatcherOperationStatus.Pending:
+                        //If there is a pending invalidation operation, try to set cycle to 2.
+                        //Does not matter if it is failed or not, since the pending one will eventually invalidate.
+                        //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
+                        System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0);
+                        return;
+                }
+                pendingInvalidateOperation = null;
+            }
             // For some reason, we need two render cycles to recover from 
             // UAC popup or sleep when MSAA is enabled.
-            pendingValidationCycles = 2;
+            if (System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, 2, 0) != 0)
+            {
+                //If invalidate failed, schedule an async operation to invalidate in future
+                pendingInvalidateOperation
+                    = Dispatcher.BeginInvoke(invalidAction, DispatcherPriority.Background);
+            }
         }
 
 
@@ -338,7 +370,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int sampleCount = 1;
             int sampleQuality = 0;
-            if (IsMSAAEnabled)
+            if (MSAA != MSAALevel.Disable)
             {
                 do
                 {
@@ -350,6 +382,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
                     sampleCount = newSampleCount;
                     sampleQuality = newSampleQuality;
+                    if (sampleCount == (int)MSAA)
+                    {
+                        break;
+                    }
                 } while (sampleCount < 32);
             }
 
@@ -500,7 +536,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                         var blinn = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
                         RenderTechnique = renderRenderable.RenderTechnique == null ? blinn : renderRenderable.RenderTechnique;
-                            
+
                         if (renderContext != null)
                         {
                             renderContext.Dispose();
@@ -533,7 +569,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
 
                 SetDefaultRenderTargets();
-                
+
                 if (RenderTechnique == deferred)
                 {
                     /// set G-Buffer                    
@@ -563,13 +599,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-                    this.device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-
                     renderRenderable.Render(renderContext);
                 }
             }
-
+#if MSAA
+            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif
             this.device.ImmediateContext.Flush();
         }
 
@@ -601,37 +636,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!renderTimer.IsRunning)
                 return;
-
-            // Check if there is a deferred updateAndRenderOperation in progress.
-            if (updateAndRenderOperation != null)
-            {
-                // If the deferred updateAndRenderOperation has not yet ended...
-                var status = updateAndRenderOperation.Status;
-                if (status == DispatcherOperationStatus.Pending ||
-                    status == DispatcherOperationStatus.Executing)
-                {
-                    // ... return immediately.
-                    return;
-                }
-
-                updateAndRenderOperation = null;
-
-                // Ensure that at least every other cycle is done at DispatcherPriority.Render.
-                // Uncomment if animation stutters, but no need as far as I can see.
-                // this.lastRenderingDuration = TimeSpan.Zero;
-            }
-
-            // If rendering took too long last time...
-            if (lastRenderingDuration > MaxRenderingDuration)
-            {
-                // ... enqueue an updateAndRenderAction at DispatcherPriority.Input.
-                updateAndRenderOperation = Dispatcher.BeginInvoke(
-                    updateAndRenderAction, DispatcherPriority.Input);
-            }
-            else
-            {
-                UpdateAndRender();
-            }
+            UpdateAndRender();
         }
 
         /// <summary>
@@ -640,29 +645,31 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UpdateAndRender()
         {
             try
-            {
-                var t0 = renderTimer.Elapsed;
-
-                // Update all renderables before rendering 
-                // giving them the chance to invalidate the current render.
-                renderRenderable.Update(t0);
-
+            {                
                 if (pendingValidationCycles > 0)
                 {
-                    pendingValidationCycles--;
+                    var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
 
+                    var t0 = renderTimer.Elapsed;
+                    // Update all renderables before rendering 
+                    // giving them the chance to invalidate the current render.
+                    renderRenderable.Update(t0);
+                                        
                     // Safety check because of dispatcher deferred render call
                     if (surfaceD3D != null)
                     {
-                        Render();
-#if MSAA
-                        device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
-                        surfaceD3D.InvalidateD3DImage();
+                        if (cycle == 1)
+                        {
+                            Render();
+                        }
+                        else
+                        {
+                            surfaceD3D.InvalidateD3DImage();
+                        }
                     }
-                }
 
-                lastRenderingDuration = renderTimer.Elapsed - t0;
+                    lastRenderingDuration = renderTimer.Elapsed - t0;
+                }
             }
             catch (Exception ex)
             {

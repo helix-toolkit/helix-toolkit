@@ -19,6 +19,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
+#if MSAA
+    public enum MSAALevel
+    {
+        Disable = 0, Maximum = 1, Two = 2, Four = 4, Eight = 8
+    }
+#endif
     public interface IRenderHost
     {
         /// <summary>
@@ -30,7 +36,9 @@ namespace HelixToolkit.Wpf.SharpDX
         Color4 ClearColor { get; }
         bool IsShadowMapEnabled { get; }
         //bool IsDeferredEnabled { get;  }
-        bool IsMSAAEnabled { get; }
+#if MSAA
+        MSAALevel MSAA { get; set; }
+#endif
         IRenderer Renderable { get; set; }
 
         /// <summary>
@@ -53,5 +61,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         double ActualHeight { get; }
         double ActualWidth { get; }
+
+        /// <summary>
+        /// Indicates if DPFCanvas busy on rendering.
+        /// </summary>
+        bool IsBusy { get; }
     }
 }

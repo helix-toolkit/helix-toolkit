@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public Device Device { get; private set; }
         public Color4 ClearColor { get; private set; }
         public bool IsShadowMapEnabled { get; private set; }
-        public bool IsMSAAEnabled { get; private set; }
+        public MSAALevel MSAA { get; set; }
         public IRenderer Renderable { get; set; }
         public RenderTechnique RenderTechnique { get; private set; }
         public double ActualHeight { get; private set; }
@@ -32,6 +32,11 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public IEffectsManager EffectsManager { get; set; }
 
         public IRenderTechniquesManager RenderTechniquesManager { get; set; }
+
+        public bool IsBusy
+        {
+            get;private set;
+        }
 
         public void SetDefaultRenderTargets()
         {
