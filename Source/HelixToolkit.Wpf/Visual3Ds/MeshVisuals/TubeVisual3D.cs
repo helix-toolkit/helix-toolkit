@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
-
+    using System.Linq;
     /// <summary>
     /// A visual element that shows a tube along a specified path.
     /// </summary>
@@ -183,23 +183,32 @@ namespace HelixToolkit.Wpf
                 this.IsSectionClosed);
 
             // Add Caps if wanted and needed
-            if (this.AddCaps && !this.IsPathClosed)
+            if (this.AddCaps && !this.IsPathClosed && builder.Positions.Count >= Section.Count)
             {
-                // Start Cap
-                var startPoints = new int[this.Section.Count];
-                for (int i = 0; i < this.Section.Count; i++)
-                {
-                    startPoints[i] = i;
-                }
-                builder.AddTriangleFan(startPoints);
+                var sCount = Section.Count;
+                var normals = new Vector3D[sCount];
+                var vertices = new Point3D[sCount];
+                var pCount = Path.Count;
                 
-                // End Cap
-                var endPoints = new int[this.Section.Count];
-                for (int i = 0; i < this.Section.Count; i++)
+                //Add back cap
+                var circleBack = builder.Positions.Skip(builder.Positions.Count - sCount).Take(sCount).ToArray();
+                var normal = Path[pCount - 1] - Path[pCount - 2];
+                normal.Normalize();
+                for (int i = 0; i < normals.Length; ++i)
                 {
-                    endPoints[i] = builder.Positions.Count - 1 - i;
+                    normals[i] = normal;
                 }
-                builder.AddTriangleFan(endPoints);
+                builder.AddTriangleFan(circleBack, normals);
+                //Add front cap
+                var circleFront = builder.Positions.Take(sCount).ToArray();
+                normal = Path[0] - Path[1];
+                normal.Normalize();
+
+                for (int i = 0; i < normals.Length; ++i)
+                {
+                    normals[i] = normal;
+                }
+                builder.AddTriangleFan(circleFront, normals);
             }
 
             return builder.ToMesh();

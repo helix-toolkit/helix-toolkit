@@ -2836,15 +2836,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
-            if(frontCap || backCap && path.Count > 1 )
+            if(!isTubeClosed && ( frontCap || backCap ) && path.Count > 1 && Positions.Count >= section.Count)
             {
-                var normals = new Vector3[section.Count];
-                var fanTextures = new Vector2[section.Count];
-                var count = path.Count;
+                var sCount = section.Count;
+                var normals = new Vector3[sCount];
+                var fanTextures = new Vector2[sCount];
+                var pCount = path.Count;
                 if (backCap)
                 {                    
-                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).ToArray();
-                    var normal = path[count - 1] - path[count - 2];
+                    var circleBack = Positions.Skip(Positions.Count - sCount).Take(sCount).ToArray();
+                    var normal = path[pCount - 1] - path[pCount - 2];
                     normal.Normalize();
                     for (int i = 0; i < normals.Length; ++i)
                     {
@@ -2854,7 +2855,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 if (frontCap)
                 {
-                    var circleFront = Positions.Take(section.Count).ToArray();
+                    var circleFront = Positions.Take(sCount).ToArray();
                     var normal = path[0] - path[1];
                     normal.Normalize();
                 
