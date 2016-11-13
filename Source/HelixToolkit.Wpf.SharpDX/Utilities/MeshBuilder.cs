@@ -2705,10 +2705,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="isTubeClosed">
         /// Set to true if the tube path is closed.
         /// </param>
-        public void AddTube(IList<Vector3> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed)
+        /// <param name="frontCap">
+        /// Add cap to tube front
+        /// </param>
+        /// <param name="backCap">
+        /// Add cap to tube back
+        /// </param>
+        public void AddTube(IList<Vector3> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
         {
             var circle = GetCircle(thetaDiv);
-            this.AddTube(path, values, diameters, circle, isTubeClosed, true);
+            this.AddTube(path, values, diameters, circle, isTubeClosed, true, frontCap, backCap);
         }
 
         /// <summary>
@@ -2726,9 +2732,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="isTubeClosed">
         /// Set to true if the tube path is closed.
         /// </param>
-        public void AddTube(IList<Vector3> path, double diameter, int thetaDiv, bool isTubeClosed)
+        /// <param name="frontCap">
+        /// Add cap to tube front
+        /// </param>
+        /// <param name="backCap">
+        /// Add cap to tube back
+        /// </param>
+        public void AddTube(IList<Vector3> path, double diameter, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
         {
-            this.AddTube(path, null, new[] { diameter }, thetaDiv, isTubeClosed);
+            this.AddTube(path, null, new[] { diameter }, thetaDiv, isTubeClosed, frontCap, backCap);
         }
 
         /// <summary>
@@ -2752,13 +2764,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="isSectionClosed">
         /// if set to <c>true</c> [is section closed].
         /// </param>
+        /// <param name="frontCap">
+        /// Add cap to tube front
+        /// </param>
+        /// <param name="backCap">
+        /// Add cap to tube back
+        /// </param>
         public void AddTube(
             IList<Vector3> path,
             IList<double> values,
             IList<double> diameters,
             IList<Vector2> section,
             bool isTubeClosed,
-            bool isSectionClosed)
+            bool isSectionClosed, bool frontCap, bool backCap)
         {
             if (values != null && values.Count == 0)
             {
@@ -2818,6 +2836,35 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
+            if(frontCap || backCap && path.Count > 1 )
+            {
+                var normals = new Vector3[section.Count];
+                var fanTextures = new Vector2[section.Count];
+                var count = path.Count;
+                if (backCap)
+                {                    
+                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).ToArray();
+                    var normal = path[count - 1] - path[count - 2];
+                    normal.Normalize();
+                    for (int i = 0; i < normals.Length; ++i)
+                    {
+                        normals[i] = normal;
+                    }
+                    this.AddTriangleFan(circleBack, normals, fanTextures);
+                }
+                if (frontCap)
+                {
+                    var circleFront = Positions.Take(section.Count).ToArray();
+                    var normal = path[0] - path[1];
+                    normal.Normalize();
+                
+                    for(int i=0; i<normals.Length; ++i)
+                    {
+                        normals[i] = normal;
+                    }
+                    this.AddTriangleFan(circleFront, normals, fanTextures);
+                }
+            }
         }
 
         /// <summary>
