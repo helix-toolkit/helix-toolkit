@@ -16,8 +16,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Output\NET45\HelixToolkit.Wpf.???" target="lib\net45" />
-    <file src="..\..\Output\NET40\HelixToolkit.Wpf.???" target="lib\net40" />
+    <file src="bin\Release\HelixToolkit.Wpf.???" target="lib\net45" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />

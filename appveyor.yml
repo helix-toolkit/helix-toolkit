@@ -25,9 +25,6 @@ after_build:
   - nuget pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%"
 
 artifacts:
-  - path: Output
-    name: HelixToolkit-$(GitVersion_SemVer)
-    type: zip
   - path: '*.nupkg'
     name: HelixToolkit-packages-$(GitVersion_SemVer)
     type: zip
