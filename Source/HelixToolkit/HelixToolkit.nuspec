@@ -13,7 +13,7 @@
     <tags>3D wpf</tags>
   </metadata>
   <files>
-    <file src="..\..\Output\PCL\HelixToolkit.???" target="lib\portable-net4+sl4+wp71+win8" />
+    <file src="..\..\Output\PCL\HelixToolkit.???" target="lib\portable-net45+win8+wpa81+wp8" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
