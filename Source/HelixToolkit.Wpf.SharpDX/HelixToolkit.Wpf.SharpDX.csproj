@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;</DefineConstants>
+    <DefineConstants>TRACE;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -153,7 +153,6 @@
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Core\Box3D.cs" />
     <Compile Include="Core\Color4Collection.cs" />
-    <Compile Include="Core\CuttingEarsTriangulator.cs" />
     <Compile Include="Core\ExposedArrayList.cs" />
     <Compile Include="Core\IntCollection.cs" />
     <Compile Include="Core\Polygon.cs" />
@@ -181,7 +180,6 @@
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Controls\ViewportCommands.cs" />
-    <Compile Include="Core\SweepLinePolygonTriangulator.cs" />
     <Compile Include="Core\Vector2Collection.cs" />
     <Compile Include="Core\Vector3Collection.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />

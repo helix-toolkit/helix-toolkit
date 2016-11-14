@@ -9,5 +9,7 @@
     <Import_RootNamespace>HelixToolkit.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\CuttingEarsTriangulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\SweepLinePolygonTriangulator.cs" />
   </ItemGroup>
 </Project>
