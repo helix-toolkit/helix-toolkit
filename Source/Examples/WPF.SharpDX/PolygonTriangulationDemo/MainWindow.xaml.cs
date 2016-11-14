@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Linq;
+using HelixToolkit.Wpf;
 
 namespace PolygonTriangulationDemo
 {
