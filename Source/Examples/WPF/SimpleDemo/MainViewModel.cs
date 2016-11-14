@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ExampleBrowser
+namespace SimpleDemo
 {
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
