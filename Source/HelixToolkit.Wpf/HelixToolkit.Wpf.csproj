@@ -18,9 +18,9 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\NET45\</OutputPath>
-    <OutputPath>bin\Debug\NET45</OutputPath>
-    <IntermediateOutputPath>obj\Debug\NET45\</IntermediateOutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,12 +32,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\NET45\</OutputPath>
-    <IntermediateOutputPath>obj\Release\NET45\</IntermediateOutputPath>
+    <OutputPath>bin\Release\</OutputPath>
+    <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\NET45\HelixToolkit.Wpf.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\HelixToolkit.Wpf.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -69,7 +69,6 @@
     <Compile Include="Exporters\StlExporter.cs" />
     <Compile Include="ExtensionMethods\AnimationExtensions.cs" />
     <Compile Include="Geometry\LineSegment.cs" />
-    <Compile Include="Geometry\SweepLinePolygonTriangulator.cs" />
     <Compile Include="Geometry\Triangle.cs" />
     <Compile Include="Helpers\AttachedProperties.cs" />
     <Compile Include="Controls\CameraController\CameraMode.cs" />
@@ -106,7 +105,6 @@
     <Compile Include="Exporters\XamlExporter.cs" />
     <Compile Include="ExtensionMethods\Point3DExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Geometry\CuttingEarsTriangulator.cs" />
     <Compile Include="Geometry\Polygon3D.cs" />
     <Compile Include="Geometry\Mesh3D.cs" />
     <Compile Include="Geometry\BoundingSphere.cs" />
@@ -329,6 +327,7 @@
       <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
