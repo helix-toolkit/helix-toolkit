@@ -83,7 +83,6 @@
     <Compile Include="Controls\ColorAxis\ColorAxis.cs" />
     <Compile Include="Controls\ColorAxis\ColorAxisPosition.cs" />
     <Compile Include="Controls\ColorAxis\RangeColorAxis.cs" />
-    <Compile Include="HelixToolkitException.cs" />
     <Compile Include="Controls\HelixViewport3D.cs" />
     <Compile Include="Controls\CameraController\MouseGestureHandler.cs" />
     <Compile Include="Controls\IHelixViewport3D.cs" />

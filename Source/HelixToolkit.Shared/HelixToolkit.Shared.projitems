@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\CuttingEarsTriangulator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\SweepLinePolygonTriangulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HelixToolkitException.cs" />
   </ItemGroup>
 </Project>
