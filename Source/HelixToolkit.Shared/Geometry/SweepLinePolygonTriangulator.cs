@@ -9,12 +9,18 @@
 
 namespace HelixToolkit.Wpf
 {
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Collections;
+#if SHARPDX
+    using Point = global::SharpDX.Vector2;
+    using Int32Collection = System.Collections.Generic.List<int>;
+    using DoubleOrSingle = System.Single;
+#else
     using System.Windows;
     using System.Windows.Media;
+    using DoubleOrSingle = System.Double;
+#endif
 
     /// <summary>
     /// Triangulate a simple Polygon with the Sweep-Line Algorithm
@@ -225,7 +231,7 @@ namespace HelixToolkit.Wpf
                         else if (top.Next == newPoint)
                             left = newPoint;
                         else
-                            throw new HelixToolkitException("Triangulation error");
+                            throw new Exception("Triangulation error");
                     }
                     else if (left.Next == newPoint)
                     {
@@ -557,7 +563,7 @@ namespace HelixToolkit.Wpf
 
                 // Calculate the x-Coordinate of the Intersection between
                 // a horizontal Line from the Point to the Left and the Edge of the StatusHelperElement
-                Double xValue = she.Edge.PointOne.X + (py - she.Edge.PointOne.Y) * she.Factor;
+                var xValue = she.Edge.PointOne.X + (py - she.Edge.PointOne.Y) * she.Factor;
 
                 // If the xValue is smaller than or equal to the Point's x-Coordinate
                 // (i.e. it lies on the left Side of it - allows a small Error)
@@ -598,12 +604,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Factor used for x-Value Calculation
         /// </summary>
-        private Double mFactor;
+        private double mFactor;
 
         /// <summary>
         /// Accessor for the Factor
         /// </summary>
-        public Double Factor
+        public double Factor
         {
             get { return mFactor; }
         }
@@ -611,7 +617,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Used to early-skip the Search for the right Status and Helper
         /// </summary>
-        public Double MinX
+        public double MinX
         {
             get;
             private set;
@@ -655,12 +661,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Accessor for the X-Coordinate of the Point
         /// </summary>
-        public double X { get { return this.mPoint.X; } set { this.mPoint.X = value; } }
+        public DoubleOrSingle X { get { return this.mPoint.X; } set { this.mPoint.X = value; } }
 
         /// <summary>
         /// Accessor for the Y-Coordinate of the Point
         /// </summary>
-        public double Y { get { return this.mPoint.Y; } set { this.mPoint.Y = value; } }
+        public DoubleOrSingle Y { get { return this.mPoint.Y; } set { this.mPoint.Y = value; } }
 
         /// <summary>
         /// The "incoming" Edge of this PolygonPoint
@@ -775,7 +781,7 @@ namespace HelixToolkit.Wpf
         {
             // If the Point has no Next- and Last-PolygonPoint, there's an Error
             if (Next == null || Last == null)
-                throw new HelixToolkitException("No closed Polygon");
+                throw new Exception("No closed Polygon");
 
             // If we use the normal Order (top-to-bottom)
             if (!reverse)
@@ -825,7 +831,7 @@ namespace HelixToolkit.Wpf
         {
             // If the Point has no Next- and Last-PolygonPoint, there's an Error
             if (Next == null || Last == null)
-                throw new HelixToolkitException("No closed Polygon");
+                throw new Exception("No closed Polygon");
             // Calculate the necessary Vectors
             // From-last-to-this Vector
             var vecFromLast = this.Point - this.Last.Point;
