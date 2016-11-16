@@ -157,7 +157,6 @@
     <Compile Include="Core\IntCollection.cs" />
     <Compile Include="Core\Polygon.cs" />
     <Compile Include="Core\Polygon3D.cs" />
-    <Compile Include="Core\HelixToolkitException.cs" />
     <Compile Include="Core\Ray3.cs" />
     <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />

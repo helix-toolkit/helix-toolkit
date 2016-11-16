@@ -11,8 +11,8 @@ namespace DemoCore
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
+    using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
 
     /// <summary>
