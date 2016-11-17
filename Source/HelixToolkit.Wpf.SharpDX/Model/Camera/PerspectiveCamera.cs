@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
@@ -47,17 +49,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public override Matrix CreateProjectionMatrix(double aspectRatio)
         {
+            var fov = this.FieldOfView*Math.PI/180;
+
             if (this.CreateLeftHandSystem)
             {
                 return global::SharpDX.Matrix.PerspectiveFovLH(
-                    (float)this.FieldOfView, 
-                    (float)aspectRatio, 
-                    (float)this.NearPlaneDistance, 
+                    (float)fov,
+                    (float)aspectRatio,
+                    (float)this.NearPlaneDistance,
                     (float)this.FarPlaneDistance);
             }
 
             return global::SharpDX.Matrix.PerspectiveFovRH(
-                (float)this.FieldOfView, (float)aspectRatio, (float)this.NearPlaneDistance, (float)this.FarPlaneDistance);
+                (float)fov, (float)aspectRatio, (float)this.NearPlaneDistance, (float)this.FarPlaneDistance);
         }
 
         /// <summary>
