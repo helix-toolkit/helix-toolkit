@@ -25,15 +25,17 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.Shared", "Heli
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.Shared", "HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.shproj", "{1EAF532E-D750-497B-BB8F-EE85359C78A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCore", "Examples\WPF.SharpDX\DemoCore\DemoCore.csproj", "{B475C12B-80F9-4BC0-88E5-815C88593BEE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
+		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{3f3b4548-a9db-4874-86f7-e7c4fec8a351}*SharedItemsImports = 4
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
-		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +148,22 @@ Global
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB}.Release|x64.Build.0 = Release|Any CPU
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB}.Release|x86.ActiveCfg = Release|Any CPU
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB}.Release|x86.Build.0 = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|x64.Build.0 = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|x86.Build.0 = Debug|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|ARM.Build.0 = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|x64.ActiveCfg = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|x64.Build.0 = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|x86.ActiveCfg = Release|Any CPU
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,5 +173,6 @@ Global
 		{77CD79C5-CF65-45D2-8739-B6DAD25DE150} = {4655B7B0-5C0D-4224-BAE1-C5D81413AE94}
 		{76556164-48F2-4CAA-859B-5573F790970C} = {4655B7B0-5C0D-4224-BAE1-C5D81413AE94}
 		{467C5E3B-0FC9-4454-A277-7350D0C10ADB} = {76556164-48F2-4CAA-859B-5573F790970C}
+		{B475C12B-80F9-4BC0-88E5-815C88593BEE} = {76556164-48F2-4CAA-859B-5573F790970C}
 	EndGlobalSection
 EndGlobal
