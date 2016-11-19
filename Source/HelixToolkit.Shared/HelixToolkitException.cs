@@ -14,7 +14,9 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Represents errors that occurs in the Helix 3D Toolkit.
     /// </summary>
+#if !NETFX_CORE
     [Serializable]
+#endif
     public class HelixToolkitException : Exception
     {
         /// <summary>
