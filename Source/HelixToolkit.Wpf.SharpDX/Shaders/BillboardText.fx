@@ -62,6 +62,11 @@ float4 PShaderBillboardText( PSInputBT input ) : SV_Target
     return intermediateColor * input.c;
 }
 
+float4 PShaderBillboardBackground(PSInputBT input) : SV_Target
+{
+	return input.c;
+}
+
 //--------------------------------------------------------------------------------------
 // Techniques
 //-------------------------------------------------------------------------------------
@@ -80,4 +85,16 @@ technique11 RenderBillboard
         SetGeometryShader	( NULL );
         SetPixelShader		( CompileShader( ps_4_0, PShaderBillboardText() ) );
     }    
+	pass P1
+	{
+		//SetDepthStencilState( DSSDepthLess, 0 );
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
+	}
 }

@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         private volatile bool isInitialized = false;
 
+        public bool IsSingle { get { return true; } }
         public BitmapSource Texture { get; private set; }
 
         private TextInfo mTextInfo = new TextInfo("", new Vector3());
@@ -38,6 +39,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             set { mFontColor = value; }
             get { return mFontColor; }
+        }
+
+        private Color4 mBackgroundColor = Color.Transparent;
+        public Color4 BackgroundColor
+        {
+            set { mBackgroundColor = value; }
+            get { return mBackgroundColor; }
         }
 
         private int mFontSize = 12;
@@ -97,12 +105,14 @@ namespace HelixToolkit.Wpf.SharpDX
             var uv_c = new Vector2(1, 0);
             var uv_d = new Vector2(1, 1);
 
+            ///Create foreground data
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
+
             Colors.Add(FontColor);
             Colors.Add(FontColor);
             Colors.Add(FontColor);
@@ -116,6 +126,35 @@ namespace HelixToolkit.Wpf.SharpDX
             TextureCoordinates.Add(uv_a);
             TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_c);
+
+            info.Offsets.Add(a);
+            info.Offsets.Add(c);
+            info.Offsets.Add(b);
+            info.Offsets.Add(b);
+            info.Offsets.Add(c);
+            info.Offsets.Add(d);
+
+            ///Create background data
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
 
             info.Offsets.Add(a);
             info.Offsets.Add(c);
