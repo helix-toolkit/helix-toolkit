@@ -24,10 +24,10 @@ namespace HelixToolkit.Wpf
     using Point = global::SharpDX.Vector2;
     using Point3D = global::SharpDX.Vector3;
     using Vector3D = global::SharpDX.Vector3;
-    using Vector3DCollection = System.Collections.Generic.List<global::SharpDX.Vector3>;
-    using Point3DCollection = System.Collections.Generic.List<global::SharpDX.Vector3>;
-    using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
-    using Int32Collection = System.Collections.Generic.List<int>;
+    using Vector3DCollection = SharpDX.Core.Vector3Collection;
+    using Point3DCollection = SharpDX.Core.Vector3Collection;
+    using PointCollection = SharpDX.Core.Vector2Collection;
+    using Int32Collection = SharpDX.Core.IntCollection;
     using DoubleOrSingle = System.Single;
 #else
     using System.Linq;
@@ -199,57 +199,57 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The positions.
         /// </summary>
-        private IList<Point3D> positions;
+        private Point3DCollection positions;
         /// <summary>
         /// Gets the positions collection of the mesh.
         /// </summary>
         /// <value> The positions. </value>
-        public IList<Point3D> Positions { get { return this.positions; } }
+        public Point3DCollection Positions { get { return this.positions; } }
         /// <summary>
         /// The triangle indices.
         /// </summary>
-        private IList<int> triangleIndices;
+        private Int32Collection triangleIndices;
         /// <summary>
         /// Gets the triangle indices.
         /// </summary>
         /// <value>The triangle indices.</value>
-        public IList<int> TriangleIndices { get { return this.triangleIndices; } }
+        public Int32Collection TriangleIndices { get { return this.triangleIndices; } }
         /// <summary>
         /// The normal vectors.
         /// </summary>
-        private IList<Vector3D> normals;
+        private Vector3DCollection normals;
         /// <summary>
         /// Gets the normal vectors of the mesh.
         /// </summary>
         /// <value>The normal vectors.</value>
-        public IList<Vector3D> Normals { get { return this.normals; } set { this.normals = value; } }
+        public Vector3DCollection Normals { get { return this.normals; } set { this.normals = value; } }
         /// <summary>
         /// The texture coordinates.
         /// </summary>
-        private IList<Point> textureCoordinates;
+        private PointCollection textureCoordinates;
         /// <summary>
         /// Gets the texture coordinates of the mesh.
         /// </summary>
         /// <value>The texture coordinates.</value>
-        public IList<Point> TextureCoordinates { get { return this.textureCoordinates; } set { this.textureCoordinates = value; } }
+        public PointCollection TextureCoordinates { get { return this.textureCoordinates; } set { this.textureCoordinates = value; } }
         /// <summary>
         /// The Tangents.
         /// </summary>
-        private IList<Vector3D> tangents;
+        private Vector3DCollection tangents;
         /// <summary>
         /// Gets and sets the tangents of the mesh.
         /// </summary>
         /// <value>The tangents.</value>
-        public IList<Vector3D> Tangents { get { return this.tangents; } set { this.tangents = value; } }
+        public Vector3DCollection Tangents { get { return this.tangents; } set { this.tangents = value; } }
         /// <summary>
         /// The Bi-Tangents.
         /// </summary>
-        private IList<Vector3D> bitangents;
+        private Vector3DCollection bitangents;
         /// <summary>
         /// Gets and sets the bi-tangents of the mesh.
         /// </summary>
         /// <value>The bi-tangents.</value>
-        public IList<Vector3D> BiTangents { get { return this.bitangents; } set { this.bitangents = value; } }
+        public Vector3DCollection BiTangents { get { return this.bitangents; } set { this.bitangents = value; } }
         /// <summary>
         /// Do we have Normals or not.
         /// </summary>
@@ -278,7 +278,7 @@ namespace HelixToolkit.Wpf
             {
                 if (value && this.normals == null)
                 {
-                    this.normals = new List<Vector3D>();
+                    this.normals = new Vector3DCollection();
                 }
                 if (!value)
                 {
@@ -337,15 +337,15 @@ namespace HelixToolkit.Wpf
         /// </param>
         public MeshBuilder(bool generateNormals = true, bool generateTexCoords = true, bool tangentSpace = false)
         {
-            this.positions = new List<Point3D>();
-            this.triangleIndices = new List<int>();
+            this.positions = new Point3DCollection();
+            this.triangleIndices = new Int32Collection();
             if (generateNormals)
             {
-                this.normals = new List<Vector3D>();
+                this.normals = new Vector3DCollection();
             }
             if (generateTexCoords)
             {
-                this.textureCoordinates = new List<Point>();
+                this.textureCoordinates = new PointCollection();
             }
             if (tangentSpace)
             {
@@ -464,10 +464,13 @@ namespace HelixToolkit.Wpf
         /// <param name="positions">The Positions.</param>
         /// <param name="triangleIndices">The TriangleIndices.</param>
         /// <param name="normals">The calcualted Normals.</param>
-        private static void ComputeNormals(IList<Point3D> positions, IList<int> triangleIndices, out IList<Vector3D> normals)
+        private static void ComputeNormals(Point3DCollection positions, Int32Collection triangleIndices, out Vector3DCollection normals)
         {
-            normals = new List<Vector3D>(positions.Count);
-            ((List<Vector3D>)normals).AddRange(Enumerable.Repeat(new Vector3D(0, 0, 0), positions.Count));
+            normals = new Vector3DCollection(positions.Count);
+            for (int i = 0; i < positions.Count; i++)
+            {
+                normals.Add(new Vector3D(0, 0, 0));
+            }
             for (int t = 0; t < triangleIndices.Count; t += 3)
             {
                 var i1 = triangleIndices[t];
@@ -528,7 +531,7 @@ namespace HelixToolkit.Wpf
         /// Based on:
         /// http://www.terathon.com/code/tangent.html
         /// </summary>
-        public static void ComputeTangents(IList<Point3D> positions, IList<Vector3D> normals, IList<Point> textureCoordinates, IList<int> triangleIndices,
+        public static void ComputeTangents(Point3DCollection positions, Vector3DCollection normals, PointCollection textureCoordinates, Int32Collection triangleIndices,
             out Vector3DCollection tangents, out Vector3DCollection bitangents)
         {
             var tan1 = new Vector3D[positions.Count];
@@ -581,7 +584,7 @@ namespace HelixToolkit.Wpf
         /// <param name="indices">The Indices.</param>
         /// <param name="tangents">The calculated Tangens.</param>
         /// <param name="bitangents">The calculated Bi-Tangens.</param>
-        public static void ComputeTangentsQuads(IList<Point3D> positions, IList<Vector3D> normals, IList<Point> textureCoordinates, IList<int> indices,
+        public static void ComputeTangentsQuads(Point3DCollection positions, Vector3DCollection normals, PointCollection textureCoordinates, Int32Collection indices,
             out Vector3DCollection tangents, out Vector3DCollection bitangents)
         {
             var tan1 = new Vector3D[positions.Count];
@@ -638,8 +641,8 @@ namespace HelixToolkit.Wpf
             Vector3DCollection t1, t2;
             ComputeTangents(meshGeometry.Positions, meshGeometry.Normals, meshGeometry.TextureCoordinates, meshGeometry.TriangleIndices, out t1, out t2);
 #if SHARPDX
-            meshGeometry.Tangents = new Vector3Collection(t1);
-            meshGeometry.BiTangents = new Vector3Collection(t2);
+            meshGeometry.Tangents = new Vector3DCollection(t1);
+            meshGeometry.BiTangents = new Vector3DCollection(t2);
 #endif
         }
         /// <summary>
@@ -1342,12 +1345,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void AddFacePZ()
         {
-            var positions = new Vector3D[]
+            var positions = new Point3D[]
             {
-                new Vector3D(0,0,1),
-                new Vector3D(0,1,1),
-                new Vector3D(1,1,1),
-                new Vector3D(1,0,1),
+                new Point3D(0,0,1),
+                new Point3D(0,1,1),
+                new Point3D(1,1,1),
+                new Point3D(1,0,1),
             };
             var normals = new Vector3D[]
             {
@@ -1369,22 +1372,35 @@ namespace HelixToolkit.Wpf
                 new Point(1,0),
                 new Point(0,0),
             };
-            ((List<Vector3D>)this.positions).AddRange(positions);
-            ((List<Vector3D>)this.normals).AddRange(normals);
-            ((List<int>)this.triangleIndices).AddRange(indices);
-            ((List<Point>)this.textureCoordinates).AddRange(texcoords);
+
+            foreach (var position in positions)
+            {
+                this.positions.Add(position);
+            }
+            foreach (var normal in normals)
+            {
+                this.normals.Add(normal);
+            }
+            foreach (var index in indices)
+            {
+                this.triangleIndices.Add(index);
+            }
+            foreach (var texCoord in texcoords)
+            {
+                this.textureCoordinates.Add(texCoord);
+            }
         }
         /// <summary>
         /// Add a Face in negative Z-Direction.
         /// </summary>
         public void AddFaceNZ()
         {
-            var positions = new Vector3D[]
+            var positions = new Point3D[]
             {
-                new Vector3D(0,1,0), //p1
-                new Vector3D(0,0,0), //p0                
-                new Vector3D(1,0,0), //p3
-                new Vector3D(1,1,0), //p2
+                new Point3D(0,1,0), //p1
+                new Point3D(0,0,0), //p0                
+                new Point3D(1,0,0), //p3
+                new Point3D(1,1,0), //p2
             };
             var normals = new Vector3D[]
             {
@@ -1408,22 +1424,34 @@ namespace HelixToolkit.Wpf
                 new Point(0,0),
             };
 
-            ((List<Vector3D>)this.positions).AddRange(positions);
-            ((List<Vector3D>)this.normals).AddRange(normals);
-            ((List<int>)this.triangleIndices).AddRange(indices);
-            ((List<Point>)this.textureCoordinates).AddRange(texcoords);
+            foreach (var position in positions)
+            {
+                this.positions.Add(position);
+            }
+            foreach (var normal in normals)
+            {
+                this.normals.Add(normal);
+            }
+            foreach (var index in indices)
+            {
+                this.triangleIndices.Add(index);
+            }
+            foreach (var texCoord in texcoords)
+            {
+                this.textureCoordinates.Add(texCoord);
+            }
         }
         /// <summary>
         /// Add a Face in positive X-Direction.
         /// </summary>
         public void AddFacePX()
         {
-            var positions = new Vector3D[]
+            var positions = new Point3D[]
             {
-                new Vector3D(1,0,0), //p0
-                new Vector3D(1,0,1), //p1
-                new Vector3D(1,1,1), //p2   
-                new Vector3D(1,1,0), //p3                             
+                new Point3D(1,0,0), //p0
+                new Point3D(1,0,1), //p1
+                new Point3D(1,1,1), //p2   
+                new Point3D(1,1,0), //p3                             
             };
             var normals = new Vector3D[]
             {
@@ -1447,22 +1475,34 @@ namespace HelixToolkit.Wpf
                 new Point(0,0),
             };
 
-            ((List<Vector3D>)this.positions).AddRange(positions);
-            ((List<Vector3D>)this.normals).AddRange(normals);
-            ((List<int>)this.triangleIndices).AddRange(indices);
-            ((List<Point>)this.textureCoordinates).AddRange(texcoords);
+            foreach (var position in positions)
+            {
+                this.positions.Add(position);
+            }
+            foreach (var normal in normals)
+            {
+                this.normals.Add(normal);
+            }
+            foreach (var index in indices)
+            {
+                this.triangleIndices.Add(index);
+            }
+            foreach (var texCoord in texcoords)
+            {
+                this.textureCoordinates.Add(texCoord);
+            }
         }
         /// <summary>
         /// Add a Face in negative X-Direction.
         /// </summary>
         public void AddFaceNX()
         {
-            var positions = new Vector3D[]
+            var positions = new Point3D[]
             {
-                new Vector3D(0,0,1), //p1
-                new Vector3D(0,0,0), //p0                
-                new Vector3D(0,1,0), //p3 
-                new Vector3D(0,1,1), //p2               
+                new Point3D(0,0,1), //p1
+                new Point3D(0,0,0), //p0                
+                new Point3D(0,1,0), //p3 
+                new Point3D(0,1,1), //p2               
             };
             var normals = new Vector3D[]
             {
@@ -1486,22 +1526,34 @@ namespace HelixToolkit.Wpf
                 new Point(0,0),
             };
 
-            ((List<Vector3D>)this.positions).AddRange(positions);
-            ((List<Vector3D>)this.normals).AddRange(normals);
-            ((List<int>)this.triangleIndices).AddRange(indices);
-            ((List<Point>)this.textureCoordinates).AddRange(texcoords);
+            foreach (var position in positions)
+            {
+                this.positions.Add(position);
+            }
+            foreach (var normal in normals)
+            {
+                this.normals.Add(normal);
+            }
+            foreach (var index in indices)
+            {
+                this.triangleIndices.Add(index);
+            }
+            foreach (var texCoord in texcoords)
+            {
+                this.textureCoordinates.Add(texCoord);
+            }
         }
         /// <summary>
         /// Add a Face in positive Y-Direction.
         /// </summary>
         public void AddFacePY()
         {
-            var positions = new Vector3D[]
+            var positions = new Point3D[]
             {
-                new Vector3D(1,1,0), //p3  
-                new Vector3D(1,1,1), //p2  
-                new Vector3D(0,1,1), //p1
-                new Vector3D(0,1,0), //p0
+                new Point3D(1,1,0), //p3  
+                new Point3D(1,1,1), //p2  
+                new Point3D(0,1,1), //p1
+                new Point3D(0,1,0), //p0
             };
             var normals = new Vector3D[]
             {
@@ -1525,22 +1577,34 @@ namespace HelixToolkit.Wpf
                 new Point(0,0),
             };
 
-            ((List<Vector3D>)this.positions).AddRange(positions);
-            ((List<Vector3D>)this.normals).AddRange(normals);
-            ((List<int>)this.triangleIndices).AddRange(indices);
-            ((List<Point>)this.textureCoordinates).AddRange(texcoords);
+            foreach (var position in positions)
+            {
+                this.positions.Add(position);
+            }
+            foreach (var normal in normals)
+            {
+                this.normals.Add(normal);
+            }
+            foreach (var index in indices)
+            {
+                this.triangleIndices.Add(index);
+            }
+            foreach (var texCoord in texcoords)
+            {
+                this.textureCoordinates.Add(texCoord);
+            }
         }
         /// <summary>
         /// Add a Face in negative Y-Direction.
         /// </summary>
         public void AddFaceNY()
         {
-            var positions = new Vector3D[]
+            var positions = new Point3D[]
             {
-                new Vector3D(0,0,0), //p0
-                new Vector3D(0,0,1), //p1
-                new Vector3D(1,0,1), //p2
-                new Vector3D(1,0,0), //p3
+                new Point3D(0,0,0), //p0
+                new Point3D(0,0,1), //p1
+                new Point3D(1,0,1), //p2
+                new Point3D(1,0,0), //p3
             };
             var normals = new Vector3D[]
             {
@@ -1564,10 +1628,22 @@ namespace HelixToolkit.Wpf
                 new Point(0,0),
             };
 
-            ((List<Vector3D>)this.positions).AddRange(positions);
-            ((List<Vector3D>)this.normals).AddRange(normals);
-            ((List<int>)this.triangleIndices).AddRange(indices);
-            ((List<Point>)this.textureCoordinates).AddRange(texcoords);
+            foreach (var position in positions)
+            {
+                this.positions.Add(position);
+            }
+            foreach (var normal in normals)
+            {
+                this.normals.Add(normal);
+            }
+            foreach (var index in indices)
+            {
+                this.triangleIndices.Add(index);
+            }
+            foreach (var texCoord in texcoords)
+            {
+                this.textureCoordinates.Add(texCoord);
+            }
         }
         /// <summary>
         /// Adds an extruded surface of the specified line segments.
@@ -4276,12 +4352,12 @@ namespace HelixToolkit.Wpf
 
             return new MeshGeometry3D()
             {
-                Positions = new Vector3Collection(this.positions),
-                Indices = new IntCollection(this.triangleIndices),
-                Normals = (this.HasNormals) ? new Vector3Collection(this.normals) : null,
-                TextureCoordinates = (this.HasTexCoords) ? new Vector2Collection(this.textureCoordinates) : null,
-                Tangents = (this.HasTangents) ? new Vector3Collection(this.tangents) : null,
-                BiTangents = (this.HasTangents) ? new Vector3Collection(this.bitangents) : null,
+                Positions = this.positions,
+                Indices = this.triangleIndices,
+                Normals = (this.HasNormals) ? this.normals : null,
+                TextureCoordinates = (this.HasTexCoords) ? this.textureCoordinates : null,
+                Tangents = (this.HasTangents) ? this.tangents : null,
+                BiTangents = (this.HasTangents) ? this.bitangents : null,
             };
         }
 #if Sphere
