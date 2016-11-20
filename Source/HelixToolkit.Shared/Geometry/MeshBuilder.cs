@@ -857,7 +857,7 @@ namespace HelixToolkit.Wpf
             bool baseCap, bool topCap, int thetaDiv)
         {
             var pc = new PointCollection();
-            var tc = new List<DoubleOrSingle>();
+            var tc = new List<double>();
             if (baseCap)
             {
                 pc.Add(new Point(0, 0));
@@ -1769,7 +1769,7 @@ namespace HelixToolkit.Wpf
                     new Point(height, (DoubleOrSingle)innerDiameter / 2)
                 };
 
-            var tc = new List<DoubleOrSingle> { 1, 0, 1, 0 };
+            var tc = new List<double> { 1, 0, 1, 0 };
 
             if (innerDiameter > 0)
             {
@@ -2822,10 +2822,10 @@ namespace HelixToolkit.Wpf
         {
             // Helper Variables
             var right = SharedFunctions.CrossProduct(up, forward);
-            var heightSphere = (DoubleOrSingle)Math.Sqrt(6) / 3 * sideLength;
-            var radiusSphere = (DoubleOrSingle)Math.Sqrt(6) / 4 * sideLength;
-            var heightFace = (DoubleOrSingle)Math.Sqrt(3) / 2 * sideLength;
-            var radiusFace = (DoubleOrSingle)Math.Sqrt(3) / 3 * sideLength;
+            var heightSphere = (DoubleOrSingle)Math.Sqrt(6) / 3 * (DoubleOrSingle)sideLength;
+            var radiusSphere = (DoubleOrSingle)Math.Sqrt(6) / 4 * (DoubleOrSingle)sideLength;
+            var heightFace = (DoubleOrSingle)Math.Sqrt(3) / 2 * (DoubleOrSingle)sideLength;
+            var radiusFace = (DoubleOrSingle)Math.Sqrt(3) / 3 * (DoubleOrSingle)sideLength;
             var smallHeightSphere = heightSphere - radiusSphere;
             var smallHeightFace = heightFace - radiusFace;
             var halfLength = (DoubleOrSingle)sideLength * 0.5f;
@@ -2882,7 +2882,7 @@ namespace HelixToolkit.Wpf
                     crossSectionPoints = GetCircle(phiDiv, true);
                 }
                 // Transform Crosssection to real Size
-                crossSectionPoints = crossSectionPoints.Select(p => new Point((DoubleOrSingle)p.X * tubeDiameter * .5f, (DoubleOrSingle)p.Y * tubeDiameter * .5f)).ToList();
+                crossSectionPoints = crossSectionPoints.Select(p => new Point((DoubleOrSingle)p.X * (DoubleOrSingle)tubeDiameter * .5f, (DoubleOrSingle)p.Y * (DoubleOrSingle)tubeDiameter * .5f)).ToList();
                 // Transform the Cross-Section Points to 3D Space
                 var crossSection3DPoints = crossSectionPoints.Select(p => new Point3D(p.X, 0, p.Y)).ToList();
 
