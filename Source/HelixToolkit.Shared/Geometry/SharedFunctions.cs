@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Functions for the Shared Projects to simplify the Code
     /// </summary>
-    public static class SharedFunctions
+    internal static class SharedFunctions
     {
         /// <summary>
         /// 
