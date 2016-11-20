@@ -13,12 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
 
-    public enum MeshFaces
-    {
-        Default, 
-        QuadPatches,
-    }
-
     public struct ModelInfo
     {
         public MeshFaces Faces { get; set; }

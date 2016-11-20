@@ -217,7 +217,6 @@
     <Compile Include="Importers\LwoReader.cs" />
     <Compile Include="Importers\StLReader.cs" />
     <Compile Include="MarkupExtensions\MaterialExtension.cs" />
-    <Compile Include="Helpers\MeshBuilder.cs" />
     <Compile Include="Visual3Ds\Composite\ClonedVisual3D.cs" />
     <Compile Include="Helpers\GZipHelper.cs" />
     <Compile Include="Visual3Ds\Composite\PanoramaCube3D.cs" />
@@ -234,7 +233,6 @@
     <Compile Include="Visual3Ds\LightSetups\DefaultLights.cs" />
     <Compile Include="Helpers\MaterialHelper.cs" />
     <Compile Include="Helpers\Materials.cs" />
-    <Compile Include="Helpers\MeshGeometryHelper.cs" />
     <Compile Include="Helpers\ElementSortingHelper.cs" />
     <Compile Include="Helpers\StereoHelper.cs" />
     <Compile Include="Adorners\TargetSymbolAdorner.cs" />

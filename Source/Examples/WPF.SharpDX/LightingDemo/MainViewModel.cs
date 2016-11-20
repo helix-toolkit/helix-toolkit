@@ -17,6 +17,7 @@ namespace LightingDemo
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using HelixToolkit.Wpf;
 
     public class MainViewModel : BaseViewModel
     {

@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
             d.Normalize();
             var p1 = p0 - (d * (float)this.Length * 0.5f);
             var p2 = p0 + (d * (float)this.Length * 0.5f);
-            mb.AddPipe(p1, p2, this.InnerDiameter, this.OuterDiameter, 64);
+            mb.AddPipe(p1, p2, (float)this.InnerDiameter, (float)this.OuterDiameter, 64);
             this.Geometry = mb.ToMeshGeometry3D();
         }
 
