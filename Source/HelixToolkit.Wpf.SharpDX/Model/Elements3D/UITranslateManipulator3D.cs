@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var d = this.Direction;
             d.Normalize();
             var p1 = p0 + (d * (float)this.Length);
-            mb.AddArrow(p0, p1, (float)this.Diameter, 2, 64);
+            mb.AddArrow(p0, p1, this.Diameter, 2, 64);
             this.Geometry = mb.ToMeshGeometry3D();            
         }
 

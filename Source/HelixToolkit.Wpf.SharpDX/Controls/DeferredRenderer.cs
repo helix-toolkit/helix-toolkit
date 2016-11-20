@@ -947,7 +947,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void InitSphereBuffer()
         {            
             var mesh = new MeshBuilder(true, false);
-            mesh.AddSphere(new Vector3(0, 0, 0), 1f);
+            mesh.AddSphere(new Vector3(0, 0, 0), 1.0);
             MeshGeometry3D meshGeometry = mesh.ToMeshGeometry3D();
 
             var vertices = meshGeometry.Positions.Select(p => new Vector4(p, 1.0f)).ToArray();
@@ -969,7 +969,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void InitConeBuffer()
         {
             MeshBuilder mesh = new MeshBuilder(true, false);
-            mesh.AddCone(new Vector3(1.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), 1.0f, true, 32);
+            mesh.AddCone(new Vector3(1.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), 1.0, true, 32);
             MeshGeometry3D meshGeometry = mesh.ToMeshGeometry3D();
             
             var vertices = meshGeometry.Positions.Select(p => new Vector4(p, 1.0f)).ToArray();
