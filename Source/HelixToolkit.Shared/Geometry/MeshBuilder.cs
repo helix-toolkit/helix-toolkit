@@ -46,36 +46,54 @@ namespace HelixToolkit.Wpf
         /// The top.
         /// </summary>
         PositiveZ = 0x1,
+        /// <summary>
+        /// The top.
+        /// </summary>
         Top = PositiveZ,
 
         /// <summary>
         /// The bottom.
         /// </summary>
         NegativeZ = 0x2,
+        /// <summary>
+        /// The bottom.
+        /// </summary>
         Bottom = NegativeZ,
 
         /// <summary>
         /// The left side.
         /// </summary>
         NegativeY = 0x4,
+        /// <summary>
+        /// The left side.
+        /// </summary>
         Left = NegativeY,
 
         /// <summary>
         /// The right side.
         /// </summary>
         PositiveY = 0x8,
+        /// <summary>
+        /// The right side.
+        /// </summary>
         Right = PositiveY,
 
         /// <summary>
         /// The front side.
         /// </summary>
         PositiveX = 0x10,
+        /// <summary>
+        /// The front side.
+        /// </summary>
         Front = PositiveX,
 
         /// <summary>
         /// The back side.
         /// </summary>
         NegativeX = 0x20,
+        /// <summary>
+        /// The back side.
+        /// </summary>
         Back = NegativeX,
 
         /// <summary>
@@ -88,7 +106,13 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public enum MeshFaces
     {
+        /// <summary>
+        /// Normal Face (3 Points).
+        /// </summary>
         Default,
+        /// <summary>
+        /// Face with 4 Points.
+        /// </summary>
         QuadPatches,
     }
 
@@ -305,8 +329,11 @@ namespace HelixToolkit.Wpf
         /// <param name="generateNormals">
         /// Generate normal vectors.
         /// </param>
-        /// <param name="generateTextureCoordinates">
+        /// <param name="generateTexCoords">
         /// Generate texture coordinates.
+        /// </param>
+        /// <param name="tangentSpace">
+        /// Generate tangents.
         /// </param>
         public MeshBuilder(bool generateNormals = true, bool generateTexCoords = true, bool tangentSpace = false)
         {
@@ -1021,6 +1048,12 @@ namespace HelixToolkit.Wpf
         /// </param>
         /// <param name="thetaDiv">
         /// The number of divisions around the cylinder.
+        /// </param>
+        /// <param name="cap1">
+        /// The first Cap.
+        /// </param>
+        /// <param name="cap2">
+        /// The second Cap.
         /// </param>
         /// <remarks>
         /// See http://en.wikipedia.org/wiki/Cylinder_(geometry).
@@ -2265,6 +2298,9 @@ namespace HelixToolkit.Wpf
         /// <param name="columns">
         /// The number of columns in the rectangular mesh.
         /// </param>
+        /// <param name="flipTriangles">
+        /// Flip the Triangles.
+        /// </param>
         public void AddRectangularMesh(IList<Point3D> points, int columns, bool flipTriangles = false)
         {
             if (points == null)
@@ -2411,6 +2447,12 @@ namespace HelixToolkit.Wpf
         /// </param>
         /// <param name="columns">
         /// The number of columns.
+        /// </param>
+        /// <param name="flipRowsAxis">
+        /// Flip the Rows.
+        /// </param>
+        /// <param name="flipColumnsAxis">
+        /// Flip the Columns.
         /// </param>
         private void AddRectangularMeshTextureCoordinates(int rows, int columns, bool flipRowsAxis = false, bool flipColumnsAxis = false)
         {
@@ -3399,6 +3441,12 @@ namespace HelixToolkit.Wpf
         /// </param>
         /// <param name="isTubeClosed">
         /// Set to true if the tube path is closed.
+        /// </param>
+        /// <param name="frontCap">
+        /// Generate front Cap.
+        /// </param>
+        /// <param name="backCap">
+        /// Generate back Cap.
         /// </param>
         public void AddTube(IList<Point3D> path, double diameter, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
         {

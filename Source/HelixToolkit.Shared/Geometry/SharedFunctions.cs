@@ -19,7 +19,9 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
     using DoubleOrSingle = System.Double;
 #endif
-
+    /// <summary>
+    /// Functions for the Shared Projects to simplify the Code
+    /// </summary>
     public static class SharedFunctions
     {
         /// <summary>
