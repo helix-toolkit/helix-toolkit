@@ -36,6 +36,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
     using DoubleOrSingle = System.Double;
 #endif
+#pragma warning disable 0436
     /// <summary>
     /// Box face enumeration.
     /// </summary>
@@ -4507,4 +4508,5 @@ namespace HelixToolkit.Wpf
 #endif
         #endregion Exporter Functions
     }
+#pragma warning restore 0436
 }

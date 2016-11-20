@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf
 {
     using System;
 
+#pragma warning disable 0436
     /// <summary>
     /// Represents errors that occurs in the Helix 3D Toolkit.
     /// </summary>
@@ -33,4 +34,5 @@ namespace HelixToolkit.Wpf
         {
         }
     }
+#pragma warning restore 0436
 }
