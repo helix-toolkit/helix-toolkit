@@ -3502,7 +3502,7 @@ namespace HelixToolkit.Wpf
         public void AddTube(IList<Point3D> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
         {
             var circle = GetCircle(thetaDiv);
-            this.AddTube(path, values, diameters, circle, isTubeClosed, true);
+            this.AddTube(path, values, diameters, circle, isTubeClosed, true, frontCap, backCap);
         }
         /// <summary>
         /// Adds a tube.
@@ -3552,7 +3552,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void AddTube(
             IList<Point3D> path, IList<double> values, IList<double> diameters,
-            IList<Point> section, bool isTubeClosed, bool isSectionClosed)
+            IList<Point> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
         {
             if (values != null && values.Count == 0)
             {
@@ -3644,6 +3644,36 @@ namespace HelixToolkit.Wpf
             }
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
+
+            if (frontCap || backCap && path.Count > 1)
+            {
+                var normals = new Vector3D[section.Count];
+                var fanTextures = new Point[section.Count];
+                var count = path.Count;
+                if (backCap)
+                {
+                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).ToArray();
+                    var normal = path[count - 1] - path[count - 2];
+                    normal.Normalize();
+                    for (int i = 0; i < normals.Length; ++i)
+                    {
+                        normals[i] = normal;
+                    }
+                    this.AddTriangleFan(circleBack, normals, fanTextures);
+                }
+                if (frontCap)
+                {
+                    var circleFront = Positions.Take(section.Count).ToArray();
+                    var normal = path[0] - path[1];
+                    normal.Normalize();
+
+                    for (int i = 0; i < normals.Length; ++i)
+                    {
+                        normals[i] = normal;
+                    }
+                    this.AddTriangleFan(circleFront, normals, fanTextures);
+                }
+            }
         }
         /// <summary>
         /// Adds a tube with a custom section.
@@ -3659,7 +3689,7 @@ namespace HelixToolkit.Wpf
         /// <param name="isSectionClosed">if set to <c>true</c> [is section closed].</param>
         public void AddTube(
             IList<Point3D> path, IList<double> angles, IList<double> values, IList<double> diameters,
-            IList<Point> section, Vector3D sectionXAxis, bool isTubeClosed, bool isSectionClosed)
+            IList<Point> section, Vector3D sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
         {
             if (values != null && values.Count == 0)
             {
@@ -3739,6 +3769,35 @@ namespace HelixToolkit.Wpf
             }
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
+            if (frontCap || backCap && path.Count > 1)
+            {
+                var normals = new Vector3D[section.Count];
+                var fanTextures = new Point[section.Count];
+                var count = path.Count;
+                if (backCap)
+                {
+                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).ToArray();
+                    var normal = path[count - 1] - path[count - 2];
+                    normal.Normalize();
+                    for (int i = 0; i < normals.Length; ++i)
+                    {
+                        normals[i] = normal;
+                    }
+                    this.AddTriangleFan(circleBack, normals, fanTextures);
+                }
+                if (frontCap)
+                {
+                    var circleFront = Positions.Take(section.Count).ToArray();
+                    var normal = path[0] - path[1];
+                    normal.Normalize();
+
+                    for (int i = 0; i < normals.Length; ++i)
+                    {
+                        normals[i] = normal;
+                    }
+                    this.AddTriangleFan(circleFront, normals, fanTextures);
+                }
+            }
         }
         #endregion Add Geometry
 
