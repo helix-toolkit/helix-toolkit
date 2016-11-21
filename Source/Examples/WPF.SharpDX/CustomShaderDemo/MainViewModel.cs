@@ -10,6 +10,7 @@ namespace CustomShaderDemo
 
     using DemoCore;
 
+    using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Core;
 

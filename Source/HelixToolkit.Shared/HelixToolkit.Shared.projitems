@@ -10,6 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\CuttingEarsTriangulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\MeshBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\MeshGeometryHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\SharedFunctions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\SweepLinePolygonTriangulator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HelixToolkitException.cs" />
   </ItemGroup>

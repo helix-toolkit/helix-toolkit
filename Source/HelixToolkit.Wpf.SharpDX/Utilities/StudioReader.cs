@@ -440,7 +440,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
           textureCoordinates.Add(Vector2.One);
         }
-      } 
+      }
       MeshBuilder.ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out tangents, out bitangents);
       MeshGeometry3D mesh = new MeshGeometry3D()
       {

@@ -6,6 +6,7 @@
 
 namespace TemplateDemo
 {
+    using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
 
     using SharpDX;
