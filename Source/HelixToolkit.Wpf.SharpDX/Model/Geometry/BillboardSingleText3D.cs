@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using HelixToolkit.Wpf.SharpDX.Extensions;
+using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -55,6 +56,45 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return mFontSize; }
         }
 
+        private Media.FontFamily mFontFamily = new Media.FontFamily("Arial");
+        public Media.FontFamily FontFamily
+        {
+            set
+            {
+                mFontFamily = value;
+            }
+            get
+            {
+                return mFontFamily;
+            }
+        }
+
+        private System.Windows.FontWeight mFontWeight = System.Windows.FontWeights.Normal;
+        public System.Windows.FontWeight FontWeight
+        {
+            set
+            {
+                mFontWeight = value;
+            }
+            get
+            {
+                return mFontWeight;
+            }
+        }
+
+        private System.Windows.FontStyle mFontStyle = System.Windows.FontStyles.Normal;
+        public System.Windows.FontStyle FontStyle
+        {
+            set
+            {
+                mFontStyle = value;
+            }
+            get
+            {
+                return mFontStyle;
+            }
+        }
+
         public BillboardSingleText3D()
         {
             Positions = new Vector3Collection();
@@ -69,7 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
-                    Texture = TextInfo.Text.StringToBitmapSource(FontSize, System.Windows.Media.Colors.White, System.Windows.Media.Colors.Black);
+                    Texture = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black, 
+                        this.FontFamily, this.FontWeight, this.FontStyle);
                     Width = (float)Texture.Width;
                     Height = (float)Texture.Height;
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, (float)Texture.Width, (float)Texture.Height, TextInfo);

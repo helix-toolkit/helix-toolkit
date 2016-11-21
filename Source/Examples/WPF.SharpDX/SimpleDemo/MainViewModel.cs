@@ -131,7 +131,11 @@ namespace SimpleDemo
 
             Billboard1Model = new BillboardSingleText3D()
             {
-                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)), FontColor=Color.Blue
+                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)),
+                FontColor =Color.Blue,
+                FontSize=16,
+                BackgroundColor =Color.Plum,
+                FontStyle= System.Windows.FontStyles.Italic
             };
 
             var background = Color.Blue;
@@ -139,16 +143,21 @@ namespace SimpleDemo
             Billboard2Model = new BillboardSingleText3D()
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
+                FontSize=14,
                 FontColor = Color.Green,
-                BackgroundColor = background
+                BackgroundColor = background,
+                FontWeight= System.Windows.FontWeights.Bold
             };
             background = Color.Purple;
             background.A = (byte)50;
             Billboard3Model = new BillboardSingleText3D()
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(-2, 1, 0)),
+                FontSize = 12,
                 FontColor = Color.Red,
-                BackgroundColor = background
+                BackgroundColor = background,
+                FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
+                FontStyle= System.Windows.FontStyles.Italic
             };
         }
     }

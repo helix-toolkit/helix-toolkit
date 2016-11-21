@@ -33,16 +33,39 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             return target;
         }
 
-        public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground, System.Windows.Media.Color background)
+        public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground,
+            System.Windows.Media.Color background)
+        {
+            return StringToBitmapSource(str, fontSize, foreground, background, 
+                new System.Windows.Media.FontFamily("Arial"));
+        }
+
+        public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground,
+            System.Windows.Media.Color background, Media.FontFamily fontFamily)
+        {
+            return StringToBitmapSource(str, fontSize, foreground, background,
+               fontFamily, FontWeights.Normal);
+        }
+
+        public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground,
+            System.Windows.Media.Color background, Media.FontFamily fontFamily, FontWeight fontWeight)
+        {
+            return StringToBitmapSource(str, fontSize, foreground, background,
+               fontFamily, fontWeight, FontStyles.Normal);
+        }
+
+        public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground, 
+            System.Windows.Media.Color background, Media.FontFamily fontFamily, FontWeight fontWeight, FontStyle fontStyle)
         {
             TextBlock tbX = new TextBlock();
-            tbX.FontFamily = new System.Windows.Media.FontFamily("Consolas");
+            tbX.FontFamily = fontFamily;
             tbX.Foreground = new System.Windows.Media.SolidColorBrush(foreground);
             tbX.Background = new System.Windows.Media.SolidColorBrush(background);
             tbX.TextAlignment = TextAlignment.Center;
             tbX.FontSize = fontSize;
             tbX.FontStretch = FontStretches.Normal;
-            tbX.FontWeight = FontWeights.Medium;
+            tbX.FontWeight = fontWeight;
+            tbX.FontStyle = fontStyle;
             tbX.Text = str;
             var size = tbX.MeasureString();
             tbX.Width = size.Width;
