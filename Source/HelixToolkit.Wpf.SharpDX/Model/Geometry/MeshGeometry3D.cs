@@ -34,6 +34,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public IntCollection TriangleIndices { get { return Indices; } set { Indices = new IntCollection(value); } }
+
         public static MeshGeometry3D Merge(params MeshGeometry3D[] meshes)
         {
             var positions = new Vector3Collection();

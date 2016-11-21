@@ -18,8 +18,8 @@ namespace MouseDragDemo
     using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
     using Matrix = SharpDX.Matrix;
 
-    using System.Windows.Input;    
-
+    using System.Windows.Input;
+    using HelixToolkit.Wpf;
 
     public sealed class InteractionHandle3D : GroupModel3D, IHitable, ISelectable
     {

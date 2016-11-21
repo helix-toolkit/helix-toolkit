@@ -8,6 +8,7 @@ namespace ShadowMapDemo
 {
     using System;
     using System.Windows.Media.Animation;
+    using HelixToolkit.Wpf;
 
     using DemoCore;
 

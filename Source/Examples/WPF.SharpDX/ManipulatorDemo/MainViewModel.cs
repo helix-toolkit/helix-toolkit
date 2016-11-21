@@ -20,6 +20,7 @@ namespace ManipulatorDemo
     using Transform3DGroup = System.Windows.Media.Media3D.Transform3DGroup;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using HelixToolkit.Wpf;
 
     public class MainViewModel : BaseViewModel
     {

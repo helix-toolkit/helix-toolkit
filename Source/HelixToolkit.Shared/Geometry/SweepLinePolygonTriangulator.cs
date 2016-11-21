@@ -22,6 +22,7 @@ namespace HelixToolkit.Wpf
     using DoubleOrSingle = System.Double;
 #endif
 
+#pragma warning disable 0436
     /// <summary>
     /// Triangulate a simple Polygon with the Sweep-Line Algorithm
     /// </summary>
@@ -1083,4 +1084,5 @@ namespace HelixToolkit.Wpf
             }
         }
     }
+#pragma warning restore 0436
 }

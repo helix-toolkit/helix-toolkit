@@ -40,7 +40,7 @@ namespace TessellationDemo
         
         public string[] MeshTopologyList { get; set; }
         
-        private string meshTopology = MeshFaces.Default.ToString();
+        private string meshTopology = HelixToolkit.Wpf.MeshFaces.Default.ToString();
         private RenderTechnique pnQuads;
         private RenderTechnique pnTriangles;
 
@@ -54,7 +54,7 @@ namespace TessellationDemo
                 this.RenderTechnique = this.meshTopology == "Quads" ? 
                     RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads] :
                     RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
-                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Quads" ? MeshFaces.QuadPatches : MeshFaces.Default);                                               
+                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Quads" ? HelixToolkit.Wpf.MeshFaces.QuadPatches : HelixToolkit.Wpf.MeshFaces.Default);                                               
             }
         }
 
@@ -115,7 +115,7 @@ namespace TessellationDemo
         /// </summary>
         /// <param name="filename">filename</param>
         /// <param name="faces">Determines if facades should be treated as triangles (Default) or as quads (Quads)</param>
-        private void LoadModel(string filename, MeshFaces faces)
+        private void LoadModel(string filename, HelixToolkit.Wpf.MeshFaces faces)
         {
             // load model
             var reader = new ObjReader();
