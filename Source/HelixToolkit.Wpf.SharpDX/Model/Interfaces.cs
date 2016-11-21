@@ -82,6 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IBillboardText
     {
+        bool IsSingle { get; }
         BitmapSource Texture { get; }
         void DrawText();
         Vector3Collection Positions { get; }

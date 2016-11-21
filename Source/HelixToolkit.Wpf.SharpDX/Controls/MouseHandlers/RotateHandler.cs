@@ -305,7 +305,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.rotationPoint3D = this.Camera.Position;
                     break;
                 default:
-                    if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
+                    if (Viewport.FixedRotationPointEnabled)
+                    {
+                        this.rotationPoint3D = Viewport.FixedRotationPoint;
+                    }
+                    else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
                         this.LookAt(this.MouseDownNearestPoint3D.Value, 0);
                         this.rotationPoint3D = this.Camera.Target;

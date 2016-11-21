@@ -686,6 +686,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 #endif
         /// <summary>
+        /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabledProperty"/> 
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
+            "FixedRotationPoint", typeof(Point3D), typeof(Viewport3DX), new PropertyMetadata(new Point3D()));
+
+        /// <summary>
+        /// Enable fixed rotation mode and use FixedRotationPoint for rotation. Only works under CameraMode = Inspect
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointEnabledProperty = DependencyProperty.Register(
+            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         [TypeConverter(typeof(Color4Converter))]
@@ -2378,5 +2390,34 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 #endif
+        /// <summary>
+        /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabled"/> 
+        /// </summary>
+        public Point3D FixedRotationPoint
+        {
+            set
+            {
+                SetValue(FixedRotationPointProperty, value);
+            }
+            get
+            {
+                return (Point3D)GetValue(FixedRotationPointProperty);
+            }
+        }
+
+        /// <summary>
+        /// Enable fixed rotation mode and use <see cref="FixedRotationPoint"/>  for rotation. Only works under <see cref="CameraMode"/> = Inspect
+        /// </summary>
+        public bool FixedRotationPointEnabled
+        {
+            set
+            {
+                SetValue(FixedRotationPointEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FixedRotationPointEnabledProperty);
+            }
+        }
     }
 }

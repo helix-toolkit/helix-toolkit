@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private EffectVectorVariable vViewport;
         private ShaderResourceView billboardTextureView;
         private EffectShaderResourceVariable billboardTextureVariable;
-
+        private bool isBillboardSingle = false;
         #endregion
 
         #region Overridable Methods
@@ -206,12 +206,32 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- bind buffer                
             Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
-            /// --- render the geometry 
+            /// --- render the geometry
             billboardTextureVariable.SetResource(billboardTextureView);
-            effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+            var vertexCount = Geometry.Positions.Count;
 
-            /// --- draw
-            Device.ImmediateContext.Draw(Geometry.Positions.Count, 0);
+            if (!isBillboardSingle)///<see cref="BillboardText3D"/>
+            {
+                ///Use foreground shader to draw text
+                effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+
+                /// --- draw text, foreground vertex is beginning from 0.
+                Device.ImmediateContext.Draw(vertexCount, 0);
+            }
+            else if(vertexCount == 12)///Double check if vertex count is 12. <see cref="BillboardSingleText3D"/>
+            {
+                var half = vertexCount / 2;
+                ///Use background shader to draw background first
+                effectTechnique.GetPassByIndex(1).Apply(Device.ImmediateContext);
+                /// --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
+                Device.ImmediateContext.Draw(half, half);
+
+                ///Use foreground shader to draw text
+                effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+
+                /// --- draw text, foreground vertex is beginning from 0.
+                Device.ImmediateContext.Draw(half, 0);
+            }
         }
 
         #endregion
@@ -224,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // Gather all of the textInfo offsets.
             // These should be equal in number to the positions.
-
+            isBillboardSingle = billboardGeometry.IsSingle;
             billboardGeometry.DrawText();
 
             var position = billboardGeometry.Positions.Array;

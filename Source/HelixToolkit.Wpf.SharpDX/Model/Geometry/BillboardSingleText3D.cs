@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using HelixToolkit.Wpf.SharpDX.Extensions;
+using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -14,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         private volatile bool isInitialized = false;
 
+        public bool IsSingle { get { return true; } }
         public BitmapSource Texture { get; private set; }
 
         private TextInfo mTextInfo = new TextInfo("", new Vector3());
@@ -40,11 +42,57 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return mFontColor; }
         }
 
+        private Color4 mBackgroundColor = Color.Transparent;
+        public Color4 BackgroundColor
+        {
+            set { mBackgroundColor = value; }
+            get { return mBackgroundColor; }
+        }
+
         private int mFontSize = 12;
         public int FontSize
         {
             set { mFontSize = value; }
             get { return mFontSize; }
+        }
+
+        private Media.FontFamily mFontFamily = new Media.FontFamily("Arial");
+        public Media.FontFamily FontFamily
+        {
+            set
+            {
+                mFontFamily = value;
+            }
+            get
+            {
+                return mFontFamily;
+            }
+        }
+
+        private System.Windows.FontWeight mFontWeight = System.Windows.FontWeights.Normal;
+        public System.Windows.FontWeight FontWeight
+        {
+            set
+            {
+                mFontWeight = value;
+            }
+            get
+            {
+                return mFontWeight;
+            }
+        }
+
+        private System.Windows.FontStyle mFontStyle = System.Windows.FontStyles.Normal;
+        public System.Windows.FontStyle FontStyle
+        {
+            set
+            {
+                mFontStyle = value;
+            }
+            get
+            {
+                return mFontStyle;
+            }
         }
 
         public BillboardSingleText3D()
@@ -61,7 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
-                    Texture = TextInfo.Text.StringToBitmapSource(FontSize, System.Windows.Media.Colors.White, System.Windows.Media.Colors.Black);
+                    Texture = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black, 
+                        this.FontFamily, this.FontWeight, this.FontStyle);
                     Width = (float)Texture.Width;
                     Height = (float)Texture.Height;
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, (float)Texture.Width, (float)Texture.Height, TextInfo);
@@ -97,12 +146,14 @@ namespace HelixToolkit.Wpf.SharpDX
             var uv_c = new Vector2(1, 0);
             var uv_d = new Vector2(1, 1);
 
+            ///Create foreground data
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
+
             Colors.Add(FontColor);
             Colors.Add(FontColor);
             Colors.Add(FontColor);
@@ -116,6 +167,35 @@ namespace HelixToolkit.Wpf.SharpDX
             TextureCoordinates.Add(uv_a);
             TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_c);
+
+            info.Offsets.Add(a);
+            info.Offsets.Add(c);
+            info.Offsets.Add(b);
+            info.Offsets.Add(b);
+            info.Offsets.Add(c);
+            info.Offsets.Add(d);
+
+            ///Create background data
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
 
             info.Offsets.Add(a);
             info.Offsets.Add(c);

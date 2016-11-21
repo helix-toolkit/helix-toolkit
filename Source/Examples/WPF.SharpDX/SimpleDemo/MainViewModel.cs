@@ -26,6 +26,10 @@ namespace SimpleDemo
         public PointGeometry3D Points { get; private set; }
         public BillboardText3D Text { get; private set; }
 
+        public BillboardSingleText3D Billboard1Model { private set; get; }
+        public BillboardSingleText3D Billboard2Model { private set; get; }
+        public BillboardSingleText3D Billboard3Model { private set; get; }
+
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
         public PhongMaterial BlueMaterial { get; private set; }
@@ -124,6 +128,37 @@ namespace SimpleDemo
                     Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
                 }
             }
+
+            Billboard1Model = new BillboardSingleText3D()
+            {
+                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)),
+                FontColor =Color.Blue,
+                FontSize=16,
+                BackgroundColor =Color.Plum,
+                FontStyle= System.Windows.FontStyles.Italic
+            };
+
+            var background = Color.Blue;
+            background.A = (byte)120;
+            Billboard2Model = new BillboardSingleText3D()
+            {
+                TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
+                FontSize=14,
+                FontColor = Color.Green,
+                BackgroundColor = background,
+                FontWeight= System.Windows.FontWeights.Bold
+            };
+            background = Color.Purple;
+            background.A = (byte)50;
+            Billboard3Model = new BillboardSingleText3D()
+            {
+                TextInfo = new TextInfo("Model 1", new Vector3(-2, 1, 0)),
+                FontSize = 12,
+                FontColor = Color.Red,
+                BackgroundColor = background,
+                FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
+                FontStyle= System.Windows.FontStyles.Italic
+            };
         }
     }
 }

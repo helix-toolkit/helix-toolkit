@@ -37,6 +37,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static BitmapSource TextureStatic { get; private set; }
 
+        public bool IsSingle { get { return false; } }
+
         public BitmapSource Texture { get { return TextureStatic; } }
 
         public List<TextInfo> TextInfo { get; private set; }
