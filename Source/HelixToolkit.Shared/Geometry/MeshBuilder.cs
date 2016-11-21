@@ -3550,6 +3550,12 @@ namespace HelixToolkit.Wpf
         /// <param name="isSectionClosed">
         /// if set to <c>true</c> [is section closed].
         /// </param>
+        /// <param name="frontCap">
+        /// Create a front Cap or not.
+        /// </param>
+        /// <param name="backCap">
+        /// Create a back Cap or not.
+        /// </param>
         public void AddTube(
             IList<Point3D> path, IList<double> values, IList<double> diameters,
             IList<Point> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
@@ -3687,6 +3693,12 @@ namespace HelixToolkit.Wpf
         /// 3D viewport</param>
         /// <param name="isTubeClosed">If the tube is closed set to <c>true</c> .</param>
         /// <param name="isSectionClosed">if set to <c>true</c> [is section closed].</param>
+        /// <param name="frontCap">
+        /// Create a front Cap or not.
+        /// </param>
+        /// <param name="backCap">
+        /// Create a back Cap or not.
+        /// </param>
         public void AddTube(
             IList<Point3D> path, IList<double> angles, IList<double> values, IList<double> diameters,
             IList<Point> section, Vector3D sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
