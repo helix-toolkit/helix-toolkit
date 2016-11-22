@@ -6,8 +6,11 @@
 //   A polygon triangulator for simple polygons with no holes. Expected runtime is O(n log n)
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
     using System.Collections.Generic;

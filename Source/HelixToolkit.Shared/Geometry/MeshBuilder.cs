@@ -6,8 +6,11 @@
 //   Builds MeshGeometry3D objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
     using System.Collections.Generic;
