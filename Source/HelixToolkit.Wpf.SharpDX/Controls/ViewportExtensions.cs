@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -82,6 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The camera transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetViewProjectionMatrix3D(this Viewport3DX viewport)
         {
             return GetViewProjectionMatrix(viewport).ToMatrix3D();
@@ -96,6 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The camera transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
@@ -107,7 +110,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// New name of the function: GetScreenViewProjectionTransform
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <returns>The total transform.</returns>        
+        /// <returns>The total transform.</returns>     
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetScreenViewProjectionMatrix3D(this Viewport3DX viewport)
         {
             return GetScreenViewProjectionMatrix(viewport).ToMatrix3D();
@@ -119,7 +123,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// New name of the function: GetScreenViewProjectionTransform
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <returns>The total transform.</returns>        
+        /// <returns>The total transform.</returns>       
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetScreenViewProjectionMatrix(this Viewport3DX viewport)
         {
             return GetViewProjectionMatrix(viewport) * GetViewportMatrix(viewport);
@@ -133,6 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         /// <returns>The transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetViewportMatrix3D(this Viewport3DX viewport)
         {
             return GetViewportMatrix(viewport).ToMatrix3D();
@@ -146,6 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         /// <returns>The transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetViewportMatrix(this Viewport3DX viewport)
         {
             return new Matrix(
