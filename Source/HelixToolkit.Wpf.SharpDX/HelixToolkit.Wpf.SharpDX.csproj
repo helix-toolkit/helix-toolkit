@@ -32,8 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Release\HelixToolkit.Wpf.SharpDX.XML</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
@@ -152,11 +151,6 @@
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Core\Box3D.cs" />
-    <Compile Include="Core\Color4Collection.cs" />
-    <Compile Include="Core\ExposedArrayList.cs" />
-    <Compile Include="Core\IntCollection.cs" />
-    <Compile Include="Core\Polygon.cs" />
-    <Compile Include="Core\Polygon3D.cs" />
     <Compile Include="Core\Ray3.cs" />
     <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
@@ -179,10 +173,7 @@
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Controls\ViewportCommands.cs" />
-    <Compile Include="Core\Vector2Collection.cs" />
-    <Compile Include="Core\Vector3Collection.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Extensions\MeshGeometry3DExtensions.cs" />
     <Compile Include="Helpers\ContourHelperDX.cs" />
@@ -201,9 +192,6 @@
     <Compile Include="Utilities\OffReader.cs" />
     <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="Utilities\StudioReader.cs" />
-    <Compile Include="Utilities\TokenizerHelper.cs" />
-    <Compile Include="Utilities\TypeConverter.cs" />
-    <Compile Include="Extensions\Vector3DExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\MatrixCamera.cs" />
@@ -240,9 +228,7 @@
     <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\UIElement3D.cs" />
-    <Compile Include="Model\Geometry\Geometry3D.cs" />
     <Compile Include="Model\Geometry\LineGeometry3D.cs" />
-    <Compile Include="Model\Geometry\MeshGeometry3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
     <Compile Include="Model\Materials\Material.cs" />
