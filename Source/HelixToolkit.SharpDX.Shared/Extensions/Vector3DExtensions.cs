@@ -9,15 +9,16 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.Runtime.CompilerServices;
 #if NETFX_CORE
     using System;
     using global::SharpDX;
+
 #else
     using System;
     using System.Windows.Media.Media3D;
     using global::SharpDX;
     using Point = System.Windows.Point;
-    using System.Runtime.CompilerServices;
 #endif
 
     public static class VectorExtensions
