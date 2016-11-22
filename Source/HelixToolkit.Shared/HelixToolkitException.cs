@@ -6,8 +6,11 @@
 //   Represents errors that occurs in the Helix 3D Toolkit.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
 
