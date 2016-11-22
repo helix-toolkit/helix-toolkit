@@ -23,7 +23,9 @@ namespace HelixToolkit.Wpf
     using global::SharpDX;
     using HelixToolkit.Wpf.SharpDX.Core;
 
+#if !NETFX_CORE
     using Rect3D = System.Windows.Media.Media3D.Rect3D;
+#endif
     using Point = global::SharpDX.Vector2;
     using Point3D = global::SharpDX.Vector3;
     using Vector3D = global::SharpDX.Vector3;
@@ -192,14 +194,16 @@ namespace HelixToolkit.Wpf
         /// The closed circle cache.
         /// </summary>
         private static readonly ThreadLocal<Dictionary<int, IList<Point>>> ClosedCircleCache = new ThreadLocal<Dictionary<int, IList<Point>>>(() => new Dictionary<int, IList<Point>>());
+#if !NETFX_CORE
         /// <summary>
         /// The unit sphere cache.
         /// </summary>
         private static readonly ThreadLocal<Dictionary<int, MeshGeometry3D>> UnitSphereCache = new ThreadLocal<Dictionary<int, MeshGeometry3D>>(() => new Dictionary<int, MeshGeometry3D>());
-        #endregion Static and Const
+#endif
+#endregion Static and Const
 
 
-        #region Variables and Properties
+#region Variables and Properties
         /// <summary>
         /// The positions.
         /// </summary>
@@ -314,10 +318,10 @@ namespace HelixToolkit.Wpf
                 }
             }
         }
-        #endregion Variables and Properties
+#endregion Variables and Properties
 
 
-        #region Constructors
+#region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshBuilder"/> class.
         /// </summary>
@@ -357,10 +361,10 @@ namespace HelixToolkit.Wpf
                 this.bitangents = new Vector3DCollection();
             }
         }
-        #endregion Constructors
+#endregion Constructors
 
 
-        #region Geometric Base Functions
+#region Geometric Base Functions
         /// <summary>
         /// Gets a circle section (cached).
         /// </summary>
@@ -429,6 +433,8 @@ namespace HelixToolkit.Wpf
 
             return circleSegment;
         }
+
+#if !NETFX_CORE
         /// <summary>
         /// Gets a unit sphere from the cache.
         /// </summary>
@@ -462,6 +468,8 @@ namespace HelixToolkit.Wpf
             UnitSphereCache.Value[subdivisions] = mesh;
             return mesh;
         }
+#endif
+
         /// <summary>
         /// Calculate the Mesh's Normals
         /// </summary>
@@ -636,6 +644,8 @@ namespace HelixToolkit.Wpf
                 bitangents.Add(b);
             }
         }
+
+#if !NETFX_CORE
         /// <summary>
         /// Calculate the Tangents for a MeshGeometry3D.
         /// </summary>
@@ -649,6 +659,8 @@ namespace HelixToolkit.Wpf
             meshGeometry.BiTangents = new Vector3DCollection(t2);
 #endif
         }
+#endif
+
         /// <summary>
         /// Calculate the Normals and Tangents for all MeshFaces.
         /// </summary>
@@ -684,10 +696,10 @@ namespace HelixToolkit.Wpf
                     break;
             }
         }
-        #endregion Geometric Base Functions
+#endregion Geometric Base Functions
 
 
-        #region Add Geometry
+#region Add Geometry
         /// <summary>
         /// Adds an arrow to the mesh.
         /// </summary>
@@ -723,6 +735,8 @@ namespace HelixToolkit.Wpf
 
             this.AddRevolvedGeometry(pc, null, point1, dir, thetaDiv);
         }
+
+#if !NETFX_CORE
         /// <summary>
         /// Adds the edges of a bounding box as cylinders.
         /// </summary>
@@ -760,6 +774,8 @@ namespace HelixToolkit.Wpf
             addEdge(p2, p6);
             addEdge(p3, p7);
         }
+#endif
+
         /// <summary>
         /// Adds a box aligned with the X, Y and Z axes.
         /// </summary>
@@ -779,6 +795,8 @@ namespace HelixToolkit.Wpf
         {
             this.AddBox(center, xlength, ylength, zlength, BoxFaces.All);
         }
+
+#if !NETFX_CORE
         /// <summary>
         /// Adds a box aligned with the X, Y and Z axes.
         /// </summary>
@@ -792,6 +810,8 @@ namespace HelixToolkit.Wpf
                 new Point3D((DoubleOrSingle)(rectangle.X + (rectangle.SizeX * 0.5f)), (DoubleOrSingle)(rectangle.Y + (rectangle.SizeY * 0.5f)), (DoubleOrSingle)(rectangle.Z + (rectangle.SizeZ * 0.5f))),
                 (DoubleOrSingle)rectangle.SizeX, (DoubleOrSingle)rectangle.SizeY, (DoubleOrSingle)rectangle.SizeZ, faces);
         }
+#endif
+
         /// <summary>
         /// Adds a box with the specified faces, aligned with the X, Y and Z axes.
         /// </summary>
@@ -2828,6 +2848,8 @@ namespace HelixToolkit.Wpf
         {
             this.AddEllipsoid(center, radius, radius, radius, thetaDiv, phiDiv);
         }
+
+#if !NETFX_CORE
         /// <summary>
         /// Adds a sphere (by subdividing a regular icosahedron).
         /// </summary>
@@ -2854,6 +2876,8 @@ namespace HelixToolkit.Wpf
                 this.positions[i] = center + ((DoubleOrSingle)radius * pVec);
             }
         }
+#endif
+
         /// <summary>
         /// Adds a surface of revolution.
         /// </summary>
@@ -3815,10 +3839,10 @@ namespace HelixToolkit.Wpf
                 }
             }
         }
-        #endregion Add Geometry
+#endregion Add Geometry
 
 
-        #region Helper Functions
+#region Helper Functions
         /// <summary>
         /// Appends the specified mesh.
         /// </summary>
@@ -3835,6 +3859,7 @@ namespace HelixToolkit.Wpf
             this.Append(mesh.positions, mesh.triangleIndices, mesh.normals, mesh.textureCoordinates);
         }
 
+#if !NETFX_CORE
         /// <summary>
         /// Appends the specified mesh.
         /// </summary>
@@ -3850,6 +3875,8 @@ namespace HelixToolkit.Wpf
 
             this.Append(mesh.Positions, mesh.TriangleIndices, this.normals != null ? mesh.Normals : null, this.textureCoordinates != null ? mesh.TextureCoordinates : null);
         }
+#endif
+
         /// <summary>
         /// Appends the specified points and triangles.
         /// </summary>
@@ -4042,6 +4069,8 @@ namespace HelixToolkit.Wpf
 
             this.NoSharedVertices();
         }
+
+#if !NETFX_CORE
         /// <summary>
         /// Checks the performance limits.
         /// </summary>
@@ -4063,6 +4092,8 @@ namespace HelixToolkit.Wpf
                 Trace.WriteLine(string.Format("Too many triangle indices ({0}).", this.triangleIndices.Count));
             }
         }
+#endif
+
         /// <summary>
         /// Finds the average normal to the specified corner (experimental code).
         /// </summary>
@@ -4400,10 +4431,10 @@ namespace HelixToolkit.Wpf
                 this.Subdivide4();
             }
         }
-        #endregion Helper Functions
+#endregion Helper Functions
 
 
-        #region Exporter Functions
+#region Exporter Functions
 #if SHARPDX
         /// <summary>
         /// Generate a MeshGeometry3D from the generated Data.
@@ -4581,7 +4612,7 @@ namespace HelixToolkit.Wpf
             return mg;
         }
 #endif
-        #endregion Exporter Functions
+#endregion Exporter Functions
     }
 #pragma warning restore 0436
 }

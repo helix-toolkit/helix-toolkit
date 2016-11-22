@@ -66,6 +66,8 @@ namespace HelixToolkit.Wpf
         {
             return (DoubleOrSingle)Math.Sqrt(LengthSquared(vector));
         }
+
+#if !NETFX_CORE
         /// <summary>
         /// 
         /// </summary>
@@ -84,7 +86,9 @@ namespace HelixToolkit.Wpf
         {
             return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
         }
+#endif
 #if SHARPDX
+#if !NETFX_CORE
         /// <summary>
         /// 
         /// </summary>
@@ -125,7 +129,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="mesh"></param>
         /// <returns></returns>
-
         public static System.Windows.Media.Media3D.MeshGeometry3D ToMeshGeometry3D(SharpDX.MeshGeometry3D mesh)
         {
             return new System.Windows.Media.Media3D.MeshGeometry3D()
@@ -136,6 +139,7 @@ namespace HelixToolkit.Wpf
                 TriangleIndices = ToInt32Collection(mesh.TriangleIndices)
             };
         }
+#endif
         /// <summary>
         /// Finds the intersection between the plane and a line.
         /// </summary>
