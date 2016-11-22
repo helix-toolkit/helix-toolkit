@@ -6,13 +6,14 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Runtime.CompilerServices;
 #if SHARPDX
     using global::SharpDX;
     using Vector3D = global::SharpDX.Vector3;
     using Point3D = global::SharpDX.Vector3;
     using DoubleOrSingle = System.Single;
     using System.Linq;
+
 #else
     using System.Windows;
     using System.Windows.Media;
@@ -30,6 +31,7 @@ namespace HelixToolkit.Wpf
         /// <param name="first"></param>
         /// <param name="second"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D CrossProduct(Vector3D first, Vector3D second)
         {
 #if SHARPDX
@@ -44,6 +46,7 @@ namespace HelixToolkit.Wpf
         /// <param name="first"></param>
         /// <param name="second"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle DotProduct(Vector3D first, Vector3D second)
         {
             return first.X * second.X + first.Y * second.Y + first.Z * second.Z;
@@ -53,6 +56,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle LengthSquared(Vector3D vector)
         {
             return vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z;
@@ -62,6 +66,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle Length(Vector3D vector)
         {
             return (DoubleOrSingle)Math.Sqrt(LengthSquared(vector));
@@ -73,6 +78,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Media3D.Point3D ToPoint3D(Vector3D vector)
         {
             return new System.Windows.Media.Media3D.Point3D(vector.X, vector.Y, vector.Z);
@@ -82,6 +88,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Media3D.Vector3D ToVector3D(Vector3D vector)
         {
             return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
@@ -94,6 +101,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Point3D ToPoint3D(System.Windows.Media.Media3D.Vector3D vector)
         {
             return new Point3D((DoubleOrSingle)vector.X, (DoubleOrSingle)vector.Y, (DoubleOrSingle)vector.Z);
@@ -103,23 +111,27 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(System.Windows.Media.Media3D.Vector3D vector)
         {
             return new Vector3D((DoubleOrSingle)vector.X, (DoubleOrSingle)vector.Y, (DoubleOrSingle)vector.Z);
         }
-        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Media3D.Vector3DCollection ToVector3DCollection(SharpDX.Core.Vector3Collection collection)
         {
             return new System.Windows.Media.Media3D.Vector3DCollection(collection.Select(v => ToVector3D(v)));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Media3D.Point3DCollection ToPoint3DCollection(SharpDX.Core.Vector3Collection collection)
         {
             return new System.Windows.Media.Media3D.Point3DCollection(collection.Select(v => ToPoint3D(v)));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.PointCollection ToPointCollection(SharpDX.Core.Vector2Collection collection)
         {
             return new System.Windows.Media.PointCollection(collection.Select(v => new System.Windows.Point(v.X, v.Y)));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Int32Collection ToInt32Collection(SharpDX.Core.IntCollection collection)
         {
             return new System.Windows.Media.Int32Collection(collection);

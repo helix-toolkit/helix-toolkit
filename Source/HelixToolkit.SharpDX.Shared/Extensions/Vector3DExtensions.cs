@@ -17,16 +17,19 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
     using global::SharpDX;
     using Point = System.Windows.Point;
+    using System.Runtime.CompilerServices;
 #endif
 
     public static class VectorExtensions
     {
 #if !NETFX_CORE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(this Vector3 vector)
         {
             return new Vector3D(vector.X, vector.Y, vector.Z);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(this Transform3D trafo)
         {
             var matrix = trafo.Value;
@@ -34,16 +37,19 @@ namespace HelixToolkit.Wpf.SharpDX
             return new Vector3D(w * matrix.OffsetX, w * matrix.OffsetY, w * matrix.OffsetZ);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Point3D ToPoint3D(this Vector3 vector)
         {
             return new Point3D(vector.X, vector.Y, vector.Z);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Size3D ToSize3D(this Vector3 vector)
         {
             return new Size3D(vector.X, vector.Y, vector.Z);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D ToMatrix3D(this Matrix m)
         {
             return new Matrix3D(
@@ -65,62 +71,72 @@ namespace HelixToolkit.Wpf.SharpDX
                 (float)m.M44);
         }
 #endif
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector2 ToVector2(this Point vector)
         {
             return new global::SharpDX.Vector2((float)vector.X, (float)vector.Y);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToVector3(this Vector2 vector, float z = 1.0f)
         {
             return new global::SharpDX.Vector3(vector.X, vector.Y, z);
         }
 
 #if !NETFX_CORE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToVector3(this Point3D point)
         {
             return new global::SharpDX.Vector3((float)point.X, (float)point.Y, (float)point.Z);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToVector3(this Vector3D vector)
         {
             return new global::SharpDX.Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
         }
 #endif
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToVector3(this Vector4 vector)
         {
             return new global::SharpDX.Vector3(vector.X / vector.W, vector.Y / vector.W, vector.Z / vector.W);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToXYZ(this Vector4 vector)
         {
             return new global::SharpDX.Vector3(vector.X, vector.Y, vector.Z);
         }
 
 #if !NETFX_CORE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 ToVector4(this Vector3D vector, float w = 1f)
         {
             return new global::SharpDX.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 ToVector4(this Point3D point, float w = 1f)
         {
             return new global::SharpDX.Vector4((float)point.X, (float)point.Y, (float)point.Z, w);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 ToVector4(this Transform3D trafo)
         {
             var matrix = trafo.Value;
             return new global::SharpDX.Vector4((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ, (float)matrix.M44);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToVector3(this Transform3D trafo)
         {
             var matrix = trafo.Value;
             return new global::SharpDX.Vector3((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Matrix ToMatrix(this Transform3D trafo)
         {
             var m = trafo.Value;
@@ -143,33 +159,38 @@ namespace HelixToolkit.Wpf.SharpDX
                 (float)m.M44);
         }
 #endif
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 ToVector4(this global::SharpDX.Vector3 vector, float w = 1f)
         {
             return new global::SharpDX.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Vector4 vector, float w = 1f)
         {
             return new global::SharpDX.Color4((float)vector.X, (float)vector.Y, (float)vector.Z, (float)vector.W);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Vector3 vector, float w = 1f)
         {
             return new global::SharpDX.Color4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Color3 vector, float alpha = 1f)
         {
             return new global::SharpDX.Color4(vector.Red, vector.Green, vector.Blue, alpha);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Vector2 vector, float z = 1f, float w = 1f)
         {
             return new global::SharpDX.Color4((float)vector.X, (float)vector.Y, z, w);
         }
 
 #if !NETFX_CORE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Matrix ToMatrix(this Matrix3D m)
         {
             return new global::SharpDX.Matrix(
@@ -191,26 +212,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 (float)m.M44);
         }
 #endif
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 Normalized(this global::SharpDX.Vector3 vector)
         {
             vector.Normalize();
             return vector;
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 Normalized(this global::SharpDX.Vector4 vector)
         {
             vector.Normalize();
             return vector;
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Color4 Normalized(this global::SharpDX.Color4 vector)
         {
             var v = vector.ToVector3();
             v.Normalize();
             return v.ToColor4();
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Matrix Inverted(this global::SharpDX.Matrix m)
         {
             m.Invert();
@@ -226,6 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A perpendicular vector.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 FindAnyPerpendicular(this Vector3 n)
         {
             n.Normalize();
@@ -245,24 +267,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// <c>true</c> if the specified vector is undefined; otherwise, <c>false</c>.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsUndefined(this Vector3 v)
         {
             return float.IsNaN(v.X) && float.IsNaN(v.Y) && float.IsNaN(v.Z);
         }
 
 #if !NETFX_CORE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color4 ToColor4(this System.Windows.Media.Color color)
         {
             color.Clamp();
             return new global::SharpDX.Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Color ToColor(this Color4 color)
         {
             //return System.Windows.Media.Color.FromArgb((byte)(color.Alpha * 256), (byte)(color.Red * 256), (byte)(color.Green * 256), (byte)(color.Blue * 256));
             return System.Windows.Media.Color.FromScRgb(color.Alpha, color.Red, color.Green, color.Blue);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Transform3D AppendTransform(this Transform3D t1, Transform3D t2)
         {
             var g = new System.Windows.Media.Media3D.Transform3DGroup();
@@ -270,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
             g.Children.Add(t2);
             return g;
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Transform3D PrependTransform(this Transform3D t1, Transform3D t2)
         {
             var g = new System.Windows.Media.Media3D.Transform3DGroup();
@@ -287,6 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of this are SmallerOrEqual the corresponding element of v.
         /// ATTENTION: For example (a.AllSmaller(b)) is not the same as !(a.AllGreaterOrEqual(b)) but !(a.AnyGreaterOrEqual(b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllSmallerOrEqual(this Vector2 v1, Vector2 v2)
         {
             return (v1.X <= v2.X && v1.Y <= v2.Y);
@@ -296,6 +321,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of this are SmallerOrEqual the corresponding element of v.
         /// ATTENTION: For example (a.AllSmaller(b)) is not the same as !(a.AllGreaterOrEqual(b)) but !(a.AnyGreaterOrEqual(b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllSmallerOrEqual(this Vector3 v1, Vector3 v2)
         {
             return (v1.X <= v2.X && v1.Y <= v2.Y && v1.Z <= v2.Z);
@@ -305,6 +331,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of v are SmallerOrEqual s.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllSmallerOrEqual(this Vector3 v, float s)
         {
             return (v.X <= s && v.Y <= s && v.Z <= s);
@@ -314,6 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of this are SmallerOrEqual the corresponding element of v.
         /// ATTENTION: For example (a.AllSmaller(b)) is not the same as !(a.AllGreaterOrEqual(b)) but !(a.AnyGreaterOrEqual(b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllSmaller(this Vector2 v1, Vector2 v2)
         {
             return (v1.X < v2.X && v1.Y < v2.Y);
@@ -323,6 +351,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of this are SmallerOrEqual the corresponding element of v.
         /// ATTENTION: For example (a.AllSmaller(b)) is not the same as !(a.AllGreaterOrEqual(b)) but !(a.AnyGreaterOrEqual(b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllSmaller(this Vector3 v1, Vector3 v2)
         {
             return (v1.X < v2.X && v1.Y < v2.Y && v1.Z < v2.Z);
@@ -332,6 +361,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of v are SmallerOrEqual s.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllSmaller(this Vector3 v, float s)
         {
             return (v.X < s && v.Y < s && v.Z < s);
@@ -341,6 +371,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether AT LEAST ONE element of a is SmallerOrEqual the corresponding element of b.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AnySmallerOrEqual(this Vector3 a, Vector3 b)
         {
             return (a.X <= b.X || a.Y <= b.Y || a.Z <= b.Z);
@@ -350,6 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether AT LEAST ONE element of v is SmallerOrEqual s.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AnySmallerOrEqual(this Vector3 v, float s)
         {
             return (v.X <= s || v.Y <= s || v.Z <= s);
@@ -359,6 +391,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of a are GreaterOrEqual the corresponding element of b.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllGreaterOrEqual(this Vector3 a, Vector3 b)
         {
             return (a.X >= b.X && a.Y >= b.Y && a.Z >= b.Z);
@@ -368,6 +401,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether ALL elements of v are GreaterOrEqual s.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AllGreaterOrEqual(this Vector3 v, float s)
         {
             return (v.X >= s && v.Y >= s && v.Z >= s);
@@ -377,6 +411,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether AT LEAST ONE element of a is GreaterOrEqual the corresponding element of b.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AnyGreaterOrEqual(this Vector3 a, Vector3 b)
         {
             return (a.X >= b.X || a.Y >= b.Y || a.Z >= b.Z);
@@ -386,6 +421,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns whether AT LEAST ONE element of v is GreaterOrEqual s.
         /// ATTENTION: For example (AllSmaller(a,b)) is not the same as !(AllGreaterOrEqual(a,b)) but !(AnyGreaterOrEqual(a,b)).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AnyGreaterOrEqual(this Vector3 v, float s)
         {
             return (v.X >= s || v.Y >= s || v.Z >= s);
@@ -394,6 +430,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Component-wise min vec
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ComponentMin(this Vector3 a, Vector3 b)
         {
             return new Vector3(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Min(a.Z, b.Z));
@@ -402,6 +439,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Component-wise max vec
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ComponentMax(this Vector3 a, Vector3 b)
         {
             return new Vector3(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y), Math.Max(a.Z, b.Z));
