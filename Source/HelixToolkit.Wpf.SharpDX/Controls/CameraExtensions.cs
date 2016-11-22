@@ -399,21 +399,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var perspectiveCamera = camera as PerspectiveCamera;
             if (perspectiveCamera != null)
             {
-                return Matrix.PerspectiveFovRH(
-                    (float)perspectiveCamera.FieldOfView,
-                    (float)(aspectRatio),
-                    (float)perspectiveCamera.NearPlaneDistance,
-                    (float)perspectiveCamera.FarPlaneDistance);
+                return perspectiveCamera.CreateProjectionMatrix(aspectRatio);
             }
 
             var orthographicCamera = camera as OrthographicCamera;
             if (orthographicCamera != null)
             {
-                return Matrix.OrthoRH(
-                    (float)orthographicCamera.Width,
-                    (float)(orthographicCamera.Width / aspectRatio),
-                    (float)orthographicCamera.NearPlaneDistance,
-                    (float)orthographicCamera.FarPlaneDistance);
+                return orthographicCamera.CreateProjectionMatrix(aspectRatio);
             }
             throw new HelixToolkitException("Unknown camera type.");
         }
