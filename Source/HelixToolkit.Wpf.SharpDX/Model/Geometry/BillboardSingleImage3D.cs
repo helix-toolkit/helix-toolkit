@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private IList<Vector2> mTextInfoOffsets = null;
-        public override IList<Vector2> TextInfoOffsets
+        public override IList<Vector2> TextureOffsets
         {
             get { return mTextInfoOffsets; }
         }
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
             MaskColor = Color.Transparent;
         }
 
-        public override void DrawText()
+        public override void DrawTexture()
         {
             Positions.Clear();
             Colors.Clear();

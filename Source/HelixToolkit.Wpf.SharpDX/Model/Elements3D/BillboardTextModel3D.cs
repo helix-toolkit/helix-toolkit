@@ -255,13 +255,13 @@ namespace HelixToolkit.Wpf.SharpDX
             // Gather all of the textInfo offsets.
             // These should be equal in number to the positions.
             billboardType = billboardGeometry.Type;
-            billboardGeometry.DrawText();
+            billboardGeometry.DrawTexture();
 
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
             var result = new BillboardVertex[vertexCount];
 
-            var allOffsets = billboardGeometry.TextInfoOffsets;
+            var allOffsets = billboardGeometry.TextureOffsets;
 
             for (var i = 0; i < vertexCount; i++)
             {

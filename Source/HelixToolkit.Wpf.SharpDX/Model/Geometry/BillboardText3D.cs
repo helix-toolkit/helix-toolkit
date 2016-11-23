@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public List<TextInfo> TextInfo { get; private set; }
 
-        public override IList<Vector2> TextInfoOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
+        public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
 
         private System.Windows.Media.Color mFontColor = System.Windows.Media.Colors.Black;
         public System.Windows.Media.Color FontColor
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
 
-        public override void DrawText()
+        public override void DrawTexture()
         {
             //Positions.Clear();
             //Colors.Clear();

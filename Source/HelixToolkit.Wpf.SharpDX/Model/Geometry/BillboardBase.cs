@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
         }
 
-        public abstract IList<Vector2> TextInfoOffsets
+        public abstract IList<Vector2> TextureOffsets
         {
             get;
         }
@@ -43,6 +43,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
         }
 
-        public abstract void DrawText();
+        public abstract void DrawTexture();
     }
 }

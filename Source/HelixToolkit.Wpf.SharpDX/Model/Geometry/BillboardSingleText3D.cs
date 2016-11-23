@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override IList<Vector2> TextInfoOffsets { get { return TextInfo.Offsets; } }
+        public override IList<Vector2> TextureOffsets { get { return TextInfo.Offsets; } }
 
         private Color4 mFontColor = Color.Black;
         public Color4 FontColor
@@ -115,7 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX
             TextInfo = new TextInfo();
         }
 
-        public override void DrawText()
+        public override void DrawTexture()
         {
             if (!isInitialized)
             {
