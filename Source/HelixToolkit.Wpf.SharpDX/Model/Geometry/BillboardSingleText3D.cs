@@ -123,6 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     Texture = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black, 
                         this.FontFamily, this.FontWeight, this.FontStyle, Padding);
+                    Texture.Freeze();
                     Width = (float)Texture.Width;
                     Height = (float)Texture.Height;
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, (float)Texture.Width, (float)Texture.Height, TextInfo);
