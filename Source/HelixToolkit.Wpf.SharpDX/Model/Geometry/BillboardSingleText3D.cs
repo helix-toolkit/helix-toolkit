@@ -1,22 +1,23 @@
 ﻿using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
-using System;
+using System.Windows;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class BillboardSingleText3D: MeshGeometry3D, IBillboardText
+    public class BillboardSingleText3D : BillboardBase
     {
         private volatile bool isInitialized = false;
 
-        public bool IsSingle { get { return true; } }
-        public BitmapSource Texture { get; private set; }
+        public override BillboardType Type
+        {
+            get
+            {
+                return BillboardType.SingleText;
+            }
+        }
 
         private TextInfo mTextInfo = new TextInfo("", new Vector3());
         public TextInfo TextInfo
@@ -29,11 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IList<Vector2> TextInfoOffsets { get { return TextInfo.Offsets; } }
-
-        public float Width { private set; get; }
-
-        public float Height { private set; get; }
+        public override IList<Vector2> TextInfoOffsets { get { return TextInfo.Offsets; } }
 
         private Color4 mFontColor = Color.Black;
         public Color4 FontColor
@@ -69,8 +66,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private System.Windows.FontWeight mFontWeight = System.Windows.FontWeights.Normal;
-        public System.Windows.FontWeight FontWeight
+        private FontWeight mFontWeight = FontWeights.Normal;
+        public FontWeight FontWeight
         {
             set
             {
@@ -82,8 +79,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private System.Windows.FontStyle mFontStyle = System.Windows.FontStyles.Normal;
-        public System.Windows.FontStyle FontStyle
+        private FontStyle mFontStyle = FontStyles.Normal;
+        public FontStyle FontStyle
         {
             set
             {
@@ -97,13 +94,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public BillboardSingleText3D()
         {
-            Positions = new Vector3Collection();
-            Colors = new Color4Collection();
-            TextureCoordinates = new Vector2Collection();
+            Positions = new Vector3Collection(12);
+            Colors = new Color4Collection(12);
+            TextureCoordinates = new Vector2Collection(12);
             TextInfo = new TextInfo();
         }
 
-        public void DrawText()
+        public override void DrawText()
         {
             if (!isInitialized)
             {

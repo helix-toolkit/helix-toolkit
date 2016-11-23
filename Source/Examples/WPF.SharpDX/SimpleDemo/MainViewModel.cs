@@ -18,6 +18,8 @@ namespace SimpleDemo
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using HelixToolkit.Wpf;
+    using System.Windows.Media.Imaging;
+    using System.IO;
 
     public class MainViewModel : BaseViewModel
     {
@@ -30,6 +32,7 @@ namespace SimpleDemo
         public BillboardSingleText3D Billboard1Model { private set; get; }
         public BillboardSingleText3D Billboard2Model { private set; get; }
         public BillboardSingleText3D Billboard3Model { private set; get; }
+        public BillboardSingleImage3D BillboardImageModel { private set; get; }
 
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
@@ -160,6 +163,20 @@ namespace SimpleDemo
                 FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
                 FontStyle= System.Windows.FontStyles.Italic
             };
+
+
+            BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample());
+            BillboardImageModel.Center = new Vector3(2, 2, 0);
+        }
+
+        private BitmapSource CreateBitmapSample()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            //Read the texture description           
+            var texDescriptionStream = assembly.GetManifestResourceStream("SimpleDemo.Sample.png");
+            var decoder = new PngBitmapDecoder(texDescriptionStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnDemand);
+            return decoder.Frames[0];
         }
     }
 }

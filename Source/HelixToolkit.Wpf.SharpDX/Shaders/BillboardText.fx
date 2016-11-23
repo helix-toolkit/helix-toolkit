@@ -67,6 +67,27 @@ float4 PShaderBillboardBackground(PSInputBT input) : SV_Target
 	return input.c;
 }
 
+SamplerState PointTSampler
+{
+	Filter = MIN_MAG_MIP_POINT;
+	AddressU = CLAMP;
+	AddressV = CLAMP;
+};
+
+float4 PShaderBillboardImage(PSInputBT input) : SV_Target
+{
+	// Take the color off the texture using mask color
+	float4 pixelColor = billboardTexture.Sample(PointTSampler, input.t);
+	if(pixelColor.x == input.c.x && pixelColor.y == input.c.y && pixelColor.z == input.c.z)
+	{
+		return float4(0.0, 0.0, 0.0, 0.0);
+	}
+	else
+	{
+		return pixelColor;	
+	}
+}
+
 //--------------------------------------------------------------------------------------
 // Techniques
 //-------------------------------------------------------------------------------------
@@ -96,5 +117,17 @@ technique11 RenderBillboard
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
 		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
+	}
+	pass P2
+	{
+		//SetDepthStencilState( DSSDepthLess, 0 );
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardImage()));
 	}
 }

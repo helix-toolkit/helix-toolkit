@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IBillboardText
     {
-        bool IsSingle { get; }
+        BillboardType Type { get; }
         BitmapSource Texture { get; }
         void DrawText();
         Vector3Collection Positions { get; }
@@ -91,5 +91,10 @@ namespace HelixToolkit.Wpf.SharpDX
         Color4Collection Colors { get; }
         float Width { get; }
         float Height { get; }
+    }
+
+    public enum BillboardType
+    {
+        SingleText, MultipleText, SingleImage
     }
 }
