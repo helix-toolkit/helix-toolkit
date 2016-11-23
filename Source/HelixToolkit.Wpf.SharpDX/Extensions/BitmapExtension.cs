@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground,
             System.Windows.Media.Color background)
         {
-            return StringToBitmapSource(str, fontSize, foreground, background, 
+            return StringToBitmapSource(str, fontSize, foreground, background,
                 new System.Windows.Media.FontFamily("Arial"));
         }
 
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                fontFamily, fontWeight, FontStyles.Normal, new Thickness(0));
         }
 
-        public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground, 
+        public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground,
             System.Windows.Media.Color background, Media.FontFamily fontFamily, FontWeight fontWeight, FontStyle fontStyle, Thickness padding)
         {
             TextBlock tbX = new TextBlock();
@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                 textBlock.FontSize,
                 Media.Brushes.Black);
 
-            return new Size(formattedText.Width, formattedText.Height);
+            return new Size(formattedText.Width + textBlock.Padding.Left + textBlock.Padding.Right, formattedText.Height + textBlock.Padding.Top + textBlock.Padding.Bottom);
         }
     }
 }

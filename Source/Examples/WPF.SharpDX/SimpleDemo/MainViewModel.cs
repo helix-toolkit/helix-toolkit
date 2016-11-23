@@ -139,7 +139,8 @@ namespace SimpleDemo
                 FontColor =Color.Blue,
                 FontSize=16,
                 BackgroundColor =Color.Plum,
-                FontStyle= System.Windows.FontStyles.Italic
+                FontStyle= System.Windows.FontStyles.Italic,
+                Padding = new System.Windows.Thickness(2)
             };
 
             var background = Color.Blue;
@@ -147,10 +148,11 @@ namespace SimpleDemo
             Billboard2Model = new BillboardSingleText3D()
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
-                FontSize=14,
+                FontSize = 14,
                 FontColor = Color.Green,
                 BackgroundColor = background,
-                FontWeight= System.Windows.FontWeights.Bold
+                FontWeight = System.Windows.FontWeights.Bold,
+                Padding = new System.Windows.Thickness(2)
             };
             background = Color.Purple;
             background.A = (byte)50;
@@ -161,7 +163,8 @@ namespace SimpleDemo
                 FontColor = Color.Red,
                 BackgroundColor = background,
                 FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
-                FontStyle= System.Windows.FontStyles.Italic,                
+                FontStyle= System.Windows.FontStyles.Italic,
+                Padding = new System.Windows.Thickness(2)
             };
 
 
