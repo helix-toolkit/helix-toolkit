@@ -29,54 +29,14 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [Serializable]
-    public class BillboardText3D : MeshGeometry3D, IBillboardText
+    public class BillboardText3D : BillboardBase
     {
-        private static bool isInitialized = false;
-
-        private static BitmapFont bmpFont;
+        private readonly static BitmapFont bmpFont;
 
         public static BitmapSource TextureStatic { get; private set; }
 
-        public bool IsSingle { get { return false; } }
-
-        public BitmapSource Texture { get { return TextureStatic; } }
-
-        public List<TextInfo> TextInfo { get; private set; }
-
-        public IList<Vector2> TextInfoOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
-
-        private System.Windows.Media.Color mFontColor = System.Windows.Media.Colors.Black;
-        public System.Windows.Media.Color FontColor
+        static BillboardText3D()
         {
-            set { mFontColor = value; }
-            get { return mFontColor; }
-        }
-
-        public float Width
-        {
-            get { return 0; }
-        }
-
-        public float Height
-        {
-            get { return 0; }
-        }
-
-        public BillboardText3D()
-        {
-            Positions = new Vector3Collection();
-            Colors = new Color4Collection();
-            TextureCoordinates = new Vector2Collection();
-            TextInfo = new List<TextInfo>();
-
-            Initialize();
-        }
-
-        private static void Initialize()
-        {
-            if (isInitialized)
-                return;
-
             var assembly = Assembly.GetExecutingAssembly();
 
             var texDescriptionFilePath = Path.GetTempFileName();
@@ -105,11 +65,46 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 File.Delete(texDescriptionFilePath);
             }
-
-            isInitialized = true;
         }
 
-        public void DrawText()
+        public override BillboardType Type
+        {
+            get
+            {
+                return BillboardType.MultipleText;
+            }
+        }
+
+        public override BitmapSource Texture
+        {
+            get
+            {
+                return TextureStatic;            
+            }
+        }
+
+        public List<TextInfo> TextInfo { get; private set; }
+
+        public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
+
+        private System.Windows.Media.Color mFontColor = System.Windows.Media.Colors.Black;
+        public System.Windows.Media.Color FontColor
+        {
+            set { mFontColor = value; }
+            get { return mFontColor; }
+        }
+
+        public BillboardText3D()
+        {
+            Positions = new Vector3Collection();
+            Colors = new Color4Collection();
+            TextureCoordinates = new Vector2Collection();
+            TextInfo = new List<TextInfo>();
+        }
+
+
+
+        public override void DrawTexture()
         {
             //Positions.Clear();
             //Colors.Clear();

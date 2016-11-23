@@ -18,6 +18,8 @@ namespace SimpleDemo
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using HelixToolkit.Wpf;
+    using System.Windows.Media.Imaging;
+    using System.IO;
 
     public class MainViewModel : BaseViewModel
     {
@@ -30,6 +32,7 @@ namespace SimpleDemo
         public BillboardSingleText3D Billboard1Model { private set; get; }
         public BillboardSingleText3D Billboard2Model { private set; get; }
         public BillboardSingleText3D Billboard3Model { private set; get; }
+        public BillboardSingleImage3D BillboardImageModel { private set; get; }
 
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
@@ -136,7 +139,8 @@ namespace SimpleDemo
                 FontColor =Color.Blue,
                 FontSize=16,
                 BackgroundColor =Color.Plum,
-                FontStyle= System.Windows.FontStyles.Italic
+                FontStyle= System.Windows.FontStyles.Italic,
+                Padding = new System.Windows.Thickness(2)
             };
 
             var background = Color.Blue;
@@ -144,10 +148,11 @@ namespace SimpleDemo
             Billboard2Model = new BillboardSingleText3D()
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
-                FontSize=14,
+                FontSize = 14,
                 FontColor = Color.Green,
                 BackgroundColor = background,
-                FontWeight= System.Windows.FontWeights.Bold
+                FontWeight = System.Windows.FontWeights.Bold,
+                Padding = new System.Windows.Thickness(2)
             };
             background = Color.Purple;
             background.A = (byte)50;
@@ -158,8 +163,23 @@ namespace SimpleDemo
                 FontColor = Color.Red,
                 BackgroundColor = background,
                 FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
-                FontStyle= System.Windows.FontStyles.Italic
+                FontStyle= System.Windows.FontStyles.Italic,
+                Padding = new System.Windows.Thickness(2)
             };
+
+
+            BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
+            BillboardImageModel.Center = new Vector3(2, 2, 0);
+        }
+
+        private BitmapSource CreateBitmapSample()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            //Read the texture description           
+            var texDescriptionStream = assembly.GetManifestResourceStream("SimpleDemo.Sample.png");
+            var decoder = new PngBitmapDecoder(texDescriptionStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnDemand);
+            return decoder.Frames[0];
         }
     }
 }
