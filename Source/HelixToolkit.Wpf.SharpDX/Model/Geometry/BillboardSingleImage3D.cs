@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// If color in image is equal to the mask color, the color will set to transparent in image.
+        /// Default color is Transparent, which did not mask any color.
         /// </summary>
         public Color4 MaskColor
         {
@@ -44,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions = new Vector3Collection(6);
             Colors = new Color4Collection(6);
             TextureCoordinates = new Vector2Collection(6);
-            MaskColor = Color.Black;
+            MaskColor = Color.Transparent;
         }
 
         public override void DrawText()

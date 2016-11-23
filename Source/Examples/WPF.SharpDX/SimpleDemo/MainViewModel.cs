@@ -161,11 +161,11 @@ namespace SimpleDemo
                 FontColor = Color.Red,
                 BackgroundColor = background,
                 FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
-                FontStyle= System.Windows.FontStyles.Italic
+                FontStyle= System.Windows.FontStyles.Italic,                
             };
 
 
-            BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample());
+            BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
             BillboardImageModel.Center = new Vector3(2, 2, 0);
         }
 
