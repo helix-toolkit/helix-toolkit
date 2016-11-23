@@ -10,6 +10,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class BillboardSingleImage3D : BillboardBase
     {
+        /// <summary>
+        /// Billboard type, <see cref="BillboardType"/>
+        /// </summary>
         public override BillboardType Type
         {
             get
@@ -24,6 +27,9 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return mTextInfoOffsets; }
         }
 
+        /// <summary>
+        /// Billboard center location
+        /// </summary>
         public Vector3 Center
         {
             set;

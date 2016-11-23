@@ -11,6 +11,9 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         private volatile bool isInitialized = false;
 
+        /// <summary>
+        /// Billboard type, <see cref="BillboardType"/>
+        /// </summary>
         public override BillboardType Type
         {
             get
@@ -92,6 +95,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private Thickness mPadding = new Thickness(0);
+        public Thickness Padding
+        {
+            set
+            {
+                mPadding = value;
+            }get
+            {
+                return mPadding;
+            }
+        }
+
         public BillboardSingleText3D()
         {
             Positions = new Vector3Collection(12);
@@ -107,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
                     Texture = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black, 
-                        this.FontFamily, this.FontWeight, this.FontStyle);
+                        this.FontFamily, this.FontWeight, this.FontStyle, Padding);
                     Width = (float)Texture.Width;
                     Height = (float)Texture.Height;
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, (float)Texture.Width, (float)Texture.Height, TextInfo);

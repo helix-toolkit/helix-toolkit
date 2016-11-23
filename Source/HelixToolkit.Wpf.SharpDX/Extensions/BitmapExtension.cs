@@ -51,11 +51,11 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             System.Windows.Media.Color background, Media.FontFamily fontFamily, FontWeight fontWeight)
         {
             return StringToBitmapSource(str, fontSize, foreground, background,
-               fontFamily, fontWeight, FontStyles.Normal);
+               fontFamily, fontWeight, FontStyles.Normal, new Thickness(0));
         }
 
         public static BitmapSource StringToBitmapSource(this string str, int fontSize, System.Windows.Media.Color foreground, 
-            System.Windows.Media.Color background, Media.FontFamily fontFamily, FontWeight fontWeight, FontStyle fontStyle)
+            System.Windows.Media.Color background, Media.FontFamily fontFamily, FontWeight fontWeight, FontStyle fontStyle, Thickness padding)
         {
             TextBlock tbX = new TextBlock();
             tbX.FontFamily = fontFamily;
@@ -66,6 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             tbX.FontStretch = FontStretches.Normal;
             tbX.FontWeight = fontWeight;
             tbX.FontStyle = fontStyle;
+            tbX.Padding = padding;
             tbX.Text = str;
             var size = tbX.MeasureString();
             tbX.Width = size.Width;
