@@ -14,18 +14,8 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
     {
         public static BitmapSource ToBitmapSource(this TextBlock element, bool freeze = true)
         {
-            var target = new RenderTargetBitmap((int)(element.Width), (int)(element.Height), 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
-            var brush = new System.Windows.Media.VisualBrush(element);
-
-            var visual = new System.Windows.Media.DrawingVisual();
-            var drawingContext = visual.RenderOpen();
-
-
-            drawingContext.DrawRectangle(brush, null, new Rect(new System.Windows.Point(0, 0),
-                new System.Windows.Point(element.Width, element.Height)));
-
-            drawingContext.Close();
-            target.Render(visual);
+            var target = new RenderTargetBitmap((int)(element.RenderSize.Width), (int)(element.RenderSize.Height), 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+            target.Render(element);
             if (freeze)
             {
                 target.Freeze();
