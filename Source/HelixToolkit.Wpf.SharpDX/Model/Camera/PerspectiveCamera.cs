@@ -70,10 +70,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>Frustum as Vector4</returns>
         public FrustumCameraParams CreateFrustum(double aspectRatio)
         {
+            var fov = this.FieldOfView * Math.PI / 180;
+
             return new FrustumCameraParams()
             {
                 AspectRatio = (float)aspectRatio,
-                FOV = (float)this.FieldOfView,
+                FOV = (float)fov,
                 LookAtDir = this.Target.ToVector3(),
                 Position = this.Position.ToVector3(),
                 UpDir = this.UpDirection.ToVector3(),
