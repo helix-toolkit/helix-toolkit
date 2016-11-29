@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private ShaderResourceView billboardTextureView;
         private EffectShaderResourceVariable billboardTextureVariable;
         private BillboardType billboardType;
+        private BillboardVertex[] vertexArrayBuffer;
         #endregion
 
         #region Overridable Methods
@@ -259,22 +260,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
-            var result = new BillboardVertex[vertexCount];
+            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
+                vertexArrayBuffer = new BillboardVertex[vertexCount];
 
             var allOffsets = billboardGeometry.TextureOffsets;
 
             for (var i = 0; i < vertexCount; i++)
             {
                 var tc = billboardGeometry.TextureCoordinates[i];
-                result[i] = new BillboardVertex
-                {
-                    Position = new Vector4(position[i], 1.0f),
-                    Color = billboardGeometry.Colors[i],
-                    TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y)
-                };
+                vertexArrayBuffer[i].Position = new Vector4(position[i], 1.0f);
+                vertexArrayBuffer[i].Color = billboardGeometry.Colors[i];
+                vertexArrayBuffer[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
             }
 
-            return result.ToArray();
+            return vertexArrayBuffer.ToArray();
         }
 
         #endregion

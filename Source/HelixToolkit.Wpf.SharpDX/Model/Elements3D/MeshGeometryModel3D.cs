@@ -370,15 +370,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             for (var i = 0; i < vertexCount; i++)
             {
-                vertexArrayBuffer[i] = new DefaultVertex
-                {
-                    Position = new Vector4(positions[i], 1f),
-                    Color = colors != null ? colors[i] : Color4.White,
-                    TexCoord = textureCoordinates != null ? texScale * textureCoordinates[i] : Vector2.Zero,
-                    Normal = normals != null ? normals[i] : Vector3.Zero,
-                    Tangent = tangents != null ? tangents[i] : Vector3.Zero,
-                    BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero,
-                };
+                vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
+                vertexArrayBuffer[i].Color = colors != null ? colors[i] : Color4.White;
+                vertexArrayBuffer[i].TexCoord = textureCoordinates != null ? texScale * textureCoordinates[i] : Vector2.Zero;
+                vertexArrayBuffer[i].Normal = normals != null ? normals[i] : Vector3.Zero;
+                vertexArrayBuffer[i].Tangent = tangents != null ? tangents[i] : Vector3.Zero;
+                vertexArrayBuffer[i].BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero;
             }
 
             return vertexArrayBuffer;

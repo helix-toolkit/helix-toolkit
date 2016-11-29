@@ -453,22 +453,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i] = new LinesVertex
-                    {
-                        Position = new Vector4(positions[i], 1f),
-                        Color = color * colors[i],
-                    };
+                    result[i].Position = new Vector4(positions[i], 1f);
+                    result[i].Color = color * colors[i];
                 }
             }
             else
             {
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i] = new LinesVertex
-                    {
-                        Position = new Vector4(positions[i], 1f),
-                        Color = color,
-                    };
+                    result[i].Position = new Vector4(positions[i], 1f);
+                    result[i].Color = color;
                 }
             }
 

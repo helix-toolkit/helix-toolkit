@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
-    using global::SharpDX.DXGI;    
+    using global::SharpDX.DXGI;
 
     public static class TessellationTechniques
     {
@@ -107,12 +107,38 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(PatchGeometryModel3D),
+            new PropertyMetadata(false, (s, e) =>
+            {
+                if (!(bool)e.NewValue)
+                {
+                    (s as PatchGeometryModel3D).vertexArrayBuffer = null;
+                }
+            }));
+
+        /// <summary>
+        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
+        /// Example: Repeatly updates textures, or geometries with close number of vertices.
+        /// </summary>
+        public bool ReuseVertexArrayBuffer
+        {
+            set
+            {
+                SetValue(ReuseVertexArrayBufferProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(ReuseVertexArrayBufferProperty);
+            }
+        }
+
+        private DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// 
         /// </summary>
         public PatchGeometryModel3D()
         {
-           // System.Console.WriteLine();
+            // System.Console.WriteLine();
 
         }
 
@@ -129,7 +155,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Geometry == null
                 || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
                 || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-            { return; }
+                return;
             // --- get variables
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
             effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
@@ -152,15 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");
 
                 /// --- init vertex buffer
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, geometry.Positions.Select((x, ii) => new DefaultVertex()
-                {
-                    Position = new Vector4(x, 1f),
-                    Color = geometry.Colors != null ? geometry.Colors[ii] : new Color4(1f, 0f, 0f, 1f),
-                    TexCoord = geometry.TextureCoordinates != null ? geometry.TextureCoordinates[ii] : new Vector2(),
-                    Normal = geometry.Normals != null ? geometry.Normals[ii] : new Vector3(),
-                    Tangent = geometry.Tangents != null ? geometry.BiTangents[ii] : new Vector3(),
-                    BiTangent = geometry.BiTangents != null ? geometry.BiTangents[ii] : new Vector3(),
-                }).ToArray());
+                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, CreateDefaultVertexArray(), geometry.Positions.Count);
 
                 /// --- init index buffer
                 indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array);
@@ -184,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //Device.ImmediateContext.Flush();
         }
 
         /// <summary>
@@ -214,10 +232,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (!IsRendering)
                     return;
 
-                if (this.Geometry == null
-                    || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
+                if (Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
                     || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-                { return; }
+                    return;
 
                 if (Visibility != System.Windows.Visibility.Visible)
                     return;
@@ -315,6 +332,36 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private EffectVectorVariable vTessellationVariables;
         private EffectPass shaderPass;
+
+        /// <summary>
+        /// Creates a <see cref="T:DefaultVertex[]"/>.
+        /// </summary>
+        private DefaultVertex[] CreateDefaultVertexArray()
+        {
+            var geometry = (MeshGeometry3D)this.Geometry;
+            var colors = geometry.Colors != null ? geometry.Colors.Array : null;
+            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.Array : null;
+            var texScale = this.TextureCoodScale;
+            var normals = geometry.Normals != null ? geometry.Normals.Array : null;
+            var tangents = geometry.Tangents != null ? geometry.Tangents.Array : null;
+            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
+            var positions = geometry.Positions.Array;
+            var vertexCount = geometry.Positions.Count;
+            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
+                vertexArrayBuffer = new DefaultVertex[vertexCount];
+
+            for (var i = 0; i < vertexCount; i++)
+            {
+                vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
+                vertexArrayBuffer[i].Color = colors != null ? colors[i] : new Color4(1f, 0f, 0f, 1f);
+                vertexArrayBuffer[i].TexCoord = textureCoordinates != null ? texScale * textureCoordinates[i] : Vector2.Zero;
+                vertexArrayBuffer[i].Normal = normals != null ? normals[i] : Vector3.Zero;
+                vertexArrayBuffer[i].Tangent = tangents != null ? tangents[i] : Vector3.Zero;
+                vertexArrayBuffer[i].BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero;
+            }
+
+            return vertexArrayBuffer;
+        }
 #endif
-    } 
+    }
 }
