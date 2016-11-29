@@ -82,6 +82,31 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(MeshGeometryModel3D),
+            new PropertyMetadata(false, (s, e) =>
+            {
+                if (!(bool)e.NewValue)
+                {
+                    (s as MeshGeometryModel3D).vertexArrayBuffer = null;
+                }
+            }));
+
+        /// <summary>
+        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
+        /// Example: Repeatly updates textures, or geometries with close number of vertices.
+        /// </summary>
+        public bool ReuseVertexArrayBuffer
+        {
+            set
+            {
+                SetValue(ReuseVertexArrayBufferProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(ReuseVertexArrayBufferProperty);
+            }
+        }
+
         public override int VertexSizeInBytes
         {
             get
@@ -89,6 +114,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 return DefaultVertex.SizeInBytes;
             }
         }
+
+        private DefaultVertex[] vertexArrayBuffer = null;
 
         protected override void OnRasterStateChanged()
         {
@@ -157,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");                
 
                 /// --- init vertex buffer
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateDefaultVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateDefaultVertexArray(), geometry.Positions.Count);
 
                 /// --- init index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
@@ -338,11 +365,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
             var positions = geometry.Positions.Array;
             var vertexCount = geometry.Positions.Count;
-            var result = new DefaultVertex[vertexCount];
+            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
+                vertexArrayBuffer = new DefaultVertex[vertexCount];
 
             for (var i = 0; i < vertexCount; i++)
             {
-                result[i] = new DefaultVertex
+                vertexArrayBuffer[i] = new DefaultVertex
                 {
                     Position = new Vector4(positions[i], 1f),
                     Color = colors != null ? colors[i] : Color4.White,
@@ -353,7 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 };
             }
 
-            return result;
+            return vertexArrayBuffer;
         }
 
     }
