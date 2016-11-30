@@ -8,14 +8,39 @@ using System.Diagnostics;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class BillboardTextModel3D : MeshGeometryModel3D
+    public class BillboardTextModel3D : MaterialGeometryModel3D
     {
+        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(BillboardTextModel3D),
+           new PropertyMetadata(false, (s, e) =>
+           {
+               if (!(bool)e.NewValue)
+               {
+                   (s as BillboardTextModel3D).vertexArrayBuffer = null;
+               }
+           }));
+
+        /// <summary>
+        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
+        /// Example: Repeatly updates textures, or geometries with close number of vertices.
+        /// </summary>
+        public bool ReuseVertexArrayBuffer
+        {
+            set
+            {
+                SetValue(ReuseVertexArrayBufferProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(ReuseVertexArrayBufferProperty);
+            }
+        }
         #region Private Class Data Members
 
         private EffectVectorVariable vViewport;
         private ShaderResourceView billboardTextureView;
         private EffectShaderResourceVariable billboardTextureVariable;
         private BillboardType billboardType;
+        private BillboardVertex[] vertexArrayBuffer;
         #endregion
 
         #region Overridable Methods
@@ -259,22 +284,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var position = billboardGeometry.Positions.Array;
             var vertexCount = billboardGeometry.Positions.Count;
-            var result = new BillboardVertex[vertexCount];
+            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
+                vertexArrayBuffer = new BillboardVertex[vertexCount];
 
             var allOffsets = billboardGeometry.TextureOffsets;
 
             for (var i = 0; i < vertexCount; i++)
             {
                 var tc = billboardGeometry.TextureCoordinates[i];
-                result[i] = new BillboardVertex
-                {
-                    Position = new Vector4(position[i], 1.0f),
-                    Color = billboardGeometry.Colors[i],
-                    TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y)
-                };
+                vertexArrayBuffer[i].Position = new Vector4(position[i], 1.0f);
+                vertexArrayBuffer[i].Color = billboardGeometry.Colors[i];
+                vertexArrayBuffer[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
             }
 
-            return result.ToArray();
+            return vertexArrayBuffer;
         }
 
         #endregion

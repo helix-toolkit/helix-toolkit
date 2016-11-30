@@ -651,13 +651,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
 
                     var t0 = renderTimer.Elapsed;
-                    // Update all renderables before rendering 
-                    // giving them the chance to invalidate the current render.
-                    renderRenderable.Update(t0);
-                                        
-                    // Safety check because of dispatcher deferred render call
-                    if (surfaceD3D != null)
+
+                    if (surfaceD3D != null && renderRenderable != null)
                     {
+                    // Update all renderables before rendering 
+                    // giving them the chance to invalidate the current render.                                                            
+                        renderRenderable.Update(t0);
                         if (cycle == 1)
                         {
                             Render();
