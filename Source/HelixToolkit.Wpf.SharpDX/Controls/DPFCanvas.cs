@@ -648,23 +648,18 @@ namespace HelixToolkit.Wpf.SharpDX
             {                
                 if (pendingValidationCycles > 0)
                 {
-                    var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
+                    System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
 
                     var t0 = renderTimer.Elapsed;
 
                     if (surfaceD3D != null && renderRenderable != null)
                     {
-                    // Update all renderables before rendering 
-                    // giving them the chance to invalidate the current render.                                                            
+                        // Update all renderables before rendering 
+                        // giving them the chance to invalidate the current render.                                                            
                         renderRenderable.Update(t0);
-                        if (cycle == 1)
-                        {
-                            Render();
-                        }
-                        else
-                        {
-                            surfaceD3D.InvalidateD3DImage();
-                        }
+
+                        Render();
+                        surfaceD3D.InvalidateD3DImage();
                     }
 
                     lastRenderingDuration = renderTimer.Elapsed - t0;
