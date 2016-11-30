@@ -8,8 +8,32 @@ using System.Diagnostics;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class BillboardTextModel3D : MeshGeometryModel3D
+    public class BillboardTextModel3D : MaterialGeometryModel3D
     {
+        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(BillboardTextModel3D),
+           new PropertyMetadata(false, (s, e) =>
+           {
+               if (!(bool)e.NewValue)
+               {
+                   (s as BillboardTextModel3D).vertexArrayBuffer = null;
+               }
+           }));
+
+        /// <summary>
+        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
+        /// Example: Repeatly updates textures, or geometries with close number of vertices.
+        /// </summary>
+        public bool ReuseVertexArrayBuffer
+        {
+            set
+            {
+                SetValue(ReuseVertexArrayBufferProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(ReuseVertexArrayBufferProperty);
+            }
+        }
         #region Private Class Data Members
 
         private EffectVectorVariable vViewport;
