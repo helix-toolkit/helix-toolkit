@@ -106,13 +106,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void DrawTexture()
         {
-            //Positions.Clear();
-            //Colors.Clear();
-            //TextureCoordinates.Clear();
+            Positions.Clear();
+            Colors.Clear();
+            TextureCoordinates.Clear();
 
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             foreach (var textInfo in TextInfo)
             {
+                textInfo.Offsets.Clear();
                 int x = 0;
                 int y = 0;
                 var w = bmpFont.TextureSize.Width;
