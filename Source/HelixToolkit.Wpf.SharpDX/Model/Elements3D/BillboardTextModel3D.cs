@@ -273,7 +273,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 vertexArrayBuffer[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
             }
 
-            return vertexArrayBuffer.ToArray();
+            return vertexArrayBuffer;
         }
 
         #endregion
