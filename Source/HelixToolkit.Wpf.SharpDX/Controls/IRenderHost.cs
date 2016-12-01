@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Model.Lights3D;
 
 #if MSAA
     public enum MSAALevel
@@ -67,6 +68,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         bool IsBusy { get; }
 
+        /// <summary>
+        /// Set render cycles per invalidation. Default = <value>1</value>
+        /// </summary>
         int RenderCycles { set; get; }
+
+        /// <summary>
+        /// Shared light data per scene
+        /// </summary>
+        Light3DSceneShared Light3DSceneShared { get; }
     }
 }

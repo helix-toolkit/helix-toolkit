@@ -23,6 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Matrix = global::SharpDX.Matrix;
+    using Model.Lights3D;
 
     public enum LightType : ushort
     {
@@ -31,11 +32,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface ILight3D
     {
+        Light3DSceneShared Light3DSceneShared { get; }
     }
 
     public abstract class Light3D : Model3D, ILight3D, IDisposable
     {
-
+        public Light3DSceneShared Light3DSceneShared { private set; get; }
         public static readonly DependencyProperty DirectionProperty =
             DependencyProperty.Register("Direction", typeof(Vector3), typeof(Light3D), new UIPropertyMetadata(new Vector3()));
 
@@ -111,29 +113,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Number of lights in the scene
-        /// </summary>
-        public static int LightCount
-        {
-            get { return lightCount; }
-            internal set
-            {
-                lightCount = value;
-                if (value == 0)
-                {
-                    lightDirections = new Vector4[maxLights];
-                    lightPositions = new Vector4[maxLights];
-                    lightAtt = new Vector4[maxLights];
-                    lightSpots = new Vector4[maxLights];
-                    lightColors = new Color4[maxLights];
-                    lightTypes = new int[maxLights];
-                    lightViewMatrices = new Matrix[maxLights];
-                    lightProjMatrices = new Matrix[maxLights];
-                }
-            }
-        }
-
-        /// <summary>
         /// The lighting model.
         /// </summary>
         //public static class Model
@@ -147,14 +126,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Matrix LightViewMatrix
         {
-            get { return lightViewMatrices[this.lightIndex]; }
-            internal set { lightViewMatrices[this.lightIndex] = value; }
+            get { return Light3DSceneShared.LightViewMatrices[this.lightIndex]; }
+            internal set { Light3DSceneShared.LightViewMatrices[this.lightIndex] = value; }
         }
 
         public Matrix LightProjectionMatrix
         {
-            get { return lightProjMatrices[this.lightIndex]; }
-            internal set { lightProjMatrices[this.lightIndex] = value; }
+            get { return Light3DSceneShared.LightProjMatrices[this.lightIndex]; }
+            internal set { Light3DSceneShared.LightProjMatrices[this.lightIndex] = value; }
         }
 
         /// <summary>
@@ -172,11 +151,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.renderTechnique = host.RenderTechnique;
             base.Attach(host);
-
+            Light3DSceneShared = host.Light3DSceneShared;
             if (this.LightType != LightType.Ambient)
             {
-                this.lightIndex = lightCount++;
-                lightCount = lightCount % maxLights;
+                this.lightIndex = host.Light3DSceneShared.LightCount++;
+                host.Light3DSceneShared.LightCount = host.Light3DSceneShared.LightCount % Light3DSceneShared.MaxLights;
 
                 if (host.IsShadowMapEnabled)
                 {
@@ -188,10 +167,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void Detach()
         {
-            if (this.LightType != LightType.Ambient)
+            if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
             {
                 // "turn-off" the light
-                lightColors[lightIndex] = new Color4(0, 0, 0, 0);
+                Light3DSceneShared.LightColors[lightIndex] = new Color4(0, 0, 0, 0);
             }
             base.Detach();
         }
@@ -200,17 +179,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.Detach();
         }
-
-        protected const int maxLights = 16;
-        protected static int lightCount = 0;
-        protected static Vector4[] lightDirections = new Vector4[maxLights];
-        protected static Vector4[] lightPositions = new Vector4[maxLights];
-        protected static Vector4[] lightAtt = new Vector4[maxLights];
-        protected static Vector4[] lightSpots = new Vector4[maxLights];
-        protected static Color4[] lightColors = new Color4[maxLights];
-        protected static int[] lightTypes = new int[maxLights];
-        protected static Matrix[] lightViewMatrices = new Matrix[maxLights];
-        protected static Matrix[] lightProjMatrices = new Matrix[maxLights];
 
         protected EffectVectorVariable vLightDir;
         protected EffectVectorVariable vLightPos;
@@ -258,7 +226,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Z = quadratic attenuation.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
         /// </summary>
-        [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Attenuation
         {
             get { return (Vector3)this.GetValue(AttenuationProperty); }

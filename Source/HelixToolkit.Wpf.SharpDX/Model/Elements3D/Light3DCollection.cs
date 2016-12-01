@@ -4,12 +4,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class Light3DCollection : GroupElement3D, ILight3D
     {
+        public Light3DSceneShared Light3DSceneShared
+        {
+            private set; get;
+        }
+
         public override void Attach(IRenderHost host)
         {
+            Light3DSceneShared = host.Light3DSceneShared;
             foreach (var c in this.Children)
             {
                 if (c.Parent == null)

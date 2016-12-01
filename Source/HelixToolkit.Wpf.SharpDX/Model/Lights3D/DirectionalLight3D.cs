@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
             /// --- Set light type
-            lightTypes[lightIndex] = (int)Light3D.Type.Directional;
+            Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Directional;
 
             /// --- flush
             this.Device.ImmediateContext.Flush();
@@ -53,30 +53,30 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.IsRendering)
             {
                 /// --- set lighting parameters
-                
-                lightColors[lightIndex] = this.Color;
+
+                Light3DSceneShared.LightColors[lightIndex] = this.Color;
             }
             else
             {
                 // --- turn-off the light
-                lightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
+                Light3DSceneShared.LightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
             }
 
             /// --- set lighting parameters
-            lightDirections[lightIndex] = -this.Direction.ToVector4();
+            Light3DSceneShared.LightDirections[lightIndex] = -this.Direction.ToVector4();
 
             /// --- update lighting variables               
-            this.vLightDir.Set(lightDirections);
-            this.vLightColor.Set(lightColors);
-            this.iLightType.Set(lightTypes);
+            this.vLightDir.Set(Light3DSceneShared.LightDirections);
+            this.vLightColor.Set(Light3DSceneShared.LightColors);
+            this.iLightType.Set(Light3DSceneShared.LightTypes);
 
 
             /// --- if shadow-map enabled
             if (this.renderHost.IsShadowMapEnabled)
             {
                 /// update shader
-                this.mLightView.SetMatrix(lightViewMatrices);
-                this.mLightProj.SetMatrix(lightProjMatrices);
+                this.mLightView.SetMatrix(Light3DSceneShared.LightViewMatrices);
+                this.mLightProj.SetMatrix(Light3DSceneShared.LightProjMatrices);
             }
         }
     }
