@@ -655,6 +655,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.RenderHost = this.GetTemplateChild("PART_Canvas") as IRenderHost;
             this.RenderHost.MSAA = this.MSAA;
+            this.RenderHost.RenderCycles = this.RenderCylces;
             if (this.RenderHost != null)
             {
                 this.RenderHost.ExceptionOccurred += this.HandleRenderException;
@@ -927,7 +928,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="host">The host.</param>
         void IRenderer.Attach(IRenderHost host)
-        {
+        {            
             foreach (IRenderable e in this.Items)
             {
                 e.Attach(host);

@@ -66,5 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
         bool IsBusy { get; }
+
+        int RenderCycles { set; get; }
     }
 }
