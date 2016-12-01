@@ -701,7 +701,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
         /// Default value = <value>1</value>
         /// </summary>
-        public static readonly DependencyProperty RenderCyclesProperty = DependencyProperty.Register("RenderCylces", typeof(int),
+        public static readonly DependencyProperty RenderCyclesProperty = DependencyProperty.Register("RenderCycles", typeof(int),
             typeof(Viewport3DX), new PropertyMetadata(1, (d,e)=> 
             {
                 var viewport = d as Viewport3DX;
@@ -2438,7 +2438,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
         /// Default value = <value>1</value>
         /// </summary>
-        public int RenderCylces
+        public int RenderCycles
         {
             set
             {
