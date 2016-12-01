@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -41,6 +42,15 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public bool IsBusy
         {
             get;private set;
+        }
+
+        private readonly Light3DSceneShared light3DSceneShared = new Light3DSceneShared();
+        public Light3DSceneShared Light3DSceneShared
+        {
+            get
+            {
+                return light3DSceneShared;
+            }
         }
 
         public void SetDefaultRenderTargets()
