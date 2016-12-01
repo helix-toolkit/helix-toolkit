@@ -19,7 +19,12 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
             Device = EffectsManager.Device;
         }
-
+        private int renderCycles = 1;
+        public int RenderCycles
+        {
+            set { renderCycles = value; }
+            get { return renderCycles; }
+        }
         public Device Device { get; private set; }
         public Color4 ClearColor { get; private set; }
         public bool IsShadowMapEnabled { get; private set; }

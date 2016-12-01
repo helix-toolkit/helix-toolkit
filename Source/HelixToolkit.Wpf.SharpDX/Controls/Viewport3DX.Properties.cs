@@ -698,6 +698,20 @@ namespace HelixToolkit.Wpf.SharpDX
             "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
         /// <summary>
+        /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
+        /// Default value = <value>1</value>
+        /// </summary>
+        public static readonly DependencyProperty RenderCyclesProperty = DependencyProperty.Register("RenderCylces", typeof(int),
+            typeof(Viewport3DX), new PropertyMetadata(1, (d,e)=> 
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.RenderHost.RenderCycles = (int)e.NewValue;
+                }
+            }));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         [TypeConverter(typeof(Color4Converter))]
@@ -2417,6 +2431,22 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(FixedRotationPointEnabledProperty);
+            }
+        }
+
+        /// <summary>
+        /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
+        /// Default value = <value>1</value>
+        /// </summary>
+        public int RenderCylces
+        {
+            set
+            {
+                SetValue(RenderCyclesProperty, value);
+            }
+            get
+            {
+                return (int)GetValue(RenderCyclesProperty);
             }
         }
     }
