@@ -26,6 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Device = global::SharpDX.Direct3D11.Device;
+    using Model.Lights3D;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -78,6 +79,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderCycles; }
         }
 
+        private readonly Light3DSceneShared light3DPerScene = new Light3DSceneShared();
+        /// <summary>
+        /// Light3D shared data per each secne
+        /// </summary>
+        public Light3DSceneShared Light3DSceneShared { get { return light3DPerScene; } }
 #if MSAA
         private Texture2D renderTargetNMS;
 #endif
@@ -538,7 +544,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     try
                     {
-                        Light3D.LightCount = 0;
+                        Light3DSceneShared.Reset();
                         sceneAttached = true;
                         ClearColor = renderRenderable.BackgroundColor;
                         IsShadowMapEnabled = renderRenderable.IsShadowMappingEnabled;

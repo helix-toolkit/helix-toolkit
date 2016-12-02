@@ -6,16 +6,16 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Windows;    
+    using System.Windows;
 
     using global::SharpDX.Direct3D11;
 
     public sealed class AmbientLight3D : Light3D
-    {        
+    {
         private EffectVectorVariable vLightAmbient;
 
         public AmbientLight3D()
-        {            
+        {
             this.Color = new global::SharpDX.Color4(0.2f, 0.2f, 0.2f, 1f);
             this.LightType = LightType.Ambient;
         }
@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- light constant params              
             this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
-            this.vLightAmbient.Set(this.Color);            
+            this.vLightAmbient.Set(this.Color);
 
             /// --- flush
             this.Device.ImmediateContext.Flush();            
