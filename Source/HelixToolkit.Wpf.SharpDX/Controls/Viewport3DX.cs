@@ -144,11 +144,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private Viewport3D coordinateView;
 
         /// <summary>
-        /// The frame counter.
-        /// </summary>
-        private int frameCounter;
-
-        /// <summary>
         /// The "control has been loaded before" flag.
         /// </summary>
         private bool hasBeenLoadedBefore;
@@ -162,11 +157,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is subscribed to rendering event.
         /// </summary>
         private bool isSubscribedToRenderingEvent;
-
-        /// <summary>
-        ///   The last tick.
-        /// </summary>
-        private long lastTick;
 
 
         /// <summary>
@@ -1298,19 +1288,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
-            var ticks = e.RenderingTime.Ticks;
-            double time = 100e-9 * (ticks - this.lastTick);
-
-            this.lastTick = ticks;
-
-            this.frameCounter++;
             if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
             {
-                this.FrameRate = (int)(this.frameCounter / (0.001 * this.fpsWatch.ElapsedMilliseconds));             
+                this.FrameRate = (int)this.FpsCounter.Value;
                 this.FrameRateText = this.FrameRate + " FPS";
-                this.frameCounter = 0;
-                this.fpsWatch.Reset();
-                this.fpsWatch.Start();
+                this.fpsWatch.Restart();
             }
 
             // update the info fields every 100 frames
