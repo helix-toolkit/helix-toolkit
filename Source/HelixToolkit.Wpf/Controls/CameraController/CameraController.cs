@@ -287,9 +287,9 @@ namespace HelixToolkit.Wpf
         /// The camera history stack.
         /// </summary>
         /// <remarks>
-        /// Implemented as a list since we want to remove items at the bottom of the stack.
+        /// Implemented as a linkedlist since we want to remove items at the bottom of the stack.
         /// </remarks>
-        private readonly List<CameraSetting> cameraHistory = new List<CameraSetting>();
+        private readonly LinkedList<CameraSetting> cameraHistory = new LinkedList<CameraSetting>();
 
         /// <summary>
         /// The rendering event listener.
@@ -1540,10 +1540,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void PushCameraSetting()
         {
-            this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
+            this.cameraHistory.AddLast(new CameraSetting(this.ActualCamera));
             if (this.cameraHistory.Count > 100)
             {
-                this.cameraHistory.RemoveAt(0);
+                this.cameraHistory.RemoveFirst();
             }
         }
 
@@ -1585,8 +1585,8 @@ namespace HelixToolkit.Wpf
         {
             if (this.cameraHistory.Count > 0)
             {
-                var cs = this.cameraHistory[this.cameraHistory.Count - 1];
-                this.cameraHistory.RemoveAt(this.cameraHistory.Count - 1);
+                var cs = this.cameraHistory.Last.Value;
+                this.cameraHistory.RemoveLast();
                 cs.UpdateCamera(this.ActualCamera);
                 return true;
             }
