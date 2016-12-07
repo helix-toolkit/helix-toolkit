@@ -202,7 +202,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            this.Viewport.PushCameraSetting();
+            this.Viewport.MouseMove -= this.OnMouseMove;
+            this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.MouseMove += this.OnMouseMove;
             this.Viewport.MouseUp += this.OnMouseUp;
             this.OnMouseDown(sender, null);

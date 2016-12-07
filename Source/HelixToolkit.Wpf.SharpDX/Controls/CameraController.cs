@@ -291,7 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Implemented as a list since we want to remove items at the bottom of the stack.
         /// </remarks>
-        private readonly List<CameraSetting> cameraHistory = new List<CameraSetting>();
+        private readonly LinkedList<CameraSetting> cameraHistory = new LinkedList<CameraSetting>();
 
         /// <summary>
         /// The rendering event listener.
@@ -1542,10 +1542,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void PushCameraSetting()
         {
-            this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
+            this.cameraHistory.AddLast(new CameraSetting(this.ActualCamera));
             if (this.cameraHistory.Count > 100)
             {
-                this.cameraHistory.RemoveAt(0);
+                this.cameraHistory.RemoveFirst();
             }
         }
 
@@ -1587,8 +1587,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.cameraHistory.Count > 0)
             {
-                var cs = this.cameraHistory[this.cameraHistory.Count - 1];
-                this.cameraHistory.RemoveAt(this.cameraHistory.Count - 1);
+                var cs = this.cameraHistory.Last.Value;
+                this.cameraHistory.RemoveLast();
                 cs.UpdateCamera(this.ActualCamera);
                 return true;
             }
@@ -2134,7 +2134,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data.
         /// </param>
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        public void OnKeyDown(object sender, KeyEventArgs e)
         {
             this.OnKeyDown(e);
             var shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
@@ -2388,7 +2388,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SubscribeEvents()
         {
             this.MouseWheel += this.OnMouseWheel;
-            this.KeyDown += this.OnKeyDown;
             RenderingEventManager.AddListener(this.renderingEventListener);
         }
 
@@ -2412,7 +2411,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UnSubscribeEvents()
         {
             this.MouseWheel -= this.OnMouseWheel;
-            this.KeyDown -= this.OnKeyDown;
             RenderingEventManager.RemoveListener(this.renderingEventListener);
         }
 

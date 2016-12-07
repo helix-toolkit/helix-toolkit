@@ -12,9 +12,14 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
     public class FpsCounter : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Minimum FPS Update Duration, Unit = Milliseconds.
+        /// </summary>
+        private const int MinimumUpdateDuration = 200;
         /// <summary>
         /// 
         /// </summary>
@@ -25,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (value == m_averagingInterval)
                     return;
-                if (value < TimeSpan.FromSeconds(0.1))
+                if (value < TimeSpan.FromMilliseconds(MinimumUpdateDuration))
                     throw new ArgumentOutOfRangeException();
 
                 m_averagingInterval = value;
@@ -38,14 +43,25 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="ts"></param>
         public void AddFrame(TimeSpan ts)
-        {
-            var sec = AveragingInterval;
-            var index = m_frames.FindLastIndex(aTS => ts - aTS > sec);
-            if (index > -1)
-                m_frames.RemoveRange(0, index);
-            m_frames.Add(ts);
-
+        {           
+            m_frames.AddLast(ts.TotalMilliseconds);
+            TrimFrames();
             UpdateValue();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void TrimFrames()
+        {
+            if (m_frames.Count == 0)
+            {
+                return;
+            }
+            var sec = AveragingInterval.TotalMilliseconds;
+            var target = m_frames.Last.Value - sec;
+            while (m_frames.Count > 0 && target > m_frames.First.Value)
+            {
+                m_frames.RemoveFirst();
+            }
         }
 
         /// <summary>
@@ -83,8 +99,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var dt = m_frames[m_frames.Count - 1] - m_frames[0];
-                Value = dt.Ticks > 100 ? m_frames.Count / dt.TotalSeconds : -1;
+                var dt = m_frames.Last.Value - m_frames.First.Value;
+                Value = dt > MinimumUpdateDuration ? m_frames.Count / (dt/1000) : -1;
             }
         }
 
@@ -104,6 +120,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private double m_value;
         private TimeSpan m_averagingInterval = TimeSpan.FromSeconds(1);
-        private List<TimeSpan> m_frames = new List<TimeSpan>();
+        private readonly LinkedList<double> m_frames = new LinkedList<double>();
     }
 }
