@@ -457,7 +457,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p)
         {
-            this.cameraController?.Camera?.LookAt(p, 0);
+            this.cameraController?.ActualCamera?.LookAt(p, 0);
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, double animationTime)
         {
-            this.cameraController?.Camera?.LookAt(p, animationTime);
+            this.cameraController?.ActualCamera?.LookAt(p, animationTime);
         }
 
         /// <summary>
@@ -488,7 +488,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, double distance, double animationTime)
         {
-            this.cameraController?.Camera?.LookAt(p, distance, animationTime);
+            this.cameraController?.ActualCamera?.LookAt(p, distance, animationTime);
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, Vector3D direction, double animationTime)
         {
-            this.cameraController?.Camera?.LookAt(p, direction, animationTime);
+            this.cameraController?.ActualCamera?.LookAt(p, direction, animationTime);
         }
 
         /// <summary>
