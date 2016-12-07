@@ -1616,6 +1616,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (!EnableMouseButtonHitTest)
+            {
+                return;
+            }
+            mouseHitModels.Clear();
             var hits = this.FindHits(pt);
             if (hits.Count > 0)
             {

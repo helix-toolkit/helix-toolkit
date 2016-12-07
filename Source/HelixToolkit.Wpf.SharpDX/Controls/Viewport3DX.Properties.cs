@@ -712,6 +712,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// Enable mouse button hit test
+        /// </summary>
+        public static readonly DependencyProperty EnableMouseButtonHitTestProperty = DependencyProperty.Register(
+            "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         [TypeConverter(typeof(Color4Converter))]
@@ -2447,6 +2453,21 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (int)GetValue(RenderCyclesProperty);
+            }
+        }
+
+        /// <summary>
+        /// Enable mouse button hit test
+        /// </summary>
+        public bool EnableMouseButtonHitTest
+        {
+            set
+            {
+                SetValue(EnableMouseButtonHitTestProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableMouseButtonHitTestProperty);
             }
         }
     }
