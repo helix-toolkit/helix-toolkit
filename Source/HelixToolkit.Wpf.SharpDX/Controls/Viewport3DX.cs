@@ -282,7 +282,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddMoveForce(double dx, double dy, double dz)
         {
-            this.cameraController.AddMoveForce(new Vector3D(dx, dy, dz));
+            this.cameraController?.AddMoveForce(new Vector3D(dx, dy, dz));
            // this.AddMoveForce(new Vector3D(dx, dy, dz));
         }
 
@@ -294,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddMoveForce(Vector3D delta)
         {
-            this.cameraController.AddMoveForce(delta);
+            this.cameraController?.AddMoveForce(delta);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddPanForce(double dx, double dy)
         {
-            this.cameraController.AddPanForce(dx, dy);
+            this.cameraController?.AddPanForce(dx, dy);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddPanForce(Vector3D pan)
         {
-            this.cameraController.AddPanForce(pan);
+            this.cameraController?.AddPanForce(pan);
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddRotateForce(double dx, double dy)
         {
-            this.cameraController.AddRotateForce(dx, dy);
+            this.cameraController?.AddRotateForce(dx, dy);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddZoomForce(double dx)
         {
-            this.cameraController.AddZoomForce(dx);
+            this.cameraController?.AddZoomForce(dx);
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddZoomForce(double dx, Point3D zoomOrigin)
         {
-            this.cameraController.AddZoomForce(dx, zoomOrigin);
+            this.cameraController?.AddZoomForce(dx, zoomOrigin);
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void ChangeDirection(Vector3D lookDir, Vector3D upDir, double animationTime = 500)
         {
-            this.cameraController.ChangeDirection(lookDir, upDir, animationTime);
+            this.cameraController?.ChangeDirection(lookDir, upDir, animationTime);
         }
 
         /// <summary>
@@ -457,7 +457,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p)
         {
-            this.cameraController.Camera.LookAt(p, 0);
+            this.cameraController?.Camera?.LookAt(p, 0);
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, double animationTime)
         {
-            this.cameraController.Camera.LookAt(p, animationTime);
+            this.cameraController?.Camera?.LookAt(p, animationTime);
         }
 
         /// <summary>
@@ -488,7 +488,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, double distance, double animationTime)
         {
-            this.cameraController.Camera.LookAt(p, distance, animationTime);
+            this.cameraController?.Camera?.LookAt(p, distance, animationTime);
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, Vector3D direction, double animationTime)
         {
-            this.cameraController.Camera.LookAt(p, direction, animationTime);
+            this.cameraController?.Camera?.LookAt(p, direction, animationTime);
         }
 
         /// <summary>
@@ -733,7 +733,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="aroundPoint">The point to spin around.</param>
         public void StartSpin(Vector speed, Point position, Point3D aroundPoint)
         {
-            cameraController.StartSpin(speed, position, aroundPoint);
+            cameraController?.StartSpin(speed, position, aroundPoint);
         }
 
         /// <summary>
@@ -741,7 +741,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void StopSpin()
         {
-            cameraController.StopSpin();
+            cameraController?.StopSpin();
         }
 
         /// <summary>
