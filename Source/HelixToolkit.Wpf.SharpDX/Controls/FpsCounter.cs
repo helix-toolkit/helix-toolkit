@@ -57,8 +57,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             var sec = AveragingInterval.TotalMilliseconds;
-            var target = m_frames.Last.Value - sec;
-            while (m_frames.Count > 0 && target > m_frames.First.Value)
+            var target = m_frames.Last.Value - sec;           
+            while (m_frames.Count > 0 && (target > m_frames.First.Value || m_frames.First.Value > m_frames.Last.Value)) //the second condition happened when switching tabs, the TotalMilliseconds reset to 0 from composite rendering
             {
                 m_frames.RemoveFirst();
             }
