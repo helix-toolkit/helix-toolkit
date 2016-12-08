@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
             billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
 
             var textureBytes = geometry.Texture.ToByteArray();
-            billboardTextureView = ShaderResourceView.FromMemory(Device, textureBytes);
+            billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
 
             /// --- set rasterstate
             OnRasterStateChanged();

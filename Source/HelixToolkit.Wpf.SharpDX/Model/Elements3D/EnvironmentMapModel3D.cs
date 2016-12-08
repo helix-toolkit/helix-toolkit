@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Filename != null)
             {
                 /// -- attach texture
-                using (var texture = Texture2D.FromFile<Texture2D>(this.Device, this.Filename))
+                using (var texture = TextureLoader.FromFileAsResource(this.Device, this.Filename))
                 {
                     this.texCubeMapView = new ShaderResourceView(this.Device, texture);
                 }
