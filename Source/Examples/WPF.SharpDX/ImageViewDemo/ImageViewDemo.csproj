@@ -15,7 +15,8 @@
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <NuGetPackageImportStamp>b106d1c5</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,9 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\ExifLib.1.5.0.0\lib\net40\ExifLib.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -120,6 +121,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="..\..\..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\..\..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
 </Project>
-
