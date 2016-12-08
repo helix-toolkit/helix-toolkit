@@ -22,6 +22,7 @@
       <dependency id="SharpDX.Direct3D11.Effects" version="3.1.1" />
       <dependency id="SharpDX.Direct3D9" version="3.1.1" />
       <dependency id="SharpDX.DXGI" version="3.1.1" />
+      <dependency id="SharpDX.Mathematics" version="3.1.1" />
     </dependencies>
   </metadata>
   <files>
