@@ -22,8 +22,6 @@
       <dependency id="SharpDX.Direct3D11.Effects" version="2.6.3" />
       <dependency id="SharpDX.Direct3D9" version="2.6.3" />
       <dependency id="SharpDX.DXGI" version="2.6.3" />
-      <dependency id="SharpDX.Toolkit" version="2.6.3" />
-      <dependency id="SharpDX.Toolkit.Graphics" version="2.6.3" />
     </dependencies>
   </metadata>
   <files>
