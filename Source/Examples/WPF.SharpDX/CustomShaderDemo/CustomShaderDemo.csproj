@@ -158,9 +158,15 @@
     <Content Include="Shaders\Custom.fx" />
     <Content Include="Shaders\Lines.fx" />
     <Content Include="Shaders\Points.fx" />
-    <Content Include="sharpdx_direct3d11_1_effects_arm.dll" />
-    <Content Include="sharpdx_direct3d11_1_effects_x64.dll" />
-    <Content Include="sharpdx_direct3d11_1_effects_x86.dll" />
+    <Content Include="sharpdx_direct3d11_1_effects_arm.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sharpdx_direct3d11_1_effects_x64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sharpdx_direct3d11_1_effects_x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
