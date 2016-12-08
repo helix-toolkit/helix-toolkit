@@ -6,7 +6,7 @@
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:local="clr-namespace:SimpleDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX"
+    xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="SharpDX in WPF"
     Width="800"
@@ -79,13 +79,13 @@
                 Geometry="{Binding Lines}"
                 Thickness="1.5"
                 Transform="{Binding Model1Transform}"
-                Color="{x:Static sdx:Color.Black}" />
+                Color="{x:Static sdxm:Color.Black}" />
             <hx:BillboardTextModel3D Geometry="{Binding Billboard1Model}" />
             <hx:BillboardTextModel3D Geometry="{Binding Billboard2Model}" />
             <hx:BillboardTextModel3D Geometry="{Binding Billboard3Model}" />
             <hx:BillboardTextModel3D Geometry="{Binding BillboardImageModel}" />
             <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
-            <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Transform="{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
+            <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Transform="{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
             <!--<hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>-->
         </hx:Viewport3DX>
 
