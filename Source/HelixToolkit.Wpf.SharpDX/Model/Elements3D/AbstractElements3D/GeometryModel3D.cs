@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
 
         public static readonly DependencyProperty IsMultisampleEnabledProperty = 
-            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(Geometry3D), new UIPropertyMetadata(true, RasterStateChanged));
+            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
         /// <summary>
         /// Provide CLR accessors for the event 
         /// </summary>
