@@ -133,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     IsDepthClipEnabled = IsDepthClipEnabled,
                     IsFrontCounterClockwise = FrontCounterClockwise,
 
-                    //IsMultisampleEnabled = true,
+                    IsMultisampleEnabled = IsMultisampleEnabled,
                     //IsAntialiasedLineEnabled = true,                    
                     //IsScissorEnabled = true,
                 };
