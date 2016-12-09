@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
+        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics" 
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"         
         Title="Manipulator Demo (HelixToolkitDX)" Height="600" Width="1200">
@@ -49,7 +49,7 @@
             
             <hx:DraggableGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding Material3}"  />
 
-            <hx:LineGeometryModel3D x:Name="lines" Geometry="{Binding Lines}" Transform = "{Binding Transform, ElementName=model3}" Color="{x:Static sdx:Color.Black}" Thickness="2" Smoothness="2"/>
+            <hx:LineGeometryModel3D x:Name="lines" Geometry="{Binding Lines}" Transform = "{Binding Transform, ElementName=model3}" Color="{x:Static sdxm:Color.Black}" Thickness="2" Smoothness="2"/>
             
             <hx:UITranslateManipulator3D x:Name="translateX" Direction="1,0,0" 
                                           Offset="1,0,0"

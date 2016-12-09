@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX"
+        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:Workitem10045"
         mc:Ignorable="d"
@@ -60,7 +60,7 @@
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}"   />
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" />
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}"  />
-                    <hx:LineGeometryModel3D Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
+                    <hx:LineGeometryModel3D Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}" Thickness="1.5"/>
                     <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
                 </hx:Viewport3DX>
             </TabItem>
@@ -91,7 +91,7 @@
                     <hx:MeshGeometryModel3D x:Name="model1b" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{x:Static hx:PhongMaterials.Chrome}"   />
                     <hx:MeshGeometryModel3D x:Name="model2b" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{x:Static hx:PhongMaterials.Gold}" />
                     <hx:MeshGeometryModel3D x:Name="model3b" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{x:Static hx:PhongMaterials.Jade}"  />
-                    <hx:LineGeometryModel3D x:Name="linesb"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
+                    <hx:LineGeometryModel3D x:Name="linesb"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}" Thickness="1.5"/>
                     <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
                 </hx:Viewport3DX>
             </TabItem>
@@ -125,7 +125,7 @@
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}"   />
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" />
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}"  />
-                    <hx:LineGeometryModel3D Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
+                    <hx:LineGeometryModel3D Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}" Thickness="1.5"/>
                     <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
                 </hx:Viewport3DX>
             </TabItem>
@@ -156,7 +156,7 @@
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{x:Static hx:PhongMaterials.Chrome}"   />
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{x:Static hx:PhongMaterials.Gold}" />
                     <hx:MeshGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{x:Static hx:PhongMaterials.Jade}"  />
-                    <hx:LineGeometryModel3D Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
+                    <hx:LineGeometryModel3D Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}" Thickness="1.5"/>
                     <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
                 </hx:Viewport3DX>
             </TabItem>

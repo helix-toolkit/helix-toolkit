@@ -1076,7 +1076,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
             // init random normals texture
-            this.randNormalMapShaderResourceView = ShaderResourceView.FromFile(device, @"./Textures/random4x4_dot3.png");
+            this.randNormalMapShaderResourceView = TextureLoader.FromFileAsShaderResourceView(device, @"./Textures/random4x4_dot3.png");
             //this.randNormalMapShaderResourceView = ShaderResourceView.FromFile(device, @"./Textures/random_dot3.jpg");
             // set shader resources
             this.screenSpaceVariables.randNormalsShaderResourceVariable.SetResource(this.randNormalMapShaderResourceView);
