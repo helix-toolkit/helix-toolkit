@@ -1,19 +1,31 @@
-﻿namespace HelixToolkit.Wpf.SharpDX.Helpers
+﻿#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
+namespace HelixToolkit.Wpf
+#endif
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
+#if SHARPDX
+    using Vector3D = global::SharpDX.Vector3;
+    using Point3D = global::SharpDX.Vector3;
+    using Point = global::SharpDX.Vector2;
+    using DoubleOrSingle = System.Single;
+#else
+    using Vector2D = System.Windows.Vector;
+    using System.Windows.Media.Media3D;
+    using DoubleOrSingle = System.Double;
     using System.Windows;
-    using Media3D = System.Windows.Media.Media3D;
-    using HelixToolkit.Wpf.SharpDX;
-    using global::SharpDX;
+#endif
     /// <summary>
     /// Provides functionality to calculate a contour slice through a 3 vertex facet.(Modified from HelixToolkit.Wpf version)
     /// </summary>
     /// <remarks>
     /// See <a href="http://paulbourke.net/papers/conrec/">CONREC</a> for further information.
     /// </remarks>
-    public class ContourHelperDX
+    public class ContourHelper
     {
         /// <summary>
         /// Provides the indices for the various <see cref="ContourFacetResult"/> cases.
@@ -32,27 +44,27 @@
         /// <summary>
         /// The parameter 'a' of the plane equation.
         /// </summary>
-        private readonly float a;
+        private readonly DoubleOrSingle a;
 
         /// <summary>
         /// The parameter 'b' of the plane equation.
         /// </summary>
-        private readonly float b;
+        private readonly DoubleOrSingle b;
 
         /// <summary>
         /// The parameter 'c' of the plane equation.
         /// </summary>
-        private readonly float c;
+        private readonly DoubleOrSingle c;
 
         /// <summary>
         /// The parameter 'd' of the plane equation.
         /// </summary>
-        private readonly float d;
+        private readonly DoubleOrSingle d;
 
         /// <summary>
         /// The sides.
         /// </summary>
-        private readonly float[] sides = new float[3];
+        private readonly DoubleOrSingle[] sides = new DoubleOrSingle[3];
 
         /// <summary>
         /// The indices.
@@ -62,32 +74,32 @@
         /// <summary>
         /// The original mesh positions.
         /// </summary>
-        private readonly Vector3[] meshPositions;
+        private readonly Point3D[] meshPositions;
 
         /// <summary>
         /// The original mesh normal vectors.
         /// </summary>
-        private readonly Vector3[] meshNormals;
+        private readonly Vector3D[] meshNormals;
 
         /// <summary>
         /// The original mesh texture coordinates.
         /// </summary>
-        private readonly Vector2[] meshTextureCoordinates;
+        private readonly Point[] meshTextureCoordinates;
 
         /// <summary>
         /// The points.
         /// </summary>
-        private readonly Vector3[] points = new Vector3[3];
+        private readonly Point3D[] points = new Point3D[3];
 
         /// <summary>
         /// The normal vectors.
         /// </summary>
-        private readonly Vector3[] normals;
+        private readonly Vector3D[] normals;
 
         /// <summary>
         /// The texture coordinates.
         /// </summary>
-        private readonly Vector2[] textures;
+        private readonly Point[] textures;
 
         /// <summary>
         /// The position count.
@@ -95,17 +107,17 @@
         private int positionCount;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContourHelperDX" /> class.
+        /// Initializes a new instance of the <see cref="ContourHelper" /> class.
         /// </summary>
         /// <param name="planeOrigin">The plane origin.</param>
         /// <param name="planeNormal">The plane normal.</param>
         /// <param name="originalMesh">The original mesh.</param>
-        public ContourHelperDX(Media3D.Point3D planeOrigin, Vector3 planeNormal, MeshGeometry3D originalMesh)
+        public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh)
         {
             var hasNormals = originalMesh.Normals != null && originalMesh.Normals.Count > 0;
             var hasTextureCoordinates = originalMesh.TextureCoordinates != null && originalMesh.TextureCoordinates.Count > 0;
-            this.normals = hasNormals ? new Vector3[3] : null;
-            this.textures = hasTextureCoordinates ? new Vector2[3] : null;
+            this.normals = hasNormals ? new Vector3D[3] : null;
+            this.textures = hasTextureCoordinates ? new Point[3] : null;
             this.positionCount = originalMesh.Positions.Count;
 
             this.meshPositions = originalMesh.Positions.ToArray();
@@ -181,9 +193,9 @@
             int index0,
             int index1,
             int index2,
-            out Vector3[] newPositions,
-            out Vector3[] newNormals,
-            out Vector2[] newTextureCoordinates,
+            out Point3D[] newPositions,
+            out Vector3D[] newNormals,
+            out Point[] newTextureCoordinates,
             out int[] triangleIndices)
         {
             this.SetData(index0, index1, index2);
@@ -211,15 +223,15 @@
                     triangleIndices = new[] { index0, index1, this.positionCount, this.positionCount++, this.positionCount++, index0 };
                     break;
                 case ContourFacetResult.All:
-                    newPositions = new Vector3[0];
-                    newNormals = new Vector3[0];
-                    newTextureCoordinates = new Vector2[0];
+                    newPositions = new Point3D[0];
+                    newNormals = new Vector3D[0];
+                    newTextureCoordinates = new Point[0];
                     triangleIndices = new[] { index0, index1, index2 };
                     return;
                 default:
-                    newPositions = new Vector3[0];
-                    newNormals = new Vector3[0];
-                    newTextureCoordinates = new Vector2[0];
+                    newPositions = new Point3D[0];
+                    newNormals = new Vector3D[0];
+                    newTextureCoordinates = new Point[0];
                     triangleIndices = new int[0];
                     return;
             }
@@ -241,7 +253,7 @@
             }
             else
             {
-                newNormals = new Vector3[0];
+                newNormals = new Vector3D[0];
             }
 
             if (this.textures != null)
@@ -254,7 +266,7 @@
             }
             else
             {
-                newTextureCoordinates = new Vector2[0];
+                newTextureCoordinates = new Point[0];
             }
         }
 
@@ -274,7 +286,8 @@
         /// The second side.
         /// </param>
         /// <returns>The new coordinate.</returns>
-        private static float CalculatePoint(float firstPoint, float secondPoint, float firstSide, float secondSide)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static DoubleOrSingle CalculatePoint(DoubleOrSingle firstPoint, DoubleOrSingle secondPoint, DoubleOrSingle firstSide, DoubleOrSingle secondSide)
         {
             return firstPoint - (firstSide * (secondPoint - firstPoint) / (secondSide - firstSide));
         }
@@ -349,13 +362,14 @@
         /// <param name="index0">The first index.</param>
         /// <param name="index1">The second index.</param>
         /// <returns>The interpolated position.</returns>
-        private Vector3 CreateNewPosition(int index0, int index1)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Point3D CreateNewPosition(int index0, int index1)
         {
             var firstPoint = this.points[index0];
             var secondPoint = this.points[index1];
             var firstSide = this.sides[index0];
             var secondSide = this.sides[index1];
-            return new Vector3(
+            return new Point3D(
                 CalculatePoint(firstPoint.X, secondPoint.X, firstSide, secondSide),
                 CalculatePoint(firstPoint.Y, secondPoint.Y, firstSide, secondSide),
                 CalculatePoint(firstPoint.Z, secondPoint.Z, firstSide, secondSide));
@@ -367,13 +381,14 @@
         /// <param name="index0">The first index.</param>
         /// <param name="index1">The second index.</param>
         /// <returns>The interpolated vector.</returns>
-        private Vector3 CreateNewNormal(int index0, int index1)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Vector3D CreateNewNormal(int index0, int index1)
         {
             var firstPoint = this.normals[index0];
             var secondPoint = this.normals[index1];
             var firstSide = this.sides[index0];
             var secondSide = this.sides[index1];
-            return new Vector3(
+            return new Vector3D(
                 CalculatePoint(firstPoint.X, secondPoint.X, firstSide, secondSide),
                 CalculatePoint(firstPoint.Y, secondPoint.Y, firstSide, secondSide),
                 CalculatePoint(firstPoint.Z, secondPoint.Z, firstSide, secondSide));
@@ -385,14 +400,15 @@
         /// <param name="index0">The first index.</param>
         /// <param name="index1">The second index.</param>
         /// <returns>The interpolated texture coordinate.</returns>
-        private Vector2 CreateNewTexture(int index0, int index1)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Point CreateNewTexture(int index0, int index1)
         {
             var firstTexture = this.textures[index0];
             var secondTexture = this.textures[index1];
             var firstSide = this.sides[index0];
             var secondSide = this.sides[index1];
 
-            return new Vector2(
+            return new Point(
                 CalculatePoint(firstTexture.X, secondTexture.X, firstSide, secondSide),
                 CalculatePoint(firstTexture.Y, secondTexture.Y, firstSide, secondSide));
         }

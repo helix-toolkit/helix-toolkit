@@ -174,8 +174,6 @@
     <Compile Include="Controls\ViewportCommands.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
-    <Compile Include="Extensions\MeshGeometry3DExtensions.cs" />
-    <Compile Include="Helpers\ContourHelperDX.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />

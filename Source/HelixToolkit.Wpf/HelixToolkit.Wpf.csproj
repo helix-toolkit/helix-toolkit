@@ -109,7 +109,6 @@
     <Compile Include="Geometry\BoundingSphere.cs" />
     <Compile Include="Helpers\CanonicalSplineHelper.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
-    <Compile Include="Helpers\ContourHelper.cs" />
     <Compile Include="Helpers\DependencyPropertyEx.cs" />
     <Compile Include="Helpers\IBoundsIgnoredVisual3D.cs" />
     <Compile Include="Helpers\Model3DHelper.cs" />

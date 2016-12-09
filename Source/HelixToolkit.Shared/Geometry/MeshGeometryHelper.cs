@@ -6,25 +6,23 @@
 //   Provides helper methods for mesh geometries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
 #if SHARPDX
-    using global::SharpDX;
-    
     using Vector3D = global::SharpDX.Vector3;
     using Point3D = global::SharpDX.Vector3;
-    
+    using Point = global::SharpDX.Vector2;
     using Int32Collection = System.Collections.Generic.List<int>;
     using Vector3DCollection = SharpDX.Core.Vector3Collection;
     using Point3DCollection = SharpDX.Core.Vector3Collection;
     using PointCollection = SharpDX.Core.Vector2Collection;
-
-    using MeshGeometry3D = SharpDX.MeshGeometry3D;
-
     using DoubleOrSingle = System.Single;
 #else
     using System.Windows;
@@ -409,7 +407,7 @@ namespace HelixToolkit.Wpf
             return sb.Length > 0 ? sb.ToString() : null;
         }
 
-#if !SHARPDX
+
         /// <summary>
         /// Cuts the mesh with the specified plane.
         /// </summary>
@@ -425,7 +423,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The <see cref="MeshGeometry3D"/>.
         /// </returns>
-        public static MeshGeometry3D Cut(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
+        public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
             var hasTextureCoordinates = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0;
             var hasNormals = mesh.Normals != null && mesh.Normals.Count > 0;
@@ -504,7 +502,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The segments of the contour.
         /// </returns>
-        public static IList<Point3D> GetContourSegments(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
+        public static IList<Point3D> GetContourSegments(this MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
             var segments = new List<Point3D>();
             var contourHelper = new ContourHelper(plane, normal, mesh);
@@ -528,7 +526,7 @@ namespace HelixToolkit.Wpf
 
             return segments;
         }
-#endif
+
 
         /// <summary>
         /// Combines the segments.
