@@ -6,25 +6,23 @@
 //   Provides helper methods for mesh geometries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
 #if SHARPDX
-    using global::SharpDX;
-    
     using Vector3D = global::SharpDX.Vector3;
     using Point3D = global::SharpDX.Vector3;
-    
+    using Point = global::SharpDX.Vector2;
     using Int32Collection = System.Collections.Generic.List<int>;
     using Vector3DCollection = SharpDX.Core.Vector3Collection;
     using Point3DCollection = SharpDX.Core.Vector3Collection;
     using PointCollection = SharpDX.Core.Vector2Collection;
-
-    using MeshGeometry3D = SharpDX.MeshGeometry3D;
-
     using DoubleOrSingle = System.Single;
 #else
     using System.Windows;
@@ -52,7 +50,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// Collection of normal vectors.
         /// </returns>
-        public static Vector3DCollection CalculateNormals(MeshGeometry3D mesh)
+        public static Vector3DCollection CalculateNormals(this MeshGeometry3D mesh)
         {
             return CalculateNormals(mesh.Positions, mesh.TriangleIndices);
         }
@@ -113,7 +111,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The edge indices for the edges that are only used by one triangle.
         /// </returns>
-        public static Int32Collection FindBorderEdges(MeshGeometry3D mesh)
+        public static Int32Collection FindBorderEdges(this MeshGeometry3D mesh)
         {
             var dict = new Dictionary<ulong, int>();
 
@@ -163,7 +161,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The edge indices (minimum index first).
         /// </returns>
-        public static Int32Collection FindEdges(MeshGeometry3D mesh)
+        public static Int32Collection FindEdges(this MeshGeometry3D mesh)
         {
             var edges = new Int32Collection();
             var dict = new HashSet<ulong>();
@@ -203,7 +201,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The edge indices.
         /// </returns>
-        public static Int32Collection FindSharpEdges(MeshGeometry3D mesh, double minimumAngle)
+        public static Int32Collection FindSharpEdges(this MeshGeometry3D mesh, double minimumAngle)
         {
             var edgeIndices = new Int32Collection();
 
@@ -256,7 +254,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A new mesh.
         /// </returns>
-        public static MeshGeometry3D NoSharedVertices(MeshGeometry3D input)
+        public static MeshGeometry3D NoSharedVertices(this MeshGeometry3D input)
         {
             var p = new Point3DCollection();
             var ti = new Int32Collection();
@@ -323,7 +321,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A simplified mesh.
         /// </returns>
-        public static MeshGeometry3D Simplify(MeshGeometry3D mesh, DoubleOrSingle eps)
+        public static MeshGeometry3D Simplify(this MeshGeometry3D mesh, DoubleOrSingle eps)
         {
             // Find common positions
             var dict = new Dictionary<int, int>(); // map position index to first occurence of same position
@@ -377,7 +375,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="mesh">The mesh.</param>
         /// <returns>Validation report or null if no issues were found.</returns>
-        public static string Validate(MeshGeometry3D mesh)
+        public static string Validate(this MeshGeometry3D mesh)
         {
             var sb = new StringBuilder();
             if (mesh.Normals != null && mesh.Normals.Count != 0 && mesh.Normals.Count != mesh.Positions.Count)
@@ -409,7 +407,7 @@ namespace HelixToolkit.Wpf
             return sb.Length > 0 ? sb.ToString() : null;
         }
 
-#if !SHARPDX
+
         /// <summary>
         /// Cuts the mesh with the specified plane.
         /// </summary>
@@ -425,7 +423,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The <see cref="MeshGeometry3D"/>.
         /// </returns>
-        public static MeshGeometry3D Cut(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
+        public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
             var hasTextureCoordinates = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0;
             var hasNormals = mesh.Normals != null && mesh.Normals.Count > 0;
@@ -504,7 +502,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The segments of the contour.
         /// </returns>
-        public static IList<Point3D> GetContourSegments(MeshGeometry3D mesh, Point3D plane, Vector3D normal)
+        public static IList<Point3D> GetContourSegments(this MeshGeometry3D mesh, Point3D plane, Vector3D normal)
         {
             var segments = new List<Point3D>();
             var contourHelper = new ContourHelper(plane, normal, mesh);
@@ -528,7 +526,7 @@ namespace HelixToolkit.Wpf
 
             return segments;
         }
-#endif
+
 
         /// <summary>
         /// Combines the segments.
