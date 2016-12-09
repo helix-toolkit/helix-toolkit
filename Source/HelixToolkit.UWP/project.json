@@ -1,12 +1,12 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
-    "SharpDX": "3.0.1",
-    "SharpDX.D3DCompiler": "3.0.1",
-    "SharpDX.Direct2D1": "3.0.1",
-    "SharpDX.Direct3D11": "3.0.1",
-    "SharpDX.DXGI": "3.0.1",
-    "SharpDX.Mathematics": "3.0.1",
+    "SharpDX": "3.1.1",
+    "SharpDX.D3DCompiler": "3.1.1",
+    "SharpDX.Direct2D1": "3.1.1",
+    "SharpDX.Direct3D11": "3.1.1",
+    "SharpDX.DXGI": "3.1.1",
+    "SharpDX.Mathematics": "3.1.1",
     "System.ComponentModel.TypeConverter": "4.3.0"
   },
   "frameworks": {
