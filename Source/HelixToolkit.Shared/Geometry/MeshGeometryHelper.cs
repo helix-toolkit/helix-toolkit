@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// Collection of normal vectors.
         /// </returns>
-        public static Vector3DCollection CalculateNormals(MeshGeometry3D mesh)
+        public static Vector3DCollection CalculateNormals(this MeshGeometry3D mesh)
         {
             return CalculateNormals(mesh.Positions, mesh.TriangleIndices);
         }
@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The edge indices for the edges that are only used by one triangle.
         /// </returns>
-        public static Int32Collection FindBorderEdges(MeshGeometry3D mesh)
+        public static Int32Collection FindBorderEdges(this MeshGeometry3D mesh)
         {
             var dict = new Dictionary<ulong, int>();
 
@@ -161,7 +161,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The edge indices (minimum index first).
         /// </returns>
-        public static Int32Collection FindEdges(MeshGeometry3D mesh)
+        public static Int32Collection FindEdges(this MeshGeometry3D mesh)
         {
             var edges = new Int32Collection();
             var dict = new HashSet<ulong>();
@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The edge indices.
         /// </returns>
-        public static Int32Collection FindSharpEdges(MeshGeometry3D mesh, double minimumAngle)
+        public static Int32Collection FindSharpEdges(this MeshGeometry3D mesh, double minimumAngle)
         {
             var edgeIndices = new Int32Collection();
 
@@ -254,7 +254,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A new mesh.
         /// </returns>
-        public static MeshGeometry3D NoSharedVertices(MeshGeometry3D input)
+        public static MeshGeometry3D NoSharedVertices(this MeshGeometry3D input)
         {
             var p = new Point3DCollection();
             var ti = new Int32Collection();
@@ -321,7 +321,7 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// A simplified mesh.
         /// </returns>
-        public static MeshGeometry3D Simplify(MeshGeometry3D mesh, DoubleOrSingle eps)
+        public static MeshGeometry3D Simplify(this MeshGeometry3D mesh, DoubleOrSingle eps)
         {
             // Find common positions
             var dict = new Dictionary<int, int>(); // map position index to first occurence of same position
@@ -375,7 +375,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="mesh">The mesh.</param>
         /// <returns>Validation report or null if no issues were found.</returns>
-        public static string Validate(MeshGeometry3D mesh)
+        public static string Validate(this MeshGeometry3D mesh)
         {
             var sb = new StringBuilder();
             if (mesh.Normals != null && mesh.Normals.Count != 0 && mesh.Normals.Count != mesh.Positions.Count)
