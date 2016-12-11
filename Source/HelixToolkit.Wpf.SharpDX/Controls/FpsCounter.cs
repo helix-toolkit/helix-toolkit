@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="ts"></param>
         public void AddFrame(TimeSpan ts)
         {           
-            m_frames.AddLast(ts.TotalMilliseconds);
+            m_frames.Add(ts.TotalMilliseconds);
             TrimFrames();
             UpdateValue();
         }
@@ -57,8 +57,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             var sec = AveragingInterval.TotalMilliseconds;
-            var target = m_frames.Last.Value - sec;           
-            while (m_frames.Count > 0 && (target > m_frames.First.Value || m_frames.First.Value > m_frames.Last.Value)) //the second condition happened when switching tabs, the TotalMilliseconds reset to 0 from composite rendering
+            var target = m_frames.Last - sec;           
+            while (m_frames.Count > 0 && (target > m_frames.First || m_frames.First > m_frames.Last)) //the second condition happened when switching tabs, the TotalMilliseconds reset to 0 from composite rendering
             {
                 m_frames.RemoveFirst();
             }
@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var dt = m_frames.Last.Value - m_frames.First.Value;
+                var dt = m_frames.Last - m_frames.First;
                 Value = dt > MinimumUpdateDuration ? m_frames.Count / (dt/1000) : -1;
             }
         }
@@ -120,6 +120,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private double m_value;
         private TimeSpan m_averagingInterval = TimeSpan.FromSeconds(1);
-        private readonly LinkedList<double> m_frames = new LinkedList<double>();
+        private readonly SimpleRingBuffer<double> m_frames = new SimpleRingBuffer<double>(250);
     }
 }
