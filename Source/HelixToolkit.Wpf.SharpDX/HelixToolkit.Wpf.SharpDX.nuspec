@@ -27,6 +27,8 @@
   </metadata>
   <files>
     <file src="bin\Release\HelixToolkit.Wpf.SharpDX.???" target="lib\net45" />
+	<file src="bin\Release\x86\d3dcompiler_47.dll" target="Content\x86\"/>
+	<file src="bin\Release\x64\d3dcompiler_47.dll" target="Content\x64\"/>
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
