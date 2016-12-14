@@ -133,6 +133,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty IsMultisampleEnabledProperty = 
             DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
+
+        public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D), 
+            new PropertyMetadata(FillMode.Solid, RasterStateChanged));
+
         /// <summary>
         /// Provide CLR accessors for the event 
         /// </summary>
@@ -354,10 +358,25 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(IsSelectedProperty, value); }
         }
 
+        /// <summary>
+        /// Only works under FillMode = Wireframe. MSAA is determined by viewport MSAA settings for FillMode = Solid
+        /// </summary>
         public bool IsMultisampleEnabled
         {
             set { SetValue(IsMultisampleEnabledProperty, value); }
             get { return (bool)GetValue(IsMultisampleEnabledProperty); }
+        }
+
+        public FillMode FillMode
+        {
+            set
+            {
+                SetValue(FillModeProperty, value);
+            }
+            get
+            {
+                return (FillMode)GetValue(FillModeProperty);
+            }
         }
     }
 

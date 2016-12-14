@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- set up rasterizer states
                 var rasterStateDesc = new RasterizerStateDescription()
                 {
-                    FillMode = FillMode.Solid,
+                    FillMode = FillMode,
                     CullMode = CullMode.None,
                     DepthBias = DepthBias,
                     DepthBiasClamp = -1000,
