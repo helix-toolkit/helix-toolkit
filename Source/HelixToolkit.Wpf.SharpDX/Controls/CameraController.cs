@@ -291,7 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Implemented as a list since we want to remove items at the bottom of the stack.
         /// </remarks>
-        private readonly SimpleRingBuffer<CameraSetting> cameraHistory = new SimpleRingBuffer<CameraSetting>(100);
+        private readonly LinkedList<CameraSetting> cameraHistory = new LinkedList<CameraSetting>();
 
         /// <summary>
         /// The rendering event listener.
@@ -1542,8 +1542,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void PushCameraSetting()
         {
-            this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
-            if (this.cameraHistory.IsFull())
+            this.cameraHistory.AddLast(new CameraSetting(this.ActualCamera));
+            if (this.cameraHistory.Count > 100)
             {
                 this.cameraHistory.RemoveFirst();
             }
@@ -1585,9 +1585,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns> The restore camera setting. </returns>
         public bool RestoreCameraSetting()
         {
-            if (!this.cameraHistory.IsEmpty())
+            if (this.cameraHistory.Count > 0)
             {
-                var cs = this.cameraHistory.Last;
+                var cs = this.cameraHistory.Last.Value;
                 this.cameraHistory.RemoveLast();
                 cs.UpdateCamera(this.ActualCamera);
                 return true;
