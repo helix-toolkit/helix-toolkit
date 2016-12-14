@@ -1,10 +1,22 @@
 ﻿using SharpDX.Direct3D11;
 using System;
+using System.Runtime.InteropServices;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
     public sealed class RenderTechnique : IComparable
     {
+        static RenderTechnique()
+        {
+            var is64 = IntPtr.Size == 8;
+            NativeMethods.LoadLibrary(is64 ? @"x64\d3dcompiler_47.dll" : @"x86\d3dcompiler_47.dll");
+        }
+        static class NativeMethods
+        {
+            [DllImport("kernel32.dll")]
+            public static extern IntPtr LoadLibrary(string dllToLoad);
+        }
+
         public RenderTechnique(string name)
         {
             this.Name = name;
