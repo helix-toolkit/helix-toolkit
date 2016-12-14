@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using System.Windows.Media.Media3D;
 
     public static class Matrix3DExtensions
@@ -23,6 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="m1"></param>
         /// <param name="m2"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D AddMatrix(this Matrix3D m1, Matrix3D m2)
         {
             return new Matrix3D(
@@ -51,6 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="scalar"></param>
         /// <param name="m"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D MultiplyMatrix(this Matrix3D m, double scalar)
         {
             return new Matrix3D(
@@ -73,6 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Translate3D(global::SharpDX.Vector3 v)
         {
             var m = Matrix3D.Identity;
@@ -82,6 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return m;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Translate3D(Vector3D v)
         {
             var m = Matrix3D.Identity;
@@ -91,6 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return m;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Translate3D(double x, double y, double z)
         {
             var m = Matrix3D.Identity;
@@ -109,6 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A similarity transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Similarity2D(IList<Point3D> p, IList<Point3D> q)
         {
             double a = 0;
@@ -142,6 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A rigid transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Rigid2D(IList<Point3D> p, IList<Point3D> q)
         {
             int n = p.Count;
@@ -176,6 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A rigid transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Rigid2D(IList<Vector3D> p, IList<Vector3D> q)
         {
             int n = p.Count;
@@ -210,6 +219,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A similarity transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Similarity2D(IList<double> w, IList<Point3D> p, IList<Point3D> q)
         {
             int n = w.Count;
@@ -244,6 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A rigid transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Rigid2D(IList<double> w, IList<Point3D> p, IList<Point3D> q)
         {
             int n = w.Count;
@@ -277,6 +288,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A affine transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Affine2D(IList<double> w, IList<Point3D> p, IList<Point3D> q)
         {
             int n = w.Count;
@@ -343,6 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A ansiotropic similarty transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D AnisotropicSimilarityX2D(Point3D p1, Point3D p2, Point3D q1, Point3D q2)
         {
             /// rotation
@@ -371,6 +384,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A ansiotropic similarty transform T: p = Tq</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D AnisotropicSimilarityY2D(Point3D p1, Point3D p2, Point3D q1, Point3D q2)
         {
             /// rotation
@@ -474,6 +488,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="v1"></param>
         /// <param name="v2"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D OuterProduct(this Vector3D v1, Vector3D v2)
         {
             var m11 = v1.X * v2.X;

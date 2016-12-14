@@ -1568,7 +1568,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.ActualCamera.Reset();
                 this.ActualCamera.ZoomExtents(this.Viewport);
-            }
+            } 
         }
 
         /// <summary>

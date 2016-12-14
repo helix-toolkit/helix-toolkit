@@ -718,6 +718,18 @@ namespace HelixToolkit.Wpf.SharpDX
             "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
 
         /// <summary>
+        /// Manually move camera to look at a point in 3D space
+        /// </summary>
+        public static readonly DependencyProperty ManualLookAtPointProperty = DependencyProperty.Register(
+            "ManualLookAtPoint", typeof(Point3D), typeof(Viewport3DX), new FrameworkPropertyMetadata(new Point3D(), (d, e) => { },
+                (d, e) =>
+                {
+                    ((Viewport3DX)d).LookAt((Point3D)e);
+                    return e;
+                })
+            { BindsTwoWayByDefault = false });
+
+        /// <summary>
         /// Background Color
         /// </summary>
         [TypeConverter(typeof(Color4Converter))]
@@ -2468,6 +2480,22 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(EnableMouseButtonHitTestProperty);
+            }
+        }
+
+        /// <summary>
+        /// Manually move camera to look at a point in 3D space. (Same as calling Viewport3DX.LookAt() function)
+        /// Since camera may have been moved by mouse, the value gets does not reflect the actual point camera currently looking at.
+        /// </summary>
+        public Point3D ManualLookAtPoint
+        {
+            set
+            {
+                SetValue(ManualLookAtPointProperty, value);
+            }
+            get
+            {
+                return (Point3D)GetValue(ManualLookAtPointProperty);
             }
         }
     }

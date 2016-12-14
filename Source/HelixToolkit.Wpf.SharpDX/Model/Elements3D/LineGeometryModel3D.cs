@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- set up rasterizer states
                 var rasterStateDesc = new RasterizerStateDescription()
                 {
-                    FillMode = FillMode.Solid,
+                    FillMode = FillMode,
                     CullMode = CullMode.None,
                     DepthBias = DepthBias,
                     DepthBiasClamp = -1000,
@@ -195,7 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     IsDepthClipEnabled = true,
                     IsFrontCounterClockwise = false,
 
-                    IsMultisampleEnabled = true,
+                    IsMultisampleEnabled = IsMultisampleEnabled,
                     //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
                     //IsScissorEnabled = true,
                 };

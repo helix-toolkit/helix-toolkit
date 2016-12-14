@@ -54,20 +54,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(MeshGeometryModel3D), new PropertyMetadata(FillMode.Solid, RasterStateChanged));
-
-        public FillMode FillMode
-        {
-            set
-            {
-                SetValue(FillModeProperty, value);
-            }
-            get
-            {
-                return (FillMode)GetValue(FillModeProperty);
-            }
-        }
-
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
 
         public bool IsDepthClipEnabled
@@ -133,7 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     IsDepthClipEnabled = IsDepthClipEnabled,
                     IsFrontCounterClockwise = FrontCounterClockwise,
 
-                    //IsMultisampleEnabled = true,
+                    IsMultisampleEnabled = IsMultisampleEnabled,
                     //IsAntialiasedLineEnabled = true,                    
                     //IsScissorEnabled = true,
                 };

@@ -14,12 +14,13 @@ namespace HelixToolkit.Wpf
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Text;
 #if SHARPDX
     using Vector3D = global::SharpDX.Vector3;
     using Point3D = global::SharpDX.Vector3;
     using Point = global::SharpDX.Vector2;
-    using Int32Collection = System.Collections.Generic.List<int>;
+    using Int32Collection = SharpDX.Core.IntCollection;
     using Vector3DCollection = SharpDX.Core.Vector3Collection;
     using Point3DCollection = SharpDX.Core.Vector3Collection;
     using PointCollection = SharpDX.Core.Vector2Collection;
@@ -683,6 +684,100 @@ namespace HelixToolkit.Wpf
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Remove isolated(not connected to any triangles) vertices
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <returns></returns>
+        public static MeshGeometry3D RemoveIsolatedVertices(this MeshGeometry3D mesh)
+        {
+            Point3DCollection vertNew;
+            Int32Collection triNew;
+            PointCollection textureNew;
+            Vector3DCollection normalNew;
+            RemoveIsolatedVertices(mesh.Positions, mesh.TriangleIndices, mesh.TextureCoordinates, mesh.Normals, out vertNew, out triNew, out textureNew, out normalNew);
+            var newMesh = new MeshGeometry3D() { Positions = vertNew, TriangleIndices = triNew, TextureCoordinates = textureNew, Normals = normalNew };
+            return newMesh;
+        }
+
+        /// <summary>
+        /// Remove isolated(not connected to any triangles) vertices
+        /// </summary>
+        /// <param name="vertices"></param>
+        /// <param name="triangles"></param>
+        /// <param name="texture"></param>
+        /// <param name="normals"></param>
+        /// <param name="verticesOut"></param>
+        /// <param name="trianglesOut"></param>
+        /// <param name="textureOut"></param>
+        /// <param name="normalOut"></param>
+        public static void RemoveIsolatedVertices(IList<Point3D> vertices, IList<int> triangles, IList<Point> texture, IList<Vector3D> normals,
+            out Point3DCollection verticesOut, out Int32Collection trianglesOut, out PointCollection textureOut, out Vector3DCollection normalOut)
+        {
+            verticesOut = null;
+            trianglesOut = null;
+            textureOut = null;
+            normalOut = null;
+            List<List<int>> tracking = new List<List<int>>(vertices.Count);
+            Debug.WriteLine(string.Format("NumVert:{0}; NumTriangle:{1};", vertices.Count, triangles.Count));
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                tracking.Add(new List<int>());
+            }
+            for (int i = 0; i < triangles.Count; ++i)
+            {
+                tracking[triangles[i]].Add(i);
+            }
+
+            List<int> vertToRemove = new List<int>(vertices.Count);
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                if (tracking[i].Count == 0)
+                {
+                    vertToRemove.Add(i);
+                }
+            }
+            verticesOut = new Point3DCollection(vertices.Count - vertToRemove.Count);
+            trianglesOut = new Int32Collection(triangles);
+            if (texture != null)
+            {
+                textureOut = new PointCollection(vertices.Count - vertToRemove.Count);
+            }
+            if (normals != null)
+            {
+                normalOut = new Vector3DCollection(vertices.Count - vertToRemove.Count);
+            }
+            if (vertices.Count == vertToRemove.Count)
+            {
+                return;
+            }
+            int counter = 0;
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                if (counter == vertToRemove.Count || i < vertToRemove[counter])
+                {
+                    verticesOut.Add(vertices[i]);
+                    if (texture != null)
+                    {
+                        textureOut.Add(texture[i]);
+                    }
+                    if (normals != null)
+                    {
+                        normalOut.Add(normals[i]);
+                    }
+                    foreach (var t in tracking[i])
+                    {
+                        trianglesOut[t] -= counter;
+                    }
+                }
+                else
+                {
+                    ++counter;
+                }
+            }
+            Debug.WriteLine(string.Format("Remesh finished. Output NumVert:{0};", verticesOut.Count));
         }
     }
 }
