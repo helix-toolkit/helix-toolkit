@@ -109,11 +109,11 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Examples\WPF.SharpDX\DemoCore\DemoCore.csproj">
+    <ProjectReference Include="..\DemoCore\DemoCore.csproj">
       <Project>{B475C12B-80F9-4BC0-88E5-815C88593BEE}</Project>
       <Name>DemoCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
       <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
       <Name>HelixToolkit.Wpf.SharpDX</Name>
     </ProjectReference>
