@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using Point = System.Windows.Point;
+    using System.ComponentModel;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -48,7 +49,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((GeometryModel3D)d).OnGeometryChanged(e);
+            var model = d as GeometryModel3D;
+            if (e.OldValue != null)
+            {
+                (e.OldValue as Geometry3D).PropertyChanged -= model.OnGeometryPropertyChanged;
+            }
+            if (e.NewValue != null)
+            {
+                (e.NewValue as Geometry3D).PropertyChanged += model.OnGeometryPropertyChanged;
+            }
+            model.OnGeometryChanged(e);
         }
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
@@ -58,7 +68,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Bounds = new BoundingBox();
                 return;
             }
-
             //var m = this.Transform.ToMatrix();
             //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
             var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
@@ -75,6 +84,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Detach();
                 this.Attach(host);
             }
+        }
+
+        protected virtual void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
         }
 
         protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)

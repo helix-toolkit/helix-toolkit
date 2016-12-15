@@ -20,7 +20,19 @@ namespace HelixToolkit.Wpf.SharpDX
     public class MeshGeometry3D : Geometry3D
     {
         public Vector3Collection Normals { get; set; }
-        public Vector2Collection TextureCoordinates { get; set; }
+
+        private Vector2Collection textureCoordinates = null;
+        public Vector2Collection TextureCoordinates
+        {
+            get
+            {
+                return textureCoordinates;
+            }
+            set
+            {
+                Set<Vector2Collection>(ref textureCoordinates, value);
+            }
+        }
 
         public Vector3Collection Tangents { get; set; }
         public Vector3Collection BiTangents { get; set; }

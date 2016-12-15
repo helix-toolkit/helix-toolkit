@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateDemo", "Examples\WP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TessellationDemo", "Examples\WPF.SharpDX\TessellationDemo\TessellationDemo.csproj", "{82BB6745-9D34-453A-851C-01C8FD7A0F20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTextureDemo", "DynamicTextureDemo\DynamicTextureDemo.csproj", "{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
@@ -452,6 +454,22 @@ Global
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|x64.Build.0 = Release|Any CPU
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|x86.ActiveCfg = Release|Any CPU
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|x86.Build.0 = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|x64.Build.0 = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|ARM.Build.0 = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|x64.ActiveCfg = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|x64.Build.0 = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -478,5 +496,6 @@ Global
 		{D9C22065-B07A-432C-B319-87BCE640600C} = {76556164-48F2-4CAA-859B-5573F790970C}
 		{10CF1F8D-1297-495C-92C2-A24E341AA7AC} = {76556164-48F2-4CAA-859B-5573F790970C}
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20} = {76556164-48F2-4CAA-859B-5573F790970C}
+		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852} = {76556164-48F2-4CAA-859B-5573F790970C}
 	EndGlobalSection
 EndGlobal

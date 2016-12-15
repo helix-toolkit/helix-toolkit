@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\Geometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\MeshGeometry3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\ComponentBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DDS.cs" />

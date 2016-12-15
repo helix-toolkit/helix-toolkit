@@ -7,12 +7,13 @@
 namespace DemoCore
 {
     using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
     public abstract class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string info)
+        protected void OnPropertyChanged([CallerMemberName]string info = "")
         {
             if (this.PropertyChanged != null)
             {
