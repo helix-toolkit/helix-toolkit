@@ -2,6 +2,7 @@
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,9 +34,47 @@ namespace DynamicTextureDemo
                 return light1Direction;
             }
         }
+        private FillMode fillMode = FillMode.Solid;
+        public FillMode FillMode
+        {
+            set
+            {
+                fillMode = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return fillMode;
+            }
+        }
+
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                showWireframe = value;
+                OnPropertyChanged();
+                if (showWireframe)
+                {
+                    FillMode = FillMode.Wireframe;
+                }
+                else
+                {
+                    FillMode = FillMode.Solid;
+                }
+            }
+            get
+            {
+                return showWireframe;
+            }
+        }
         public Color4 Light1Color { get; set; }
         public PhongMaterial FloorMaterial { get; set; }
+
+        public PhongMaterial InnerFloorMaterial { get; set; }
         public MeshGeometry3D Floor { get; private set; }
+        public MeshGeometry3D InnerFloor { get; private set; }
         public Color4 AmbientLightColor { get; set; }
         DispatcherTimer timer = new DispatcherTimer();
 
@@ -82,6 +121,14 @@ namespace DynamicTextureDemo
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
             this.Floor = b2.ToMeshGeometry3D();
+            this.InnerFloor = new MeshGeometry3D()
+            {
+                Indices = Floor.Indices, Positions = Floor.Positions,
+                Normals = new Vector3Collection(Floor.Normals.Select(x => { return x * -1; })),
+                TextureCoordinates = Floor.TextureCoordinates,
+                Tangents = Floor.Tangents,
+                BiTangents = Floor.BiTangents
+            };
             this.FloorMaterial = new PhongMaterial
             {
                 AmbientColor = Color.Gray,
@@ -91,6 +138,17 @@ namespace DynamicTextureDemo
                 DiffuseMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute)),
                 NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
             };
+
+            this.InnerFloorMaterial = new PhongMaterial
+            {
+                AmbientColor = Color.Gray,
+                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+                SpecularColor = Color.White,
+                SpecularShininess = 100f,
+                DiffuseMap = new BitmapImage(new System.Uri(@"TextureNoise1.jpg", System.UriKind.RelativeOrAbsolute)),
+                NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
+            };
+
             initialPosition = Floor.Positions;
             initialIndicies = Floor.Indices;
             this.PropertyChanged += MainViewModel_PropertyChanged;
@@ -134,6 +192,7 @@ namespace DynamicTextureDemo
                 }
                 texture[texture.Count-1] = Floor.TextureCoordinates[0];
                 Floor.TextureCoordinates = texture;
+                InnerFloor.TextureCoordinates = texture;
             }
             if(DynamicVertices)
             {
@@ -143,8 +202,9 @@ namespace DynamicTextureDemo
                     positions[i] = positions[i] * (float)rnd.Next(95, 105)/100;
                 }
                 Floor.Normals = MeshGeometryHelper.CalculateNormals(positions, Floor.Indices);
+                InnerFloor.Normals = new Vector3Collection(Floor.Normals.Select(x => { return x * -1; }));
                 Floor.Positions = positions;
-
+                InnerFloor.Positions = positions;
                 //Alternative implementation
                 //Floor.DisablePropertyChangedEvent = true;
                 //Floor.Positions = positions;
@@ -175,6 +235,7 @@ namespace DynamicTextureDemo
                 }
                 indices.RemoveRange(0, removedIndex);
                 Floor.Indices = indices;
+                InnerFloor.Indices = indices;
             }
         }
     }
