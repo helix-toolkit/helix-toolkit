@@ -144,6 +144,13 @@ namespace DynamicTextureDemo
                 }
                 Floor.Normals = MeshGeometryHelper.CalculateNormals(positions, Floor.Indices);
                 Floor.Positions = positions;
+
+                //Alternative implementation
+                //Floor.DisablePropertyChangedEvent = true;
+                //Floor.Positions = positions;
+                //Floor.CalculateNormals();
+                //Floor.DisablePropertyChangedEvent = false;
+                //Floor.UpdateVertex();
             }
             if(DynamicTriangles)
             {

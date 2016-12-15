@@ -23,6 +23,9 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public abstract class Geometry3D : ObservableObject
     {
+        public const string VertexBuffer = "VertexBuffer";
+        public const string TriangleBuffer = "TriangleBuffer";
+
         private IntCollection indices = null;
         public IntCollection Indices
         {
@@ -83,6 +86,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public struct Point
         {
             public Vector3 P0;
+        }
+        /// <summary>
+        /// Call to manually update vertex buffer. Use with <see cref="DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateVertices()
+        {
+            RaisePropertyChanged(VertexBuffer);
+        }
+        /// <summary>
+        /// Call to manually update triangle buffer. Use with <see cref="DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateTriangles()
+        {
+            RaisePropertyChanged(TriangleBuffer);
         }
     }
 }

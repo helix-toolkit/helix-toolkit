@@ -24,6 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.DXGI;
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
+    using System.Runtime.CompilerServices;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
@@ -151,11 +152,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     OnUpdateVertexBuffer(UpdateColorsOnly);
                 }
-                else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)))
+                else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
                     this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
                     InvalidateRender();
+                }else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    OnUpdateVertexBuffer(CreateDefaultVertexArray);
                 }
             }
         }
@@ -222,6 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.Flush();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnUpdateVertexBuffer(Func<DefaultVertex[]> updateFunction)
         {
             // --- get geometry

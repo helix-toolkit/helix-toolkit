@@ -8,11 +8,29 @@ namespace HelixToolkit.SharpDX.Shared.Model
 {
     public abstract class ObservableObject : INotifyPropertyChanged
     {
+        private bool disablePropertyChangedEvent = false;
+        public bool DisablePropertyChangedEvent
+        {
+            set
+            {
+                if (disablePropertyChangedEvent == value)
+                {
+                    return;
+                }
+                disablePropertyChangedEvent = value;
+                RaisePropertyChanged();
+            }
+            get
+            {
+                return disablePropertyChangedEvent;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
-
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if(!DisablePropertyChangedEvent)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
