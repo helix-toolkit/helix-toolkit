@@ -211,6 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsAttached && Geometry!=null)
             {
+                Disposer.RemoveAndDispose(ref vertexBuffer);
                 /// --- set up buffers            
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateLinesVertexArray());
             }

@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             // -- set geometry if given
             vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
-                VertexSizeInBytes, CreateBillboardVertexArray());
+                VertexSizeInBytes, CreateBillboardVertexArray(), geometry.Positions.Count);
             // --- material 
             // this.AttachMaterial();
             billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();

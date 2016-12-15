@@ -52,11 +52,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var model = d as GeometryModel3D;
             if (e.OldValue != null)
             {
-                (e.OldValue as Geometry3D).PropertyChanged -= model.OnGeometryPropertyChanged;
+                (e.OldValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
             }
             if (e.NewValue != null)
             {
-                (e.NewValue as Geometry3D).PropertyChanged += model.OnGeometryPropertyChanged;
+                (e.NewValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
+                (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
             }
             model.OnGeometryChanged(e);
         }
@@ -83,6 +84,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 var host = this.renderHost;
                 this.Detach();
                 this.Attach(host);
+            }
+        }
+
+        private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
+        {
+            if (this.IsAttached)
+            {
+                OnGeometryPropertyChanged(sender, e);
             }
         }
 
@@ -207,7 +216,26 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
             this.IsThrowingShadow = true;
+            this.Unloaded += GeometryModel3D_Unloaded;
+            this.Loaded += GeometryModel3D_Loaded;
             //count++;
+        }
+
+        private void GeometryModel3D_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Geometry != null)
+            {
+                (Geometry as INotifyPropertyChanged).PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                (Geometry as INotifyPropertyChanged).PropertyChanged += OnGeometryPropertyChangedPrivate;
+            }
+        }
+
+        private void GeometryModel3D_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (Geometry != null)
+            {
+                (Geometry as INotifyPropertyChanged).PropertyChanged -= OnGeometryPropertyChangedPrivate;
+            }
         }
 
         ~GeometryModel3D()

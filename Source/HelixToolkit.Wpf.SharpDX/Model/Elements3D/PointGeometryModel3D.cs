@@ -185,6 +185,7 @@
         {
             if (this.IsAttached && Geometry != null && Geometry.Positions != null)
             {
+                Disposer.RemoveAndDispose(ref vertexBuffer);
                 /// --- set up buffers            
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
             }
