@@ -107,31 +107,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(PatchGeometryModel3D),
-            new PropertyMetadata(false, (s, e) =>
-            {
-                if (!(bool)e.NewValue)
-                {
-                    (s as PatchGeometryModel3D).vertexArrayBuffer = null;
-                }
-            }));
-
-        /// <summary>
-        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
-        /// Example: Repeatly updates textures, or geometries with close number of vertices.
-        /// </summary>
-        public bool ReuseVertexArrayBuffer
-        {
-            set
-            {
-                SetValue(ReuseVertexArrayBufferProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(ReuseVertexArrayBufferProperty);
-            }
-        }
-
         private DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// 

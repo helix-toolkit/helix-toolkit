@@ -12,9 +12,11 @@
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color = global::SharpDX.Color;
+    using System.Runtime.CompilerServices;
 
     public class PointGeometryModel3D : GeometryModel3D
     {
+        private Geometry3D.PointsVertex[] vertexArrayBuffer;
         protected InputLayout vertexLayout;
         protected Buffer vertexBuffer;
         protected EffectTechnique effectTechnique;
@@ -183,11 +185,19 @@
 
         private void OnColorChanged()
         {
-            if (this.IsAttached && Geometry != null && Geometry.Positions != null)
+            CreateVertexBuffer();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+
+        private void CreateVertexBuffer()
+        {
+            var geometry = Geometry as LineGeometry3D;
+            if (this.IsAttached && geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray(), geometry.Positions.Count);
             }
         }
 
@@ -214,15 +224,7 @@
 
             effectTransforms = new EffectTransformVariables(effect);
 
-            // --- get geometry
-            var geometry = Geometry as PointGeometry3D;
-
-            // -- set geometry if given
-            if (geometry != null)
-            {
-                /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
-            }
+            CreateVertexBuffer();
 
             /// --- set up const variables
             vViewport = effect.GetVariableByName("vViewport").AsVector();
@@ -331,27 +333,28 @@
             var positions = this.Geometry.Positions.Array;
             var vertexCount = this.Geometry.Positions.Count;
             var color = this.Color;
-            var result = new Geometry3D.PointsVertex[vertexCount];
+            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
+                vertexArrayBuffer = new Geometry3D.PointsVertex[vertexCount];
 
             if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
             {
                 var colors = this.Geometry.Colors;
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i].Position = new Vector4(positions[i], 1f);
-                    result[i].Color = color * colors[i];
+                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
+                    vertexArrayBuffer[i].Color = color * colors[i];
                 }
             }
             else
             {
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i].Position = new Vector4(positions[i], 1f);
-                    result[i].Color = color;
+                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
+                    vertexArrayBuffer[i].Color = color;
                 }
             }
 
-            return result;
+            return vertexArrayBuffer;
         }
 
         public enum PointFigure
