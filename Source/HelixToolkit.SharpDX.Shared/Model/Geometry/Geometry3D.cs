@@ -15,15 +15,55 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Core;
 
     using System.Runtime.InteropServices;
+    using System.ComponentModel;
+    using HelixToolkit.SharpDX.Shared.Model;
 
 #if !NETFX_CORE
     [Serializable]
 #endif
-    public abstract class Geometry3D
+    public abstract class Geometry3D : ObservableObject
     {
-        public IntCollection Indices { get; set; }
-        public Vector3Collection Positions { get; set; }
-        public Color4Collection Colors { get; set; }
+        public const string VertexBuffer = "VertexBuffer";
+        public const string TriangleBuffer = "TriangleBuffer";
+
+        private IntCollection indices = null;
+        public IntCollection Indices
+        {
+            get
+            {
+                return indices;
+            }
+            set
+            {
+                Set<IntCollection>(ref indices, value);
+            }
+        }
+
+        private Vector3Collection position = null;
+        public Vector3Collection Positions
+        {
+            get
+            {
+                return position;
+            }
+            set
+            {
+                Set<Vector3Collection>(ref position, value);
+            }
+        }
+
+        private Color4Collection colors = null;
+        public Color4Collection Colors
+        {
+            get
+            {
+                return colors;
+            }
+            set
+            {
+                Set<Color4Collection>(ref colors, value);
+            }
+        }
 
         public struct Triangle
         {
@@ -46,6 +86,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public struct Point
         {
             public Vector3 P0;
+        }
+        /// <summary>
+        /// Call to manually update vertex buffer. Use with <see cref="DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateVertices()
+        {
+            RaisePropertyChanged(VertexBuffer);
+        }
+        /// <summary>
+        /// Call to manually update triangle buffer. Use with <see cref="DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateTriangles()
+        {
+            RaisePropertyChanged(TriangleBuffer);
         }
     }
 }

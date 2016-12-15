@@ -12,6 +12,7 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
+    using System.ComponentModel;
     using System.Linq;
 
     using global::SharpDX;
@@ -23,6 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.DXGI;
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
+    using System.Runtime.CompilerServices;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
@@ -133,6 +135,35 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnGeometryPropertyChanged(sender, e);
+            if(sender is MeshGeometry3D)
+            {
+                if(e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates)))
+                {
+                    OnUpdateVertexBuffer(UpdateTextureOnly);
+                }
+                else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Positions)))
+                {
+                    OnUpdateVertexBuffer(UpdatePositionOnly);
+                }
+                else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
+                {
+                    OnUpdateVertexBuffer(UpdateColorsOnly);
+                }
+                else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
+                {
+                    Disposer.RemoveAndDispose(ref this.indexBuffer);
+                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
+                    InvalidateRender();
+                }else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    OnUpdateVertexBuffer(CreateDefaultVertexArray);
+                }
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -193,6 +224,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- flush
             this.Device.ImmediateContext.Flush();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnUpdateVertexBuffer(Func<DefaultVertex[]> updateFunction)
+        {
+            // --- get geometry
+            var geometry = this.Geometry as MeshGeometry3D;
+
+            // -- set geometry if given
+            if (geometry != null)
+            {
+                Disposer.RemoveAndDispose(ref this.vertexBuffer);
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, updateFunction(), geometry.Positions.Count);
+                this.InvalidateRender();
+            }
         }
 
         /// <summary>
@@ -367,5 +413,74 @@ namespace HelixToolkit.Wpf.SharpDX
             return vertexArrayBuffer;
         }
 
+        private DefaultVertex[] UpdateTextureOnly()
+        {
+            var geometry = (MeshGeometry3D)this.Geometry;
+            var vertexCount = geometry.Positions.Count;
+            if (vertexArrayBuffer != null && geometry.TextureCoordinates != null && vertexArrayBuffer.Length >= vertexCount)
+            {
+                if (geometry.TextureCoordinates != null && geometry.TextureCoordinates.Count == vertexCount)
+                {
+                    var texScale = this.TextureCoodScale;
+                    for (int i = 0; i < vertexCount; ++i)
+                    {
+                        vertexArrayBuffer[i].TexCoord = texScale * geometry.TextureCoordinates[i];
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < vertexCount; ++i)
+                    {
+                        vertexArrayBuffer[i].TexCoord = Vector2.Zero;
+                    }
+                }
+            }
+            return vertexArrayBuffer;
+        }
+
+        private DefaultVertex[] UpdatePositionOnly()
+        {
+            var geometry = (MeshGeometry3D)this.Geometry;
+            var vertexCount = geometry.Positions.Count;
+            if (vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount)
+            {
+                var positions = geometry.Positions.Array;
+                var normals = geometry.Normals != null ? geometry.Normals.Array : null;
+                var tangents = geometry.Tangents != null ? geometry.Tangents.Array : null;
+                var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
+                for (int i = 0; i < vertexCount; ++i)
+                {
+                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
+                    vertexArrayBuffer[i].Normal = normals != null ? normals[i] : Vector3.Zero;
+                    vertexArrayBuffer[i].Tangent = tangents != null ? tangents[i] : Vector3.Zero;
+                    vertexArrayBuffer[i].BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero;
+                }
+            }
+            return vertexArrayBuffer;
+        }
+
+        private DefaultVertex[] UpdateColorsOnly()
+        {
+            var geometry = (MeshGeometry3D)this.Geometry;
+            var vertexCount = geometry.Positions.Count;
+            if (vertexArrayBuffer != null && geometry.Colors != null && vertexArrayBuffer.Length >= vertexCount)
+            {
+                if (geometry.Colors != null && geometry.Colors.Count == vertexCount)
+                {
+                    for (int i = 0; i < vertexCount; ++i)
+                    {
+                        vertexArrayBuffer[i].Color = geometry.Colors[i];
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < vertexCount; ++i)
+                    {
+                        vertexArrayBuffer[i].Color = Color4.White;
+                    }
+                }
+            }
+            return vertexArrayBuffer;
+        }
     }
 }

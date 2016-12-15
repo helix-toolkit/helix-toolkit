@@ -19,10 +19,31 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public class MeshGeometry3D : Geometry3D
     {
+        /// <summary>
+        /// Does not raise property changed event
+        /// </summary>
         public Vector3Collection Normals { get; set; }
-        public Vector2Collection TextureCoordinates { get; set; }
 
+        private Vector2Collection textureCoordinates = null;
+        public Vector2Collection TextureCoordinates
+        {
+            get
+            {
+                return textureCoordinates;
+            }
+            set
+            {
+                Set<Vector2Collection>(ref textureCoordinates, value);
+            }
+        }
+        /// <summary>
+        /// Does not raise property changed event
+        /// </summary>
         public Vector3Collection Tangents { get; set; }
+
+        /// <summary>
+        /// Does not raise property changed event
+        /// </summary>
         public Vector3Collection BiTangents { get; set; }
 
         public IEnumerable<Geometry3D.Triangle> Triangles
