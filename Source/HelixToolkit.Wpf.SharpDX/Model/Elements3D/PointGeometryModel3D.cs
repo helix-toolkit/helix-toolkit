@@ -189,7 +189,6 @@
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-
         private void CreateVertexBuffer()
         {
             var geometry = Geometry as LineGeometry3D;
@@ -199,6 +198,32 @@
                 /// --- set up buffers            
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray(), geometry.Positions.Count);
             }
+        }
+
+        protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnGeometryPropertyChanged(sender, e);
+            if (sender is PointGeometry3D)
+            {
+                if (e.PropertyName.Equals(nameof(PointGeometry3D.Positions)))
+                {
+                    OnUpdateVertexBuffer(CreateVertexArray);
+                }
+                else if (e.PropertyName.Equals(nameof(PointGeometry3D.Colors)))
+                {
+                    OnUpdateVertexBuffer(CreateVertexArray);
+                }
+                else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    OnUpdateVertexBuffer(CreateVertexArray);
+                }
+            }
+        }
+
+        private void OnUpdateVertexBuffer(System.Func<Geometry3D.PointsVertex[]> updateFunction)
+        {
+            CreateVertexBuffer();
+            this.InvalidateRender();
         }
 
         /// <summary>

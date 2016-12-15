@@ -214,6 +214,39 @@ namespace HelixToolkit.Wpf.SharpDX
             CreateVertexBuffer();
         }
 
+        protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnGeometryPropertyChanged(sender, e);
+            if (sender is LineGeometry3D)
+            {
+                if (e.PropertyName.Equals(nameof(LineGeometry3D.Positions)))
+                {
+                    OnUpdateVertexBuffer(CreateLinesVertexArray);
+                }
+                else if (e.PropertyName.Equals(nameof(LineGeometry3D.Colors)))
+                {
+                    OnUpdateVertexBuffer(CreateLinesVertexArray);
+                }
+                else if (e.PropertyName.Equals(nameof(LineGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
+                {
+                    Disposer.RemoveAndDispose(ref this.indexBuffer);
+                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
+                    InvalidateRender();
+                }
+                else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    OnUpdateVertexBuffer(CreateLinesVertexArray);
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnUpdateVertexBuffer(Func<LinesVertex[]> updateFunction)
+        {
+            CreateVertexBuffer();
+            this.InvalidateRender();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateVertexBuffer()
         {
