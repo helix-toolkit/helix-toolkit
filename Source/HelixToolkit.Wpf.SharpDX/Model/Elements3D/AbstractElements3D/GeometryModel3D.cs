@@ -240,20 +240,42 @@ namespace HelixToolkit.Wpf.SharpDX
             //count++;
         }
 
+        public override void Attach(IRenderHost host)
+        {
+            base.Attach(host);
+            AttachOnGeometryPropertyChanged();
+        }
+
+        public override void Detach()
+        {
+            DetachOnGeometryPropertyChanged();
+            base.Detach();
+        }
+
         private void GeometryModel3D_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Geometry != null)
-            {
-                (Geometry as INotifyPropertyChanged).PropertyChanged -= OnGeometryPropertyChangedPrivate;
-                (Geometry as INotifyPropertyChanged).PropertyChanged += OnGeometryPropertyChangedPrivate;
-            }
+            AttachOnGeometryPropertyChanged();
         }
 
         private void GeometryModel3D_Unloaded(object sender, RoutedEventArgs e)
         {
+            DetachOnGeometryPropertyChanged();
+        }
+
+        private void AttachOnGeometryPropertyChanged()
+        {
             if (Geometry != null)
             {
-                (Geometry as INotifyPropertyChanged).PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                Geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                Geometry.PropertyChanged += OnGeometryPropertyChangedPrivate;
+            }
+        }
+
+        private void DetachOnGeometryPropertyChanged()
+        {
+            if (Geometry != null)
+            {
+                Geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
             }
         }
 
