@@ -2,6 +2,7 @@
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,41 @@ namespace DynamicTextureDemo
             get
             {
                 return light1Direction;
+            }
+        }
+        private FillMode fillMode = FillMode.Solid;
+        public FillMode FillMode
+        {
+            set
+            {
+                fillMode = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return fillMode;
+            }
+        }
+
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                showWireframe = value;
+                OnPropertyChanged();
+                if (showWireframe)
+                {
+                    FillMode = FillMode.Wireframe;
+                }
+                else
+                {
+                    FillMode = FillMode.Solid;
+                }
+            }
+            get
+            {
+                return showWireframe;
             }
         }
         public Color4 Light1Color { get; set; }

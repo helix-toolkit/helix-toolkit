@@ -36,10 +36,10 @@
 
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <hx:MeshGeometryModel3D
+            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
                 Geometry="{Binding InnerFloor}" CullMode="Front" FrontCounterClockwise="True"
-                Material="{Binding InnerFloorMaterial}" />            
-            <hx:MeshGeometryModel3D
+                Material="{Binding InnerFloorMaterial}" />
+            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
                 x:Name="floor" CullMode="Back"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}" />
@@ -52,6 +52,7 @@
             <CheckBox IsChecked="{Binding DynamicTexture}">Dynamic Texture</CheckBox>
             <CheckBox IsChecked="{Binding DynamicVertices}">Dynamic Vertex Positions</CheckBox>
             <CheckBox IsChecked="{Binding DynamicTriangles}">Dynamic Triangles</CheckBox>
+            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
         </StackPanel>
     </Grid>
 </Window>
