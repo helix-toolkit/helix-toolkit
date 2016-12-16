@@ -44,6 +44,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(GeometryModel3D),
+            new PropertyMetadata(false));
+
+        /// <summary>
+        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
+        /// Example: Repeatly updates textures, or geometries with close number of vertices.
+        /// </summary>
+        public bool ReuseVertexArrayBuffer
+        {
+            set
+            {
+                SetValue(ReuseVertexArrayBufferProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(ReuseVertexArrayBufferProperty);
+            }
+        }
+
         public static readonly DependencyProperty GeometryProperty =
             DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new UIPropertyMetadata(GeometryChanged));
 
@@ -52,11 +71,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var model = d as GeometryModel3D;
             if (e.OldValue != null)
             {
-                (e.OldValue as Geometry3D).PropertyChanged -= model.OnGeometryPropertyChanged;
+                (e.OldValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
             }
             if (e.NewValue != null)
             {
-                (e.NewValue as Geometry3D).PropertyChanged += model.OnGeometryPropertyChanged;
+                (e.NewValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
+                (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
             }
             model.OnGeometryChanged(e);
         }
@@ -83,6 +103,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 var host = this.renderHost;
                 this.Detach();
                 this.Attach(host);
+            }
+        }
+
+        private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
+        {
+            if (this.IsAttached)
+            {
+                OnGeometryPropertyChanged(sender, e);
             }
         }
 
@@ -208,6 +236,35 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseMove3D += OnMouse3DMove;
             this.IsThrowingShadow = true;
             //count++;
+        }
+
+        public override void Attach(IRenderHost host)
+        {
+            base.Attach(host);
+            AttachOnGeometryPropertyChanged();
+        }
+
+        public override void Detach()
+        {
+            DetachOnGeometryPropertyChanged();
+            base.Detach();
+        }
+
+        private void AttachOnGeometryPropertyChanged()
+        {
+            if (Geometry != null)
+            {
+                Geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                Geometry.PropertyChanged += OnGeometryPropertyChangedPrivate;
+            }
+        }
+
+        private void DetachOnGeometryPropertyChanged()
+        {
+            if (Geometry != null)
+            {
+                Geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+            }
         }
 
         ~GeometryModel3D()

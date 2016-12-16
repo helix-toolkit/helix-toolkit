@@ -51,11 +51,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLoadDemo", "Examples\WP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolygonTriangulationDemo", "Examples\WPF.SharpDX\PolygonTriangulationDemo\PolygonTriangulationDemo.csproj", "{AEE87C0E-AA98-4D82-9ED8-9EBEA107DDD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTextureDemo", "Examples\WPF.SharpDX\DynamicTextureDemo\DynamicTextureDemo.csproj", "{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}"
+EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.Shared", "HelixToolkit.Shared\HelixToolkit.Shared.shproj", "{4EE18E80-7609-4FFF-BD4B-F02728EC0688}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.Shared", "HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.shproj", "{1EAF532E-D750-497B-BB8F-EE85359C78A2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTextureDemo", "Examples\WPF.SharpDX\DynamicTextureDemo\DynamicTextureDemo.csproj", "{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

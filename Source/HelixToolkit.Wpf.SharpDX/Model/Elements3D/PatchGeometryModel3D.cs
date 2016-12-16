@@ -107,31 +107,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(PatchGeometryModel3D),
-            new PropertyMetadata(false, (s, e) =>
-            {
-                if (!(bool)e.NewValue)
-                {
-                    (s as PatchGeometryModel3D).vertexArrayBuffer = null;
-                }
-            }));
-
-        /// <summary>
-        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
-        /// Example: Repeatly updates textures, or geometries with close number of vertices.
-        /// </summary>
-        public bool ReuseVertexArrayBuffer
-        {
-            set
-            {
-                SetValue(ReuseVertexArrayBufferProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(ReuseVertexArrayBufferProperty);
-            }
-        }
-
         private DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// 
@@ -142,14 +117,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
+        protected override void SetRenderTechnique(IRenderHost host)
+        {
+            renderTechnique = host.RenderTechnique;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            /// --- attach
-            renderTechnique = host.RenderTechnique;
+            /// --- attach           
             base.Attach(host);
 
             if (this.Geometry == null
@@ -202,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //Device.ImmediateContext.Flush();
         }
 
         /// <summary>

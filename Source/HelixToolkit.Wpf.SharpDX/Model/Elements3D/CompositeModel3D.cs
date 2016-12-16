@@ -165,48 +165,53 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+            if (e.OldItems != null)
             {
-                case NotifyCollectionChangedAction.Remove:
-                case NotifyCollectionChangedAction.Replace:
-                    foreach (Model3D item in e.OldItems)
-                    {
-                        // todo: detach?
-                        // yes, always
-                        item.Detach();
-                        if (item.Parent == this)
+                switch (e.Action)
+                {
+                    case NotifyCollectionChangedAction.Reset:
+                    case NotifyCollectionChangedAction.Remove:
+                    case NotifyCollectionChangedAction.Replace:
+                        foreach (Model3D item in e.OldItems)
                         {
-                            this.RemoveLogicalChild(item);                            
-                        }
-                    }
-
-                    break;
-            }
-
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                case NotifyCollectionChangedAction.Replace:
-                    foreach (Model3D item in e.NewItems)
-                    {
-                        if (this.IsAttached)
-                        {
-                            // todo: attach?
-                            // yes, always  
-                            // where to get a refrence to renderHost?
-                            // store it as private memeber of the class?
-                            if (item.Parent == null)
+                            // todo: detach?
+                            // yes, always
+                            item.Detach();
+                            if (item.Parent == this)
                             {
-                                this.AddLogicalChild(item);
+                                this.RemoveLogicalChild(item);                            
                             }
-
-                            item.Attach(this.renderHost);
                         }
-                    }
-
-                    break;
+                        break;
+                }
             }
 
+            if (e.NewItems != null)
+            {
+                switch (e.Action)
+                {
+                    case NotifyCollectionChangedAction.Reset:
+                    case NotifyCollectionChangedAction.Add:
+                    case NotifyCollectionChangedAction.Replace:
+                        foreach (Model3D item in e.NewItems)
+                        {
+                            if (this.IsAttached)
+                            {
+                                // todo: attach?
+                                // yes, always  
+                                // where to get a refrence to renderHost?
+                                // store it as private memeber of the class?
+                                if (item.Parent == null)
+                                {
+                                    this.AddLogicalChild(item);
+                                }
+
+                                item.Attach(this.renderHost);
+                            }
+                        }
+                        break;
+                }
+            }
             UpdateBounds();
         }
         

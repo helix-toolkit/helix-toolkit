@@ -70,31 +70,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(MeshGeometryModel3D),
-            new PropertyMetadata(false, (s, e) =>
-            {
-                if (!(bool)e.NewValue)
-                {
-                    (s as MeshGeometryModel3D).vertexArrayBuffer = null;
-                }
-            }));
-
-        /// <summary>
-        /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
-        /// Example: Repeatly updates textures, or geometries with close number of vertices.
-        /// </summary>
-        public bool ReuseVertexArrayBuffer
-        {
-            set
-            {
-                SetValue(ReuseVertexArrayBufferProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(ReuseVertexArrayBufferProperty);
-            }
-        }
-
         public override int VertexSizeInBytes
         {
             get
@@ -157,7 +132,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
                     this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
                     InvalidateRender();
-                }else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                }
+                else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
                 {
                     OnUpdateVertexBuffer(CreateDefaultVertexArray);
                 }
@@ -171,7 +147,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             // --- attach
-            this.renderTechnique = host.RenderTechnique;
             base.Attach(host);
 
             if (this.Geometry == null
@@ -201,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");                
 
                 /// --- init vertex buffer
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateDefaultVertexArray(), geometry.Positions.Count);
+                CreateVertexBuffer(CreateDefaultVertexArray);
 
                 /// --- init index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
@@ -223,21 +198,27 @@ namespace HelixToolkit.Wpf.SharpDX
             this.OnRasterStateChanged();
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            //this.Device.ImmediateContext.Flush();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnUpdateVertexBuffer(Func<DefaultVertex[]> updateFunction)
         {
+            CreateVertexBuffer(updateFunction);
+            InvalidateRender();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void CreateVertexBuffer(Func<DefaultVertex[]> updateFunction)
+        {
             // --- get geometry
             var geometry = this.Geometry as MeshGeometry3D;
 
             // -- set geometry if given
-            if (geometry != null)
+            if (IsAttached && geometry != null && geometry.Positions!=null)
             {
                 Disposer.RemoveAndDispose(ref this.vertexBuffer);
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, updateFunction(), geometry.Positions.Count);
-                this.InvalidateRender();
             }
         }
 

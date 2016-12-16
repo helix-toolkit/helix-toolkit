@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Directional;
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            //this.Device.ImmediateContext.Flush();
         }
 
         public override void Detach()

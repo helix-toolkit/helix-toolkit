@@ -82,6 +82,8 @@ namespace DynamicTextureDemo
         public bool DynamicVertices { set; get; } = false;
         public bool DynamicTriangles { set; get; } = false;
 
+        public bool ReverseInnerRotation { set; get; } = false;
+
         private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
         public Media3D.Vector3D CamLookDir
         {
@@ -192,7 +194,16 @@ namespace DynamicTextureDemo
                 }
                 texture[texture.Count-1] = Floor.TextureCoordinates[0];
                 Floor.TextureCoordinates = texture;
-                InnerFloor.TextureCoordinates = texture;
+                if (ReverseInnerRotation)
+                {
+                    var texture1 = new Vector2Collection(texture);
+                    texture1.Reverse();
+                    InnerFloor.TextureCoordinates = texture1;
+                }
+                else
+                {
+                    InnerFloor.TextureCoordinates = texture;
+                }
             }
             if(DynamicVertices)
             {
@@ -217,7 +228,7 @@ namespace DynamicTextureDemo
                 var indices = new IntCollection(initialIndicies);
                 if (isRemoving)
                 {
-                    removedIndex += 12;
+                    removedIndex += 3*8;
                     if(removedIndex >= initialIndicies.Count)
                     {
                         removedIndex = initialIndicies.Count;
@@ -226,7 +237,7 @@ namespace DynamicTextureDemo
                 }
                 else
                 {
-                    removedIndex -= 12;
+                    removedIndex -= 3*8;
                     if (removedIndex <= 0)
                     {
                         isRemoving = true;

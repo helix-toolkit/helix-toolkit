@@ -29,9 +29,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using Color = global::SharpDX.Color;
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
+    using System.Runtime.CompilerServices;
 
     public class LineGeometryModel3D : GeometryModel3D
     {
+        private LinesVertex[] vertexArrayBuffer = null;
         protected InputLayout vertexLayout;
         protected Buffer vertexBuffer;
         protected Buffer indexBuffer;
@@ -209,21 +211,65 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OnColorChanged()
         {
-            if (this.IsAttached && Geometry!=null)
+            CreateVertexBuffer();
+        }
+
+        protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnGeometryPropertyChanged(sender, e);
+            if (sender is LineGeometry3D)
             {
-                /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateLinesVertexArray());
+                if (e.PropertyName.Equals(nameof(LineGeometry3D.Positions)))
+                {
+                    OnUpdateVertexBuffer(CreateLinesVertexArray);
+                }
+                else if (e.PropertyName.Equals(nameof(LineGeometry3D.Colors)))
+                {
+                    OnUpdateVertexBuffer(CreateLinesVertexArray);
+                }
+                else if (e.PropertyName.Equals(nameof(LineGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
+                {
+                    Disposer.RemoveAndDispose(ref this.indexBuffer);
+                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
+                    InvalidateRender();
+                }
+                else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    OnUpdateVertexBuffer(CreateLinesVertexArray);
+                }
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnUpdateVertexBuffer(Func<LinesVertex[]> updateFunction)
+        {
+            CreateVertexBuffer();
+            this.InvalidateRender();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void CreateVertexBuffer()
+        {
+            var geometry = Geometry as LineGeometry3D;
+            if (this.IsAttached && geometry != null && geometry.Positions != null)
+            {
+                Disposer.RemoveAndDispose(ref vertexBuffer);
+                /// --- set up buffers            
+                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateLinesVertexArray(), geometry.Positions.Count);
+            }
+        }
+
+        protected override void SetRenderTechnique(IRenderHost host)
+        {
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            /// --- attach            
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+            /// --- attach                        
             base.Attach(host);
 
             if (this.Geometry == null
@@ -248,8 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (geometry != null)
             {
                 /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateLinesVertexArray());
-
+                CreateVertexBuffer();
                 /// --- set up indexbuffer
                 indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
             }
@@ -296,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX
            
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //Device.ImmediateContext.Flush();
         }        
 
         /// <summary>
@@ -443,9 +488,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private LinesVertex[] CreateLinesVertexArray()
         {
             var positions = this.Geometry.Positions.Array;
-            var vertexCount = this.Geometry.Positions.Count;        
+            var vertexCount = this.Geometry.Positions.Count;
             var color = this.Color;
-            var result = new LinesVertex[vertexCount];
+            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
+                vertexArrayBuffer = new LinesVertex[vertexCount];
 
             if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
             {
@@ -453,20 +499,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i].Position = new Vector4(positions[i], 1f);
-                    result[i].Color = color * colors[i];
+                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
+                    vertexArrayBuffer[i].Color = color * colors[i];
                 }
             }
             else
             {
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i].Position = new Vector4(positions[i], 1f);
-                    result[i].Color = color;
+                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
+                    vertexArrayBuffer[i].Color = color;
                 }
             }
 
-            return result;
+            return vertexArrayBuffer;
         }
     }
 }

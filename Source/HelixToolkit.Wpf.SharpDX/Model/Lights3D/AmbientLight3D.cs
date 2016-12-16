@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.vLightAmbient.Set(this.Color);
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();            
+            //this.Device.ImmediateContext.Flush();            
         }
 
         public override void Detach()
