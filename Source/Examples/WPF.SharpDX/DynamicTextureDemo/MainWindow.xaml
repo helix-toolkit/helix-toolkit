@@ -53,6 +53,7 @@
             <CheckBox IsChecked="{Binding DynamicVertices}">Dynamic Vertex Positions</CheckBox>
             <CheckBox IsChecked="{Binding DynamicTriangles}">Dynamic Triangles</CheckBox>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding ReverseInnerRotation}">Reverse Inner Rotation</CheckBox>
         </StackPanel>
     </Grid>
 </Window>
