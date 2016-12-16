@@ -89,6 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (e.NewValue is INotifyCollectionChanged)
             {
+                (e.NewValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
                 (e.NewValue as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
             }
 
@@ -136,6 +137,25 @@ namespace HelixToolkit.Wpf.SharpDX
                         throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
                     }
                 }
+            }
+        }
+
+        public override void Detach()
+        {
+            if (ItemsSource is INotifyCollectionChanged)
+            {
+                (ItemsSource as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
+            }
+            base.Detach();
+        }
+
+        public override void Attach(IRenderHost host)
+        {
+            base.Attach(host);
+            if (ItemsSource is INotifyCollectionChanged)
+            {
+                (ItemsSource as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
+                (ItemsSource as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
             }
         }
 
