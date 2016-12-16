@@ -235,8 +235,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
             this.IsThrowingShadow = true;
-            this.Unloaded += GeometryModel3D_Unloaded;
-            this.Loaded += GeometryModel3D_Loaded;
             //count++;
         }
 
@@ -250,16 +248,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             DetachOnGeometryPropertyChanged();
             base.Detach();
-        }
-
-        private void GeometryModel3D_Loaded(object sender, RoutedEventArgs e)
-        {
-            AttachOnGeometryPropertyChanged();
-        }
-
-        private void GeometryModel3D_Unloaded(object sender, RoutedEventArgs e)
-        {
-            DetachOnGeometryPropertyChanged();
         }
 
         private void AttachOnGeometryPropertyChanged()
