@@ -147,7 +147,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Attach(IRenderHost host)
         {
             // --- attach
-            this.renderTechnique = host.RenderTechnique;
             base.Attach(host);
 
             if (this.Geometry == null

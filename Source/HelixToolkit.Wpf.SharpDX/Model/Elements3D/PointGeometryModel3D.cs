@@ -226,13 +226,16 @@
             this.InvalidateRender();
         }
 
+        protected override void SetRenderTechnique(IRenderHost host)
+        {
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
             base.Attach(host);
 
             if (this.Geometry == null

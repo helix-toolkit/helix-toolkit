@@ -115,12 +115,15 @@ namespace HelixToolkit.Wpf.SharpDX
             return h;
         }
 
+        protected override void SetRenderTechnique(IRenderHost host)
+        {
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
+        }
+
         public override void Attach(IRenderHost host)
         {
             // --- attach
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
-            effect = host.EffectsManager.GetEffect(renderTechnique);
-            renderHost = host;
+            base.Attach(host);
 
             // --- get variables
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);

@@ -117,14 +117,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
+        protected override void SetRenderTechnique(IRenderHost host)
+        {
+            renderTechnique = host.RenderTechnique;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            /// --- attach
-            renderTechnique = host.RenderTechnique;
+            /// --- attach           
             base.Attach(host);
 
             if (this.Geometry == null

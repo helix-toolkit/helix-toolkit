@@ -259,14 +259,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override void SetRenderTechnique(IRenderHost host)
+        {
+            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
         public override void Attach(IRenderHost host)
         {
-            /// --- attach            
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+            /// --- attach                        
             base.Attach(host);
 
             if (this.Geometry == null

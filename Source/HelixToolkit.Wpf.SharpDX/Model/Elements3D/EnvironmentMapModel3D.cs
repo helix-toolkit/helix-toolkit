@@ -81,12 +81,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 obj.bHasCubeMap.Set((bool)e.NewValue);
         }
 
+        protected override void SetRenderTechnique(IRenderHost host)
+        {
+            base.SetRenderTechnique(host); this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
+        }
         public override void Attach(IRenderHost host)
         {
             /// --- attach
-            this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
             base.Attach(host);
-
             /// --- get variables               
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
