@@ -80,13 +80,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            mDictionary.Clear();
-            Children.Clear();
-
             if (e.OldValue is INotifyCollectionChanged)
             {
                 (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
+
+            foreach(Model3D item in Children)
+            {
+                item.DataContext = null;
+            }
+            mDictionary.Clear();
+            Children.Clear();
+
             if (e.NewValue is INotifyCollectionChanged)
             {
                 (e.NewValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
@@ -153,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             if (mDictionary.ContainsKey(item))
                             {
                                 var model = mDictionary[item];
-                                model.Detach();
+                                model.DataContext = null;
                                 this.Children.Remove(model);
                                 mDictionary.Remove(item);
                             }
@@ -165,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var array = this.Children.ToArray();
                     foreach (var item in array)
                     {
-                        item.Detach();
+                        item.DataContext = null;
                         this.Children.Remove(item);
                     }
                     mDictionary.Clear();
