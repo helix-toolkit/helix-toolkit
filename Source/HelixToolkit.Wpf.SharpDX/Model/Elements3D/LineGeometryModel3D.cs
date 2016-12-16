@@ -338,7 +338,7 @@ namespace HelixToolkit.Wpf.SharpDX
            
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //Device.ImmediateContext.Flush();
         }        
 
         /// <summary>

@@ -177,7 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //Device.ImmediateContext.Flush();
         }
 
         /// <summary>

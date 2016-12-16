@@ -264,7 +264,7 @@
             OnRasterStateChanged();
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //Device.ImmediateContext.Flush();
         }
 
         /// <summary>

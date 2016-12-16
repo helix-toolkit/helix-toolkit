@@ -140,25 +140,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void Detach()
-        {
-            if (ItemsSource is INotifyCollectionChanged)
-            {
-                (ItemsSource as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
-            }
-            base.Detach();
-        }
-
-        public override void Attach(IRenderHost host)
-        {
-            base.Attach(host);
-            if (ItemsSource is INotifyCollectionChanged)
-            {
-                (ItemsSource as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
-                (ItemsSource as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
-            }
-        }
-
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)

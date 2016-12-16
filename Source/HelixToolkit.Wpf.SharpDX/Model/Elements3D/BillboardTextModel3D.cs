@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
             OnRasterStateChanged();
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //Device.ImmediateContext.Flush();
         }
 
         public override void Detach()

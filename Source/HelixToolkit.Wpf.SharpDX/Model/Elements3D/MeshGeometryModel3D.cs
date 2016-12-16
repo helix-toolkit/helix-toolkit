@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.OnRasterStateChanged();
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            //this.Device.ImmediateContext.Flush();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             /// --- flush
-            this.Device.ImmediateContext.Flush();
+            //this.Device.ImmediateContext.Flush();
         }
 
         public override void Detach()
