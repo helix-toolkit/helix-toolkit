@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
+using System.IO;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -28,6 +29,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public virtual BitmapSource Texture
+        {
+            protected set;
+            get;
+        }
+
+        public virtual Stream AlphaTexture
         {
             protected set;
             get;

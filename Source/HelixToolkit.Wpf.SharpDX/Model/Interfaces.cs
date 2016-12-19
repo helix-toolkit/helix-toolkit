@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Matrix = global::SharpDX.Matrix;
     using System.Windows.Media.Imaging;
     using HelixToolkit.Wpf.SharpDX.Core;
+    using System.IO;
 
     public interface ITraversable
     {
@@ -84,6 +85,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         BillboardType Type { get; }
         BitmapSource Texture { get; }
+
+        Stream AlphaTexture { get; }
         void DrawTexture();
         Vector3Collection Positions { get; }
         IList<Vector2> TextureOffsets { get; }
