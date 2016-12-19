@@ -436,9 +436,11 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns>A texture</returns>
         public static Texture Load(Direct3D11.Device device, Stream stream, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable)
         {
+            stream.Position = 0;
             var image = Image.Load(stream);
             if (image == null)
             {
+                stream.Position = 0;
                 return null;
             }
 
@@ -455,11 +457,12 @@ namespace SharpDX.Toolkit.Graphics
                     case TextureDimension.TextureCube:
                         return TextureCube.New(device, image, flags, usage);
                 }
-            } finally
+            }
+            finally
             {
                 image.Dispose();
+                stream.Position = 0;
             }
-
             throw new InvalidOperationException("Dimension not supported");
         }
 

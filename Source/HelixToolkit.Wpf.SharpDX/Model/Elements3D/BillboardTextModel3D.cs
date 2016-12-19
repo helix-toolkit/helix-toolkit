@@ -13,8 +13,12 @@ namespace HelixToolkit.Wpf.SharpDX
         #region Private Class Data Members
 
         private EffectVectorVariable vViewport;
+        private EffectScalarVariable bHasBillboardTexture;
         private ShaderResourceView billboardTextureView;
+        private ShaderResourceView billboardAlphaTextureView;
         private EffectShaderResourceVariable billboardTextureVariable;
+        private EffectShaderResourceVariable billboardAlphaTextureVariable;
+        private EffectScalarVariable bHasBillboardAlphaTexture;
         private BillboardType billboardType;
         private BillboardVertex[] vertexArrayBuffer;
         #endregion
@@ -128,7 +132,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- get variables
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
             effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
             // --- transformations
             effectTransforms = new EffectTransformVariables(effect);
 
@@ -146,11 +149,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 VertexSizeInBytes, CreateBillboardVertexArray(), geometry.Positions.Count);
             // --- material 
             // this.AttachMaterial();
-            billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
+            this.bHasBillboardTexture = effect.GetVariableByName("bHasTexture").AsScalar();
+            this.billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
+            if (geometry.Texture != null)
+            {
+                var textureBytes = geometry.Texture.ToByteArray();
+                billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
+            }
 
-            var textureBytes = geometry.Texture.ToByteArray();
-            billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
-
+            this.billboardAlphaTextureVariable = effect.GetVariableByName("billboardAlphaTexture").AsShaderResource();
+            this.bHasBillboardAlphaTexture = effect.GetVariableByName("bHasAlphaTexture").AsScalar();
+            if (geometry.AlphaTexture !=null )
+            {
+                billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, geometry.AlphaTexture);
+            }
             /// --- set rasterstate
             OnRasterStateChanged();
 
@@ -163,12 +175,21 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref vViewport);
             Disposer.RemoveAndDispose(ref billboardTextureVariable);
             Disposer.RemoveAndDispose(ref billboardTextureView);
+            Disposer.RemoveAndDispose(ref billboardAlphaTextureVariable);
+            Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
+            Disposer.RemoveAndDispose(ref bHasBillboardAlphaTexture);
+            Disposer.RemoveAndDispose(ref bHasBillboardTexture);
             base.Detach();
         }
 
         public override void Render(RenderContext renderContext)
         {
             /// --- check to render the model
+            var geometry = Geometry as IBillboardText;
+            if (geometry == null)
+            {
+                return;
+            }
             {
                 if (!IsRendering)
                     return;
@@ -211,7 +232,18 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- bind buffer                
             Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
             /// --- render the geometry
-            billboardTextureVariable.SetResource(billboardTextureView);
+            this.bHasBillboardTexture.Set(geometry.Texture != null);
+            if (geometry.Texture != null)
+            {
+                billboardTextureVariable.SetResource(billboardTextureView);
+            }
+
+            this.bHasBillboardAlphaTexture.Set(geometry.AlphaTexture != null);
+            if (geometry.AlphaTexture != null)
+            {
+                billboardAlphaTextureVariable.SetResource(billboardAlphaTextureView);
+            }
+
             var vertexCount = Geometry.Positions.Count;
             switch (billboardType)
             {

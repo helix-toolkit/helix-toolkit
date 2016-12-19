@@ -18,6 +18,7 @@
 	float4 vMaterialReflect 	= 0.0f;   //Kr := surface material's reflectivity coefficient
 	float  sMaterialShininess	= 1.0f;	  //Ps := surface material's shininess
 	
+	bool   bHasAlphaMap			= false;
 	bool   bHasDiffuseMap		= false;
 	bool   bHasNormalMap		= false;
 	bool   bHasDisplacementMap  = false;	
@@ -39,7 +40,7 @@ float4 vLightAmbient			= float4(0.2f, 0.2f, 0.2f, 1.0f);
 //--------------------------------------------------------------------------------------
 // TEXTURES
 //--------------------------------------------------------------------------------------
-
+Texture2D   texAlphaMap;
 Texture2D	texDiffuseMap;
 Texture2D	texNormalMap;
 Texture2D	texDisplacementMap;

@@ -1,6 +1,8 @@
 
 Texture2D billboardTexture; // billboard text image
-
+Texture2D billboardAlphaTexture;
+bool   bHasAlphaTexture = false;
+bool   bHasTexture = false;
 //--------------------------------------------------------------------------------------
 // VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------
@@ -70,7 +72,17 @@ float4 PShaderBillboardBackground(PSInputBT input) : SV_Target
 float4 PShaderBillboardImage(PSInputBT input) : SV_Target
 {
 	// Take the color off the texture using mask color
-	float4 pixelColor = billboardTexture.Sample(PointSampler, input.t);
+	float4 pixelColor = 1;
+	if (bHasTexture)
+	{
+		pixelColor *= billboardTexture.Sample(PointSampler, input.t);
+	}
+
+	if (bHasAlphaTexture) 
+	{
+		pixelColor *= billboardAlphaTexture.Sample(PointSampler, input.t);
+	}
+
 	if(input.c.w != 0 && length(pixelColor - input.c) < 0.00001)
 	{
 		return float4(0.0, 0.0, 0.0, 0.0);

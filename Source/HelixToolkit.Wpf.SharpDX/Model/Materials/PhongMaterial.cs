@@ -13,11 +13,12 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
 
     using global::SharpDX;
-    using System.Windows;    
+    using System.Windows;
     using System.Windows.Media.Imaging;
     using System;
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
+    using System.IO;
 
     /// <summary>
     /// Implments a phong-material with its all properties
@@ -69,6 +70,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
             DependencyProperty.Register("DiffuseMap", typeof(BitmapSource), typeof(PhongMaterial), new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// Supports alpha channel image, such as PNG.
+        /// Usage: Load the image file(BMP, PNG, etc) as a stream.
+        /// It can be used to replace DiffuseMap, or used as a mask and apply onto diffuse map. 
+        /// The color will be cDiffuse*cAlpha.
+        /// </summary>
+        public static readonly DependencyProperty DiffuseAlphaMapProperty =
+            DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new UIPropertyMetadata(null));
 
         /// <summary>
         /// 
@@ -163,6 +173,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DiffuseMapProperty, value); }
         }
 
+        public Stream DiffuseAlphaMap
+        {
+            get { return (Stream)this.GetValue(DiffuseAlphaMapProperty); }
+            set { this.SetValue(DiffuseAlphaMapProperty, value); }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -195,6 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 SpecularColor = this.SpecularColor,
                 SpecularShininess = this.SpecularShininess,
                 DiffuseMap = this.DiffuseMap,
+                DiffuseAlphaMap = this.DiffuseAlphaMap
             };
         }
     }

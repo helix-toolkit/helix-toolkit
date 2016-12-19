@@ -5,6 +5,8 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,11 +72,15 @@ namespace DynamicTextureDemo
             }
         }
         public Color4 Light1Color { get; set; }
-        public PhongMaterial FloorMaterial { get; set; }
+        public PhongMaterial ModelMaterial { get; set; }
 
-        public PhongMaterial InnerFloorMaterial { get; set; }
-        public MeshGeometry3D Floor { get; private set; }
-        public MeshGeometry3D InnerFloor { get; private set; }
+        public PhongMaterial InnerModelMaterial { get; set; }
+
+        //public PhongMaterial OtherMaterial { set; get; }
+        public MeshGeometry3D Model { get; private set; }
+        public MeshGeometry3D InnerModel { get; private set; }
+
+        //public MeshGeometry3D Other { get; private set; }
         public Color4 AmbientLightColor { get; set; }
         DispatcherTimer timer = new DispatcherTimer();
 
@@ -122,41 +128,68 @@ namespace DynamicTextureDemo
 
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
-            this.Floor = b2.ToMeshGeometry3D();
-            this.InnerFloor = new MeshGeometry3D()
+            this.Model = b2.ToMeshGeometry3D();
+            this.InnerModel = new MeshGeometry3D()
             {
-                Indices = Floor.Indices, Positions = Floor.Positions,
-                Normals = new Vector3Collection(Floor.Normals.Select(x => { return x * -1; })),
-                TextureCoordinates = Floor.TextureCoordinates,
-                Tangents = Floor.Tangents,
-                BiTangents = Floor.BiTangents
+                Indices = Model.Indices, Positions = Model.Positions,
+                Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; })),
+                TextureCoordinates = Model.TextureCoordinates,
+                Tangents = Model.Tangents,
+                BiTangents = Model.BiTangents
             };
-            this.FloorMaterial = new PhongMaterial
+            var uri = new System.Uri(@"test.png", System.UriKind.RelativeOrAbsolute);
+            var image = new FileStream(uri.ToString(), FileMode.Open);
+            this.ModelMaterial = new PhongMaterial
             {
                 AmbientColor = Color.Gray,
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+                DiffuseColor = Color.White,
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
+                DiffuseAlphaMap = image,
                 DiffuseMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute)),
                 NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
             };
 
-            this.InnerFloorMaterial = new PhongMaterial
+            this.InnerModelMaterial = new PhongMaterial
             {
                 AmbientColor = Color.Gray,
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
+                DiffuseAlphaMap = image,
                 DiffuseMap = new BitmapImage(new System.Uri(@"TextureNoise1.jpg", System.UriKind.RelativeOrAbsolute)),
-                NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
+                NormalMap = ModelMaterial.NormalMap
             };
 
-            initialPosition = Floor.Positions;
-            initialIndicies = Floor.Indices;
+            //this.OtherMaterial = new PhongMaterial
+            //{
+            //    AmbientColor = Color.Gray,
+            //    DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+            //    SpecularColor = Color.White,
+            //    SpecularShininess = 100f,
+            //    DiffuseMap = ModelMaterial.DiffuseMap,
+            //    NormalMap = ModelMaterial.NormalMap
+            //};
+
+            initialPosition = Model.Positions;
+            initialIndicies = Model.Indices;
+
+            //var b3 = new MeshBuilder(true, true, true);
+            //b3.AddBox(new Vector3(3, 3, 3), 1, 2,  2);
+            //Other = b3.ToMeshGeometry3D();
+
             this.PropertyChanged += MainViewModel_PropertyChanged;
             timer.Interval = TimeSpan.FromMilliseconds(16);
             timer.Tick += Timer_Tick;
             timer.Start();
+        }
+
+        public static Stream ToStream(System.Drawing.Image image, ImageFormat format)
+        {
+            var stream = new System.IO.MemoryStream();
+            image.Save(stream, format);
+            stream.Position = 0;
+            return stream;
         }
 
         private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -187,22 +220,22 @@ namespace DynamicTextureDemo
         {
             if (DynamicTexture)
             {
-                var texture = new Vector2Collection(Floor.TextureCoordinates);
-                for(int i=1; i < Floor.TextureCoordinates.Count; ++i)
+                var texture = new Vector2Collection(Model.TextureCoordinates);
+                for(int i=1; i < Model.TextureCoordinates.Count; ++i)
                 {
-                    texture[i-1] = Floor.TextureCoordinates[i];
+                    texture[i-1] = Model.TextureCoordinates[i];
                 }
-                texture[texture.Count-1] = Floor.TextureCoordinates[0];
-                Floor.TextureCoordinates = texture;
+                texture[texture.Count-1] = Model.TextureCoordinates[0];
+                Model.TextureCoordinates = texture;
                 if (ReverseInnerRotation)
                 {
                     var texture1 = new Vector2Collection(texture);
                     texture1.Reverse();
-                    InnerFloor.TextureCoordinates = texture1;
+                    InnerModel.TextureCoordinates = texture1;
                 }
                 else
                 {
-                    InnerFloor.TextureCoordinates = texture;
+                    InnerModel.TextureCoordinates = texture;
                 }
             }
             if(DynamicVertices)
@@ -212,10 +245,10 @@ namespace DynamicTextureDemo
                 {
                     positions[i] = positions[i] * (float)rnd.Next(95, 105)/100;
                 }
-                Floor.Normals = MeshGeometryHelper.CalculateNormals(positions, Floor.Indices);
-                InnerFloor.Normals = new Vector3Collection(Floor.Normals.Select(x => { return x * -1; }));
-                Floor.Positions = positions;
-                InnerFloor.Positions = positions;
+                Model.Normals = MeshGeometryHelper.CalculateNormals(positions, Model.Indices);
+                InnerModel.Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; }));
+                Model.Positions = positions;
+                InnerModel.Positions = positions;
                 //Alternative implementation
                 //Floor.DisablePropertyChangedEvent = true;
                 //Floor.Positions = positions;
@@ -245,8 +278,8 @@ namespace DynamicTextureDemo
                     }                   
                 }
                 indices.RemoveRange(0, removedIndex);
-                Floor.Indices = indices;
-                InnerFloor.Indices = indices;
+                Model.Indices = indices;
+                InnerModel.Indices = indices;
             }
         }
     }

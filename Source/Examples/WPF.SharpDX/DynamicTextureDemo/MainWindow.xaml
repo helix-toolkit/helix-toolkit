@@ -36,13 +36,16 @@
 
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
+            <!--<hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
+                Geometry="{Binding Other}"
+                Material="{Binding OtherMaterial}" />-->
             <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
-                Geometry="{Binding InnerFloor}" CullMode="Front" FrontCounterClockwise="True"
-                Material="{Binding InnerFloorMaterial}" />
+                Geometry="{Binding InnerModel}" CullMode="Front" FrontCounterClockwise="True"
+                Material="{Binding InnerModelMaterial}" />
             <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
-                x:Name="floor" CullMode="Back"
-                Geometry="{Binding Floor}"
-                Material="{Binding FloorMaterial}" />
+                CullMode="Back"
+                Geometry="{Binding Model}"
+                Material="{Binding ModelMaterial}" />
 
         </hx:Viewport3DX>
         <StackPanel
