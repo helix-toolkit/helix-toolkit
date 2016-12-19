@@ -76,6 +76,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     // --- change the pass
                     obj.shaderPass = obj.effectTechnique.GetPassByName(shadingPass);
+                    if (shadingPass.Equals("Wires"))
+                    {
+                        obj.FillMode = FillMode.Wireframe;
+                    }
+                    else
+                    {
+                        obj.FillMode = FillMode.Solid;
+                    }
                 }
             }
         }
@@ -107,6 +115,48 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+
+        public bool FrontCounterClockwise
+        {
+            set
+            {
+                SetValue(FrontCounterClockwiseProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FrontCounterClockwiseProperty);
+            }
+        }
+
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D), new PropertyMetadata(CullMode.None, RasterStateChanged));
+
+        public CullMode CullMode
+        {
+            set
+            {
+                SetValue(CullModeProperty, value);
+            }
+            get
+            {
+                return (CullMode)GetValue(CullModeProperty);
+            }
+        }
+
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+
+        public bool IsDepthClipEnabled
+        {
+            set
+            {
+                SetValue(IsDepthClipEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsDepthClipEnabledProperty);
+            }
+        }
+
         private DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// 
@@ -115,6 +165,36 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // System.Console.WriteLine();
 
+        }
+
+        protected override void OnRasterStateChanged()
+        {
+            if (this.IsAttached)
+            {
+                Disposer.RemoveAndDispose(ref this.rasterState);
+                /// --- set up rasterizer states
+                var rasterStateDesc = new RasterizerStateDescription()
+                {
+                    FillMode = FillMode,
+                    CullMode = CullMode,
+                    DepthBias = -5,
+                    DepthBiasClamp = -10,
+                    SlopeScaledDepthBias = +0,
+                    IsDepthClipEnabled = IsDepthClipEnabled,
+                    IsFrontCounterClockwise = FrontCounterClockwise,
+
+                    IsMultisampleEnabled = IsMultisampleEnabled,
+                    //IsAntialiasedLineEnabled = true,
+                    //IsScissorEnabled = true,
+                };
+                try
+                {
+                    this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
+                }
+                catch (System.Exception)
+                {
+                }
+            }
         }
 
         protected override void SetRenderTechnique(IRenderHost host)
@@ -178,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- init tessellation vars
             vTessellationVariables = effect.GetVariableByName("vTessellation").AsVector();
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
-
+            OnRasterStateChanged();
             /// --- flush
             //Device.ImmediateContext.Flush();
         }
@@ -279,6 +359,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- set vertex buffer                
             Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, DefaultVertex.SizeInBytes, 0));
 
+            Device.ImmediateContext.Rasterizer.State = this.rasterState;
             /// --- apply chosen pass
             shaderPass.Apply(Device.ImmediateContext);
 
