@@ -168,7 +168,8 @@ namespace SimpleDemo
             };
 
 
-            BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
+            //BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
+            BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample());
             BillboardImageModel.Center = new Vector3(2, 2, 0);
         }
 
@@ -180,6 +181,16 @@ namespace SimpleDemo
             var texDescriptionStream = assembly.GetManifestResourceStream("SimpleDemo.Sample.png");
             var decoder = new PngBitmapDecoder(texDescriptionStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnDemand);
             return decoder.Frames[0];
+        }
+
+        private Stream CreatePNGSample()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            //Read the texture description           
+            var texDescriptionStream = assembly.GetManifestResourceStream("SimpleDemo.Sample.png");
+            texDescriptionStream.Position = 0;
+            return texDescriptionStream;
         }
     }
 }
