@@ -70,6 +70,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
+        public static readonly DependencyProperty RenderAlphaDiffuseMapProperty =
+            DependencyProperty.Register("RenderAlphaDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderAlphaDiffuseMap
+        {
+            get { return (bool)this.GetValue(RenderAlphaDiffuseMapProperty); }
+            set { this.SetValue(RenderAlphaDiffuseMapProperty, value); }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty RenderNormalMapProperty =
             DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(false));
 
@@ -206,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.effectMaterial = new EffectMaterialVariables(this.effect);
 
                 /// --- has texture
-                if (phongMaterial.DiffuseMap != null)
+                if (phongMaterial.DiffuseMap != null && RenderDiffuseMap)
                 {
                     this.texDiffuseMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.DiffuseMap.ToByteArray());
                     this.effectMaterial.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
@@ -217,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.effectMaterial.bHasDiffuseMapVariable.Set(false);
                 }
 
-                if (phongMaterial.DiffuseAlphaMap != null)
+                if (phongMaterial.DiffuseAlphaMap != null && RenderAlphaDiffuseMap)
                 {
                     this.texDiffuseAlphaMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.DiffuseAlphaMap);
                     this.effectMaterial.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
@@ -229,7 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
 
                 // --- has bumpmap
-                if (phongMaterial.NormalMap != null)
+                if (phongMaterial.NormalMap != null && RenderNormalMap)
                 {
                     var geometry = this.Geometry as MeshGeometry3D;
                     if (geometry != null)
@@ -253,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
 
                 // --- has displacement map
-                if (phongMaterial.DisplacementMap != null)
+                if (phongMaterial.DisplacementMap != null && RenderDisplacementMap)
                 {
                     this.texDisplacementMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.DisplacementMap.ToByteArray());
                     this.effectMaterial.texDisplacementMapVariable.SetResource(this.texDisplacementMapView);
