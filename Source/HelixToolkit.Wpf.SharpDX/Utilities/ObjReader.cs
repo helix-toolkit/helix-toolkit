@@ -823,7 +823,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
-            var path = Path.Combine(this.TexturePath, mtlFile);
+            var path = Path.GetFullPath(Path.Combine(this.TexturePath, "./" + mtlFile));
             if (!File.Exists(path))
             {
                 return;
@@ -1178,13 +1178,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     //AmbientMap = this.AmbientMap,
 
                     DiffuseColor = this.Diffuse,
-                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(Path.Combine(texturePath, this.DiffuseMap)),
+                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap))),
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
                     //SpecularMap = this.SpecularMap,
 
-                    NormalMap = (this.BumpMap == null) ? null : LoadImage(Path.Combine(texturePath, this.BumpMap)),
+                    NormalMap = (this.BumpMap == null) ? null : LoadImage(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap))),
                     //Dissolved = this.Dissolved,
                     //Illumination = this.Illumination,
 
