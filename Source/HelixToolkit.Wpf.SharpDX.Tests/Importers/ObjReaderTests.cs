@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using NUnit.Framework;
 using SharpDX;
@@ -266,6 +267,55 @@ f 4/4 3/5 2/6
 
                 CollectionAssert.AreEqual(expectedPositions, mesh.Positions);
                 CollectionAssert.AreEqual(expectedTextureCoordinates, mesh.TextureCoordinates);
+            }
+        }
+
+        [TestCase("")]
+        [TestCase("/")]
+        [TestCase("./")]
+        public void TexturePath_AbsoluteOrRelative_Valid(string prefix)
+        {
+            var tempObj = Path.GetTempFileName();
+            var tempMtl = Path.GetTempFileName();
+            var tempTex = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(tempObj, @"
+mtllib " + prefix + Path.GetFileName(tempMtl) + @"
+v -0.5 0 0.5
+v 0.5 0 0.5
+v -0.5 0 -0.5
+vt 0 1
+usemtl TestMaterial
+f 1/1 2/1 3/1
+");
+
+                File.WriteAllText(tempMtl, @"
+newmtl TestMaterial
+map_Kd " + prefix + Path.GetFileName(tempTex) + @"
+map_bump " + prefix + Path.GetFileName(tempTex) + @"
+");
+
+                using (var image = new System.Drawing.Bitmap(1, 1))
+                {
+                    image.Save(tempTex);
+                }
+
+                var model = _objReader.Read(tempObj);
+                var material = (PhongMaterial)model[0].Material;
+
+                var diffuseSource = ((BitmapImage)material.DiffuseMap).UriSource.LocalPath;
+                Assert.AreEqual(tempTex, diffuseSource);
+
+                var bumpSource = ((BitmapImage)material.NormalMap).UriSource.LocalPath;
+                Assert.AreEqual(tempTex, bumpSource);
+            }
+            finally
+            {
+                File.Delete(tempObj);
+                File.Delete(tempMtl);
+                //File.Delete(tempTex);
             }
         }
     }
