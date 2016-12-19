@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderNormalMapProperty =
-            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(true));
 
         /// <summary>
         /// 
@@ -100,7 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDisplacementMapProperty =
-            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(true));
 
         /// <summary>
         /// 
