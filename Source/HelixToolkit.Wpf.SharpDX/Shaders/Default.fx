@@ -287,6 +287,16 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 		vMaterialTexture = texDiffuseMap.Sample(LinearSampler, input.t);
 	}
 
+
+	float alpha = 1;
+	if (bHasAlphaMap)
+	{
+		float4 color = texAlphaMap.Sample(LinearSampler, input.t);
+		alpha = color[3];
+		color[3] = 1;
+		vMaterialTexture *= color;
+	}
+
 	// loop over lights
 	for (int i = 0; i < LIGHTS; i++)
 	{		
@@ -342,7 +352,10 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 
 	/// set diffuse alpha
 	I.a = vMaterialDiffuse.a;
-
+	if (bHasAlphaMap)
+	{
+		I.a *= alpha;
+	}
 	// multiply by vertex colors
 	I = I * input.c;
 
@@ -382,6 +395,15 @@ float4 PSShaderBlinnPhong( PSInput input ) : SV_Target
 	{			
 		// SamplerState is defined in Common.fx.
 		vMaterialTexture *= texDiffuseMap.Sample(LinearSampler, input.t);
+	}
+
+	float alpha = 1;
+	if (bHasAlphaMap)
+	{
+		float4 color = texAlphaMap.Sample(LinearSampler, input.t);
+		alpha = color[3];
+		color[3] = 1;
+		vMaterialTexture *= color;
 	}
 
 	// compute lighting
@@ -432,6 +454,10 @@ float4 PSShaderBlinnPhong( PSInput input ) : SV_Target
 		}
 	}		
 	I.a = vMaterialDiffuse.a;
+	if (bHasAlphaMap)
+	{
+		I.a *= alpha;
+	}
 
 	// get reflection-color
 	if(bHasCubeMap)
@@ -498,6 +524,7 @@ float4 PShaderDiffuseMap ( PSInput input )  : SV_Target
 	// SamplerState is defined in Common.fx.
 	return texDiffuseMap.Sample(LinearSampler, input.t);
 }
+
 
 //--------------------------------------------------------------------------------------
 // empty pixel shader

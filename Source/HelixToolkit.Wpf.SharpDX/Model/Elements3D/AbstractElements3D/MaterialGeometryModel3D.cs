@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectTransformVariables effectTransforms;
         protected EffectMaterialVariables effectMaterial;        
         protected PhongMaterial phongMaterial;
+        protected ShaderResourceView texDiffuseAlphaMapView;
         protected ShaderResourceView texDiffuseMapView;
         protected ShaderResourceView texNormalMapView;
         protected ShaderResourceView texDisplacementMapView;
@@ -216,6 +217,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.effectMaterial.bHasDiffuseMapVariable.Set(false);
                 }
 
+                if (phongMaterial.DiffuseAlphaMap != null)
+                {
+                    this.texDiffuseAlphaMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.DiffuseAlphaMap);
+                    this.effectMaterial.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
+                    this.effectMaterial.bHasDiffuseAlphaMapVariable.Set(true);
+                }
+                else
+                {
+                    this.effectMaterial.bHasDiffuseAlphaMapVariable.Set(false);
+                }
+
                 // --- has bumpmap
                 if (phongMaterial.NormalMap != null)
                 {
@@ -305,6 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.vMaterialReflectVariable = effect.GetVariableByName("vMaterialReflect").AsVector();
                 this.sMaterialShininessVariable = effect.GetVariableByName("sMaterialShininess").AsScalar();
                 this.bHasDiffuseMapVariable = effect.GetVariableByName("bHasDiffuseMap").AsScalar();
+                this.bHasDiffuseAlphaMapVariable = effect.GetVariableByName("bHasAlphaMap").AsScalar();
                 this.bHasNormalMapVariable = effect.GetVariableByName("bHasNormalMap").AsScalar();
                 this.bHasDisplacementMapVariable = effect.GetVariableByName("bHasDisplacementMap").AsScalar();
                 this.bHasShadowMapVariable = effect.GetVariableByName("bHasShadowMap").AsScalar();
@@ -312,11 +325,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.texNormalMapVariable = effect.GetVariableByName("texNormalMap").AsShaderResource();
                 this.texDisplacementMapVariable = effect.GetVariableByName("texDisplacementMap").AsShaderResource();
                 this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
+                this.texDiffuseAlphaMapVariable = effect.GetVariableByName("texAlphaMap").AsShaderResource();
             }
             public EffectVectorVariable vMaterialAmbientVariable, vMaterialDiffuseVariable, vMaterialEmissiveVariable, vMaterialSpecularVariable, vMaterialReflectVariable;
             public EffectScalarVariable sMaterialShininessVariable;
-            public EffectScalarVariable bHasDiffuseMapVariable, bHasNormalMapVariable, bHasDisplacementMapVariable, bHasShadowMapVariable;
-            public EffectShaderResourceVariable texDiffuseMapVariable, texNormalMapVariable, texDisplacementMapVariable, texShadowMapVariable;
+            public EffectScalarVariable bHasDiffuseMapVariable, bHasNormalMapVariable, bHasDisplacementMapVariable, bHasShadowMapVariable, bHasDiffuseAlphaMapVariable;
+            public EffectShaderResourceVariable texDiffuseMapVariable, texNormalMapVariable, texDisplacementMapVariable, texShadowMapVariable, texDiffuseAlphaMapVariable;
 
             public void Dispose()
             {
@@ -330,10 +344,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.bHasNormalMapVariable);
                 Disposer.RemoveAndDispose(ref this.bHasDisplacementMapVariable);
                 Disposer.RemoveAndDispose(ref this.bHasShadowMapVariable);
+                Disposer.RemoveAndDispose(ref this.bHasDiffuseAlphaMapVariable);
                 Disposer.RemoveAndDispose(ref this.texDiffuseMapVariable);
                 Disposer.RemoveAndDispose(ref this.texNormalMapVariable);
                 Disposer.RemoveAndDispose(ref this.texDisplacementMapVariable);
                 Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
+                Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapVariable);
             }
         }
 
@@ -351,6 +367,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
             Disposer.RemoveAndDispose(ref this.texNormalMapView);
             Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
+            Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
             Disposer.RemoveAndDispose(ref this.bHasInstances);            
 
             this.phongMaterial = null;            

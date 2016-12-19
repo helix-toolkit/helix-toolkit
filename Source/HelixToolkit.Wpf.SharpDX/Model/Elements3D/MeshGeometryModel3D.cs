@@ -234,6 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.effectTransforms);
             Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
             Disposer.RemoveAndDispose(ref this.texNormalMapView);
+            Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
             Disposer.RemoveAndDispose(ref this.bHasInstances);
 
             this.renderTechnique = null;
@@ -287,6 +288,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 /// --- has samples              
                 this.effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null);
+                this.effectMaterial.bHasDiffuseAlphaMapVariable.Set(phongMaterial.DiffuseAlphaMap != null);
                 this.effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null);
 
                 /// --- set samplers
@@ -298,6 +300,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (phongMaterial.NormalMap != null)
                 {
                     this.effectMaterial.texNormalMapVariable.SetResource(this.texNormalMapView);
+                }
+
+                if (phongMaterial.DiffuseAlphaMap != null)
+                {
+                    this.effectMaterial.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
                 }
             }
 
