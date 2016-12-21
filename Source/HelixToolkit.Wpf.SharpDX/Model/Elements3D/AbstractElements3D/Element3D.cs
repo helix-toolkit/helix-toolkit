@@ -25,6 +25,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected IRenderHost renderHost;
 
         private bool isAttached = false;
+        /// <summary>
+        /// If this has been attached onto renderhost. 
+        /// </summary>
         public bool IsAttached
         {
             get
@@ -107,9 +110,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual void Update(TimeSpan timeSpan) { }
 
         /// <summary>
-        /// Determine if this can be rendered. 
+        /// Determine if this can be rendered. Default returns (IsAttached && IsRendering && Visibility == Visibility.Visible).
         /// </summary>
-        /// <returns>Default is return IsAttached && IsRendering && Visibility == Visibility.Visible.</returns>
         protected virtual bool CanRender(RenderContext context)
         {
             return IsAttached && IsRendering && Visibility == Visibility.Visible;
