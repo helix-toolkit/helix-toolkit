@@ -58,31 +58,28 @@ namespace CustomShaderDemo
 
         protected override void OnRasterStateChanged()
         {
-            if (IsAttached)
+            Disposer.RemoveAndDispose(ref rasterState);
+            /// --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
             {
-                Disposer.RemoveAndDispose(ref rasterState);
-                /// --- set up rasterizer states
-                var rasterStateDesc = new RasterizerStateDescription()
-                {
-                    FillMode = FillMode.Solid,
-                    CullMode = CullMode.Back,
-                    DepthBias = DepthBias,
-                    DepthBiasClamp = -1000,
-                    SlopeScaledDepthBias = +0,
-                    IsDepthClipEnabled = true,
-                    IsFrontCounterClockwise = true,
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.Back,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = +0,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = true,
 
-                    //IsMultisampleEnabled = true,
-                    //IsAntialiasedLineEnabled = true,                    
-                    //IsScissorEnabled = true,
-                };
-                try
-                {
-                    rasterState = new RasterizerState(Device, rasterStateDesc);
-                }
-                catch (Exception)
-                {
-                }
+                //IsMultisampleEnabled = true,
+                //IsAntialiasedLineEnabled = true,                    
+                //IsScissorEnabled = true,
+            };
+            try
+            {
+                rasterState = new RasterizerState(Device, rasterStateDesc);
+            }
+            catch (Exception)
+            {
             }
         }
 
