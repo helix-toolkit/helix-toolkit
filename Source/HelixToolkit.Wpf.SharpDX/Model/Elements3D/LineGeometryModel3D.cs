@@ -183,35 +183,33 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRasterStateChanged()
         {
-            if (this.IsAttached)
+            Disposer.RemoveAndDispose(ref this.rasterState);
+            /// --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
             {
-                Disposer.RemoveAndDispose(ref this.rasterState);
-                /// --- set up rasterizer states
-                var rasterStateDesc = new RasterizerStateDescription()
-                {
-                    FillMode = FillMode,
-                    CullMode = CullMode.None,
-                    DepthBias = DepthBias,
-                    DepthBiasClamp = -1000,
-                    SlopeScaledDepthBias = -2,
-                    IsDepthClipEnabled = true,
-                    IsFrontCounterClockwise = false,
+                FillMode = FillMode,
+                CullMode = CullMode.None,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = -2,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = false,
 
-                    IsMultisampleEnabled = IsMultisampleEnabled,
-                    //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
-                    //IsScissorEnabled = true,
-                };
+                IsMultisampleEnabled = IsMultisampleEnabled,
+                //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
+                //IsScissorEnabled = true,
+            };
 
-                try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
-                catch (System.Exception)
-                {
-                }
+            try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
+            catch (System.Exception)
+            {
             }
         }
 
         private void OnColorChanged()
         {
-            CreateVertexBuffer();
+            if(IsAttached)
+                CreateVertexBuffer();
         }
 
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -251,35 +249,34 @@ namespace HelixToolkit.Wpf.SharpDX
         private void CreateVertexBuffer()
         {
             var geometry = Geometry as LineGeometry3D;
-            if (this.IsAttached && geometry != null && geometry.Positions != null)
+            if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateLinesVertexArray(), geometry.Positions.Count);
+                var data = this.CreateLinesVertexArray();
+                if (data != null)
+                {
+                    this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, data, geometry.Positions.Count);
+                }
             }
         }
 
-        protected override void SetRenderTechnique(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        public override void Attach(IRenderHost host)
+
+        protected override bool OnAttach(IRenderHost host)
         {
             /// --- attach                        
-            base.Attach(host);
-
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-            { return; }
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
+                return false;
 
             // --- get device
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
@@ -298,7 +295,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- set up indexbuffer
                 indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
             }
-
+            else
+            {
+                throw new ArgumentException("Geometry must be LineGeometry3D");
+            }
             /// --- init instances buffer            
             hasInstances = (Instances != null)&&(Instances.Any());
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
@@ -325,9 +325,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- create raster state
             OnRasterStateChanged();
-            
 
-            
+
+
             //this.rasterState = new RasterizerState(this.device, rasterStateDesc);
 
             /// --- set up depth stencil state
@@ -338,10 +338,11 @@ namespace HelixToolkit.Wpf.SharpDX
             //    IsDepthEnabled = true,
             //};
             //this.depthStencilState = new DepthStencilState(this.device, depthStencilDesc);   
-           
+
 
             /// --- flush
             //Device.ImmediateContext.Flush();
+            return true;
         }        
 
         /// <summary>
@@ -366,31 +367,25 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Detach();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Render(RenderContext renderContext)
+        protected override bool CanRender(RenderContext context)
         {
-            /// --- do not render, if not enabled
-            if (!this.IsRendering)
-                return;
+            if (base.CanRender(context))
+            {
+                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-            { return; }
-
-            if (this.Visibility != System.Windows.Visibility.Visible)
-                return;
-
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
-
-            if (renderContext.IsShadowPass)
-                if (!this.IsThrowingShadow)
-                    return;
-
+        protected override void OnRender(RenderContext renderContext)
+        {
             /// --- since these values are changed only per window resize, we set them only once here
             //if (this.isResized || renderContext.Camera != this.lastCamera)
             {

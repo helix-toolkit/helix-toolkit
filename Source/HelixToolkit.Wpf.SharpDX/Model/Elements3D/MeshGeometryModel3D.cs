@@ -82,31 +82,28 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRasterStateChanged()
         {
-            if (this.IsAttached)
+            Disposer.RemoveAndDispose(ref this.rasterState);
+            /// --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
             {
-                Disposer.RemoveAndDispose(ref this.rasterState);
-                /// --- set up rasterizer states
-                var rasterStateDesc = new RasterizerStateDescription()
-                {
-                    FillMode = FillMode,
-                    CullMode = CullMode,
-                    DepthBias = DepthBias,
-                    DepthBiasClamp = -1000,
-                    SlopeScaledDepthBias = +0,
-                    IsDepthClipEnabled = IsDepthClipEnabled,
-                    IsFrontCounterClockwise = FrontCounterClockwise,
+                FillMode = FillMode,
+                CullMode = CullMode,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = +0,
+                IsDepthClipEnabled = IsDepthClipEnabled,
+                IsFrontCounterClockwise = FrontCounterClockwise,
 
-                    IsMultisampleEnabled = IsMultisampleEnabled,
-                    //IsAntialiasedLineEnabled = true,                    
-                    //IsScissorEnabled = true,
-                };
-                try
-                {
-                    this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
-                }
-                catch (System.Exception)
-                {
-                }
+                IsMultisampleEnabled = IsMultisampleEnabled,
+                //IsAntialiasedLineEnabled = true,                    
+                //IsScissorEnabled = true,
+            };
+            try
+            {
+                this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
+            }
+            catch (System.Exception)
+            {
             }
         }
 
@@ -144,15 +141,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="host"></param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
             // --- attach
-            base.Attach(host);
-
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-            { return; }
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             // --- get variables
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
@@ -199,6 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- flush
             //this.Device.ImmediateContext.Flush();
+            return true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -215,10 +211,14 @@ namespace HelixToolkit.Wpf.SharpDX
             var geometry = this.Geometry as MeshGeometry3D;
 
             // -- set geometry if given
-            if (IsAttached && geometry != null && geometry.Positions!=null)
+            if (geometry != null && geometry.Positions!=null)
             {
                 Disposer.RemoveAndDispose(ref this.vertexBuffer);
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, updateFunction(), geometry.Positions.Count);
+                var data = updateFunction();
+                if (data != null)
+                {
+                    this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, data, geometry.Positions.Count);
+                }
             }
         }
 
@@ -245,29 +245,8 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Detach();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Render(RenderContext renderContext)
+        protected override void OnRender(RenderContext renderContext)
         {
-            /// --- check to render the model
-            {
-                if (!this.IsRendering)
-                    return;
-
-                if (this.Geometry == null
-                    || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                    || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-                { return; }
-
-                if (this.Visibility != System.Windows.Visibility.Visible)
-                    return;
-
-                if (renderContext.IsShadowPass)
-                    if (!this.IsThrowingShadow)
-                        return;
-            }
-
             /// --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);

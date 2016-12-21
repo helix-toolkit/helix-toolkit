@@ -97,8 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
             //b.Maximum = Vector3.TransformCoordinate(b.Maximum, m);
             this.Bounds = b;
             //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
-
-            if (this.IsAttached)
+            if (renderHost !=null)
             {
                 var host = this.renderHost;
                 this.Detach();
@@ -238,10 +237,41 @@ namespace HelixToolkit.Wpf.SharpDX
             //count++;
         }
 
-        public override void Attach(IRenderHost host)
+        /// <summary>
+        /// Check geometry validity.
+        /// </summary>
+        /// <returns>
+        /// Return false if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0 || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+        /// </returns>
+        protected virtual bool CheckGeometry()
         {
-            base.Attach(host);
-            AttachOnGeometryPropertyChanged();
+            if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
+                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Overriding OnAttach, use <see cref="CheckGeometry" to check if it can be attached./>
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (CheckGeometry())
+            {
+                AttachOnGeometryPropertyChanged();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override void Detach()
@@ -264,6 +294,21 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Geometry != null)
             {
                 Geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+            }
+        }
+
+        protected override bool CanRender(RenderContext context)
+        {
+            if (base.CanRender(context) && CheckGeometry())
+            {
+                if (context.IsShadowPass)
+                    if (!IsThrowingShadow)
+                        return false;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

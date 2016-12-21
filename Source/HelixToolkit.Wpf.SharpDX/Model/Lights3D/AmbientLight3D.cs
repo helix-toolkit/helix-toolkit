@@ -20,17 +20,23 @@ namespace HelixToolkit.Wpf.SharpDX
             this.LightType = LightType.Ambient;
         }
 
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
             /// --- attach
-            base.Attach(host);
+            if (base.OnAttach(host))
+            {
+                /// --- light constant params              
+                this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
+                this.vLightAmbient.Set(this.Color);
 
-            /// --- light constant params              
-            this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
-            this.vLightAmbient.Set(this.Color);
-
-            /// --- flush
-            //this.Device.ImmediateContext.Flush();            
+                /// --- flush
+                //this.Device.ImmediateContext.Flush();     
+                return true;
+            }
+            else
+            {
+                return false;
+            }      
         }
 
         public override void Detach()

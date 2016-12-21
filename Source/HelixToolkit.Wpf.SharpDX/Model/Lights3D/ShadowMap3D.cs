@@ -83,17 +83,19 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(IntensityProperty, value); }
         }
 
-        public override void Attach(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
+        }
+
+        protected override bool OnAttach(IRenderHost host)
         {
             this.width = (int)(Resolution.X + 0.5f); //faktor* oneK;
             this.height = (int)(this.Resolution.Y + 0.5f); // faktor* oneK;
 
-            base.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
-            base.Attach(host);
-
             if (!host.IsShadowMapEnabled)
             {
-                return;
+                return false;
             }
 
             // gen shadow map
@@ -166,6 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
             this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
             this.shadowPassContext = new RenderContext(host, this.effect);
+            return true;
         }
 
         public override void Detach()
@@ -186,13 +189,20 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Detach();
         }
 
-        public override void Render(RenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
-            if (!this.renderHost.IsShadowMapEnabled)
-            {                
-                return;
+            if (base.CanRender(context))
+            {
+                if (!this.renderHost.IsShadowMapEnabled)
+                {
+                    return false;
+                }
+                return true;
             }
-
+            return false;
+        }
+        protected override void OnRender(RenderContext context)
+        {
             /// --- set rasterizes state here with proper shadow-bias, as depth-bias and slope-bias in the rasterizer            
             this.Device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
             this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            

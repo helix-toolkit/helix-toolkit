@@ -24,9 +24,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected IRenderHost renderHost;
 
+        private bool isAttached = false;
         public bool IsAttached
         {
-            get { return renderHost != null; }
+            get
+            {
+                return isAttached && renderHost != null;
+            }
+            protected set
+            {
+                isAttached = value;
+            }
         }
 
         public IRenderHost RenderHost
@@ -43,28 +51,38 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Override this function to set render technique during Attach Host.
         /// </summary>
         /// <param name="host"></param>
-        protected virtual void SetRenderTechnique(IRenderHost host)
+        /// <returns>Return RenderTechnique</returns>
+        protected virtual RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            renderTechnique = this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
+            return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
         /// <summary>
-        /// Attaches the element to the specified host. 
+        /// Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.
         /// To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/>
         /// </summary>
         /// <param name="host">The host.</param>
-        public virtual void Attach(IRenderHost host)
+        public void Attach(IRenderHost host)
         {
-            SetRenderTechnique(host);
+            this.renderTechnique = SetRenderTechnique(host);
             renderHost = host;
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
+            IsAttached = OnAttach(host);
             InvalidateRender();
         }
+
+        /// <summary>
+        /// To override Attach routine, please override this.
+        /// </summary>
+        /// <param name="host"></param>       
+        /// <returns>Return true if attached</returns>
+        protected abstract bool OnAttach(IRenderHost host);
 
         /// <summary>
         /// Detaches the element from the host.
         /// </summary>
         public virtual void Detach()
         {
+            IsAttached = false;
             renderTechnique = null;            
             effect = null;
             renderHost = null;           
@@ -89,12 +107,31 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual void Update(TimeSpan timeSpan) { }
 
         /// <summary>
-        /// Renders the element in the specified context.
+        /// Determine if this can be rendered. 
+        /// </summary>
+        /// <returns>Default is return IsAttached && IsRendering && Visibility == Visibility.Visible.</returns>
+        protected virtual bool CanRender(RenderContext context)
+        {
+            return IsAttached && IsRendering && Visibility == Visibility.Visible;
+        }
+        /// <summary>
+        /// Renders the element in the specified context. To override Render, please override <see cref="OnRender"/>
+        /// Render uses <see cref="CanRender"/>  to call OnRender or not. 
         /// </summary>
         /// <param name="context">The context.</param>
-        public virtual void Render(RenderContext context)
+        public void Render(RenderContext context)
         {
+            if (CanRender(context))
+            {
+                OnRender(context);
+            }
         }
+
+        /// <summary>
+        /// Used to overriding <see cref="Render"/> routine.
+        /// </summary>
+        /// <param name="context"></param>
+        protected abstract void OnRender(RenderContext context);
 
         /// <summary>
         /// Disposes the Element3D. Frees all DX resources.

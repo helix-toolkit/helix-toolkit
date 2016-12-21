@@ -37,21 +37,24 @@ namespace CustomShaderDemo
             }
         }
 
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
+        }
         /// <summary>
         /// By overriding Attach, we can provide our own vertex array.
         /// </summary>
         /// <param name="host">An object whose type implements IRenderHost.</param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
-            base.Attach(host);
-
-            if (Geometry == null)
-                return;
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
+                return false;
 
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
             effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
@@ -79,7 +82,8 @@ namespace CustomShaderDemo
             OnRasterStateChanged();
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //  Device.ImmediateContext.Flush();
+            return true;
         }
 
         private CustomPointsVertex[] CreateVertexArray()

@@ -46,9 +46,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">
         /// The host.
         /// </param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.Attach(host);
             foreach (var model in this.Children)
             {
                 if (model.Parent == null)
@@ -58,6 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 model.Attach(host);
             }
+            return true;
         }
 
         /// <summary>
@@ -124,15 +124,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
             if (!this.IsRendering)
                 return;
 
             if (this.Visibility != System.Windows.Visibility.Visible)
                 return;
-
-            base.Render(context);
 
             // you mean like this?
             foreach (var c in this.Children)

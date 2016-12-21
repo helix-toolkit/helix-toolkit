@@ -56,27 +56,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.modelMatrix = trafo.ToMatrix();
         }
 
-        public override void Attach(IRenderHost host)
+        protected override void OnRender(RenderContext renderContext)
         {
-            this.renderTechnique = host.RenderTechnique;
-            base.Attach(host);
-        }
-
-        public override void Render(RenderContext renderContext)
-        {
-            /// --- check to render the model
-            {
-                if (!this.IsRendering)
-                    return;
-
-                if (this.Visibility != System.Windows.Visibility.Visible)
-                    return;
-
-                //if (renderContext.IsShadowPass)
-                //    if (!this.IsThrowingShadow)
-                //        return;
-            }
-
+            base.OnRender(renderContext);
             foreach (var c in this.Children)
             {
                 var model = c as ITransformable;

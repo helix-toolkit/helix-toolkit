@@ -81,14 +81,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 obj.bHasCubeMap.Set((bool)e.NewValue);
         }
 
-        protected override void SetRenderTechnique(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            base.SetRenderTechnique(host); this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
         }
-        public override void Attach(IRenderHost host)
-        {
-            /// --- attach
-            base.Attach(host);
+        protected override bool OnAttach(IRenderHost host)
+        {           
             /// --- get variables               
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
@@ -137,10 +135,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     IsDepthEnabled = true,
                 };
                 this.depthStencilState = new DepthStencilState(this.Device, depthStencilDesc);
+                /// --- flush
+                //this.Device.ImmediateContext.Flush();
+                return true;
             }
-
-            /// --- flush
-            //this.Device.ImmediateContext.Flush();
+            else
+            {
+                return false;
+            }
         }
 
         public override void Detach()
@@ -167,10 +169,8 @@ namespace HelixToolkit.Wpf.SharpDX
             base.Detach();
         }
 
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
-            if (!this.IsRendering) return;
-
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = Direct3D.PrimitiveTopology.TriangleList;

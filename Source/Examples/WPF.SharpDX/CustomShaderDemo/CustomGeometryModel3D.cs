@@ -86,14 +86,16 @@ namespace CustomShaderDemo
             }
         }
 
-        public override void Attach(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            base.Attach(host);
-
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques["RenderCustom"];
-
-            if (Geometry == null)
-                return;
+            return host.RenderTechniquesManager.RenderTechniques["RenderCustom"];
+        }
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
             effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
@@ -123,7 +125,8 @@ namespace CustomShaderDemo
 
             OnRasterStateChanged();
 
-            Device.ImmediateContext.Flush();
+           // Device.ImmediateContext.Flush();
+            return true;
         }
 
         public override void Detach()
@@ -145,24 +148,8 @@ namespace CustomShaderDemo
             base.Detach();
         }
 
-        public override void Render(RenderContext renderContext)
+        protected override void OnRender(RenderContext renderContext)
         {
-            /// --- check to render the model
-            {
-                if (!IsRendering)
-                    return;
-
-                if (Geometry == null)
-                    return;
-
-                if (Visibility != Visibility.Visible)
-                    return;
-
-                if (renderContext.IsShadowPass)
-                    if (!IsThrowingShadow)
-                        return;
-            }
-
             /// --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.WorldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);

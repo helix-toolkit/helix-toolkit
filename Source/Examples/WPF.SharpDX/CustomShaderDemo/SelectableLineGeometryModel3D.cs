@@ -31,17 +31,21 @@ namespace CustomShaderDemo
                 return CustomLinesVertex.SizeInBytes;
             }
         }
-        public override void Attach(IRenderHost host)
-        {          
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
-            base.Attach(host);
 
-            if (Geometry == null)
-                return;
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+        }
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
+                return false;
 
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
             effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
@@ -71,7 +75,8 @@ namespace CustomShaderDemo
 
             OnRasterStateChanged();
 
-            Device.ImmediateContext.Flush();
+            //  Device.ImmediateContext.Flush();
+            return true;
         }
 
         private CustomLinesVertex[] CreateVertexArray()
