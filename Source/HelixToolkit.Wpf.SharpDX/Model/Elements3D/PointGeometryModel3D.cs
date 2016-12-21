@@ -274,7 +274,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
             Disposer.RemoveAndDispose(ref this.vViewport);
@@ -284,7 +284,7 @@
             this.effectTechnique = null;
             this.vertexLayout = null;
 
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override bool CanRender(RenderContext context)

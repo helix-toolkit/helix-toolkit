@@ -274,11 +274,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             DetachOnGeometryPropertyChanged();
             Disposer.RemoveAndDispose(ref rasterState);
-            base.Detach();
+            base.OnDetach();
         }
 
         private void AttachOnGeometryPropertyChanged()

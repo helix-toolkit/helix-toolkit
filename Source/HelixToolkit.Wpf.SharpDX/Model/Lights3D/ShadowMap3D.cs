@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.depthBufferSM);
             Disposer.RemoveAndDispose(ref this.depthViewSM);
@@ -186,7 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Disposer.RemoveAndDispose(ref this.shadowPassContext);
             //this.renderHost.IsShadowMapEnabled = false;            
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override bool CanRender(RenderContext context)

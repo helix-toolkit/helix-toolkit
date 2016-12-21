@@ -80,10 +80,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>Return true if attached</returns>
         protected abstract bool OnAttach(IRenderHost host);
 
+        public void Detach()
+        {
+            OnDetach();
+        }
         /// <summary>
         /// Detaches the element from the host.
         /// </summary>
-        public virtual void Detach()
+        protected virtual void OnDetach()
         {
             IsAttached = false;
             renderTechnique = null;            

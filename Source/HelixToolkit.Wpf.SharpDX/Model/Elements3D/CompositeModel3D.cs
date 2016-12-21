@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         ///     Detaches this instance.
         /// </summary>
-        public override void Detach()
+        protected override void OnDetach()
         {
             foreach (var model in this.Children)
             {
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.RemoveLogicalChild(model);                    
                 }
             }
-            base.Detach();
+            base.OnDetach();
         }
 
         /// <summary>

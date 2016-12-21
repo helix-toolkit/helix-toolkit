@@ -40,12 +40,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.vLightDir);
             Disposer.RemoveAndDispose(ref this.vLightColor);
             Disposer.RemoveAndDispose(ref this.iLightType);
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override bool CanRender(RenderContext context)

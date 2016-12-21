@@ -126,7 +126,7 @@ namespace CustomShaderDemo
             return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref vertexBuffer);
             Disposer.RemoveAndDispose(ref indexBuffer);
@@ -142,7 +142,7 @@ namespace CustomShaderDemo
             effectTechnique = null;
             vertexLayout = null;
 
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override void OnRender(RenderContext renderContext)

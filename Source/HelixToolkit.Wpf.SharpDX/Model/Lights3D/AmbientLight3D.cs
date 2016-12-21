@@ -39,14 +39,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }      
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             if (this.vLightAmbient != null)
             {
                 this.vLightAmbient.Set(new global::SharpDX.Color4(0, 0, 0, 0));
                 Disposer.RemoveAndDispose(ref this.vLightAmbient);
             }
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override void OnColorChanged(DependencyPropertyChangedEventArgs e)

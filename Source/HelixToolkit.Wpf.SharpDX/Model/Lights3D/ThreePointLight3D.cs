@@ -30,8 +30,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
             return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
+            base.OnDetach();
             foreach (var c in this.Children)
             {
                 c.Detach();

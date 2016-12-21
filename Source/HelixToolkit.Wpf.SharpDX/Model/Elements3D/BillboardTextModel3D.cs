@@ -178,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref vViewport);
             Disposer.RemoveAndDispose(ref billboardTextureVariable);
@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
             Disposer.RemoveAndDispose(ref bHasBillboardAlphaTexture);
             Disposer.RemoveAndDispose(ref bHasBillboardTexture);
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override void OnRender(RenderContext renderContext)

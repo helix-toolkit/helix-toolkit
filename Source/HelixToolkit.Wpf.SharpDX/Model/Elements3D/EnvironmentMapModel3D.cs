@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             if (!this.IsAttached)
                 return;
@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.depthStencilState);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
 
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override void OnRender(RenderContext context)

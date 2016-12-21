@@ -258,11 +258,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref vTessellationVariables);
             Disposer.RemoveAndDispose(ref shaderPass);
-            base.Detach();
+            base.OnDetach();
         }
 
         /// <summary>

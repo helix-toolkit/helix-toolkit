@@ -164,14 +164,14 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
             {
                 // "turn-off" the light
                 Light3DSceneShared.LightColors[lightIndex] = new Color4(0, 0, 0, 0);
             }
-            base.Detach();
+            base.OnDetach();
         }
 
         protected override void OnRender(RenderContext context)

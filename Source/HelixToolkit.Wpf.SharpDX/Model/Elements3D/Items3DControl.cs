@@ -263,8 +263,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         ///     Detaches this instance.
         /// </summary>
-        public virtual void Detach()
+        public void Detach()
         {
+            OnDetach();
+        }
+        /// <summary>
+        /// Override Detach
+        /// </summary>
+        protected virtual void OnDetach()
+        {           
             foreach (var item in this.children)
             {
                 var model = item as Element3D;
