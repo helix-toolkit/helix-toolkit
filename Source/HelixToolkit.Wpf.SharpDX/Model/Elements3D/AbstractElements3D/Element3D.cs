@@ -79,13 +79,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host"></param>       
         /// <returns>Return true if attached</returns>
         protected abstract bool OnAttach(IRenderHost host);
-
+        /// <summary>
+        /// Detaches the element from the host. Override <see cref="OnDetach"/>
+        /// </summary>
         public void Detach()
         {
             OnDetach();
         }
         /// <summary>
-        /// Detaches the element from the host.
+        /// Used to override Detach
         /// </summary>
         protected virtual void OnDetach()
         {
