@@ -27,9 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Children = new Element3DCollection();
         }
 
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.Attach(host);
             foreach (var c in this.Children)
             {
                 if (c.Parent == null)
@@ -39,11 +38,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 c.Attach(host);
             }
+            return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
-            base.Detach();
+            base.OnDetach();
             foreach (var c in this.Children)
             {
                 c.Detach();
@@ -54,9 +54,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
-            base.Render(context);
             foreach (var c in this.Children)
             {
                 c.Render(context);

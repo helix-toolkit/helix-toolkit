@@ -17,41 +17,54 @@ namespace HelixToolkit.Wpf.SharpDX
             this.LightType = LightType.Point;
         }
 
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
             /// --- attach
-            base.Attach(host);
+            if (base.OnAttach(host))
+            {
+                /// --- light constant params            
+                this.vLightPos = this.effect.GetVariableByName("vLightPos").AsVector();
+                this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
+                this.vLightAtt = this.effect.GetVariableByName("vLightAtt").AsVector();
+                this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
-            /// --- light constant params            
-            this.vLightPos = this.effect.GetVariableByName("vLightPos").AsVector();
-            this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
-            this.vLightAtt = this.effect.GetVariableByName("vLightAtt").AsVector();
-            this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
+                /// --- Set light type
+                Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Point;
 
-            /// --- Set light type
-            Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Point;
-
-            /// --- flush
-            //this.Device.ImmediateContext.Flush();
+                /// --- flush
+                //this.Device.ImmediateContext.Flush();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.vLightPos);
             Disposer.RemoveAndDispose(ref this.vLightColor);
             Disposer.RemoveAndDispose(ref this.vLightAtt);
             Disposer.RemoveAndDispose(ref this.iLightType);
-            base.Detach();
+            base.OnDetach();
         }
-
-        public override void Render(RenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+            var manager = renderHost.RenderTechniquesManager;
+            if (base.CanRender(context))
             {
-                return;
+                if (renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                    renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                {
+                    return false;
+                }
+                return true;
             }
-
+            return false;
+        }
+        protected override void OnRender(RenderContext context)
+        {
             if (this.IsRendering)
             {
                 /// --- turn-on the light            

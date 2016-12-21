@@ -20,24 +20,26 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
             private set; get;
         }
 
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
             Light3DSceneShared = host.Light3DSceneShared;
             foreach (var c in this.Children)
             {
                 c.Attach(host);
             }
+            return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
+            base.OnDetach();
             foreach (var c in this.Children)
             {
                 c.Detach();
             }
         }
 
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
             foreach (var c in this.Children)
             {

@@ -169,51 +169,43 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRasterStateChanged()
         {
-            if (this.IsAttached)
+            Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
+            /// --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
             {
-                Disposer.RemoveAndDispose(ref this.rasterState);
-                /// --- set up rasterizer states
-                var rasterStateDesc = new RasterizerStateDescription()
-                {
-                    FillMode = FillMode,
-                    CullMode = CullMode,
-                    DepthBias = -5,
-                    DepthBiasClamp = -10,
-                    SlopeScaledDepthBias = +0,
-                    IsDepthClipEnabled = IsDepthClipEnabled,
-                    IsFrontCounterClockwise = FrontCounterClockwise,
+                FillMode = FillMode,
+                CullMode = CullMode,
+                DepthBias = -5,
+                DepthBiasClamp = -10,
+                SlopeScaledDepthBias = +0,
+                IsDepthClipEnabled = IsDepthClipEnabled,
+                IsFrontCounterClockwise = FrontCounterClockwise,
 
-                    IsMultisampleEnabled = IsMultisampleEnabled,
-                    //IsAntialiasedLineEnabled = true,
-                    //IsScissorEnabled = true,
-                };
-                try
-                {
-                    this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
-                }
-                catch (System.Exception)
-                {
-                }
+                IsMultisampleEnabled = IsMultisampleEnabled,
+                //IsAntialiasedLineEnabled = true,
+                //IsScissorEnabled = true,
+            };
+            try
+            {
+                this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
+            }
+            catch (System.Exception)
+            {
             }
         }
 
-        protected override void SetRenderTechnique(IRenderHost host)
-        {
-            renderTechnique = host.RenderTechnique;
-        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
             /// --- attach           
-            base.Attach(host);
-
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-                return;
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
             // --- get variables
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
             effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
@@ -258,19 +250,19 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- init tessellation vars
             vTessellationVariables = effect.GetVariableByName("vTessellation").AsVector();
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
-            OnRasterStateChanged();
             /// --- flush
             //Device.ImmediateContext.Flush();
+            return true;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref vTessellationVariables);
             Disposer.RemoveAndDispose(ref shaderPass);
-            base.Detach();
+            base.OnDetach();
         }
 
         /// <summary>
@@ -283,25 +275,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public override void Render(RenderContext renderContext)
+        protected override void OnRender(RenderContext renderContext)
         {
-            /// --- check if to render the model
-            {
-                if (!IsRendering)
-                    return;
-
-                if (Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                    || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-                    return;
-
-                if (Visibility != System.Windows.Visibility.Visible)
-                    return;
-
-                if (renderContext.IsShadowPass)
-                    if (!IsThrowingShadow)
-                        return;
-            }
-
             /// --- set model transform paramerers                         
             effectTransforms.mWorld.SetMatrix(ref modelMatrix);
 

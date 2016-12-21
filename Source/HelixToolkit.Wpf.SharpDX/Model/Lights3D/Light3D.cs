@@ -147,10 +147,8 @@ namespace HelixToolkit.Wpf.SharpDX
             Spot = 3,
         }
 
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            this.renderTechnique = host.RenderTechnique;
-            base.Attach(host);
             Light3DSceneShared = host.Light3DSceneShared;
             if (this.LightType != LightType.Ambient)
             {
@@ -163,16 +161,22 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.mLightProj = this.effect.GetVariableByName("mLightProj").AsMatrix();
                 }
             }
+            return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
             {
                 // "turn-off" the light
                 Light3DSceneShared.LightColors[lightIndex] = new Color4(0, 0, 0, 0);
             }
-            base.Detach();
+            base.OnDetach();
+        }
+
+        protected override void OnRender(RenderContext context)
+        {
+            
         }
 
         public override void Dispose()

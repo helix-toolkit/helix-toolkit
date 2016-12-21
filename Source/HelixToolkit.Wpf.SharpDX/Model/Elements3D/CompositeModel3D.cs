@@ -46,34 +46,34 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">
         /// The host.
         /// </param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.Attach(host);
             foreach (var model in this.Children)
             {
                 if (model.Parent == null)
                 {
-                    this.AddLogicalChild(model);                    
+                    this.AddLogicalChild(model);
                 }
 
                 model.Attach(host);
             }
+            return true;
         }
 
         /// <summary>
         ///     Detaches this instance.
         /// </summary>
-        public override void Detach()
+        protected override void OnDetach()
         {
             foreach (var model in this.Children)
             {
                 model.Detach();
                 if (model.Parent == this)
                 {
-                    this.RemoveLogicalChild(model);                    
+                    this.RemoveLogicalChild(model);
                 }
             }
-            base.Detach();
+            base.OnDetach();
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override bool HitTest(Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = base.HitTest(ray, ref hits);
-            
+
             foreach (var c in this.Children)
             {
                 var hc = c as IHitable;
@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             return hit;
-        }        
+        }
 
         /// <summary>
         /// 
@@ -118,22 +118,18 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Detach();
         }
 
+        protected override bool CanRender(RenderContext context)
+        {
+            return IsRendering && Visibility == System.Windows.Visibility.Visible;
+        }
         /// <summary>
         /// Renders the specified context.
         /// </summary>
         /// <param name="context">
         /// The context.
         /// </param>
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
-            if (!this.IsRendering)
-                return;
-
-            if (this.Visibility != System.Windows.Visibility.Visible)
-                return;
-
-            base.Render(context);
-
             // you mean like this?
             foreach (var c in this.Children)
             {
@@ -179,7 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             item.Detach();
                             if (item.Parent == this)
                             {
-                                this.RemoveLogicalChild(item);                            
+                                this.RemoveLogicalChild(item);
                             }
                         }
                         break;
@@ -214,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             UpdateBounds();
         }
-        
+
         /// <summary>
         /// a Model3D does not have bounds, 
         /// if you want to have a model with bounds, use GeometryModel3D instead:
@@ -231,7 +227,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     bb = BoundingBox.Merge(bb, model.Bounds);
                 }
             }
-            this.Bounds = bb;            
+            this.Bounds = bb;
         }
     }
 }

@@ -16,40 +16,54 @@ namespace HelixToolkit.Wpf.SharpDX
             this.LightType = LightType.Directional;
         }
 
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
             /// --- attach
-            base.Attach(host);
+            if (base.OnAttach(host))
+            {
 
-            /// --- light constant params            
-            this.vLightDir = this.effect.GetVariableByName("vLightDir").AsVector();
-            this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
-            this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
+                /// --- light constant params            
+                this.vLightDir = this.effect.GetVariableByName("vLightDir").AsVector();
+                this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
+                this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
-            /// --- Set light type
-            Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Directional;
+                /// --- Set light type
+                Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Directional;
 
-            /// --- flush
-            //this.Device.ImmediateContext.Flush();
+                /// --- flush
+                //this.Device.ImmediateContext.Flush();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.vLightDir);
             Disposer.RemoveAndDispose(ref this.vLightColor);
             Disposer.RemoveAndDispose(ref this.iLightType);
-            base.Detach();
+            base.OnDetach();
         }
 
-        public override void Render(RenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             var manager = renderHost.RenderTechniquesManager;
-            if (renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+            if (base.CanRender(context))
             {
-                return;
+                if (renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                    renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                {
+                    return false;
+                }
+                return true;
             }
-
+            return false;
+        }
+        protected override void OnRender(RenderContext context)
+        {
             if (this.IsRendering)
             {
                 /// --- set lighting parameters

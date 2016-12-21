@@ -210,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="context"></param>
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
             foreach (var c in this.Children)
             {

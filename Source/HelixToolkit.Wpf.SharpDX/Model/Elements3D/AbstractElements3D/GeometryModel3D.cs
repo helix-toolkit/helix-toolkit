@@ -97,8 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
             //b.Maximum = Vector3.TransformCoordinate(b.Maximum, m);
             this.Bounds = b;
             //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
-
-            if (this.IsAttached)
+            if (renderHost !=null)
             {
                 var host = this.renderHost;
                 this.Detach();
@@ -159,6 +158,9 @@ namespace HelixToolkit.Wpf.SharpDX
             ((GeometryModel3D)d).OnRasterStateChanged();
         }
 
+        /// <summary>
+        /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
+        /// </summary>
         protected virtual void OnRasterStateChanged() { }
 
         public static readonly RoutedEvent MouseDown3DEvent =
@@ -238,16 +240,53 @@ namespace HelixToolkit.Wpf.SharpDX
             //count++;
         }
 
-        public override void Attach(IRenderHost host)
+        /// <summary>
+        /// <para>Check geometry validity.</para>
+        /// Return false if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0 || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual bool CheckGeometry()
         {
-            base.Attach(host);
-            AttachOnGeometryPropertyChanged();
+            if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
+                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public override void Detach()
+        /// <summary>
+        /// Overriding OnAttach, use <see cref="CheckGeometry"/> to check if it can be attached.
+        /// </summary>
+        /// <param name="host"></param>
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (CheckGeometry())
+            {
+                AttachOnGeometryPropertyChanged();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            OnRasterStateChanged();
+        }
+
+        protected override void OnDetach()
         {
             DetachOnGeometryPropertyChanged();
-            base.Detach();
+            Disposer.RemoveAndDispose(ref rasterState);
+            base.OnDetach();
         }
 
         private void AttachOnGeometryPropertyChanged()
@@ -267,12 +306,30 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        /// <para>base.CanRender(context) &amp;&amp; <see cref="CheckGeometry"/> </para>
+        /// <para>If RenderContext IsShadowPass=true, return false if <see cref="IsThrowingShadow"/> = false</para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        protected override bool CanRender(RenderContext context)
+        {
+            if (base.CanRender(context) && CheckGeometry())
+            {
+                if (context.IsShadowPass)
+                    if (!IsThrowingShadow)
+                        return false;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         ~GeometryModel3D()
         {
-            //this.Dispose();
-            //this.MouseDown3D -= OnMouse3DDown;
-            //this.MouseUp3D -= OnMouse3DUp;
-            //this.MouseMove3D -= OnMouse3DMove;
+            
         }
 
         //static ulong count = 0;

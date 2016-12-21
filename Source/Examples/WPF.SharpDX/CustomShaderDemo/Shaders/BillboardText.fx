@@ -1,10 +1,8 @@
+
 Texture2D billboardTexture; // billboard text image
-
-DepthStencilState DSSOff
-{
-	DepthEnable = false;
-};
-
+Texture2D billboardAlphaTexture;
+bool   bHasAlphaTexture = false;
+bool   bHasTexture = false;
 //--------------------------------------------------------------------------------------
 // VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------
@@ -66,6 +64,35 @@ float4 PShaderBillboardText(PSInputBT input) : SV_Target
 	return intermediateColor * input.c;
 }
 
+float4 PShaderBillboardBackground(PSInputBT input) : SV_Target
+{
+	return input.c;
+}
+
+float4 PShaderBillboardImage(PSInputBT input) : SV_Target
+{
+	// Take the color off the texture using mask color
+	float4 pixelColor = 1;
+	if (bHasTexture)
+	{
+		pixelColor *= billboardTexture.Sample(PointSampler, input.t);
+	}
+
+	if (bHasAlphaTexture)
+	{
+		pixelColor *= billboardAlphaTexture.Sample(PointSampler, input.t);
+	}
+
+	if (input.c.w != 0 && length(pixelColor - input.c) < 0.00001)
+	{
+		return float4(0.0, 0.0, 0.0, 0.0);
+	}
+	else
+	{
+		return pixelColor;
+	}
+}
+
 //--------------------------------------------------------------------------------------
 // Techniques
 //-------------------------------------------------------------------------------------
@@ -75,7 +102,7 @@ technique11 RenderBillboard
 	pass P0
 	{
 		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSOff, 0);
+		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
@@ -83,5 +110,29 @@ technique11 RenderBillboard
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
 		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardText()));
+	}
+	pass P1
+	{
+		//SetDepthStencilState( DSSDepthLess, 0 );
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
+	}
+	pass P2
+	{
+		//SetDepthStencilState( DSSDepthLess, 0 );
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardImage()));
 	}
 }

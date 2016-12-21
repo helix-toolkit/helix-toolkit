@@ -160,26 +160,24 @@
 
         protected override void OnRasterStateChanged()
         {
-            if (this.IsAttached)
+            Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
+            /// --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
             {
-                Disposer.RemoveAndDispose(ref this.rasterState);
-                /// --- set up rasterizer states
-                var rasterStateDesc = new RasterizerStateDescription()
-                {
-                    FillMode = FillMode.Solid,
-                    CullMode = CullMode.None,
-                    DepthBias = DepthBias,
-                    DepthBiasClamp = -1000,
-                    SlopeScaledDepthBias = -2,
-                    IsDepthClipEnabled = true,
-                    IsFrontCounterClockwise = false,
-                    IsMultisampleEnabled = true,
-                };
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.None,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = -2,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = false,
+                IsMultisampleEnabled = true,
+            };
 
-                try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
-                catch (System.Exception)
-                {
-                }
+            try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
+            catch (System.Exception)
+            {
             }
         }
 
@@ -192,11 +190,15 @@
         private void CreateVertexBuffer()
         {
             var geometry = Geometry as LineGeometry3D;
-            if (this.IsAttached && geometry != null && geometry.Positions != null)
+            if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
                 /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray(), geometry.Positions.Count);
+                var data = CreateVertexArray();
+                if (data != null)
+                {
+                    this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, data, geometry.Positions.Count);
+                }
             }
         }
 
@@ -226,25 +228,24 @@
             this.InvalidateRender();
         }
 
-        protected override void SetRenderTechnique(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.Attach(host);
-
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
-            { return; }
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
+                return false;
 
             // --- get device
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
@@ -263,17 +264,15 @@
             var pointParams = new Vector4((float)Size.Width, (float)Size.Height, (float)Figure, (float)FigureRatio);
             vPointParams.Set(pointParams);
 
-            /// --- create raster state
-            OnRasterStateChanged();
-
             /// --- flush
             //Device.ImmediateContext.Flush();
+            return true;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
             Disposer.RemoveAndDispose(ref this.vViewport);
@@ -283,33 +282,28 @@
             this.effectTechnique = null;
             this.vertexLayout = null;
 
-            base.Detach();
+            base.OnDetach();
         }
 
+        protected override bool CanRender(RenderContext context)
+        {
+            if(base.CanRender(context))
+            {
+                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                    return false;
+                else return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
-        public override void Render(RenderContext renderContext)
-        {
-            /// --- do not render, if not enabled
-            if (!this.IsRendering)
-                return;
-
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
-            { return; }
-
-            if (this.Visibility != System.Windows.Visibility.Visible)
-                return;
-
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
-
-            if (renderContext.IsShadowPass)
-                if (!this.IsThrowingShadow)
-                    return;
-
+        protected override void OnRender(RenderContext renderContext)
+        {       
             /// --- since these values are changed only per window resize, we set them only once here
             if (renderContext.Camera is ProjectionCamera)
             {

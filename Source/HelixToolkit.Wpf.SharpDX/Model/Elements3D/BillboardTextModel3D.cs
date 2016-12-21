@@ -119,15 +119,22 @@ namespace HelixToolkit.Wpf.SharpDX
             return h;
         }
 
-        protected override void SetRenderTechnique(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
         }
 
-        public override void Attach(IRenderHost host)
+        protected override bool CheckGeometry()
+        {
+            return Geometry is IBillboardText;
+        }
+        protected override bool OnAttach(IRenderHost host)
         {
             // --- attach
-            base.Attach(host);
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             // --- get variables
             vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
@@ -142,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var geometry = Geometry as IBillboardText;
             if (geometry == null)
             {
-                return;
+                throw new System.Exception("Geometry must implement IBillboardText");
             }
             // -- set geometry if given
             vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
@@ -168,9 +175,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- flush
             //Device.ImmediateContext.Flush();
+            return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref vViewport);
             Disposer.RemoveAndDispose(ref billboardTextureVariable);
@@ -179,30 +187,16 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
             Disposer.RemoveAndDispose(ref bHasBillboardAlphaTexture);
             Disposer.RemoveAndDispose(ref bHasBillboardTexture);
-            base.Detach();
+            base.OnDetach();
         }
 
-        public override void Render(RenderContext renderContext)
+        protected override void OnRender(RenderContext renderContext)
         {
             /// --- check to render the model
             var geometry = Geometry as IBillboardText;
             if (geometry == null)
             {
-                return;
-            }
-            {
-                if (!IsRendering)
-                    return;
-
-                if (Geometry == null)
-                    return;
-
-                if (Visibility != System.Windows.Visibility.Visible)
-                    return;
-
-                if (renderContext.IsShadowPass)
-                    if (!IsThrowingShadow)
-                        return;
+                throw new System.Exception("Geometry must implement IBillboardText");
             }
 
             if (renderContext.Camera is ProjectionCamera)
