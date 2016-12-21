@@ -159,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Make sure to check if RenderHost == null
+        /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
         /// </summary>
         protected virtual void OnRasterStateChanged() { }
 
