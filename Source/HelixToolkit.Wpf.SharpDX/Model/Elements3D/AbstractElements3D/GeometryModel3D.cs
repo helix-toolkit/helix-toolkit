@@ -329,7 +329,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         ~GeometryModel3D()
         {
-            this.Detach();
+            
         }
 
         //static ulong count = 0;
