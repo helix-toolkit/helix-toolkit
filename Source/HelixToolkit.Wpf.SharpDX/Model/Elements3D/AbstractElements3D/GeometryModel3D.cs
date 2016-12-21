@@ -239,9 +239,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Check geometry validity.
+        /// Return false if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0 || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
         /// </summary>
         /// <returns>
-        /// Return false if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0 || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
         /// </returns>
         protected virtual bool CheckGeometry()
         {
