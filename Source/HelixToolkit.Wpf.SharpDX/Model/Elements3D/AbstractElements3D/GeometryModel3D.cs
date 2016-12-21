@@ -241,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Check geometry validity.
+        /// <para>Check geometry validity.</para>
         /// Return false if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0 || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
         /// </summary>
         /// <returns>
@@ -306,6 +306,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        /// <para>base.CanRender(context) &amp;&amp; <see cref="CheckGeometry"/> </para>
+        /// <para>If RenderContext IsShadowPass=true, return false if <see cref="IsThrowingShadow"/> = false</para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         protected override bool CanRender(RenderContext context)
         {
             if (base.CanRender(context) && CheckGeometry())
@@ -323,10 +329,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         ~GeometryModel3D()
         {
-            //this.Dispose();
-            //this.MouseDown3D -= OnMouse3DDown;
-            //this.MouseUp3D -= OnMouse3DUp;
-            //this.MouseMove3D -= OnMouse3DMove;
+            this.Detach();
         }
 
         //static ulong count = 0;

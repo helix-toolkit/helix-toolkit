@@ -61,8 +61,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.
-        /// To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/>
+        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
+        /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
+        /// <para>Attach Flow: <see cref="SetRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
@@ -78,6 +79,9 @@ namespace HelixToolkit.Wpf.SharpDX
             InvalidateRender();
         }
 
+        /// <summary>
+        /// Called after <see cref="OnAttach(IRenderHost)"/>
+        /// </summary>
         protected virtual void OnAttached()
         {
 
@@ -125,15 +129,18 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual void Update(TimeSpan timeSpan) { }
 
         /// <summary>
-        /// Determine if this can be rendered. Default returns (IsAttached && IsRendering && Visibility == Visibility.Visible).
+        /// <para>Determine if this can be rendered.</para>
+        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
         /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         protected virtual bool CanRender(RenderContext context)
         {
             return IsAttached && IsRendering && Visibility == Visibility.Visible;
         }
         /// <summary>
-        /// Renders the element in the specified context. To override Render, please override <see cref="OnRender"/>
-        /// Render uses <see cref="CanRender"/>  to call OnRender or not. 
+        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
+        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
         public void Render(RenderContext context)
