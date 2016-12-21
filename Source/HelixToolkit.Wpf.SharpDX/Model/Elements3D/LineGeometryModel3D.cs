@@ -184,6 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRasterStateChanged()
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
             /// --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
@@ -322,23 +323,6 @@ namespace HelixToolkit.Wpf.SharpDX
             //    var texDiffuseMap = effect.GetVariableByName("texDiffuseMap").AsShaderResource();
             //    texDiffuseMap.SetResource(texDiffuseMapView);                
             //}
-
-            /// --- create raster state
-            OnRasterStateChanged();
-
-
-
-            //this.rasterState = new RasterizerState(this.device, rasterStateDesc);
-
-            /// --- set up depth stencil state
-            //var depthStencilDesc = new DepthStencilStateDescription()
-            //{
-            //    DepthComparison = Comparison.Less,
-            //    DepthWriteMask = global::SharpDX.Direct3D11.DepthWriteMask.All,
-            //    IsDepthEnabled = true,
-            //};
-            //this.depthStencilState = new DepthStencilState(this.device, depthStencilDesc);   
-
 
             /// --- flush
             //Device.ImmediateContext.Flush();

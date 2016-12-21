@@ -59,6 +59,7 @@ namespace CustomShaderDemo
         protected override void OnRasterStateChanged()
         {
             Disposer.RemoveAndDispose(ref rasterState);
+            if (!IsAttached) { return; }
             /// --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {

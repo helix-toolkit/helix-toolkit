@@ -59,6 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
+
         /// <summary>
         /// Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.
         /// To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/>
@@ -70,9 +71,17 @@ namespace HelixToolkit.Wpf.SharpDX
             renderHost = host;
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             IsAttached = OnAttach(host);
+            if (IsAttached)
+            {
+                OnAttached();
+            }
             InvalidateRender();
         }
 
+        protected virtual void OnAttached()
+        {
+
+        }
         /// <summary>
         /// To override Attach routine, please override this.
         /// </summary>

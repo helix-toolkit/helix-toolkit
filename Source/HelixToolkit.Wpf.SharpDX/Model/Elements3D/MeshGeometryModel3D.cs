@@ -83,6 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRasterStateChanged()
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
             /// --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
@@ -188,9 +189,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
             }
-
-            /// --- set rasterstate
-            this.OnRasterStateChanged();
 
             /// --- flush
             //this.Device.ImmediateContext.Flush();

@@ -158,6 +158,9 @@ namespace HelixToolkit.Wpf.SharpDX
             ((GeometryModel3D)d).OnRasterStateChanged();
         }
 
+        /// <summary>
+        /// Make sure to check if RenderHost == null
+        /// </summary>
         protected virtual void OnRasterStateChanged() { }
 
         public static readonly RoutedEvent MouseDown3DEvent =
@@ -257,10 +260,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Overriding OnAttach, use <see cref="CheckGeometry" to check if it can be attached./>
+        /// Overriding OnAttach, use <see cref="CheckGeometry"/> to check if it can be attached.
         /// </summary>
         /// <param name="host"></param>
-        /// <returns></returns>
         protected override bool OnAttach(IRenderHost host)
         {
             if (CheckGeometry())
@@ -272,6 +274,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
+        }
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            OnRasterStateChanged();
         }
 
         protected override void OnDetach()

@@ -161,6 +161,7 @@
         protected override void OnRasterStateChanged()
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
             /// --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
@@ -262,9 +263,6 @@
             /// --- set effect per object const vars
             var pointParams = new Vector4((float)Size.Width, (float)Size.Height, (float)Figure, (float)FigureRatio);
             vPointParams.Set(pointParams);
-
-            /// --- create raster state
-            OnRasterStateChanged();
 
             /// --- flush
             //Device.ImmediateContext.Flush();

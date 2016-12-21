@@ -170,6 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRasterStateChanged()
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
             /// --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
@@ -249,7 +250,6 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- init tessellation vars
             vTessellationVariables = effect.GetVariableByName("vTessellation").AsVector();
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
-            OnRasterStateChanged();
             /// --- flush
             //Device.ImmediateContext.Flush();
             return true;
