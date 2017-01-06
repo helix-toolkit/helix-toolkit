@@ -71,6 +71,20 @@ namespace OctreeDemo
                 return showWireframe;
             }
         }
+
+        private bool visibility = true;
+        public bool Visibility
+        {
+            set
+            {
+                visibility = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return visibility;
+            }
+        }
         public Color4 Light1Color { get; set; }
         public PhongMaterial ModelMaterial { get; set; }
 

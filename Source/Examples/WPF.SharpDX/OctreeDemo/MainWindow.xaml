@@ -38,19 +38,20 @@
             <!--<hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
                 Geometry="{Binding Other}"
                 Material="{Binding OtherMaterial}" />-->
-            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
+            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}" IsRendering="{Binding Visibility}" 
                 Geometry="{Binding InnerModel}" CullMode="Front" FrontCounterClockwise="True"
                 Material="{Binding InnerModelMaterial}" />
-            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
+            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}" IsRendering="{Binding Visibility}"
                 CullMode="Back"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}" />
-            <hx:LineGeometryModel3D Geometry="{Binding OctreeModel}" Color="{Binding LineColor}" Thickness="1"/>
+            <hx:LineGeometryModel3D Geometry="{Binding OctreeModel}" Color="{Binding LineColor}" Thickness="0.5"/>
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Orientation="Vertical">
+            <CheckBox IsChecked="{Binding Visibility}">Model Visible</CheckBox>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
         </StackPanel>
     </Grid>
