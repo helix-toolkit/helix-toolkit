@@ -1,13 +1,29 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
+﻿using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace HelixToolkit.SharpDX.Shared.Utilities
 {
-    public abstract class OctreeBase<T>
+    public interface IOctree<T>
+    {
+        byte ActiveNodes { get; }
+        bool HasChildren { get; }
+        bool IsRoot { get; }
+        List<T> Objects { get; }
+        IOctree<T> Parent { get; }
+        BoundingBox Region { get; }
+        IOctree<T>[] ChildNodes { get; }
+        bool IsEmpty { get; }
+        bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+        void UpdateTree();
+    }
+
+    public abstract class OctreeBase<T> : IOctree<T>
     {
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
@@ -21,8 +37,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// These are all of the possible child octants for this node in the tree.
         /// </summary>
-        public readonly OctreeBase<T>[] ChildNodes = new OctreeBase<T>[8];
-
+        private readonly IOctree<T>[] childNodes = new IOctree<T>[8];
+        public IOctree<T>[] ChildNodes { get { return childNodes; } }
         /// <summary>
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
@@ -33,7 +49,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// A reference to the parent node is sometimes required. If we are a node and we realize that we no longer have items contained within ourselves,
         /// we need to let our parent know that we're empty so that it can delete us.
         /// </summary>
-        public OctreeBase<T> Parent { protected set; get; }
+        public IOctree<T> Parent { protected set; get; }
 
         protected bool treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
@@ -105,7 +121,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         protected abstract void FindEnclosingCube();
 
-
+        public abstract bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
 
         #region Accessors
         public bool IsRoot
@@ -125,7 +141,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// Returns true if this node tree and all children have no content
         /// </summary>
-        private bool IsEmpty    //untested
+        public bool IsEmpty    //untested
         {
             get
             {
@@ -291,7 +307,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 if (local_max.Y > global_max.Y) global_max.Y = local_max.Y;
                 if (local_max.Z > global_max.Z) global_max.Z = local_max.Z;
             }
-
             Region = new BoundingBox(global_min, global_max);
         }
 
@@ -334,6 +349,71 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 x = Math.Abs(x);
                 return -(int)Math.Pow(2, Math.Ceiling(Math.Log(x) / Math.Log(2)));
             }
+        }
+
+        public override bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            var isHit = false;
+            var result = new HitTestResult();
+            result.Distance = double.MaxValue;
+            var bound = BoundingBox.FromPoints(Region.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            if(rayWS.Intersects(ref bound))
+            {
+                foreach(var t in this.Objects)
+                {
+                    var idx = t*3;
+                    var v0 = Positions[Indices[idx]];
+                    var v1 = Positions[Indices[idx + 1]];
+                    var v2 = Positions[Indices[idx + 2]];
+                    float d;
+                    var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
+                    var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
+                    var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
+
+                    if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
+                    {
+                        if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                        {
+                            result.IsValid = true;
+                            result.ModelHit = model;
+                            // transform hit-info to world space now:
+                            result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
+                            result.Distance = d;
+
+                            var n = Vector3.Cross(p1 - p0, p2 - p0);
+                            n.Normalize();
+                            // transform hit-info to world space now:
+                            result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
+                            result.TriangleIndices = new System.Tuple<int, int, int>(Indices[idx], Indices[idx + 1], Indices[idx + 2]);
+                            isHit = true;
+                        }
+                    }
+                }
+                if (isHit)
+                {
+                    if (hits.Count > 0)
+                    {
+                        if (hits[0].Distance > result.Distance)
+                        {
+                            hits[0] = result;
+                        }
+                    }
+                    else
+                    {
+                        hits.Add(result);
+                    }
+                }
+                if (HasChildren)
+                {
+                    foreach(GeometryOctree child in ChildNodes)
+                    {
+                        if(child != null)
+                            child.HitTest(model, modelMatrix, rayWS, ref hits);
+                    }
+                }
+            }
+
+            return hits.Count>0;
         }
     }
 }
