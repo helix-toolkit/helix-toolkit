@@ -135,7 +135,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
-            var queue = new Queue<IOctree>();
+            var queue = new Queue<IOctree>(64);
             queue.Enqueue(this);
             while (queue.Count > 0)
             {
