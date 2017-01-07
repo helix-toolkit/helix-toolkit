@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.SharpDX.Shared.Utilities
 {
@@ -30,6 +31,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool IsEmpty { get; }
         bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
         void UpdateTree();
+
+        void Clear();
     }
 
     public interface IOctreeBase<T> : IOctree
@@ -99,11 +102,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         }
 
         /// <summary>
-        /// Naively builds an oct tree from scratch.
-        /// </summary>
-        protected abstract void BuildTree();    //complete & tested
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="bound"></param>
@@ -130,21 +128,193 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             /*I think I can just directly insert items into the tree instead of using a queue.*/
             if (!treeBuilt)
-            {
+            {            //terminate the recursion if we're a leaf node
+                if (Objects.Count <= 1)   //doubt: is this really right? needs testing.
+                {
+                    treeBuilt = true;
+                    treeReady = true;
+                    return;
+                }
                 BuildTree();
+                treeBuilt = true;
+                treeReady = true;
             }
-            treeReady = true;
         }
+        /// <summary>
+        /// Build tree nodes
+        /// </summary>
+        protected virtual void BuildTree()
+        {
+            Vector3 dimensions = Bound.Maximum - Bound.Minimum;
+
+            if (dimensions == Vector3.Zero)
+            {
+                FindEnclosingCube();
+                dimensions = Bound.Maximum - Bound.Minimum;
+            }
+
+            //Check to see if the dimensions of the box are greater than the minimum dimensions
+            if (dimensions.X <= MIN_SIZE && dimensions.Y <= MIN_SIZE && dimensions.Z <= MIN_SIZE)
+            {
+                treeBuilt = true;
+                treeReady = true;
+                return;
+            }
+            Vector3 half = dimensions / 2.0f;
+            Vector3 center = Bound.Minimum + half;
+
+            //Create subdivided regions for each octant
+            var octant = new BoundingBox[8] {
+                new BoundingBox(Bound.Minimum, center),
+                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, center.Y, center.Z)),
+                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, center.Z), new Vector3(Bound.Maximum.X, center.Y, Bound.Maximum.Z)),
+                new BoundingBox(new Vector3(Bound.Minimum.X, Bound.Minimum.Y, center.Z), new Vector3(center.X, center.Y, Bound.Maximum.Z)),
+                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, Bound.Minimum.Z), new Vector3(center.X, Bound.Maximum.Y, center.Z)),
+                new BoundingBox(new Vector3(center.X, center.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, Bound.Maximum.Y, center.Z)),
+                new BoundingBox(center, Bound.Maximum),
+                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, center.Z), new Vector3(center.X, Bound.Maximum.Y, Bound.Maximum.Z))
+                };
+
+            //This will contain all of our objects which fit within each respective octant.
+            var octList = new List<T>[8];
+            for (int i = 0; i < 8; i++)
+                octList[i] = new List<T>(Objects.Count / 8);
+
+            //this list contains all of the objects which got moved down the tree and can be delisted from this node.
+            var delist = new List<int>(Objects.Count);
+            int idx = 0;
+            foreach (var obj in Objects)
+            {
+                var box = GetBoundingBoxFromItem(obj);
+                if (box.Minimum != box.Maximum)
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
+                        if (octant[i].Contains(box) == ContainmentType.Contains)
+                        {
+                            octList[i].Add(obj);
+                            delist.Add(idx);// Add index instead of object to allow fast swap and resize operation
+                            break;
+                        }
+                    }
+                }
+                ++idx;
+            }
+
+            //delist every moved object from this node.
+            //foreach (int obj in delist)
+            //    Objects.Remove(obj);
+            //To avoid list memory operation during remove, use swap and resize to improve performance
+            int end = Objects.Count - 1;
+            delist.Reverse();
+            foreach (var i in delist)
+            {
+                Objects[i] = Objects[end--];
+            }
+            ++end;
+            if (end < Objects.Count)
+                Objects.RemoveRange(end, Objects.Count - end);
+            Objects.TrimExcess();
+
+            //Create child nodes where there are items contained in the bounding region
+            for (int i = 0; i < 8; i++)
+            {
+                if (octList[i].Count != 0)
+                {
+                    ChildNodes[i] = CreateNode(octant[i], octList[i]);
+                    ActiveNodes |= (byte)(1 << i);
+                    ChildNodes[i].UpdateTree();
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected abstract BoundingBox GetBoundingBoxFromItem(T item);
 
         /// <summary>
         /// This finds the dimensions of the bounding box necessary to tightly enclose all items in the object list.
         /// </summary>
-        protected abstract void FindEnclosingBox();
+        protected virtual void FindEnclosingBox()
+        {
+            Vector3 global_min = Bound.Minimum, global_max = Bound.Maximum;
 
+            //go through all the objects in the list and find the extremes for their bounding areas.
+            foreach (var obj in Objects)
+            {
+                Vector3 local_min = Vector3.Zero, local_max = Vector3.Zero;
+                var bound = GetBoundingBoxFromItem(obj);
+                if (bound != null && bound.Maximum != bound.Minimum)
+                {
+                    local_min = bound.Minimum;
+                    local_max = bound.Maximum;
+                }
+
+                if (local_min.X < global_min.X) global_min.X = local_min.X;
+                if (local_min.Y < global_min.Y) global_min.Y = local_min.Y;
+                if (local_min.Z < global_min.Z) global_min.Z = local_min.Z;
+
+                if (local_max.X > global_max.X) global_max.X = local_max.X;
+                if (local_max.Y > global_max.Y) global_max.Y = local_max.Y;
+                if (local_max.Z > global_max.Z) global_max.Z = local_max.Z;
+            }
+            Bound = new BoundingBox(global_min, global_max);
+        }
         /// <summary>
         /// This finds the smallest enclosing cube which is a power of 2, for all objects in the list.
         /// </summary>
-        protected abstract void FindEnclosingCube();
+        protected virtual void FindEnclosingCube()
+        {
+            FindEnclosingBox();
+
+            //find the min offset from (0,0,0) and translate by it for a short while
+            Vector3 offset = Bound.Minimum - Vector3.Zero;
+            Bound = new BoundingBox(Bound.Minimum + offset, Bound.Maximum + offset);
+
+            //find the nearest power of two for the max values
+            int highX = (int)Math.Floor(Math.Max(Math.Max(Bound.Maximum.X, Bound.Maximum.Y), Bound.Maximum.Z));
+
+            //see if we're already at a power of 2
+            for (int bit = 0; bit < 32; bit++)
+            {
+                if (highX == 1 << bit)
+                {
+                    Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(highX, highX, highX) - offset);
+                    return;
+                }
+            }
+
+            //gets the most significant bit value, so that we essentially do a Ceiling(X) with the 
+            //ceiling result being to the nearest power of 2 rather than the nearest integer.
+            int x = SigBit(highX);
+
+            Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(x, x, x) - offset);
+        }
+
+        protected static int SigBit(int x)
+        {
+            if (x >= 0)
+            {
+                return (int)Math.Pow(2, Math.Ceiling(Math.Log(x) / Math.Log(2)));
+            }
+            else
+            {
+                x = Math.Abs(x);
+                return -(int)Math.Pow(2, Math.Ceiling(Math.Log(x) / Math.Log(2)));
+            }
+        }
+
+        public virtual void Clear()
+        {
+            Objects.Clear();
+            foreach(var item in ChildNodes)
+            {
+                if (item != null)
+                {
+                    item.Clear();
+                }
+            }
+            Array.Clear(ChildNodes, 0, ChildNodes.Length);
+        }
 
         public abstract bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
 
@@ -239,176 +409,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
         }
 
-        /// <summary>
-        /// Build Tree subroutine
-        /// </summary>
-        protected override void BuildTree()
+        protected override BoundingBox GetBoundingBoxFromItem(Tuple<int, BoundingBox> item)
         {
-            //terminate the recursion if we're a leaf node
-            if (Objects.Count <= 1)   //doubt: is this really right? needs testing.
-            {
-                treeBuilt = true;
-                treeReady = true;
-                return;
-            }
-
-            Vector3 dimensions = Bound.Maximum - Bound.Minimum;
-
-            if (dimensions == Vector3.Zero)
-            {
-                FindEnclosingCube();
-                dimensions = Bound.Maximum - Bound.Minimum;
-            }
-
-            //Check to see if the dimensions of the box are greater than the minimum dimensions
-            if (dimensions.X <= MIN_SIZE && dimensions.Y <= MIN_SIZE && dimensions.Z <= MIN_SIZE)
-            {
-                treeBuilt = true;
-                treeReady = true;
-                return;
-            }
-
-            Vector3 half = dimensions / 2.0f;
-            Vector3 center = Bound.Minimum + half;
-
-            //Create subdivided regions for each octant
-            var octant = new BoundingBox[8] {
-                new BoundingBox(Bound.Minimum, center),
-                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, center.Y, center.Z)),
-                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, center.Z), new Vector3(Bound.Maximum.X, center.Y, Bound.Maximum.Z)),
-                new BoundingBox(new Vector3(Bound.Minimum.X, Bound.Minimum.Y, center.Z), new Vector3(center.X, center.Y, Bound.Maximum.Z)),
-                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, Bound.Minimum.Z), new Vector3(center.X, Bound.Maximum.Y, center.Z)),
-                new BoundingBox(new Vector3(center.X, center.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, Bound.Maximum.Y, center.Z)),
-                new BoundingBox(center, Bound.Maximum),
-                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, center.Z), new Vector3(center.X, Bound.Maximum.Y, Bound.Maximum.Z))
-            };
-
-
-            //This will contain all of our objects which fit within each respective octant.
-            var octList = new List<Tuple<int, BoundingBox>>[8];
-            for (int i = 0; i < 8; i++)
-                octList[i] = new List<Tuple<int, BoundingBox>>(Objects.Count / 8);
-
-            //this list contains all of the objects which got moved down the tree and can be delisted from this node.
-            var delist = new List<int>(Objects.Count);
-            int idx = 0;
-            foreach (var obj in Objects)
-            {
-                var box = obj.Item2;
-                if (box.Minimum != box.Maximum)
-                {
-                    for (int i = 0; i < 8; i++)
-                    {
-                        if (octant[i].Contains(box) == ContainmentType.Contains)
-                        {
-                            octList[i].Add(obj);
-                            delist.Add(idx);// Add index instead of object to allow fast swap and resize operation
-                            break;
-                        }
-                    }
-                }
-                ++idx;
-            }
-
-            //delist every moved object from this node.
-            //foreach (int obj in delist)
-            //    Objects.Remove(obj);
-            //To avoid list memory operation during remove, use swap and resize to improve performance
-            int end = Objects.Count - 1;
-            delist.Reverse();
-            foreach (var i in delist)
-            {
-                Objects[i] = Objects[end--];
-            }
-            ++end;
-            if (end < Objects.Count)
-                Objects.RemoveRange(end, Objects.Count - end);
-            Objects.TrimExcess();
-            //Create child nodes where there are items contained in the bounding region
-            for (int i = 0; i < 8; i++)
-            {
-                if (octList[i].Count != 0)
-                {
-                    ChildNodes[i] = CreateNode(octant[i], octList[i]);
-                    ActiveNodes |= (byte)(1 << i);
-                    (ChildNodes[i] as MeshGeometryOctree).BuildTree();
-                }
-            }
-
-            treeBuilt = true;
-            treeReady = true;
+            return item.Item2;
         }
 
         protected override IOctree CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
         {
             return new MeshGeometryOctree(Positions, Indices, region, objList);
-        }
-
-        protected override void FindEnclosingBox()
-        {
-            Vector3 global_min = Bound.Minimum, global_max = Bound.Maximum;
-
-            //go through all the objects in the list and find the extremes for their bounding areas.
-            foreach (var obj in Objects)
-            {
-                Vector3 local_min = Vector3.Zero, local_max = Vector3.Zero;
-                var bound = obj.Item2;
-                if (bound != null && bound.Maximum != bound.Minimum)
-                {
-                    local_min = bound.Minimum;
-                    local_max = bound.Maximum;
-                }
-
-                if (local_min.X < global_min.X) global_min.X = local_min.X;
-                if (local_min.Y < global_min.Y) global_min.Y = local_min.Y;
-                if (local_min.Z < global_min.Z) global_min.Z = local_min.Z;
-
-                if (local_max.X > global_max.X) global_max.X = local_max.X;
-                if (local_max.Y > global_max.Y) global_max.Y = local_max.Y;
-                if (local_max.Z > global_max.Z) global_max.Z = local_max.Z;
-            }
-            Bound = new BoundingBox(global_min, global_max);
-        }
-
-        protected override void FindEnclosingCube()
-        {
-            FindEnclosingBox();
-
-            //find the min offset from (0,0,0) and translate by it for a short while
-            Vector3 offset = Bound.Minimum - Vector3.Zero;
-            Bound = new BoundingBox(Bound.Minimum + offset, Bound.Maximum + offset);
-
-            //find the nearest power of two for the max values
-            int highX = (int)Math.Floor(Math.Max(Math.Max(Bound.Maximum.X, Bound.Maximum.Y), Bound.Maximum.Z));
-
-            //see if we're already at a power of 2
-            for (int bit = 0; bit < 32; bit++)
-            {
-                if (highX == 1 << bit)
-                {
-                    Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(highX, highX, highX) - offset);
-                    return;
-                }
-            }
-
-            //gets the most significant bit value, so that we essentially do a Ceiling(X) with the 
-            //ceiling result being to the nearest power of 2 rather than the nearest integer.
-            int x = SigBit(highX);
-
-            Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(x, x, x) - offset);
-        }
-
-        private static int SigBit(int x)
-        {
-            if (x >= 0)
-            {
-                return (int)Math.Pow(2, Math.Ceiling(Math.Log(x) / Math.Log(2)));
-            }
-            else
-            {
-                x = Math.Abs(x);
-                return -(int)Math.Pow(2, Math.Ceiling(Math.Log(x) / Math.Log(2)));
-            }
         }
 
         public override bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
@@ -478,6 +486,71 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
 
             return hits.Count > 0;
+        }
+    }
+
+    public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
+    {
+        public GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList)
+            :base(bound, objList)
+        { }
+
+
+        public override bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            if (!this.treeBuilt)
+            {
+                return false;
+            }
+
+            var result = new HitTestResult();
+            result.Distance = double.MaxValue;
+            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            if (rayWS.Intersects(ref bound))
+            {
+                var tempHits = new List<HitTestResult>();
+                foreach (var t in this.Objects)
+                {
+                    bound = BoundingBox.FromPoints(t.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+                    if(rayWS.Intersects(ref bound))
+                    {
+                        t.HitTest(rayWS, ref tempHits);
+                    }                
+                }
+               
+                if (HasChildren)
+                {
+                    foreach (MeshGeometryOctree child in ChildNodes)
+                    {
+                        if (child != null)
+                            child.HitTest(model, modelMatrix, rayWS, ref tempHits);
+                    }
+                }
+
+                if (tempHits.Count > 0)
+                {
+                    foreach(var item in tempHits)
+                    {
+                        if (result.Distance > item.Distance)
+                        {
+                            result = item;
+                        }
+                    }
+                    hits.Add(result);
+                }
+            }
+
+            return hits.Count > 0;
+        }
+
+        protected override BoundingBox GetBoundingBoxFromItem(GeometryModel3D item)
+        {
+            return item.Bounds;
+        }
+
+        protected override IOctree CreateNode(BoundingBox bound, List<GeometryModel3D> objList)
+        {
+            return new GeometryModel3DOctree(bound, objList);
         }
     }
 }
