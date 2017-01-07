@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         /// <returns>The internal array of the list.</returns>
         public static T[] GetInternalArray<T>(this List<T> list)
         {
-            list.TrimExcess();
+            list.TrimExcess(); //Trim capacity before exposing underlying array.
             return ArrayAccessor<T>.Getter(list);
         }
 #endif
