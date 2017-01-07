@@ -135,7 +135,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
-            var queue = new Queue<IOctree>(64);
+            var queue = new Queue<IOctree>(200);
             queue.Enqueue(this);
             while (queue.Count > 0)
             {
@@ -215,7 +215,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
             //This will contain all of our objects which fit within each respective octant.
             var octList = new List<T>[8];
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; ++i)
                 octList[i] = new List<T>(Objects.Count / 8);
 
             //this list contains all of the objects which got moved down the tree and can be delisted from this node.
@@ -226,7 +226,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 var box = GetBoundingBoxFromItem(obj);
                 if (box.Minimum != box.Maximum)
                 {
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i < 8; ++i)
                     {
                         if (octant[i].Contains(box) == ContainmentType.Contains)
                         {
@@ -255,7 +255,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Objects.TrimExcess();
 
             //Create child nodes where there are items contained in the bounding region
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; ++i)
             {
                 if (octList[i].Count != 0)
                 {
