@@ -25,7 +25,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
     using System.Runtime.CompilerServices;
-    using HelixToolkit.SharpDX.Shared.Utilities;
     using System.Diagnostics;
     using System.Collections.Generic;
 
@@ -73,34 +72,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty UseOctreeHitTestProperty = DependencyProperty.Register("UseOctreeHitTest", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(true,
-            (s, e) =>
-            {
-                var m = s as MeshGeometryModel3D;
-                if ((bool)e.NewValue == true)
-                {
-                    m.UpdateOctree();
-                }
-                else
-                {
-                    m.octree = null;
-                }
-            }));
-        /// <summary>
-        /// Use octree for hittest instead of bruteforce hit test for better performance
-        /// </summary>
-        public bool UseOctreeHitTest
-        {
-            set
-            {
-                SetValue(UseOctreeHitTestProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(UseOctreeHitTestProperty);
-            }
-        }
-
         public override int VertexSizeInBytes
         {
             get
@@ -110,7 +81,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private DefaultVertex[] vertexArrayBuffer = null;
-        protected MeshGeometryOctree octree;
 
         protected override void OnRasterStateChanged()
         {
@@ -143,7 +113,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnGeometryChanged(e);
-            UpdateOctree();
         }
 
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -157,7 +126,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Positions)))
                 {
-                    UpdateOctree();
                     OnUpdateVertexBuffer(UpdatePositionOnly);
                 }
                 else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
@@ -166,37 +134,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
-                    UpdateOctree();
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
                     this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
                     InvalidateRender();
                 }
                 else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
                 {
-                    UpdateOctree();
                     OnUpdateVertexBuffer(CreateDefaultVertexArray);
                 }
-            }
-        }
-
-        protected void UpdateOctree()
-        {
-            if (UseOctreeHitTest && IsHitTestVisible && Geometry != null && Geometry.Positions != null
-                && Geometry.Indices != null && Geometry.Positions.Count > 0 && Geometry.Indices.Count > 0)
-            {
-                this.octree = new MeshGeometryOctree(this.Geometry.Positions, this.Geometry.Indices);
-#if DEBUG
-                var sw = Stopwatch.StartNew();
-#endif
-                this.octree.UpdateTree();
-#if DEBUG
-                sw.Stop();
-                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
-#endif
-            }
-            else
-            {
-                this.octree = null;
             }
         }
 
@@ -520,13 +465,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-#if DEBUG
-            Stopwatch sw = Stopwatch.StartNew();
-#endif
             bool isHit = false;
-            if (UseOctreeHitTest && octree != null)
+            var model = Geometry as MeshGeometry3D;
+            if (model != null && model.Octree!=null)
             {
-                isHit = octree.HitTest(this, modelMatrix, rayWS, ref hits);
+                isHit = model.Octree.HitTest(this, modelMatrix, rayWS, ref hits);
             }
             else
             {

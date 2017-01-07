@@ -9,9 +9,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using HelixToolkit.SharpDX.Shared.Utilities;
     using global::SharpDX;
-
+    using System.Diagnostics;
     using HelixToolkit.Wpf.SharpDX.Core;
 
 #if !NETFX_CORE
@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public class MeshGeometry3D : Geometry3D
     {
+        public IOctree Octree { private set; get; }
         /// <summary>
         /// Does not raise property changed event
         /// </summary>
@@ -124,6 +125,26 @@ namespace HelixToolkit.Wpf.SharpDX
             mesh.BiTangents = bitangents;
 
             return mesh;
+        }
+
+        public void UpdateOctree()
+        {
+            if (Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0)
+            {
+                this.Octree = new MeshGeometryOctree(this.Positions, this.Indices);
+#if DEBUG
+                var sw = Stopwatch.StartNew();
+#endif
+                this.Octree.UpdateTree();
+#if DEBUG
+                sw.Stop();
+                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
+#endif
+            }
+            else
+            {
+                this.Octree = null;
+            }
         }
     }
 }

@@ -166,10 +166,8 @@ namespace OctreeDemo
             this.PropertyChanged += MainViewModel_PropertyChanged;
 
             LineColor = Color.Blue;
-
-            MeshGeometryOctree octree = new MeshGeometryOctree(Model.Positions, Model.Indices);
-            octree.UpdateTree();
-            OctreeModel = octree.CreateOctreeLineModel();
+            Model.UpdateOctree();
+            OctreeModel = Model.Octree.CreateOctreeLineModel();
         }
 
         private void CreateOctreeSegments(LineBuilder builder, MeshGeometryOctree tree)
