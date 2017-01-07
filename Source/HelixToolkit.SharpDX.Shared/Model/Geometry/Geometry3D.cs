@@ -13,10 +13,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using HelixToolkit.Wpf.SharpDX.Core;
-
+    using HelixToolkit.SharpDX.Shared.Utilities;
     using System.Runtime.InteropServices;
     using System.ComponentModel;
     using HelixToolkit.SharpDX.Shared.Model;
+    using System.Diagnostics;
 
 #if !NETFX_CORE
     [Serializable]
@@ -87,6 +88,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public Vector3 P0;
         }
+
+        /// <summary>
+        /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
+        /// </summary>
+        public IOctree Octree { private set; get; }
+
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="DisablePropertyChangedEvent"/>
         /// </summary>
@@ -100,6 +107,34 @@ namespace HelixToolkit.Wpf.SharpDX
         public void UpdateTriangles()
         {
             RaisePropertyChanged(TriangleBuffer);
+        }
+
+        /// <summary>
+        /// Create Octree for current model.
+        /// </summary>
+        public void UpdateOctree()
+        {
+            if (Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0)
+            {
+                this.Octree = CreateOctree();
+#if DEBUG
+                var sw = Stopwatch.StartNew();
+#endif
+                this.Octree.UpdateTree();
+#if DEBUG
+                sw.Stop();
+                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
+#endif
+            }
+            else
+            {
+                this.Octree = null;
+            }
+        }
+
+        protected virtual IOctree CreateOctree()
+        {
+            return null;
         }
     }
 }

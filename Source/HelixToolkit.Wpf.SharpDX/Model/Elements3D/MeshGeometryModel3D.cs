@@ -467,8 +467,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             bool isHit = false;
             var model = Geometry as MeshGeometry3D;
-            if (model != null && model.Octree!=null)
+            if (model != null && model.Octree != null)
             {
+#if DEBUG
+                Debug.WriteLine("Using octree for hit test");
+#endif
                 isHit = model.Octree.HitTest(this, modelMatrix, rayWS, ref hits);
             }
             else

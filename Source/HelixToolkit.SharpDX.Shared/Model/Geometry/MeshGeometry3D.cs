@@ -19,7 +19,6 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public class MeshGeometry3D : Geometry3D
     {
-        public IOctree Octree { private set; get; }
         /// <summary>
         /// Does not raise property changed event
         /// </summary>
@@ -58,7 +57,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IntCollection TriangleIndices { get { return Indices; } set { Indices = new IntCollection(value); } }
+        public IntCollection TriangleIndices
+        {
+            get { return Indices; }
+            set { Indices = new IntCollection(value); }
+        }
 
         public static MeshGeometry3D Merge(params MeshGeometry3D[] meshes)
         {
@@ -127,24 +130,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return mesh;
         }
 
-        public void UpdateOctree()
+        protected override IOctree CreateOctree()
         {
-            if (Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0)
-            {
-                this.Octree = new MeshGeometryOctree(this.Positions, this.Indices);
-#if DEBUG
-                var sw = Stopwatch.StartNew();
-#endif
-                this.Octree.UpdateTree();
-#if DEBUG
-                sw.Stop();
-                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
-#endif
-            }
-            else
-            {
-                this.Octree = null;
-            }
+            return new MeshGeometryOctree(this.Positions, this.Indices);
         }
     }
 }
