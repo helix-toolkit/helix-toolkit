@@ -25,6 +25,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
     using System.Runtime.CompilerServices;
+    using HelixToolkit.SharpDX.Shared.Utilities;
+    using System.Diagnostics;
+    using System.Collections.Generic;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
@@ -70,6 +73,34 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static readonly DependencyProperty UseOctreeHitTestProperty = DependencyProperty.Register("UseOctreeHitTest", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(true,
+            (s, e) =>
+            {
+                var m = s as MeshGeometryModel3D;
+                if ((bool)e.NewValue == true)
+                {
+                    m.UpdateOctree();
+                }
+                else
+                {
+                    m.octree = null;
+                }
+            }));
+        /// <summary>
+        /// Use octree for hittest instead of bruteforce hit test for better performance
+        /// </summary>
+        public bool UseOctreeHitTest
+        {
+            set
+            {
+                SetValue(UseOctreeHitTestProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(UseOctreeHitTestProperty);
+            }
+        }
+
         public override int VertexSizeInBytes
         {
             get
@@ -79,6 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private DefaultVertex[] vertexArrayBuffer = null;
+        protected GeometryOctree octree;
 
         protected override void OnRasterStateChanged()
         {
@@ -106,6 +138,12 @@ namespace HelixToolkit.Wpf.SharpDX
             catch (System.Exception)
             {
             }
+        }
+
+        protected override void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnGeometryChanged(e);
+            UpdateOctree();
         }
 
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -138,6 +176,27 @@ namespace HelixToolkit.Wpf.SharpDX
                     UpdateOctree();
                     OnUpdateVertexBuffer(CreateDefaultVertexArray);
                 }
+            }
+        }
+
+        protected void UpdateOctree()
+        {
+            if (UseOctreeHitTest && IsHitTestVisible && Geometry != null && Geometry.Positions != null
+                && Geometry.Indices != null && Geometry.Positions.Count > 0 && Geometry.Indices.Count > 0)
+            {
+                this.octree = new GeometryOctree(this.Geometry.Positions, this.Geometry.Indices);
+#if DEBUG
+                var sw = Stopwatch.StartNew();
+#endif
+                this.octree.UpdateTree();
+#if DEBUG
+                sw.Stop();
+                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
+#endif
+            }
+            else
+            {
+                this.octree = null;
             }
         }
 
@@ -449,6 +508,31 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             return vertexArrayBuffer;
+        }
+
+        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        {
+            if (this.Visibility == Visibility.Collapsed)
+            {
+                return false;
+            }
+            if (this.IsHitTestVisible == false)
+            {
+                return false;
+            }
+#if DEBUG
+            Stopwatch sw = Stopwatch.StartNew();
+#endif
+            bool isHit = false;
+            if (UseOctreeHitTest && octree != null)
+            {
+                isHit = octree.HitTest(this, modelMatrix, rayWS, ref hits);
+            }
+            else
+            {
+                isHit = base.HitTest(rayWS, ref hits);
+            }
+            return isHit;
         }
     }
 }
