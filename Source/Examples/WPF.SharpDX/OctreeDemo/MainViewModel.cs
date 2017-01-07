@@ -199,7 +199,7 @@ namespace OctreeDemo
         private void CreateOctreeSegments(LineBuilder builder, GeometryOctree tree)
         {
             if (tree == null) return;
-            var box = tree.Region;
+            var box = tree.Bound;
             Vector3[] verts = new Vector3[8];
             verts[0] = box.Minimum;
             verts[1] = new Vector3(box.Minimum.X, box.Minimum.Y, box.Maximum.Z); //Z

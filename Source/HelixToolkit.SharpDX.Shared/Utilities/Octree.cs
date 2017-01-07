@@ -26,7 +26,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool IsRoot { get; }
         List<T> Objects { get; }
         IOctree<T> Parent { get; }
-        BoundingBox Region { get; }
+        BoundingBox Bound { get; }
         IOctree<T>[] ChildNodes { get; }
         bool IsEmpty { get; }
         bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
@@ -40,7 +40,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         public const int MIN_SIZE = 1;
 
-        public BoundingBox Region { protected set; get; }
+        public BoundingBox Bound { protected set; get; }
 
         public List<T> Objects { protected set; get; }
 
@@ -69,29 +69,29 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// Creates an oct tree which encloses the given region and contains the provided objects.
         /// </summary>
-        /// <param name="region">The bounding region for the oct tree.</param>
+        /// <param name="bound">The bounding region for the oct tree.</param>
         /// <param name="objList">The list of objects contained within the bounding region</param>
-        protected OctreeBase(BoundingBox region, List<T> objList)
+        protected OctreeBase(BoundingBox bound, List<T> objList)
         {
-            Region = region;
+            Bound = bound;
             Objects = objList;
         }
 
         public OctreeBase()
         {
             Objects = new List<T>();
-            Region = new BoundingBox(Vector3.Zero, Vector3.Zero);
+            Bound = new BoundingBox(Vector3.Zero, Vector3.Zero);
         }
 
         /// <summary>
         /// Creates an octTree with a suggestion for the bounding region containing the items.
         /// </summary>
-        /// <param name="region">The suggested dimensions for the bounding region. 
+        /// <param name="bound">The suggested dimensions for the bounding region. 
         /// Note: if items are outside this region, the region will be automatically resized.</param>
-        public OctreeBase(BoundingBox region)
+        public OctreeBase(BoundingBox bound)
             : this()
         {
-            Region = region;
+            Bound = bound;
         }
 
         /// <summary>
@@ -99,12 +99,23 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         protected abstract void BuildTree();    //complete & tested
 
-        protected abstract IOctree<T> CreateNode(BoundingBox region, List<T> objList);  //complete & tested
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="objList"></param>
+        /// <returns></returns>
+        protected abstract IOctree<T> CreateNode(BoundingBox bound, List<T> objList);  //complete & tested
 
-
-        protected IOctree<T> CreateNode(BoundingBox region, T Item)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="Item"></param>
+        /// <returns></returns>
+        protected IOctree<T> CreateNode(BoundingBox bound, T Item)
         {
-            return CreateNode(region, new List<T> { Item });
+            return CreateNode(bound, new List<T> { Item });
         }
 
         /// <summary>
@@ -184,7 +195,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             Positions = positions;
             Indices = indices;
-            Region = BoundingBox.FromPoints(positions.Array);
+            Bound = BoundingBox.FromPoints(positions.Array);
             Objects = new List<Tuple<int, BoundingBox>>(indices.Count / 3);
             foreach (var i in Enumerable.Range(0, indices.Count / 3))
             {
@@ -192,14 +203,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        public GeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox box, List<Tuple<int, BoundingBox>> triIndex)
-            : base(box, triIndex)
+        public GeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex)
+            : base(bound, triIndex)
         {
             Positions = positions;
             Indices = indices;
         }
 
-        protected GeometryOctree(BoundingBox box, List<Tuple<int, BoundingBox>> list) : base(box, list) { }
+        protected GeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list)
+            : base(bound, list)
+        { }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
         {
@@ -217,6 +230,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
             return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
         }
+
+        /// <summary>
+        /// Build Tree subroutine
+        /// </summary>
         protected override void BuildTree()
         {
             //terminate the recursion if we're a leaf node
@@ -227,12 +244,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return;
             }
 
-            Vector3 dimensions = Region.Maximum - Region.Minimum;
+            Vector3 dimensions = Bound.Maximum - Bound.Minimum;
 
             if (dimensions == Vector3.Zero)
             {
                 FindEnclosingCube();
-                dimensions = Region.Maximum - Region.Minimum;
+                dimensions = Bound.Maximum - Bound.Minimum;
             }
 
             //Check to see if the dimensions of the box are greater than the minimum dimensions
@@ -244,18 +261,20 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
 
             Vector3 half = dimensions / 2.0f;
-            Vector3 center = Region.Minimum + half;
+            Vector3 center = Bound.Minimum + half;
 
             //Create subdivided regions for each octant
-            var octant = new BoundingBox[8];
-            octant[0] = new BoundingBox(Region.Minimum, center);
-            octant[1] = new BoundingBox(new Vector3(center.X, Region.Minimum.Y, Region.Minimum.Z), new Vector3(Region.Maximum.X, center.Y, center.Z));
-            octant[2] = new BoundingBox(new Vector3(center.X, Region.Minimum.Y, center.Z), new Vector3(Region.Maximum.X, center.Y, Region.Maximum.Z));
-            octant[3] = new BoundingBox(new Vector3(Region.Minimum.X, Region.Minimum.Y, center.Z), new Vector3(center.X, center.Y, Region.Maximum.Z));
-            octant[4] = new BoundingBox(new Vector3(Region.Minimum.X, center.Y, Region.Minimum.Z), new Vector3(center.X, Region.Maximum.Y, center.Z));
-            octant[5] = new BoundingBox(new Vector3(center.X, center.Y, Region.Minimum.Z), new Vector3(Region.Maximum.X, Region.Maximum.Y, center.Z));
-            octant[6] = new BoundingBox(center, Region.Maximum);
-            octant[7] = new BoundingBox(new Vector3(Region.Minimum.X, center.Y, center.Z), new Vector3(center.X, Region.Maximum.Y, Region.Maximum.Z));
+            var octant = new BoundingBox[8] {
+                new BoundingBox(Bound.Minimum, center),
+                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, center.Y, center.Z)),
+                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, center.Z), new Vector3(Bound.Maximum.X, center.Y, Bound.Maximum.Z)),
+                new BoundingBox(new Vector3(Bound.Minimum.X, Bound.Minimum.Y, center.Z), new Vector3(center.X, center.Y, Bound.Maximum.Z)),
+                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, Bound.Minimum.Z), new Vector3(center.X, Bound.Maximum.Y, center.Z)),
+                new BoundingBox(new Vector3(center.X, center.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, Bound.Maximum.Y, center.Z)),
+                new BoundingBox(center, Bound.Maximum),
+                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, center.Z), new Vector3(center.X, Bound.Maximum.Y, Bound.Maximum.Z))
+            };
+
 
             //This will contain all of our objects which fit within each respective octant.
             var octList = new List<Tuple<int, BoundingBox>>[8];
@@ -319,17 +338,17 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override void FindEnclosingBox()
         {
-            Vector3 global_min = Region.Minimum, global_max = Region.Maximum;
+            Vector3 global_min = Bound.Minimum, global_max = Bound.Maximum;
 
             //go through all the objects in the list and find the extremes for their bounding areas.
             foreach (var obj in Objects)
             {
                 Vector3 local_min = Vector3.Zero, local_max = Vector3.Zero;
-                var BoundingBox = obj.Item2;
-                if (BoundingBox != null && BoundingBox.Maximum != BoundingBox.Minimum)
+                var bound = obj.Item2;
+                if (bound != null && bound.Maximum != bound.Minimum)
                 {
-                    local_min = BoundingBox.Minimum;
-                    local_max = BoundingBox.Maximum;
+                    local_min = bound.Minimum;
+                    local_max = bound.Maximum;
                 }
 
                 if (local_min.X < global_min.X) global_min.X = local_min.X;
@@ -340,7 +359,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 if (local_max.Y > global_max.Y) global_max.Y = local_max.Y;
                 if (local_max.Z > global_max.Z) global_max.Z = local_max.Z;
             }
-            Region = new BoundingBox(global_min, global_max);
+            Bound = new BoundingBox(global_min, global_max);
         }
 
         protected override void FindEnclosingCube()
@@ -348,18 +367,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             FindEnclosingBox();
 
             //find the min offset from (0,0,0) and translate by it for a short while
-            Vector3 offset = Region.Minimum - Vector3.Zero;
-            Region = new BoundingBox(Region.Minimum + offset, Region.Maximum + offset);
+            Vector3 offset = Bound.Minimum - Vector3.Zero;
+            Bound = new BoundingBox(Bound.Minimum + offset, Bound.Maximum + offset);
 
             //find the nearest power of two for the max values
-            int highX = (int)Math.Floor(Math.Max(Math.Max(Region.Maximum.X, Region.Maximum.Y), Region.Maximum.Z));
+            int highX = (int)Math.Floor(Math.Max(Math.Max(Bound.Maximum.X, Bound.Maximum.Y), Bound.Maximum.Z));
 
             //see if we're already at a power of 2
             for (int bit = 0; bit < 32; bit++)
             {
                 if (highX == 1 << bit)
                 {
-                    Region = new BoundingBox(Region.Minimum - offset, new Vector3(highX, highX, highX) - offset);
+                    Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(highX, highX, highX) - offset);
                     return;
                 }
             }
@@ -368,7 +387,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             //ceiling result being to the nearest power of 2 rather than the nearest integer.
             int x = SigBit(highX);
 
-            Region = new BoundingBox(Region.Minimum - offset, new Vector3(x, x, x) - offset);
+            Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(x, x, x) - offset);
         }
 
         private static int SigBit(int x)
@@ -393,7 +412,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             var isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
-            var bound = BoundingBox.FromPoints(Region.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
             if (rayWS.Intersects(ref bound))
             {
                 foreach (var t in this.Objects)
