@@ -242,7 +242,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
             //this list contains all of the objects which got moved down the tree and can be delisted from this node.
             List<int> delist = new List<int>();
-
+            int idx = 0;
             foreach (int obj in Objects)
             {
                 var box = GetBoundingBox(obj);
@@ -253,17 +253,28 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         if (octant[i].Contains(box) == ContainmentType.Contains)
                         {
                             octList[i].Add(obj);
-                            delist.Add(obj);
+                            delist.Add(idx);// Add index instead of object to allow fast swap and resize operation
                             break;
                         }
                     }
                 }
+                ++idx;
             }
 
             //delist every moved object from this node.
-            foreach (int obj in delist)
-                Objects.Remove(obj);
-
+            //foreach (int obj in delist)
+            //    Objects.Remove(obj);
+            //To avoid list memory operation during remove, use swap and resize to improve performance
+            int end = Objects.Count - 1;
+            delist.Reverse();
+            foreach(var i in delist)
+            {
+                Objects[i] = Objects[end--];
+            }
+            ++end;
+            if(end < Objects.Count)
+                Objects.RemoveRange(end, Objects.Count - end);
+            Objects.TrimExcess();
             //Create child nodes where there are items contained in the bounding region
             for (int i = 0; i < 8; i++)
             {

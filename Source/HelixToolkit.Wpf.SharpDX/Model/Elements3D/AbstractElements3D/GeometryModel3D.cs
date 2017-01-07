@@ -18,6 +18,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Point = System.Windows.Point;
     using System.ComponentModel;
+    using HelixToolkit.SharpDX.Shared.Utilities;
+    using System.Diagnostics;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -25,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class GeometryModel3D : Model3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
     {
         protected RasterizerState rasterState;
-
+        protected GeometryOctree octree;
         /// <summary>
         /// Override in derived classes to specify the
         /// size, in bytes, of the vertices used for rendering.
@@ -63,6 +65,34 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static readonly DependencyProperty UseOctreeHitTestProperty = DependencyProperty.Register("UseOctreeHitTest", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, 
+            (s,e)=> 
+            {
+                var m = s as GeometryModel3D;
+                if((bool)e.NewValue == true)
+                {
+                    m.UpdateOctree();
+                }
+                else
+                {
+                    m.octree = null;
+                }
+            }));
+        /// <summary>
+        /// Use octree for hittest instead of bruteforce hit test for better performance
+        /// </summary>
+        public bool UseOctreeHitTest
+        {
+            set
+            {
+                SetValue(UseOctreeHitTestProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(UseOctreeHitTestProperty);
+            }
+        }
+
         public static readonly DependencyProperty GeometryProperty =
             DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new UIPropertyMetadata(GeometryChanged));
 
@@ -97,11 +127,28 @@ namespace HelixToolkit.Wpf.SharpDX
             //b.Maximum = Vector3.TransformCoordinate(b.Maximum, m);
             this.Bounds = b;
             //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
+            UpdateOctree();
             if (renderHost !=null)
             {
                 var host = this.renderHost;
                 this.Detach();
                 this.Attach(host);
+            }
+        }
+
+        protected void UpdateOctree()
+        {
+            if(Geometry != null && Geometry.Positions != null && Geometry.Indices != null)
+            {
+                this.octree = new GeometryOctree(this.Geometry.Positions, this.Geometry.Indices);
+#if DEBUG
+                var sw = Stopwatch.StartNew();
+#endif
+                this.octree.UpdateTree();
+#if DEBUG
+                sw.Stop();
+                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
+#endif
             }
         }
 
@@ -357,57 +404,78 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-
-            var g = this.Geometry as MeshGeometry3D;
-            var isHit = false;
-            var result = new HitTestResult();
-            result.Distance = double.MaxValue;
-
-            if (g != null)
+#if DEBUG
+            Stopwatch sw = Stopwatch.StartNew();
+#endif
+            bool isHit = false;
+            if (UseOctreeHitTest)
             {
-                var m = this.modelMatrix;
+                isHit = octree.HitTest(this, modelMatrix, rayWS, ref hits);
+            }
+            else
+            {
+                var g = this.Geometry as MeshGeometry3D;
+                isHit = false;
+                var result = new HitTestResult();
+                result.Distance = double.MaxValue;
 
-                // put bounds to world space
-                var b = BoundingBox.FromPoints(this.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
-
-                //var b = this.Bounds;
-
-                // this all happens now in world space now:
-                if (rayWS.Intersects(ref b))
+                if (g != null)
                 {
-                    int index = 0;
-                    foreach (var t in g.Triangles)
-                    {
-                        float d;
-                        var p0 = Vector3.TransformCoordinate(t.P0, m);
-                        var p1 = Vector3.TransformCoordinate(t.P1, m);
-                        var p2 = Vector3.TransformCoordinate(t.P2, m);
-                        if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
-                        {
-                            if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
-                            {
-                                result.IsValid = true;
-                                result.ModelHit = this;
-                                // transform hit-info to world space now:
-                                result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
-                                result.Distance = d;
+                    var m = this.modelMatrix;
 
-                                var n = Vector3.Cross(p1 - p0, p2 - p0);
-                                n.Normalize();
-                                // transform hit-info to world space now:
-                                result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
-                                result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
-                                isHit = true;
+                    // put bounds to world space
+                    var b = BoundingBox.FromPoints(this.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+
+                    //var b = this.Bounds;
+
+                    // this all happens now in world space now:
+                    if (rayWS.Intersects(ref b))
+                    {
+                        int index = 0;
+                        foreach (var t in g.Triangles)
+                        {
+                            float d;
+                            var p0 = Vector3.TransformCoordinate(t.P0, m);
+                            var p1 = Vector3.TransformCoordinate(t.P1, m);
+                            var p2 = Vector3.TransformCoordinate(t.P2, m);
+                            if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
+                            {
+                                if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                                {
+                                    result.IsValid = true;
+                                    result.ModelHit = this;
+                                    // transform hit-info to world space now:
+                                    result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
+                                    result.Distance = d;
+
+                                    var n = Vector3.Cross(p1 - p0, p2 - p0);
+                                    n.Normalize();
+                                    // transform hit-info to world space now:
+                                    result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
+                                    result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
+                                    isHit = true;
+                                }
                             }
+                            index += 3;
                         }
-                        index += 3;
                     }
                 }
+                if (isHit)
+                {
+                    hits.Add(result);
+                }
             }
+#if DEBUG
+            sw.Stop();
             if (isHit)
             {
-                hits.Add(result);
+                Debug.WriteLine("Octree time:" + sw.ElapsedMilliseconds);
+                foreach (var hit in hits)
+                {
+                    Debug.WriteLine(hit.PointHit);
+                }
             }
+#endif
             return isHit;
         }
 

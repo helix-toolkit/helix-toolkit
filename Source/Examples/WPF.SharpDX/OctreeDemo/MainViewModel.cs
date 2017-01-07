@@ -139,6 +139,8 @@ namespace OctreeDemo
 
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
+            b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
+            b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);
             this.Model = b2.ToMeshGeometry3D();
             this.InnerModel = new MeshGeometry3D()
             {

@@ -1,4 +1,5 @@
-﻿<Window x:Class="OctreeDemo.MainWindow"
+﻿<Window
+    x:Class="OctreeDemo.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -38,14 +39,24 @@
             <!--<hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
                 Geometry="{Binding Other}"
                 Material="{Binding OtherMaterial}" />-->
-            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}" IsRendering="{Binding Visibility}" 
-                Geometry="{Binding InnerModel}" CullMode="Front" FrontCounterClockwise="True"
+            <hx:MeshGeometryModel3D
+                CullMode="Front"
+                FillMode="{Binding FillMode}"
+                FrontCounterClockwise="True"
+                Geometry="{Binding InnerModel}"
+                IsRendering="{Binding Visibility}"
                 Material="{Binding InnerModelMaterial}" />
-            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}" IsRendering="{Binding Visibility}"
+            <hx:MeshGeometryModel3D
                 CullMode="Back"
+                FillMode="{Binding FillMode}"
                 Geometry="{Binding Model}"
+                IsRendering="{Binding Visibility}"
                 Material="{Binding ModelMaterial}" />
-            <hx:LineGeometryModel3D Geometry="{Binding OctreeModel}" Color="{Binding LineColor}" Thickness="0.5"/>
+            <hx:LineGeometryModel3D
+                Geometry="{Binding OctreeModel}"
+                IsHitTestVisible="False"
+                Thickness="0.5"
+                Color="{Binding LineColor}" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
