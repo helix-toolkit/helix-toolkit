@@ -136,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var list = Children.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
             var tree = new GeometryModel3DOctree(list);
-            tree.UpdateTree();
+            tree.BuildTree();
             Octree = tree;
         }
         /// <summary>

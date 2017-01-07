@@ -123,14 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0)
             {
                 this.Octree = CreateOctree();
-#if DEBUG
-                var sw = Stopwatch.StartNew();
-#endif
-                this.Octree.UpdateTree();
-#if DEBUG
-                sw.Stop();
-                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
-#endif
+                this.Octree.BuildTree();
             }
             else
             {

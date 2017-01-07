@@ -30,8 +30,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         IOctree[] ChildNodes { get; }
         bool IsEmpty { get; }
         bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
-        void UpdateTree();
+        /// <summary>
+        /// Build tree from top to bottom
+        /// </summary>
+        void BuildTree();
 
+        /// <summary>
+        /// Build current node level only, this will only build current node and its children. To build from top to bottom, call BuildTree
+        /// </summary>
+        void BuildCurrent();
         void Clear();
     }
 
@@ -121,10 +128,40 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         }
 
         /// <summary>
-        /// Processes all pending insertions by inserting them into the tree.
+        /// Build the whole tree from top to bottom iteratively.
         /// </summary>
-        /// <remarks>Consider deprecating this?</remarks>
-        public void UpdateTree()   //complete & tested
+        public void BuildTree()
+        {
+#if DEBUG
+            var sw = Stopwatch.StartNew();
+#endif
+            var queue = new Queue<IOctree>();
+            queue.Enqueue(this);
+            while (queue.Count > 0)
+            {
+                var tree = queue.Dequeue();
+                tree.BuildCurrent();
+                if (tree.HasChildren)
+                {
+                    foreach(var subTree in tree.ChildNodes)
+                    {
+                        if (subTree != null)
+                        {
+                            queue.Enqueue(subTree);
+                        }
+                    }
+                }
+            }
+#if DEBUG
+            sw.Stop();
+            Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
+#endif
+        }
+
+        /// <summary>
+        /// Update this tree node and create its children, to build its children iteratively, please call BuildTree
+        /// </summary>
+        public void BuildCurrent() 
         {
             /*I think I can just directly insert items into the tree instead of using a queue.*/
             if (!treeBuilt)
@@ -135,15 +172,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     treeReady = true;
                     return;
                 }
-                BuildTree();
+                BuildSubTree();
                 treeBuilt = true;
                 treeReady = true;
             }
         }
+
         /// <summary>
-        /// Build tree nodes
+        /// Build sub tree nodes
         /// </summary>
-        protected virtual void BuildTree()
+        protected virtual void BuildSubTree()
         {
             Vector3 dimensions = Bound.Maximum - Bound.Minimum;
 
@@ -223,7 +261,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     ChildNodes[i] = CreateNode(octant[i], octList[i]);
                     ActiveNodes |= (byte)(1 << i);
-                    ChildNodes[i].UpdateTree();
                 }
             }
         }
