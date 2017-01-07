@@ -202,7 +202,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Vector3 center = Bound.Minimum + half;
 
             //Create subdivided regions for each octant
-            var octant = new BoundingBox[8] {
+            var octants = new BoundingBox[8] {
                 new BoundingBox(Bound.Minimum, center),
                 new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, center.Y, center.Z)),
                 new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, center.Z), new Vector3(Bound.Maximum.X, center.Y, Bound.Maximum.Z)),
@@ -218,40 +218,26 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             for (int i = 0; i < 8; ++i)
                 octList[i] = new List<T>(Objects.Count / 8);
 
-            //this list contains all of the objects which got moved down the tree and can be delisted from this node.
-            var delist = new List<int>(Objects.Count);
-            int idx = 0;
-            foreach (var obj in Objects)
+            int count = Objects.Count;
+            for(int i = Objects.Count - 1; i >= 0; --i)
             {
+                var obj = Objects[i];
                 var box = GetBoundingBoxFromItem(obj);
                 if (box.Minimum != box.Maximum)
                 {
-                    for (int i = 0; i < 8; ++i)
+                    for (int x = 0; x < 8; ++x)
                     {
-                        if (octant[i].Contains(box) == ContainmentType.Contains)
+                        if (octants[x].Contains(box) == ContainmentType.Contains)
                         {
-                            octList[i].Add(obj);
-                            delist.Add(idx);// Add index instead of object to allow fast swap and resize operation
+                            octList[x].Add(obj);
+                            Objects[i] = Objects[--count]; //Disard the existing object from location i, replaced with last valid object.
                             break;
                         }
                     }
                 }
-                ++idx;
             }
 
-            //delist every moved object from this node.
-            //foreach (int obj in delist)
-            //    Objects.Remove(obj);
-            //To avoid list memory operation during remove, use swap and resize to improve performance
-            int end = Objects.Count - 1;
-            delist.Reverse();
-            foreach (var i in delist)
-            {
-                Objects[i] = Objects[end--];
-            }
-            ++end;
-            if (end < Objects.Count)
-                Objects.RemoveRange(end, Objects.Count - end);
+            Objects.RemoveRange(count, Objects.Count - count);
             Objects.TrimExcess();
 
             //Create child nodes where there are items contained in the bounding region
@@ -259,7 +245,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 if (octList[i].Count != 0)
                 {
-                    ChildNodes[i] = CreateNode(octant[i], octList[i]);
+                    ChildNodes[i] = CreateNode(octants[i], octList[i]);
                     ActiveNodes |= (byte)(1 << i);
                 }
             }
