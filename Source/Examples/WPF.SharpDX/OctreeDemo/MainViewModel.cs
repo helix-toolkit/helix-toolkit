@@ -167,11 +167,9 @@ namespace OctreeDemo
 
             LineColor = Color.Blue;
 
-            var lineBuilder = new LineBuilder();
             MeshGeometryOctree octree = new MeshGeometryOctree(Model.Positions, Model.Indices);
             octree.UpdateTree();
-            CreateOctreeSegments(lineBuilder, octree);
-            OctreeModel = lineBuilder.ToLineGeometry3D();
+            OctreeModel = octree.CreateOctreeLineModel();
         }
 
         private void CreateOctreeSegments(LineBuilder builder, MeshGeometryOctree tree)

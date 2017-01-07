@@ -19,21 +19,25 @@ using System.Text;
 
 namespace HelixToolkit.SharpDX.Shared.Utilities
 {
-    public interface IOctree<T>
+    public interface IOctree
     {
         byte ActiveNodes { get; }
         bool HasChildren { get; }
         bool IsRoot { get; }
-        List<T> Objects { get; }
-        IOctree<T> Parent { get; }
+        IOctree Parent { get; }
         BoundingBox Bound { get; }
-        IOctree<T>[] ChildNodes { get; }
+        IOctree[] ChildNodes { get; }
         bool IsEmpty { get; }
         bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
         void UpdateTree();
     }
 
-    public abstract class OctreeBase<T> : IOctree<T>
+    public interface IOctreeBase<T> : IOctree
+    {
+        List<T> Objects { get; }
+    }
+
+    public abstract class OctreeBase<T> : IOctreeBase<T>
     {
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
@@ -47,8 +51,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// These are all of the possible child octants for this node in the tree.
         /// </summary>
-        private readonly IOctree<T>[] childNodes = new IOctree<T>[8];
-        public IOctree<T>[] ChildNodes { get { return childNodes; } }
+        private readonly IOctree[] childNodes = new IOctree[8];
+        public IOctree[] ChildNodes { get { return childNodes; } }
         /// <summary>
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
@@ -59,7 +63,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// A reference to the parent node is sometimes required. If we are a node and we realize that we no longer have items contained within ourselves,
         /// we need to let our parent know that we're empty so that it can delete us.
         /// </summary>
-        public IOctree<T> Parent { protected set; get; }
+        public IOctree Parent { protected set; get; }
 
         protected bool treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
@@ -105,7 +109,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <param name="bound"></param>
         /// <param name="objList"></param>
         /// <returns></returns>
-        protected abstract IOctree<T> CreateNode(BoundingBox bound, List<T> objList);  //complete & tested
+        protected abstract IOctree CreateNode(BoundingBox bound, List<T> objList);  //complete & tested
 
         /// <summary>
         /// 
@@ -113,7 +117,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <param name="bound"></param>
         /// <param name="Item"></param>
         /// <returns></returns>
-        protected IOctree<T> CreateNode(BoundingBox bound, T Item)
+        protected IOctree CreateNode(BoundingBox bound, T Item)
         {
             return CreateNode(bound, new List<T> { Item });
         }
@@ -335,7 +339,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             treeReady = true;
         }
 
-        protected override IOctree<Tuple<int, BoundingBox>> CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
+        protected override IOctree CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
         {
             return new MeshGeometryOctree(Positions, Indices, region, objList);
         }
