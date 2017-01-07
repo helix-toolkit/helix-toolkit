@@ -36,7 +36,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                Set<IntCollection>(ref indices, value);
+                if(Set<IntCollection>(ref indices, value))
+                {
+                    Octree = null;
+                }
             }
         }
 
@@ -49,7 +52,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                Set<Vector3Collection>(ref position, value);
+                if(Set<Vector3Collection>(ref position, value))
+                {
+                    Octree = null;
+                }
             }
         }
 
@@ -131,10 +137,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Octree = null;
             }
         }
-
+        /// <summary>
+        /// Override to create different octree in subclasses.
+        /// </summary>
+        /// <returns></returns>
         protected virtual IOctree CreateOctree()
         {
             return null;
+        }
+
+        /// <summary>
+        /// Set octree to null
+        /// </summary>
+        public void ClearOctree()
+        {
+            Octree = null;
         }
     }
 }
