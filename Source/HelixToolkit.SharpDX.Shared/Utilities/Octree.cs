@@ -185,32 +185,36 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         #endregion
     }
 
-
-    public class GeometryOctree
+    /// <summary>
+    /// MeshGeometryOctree slices mesh geometry by triangles into octree. Objects are tuple of each triangle index and its bounding box.
+    /// </summary>
+    public class MeshGeometryOctree
         : OctreeBase<Tuple<int, BoundingBox>>
     {
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
-        public GeometryOctree(Vector3Collection positions, IList<int> indices)
+
+        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices)
         {
             Positions = positions;
             Indices = indices;
             Bound = BoundingBox.FromPoints(positions.Array);
             Objects = new List<Tuple<int, BoundingBox>>(indices.Count / 3);
+            // Construct triangle index and its bounding box tuple
             foreach (var i in Enumerable.Range(0, indices.Count / 3))
             {
                 Objects.Add(new Tuple<int, BoundingBox>(i, GetBoundingBox(i)));
             }
         }
 
-        public GeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex)
+        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex)
             : base(bound, triIndex)
         {
             Positions = positions;
             Indices = indices;
         }
 
-        protected GeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list)
+        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list)
             : base(bound, list)
         { }
 
@@ -323,7 +327,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     ChildNodes[i] = CreateNode(octant[i], octList[i]);
                     ActiveNodes |= (byte)(1 << i);
-                    (ChildNodes[i] as GeometryOctree).BuildTree();
+                    (ChildNodes[i] as MeshGeometryOctree).BuildTree();
                 }
             }
 
@@ -333,7 +337,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override IOctree<Tuple<int, BoundingBox>> CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
         {
-            return new GeometryOctree(Positions, Indices, region, objList);
+            return new MeshGeometryOctree(Positions, Indices, region, objList);
         }
 
         protected override void FindEnclosingBox()
@@ -461,7 +465,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 }
                 if (HasChildren)
                 {
-                    foreach (GeometryOctree child in ChildNodes)
+                    foreach (MeshGeometryOctree child in ChildNodes)
                     {
                         if (child != null)
                             child.HitTest(model, modelMatrix, rayWS, ref hits);

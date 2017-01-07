@@ -110,7 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private DefaultVertex[] vertexArrayBuffer = null;
-        protected GeometryOctree octree;
+        protected MeshGeometryOctree octree;
 
         protected override void OnRasterStateChanged()
         {
@@ -184,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (UseOctreeHitTest && IsHitTestVisible && Geometry != null && Geometry.Positions != null
                 && Geometry.Indices != null && Geometry.Positions.Count > 0 && Geometry.Indices.Count > 0)
             {
-                this.octree = new GeometryOctree(this.Geometry.Positions, this.Geometry.Indices);
+                this.octree = new MeshGeometryOctree(this.Geometry.Positions, this.Geometry.Indices);
 #if DEBUG
                 var sw = Stopwatch.StartNew();
 #endif

@@ -118,11 +118,6 @@ namespace OctreeDemo
             }
         }
 
-        private Vector3Collection initialPosition;
-        private IntCollection initialIndicies;
-        private Random rnd = new Random();
-        private bool isRemoving = true;
-        private int removedIndex = 0;
         public MainViewModel()
         {            // titles
             this.Title = "DynamicTexture Demo";
@@ -168,35 +163,18 @@ namespace OctreeDemo
                 SpecularShininess = 100f
             };
 
-            //this.OtherMaterial = new PhongMaterial
-            //{
-            //    AmbientColor = Color.Gray,
-            //    DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-            //    SpecularColor = Color.White,
-            //    SpecularShininess = 100f,
-            //    DiffuseMap = ModelMaterial.DiffuseMap,
-            //    NormalMap = ModelMaterial.NormalMap
-            //};
-
-            initialPosition = Model.Positions;
-            initialIndicies = Model.Indices;
-
-            //var b3 = new MeshBuilder(true, true, true);
-            //b3.AddBox(new Vector3(3, 3, 3), 1, 2,  2);
-            //Other = b3.ToMeshGeometry3D();
-
             this.PropertyChanged += MainViewModel_PropertyChanged;
 
             LineColor = Color.Blue;
 
             var lineBuilder = new LineBuilder();
-            GeometryOctree octree = new GeometryOctree(Model.Positions, Model.Indices);
+            MeshGeometryOctree octree = new MeshGeometryOctree(Model.Positions, Model.Indices);
             octree.UpdateTree();
             CreateOctreeSegments(lineBuilder, octree);
             OctreeModel = lineBuilder.ToLineGeometry3D();
         }
 
-        private void CreateOctreeSegments(LineBuilder builder, GeometryOctree tree)
+        private void CreateOctreeSegments(LineBuilder builder, MeshGeometryOctree tree)
         {
             if (tree == null) return;
             var box = tree.Bound;
@@ -228,7 +206,7 @@ namespace OctreeDemo
             {
                 foreach(var child in tree.ChildNodes)
                 {
-                    CreateOctreeSegments(builder, child as GeometryOctree);
+                    CreateOctreeSegments(builder, child as MeshGeometryOctree);
                 }
             }          
         }
