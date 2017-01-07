@@ -1,4 +1,14 @@
-﻿using HelixToolkit.Wpf.SharpDX;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Octree.cs" company="Helix Toolkit">
+//   Copyright (c) 2017 Helix Toolkit contributors
+// </copyright>
+// <summary>
+// An octree implementation reference from https://www.gamedev.net/resources/_/technical/game-programming/introduction-to-octrees-r3529
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using System;
@@ -166,25 +176,30 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
 
     public class GeometryOctree
-        : OctreeBase<int>
+        : OctreeBase<Tuple<int, BoundingBox>>
     {
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
         public GeometryOctree(Vector3Collection positions, IList<int> indices)
-            : base(BoundingBox.FromPoints(positions.Array), Enumerable.Range(0, indices.Count/3).ToList())
         {
             Positions = positions;
             Indices = indices;
+            Region = BoundingBox.FromPoints(positions.Array);
+            Objects = new List<Tuple<int, BoundingBox>>(indices.Count / 3);
+            foreach(var i in Enumerable.Range(0, indices.Count / 3))
+            {
+                Objects.Add(new Tuple<int, BoundingBox>(i, GetBoundingBox(i)));
+            }
         }
 
-        public GeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox box, List<int> triIndex)
+        public GeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox box, List<Tuple<int, BoundingBox>> triIndex)
             : base(box, triIndex)
         {
             Positions = positions;
             Indices = indices;
         }
 
-        protected GeometryOctree(BoundingBox box, List<int> list):base(box, list) { }
+        protected GeometryOctree(BoundingBox box, List<Tuple<int, BoundingBox>> list):base(box, list) { }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
         {
@@ -226,7 +241,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Vector3 center = Region.Minimum + half;
 
             //Create subdivided regions for each octant
-            BoundingBox[] octant = new BoundingBox[8];
+            var octant = new BoundingBox[8];
             octant[0] = new BoundingBox(Region.Minimum, center);
             octant[1] = new BoundingBox(new Vector3(center.X, Region.Minimum.Y, Region.Minimum.Z), new Vector3(Region.Maximum.X, center.Y, center.Z));
             octant[2] = new BoundingBox(new Vector3(center.X, Region.Minimum.Y, center.Z), new Vector3(Region.Maximum.X, center.Y, Region.Maximum.Z));
@@ -237,15 +252,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             octant[7] = new BoundingBox(new Vector3(Region.Minimum.X, center.Y, center.Z), new Vector3(center.X, Region.Maximum.Y, Region.Maximum.Z));
 
             //This will contain all of our objects which fit within each respective octant.
-            List<int>[] octList = new List<int>[8];
-            for (int i = 0; i < 8; i++) octList[i] = new List<int>();
+            var octList = new List<Tuple<int, BoundingBox>>[8];
+            for (int i = 0; i < 8; i++)
+                octList[i] = new List<Tuple<int, BoundingBox>>(Objects.Count/8);
 
             //this list contains all of the objects which got moved down the tree and can be delisted from this node.
-            List<int> delist = new List<int>();
+            var delist = new List<int>(Objects.Count);
             int idx = 0;
-            foreach (int obj in Objects)
+            foreach (var obj in Objects)
             {
-                var box = GetBoundingBox(obj);
+                var box = obj.Item2;
                 if (box.Minimum != box.Maximum)
                 {
                     for (int i = 0; i < 8; i++)
@@ -290,7 +306,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             treeReady = true;
         }
 
-        protected override OctreeBase<int> CreateNode(BoundingBox region, List<int> objList)
+        protected override OctreeBase<Tuple<int, BoundingBox>> CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
         {
             return new GeometryOctree(Positions, Indices, region, objList);
         }
@@ -303,7 +319,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             foreach (var obj in Objects)
             {
                 Vector3 local_min = Vector3.Zero, local_max = Vector3.Zero;
-                var BoundingBox = GetBoundingBox(obj);
+                var BoundingBox = obj.Item2;
                 if (BoundingBox != null && BoundingBox.Maximum != BoundingBox.Minimum)
                 {
                     local_min = BoundingBox.Minimum;
@@ -372,7 +388,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 foreach(var t in this.Objects)
                 {
-                    var idx = t*3;
+                    var idx = t.Item1*3;
                     var v0 = Positions[Indices[idx]];
                     var v1 = Positions[Indices[idx + 1]];
                     var v2 = Positions[Indices[idx + 2]];
