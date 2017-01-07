@@ -36,9 +36,6 @@
 
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <!--<hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
-                Geometry="{Binding Other}"
-                Material="{Binding OtherMaterial}" />-->
             <hx:MeshGeometryModel3D
                 CullMode="Front"
                 FillMode="{Binding FillMode}"
@@ -52,11 +49,24 @@
                 Geometry="{Binding Model}"
                 IsRendering="{Binding Visibility}"
                 Material="{Binding ModelMaterial}" />
+            <hx:ItemsModel3D ItemsSource="{Binding Items}" UseOctreeHitTest="True" Octree="{Binding GroupOctree, Mode=OneWayToSource}" IsRendering="{Binding Visibility}">
+                <hx:ItemsModel3D.ItemTemplate>
+                    <DataTemplate>
+                        <hx:MeshGeometryModel3D Geometry="{Binding Model}" Material="{Binding Material}"/>
+                    </DataTemplate>
+                </hx:ItemsModel3D.ItemTemplate>
+            </hx:ItemsModel3D>
             <hx:LineGeometryModel3D
                 Geometry="{Binding OctreeModel}"
                 IsHitTestVisible="False"
                 Thickness="0.5"
                 Color="{Binding LineColor}" />
+
+            <hx:LineGeometryModel3D
+                Geometry="{Binding GroupOctreeModel}"
+                IsHitTestVisible="False"
+                Thickness="0.5"
+                Color="{Binding GroupLineColor}" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"

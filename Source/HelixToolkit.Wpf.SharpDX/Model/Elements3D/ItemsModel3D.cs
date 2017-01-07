@@ -17,6 +17,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using HelixToolkit.SharpDX.Shared.Utilities;
+    using SharpDX;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a
@@ -45,6 +47,25 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
 
         /// <summary>
+        /// Enable octree hit test to improve hit performance. Note: Octree does not support child using Transform. 
+        /// </summary>
+        public static readonly DependencyProperty UseOctreeHitTestProperty = DependencyProperty.Register("UseOctreeHitTest", typeof(bool), typeof(ItemsModel3D), 
+            new PropertyMetadata(true,
+                (s,e)=> {
+                    var d = s as ItemsModel3D;
+                    if ((bool)e.NewValue)
+                    {
+                        d.UpdateOctree();
+                    }
+                    else
+                    {
+                        d.Octree = null;
+                    }
+                }));
+
+        public static readonly DependencyProperty OctreeProperty = DependencyProperty.Register("Octree", typeof(IOctree), typeof(ItemsModel3D), new PropertyMetadata(null));
+
+        /// <summary>
         ///     Gets or sets the <see cref="DataTemplate" /> used to display each item.
         /// </summary>
         /// <value>
@@ -68,7 +89,56 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
+        /// <summary>
+        /// Enable octree hit test to improve hit performance. Note: Octree does not support child using Transform. 
+        /// </summary>
+        public bool UseOctreeHitTest
+        {
+            set
+            {
+                SetValue(UseOctreeHitTestProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(UseOctreeHitTestProperty);
+            }
+        }
+
+        public IOctree Octree
+        {
+            set
+            {
+                SetValue(OctreeProperty, value);
+            }
+            get
+            {
+                return (IOctree)GetValue(OctreeProperty);
+            }
+        }
+
         private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
+
+        public ItemsModel3D()
+        {
+            this.Loaded += ItemsModel3D_Loaded;
+        }
+
+        private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateBounds();
+            if (UseOctreeHitTest && mDictionary.Count > 0)
+            {
+                UpdateOctree();
+            }
+        }
+
+        private void UpdateOctree()
+        {
+            var list = Children.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
+            var tree = new GeometryModel3DOctree(list);
+            tree.UpdateTree();
+            Octree = tree;
+        }
         /// <summary>
         /// Handles changes in the ItemsSource property.
         /// </summary>
@@ -266,6 +336,20 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
+        }
+
+        public override bool HitTest(global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        {
+            bool isHit = false;
+            if (UseOctreeHitTest && Octree != null)
+            {
+                isHit= Octree.HitTest(this, modelMatrix, ray, ref hits);
+            }
+            else
+            {
+                isHit= base.HitTest(ray, ref hits);
+            }
+            return isHit;
         }
     }
 }

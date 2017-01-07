@@ -6,6 +6,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
 
 namespace OctreeDemo
-{    
+{
     public class MainViewModel : BaseViewModel
     {
         private Vector3 light1Direction = new Vector3();
@@ -101,6 +102,48 @@ namespace OctreeDemo
 
         public LineGeometry3D OctreeModel { set; get; }
 
+        public Color GroupLineColor { set; get; }
+
+        private LineGeometry3D groupOctreeModel = null;
+        public LineGeometry3D GroupOctreeModel
+        {
+            set
+            {
+                groupOctreeModel = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return groupOctreeModel;
+            }
+        }
+
+        public ObservableCollection<DataModel> Items { set; get; }
+
+        private IOctree groupOctree = null;
+        public IOctree GroupOctree
+        {
+            set
+            {
+                if (groupOctree == value)
+                    return;
+                groupOctree = value;
+                OnPropertyChanged();
+                if (value != null)
+                {
+                    GroupOctreeModel = value.CreateOctreeLineModel();
+                }
+                else
+                {
+                    GroupOctreeModel = null;
+                }
+            }
+            get
+            {
+                return groupOctree;
+            }
+        }
+
         private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
         public Media3D.Vector3D CamLookDir
         {
@@ -125,8 +168,12 @@ namespace OctreeDemo
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-            this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera { Position = new Media3D.Point3D(10, 10, 10),
-                LookDirection = new Media3D.Vector3D(-10, -10, -10), UpDirection = new Media3D.Vector3D(0, 1, 0) };
+            this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
+            {
+                Position = new Media3D.Point3D(10, 10, 10),
+                LookDirection = new Media3D.Vector3D(-10, -10, -10),
+                UpDirection = new Media3D.Vector3D(0, 1, 0)
+            };
             this.Light1Color = (Color4)Color.White;
             this.Light1Direction = new Vector3(-10, -10, -10);
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
@@ -139,7 +186,8 @@ namespace OctreeDemo
             this.Model = b2.ToMeshGeometry3D();
             this.InnerModel = new MeshGeometry3D()
             {
-                Indices = Model.Indices, Positions = Model.Positions,
+                Indices = Model.Indices,
+                Positions = Model.Positions,
                 Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; })),
                 TextureCoordinates = Model.TextureCoordinates,
                 Tangents = Model.Tangents,
@@ -166,47 +214,22 @@ namespace OctreeDemo
             this.PropertyChanged += MainViewModel_PropertyChanged;
 
             LineColor = Color.Blue;
+            GroupLineColor = Color.Red;
             Model.UpdateOctree();
             OctreeModel = Model.Octree.CreateOctreeLineModel();
-        }
 
-        private void CreateOctreeSegments(LineBuilder builder, MeshGeometryOctree tree)
-        {
-            if (tree == null) return;
-            var box = tree.Bound;
-            Vector3[] verts = new Vector3[8];
-            verts[0] = box.Minimum;
-            verts[1] = new Vector3(box.Minimum.X, box.Minimum.Y, box.Maximum.Z); //Z
-            verts[2] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Minimum.Z); //Y
-            verts[3] = new Vector3(box.Maximum.X, box.Minimum.Y, box.Minimum.Z); //X
+            Items = new ObservableCollection<DataModel>();
 
-            verts[7] = box.Maximum;
-            verts[4] = new Vector3(box.Maximum.X, box.Maximum.Y, box.Minimum.Z); //Z
-            verts[5] = new Vector3(box.Maximum.X, box.Minimum.Y, box.Maximum.Z); //Y
-            verts[6] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Maximum.Z); //X
-            builder.AddLine(verts[0], verts[1]);
-            builder.AddLine(verts[0], verts[2]);
-            builder.AddLine(verts[0], verts[3]);
-            builder.AddLine(verts[7], verts[4]);
-            builder.AddLine(verts[7], verts[5]);
-            builder.AddLine(verts[7], verts[6]);
-
-            builder.AddLine(verts[1], verts[6]);
-            builder.AddLine(verts[1], verts[5]);
-            builder.AddLine(verts[4], verts[2]);
-            builder.AddLine(verts[4], verts[3]);
-            builder.AddLine(verts[2], verts[6]);
-            builder.AddLine(verts[3], verts[5]);
-
-            if (tree.HasChildren)
+            for (int i = 0; i < 10; ++i)
             {
-                foreach(var child in tree.ChildNodes)
+                for (int j = 0; j < 10; ++j)
                 {
-                    CreateOctreeSegments(builder, child as MeshGeometryOctree);
+                    var builder = new MeshBuilder(true, false, false);
+                    builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1);
+                    Items.Add(new DataModel() { Model = builder.ToMeshGeometry3D() });
                 }
-            }          
+            }
         }
-
 
         private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

@@ -491,6 +491,19 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
     public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
     {
+        public GeometryModel3DOctree(List<GeometryModel3D> objList)
+        {
+            Objects = objList;
+            if(Objects!=null && Objects.Count > 0)
+            {
+                var bound = Objects[0].Bounds;
+                foreach(var item in Objects)
+                {
+                    bound = BoundingBox.Merge(item.Bounds, bound);
+                }
+                this.Bound = bound;
+            }
+        }
         public GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList)
             :base(bound, objList)
         { }
@@ -511,16 +524,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 var tempHits = new List<HitTestResult>();
                 foreach (var t in this.Objects)
                 {
-                    bound = BoundingBox.FromPoints(t.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
-                    if(rayWS.Intersects(ref bound))
-                    {
-                        t.HitTest(rayWS, ref tempHits);
-                    }                
+                    t.PushMatrix(modelMatrix);
+                    t.HitTest(rayWS, ref hits);
+                    t.PopMatrix();
                 }
                
                 if (HasChildren)
                 {
-                    foreach (MeshGeometryOctree child in ChildNodes)
+                    foreach (var child in ChildNodes)
                     {
                         if (child != null)
                             child.HitTest(model, modelMatrix, rayWS, ref tempHits);
