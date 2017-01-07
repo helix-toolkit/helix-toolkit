@@ -89,7 +89,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <param name="region">The suggested dimensions for the bounding region. 
         /// Note: if items are outside this region, the region will be automatically resized.</param>
         public OctreeBase(BoundingBox region)
-            :this()
+            : this()
         {
             Region = region;
         }
@@ -99,10 +99,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         protected abstract void BuildTree();    //complete & tested
 
-        protected abstract OctreeBase<T> CreateNode(BoundingBox region, List<T> objList);  //complete & tested
+        protected abstract IOctree<T> CreateNode(BoundingBox region, List<T> objList);  //complete & tested
 
 
-        protected OctreeBase<T> CreateNode(BoundingBox region, T Item)
+        protected IOctree<T> CreateNode(BoundingBox region, T Item)
         {
             return CreateNode(region, new List<T> { Item });
         }
@@ -186,7 +186,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Indices = indices;
             Region = BoundingBox.FromPoints(positions.Array);
             Objects = new List<Tuple<int, BoundingBox>>(indices.Count / 3);
-            foreach(var i in Enumerable.Range(0, indices.Count / 3))
+            foreach (var i in Enumerable.Range(0, indices.Count / 3))
             {
                 Objects.Add(new Tuple<int, BoundingBox>(i, GetBoundingBox(i)));
             }
@@ -199,14 +199,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Indices = indices;
         }
 
-        protected GeometryOctree(BoundingBox box, List<Tuple<int, BoundingBox>> list):base(box, list) { }
+        protected GeometryOctree(BoundingBox box, List<Tuple<int, BoundingBox>> list) : base(box, list) { }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
         {
             var actual = triangleIndex * 3;
             var v1 = Positions[Indices[actual++]];
             var v2 = Positions[Indices[actual++]];
-            var v3 = Positions[Indices[actual++]];
+            var v3 = Positions[Indices[actual]];
             var maxX = Math.Max(v1.X, Math.Max(v2.X, v3.X));
             var maxY = Math.Max(v1.Y, Math.Max(v2.Y, v3.Y));
             var maxZ = Math.Max(v1.Z, Math.Max(v2.Z, v3.Z));
@@ -221,7 +221,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             //terminate the recursion if we're a leaf node
             if (Objects.Count <= 1)   //doubt: is this really right? needs testing.
+            {
+                treeBuilt = true;
+                treeReady = true;
                 return;
+            }
 
             Vector3 dimensions = Region.Maximum - Region.Minimum;
 
@@ -234,6 +238,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             //Check to see if the dimensions of the box are greater than the minimum dimensions
             if (dimensions.X <= MIN_SIZE && dimensions.Y <= MIN_SIZE && dimensions.Z <= MIN_SIZE)
             {
+                treeBuilt = true;
+                treeReady = true;
                 return;
             }
 
@@ -254,7 +260,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             //This will contain all of our objects which fit within each respective octant.
             var octList = new List<Tuple<int, BoundingBox>>[8];
             for (int i = 0; i < 8; i++)
-                octList[i] = new List<Tuple<int, BoundingBox>>(Objects.Count/8);
+                octList[i] = new List<Tuple<int, BoundingBox>>(Objects.Count / 8);
 
             //this list contains all of the objects which got moved down the tree and can be delisted from this node.
             var delist = new List<int>(Objects.Count);
@@ -283,12 +289,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             //To avoid list memory operation during remove, use swap and resize to improve performance
             int end = Objects.Count - 1;
             delist.Reverse();
-            foreach(var i in delist)
+            foreach (var i in delist)
             {
                 Objects[i] = Objects[end--];
             }
             ++end;
-            if(end < Objects.Count)
+            if (end < Objects.Count)
                 Objects.RemoveRange(end, Objects.Count - end);
             Objects.TrimExcess();
             //Create child nodes where there are items contained in the bounding region
@@ -306,7 +312,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             treeReady = true;
         }
 
-        protected override OctreeBase<Tuple<int, BoundingBox>> CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
+        protected override IOctree<Tuple<int, BoundingBox>> CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
         {
             return new GeometryOctree(Positions, Indices, region, objList);
         }
@@ -380,15 +386,19 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public override bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
+            if (!this.treeBuilt)
+            {
+                return false;
+            }
             var isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
             var bound = BoundingBox.FromPoints(Region.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
-            if(rayWS.Intersects(ref bound))
+            if (rayWS.Intersects(ref bound))
             {
-                foreach(var t in this.Objects)
+                foreach (var t in this.Objects)
                 {
-                    var idx = t.Item1*3;
+                    var idx = t.Item1 * 3;
                     var v0 = Positions[Indices[idx]];
                     var v1 = Positions[Indices[idx + 1]];
                     var v2 = Positions[Indices[idx + 2]];
@@ -432,15 +442,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 }
                 if (HasChildren)
                 {
-                    foreach(GeometryOctree child in ChildNodes)
+                    foreach (GeometryOctree child in ChildNodes)
                     {
-                        if(child != null)
+                        if (child != null)
                             child.HitTest(model, modelMatrix, rayWS, ref hits);
                     }
                 }
             }
 
-            return hits.Count>0;
+            return hits.Count > 0;
         }
     }
 }

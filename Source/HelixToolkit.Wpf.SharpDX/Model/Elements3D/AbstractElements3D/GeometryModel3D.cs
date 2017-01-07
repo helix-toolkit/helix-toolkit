@@ -138,7 +138,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void UpdateOctree()
         {
-            if(Geometry != null && Geometry.Positions != null && Geometry.Indices != null)
+            if(UseOctreeHitTest && IsHitTestVisible && Geometry != null && Geometry.Positions != null 
+                && Geometry.Indices != null && Geometry.Positions.Count > 0 && Geometry.Indices.Count > 0)
             {
                 this.octree = new GeometryOctree(this.Geometry.Positions, this.Geometry.Indices);
 #if DEBUG
@@ -149,6 +150,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 sw.Stop();
                 Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
 #endif
+            }
+            else
+            {
+                this.octree = null;
             }
         }
 
@@ -408,7 +413,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Stopwatch sw = Stopwatch.StartNew();
 #endif
             bool isHit = false;
-            if (UseOctreeHitTest)
+            if (UseOctreeHitTest && octree!=null)
             {
                 isHit = octree.HitTest(this, modelMatrix, rayWS, ref hits);
             }

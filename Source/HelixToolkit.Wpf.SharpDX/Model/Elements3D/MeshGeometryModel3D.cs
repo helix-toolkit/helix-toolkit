@@ -119,6 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Positions)))
                 {
+                    UpdateOctree();
                     OnUpdateVertexBuffer(UpdatePositionOnly);
                 }
                 else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
@@ -127,12 +128,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
+                    UpdateOctree();
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
                     this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
                     InvalidateRender();
                 }
                 else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
                 {
+                    UpdateOctree();
                     OnUpdateVertexBuffer(CreateDefaultVertexArray);
                 }
             }
