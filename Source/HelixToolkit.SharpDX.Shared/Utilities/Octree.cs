@@ -22,23 +22,53 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 {
     public interface IOctree
     {
+        /// <summary>
+        /// This is a bitmask indicating which child nodes are actively being used.
+        /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
+        /// </summary>
         byte ActiveNodes { get; }
         bool HasChildren { get; }
         bool IsRoot { get; }
         IOctree Parent { get; }
         BoundingBox Bound { get; }
         IOctree[] ChildNodes { get; }
-        bool IsEmpty { get; }
-        bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+
         /// <summary>
-        /// Build tree from top to bottom
+        /// Returns true if this node tree and all children have no content
+        /// </summary>
+        bool IsEmpty { get; }
+
+        /// <summary>
+        /// Normal hit test from top to bottom
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <returns></returns>
+        bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+
+        /// <summary>
+        /// Hit test for only this node, not its child node
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
+        bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect);
+
+        /// <summary>
+        /// Build the whole tree from top to bottom iteratively.
         /// </summary>
         void BuildTree();
 
         /// <summary>
-        /// Build current node level only, this will only build current node and its children. To build from top to bottom, call BuildTree
+        /// Build current node level only, this will only build current node and create children, but not build its children. 
+        /// To build from top to bottom, call BuildTree
         /// </summary>
-        void BuildCurrent();
+        void BuildCurretNodeOnly();
         void Clear();
     }
 
@@ -63,16 +93,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         private readonly IOctree[] childNodes = new IOctree[8];
         public IOctree[] ChildNodes { get { return childNodes; } }
-        /// <summary>
-        /// This is a bitmask indicating which child nodes are actively being used.
-        /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
-        /// </summary>
+
         public byte ActiveNodes { protected set; get; }
 
-        /// <summary>
-        /// A reference to the parent node is sometimes required. If we are a node and we realize that we no longer have items contained within ourselves,
-        /// we need to let our parent know that we're empty so that it can delete us.
-        /// </summary>
         public IOctree Parent { protected set; get; }
 
         protected bool treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
@@ -108,42 +131,27 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Bound = bound;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bound"></param>
-        /// <param name="objList"></param>
-        /// <returns></returns>
         protected abstract IOctree CreateNode(BoundingBox bound, List<T> objList);  //complete & tested
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bound"></param>
-        /// <param name="Item"></param>
-        /// <returns></returns>
         protected IOctree CreateNode(BoundingBox bound, T Item)
         {
             return CreateNode(bound, new List<T> { Item });
         }
 
-        /// <summary>
-        /// Build the whole tree from top to bottom iteratively.
-        /// </summary>
         public void BuildTree()
         {
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
-            var queue = new Queue<IOctree>(200);
+            var queue = new Queue<IOctree>(256);
             queue.Enqueue(this);
             while (queue.Count > 0)
             {
                 var tree = queue.Dequeue();
-                tree.BuildCurrent();
+                tree.BuildCurretNodeOnly();
                 if (tree.HasChildren)
                 {
-                    foreach(var subTree in tree.ChildNodes)
+                    foreach (var subTree in tree.ChildNodes)
                     {
                         if (subTree != null)
                         {
@@ -158,10 +166,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 #endif
         }
 
-        /// <summary>
-        /// Update this tree node and create its children, to build its children iteratively, please call BuildTree
-        /// </summary>
-        public void BuildCurrent() 
+        public void BuildCurretNodeOnly()
         {
             /*I think I can just directly insert items into the tree instead of using a queue.*/
             if (!treeBuilt)
@@ -219,7 +224,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 octList[i] = new List<T>(Objects.Count / 8);
 
             int count = Objects.Count;
-            for(int i = Objects.Count - 1; i >= 0; --i)
+            for (int i = Objects.Count - 1; i >= 0; --i)
             {
                 var obj = Objects[i];
                 var box = GetBoundingBoxFromItem(obj);
@@ -329,7 +334,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public virtual void Clear()
         {
             Objects.Clear();
-            foreach(var item in ChildNodes)
+            foreach (var item in ChildNodes)
             {
                 if (item != null)
                 {
@@ -339,7 +344,32 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
 
-        public abstract bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+        public virtual bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            var hitQueue = new Queue<IOctree>(256);
+            hitQueue.Enqueue(this);
+            bool isHit = false;
+            while (hitQueue.Count > 0)
+            {
+                var node = hitQueue.Dequeue();
+                bool isIntersect = false;
+                isHit |= node.HitTestCurrentNodeExcludeChild(model, modelMatrix, rayWS, ref hits, ref isIntersect);
+                if (isIntersect && node.HasChildren)
+                {
+                    foreach (var child in node.ChildNodes)
+                    {
+                        if (child != null)
+                        {
+                            hitQueue.Enqueue(child);
+                        }
+                    }
+                }
+            }
+
+            return isHit;
+        }
+
+        public abstract bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect);
 
         #region Accessors
         public bool IsRoot
@@ -356,10 +386,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        /// <summary>
-        /// Returns true if this node tree and all children have no content
-        /// </summary>
-        public bool IsEmpty    //untested
+        public bool IsEmpty
         {
             get
             {
@@ -442,8 +469,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return new MeshGeometryOctree(Positions, Indices, region, objList);
         }
 
-        public override bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
         {
+            isIntersect = false;
             if (!this.treeBuilt)
             {
                 return false;
@@ -454,6 +482,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
             if (rayWS.Intersects(ref bound))
             {
+                isIntersect = true;
                 foreach (var t in this.Objects)
                 {
                     var idx = t.Item1 * 3;
@@ -484,7 +513,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         }
                     }
                 }
-                
+
                 if (isHit)
                 {
                     isHit = false;
@@ -502,16 +531,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         isHit = true;
                     }
                 }
-                if (HasChildren)
-                {
-                    foreach (var child in ChildNodes)
-                    {
-                        if (child != null)
-                        {
-                            isHit |= child.HitTest(model, modelMatrix, rayWS, ref hits);
-                        }
-                    }
-                }
             }
 
             return isHit;
@@ -523,10 +542,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public GeometryModel3DOctree(List<GeometryModel3D> objList)
         {
             Objects = objList;
-            if(Objects!=null && Objects.Count > 0)
+            if (Objects != null && Objects.Count > 0)
             {
                 var bound = Objects[0].Bounds;
-                foreach(var item in Objects)
+                foreach (var item in Objects)
                 {
                     bound = BoundingBox.Merge(item.Bounds, bound);
                 }
@@ -534,43 +553,32 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
         public GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList)
-            :base(bound, objList)
+            : base(bound, objList)
         { }
 
-
-        public override bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
         {
+            isIntersect = false;
             if (!this.treeBuilt)
             {
                 return false;
             }
-
-            var result = new HitTestResult();
-            result.Distance = double.MaxValue;
+            bool isHit = false;
             var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
             var tempHits = new List<HitTestResult>();
             if (rayWS.Intersects(ref bound))
             {
+                isIntersect = true;
                 foreach (var t in this.Objects)
                 {
                     t.PushMatrix(modelMatrix);
-                    t.HitTest(rayWS, ref tempHits);
+                    isHit |= t.HitTest(rayWS, ref tempHits);
                     t.PopMatrix();
                     hits.AddRange(tempHits);
                     tempHits.Clear();
                 }
-               
-                if (HasChildren)
-                {
-                    foreach (var child in ChildNodes)
-                    {
-                        if (child != null)
-                            child.HitTest(model, modelMatrix, rayWS, ref hits);
-                    }
-                }
             }
-
-            return hits.Count > 0;
+            return isHit;
         }
 
         protected override BoundingBox GetBoundingBoxFromItem(GeometryModel3D item)
