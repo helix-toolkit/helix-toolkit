@@ -75,7 +75,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         void RemoveSelf();
         void RemoveChild(IOctree child);
-        void UpdateBoundingBox();
+
+        /// <summary>
+        /// Update bounding box. Returns true if bounding box has been changed. Otherwise return false.
+        /// </summary>
+        /// <returns></returns>
+        bool UpdateBoundingBox();
     }
 
     public interface IOctreeBase<T> : IOctree
@@ -410,10 +415,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var nodeBase = node as IOctreeBase<T>;
                 nodeBase.Objects.Remove(item);
-                if (nodeBase.Objects.Count == 0 && !nodeBase.HasChildren)
+                if (nodeBase.IsEmpty)
                 {
                     nodeBase.RemoveSelf();
-                    UpdateBoundingBox();
                 }
             }
         }
@@ -440,7 +444,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     break;
                 }
             }
-            if (!HasChildren && Objects.Count == 0)
+            if (IsEmpty)
             {
                 RemoveSelf();
             }
@@ -486,12 +490,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             var parent = Parent;
             while (parent != null)
             {
-                parent.UpdateBoundingBox();
+                if (!parent.UpdateBoundingBox()) //If bounding box does not change, don't need to propergate to upper level
+                {
+                    break;
+                }
                 parent = parent.Parent;
             }
         }
 
-        public void UpdateBoundingBox()
+        public bool UpdateBoundingBox()
         {
             var box = new BoundingBox();
             if (Objects.Count > 0)
@@ -524,7 +531,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     }
                 }
             }
-            Bound = box;
+            if (Bound == box)
+            {
+                return false;
+            }
+            else
+            {
+                Bound = box;
+                return true;
+            }
         }
 
         #region Accessors
@@ -546,20 +561,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             get
             {
-                if (Objects.Count != 0)
-                    return false;
-                else
-                {
-                    for (int a = 0; a < 8; a++)
-                    {
-                        //note that we have to do this recursively. 
-                        //Just checking child nodes for the current node doesn't mean that their children won't have objects.
-                        if (ChildNodes[a] != null && !ChildNodes[a].IsEmpty)
-                            return false;
-                    }
-
-                    return true;
-                }
+                return !HasChildren && Objects.Count == 0;
             }
         }
         #endregion
