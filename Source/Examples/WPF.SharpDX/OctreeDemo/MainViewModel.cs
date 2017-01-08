@@ -87,13 +87,6 @@ namespace OctreeDemo
             }
         }
         public Color4 Light1Color { get; set; }
-        public PhongMaterial ModelMaterial { get; set; }
-
-        public PhongMaterial InnerModelMaterial { get; set; }
-
-        //public PhongMaterial OtherMaterial { set; get; }
-        public MeshGeometry3D Model { get; private set; }
-        public MeshGeometry3D InnerModel { get; private set; }
 
         //public MeshGeometry3D Other { get; private set; }
         public Color4 AmbientLightColor { get; set; }
@@ -178,48 +171,23 @@ namespace OctreeDemo
             this.Light1Direction = new Vector3(-10, -10, -10);
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             SetupCameraBindings(this.Camera);
+            this.PropertyChanged += MainViewModel_PropertyChanged;
 
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
             b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
-            b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);
-            this.Model = b2.ToMeshGeometry3D();
-            this.InnerModel = new MeshGeometry3D()
-            {
-                Indices = Model.Indices,
-                Positions = Model.Positions,
-                Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; })),
-                TextureCoordinates = Model.TextureCoordinates,
-                Tangents = Model.Tangents,
-                BiTangents = Model.BiTangents
-            };
-            var uri = new System.Uri(@"test.png", System.UriKind.RelativeOrAbsolute);
-
-            this.ModelMaterial = new PhongMaterial
-            {
-                AmbientColor = Color.Gray,
-                DiffuseColor = Color.White,
-                SpecularColor = Color.White,
-                SpecularShininess = 100f,
-            };
-
-            this.InnerModelMaterial = new PhongMaterial
-            {
-                AmbientColor = Color.Gray,
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-                SpecularColor = Color.White,
-                SpecularShininess = 100f
-            };
-
-            this.PropertyChanged += MainViewModel_PropertyChanged;
+            b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);           
 
             LineColor = Color.Blue;
             GroupLineColor = Color.Red;
-            Model.UpdateOctree();
-            OctreeModel = Model.Octree.CreateOctreeLineModel();
+
+            var model = b2.ToMeshGeometry3D();
+
+            model.UpdateOctree();
+            OctreeModel = model.Octree.CreateOctreeLineModel();
 
             Items = new ObservableCollection<DataModel>();
-
+            Items.Add(new DataModel() { Model = model });
             for (int i = 0; i < 10; ++i)
             {
                 for (int j = 0; j < 10; ++j)
@@ -255,5 +223,21 @@ namespace OctreeDemo
             BindingOperations.SetBinding(dobj, property, binding);
         }
 
+        public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var viewport = sender as Viewport3DX;
+            if (viewport == null) { return; }
+            var point = e.GetPosition(viewport);
+            var hitTests = viewport.FindHits(point);
+            if (hitTests != null && hitTests.Count > 0)
+            {
+                if (hitTests[0].ModelHit.DataContext is DataModel)
+                {
+                    var model = hitTests[0].ModelHit.DataContext as DataModel;
+                    model.Highlight = !model.Highlight;
+                }
+            }
+
+        }
     }
 }

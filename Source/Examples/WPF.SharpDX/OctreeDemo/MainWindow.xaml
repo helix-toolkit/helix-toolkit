@@ -6,6 +6,8 @@
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:local="clr-namespace:OctreeDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i ="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     Title="MainWindow"
     Width="800"
     Height="600"
@@ -31,24 +33,16 @@
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+                <!--<MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />-->
             </hx:Viewport3DX.InputBindings>
-
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <ie:CallMethodAction TargetObject="{Binding}" MethodName="OnMouseLeftButtonDownHandler"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <hx:MeshGeometryModel3D
-                CullMode="Front"
-                FillMode="{Binding FillMode}"
-                FrontCounterClockwise="True"
-                Geometry="{Binding InnerModel}"
-                IsRendering="{Binding Visibility}"
-                Material="{Binding InnerModelMaterial}" />
-            <hx:MeshGeometryModel3D
-                CullMode="Back"
-                FillMode="{Binding FillMode}"
-                Geometry="{Binding Model}"
-                IsRendering="{Binding Visibility}"
-                Material="{Binding ModelMaterial}" />
+
             <hx:ItemsModel3D ItemsSource="{Binding Items}" UseOctreeHitTest="True" Octree="{Binding GroupOctree, Mode=OneWayToSource}" IsRendering="{Binding Visibility}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
@@ -56,6 +50,7 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
+            
             <hx:LineGeometryModel3D
                 Geometry="{Binding OctreeModel}"
                 IsHitTestVisible="False"
