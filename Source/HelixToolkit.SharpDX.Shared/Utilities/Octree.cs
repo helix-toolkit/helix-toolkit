@@ -104,7 +104,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
-        public const int MIN_SIZE = 1;
+        public readonly int MIN_SIZE = 1;
 
         public BoundingBox Bound { protected set; get; }
 
@@ -129,18 +129,20 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="bound">The bounding region for the oct tree.</param>
         /// <param name="objList">The list of objects contained within the bounding region</param>
-        protected OctreeBase(BoundingBox bound, List<T> objList, IOctree parent)
+        protected OctreeBase(BoundingBox bound, List<T> objList, IOctree parent, int minSize)
         {
             Bound = bound;
             Objects = objList;
             Parent = parent;
+            MIN_SIZE = minSize;
         }
 
-        protected OctreeBase(IOctree parent)
+        protected OctreeBase(IOctree parent, int minSize)
         {
             Objects = new List<T>();
             Bound = new BoundingBox(Vector3.Zero, Vector3.Zero);
             Parent = parent;
+            MIN_SIZE = minSize;
         }
 
         /// <summary>
@@ -148,8 +150,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="bound">The suggested dimensions for the bounding region. 
         /// Note: if items are outside this region, the region will be automatically resized.</param>
-        protected OctreeBase(BoundingBox bound, IOctree parent)
-            : this(parent)
+        protected OctreeBase(BoundingBox bound, IOctree parent, int minSize)
+            : this(parent, minSize)
         {
             Bound = bound;
         }
@@ -576,8 +578,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
 
-        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices)
-            : base(null)
+        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, int minSize = 1)
+            : base(null, minSize)
         {
             Positions = positions;
             Indices = indices;
@@ -590,15 +592,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex, IOctree parent)
-            : base(bound, triIndex, parent)
+        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex, IOctree parent, int minSize)
+            : base(bound, triIndex, parent, minSize)
         {
             Positions = positions;
             Indices = indices;
         }
 
-        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent)
-            : base(bound, list, parent)
+        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent, int minSize)
+            : base(bound, list, parent, minSize)
         { }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
@@ -625,7 +627,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override IOctree CreateNodeWithParent(BoundingBox region, List<Tuple<int, BoundingBox>> objList, IOctree parent)
         {
-            return new MeshGeometryOctree(Positions, Indices, region, objList, parent);
+            return new MeshGeometryOctree(Positions, Indices, region, objList, parent, this.MIN_SIZE);
         }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -698,8 +700,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
     public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
     {
-        public GeometryModel3DOctree(List<GeometryModel3D> objList)
-            : base(null)
+        public GeometryModel3DOctree(List<GeometryModel3D> objList, int minSize = 1)
+            : base(null, minSize)
         {
             Objects = objList;
             if (Objects != null && Objects.Count > 0)
@@ -712,8 +714,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 this.Bound = bound;
             }
         }
-        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent = null)
-            : base(bound, objList, parent)
+        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent, int minSize)
+            : base(bound, objList, parent, minSize)
         { }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -748,7 +750,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override IOctree CreateNodeWithParent(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)
         {
-            return new GeometryModel3DOctree(bound, objList, parent);
+            return new GeometryModel3DOctree(bound, objList, parent, this.MIN_SIZE);
         }
     }
 }
