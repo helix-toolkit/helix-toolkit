@@ -67,9 +67,19 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Vertical">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Setter Property="Margin" Value="4"/>
+                </Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="4"/>
+                </Style>
+            </StackPanel.Resources>
             <CheckBox IsChecked="{Binding Visibility}">Model Visible</CheckBox>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding HitThrough}">Hit Through</CheckBox>
             <Button Command="{Binding AddModelCommand}">Add Model</Button>
+            <Button Command="{Binding RemoveModelCommand}">Remove Model</Button>
         </StackPanel>
     </Grid>
 </Window>

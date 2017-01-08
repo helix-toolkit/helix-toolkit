@@ -155,7 +155,10 @@ namespace OctreeDemo
             }
         }
 
+        public bool HitThrough {set; get;}
+
         public ICommand AddModelCommand { private set; get; }
+        public ICommand RemoveModelCommand { private set; get; }
 
         public MainViewModel()
         {            // titles
@@ -178,10 +181,11 @@ namespace OctreeDemo
 
             LineColor = Color.Blue;
             GroupLineColor = Color.Red;
-
+            Items = new ObservableCollection<DataModel>();
             CreateDefaultModels();
 
             AddModelCommand = new RelayCommand(AddModel);
+            RemoveModelCommand = new RelayCommand(RemoveModel);
         }
 
         private void CreateDefaultModels()
@@ -195,7 +199,7 @@ namespace OctreeDemo
             model.UpdateOctree();
             OctreeModel = model.Octree.CreateOctreeLineModel();
 
-            Items = new ObservableCollection<DataModel>();
+
             Items.Add(new DataModel() { Model = model });
             for (int i = 0; i < 10; ++i)
             {
@@ -205,9 +209,18 @@ namespace OctreeDemo
                     builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1);
                     model = builder.ToMeshGeometry3D();
                     model.UpdateOctree();
-                    Items.Add(new DataModel() { Model =  model});
+                    Items.Add(new DataModel() { Model = model });
                 }
             }
+
+            //for (int i = 0; i < 10; ++i)
+            //{
+            //    var builder = new MeshBuilder(true, false, false);
+            //    builder.AddSphere(new Vector3(i * 2, 0, 0), 1);
+            //    var model = builder.ToMeshGeometry3D();
+            //    model.UpdateOctree();
+            //    Items.Add(new DataModel() { Model = model });
+            //}
         }
 
         private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -242,10 +255,25 @@ namespace OctreeDemo
             var hitTests = viewport.FindHits(point);
             if (hitTests != null && hitTests.Count > 0)
             {
-                if (hitTests[0].ModelHit.DataContext is DataModel)
+                if (HitThrough)
                 {
-                    var model = hitTests[0].ModelHit.DataContext as DataModel;
-                    model.Highlight = !model.Highlight;
+                    foreach(var hit in hitTests)
+                    {
+                        if (hit.ModelHit.DataContext is DataModel)
+                        {
+                            var model = hit.ModelHit.DataContext as DataModel;
+                            model.Highlight = !model.Highlight;
+                        }
+                    }
+                }
+                else
+                {
+                    var hit = hitTests[0];
+                    if (hit.ModelHit.DataContext is DataModel)
+                    {
+                        var model = hit.ModelHit.DataContext as DataModel;
+                        model.Highlight = !model.Highlight;
+                    }
                 }
             }
 
@@ -267,6 +295,14 @@ namespace OctreeDemo
             model.UpdateOctree();
             Items.Add(new DataModel() { Model = model });
             ++counter;
+        }
+
+        private void RemoveModel(object o)
+        {
+            if (Items.Count > 0)
+            {
+                Items.RemoveAt(Items.Count - 1);
+            }
         }
     }
 }
