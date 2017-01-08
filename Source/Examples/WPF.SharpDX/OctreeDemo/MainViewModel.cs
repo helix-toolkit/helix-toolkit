@@ -327,6 +327,7 @@ namespace OctreeDemo
             if (Items.Count > 0)
             {
                 Items.RemoveAt(Items.Count - 1);
+                counter = counter == 0 ? 0 : counter - 1;             
             }
         }
     }

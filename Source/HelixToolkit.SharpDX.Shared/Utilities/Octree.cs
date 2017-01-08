@@ -25,7 +25,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
         /// </summary>
-        byte ActiveNodes { get; }
+        byte ActiveNodes { set; get; }
         bool HasChildren { get; }
         bool IsRoot { get; }
         IOctree Parent { get; }
@@ -91,7 +91,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// 
         /// </summary>
         /// <param name="item"></param>
-        void Add(T item);
+        bool Add(T item);
 
         /// <summary>
         /// 
@@ -120,7 +120,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         private readonly IOctree[] childNodes = new IOctree[8];
         public IOctree[] ChildNodes { get { return childNodes; } }
 
-        public byte ActiveNodes { protected set; get; }
+        public byte ActiveNodes { set; get; }
 
         public IOctree Parent { protected set; get; }
 
@@ -444,9 +444,69 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public abstract bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect);
 
-        public void Add(T item)
+        public bool Add(T item)
         {
-            throw new NotImplementedException();
+            var bound = GetBoundingBoxFromItem(item);
+            var node = FindSmallestNodeContainsBoundingBox(bound);
+            if (node == null)
+            {
+                return false;
+            }
+            else
+            {
+                var octants = CreateOctants(node.Bound);
+                bool pushToChild = false;
+                for(int i = 0; i < octants.Length; ++i)
+                {
+                    if(octants[i].Contains(bound)== ContainmentType.Contains)
+                    {
+                        if (node.ChildNodes[i] != null)
+                        {
+                            (node.ChildNodes[i] as IOctreeBase<T>).Add(item);
+                        }
+                        else
+                        {                            
+                            node.ChildNodes[i] = CreateNodeWithParent(octants[i], new List<T>() { item }, node);
+                            node.ActiveNodes |= (byte)(1 << i);
+                            node.ChildNodes[i].BuildTree();
+                        }
+                        pushToChild = true;
+                        break;
+                    }
+                }
+                if (!pushToChild)
+                {
+                    (node as IOctreeBase<T>).Objects.Add(item);
+                }
+                return true;
+            }
+        }       
+
+        public IOctree FindSmallestNodeContainsBoundingBox(BoundingBox bound)
+        {
+            var queue = new Queue<IOctreeBase<T>>(64);
+            queue.Enqueue(this);
+            IOctree result = null;
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                if (node.Bound.Contains(bound) != ContainmentType.Contains)
+                {
+                    continue;
+                }
+                else
+                {
+                    result = node;
+                    foreach (var child in node.ChildNodes)
+                    {
+                        if (child != null)
+                        {
+                            queue.Enqueue(child as IOctreeBase<T>);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public void Remove(T item)

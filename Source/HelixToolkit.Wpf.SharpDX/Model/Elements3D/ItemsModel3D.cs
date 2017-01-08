@@ -110,6 +110,8 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
+        private volatile bool mRequestUpdateOctree = false;
+        private readonly Queue<Model3D> mAddPendingQueue = new Queue<Model3D>();
 
         public ItemsModel3D()
         {
@@ -129,16 +131,46 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (UseOctreeHitTest)
             {
-                var list = Children.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
-                var tree = new GeometryModel3DOctree(list);
-                tree.BuildTree();
-                Octree = tree;
-                RequestUpdateOctree = false;
+                if (Octree == null)
+                {
+                    Octree = RebuildOctree();
+                }
+                else
+                {
+                    while (mAddPendingQueue.Count > 0)
+                    {
+                        var model = mAddPendingQueue.Dequeue();
+                        if(model is GeometryModel3D)
+                        {
+                            var tree = Octree as GeometryModel3DOctree;
+                            Octree = null;
+                            if (!tree.Add(model as GeometryModel3D))
+                            {
+                                Octree = RebuildOctree();
+                            }
+                            else
+                            {
+                                Octree = tree;
+                            }
+                        }
+
+                    }
+                }
+                mRequestUpdateOctree = false;
             }
             else
             {
+                mAddPendingQueue.Clear();
                 Octree = null;
             }
+        }
+
+        private IOctree RebuildOctree()
+        {
+            var list = Children.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
+            var tree = new GeometryModel3DOctree(list);
+            tree.BuildTree();
+            return tree;
         }
 
         /// <summary>
@@ -152,6 +184,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
+            Octree = null;
+            mAddPendingQueue.Clear();
             if (e.OldValue is INotifyCollectionChanged)
             {
                 (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
@@ -215,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
-            RequestUpdateOctree = true;
+            mRequestUpdateOctree = true;
         }
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -310,6 +344,10 @@ namespace HelixToolkit.Wpf.SharpDX
                                     model.DataContext = item;
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
+                                    if (UseOctreeHitTest)
+                                    {
+                                        mAddPendingQueue.Enqueue(model);
+                                    }
                                 }
                                 else
                                 {
@@ -330,6 +368,10 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
+                                    if (UseOctreeHitTest)
+                                    {
+                                        mAddPendingQueue.Enqueue(model);
+                                    }
                                 }
                                 else
                                 {
@@ -347,19 +389,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     case NotifyCollectionChangedAction.Remove:
                         break;
+                    case NotifyCollectionChangedAction.Add:
+                    case NotifyCollectionChangedAction.Replace:
+                        mRequestUpdateOctree = true;
+                        break;
                     default:
-                        RequestUpdateOctree = true;
+                        Octree = null;
+                        mRequestUpdateOctree = true;
                         break;
                 }
             }
         }
 
-        private bool RequestUpdateOctree = false;
-
         protected override void OnRender(RenderContext context)
         {
             base.OnRender(context);
-            if (RequestUpdateOctree)
+            if (mRequestUpdateOctree)
             {
                 UpdateOctree();
             }
