@@ -548,14 +548,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
             var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var tempHits = new List<HitTestResult>();
             if (rayWS.Intersects(ref bound))
             {
-                var tempHits = new List<HitTestResult>();
                 foreach (var t in this.Objects)
                 {
                     t.PushMatrix(modelMatrix);
-                    t.HitTest(rayWS, ref hits);
+                    t.HitTest(rayWS, ref tempHits);
                     t.PopMatrix();
+                    hits.AddRange(tempHits);
+                    tempHits.Clear();
                 }
                
                 if (HasChildren)
@@ -563,20 +565,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     foreach (var child in ChildNodes)
                     {
                         if (child != null)
-                            child.HitTest(model, modelMatrix, rayWS, ref tempHits);
+                            child.HitTest(model, modelMatrix, rayWS, ref hits);
                     }
-                }
-
-                if (tempHits.Count > 0)
-                {
-                    foreach(var item in tempHits)
-                    {
-                        if (result.Distance > item.Distance)
-                        {
-                            result = item;
-                        }
-                    }
-                    hits.Add(result);
                 }
             }
 
