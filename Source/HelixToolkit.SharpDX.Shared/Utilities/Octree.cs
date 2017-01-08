@@ -70,11 +70,28 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         void BuildCurretNodeOnly();
         void Clear();
+        /// <summary>
+        /// Remove self from parent node
+        /// </summary>
+        void RemoveSelf();
+        void RemoveChild(IOctree child);
+        void UpdateBoundingBox();
     }
 
     public interface IOctreeBase<T> : IOctree
     {
         List<T> Objects { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        void Add(T item);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        void Remove(T item);
     }
 
     public abstract class OctreeBase<T> : IOctreeBase<T>
@@ -101,23 +118,24 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         protected bool treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
 
-
         /*Note: we want to avoid allocating memory for as long as possible since there can be lots of nodes.*/
         /// <summary>
         /// Creates an oct tree which encloses the given region and contains the provided objects.
         /// </summary>
         /// <param name="bound">The bounding region for the oct tree.</param>
         /// <param name="objList">The list of objects contained within the bounding region</param>
-        protected OctreeBase(BoundingBox bound, List<T> objList)
+        protected OctreeBase(BoundingBox bound, List<T> objList, IOctree parent)
         {
             Bound = bound;
             Objects = objList;
+            Parent = parent;
         }
 
-        public OctreeBase()
+        protected OctreeBase(IOctree parent)
         {
             Objects = new List<T>();
             Bound = new BoundingBox(Vector3.Zero, Vector3.Zero);
+            Parent = parent;
         }
 
         /// <summary>
@@ -125,13 +143,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="bound">The suggested dimensions for the bounding region. 
         /// Note: if items are outside this region, the region will be automatically resized.</param>
-        public OctreeBase(BoundingBox bound)
-            : this()
+        protected OctreeBase(BoundingBox bound, IOctree parent)
+            : this(parent)
         {
             Bound = bound;
         }
 
-        protected abstract IOctree CreateNode(BoundingBox bound, List<T> objList);  //complete & tested
+        private IOctree CreateNode(BoundingBox bound, List<T> objList)
+        {
+            return CreateNodeWithParent(bound, objList, this);
+        }
+
+        protected abstract IOctree CreateNodeWithParent(BoundingBox bound, List<T> objList, IOctree parent);
 
         protected IOctree CreateNode(BoundingBox bound, T Item)
         {
@@ -371,6 +394,139 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public abstract bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect);
 
+        public void Add(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(T item)
+        {
+            var node = FindChildByItem(item);
+            if (node == null)
+            {
+                return;
+            }
+            else
+            {
+                var nodeBase = node as IOctreeBase<T>;
+                nodeBase.Objects.Remove(item);
+                if (nodeBase.Objects.Count == 0 && !nodeBase.HasChildren)
+                {
+                    nodeBase.RemoveSelf();
+                    UpdateBoundingBox();
+                }
+            }
+        }
+
+        public virtual void RemoveSelf()
+        {
+            if (Parent == null)
+            { return; }
+
+            Clear();
+            Parent.RemoveChild(this);
+            UpdateParentBoundingBoxToRoot();
+            Parent = null;
+        }
+
+        public void RemoveChild(IOctree child)
+        {
+            for (int i = 0; i < ChildNodes.Length; ++i)
+            {
+                if (ChildNodes[i] == child)
+                {
+                    ChildNodes[i] = null;
+                    ActiveNodes ^= (byte)(1 << i);
+                    break;
+                }
+            }
+            if (!HasChildren && Objects.Count == 0)
+            {
+                RemoveSelf();
+            }
+        }
+
+        protected virtual IOctree FindChildByItem(T item)
+        {
+            var bound = GetBoundingBoxFromItem(item);
+            var queue = new Queue<IOctreeBase<T>>(64);
+            queue.Enqueue(this);
+            IOctree result = null;
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                if (node.Bound.Contains(bound) != ContainmentType.Contains)
+                {
+                    continue;
+                }
+                var found = node.Objects.Where(x => x.Equals(item)).FirstOrDefault();
+                if (found == null)
+                {
+                    foreach (var child in node.ChildNodes)
+                    {
+                        if (child != null)
+                        {
+                            queue.Enqueue(child as IOctreeBase<T>);
+                        }
+                    }
+                }
+                else
+                {
+                    queue.Clear();
+                    result = node;
+                    break;
+                }
+            }
+            return result;
+        }
+
+
+        private void UpdateParentBoundingBoxToRoot()
+        {
+            var parent = Parent;
+            while (parent != null)
+            {
+                parent.UpdateBoundingBox();
+                parent = parent.Parent;
+            }
+        }
+
+        public void UpdateBoundingBox()
+        {
+            var box = new BoundingBox();
+            if (Objects.Count > 0)
+            {
+                box = GetBoundingBoxFromItem(Objects[0]);
+            }
+            else if (HasChildren)
+            {
+                foreach (var child in ChildNodes)
+                {
+                    if (child != null)
+                    {
+                        box = child.Bound;
+                        break;
+                    }
+                }
+            }
+
+            foreach (var item in Objects)
+            {
+                box = BoundingBox.Merge(box, GetBoundingBoxFromItem(item));
+            }
+            if (HasChildren)
+            {
+                foreach (var child in ChildNodes)
+                {
+                    if (child != null)
+                    {
+                        box = BoundingBox.Merge(box, child.Bound);
+                    }
+                }
+            }
+            Bound = box;
+        }
+
         #region Accessors
         public bool IsRoot
         {
@@ -419,6 +575,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public IList<int> Indices { private set; get; }
 
         public MeshGeometryOctree(Vector3Collection positions, IList<int> indices)
+            : base(null)
         {
             Positions = positions;
             Indices = indices;
@@ -431,15 +588,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex)
-            : base(bound, triIndex)
+        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex, IOctree parent)
+            : base(bound, triIndex, parent)
         {
             Positions = positions;
             Indices = indices;
         }
 
-        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list)
-            : base(bound, list)
+        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent)
+            : base(bound, list, parent)
         { }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
@@ -464,9 +621,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return item.Item2;
         }
 
-        protected override IOctree CreateNode(BoundingBox region, List<Tuple<int, BoundingBox>> objList)
+        protected override IOctree CreateNodeWithParent(BoundingBox region, List<Tuple<int, BoundingBox>> objList, IOctree parent)
         {
-            return new MeshGeometryOctree(Positions, Indices, region, objList);
+            return new MeshGeometryOctree(Positions, Indices, region, objList, parent);
         }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -540,6 +697,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
     public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
     {
         public GeometryModel3DOctree(List<GeometryModel3D> objList)
+            : base(null)
         {
             Objects = objList;
             if (Objects != null && Objects.Count > 0)
@@ -552,8 +710,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 this.Bound = bound;
             }
         }
-        public GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList)
-            : base(bound, objList)
+        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent = null)
+            : base(bound, objList, parent)
         { }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -586,9 +744,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return item.Bounds;
         }
 
-        protected override IOctree CreateNode(BoundingBox bound, List<GeometryModel3D> objList)
+        protected override IOctree CreateNodeWithParent(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)
         {
-            return new GeometryModel3DOctree(bound, objList);
+            return new GeometryModel3DOctree(bound, objList, parent);
         }
     }
 }

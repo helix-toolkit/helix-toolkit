@@ -133,12 +133,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 var tree = new GeometryModel3DOctree(list);
                 tree.BuildTree();
                 Octree = tree;
+                RequestUpdateOctree = false;
             }
             else
             {
                 Octree = null;
             }
         }
+
         /// <summary>
         /// Handles changes in the ItemsSource property.
         /// </summary>
@@ -213,7 +215,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
-            UpdateOctree();
+            RequestUpdateOctree = true;
         }
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -224,6 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldItems != null)
                     {
+                        RemoveItemsFromOctree(e.OldItems);
                         foreach (var item in e.OldItems)
                         {
                             if (mDictionary.ContainsKey(item))
@@ -337,7 +340,51 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
-            UpdateOctree();
+
+            if (UseOctreeHitTest && Octree != null)
+            {
+                switch (e.Action)
+                {
+                    case NotifyCollectionChangedAction.Remove:
+                        break;
+                    default:
+                        RequestUpdateOctree = true;
+                        break;
+                }
+            }
+        }
+
+        private bool RequestUpdateOctree = false;
+
+        protected override void OnRender(RenderContext context)
+        {
+            base.OnRender(context);
+            if (RequestUpdateOctree)
+            {
+                UpdateOctree();
+            }
+        }
+
+        private void RemoveItemsFromOctree(IList items)
+        {
+            var tree = Octree as GeometryModel3DOctree;
+            if (tree != null)
+            {
+                Octree = null;
+                foreach (var item in items)
+                {
+                    var holder = mDictionary[item];
+                    if(holder is GeometryModel3D)
+                    {
+                        tree.Remove(holder as GeometryModel3D);
+                    }
+                }
+                Octree = tree;
+            }
+            else
+            {
+                throw new InvalidOperationException("Octree does not support remove");
+            }
         }
 
         public override bool HitTest(global::SharpDX.Ray ray, ref List<HitTestResult> hits)
