@@ -63,6 +63,12 @@
                 IsHitTestVisible="False"
                 Thickness="0.5"
                 Color="{Binding GroupLineColor}" />
+
+            <hx:LineGeometryModel3D
+                Geometry="{Binding HitModel}"
+                IsHitTestVisible="False"
+                Thickness="1.5"
+                Color="{Binding HitLineColor}" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"

@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.SharpDX.Shared.Utilities
@@ -33,6 +32,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         BoundingBox Bound { get; }
         IOctree[] ChildNodes { get; }
 
+        bool RecordHitPathBoundingBoxes { set; get; }
+        IList<BoundingBox> HitPathBoundingBoxes { get; }
         /// <summary>
         /// Returns true if this node tree and all children have no content
         /// </summary>
@@ -110,6 +111,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public List<T> Objects { protected set; get; }
 
+        public bool RecordHitPathBoundingBoxes { set; get; } = false;
+        private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
+        public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
         /// <summary>
         /// These are all of the possible child octants for this node in the tree.
         /// </summary>
@@ -376,6 +380,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public virtual bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
+            hitPathBoundingBoxes.Clear();
             var hitQueue = new Queue<IOctree>(256);
             hitQueue.Enqueue(this);
             bool isHit = false;
@@ -383,7 +388,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var node = hitQueue.Dequeue();
                 bool isIntersect = false;
-                isHit |= node.HitTestCurrentNodeExcludeChild(model, modelMatrix, rayWS, ref hits, ref isIntersect);
+                bool nodeHit = node.HitTestCurrentNodeExcludeChild(model, modelMatrix, rayWS, ref hits, ref isIntersect);
+                isHit |= nodeHit;
                 if (isIntersect && node.HasChildren)
                 {
                     foreach (var child in node.ChildNodes)
@@ -394,8 +400,20 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         }
                     }
                 }
+                if (RecordHitPathBoundingBoxes && nodeHit)
+                {
+                    var n = node;
+                    while (n != null)
+                    {
+                        hitPathBoundingBoxes.Add(n.Bound);
+                        n = n.Parent;
+                    }
+                }
             }
-
+            if (!isHit)
+            {
+                hitPathBoundingBoxes.Clear();
+            }
             return isHit;
         }
 

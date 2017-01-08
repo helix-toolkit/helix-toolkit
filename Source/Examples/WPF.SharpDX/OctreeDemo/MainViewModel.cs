@@ -98,6 +98,8 @@ namespace OctreeDemo
 
         public Color GroupLineColor { set; get; }
 
+        public Color HitLineColor { set; get; }
+
         private LineGeometry3D groupOctreeModel = null;
         public LineGeometry3D GroupOctreeModel
         {
@@ -109,6 +111,20 @@ namespace OctreeDemo
             get
             {
                 return groupOctreeModel;
+            }
+        }
+
+        private LineGeometry3D hitModel = null;
+        public LineGeometry3D HitModel
+        {
+            set
+            {
+                hitModel = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return hitModel;
             }
         }
 
@@ -126,6 +142,7 @@ namespace OctreeDemo
                 if (value != null)
                 {
                     GroupOctreeModel = value.CreateOctreeLineModel();
+                    value.RecordHitPathBoundingBoxes = true;
                 }
                 else
                 {
@@ -157,6 +174,8 @@ namespace OctreeDemo
 
         public bool HitThrough {set; get;}
 
+        private readonly IList<DataModel> HighlightItems = new List<DataModel>();
+
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
 
@@ -180,7 +199,8 @@ namespace OctreeDemo
             this.PropertyChanged += MainViewModel_PropertyChanged;       
 
             LineColor = Color.Blue;
-            GroupLineColor = Color.Red;
+            GroupLineColor = Color.Green;
+            HitLineColor = Color.Red;
             Items = new ObservableCollection<DataModel>();
             CreateDefaultModels();
 
@@ -212,15 +232,6 @@ namespace OctreeDemo
                     Items.Add(new DataModel() { Model = model });
                 }
             }
-
-            //for (int i = 0; i < 10; ++i)
-            //{
-            //    var builder = new MeshBuilder(true, false, false);
-            //    builder.AddSphere(new Vector3(i * 2, 0, 0), 1);
-            //    var model = builder.ToMeshGeometry3D();
-            //    model.UpdateOctree();
-            //    Items.Add(new DataModel() { Model = model });
-            //}
         }
 
         private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -249,6 +260,11 @@ namespace OctreeDemo
 
         public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            foreach(var item in HighlightItems)
+            {
+                item.Highlight = false;
+            }
+            HighlightItems.Clear();
             var viewport = sender as Viewport3DX;
             if (viewport == null) { return; }
             var point = e.GetPosition(viewport);
@@ -262,7 +278,8 @@ namespace OctreeDemo
                         if (hit.ModelHit.DataContext is DataModel)
                         {
                             var model = hit.ModelHit.DataContext as DataModel;
-                            model.Highlight = !model.Highlight;
+                            model.Highlight = true;
+                            HighlightItems.Add(model);
                         }
                     }
                 }
@@ -272,11 +289,19 @@ namespace OctreeDemo
                     if (hit.ModelHit.DataContext is DataModel)
                     {
                         var model = hit.ModelHit.DataContext as DataModel;
-                        model.Highlight = !model.Highlight;
+                        model.Highlight = true;
+                        HighlightItems.Add(model);
                     }
                 }
+                if (GroupOctree.HitPathBoundingBoxes.Count > 0)
+                {
+                    HitModel = GroupOctree.HitPathBoundingBoxes.CreatePathLines();
+                }
             }
-
+            else
+            {
+                HitModel = null;
+            }
         }
 
         private double theta = 0;
