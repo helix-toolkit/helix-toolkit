@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
@@ -154,6 +155,8 @@ namespace OctreeDemo
             }
         }
 
+        public ICommand AddModelCommand { private set; get; }
+
         public MainViewModel()
         {            // titles
             this.Title = "DynamicTexture Demo";
@@ -171,16 +174,22 @@ namespace OctreeDemo
             this.Light1Direction = new Vector3(-10, -10, -10);
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             SetupCameraBindings(this.Camera);
-            this.PropertyChanged += MainViewModel_PropertyChanged;
-
-            var b2 = new MeshBuilder(true, true, true);
-            b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
-            b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
-            b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);           
+            this.PropertyChanged += MainViewModel_PropertyChanged;       
 
             LineColor = Color.Blue;
             GroupLineColor = Color.Red;
 
+            CreateDefaultModels();
+
+            AddModelCommand = new RelayCommand(AddModel);
+        }
+
+        private void CreateDefaultModels()
+        {
+            var b2 = new MeshBuilder(true, true, true);
+            b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
+            b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
+            b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);
             var model = b2.ToMeshGeometry3D();
 
             model.UpdateOctree();
@@ -194,7 +203,9 @@ namespace OctreeDemo
                 {
                     var builder = new MeshBuilder(true, false, false);
                     builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1);
-                    Items.Add(new DataModel() { Model = builder.ToMeshGeometry3D() });
+                    model = builder.ToMeshGeometry3D();
+                    model.UpdateOctree();
+                    Items.Add(new DataModel() { Model =  model});
                 }
             }
         }
@@ -238,6 +249,24 @@ namespace OctreeDemo
                 }
             }
 
+        }
+
+        private double theta = 0;
+        private double newModelZ = -5;
+        private int counter = 0;
+        private void AddModel(object o)
+        {
+            var x = 10*(float)Math.Sin(theta);
+            var y = 10*(float)Math.Cos(theta);
+            theta += 0.3;
+            newModelZ += counter*0.05;
+            var z = (float)(newModelZ);
+            var builder = new MeshBuilder(true, false, false);
+            builder.AddSphere(new Vector3(x -14, y - 14, z - 14), 1);
+            var model = builder.ToMeshGeometry3D();
+            model.UpdateOctree();
+            Items.Add(new DataModel() { Model = model });
+            ++counter;
         }
     }
 }

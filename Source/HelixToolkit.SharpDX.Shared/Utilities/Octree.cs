@@ -484,31 +484,37 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         }
                     }
                 }
+                
                 if (isHit)
                 {
+                    isHit = false;
                     if (hits.Count > 0)
                     {
                         if (hits[0].Distance > result.Distance)
                         {
                             hits[0] = result;
+                            isHit = true;
                         }
                     }
                     else
                     {
                         hits.Add(result);
+                        isHit = true;
                     }
                 }
                 if (HasChildren)
                 {
-                    foreach (MeshGeometryOctree child in ChildNodes)
+                    foreach (var child in ChildNodes)
                     {
                         if (child != null)
-                            child.HitTest(model, modelMatrix, rayWS, ref hits);
+                        {
+                            isHit |= child.HitTest(model, modelMatrix, rayWS, ref hits);
+                        }
                     }
                 }
             }
 
-            return hits.Count > 0;
+            return isHit;
         }
     }
 

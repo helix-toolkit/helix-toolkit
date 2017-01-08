@@ -65,10 +65,11 @@
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
+            VerticalAlignment="Center"
             Orientation="Vertical">
             <CheckBox IsChecked="{Binding Visibility}">Model Visible</CheckBox>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <Button Command="{Binding AddModelCommand}">Add Model</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -466,13 +466,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
             bool isHit = false;
-            var model = Geometry as MeshGeometry3D;
+            var model = Geometry;
             if (model != null && model.Octree != null)
             {
-#if DEBUG
-                Debug.WriteLine("Using octree for hit test");
-#endif
                 isHit = model.Octree.HitTest(this, modelMatrix, rayWS, ref hits);
+
+#if DEBUG
+                if (isHit)
+                {
+                    Debug.WriteLine("Using octree for hit test, hit = "+hits[0].PointHit);
+                }
+#endif
+
             }
             else
             {
