@@ -206,7 +206,7 @@ namespace OctreeDemo
                 for (int j = 0; j < 10; ++j)
                 {
                     var builder = new MeshBuilder(true, false, false);
-                    builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1);
+                    builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1, 12, 12);
                     model = builder.ToMeshGeometry3D();
                     model.UpdateOctree();
                     Items.Add(new DataModel() { Model = model });

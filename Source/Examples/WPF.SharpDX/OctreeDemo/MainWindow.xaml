@@ -46,7 +46,8 @@
             <hx:ItemsModel3D ItemsSource="{Binding Items}" UseOctreeHitTest="True" Octree="{Binding GroupOctree, Mode=OneWayToSource}" IsRendering="{Binding Visibility}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
-                        <hx:MeshGeometryModel3D Geometry="{Binding Model}" Material="{Binding Material}"/>
+                        <hx:MeshGeometryModel3D Geometry="{Binding Model}" Material="{Binding Material}"
+                                                FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"/>
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
