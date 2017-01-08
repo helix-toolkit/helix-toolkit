@@ -53,14 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(true,
                 (s,e)=> {
                     var d = s as ItemsModel3D;
-                    if ((bool)e.NewValue)
-                    {
-                        d.UpdateOctree();
-                    }
-                    else
-                    {
-                        d.Octree = null;
-                    }
+                    d.UpdateOctree();
                 }));
 
         public static readonly DependencyProperty OctreeProperty = DependencyProperty.Register("Octree", typeof(IOctree), typeof(ItemsModel3D), new PropertyMetadata(null));
@@ -126,7 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateBounds();
-            if (UseOctreeHitTest && mDictionary.Count > 0)
+            if (mDictionary.Count > 0)
             {
                 UpdateOctree();
             }
@@ -134,10 +127,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void UpdateOctree()
         {
-            var list = Children.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
-            var tree = new GeometryModel3DOctree(list);
-            tree.BuildTree();
-            Octree = tree;
+            if (UseOctreeHitTest)
+            {
+                var list = Children.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
+                var tree = new GeometryModel3DOctree(list);
+                tree.BuildTree();
+                Octree = tree;
+            }
+            else
+            {
+                Octree = null;
+            }
         }
         /// <summary>
         /// Handles changes in the ItemsSource property.
@@ -213,6 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
+            UpdateOctree();
         }
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -336,6 +337,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
+            UpdateOctree();
         }
 
         public override bool HitTest(global::SharpDX.Ray ray, ref List<HitTestResult> hits)
