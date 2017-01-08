@@ -217,10 +217,29 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        /// <summary>
-        /// Build sub tree nodes
-        /// </summary>
-        protected virtual void BuildSubTree()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static BoundingBox[] CreateOctants(BoundingBox box)
+        {
+            Vector3 dimensions = box.Maximum - box.Minimum;
+
+            Vector3 half = dimensions / 2.0f;
+            Vector3 center = box.Minimum + half;
+
+            //Create subdivided regions for each octant
+            return new BoundingBox[8] {
+                new BoundingBox(box.Minimum, center),
+                new BoundingBox(new Vector3(center.X, box.Minimum.Y, box.Minimum.Z), new Vector3(box.Maximum.X, center.Y, center.Z)),
+                new BoundingBox(new Vector3(center.X, box.Minimum.Y, center.Z), new Vector3(box.Maximum.X, center.Y, box.Maximum.Z)),
+                new BoundingBox(new Vector3(box.Minimum.X, box.Minimum.Y, center.Z), new Vector3(center.X, center.Y, box.Maximum.Z)),
+                new BoundingBox(new Vector3(box.Minimum.X, center.Y, box.Minimum.Z), new Vector3(center.X, box.Maximum.Y, center.Z)),
+                new BoundingBox(new Vector3(center.X, center.Y, box.Minimum.Z), new Vector3(box.Maximum.X, box.Maximum.Y, center.Z)),
+                new BoundingBox(center, box.Maximum),
+                new BoundingBox(new Vector3(box.Minimum.X, center.Y, center.Z), new Vector3(center.X, box.Maximum.Y, box.Maximum.Z))
+                };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool CheckDimension()
         {
             Vector3 dimensions = Bound.Maximum - Bound.Minimum;
 
@@ -233,24 +252,27 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             //Check to see if the dimensions of the box are greater than the minimum dimensions
             if (dimensions.X <= MIN_SIZE && dimensions.Y <= MIN_SIZE && dimensions.Z <= MIN_SIZE)
             {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        /// <summary>
+        /// Build sub tree nodes
+        /// </summary>
+        protected virtual void BuildSubTree()
+        {           
+            if (!CheckDimension())
+            {
                 treeBuilt = true;
                 treeReady = true;
                 return;
             }
-            Vector3 half = dimensions / 2.0f;
-            Vector3 center = Bound.Minimum + half;
 
             //Create subdivided regions for each octant
-            var octants = new BoundingBox[8] {
-                new BoundingBox(Bound.Minimum, center),
-                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, center.Y, center.Z)),
-                new BoundingBox(new Vector3(center.X, Bound.Minimum.Y, center.Z), new Vector3(Bound.Maximum.X, center.Y, Bound.Maximum.Z)),
-                new BoundingBox(new Vector3(Bound.Minimum.X, Bound.Minimum.Y, center.Z), new Vector3(center.X, center.Y, Bound.Maximum.Z)),
-                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, Bound.Minimum.Z), new Vector3(center.X, Bound.Maximum.Y, center.Z)),
-                new BoundingBox(new Vector3(center.X, center.Y, Bound.Minimum.Z), new Vector3(Bound.Maximum.X, Bound.Maximum.Y, center.Z)),
-                new BoundingBox(center, Bound.Maximum),
-                new BoundingBox(new Vector3(Bound.Minimum.X, center.Y, center.Z), new Vector3(center.X, Bound.Maximum.Y, Bound.Maximum.Z))
-                };
+            var octants = CreateOctants(Bound);
 
             //This will contain all of our objects which fit within each respective octant.
             var octList = new List<T>[8];
@@ -296,6 +318,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// This finds the dimensions of the bounding box necessary to tightly enclose all items in the object list.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual void FindEnclosingBox()
         {
             Vector3 global_min = Bound.Minimum, global_max = Bound.Maximum;
@@ -324,6 +347,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// This finds the smallest enclosing cube which is a power of 2, for all objects in the list.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual void FindEnclosingCube()
         {
             FindEnclosingBox();
@@ -352,6 +376,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(x, x, x) - offset);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static int SigBit(int x)
         {
             if (x >= 0)
