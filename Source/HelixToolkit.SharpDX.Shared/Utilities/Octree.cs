@@ -87,8 +87,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
     public interface IOctreeBase<T> : IOctree
     {
         List<T> Objects { get; }
+
         /// <summary>
-        /// 
+        /// <para>Add item into octree. Return true if successful, otherwise return false to indicate the tree needs to be recreated.</para>
+        /// <para>Note: When return false, it usually indicates the bound of new object is outside the max bound of current octree. </para>
         /// </summary>
         /// <param name="item"></param>
         bool Add(T item);
