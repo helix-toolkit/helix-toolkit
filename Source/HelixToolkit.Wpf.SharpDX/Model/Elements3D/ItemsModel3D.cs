@@ -412,23 +412,30 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void RemoveItemsFromOctree(IList items)
         {
-            var tree = Octree as GeometryModel3DOctree;
-            if (tree != null)
+            if (UseOctreeHitTest)
             {
-                Octree = null;
-                foreach (var item in items)
+                var tree = Octree as GeometryModel3DOctree;
+                if (tree != null)
                 {
-                    var holder = mDictionary[item];
-                    if(holder is GeometryModel3D)
+                    Octree = null;
+                    foreach (var item in items)
                     {
-                        tree.Remove(holder as GeometryModel3D);
+                        var holder = mDictionary[item];
+                        if(holder is GeometryModel3D)
+                        {
+                            tree.Remove(holder as GeometryModel3D);
+                        }
                     }
+                    Octree = tree;
                 }
-                Octree = tree;
+                else
+                {
+                    throw new InvalidOperationException("Octree does not support remove");
+                }
             }
             else
             {
-                throw new InvalidOperationException("Octree does not support remove");
+                Octree = null;
             }
         }
 

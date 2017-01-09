@@ -176,6 +176,19 @@ namespace OctreeDemo
 
         private readonly IList<DataModel> HighlightItems = new List<DataModel>();
 
+        private bool useOctreeHitTest = true;
+        public bool UseOctreeHitTest
+        {
+            set
+            {
+                SetValue<bool>(ref useOctreeHitTest, value, nameof(UseOctreeHitTest));
+            }
+            get
+            {
+                return useOctreeHitTest;
+            }
+        }
+
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
 
@@ -293,7 +306,7 @@ namespace OctreeDemo
                         HighlightItems.Add(model);
                     }
                 }
-                if (GroupOctree.HitPathBoundingBoxes.Count > 0)
+                if (GroupOctree !=null && GroupOctree.HitPathBoundingBoxes.Count > 0)
                 {
                     HitModel = GroupOctree.HitPathBoundingBoxes.CreatePathLines();
                 }
@@ -329,6 +342,7 @@ namespace OctreeDemo
                 Items.RemoveAt(Items.Count - 1);
                 counter = counter == 0 ? 0 : counter - 1;             
             }
+            HitModel = null;
         }
     }
 }

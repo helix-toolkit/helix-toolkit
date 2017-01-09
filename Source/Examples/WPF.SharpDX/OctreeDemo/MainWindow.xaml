@@ -43,7 +43,7 @@
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
 
-            <hx:ItemsModel3D ItemsSource="{Binding Items}" UseOctreeHitTest="True" Octree="{Binding GroupOctree, Mode=OneWayToSource}" IsRendering="{Binding Visibility}">
+            <hx:ItemsModel3D ItemsSource="{Binding Items}" UseOctreeHitTest="{Binding UseOctreeHitTest}" Octree="{Binding GroupOctree, Mode=OneWayToSource}" IsRendering="{Binding Visibility}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D Geometry="{Binding Model}" Material="{Binding Material}"
@@ -85,6 +85,7 @@
             <CheckBox IsChecked="{Binding Visibility}">Model Visible</CheckBox>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding HitThrough}">Hit Through</CheckBox>
+            <CheckBox IsChecked="{Binding UseOctreeHitTest}">Enable Octree</CheckBox>
             <Button Command="{Binding AddModelCommand}">Add Model</Button>
             <Button Command="{Binding RemoveModelCommand}">Remove Model</Button>
         </StackPanel>
