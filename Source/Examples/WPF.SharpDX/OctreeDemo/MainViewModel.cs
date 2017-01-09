@@ -128,6 +128,8 @@ namespace OctreeDemo
             }
         }
 
+        public PhongMaterial Material { private set; get; }
+        public MeshGeometry3D DefaultModel { private set; get; }
         public ObservableCollection<DataModel> Items { set; get; }
 
         private IOctree groupOctree = null;
@@ -192,6 +194,8 @@ namespace OctreeDemo
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
 
+        public ICommand ClearModelCommand { private set; get; }
+
         public MainViewModel()
         {            // titles
             this.Title = "DynamicTexture Demo";
@@ -219,28 +223,28 @@ namespace OctreeDemo
 
             AddModelCommand = new RelayCommand(AddModel);
             RemoveModelCommand = new RelayCommand(RemoveModel);
+            ClearModelCommand = new RelayCommand(ClearModel);
         }
 
         private void CreateDefaultModels()
         {
+            Material = PhongMaterials.Orange;
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
             b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
             b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);
-            var model = b2.ToMeshGeometry3D();
+            DefaultModel = b2.ToMeshGeometry3D();
 
-            model.UpdateOctree();
-            OctreeModel = model.Octree.CreateOctreeLineModel();
+            DefaultModel.UpdateOctree();
+            OctreeModel = DefaultModel.Octree.CreateOctreeLineModel();
 
-
-            Items.Add(new DataModel() { Model = model });
             for (int i = 0; i < 10; ++i)
             {
                 for (int j = 0; j < 10; ++j)
                 {
                     var builder = new MeshBuilder(true, false, false);
                     builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1, 12, 12);
-                    model = builder.ToMeshGeometry3D();
+                    var model = builder.ToMeshGeometry3D();
                     model.UpdateOctree();
                     Items.Add(new DataModel() { Model = model });
                 }
@@ -342,6 +346,13 @@ namespace OctreeDemo
                 newModelZ = newModelZ > -5 ? newModelZ - 0.5 : 0;             
             }
             HitModel = null;
+        }
+
+        private void ClearModel(object o)
+        {
+            Items.Clear();
+            HitModel = null;
+            HighlightItems.Clear();
         }
     }
 }

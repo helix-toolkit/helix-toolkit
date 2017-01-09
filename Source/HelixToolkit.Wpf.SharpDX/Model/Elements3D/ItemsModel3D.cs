@@ -359,6 +359,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Reset:
+                    mOctreeManager.RequestRebuild();
+                    break;
+            }
         }
 
         protected override void OnRender(RenderContext context)

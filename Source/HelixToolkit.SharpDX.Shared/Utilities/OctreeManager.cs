@@ -155,5 +155,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 handler(this, new OctreeChangedArgs(this.Octree));
             }
         }
+
+        public void RequestRebuild()
+        {
+            Clear();
+            mRequestUpdateOctree = true;
+        }
     }
 }
