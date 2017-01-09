@@ -1,5 +1,6 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
+using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace OctreeDemo
         {
             set
             {
-                SetValue<MeshGeometry3D>(ref model, value, nameof(Model));             
+                SetValue<MeshGeometry3D>(ref model, value, nameof(Model));
             }
             get { return model; }
         }
@@ -59,6 +60,67 @@ namespace OctreeDemo
         public DataModel()
         {
             Material = PhongMaterials.Red;
+        }
+    }
+
+    public class SphereModel : DataModel
+    {
+        public SphereModel(Vector3 center, int radius)
+        {
+            Center = center;
+            Radius = radius;
+            CreateModel();
+            isConstructed = true;
+        }
+
+        private bool isConstructed = false;
+
+        private Vector3 center;
+        public Vector3 Center
+        {
+            set
+            {
+                if (SetValue<Vector3>(ref center, value, nameof(Center)))
+                {
+                    if (!isConstructed)
+                    {
+                        return;
+                    }
+                    CreateModel();
+                }
+            }
+            get
+            {
+                return center;
+            }
+        }
+
+        private int radius;
+        public int Radius
+        {
+            set
+            {
+                if (SetValue<int>(ref radius, value, nameof(Radius)))
+                {
+                    if (!isConstructed)
+                    {
+                        return;
+                    }
+                    CreateModel();
+                }
+            }
+            get
+            {
+                return radius;
+            }
+        }
+
+        private void CreateModel()
+        {
+            var builder = new MeshBuilder(true, false, false);
+            builder.AddSphere(Center, Radius, 12, 12);
+            this.Model = builder.ToMeshGeometry3D();
+            this.Model.UpdateOctree();
         }
     }
 }

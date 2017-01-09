@@ -218,7 +218,7 @@ namespace OctreeDemo
             }
         }
 
-        public bool HitThrough {set; get;}
+        public bool HitThrough { set; get; }
 
         private readonly IList<DataModel> HighlightItems = new List<DataModel>();
 
@@ -257,7 +257,7 @@ namespace OctreeDemo
             this.Light1Direction = new Vector3(-10, -10, -10);
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             SetupCameraBindings(this.Camera);
-            this.PropertyChanged += MainViewModel_PropertyChanged;       
+            this.PropertyChanged += MainViewModel_PropertyChanged;
 
             LineColor = Color.Blue;
             GroupLineColor = Color.Green;
@@ -286,16 +286,12 @@ namespace OctreeDemo
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    var builder = new MeshBuilder(true, false, false);
-                    builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1, 12, 12);
-                    var model = builder.ToMeshGeometry3D();
-                    model.UpdateOctree();
-                    Items.Add(new DataModel() { Model = model });
+                    Items.Add(new SphereModel(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1));
                 }
             }
 
-            LanderItems = Load3ds("Car.3ds").Select(x=>new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
-            foreach(var item in LanderItems)
+            LanderItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
+            foreach (var item in LanderItems)
             {
                 var scale = new Vector3(0.007f);
                 for (int i = 0; i < item.Model.Positions.Count; ++i)
@@ -339,7 +335,7 @@ namespace OctreeDemo
 
         public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            foreach(var item in HighlightItems)
+            foreach (var item in HighlightItems)
             {
                 item.Highlight = false;
             }
@@ -353,7 +349,7 @@ namespace OctreeDemo
             {
                 if (HitThrough)
                 {
-                    foreach(var hit in hitTests)
+                    foreach (var hit in hitTests)
                     {
                         if (hit.ModelHit.DataContext is DataModel)
                         {
@@ -361,7 +357,7 @@ namespace OctreeDemo
                             model.Highlight = true;
                             HighlightItems.Add(model);
                         }
-                        else if(hit.ModelHit.DataContext == this)
+                        else if (hit.ModelHit.DataContext == this)
                         {
                             Material = PhongMaterials.Yellow;
                         }
@@ -381,7 +377,7 @@ namespace OctreeDemo
                         Material = PhongMaterials.Yellow;
                     }
                 }
-                if (GroupOctree !=null && GroupOctree.HitPathBoundingBoxes.Count > 0)
+                if (GroupOctree != null && GroupOctree.HitPathBoundingBoxes.Count > 0)
                 {
                     HitModel = GroupOctree.HitPathBoundingBoxes.CreatePathLines();
                 }
@@ -400,16 +396,12 @@ namespace OctreeDemo
         private double newModelZ = -5;
         private void AddModel(object o)
         {
-            var x = 10*(float)Math.Sin(theta);
-            var y = 10*(float)Math.Cos(theta);
+            var x = 10 * (float)Math.Sin(theta);
+            var y = 10 * (float)Math.Cos(theta);
             theta += 0.3;
             newModelZ += 0.5;
             var z = (float)(newModelZ);
-            var builder = new MeshBuilder(true, false, false);
-            builder.AddSphere(new Vector3(x, y + 20, z +14), 1, 12, 12);
-            var model = builder.ToMeshGeometry3D();
-            model.UpdateOctree();
-            Items.Add(new DataModel() { Model = model });
+            Items.Add(new SphereModel(new Vector3(x, y + 20, z + 14), 1));
             HitModel = null;
         }
 
@@ -418,7 +410,7 @@ namespace OctreeDemo
             if (Items.Count > 0)
             {
                 Items.RemoveAt(Items.Count - 1);
-                newModelZ = newModelZ > -5 ? newModelZ - 0.5 : 0;             
+                newModelZ = newModelZ > -5 ? newModelZ - 0.5 : 0;
             }
             HitModel = null;
         }
