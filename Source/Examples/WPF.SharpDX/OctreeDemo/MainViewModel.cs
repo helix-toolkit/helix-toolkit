@@ -1,21 +1,15 @@
 ﻿using DemoCore;
 using HelixToolkit.SharpDX.Shared.Utilities;
 using HelixToolkit.Wpf.SharpDX;
-using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
 
 namespace OctreeDemo
@@ -412,7 +406,7 @@ namespace OctreeDemo
             newModelZ += 0.5;
             var z = (float)(newModelZ);
             var builder = new MeshBuilder(true, false, false);
-            builder.AddSphere(new Vector3(x -14, y - 14, z - 14), 1);
+            builder.AddSphere(new Vector3(x, y + 20, z +14), 1, 12, 12);
             var model = builder.ToMeshGeometry3D();
             model.UpdateOctree();
             Items.Add(new DataModel() { Model = model });
