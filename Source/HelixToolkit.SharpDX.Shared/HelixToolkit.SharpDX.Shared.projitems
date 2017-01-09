@@ -63,6 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TypeConverter.cs" />

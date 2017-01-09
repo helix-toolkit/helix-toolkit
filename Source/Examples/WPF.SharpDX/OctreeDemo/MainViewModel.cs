@@ -319,20 +319,19 @@ namespace OctreeDemo
 
         private double theta = 0;
         private double newModelZ = -5;
-        private int counter = 0;
         private void AddModel(object o)
         {
             var x = 10*(float)Math.Sin(theta);
             var y = 10*(float)Math.Cos(theta);
             theta += 0.3;
-            newModelZ += counter*0.05;
+            newModelZ += 0.5;
             var z = (float)(newModelZ);
             var builder = new MeshBuilder(true, false, false);
             builder.AddSphere(new Vector3(x -14, y - 14, z - 14), 1);
             var model = builder.ToMeshGeometry3D();
             model.UpdateOctree();
             Items.Add(new DataModel() { Model = model });
-            ++counter;
+            HitModel = null;
         }
 
         private void RemoveModel(object o)
@@ -340,7 +339,7 @@ namespace OctreeDemo
             if (Items.Count > 0)
             {
                 Items.RemoveAt(Items.Count - 1);
-                counter = counter == 0 ? 0 : counter - 1;             
+                newModelZ = newModelZ > -5 ? newModelZ - 0.5 : 0;             
             }
             HitModel = null;
         }
