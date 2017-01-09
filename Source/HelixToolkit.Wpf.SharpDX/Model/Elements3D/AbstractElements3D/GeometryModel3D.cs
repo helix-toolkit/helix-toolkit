@@ -89,15 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Bounds = new BoundingBox();
                 return;
             }
-            //var m = this.Transform.ToMatrix();
-            //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
-            var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-
-            //var b = BoundingBox.FromPoints(this.Geometry.Positions);
-            //b.Minimum = Vector3.TransformCoordinate(b.Minimum, m);
-            //b.Maximum = Vector3.TransformCoordinate(b.Maximum, m);
-            this.Bounds = b;
-            //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
+            this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
             if (renderHost !=null)
             {
                 var host = this.renderHost;
@@ -110,6 +102,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsAttached)
             {
+                if (e.PropertyName.Equals(nameof(Geometry3D.Positions)) || e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
+                }
                 OnGeometryPropertyChanged(sender, e);
             }
         }
