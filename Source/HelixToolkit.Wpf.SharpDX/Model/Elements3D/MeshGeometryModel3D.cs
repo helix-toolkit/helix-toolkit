@@ -25,6 +25,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
     using System.Runtime.CompilerServices;
+    using System.Diagnostics;
+    using System.Collections.Generic;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
@@ -106,6 +108,11 @@ namespace HelixToolkit.Wpf.SharpDX
             catch (System.Exception)
             {
             }
+        }
+
+        protected override void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnGeometryChanged(e);
         }
 
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -446,6 +453,37 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             return vertexArrayBuffer;
+        }
+
+        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        {
+            if (this.Visibility == Visibility.Collapsed)
+            {
+                return false;
+            }
+            if (this.IsHitTestVisible == false)
+            {
+                return false;
+            }
+            bool isHit = false;
+            var model = Geometry;
+            if (model != null && model.Octree != null)
+            {
+                isHit = model.Octree.HitTest(this, modelMatrix, rayWS, ref hits);
+
+#if DEBUG
+                if (isHit)
+                {
+                    Debug.WriteLine("Using octree for hit test, hit = "+hits[0].PointHit);
+                }
+#endif
+
+            }
+            else
+            {
+                isHit = base.HitTest(rayWS, ref hits);
+            }
+            return isHit;
         }
     }
 }

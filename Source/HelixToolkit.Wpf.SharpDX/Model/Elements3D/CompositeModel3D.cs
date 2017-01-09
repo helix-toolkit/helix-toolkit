@@ -216,7 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// if you want to have a model with bounds, use GeometryModel3D instead:
         /// but this prevents the CompositeModel3D containg lights, etc. (Lights3D are Models3D, which do not have bounds)
         /// </summary>
-        private void UpdateBounds()
+        protected void UpdateBounds()
         {
             var bb = this.Bounds;
             foreach (var item in this.Children)

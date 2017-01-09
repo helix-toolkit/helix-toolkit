@@ -9,9 +9,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using HelixToolkit.SharpDX.Shared.Utilities;
     using global::SharpDX;
-
+    using System.Diagnostics;
     using HelixToolkit.Wpf.SharpDX.Core;
 
 #if !NETFX_CORE
@@ -57,7 +57,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IntCollection TriangleIndices { get { return Indices; } set { Indices = new IntCollection(value); } }
+        public IntCollection TriangleIndices
+        {
+            get { return Indices; }
+            set { Indices = new IntCollection(value); }
+        }
 
         public static MeshGeometry3D Merge(params MeshGeometry3D[] meshes)
         {
@@ -124,6 +128,11 @@ namespace HelixToolkit.Wpf.SharpDX
             mesh.BiTangents = bitangents;
 
             return mesh;
+        }
+
+        protected override IOctree CreateOctree()
+        {
+            return new MeshGeometryOctree(this.Positions, this.Indices);
         }
     }
 }

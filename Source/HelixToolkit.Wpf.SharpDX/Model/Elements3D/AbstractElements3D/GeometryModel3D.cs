@@ -18,6 +18,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Point = System.Windows.Point;
     using System.ComponentModel;
+    using HelixToolkit.SharpDX.Shared.Utilities;
+    using System.Diagnostics;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -25,7 +27,6 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class GeometryModel3D : Model3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
     {
         protected RasterizerState rasterState;
-
         /// <summary>
         /// Override in derived classes to specify the
         /// size, in bytes, of the vertices used for rendering.
@@ -359,7 +360,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var g = this.Geometry as MeshGeometry3D;
-            var isHit = false;
+            bool isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
 

@@ -13,10 +13,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using HelixToolkit.Wpf.SharpDX.Core;
-
+    using HelixToolkit.SharpDX.Shared.Utilities;
     using System.Runtime.InteropServices;
     using System.ComponentModel;
     using HelixToolkit.SharpDX.Shared.Model;
+    using System.Diagnostics;
 
 #if !NETFX_CORE
     [Serializable]
@@ -35,7 +36,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                Set<IntCollection>(ref indices, value);
+                if(Set<IntCollection>(ref indices, value))
+                {
+                    Octree = null;
+                }
             }
         }
 
@@ -48,7 +52,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                Set<Vector3Collection>(ref position, value);
+                if(Set<Vector3Collection>(ref position, value))
+                {
+                    Octree = null;
+                }
             }
         }
 
@@ -87,6 +94,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public Vector3 P0;
         }
+
+        /// <summary>
+        /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
+        /// </summary>
+        public IOctree Octree { private set; get; }
+
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="DisablePropertyChangedEvent"/>
         /// </summary>
@@ -100,6 +113,38 @@ namespace HelixToolkit.Wpf.SharpDX
         public void UpdateTriangles()
         {
             RaisePropertyChanged(TriangleBuffer);
+        }
+
+        /// <summary>
+        /// Create Octree for current model.
+        /// </summary>
+        public void UpdateOctree()
+        {
+            if (Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0)
+            {
+                this.Octree = CreateOctree();
+                this.Octree.BuildTree();
+            }
+            else
+            {
+                this.Octree = null;
+            }
+        }
+        /// <summary>
+        /// Override to create different octree in subclasses.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IOctree CreateOctree()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Set octree to null
+        /// </summary>
+        public void ClearOctree()
+        {
+            Octree = null;
         }
     }
 }
