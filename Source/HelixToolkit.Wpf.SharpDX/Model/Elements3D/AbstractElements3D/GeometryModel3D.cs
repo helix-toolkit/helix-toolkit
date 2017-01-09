@@ -140,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.RegisterReadOnly("Bounds", typeof(BoundingBox), typeof(GeometryModel3D), 
                 new UIPropertyMetadata(new BoundingBox(), (d,e)=> 
                 {
-                    (d as GeometryModel3D).RaiseEvent(new BoundChangedEventArgs((BoundingBox)e.NewValue, (BoundingBox)e.OldValue));
+                    (d as GeometryModel3D).RaiseEvent(new BoundChangedEventArgs(d, (BoundingBox)e.NewValue, (BoundingBox)e.OldValue));
                 }
             ));
 
@@ -562,7 +562,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public BoundingBox NewBound { private set; get; }
         public BoundingBox OldBound { private set; get; }
-        public BoundChangedEventArgs(BoundingBox newBound, BoundingBox oldBound)
+        public BoundChangedEventArgs(object source, BoundingBox newBound, BoundingBox oldBound)
+            :base(GeometryModel3D.BoundChangedEvent, source)
         {
             NewBound = newBound;
             OldBound = oldBound;
