@@ -19,7 +19,7 @@ namespace OctreeDemo
             }
             get { return model; }
         }
-
+        private Material orgMaterial;
         private Material material;
         public Material Material
         {
@@ -42,11 +42,12 @@ namespace OctreeDemo
                 highlight = value;
                 if (highlight)
                 {
+                    orgMaterial = material;
                     Material = PhongMaterials.Yellow;
                 }
                 else
                 {
-                    Material = PhongMaterials.Red;
+                    Material = orgMaterial;
                 }
             }
             get

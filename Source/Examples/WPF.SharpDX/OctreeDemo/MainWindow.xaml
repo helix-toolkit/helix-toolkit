@@ -4,10 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:local="clr-namespace:OctreeDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:i ="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     Title="MainWindow"
     Width="800"
     Height="600"
@@ -17,6 +17,7 @@
             x:Name="view1"
             Title="{Binding Title}"
             Camera="{Binding Camera}"
+            CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
@@ -37,21 +38,43 @@
             </hx:Viewport3DX.InputBindings>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <ie:CallMethodAction TargetObject="{Binding}" MethodName="OnMouseLeftButtonDownHandler"/>
+                    <ie:CallMethodAction MethodName="OnMouseLeftButtonDownHandler" TargetObject="{Binding}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <hx:MeshGeometryModel3D Geometry="{Binding DefaultModel}" Material="{Binding Material}" FillMode="{Binding FillMode}"/>
-            <hx:ItemsModel3D ItemsSource="{Binding Items}" UseOctreeHitTest="{Binding UseOctreeHitTest}" Octree="{Binding GroupOctree, Mode=OneWayToSource}" IsRendering="{Binding Visibility}">
+            <hx:MeshGeometryModel3D IsRendering="{Binding Visibility}"
+                FillMode="{Binding FillMode}"
+                Geometry="{Binding DefaultModel}"
+                Material="{Binding Material}" />
+            <hx:ItemsModel3D
+                IsRendering="{Binding Visibility}"
+                ItemsSource="{Binding Items}"
+                Octree="{Binding GroupOctree, Mode=OneWayToSource}"
+                UseOctreeHitTest="{Binding UseOctreeHitTest}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
-                        <hx:MeshGeometryModel3D Geometry="{Binding Model}" Material="{Binding Material}"
-                                                FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"/>
+                        <hx:MeshGeometryModel3D
+                            FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
+                            Geometry="{Binding Model}"
+                            Material="{Binding Material}" />
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
-            
+            <hx:ItemsModel3D
+                IsRendering="{Binding Visibility}"
+                ItemsSource="{Binding LanderItems}"
+                Octree="{Binding LanderGroupOctree, Mode=OneWayToSource}"
+                UseOctreeHitTest="{Binding UseOctreeHitTest}">
+                <hx:ItemsModel3D.ItemTemplate>
+                    <DataTemplate>
+                        <hx:MeshGeometryModel3D
+                            FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
+                            Geometry="{Binding Model}"
+                            Material="{Binding Material}" />
+                    </DataTemplate>
+                </hx:ItemsModel3D.ItemTemplate>
+            </hx:ItemsModel3D>
             <hx:LineGeometryModel3D
                 Geometry="{Binding OctreeModel}"
                 IsHitTestVisible="False"
@@ -69,6 +92,12 @@
                 IsHitTestVisible="False"
                 Thickness="1.5"
                 Color="{Binding HitLineColor}" />
+
+            <hx:LineGeometryModel3D
+                Geometry="{Binding LanderGroupOctreeModel}"
+                IsHitTestVisible="False"
+                Thickness="0.5"
+                Color="{Binding GroupLineColor}" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
@@ -76,10 +105,10 @@
             Orientation="Vertical">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type CheckBox}">
-                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="Margin" Value="4" />
                 </Style>
                 <Style TargetType="{x:Type Button}">
-                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="Margin" Value="4" />
                 </Style>
             </StackPanel.Resources>
             <CheckBox IsChecked="{Binding Visibility}">Model Visible</CheckBox>

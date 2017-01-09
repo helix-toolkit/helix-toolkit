@@ -114,6 +114,20 @@ namespace OctreeDemo
             }
         }
 
+        private LineGeometry3D landerGroupOctreeModel = null;
+        public LineGeometry3D LanderGroupOctreeModel
+        {
+            set
+            {
+                landerGroupOctreeModel = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return landerGroupOctreeModel;
+            }
+        }
+
         private LineGeometry3D hitModel = null;
         public LineGeometry3D HitModel
         {
@@ -141,6 +155,7 @@ namespace OctreeDemo
         }
         public MeshGeometry3D DefaultModel { private set; get; }
         public ObservableCollection<DataModel> Items { set; get; }
+        public List<DataModel> LanderItems { private set; get; }
 
         private IOctree groupOctree = null;
         public IOctree GroupOctree
@@ -164,6 +179,31 @@ namespace OctreeDemo
             get
             {
                 return groupOctree;
+            }
+        }
+
+        private IOctree landerGroupOctree = null;
+        public IOctree LanderGroupOctree
+        {
+            set
+            {
+                if (landerGroupOctree == value)
+                    return;
+                landerGroupOctree = value;
+                OnPropertyChanged();
+                if (value != null)
+                {
+                    LanderGroupOctreeModel = value.CreateOctreeLineModel();
+                    value.RecordHitPathBoundingBoxes = true;
+                }
+                else
+                {
+                    LanderGroupOctreeModel = null;
+                }
+            }
+            get
+            {
+                return landerGroupOctree;
             }
         }
 
@@ -240,9 +280,9 @@ namespace OctreeDemo
         {
             Material = PhongMaterials.White;
             var b2 = new MeshBuilder(true, true, true);
-            b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
-            b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
-            b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);
+            b2.AddSphere(new Vector3(15f, 0f, 0f), 4, 64, 64);
+            b2.AddSphere(new Vector3(25f, 0f, 0f), 2, 32, 32);
+            b2.AddTube(new Vector3[] { new Vector3(10f, 5f, 0f), new Vector3(10f, 7f, 0f) }, 2, 12, false, true, true);
             DefaultModel = b2.ToMeshGeometry3D();
 
             DefaultModel.UpdateOctree();
@@ -259,6 +299,24 @@ namespace OctreeDemo
                     Items.Add(new DataModel() { Model = model });
                 }
             }
+
+            LanderItems = Load3ds("Car.3ds").Select(x=>new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
+            foreach(var item in LanderItems)
+            {
+                var scale = new Vector3(0.007f);
+                for (int i = 0; i < item.Model.Positions.Count; ++i)
+                {
+                    item.Model.Positions[i] = item.Model.Positions[i] * scale;
+                }
+                item.Model.UpdateOctree();
+            }
+        }
+
+        public List<Object3D> Load3ds(string path)
+        {
+            var reader = new StudioReader();
+            var list = reader.Read(path);
+            return list;
         }
 
         private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -332,6 +390,10 @@ namespace OctreeDemo
                 if (GroupOctree !=null && GroupOctree.HitPathBoundingBoxes.Count > 0)
                 {
                     HitModel = GroupOctree.HitPathBoundingBoxes.CreatePathLines();
+                }
+                if (LanderGroupOctree != null && LanderGroupOctree.HitPathBoundingBoxes.Count > 0)
+                {
+                    HitModel = LanderGroupOctree.HitPathBoundingBoxes.CreatePathLines();
                 }
             }
             else
