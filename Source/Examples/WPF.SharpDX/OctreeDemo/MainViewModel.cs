@@ -127,8 +127,18 @@ namespace OctreeDemo
                 return hitModel;
             }
         }
-
-        public PhongMaterial Material { private set; get; }
+        private PhongMaterial material;
+        public PhongMaterial Material
+        {
+            private set
+            {
+                SetValue<PhongMaterial>(ref material, value, nameof(Material));
+            }
+            get
+            {
+                return material;
+            }
+        }
         public MeshGeometry3D DefaultModel { private set; get; }
         public ObservableCollection<DataModel> Items { set; get; }
 
@@ -228,7 +238,7 @@ namespace OctreeDemo
 
         private void CreateDefaultModels()
         {
-            Material = PhongMaterials.Orange;
+            Material = PhongMaterials.White;
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
             b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
@@ -282,6 +292,7 @@ namespace OctreeDemo
                 item.Highlight = false;
             }
             HighlightItems.Clear();
+            Material = PhongMaterials.White;
             var viewport = sender as Viewport3DX;
             if (viewport == null) { return; }
             var point = e.GetPosition(viewport);
@@ -298,6 +309,10 @@ namespace OctreeDemo
                             model.Highlight = true;
                             HighlightItems.Add(model);
                         }
+                        else if(hit.ModelHit.DataContext == this)
+                        {
+                            Material = PhongMaterials.Yellow;
+                        }
                     }
                 }
                 else
@@ -308,6 +323,10 @@ namespace OctreeDemo
                         var model = hit.ModelHit.DataContext as DataModel;
                         model.Highlight = true;
                         HighlightItems.Add(model);
+                    }
+                    else if (hit.ModelHit.DataContext == this)
+                    {
+                        Material = PhongMaterials.Yellow;
                     }
                 }
                 if (GroupOctree !=null && GroupOctree.HitPathBoundingBoxes.Count > 0)
