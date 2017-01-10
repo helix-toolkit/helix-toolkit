@@ -101,6 +101,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="item"></param>
         void Remove(T item);
+
+        IOctree FindChildByItemBound(T item);
+
+        IOctree FindChildByItemBound(T item, BoundingBox bound);
     }
 
     public abstract class OctreeBase<T> : IOctreeBase<T>
@@ -558,12 +562,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        protected virtual IOctree FindChildByItemBound(T item)
+        public virtual IOctree FindChildByItemBound(T item)
         {
             return FindChildByItemBound(item, GetBoundingBoxFromItem(item));
         }
 
-        protected virtual IOctree FindChildByItemBound(T item, BoundingBox bound)
+        public virtual IOctree FindChildByItemBound(T item, BoundingBox bound)
         {           
             var queue = new Queue<IOctreeBase<T>>(64);
             queue.Enqueue(this);
@@ -820,23 +824,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 foreach (var item in Objects)
                 {
                     bound = BoundingBox.Merge(item.Bounds, bound);
-                    item.OnBoundChanged += MakeWeakHandler(Item_OnBoundChanged, 
-                        new Action<RoutedEventHandler>((e) =>
-                        {
-                            item.OnBoundChanged -= e;
-                        }));
                 }
                 this.Bound = bound;
             }
-        }
-
-        private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
-        {
-            if (e.OldBound.Contains(e.NewBound) == ContainmentType.Contains)
-            { return; }
-            var item = sender as GeometryModel3D;
-            var node = FindChildByItemBound(item, e.OldBound);
-#warning TODO
         }
 
         protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent, int minSize)
@@ -876,26 +866,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         protected override IOctree CreateNodeWithParent(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)
         {
             return new GeometryModel3DOctree(bound, objList, parent, this.MIN_SIZE);
-        }
-
-        private RoutedEventHandler MakeWeakHandler(Action<object, BoundChangedEventArgs> action, Action<RoutedEventHandler> remove)
-        {
-            var reference = new WeakReference(action.Target);
-            var method = action.Method;
-            RoutedEventHandler handler = null;
-            handler = delegate (object sender, RoutedEventArgs e)
-            {
-                var target = reference.Target;
-                if (reference.IsAlive)
-                {
-                    method.Invoke(target, null);
-                }
-                else
-                {
-                    remove(handler);
-                }
-            };
-            return handler;
         }
     }
 }

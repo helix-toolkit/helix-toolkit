@@ -235,6 +235,28 @@ namespace OctreeDemo
             }
         }
 
+        private int sphereSize = 1;
+        public int SphereSize
+        {
+            set
+            {
+                if (SetValue<int>(ref sphereSize, value, nameof(SphereSize)))
+                {
+                    if (HighlightItems.Count > 0)
+                    {
+                        foreach (SphereModel item in HighlightItems)
+                        {
+                            item.Radius = value;
+                        }
+                    }
+                }
+            }
+            get
+            {
+                return sphereSize;
+            }
+        }
+
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
 

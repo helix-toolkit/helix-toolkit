@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using HelixToolkit.Wpf.SharpDX;
 using System.Linq;
 using System.Collections;
+using System.Windows;
+using SharpDX;
 
 namespace HelixToolkit.SharpDX.Shared.Utilities
 {
@@ -84,6 +86,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         {
                             Octree = tree;
                         }
+                        SubscribeBoundChangeEvent(model);
                     }
                 }                
             }
@@ -93,9 +96,65 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
+        private void SubscribeBoundChangeEvent(GeometryModel3D item)
+        {
+            item.OnBoundChanged -= Item_OnBoundChanged;
+            item.OnBoundChanged += Item_OnBoundChanged;
+        }
+
+        private void UnsubscribeBoundChangeEvent(GeometryModel3D item)
+        {
+            item.OnBoundChanged -= Item_OnBoundChanged;
+        }
+
+        private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
+        {
+            if(Octree == null)
+            {
+                return;
+            }
+            var arg = e;
+            if (arg.OldBound.Contains(arg.NewBound) == ContainmentType.Contains)
+            {
+                return;
+            }
+            var item = sender as GeometryModel3D;
+            var node = this.Octree.FindChildByItemBound(item, arg.OldBound);
+            if (node.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+            {
+                return;
+            }
+            (node as GeometryModel3DOctree).Remove(item);
+            AddPendingItem(item);
+        }
+
+        //private RoutedEventHandler MakeWeakHandler(Action<object, BoundChangedEventArgs> action, Action<RoutedEventHandler> remove)
+        //{
+        //    var reference = new WeakReference(action.Target);
+        //    var method = action.Method;
+        //    RoutedEventHandler handler = null;
+        //    handler = delegate (object sender, RoutedEventArgs e)
+        //    {
+        //        var target = reference.Target;
+        //        if (reference.IsAlive)
+        //        {
+        //            method.Invoke(target, null);
+        //        }
+        //        else
+        //        {
+        //            remove(handler);
+        //        }
+        //    };
+        //    return handler;
+        //}
+
         private GeometryModel3DOctree RebuildOctree(IList<Element3D> items)
         {
             var list = items.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
+            foreach(var item in list)
+            {
+                SubscribeBoundChangeEvent(item);
+            }
             var tree = new GeometryModel3DOctree(list);
             tree.BuildTree();
             return tree;
@@ -123,6 +182,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 Octree = null;
                 foreach(var item in items)
                 {
+                    UnsubscribeBoundChangeEvent(item);
                     tree.Remove(item);
                 }
                 Octree = tree;
@@ -135,6 +195,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var tree = Octree;
                 Octree = null;
+                UnsubscribeBoundChangeEvent(item);
                 tree.Remove(item);
                 Octree = tree;
             }
@@ -149,11 +210,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         private void RaiseOctreeChangedEvent()
         {
-            var handler = OnOctreeChanged;
-            if (handler != null)
-            {
-                handler(this, new OctreeChangedArgs(this.Octree));
-            }
+            OnOctreeChanged?.Invoke(this, new OctreeChangedArgs(this.Octree));
         }
 
         public void RequestRebuild()
