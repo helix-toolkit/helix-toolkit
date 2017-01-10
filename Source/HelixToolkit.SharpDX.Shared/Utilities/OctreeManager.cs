@@ -148,7 +148,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             if(Enabled && item is GeometryModel3D)
             {
-                (item as GeometryModel3D).OnBoundChanged += GeometryModel3DOctreeManager_OnBoundChanged;
+                var model = item as GeometryModel3D;
+                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
+                model.OnBoundChanged += GeometryModel3DOctreeManager_OnBoundChanged;
                 return true;
             }
             else
@@ -190,7 +192,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 Octree = null;
                 foreach(var item in items)
                 {
-                    UnsubscribeBoundChangeEvent(item);
+                    item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
+                    UnsubscribeBoundChangeEvent(item);                    
                     tree.RemoveByBound(item);
                 }
                 Octree = tree;
@@ -203,7 +206,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var tree = Octree;
                 Octree = null;
-                UnsubscribeBoundChangeEvent(item);
+                item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
+                UnsubscribeBoundChangeEvent(item);               
                 tree.RemoveByBound(item);
                 Octree = tree;
             }
@@ -213,7 +217,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             mRequestUpdateOctree = false;
             Octree = null;
-            //mAddPendingQueue.Clear();
         }
 
         private void RaiseOctreeChangedEvent()
