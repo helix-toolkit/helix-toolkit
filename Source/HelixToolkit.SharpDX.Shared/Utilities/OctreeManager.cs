@@ -98,16 +98,20 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return;
             }
             var item = sender as GeometryModel3D;
-            var node = this.Octree.FindChildByItemBound(item, arg.OldBound);
-            if (node != null && node.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+            int index;
+            var node = this.Octree.FindChildByItemBound(item, arg.OldBound, out index);
+            if (node != null)
             {
-                Debug.WriteLine("new bound inside current node. Do nothing.");
-                return;
-            }
-            else if (node != null && node is GeometryModel3DOctree)
-            {
-                Debug.WriteLine("new bound outside current node, remove it.");
-                (node as GeometryModel3DOctree).RemoveByBound(item, arg.OldBound);
+                if (node.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+                {
+                    Debug.WriteLine("new bound inside current node. Do nothing.");
+                    return;
+                }
+                else if (node is GeometryModel3DOctree)
+                {
+                    Debug.WriteLine("new bound outside current node, remove it.");
+                    (node as GeometryModel3DOctree).RemoveAt(index);
+                }
             }
             AddItem(item);
         }

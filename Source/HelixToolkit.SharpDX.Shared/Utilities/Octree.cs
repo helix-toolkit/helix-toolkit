@@ -91,43 +91,51 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool Add(T item);
 
         /// <summary>
-        /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T)"/>
+        /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T, out int)"/>
         /// </summary>
         /// <param name="item"></param>
         void RemoveByBound(T item);
         /// <summary>
-        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox)"/>
+        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox, out int)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="bound"></param>
         void RemoveByBound(T item, BoundingBox bound);
 
         /// <summary>
-        /// Remove item using exhaust search(Slow). <see cref="FindChildByItem(T)"/>
+        /// Remove item using exhaust search(Slow). <see cref="FindChildByItem(T, out int)"/>
         /// </summary>
         /// <param name="item"></param>
         void RemoveSafe(T item);
 
         /// <summary>
+        /// Remove item from current node by its index in Objects
+        /// </summary>
+        /// <param name="index"></param>
+        void RemoveAt(int index);
+        /// <summary>
         /// Fast search node by item bound
         /// </summary>
         /// <param name="item"></param>
+        /// <param name="index">The item index in Objects, if not found, output -1</param>
         /// <returns></returns>
-        IOctree FindChildByItemBound(T item);
+        IOctree FindChildByItemBound(T item, out int index);
 
         /// <summary>
         /// Fast search node by item bound
         /// </summary>
         /// <param name="item"></param>
+        /// <param name="index">The item index in Objects, if not found, output -1</param>
         /// <returns></returns>
-        IOctree FindChildByItemBound(T item, BoundingBox bound);
+        IOctree FindChildByItemBound(T item, BoundingBox bound, out int index);
 
         /// <summary>
         /// Exhaust search, slow.
         /// </summary>
         /// <param name="item"></param>
+        /// <param name="index">The item index in Objects, if not found, output -1</param>
         /// <returns></returns>
-        IOctree FindChildByItem(T item);
+        IOctree FindChildByItem(T item, out int index);
     }
 
     public abstract class OctreeBase<T> : IOctreeBase<T>
@@ -546,19 +554,20 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return result;
         }
 
-        public IOctree FindChildByItem(T item)
+        public IOctree FindChildByItem(T item, out int index)
         {
-            return FindChildByItem<T>(item, this);
+            return FindChildByItem<T>(item, this, out index);
         }
 
-        private static IOctree FindChildByItem<T>(T item, IOctreeBase<T> root)
+        private static IOctree FindChildByItem<T>(T item, IOctreeBase<T> root, out int index)
         {
             var queue = new Queue<IOctreeBase<T>>(256);
             queue.Enqueue(root);
+            index = -1;
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
-                int index = node.Objects.IndexOf(item);
+                index = node.Objects.IndexOf(item);
                 if (index != -1)
                 {
                     return node;
@@ -579,7 +588,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public void RemoveByBound(T item, BoundingBox bound)
         {
-            var node = FindChildByItemBound(item, bound);
+            int index;
+            var node = FindChildByItemBound(item, bound, out index);
             if (node == null)
             {
 #if DEBUG
@@ -591,7 +601,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             else
             {
                 var nodeBase = node as IOctreeBase<T>;
-                nodeBase.Objects.Remove(item);
+                nodeBase.Objects.RemoveAt(index);
                 if (nodeBase.IsEmpty)
                 {
                     nodeBase.RemoveSelf();
@@ -607,10 +617,24 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public void RemoveSafe(T item)
         {
             Debug.WriteLine("RemoveSafe");
-            var node = FindChildByItem(item);
+            int index;
+            var node = FindChildByItem(item, out index);
             if (node != null)
             {
-                (node as IOctreeBase<T>).Objects.Remove(item);
+                (node as IOctreeBase<T>).Objects.RemoveAt(index);
+                if (node.IsEmpty)
+                {
+                    node.RemoveSelf();
+                }
+            }
+        }
+
+        public void RemoveAt(int index)
+        {
+            this.Objects.RemoveAt(index);
+            if (this.IsEmpty)
+            {
+                this.RemoveSelf();
             }
         }
 
@@ -641,22 +665,23 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        public virtual IOctree FindChildByItemBound(T item)
+        public virtual IOctree FindChildByItemBound(T item, out int index)
         {
-            return FindChildByItemBound(item, GetBoundingBoxFromItem(item));
+            return FindChildByItemBound(item, GetBoundingBoxFromItem(item), out index);
         }
 
-        public virtual IOctree FindChildByItemBound(T item, BoundingBox bound)
+        public virtual IOctree FindChildByItemBound(T item, BoundingBox bound, out int index)
         {
-            return FindChildByItemBound<T>(item, bound, this);
+            return FindChildByItemBound<T>(item, bound, this, out index);
         }
 
-        private static IOctree FindChildByItemBound<T>(T item, BoundingBox bound, IOctreeBase<T> root)
+        private static IOctree FindChildByItemBound<T>(T item, BoundingBox bound, IOctreeBase<T> root, out int index)
         {
             var queue = new Queue<IOctreeBase<T>>(64);
             queue.Enqueue(root);
             IOctree result = null;
             IOctreeBase<T> lastNode = null;
+            index = -1;
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
@@ -664,8 +689,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     continue;
                 }
-                var found = node.Objects.Where(x => x.Equals(item)).FirstOrDefault();
-                if (found == null)
+                index = node.Objects.IndexOf(item);
+                if (index == -1)
                 {
                     foreach (var child in node.ChildNodes)
                     {
@@ -688,8 +713,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 while (lastNode != null)
                 {
-                    var found = lastNode.Objects.Where(x => x.Equals(item)).FirstOrDefault();
-                    if(found == null)
+                    index = lastNode.Objects.IndexOf(item);
+                    if(index == -1)
                     {
                         lastNode = lastNode.Parent as IOctreeBase<T>;
                     }
