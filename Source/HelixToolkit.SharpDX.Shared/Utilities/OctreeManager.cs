@@ -129,7 +129,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             else if (node != null && node is GeometryModel3DOctree)
             {
                 Debug.WriteLine("new bound outside current node, remove it.");
-                (node as GeometryModel3DOctree).Remove(item, arg.OldBound);
+                (node as GeometryModel3DOctree).RemoveByBound(item, arg.OldBound);
             }
             AddPendingItem(item);
         }
@@ -189,7 +189,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 foreach(var item in items)
                 {
                     UnsubscribeBoundChangeEvent(item);
-                    tree.Remove(item);
+                    tree.RemoveByBound(item);
                 }
                 Octree = tree;
             }
@@ -202,7 +202,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 var tree = Octree;
                 Octree = null;
                 UnsubscribeBoundChangeEvent(item);
-                tree.Remove(item);
+                tree.RemoveByBound(item);
                 Octree = tree;
             }
         }

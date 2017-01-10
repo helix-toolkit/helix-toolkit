@@ -91,19 +91,19 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool Add(T item);
 
         /// <summary>
-        /// Remove item using its bounding box
+        /// Remove item using its bounding box. <see cref="FindChildByItemBound(T)"/>
         /// </summary>
         /// <param name="item"></param>
-        void Remove(T item);
+        void RemoveByBound(T item);
         /// <summary>
-        /// Remove item using manual bounding box, this is useful if the item's bound has been changed, use its old bound
+        /// Remove item using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="bound"></param>
-        void Remove(T item, BoundingBox bound);
+        void RemoveByBound(T item, BoundingBox bound);
 
         /// <summary>
-        /// Remove item using exhaust search
+        /// Remove item using exhaust search<see cref="FindChildByItem(T)"/>
         /// </summary>
         /// <param name="item"></param>
         void RemoveSafe(T item);
@@ -111,6 +111,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         IOctree FindChildByItemBound(T item);
 
         IOctree FindChildByItemBound(T item, BoundingBox bound);
+
+        /// <summary>
+        /// Exhaust search
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        IOctree FindChildByItem(T item);
     }
 
     public abstract class OctreeBase<T> : IOctreeBase<T>
@@ -522,7 +529,33 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return result;
         }
 
-        public void Remove(T item, BoundingBox bound)
+        public IOctree FindChildByItem(T item)
+        {
+            var queue = new Queue<IOctreeBase<T>>(256);
+            queue.Enqueue(this);
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                int index = node.Objects.IndexOf(item);
+                if (index != -1)
+                {
+                    return node;
+                }
+                else
+                {
+                    foreach(var child in ChildNodes)
+                    {
+                        if (child != null)
+                        {
+                            queue.Enqueue(child as IOctreeBase<T>);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void RemoveByBound(T item, BoundingBox bound)
         {
             var node = FindChildByItemBound(item, bound);
             if (node == null)
@@ -544,35 +577,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        public void Remove(T item)
+        public void RemoveByBound(T item)
         {
-            Remove(item, GetBoundingBoxFromItem(item));
+            RemoveByBound(item, GetBoundingBoxFromItem(item));
         }
 
         public void RemoveSafe(T item)
         {
             Debug.WriteLine("RemoveSafe");
-            var queue = new Queue<IOctreeBase<T>>(256);
-            queue.Enqueue(this);
-            while (queue.Count > 0)
+            var node = FindChildByItem(item);
+            if (node != null)
             {
-                var node = queue.Dequeue();
-                int index = node.Objects.IndexOf(item);
-                if (index != -1)
-                {
-                    node.Objects.RemoveAt(index);
-                    break;
-                }
-                else
-                {
-                    foreach(var child in ChildNodes)
-                    {
-                        if (child != null)
-                        {
-                            queue.Enqueue(child as IOctreeBase<T>);
-                        }
-                    }
-                }
+                (node as IOctreeBase<T>).Objects.Remove(item);
             }
         }
 
