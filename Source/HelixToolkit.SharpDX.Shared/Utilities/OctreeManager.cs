@@ -44,7 +44,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } }
         private volatile bool mRequestUpdateOctree = false;
-        private readonly Queue<GeometryModel3D> mAddPendingQueue = new Queue<GeometryModel3D>();
+       // private readonly Queue<GeometryModel3D> mAddPendingQueue = new Queue<GeometryModel3D>();
         private bool mEnabled = false;
         public bool Enabled
         {
@@ -62,34 +62,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        public void UpdateOctree(IList<Element3D> items)
+        public void RebuildTree(IList<Element3D> items)
         {
             mRequestUpdateOctree = false;
             if (Enabled)
             {
-                if (Octree == null)
-                {
-                    Octree = RebuildOctree(items);
-                }
-                else
-                {
-                    while (mAddPendingQueue.Count > 0)
-                    {
-                        var model = mAddPendingQueue.Dequeue();
-
-                        var tree = Octree as GeometryModel3DOctree;
-                        Octree = null;
-                        if (!tree.Add(model))
-                        {
-                            Octree = RebuildOctree(items);
-                        }
-                        else
-                        {
-                            Octree = tree;
-                        }
-                        SubscribeBoundChangeEvent(model);
-                    }
-                }                
+                Octree = RebuildOctree(items);      
             }
             else
             {
@@ -131,7 +109,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 Debug.WriteLine("new bound outside current node, remove it.");
                 (node as GeometryModel3DOctree).RemoveByBound(item, arg.OldBound);
             }
-            AddPendingItem(item);
+            AddItem(item);
         }
 
         //private RoutedEventHandler MakeWeakHandler(Action<object, BoundChangedEventArgs> action, Action<RoutedEventHandler> remove)
@@ -170,13 +148,37 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             if(Enabled && item is GeometryModel3D)
             {
-                mAddPendingQueue.Enqueue(item as GeometryModel3D);
-                mRequestUpdateOctree = true;
+                (item as GeometryModel3D).OnBoundChanged += GeometryModel3DOctreeManager_OnBoundChanged;
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+        private void GeometryModel3DOctreeManager_OnBoundChanged(object sender, BoundChangedEventArgs e)
+        {
+            var item = sender as GeometryModel3D;
+            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
+            AddItem(item);
+        }
+
+        private void AddItem(GeometryModel3D item)
+        {
+            if (Enabled)
+            {
+                var tree = Octree;
+                Octree = null;
+                if (tree == null || !tree.Add(item))
+                {
+                    RequestRebuild();
+                }
+                else
+                {
+                    Octree = tree;
+                }
+                SubscribeBoundChangeEvent(item);
             }
         }
 
@@ -211,7 +213,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             mRequestUpdateOctree = false;
             Octree = null;
-            mAddPendingQueue.Clear();
+            //mAddPendingQueue.Clear();
         }
 
         private void RaiseOctreeChangedEvent()
