@@ -482,7 +482,7 @@ namespace OctreeDemo
                 return enabled;
             }
         }
-
+        private Random rnd = new Random();
         private void AutoTestAddRemove(object o)
         {
             if (timer == null)
@@ -515,6 +515,12 @@ namespace OctreeDemo
             else
             {
                 AddModel(null);
+            }
+            if(counter % 2 == 0)
+            {
+                int k = rnd.Next(0, Items.Count - 1);
+                int radius = rnd.Next(1, 5);
+                (Items[k] as SphereModel).Radius = radius;
             }
             ++counter;
         }
