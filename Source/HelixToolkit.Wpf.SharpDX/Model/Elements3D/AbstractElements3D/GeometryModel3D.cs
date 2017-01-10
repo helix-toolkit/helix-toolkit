@@ -20,6 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
     using HelixToolkit.SharpDX.Shared.Utilities;
     using System.Diagnostics;
+    using System;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -89,16 +90,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Bounds = new BoundingBox();
                 return;
             }
-            //var m = this.Transform.ToMatrix();
-            //var b = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
-            var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-
-            //var b = BoundingBox.FromPoints(this.Geometry.Positions);
-            //b.Minimum = Vector3.TransformCoordinate(b.Minimum, m);
-            //b.Maximum = Vector3.TransformCoordinate(b.Maximum, m);
-            this.Bounds = b;
-            //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
-            if (renderHost !=null)
+            this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
+            if (renderHost != null)
             {
                 var host = this.renderHost;
                 this.Detach();
@@ -110,6 +103,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsAttached)
             {
+                if (e.PropertyName.Equals(nameof(Geometry3D.Positions)) || e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
+                }
                 OnGeometryPropertyChanged(sender, e);
             }
         }
@@ -140,7 +137,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private static readonly DependencyPropertyKey BoundsPropertyKey =
-            DependencyProperty.RegisterReadOnly("Bounds", typeof(BoundingBox), typeof(GeometryModel3D), new UIPropertyMetadata(new BoundingBox()));
+            DependencyProperty.RegisterReadOnly("Bounds", typeof(BoundingBox), typeof(GeometryModel3D),
+                new UIPropertyMetadata(new BoundingBox(), (d, e) =>
+                {
+                    (d as GeometryModel3D).RaiseEvent(new BoundChangedEventArgs(d, (BoundingBox)e.NewValue, (BoundingBox)e.OldValue));
+                }
+            ));
 
         public static readonly DependencyProperty BoundsProperty = BoundsPropertyKey.DependencyProperty;
 
@@ -173,13 +175,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly RoutedEvent MouseMove3DEvent =
             EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
+        public delegate void BoundChangedEventHandler(object sender, BoundChangedEventArgs e);
+        public static readonly RoutedEvent BoundChangedEvent =
+            EventManager.RegisterRoutedEvent("OnBoundChanged", RoutingStrategy.Bubble, typeof(BoundChangedEventHandler), typeof(GeometryModel3D));
+
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
 
-        public static readonly DependencyProperty IsMultisampleEnabledProperty = 
+        public static readonly DependencyProperty IsMultisampleEnabledProperty =
             DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
 
-        public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D), 
+        public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
             new PropertyMetadata(FillMode.Solid, RasterStateChanged));
 
         /// <summary>
@@ -209,6 +215,11 @@ namespace HelixToolkit.Wpf.SharpDX
             remove { RemoveHandler(MouseMove3DEvent, value); }
         }
 
+        public event BoundChangedEventHandler OnBoundChanged
+        {
+            add { AddHandler(BoundChangedEvent, value); }
+            remove { RemoveHandler(BoundChangedEvent, value); }
+        }
         ///// <summary>
         ///// This method raises the MouseDown3D event 
         ///// </summary>        
@@ -330,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         ~GeometryModel3D()
         {
-            
+
         }
 
         //static ulong count = 0;
@@ -546,5 +557,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public MouseMove3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
             : base(GeometryModel3D.MouseMove3DEvent, source, hitTestResult, position, viewport)
         { }
+    }
+
+    public sealed class BoundChangedEventArgs : RoutedEventArgs
+    {
+        public BoundingBox NewBound { private set; get; }
+        public BoundingBox OldBound { private set; get; }
+        public BoundChangedEventArgs(object source, BoundingBox newBound, BoundingBox oldBound)
+            : base(GeometryModel3D.BoundChangedEvent, source)
+        {
+            NewBound = newBound;
+            OldBound = oldBound;
+        }
     }
 }

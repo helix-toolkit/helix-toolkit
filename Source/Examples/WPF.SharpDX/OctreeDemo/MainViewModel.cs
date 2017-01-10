@@ -1,20 +1,16 @@
 ﻿using DemoCore;
 using HelixToolkit.SharpDX.Shared.Utilities;
 using HelixToolkit.Wpf.SharpDX;
-using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
 
@@ -114,6 +110,20 @@ namespace OctreeDemo
             }
         }
 
+        private LineGeometry3D landerGroupOctreeModel = null;
+        public LineGeometry3D LanderGroupOctreeModel
+        {
+            set
+            {
+                landerGroupOctreeModel = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return landerGroupOctreeModel;
+            }
+        }
+
         private LineGeometry3D hitModel = null;
         public LineGeometry3D HitModel
         {
@@ -127,8 +137,21 @@ namespace OctreeDemo
                 return hitModel;
             }
         }
-
+        private PhongMaterial material;
+        public PhongMaterial Material
+        {
+            private set
+            {
+                SetValue<PhongMaterial>(ref material, value, nameof(Material));
+            }
+            get
+            {
+                return material;
+            }
+        }
+        public MeshGeometry3D DefaultModel { private set; get; }
         public ObservableCollection<DataModel> Items { set; get; }
+        public List<DataModel> LanderItems { private set; get; }
 
         private IOctree groupOctree = null;
         public IOctree GroupOctree
@@ -155,6 +178,31 @@ namespace OctreeDemo
             }
         }
 
+        private IOctree landerGroupOctree = null;
+        public IOctree LanderGroupOctree
+        {
+            set
+            {
+                if (landerGroupOctree == value)
+                    return;
+                landerGroupOctree = value;
+                OnPropertyChanged();
+                if (value != null)
+                {
+                    LanderGroupOctreeModel = value.CreateOctreeLineModel();
+                    value.RecordHitPathBoundingBoxes = true;
+                }
+                else
+                {
+                    LanderGroupOctreeModel = null;
+                }
+            }
+            get
+            {
+                return landerGroupOctree;
+            }
+        }
+
         private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
         public Media3D.Vector3D CamLookDir
         {
@@ -172,7 +220,7 @@ namespace OctreeDemo
             }
         }
 
-        public bool HitThrough {set; get;}
+        public bool HitThrough { set; get; }
 
         private readonly IList<DataModel> HighlightItems = new List<DataModel>();
 
@@ -189,8 +237,33 @@ namespace OctreeDemo
             }
         }
 
+        private int sphereSize = 1;
+        public int SphereSize
+        {
+            set
+            {
+                if (SetValue<int>(ref sphereSize, value, nameof(SphereSize)))
+                {
+                    HitModel = null;
+                    if (HighlightItems.Count > 0)
+                    {
+                        foreach (SphereModel item in HighlightItems)
+                        {
+                            item.Radius = value;
+                        }
+                    }
+                }
+            }
+            get
+            {
+                return sphereSize;
+            }
+        }
+
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
+        public ICommand ClearModelCommand { private set; get; }
+        public ICommand AutoTestCommand { private set; get; }
 
         public MainViewModel()
         {            // titles
@@ -209,42 +282,61 @@ namespace OctreeDemo
             this.Light1Direction = new Vector3(-10, -10, -10);
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             SetupCameraBindings(this.Camera);
-            this.PropertyChanged += MainViewModel_PropertyChanged;       
+            this.PropertyChanged += MainViewModel_PropertyChanged;
 
             LineColor = Color.Blue;
             GroupLineColor = Color.Green;
             HitLineColor = Color.Red;
             Items = new ObservableCollection<DataModel>();
+
+            var sw = Stopwatch.StartNew();
             CreateDefaultModels();
+            sw.Stop();
+            Console.WriteLine("Create Models total time =" + sw.ElapsedMilliseconds + " ms");
 
             AddModelCommand = new RelayCommand(AddModel);
             RemoveModelCommand = new RelayCommand(RemoveModel);
+            ClearModelCommand = new RelayCommand(ClearModel);
+            AutoTestCommand = new RelayCommand(AutoTestAddRemove);
         }
 
         private void CreateDefaultModels()
         {
+            Material = PhongMaterials.White;
             var b2 = new MeshBuilder(true, true, true);
-            b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
-            b2.AddSphere(new Vector3(5f, 0f, 0f), 2, 32, 32);
-            b2.AddTube(new Vector3[] { new Vector3(0f, 5f, 0f), new Vector3(0f, 7f, 0f) }, 2, 12, false, true, true);
-            var model = b2.ToMeshGeometry3D();
+            b2.AddSphere(new Vector3(15f, 0f, 0f), 4, 64, 64);
+            b2.AddSphere(new Vector3(25f, 0f, 0f), 2, 32, 32);
+            b2.AddTube(new Vector3[] { new Vector3(10f, 5f, 0f), new Vector3(10f, 7f, 0f) }, 2, 12, false, true, true);
+            DefaultModel = b2.ToMeshGeometry3D();
 
-            model.UpdateOctree();
-            OctreeModel = model.Octree.CreateOctreeLineModel();
+            DefaultModel.UpdateOctree();
+            OctreeModel = DefaultModel.Octree.CreateOctreeLineModel();
 
-
-            Items.Add(new DataModel() { Model = model });
             for (int i = 0; i < 10; ++i)
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    var builder = new MeshBuilder(true, false, false);
-                    builder.AddSphere(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1, 12, 12);
-                    model = builder.ToMeshGeometry3D();
-                    model.UpdateOctree();
-                    Items.Add(new DataModel() { Model = model });
+                    Items.Add(new SphereModel(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1));
                 }
             }
+
+            LanderItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
+            foreach (var item in LanderItems)
+            {
+                var scale = new Vector3(0.007f);
+                for (int i = 0; i < item.Model.Positions.Count; ++i)
+                {
+                    item.Model.Positions[i] = item.Model.Positions[i] * scale;
+                }
+                item.Model.UpdateOctree();
+            }
+        }
+
+        public List<Object3D> Load3ds(string path)
+        {
+            var reader = new StudioReader();
+            var list = reader.Read(path);
+            return list;
         }
 
         private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -273,11 +365,12 @@ namespace OctreeDemo
 
         public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            foreach(var item in HighlightItems)
+            foreach (var item in HighlightItems)
             {
                 item.Highlight = false;
             }
             HighlightItems.Clear();
+            Material = PhongMaterials.White;
             var viewport = sender as Viewport3DX;
             if (viewport == null) { return; }
             var point = e.GetPosition(viewport);
@@ -286,13 +379,17 @@ namespace OctreeDemo
             {
                 if (HitThrough)
                 {
-                    foreach(var hit in hitTests)
+                    foreach (var hit in hitTests)
                     {
                         if (hit.ModelHit.DataContext is DataModel)
                         {
                             var model = hit.ModelHit.DataContext as DataModel;
                             model.Highlight = true;
                             HighlightItems.Add(model);
+                        }
+                        else if (hit.ModelHit.DataContext == this)
+                        {
+                            Material = PhongMaterials.Yellow;
                         }
                     }
                 }
@@ -305,10 +402,18 @@ namespace OctreeDemo
                         model.Highlight = true;
                         HighlightItems.Add(model);
                     }
+                    else if (hit.ModelHit.DataContext == this)
+                    {
+                        Material = PhongMaterials.Yellow;
+                    }
                 }
-                if (GroupOctree !=null && GroupOctree.HitPathBoundingBoxes.Count > 0)
+                if (GroupOctree != null && GroupOctree.HitPathBoundingBoxes.Count > 0)
                 {
                     HitModel = GroupOctree.HitPathBoundingBoxes.CreatePathLines();
+                }
+                if (LanderGroupOctree != null && LanderGroupOctree.HitPathBoundingBoxes.Count > 0)
+                {
+                    HitModel = LanderGroupOctree.HitPathBoundingBoxes.CreatePathLines();
                 }
             }
             else
@@ -321,16 +426,12 @@ namespace OctreeDemo
         private double newModelZ = -5;
         private void AddModel(object o)
         {
-            var x = 10*(float)Math.Sin(theta);
-            var y = 10*(float)Math.Cos(theta);
+            var x = 10 * (float)Math.Sin(theta);
+            var y = 10 * (float)Math.Cos(theta);
             theta += 0.3;
             newModelZ += 0.5;
             var z = (float)(newModelZ);
-            var builder = new MeshBuilder(true, false, false);
-            builder.AddSphere(new Vector3(x -14, y - 14, z - 14), 1);
-            var model = builder.ToMeshGeometry3D();
-            model.UpdateOctree();
-            Items.Add(new DataModel() { Model = model });
+            Items.Add(new SphereModel(new Vector3(x, y + 20, z + 14), 1));
             HitModel = null;
         }
 
@@ -339,9 +440,89 @@ namespace OctreeDemo
             if (Items.Count > 0)
             {
                 Items.RemoveAt(Items.Count - 1);
-                newModelZ = newModelZ > -5 ? newModelZ - 0.5 : 0;             
+                newModelZ = newModelZ > -5 ? newModelZ - 0.5 : 0;
             }
             HitModel = null;
+        }
+
+        private void ClearModel(object o)
+        {
+            Items.Clear();
+            HitModel = null;
+            HighlightItems.Clear();
+        }
+
+        private DispatcherTimer timer;
+        private int counter = 0;
+        private bool autoTesting = false;
+        public bool AutoTesting
+        {
+            set
+            {
+                if (SetValue<bool>(ref autoTesting, value, nameof(AutoTesting)))
+                {
+                    Enabled = !value;
+                }
+            }
+            get
+            {
+                return autoTesting;
+            }
+        }
+
+        private bool enabled = true;
+        public bool Enabled
+        {
+            set
+            {
+                SetValue<bool>(ref enabled, value, nameof(Enabled));
+            }
+            get
+            {
+                return enabled;
+            }
+        }
+        private Random rnd = new Random();
+        private void AutoTestAddRemove(object o)
+        {
+            if (timer == null)
+            {
+                AutoTesting = true;
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(50);
+                timer.Tick += Timer_Tick;
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+                timer = null;
+                AutoTesting = false;
+                counter = 0;
+            }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {            
+            if (counter > 99)
+            {
+                counter = -100;
+            }
+            if (counter < 0)
+            {
+                RemoveModel(null);
+            }
+            else
+            {
+                AddModel(null);
+            }
+            if(counter % 2 == 0)
+            {
+                int k = rnd.Next(0, Items.Count - 1);
+                int radius = rnd.Next(1, 5);
+                (Items[k] as SphereModel).Radius = radius;
+            }
+            ++counter;
         }
     }
 }

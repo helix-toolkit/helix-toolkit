@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void UpdateOctree()
         {
-            mOctreeManager.UpdateOctree(this.Children);
+            mOctreeManager.RebuildTree(this.Children);
         }
 
         /// <summary>
@@ -357,6 +357,13 @@ namespace HelixToolkit.Wpf.SharpDX
                             }
                         }
                     }
+                    break;
+            }
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Reset:
+                    mOctreeManager.RequestRebuild();
                     break;
             }
         }
