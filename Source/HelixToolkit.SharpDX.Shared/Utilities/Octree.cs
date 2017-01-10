@@ -226,7 +226,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
 #if DEBUG
             sw.Stop();
-            Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
+            if(sw.ElapsedMilliseconds > 0)
+                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
 #endif
         }
 

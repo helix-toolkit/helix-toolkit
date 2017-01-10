@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
 
 namespace OctreeDemo
@@ -261,8 +262,8 @@ namespace OctreeDemo
 
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
-
         public ICommand ClearModelCommand { private set; get; }
+        public ICommand AutoTestCommand { private set; get; }
 
         public MainViewModel()
         {            // titles
@@ -296,6 +297,7 @@ namespace OctreeDemo
             AddModelCommand = new RelayCommand(AddModel);
             RemoveModelCommand = new RelayCommand(RemoveModel);
             ClearModelCommand = new RelayCommand(ClearModel);
+            AutoTestCommand = new RelayCommand(AutoTestAddRemove);
         }
 
         private void CreateDefaultModels()
@@ -448,6 +450,73 @@ namespace OctreeDemo
             Items.Clear();
             HitModel = null;
             HighlightItems.Clear();
+        }
+
+        private DispatcherTimer timer;
+        private int counter = 0;
+        private bool autoTesting = false;
+        public bool AutoTesting
+        {
+            set
+            {
+                if (SetValue<bool>(ref autoTesting, value, nameof(AutoTesting)))
+                {
+                    Enabled = !value;
+                }
+            }
+            get
+            {
+                return autoTesting;
+            }
+        }
+
+        private bool enabled = true;
+        public bool Enabled
+        {
+            set
+            {
+                SetValue<bool>(ref enabled, value, nameof(Enabled));
+            }
+            get
+            {
+                return enabled;
+            }
+        }
+
+        private void AutoTestAddRemove(object o)
+        {
+            if (timer == null)
+            {
+                AutoTesting = true;
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(100);
+                timer.Tick += Timer_Tick;
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+                timer = null;
+                AutoTesting = false;
+                counter = 0;
+            }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            ++counter;
+            if (counter > 100)
+            {
+                counter = -100;
+            }
+            if (counter < 0)
+            {
+                RemoveModel(null);
+            }
+            else
+            {
+                AddModel(null);
+            }
         }
     }
 }

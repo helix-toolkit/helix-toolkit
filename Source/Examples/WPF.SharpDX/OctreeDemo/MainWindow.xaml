@@ -116,9 +116,10 @@
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding HitThrough}">Hit Through</CheckBox>
             <CheckBox IsChecked="{Binding UseOctreeHitTest}">Enable Octree</CheckBox>
-            <Button Command="{Binding AddModelCommand}">Add Model</Button>
-            <Button Command="{Binding RemoveModelCommand}">Remove Model</Button>
+            <Button Command="{Binding AddModelCommand}" IsEnabled="{Binding Enabled}">Add Model</Button>
+            <Button Command="{Binding RemoveModelCommand}" IsEnabled="{Binding Enabled}">Remove Model</Button>
             <Button Command="{Binding ClearModelCommand}">Clear Models</Button>
+            <Button Command="{Binding AutoTestCommand}">Auto Test(Add/Remove)</Button>
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <TextBlock>Change selected sphere radius</TextBlock>
@@ -127,6 +128,7 @@
                 Maximum="20"
                 Minimum="1"
                 Value="{Binding SphereSize}" />
+            <TextBlock Text="{Binding SphereSize}" />
         </StackPanel>
     </Grid>
 </Window>
