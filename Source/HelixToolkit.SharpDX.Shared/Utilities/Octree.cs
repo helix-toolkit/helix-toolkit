@@ -91,29 +91,39 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool Add(T item);
 
         /// <summary>
-        /// Remove item using its bounding box. <see cref="FindChildByItemBound(T)"/>
+        /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T)"/>
         /// </summary>
         /// <param name="item"></param>
         void RemoveByBound(T item);
         /// <summary>
-        /// Remove item using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox)"/>
+        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="bound"></param>
         void RemoveByBound(T item, BoundingBox bound);
 
         /// <summary>
-        /// Remove item using exhaust search<see cref="FindChildByItem(T)"/>
+        /// Remove item using exhaust search(Slow). <see cref="FindChildByItem(T)"/>
         /// </summary>
         /// <param name="item"></param>
         void RemoveSafe(T item);
 
+        /// <summary>
+        /// Fast search node by item bound
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         IOctree FindChildByItemBound(T item);
 
+        /// <summary>
+        /// Fast search node by item bound
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         IOctree FindChildByItemBound(T item, BoundingBox bound);
 
         /// <summary>
-        /// Exhaust search
+        /// Exhaust search, slow.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
