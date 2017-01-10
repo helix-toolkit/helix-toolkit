@@ -527,11 +527,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
-                if (node.Bound.Contains(bound) != ContainmentType.Contains)
-                {
-                    continue;
-                }
-                else
+                if (node.Bound.Contains(bound) == ContainmentType.Contains)
                 {
                     result = node;
                     foreach (var child in node.ChildNodes)
@@ -541,6 +537,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                             queue.Enqueue(child as IOctreeBase<T>);
                         }
                     }
+                }
+                else
+                {
+                    continue;
                 }
             }
             return result;
