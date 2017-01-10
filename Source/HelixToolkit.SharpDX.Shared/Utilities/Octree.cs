@@ -473,6 +473,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return isHit;
         }
 
+
         public abstract bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect);
 
         public bool Add(T item)
@@ -515,8 +516,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public IOctree FindSmallestNodeContainsBoundingBox(BoundingBox bound)
         {
+            return FindSmallestNodeContainsBoundingBox<T>(bound, this);
+        }
+
+        private static IOctree FindSmallestNodeContainsBoundingBox<T>(BoundingBox bound, IOctreeBase<T> root)
+        {
             var queue = new Queue<IOctreeBase<T>>(64);
-            queue.Enqueue(this);
+            queue.Enqueue(root);
             IOctree result = null;
             while (queue.Count > 0)
             {
@@ -542,8 +548,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public IOctree FindChildByItem(T item)
         {
+            return FindChildByItem<T>(item, this);
+        }
+
+        private static IOctree FindChildByItem<T>(T item, IOctreeBase<T> root)
+        {
             var queue = new Queue<IOctreeBase<T>>(256);
-            queue.Enqueue(this);
+            queue.Enqueue(root);
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
@@ -554,7 +565,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 }
                 else
                 {
-                    foreach(var child in ChildNodes)
+                    foreach (var child in node.ChildNodes)
                     {
                         if (child != null)
                         {
@@ -636,9 +647,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         }
 
         public virtual IOctree FindChildByItemBound(T item, BoundingBox bound)
-        {           
+        {
+            return FindChildByItemBound<T>(item, bound, this);
+        }
+
+        private static IOctree FindChildByItemBound<T>(T item, BoundingBox bound, IOctreeBase<T> root)
+        {
             var queue = new Queue<IOctreeBase<T>>(64);
-            queue.Enqueue(this);
+            queue.Enqueue(root);
             IOctree result = null;
             while (queue.Count > 0)
             {
