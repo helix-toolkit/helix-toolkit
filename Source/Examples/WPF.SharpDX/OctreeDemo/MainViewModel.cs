@@ -489,7 +489,7 @@ namespace OctreeDemo
             {
                 AutoTesting = true;
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(100);
+                timer.Interval = TimeSpan.FromMilliseconds(50);
                 timer.Tick += Timer_Tick;
                 timer.Start();
             }
@@ -503,9 +503,8 @@ namespace OctreeDemo
         }
 
         private void Timer_Tick(object sender, EventArgs e)
-        {
-            ++counter;
-            if (counter > 100)
+        {            
+            if (counter > 99)
             {
                 counter = -100;
             }
@@ -517,6 +516,7 @@ namespace OctreeDemo
             {
                 AddModel(null);
             }
+            ++counter;
         }
     }
 }
