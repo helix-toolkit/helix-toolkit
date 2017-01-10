@@ -243,6 +243,7 @@ namespace OctreeDemo
             {
                 if (SetValue<int>(ref sphereSize, value, nameof(SphereSize)))
                 {
+                    HitModel = null;
                     if (HighlightItems.Count > 0)
                     {
                         foreach (SphereModel item in HighlightItems)
