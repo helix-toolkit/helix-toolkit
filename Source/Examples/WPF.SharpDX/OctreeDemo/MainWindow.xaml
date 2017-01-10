@@ -120,12 +120,14 @@
             <Button Command="{Binding RemoveModelCommand}">Remove Model</Button>
             <Button Command="{Binding ClearModelCommand}">Clear Models</Button>
         </StackPanel>
-        <Slider
-            Width="200"
-            VerticalAlignment="Bottom"
-            Maximum="20"
-            Minimum="1"
-            Value="{Binding SphereSize}" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <TextBlock>Change selected sphere radius</TextBlock>
+            <Slider
+                Width="200"
+                Maximum="20"
+                Minimum="1"
+                Value="{Binding SphereSize}" />
+        </StackPanel>
     </Grid>
 </Window>
 

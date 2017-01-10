@@ -77,12 +77,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         void RemoveSelf();
         void RemoveChild(IOctree child);
-
-        /// <summary>
-        /// Update bounding box. Returns true if bounding box has been changed. Otherwise return false.
-        /// </summary>
-        /// <returns></returns>
-        bool UpdateBoundingBox();
     }
 
     public interface IOctreeBase<T> : IOctree
@@ -97,10 +91,22 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool Add(T item);
 
         /// <summary>
-        /// 
+        /// Remove item using its bounding box
         /// </summary>
         /// <param name="item"></param>
         void Remove(T item);
+        /// <summary>
+        /// Remove item using manual bounding box, this is useful if the item's bound has been changed, use its old bound
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="bound"></param>
+        void Remove(T item, BoundingBox bound);
+
+        /// <summary>
+        /// Remove item using exhaust search
+        /// </summary>
+        /// <param name="item"></param>
+        void RemoveSafe(T item);
 
         IOctree FindChildByItemBound(T item);
 
@@ -516,12 +522,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return result;
         }
 
-        public void Remove(T item)
+        public void Remove(T item, BoundingBox bound)
         {
-            var node = FindChildByItemBound(item);
+            var node = FindChildByItemBound(item, bound);
             if (node == null)
             {
-                return;
+#if DEBUG
+                throw new Exception("item not found using bound.");
+#else
+                RemoveSafe(item);
+#endif
             }
             else
             {
@@ -534,6 +544,38 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
+        public void Remove(T item)
+        {
+            Remove(item, GetBoundingBoxFromItem(item));
+        }
+
+        public void RemoveSafe(T item)
+        {
+            Debug.WriteLine("RemoveSafe");
+            var queue = new Queue<IOctreeBase<T>>(256);
+            queue.Enqueue(this);
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                int index = node.Objects.IndexOf(item);
+                if (index != -1)
+                {
+                    node.Objects.RemoveAt(index);
+                    break;
+                }
+                else
+                {
+                    foreach(var child in ChildNodes)
+                    {
+                        if (child != null)
+                        {
+                            queue.Enqueue(child as IOctreeBase<T>);
+                        }
+                    }
+                }
+            }
+        }
+
         public virtual void RemoveSelf()
         {
             if (Parent == null)
@@ -541,7 +583,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
             Clear();
             Parent.RemoveChild(this);
-            UpdateParentBoundingBoxToRoot();
             Parent = null;
         }
 
@@ -600,65 +641,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return result;
         }
 
-
-        private void UpdateParentBoundingBoxToRoot()
-        {
-            var parent = Parent;
-            while (parent != null)
-            {
-                if (!parent.UpdateBoundingBox()) //If bounding box does not change, don't need to propergate to upper level
-                {
-                    break;
-                }
-                parent = parent.Parent;
-            }
-        }
-
-        public bool UpdateBoundingBox()
-        {
-            var box = new BoundingBox();
-            if (Objects.Count > 0)
-            {
-                box = GetBoundingBoxFromItem(Objects[0]);
-            }
-            else if (HasChildren)
-            {
-                foreach (var child in ChildNodes)
-                {
-                    if (child != null)
-                    {
-                        box = child.Bound;
-                        break;
-                    }
-                }
-            }
-
-            foreach (var item in Objects)
-            {
-                box = BoundingBox.Merge(box, GetBoundingBoxFromItem(item));
-            }
-            if (HasChildren)
-            {
-                foreach (var child in ChildNodes)
-                {
-                    if (child != null)
-                    {
-                        box = BoundingBox.Merge(box, child.Bound);
-                    }
-                }
-            }
-            if (Bound == box)
-            {
-                return false;
-            }
-            else
-            {
-                Bound = box;
-                return true;
-            }
-        }
-
-        #region Accessors
+#region Accessors
         public bool IsRoot
         {
             //The root node is the only node without a parent.
@@ -680,7 +663,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return !HasChildren && Objects.Count == 0;
             }
         }
-        #endregion
+#endregion
     }
 
     /// <summary>

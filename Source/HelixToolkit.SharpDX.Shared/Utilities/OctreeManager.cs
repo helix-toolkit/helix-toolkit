@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections;
 using System.Windows;
 using SharpDX;
+using System.Diagnostics;
 
 namespace HelixToolkit.SharpDX.Shared.Utilities
 {
@@ -120,11 +121,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
             var item = sender as GeometryModel3D;
             var node = this.Octree.FindChildByItemBound(item, arg.OldBound);
-            if (node.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+            if (node != null && node.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
             {
+                Debug.WriteLine("new bound inside current node. Do nothing.");
                 return;
             }
-            (node as GeometryModel3DOctree).Remove(item);
+            else if (node != null && node is GeometryModel3DOctree)
+            {
+                Debug.WriteLine("new bound outside current node, remove it.");
+                (node as GeometryModel3DOctree).Remove(item, arg.OldBound);
+            }
             AddPendingItem(item);
         }
 

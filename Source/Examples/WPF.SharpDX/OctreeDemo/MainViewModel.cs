@@ -6,6 +6,7 @@ using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -285,7 +286,11 @@ namespace OctreeDemo
             GroupLineColor = Color.Green;
             HitLineColor = Color.Red;
             Items = new ObservableCollection<DataModel>();
+
+            var sw = Stopwatch.StartNew();
             CreateDefaultModels();
+            sw.Stop();
+            Console.WriteLine("Create Models total time =" + sw.ElapsedMilliseconds + " ms");
 
             AddModelCommand = new RelayCommand(AddModel);
             RemoveModelCommand = new RelayCommand(RemoveModel);
