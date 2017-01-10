@@ -93,27 +93,39 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return;
             }
             var arg = e;
-            if (arg.OldBound.Contains(arg.NewBound) == ContainmentType.Contains)
+            if (arg.OldBound == arg.NewBound)
             {
                 return;
             }
             var item = sender as GeometryModel3D;
             int index;
             var node = this.Octree.FindChildByItemBound(item, arg.OldBound, out index);
+            bool rootAdd = true;
             if (node != null)
             {
-                if (node.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+                var tree = Octree;
+                Octree = null;
+                var geoNode = node as GeometryModel3DOctree;
+                geoNode.RemoveAt(index);
+                if (geoNode.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
                 {
-                    Debug.WriteLine("new bound inside current node. Do nothing.");
-                    return;
+
+                    Debug.WriteLine("new bound inside current node");
+                    if (geoNode.Add(item))
+                    {
+                        rootAdd = false;
+                    }
                 }
-                else if (node is GeometryModel3DOctree)
+                else
                 {
-                    Debug.WriteLine("new bound outside current node, remove it.");
-                    (node as GeometryModel3DOctree).RemoveAt(index);
+                    Debug.WriteLine("new bound outside current node");
                 }
+                Octree = tree;
             }
-            AddItem(item);
+            if (rootAdd)
+            {
+                AddItem(item);
+            }
         }
 
         //private RoutedEventHandler MakeWeakHandler(Action<object, BoundChangedEventArgs> action, Action<RoutedEventHandler> remove)
