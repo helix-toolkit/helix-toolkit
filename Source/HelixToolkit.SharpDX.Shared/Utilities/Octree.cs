@@ -656,6 +656,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             var queue = new Queue<IOctreeBase<T>>(64);
             queue.Enqueue(root);
             IOctree result = null;
+            IOctreeBase<T> lastNode = null;
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
@@ -673,12 +674,30 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                             queue.Enqueue(child as IOctreeBase<T>);
                         }
                     }
+                    lastNode = node;
                 }
                 else
                 {
                     queue.Clear();
                     result = node;
                     break;
+                }
+            }
+            //If not found, traverse from bottom to top to find the item.
+            if(result == null)
+            {
+                while (lastNode != null)
+                {
+                    var found = lastNode.Objects.Where(x => x.Equals(item)).FirstOrDefault();
+                    if(found == null)
+                    {
+                        lastNode = lastNode.Parent as IOctreeBase<T>;
+                    }
+                    else
+                    {
+                        result = lastNode;
+                        break;
+                    }
                 }
             }
             return result;
