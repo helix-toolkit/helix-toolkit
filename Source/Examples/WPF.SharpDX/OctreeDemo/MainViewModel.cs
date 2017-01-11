@@ -260,6 +260,17 @@ namespace OctreeDemo
             }
         }
 
+        private bool autoDeleteEmptyNode = true;
+        public bool AutoDeleteEmptyNode
+        {
+            set
+            {
+                autoDeleteEmptyNode = value;
+                OnPropertyChanged();
+            }
+            get { return autoDeleteEmptyNode; }
+        }
+
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
         public ICommand ClearModelCommand { private set; get; }

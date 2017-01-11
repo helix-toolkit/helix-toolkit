@@ -44,7 +44,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } }
         private volatile bool mRequestUpdateOctree = false;
-       // private readonly Queue<GeometryModel3D> mAddPendingQueue = new Queue<GeometryModel3D>();
+        public readonly OctreeBuildParameter Parameter = new OctreeBuildParameter();
+
         private bool mEnabled = false;
         public bool Enabled
         {
@@ -155,7 +156,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 SubscribeBoundChangeEvent(item);
             }
-            var tree = new GeometryModel3DOctree(list);
+            var tree = new GeometryModel3DOctree(list, Parameter);
             tree.BuildTree();
             return tree;
         }

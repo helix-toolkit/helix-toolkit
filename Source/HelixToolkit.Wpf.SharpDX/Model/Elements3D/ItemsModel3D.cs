@@ -60,9 +60,17 @@ namespace HelixToolkit.Wpf.SharpDX
                         d.UpdateOctree();
                     }
                 }));
-
+        /// <summary>
+        /// Output internal Octree for display if needed. Ususally used for debugging
+        /// </summary>
         public static readonly DependencyProperty OctreeProperty = DependencyProperty.Register("Octree", typeof(IOctree), typeof(ItemsModel3D), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty AutoDeleteEmptyOctreeNodeProperty = DependencyProperty.Register("AutoDeleteEmptyOctreeNode", typeof(bool), typeof(ItemsModel3D),
+            new PropertyMetadata(true, (s, e) =>
+            {
+                var d = s as ItemsModel3D;
+                d.mOctreeManager.Parameter.AutoDeleteIfEmpty = (bool)e.NewValue;
+            }));
         /// <summary>
         ///     Gets or sets the <see cref="DataTemplate" /> used to display each item.
         /// </summary>
@@ -111,6 +119,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (IOctree)GetValue(OctreeProperty);
+            }
+        }
+
+        public bool AutoDeleteEmptyOctreeNode
+        {
+            set
+            {
+                SetValue(AutoDeleteEmptyOctreeNodeProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(AutoDeleteEmptyOctreeNodeProperty);
             }
         }
 

@@ -35,6 +35,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         BoundingBox[] Octants { get; }
         bool RecordHitPathBoundingBoxes { set; get; }
         IList<BoundingBox> HitPathBoundingBoxes { get; }
+        OctreeBuildParameter Parameter { get; }
+        /// <summary>
+        /// Delete self if is empty;
+        /// </summary>
+        bool AutoDeleteIfEmpty { set; get; }
+
         /// <summary>
         /// Returns true if this node tree and all children have no content
         /// </summary>
@@ -76,6 +82,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// Remove self from parent node
         /// </summary>
         void RemoveSelf();
+        /// <summary>
+        /// Remove child from ChildNodes
+        /// </summary>
+        /// <param name="child"></param>
         void RemoveChild(IOctree child);
     }
 
@@ -147,8 +157,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
-        public readonly int MIN_SIZE = 1;
+        public int MIN_SIZE { get { return Parameter.MinSize; } }
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
+        public OctreeBuildParameter Parameter { private set; get; } = new OctreeBuildParameter();
 
         private BoundingBox bound;
         public BoundingBox Bound
@@ -186,26 +197,50 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         private BoundingBox[] octants = null;
         public BoundingBox[] Octants { get { return octants; } }
 
+        public bool AutoDeleteIfEmpty
+        {
+            get
+            {
+                return Parameter.AutoDeleteIfEmpty;
+            }
+            set
+            {
+                Parameter.AutoDeleteIfEmpty = value;
+            }
+        }
+
+        private OctreeBase(OctreeBuildParameter parameter)
+        {
+            if(parameter != null)
+                Parameter = parameter;
+        }
 
         /// <summary>
         /// Creates an oct tree which encloses the given region and contains the provided objects.
         /// </summary>
         /// <param name="bound">The bounding region for the oct tree.</param>
         /// <param name="objList">The list of objects contained within the bounding region</param>
-        protected OctreeBase(BoundingBox bound, List<T> objList, IOctree parent, int minSize)
+        /// <param name="autoDeleteIfEmpty">Delete self if becomes empty</param>
+        protected OctreeBase(BoundingBox bound, List<T> objList, IOctree parent, OctreeBuildParameter parameter)
+            :this(parameter)
         {
             Bound = bound;
             Objects = objList;
             Parent = parent;
-            MIN_SIZE = minSize;
         }
 
-        protected OctreeBase(IOctree parent, int minSize)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="minSize"></param>
+        /// <param name="autoDeleteIfEmpty">Delete self if becomes empty</param>
+        protected OctreeBase(IOctree parent, OctreeBuildParameter parameter)
+            :this(parameter)
         {
             Objects = new List<T>();
             Bound = new BoundingBox(Vector3.Zero, Vector3.Zero);
             Parent = parent;
-            MIN_SIZE = minSize;
         }
 
         /// <summary>
@@ -213,8 +248,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="bound">The suggested dimensions for the bounding region. 
         /// Note: if items are outside this region, the region will be automatically resized.</param>
-        protected OctreeBase(BoundingBox bound, IOctree parent, int minSize)
-            : this(parent, minSize)
+        protected OctreeBase(BoundingBox bound, IOctree parent, OctreeBuildParameter parameter)
+            : this(parent, parameter)
         {
             Bound = bound;
         }
@@ -597,8 +632,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 #if DEBUG
                 if (!RemoveSafe(item))
                 {
-                    return false;
-                    //throw new Exception("item not found using bound.");
+                    throw new Exception("item not found using bound.");
                 }
                 return true;
 #else
@@ -609,7 +643,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var nodeBase = node as IOctreeBase<T>;
                 nodeBase.Objects.RemoveAt(index);
-                if (nodeBase.IsEmpty)
+                if (nodeBase.IsEmpty && nodeBase.AutoDeleteIfEmpty)
                 {
                     nodeBase.RemoveSelf();
                 }
@@ -630,7 +664,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             if (node != null)
             {
                 (node as IOctreeBase<T>).Objects.RemoveAt(index);
-                if (node.IsEmpty)
+                if (node.IsEmpty && node.AutoDeleteIfEmpty)
                 {
                     node.RemoveSelf();
                 }
@@ -646,7 +680,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return false;
             }
             this.Objects.RemoveAt(index);
-            if (this.IsEmpty)
+            if (this.IsEmpty && this.AutoDeleteIfEmpty)
             {
                 this.RemoveSelf();
             }
@@ -674,7 +708,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     break;
                 }
             }
-            if (IsEmpty)
+            if (IsEmpty && AutoDeleteIfEmpty)
             {
                 RemoveSelf();
             }
@@ -776,9 +810,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
     {
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
+        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices)
+            : base(null, null)
+        {
 
-        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, int minSize = 1)
-            : base(null, minSize)
+        }
+        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, OctreeBuildParameter parameter)
+            : base(null, parameter)
         {
             Positions = positions;
             Indices = indices;
@@ -791,15 +829,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex, IOctree parent, int minSize)
-            : base(bound, triIndex, parent, minSize)
+        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex, IOctree parent, OctreeBuildParameter paramter)
+            : base(bound, triIndex, parent, paramter)
         {
             Positions = positions;
             Indices = indices;
         }
 
-        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent, int minSize)
-            : base(bound, list, parent, minSize)
+        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent, OctreeBuildParameter paramter)
+            : base(bound, list, parent, paramter)
         { }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
@@ -826,7 +864,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override IOctree CreateNodeWithParent(BoundingBox region, List<Tuple<int, BoundingBox>> objList, IOctree parent)
         {
-            return new MeshGeometryOctree(Positions, Indices, region, objList, parent, this.MIN_SIZE);
+            return new MeshGeometryOctree(Positions, Indices, region, objList, parent, parent.Parameter);
         }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -899,8 +937,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
     public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
     {
-        public GeometryModel3DOctree(List<GeometryModel3D> objList, int minSize = 1)
-            : base(null, minSize)
+        public GeometryModel3DOctree(List<GeometryModel3D> objList)
+            :this(objList, null)
+        {
+
+        }
+
+        public GeometryModel3DOctree(List<GeometryModel3D> objList, OctreeBuildParameter paramter)
+            : base(null, paramter)
         {
             Objects = objList;
             if (Objects != null && Objects.Count > 0)
@@ -914,8 +958,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent, int minSize)
-            : base(bound, objList, parent, minSize)
+        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent, OctreeBuildParameter paramter)
+            : base(bound, objList, parent, paramter)
         { }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -950,7 +994,37 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override IOctree CreateNodeWithParent(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)
         {
-            return new GeometryModel3DOctree(bound, objList, parent, this.MIN_SIZE);
+            return new GeometryModel3DOctree(bound, objList, parent, parent.Parameter);
+        }
+    }
+
+    public sealed class OctreeBuildParameter
+    {
+        public int MinSize = 1;
+        public bool AutoDeleteIfEmpty = true;
+
+        public OctreeBuildParameter()
+        {
+            MinSize = 1;
+            AutoDeleteIfEmpty = true;
+        }
+
+        public OctreeBuildParameter(int minSize)
+        {
+            MinSize = minSize;
+            AutoDeleteIfEmpty = true;
+        }
+
+        public OctreeBuildParameter(bool autoDeleteIfEmpty)
+        {
+            MinSize = 1;
+            AutoDeleteIfEmpty = autoDeleteIfEmpty;
+        }
+
+        public OctreeBuildParameter(int minSize, bool autoDeleteIfEmpty)
+            :this(minSize)
+        {
+            AutoDeleteIfEmpty = autoDeleteIfEmpty;
         }
     }
 }
