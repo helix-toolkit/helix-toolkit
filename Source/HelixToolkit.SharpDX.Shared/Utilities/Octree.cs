@@ -159,7 +159,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         public int MIN_SIZE { get { return Parameter.MinSize; } }
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
-        public OctreeBuildParameter Parameter { private set; get; } = new OctreeBuildParameter();
+        public OctreeBuildParameter Parameter { private set; get; }
 
         private BoundingBox bound;
         public BoundingBox Bound
@@ -211,8 +211,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         private OctreeBase(OctreeBuildParameter parameter)
         {
-            if(parameter != null)
+            if (parameter != null)
                 Parameter = parameter;
+            else
+                Parameter = new OctreeBuildParameter();
         }
 
         /// <summary>
