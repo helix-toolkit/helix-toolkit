@@ -148,6 +148,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
         public readonly int MIN_SIZE = 1;
+        protected bool treeBuilt = false;       //there is no pre-existing tree yet.
 
         private BoundingBox bound;
         public BoundingBox Bound
@@ -182,11 +183,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public IOctree Parent { protected set; get; }
 
-        protected bool treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
-        protected bool treeBuilt = false;       //there is no pre-existing tree yet.
         private BoundingBox[] octants = null;
         public BoundingBox[] Octants { get { return octants; } }
-        /*Note: we want to avoid allocating memory for as long as possible since there can be lots of nodes.*/
+
+
         /// <summary>
         /// Creates an oct tree which encloses the given region and contains the provided objects.
         /// </summary>
@@ -236,7 +236,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             if (!CheckDimension())
             {
                 treeBuilt = true;
-                treeReady = true;
                 return;
             }
             if (cubify)
@@ -278,12 +277,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 if (Objects.Count <= 1)   //doubt: is this really right? needs testing.
                 {
                     treeBuilt = true;
-                    treeReady = true;
                     return;
                 }
                 BuildSubTree();
                 treeBuilt = true;
-                treeReady = true;
             }
         }
 
@@ -336,7 +333,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             if (!CheckDimension())
             {
                 treeBuilt = true;
-                treeReady = true;
                 return;
             }
 
