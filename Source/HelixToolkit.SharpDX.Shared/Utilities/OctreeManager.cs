@@ -93,10 +93,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return;
             }
             var arg = e;
-            if (arg.OldBound == arg.NewBound)
-            {
-                return;
-            }
             var item = sender as GeometryModel3D;
             int index;
             var node = this.Octree.FindChildByItemBound(item, arg.OldBound, out index);
@@ -106,18 +102,22 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 var tree = Octree;
                 Octree = null;
                 var geoNode = node as GeometryModel3DOctree;
+                var parent = geoNode.Parent;// Need to get its parent first before remove, otherwise it may remove itself from tree
                 geoNode.RemoveAt(index);
                 if (geoNode.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
                 {
-
                     Debug.WriteLine("new bound inside current node");
-                    if (geoNode.Add(item))
+                    if (geoNode.Parent != null && geoNode.Add(item))
+                    {
+                        rootAdd = false;
+                    }
+                    else if (parent != null && (parent as GeometryModel3DOctree).Add(item))
                     {
                         rootAdd = false;
                     }
                 }
                 else
-                {
+                {                    
                     Debug.WriteLine("new bound outside current node");
                 }
                 Octree = tree;
@@ -160,13 +160,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return tree;
         }
 
+        private static readonly BoundingBox ZeroBound = new BoundingBox();
         public bool AddPendingItem(Model3D item)
         {
             if(Enabled && item is GeometryModel3D)
             {
                 var model = item as GeometryModel3D;
-                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
-                model.OnBoundChanged += GeometryModel3DOctreeManager_OnBoundChanged;
+                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                if (model.Bounds != ZeroBound)
+                {
+                    AddItem(model);
+                }
                 return true;
             }
             else
@@ -175,10 +180,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        private void GeometryModel3DOctreeManager_OnBoundChanged(object sender, BoundChangedEventArgs e)
+        private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, BoundChangedEventArgs e)
         {
             var item = sender as GeometryModel3D;
-            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
+            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
             AddItem(item);
         }
 
@@ -208,9 +213,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 Octree = null;
                 foreach(var item in items)
                 {
-                    item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
-                    UnsubscribeBoundChangeEvent(item);                    
-                    tree.RemoveByBound(item);
+                    item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                    UnsubscribeBoundChangeEvent(item);
+                    if (!tree.RemoveByBound(item))
+                    {
+                        Console.WriteLine("Remove failed.");
+                    }
                 }
                 Octree = tree;
             }
@@ -222,9 +230,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var tree = Octree;
                 Octree = null;
-                item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
-                UnsubscribeBoundChangeEvent(item);               
-                tree.RemoveByBound(item);
+                item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                UnsubscribeBoundChangeEvent(item);
+                if (!tree.RemoveByBound(item))
+                {
+                    Console.WriteLine("Remove failed.");
+                }
                 Octree = tree;
             }
         }

@@ -32,7 +32,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         IOctree Parent { get; }
         BoundingBox Bound { get; }
         IOctree[] ChildNodes { get; }
-
+        BoundingBox[] Octants { get; }
         bool RecordHitPathBoundingBoxes { set; get; }
         IList<BoundingBox> HitPathBoundingBoxes { get; }
         /// <summary>
@@ -64,7 +64,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// Build the whole tree from top to bottom iteratively.
         /// </summary>
-        void BuildTree();
+        void BuildTree(bool cubify = false);
 
         /// <summary>
         /// Build current node level only, this will only build current node and create children, but not build its children. 
@@ -94,25 +94,29 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T, out int)"/>
         /// </summary>
         /// <param name="item"></param>
-        void RemoveByBound(T item);
+        /// <returns>Return false if item not found</returns>
+        bool RemoveByBound(T item);
         /// <summary>
         /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox, out int)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="bound"></param>
-        void RemoveByBound(T item, BoundingBox bound);
+        /// <returns>Return false if item not found</returns>
+        bool RemoveByBound(T item, BoundingBox bound);
 
         /// <summary>
         /// Remove item using exhaust search(Slow). <see cref="FindChildByItem(T, out int)"/>
         /// </summary>
         /// <param name="item"></param>
-        void RemoveSafe(T item);
+        /// <returns>Return false if item not found</returns>
+        bool RemoveSafe(T item);
 
         /// <summary>
         /// Remove item from current node by its index in Objects
         /// </summary>
         /// <param name="index"></param>
-        void RemoveAt(int index);
+        /// <returns>Return false if index out of bound</returns>
+        bool RemoveAt(int index);
         /// <summary>
         /// Fast search node by item bound
         /// </summary>
@@ -145,7 +149,23 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         public readonly int MIN_SIZE = 1;
 
-        public BoundingBox Bound { protected set; get; }
+        private BoundingBox bound;
+        public BoundingBox Bound
+        {
+            protected set
+            {
+                if(bound == value)
+                {
+                    return;
+                }
+                bound = value;
+                octants = CreateOctants(value);
+            }
+            get
+            {
+                return bound;
+            }
+        }
 
         public List<T> Objects { protected set; get; }
 
@@ -164,7 +184,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected bool treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
-
+        private BoundingBox[] octants = null;
+        public BoundingBox[] Octants { get { return octants; } }
         /*Note: we want to avoid allocating memory for as long as possible since there can be lots of nodes.*/
         /// <summary>
         /// Creates an oct tree which encloses the given region and contains the provided objects.
@@ -210,8 +231,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return CreateNode(bound, new List<T> { Item });
         }
 
-        public void BuildTree()
+        public void BuildTree(bool cubify = false)
         {
+            if (!CheckDimension())
+            {
+                treeBuilt = true;
+                treeReady = true;
+                return;
+            }
+            if (cubify)
+            {
+                Bound = FindEnclosingCube(Bound);
+            }
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
@@ -284,10 +315,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
             if (dimensions == Vector3.Zero)
             {
-                FindEnclosingCube();
-                dimensions = Bound.Maximum - Bound.Minimum;
+                Bound = FindEnclosingBox();
             }
-
+            dimensions = Bound.Maximum - Bound.Minimum;
             //Check to see if the dimensions of the box are greater than the minimum dimensions
             if (dimensions.X <= MIN_SIZE && dimensions.Y <= MIN_SIZE && dimensions.Z <= MIN_SIZE)
             {
@@ -310,9 +340,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return;
             }
 
-            //Create subdivided regions for each octant
-            var octants = CreateOctants(Bound);
-
             //This will contain all of our objects which fit within each respective octant.
             var octList = new List<T>[8];
             for (int i = 0; i < 8; ++i)
@@ -327,7 +354,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     for (int x = 0; x < 8; ++x)
                     {
-                        if (octants[x].Contains(box) == ContainmentType.Contains)
+                        if (Octants[x].Contains(box) == ContainmentType.Contains)
                         {
                             octList[x].Add(obj);
                             Objects[i] = Objects[--count]; //Disard the existing object from location i, replaced with last valid object.
@@ -358,7 +385,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// This finds the dimensions of the bounding box necessary to tightly enclose all items in the object list.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void FindEnclosingBox()
+        protected BoundingBox FindEnclosingBox()
         {
             Vector3 global_min = Bound.Minimum, global_max = Bound.Maximum;
 
@@ -381,38 +408,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 if (local_max.Y > global_max.Y) global_max.Y = local_max.Y;
                 if (local_max.Z > global_max.Z) global_max.Z = local_max.Z;
             }
-            Bound = new BoundingBox(global_min, global_max);
+            return new BoundingBox(global_min, global_max);
         }
         /// <summary>
         /// This finds the smallest enclosing cube which is a power of 2, for all objects in the list.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void FindEnclosingCube()
+        public static BoundingBox FindEnclosingCube(BoundingBox bound)
         {
-            FindEnclosingBox();
-
-            //find the min offset from (0,0,0) and translate by it for a short while
-            Vector3 offset = Bound.Minimum - Vector3.Zero;
-            Bound = new BoundingBox(Bound.Minimum + offset, Bound.Maximum + offset);
-
-            //find the nearest power of two for the max values
-            int highX = (int)Math.Floor(Math.Max(Math.Max(Bound.Maximum.X, Bound.Maximum.Y), Bound.Maximum.Z));
-
-            //see if we're already at a power of 2
-            for (int bit = 0; bit < 32; bit++)
-            {
-                if (highX == 1 << bit)
-                {
-                    Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(highX, highX, highX) - offset);
-                    return;
-                }
-            }
-
-            //gets the most significant bit value, so that we essentially do a Ceiling(X) with the 
-            //ceiling result being to the nearest power of 2 rather than the nearest integer.
-            int x = SigBit(highX);
-
-            Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(x, x, x) - offset);
+            var v = (bound.Maximum - bound.Minimum) / 2 + bound.Minimum;
+            bound = new BoundingBox(bound.Minimum - v, bound.Maximum - v);
+            var max = Math.Max(bound.Maximum.X, Math.Max(bound.Maximum.Y, bound.Maximum.Z));
+            return new BoundingBox(new Vector3(-max,-max,-max)+v, new Vector3(max,max,max)+v);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -494,19 +501,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
             else
             {
-                var octants = CreateOctants(node.Bound);
                 bool pushToChild = false;
-                for(int i = 0; i < octants.Length; ++i)
+                for(int i = 0; i < node.Octants.Length; ++i)
                 {
-                    if(octants[i].Contains(bound)== ContainmentType.Contains)
+                    if(node.Octants[i].Contains(bound)== ContainmentType.Contains)
                     {
                         if (node.ChildNodes[i] != null)
                         {
-                            (node.ChildNodes[i] as IOctreeBase<T>).Add(item);
+                            (node.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
                         }
                         else
                         {                            
-                            node.ChildNodes[i] = CreateNodeWithParent(octants[i], new List<T>() { item }, node);
+                            node.ChildNodes[i] = CreateNodeWithParent(node.Octants[i], new List<T>() { item }, node);
                             node.ActiveNodes |= (byte)(1 << i);
                             node.ChildNodes[i].BuildTree();
                         }
@@ -586,16 +592,21 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return null;
         }
 
-        public void RemoveByBound(T item, BoundingBox bound)
+        public bool RemoveByBound(T item, BoundingBox bound)
         {
             int index;
             var node = FindChildByItemBound(item, bound, out index);
             if (node == null)
             {
 #if DEBUG
-                throw new Exception("item not found using bound.");
+                if (!RemoveSafe(item))
+                {
+                    return false;
+                    //throw new Exception("item not found using bound.");
+                }
+                return true;
 #else
-                RemoveSafe(item);
+                return RemoveSafe(item);
 #endif
             }
             else
@@ -606,15 +617,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     nodeBase.RemoveSelf();
                 }
+                return true;
             }
         }
 
-        public void RemoveByBound(T item)
+        public bool RemoveByBound(T item)
         {
-            RemoveByBound(item, GetBoundingBoxFromItem(item));
+            return RemoveByBound(item, GetBoundingBoxFromItem(item));
         }
 
-        public void RemoveSafe(T item)
+        public bool RemoveSafe(T item)
         {
             Debug.WriteLine("RemoveSafe");
             int index;
@@ -626,16 +638,23 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     node.RemoveSelf();
                 }
+                return true;
             }
+            return false;
         }
 
-        public void RemoveAt(int index)
+        public bool RemoveAt(int index)
         {
+            if(index <=0 && index >= this.Objects.Count)
+            {
+                return false;
+            }
             this.Objects.RemoveAt(index);
             if (this.IsEmpty)
             {
                 this.RemoveSelf();
             }
+            return true;
         }
 
         public virtual void RemoveSelf()

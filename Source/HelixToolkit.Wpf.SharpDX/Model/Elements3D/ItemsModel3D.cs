@@ -49,9 +49,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Enable octree hit test to improve hit performance. Note: Octree does not support child using Transform. 
         /// </summary>
-        public static readonly DependencyProperty UseOctreeHitTestProperty = DependencyProperty.Register("UseOctreeHitTest", typeof(bool), typeof(ItemsModel3D), 
+        public static readonly DependencyProperty UseOctreeHitTestProperty = DependencyProperty.Register("UseOctreeHitTest", typeof(bool), typeof(ItemsModel3D),
             new PropertyMetadata(false,
-                (s,e)=> {
+                (s, e) =>
+                {
                     var d = s as ItemsModel3D;
                     d.mOctreeManager.Enabled = (bool)e.NewValue;
                     if (d.loaded)
@@ -160,13 +161,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Cannot create a Model3D from ItemTemplate.
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
-        {           
+        {
             if (e.OldValue is INotifyCollectionChanged)
             {
                 (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
 
-            foreach(Model3D item in Children)
+            foreach (Model3D item in Children)
             {
                 item.DataContext = null;
             }
@@ -241,7 +242,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             if (mDictionary.ContainsKey(item))
                             {
                                 var model = mDictionary[item];
-                                if( UseOctreeHitTest && model is GeometryModel3D)
+                                if (UseOctreeHitTest && model is GeometryModel3D)
                                     mOctreeManager.RemoveItem(model as GeometryModel3D);
                                 model.DataContext = null;
                                 this.Children.Remove(model);
@@ -318,13 +319,13 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = this.ItemTemplate.LoadContent() as Model3D;
                                 if (model != null)
                                 {
-                                    model.DataContext = item;
-                                    this.Children.Add(model);
-                                    mDictionary.Add(item, model);
                                     if (UseOctreeHitTest)
                                     {
                                         mOctreeManager.AddPendingItem(model);
                                     }
+                                    model.DataContext = item;
+                                    this.Children.Add(model);
+                                    mDictionary.Add(item, model);
                                 }
                                 else
                                 {
@@ -343,12 +344,12 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = item as Model3D;
                                 if (model != null)
                                 {
-                                    this.Children.Add(model);
-                                    mDictionary.Add(item, model);
                                     if (UseOctreeHitTest)
                                     {
                                         mOctreeManager.AddPendingItem(model);
                                     }
+                                    this.Children.Add(model);
+                                    mDictionary.Add(item, model);
                                 }
                                 else
                                 {
@@ -382,11 +383,11 @@ namespace HelixToolkit.Wpf.SharpDX
             bool isHit = false;
             if (UseOctreeHitTest && Octree != null)
             {
-                isHit= Octree.HitTest(this, modelMatrix, ray, ref hits);
+                isHit = Octree.HitTest(this, modelMatrix, ray, ref hits);
             }
             else
             {
-                isHit= base.HitTest(ray, ref hits);
+                isHit = base.HitTest(ray, ref hits);
             }
             return isHit;
         }
