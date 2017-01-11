@@ -103,22 +103,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 var tree = Octree;
                 Octree = null;
                 var geoNode = node as GeometryModel3DOctree;
-                var parent = geoNode.Parent;// Need to get its parent first before remove, otherwise it may remove itself from tree
-                geoNode.RemoveAt(index);
                 if (geoNode.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
                 {
                     Debug.WriteLine("new bound inside current node");
-                    if (geoNode.Parent != null && geoNode.Add(item))
+                    if (geoNode.Add(item))
                     {
-                        rootAdd = false;
-                    }
-                    else if (parent != null && (parent as GeometryModel3DOctree).Add(item))
-                    {
+                        geoNode.RemoveAt(index); //remove old item from node after adding successfully.
                         rootAdd = false;
                     }
                 }
                 else
-                {                    
+                {
+                    geoNode.RemoveAt(index);
                     Debug.WriteLine("new bound outside current node");
                 }
                 Octree = tree;
