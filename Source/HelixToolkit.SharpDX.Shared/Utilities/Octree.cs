@@ -279,11 +279,16 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 Bound = FindEnclosingCube(Bound);
             }
+            BuildTree(this, cubify);
+        }
+
+        private static void BuildTree(IOctree root, bool cubify)
+        {
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
             var queue = new Queue<IOctree>(256);
-            queue.Enqueue(this);
+            queue.Enqueue(root);
             while (queue.Count > 0)
             {
                 var tree = queue.Dequeue();
