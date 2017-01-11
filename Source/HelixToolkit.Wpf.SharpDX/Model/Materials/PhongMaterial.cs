@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(BitmapSource), typeof(PhongMaterial), new UIPropertyMetadata(null));
+            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(PhongMaterial), new UIPropertyMetadata(null));
 
         /// <summary>
         /// Supports alpha channel image, such as PNG.
@@ -84,13 +84,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapProperty =
-            DependencyProperty.Register("NormalMap", typeof(BitmapSource), typeof(PhongMaterial), new UIPropertyMetadata(null));
+            DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new UIPropertyMetadata(null));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapProperty =
-            DependencyProperty.Register("DisplacementMap", typeof(BitmapSource), typeof(PhongMaterial), new UIPropertyMetadata(null));
+            DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new UIPropertyMetadata(null));
 
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// System.Windows.Media.Brush to be applied as a System.Windows.Media.Media3D.Material
         /// to a 3-D model.
         /// </summary>
-        public BitmapSource DiffuseMap
+        public Stream DiffuseMap
         {
-            get { return (BitmapSource)this.GetValue(DiffuseMapProperty); }
+            get { return (Stream)this.GetValue(DiffuseMapProperty); }
             set { this.SetValue(DiffuseMapProperty, value); }
         }
 
@@ -182,18 +182,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public BitmapSource NormalMap
+        public Stream NormalMap
         {
-            get { return (BitmapSource)this.GetValue(NormalMapProperty); }
+            get { return (Stream)this.GetValue(NormalMapProperty); }
             set { this.SetValue(NormalMapProperty, value); }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public BitmapSource DisplacementMap
+        public Stream DisplacementMap
         {
-            get { return (BitmapSource)this.GetValue(DisplacementMapProperty); }
+            get { return (Stream)this.GetValue(DisplacementMapProperty); }
             set { this.SetValue(DisplacementMapProperty, value); }
         }
 

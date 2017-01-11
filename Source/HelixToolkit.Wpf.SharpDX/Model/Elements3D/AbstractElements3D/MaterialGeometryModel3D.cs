@@ -25,9 +25,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Buffer vertexBuffer;
         protected Buffer indexBuffer;
         protected Buffer instanceBuffer;
-        protected EffectTechnique effectTechnique;        
+        protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
-        protected EffectMaterialVariables effectMaterial;        
+        protected EffectMaterialVariables effectMaterial;
         protected PhongMaterial phongMaterial;
         protected ShaderResourceView texDiffuseAlphaMapView;
         protected ShaderResourceView texDiffuseMapView;
@@ -40,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool hasShadowMap = false;
 
         public MaterialGeometryModel3D()
-        {            
+        {
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         protected override void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
-            if ((this.Instances == null)||(!this.Instances.Any()))
+            if ((this.Instances == null) || (!this.Instances.Any()))
             {
                 base.OnGeometryChanged(e);
             }
@@ -222,9 +222,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- has texture
                 if (phongMaterial.DiffuseMap != null && RenderDiffuseMap)
                 {
-                    this.texDiffuseMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.DiffuseMap.ToByteArray());
+                    this.texDiffuseMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.DiffuseMap);
                     this.effectMaterial.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
-                    this.effectMaterial.bHasDiffuseMapVariable.Set(true);                    
+                    this.effectMaterial.bHasDiffuseMapVariable.Set(true);
                 }
                 else
                 {
@@ -255,7 +255,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         else
                         {
-                            this.texNormalMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.NormalMap.ToByteArray());
+                            this.texNormalMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.NormalMap);
                             this.effectMaterial.texNormalMapVariable.SetResource(this.texNormalMapView);
                             this.effectMaterial.bHasNormalMapVariable.Set(true);
                         }
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- has displacement map
                 if (phongMaterial.DisplacementMap != null && RenderDisplacementMap)
                 {
-                    this.texDisplacementMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.DisplacementMap.ToByteArray());
+                    this.texDisplacementMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.DisplacementMap);
                     this.effectMaterial.texDisplacementMapVariable.SetResource(this.texDisplacementMapView);
                     this.effectMaterial.bHasDisplacementMapVariable.Set(true);
                 }
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>        
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
-            if ((this.Instances != null)&&(this.Instances.Any()))
+            if ((this.Instances != null) && (this.Instances.Any()))
             {
                 bool hit = false;
                 foreach (var modelMatrix in Instances)
@@ -371,7 +371,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         protected override void OnDetach()
-        {                    
+        {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
             Disposer.RemoveAndDispose(ref this.indexBuffer);
             Disposer.RemoveAndDispose(ref this.instanceBuffer);
@@ -382,9 +382,9 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.texNormalMapView);
             Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
             Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
-            Disposer.RemoveAndDispose(ref this.bHasInstances);            
+            Disposer.RemoveAndDispose(ref this.bHasInstances);
 
-            this.phongMaterial = null;            
+            this.phongMaterial = null;
             this.effectTechnique = null;
             this.vertexLayout = null;
 

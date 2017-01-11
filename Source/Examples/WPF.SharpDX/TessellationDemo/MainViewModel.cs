@@ -10,7 +10,7 @@
 namespace TessellationDemo
 {
     using System.Linq;
-    using DemoCore;    
+    using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
     using Media3D = System.Windows.Media.Media3D;
@@ -19,6 +19,7 @@ namespace TessellationDemo
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using System.Windows.Media.Imaging;
     using HelixToolkit.Wpf.SharpDX.Core;
+    using System.IO;
 
     public class MainViewModel : BaseViewModel
     {
@@ -37,9 +38,9 @@ namespace TessellationDemo
         public Vector3 DirectionalLightDirection3 { get; private set; }
         public Color4 DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
-        
+
         public string[] MeshTopologyList { get; set; }
-        
+
         private string meshTopology = MeshFaces.Default.ToString();
         private RenderTechnique pnQuads;
         private RenderTechnique pnTriangles;
@@ -51,10 +52,10 @@ namespace TessellationDemo
             {
                 /// if topology is changes, reload the model with proper type of faces
                 this.meshTopology = value;
-                this.RenderTechnique = this.meshTopology == "Quads" ? 
+                this.RenderTechnique = this.meshTopology == "Quads" ?
                     RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads] :
                     RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
-                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Quads" ? MeshFaces.QuadPatches : MeshFaces.Default);                                               
+                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Quads" ? MeshFaces.QuadPatches : MeshFaces.Default);
             }
         }
 
@@ -78,7 +79,7 @@ namespace TessellationDemo
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             this.DirectionalLightColor = Color.White;
             this.DirectionalLightDirection1 = new Vector3(-0, -50, -20);
-            this.DirectionalLightDirection2 = new Vector3(-0, -1 , +50);
+            this.DirectionalLightDirection2 = new Vector3(-0, -1, +50);
             this.DirectionalLightDirection3 = new Vector3(0, +1, 0);
 
             // ---------------------------------------------
@@ -93,8 +94,8 @@ namespace TessellationDemo
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), // Colors.LightGray,
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
-                DiffuseMap = new BitmapImage(new System.Uri(@"./Media/TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute)),
-                NormalMap = new BitmapImage(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
+                DiffuseMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
+                NormalMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
                 //DisplacementMap = new BitmapImage(new Uri(@"path", UriKind.RelativeOrAbsolute)),                
             };
 
@@ -106,7 +107,7 @@ namespace TessellationDemo
             // ---------------------------------------------
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid();
-            this.GridColor = SharpDX.Color.Black;            
+            this.GridColor = SharpDX.Color.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
         }
 
@@ -122,7 +123,7 @@ namespace TessellationDemo
             var objModel = reader.Read(filename, new ModelInfo() { Faces = faces });
             this.DefaultModel = objModel[0].Geometry as MeshGeometry3D;
             this.DefaultModel.Colors = new Color4Collection(this.DefaultModel.Positions.Select(x => new Color4(1, 0, 0, 1)));
-        }  
+        }
 
     }
 }
