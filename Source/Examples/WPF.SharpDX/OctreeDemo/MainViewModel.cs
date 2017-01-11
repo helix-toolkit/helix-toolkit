@@ -503,7 +503,7 @@ namespace OctreeDemo
         }
 
         private void Timer_Tick(object sender, EventArgs e)
-        {            
+        {
             if (counter > 99)
             {
                 counter = -100;
@@ -516,7 +516,7 @@ namespace OctreeDemo
             {
                 AddModel(null);
             }
-            if(counter % 2 == 0)
+            if (counter % 2 == 0)
             {
                 int k = rnd.Next(0, Items.Count - 1);
                 int radius = rnd.Next(1, 5);
