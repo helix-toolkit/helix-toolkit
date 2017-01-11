@@ -682,7 +682,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public bool RemoveAt(int index)
         {
-            if(index <=0 && index >= this.Objects.Count)
+            if(index <0 || index >= this.Objects.Count)
             {
                 return false;
             }
