@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Media = System.Windows.Media;
-namespace HelixToolkit.Wpf.SharpDX.Extensions
+namespace HelixToolkit.Wpf.SharpDX
 {
-    internal static class BitmapExtension
+    public static class BitmapExtension
     {
         public static BitmapSource ToBitmapSource(this TextBlock element, bool freeze = true)
         {
@@ -77,6 +78,16 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                 Media.Brushes.Black);
 
             return new Size(formattedText.Width + textBlock.Padding.Left + textBlock.Padding.Right, formattedText.Height + textBlock.Padding.Top + textBlock.Padding.Bottom);
+        }
+
+        public static MemoryStream ToMemoryStream(this BitmapSource writeBmp)
+        {
+            var outStream = new MemoryStream();
+            BitmapEncoder enc = new BmpBitmapEncoder();
+            enc.Frames.Add(BitmapFrame.Create(writeBmp));
+            enc.Save(outStream);
+            outStream.Position = 0;
+            return outStream;
         }
     }
 }
