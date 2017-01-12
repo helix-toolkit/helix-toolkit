@@ -222,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- has texture
                 if (phongMaterial.DiffuseMap != null && RenderDiffuseMap)
                 {
-                    this.texDiffuseMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.DiffuseMap);
+                    this.texDiffuseMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.DiffuseMap);
                     this.effectMaterial.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
                     this.effectMaterial.bHasDiffuseMapVariable.Set(true);
                 }
@@ -233,7 +233,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (phongMaterial.DiffuseAlphaMap != null && RenderAlphaDiffuseMap)
                 {
-                    this.texDiffuseAlphaMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.DiffuseAlphaMap);
+                    this.texDiffuseAlphaMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.DiffuseAlphaMap);
                     this.effectMaterial.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
                     this.effectMaterial.bHasDiffuseAlphaMapVariable.Set(true);
                 }
@@ -255,7 +255,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         else
                         {
-                            this.texNormalMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.NormalMap);
+                            this.texNormalMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.NormalMap);
                             this.effectMaterial.texNormalMapVariable.SetResource(this.texNormalMapView);
                             this.effectMaterial.bHasNormalMapVariable.Set(true);
                         }
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- has displacement map
                 if (phongMaterial.DisplacementMap != null && RenderDisplacementMap)
                 {
-                    this.texDisplacementMapView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, phongMaterial.DisplacementMap);
+                    this.texDisplacementMapView = TextureLoader.FromMemoryAsShaderResourceView(Device, phongMaterial.DisplacementMap);
                     this.effectMaterial.texDisplacementMapVariable.SetResource(this.texDisplacementMapView);
                     this.effectMaterial.bHasDisplacementMapVariable.Set(true);
                 }

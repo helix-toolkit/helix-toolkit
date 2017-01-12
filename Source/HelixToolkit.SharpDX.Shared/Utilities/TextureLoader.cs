@@ -31,11 +31,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="device">The device.</param>
         /// <param name="fileName">The file name.</param>
         /// <returns></returns>
-        public static ShaderResourceView FromFileAsShaderResourceView(Device device, string fileName)
+        public static ShaderResourceView FromFileAsShaderResourceView(Device device, string fileName, bool disableAutoGenMipMap = false)
         {
             using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, fileName))
             {
-                return new ShaderResourceView(device, texture);
+                if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+                {
+                    using (var textureMipmap = GenerateMipMaps(device, texture))
+                    {
+                        return new ShaderResourceView(device, textureMipmap);
+                    }
+                }
+                else
+                {
+                    return new ShaderResourceView(device, texture);
+                }
             }
         }
 
@@ -45,13 +55,62 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="device">The device.</param>
         /// <param name="memory">The memory buffer.</param>
         /// <returns></returns>
-        public static ShaderResourceView FromMemoryAsShaderResourceView(Device device, byte[] memory)
+        public static ShaderResourceView FromMemoryAsShaderResourceView(Device device, byte[] memory, bool disableAutoGenMipMap = false)
         {
-            using (var stream = new MemoryStream(memory))
-            using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, stream))
+            using(var memStream = new MemoryStream(memory))
             {
-                return new ShaderResourceView(device, texture);
+                return FromMemoryAsShaderResourceView(device, memory, disableAutoGenMipMap);
             }
+        }
+
+        /// <summary>
+        /// Loads a texture from a memory buffer as a shader resource view.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="memory">The memory stream.</param>
+        /// <returns></returns>
+        public static ShaderResourceView FromMemoryAsShaderResourceView(Device device, Stream memory, bool disableAutoGenMipMap = false)
+        {
+            using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory))
+            {
+                if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+                {
+                    using (var textureMipmap = GenerateMipMaps(device, texture))
+                    {
+                        return new ShaderResourceView(device, textureMipmap);
+                    }
+                }
+                else
+                {
+                    return new ShaderResourceView(device, texture);
+                }
+            }
+        }
+
+        public static Texture2D GenerateMipMaps(Device device, global::SharpDX.Toolkit.Graphics.Texture texture)
+        {
+            var desc = new Texture2DDescription()
+            {
+                Width = texture.Description.Width,
+                Height = texture.Description.Height,
+                MipLevels = 0,
+                ArraySize = 1,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Usage = ResourceUsage.Default,
+                SampleDescription = texture.Description.SampleDescription,
+                OptionFlags = ResourceOptionFlags.GenerateMipMaps,
+                Format = texture.Description.Format
+            };
+
+            var textMip = new Texture2D(device, desc);
+
+            using (var shaderRes = new ShaderResourceView(device, textMip))
+            {
+                device.ImmediateContext.CopySubresourceRegion(texture, 0, null, textMip, 0);
+                device.ImmediateContext.GenerateMips(shaderRes);
+            }
+            return textMip;
         }
     }
 }
