@@ -346,7 +346,8 @@ f 4/4 3/5 2/6
         {
             var tempObj = Path.GetTempFileName();
             var tempMtl = Path.GetTempFileName();
-            var tempTex = Path.GetTempFileName();
+            var tempTexDiffuse = Path.GetTempFileName();
+            var tempTexAmbient = Path.GetTempFileName();
 
             try
             {
@@ -362,13 +363,14 @@ f 1/1 2/1 3/1
 
                 File.WriteAllText(tempMtl, @"
 newmtl TestMaterial
-map_Kd " + prefix + Path.GetFileName(tempTex) + @"
-map_Ka " + prefix + Path.GetFileName(tempTex) + @"
+map_Kd " + prefix + Path.GetFileName(tempTexDiffuse) + @"
+map_Ka " + prefix + Path.GetFileName(tempTexAmbient) + @"
 ");
 
                 using (var image = new System.Drawing.Bitmap(1, 1))
                 {
-                    image.Save(tempTex);
+                    image.Save(tempTexDiffuse);
+                    image.Save(tempTexAmbient);
                 }
 
                 var model = _objReader.Read(tempObj);
@@ -377,17 +379,18 @@ map_Ka " + prefix + Path.GetFileName(tempTex) + @"
 
                 var diffuseMaterial = (DiffuseMaterial)materialGroup.Children[0];
                 var diffuseSource = ((ImageBrush)diffuseMaterial.Brush).ImageSource.ToString();
-                Assert.AreEqual(tempTex, diffuseSource);
+                Assert.AreEqual(tempTexDiffuse, diffuseSource);
 
                 var ambientMaterial = (EmissiveMaterial)materialGroup.Children[1];
                 var ambientSource = ((ImageBrush)ambientMaterial.Brush).ImageSource.ToString();
-                Assert.AreEqual(tempTex, ambientSource);
+                Assert.AreEqual(tempTexAmbient, ambientSource);
             }
             finally
             {
                 File.Delete(tempObj);
                 File.Delete(tempMtl);
-                File.Delete(tempTex);
+                File.Delete(tempTexDiffuse);
+                File.Delete(tempTexAmbient);
             }
         }
     }
