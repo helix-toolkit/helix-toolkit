@@ -18,11 +18,12 @@ namespace LightingDemo
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using HelixToolkit.Wpf;
+    using System.IO;
 
     public class MainViewModel : BaseViewModel
     {
         public string Name { get; set; }
-        public MainViewModel ViewModel { get { return this; } }        
+        public MainViewModel ViewModel { get { return this; } }
         public MeshGeometry3D Model { get; private set; }
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
@@ -42,7 +43,7 @@ namespace LightingDemo
 
         public Vector3 Light1Direction { get; set; }
         public Vector3 Light4Direction { get; set; }
-        public Vector3D LightDirection4 { get; set; }        
+        public Vector3D LightDirection4 { get; set; }
         public Color4 Light1Color { get; set; }
         public Color4 Light2Color { get; set; }
         public Color4 Light3Color { get; set; }
@@ -55,7 +56,7 @@ namespace LightingDemo
         public bool RenderLight2 { get; set; }
         public bool RenderLight3 { get; set; }
         public bool RenderLight4 { get; set; }
-                
+
 
         public MainViewModel()
         {
@@ -99,8 +100,8 @@ namespace LightingDemo
 
             this.Light4Direction = new Vector3(0, -5, 0);
             this.Light4Transform = new TranslateTransform3D(-Light4Direction.ToVector3D());
-            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12); 
-            
+            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12);
+
             // ----------------------------------------------
             // light model3d
             var sphere = new MeshBuilder();
@@ -127,7 +128,8 @@ namespace LightingDemo
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.ModelMaterial = PhongMaterials.Chrome;
             //this.ModelMaterial.TextureMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute));
-            this.ModelMaterial.NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute));
+            //var bitmap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute));
+            this.ModelMaterial.NormalMap = new FileStream(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
             //odelMaterial.NormalMap = new BitmapImage(new System.Uri(@"TextureNoise1_dot3.jpg", System.UriKind.RelativeOrAbsolute));
 
 
@@ -142,12 +144,12 @@ namespace LightingDemo
             this.FloorMaterial = new PhongMaterial
             {
                 AmbientColor = Color.Gray,
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), 
+                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
-                DiffuseMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute)),
-                NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
-            };            
+                DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
+                NormalMap = ModelMaterial.NormalMap
+            };
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)

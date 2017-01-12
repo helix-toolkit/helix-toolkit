@@ -17,6 +17,7 @@ namespace DeferredShadingDemo
     using SharpDX;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Windows.Data;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
@@ -123,7 +124,7 @@ namespace DeferredShadingDemo
 
             //load model
             var reader = new ObjReader();
-            var objModel = reader.Read(@"./Media/bunny.obj");            
+            var objModel = reader.Read(@"./Media/bunny.obj");
             this.Model = objModel[0].Geometry as MeshGeometry3D;
             var scale = 2.0;
 
@@ -148,7 +149,7 @@ namespace DeferredShadingDemo
             // floor plane
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddBox(new Vector3(0, 0, 0), 100, 0.0, 100, BoxFaces.PositiveY);
-            this.Plane = meshBuilder.ToMeshGeometry3D();            
+            this.Plane = meshBuilder.ToMeshGeometry3D();
             this.PlaneTransform = new TranslateTransform3D(0, -1.05, 0);
 
             // model materials
@@ -156,8 +157,8 @@ namespace DeferredShadingDemo
             this.GreenMaterial = PhongMaterials.Green;
             this.BlueMaterial = PhongMaterials.Blue;
             this.PlaneMaterial = PhongMaterials.DefaultVRML;
-            this.PlaneMaterial.DiffuseMap = new BitmapImage(new System.Uri(@"./Media/TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute));
-            this.PlaneMaterial.NormalMap = new BitmapImage(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute));
+            this.PlaneMaterial.DiffuseMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+            this.PlaneMaterial.NormalMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.3f, 0.3f, 0.3f, 1.0f);
@@ -176,12 +177,12 @@ namespace DeferredShadingDemo
             // light collection
             this.PointLightCollection = new Element3DCollection();
             this.PointLightCount = 7;
-            this.PointLightSpread = 100; 
+            this.PointLightSpread = 100;
 
             // spotlight collection
             this.SpotLightCollection = new Element3DCollection();
             this.SpotLightCount = 7;
-            this.SpotLightSpread = 100; 
+            this.SpotLightSpread = 100;
         }
 
         /// <summary>

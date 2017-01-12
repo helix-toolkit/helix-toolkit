@@ -32,9 +32,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         IOctree Parent { get; }
         BoundingBox Bound { get; }
         IOctree[] ChildNodes { get; }
-
+        BoundingBox[] Octants { get; }
         bool RecordHitPathBoundingBoxes { set; get; }
         IList<BoundingBox> HitPathBoundingBoxes { get; }
+        OctreeBuildParameter Parameter { get; }
+        /// <summary>
+        /// Delete self if is empty;
+        /// </summary>
+        bool AutoDeleteIfEmpty { set; get; }
+
         /// <summary>
         /// Returns true if this node tree and all children have no content
         /// </summary>
@@ -64,7 +70,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// Build the whole tree from top to bottom iteratively.
         /// </summary>
-        void BuildTree();
+        void BuildTree(bool cubify = false);
 
         /// <summary>
         /// Build current node level only, this will only build current node and create children, but not build its children. 
@@ -76,6 +82,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// Remove self from parent node
         /// </summary>
         void RemoveSelf();
+        /// <summary>
+        /// Remove child from ChildNodes
+        /// </summary>
+        /// <param name="child"></param>
         void RemoveChild(IOctree child);
     }
 
@@ -91,43 +101,55 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool Add(T item);
 
         /// <summary>
-        /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T)"/>
+        /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T, out int)"/>
         /// </summary>
         /// <param name="item"></param>
-        void RemoveByBound(T item);
+        /// <returns>Return false if item not found</returns>
+        bool RemoveByBound(T item);
         /// <summary>
-        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox)"/>
+        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox, out int)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="bound"></param>
-        void RemoveByBound(T item, BoundingBox bound);
+        /// <returns>Return false if item not found</returns>
+        bool RemoveByBound(T item, BoundingBox bound);
 
         /// <summary>
-        /// Remove item using exhaust search(Slow). <see cref="FindChildByItem(T)"/>
+        /// Remove item using exhaust search(Slow). <see cref="FindChildByItem(T, out int)"/>
         /// </summary>
         /// <param name="item"></param>
-        void RemoveSafe(T item);
+        /// <returns>Return false if item not found</returns>
+        bool RemoveSafe(T item);
+
+        /// <summary>
+        /// Remove item from current node by its index in Objects
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>Return false if index out of bound</returns>
+        bool RemoveAt(int index);
+        /// <summary>
+        /// Fast search node by item bound
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="index">The item index in Objects, if not found, output -1</param>
+        /// <returns></returns>
+        IOctree FindChildByItemBound(T item, out int index);
 
         /// <summary>
         /// Fast search node by item bound
         /// </summary>
         /// <param name="item"></param>
+        /// <param name="index">The item index in Objects, if not found, output -1</param>
         /// <returns></returns>
-        IOctree FindChildByItemBound(T item);
-
-        /// <summary>
-        /// Fast search node by item bound
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        IOctree FindChildByItemBound(T item, BoundingBox bound);
+        IOctree FindChildByItemBound(T item, BoundingBox bound, out int index);
 
         /// <summary>
         /// Exhaust search, slow.
         /// </summary>
         /// <param name="item"></param>
+        /// <param name="index">The item index in Objects, if not found, output -1</param>
         /// <returns></returns>
-        IOctree FindChildByItem(T item);
+        IOctree FindChildByItem(T item, out int index);
     }
 
     public abstract class OctreeBase<T> : IOctreeBase<T>
@@ -135,9 +157,27 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
-        public readonly int MIN_SIZE = 1;
+        public int MIN_SIZE { get { return Parameter.MinSize; } }
+        protected bool treeBuilt = false;       //there is no pre-existing tree yet.
+        public OctreeBuildParameter Parameter { private set; get; }
 
-        public BoundingBox Bound { protected set; get; }
+        private BoundingBox bound;
+        public BoundingBox Bound
+        {
+            protected set
+            {
+                if(bound == value)
+                {
+                    return;
+                }
+                bound = value;
+                octants = CreateOctants(value);
+            }
+            get
+            {
+                return bound;
+            }
+        }
 
         public List<T> Objects { protected set; get; }
 
@@ -154,29 +194,55 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public IOctree Parent { protected set; get; }
 
-        protected bool treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
-        protected bool treeBuilt = false;       //there is no pre-existing tree yet.
+        private BoundingBox[] octants = null;
+        public BoundingBox[] Octants { get { return octants; } }
 
-        /*Note: we want to avoid allocating memory for as long as possible since there can be lots of nodes.*/
+        public bool AutoDeleteIfEmpty
+        {
+            get
+            {
+                return Parameter.AutoDeleteIfEmpty;
+            }
+            set
+            {
+                Parameter.AutoDeleteIfEmpty = value;
+            }
+        }
+
+        private OctreeBase(OctreeBuildParameter parameter)
+        {
+            if (parameter != null)
+                Parameter = parameter;
+            else
+                Parameter = new OctreeBuildParameter();
+        }
+
         /// <summary>
         /// Creates an oct tree which encloses the given region and contains the provided objects.
         /// </summary>
         /// <param name="bound">The bounding region for the oct tree.</param>
         /// <param name="objList">The list of objects contained within the bounding region</param>
-        protected OctreeBase(BoundingBox bound, List<T> objList, IOctree parent, int minSize)
+        /// <param name="autoDeleteIfEmpty">Delete self if becomes empty</param>
+        protected OctreeBase(BoundingBox bound, List<T> objList, IOctree parent, OctreeBuildParameter parameter)
+            :this(parameter)
         {
             Bound = bound;
             Objects = objList;
             Parent = parent;
-            MIN_SIZE = minSize;
         }
 
-        protected OctreeBase(IOctree parent, int minSize)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="minSize"></param>
+        /// <param name="autoDeleteIfEmpty">Delete self if becomes empty</param>
+        protected OctreeBase(IOctree parent, OctreeBuildParameter parameter)
+            :this(parameter)
         {
             Objects = new List<T>();
             Bound = new BoundingBox(Vector3.Zero, Vector3.Zero);
             Parent = parent;
-            MIN_SIZE = minSize;
         }
 
         /// <summary>
@@ -184,8 +250,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="bound">The suggested dimensions for the bounding region. 
         /// Note: if items are outside this region, the region will be automatically resized.</param>
-        protected OctreeBase(BoundingBox bound, IOctree parent, int minSize)
-            : this(parent, minSize)
+        protected OctreeBase(BoundingBox bound, IOctree parent, OctreeBuildParameter parameter)
+            : this(parent, parameter)
         {
             Bound = bound;
         }
@@ -202,13 +268,27 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return CreateNode(bound, new List<T> { Item });
         }
 
-        public void BuildTree()
+        public void BuildTree(bool cubify = false)
+        {
+            if (!CheckDimension())
+            {
+                treeBuilt = true;
+                return;
+            }
+            if (cubify)
+            {
+                Bound = FindEnclosingCube(Bound);
+            }
+            BuildTree(this, cubify);
+        }
+
+        private static void BuildTree(IOctree root, bool cubify)
         {
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
             var queue = new Queue<IOctree>(256);
-            queue.Enqueue(this);
+            queue.Enqueue(root);
             while (queue.Count > 0)
             {
                 var tree = queue.Dequeue();
@@ -239,12 +319,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 if (Objects.Count <= 1)   //doubt: is this really right? needs testing.
                 {
                     treeBuilt = true;
-                    treeReady = true;
                     return;
                 }
                 BuildSubTree();
                 treeBuilt = true;
-                treeReady = true;
             }
         }
 
@@ -276,10 +354,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
             if (dimensions == Vector3.Zero)
             {
-                FindEnclosingCube();
-                dimensions = Bound.Maximum - Bound.Minimum;
+                Bound = FindEnclosingBox();
             }
-
+            dimensions = Bound.Maximum - Bound.Minimum;
             //Check to see if the dimensions of the box are greater than the minimum dimensions
             if (dimensions.X <= MIN_SIZE && dimensions.Y <= MIN_SIZE && dimensions.Z <= MIN_SIZE)
             {
@@ -298,12 +375,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             if (!CheckDimension())
             {
                 treeBuilt = true;
-                treeReady = true;
                 return;
             }
-
-            //Create subdivided regions for each octant
-            var octants = CreateOctants(Bound);
 
             //This will contain all of our objects which fit within each respective octant.
             var octList = new List<T>[8];
@@ -319,7 +392,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     for (int x = 0; x < 8; ++x)
                     {
-                        if (octants[x].Contains(box) == ContainmentType.Contains)
+                        if (Octants[x].Contains(box) == ContainmentType.Contains)
                         {
                             octList[x].Add(obj);
                             Objects[i] = Objects[--count]; //Disard the existing object from location i, replaced with last valid object.
@@ -350,7 +423,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// This finds the dimensions of the bounding box necessary to tightly enclose all items in the object list.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void FindEnclosingBox()
+        protected BoundingBox FindEnclosingBox()
         {
             Vector3 global_min = Bound.Minimum, global_max = Bound.Maximum;
 
@@ -373,38 +446,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 if (local_max.Y > global_max.Y) global_max.Y = local_max.Y;
                 if (local_max.Z > global_max.Z) global_max.Z = local_max.Z;
             }
-            Bound = new BoundingBox(global_min, global_max);
+            return new BoundingBox(global_min, global_max);
         }
         /// <summary>
         /// This finds the smallest enclosing cube which is a power of 2, for all objects in the list.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void FindEnclosingCube()
+        public static BoundingBox FindEnclosingCube(BoundingBox bound)
         {
-            FindEnclosingBox();
-
-            //find the min offset from (0,0,0) and translate by it for a short while
-            Vector3 offset = Bound.Minimum - Vector3.Zero;
-            Bound = new BoundingBox(Bound.Minimum + offset, Bound.Maximum + offset);
-
-            //find the nearest power of two for the max values
-            int highX = (int)Math.Floor(Math.Max(Math.Max(Bound.Maximum.X, Bound.Maximum.Y), Bound.Maximum.Z));
-
-            //see if we're already at a power of 2
-            for (int bit = 0; bit < 32; bit++)
-            {
-                if (highX == 1 << bit)
-                {
-                    Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(highX, highX, highX) - offset);
-                    return;
-                }
-            }
-
-            //gets the most significant bit value, so that we essentially do a Ceiling(X) with the 
-            //ceiling result being to the nearest power of 2 rather than the nearest integer.
-            int x = SigBit(highX);
-
-            Bound = new BoundingBox(Bound.Minimum - offset, new Vector3(x, x, x) - offset);
+            var v = (bound.Maximum - bound.Minimum) / 2 + bound.Minimum;
+            bound = new BoundingBox(bound.Minimum - v, bound.Maximum - v);
+            var max = Math.Max(bound.Maximum.X, Math.Max(bound.Maximum.Y, bound.Maximum.Z));
+            return new BoundingBox(new Vector3(-max,-max,-max)+v, new Vector3(max,max,max)+v);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -486,19 +539,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
             else
             {
-                var octants = CreateOctants(node.Bound);
                 bool pushToChild = false;
-                for(int i = 0; i < octants.Length; ++i)
+                for(int i = 0; i < node.Octants.Length; ++i)
                 {
-                    if(octants[i].Contains(bound)== ContainmentType.Contains)
+                    if(node.Octants[i].Contains(bound)== ContainmentType.Contains)
                     {
                         if (node.ChildNodes[i] != null)
                         {
-                            (node.ChildNodes[i] as IOctreeBase<T>).Add(item);
+                            (node.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
                         }
                         else
                         {                            
-                            node.ChildNodes[i] = CreateNodeWithParent(octants[i], new List<T>() { item }, node);
+                            node.ChildNodes[i] = CreateNodeWithParent(node.Octants[i], new List<T>() { item }, node);
                             node.ActiveNodes |= (byte)(1 << i);
                             node.ChildNodes[i].BuildTree();
                         }
@@ -519,9 +571,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return FindSmallestNodeContainsBoundingBox<T>(bound, this);
         }
 
-        private static IOctree FindSmallestNodeContainsBoundingBox<T>(BoundingBox bound, IOctreeBase<T> root)
+        private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, IOctreeBase<E> root)
         {
-            var queue = new Queue<IOctreeBase<T>>(64);
+            var queue = new Queue<IOctreeBase<E>>(64);
             queue.Enqueue(root);
             IOctree result = null;
             while (queue.Count > 0)
@@ -534,7 +586,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     {
                         if (child != null)
                         {
-                            queue.Enqueue(child as IOctreeBase<T>);
+                            queue.Enqueue(child as IOctreeBase<E>);
                         }
                     }
                 }
@@ -546,19 +598,20 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return result;
         }
 
-        public IOctree FindChildByItem(T item)
+        public IOctree FindChildByItem(T item, out int index)
         {
-            return FindChildByItem<T>(item, this);
+            return FindChildByItem<T>(item, this, out index);
         }
 
-        private static IOctree FindChildByItem<T>(T item, IOctreeBase<T> root)
+        private static IOctree FindChildByItem<E>(E item, IOctreeBase<E> root, out int index)
         {
-            var queue = new Queue<IOctreeBase<T>>(256);
+            var queue = new Queue<IOctreeBase<E>>(256);
             queue.Enqueue(root);
+            index = -1;
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
-                int index = node.Objects.IndexOf(item);
+                index = node.Objects.IndexOf(item);
                 if (index != -1)
                 {
                     return node;
@@ -569,7 +622,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     {
                         if (child != null)
                         {
-                            queue.Enqueue(child as IOctreeBase<T>);
+                            queue.Enqueue(child as IOctreeBase<E>);
                         }
                     }
                 }
@@ -577,41 +630,68 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return null;
         }
 
-        public void RemoveByBound(T item, BoundingBox bound)
+        public bool RemoveByBound(T item, BoundingBox bound)
         {
-            var node = FindChildByItemBound(item, bound);
+            int index;
+            var node = FindChildByItemBound(item, bound, out index);
             if (node == null)
             {
 #if DEBUG
-                throw new Exception("item not found using bound.");
+                if (!RemoveSafe(item))
+                {
+                    throw new Exception("item not found using bound.");
+                }
+                return true;
 #else
-                RemoveSafe(item);
+                return RemoveSafe(item);
 #endif
             }
             else
             {
                 var nodeBase = node as IOctreeBase<T>;
-                nodeBase.Objects.Remove(item);
-                if (nodeBase.IsEmpty)
+                nodeBase.Objects.RemoveAt(index);
+                if (nodeBase.IsEmpty && nodeBase.AutoDeleteIfEmpty)
                 {
                     nodeBase.RemoveSelf();
                 }
+                return true;
             }
         }
 
-        public void RemoveByBound(T item)
+        public bool RemoveByBound(T item)
         {
-            RemoveByBound(item, GetBoundingBoxFromItem(item));
+            return RemoveByBound(item, GetBoundingBoxFromItem(item));
         }
 
-        public void RemoveSafe(T item)
+        public bool RemoveSafe(T item)
         {
             Debug.WriteLine("RemoveSafe");
-            var node = FindChildByItem(item);
+            int index;
+            var node = FindChildByItem(item, out index);
             if (node != null)
             {
-                (node as IOctreeBase<T>).Objects.Remove(item);
+                (node as IOctreeBase<T>).Objects.RemoveAt(index);
+                if (node.IsEmpty && node.AutoDeleteIfEmpty)
+                {
+                    node.RemoveSelf();
+                }
+                return true;
             }
+            return false;
+        }
+
+        public bool RemoveAt(int index)
+        {
+            if(index <0 || index >= this.Objects.Count)
+            {
+                return false;
+            }
+            this.Objects.RemoveAt(index);
+            if (this.IsEmpty && this.AutoDeleteIfEmpty)
+            {
+                this.RemoveSelf();
+            }
+            return true;
         }
 
         public virtual void RemoveSelf()
@@ -635,28 +715,29 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     break;
                 }
             }
-            if (IsEmpty)
+            if (IsEmpty && AutoDeleteIfEmpty)
             {
                 RemoveSelf();
             }
         }
 
-        public virtual IOctree FindChildByItemBound(T item)
+        public virtual IOctree FindChildByItemBound(T item, out int index)
         {
-            return FindChildByItemBound(item, GetBoundingBoxFromItem(item));
+            return FindChildByItemBound(item, GetBoundingBoxFromItem(item), out index);
         }
 
-        public virtual IOctree FindChildByItemBound(T item, BoundingBox bound)
+        public virtual IOctree FindChildByItemBound(T item, BoundingBox bound, out int index)
         {
-            return FindChildByItemBound<T>(item, bound, this);
+            return FindChildByItemBound<T>(item, bound, this, out index);
         }
 
-        private static IOctree FindChildByItemBound<T>(T item, BoundingBox bound, IOctreeBase<T> root)
+        private static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, IOctreeBase<E> root, out int index)
         {
-            var queue = new Queue<IOctreeBase<T>>(64);
+            var queue = new Queue<IOctreeBase<E>>(64);
             queue.Enqueue(root);
             IOctree result = null;
-            IOctreeBase<T> lastNode = null;
+            IOctreeBase<E> lastNode = null;
+            index = -1;
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
@@ -664,14 +745,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 {
                     continue;
                 }
-                var found = node.Objects.Where(x => x.Equals(item)).FirstOrDefault();
-                if (found == null)
+                index = node.Objects.IndexOf(item);
+                if (index == -1)
                 {
                     foreach (var child in node.ChildNodes)
                     {
                         if (child != null)
                         {
-                            queue.Enqueue(child as IOctreeBase<T>);
+                            queue.Enqueue(child as IOctreeBase<E>);
                         }
                     }
                     lastNode = node;
@@ -688,10 +769,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 while (lastNode != null)
                 {
-                    var found = lastNode.Objects.Where(x => x.Equals(item)).FirstOrDefault();
-                    if(found == null)
+                    index = lastNode.Objects.IndexOf(item);
+                    if(index == -1)
                     {
-                        lastNode = lastNode.Parent as IOctreeBase<T>;
+                        lastNode = lastNode.Parent as IOctreeBase<E>;
                     }
                     else
                     {
@@ -736,9 +817,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
     {
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
-
-        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, int minSize = 1)
-            : base(null, minSize)
+        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices)
+            : this(positions, indices, null)
+        {
+        }
+        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, OctreeBuildParameter parameter)
+            : base(null, parameter)
         {
             Positions = positions;
             Indices = indices;
@@ -751,15 +835,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex, IOctree parent, int minSize)
-            : base(bound, triIndex, parent, minSize)
+        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex, IOctree parent, OctreeBuildParameter paramter)
+            : base(bound, triIndex, parent, paramter)
         {
             Positions = positions;
             Indices = indices;
         }
 
-        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent, int minSize)
-            : base(bound, list, parent, minSize)
+        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent, OctreeBuildParameter paramter)
+            : base(bound, list, parent, paramter)
         { }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
@@ -786,7 +870,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override IOctree CreateNodeWithParent(BoundingBox region, List<Tuple<int, BoundingBox>> objList, IOctree parent)
         {
-            return new MeshGeometryOctree(Positions, Indices, region, objList, parent, this.MIN_SIZE);
+            return new MeshGeometryOctree(Positions, Indices, region, objList, parent, parent.Parameter);
         }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -859,8 +943,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
     public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
     {
-        public GeometryModel3DOctree(List<GeometryModel3D> objList, int minSize = 1)
-            : base(null, minSize)
+        public GeometryModel3DOctree(List<GeometryModel3D> objList)
+            :this(objList, null)
+        {
+
+        }
+
+        public GeometryModel3DOctree(List<GeometryModel3D> objList, OctreeBuildParameter paramter)
+            : base(null, paramter)
         {
             Objects = objList;
             if (Objects != null && Objects.Count > 0)
@@ -874,8 +964,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent, int minSize)
-            : base(bound, objList, parent, minSize)
+        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent, OctreeBuildParameter paramter)
+            : base(bound, objList, parent, paramter)
         { }
 
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
@@ -910,7 +1000,37 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override IOctree CreateNodeWithParent(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)
         {
-            return new GeometryModel3DOctree(bound, objList, parent, this.MIN_SIZE);
+            return new GeometryModel3DOctree(bound, objList, parent, parent.Parameter);
+        }
+    }
+
+    public sealed class OctreeBuildParameter
+    {
+        public int MinSize = 1;
+        public bool AutoDeleteIfEmpty = true;
+
+        public OctreeBuildParameter()
+        {
+            MinSize = 1;
+            AutoDeleteIfEmpty = true;
+        }
+
+        public OctreeBuildParameter(int minSize)
+        {
+            MinSize = minSize;
+            AutoDeleteIfEmpty = true;
+        }
+
+        public OctreeBuildParameter(bool autoDeleteIfEmpty)
+        {
+            MinSize = 1;
+            AutoDeleteIfEmpty = autoDeleteIfEmpty;
+        }
+
+        public OctreeBuildParameter(int minSize, bool autoDeleteIfEmpty)
+            :this(minSize)
+        {
+            AutoDeleteIfEmpty = autoDeleteIfEmpty;
         }
     }
 }

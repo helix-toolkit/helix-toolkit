@@ -17,7 +17,7 @@ using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
 
 namespace DynamicTextureDemo
-{    
+{
     public class MainViewModel : BaseViewModel
     {
         private Vector3 light1Direction = new Vector3();
@@ -119,8 +119,12 @@ namespace DynamicTextureDemo
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-            this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera { Position = new Media3D.Point3D(10, 10, 10),
-                LookDirection = new Media3D.Vector3D(-10, -10, -10), UpDirection = new Media3D.Vector3D(0, 1, 0) };
+            this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
+            {
+                Position = new Media3D.Point3D(10, 10, 10),
+                LookDirection = new Media3D.Vector3D(-10, -10, -10),
+                UpDirection = new Media3D.Vector3D(0, 1, 0)
+            };
             this.Light1Color = (Color4)Color.White;
             this.Light1Direction = new Vector3(-10, -10, -10);
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
@@ -131,7 +135,8 @@ namespace DynamicTextureDemo
             this.Model = b2.ToMeshGeometry3D();
             this.InnerModel = new MeshGeometry3D()
             {
-                Indices = Model.Indices, Positions = Model.Positions,
+                Indices = Model.Indices,
+                Positions = Model.Positions,
                 Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; })),
                 TextureCoordinates = Model.TextureCoordinates,
                 Tangents = Model.Tangents,
@@ -146,8 +151,8 @@ namespace DynamicTextureDemo
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
                 DiffuseAlphaMap = image,
-                DiffuseMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute)),
-                NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
+                DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
+                NormalMap = new FileStream(new System.Uri(@"TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
             };
 
             this.InnerModelMaterial = new PhongMaterial
@@ -157,7 +162,7 @@ namespace DynamicTextureDemo
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
                 DiffuseAlphaMap = image,
-                DiffuseMap = new BitmapImage(new System.Uri(@"TextureNoise1.jpg", System.UriKind.RelativeOrAbsolute)),
+                DiffuseMap = new FileStream(new System.Uri(@"TextureNoise1.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
                 NormalMap = ModelMaterial.NormalMap
             };
 
@@ -221,11 +226,11 @@ namespace DynamicTextureDemo
             if (DynamicTexture)
             {
                 var texture = new Vector2Collection(Model.TextureCoordinates);
-                for(int i=1; i < Model.TextureCoordinates.Count; ++i)
+                for (int i = 1; i < Model.TextureCoordinates.Count; ++i)
                 {
-                    texture[i-1] = Model.TextureCoordinates[i];
+                    texture[i - 1] = Model.TextureCoordinates[i];
                 }
-                texture[texture.Count-1] = Model.TextureCoordinates[0];
+                texture[texture.Count - 1] = Model.TextureCoordinates[0];
                 Model.TextureCoordinates = texture;
                 if (ReverseInnerRotation)
                 {
@@ -238,12 +243,12 @@ namespace DynamicTextureDemo
                     InnerModel.TextureCoordinates = texture;
                 }
             }
-            if(DynamicVertices)
+            if (DynamicVertices)
             {
                 var positions = new Vector3Collection(initialPosition);
-                for(int i=0; i<positions.Count; ++i)
+                for (int i = 0; i < positions.Count; ++i)
                 {
-                    positions[i] = positions[i] * (float)rnd.Next(95, 105)/100;
+                    positions[i] = positions[i] * (float)rnd.Next(95, 105) / 100;
                 }
                 Model.Normals = MeshGeometryHelper.CalculateNormals(positions, Model.Indices);
                 InnerModel.Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; }));
@@ -256,13 +261,13 @@ namespace DynamicTextureDemo
                 //Floor.DisablePropertyChangedEvent = false;
                 //Floor.UpdateVertex();
             }
-            if(DynamicTriangles)
+            if (DynamicTriangles)
             {
                 var indices = new IntCollection(initialIndicies);
                 if (isRemoving)
                 {
-                    removedIndex += 3*8;
-                    if(removedIndex >= initialIndicies.Count)
+                    removedIndex += 3 * 8;
+                    if (removedIndex >= initialIndicies.Count)
                     {
                         removedIndex = initialIndicies.Count;
                         isRemoving = false;
@@ -270,12 +275,12 @@ namespace DynamicTextureDemo
                 }
                 else
                 {
-                    removedIndex -= 3*8;
+                    removedIndex -= 3 * 8;
                     if (removedIndex <= 0)
                     {
                         isRemoving = true;
                         removedIndex = 0;
-                    }                   
+                    }
                 }
                 indices.RemoveRange(0, removedIndex);
                 Model.Indices = indices;

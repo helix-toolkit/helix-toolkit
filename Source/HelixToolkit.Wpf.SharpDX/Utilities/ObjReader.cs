@@ -191,10 +191,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
 
                     line = line.Trim();
-                    while (line.EndsWith("\\")) 
+                    while (line.EndsWith("\\"))
                     {
                         var nextLine = this.Reader.ReadLine();
-                        while (nextLine.Length == 0) 
+                        while (nextLine.Length == 0)
                         {
                             nextLine = this.Reader.ReadLine();
                         }
@@ -1178,13 +1178,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     //AmbientMap = this.AmbientMap,
 
                     DiffuseColor = this.Diffuse,
-                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap))),
+                    DiffuseMap = (this.DiffuseMap == null) ? null : new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap)), FileMode.Open),
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
                     //SpecularMap = this.SpecularMap,
 
-                    NormalMap = (this.BumpMap == null) ? null : LoadImage(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap))),
+                    NormalMap = (this.BumpMap == null) ? null : new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap)), FileMode.Open),
                     //Dissolved = this.Dissolved,
                     //Illumination = this.Illumination,
 
@@ -1197,7 +1197,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private static BitmapImage LoadImage(string path)
             {
-                var bmp = new BitmapImage(new Uri(path,UriKind.RelativeOrAbsolute));
+                var bmp = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                 return bmp;
             }
 

@@ -44,7 +44,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } }
         private volatile bool mRequestUpdateOctree = false;
-       // private readonly Queue<GeometryModel3D> mAddPendingQueue = new Queue<GeometryModel3D>();
+        public readonly OctreeBuildParameter Parameter = new OctreeBuildParameter();
+
         private bool mEnabled = false;
         public bool Enabled
         {
@@ -93,23 +94,35 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return;
             }
             var arg = e;
-            if (arg.OldBound.Contains(arg.NewBound) == ContainmentType.Contains)
-            {
-                return;
-            }
             var item = sender as GeometryModel3D;
-            var node = this.Octree.FindChildByItemBound(item, arg.OldBound);
-            if (node != null && node.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+            int index;
+            var node = this.Octree.FindChildByItemBound(item, arg.OldBound, out index);
+            bool rootAdd = true;
+            if (node != null)
             {
-                Debug.WriteLine("new bound inside current node. Do nothing.");
-                return;
+                var tree = Octree;
+                Octree = null;
+                var geoNode = node as GeometryModel3DOctree;
+                if (geoNode.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+                {
+                    Debug.WriteLine("new bound inside current node");
+                    if (geoNode.Add(item))
+                    {
+                        geoNode.RemoveAt(index); //remove old item from node after adding successfully.
+                        rootAdd = false;
+                    }
+                }
+                else
+                {
+                    geoNode.RemoveAt(index);
+                    Debug.WriteLine("new bound outside current node");
+                }
+                Octree = tree;
             }
-            else if (node != null && node is GeometryModel3DOctree)
+            if (rootAdd)
             {
-                Debug.WriteLine("new bound outside current node, remove it.");
-                (node as GeometryModel3DOctree).RemoveByBound(item, arg.OldBound);
+                AddItem(item);
             }
-            AddItem(item);
         }
 
         //private RoutedEventHandler MakeWeakHandler(Action<object, BoundChangedEventArgs> action, Action<RoutedEventHandler> remove)
@@ -139,18 +152,23 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 SubscribeBoundChangeEvent(item);
             }
-            var tree = new GeometryModel3DOctree(list);
+            var tree = new GeometryModel3DOctree(list, Parameter);
             tree.BuildTree();
             return tree;
         }
 
+        private static readonly BoundingBox ZeroBound = new BoundingBox();
         public bool AddPendingItem(Model3D item)
         {
             if(Enabled && item is GeometryModel3D)
             {
                 var model = item as GeometryModel3D;
-                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
-                model.OnBoundChanged += GeometryModel3DOctreeManager_OnBoundChanged;
+                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                if (model.Bounds != ZeroBound)
+                {
+                    AddItem(model);
+                }
                 return true;
             }
             else
@@ -159,10 +177,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        private void GeometryModel3DOctreeManager_OnBoundChanged(object sender, BoundChangedEventArgs e)
+        private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, BoundChangedEventArgs e)
         {
             var item = sender as GeometryModel3D;
-            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
+            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
             AddItem(item);
         }
 
@@ -192,9 +210,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 Octree = null;
                 foreach(var item in items)
                 {
-                    item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
-                    UnsubscribeBoundChangeEvent(item);                    
-                    tree.RemoveByBound(item);
+                    item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                    UnsubscribeBoundChangeEvent(item);
+                    if (!tree.RemoveByBound(item))
+                    {
+                        Console.WriteLine("Remove failed.");
+                    }
                 }
                 Octree = tree;
             }
@@ -206,9 +227,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var tree = Octree;
                 Octree = null;
-                item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundChanged;
-                UnsubscribeBoundChangeEvent(item);               
-                tree.RemoveByBound(item);
+                item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                UnsubscribeBoundChangeEvent(item);
+                if (!tree.RemoveByBound(item))
+                {
+                    Console.WriteLine("Remove failed.");
+                }
                 Octree = tree;
             }
         }

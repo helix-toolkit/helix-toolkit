@@ -40,64 +40,82 @@ namespace ImageViewDemo
         public MeshGeometry3D Plane
         {
             get { return this.plane; }
-            set {
-                this.SetValue(ref this.plane, value, nameof(this.Plane)); }
+            set
+            {
+                this.SetValue(ref this.plane, value, nameof(this.Plane));
+            }
         }
 
         public LineGeometry3D Grid
         {
             get { return this.grid; }
-            set {
-                this.SetValue(ref this.grid, value, nameof(this.Grid)); }
+            set
+            {
+                this.SetValue(ref this.grid, value, nameof(this.Grid));
+            }
         }
 
         public PhongMaterial PlaneMaterial
         {
             get { return this.planeMaterial; }
-            set {
-                this.SetValue(ref this.planeMaterial, value, nameof(this.PlaneMaterial)); }
+            set
+            {
+                this.SetValue(ref this.planeMaterial, value, nameof(this.PlaneMaterial));
+            }
         }
 
         public Color GridColor
         {
             get { return this.gridColor; }
-            set {
-                this.SetValue(ref this.gridColor, value, nameof(this.GridColor)); }
+            set
+            {
+                this.SetValue(ref this.gridColor, value, nameof(this.GridColor));
+            }
         }
 
         public Media3D.Transform3D PlaneTransform
         {
             get { return this.planeTransform; }
-            set {
-                this.SetValue(ref this.planeTransform, value, nameof(this.PlaneTransform)); }
+            set
+            {
+                this.SetValue(ref this.planeTransform, value, nameof(this.PlaneTransform));
+            }
         }
 
         public Media3D.Transform3D GridTransform
         {
             get { return this.gridTransform; }
-            set {
-                this.SetValue(ref this.gridTransform, value, nameof(this.GridTransform)); }
+            set
+            {
+                this.SetValue(ref this.gridTransform, value, nameof(this.GridTransform));
+            }
         }
 
         public Vector3 DirectionalLightDirection
         {
             get { return this.directionalLightDirection; }
-            set {
-                this.SetValue(ref this.directionalLightDirection, value, nameof(this.DirectionalLightDirection)); }
+            set
+            {
+                this.SetValue(ref this.directionalLightDirection, value, nameof(this.DirectionalLightDirection));
+            }
         }
 
         public Color4 DirectionalLightColor
         {
             get { return this.directionalLightColor; }
-            set {
-                this.SetValue(ref this.directionalLightColor, value, nameof(this.DirectionalLightColor)); }
+            set
+            {
+                this.SetValue(ref this.directionalLightColor, value, nameof(this.DirectionalLightColor));
+            }
         }
 
         public Color4 AmbientLightColor
         {
             get { return this.ambientLightColor; }
-            set {
-                this.SetValue(ref this.ambientLightColor, value, nameof(this.AmbientLightColor)); }
+            set
+            {
+                this.SetValue(ref this.ambientLightColor, value, nameof(this.AmbientLightColor));
+            }
         }
 
         public ICommand OpenCommand { get; private set; }
@@ -205,7 +223,7 @@ namespace ImageViewDemo
                 ReflectiveColor = Color.Black,
                 EmissiveColor = Color.Black,
                 SpecularColor = Color.Black,
-                DiffuseMap = img,
+                DiffuseMap = new MemoryStream(img.ToByteArray()),
             };
 
             this.PlaneMaterial = white;
