@@ -818,9 +818,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
         public MeshGeometryOctree(Vector3Collection positions, IList<int> indices)
-            : base(null, null)
+            : this(positions, indices, null)
         {
-
         }
         public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, OctreeBuildParameter parameter)
             : base(null, parameter)
