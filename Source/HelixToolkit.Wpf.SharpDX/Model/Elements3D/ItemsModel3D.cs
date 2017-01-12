@@ -247,6 +247,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
+            if (UseOctreeHitTest && Children.Count > 0)
+            {
+                mOctreeManager.RequestRebuild();
+            }
         }
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
