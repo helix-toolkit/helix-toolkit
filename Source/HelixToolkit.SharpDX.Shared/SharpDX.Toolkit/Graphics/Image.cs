@@ -92,7 +92,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="handle"></param>
         /// <returns></returns>
         public delegate Image ImageLoadDelegate(IntPtr dataPointer, int dataSize, bool makeACopy, GCHandle? handle);
-
+        public delegate void ImageSaveDelegate(PixelBuffer[] pixelBuffers, int count, ImageDescription description, Stream imageStream);
         /// <summary>
         /// Pixel buffers.
         /// </summary>
@@ -246,12 +246,13 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="type">The file type (use integer and explicit casting to <see cref="ImageFileType"/> to register other file format.</param>
         /// <param name="loader">The loader delegate (can be null).</param>
         /// <exception cref="System.ArgumentException"></exception>
-        public static void Register(ImageFileType type, ImageLoadDelegate loader)
+        public static void Register(ImageFileType type, ImageLoadDelegate loader, ImageSaveDelegate saver)
         {
-            if (loader == null)
-                throw new ArgumentNullException("loader", "Can't set loader to null");
+            // If reference equals, then it is null
+            if (ReferenceEquals(loader, saver))
+                throw new ArgumentNullException("loader/saver", "Can set both loader and saver to null");
 
-            var newDelegate = new LoadSaveDelegate(type, loader);
+            var newDelegate = new LoadSaveDelegate(type, loader, saver);
             for (int i = 0; i < loadSaveDelegates.Count; i++)
             {
                 var loadSaveDelegate = loadSaveDelegates[i];
@@ -609,13 +610,13 @@ namespace SharpDX.Toolkit.Graphics
 
         static Image()
         {
-            Register(ImageFileType.Dds,  DDSHelper.LoadFromDDSMemory);
-            Register(ImageFileType.Gif,  WICHelper.LoadFromWICMemory);
-            Register(ImageFileType.Tiff, WICHelper.LoadFromWICMemory);
-            Register(ImageFileType.Bmp,  WICHelper.LoadFromWICMemory);
-            Register(ImageFileType.Jpg,  WICHelper.LoadFromWICMemory);
-            Register(ImageFileType.Png,  WICHelper.LoadFromWICMemory);
-            Register(ImageFileType.Wmp,  WICHelper.LoadFromWICMemory);
+            Register(ImageFileType.Dds, DDSHelper.LoadFromDDSMemory, DDSHelper.SaveToDDSStream);
+            Register(ImageFileType.Gif, WICHelper.LoadFromWICMemory, WICHelper.SaveGifToWICMemory);
+            Register(ImageFileType.Tiff, WICHelper.LoadFromWICMemory, WICHelper.SaveTiffToWICMemory);
+            Register(ImageFileType.Bmp, WICHelper.LoadFromWICMemory, WICHelper.SaveBmpToWICMemory);
+            Register(ImageFileType.Jpg, WICHelper.LoadFromWICMemory, WICHelper.SaveJpgToWICMemory);
+            Register(ImageFileType.Png, WICHelper.LoadFromWICMemory, WICHelper.SavePngToWICMemory);
+            Register(ImageFileType.Wmp, WICHelper.LoadFromWICMemory, WICHelper.SaveWmpToWICMemory);
         }
 
         internal unsafe void Initialize(ImageDescription description, IntPtr dataPointer, int offset, GCHandle? handle, bool bufferIsDisposable, PitchFlags pitchFlags = PitchFlags.None)
@@ -924,15 +925,113 @@ namespace SharpDX.Toolkit.Graphics
 
         private class LoadSaveDelegate
         {
-            public LoadSaveDelegate(ImageFileType fileType, ImageLoadDelegate load)
+            public LoadSaveDelegate(ImageFileType fileType, ImageLoadDelegate load, ImageSaveDelegate save)
             {
                 FileType = fileType;
                 Load = load;
+                Save = save;
             }
 
             public ImageFileType FileType;
 
             public ImageLoadDelegate Load;
+
+            public ImageSaveDelegate Save;
         }
-   }
+
+        /// <summary>
+        /// Saves this instance to a file.
+        /// </summary>
+        /// <param name="fileName">The destination file. Filename must end with a known extension (dds, bmp, jpg, png, gif, tiff, wmp, tga)</param>
+        public void Save(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            extension = extension ?? string.Empty;
+
+            ImageFileType fileType;
+            extension = extension.TrimStart('.').ToLower();
+            switch (extension)
+            {
+                case "jpg":
+                    fileType = ImageFileType.Jpg;
+                    break;
+                case "dds":
+                    fileType = ImageFileType.Dds;
+                    break;
+                case "gif":
+                    fileType = ImageFileType.Gif;
+                    break;
+                case "bmp":
+                    fileType = ImageFileType.Bmp;
+                    break;
+                case "png":
+                    fileType = ImageFileType.Png;
+                    break;
+                case "tga":
+                    fileType = ImageFileType.Tga;
+                    break;
+                case "tiff":
+                    fileType = ImageFileType.Tiff;
+                    break;
+                case "tktx":
+                    fileType = ImageFileType.Tktx;
+                    break;
+                case "wmp":
+                    fileType = ImageFileType.Wmp;
+                    break;
+                default:
+                    throw new ArgumentException("Filename must have a supported image extension: dds, bmp, jpg, png, gif, tiff, wmp, tga");
+            }
+
+            Save(fileName, fileType);
+        }
+
+        /// <summary>
+        /// Saves this instance to a file.
+        /// </summary>
+        /// <param name="fileName">The destination file.</param>
+        /// <param name="fileType">Specify the output format.</param>
+        /// <remarks>This method support the following format: <c>dds, bmp, jpg, png, gif, tiff, wmp, tga</c>.</remarks>
+        public void Save(string fileName, ImageFileType fileType)
+        {
+            using (var imageStream = new NativeFileStream(fileName, NativeFileMode.Create, NativeFileAccess.Write))
+            {
+                Save(imageStream, fileType);
+            }
+        }
+
+        /// <summary>
+        /// Saves this instance to a stream.
+        /// </summary>
+        /// <param name="imageStream">The destination stream.</param>
+        /// <param name="fileType">Specify the output format.</param>
+        /// <remarks>This method support the following format: <c>dds, bmp, jpg, png, gif, tiff, wmp, tga</c>.</remarks>
+        public void Save(Stream imageStream, ImageFileType fileType)
+        {
+            Save(pixelBuffers, this.pixelBuffers.Length, Description, imageStream, fileType);
+        }
+
+        /// <summary>
+        /// Saves this instance to a stream.
+        /// </summary>
+        /// <param name="pixelBuffers">The buffers to save.</param>
+        /// <param name="count">The number of buffers to save.</param>
+        /// <param name="description">Global description of the buffer.</param>
+        /// <param name="imageStream">The destination stream.</param>
+        /// <param name="fileType">Specify the output format.</param>
+        /// <remarks>This method support the following format: <c>dds, bmp, jpg, png, gif, tiff, wmp, tga</c>.</remarks>
+        internal static void Save(PixelBuffer[] pixelBuffers, int count, ImageDescription description, Stream imageStream, ImageFileType fileType)
+        {
+            foreach (var loadSaveDelegate in loadSaveDelegates)
+            {
+                if (loadSaveDelegate.FileType == fileType)
+                {
+                    loadSaveDelegate.Save(pixelBuffers, count, description, imageStream);
+                    return;
+                }
+
+            }
+            throw new NotSupportedException("This file format is not yet implemented.");
+        }
+    }
 }

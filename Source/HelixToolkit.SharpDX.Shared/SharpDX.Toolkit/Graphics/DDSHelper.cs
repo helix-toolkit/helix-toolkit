@@ -75,6 +75,7 @@ using System.Runtime.InteropServices;
 using SharpDX.DXGI;
 using SharpDX.Direct3D11;
 using SharpDX.Multimedia;
+using System.Diagnostics;
 
 namespace SharpDX.Toolkit.Graphics
 {
@@ -1131,6 +1132,67 @@ namespace SharpDX.Toolkit.Graphics
             return image;
         }
 
+        public static void SaveToDDSStream(PixelBuffer[] pixelBuffers, int count, ImageDescription description, System.IO.Stream imageStream)
+        {
+            SaveToDDSStream(pixelBuffers, count, description, DDSFlags.None, imageStream);
+        }
+
+        //-------------------------------------------------------------------------------------
+        // Save a DDS to a stream
+        //-------------------------------------------------------------------------------------
+        public unsafe static void SaveToDDSStream(PixelBuffer[] pixelBuffers, int count, ImageDescription metadata, DDSFlags flags, System.IO.Stream stream)
+        {
+            // Determine memory required
+            int totalSize = 0;
+            int headerSize = 0;
+            EncodeDDSHeader(metadata, flags, IntPtr.Zero, 0, out totalSize);
+            headerSize = totalSize;
+
+            int maxSlice = 0;
+
+            for (int i = 0; i < pixelBuffers.Length; ++i)
+            {
+                int slice = pixelBuffers[i].BufferStride;
+                totalSize += slice;
+                if (slice > maxSlice)
+                    maxSlice = slice;
+            }
+
+            Debug.Assert(totalSize > 0);
+
+            // Allocate a single temporary buffer to save the headers and each slice.
+            var buffer = new byte[Math.Max(maxSlice, headerSize)];
+
+            fixed (void* pbuffer = buffer)
+            {
+                int required;
+                EncodeDDSHeader(metadata, flags, (IntPtr)pbuffer, headerSize, out required);
+                stream.Write(buffer, 0, headerSize);
+            }
+
+            int remaining = totalSize - headerSize;
+            Debug.Assert(remaining > 0);
+
+            int index = 0;
+            for (int item = 0; item < metadata.ArraySize; ++item)
+            {
+                int d = metadata.Depth;
+
+                for (int level = 0; level < metadata.MipLevels; ++level)
+                {
+                    for (int slice = 0; slice < d; ++slice)
+                    {
+                        int pixsize = pixelBuffers[index].BufferStride;
+                        Utilities.Read(pixelBuffers[index].DataPointer, buffer, 0, pixsize);
+                        stream.Write(buffer, 0, pixsize);
+                        ++index;
+                    }
+
+                    if (d > 1)
+                        d >>= 1;
+                }
+            }
+        }
 
         [Flags]
         internal enum ScanlineFlags
