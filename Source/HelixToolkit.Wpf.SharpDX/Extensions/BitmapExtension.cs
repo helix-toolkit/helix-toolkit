@@ -89,5 +89,16 @@ namespace HelixToolkit.Wpf.SharpDX
             outStream.Position = 0;
             return outStream;
         }
+
+        public static byte[] ToByteArray(this System.Windows.Media.Imaging.BitmapSource bitmapSource)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                var encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                encoder.Save(ms);
+                return ms.ToArray();
+            }
+        }
     }
 }

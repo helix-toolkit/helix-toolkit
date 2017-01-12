@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             using(var memStream = new MemoryStream(memory))
             {
-                return FromMemoryAsShaderResourceView(device, memory, disableAutoGenMipMap);
+                return FromMemoryAsShaderResourceView(device, memStream, disableAutoGenMipMap);
             }
         }
 

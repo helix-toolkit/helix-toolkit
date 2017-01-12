@@ -33,18 +33,6 @@ namespace HelixToolkit.Wpf.SharpDX
         } 
 #endif
 
-
-        public static byte[] ToByteArray(this System.Windows.Media.Imaging.BitmapSource bitmapSource)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                var encoder = new System.Windows.Media.Imaging.BmpBitmapEncoder();
-                encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmapSource));
-                encoder.Save(ms);
-                return ms.ToArray();
-            }
-        }
-
         /// <summary>
         /// Create buffer
         /// </summary>
