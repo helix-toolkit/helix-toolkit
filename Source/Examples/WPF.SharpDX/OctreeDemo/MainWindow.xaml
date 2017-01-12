@@ -49,11 +49,9 @@
                 IsRendering="{Binding Visibility}"
                 Material="{Binding Material}" />
             <hx:ItemsModel3D
-                AutoDeleteEmptyOctreeNode="{Binding AutoDeleteEmptyNode}"
                 IsRendering="{Binding Visibility}"
                 ItemsSource="{Binding Items}"
-                Octree="{Binding GroupOctree, Mode=OneWayToSource}"
-                UseOctreeHitTest="{Binding UseOctreeHitTest}">
+                OctreeManager="{Binding GroupOctreeManager}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
@@ -66,8 +64,7 @@
             <hx:ItemsModel3D
                 IsRendering="{Binding Visibility}"
                 ItemsSource="{Binding LanderItems}"
-                Octree="{Binding LanderGroupOctree, Mode=OneWayToSource}"
-                UseOctreeHitTest="{Binding UseOctreeHitTest}">
+                OctreeManager="{Binding LanderOctreeManager}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D

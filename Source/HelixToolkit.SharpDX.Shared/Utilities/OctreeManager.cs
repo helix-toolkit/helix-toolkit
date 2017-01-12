@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX;
 using System.Linq;
 using System.Collections;
 using System.Windows;
 using SharpDX;
 using System.Diagnostics;
+using HelixToolkit.SharpDX.Shared.Utilities;
+using HelixToolkit.SharpDX.Shared.Model;
 
-namespace HelixToolkit.SharpDX.Shared.Utilities
+namespace HelixToolkit.Wpf.SharpDX
 {
-    public sealed class OctreeChangedArgs : EventArgs
+    public sealed class GeometryModel3DOctreeManager : ObservableObject
     {
-        public IOctree Octree { private set; get; }
-        public OctreeChangedArgs(IOctree tree)
+        private bool autoDeleteEmptyOctreeNode = true;
+        public bool AutoDeleteEmptyOctreeNode
         {
-            Octree = tree;
+            set
+            {
+                if(Set(ref autoDeleteEmptyOctreeNode, value))
+                {
+                    Parameter.AutoDeleteIfEmpty = value;
+                }
+            }
+            get
+            {
+                return autoDeleteEmptyOctreeNode;
+            }
         }
-    }
-
-    public delegate void OnOctreeChangedEventHandler(object sender, OctreeChangedArgs args);
-
-    public sealed class GeometryModel3DOctreeManager
-    {
-        public event OnOctreeChangedEventHandler OnOctreeChanged;
 
         private GeometryModel3DOctree mOctree = null;
         public GeometryModel3DOctree Octree
         {
-            private set
+            set
             {
-                if (mOctree == value)
-                {
-                    return;
-                }
-                mOctree = value;
-                RaiseOctreeChangedEvent();
+                Set(ref mOctree, value);
             }
             get
             {
@@ -46,7 +45,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         private volatile bool mRequestUpdateOctree = false;
         public readonly OctreeBuildParameter Parameter = new OctreeBuildParameter() { MinSize = 1f };
 
-        private bool mEnabled = false;
+        private bool mEnabled = true;
         public bool Enabled
         {
             set
@@ -269,11 +268,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             //        }
             //    }
             //}           
-        }
-
-        private void RaiseOctreeChangedEvent()
-        {
-            OnOctreeChanged?.Invoke(this, new OctreeChangedArgs(this.Octree));
         }
 
         public void RequestRebuild()

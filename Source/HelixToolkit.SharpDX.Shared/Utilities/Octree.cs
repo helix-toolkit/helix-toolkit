@@ -1011,7 +1011,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
     {
         public float MinSize = 1f;
         public bool AutoDeleteIfEmpty = true;
-
+        public bool Cubify = false;
         public OctreeBuildParameter()
         {
         }
