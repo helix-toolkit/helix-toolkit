@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     d.mOctreeManager.Enabled = (bool)e.NewValue;
                     if (d.loaded)
                     {
-                        d.UpdateOctree();
+                        d.mOctreeManager.RequestRebuild();
                     }
                 }));
         /// <summary>
@@ -162,7 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UpdateBounds();
             if (UseOctreeHitTest && Children.Count > 0)
             {
-                UpdateOctree();
+                mOctreeManager.RequestRebuild();
             }
         }
 
@@ -251,6 +251,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Reset:
+                    if (UseOctreeHitTest)
+                    {
+                        mOctreeManager.Clear();
+                        mOctreeManager.RequestRebuild();
+                    }
+                    break;
+            }
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Replace:
@@ -380,21 +390,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
-
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Reset:
-                    mOctreeManager.RequestRebuild();
-                    break;
-            }
         }
 
         protected override void OnRender(RenderContext context)
         {
             base.OnRender(context);
-            if (mOctreeManager.RequestUpdateOctree)
+            if (UseOctreeHitTest)
             {
-                UpdateOctree();
+                if (mOctreeManager.RequestUpdateOctree)
+                {
+                    UpdateOctree();
+                }
+            }
+            else
+            {
+                Octree = null;
             }
         }
 
