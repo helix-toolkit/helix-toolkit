@@ -13,6 +13,9 @@
     Height="600"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Resources>
+            <local:BindingProxy x:Key="MainContext" Data="{Binding}"/>
+        </Grid.Resources>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
@@ -50,8 +53,10 @@
                 Material="{Binding Material}" />
             <hx:ItemsModel3D
                 IsRendering="{Binding Visibility}"
-                ItemsSource="{Binding Items}"
-                OctreeManager="{Binding GroupOctreeManager}">
+                ItemsSource="{Binding Items}">
+                <hx:ItemsModel3D.OctreeManager>
+                    <hx:GeometryModel3DOctreeManager Octree="{Binding GroupOctree}"/>
+                </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
@@ -63,8 +68,10 @@
             </hx:ItemsModel3D>
             <hx:ItemsModel3D
                 IsRendering="{Binding Visibility}"
-                ItemsSource="{Binding LanderItems}"
-                OctreeManager="{Binding LanderOctreeManager}">
+                ItemsSource="{Binding LanderItems}">
+                <hx:ItemsModel3D.OctreeManager>
+                    <hx:GeometryModel3DOctreeManager Octree="{Binding LanderGroupOctree}"/>
+                </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
@@ -113,7 +120,7 @@
             <CheckBox IsChecked="{Binding Visibility}">Model Visible</CheckBox>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding HitThrough}">Hit Through</CheckBox>
-            <CheckBox IsChecked="{Binding UseOctreeHitTest}">Enable Octree</CheckBox>
+            <!--<CheckBox IsChecked="{Binding UseOctreeHitTest}">Enable Octree</CheckBox>-->
             <CheckBox IsChecked="{Binding AutoDeleteEmptyNode}">Auto Delete Empty Node</CheckBox>
             <Button Command="{Binding AddModelCommand}" IsEnabled="{Binding Enabled}">Add Model</Button>
             <Button Command="{Binding RemoveModelCommand}" IsEnabled="{Binding Enabled}">Remove Model</Button>

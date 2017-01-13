@@ -16,6 +16,27 @@ using Media3D = System.Windows.Media.Media3D;
 
 namespace OctreeDemo
 {
+    public class BindingProxy : Freezable
+    {
+        #region Overrides of Freezable
+
+        protected override Freezable CreateInstanceCore()
+        {
+            return new BindingProxy();
+        }
+
+        #endregion
+
+        public object Data
+        {
+            get { return (object)GetValue(DataProperty); }
+            set { SetValue(DataProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DataProperty =
+            DependencyProperty.Register("Data", typeof(object), typeof(BindingProxy), new UIPropertyMetadata(null));
+    }
     public class MainViewModel : BaseViewModel
     {
         private Vector3 light1Direction = new Vector3();
@@ -275,8 +296,6 @@ namespace OctreeDemo
             {
                 autoDeleteEmptyNode = value;
                 OnPropertyChanged();
-                GroupOctreeManager.AutoDeleteEmptyOctreeNode = value;
-                LanderOctreeManager.AutoDeleteEmptyOctreeNode = value;
             }
             get { return autoDeleteEmptyNode; }
         }
@@ -319,19 +338,6 @@ namespace OctreeDemo
             RemoveModelCommand = new RelayCommand(RemoveModel);
             ClearModelCommand = new RelayCommand(ClearModel);
             AutoTestCommand = new RelayCommand(AutoTestAddRemove);
-
-            GroupOctreeManager.PropertyChanged += GroupOctreeManager_PropertyChanged;
-            LanderOctreeManager.PropertyChanged += LanderOctreeManager_PropertyChanged;
-        }
-
-        private void LanderOctreeManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            LanderGroupOctree = LanderOctreeManager.Octree;
-        }
-
-        private void GroupOctreeManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            GroupOctree = GroupOctreeManager.Octree;
         }
 
         private void CreateDefaultModels()
@@ -354,16 +360,16 @@ namespace OctreeDemo
                 }
             }
 
-            LanderItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
-            foreach (var item in LanderItems)
-            {
-                var scale = new Vector3(0.007f);
-                for (int i = 0; i < item.Model.Positions.Count; ++i)
-                {
-                    item.Model.Positions[i] = item.Model.Positions[i] * scale;
-                }
-                item.Model.UpdateOctree();
-            }
+            //LanderItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
+            //foreach (var item in LanderItems)
+            //{
+            //    var scale = new Vector3(0.007f);
+            //    for (int i = 0; i < item.Model.Positions.Count; ++i)
+            //    {
+            //        item.Model.Positions[i] = item.Model.Positions[i] * scale;
+            //    }
+            //    item.Model.UpdateOctree();
+            //}
         }
 
         public List<Object3D> Load3ds(string path)

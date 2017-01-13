@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections.Specialized;
     using HelixToolkit.SharpDX.Shared.Utilities;
     using SharpDX;
+    using System.Windows.Media;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a
@@ -46,13 +47,14 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(ItemsModel3D),
             new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
 
-        public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager", typeof(GeometryModel3DOctreeManager),
-            typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
+        public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
+            typeof(IOctreeManager),
+            typeof(ItemsModel3D), new PropertyMetadata(null, (s,e)=> 
             {
-                if (e.NewValue != null)
-                {
-                    (s as ItemsModel3D).OctreeManager.RequestRebuild();
-                }
+                var d = s as ItemsModel3D;
+                d.RemoveLogicalChild(e.OldValue);
+                if(e.NewValue!=null)
+                    d.AddLogicalChild(e.NewValue);
             }));
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
-        public GeometryModel3DOctreeManager OctreeManager
+        public IOctreeManager OctreeManager
         {
             set
             {
@@ -87,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (GeometryModel3DOctreeManager)GetValue(OctreeManagerProperty);
+                return (IOctreeManager)GetValue(OctreeManagerProperty);
             }
         }
 
