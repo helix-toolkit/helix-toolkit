@@ -230,7 +230,7 @@ namespace OctreeDemo
             b2.AddSphere(new Vector3(25f, 0f, 0f), 2, 32, 32);
             b2.AddTube(new Vector3[] { new Vector3(10f, 5f, 0f), new Vector3(10f, 7f, 0f) }, 2, 12, false, true, true);
             DefaultModel = b2.ToMeshGeometry3D();
-
+            DefaultModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
             DefaultModel.UpdateOctree();
 
             for (int i = 0; i < 10; ++i)

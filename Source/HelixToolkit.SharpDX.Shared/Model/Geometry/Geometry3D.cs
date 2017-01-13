@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                if(Set<IntCollection>(ref indices, value))
+                if (Set<IntCollection>(ref indices, value))
                 {
                     Octree = null;
                 }
@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                if(Set<Vector3Collection>(ref position, value))
+                if (Set<Vector3Collection>(ref position, value))
                 {
                     Octree = null;
                 }
@@ -99,6 +99,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
         public IOctree Octree { private set; get; }
+
+        public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
 
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="DisablePropertyChangedEvent"/>

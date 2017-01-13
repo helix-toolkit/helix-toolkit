@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void CreateOctreeLines()
         {
-            if (Octree != null)
+            if (Octree != null && Visibility == Visibility.Visible && IsRendering)
             {
                 OctreeVisual.Geometry = Octree.CreateOctreeLineModel();
                 OctreeVisual.Color = LineColor;
@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void OctreeLineGeometryModel3D_OnHit(object sender, OnHitEventArgs args)
         {
             var node = sender as IOctree;
-            if (node.HitPathBoundingBoxes.Count > 0)
+            if (node.HitPathBoundingBoxes.Count > 0 && Visibility == Visibility.Visible && IsRendering)
             {
                 HitVisual.Geometry = node.HitPathBoundingBoxes.CreatePathLines();
                 HitVisual.Color = HitLineColor;
