@@ -59,7 +59,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateDemo", "Examples\WP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TessellationDemo", "Examples\WPF.SharpDX\TessellationDemo\TessellationDemo.csproj", "{82BB6745-9D34-453A-851C-01C8FD7A0F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTextureDemo", "DynamicTextureDemo\DynamicTextureDemo.csproj", "{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTextureDemo", "Examples\WPF.SharpDX\DynamicTextureDemo\DynamicTextureDemo.csproj", "{C7F68E1A-85B4-494A-BA4E-F4270FFF3852}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
