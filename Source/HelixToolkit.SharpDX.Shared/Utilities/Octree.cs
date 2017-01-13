@@ -41,6 +41,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         BoundingBox[] Octants { get; }
         IList<BoundingBox> HitPathBoundingBoxes { get; }
         OctreeBuildParameter Parameter { get; }
+
+        bool TreeBuilt { get; }
         /// <summary>
         /// Delete self if is empty;
         /// </summary>
@@ -75,7 +77,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// Build the whole tree from top to bottom iteratively.
         /// </summary>
-        void BuildTree(bool cubify = false);
+        void BuildTree();
 
         /// <summary>
         /// Build current node level only, this will only build current node and create children, but not build its children. 
@@ -164,6 +166,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
         public float MIN_SIZE { get { return Parameter.MinSize; } }
+
+        public bool TreeBuilt { get { return treeBuilt; } }
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
         public OctreeBuildParameter Parameter { private set; get; }
 
@@ -273,18 +277,18 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return CreateNode(bound, new List<T> { Item });
         }
 
-        public void BuildTree(bool cubify = false)
+        public void BuildTree()
         {
-            if (!CheckDimension())
+            if (Bound.Maximum == Bound.Minimum || !CheckDimension())
             {
-                treeBuilt = true;
+                treeBuilt = false;
                 return;
             }
-            if (cubify)
+            if (Parameter.Cubify)
             {
                 Bound = FindEnclosingCube(Bound);
             }
-            BuildTree(this, cubify);
+            BuildTree(this, Parameter.Cubify);
         }
 
         private static void BuildTree(IOctree root, bool cubify)

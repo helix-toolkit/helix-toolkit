@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public sealed class GeometryModel3DOctreeManager : FrameworkElement, IOctreeManager
     {
         public static readonly DependencyProperty OctreeProperty
-            = DependencyProperty.Register("Octree", typeof(IOctree), typeof(GeometryModel3DOctreeManager), 
+            = DependencyProperty.Register("Octree", typeof(IOctree), typeof(GeometryModel3DOctreeManager),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public static readonly DependencyProperty ParameterProperty
@@ -70,6 +70,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public GeometryModel3DOctreeManager()
+        {
+        }
+
         private void UpdateOctree(GeometryModel3DOctree tree)
         {
             Octree = tree;
@@ -82,6 +86,10 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Enabled)
             {
                 UpdateOctree(RebuildOctree(items));
+                if (Octree == null)
+                {
+                    RequestRebuild();
+                }
             }
             else
             {
@@ -141,42 +149,24 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        //private RoutedEventHandler MakeWeakHandler(Action<object, BoundChangedEventArgs> action, Action<RoutedEventHandler> remove)
-        //{
-        //    var reference = new WeakReference(action.Target);
-        //    var method = action.Method;
-        //    RoutedEventHandler handler = null;
-        //    handler = delegate (object sender, RoutedEventArgs e)
-        //    {
-        //        var target = reference.Target;
-        //        if (reference.IsAlive)
-        //        {
-        //            method.Invoke(target, null);
-        //        }
-        //        else
-        //        {
-        //            remove(handler);
-        //        }
-        //    };
-        //    return handler;
-        //}
-
         private GeometryModel3DOctree RebuildOctree(IList<Element3D> items)
         {
             Clear();
-            mRequestUpdateOctree = false;
             if (items == null || items.Count == 0)
             {
                 return null;
             }
             var list = items.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
-            foreach (var item in list)
-            {
-                SubscribeBoundChangeEvent(item);
-            }
             var tree = new GeometryModel3DOctree(list, Parameter);
             tree.BuildTree();
-            return tree;
+            if (tree.TreeBuilt)
+            {
+                foreach (var item in list)
+                {
+                    SubscribeBoundChangeEvent(item);
+                }
+            }
+            return tree.TreeBuilt ? tree : null;
         }
 
         private static readonly BoundingBox ZeroBound = new BoundingBox();
@@ -264,7 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void Clear()
         {
             mRequestUpdateOctree = false;
-            UpdateOctree(null);   
+            UpdateOctree(null);
         }
 
         public void RequestRebuild()
