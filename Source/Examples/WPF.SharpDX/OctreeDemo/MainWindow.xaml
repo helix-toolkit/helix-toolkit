@@ -14,7 +14,7 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <local:BindingProxy x:Key="MainContext" Data="{Binding}"/>
+            <local:BindingProxy x:Key="MainContext" Data="{Binding}" />
         </Grid.Resources>
         <hx:Viewport3DX
             x:Name="view1"
@@ -51,11 +51,9 @@
                 Geometry="{Binding DefaultModel}"
                 IsRendering="{Binding Visibility}"
                 Material="{Binding Material}" />
-            <hx:ItemsModel3D
-                IsRendering="{Binding Visibility}"
-                ItemsSource="{Binding Items}">
+            <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
                 <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager Octree="{Binding GroupOctree}"/>
+                    <hx:GeometryModel3DOctreeManager x:Name="groupOctreeMgr" Parameter="{Binding OctreeParameter}" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
@@ -66,11 +64,9 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
-            <hx:ItemsModel3D
-                IsRendering="{Binding Visibility}"
-                ItemsSource="{Binding LanderItems}">
+            <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding LanderItems}">
                 <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager Octree="{Binding LanderGroupOctree}"/>
+                    <hx:GeometryModel3DOctreeManager x:Name="landerOctreeMgr" Parameter="{Binding OctreeParameter}" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
@@ -81,29 +77,9 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
-            <hx:LineGeometryModel3D
-                Geometry="{Binding OctreeModel}"
-                IsHitTestVisible="False"
-                Thickness="0.5"
-                Color="{Binding LineColor}" />
-
-            <hx:LineGeometryModel3D
-                Geometry="{Binding GroupOctreeModel}"
-                IsHitTestVisible="False"
-                Thickness="0.5"
-                Color="{Binding GroupLineColor}" />
-
-            <hx:LineGeometryModel3D
-                Geometry="{Binding HitModel}"
-                IsHitTestVisible="False"
-                Thickness="1.5"
-                Color="{Binding HitLineColor}" />
-
-            <hx:LineGeometryModel3D
-                Geometry="{Binding LanderGroupOctreeModel}"
-                IsHitTestVisible="False"
-                Thickness="0.5"
-                Color="{Binding GroupLineColor}" />
+            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
+            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />
+            <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"

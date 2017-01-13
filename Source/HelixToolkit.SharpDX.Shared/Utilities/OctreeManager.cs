@@ -11,6 +11,9 @@ using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    /// <summary>
+    /// Use to create geometryModel3D octree for groups. Each ItemsModel3D must has its own manager, do not share between two ItemsModel3D
+    /// </summary>
     public sealed class GeometryModel3DOctreeManager : FrameworkElement, IOctreeManager
     {
         public static readonly DependencyProperty OctreeProperty

@@ -111,53 +111,6 @@ namespace OctreeDemo
 
         public Color LineColor { set; get; }
 
-        public LineGeometry3D OctreeModel { set; get; }
-
-        public Color GroupLineColor { set; get; }
-
-        public Color HitLineColor { set; get; }
-
-        private LineGeometry3D groupOctreeModel = null;
-        public LineGeometry3D GroupOctreeModel
-        {
-            set
-            {
-                groupOctreeModel = value;
-                OnPropertyChanged();
-            }
-            get
-            {
-                return groupOctreeModel;
-            }
-        }
-
-        private LineGeometry3D landerGroupOctreeModel = null;
-        public LineGeometry3D LanderGroupOctreeModel
-        {
-            set
-            {
-                landerGroupOctreeModel = value;
-                OnPropertyChanged();
-            }
-            get
-            {
-                return landerGroupOctreeModel;
-            }
-        }
-
-        private LineGeometry3D hitModel = null;
-        public LineGeometry3D HitModel
-        {
-            set
-            {
-                hitModel = value;
-                OnPropertyChanged();
-            }
-            get
-            {
-                return hitModel;
-            }
-        }
         private PhongMaterial material;
         public PhongMaterial Material
         {
@@ -173,56 +126,6 @@ namespace OctreeDemo
         public MeshGeometry3D DefaultModel { private set; get; }
         public ObservableCollection<DataModel> Items { set; get; }
         public List<DataModel> LanderItems { private set; get; }
-
-        private IOctree groupOctree = null;
-        public IOctree GroupOctree
-        {
-            set
-            {
-                if (groupOctree == value)
-                    return;
-                groupOctree = value;
-                OnPropertyChanged();
-                if (value != null)
-                {
-                    GroupOctreeModel = value.CreateOctreeLineModel();
-                    value.RecordHitPathBoundingBoxes = true;
-                }
-                else
-                {
-                    GroupOctreeModel = null;
-                }
-            }
-            get
-            {
-                return groupOctree;
-            }
-        }
-
-        private IOctree landerGroupOctree = null;
-        public IOctree LanderGroupOctree
-        {
-            set
-            {
-                if (landerGroupOctree == value)
-                    return;
-                landerGroupOctree = value;
-                OnPropertyChanged();
-                if (value != null)
-                {
-                    LanderGroupOctreeModel = value.CreateOctreeLineModel();
-                    value.RecordHitPathBoundingBoxes = true;
-                }
-                else
-                {
-                    LanderGroupOctreeModel = null;
-                }
-            }
-            get
-            {
-                return landerGroupOctree;
-            }
-        }
 
         private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
         public Media3D.Vector3D CamLookDir
@@ -241,30 +144,9 @@ namespace OctreeDemo
             }
         }
 
-        public GeometryModel3DOctreeManager GroupOctreeManager { private set; get; } = new GeometryModel3DOctreeManager();
-
-        public GeometryModel3DOctreeManager LanderOctreeManager { private set; get; } = new GeometryModel3DOctreeManager();
-
         public bool HitThrough { set; get; }
 
         private readonly IList<DataModel> HighlightItems = new List<DataModel>();
-
-        private bool enableOctreeHitTest = true;
-        public bool EnableOctreeHitTest
-        {
-            set
-            {
-                if (SetValue(ref enableOctreeHitTest, value, nameof(EnableOctreeHitTest)))
-                {
-                    LanderOctreeManager.Enabled = value;
-                    GroupOctreeManager.Enabled = value;
-                }
-            }
-            get
-            {
-                return enableOctreeHitTest;
-            }
-        }
 
         private int sphereSize = 1;
         public int SphereSize
@@ -273,7 +155,6 @@ namespace OctreeDemo
             {
                 if (SetValue<int>(ref sphereSize, value, nameof(SphereSize)))
                 {
-                    HitModel = null;
                     if (HighlightItems.Count > 0)
                     {
                         foreach (SphereModel item in HighlightItems)
@@ -296,9 +177,12 @@ namespace OctreeDemo
             {
                 autoDeleteEmptyNode = value;
                 OnPropertyChanged();
+                OctreeParameter.AutoDeleteIfEmpty = value;
             }
             get { return autoDeleteEmptyNode; }
         }
+
+        public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter() { RecordHitPathBoundingBoxes = true };
 
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
@@ -325,8 +209,6 @@ namespace OctreeDemo
             this.PropertyChanged += MainViewModel_PropertyChanged;
 
             LineColor = Color.Blue;
-            GroupLineColor = Color.Green;
-            HitLineColor = Color.Red;
             Items = new ObservableCollection<DataModel>();
 
             var sw = Stopwatch.StartNew();
@@ -350,7 +232,6 @@ namespace OctreeDemo
             DefaultModel = b2.ToMeshGeometry3D();
 
             DefaultModel.UpdateOctree();
-            OctreeModel = DefaultModel.Octree.CreateOctreeLineModel();
 
             for (int i = 0; i < 10; ++i)
             {
@@ -447,18 +328,6 @@ namespace OctreeDemo
                         Material = PhongMaterials.Yellow;
                     }
                 }
-                if (GroupOctree != null && GroupOctree.HitPathBoundingBoxes.Count > 0)
-                {
-                    HitModel = GroupOctree.HitPathBoundingBoxes.CreatePathLines();
-                }
-                if (LanderGroupOctree != null && LanderGroupOctree.HitPathBoundingBoxes.Count > 0)
-                {
-                    HitModel = LanderGroupOctree.HitPathBoundingBoxes.CreatePathLines();
-                }
-            }
-            else
-            {
-                HitModel = null;
             }
         }
 
@@ -472,7 +341,6 @@ namespace OctreeDemo
             newModelZ += 0.5;
             var z = (float)(newModelZ);
             Items.Add(new SphereModel(new Vector3(x, y + 20, z + 14), 1));
-            HitModel = null;
         }
 
         private void RemoveModel(object o)
@@ -482,13 +350,11 @@ namespace OctreeDemo
                 Items.RemoveAt(Items.Count - 1);
                 newModelZ = newModelZ > -5 ? newModelZ - 0.5 : 0;
             }
-            HitModel = null;
         }
 
         private void ClearModel(object o)
         {
             Items.Clear();
-            HitModel = null;
             HighlightItems.Clear();
         }
 
