@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using SharpDX;
 using SharpDX.Direct3D;
@@ -38,8 +38,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hits"></param>
         /// <returns></returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
-        {            
-            if (this.Visibility == Visibility.Collapsed || this.Visibility==Visibility.Hidden)
+        {
+            if (this.Visibility == Visibility.Collapsed || this.Visibility == Visibility.Hidden)
             {
                 return false;
             }
@@ -75,8 +75,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 var right = g.Width / 2;
                 var top = -g.Height / 2 * heightScale;
                 var bottom = g.Height / 2 * heightScale;
-                Debug.WriteLine(spw);
-                Debug.WriteLine(string.Format("Z={0}; W={1}", spz, spw));
+                //Debug.WriteLine(spw);
+                // Debug.WriteLine(string.Format("Z={0}; W={1}", spz, spw));
                 var bl = new Vector4(spx + left * spw, spy + bottom * spw, spz, spw);
                 bl = Vector4.Transform(bl, screenToVisual);
                 bl /= bl.W;
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var b = BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
 
                 // this all happens now in world space now:
-                Debug.WriteLine(string.Format("RayPosition:{0}; Direction:{1};", rayWS.Position, rayWS.Direction));
+                //Debug.WriteLine(string.Format("RayPosition:{0}; Direction:{1};", rayWS.Position, rayWS.Direction));
                 if (rayWS.Intersects(ref b))
                 {
 
@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.IsValid = true;
                         result.PointHit = (rayWS.Position + (rayWS.Direction * distance)).ToPoint3D();
                         result.Distance = distance;
-                        Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
+                        //Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
                     }
                 }
             }
@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.billboardAlphaTextureVariable = effect.GetVariableByName("billboardAlphaTexture").AsShaderResource();
             this.bHasBillboardAlphaTexture = effect.GetVariableByName("bHasAlphaTexture").AsScalar();
-            if (geometry.AlphaTexture !=null )
+            if (geometry.AlphaTexture != null)
             {
                 billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, geometry.AlphaTexture);
             }
