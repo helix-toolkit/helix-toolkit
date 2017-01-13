@@ -20,8 +20,14 @@ using System.Windows;
 
 namespace HelixToolkit.SharpDX.Shared.Utilities
 {
+    public sealed class OnHitEventArgs : EventArgs
+    {
+
+    }
+    public delegate void OnHitEventHandler(object sender, OnHitEventArgs args);
     public interface IOctree
     {
+        event OnHitEventHandler OnHit;
         /// <summary>
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
@@ -33,7 +39,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         BoundingBox Bound { get; }
         IOctree[] ChildNodes { get; }
         BoundingBox[] Octants { get; }
-        bool RecordHitPathBoundingBoxes { set; get; }
         IList<BoundingBox> HitPathBoundingBoxes { get; }
         OctreeBuildParameter Parameter { get; }
         /// <summary>
@@ -154,6 +159,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
     public abstract class OctreeBase<T> : IOctreeBase<T>
     {
+        public event OnHitEventHandler OnHit;
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
@@ -181,7 +187,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public List<T> Objects { protected set; get; }
 
-        public bool RecordHitPathBoundingBoxes { set; get; } = false;
         private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
         public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
         /// <summary>
@@ -512,7 +517,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         }
                     }
                 }
-                if (RecordHitPathBoundingBoxes && nodeHit)
+                if (Parameter.RecordHitPathBoundingBoxes && nodeHit)
                 {
                     var n = node;
                     while (n != null)
@@ -525,6 +530,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             if (!isHit)
             {
                 hitPathBoundingBoxes.Clear();
+            }
+            else
+            {
+                OnHit?.Invoke(this, new OnHitEventArgs());
             }
             return isHit;
         }
@@ -1012,6 +1021,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public float MinSize = 1f;
         public bool AutoDeleteIfEmpty = true;
         public bool Cubify = false;
+        public bool RecordHitPathBoundingBoxes = false;
         public OctreeBuildParameter()
         {
         }

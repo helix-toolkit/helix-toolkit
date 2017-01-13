@@ -132,7 +132,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IOctree CreateOctree(float minSize, bool autoDeleteIfEmpty)
         {
-            return new MeshGeometryOctree(this.Positions, this.Indices, new OctreeBuildParameter() { MinSize = minSize, AutoDeleteIfEmpty = autoDeleteIfEmpty });
+            OctreeParameter.MinSize = minSize;
+            OctreeParameter.AutoDeleteIfEmpty = autoDeleteIfEmpty;
+            return new MeshGeometryOctree(this.Positions, this.Indices, OctreeParameter);
         }
     }
 }

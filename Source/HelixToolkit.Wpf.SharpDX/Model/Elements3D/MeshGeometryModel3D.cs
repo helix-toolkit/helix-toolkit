@@ -118,9 +118,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnGeometryPropertyChanged(sender, e);
-            if(sender is MeshGeometry3D)
+            if (sender is MeshGeometry3D)
             {
-                if(e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates)))
+                if (e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates)))
                 {
                     OnUpdateVertexBuffer(UpdateTextureOnly);
                 }
@@ -128,11 +128,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     OnUpdateVertexBuffer(UpdatePositionOnly);
                 }
-                else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
+                else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
                 {
                     OnUpdateVertexBuffer(UpdateColorsOnly);
                 }
-                else if(e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
+                else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
                     this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
@@ -216,7 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var geometry = this.Geometry as MeshGeometry3D;
 
             // -- set geometry if given
-            if (geometry != null && geometry.Positions!=null)
+            if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref this.vertexBuffer);
                 var data = updateFunction();
@@ -323,7 +323,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
 
                 /// --- INSTANCING: need to set 2 buffers            
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[] 
+                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
                     new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
                     new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
@@ -453,37 +453,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             return vertexArrayBuffer;
-        }
-
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
-        {
-            if (this.Visibility == Visibility.Collapsed)
-            {
-                return false;
-            }
-            if (this.IsHitTestVisible == false)
-            {
-                return false;
-            }
-            bool isHit = false;
-            var model = Geometry;
-            if (model != null && model.Octree != null)
-            {
-                isHit = model.Octree.HitTest(this, modelMatrix, rayWS, ref hits);
-
-#if DEBUG
-                if (isHit)
-                {
-                    Debug.WriteLine("Using octree for hit test, hit = "+hits[0].PointHit);
-                }
-#endif
-
-            }
-            else
-            {
-                isHit = base.HitTest(rayWS, ref hits);
-            }
-            return isHit;
         }
     }
 }
