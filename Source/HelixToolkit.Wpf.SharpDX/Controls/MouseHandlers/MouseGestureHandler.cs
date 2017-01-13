@@ -294,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// A ray
         /// </returns>
         protected Ray3D GetRay(Point position)
-        {            
+        {
             return this.Viewport.UnProject(position);
         }
 
@@ -318,7 +318,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
-        {           
+        {
             this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
 
             this.OldCursor = this.Viewport.Cursor;
@@ -388,7 +388,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Point3D nearestPoint;
             Vector3D normal;
             Model3D visual;
-            if (this.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }
