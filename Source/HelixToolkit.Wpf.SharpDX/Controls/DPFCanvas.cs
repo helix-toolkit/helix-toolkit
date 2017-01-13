@@ -549,8 +549,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         ClearColor = renderRenderable.BackgroundColor;
                         IsShadowMapEnabled = renderRenderable.IsShadowMappingEnabled;
 
-                        var blinn = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-                        RenderTechnique = renderRenderable.RenderTechnique == null ? blinn : renderRenderable.RenderTechnique;
+                        RenderTechnique = renderRenderable.RenderTechnique == null ? RenderTechniquesManager?.RenderTechniques[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
 
                         if (renderContext != null)
                         {
@@ -660,20 +659,20 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UpdateAndRender()
         {
             try
-            {                
+            {
                 if (pendingValidationCycles > 0)
                 {
                     var t0 = renderTimer.Elapsed;
 
                     if (surfaceD3D != null && renderRenderable != null)
                     {
-                    // Update all renderables before rendering 
-                    // giving them the chance to invalidate the current render.                                                            
+                        // Update all renderables before rendering 
+                        // giving them the chance to invalidate the current render.                                                            
                         renderRenderable.Update(t0);
                         var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
                         if (cycle == RenderCycles - 1)
                         {
-                            Render();                       
+                            Render();
                         }
                         if (cycle == 0)
                         {
@@ -707,13 +706,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
             {
-                if (surfaceD3D != null)
+                if (surfaceD3D != null && RenderTechnique != null)
                 {
                     if (RenderTechnique == deferred)
                     {
                         deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
                     }
-                    if (RenderTechnique == gbuffer)
+                    else if (RenderTechnique == gbuffer)
                     {
                         deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                     }

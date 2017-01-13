@@ -1,40 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX;
 using System.Linq;
 using System.Collections;
 using System.Windows;
 using SharpDX;
 using System.Diagnostics;
+using HelixToolkit.SharpDX.Shared.Utilities;
+using HelixToolkit.SharpDX.Shared.Model;
+using System.Runtime.CompilerServices;
 
-namespace HelixToolkit.SharpDX.Shared.Utilities
+namespace HelixToolkit.Wpf.SharpDX
 {
-    public sealed class OctreeChangedArgs : EventArgs
+    public sealed class GeometryModel3DOctreeManager : ObservableObject
     {
-        public IOctree Octree { private set; get; }
-        public OctreeChangedArgs(IOctree tree)
+        private bool autoDeleteEmptyOctreeNode = true;
+        public bool AutoDeleteEmptyOctreeNode
         {
-            Octree = tree;
+            set
+            {
+                if(Set(ref autoDeleteEmptyOctreeNode, value))
+                {
+                    Parameter.AutoDeleteIfEmpty = value;
+                }
+            }
+            get
+            {
+                return autoDeleteEmptyOctreeNode;
+            }
         }
-    }
-
-    public delegate void OnOctreeChangedEventHandler(object sender, OctreeChangedArgs args);
-
-    public sealed class GeometryModel3DOctreeManager
-    {
-        public event OnOctreeChangedEventHandler OnOctreeChanged;
 
         private GeometryModel3DOctree mOctree = null;
         public GeometryModel3DOctree Octree
         {
-            private set
+            set
             {
-                if(mOctree == value)
-                {
-                    return;
-                }
-                mOctree = value;
-                RaiseOctreeChangedEvent();
+                Set(ref mOctree, value);
             }
             get
             {
@@ -44,9 +44,9 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } }
         private volatile bool mRequestUpdateOctree = false;
-        public readonly OctreeBuildParameter Parameter = new OctreeBuildParameter();
+        public readonly OctreeBuildParameter Parameter = new OctreeBuildParameter() { MinSize = 1f };
 
-        private bool mEnabled = false;
+        private bool mEnabled = true;
         public bool Enabled
         {
             set
@@ -68,7 +68,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             mRequestUpdateOctree = false;
             if (Enabled)
             {
-                Octree = RebuildOctree(items);      
+                Octree = RebuildOctree(items);
             }
             else
             {
@@ -76,12 +76,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SubscribeBoundChangeEvent(GeometryModel3D item)
         {
             item.OnBoundChanged -= Item_OnBoundChanged;
             item.OnBoundChanged += Item_OnBoundChanged;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnsubscribeBoundChangeEvent(GeometryModel3D item)
         {
             item.OnBoundChanged -= Item_OnBoundChanged;
@@ -89,12 +91,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
         {
-            if(Octree == null)
+            var item = sender as GeometryModel3D;
+            if (Octree == null || !item.IsAttached)
             {
+                UnsubscribeBoundChangeEvent(item);
                 return;
             }
             var arg = e;
-            var item = sender as GeometryModel3D;
             int index;
             var node = this.Octree.FindChildByItemBound(item, arg.OldBound, out index);
             bool rootAdd = true;
@@ -147,8 +150,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         private GeometryModel3DOctree RebuildOctree(IList<Element3D> items)
         {
+            Clear();
+            mRequestUpdateOctree = false;
+            if (items == null || items.Count == 0)
+            {
+                return null;
+            }
             var list = items.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 SubscribeBoundChangeEvent(item);
             }
@@ -160,7 +169,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         private static readonly BoundingBox ZeroBound = new BoundingBox();
         public bool AddPendingItem(Model3D item)
         {
-            if(Enabled && item is GeometryModel3D)
+            if (Enabled && item is GeometryModel3D)
             {
                 var model = item as GeometryModel3D;
                 model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
@@ -208,7 +217,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 var tree = Octree;
                 Octree = null;
-                foreach(var item in items)
+                foreach (var item in items)
                 {
                     item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                     UnsubscribeBoundChangeEvent(item);
@@ -241,11 +250,27 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             mRequestUpdateOctree = false;
             Octree = null;
-        }
-
-        private void RaiseOctreeChangedEvent()
-        {
-            OnOctreeChanged?.Invoke(this, new OctreeChangedArgs(this.Octree));
+            //if(Octree == null)
+            //{
+            //    return;
+            //}
+            //var queue = new Queue<GeometryModel3DOctree>(256);
+            //queue.Enqueue(Octree);
+            //while (queue.Count > 0)
+            //{
+            //    var node = queue.Dequeue();
+            //    foreach(var item in node.Objects)
+            //    {
+            //        UnsubscribeBoundChangeEvent(item);
+            //    }
+            //    foreach(var child in node.ChildNodes)
+            //    {
+            //        if (child != null)
+            //        {
+            //            queue.Enqueue(child as GeometryModel3DOctree);
+            //        }
+            //    }
+            //}           
         }
 
         public void RequestRebuild()

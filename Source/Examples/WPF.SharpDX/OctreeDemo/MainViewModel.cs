@@ -220,20 +220,28 @@ namespace OctreeDemo
             }
         }
 
+        public GeometryModel3DOctreeManager GroupOctreeManager { private set; get; } = new GeometryModel3DOctreeManager();
+
+        public GeometryModel3DOctreeManager LanderOctreeManager { private set; get; } = new GeometryModel3DOctreeManager();
+
         public bool HitThrough { set; get; }
 
         private readonly IList<DataModel> HighlightItems = new List<DataModel>();
 
-        private bool useOctreeHitTest = true;
-        public bool UseOctreeHitTest
+        private bool enableOctreeHitTest = true;
+        public bool EnableOctreeHitTest
         {
             set
             {
-                SetValue<bool>(ref useOctreeHitTest, value, nameof(UseOctreeHitTest));
+                if (SetValue(ref enableOctreeHitTest, value, nameof(EnableOctreeHitTest)))
+                {
+                    LanderOctreeManager.Enabled = value;
+                    GroupOctreeManager.Enabled = value;
+                }
             }
             get
             {
-                return useOctreeHitTest;
+                return enableOctreeHitTest;
             }
         }
 
@@ -267,6 +275,8 @@ namespace OctreeDemo
             {
                 autoDeleteEmptyNode = value;
                 OnPropertyChanged();
+                GroupOctreeManager.AutoDeleteEmptyOctreeNode = value;
+                LanderOctreeManager.AutoDeleteEmptyOctreeNode = value;
             }
             get { return autoDeleteEmptyNode; }
         }
@@ -309,6 +319,19 @@ namespace OctreeDemo
             RemoveModelCommand = new RelayCommand(RemoveModel);
             ClearModelCommand = new RelayCommand(ClearModel);
             AutoTestCommand = new RelayCommand(AutoTestAddRemove);
+
+            GroupOctreeManager.PropertyChanged += GroupOctreeManager_PropertyChanged;
+            LanderOctreeManager.PropertyChanged += LanderOctreeManager_PropertyChanged;
+        }
+
+        private void LanderOctreeManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            LanderGroupOctree = LanderOctreeManager.Octree;
+        }
+
+        private void GroupOctreeManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            GroupOctree = GroupOctreeManager.Octree;
         }
 
         private void CreateDefaultModels()

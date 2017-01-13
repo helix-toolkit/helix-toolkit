@@ -46,31 +46,15 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(ItemsModel3D),
             new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
 
-        /// <summary>
-        /// Enable octree hit test to improve hit performance. Note: Octree does not support child using Transform. 
-        /// </summary>
-        public static readonly DependencyProperty UseOctreeHitTestProperty = DependencyProperty.Register("UseOctreeHitTest", typeof(bool), typeof(ItemsModel3D),
-            new PropertyMetadata(false,
-                (s, e) =>
-                {
-                    var d = s as ItemsModel3D;
-                    d.mOctreeManager.Enabled = (bool)e.NewValue;
-                    if (d.loaded)
-                    {
-                        d.UpdateOctree();
-                    }
-                }));
-        /// <summary>
-        /// Output internal Octree for display if needed. Ususally used for debugging
-        /// </summary>
-        public static readonly DependencyProperty OctreeProperty = DependencyProperty.Register("Octree", typeof(IOctree), typeof(ItemsModel3D), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty AutoDeleteEmptyOctreeNodeProperty = DependencyProperty.Register("AutoDeleteEmptyOctreeNode", typeof(bool), typeof(ItemsModel3D),
-            new PropertyMetadata(true, (s, e) =>
+        public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager", typeof(GeometryModel3DOctreeManager),
+            typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
             {
-                var d = s as ItemsModel3D;
-                d.mOctreeManager.Parameter.AutoDeleteIfEmpty = (bool)e.NewValue;
+                if (e.NewValue != null)
+                {
+                    (s as ItemsModel3D).OctreeManager.RequestRebuild();
+                }
             }));
+
         /// <summary>
         ///     Gets or sets the <see cref="DataTemplate" /> used to display each item.
         /// </summary>
@@ -95,80 +79,50 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
-        /// <summary>
-        /// Enable octree hit test to improve hit performance. Note: Octree does not support child using Transform. 
-        /// </summary>
-        public bool UseOctreeHitTest
+        public GeometryModel3DOctreeManager OctreeManager
         {
             set
             {
-                SetValue(UseOctreeHitTestProperty, value);
+                SetValue(OctreeManagerProperty, value);
             }
             get
             {
-                return (bool)GetValue(UseOctreeHitTestProperty);
-            }
-        }
-
-        public IOctree Octree
-        {
-            set
-            {
-                SetValue(OctreeProperty, value);
-            }
-            get
-            {
-                return (IOctree)GetValue(OctreeProperty);
-            }
-        }
-
-        public bool AutoDeleteEmptyOctreeNode
-        {
-            set
-            {
-                SetValue(AutoDeleteEmptyOctreeNodeProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(AutoDeleteEmptyOctreeNodeProperty);
+                return (GeometryModel3DOctreeManager)GetValue(OctreeManagerProperty);
             }
         }
 
         private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
         private bool loaded = false;
-        private readonly GeometryModel3DOctreeManager mOctreeManager = new GeometryModel3DOctreeManager();
+        private IOctree Octree
+        {
+            get { return OctreeManager == null ? null : OctreeManager.Octree; }
+        }
 
         public ItemsModel3D()
         {
             this.Loaded += ItemsModel3D_Loaded;
             this.Unloaded += ItemsModel3D_Unloaded;
-            mOctreeManager.OnOctreeChanged += MOctreeManager_OnOctreeChanged;
         }
 
         private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
         {
             loaded = false;
-            mOctreeManager.Clear();
-        }
-
-        private void MOctreeManager_OnOctreeChanged(object sender, OctreeChangedArgs args)
-        {
-            this.Octree = args.Octree;
+            OctreeManager?.Clear();
         }
 
         private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
         {
             loaded = true;
             UpdateBounds();
-            if (UseOctreeHitTest && Children.Count > 0)
+            if (Children.Count > 0)
             {
-                UpdateOctree();
+                OctreeManager?.RequestRebuild();
             }
         }
 
         private void UpdateOctree()
         {
-            mOctreeManager.RebuildTree(this.Children);
+            OctreeManager?.RebuildTree(this.Children);
         }
 
         /// <summary>
@@ -192,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 item.DataContext = null;
             }
 
-            mOctreeManager.Clear();
+            OctreeManager?.Clear();
             mDictionary.Clear();
             Children.Clear();
 
@@ -247,10 +201,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
+            if (Children.Count > 0)
+            {
+                OctreeManager?.RequestRebuild();
+            }
         }
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Reset:
+                    OctreeManager?.Clear();
+                    OctreeManager?.RequestRebuild();
+                    break;
+            }
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Replace:
@@ -262,8 +227,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             if (mDictionary.ContainsKey(item))
                             {
                                 var model = mDictionary[item];
-                                if (UseOctreeHitTest && model is GeometryModel3D)
-                                    mOctreeManager.RemoveItem(model as GeometryModel3D);
+                                if (model is GeometryModel3D)
+                                    OctreeManager?.RemoveItem(model as GeometryModel3D);
                                 model.DataContext = null;
                                 this.Children.Remove(model);
                                 mDictionary.Remove(item);
@@ -339,10 +304,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = this.ItemTemplate.LoadContent() as Model3D;
                                 if (model != null)
                                 {
-                                    if (UseOctreeHitTest)
-                                    {
-                                        mOctreeManager.AddPendingItem(model);
-                                    }
+                                    OctreeManager?.AddPendingItem(model);
                                     model.DataContext = item;
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
@@ -364,10 +326,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = item as Model3D;
                                 if (model != null)
                                 {
-                                    if (UseOctreeHitTest)
-                                    {
-                                        mOctreeManager.AddPendingItem(model);
-                                    }
+                                    OctreeManager?.AddPendingItem(model);
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
                                 }
@@ -380,28 +339,24 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
-
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Reset:
-                    mOctreeManager.RequestRebuild();
-                    break;
-            }
         }
 
         protected override void OnRender(RenderContext context)
         {
             base.OnRender(context);
-            if (mOctreeManager.RequestUpdateOctree)
+            if (OctreeManager != null)
             {
-                UpdateOctree();
+                if (OctreeManager.RequestUpdateOctree)
+                {
+                    UpdateOctree();
+                }
             }
         }
 
         public override bool HitTest(global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
-            if (UseOctreeHitTest && Octree != null)
+            if (Octree != null)
             {
                 isHit = Octree.HitTest(this, modelMatrix, ray, ref hits);
             }
