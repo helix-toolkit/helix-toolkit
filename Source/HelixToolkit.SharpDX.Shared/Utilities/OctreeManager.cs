@@ -7,6 +7,7 @@ using SharpDX;
 using System.Diagnostics;
 using HelixToolkit.SharpDX.Shared.Utilities;
 using HelixToolkit.SharpDX.Shared.Model;
+using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -75,12 +76,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SubscribeBoundChangeEvent(GeometryModel3D item)
         {
             item.OnBoundChanged -= Item_OnBoundChanged;
             item.OnBoundChanged += Item_OnBoundChanged;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnsubscribeBoundChangeEvent(GeometryModel3D item)
         {
             item.OnBoundChanged -= Item_OnBoundChanged;
@@ -89,9 +92,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
         {
             var item = sender as GeometryModel3D;
-            if (Octree == null)
+            if (Octree == null || !item.IsAttached)
             {
-                item.OnBoundChanged -= Item_OnBoundChanged;
+                UnsubscribeBoundChangeEvent(item);
                 return;
             }
             var arg = e;
