@@ -62,7 +62,7 @@
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
                             FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
-                            Geometry="{Binding Model}"
+                            Geometry="{Binding Model}" Transform="{Binding DynamicTransform}"
                             Material="{Binding Material}" />
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
@@ -84,7 +84,7 @@
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
             <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
-            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />
+            <!--<hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
             <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" />
         </hx:Viewport3DX>
         <StackPanel

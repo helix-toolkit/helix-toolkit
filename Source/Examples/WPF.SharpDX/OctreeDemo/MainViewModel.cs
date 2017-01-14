@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
 
@@ -207,7 +208,6 @@ namespace OctreeDemo
 
             LineColor = Color.Blue;
             Items = new ObservableCollection<DataModel>();
-
             var sw = Stopwatch.StartNew();
             CreateDefaultModels();
             sw.Stop();
@@ -230,7 +230,7 @@ namespace OctreeDemo
             DefaultModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
             DefaultModel.UpdateOctree();
 
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 5; ++i)
             {
                 for (int j = 0; j < 10; ++j)
                 {
@@ -337,7 +337,7 @@ namespace OctreeDemo
             theta += 0.3;
             newModelZ += 0.5;
             var z = (float)(newModelZ);
-            Items.Add(new SphereModel(new Vector3(x, y + 20, z + 14), 1));
+            Items.Add(new SphereModel(new Vector3(x, y + 20, z + 14), 1, false));
         }
 
         private void RemoveModel(object o)

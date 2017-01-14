@@ -88,14 +88,16 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Geometry == null)
             {
                 this.Bounds = new BoundingBox();
-                return;
             }
-            this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-            if (renderHost != null)
+            else
             {
-                var host = this.renderHost;
-                this.Detach();
-                this.Attach(host);
+                this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
+                if (renderHost != null)
+                {
+                    var host = this.renderHost;
+                    this.Detach();
+                    this.Attach(host);
+                }
             }
         }
 
@@ -125,6 +127,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     = BoundingBox.FromPoints(Bounds.GetCorners()
                     .Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
             }
+            else
+            {
+                BoundsWithTransform = Bounds;
+            }
         }
 
         public BoundingBox Bounds
@@ -143,10 +149,12 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.RegisterReadOnly("Bounds", typeof(BoundingBox), typeof(GeometryModel3D),
                 new UIPropertyMetadata(new BoundingBox(), (d, e) =>
                 {
-                    (d as GeometryModel3D).RaiseOnBoundChanged((BoundingBox)e.NewValue, (BoundingBox)e.OldValue);
-                    (d as GeometryModel3D).BoundsWithTransform
-                    = BoundingBox.FromPoints(((BoundingBox)e.NewValue).GetCorners()
-                    .Select(x => Vector3.TransformCoordinate(x, (d as GeometryModel3D).Transform.ToMatrix())).ToArray());
+                    var model = d as GeometryModel3D;
+                    model.RaiseOnBoundChanged((BoundingBox)e.NewValue, (BoundingBox)e.OldValue);
+                    model.BoundsWithTransform
+                    = model.Transform == null ? 
+                    (BoundingBox)e.NewValue : BoundingBox.FromPoints(((BoundingBox)e.NewValue).GetCorners()
+                    .Select(x => Vector3.TransformCoordinate(x, model.Transform.ToMatrix())).ToArray());
                 }
             ));
 
