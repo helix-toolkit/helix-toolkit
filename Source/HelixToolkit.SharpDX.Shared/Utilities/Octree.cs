@@ -237,6 +237,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         private OctreeBase(OctreeBuildParameter parameter, Queue<IOctree> queueCache)
         {
             queue = queueCache ?? new Queue<IOctree>(64);
+#if DEBUG
+            if (queueCache == null)
+            {
+                Debug.WriteLine("queue cache is null");
+            }
+#endif
             if (parameter != null)
                 Parameter = parameter;
             else
@@ -559,7 +565,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public virtual bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
             hitPathBoundingBoxes.Clear();
-            var hitQueue = new Queue<IOctree>(256);
+            var hitQueue = queue;
+            hitQueue.Clear();
             hitQueue.Enqueue(this);
             bool isHit = false;
             while (hitQueue.Count > 0)
@@ -596,6 +603,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 OnHit?.Invoke(this, new OnHitEventArgs());
             }
+            hitQueue.Clear();
             return isHit;
         }
 
