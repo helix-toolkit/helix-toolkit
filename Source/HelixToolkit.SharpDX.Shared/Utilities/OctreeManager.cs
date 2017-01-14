@@ -209,6 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         geoNode.RemoveAt(index); //remove old item from node after adding successfully.
                         rootAdd = false;
+                        tree = tree.Shrink() as GeometryModel3DOctree;
                     }
                 }
                 else
@@ -291,7 +292,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         var direction =(model.Bounds.Minimum + model.Bounds.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
-                        tree = tree.Expand(tree, direction) as GeometryModel3DOctree;
+                        tree = tree.Expand(direction) as GeometryModel3DOctree;
                         ++counter;
                         if (counter > 10)
                         {
@@ -328,6 +329,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (!tree.RemoveByBound(model))
                 {
                     Console.WriteLine("Remove failed.");
+                }
+                else
+                {
+                    tree = tree.Shrink() as GeometryModel3DOctree;
                 }
                 UpdateOctree(tree);
             }

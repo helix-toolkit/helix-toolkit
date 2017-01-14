@@ -107,7 +107,20 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <param name="item"></param>
         bool Add(T item);
 
-        IOctree Expand(IOctree root, Vector3 direction);
+        /// <summary>
+        /// Expand the octree to direction
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        IOctree Expand(Vector3 direction);
+
+        /// <summary>
+        /// Shrink root if there is no objects
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        IOctree Shrink();
 
         /// <summary>
         /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T, out int)"/>
@@ -612,14 +625,27 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 return true;
             }
         }
+        /// <summary>
+        /// Return new root
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public IOctree Expand(Vector3 direction)
+        {
+            return Expand(this, direction, CreateNodeWithParent);
+        }
 
         /// <summary>
         /// Return new root
         /// </summary>
         /// <param name="oldRoot"></param>
         /// <returns></returns>
-        public IOctree Expand(IOctree oldRoot, Vector3 direction)
+        private static IOctree Expand(IOctree oldRoot, Vector3 direction, Func<BoundingBox, List<T>, IOctree, IOctree> createNodeFunc)
         {
+            if (oldRoot.Parent != null)
+            {
+                throw new ArgumentException("Input node is not root node");
+            }
             var rootBound = oldRoot.Bound;
             int xDirection = direction.X >= 0 ? 1 : -1;
             int yDirection = direction.Y >= 0 ? 1 : -1;
@@ -629,7 +655,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             var center = rootBound.Minimum + half;
             var newSize = dimension * 2;
             var newCenter = center + new Vector3(xDirection * Math.Abs(half.X), yDirection * Math.Abs(half.Y), zDirection * Math.Abs(half.Z));
-            var newRoot = CreateNodeWithParent(new BoundingBox(newCenter - dimension, newCenter + dimension), new List<T>(), oldRoot);
+            var newRoot = createNodeFunc(new BoundingBox(newCenter - dimension, newCenter + dimension), new List<T>(), oldRoot);
             newRoot.Parent = null;
             newRoot.BuildTree();
             for (int i=0; i< newRoot.Octants.Length;++i)
@@ -643,6 +669,43 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 }
             }
             return newRoot;
+        }
+
+        /// <summary>
+        /// Return new root
+        /// </summary>
+        /// <returns></returns>
+        public IOctree Shrink()
+        {
+            return Shrink(this);
+        }
+
+        private static IOctree Shrink(IOctree root)
+        {
+            if (root.Parent != null)
+            { throw new ArgumentException("Input node is not a root node."); }
+            if (root.IsEmpty)
+            {
+                return root;
+            }
+            else if ((root as IOctreeBase<T>).Objects.Count == 0 && (root.ActiveNodes & (root.ActiveNodes - 1)) == 0)
+            {
+                for (int i = 0; i < root.ChildNodes.Length; ++i)
+                {
+                    if (root.ChildNodes[i] != null)
+                    {
+                        var newRoot = root.ChildNodes[i];
+                        newRoot.Parent = null;
+                        root.ChildNodes[i] = null;
+                        return newRoot;
+                    }
+                }
+                return null;
+            }
+            else
+            {
+                return root;
+            }
         }
 
         public IOctree FindSmallestNodeContainsBoundingBox(BoundingBox bound)
