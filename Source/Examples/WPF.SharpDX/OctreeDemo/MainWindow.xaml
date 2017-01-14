@@ -53,7 +53,10 @@
                 Material="{Binding Material}" />
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
                 <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager x:Name="groupOctreeMgr" Parameter="{Binding OctreeParameter}" />
+                    <hx:GeometryModel3DOctreeManager
+                        x:Name="groupOctreeMgr"
+                        AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
+                        RecordHitPathBoundingBoxes="True" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
@@ -66,7 +69,10 @@
             </hx:ItemsModel3D>
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding LanderItems}">
                 <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager x:Name="landerOctreeMgr" Parameter="{Binding OctreeParameter}" />
+                    <hx:GeometryModel3DOctreeManager
+                        x:Name="landerOctreeMgr"
+                        AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
+                        RecordHitPathBoundingBoxes="True" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>

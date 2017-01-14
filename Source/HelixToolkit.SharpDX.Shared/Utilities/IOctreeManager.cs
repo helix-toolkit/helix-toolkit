@@ -7,7 +7,6 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         bool Enabled { get; set; }
         IOctree Octree { get; set; }
-        OctreeBuildParameter Parameter { get; set; }
         bool RequestUpdateOctree { get; }
 
         bool AddPendingItem(Element3D item);

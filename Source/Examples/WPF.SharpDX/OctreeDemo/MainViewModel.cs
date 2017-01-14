@@ -177,12 +177,9 @@ namespace OctreeDemo
             {
                 autoDeleteEmptyNode = value;
                 OnPropertyChanged();
-                OctreeParameter.AutoDeleteIfEmpty = value;
             }
             get { return autoDeleteEmptyNode; }
         }
-
-        public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter() { RecordHitPathBoundingBoxes = true };
 
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }

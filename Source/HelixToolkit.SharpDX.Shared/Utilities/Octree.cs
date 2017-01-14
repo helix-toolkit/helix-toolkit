@@ -1033,7 +1033,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public OctreeBuildParameter(float minSize)
         {
             MinSize = minSize;
-            AutoDeleteIfEmpty = true;
         }
 
         public OctreeBuildParameter(bool autoDeleteIfEmpty)
