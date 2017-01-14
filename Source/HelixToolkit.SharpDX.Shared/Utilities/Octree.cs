@@ -658,14 +658,17 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             var newRoot = createNodeFunc(new BoundingBox(newCenter - dimension, newCenter + dimension), new List<T>(), oldRoot);
             newRoot.Parent = null;
             newRoot.BuildTree();
-            for (int i=0; i< newRoot.Octants.Length;++i)
+            if (!oldRoot.IsEmpty)
             {
-                if (newRoot.Octants[i] == rootBound)
+                for (int i=0; i< newRoot.Octants.Length;++i)
                 {
-                    newRoot.ChildNodes[i] = oldRoot;
-                    newRoot.ActiveNodes |= (byte)(1 << i);
-                    oldRoot.Parent = newRoot;
-                    break;
+                    if (newRoot.Octants[i] == rootBound)
+                    {
+                        newRoot.ChildNodes[i] = oldRoot;
+                        newRoot.ActiveNodes |= (byte)(1 << i);
+                        oldRoot.Parent = newRoot;
+                        break;
+                    }
                 }
             }
             return newRoot;
@@ -754,7 +757,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             IOctree result = null;
             int idx = -1;
             TreeTraversal(root, null, 
-                (node) => { idx = (node as IOctreeBase<E>).Objects.IndexOf(item); }, 
+                (node) => 
+                {
+                    idx = (node as IOctreeBase<E>).Objects.IndexOf(item);
+                    result = idx != -1 ? node : null;
+                }, 
                 ()=> { return idx != -1; });
             index = idx;
             return result;

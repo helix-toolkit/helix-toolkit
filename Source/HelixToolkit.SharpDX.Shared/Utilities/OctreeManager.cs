@@ -219,6 +219,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 UpdateOctree(tree);
             }
+            else
+            {
+                mOctree.RemoveSafe(item);
+            }
             if (rootAdd)
             {
                 AddItem(item);
