@@ -35,6 +35,11 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("RecordHitPathBoundingBoxes", typeof(bool), typeof(OctreeManagerBase),
                 new PropertyMetadata(false, (s, e) => { (s as OctreeManagerBase).Parameter.RecordHitPathBoundingBoxes = (bool)e.NewValue; }));
 
+        public static readonly DependencyProperty MinObjectSizeToSplitProperty
+            = DependencyProperty.Register("MinObjectSizeToSplit", typeof(int), typeof(OctreeManagerBase),
+                new PropertyMetadata(0, (s, e) => { (s as OctreeManagerBase).Parameter.MinObjectSizeToSplit = (int)e.NewValue; }));
+
+
         public IOctree Octree
         {
             set
@@ -101,6 +106,20 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(RecordHitPathBoundingBoxesProperty);
+            }
+        }
+        /// <summary>
+        /// Minimum object in each octant to start splitting into smaller octant during build
+        /// </summary>
+        public int MinObjectSizeToSplit
+        {
+            set
+            {
+                SetValue(MinObjectSizeToSplitProperty, value);
+            }
+            get
+            {
+                return (int)GetValue(MinObjectSizeToSplitProperty);
             }
         }
 

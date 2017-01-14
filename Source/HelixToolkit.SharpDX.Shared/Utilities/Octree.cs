@@ -1132,7 +1132,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// Minimum object in each octant to start splitting into smaller octant during build
         /// </summary>
-        public uint MinObjectSizeToSplit = 0;
+        public int MinObjectSizeToSplit = 2;
         /// <summary>
         /// Delete empty octant automatically
         /// </summary>
