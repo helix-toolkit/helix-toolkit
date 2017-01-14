@@ -320,6 +320,35 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 #endif
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void TreeTraversal(IOctree root, Func<IOctree, bool> criteria, Action<IOctree> process, Func<bool> breakCriteria = null)
+        {
+            var queue = new Queue<IOctree>(256);
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var tree = queue.Dequeue();
+                if (criteria == null || criteria(tree))
+                {
+                    process(tree);
+                    if(breakCriteria !=null && breakCriteria())
+                    {
+                        break;
+                    } 
+                    if (tree.HasChildren)
+                    {
+                        foreach (var subTree in tree.ChildNodes)
+                        {
+                            if (subTree != null)
+                            {
+                                queue.Enqueue(subTree);
+                            }
+                        }
+                    }                 
+                }
+            }
+        }
+
         public void BuildCurretNodeOnly()
         {
             /*I think I can just directly insert items into the tree instead of using a queue.*/
@@ -589,28 +618,32 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, IOctreeBase<E> root)
         {
-            var queue = new Queue<IOctreeBase<E>>(64);
-            queue.Enqueue(root);
             IOctree result = null;
-            while (queue.Count > 0)
-            {
-                var node = queue.Dequeue();
-                if (node.Bound.Contains(bound) == ContainmentType.Contains)
-                {
-                    result = node;
-                    foreach (var child in node.ChildNodes)
-                    {
-                        if (child != null)
-                        {
-                            queue.Enqueue(child as IOctreeBase<E>);
-                        }
-                    }
-                }
-                else
-                {
-                    continue;
-                }
-            }
+            TreeTraversal(root,
+                (node) => { return node.Bound.Contains(bound) == ContainmentType.Contains; }, 
+                (node) => { result = node; });
+            //var queue = new Queue<IOctreeBase<E>>(64);
+            //queue.Enqueue(root);
+            
+            //while (queue.Count > 0)
+            //{
+            //    var node = queue.Dequeue();
+            //    if (node.Bound.Contains(bound) == ContainmentType.Contains)
+            //    {
+            //        result = node;
+            //        foreach (var child in node.ChildNodes)
+            //        {
+            //            if (child != null)
+            //            {
+            //                queue.Enqueue(child as IOctreeBase<E>);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        continue;
+            //    }
+            //}
             return result;
         }
 
@@ -621,29 +654,35 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         private static IOctree FindChildByItem<E>(E item, IOctreeBase<E> root, out int index)
         {
-            var queue = new Queue<IOctreeBase<E>>(256);
-            queue.Enqueue(root);
-            index = -1;
-            while (queue.Count > 0)
-            {
-                var node = queue.Dequeue();
-                index = node.Objects.IndexOf(item);
-                if (index != -1)
-                {
-                    return node;
-                }
-                else
-                {
-                    foreach (var child in node.ChildNodes)
-                    {
-                        if (child != null)
-                        {
-                            queue.Enqueue(child as IOctreeBase<E>);
-                        }
-                    }
-                }
-            }
-            return null;
+            IOctree result = null;
+            int idx = -1;
+            TreeTraversal(root, null, 
+                (node) => { idx = (node as IOctreeBase<E>).Objects.IndexOf(item); }, 
+                ()=> { return idx != -1; });
+            index = idx;
+            //var queue = new Queue<IOctreeBase<E>>(256);
+            //queue.Enqueue(root);
+            //index = -1;
+            //while (queue.Count > 0)
+            //{
+            //    var node = queue.Dequeue();
+            //    index = node.Objects.IndexOf(item);
+            //    if (index != -1)
+            //    {
+            //        return node;
+            //    }
+            //    else
+            //    {
+            //        foreach (var child in node.ChildNodes)
+            //        {
+            //            if (child != null)
+            //            {
+            //                queue.Enqueue(child as IOctreeBase<E>);
+            //            }
+            //        }
+            //    }
+            //}
+            return result;
         }
 
         public bool RemoveByBound(T item, BoundingBox bound)
@@ -749,37 +788,50 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         private static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, IOctreeBase<E> root, out int index)
         {
-            var queue = new Queue<IOctreeBase<E>>(64);
-            queue.Enqueue(root);
+            int idx = -1;
             IOctree result = null;
             IOctreeBase<E> lastNode = null;
-            index = -1;
-            while (queue.Count > 0)
-            {
-                var node = queue.Dequeue();
-                if (node.Bound.Contains(bound) != ContainmentType.Contains)
+            TreeTraversal(root,
+                (node) => { return node.Bound.Contains(bound) == ContainmentType.Contains; },
+                (node) =>
                 {
-                    continue;
-                }
-                index = node.Objects.IndexOf(item);
-                if (index == -1)
-                {
-                    foreach (var child in node.ChildNodes)
-                    {
-                        if (child != null)
-                        {
-                            queue.Enqueue(child as IOctreeBase<E>);
-                        }
-                    }
-                    lastNode = node;
-                }
-                else
-                {
-                    queue.Clear();
-                    result = node;
-                    break;
-                }
-            }
+                    lastNode = node as IOctreeBase<E>;
+                    idx = lastNode.Objects.IndexOf(item);
+                    result = idx != -1 ? node : null;
+                }, 
+                () => { return idx != -1; });
+            index = idx;
+            //var queue = new Queue<IOctreeBase<E>>(64);
+            //queue.Enqueue(root);
+            
+            //IOctreeBase<E> lastNode = null;
+            //index = -1;
+            //while (queue.Count > 0)
+            //{
+            //    var node = queue.Dequeue();
+            //    if (node.Bound.Contains(bound) != ContainmentType.Contains)
+            //    {
+            //        continue;
+            //    }
+            //    index = node.Objects.IndexOf(item);
+            //    if (index == -1)
+            //    {
+            //        foreach (var child in node.ChildNodes)
+            //        {
+            //            if (child != null)
+            //            {
+            //                queue.Enqueue(child as IOctreeBase<E>);
+            //            }
+            //        }
+            //        lastNode = node;
+            //    }
+            //    else
+            //    {
+            //        queue.Clear();
+            //        result = node;
+            //        break;
+            //    }
+            //}
             //If not found, traverse from bottom to top to find the item.
             if (result == null)
             {
