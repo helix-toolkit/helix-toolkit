@@ -1107,7 +1107,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         protected override BoundingBox GetBoundingBoxFromItem(GeometryModel3D item)
         {
-            return item.Bounds;
+            return item.BoundsWithTransform;
         }
 
         protected override IOctree CreateNodeWithParent(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)

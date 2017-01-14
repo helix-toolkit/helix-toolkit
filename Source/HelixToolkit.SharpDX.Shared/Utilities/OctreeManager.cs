@@ -175,14 +175,14 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SubscribeBoundChangeEvent(GeometryModel3D item)
         {
-            item.OnBoundChanged -= Item_OnBoundChanged;
-            item.OnBoundChanged += Item_OnBoundChanged;
+            item.OnTransformBoundChanged -= Item_OnBoundChanged;
+            item.OnTransformBoundChanged += Item_OnBoundChanged;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnsubscribeBoundChangeEvent(GeometryModel3D item)
         {
-            item.OnBoundChanged -= Item_OnBoundChanged;
+            item.OnTransformBoundChanged -= Item_OnBoundChanged;
         }
 
         private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var geoNode = node as GeometryModel3DOctree;
                 if (geoNode.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
                 {
-                    Debug.WriteLine("new bound inside current node");
+             //       Debug.WriteLine("new bound inside current node");
                     if (geoNode.Add(item))
                     {
                         geoNode.RemoveAt(index); //remove old item from node after adding successfully.
@@ -215,7 +215,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     geoNode.RemoveAt(index);
-                    Debug.WriteLine("new bound outside current node");
+             //       Debug.WriteLine("new bound outside current node");
                 }
                 UpdateOctree(tree);
             }
@@ -252,8 +252,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Enabled && item is GeometryModel3D)
             {
                 var model = item as GeometryModel3D;
-                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                model.OnBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
                 if (model.Bounds != ZeroBound)
                 {
                     AddItem(model);
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, BoundChangedEventArgs e)
         {
             var item = sender as GeometryModel3D;
-            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+            item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
             AddItem(item);
         }
 
@@ -324,7 +324,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var tree = mOctree;
                 UpdateOctree(null);
                 var model = item as GeometryModel3D;
-                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                 UnsubscribeBoundChangeEvent(model);
                 if (!tree.RemoveByBound(model))
                 {
