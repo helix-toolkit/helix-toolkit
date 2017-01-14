@@ -180,7 +180,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
-        public float MIN_SIZE { get { return Parameter.MinSize; } }
+        public float MIN_SIZE { get { return Parameter.MinimumOctantSize; } }
 
         public bool TreeBuilt { get { return treeBuilt; } }
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
@@ -428,7 +428,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         protected virtual void BuildSubTree()
         {
-            if (!CheckDimension())
+            if (!CheckDimension() || Objects.Count < this.Parameter.MinObjectSizeToSplit)
             {
                 treeBuilt = true;
                 return;
@@ -1125,9 +1125,25 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
     public sealed class OctreeBuildParameter
     {
-        public float MinSize = 1f;
+        /// <summary>
+        /// Minimum Octant size.
+        /// </summary>
+        public float MinimumOctantSize = 1f;
+        /// <summary>
+        /// Minimum object in each octant to start splitting into smaller octant during build
+        /// </summary>
+        public uint MinObjectSizeToSplit = 0;
+        /// <summary>
+        /// Delete empty octant automatically
+        /// </summary>
         public bool AutoDeleteIfEmpty = true;
+        /// <summary>
+        /// Generate cube octants instead of rectangle octants
+        /// </summary>
         public bool Cubify = false;
+        /// <summary>
+        /// Record hit path bounding boxes for debugging or display purpose only
+        /// </summary>
         public bool RecordHitPathBoundingBoxes = false;
         public OctreeBuildParameter()
         {
@@ -1135,7 +1151,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public OctreeBuildParameter(float minSize)
         {
-            MinSize = minSize;
+            MinimumOctantSize = Math.Max(0, minSize);
         }
 
         public OctreeBuildParameter(bool autoDeleteIfEmpty)

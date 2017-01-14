@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty MinSizeProperty
             = DependencyProperty.Register("MinSize", typeof(float), typeof(OctreeManagerBase),
-                new PropertyMetadata(1f, (s, e) => { (s as OctreeManagerBase).Parameter.MinSize = (float)e.NewValue; }));
+                new PropertyMetadata(1f, (s, e) => { (s as OctreeManagerBase).Parameter.MinimumOctantSize = (float)e.NewValue; }));
 
         public static readonly DependencyProperty AutoDeleteIfEmptyProperty
             = DependencyProperty.Register("AutoDeleteIfEmpty", typeof(bool), typeof(OctreeManagerBase),
