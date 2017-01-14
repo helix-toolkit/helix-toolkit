@@ -232,11 +232,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return null;
             }
             var list = items.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
+            var array = list.ToArray();
             var tree = new GeometryModel3DOctree(list, Parameter);
             tree.BuildTree();
             if (tree.TreeBuilt)
             {
-                foreach (var item in list)
+                foreach (var item in array)
                 {
                     SubscribeBoundChangeEvent(item);
                 }
@@ -278,15 +279,40 @@ namespace HelixToolkit.Wpf.SharpDX
                 var tree = mOctree;
                 UpdateOctree(null);
                 var model = item as GeometryModel3D;
-                if (tree == null || !tree.Add(model))
+                if (tree == null)
                 {
                     RequestRebuild();
                 }
                 else
                 {
-                    UpdateOctree(tree);
+                    bool succeed = true;
+                    int counter = 0;
+                    while (!tree.Add(model))
+                    {
+                        var direction =(model.Bounds.Minimum + model.Bounds.Maximum)
+                            - (tree.Bound.Minimum + tree.Bound.Maximum);
+                        tree = tree.Expand(tree, direction) as GeometryModel3DOctree;
+                        ++counter;
+                        if (counter > 10)
+                        {
+#if DEBUG
+                            throw new Exception("Expand tree failed");
+#else
+                            succeed = false;
+                            break;
+#endif
+                        }
+                    }
+                    if (succeed)
+                    {
+                        UpdateOctree(tree);
+                        SubscribeBoundChangeEvent(model);
+                    }
+                    else
+                    {
+                        RequestRebuild();
+                    }
                 }
-                SubscribeBoundChangeEvent(model);
             }
         }
 

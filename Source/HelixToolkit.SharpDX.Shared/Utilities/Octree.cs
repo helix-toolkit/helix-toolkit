@@ -35,7 +35,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         byte ActiveNodes { set; get; }
         bool HasChildren { get; }
         bool IsRoot { get; }
-        IOctree Parent { get; }
+        IOctree Parent { get; set; }
         BoundingBox Bound { get; }
         IOctree[] ChildNodes { get; }
         BoundingBox[] Octants { get; }
@@ -106,6 +106,8 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="item"></param>
         bool Add(T item);
+
+        IOctree Expand(IOctree root, Vector3 direction);
 
         /// <summary>
         /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T, out int)"/>
@@ -201,7 +203,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public byte ActiveNodes { set; get; }
 
-        public IOctree Parent { protected set; get; }
+        public IOctree Parent { set; get; }
 
         private BoundingBox[] octants = null;
         public BoundingBox[] Octants { get { return octants; } }
@@ -611,6 +613,38 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
+        /// <summary>
+        /// Return new root
+        /// </summary>
+        /// <param name="oldRoot"></param>
+        /// <returns></returns>
+        public IOctree Expand(IOctree oldRoot, Vector3 direction)
+        {
+            var rootBound = oldRoot.Bound;
+            int xDirection = direction.X >= 0 ? 1 : -1;
+            int yDirection = direction.Y >= 0 ? 1 : -1;
+            int zDirection = direction.Z >= 0 ? 1 : -1;
+            var dimension = rootBound.Maximum - rootBound.Minimum;
+            var half = dimension / 2;
+            var center = rootBound.Minimum + half;
+            var newSize = dimension * 2;
+            var newCenter = center + new Vector3(xDirection * Math.Abs(half.X), yDirection * Math.Abs(half.Y), zDirection * Math.Abs(half.Z));
+            var newRoot = CreateNodeWithParent(new BoundingBox(newCenter - dimension, newCenter + dimension), new List<T>(), oldRoot);
+            newRoot.Parent = null;
+            newRoot.BuildTree();
+            for (int i=0; i< newRoot.Octants.Length;++i)
+            {
+                if (newRoot.Octants[i] == rootBound)
+                {
+                    newRoot.ChildNodes[i] = oldRoot;
+                    newRoot.ActiveNodes |= (byte)(1 << i);
+                    oldRoot.Parent = newRoot;
+                    break;
+                }
+            }
+            return newRoot;
+        }
+
         public IOctree FindSmallestNodeContainsBoundingBox(BoundingBox bound)
         {
             return FindSmallestNodeContainsBoundingBox<T>(bound, this);
@@ -660,28 +694,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 (node) => { idx = (node as IOctreeBase<E>).Objects.IndexOf(item); }, 
                 ()=> { return idx != -1; });
             index = idx;
-            //var queue = new Queue<IOctreeBase<E>>(256);
-            //queue.Enqueue(root);
-            //index = -1;
-            //while (queue.Count > 0)
-            //{
-            //    var node = queue.Dequeue();
-            //    index = node.Objects.IndexOf(item);
-            //    if (index != -1)
-            //    {
-            //        return node;
-            //    }
-            //    else
-            //    {
-            //        foreach (var child in node.ChildNodes)
-            //        {
-            //            if (child != null)
-            //            {
-            //                queue.Enqueue(child as IOctreeBase<E>);
-            //            }
-            //        }
-            //    }
-            //}
             return result;
         }
 
@@ -801,37 +813,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 }, 
                 () => { return idx != -1; });
             index = idx;
-            //var queue = new Queue<IOctreeBase<E>>(64);
-            //queue.Enqueue(root);
-            
-            //IOctreeBase<E> lastNode = null;
-            //index = -1;
-            //while (queue.Count > 0)
-            //{
-            //    var node = queue.Dequeue();
-            //    if (node.Bound.Contains(bound) != ContainmentType.Contains)
-            //    {
-            //        continue;
-            //    }
-            //    index = node.Objects.IndexOf(item);
-            //    if (index == -1)
-            //    {
-            //        foreach (var child in node.ChildNodes)
-            //        {
-            //            if (child != null)
-            //            {
-            //                queue.Enqueue(child as IOctreeBase<E>);
-            //            }
-            //        }
-            //        lastNode = node;
-            //    }
-            //    else
-            //    {
-            //        queue.Clear();
-            //        result = node;
-            //        break;
-            //    }
-            //}
             //If not found, traverse from bottom to top to find the item.
             if (result == null)
             {
