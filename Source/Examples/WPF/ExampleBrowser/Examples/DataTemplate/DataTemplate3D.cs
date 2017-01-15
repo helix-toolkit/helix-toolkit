@@ -45,6 +45,7 @@ namespace DataTemplateDemo
         public Visual3D Content { get; set; }
         /// <summary>
         /// Gets or sets whether the model has a generated content or not.
+        /// Defaults to true.
         /// </summary>
         public bool HasGeneratedContent { get; set; }
 
@@ -76,7 +77,7 @@ namespace DataTemplateDemo
                                         .ToArray();
             }
 
-            // clear references fro previous runs because they belong to another object (reflection result do not need to be cleared)
+            // clear references from previous runs because they belong to another object (reflection results do not need to be cleared)
             foreach (var path in listOfBindingPaths.SelectMany(x => x))
                 path.Reference = null;
 
@@ -150,7 +151,7 @@ namespace DataTemplateDemo
         /// </summary>
         /// <param name="obj">The root object.</param>
         /// <param name="path">A <see cref="PathInfo"/> describing how to retrieve the next object.</param>
-        /// <returns>The next object as decribed by <paramref name="path"/>.</returns>
+        /// <returns>The next object as described by <paramref name="path"/>.</returns>
         private object GetValueOf(object obj, PathInfo path)
         {
             if (path.Reference != null)
@@ -243,7 +244,7 @@ namespace DataTemplateDemo
         {
             var outstr = new StringBuilder();
 
-            //this code need for right XML fomating
+            //this code is needed for right XAML fomating
             var settings = new XmlWriterSettings
             {
                 Indent = true,
@@ -276,7 +277,7 @@ namespace DataTemplateDemo
         /// </summary>
         /// <param name="obj">The root object.</param>
         /// <param name="dataContext">The object to use as source.</param>
-        /// <param name="path">A list of objects decribing the path through the object tree to the property.</param>
+        /// <param name="path">A list of objects describing the path through the object tree to the property.</param>
         private bool UpdateBindingSource(object obj, object dataContext, ICollection<PathInfo> path)
         {
             object nestedObj = obj;
@@ -298,11 +299,9 @@ namespace DataTemplateDemo
                 foreach (var pathSegment in segmentsToTraverse)
                 {
                     nestedObj = GetValueOf(nestedObj, pathSegment);
-                    if (pathSegment.Reference == null)
-                    {
-                        pathSegment.Reference = nestedObj;
-                        hasNewlyDiscoveredObjects = true;
-                    }
+                    pathSegment.Reference = nestedObj;
+
+                    hasNewlyDiscoveredObjects = true;
                 }
             }
             else
@@ -310,7 +309,6 @@ namespace DataTemplateDemo
                 // update object with last known reference
                 nestedObj = path.ElementAt(path.Count - 2)
                                 .Reference;
-
             }
 
             var type = nestedObj.GetType();
@@ -322,10 +320,12 @@ namespace DataTemplateDemo
                 if (secondLastSegment.PublicDependencyProperties == null)
                     secondLastSegment.PublicDependencyProperties = type.GetPublicStaticFields().ToArray();
 
+                var lastSegmentName = path.Last().Name;
+
                 foreach (var fi in secondLastSegment.PublicDependencyProperties)
                 {
                     var dp = fi.GetValue(null) as DependencyProperty;
-                    if (dp != null && dp.Name == path.Last().Name)
+                    if (dp != null && dp.Name == lastSegmentName)
                     {
                         var binding = BindingOperations.GetBinding(visual, dp);
                         if (binding != null && binding.Source == null)
