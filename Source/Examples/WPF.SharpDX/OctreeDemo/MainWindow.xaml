@@ -83,7 +83,7 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
-            <!--<hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>-->
+            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
             <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
             <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
         </hx:Viewport3DX>

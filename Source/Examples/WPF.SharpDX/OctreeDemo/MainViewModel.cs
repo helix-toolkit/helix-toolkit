@@ -182,7 +182,7 @@ namespace OctreeDemo
             get { return autoDeleteEmptyNode; }
         }
 
-        private bool octreeFrameVisible = true;
+        private bool octreeFrameVisible = false;
         public bool OctreeFrameVisible
         {
             set
@@ -207,8 +207,8 @@ namespace OctreeDemo
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
-                Position = new Media3D.Point3D(10, 10, 10),
-                LookDirection = new Media3D.Vector3D(-10, -10, -10),
+                Position = new Media3D.Point3D(30, 30, 30),
+                LookDirection = new Media3D.Vector3D(-10, -30, -10),
                 UpDirection = new Media3D.Vector3D(0, 1, 0)
             };
             this.Light1Color = (Color4)Color.White;
@@ -245,23 +245,23 @@ namespace OctreeDemo
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    Items.Add(new SphereModel(new Vector3(10f + i + (float)Math.Pow((float)j / 2, 2), 10f + (float)Math.Pow((float)i / 2, 2), 5f + (float)Math.Pow(j, ((float)i / 5))), 1));
+                    Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), 1));
                 }
             }
 
-            var landerItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
-            var scale = new Vector3(0.007f);
-            var offset = new Vector3(15, 15, 15);
-            foreach (var item in landerItems)
-            {
-                for (int i = 0; i < item.Model.Positions.Count; ++i)
-                {
-                    item.Model.Positions[i] = item.Model.Positions[i] * scale + offset;
-                }
+            //var landerItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
+            //var scale = new Vector3(0.007f);
+            //var offset = new Vector3(15, 15, 15);
+            //foreach (var item in landerItems)
+            //{
+            //    for (int i = 0; i < item.Model.Positions.Count; ++i)
+            //    {
+            //        item.Model.Positions[i] = item.Model.Positions[i] * scale + offset;
+            //    }
 
-                item.Model.UpdateOctree();
-            }
-            LanderItems = landerItems;
+            //    item.Model.UpdateOctree();
+            //}
+            //LanderItems = landerItems;
         }
 
         public List<Object3D> Load3ds(string path)

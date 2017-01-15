@@ -80,6 +80,8 @@ namespace OctreeDemo
                   (new Media3D.Vector3D(rnd.Next(-2, 2), rnd.Next(-2, 2), rnd.Next(-2, 2)),
                   new Media3D.Vector3D(rnd.Next(-1,1), rnd.Next(-1, 1), rnd.Next(-1, 1)), rnd.Next(10, 100));
             }
+            var color = rnd.NextColor();
+            Material = new PhongMaterial() { DiffuseColor = color.ToColor4() };
         }
 
         private bool isConstructed = false;
