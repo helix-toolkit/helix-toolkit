@@ -208,7 +208,7 @@ namespace OctreeDemo
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
                 Position = new Media3D.Point3D(30, 30, 30),
-                LookDirection = new Media3D.Vector3D(-10, -30, -10),
+                LookDirection = new Media3D.Vector3D(-30, -30, -30),
                 UpDirection = new Media3D.Vector3D(0, 1, 0)
             };
             this.Light1Color = (Color4)Color.White;
