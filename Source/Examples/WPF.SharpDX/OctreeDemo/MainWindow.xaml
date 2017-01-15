@@ -53,20 +53,26 @@
                 Material="{Binding Material}" />
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
                 <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager x:Name="groupOctreeMgr" Parameter="{Binding OctreeParameter}" />
+                    <hx:GeometryModel3DOctreeManager MinObjectSizeToSplit="4"
+                        x:Name="groupOctreeMgr" Cubify="True"
+                        AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
+                        RecordHitPathBoundingBoxes="True" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
                             FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
-                            Geometry="{Binding Model}"
+                            Geometry="{Binding Model}" Transform="{Binding DynamicTransform}"
                             Material="{Binding Material}" />
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding LanderItems}">
                 <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager x:Name="landerOctreeMgr" Parameter="{Binding OctreeParameter}" />
+                    <hx:GeometryModel3DOctreeManager
+                        x:Name="landerOctreeMgr"
+                        AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
+                        RecordHitPathBoundingBoxes="True" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
@@ -77,9 +83,8 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
-            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
-            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />
-            <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" />
+            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
+            <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
@@ -98,6 +103,7 @@
             <CheckBox IsChecked="{Binding HitThrough}">Hit Through</CheckBox>
             <!--<CheckBox IsChecked="{Binding UseOctreeHitTest}">Enable Octree</CheckBox>-->
             <CheckBox IsChecked="{Binding AutoDeleteEmptyNode}">Auto Delete Empty Node</CheckBox>
+            <CheckBox IsChecked="{Binding OctreeFrameVisible}">Octree Wireframe</CheckBox>
             <Button Command="{Binding AddModelCommand}" IsEnabled="{Binding Enabled}">Add Model</Button>
             <Button Command="{Binding RemoveModelCommand}" IsEnabled="{Binding Enabled}">Remove Model</Button>
             <Button Command="{Binding ClearModelCommand}">Clear Models</Button>

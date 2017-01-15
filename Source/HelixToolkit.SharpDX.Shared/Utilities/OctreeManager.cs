@@ -8,21 +8,37 @@ using System.Diagnostics;
 using HelixToolkit.SharpDX.Shared.Utilities;
 using HelixToolkit.SharpDX.Shared.Model;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    /// <summary>
-    /// Use to create geometryModel3D octree for groups. Each ItemsModel3D must has its own manager, do not share between two ItemsModel3D
-    /// </summary>
-    public sealed class GeometryModel3DOctreeManager : FrameworkElement, IOctreeManager
+    public abstract class OctreeManagerBase : FrameworkElement, IOctreeManager
     {
         public static readonly DependencyProperty OctreeProperty
-            = DependencyProperty.Register("Octree", typeof(IOctree), typeof(GeometryModel3DOctreeManager), 
+            = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeManagerBase),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        public static readonly DependencyProperty ParameterProperty
-            = DependencyProperty.Register("Parameter", typeof(OctreeBuildParameter), typeof(GeometryModel3DOctreeManager),
-                new PropertyMetadata(new OctreeBuildParameter()));
+        public static readonly DependencyProperty MinSizeProperty
+            = DependencyProperty.Register("MinSize", typeof(float), typeof(OctreeManagerBase),
+                new PropertyMetadata(1f, (s, e) => { (s as OctreeManagerBase).Parameter.MinimumOctantSize = (float)e.NewValue; }));
+
+        public static readonly DependencyProperty AutoDeleteIfEmptyProperty
+            = DependencyProperty.Register("AutoDeleteIfEmpty", typeof(bool), typeof(OctreeManagerBase),
+                new PropertyMetadata(true, (s, e) => { (s as OctreeManagerBase).Parameter.AutoDeleteIfEmpty = (bool)e.NewValue; }));
+
+        public static readonly DependencyProperty CubifyPropertyProperty
+            = DependencyProperty.Register("Cubify", typeof(bool), typeof(OctreeManagerBase),
+                new PropertyMetadata(false, (s, e) => { (s as OctreeManagerBase).Parameter.Cubify = (bool)e.NewValue; }));
+
+        public static readonly DependencyProperty RecordHitPathBoundingBoxesProperty
+            = DependencyProperty.Register("RecordHitPathBoundingBoxes", typeof(bool), typeof(OctreeManagerBase),
+                new PropertyMetadata(false, (s, e) => { (s as OctreeManagerBase).Parameter.RecordHitPathBoundingBoxes = (bool)e.NewValue; }));
+
+        public static readonly DependencyProperty MinObjectSizeToSplitProperty
+            = DependencyProperty.Register("MinObjectSizeToSplit", typeof(int), typeof(OctreeManagerBase),
+                new PropertyMetadata(0, (s, e) => { (s as OctreeManagerBase).Parameter.MinObjectSizeToSplit = (int)e.NewValue; }));
+
 
         public IOctree Octree
         {
@@ -36,22 +52,80 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private GeometryModel3DOctree mOctree = null;
-
-        public OctreeBuildParameter Parameter
+        /// <summary>
+        /// Minimum octant size
+        /// </summary>
+        public float MinSize
         {
             set
             {
-                SetValue(ParameterProperty, value);
+                SetValue(MinSizeProperty, value);
             }
             get
             {
-                return (OctreeBuildParameter)GetValue(ParameterProperty);
+                return (float)GetValue(MinSizeProperty);
+            }
+        }
+        /// <summary>
+        /// Delete octant node if its empty
+        /// </summary>
+        public bool AutoDeleteIfEmpty
+        {
+            set
+            {
+                SetValue(AutoDeleteIfEmptyProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(AutoDeleteIfEmptyProperty);
+            }
+        }
+        /// <summary>
+        /// Create cube octree
+        /// </summary>
+        public bool Cubify
+        {
+            set
+            {
+                SetValue(CubifyPropertyProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(CubifyPropertyProperty);
+            }
+        }
+        /// <summary>
+        /// Record the hit path bounding box for debugging
+        /// </summary>
+        public bool RecordHitPathBoundingBoxes
+        {
+            set
+            {
+                SetValue(RecordHitPathBoundingBoxesProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(RecordHitPathBoundingBoxesProperty);
+            }
+        }
+        /// <summary>
+        /// Minimum object in each octant to start splitting into smaller octant during build
+        /// </summary>
+        public int MinObjectSizeToSplit
+        {
+            set
+            {
+                SetValue(MinObjectSizeToSplitProperty, value);
+            }
+            get
+            {
+                return (int)GetValue(MinObjectSizeToSplitProperty);
             }
         }
 
-        public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } }
-        private volatile bool mRequestUpdateOctree = false;
+        private GeometryModel3DOctree mOctree = null;
+
+        public OctreeBuildParameter Parameter { private set; get; } = new OctreeBuildParameter();
 
         private bool mEnabled = true;
         public bool Enabled
@@ -70,18 +144,46 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } protected set { mRequestUpdateOctree = value; } }
+        private volatile bool mRequestUpdateOctree = false;
+
+        public abstract bool AddPendingItem(Element3D item);
+
+        public abstract void Clear();
+
+        public abstract void RebuildTree(IList<Element3D> items);
+
+        public abstract void RemoveItem(Element3D item);
+
+        public abstract void RequestRebuild();
+    }
+    /// <summary>
+    /// Use to create geometryModel3D octree for groups. Each ItemsModel3D must has its own manager, do not share between two ItemsModel3D
+    /// </summary>
+    public sealed class GeometryModel3DOctreeManager : OctreeManagerBase
+    {
+        private GeometryModel3DOctree mOctree = null;
+
+        public GeometryModel3DOctreeManager()
+        {
+        }
+
         private void UpdateOctree(GeometryModel3DOctree tree)
         {
             Octree = tree;
             mOctree = tree;
         }
 
-        public void RebuildTree(IList<Element3D> items)
+        public override void RebuildTree(IList<Element3D> items)
         {
-            mRequestUpdateOctree = false;
+            RequestUpdateOctree = false;
             if (Enabled)
             {
                 UpdateOctree(RebuildOctree(items));
+                if (Octree == null)
+                {
+                    RequestRebuild();
+                }
             }
             else
             {
@@ -92,14 +194,14 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SubscribeBoundChangeEvent(GeometryModel3D item)
         {
-            item.OnBoundChanged -= Item_OnBoundChanged;
-            item.OnBoundChanged += Item_OnBoundChanged;
+            item.OnTransformBoundChanged -= Item_OnBoundChanged;
+            item.OnTransformBoundChanged += Item_OnBoundChanged;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnsubscribeBoundChangeEvent(GeometryModel3D item)
         {
-            item.OnBoundChanged -= Item_OnBoundChanged;
+            item.OnTransformBoundChanged -= Item_OnBoundChanged;
         }
 
         private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
@@ -121,19 +223,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 var geoNode = node as GeometryModel3DOctree;
                 if (geoNode.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
                 {
-                    Debug.WriteLine("new bound inside current node");
+             //       Debug.WriteLine("new bound inside current node");
                     if (geoNode.Add(item))
                     {
                         geoNode.RemoveAt(index); //remove old item from node after adding successfully.
                         rootAdd = false;
+                        tree = tree.Shrink() as GeometryModel3DOctree;
                     }
                 }
                 else
                 {
                     geoNode.RemoveAt(index);
-                    Debug.WriteLine("new bound outside current node");
+             //       Debug.WriteLine("new bound outside current node");
                 }
                 UpdateOctree(tree);
+            }
+            else
+            {
+                mOctree.RemoveSafe(item);
             }
             if (rootAdd)
             {
@@ -141,52 +248,35 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        //private RoutedEventHandler MakeWeakHandler(Action<object, BoundChangedEventArgs> action, Action<RoutedEventHandler> remove)
-        //{
-        //    var reference = new WeakReference(action.Target);
-        //    var method = action.Method;
-        //    RoutedEventHandler handler = null;
-        //    handler = delegate (object sender, RoutedEventArgs e)
-        //    {
-        //        var target = reference.Target;
-        //        if (reference.IsAlive)
-        //        {
-        //            method.Invoke(target, null);
-        //        }
-        //        else
-        //        {
-        //            remove(handler);
-        //        }
-        //    };
-        //    return handler;
-        //}
-
         private GeometryModel3DOctree RebuildOctree(IList<Element3D> items)
         {
             Clear();
-            mRequestUpdateOctree = false;
             if (items == null || items.Count == 0)
             {
                 return null;
             }
             var list = items.Where(x => x is GeometryModel3D).Select(x => x as GeometryModel3D).ToList();
-            foreach (var item in list)
-            {
-                SubscribeBoundChangeEvent(item);
-            }
+            var array = list.ToArray();
             var tree = new GeometryModel3DOctree(list, Parameter);
             tree.BuildTree();
-            return tree;
+            if (tree.TreeBuilt)
+            {
+                foreach (var item in array)
+                {
+                    SubscribeBoundChangeEvent(item);
+                }
+            }
+            return tree.TreeBuilt ? tree : null;
         }
 
         private static readonly BoundingBox ZeroBound = new BoundingBox();
-        public bool AddPendingItem(Element3D item)
+        public override bool AddPendingItem(Element3D item)
         {
             if (Enabled && item is GeometryModel3D)
             {
                 var model = item as GeometryModel3D;
-                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                model.OnBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
                 if (model.Bounds != ZeroBound)
                 {
                     AddItem(model);
@@ -202,7 +292,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, BoundChangedEventArgs e)
         {
             var item = sender as GeometryModel3D;
-            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+            item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
             AddItem(item);
         }
 
@@ -213,64 +303,74 @@ namespace HelixToolkit.Wpf.SharpDX
                 var tree = mOctree;
                 UpdateOctree(null);
                 var model = item as GeometryModel3D;
-                if (tree == null || !tree.Add(model))
+                if (tree == null)
                 {
                     RequestRebuild();
                 }
                 else
                 {
-                    UpdateOctree(tree);
+                    bool succeed = true;
+                    int counter = 0;
+                    while (!tree.Add(model))
+                    {
+                        var direction =(model.Bounds.Minimum + model.Bounds.Maximum)
+                            - (tree.Bound.Minimum + tree.Bound.Maximum);
+                        tree = tree.Expand(direction) as GeometryModel3DOctree;
+                        ++counter;
+                        if (counter > 10)
+                        {
+#if DEBUG
+                            throw new Exception("Expand tree failed");
+#else
+                            succeed = false;
+                            break;
+#endif
+                        }
+                    }
+                    if (succeed)
+                    {
+                        UpdateOctree(tree);
+                        SubscribeBoundChangeEvent(model);
+                    }
+                    else
+                    {
+                        RequestRebuild();
+                    }
                 }
-                SubscribeBoundChangeEvent(model);
             }
         }
 
-        //public void RemoveItems(IList<GeometryModel3D> items)
-        //{
-        //    if (Enabled && Octree != null)
-        //    {
-        //        var tree = Octree;
-        //        UpdateOctree(null);
-        //        foreach (var item in items)
-        //        {
-        //            item.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-        //            UnsubscribeBoundChangeEvent(item);
-        //            if (!tree.RemoveByBound(item))
-        //            {
-        //                Console.WriteLine("Remove failed.");
-        //            }
-        //        }
-        //        UpdateOctree(tree);
-        //    }
-        //}
-
-        public void RemoveItem(Element3D item)
+        public override void RemoveItem(Element3D item)
         {
             if (Enabled && Octree != null && item is GeometryModel3D)
             {
                 var tree = mOctree;
                 UpdateOctree(null);
                 var model = item as GeometryModel3D;
-                model.OnBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                 UnsubscribeBoundChangeEvent(model);
                 if (!tree.RemoveByBound(model))
                 {
                     Console.WriteLine("Remove failed.");
                 }
+                else
+                {
+                    tree = tree.Shrink() as GeometryModel3DOctree;
+                }
                 UpdateOctree(tree);
             }
         }
 
-        public void Clear()
+        public override void Clear()
         {
-            mRequestUpdateOctree = false;
-            UpdateOctree(null);   
+            RequestUpdateOctree = false;
+            UpdateOctree(null);
         }
 
-        public void RequestRebuild()
+        public override void RequestRebuild()
         {
             Clear();
-            mRequestUpdateOctree = true;
+            RequestUpdateOctree = true;
         }
     }
 }

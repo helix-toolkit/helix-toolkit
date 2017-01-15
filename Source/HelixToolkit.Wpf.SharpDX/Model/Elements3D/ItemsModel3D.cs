@@ -20,6 +20,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.SharpDX.Shared.Utilities;
     using SharpDX;
     using System.Windows.Media;
+    using System.Diagnostics;
+    using System.Windows.Markup;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a
@@ -47,14 +49,23 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(ItemsModel3D),
             new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
 
+        /// <summary>
+        /// Add octree manager to use octree hit test.
+        /// </summary>
         public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
             typeof(IOctreeManager),
-            typeof(ItemsModel3D), new PropertyMetadata(null, (s,e)=> 
+            typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as ItemsModel3D;
-                d.RemoveLogicalChild(e.OldValue);
-                if(e.NewValue!=null)
+                if (e.OldValue != null)
+                {
+                    d.RemoveLogicalChild(e.OldValue);
+                }
+
+                if (e.NewValue != null)
+                {
                     d.AddLogicalChild(e.NewValue);
+                }
             }));
 
         /// <summary>
@@ -94,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
-        private bool loaded = false;
+        //private bool loaded = false;
         private IOctree Octree
         {
             get { return OctreeManager == null ? null : OctreeManager.Octree; }
@@ -102,25 +113,25 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public ItemsModel3D()
         {
-            this.Loaded += ItemsModel3D_Loaded;
-            this.Unloaded += ItemsModel3D_Unloaded;
+            //this.Loaded += ItemsModel3D_Loaded;
+            //this.Unloaded += ItemsModel3D_Unloaded;
         }
 
-        private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
-        {
-            loaded = false;
-            OctreeManager?.Clear();
-        }
+        //private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
+        //{
+        //    loaded = false;
+        //    OctreeManager?.Clear();
+        //}
 
-        private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
-        {
-            loaded = true;
-            UpdateBounds();
-            if (Children.Count > 0)
-            {
-                OctreeManager?.RequestRebuild();
-            }
-        }
+        //private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    loaded = true;
+        //    UpdateBounds();
+        //    //if (Children.Count > 0)
+        //    //{
+        //    //    OctreeManager?.RequestRebuild();
+        //    //}
+        //}
 
         private void UpdateOctree()
         {
@@ -361,6 +372,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Octree != null)
             {
                 isHit = Octree.HitTest(this, modelMatrix, ray, ref hits);
+#if DEBUG
+                if (isHit)
+                {
+                    Debug.WriteLine("Octree hit test, hit at " + hits[0].PointHit);
+                }
+#endif
             }
             else
             {
