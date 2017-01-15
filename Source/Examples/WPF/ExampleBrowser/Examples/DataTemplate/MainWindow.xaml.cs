@@ -62,9 +62,9 @@ namespace DataTemplateDemo
                     var modelBuilder = new MeshBuilder();
                     modelBuilder.AddCylinder(new Point3D(0, 0, 0), new Point3D(0, 1, 0), 0.75, 15);
 
-                    var model = new ModelElement();
+                    ModelElement model = new ModelElement1();
                     if (this.ObservableElements.Count % 2 == 0)
-                        model = new ModelElement1();
+                        model = new ModelElement2();
 
                     model.IsVisible = true;
                     model.Model = new GeometryModel3D

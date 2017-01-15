@@ -40,7 +40,7 @@ namespace DataTemplateDemo
         ///     The item template selector property
         /// </summary>
         public static readonly DependencyProperty ItemTemplateSelectorProperty = DependencyProperty.Register(
-            "ItemTemplateSelector", typeof(DataTemplateSelector3D), typeof(ItemsVisual3D), new PropertyMetadata(new DefaultDatTemplateSelctor3D()));
+            "ItemTemplateSelector", typeof(DataTemplateSelector3D), typeof(ItemsVisual3D), new PropertyMetadata(new DefaultDataTemplateSelctor3D()));
 
         /// <summary>
         ///     The items source property
