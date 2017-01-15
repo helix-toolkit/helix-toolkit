@@ -182,6 +182,17 @@ namespace OctreeDemo
             get { return autoDeleteEmptyNode; }
         }
 
+        private bool octreeFrameVisible = true;
+        public bool OctreeFrameVisible
+        {
+            set
+            {
+                octreeFrameVisible = value;
+                OnPropertyChanged();
+            }
+            get { return octreeFrameVisible; }
+        }
+
         public ICommand AddModelCommand { private set; get; }
         public ICommand RemoveModelCommand { private set; get; }
         public ICommand ClearModelCommand { private set; get; }
