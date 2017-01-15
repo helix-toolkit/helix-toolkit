@@ -346,17 +346,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
            // queue.Clear();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void TreeTraversal(IOctree root, Queue<IOctree> queue, Func<IOctree, bool> criteria, Action<IOctree> process,
             Func<bool> breakCriteria = null)
         {
-            if (queue == null)
-            {
-                queue = new Queue<IOctree>(64);
-            }
-            else
-            {
-                queue.Clear();
-            }
+            queue.Clear();
             queue.Enqueue(root);
             while (queue.Count > 0)
             {

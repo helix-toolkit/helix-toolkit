@@ -123,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private GeometryModel3DOctree mOctree = null;
+        protected GeometryModel3DOctree mOctree = null;
 
         public OctreeBuildParameter Parameter { private set; get; } = new OctreeBuildParameter();
 
@@ -144,6 +144,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected void UpdateOctree(GeometryModel3DOctree tree)
+        {
+            Octree = tree;
+            mOctree = tree;
+        }
+
         public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } protected set { mRequestUpdateOctree = value; } }
         private volatile bool mRequestUpdateOctree = false;
 
@@ -162,16 +168,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public sealed class GeometryModel3DOctreeManager : OctreeManagerBase
     {
-        private GeometryModel3DOctree mOctree = null;
-
         public GeometryModel3DOctreeManager()
         {
-        }
-
-        private void UpdateOctree(GeometryModel3DOctree tree)
-        {
-            Octree = tree;
-            mOctree = tree;
         }
 
         public override void RebuildTree(IList<Element3D> items)
@@ -207,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
         {
             var item = sender as GeometryModel3D;
-            if (Octree == null || !item.IsAttached)
+            if (mOctree == null || !item.IsAttached)
             {
                 UnsubscribeBoundChangeEvent(item);
                 return;
