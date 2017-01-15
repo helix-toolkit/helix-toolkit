@@ -22,10 +22,13 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !NETFX_CORE
     [Serializable]
 #endif
-    public abstract class Geometry3D : ObservableObject
+    public abstract class Geometry3D : ObservableObject, IGUID
     {
         public const string VertexBuffer = "VertexBuffer";
         public const string TriangleBuffer = "TriangleBuffer";
+
+        private readonly Guid guid = Guid.NewGuid();
+        public Guid GUID { get { return guid; } }
 
         private IntCollection indices = null;
         public IntCollection Indices
