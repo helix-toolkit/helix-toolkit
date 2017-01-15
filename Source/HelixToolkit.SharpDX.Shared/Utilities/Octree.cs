@@ -621,39 +621,19 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         {
             var bound = GetBoundingBoxFromItem(item);
             var node = FindSmallestNodeContainsBoundingBox(bound);
-            octant = null;
+            octant = node;
             if (node == null)
             {
                 return false;
             }
             else
             {
-                bool pushToChild = false;
-                for (int i = 0; i < node.Octants.Length; ++i)
+                var nodeBase = node as IOctreeBase<T>;
+                nodeBase.Objects.Add(item);
+                if (nodeBase.Objects.Count > Parameter.MinObjectSizeToSplit)
                 {
-                    if (node.Octants[i].Contains(bound) == ContainmentType.Contains)
-                    {
-                        if (node.ChildNodes[i] != null)
-                        {
-                            (node.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
-                            octant = node.ChildNodes[i];
-                        }
-                        else
-                        {
-                            node.ChildNodes[i] = CreateNodeWithParent(node.Octants[i], new List<T>() { item }, node);
-                            node.ActiveNodes |= (byte)(1 << i);
-                            node.ChildNodes[i].BuildTree();
-                            int idx;
-                            octant = (node.ChildNodes[i] as IOctreeBase<T>).FindChildByItemBound(item, out idx);
-                        }
-                        pushToChild = true;
-                        break;
-                    }
-                }
-                if (!pushToChild)
-                {
-                    (node as IOctreeBase<T>).Objects.Add(item);
-                    octant = node;
+                    int index = (node as IOctreeBase<T>).Objects.Count - 1;
+                    PushExistingToChild(nodeBase, index, GetBoundingBoxFromItem, CreateNodeWithParent, out octant);
                 }
                 return true;
             }
@@ -667,26 +647,50 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public virtual bool PushExistingToChild(int index, out IOctree octant)
         {
-            var item = Objects[index];
             octant = this;
-            bool pushToChild = false;
-            for (int i = 0; i < this.Octants.Length; ++i)
+            if (this.Objects.Count > Parameter.MinObjectSizeToSplit)
             {
-                if (this.Octants[i].Contains(bound) == ContainmentType.Contains)
+                return PushExistingToChild(this, index, GetBoundingBoxFromItem, CreateNodeWithParent, out octant);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Push existing item into child
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="index"></param>
+        /// <param name="getBound"></param>
+        /// <param name="createNodeFunc"></param>
+        /// <param name="octant"></param>
+        /// <returns>True: Pushed into child. Otherwise false.</returns>
+        public static bool PushExistingToChild(IOctreeBase<T> node, int index, Func<T, BoundingBox> getBound, 
+            Func<BoundingBox, List<T>, IOctree, IOctree> createNodeFunc, out IOctree octant)
+        {
+            var item = node.Objects[index];
+            octant = node;
+            bool pushToChild = false;
+            var bound = getBound(item);
+            for (int i = 0; i < node.Octants.Length; ++i)
+            {
+                if (node.Octants[i].Contains(bound) == ContainmentType.Contains)
                 {
-                    Objects.RemoveAt(index);                   
-                    if (this.ChildNodes[i] != null)
+                    node.Objects.RemoveAt(index);                   
+                    if (node.ChildNodes[i] != null)
                     {
-                        (this.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
-                        octant = this.ChildNodes[i];
+                        (node.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
+                        octant = node.ChildNodes[i];
                     }
                     else
                     {
-                        this.ChildNodes[i] = CreateNodeWithParent(this.Octants[i], new List<T>() { item }, this);
-                        this.ActiveNodes |= (byte)(1 << i);
-                        this.ChildNodes[i].BuildTree();
+                        node.ChildNodes[i] = createNodeFunc(node.Octants[i], new List<T>() { item }, node);
+                        node.ActiveNodes |= (byte)(1 << i);
+                        node.ChildNodes[i].BuildTree();
                         int idx = -1;
-                        octant = (this.ChildNodes[i] as IOctreeBase<T>).FindChildByItemBound(item, out idx);
+                        octant = (node.ChildNodes[i] as IOctreeBase<T>).FindChildByItemBound(item, out idx);
                     }
                     pushToChild = true;
                     break;
