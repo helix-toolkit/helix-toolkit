@@ -249,16 +249,16 @@ namespace OctreeDemo
                 }
             }
 
-            //LanderItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
-            //foreach (var item in LanderItems)
-            //{
-            //    var scale = new Vector3(0.007f);
-            //    for (int i = 0; i < item.Model.Positions.Count; ++i)
-            //    {
-            //        item.Model.Positions[i] = item.Model.Positions[i] * scale;
-            //    }
-            //    item.Model.UpdateOctree();
-            //}
+            LanderItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
+            foreach (var item in LanderItems)
+            {
+                var scale = new Vector3(0.007f);
+                for (int i = 0; i < item.Model.Positions.Count; ++i)
+                {
+                    item.Model.Positions[i] = item.Model.Positions[i] * scale;
+                }
+                item.Model.UpdateOctree();
+            }
         }
 
         public List<Object3D> Load3ds(string path)
