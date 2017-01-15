@@ -729,6 +729,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 })
             { BindsTwoWayByDefault = false });
 
+        /// <summary>
+        /// Enable render frustum to avoid rendering model if it is out of view frustum
+        /// </summary>
         public static readonly DependencyProperty EnableRenderFrustumProperty
             = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
                 (s, e) =>
