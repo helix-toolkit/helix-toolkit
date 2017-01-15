@@ -346,6 +346,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool CanRender(RenderContext context)
         {
+            var bound = BoundsWithTransform;
+            if (context.EnableBoundingFrustum && !context.boundingFrustum.Intersects(ref bound))
+            {
+                return false;
+            }
             if (base.CanRender(context) && CheckGeometry())
             {
                 if (context.IsShadowPass)
