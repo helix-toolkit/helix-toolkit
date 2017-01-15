@@ -250,12 +250,13 @@ namespace OctreeDemo
             }
 
             LanderItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
+            var scale = new Vector3(0.007f);
+            var offset = new Vector3(15, 15, 15);
             foreach (var item in LanderItems)
             {
-                var scale = new Vector3(0.007f);
                 for (int i = 0; i < item.Model.Positions.Count; ++i)
                 {
-                    item.Model.Positions[i] = item.Model.Positions[i] * scale;
+                    item.Model.Positions[i] = item.Model.Positions[i] * scale + offset;
                 }
                 item.Model.UpdateOctree();
             }
