@@ -120,6 +120,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public RenderTechnique RenderTechnique { get; private set; }
 
+        private bool enableRenderFrustum = false;
+        public bool EnableRenderFrustum
+        {
+            set
+            {
+                enableRenderFrustum = value;
+                if (renderContext != null)
+                {
+                    renderContext.EnableBoundingFrustum = value;
+                }
+            }
+            get
+            {
+                return enableRenderFrustum;
+            }
+        }
         /// <summary>
         /// The instance of currently attached IRenderable - this is in general the Viewport3DX
         /// </summary>
@@ -556,6 +572,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             renderContext.Dispose();
                         }
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique));
+                        renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         renderRenderable.Attach(this);
 
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.GBuffer, out gbuffer);

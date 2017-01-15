@@ -20,12 +20,12 @@
             x:Name="view1"
             Title="{Binding Title}"
             Camera="{Binding Camera}"
-            CameraRotationMode="Trackball"
+            CameraRotationMode="Trackball" CameraMode="WalkAround"
             CoordinateSystemLabelForeground="White"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
-            ShowFrameRate="True"
-            TextBrush="Black"
+            ShowFrameRate="True" 
+            TextBrush="Black" EnableRenderFrustum="True"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -84,6 +84,7 @@
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
             <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
+            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
             <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
         </hx:Viewport3DX>
         <StackPanel

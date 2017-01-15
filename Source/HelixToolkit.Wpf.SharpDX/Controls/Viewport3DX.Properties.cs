@@ -730,6 +730,20 @@ namespace HelixToolkit.Wpf.SharpDX
             { BindsTwoWayByDefault = false });
 
         /// <summary>
+        /// Enable render frustum to avoid rendering model if it is out of view frustum
+        /// </summary>
+        public static readonly DependencyProperty EnableRenderFrustumProperty
+            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+                (s, e) =>
+            {
+                var viewport = s as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.EnableRenderFrustum = (bool)e.NewValue;
+                }
+            }));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         [TypeConverter(typeof(Color4Converter))]
@@ -2496,6 +2510,21 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (Point3D)GetValue(ManualLookAtPointProperty);
+            }
+        }
+
+        /// <summary>
+        /// Enable render frustum to skip rendering model if model is out of the camera bounding frustum
+        /// </summary>
+        public bool EnableRenderFrustum
+        {
+            set
+            {
+                SetValue(EnableRenderFrustumProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableRenderFrustumProperty);
             }
         }
     }

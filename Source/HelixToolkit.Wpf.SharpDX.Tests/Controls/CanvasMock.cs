@@ -53,6 +53,11 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             }
         }
 
+        public bool EnableRenderFrustum
+        {
+            set;get;
+        }
+
         public void SetDefaultRenderTargets()
         {
         }

@@ -20,6 +20,12 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Imaging;
     using HelixToolkit.Wpf.SharpDX.Core;
     using System.IO;
+    using System;
+
+    public interface IGUID
+    {
+        Guid GUID { get; }
+    }
 
     public interface ITraversable
     {

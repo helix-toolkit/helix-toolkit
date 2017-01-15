@@ -108,6 +108,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool Add(T item);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="octant">The octant object belongs</param>
+        /// <returns></returns>
+        bool Add(T item, out IOctree octant);
+        /// <summary>
         /// Expand the octree to direction
         /// </summary>
         /// <param name="root"></param>
@@ -300,7 +307,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return CreateNode(bound, new List<T> { Item });
         }
 
-        public void BuildTree()
+        public virtual void BuildTree()
         {
             if (Bound.Maximum == Bound.Minimum || !CheckDimension())
             {
@@ -314,7 +321,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             BuildTree(this, this.queue);
         }
 
-        private static void BuildTree(IOctree root, Queue<IOctree> queue)
+        public void BuildTree(IOctree root, Queue<IOctree> queue)
         {
 #if DEBUG
             var sw = Stopwatch.StartNew();
@@ -346,17 +353,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
            // queue.Clear();
         }
 
-        private static void TreeTraversal(IOctree root, Queue<IOctree> queue, Func<IOctree, bool> criteria, Action<IOctree> process,
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void TreeTraversal(IOctree root, Queue<IOctree> queue, Func<IOctree, bool> criteria, Action<IOctree> process,
             Func<bool> breakCriteria = null)
         {
-            if (queue == null)
-            {
-                queue = new Queue<IOctree>(64);
-            }
-            else
-            {
-                queue.Clear();
-            }
+            queue.Clear();
             queue.Enqueue(root);
             while (queue.Count > 0)
             {
@@ -399,7 +400,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static BoundingBox[] CreateOctants(BoundingBox box, float minSize)
+        public static BoundingBox[] CreateOctants(BoundingBox box, float minSize)
         {
             Vector3 dimensions = box.Maximum - box.Minimum;
             if (dimensions == Vector3.Zero || (dimensions.X < minSize && dimensions.Y < minSize && dimensions.Z < minSize))
@@ -423,7 +424,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private bool CheckDimension()
+        public bool CheckDimension()
         {
             Vector3 dimensions = Bound.Maximum - Bound.Minimum;
 
@@ -612,46 +613,97 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public bool Add(T item)
         {
+            IOctree octant;
+            return Add(item, out octant);
+        }
+
+        public virtual bool Add(T item, out IOctree octant)
+        {
             var bound = GetBoundingBoxFromItem(item);
             var node = FindSmallestNodeContainsBoundingBox(bound);
+            octant = node;
             if (node == null)
             {
                 return false;
             }
             else
             {
-                bool pushToChild = false;
-                for (int i = 0; i < node.Octants.Length; ++i)
+                var nodeBase = node as IOctreeBase<T>;
+                nodeBase.Objects.Add(item);
+                if (nodeBase.Objects.Count > Parameter.MinObjectSizeToSplit)
                 {
-                    if (node.Octants[i].Contains(bound) == ContainmentType.Contains)
-                    {
-                        if (node.ChildNodes[i] != null)
-                        {
-                            (node.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
-                        }
-                        else
-                        {
-                            node.ChildNodes[i] = CreateNodeWithParent(node.Octants[i], new List<T>() { item }, node);
-                            node.ActiveNodes |= (byte)(1 << i);
-                            node.ChildNodes[i].BuildTree();
-                        }
-                        pushToChild = true;
-                        break;
-                    }
-                }
-                if (!pushToChild)
-                {
-                    (node as IOctreeBase<T>).Objects.Add(item);
+                    int index = (node as IOctreeBase<T>).Objects.Count - 1;
+                    PushExistingToChild(nodeBase, index, GetBoundingBoxFromItem, CreateNodeWithParent, out octant);
                 }
                 return true;
             }
+        }
+
+        public bool PushExistingToChild(int index)
+        {
+            IOctree octant;
+            return PushExistingToChild(index, out octant);
+        }
+
+        public virtual bool PushExistingToChild(int index, out IOctree octant)
+        {
+            octant = this;
+            if (this.Objects.Count > Parameter.MinObjectSizeToSplit)
+            {
+                return PushExistingToChild(this, index, GetBoundingBoxFromItem, CreateNodeWithParent, out octant);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Push existing item into child
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="index"></param>
+        /// <param name="getBound"></param>
+        /// <param name="createNodeFunc"></param>
+        /// <param name="octant"></param>
+        /// <returns>True: Pushed into child. Otherwise false.</returns>
+        public static bool PushExistingToChild(IOctreeBase<T> node, int index, Func<T, BoundingBox> getBound, 
+            Func<BoundingBox, List<T>, IOctree, IOctree> createNodeFunc, out IOctree octant)
+        {
+            var item = node.Objects[index];
+            octant = node;
+            bool pushToChild = false;
+            var bound = getBound(item);
+            for (int i = 0; i < node.Octants.Length; ++i)
+            {
+                if (node.Octants[i].Contains(bound) == ContainmentType.Contains)
+                {
+                    node.Objects.RemoveAt(index);                   
+                    if (node.ChildNodes[i] != null)
+                    {
+                        (node.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
+                        octant = node.ChildNodes[i];
+                    }
+                    else
+                    {
+                        node.ChildNodes[i] = createNodeFunc(node.Octants[i], new List<T>() { item }, node);
+                        node.ActiveNodes |= (byte)(1 << i);
+                        node.ChildNodes[i].BuildTree();
+                        int idx = -1;
+                        octant = (node.ChildNodes[i] as IOctreeBase<T>).FindChildByItemBound(item, out idx);
+                    }
+                    pushToChild = true;
+                    break;
+                }
+            }
+            return pushToChild;
         }
         /// <summary>
         /// Return new root
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public IOctree Expand(Vector3 direction)
+        public virtual IOctree Expand(Vector3 direction)
         {
             return Expand(this, direction, CreateNodeWithParent);
         }
@@ -661,7 +713,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// </summary>
         /// <param name="oldRoot"></param>
         /// <returns></returns>
-        private static IOctree Expand(IOctree oldRoot, Vector3 direction, Func<BoundingBox, List<T>, IOctree, IOctree> createNodeFunc)
+        public static IOctree Expand(IOctree oldRoot, Vector3 direction, Func<BoundingBox, List<T>, IOctree, IOctree> createNodeFunc)
         {
             if (oldRoot.Parent != null)
             {
@@ -699,12 +751,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// Return new root
         /// </summary>
         /// <returns></returns>
-        public IOctree Shrink()
+        public virtual IOctree Shrink()
         {
             return Shrink(this);
         }
 
-        private static IOctree Shrink(IOctree root)
+        public static IOctree Shrink(IOctree root)
         {
             if (root.Parent != null)
             { throw new ArgumentException("Input node is not a root node."); }
@@ -743,28 +795,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             TreeTraversal(root, queueCache,
                 (node) => { return node.Bound.Contains(bound) == ContainmentType.Contains; }, 
                 (node) => { result = node; });
-            //var queue = new Queue<IOctreeBase<E>>(64);
-            //queue.Enqueue(root);
-            
-            //while (queue.Count > 0)
-            //{
-            //    var node = queue.Dequeue();
-            //    if (node.Bound.Contains(bound) == ContainmentType.Contains)
-            //    {
-            //        result = node;
-            //        foreach (var child in node.ChildNodes)
-            //        {
-            //            if (child != null)
-            //            {
-            //                queue.Enqueue(child as IOctreeBase<E>);
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        continue;
-            //    }
-            //}
             return result;
         }
 
@@ -773,7 +803,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return FindChildByItem<T>(item, this, this.queue, out index);
         }
 
-        private static IOctree FindChildByItem<E>(E item, IOctreeBase<E> root, Queue<IOctree> queueCache, out int index)
+        public static IOctree FindChildByItem<E>(E item, IOctreeBase<E> root, Queue<IOctree> queueCache, out int index)
         {
             IOctree result = null;
             int idx = -1;
@@ -788,7 +818,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return result;
         }
 
-        public bool RemoveByBound(T item, BoundingBox bound)
+        public virtual bool RemoveByBound(T item, BoundingBox bound)
         {
             int index;
             var node = FindChildByItemBound(item, bound, out index);
@@ -816,12 +846,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
         }
 
-        public bool RemoveByBound(T item)
+        public virtual bool RemoveByBound(T item)
         {
             return RemoveByBound(item, GetBoundingBoxFromItem(item));
         }
 
-        public bool RemoveSafe(T item)
+        public virtual bool RemoveSafe(T item)
         {
             Debug.WriteLine("RemoveSafe");
             int index;
@@ -838,7 +868,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return false;
         }
 
-        public bool RemoveAt(int index)
+        public virtual bool RemoveAt(int index)
         {
             if (index < 0 || index >= this.Objects.Count)
             {
@@ -889,7 +919,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return FindChildByItemBound<T>(item, bound, this, this.queue, out index);
         }
 
-        private static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, IOctreeBase<E> root, Queue<IOctree> queueCache, out int index)
+        public static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, IOctreeBase<E> root, Queue<IOctree> queueCache, out int index)
         {
             int idx = -1;
             IOctree result = null;
@@ -924,6 +954,14 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return result;
         }
 
+        public static IOctree FindRoot(IOctree node)
+        {
+            while (node.Parent != null)
+            {
+                node = node.Parent;
+            }
+            return node;
+        }
         #region Accessors
         public bool IsRoot
         {
@@ -1085,6 +1123,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
     public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
     {
+        /// <summary>
+        /// Only root contains dictionary
+        /// </summary>
+        private Dictionary<Guid, IOctree> OctantDictionary = null;
         public GeometryModel3DOctree(List<GeometryModel3D> objList, Queue<IOctree> queueCache = null)
             : this(objList, null, queueCache)
         {
@@ -1143,6 +1185,158 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         protected override IOctree CreateNodeWithParent(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)
         {
             return new GeometryModel3DOctree(bound, objList, parent, parent.Parameter, this.queue);
+        }
+
+        public override void BuildTree()
+        {
+            OctantDictionary = new Dictionary<Guid, IOctree>(Objects.Count);
+            base.BuildTree();
+            TreeTraversal(this, queue, null, (node) =>
+            {
+                foreach(var item in (node as IOctreeBase<GeometryModel3D>).Objects)
+                {
+                    OctantDictionary.Add(item.GUID, node);
+                }
+            }, null);
+        }
+
+        public IOctree FindItemByGuid(Guid guid, GeometryModel3D item, out int index)
+        {
+            var root = FindRoot(this) as GeometryModel3DOctree;
+            index = -1;
+            if (root.OctantDictionary.ContainsKey(guid))
+            {
+                var node = root.OctantDictionary[guid];
+                index = (node as IOctreeBase<GeometryModel3D>).Objects.IndexOf(item);
+                return root.OctantDictionary[guid];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public bool RemoveByGuid(Guid guid, GeometryModel3D item)
+        {
+            if (OctantDictionary.ContainsKey(guid))
+            {
+                (OctantDictionary[guid] as IOctreeBase<GeometryModel3D>).RemoveSafe(item);
+                RemoveFromRootDictionary(this, guid);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Add(GeometryModel3D item, out IOctree octant)
+        {
+            if(base.Add(item, out octant))
+            {
+                if (octant == null)
+                { throw new Exception("Output octant is null"); };
+                var root = FindRoot(this) as GeometryModel3DOctree;
+                root.OctantDictionary.Add(item.GUID, octant);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool PushExistingToChild(int index, out IOctree octant)
+        {
+            var item = Objects[index];
+            if(base.PushExistingToChild(index, out octant))
+            {
+                var root = FindRoot(this) as GeometryModel3DOctree;
+                root.OctantDictionary[item.GUID] = octant;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool RemoveSafe(GeometryModel3D item)
+        {
+            var root = FindRoot(this);
+            if (base.RemoveSafe(item))
+            {
+                RemoveFromRootDictionary(root, item.GUID);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool RemoveAt(int index)
+        {
+            var id = this.Objects[index].GUID;
+            var root = FindRoot(this);
+            if (base.RemoveAt(index))
+            {
+                RemoveFromRootDictionary(root, id);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool RemoveByBound(GeometryModel3D item, BoundingBox bound)
+        {
+            var root = FindRoot(this);
+            if (base.RemoveByBound(item, bound))
+            {
+                RemoveFromRootDictionary(root, item.GUID);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override IOctree Expand(Vector3 direction)
+        {
+            var root = base.Expand(direction);
+            (root as GeometryModel3DOctree).TransferOctantDictionary(this, ref this.OctantDictionary);//Transfer the dictionary to new root
+            return root;
+        }
+
+        public override IOctree Shrink()
+        {
+            var root = base.Shrink();
+            (root as GeometryModel3DOctree).TransferOctantDictionary(this, ref this.OctantDictionary);//Transfer the dictionary to new root
+            return root;
+        }
+
+        private void TransferOctantDictionary(IOctree source, ref Dictionary<Guid, IOctree> dictionary)
+        {
+            if(source == this)
+            {
+                return;
+            }
+            this.OctantDictionary = dictionary;
+            dictionary = null;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void RemoveFromRootDictionary(IOctree node, Guid guid)
+        {
+            node = FindRoot(node);
+            var root = node as GeometryModel3DOctree;
+            if (root.OctantDictionary.ContainsKey(guid))
+            {
+                root.OctantDictionary.Remove(guid);
+            }
         }
     }
 

@@ -77,5 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Shared light data per scene
         /// </summary>
         Light3DSceneShared Light3DSceneShared { get; }
+
+        bool EnableRenderFrustum { set; get; }
     }
 }

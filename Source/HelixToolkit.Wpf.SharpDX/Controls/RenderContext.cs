@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
         internal Matrix worldMatrix = Matrix.Identity;
         internal Matrix viewMatrix;
         internal Matrix projectionMatrix;
+        internal BoundingFrustum boundingFrustum;
 
         private Camera camera; 
         private EffectVectorVariable vEyePos, vFrustum, vViewport;        
@@ -36,6 +37,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix ProjectrionMatrix { get { return this.projectionMatrix; } }
 
         public Matrix WorldMatrix { get { return worldMatrix; } }
+
+        public bool EnableBoundingFrustum = false;
 
         public Camera Camera
         {
@@ -61,6 +64,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     var zf = c.FarPlaneDistance + 0.0;
                     // frustum: FOV,AR,N,F
                     var frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
+                    if(EnableBoundingFrustum)
+                        boundingFrustum = new BoundingFrustum(this.viewMatrix * this.projectionMatrix);
 
                     this.vViewport.Set(ref viewport);
                     this.vFrustum.Set(ref frustum);

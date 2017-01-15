@@ -523,6 +523,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.RenderHost = this.GetTemplateChild("PART_Canvas") as IRenderHost;
             this.RenderHost.MSAA = this.MSAA;
+            this.RenderHost.EnableRenderFrustum = this.EnableRenderFrustum;
             this.RenderHost.RenderCycles = this.RenderCycles;
             if (this.RenderHost != null)
             {

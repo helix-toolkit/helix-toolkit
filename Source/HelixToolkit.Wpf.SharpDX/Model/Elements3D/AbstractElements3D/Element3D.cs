@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkElement, IDisposable, IRenderable
+    public abstract class Element3D : FrameworkElement, IDisposable, IRenderable, IGUID
     {
         protected global::SharpDX.Direct3D11.Effect effect;
 
@@ -25,6 +25,10 @@ namespace HelixToolkit.Wpf.SharpDX
         protected IRenderHost renderHost;
 
         private bool isAttached = false;
+
+        private readonly Guid guid = Guid.NewGuid();
+
+        public Guid GUID { get { return guid; } }
         /// <summary>
         /// If this has been attached onto renderhost. 
         /// </summary>
