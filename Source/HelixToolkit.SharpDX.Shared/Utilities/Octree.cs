@@ -1218,10 +1218,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public bool RemoveByGuid(Guid guid, GeometryModel3D item)
         {
-            if (OctantDictionary.ContainsKey(guid))
+            var root = FindRoot(this);
+            return RemoveByGuid(guid, item, root as GeometryModel3DOctree);
+        }
+
+        public bool RemoveByGuid(Guid guid, GeometryModel3D item, GeometryModel3DOctree root)
+        {
+            if (root.OctantDictionary.ContainsKey(guid))
             {
-                (OctantDictionary[guid] as IOctreeBase<GeometryModel3D>).RemoveSafe(item);
-                RemoveFromRootDictionary(this, guid);
+                (OctantDictionary[guid] as GeometryModel3DOctree).RemoveSafe(item, root);
                 return true;
             }
             else
@@ -1264,6 +1269,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public override bool RemoveSafe(GeometryModel3D item)
         {
             var root = FindRoot(this);
+            return RemoveSafe(item, root);
+        }
+
+        public bool RemoveSafe(GeometryModel3D item, IOctree root)
+        {
             if (base.RemoveSafe(item))
             {
                 RemoveFromRootDictionary(root, item.GUID);
@@ -1277,8 +1287,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public override bool RemoveAt(int index)
         {
-            var id = this.Objects[index].GUID;
             var root = FindRoot(this);
+            return RemoveAt(index, root);
+        }
+
+        public bool RemoveAt(int index, IOctree root)
+        {
+            var id = this.Objects[index].GUID;
             if (base.RemoveAt(index))
             {
                 RemoveFromRootDictionary(root, id);
@@ -1293,6 +1308,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public override bool RemoveByBound(GeometryModel3D item, BoundingBox bound)
         {
             var root = FindRoot(this);
+            return RemoveByBound(item, bound, root);
+        }
+
+        public bool RemoveByBound(GeometryModel3D item, BoundingBox bound, IOctree root)
+        {
             if (base.RemoveByBound(item, bound))
             {
                 RemoveFromRootDictionary(root, item.GUID);

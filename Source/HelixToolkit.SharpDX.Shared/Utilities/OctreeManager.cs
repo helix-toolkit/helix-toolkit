@@ -229,13 +229,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    geoNode.RemoveAt(index);
+                    geoNode.RemoveAt(index, tree);
                 }
                 UpdateOctree(tree);
             }
             else
             {
-                mOctree.RemoveByGuid(item.GUID, item);
+                mOctree.RemoveByGuid(item.GUID, item, mOctree);
             }
             if (rootAdd)
             {
