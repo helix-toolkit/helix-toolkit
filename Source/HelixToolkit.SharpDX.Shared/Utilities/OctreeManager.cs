@@ -310,7 +310,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         var direction =(model.Bounds.Minimum + model.Bounds.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
-                        tree = tree.Expand(direction) as GeometryModel3DOctree;
+                        tree = tree.Expand(ref direction) as GeometryModel3DOctree;
                         ++counter;
                         if (counter > 10)
                         {
