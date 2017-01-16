@@ -184,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 IsMultisampleEnabled = IsMultisampleEnabled,
                 //IsAntialiasedLineEnabled = true,
-                //IsScissorEnabled = true,
+                IsScissorEnabled = IsScissorEnabled,
             };
             try
             {

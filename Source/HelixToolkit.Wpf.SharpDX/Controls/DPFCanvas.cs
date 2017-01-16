@@ -482,7 +482,8 @@ namespace HelixToolkit.Wpf.SharpDX
             surfaceD3D.SetRenderTargetDX11(renderTargetNMS);
 #else
             this.surfaceD3D.SetRenderTargetDX11(this.colorBuffer);
-#endif                       
+#endif
+            this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
         }
 
         /// <summary>
@@ -550,7 +551,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var renderTarget = colorBuffer;
             if (renderTarget == null)
                 return;
-
             if (renderRenderable != null)
             {
                 /// ---------------------------------------------------------------------------

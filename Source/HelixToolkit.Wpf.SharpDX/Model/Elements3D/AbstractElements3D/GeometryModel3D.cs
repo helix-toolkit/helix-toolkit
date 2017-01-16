@@ -215,6 +215,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
             new PropertyMetadata(FillMode.Solid, RasterStateChanged));
 
+        public static readonly DependencyProperty IsScissorEnabledProperty =
+            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
+
         /// <summary>
         /// Provide CLR accessors for the event 
         /// </summary>
@@ -559,6 +562,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (FillMode)GetValue(FillModeProperty);
+            }
+        }
+
+        public bool IsScissorEnabled
+        {
+            set
+            {
+                SetValue(IsScissorEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsScissorEnabledProperty);
             }
         }
     }
