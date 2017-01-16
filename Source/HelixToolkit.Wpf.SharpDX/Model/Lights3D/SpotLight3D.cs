@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
                 /// --- Set light type
-                Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Spot;
+                Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
 
                 /// --- flush
                 // this.Device.ImmediateContext.Flush();

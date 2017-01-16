@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public enum LightType : ushort
     {
-        Ambient = 1, Directional = 2, Point = 3, Spot = 4,
+        Ambient = 0, Directional = 1, Point = 2, Spot = 3,
     }
 
     public interface ILight3D
@@ -134,17 +134,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return Light3DSceneShared.LightProjMatrices[this.lightIndex]; }
             internal set { Light3DSceneShared.LightProjMatrices[this.lightIndex] = value; }
-        }
-
-        /// <summary>
-        /// Light Type.
-        /// </summary>
-        public enum Type : int
-        {
-            Ambient = 0,
-            Directional = 1,
-            Point = 2,
-            Spot = 3,
         }
 
         protected override bool OnAttach(IRenderHost host)
