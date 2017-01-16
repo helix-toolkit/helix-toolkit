@@ -21,6 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.SharpDX.Shared.Utilities;
     using System.Diagnostics;
     using System;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -199,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly RoutedEvent MouseMove3DEvent =
             EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
-        public delegate void BoundChangedEventHandler(object sender, BoundChangedEventArgs e);
+        public delegate void BoundChangedEventHandler(object sender, ref BoundingBox newBound, ref BoundingBox oldBound);
 
         public event BoundChangedEventHandler OnBoundChanged;
 
@@ -377,14 +378,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public virtual void OnMouse3DMove(object sender, RoutedEventArgs e) { }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void RaiseOnTransformBoundChanged(BoundingBox newBound, BoundingBox oldBound)
         {
-            OnTransformBoundChanged?.Invoke(this, new BoundChangedEventArgs(newBound, oldBound));
+            OnTransformBoundChanged?.Invoke(this, ref newBound, ref oldBound);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void RaiseOnBoundChanged(BoundingBox newBound, BoundingBox oldBound)
         {
-            OnBoundChanged?.Invoke(this, new BoundChangedEventArgs(newBound, oldBound));
+            OnBoundChanged?.Invoke(this, ref newBound, ref oldBound);
         }
         /// <summary>
         /// Checks if the ray hits the geometry of the model.

@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX
             item.OnTransformBoundChanged -= Item_OnBoundChanged;
         }
 
-        private void Item_OnBoundChanged(object sender, BoundChangedEventArgs e)
+        private void Item_OnBoundChanged(object sender, ref BoundingBox newBound, ref BoundingBox oldBound)
         {
             var item = sender as GeometryModel3D;
             if (mOctree == null || !item.IsAttached)
@@ -210,7 +210,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 UnsubscribeBoundChangeEvent(item);
                 return;
             }
-            var arg = e;
             int index;
             var node = mOctree.FindItemByGuid(item.GUID, item, out index);
             bool rootAdd = true;
@@ -219,7 +218,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var tree = mOctree;
                 UpdateOctree(null);
                 var geoNode = node as GeometryModel3DOctree;
-                if (geoNode.Bound.Contains(arg.NewBound) == ContainmentType.Contains)
+                if (geoNode.Bound.Contains(newBound) == ContainmentType.Contains)
                 {
                     if (geoNode.PushExistingToChild(index))
                     {
@@ -284,7 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, BoundChangedEventArgs e)
+        private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, ref BoundingBox newBound, ref BoundingBox oldBound)
         {
             var item = sender as GeometryModel3D;
             item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
