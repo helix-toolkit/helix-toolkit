@@ -60,6 +60,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 return true;
             }
+            else
+            {
+                Light3DSceneShared.LightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
+            }
             return false;
         }
         protected override void OnRender(RenderContext context)
