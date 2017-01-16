@@ -78,7 +78,7 @@ namespace OctreeDemo
             {
                 DynamicTransform = CreateAnimatedTransform1
                   (new Media3D.Vector3D(rnd.Next(-2, 2), rnd.Next(-2, 2), rnd.Next(-2, 2)),
-                  new Media3D.Vector3D(rnd.Next(-1,1), rnd.Next(-1, 1), rnd.Next(-1, 1)), rnd.Next(10, 100));
+                  new Media3D.Vector3D(rnd.Next(-1,1), rnd.Next(-1, 1), rnd.Next(-1, 1)), new System.Windows.Media.Media3D.Vector3D(0,1,0), rnd.Next(10, 100));
             }
             var color = rnd.NextColor();
             Material = new PhongMaterial() { DiffuseColor = color.ToColor4() };
@@ -131,12 +131,27 @@ namespace OctreeDemo
         private void CreateModel()
         {
             var builder = new MeshBuilder(true, false, false);
-            builder.AddSphere(Center, Radius, 12, 12);
+            int type = rnd.Next(0, 3);
+            switch (type)
+            {
+                case 0:
+                    builder.AddSphere(Center, Radius, 12, 12);
+                    break;
+                case 1:
+                    builder.AddBox(Center, Radius, Radius, Radius);
+                    break;
+                case 2:
+                    builder.AddPyramid(Center, Radius, Radius, true);
+                    break;
+                case 3:
+                    builder.AddPipe(Center, Center + new Vector3(0, 1, 0), 0, Radius*2, 12);
+                    break;
+            }
             this.Model = builder.ToMeshGeometry3D();
             //this.Model.UpdateOctree();
         }
 
-        private static Media3D.Transform3D CreateAnimatedTransform1(Media3D.Vector3D translate, Media3D.Vector3D axis, double speed = 4)
+        private static Media3D.Transform3D CreateAnimatedTransform1(Media3D.Vector3D translate, Media3D.Vector3D axis, Media3D.Vector3D center, double speed = 4)
         {
             var lightTrafo = new Media3D.Transform3DGroup();
             lightTrafo.Children.Add(new Media3D.TranslateTransform3D(translate));
@@ -151,6 +166,20 @@ namespace OctreeDemo
 
             var rotateTransform = new Media3D.RotateTransform3D();
             rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
+
+            lightTrafo.Children.Add(rotateTransform);
+
+            rotateAnimation = new Rotation3DAnimation
+            {
+                RepeatBehavior = RepeatBehavior.Forever,
+                By = new Media3D.AxisAngleRotation3D(center, rnd.Next(-180, 180)),
+                Duration = TimeSpan.FromSeconds(speed / 4),
+                IsCumulative = true,
+            };
+
+            rotateTransform = new Media3D.RotateTransform3D();
+            rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
+
             lightTrafo.Children.Add(rotateTransform);
 
             return lightTrafo;
