@@ -18,7 +18,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Point = System.Windows.Point;
     using System.ComponentModel;
-    using HelixToolkit.SharpDX.Shared.Utilities;
     using System.Diagnostics;
     using System;
     using System.Runtime.CompilerServices;
@@ -109,6 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (e.PropertyName.Equals(nameof(Geometry3D.Positions)) || e.PropertyName.Equals(Geometry3D.VertexBuffer))
                 {
                     this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
+                    this.BoundsSphere = BoundingSphere.FromPoints(this.Geometry.Positions.Array);
                 }
                 OnGeometryPropertyChanged(sender, e);
             }
@@ -127,49 +127,81 @@ namespace HelixToolkit.Wpf.SharpDX
                 BoundsWithTransform
                     = BoundingBox.FromPoints(Bounds.GetCorners()
                     .Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
+                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(this.modelMatrix);
             }
             else
             {
                 BoundsWithTransform = Bounds;
+                BoundsSphereWithTransform = BoundsSphere;
             }
         }
 
+        private BoundingBox bounds;
         public BoundingBox Bounds
         {
-            get { return (BoundingBox)this.GetValue(BoundsProperty); }
-            protected set { this.SetValue(BoundsPropertyKey, value); }
+            get { return bounds; }
+            protected set
+            {
+                if (bounds != value)
+                {
+                    var old = bounds;
+                    bounds = value;
+                    RaiseOnBoundChanged(value, old);
+                    BoundsWithTransform = Transform == null ? bounds : BoundingBox.FromPoints((bounds).GetCorners()
+                    .Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
+                }
+            }
         }
 
+        private BoundingBox boundsWithTransform;
         public BoundingBox BoundsWithTransform
         {
-            get { return (BoundingBox)this.GetValue(BoundsWithTransformProperty); }
-            protected set { this.SetValue(BoundsWithTransformPropertyKey, value); }
+            get { return boundsWithTransform; }
+            private set
+            {
+                if (boundsWithTransform != value)
+                {
+                    var old = boundsWithTransform;
+                    boundsWithTransform = value;
+                    RaiseOnTransformBoundChanged(value, old);
+                }
+            }
         }
 
-        private static readonly DependencyPropertyKey BoundsPropertyKey =
-            DependencyProperty.RegisterReadOnly("Bounds", typeof(BoundingBox), typeof(GeometryModel3D),
-                new UIPropertyMetadata(new BoundingBox(), (d, e) =>
+        private BoundingSphere boundsSphere;
+        public BoundingSphere BoundsSphere
+        {
+            protected set
+            {
+                if (boundsSphere != value)
                 {
-                    var model = d as GeometryModel3D;
-                    model.RaiseOnBoundChanged((BoundingBox)e.NewValue, (BoundingBox)e.OldValue);
-                    model.BoundsWithTransform
-                    = model.Transform == null ? 
-                    (BoundingBox)e.NewValue : BoundingBox.FromPoints(((BoundingBox)e.NewValue).GetCorners()
-                    .Select(x => Vector3.TransformCoordinate(x, model.Transform.ToMatrix())).ToArray());
+                    var old = boundsSphere;
+                    boundsSphere = value;
+                    RaiseOnBoundSphereChanged(value, old);
+                    BoundsSphereWithTransform = value.TransformBoundingSphere(this.modelMatrix);
                 }
-            ));
+            }
+            get
+            {
+                return boundsSphere;
+            }
+        }
 
-        public static readonly DependencyProperty BoundsProperty = BoundsPropertyKey.DependencyProperty;
-
-        private static readonly DependencyPropertyKey BoundsWithTransformPropertyKey =
-            DependencyProperty.RegisterReadOnly("BoundsWithTransform", typeof(BoundingBox), typeof(GeometryModel3D),
-                new UIPropertyMetadata(new BoundingBox(), (d, e) =>
+        private BoundingSphere boundsSphereWithTransform;
+        public BoundingSphere BoundsSphereWithTransform
+        {
+            private set
+            {
+                if (boundsSphereWithTransform != value)
                 {
-                    (d as GeometryModel3D).RaiseOnTransformBoundChanged((BoundingBox)e.NewValue, (BoundingBox)e.OldValue);
+                    boundsSphereWithTransform = value;
                 }
-            ));
-
-        public static readonly DependencyProperty BoundsWithTransformProperty = BoundsWithTransformPropertyKey.DependencyProperty;
+            }
+            get
+            {
+                return boundsSphereWithTransform;
+            }
+        }
 
 
         public int DepthBias
@@ -205,6 +237,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public event BoundChangedEventHandler OnBoundChanged;
 
         public event BoundChangedEventHandler OnTransformBoundChanged;
+
+        public delegate void BoundSphereChangedEventHandler(object sender, ref BoundingSphere newBound, ref BoundingSphere oldBound);
+
+        public event BoundSphereChangedEventHandler OnBoundSphereChanged;
+
+        public event BoundSphereChangedEventHandler OnTransformBoundSphereChanged;
 
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
@@ -390,6 +428,18 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RaiseOnBoundChanged(BoundingBox newBound, BoundingBox oldBound)
         {
             OnBoundChanged?.Invoke(this, ref newBound, ref oldBound);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void RaiseOnTransformBoundSphereChanged(BoundingSphere newBoundSphere, BoundingSphere oldBoundSphere)
+        {
+            OnTransformBoundSphereChanged?.Invoke(this, ref newBoundSphere, ref oldBoundSphere);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void RaiseOnBoundSphereChanged(BoundingSphere newBoundSphere, BoundingSphere oldBoundSphere)
+        {
+            OnBoundSphereChanged?.Invoke(this, ref newBoundSphere, ref oldBoundSphere);
         }
         /// <summary>
         /// Checks if the ray hits the geometry of the model.

@@ -184,29 +184,6 @@ namespace HelixToolkit.Wpf.SharpDX
             model.isChanged = true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if ((this.Instances == null) || (!this.Instances.Any()))
-            {
-                base.OnGeometryChanged(e);
-            }
-            else
-            {
-                if (this.Geometry == null)
-                {
-                    this.Bounds = new BoundingBox();
-                    return;
-                }
-                var b = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-                this.Bounds = b;
-                //this.BoundsDiameter = (b.Maximum - b.Minimum).Length();
-            }
-        }
-
 
 
         /// <summary>
