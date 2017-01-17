@@ -27,13 +27,13 @@ namespace OctreeDemo
         public readonly Media3D.TranslateTransform3D translateTransform = new Media3D.TranslateTransform3D();
         public Media3D.Transform3DGroup DynamicTransform { get; private set; } = new Media3D.Transform3DGroup();
 
-        private Material orgMaterial;
-        private Material material;
-        public Material Material
+        private PhongMaterial orgMaterial;
+        private PhongMaterial material;
+        public PhongMaterial Material
         {
             set
             {
-                SetValue<Material>(ref material, value, nameof(Material));
+                SetValue<PhongMaterial>(ref material, value, nameof(Material));
             }
             get
             {
@@ -50,12 +50,13 @@ namespace OctreeDemo
                 highlight = value;
                 if (highlight)
                 {
-                    orgMaterial = material;
-                    Material = PhongMaterials.Yellow;
+                    //orgMaterial = material;
+                    Material.EmissiveColor = Color.Yellow;
                 }
                 else
                 {
-                    Material = orgMaterial;
+                    Material.EmissiveColor = Color.Transparent;
+                    //Material = orgMaterial;
                 }
             }
             get
@@ -97,7 +98,7 @@ namespace OctreeDemo
         }
 
         private static readonly Random rnd = new Random();
-        public SphereModel(Vector3 center, int radius, bool enableTransform = true)
+        public SphereModel(Vector3 center, double radius, bool enableTransform = true)
             :base()
         {
             Center = center;
@@ -121,9 +122,7 @@ namespace OctreeDemo
             {
                 if (SetValue<Vector3>(ref center, value, nameof(Center)))
                 {
-                    translateTransform.OffsetX = value.X;
-                    translateTransform.OffsetY = value.Y;
-                    translateTransform.OffsetZ = value.Z;
+                    translateTransform.OffsetX = translateTransform.OffsetY = translateTransform.OffsetZ = value.X;
                 }
             }
             get
@@ -132,16 +131,14 @@ namespace OctreeDemo
             }
         }
 
-        private int radius;
-        public int Radius
+        private double radius = 1;
+        public double Radius
         {
             set
             {
-                if (SetValue<int>(ref radius, value, nameof(Radius)))
+                if (SetValue<double>(ref radius, value, nameof(Radius)))
                 {
-                    scaleTransform.ScaleX = value;
-                    scaleTransform.ScaleY = value;
-                    scaleTransform.ScaleZ = value;
+                    scaleTransform.ScaleX = scaleTransform.ScaleY = scaleTransform.ScaleZ = value;
                 }
             }
             get
