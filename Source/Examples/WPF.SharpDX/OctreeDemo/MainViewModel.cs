@@ -245,7 +245,7 @@ namespace OctreeDemo
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), 1));
+                    Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), rnd.NextDouble(1,3)));
                 }
             }
 
