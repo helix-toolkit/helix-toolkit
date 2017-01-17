@@ -60,26 +60,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 return true;
             }
-            else
-            {
-                Light3DSceneShared.LightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
-            }
             return false;
         }
         protected override void OnRender(RenderContext context)
         {
-            if (this.IsRendering)
-            {
-                /// --- set lighting parameters
-
-                Light3DSceneShared.LightColors[lightIndex] = this.Color;
-            }
-            else
-            {
-                // --- turn-off the light
-                Light3DSceneShared.LightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
-            }
-
+            Light3DSceneShared.LightColors[lightIndex] = this.Color;
             /// --- set lighting parameters
             Light3DSceneShared.LightDirections[lightIndex] = -this.Direction.ToVector4();
 

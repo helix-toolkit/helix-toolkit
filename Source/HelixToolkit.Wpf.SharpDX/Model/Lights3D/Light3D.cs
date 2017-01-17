@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
             {
                 // "turn-off" the light
-                Light3DSceneShared.LightColors[lightIndex] = new Color4(0, 0, 0, 0);
+                Light3DSceneShared.LightColors[lightIndex] = NoLight;
             }
             base.OnDetach();
         }
@@ -166,6 +166,21 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext context)
         {
             
+        }
+
+        protected static readonly Color4 NoLight = new Color4(0,0,0,0);
+        protected override bool CanRender(RenderContext context)
+        {
+            if (!base.CanRender(context))
+            {
+                Light3DSceneShared.LightColors[lightIndex] = NoLight;
+                this.vLightColor.Set(Light3DSceneShared.LightColors);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public override void Dispose()

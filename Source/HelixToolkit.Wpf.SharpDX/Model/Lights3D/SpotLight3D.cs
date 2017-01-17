@@ -123,17 +123,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext context)
         {
-            if (this.IsRendering)
-            {
-                /// --- turn-on the light            
-                Light3DSceneShared.LightColors[lightIndex] = this.Color;
-            }
-            else
-            {
-                // --- turn-off the light
-                Light3DSceneShared.LightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
-            }
-
+            /// --- turn-on the light            
+            Light3DSceneShared.LightColors[lightIndex] = this.Color;
             /// --- Set lighting parameters
             Light3DSceneShared.LightPositions[lightIndex] = this.Position.ToVector4();
             Light3DSceneShared.LightDirections[lightIndex] = this.Direction.ToVector4();
