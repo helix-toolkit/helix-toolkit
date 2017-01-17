@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 IsMultisampleEnabled = IsMultisampleEnabled,
                 //IsAntialiasedLineEnabled = true,                    
-                //IsScissorEnabled = true,
+                IsScissorEnabled = IsScissorEnabled,
             };
             try
             {
@@ -306,7 +306,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- set rasterstate            
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
-
             if (this.hasInstances)
             {
                 /// --- update instance buffer

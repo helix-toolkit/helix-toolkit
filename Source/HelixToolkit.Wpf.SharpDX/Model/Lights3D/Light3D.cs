@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public enum LightType : ushort
     {
-        Ambient = 1, Directional = 2, Point = 3, Spot = 4,
+        Ambient = 0, Directional = 1, Point = 2, Spot = 3,
     }
 
     public interface ILight3D
@@ -136,17 +136,6 @@ namespace HelixToolkit.Wpf.SharpDX
             internal set { Light3DSceneShared.LightProjMatrices[this.lightIndex] = value; }
         }
 
-        /// <summary>
-        /// Light Type.
-        /// </summary>
-        public enum Type : int
-        {
-            Ambient = 0,
-            Directional = 1,
-            Point = 2,
-            Spot = 3,
-        }
-
         protected override bool OnAttach(IRenderHost host)
         {
             Light3DSceneShared = host.Light3DSceneShared;
@@ -169,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
             {
                 // "turn-off" the light
-                Light3DSceneShared.LightColors[lightIndex] = new Color4(0, 0, 0, 0);
+                Light3DSceneShared.LightColors[lightIndex] = NoLight;
             }
             base.OnDetach();
         }
@@ -177,6 +166,21 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext context)
         {
             
+        }
+
+        protected static readonly Color4 NoLight = new Color4(0,0,0,0);
+        protected override bool CanRender(RenderContext context)
+        {
+            if (!base.CanRender(context))
+            {
+                Light3DSceneShared.LightColors[lightIndex] = NoLight;
+                this.vLightColor.Set(Light3DSceneShared.LightColors);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public override void Dispose()

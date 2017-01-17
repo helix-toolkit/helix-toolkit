@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
                 /// --- Set light type
-                Light3DSceneShared.LightTypes[lightIndex] = (int)Light3D.Type.Directional;
+                Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
 
                 /// --- flush
                 //this.Device.ImmediateContext.Flush();
@@ -64,18 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         protected override void OnRender(RenderContext context)
         {
-            if (this.IsRendering)
-            {
-                /// --- set lighting parameters
-
-                Light3DSceneShared.LightColors[lightIndex] = this.Color;
-            }
-            else
-            {
-                // --- turn-off the light
-                Light3DSceneShared.LightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
-            }
-
+            Light3DSceneShared.LightColors[lightIndex] = this.Color;
             /// --- set lighting parameters
             Light3DSceneShared.LightDirections[lightIndex] = -this.Direction.ToVector4();
 

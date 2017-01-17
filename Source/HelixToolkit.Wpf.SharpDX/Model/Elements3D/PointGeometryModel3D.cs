@@ -173,6 +173,7 @@
                 IsDepthClipEnabled = true,
                 IsFrontCounterClockwise = false,
                 IsMultisampleEnabled = true,
+                IsScissorEnabled = IsScissorEnabled
             };
 
             try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
