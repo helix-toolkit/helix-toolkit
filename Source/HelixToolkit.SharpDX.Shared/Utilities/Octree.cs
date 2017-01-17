@@ -766,12 +766,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 float diff = float.MaxValue;
                 for (int i = 0; i < newRoot.Octants.Length; ++i)
                 {
-                    var d = (newRoot.Octants[i].Maximum - rootBound.Maximum).LengthSquared()
-                        + (newRoot.Octants[i].Minimum - rootBound.Minimum).LengthSquared();
+                    var d = (newRoot.Octants[i].Minimum - rootBound.Minimum).LengthSquared();
                     if (d < diff)
                     {
                         diff = d;
                         idx = i;
+                        if (diff < 10e-8)
+                        {
+                            break;
+                        }
                     }
                 }
                 if (idx >= 0 && idx < newRoot.Octants.Length)
