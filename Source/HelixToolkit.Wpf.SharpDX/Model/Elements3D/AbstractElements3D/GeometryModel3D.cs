@@ -85,15 +85,23 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
+            if (this.Geometry == null || this.Geometry.Positions == null)
             {
                 this.Bounds = new BoundingBox();
                 this.BoundsSphere = new BoundingSphere();
             }
             else
             {
-                this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-                this.BoundsSphere = BoundingSphere.FromPoints(this.Geometry.Positions.Array);
+                if (this.Geometry.Positions.Count != 0)
+                {
+                    this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
+                    this.BoundsSphere = BoundingSphere.FromPoints(this.Geometry.Positions.Array);
+                }
+                else
+                {
+                    this.Bounds = new BoundingBox();
+                    this.BoundsSphere = new BoundingSphere();
+                }
                 if (renderHost != null)
                 {
                     var host = this.renderHost;
