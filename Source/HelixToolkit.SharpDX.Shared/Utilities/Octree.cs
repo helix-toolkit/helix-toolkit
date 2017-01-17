@@ -1186,10 +1186,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Objects = objList;
             if (Objects != null && Objects.Count > 0)
             {
-                var bound = Objects[0].Bounds;
+                var bound = GetBoundingBoxFromItem(Objects[0]);
                 foreach (var item in Objects)
                 {
-                    bound = BoundingBox.Merge(item.Bounds, bound);
+                    var b = GetBoundingBoxFromItem(item);
+                    BoundingBox.Merge(ref b, ref bound, out bound);
                 }
                 this.Bound = bound;
             }

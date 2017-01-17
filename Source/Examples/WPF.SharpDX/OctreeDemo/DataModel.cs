@@ -22,6 +22,11 @@ namespace OctreeDemo
             }
             get { return model; }
         }
+
+        public readonly Media3D.ScaleTransform3D scaleTransform = new Media3D.ScaleTransform3D();
+        public readonly Media3D.TranslateTransform3D translateTransform = new Media3D.TranslateTransform3D();
+        public Media3D.Transform3DGroup DynamicTransform { get; private set; } = new Media3D.Transform3DGroup();
+
         private Material orgMaterial;
         private Material material;
         public Material Material
@@ -61,14 +66,39 @@ namespace OctreeDemo
 
         public DataModel()
         {
+            DynamicTransform.Children.Add(scaleTransform);
+            DynamicTransform.Children.Add(translateTransform);
             Material = PhongMaterials.Red;
         }
     }
 
     public class SphereModel : DataModel
     {
+        private static MeshGeometry3D Sphere;
+        private static MeshGeometry3D Box;
+        private static MeshGeometry3D Pyramid;
+        private static MeshGeometry3D Pipe;
+
+        static SphereModel()
+        {
+            var builder = new MeshBuilder(true, false, false);
+            var center = new Vector3();
+            builder.AddSphere(center, 1, 12, 12);
+            Sphere = builder.ToMeshGeometry3D();
+            builder = new MeshBuilder(true, false, false);
+            builder.AddBox(center, 1, 1, 1);
+            Box = builder.ToMeshGeometry3D();
+            builder = new MeshBuilder(true, false, false);
+            builder.AddPyramid(center, 1, 1, true);
+            Pyramid = builder.ToMeshGeometry3D();
+            builder = new MeshBuilder(true, false, false);
+            builder.AddPipe(center, center + new Vector3(0, 1, 0), 0, 2, 12);
+            Pipe = builder.ToMeshGeometry3D();
+        }
+
         private static readonly Random rnd = new Random();
         public SphereModel(Vector3 center, int radius, bool enableTransform = true)
+            :base()
         {
             Center = center;
             Radius = radius;
@@ -76,9 +106,7 @@ namespace OctreeDemo
             isConstructed = true;
             if (enableTransform)
             {
-                DynamicTransform = CreateAnimatedTransform1
-                  (new Media3D.Vector3D(rnd.Next(-2, 2), rnd.Next(-2, 2), rnd.Next(-2, 2)),
-                  new Media3D.Vector3D(rnd.Next(-1, 1), rnd.Next(-1, 1), rnd.Next(-1, 1)), center.ToVector3D(), rnd.Next(10, 100));
+                CreateAnimatedTransform1(DynamicTransform, center.ToVector3D(), new Media3D.Vector3D(rnd.Next(-1, 1), rnd.Next(-1, 1), rnd.Next(-1, 1)), rnd.Next(10, 100));
             }
             var color = rnd.NextColor();
             Material = new PhongMaterial() { DiffuseColor = color.ToColor4() };
@@ -93,11 +121,9 @@ namespace OctreeDemo
             {
                 if (SetValue<Vector3>(ref center, value, nameof(Center)))
                 {
-                    if (!isConstructed)
-                    {
-                        return;
-                    }
-                    CreateModel();
+                    translateTransform.OffsetX = value.X;
+                    translateTransform.OffsetY = value.Y;
+                    translateTransform.OffsetZ = value.Z;
                 }
             }
             get
@@ -113,11 +139,9 @@ namespace OctreeDemo
             {
                 if (SetValue<int>(ref radius, value, nameof(Radius)))
                 {
-                    if (!isConstructed)
-                    {
-                        return;
-                    }
-                    CreateModel();
+                    scaleTransform.ScaleX = value;
+                    scaleTransform.ScaleY = value;
+                    scaleTransform.ScaleZ = value;
                 }
             }
             get
@@ -126,37 +150,31 @@ namespace OctreeDemo
             }
         }
 
-        public Media3D.Transform3D DynamicTransform { get; private set; }
-
         private void CreateModel()
         {
-            var builder = new MeshBuilder(true, false, false);
+
             int type = rnd.Next(0, 3);
-            var center = Center;
             switch (type)
             {
                 case 0:
-                    builder.AddSphere(center, Radius, 12, 12);
+                    Model = Sphere;
                     break;
                 case 1:
-                    builder.AddBox(center, Radius, Radius, Radius);
+                    Model = Box;
                     break;
                 case 2:
-                    builder.AddPyramid(center, Radius, Radius, true);
+                    Model = Pyramid;
                     break;
                 case 3:
-                    builder.AddPipe(center, center + new Vector3(0, 1, 0), 0, Radius*2, 12);
+                    Model = Pipe;
                     break;
-            }
-            this.Model = builder.ToMeshGeometry3D();
-            //this.Model.UpdateOctree();
+            }           
         }
 
-        private static Media3D.Transform3D CreateAnimatedTransform1(Media3D.Vector3D translate, Media3D.Vector3D axis, Media3D.Vector3D center, double speed = 4)
-        {
-            var lightTrafo = new Media3D.Transform3DGroup();
-            // lightTrafo.Children.Add(new Media3D.TranslateTransform3D(translate));
-
+        private static Media3D.Transform3D CreateAnimatedTransform1(Media3D.Transform3DGroup transformGroup,
+            Media3D.Vector3D center, Media3D.Vector3D axis, double speed = 4)
+        {            
+           
             var rotateAnimation = new Rotation3DAnimation
             {
                 RepeatBehavior = RepeatBehavior.Forever,
@@ -168,7 +186,7 @@ namespace OctreeDemo
             var rotateTransform = new Media3D.RotateTransform3D();
             rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
 
-            lightTrafo.Children.Add(rotateTransform);
+            transformGroup.Children.Add(rotateTransform);
 
             var rotateAnimation1 = new Rotation3DAnimation
             {
@@ -184,9 +202,9 @@ namespace OctreeDemo
             rotateTransform1.CenterZ = center.Z;
             rotateTransform1.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation1);
 
-            lightTrafo.Children.Add(rotateTransform1);
+            transformGroup.Children.Add(rotateTransform1);
 
-            return lightTrafo;
+            return transformGroup;
         }
     }
 }
