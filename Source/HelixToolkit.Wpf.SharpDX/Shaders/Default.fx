@@ -299,7 +299,12 @@ float4 PShaderPhong( PSInput input ) : SV_Target
 
 	// loop over lights
 	for (int i = 0; i < LIGHTS; i++)
-	{		
+	{
+		///If light color is black,ignore
+		if (vLightColor[i].x == 0 && vLightColor[i].y == 0 && vLightColor[i].z == 0)
+		{
+			continue;
+		}
 		// This framework calculates lighting in world space.
 		// For every light type, you should calculate the input values to the
 		// calcPhongLighting function, namely light direction and the reflection vector.
@@ -409,6 +414,9 @@ float4 PSShaderBlinnPhong( PSInput input ) : SV_Target
 	// compute lighting
 	for (int i = 0; i < LIGHTS; i++)
 	{		
+		///If light color is black,ignore
+		if (vLightColor[i].x == 0 && vLightColor[i].y == 0 && vLightColor[i].z == 0)
+		{ continue; }
 		// Same as for the Phong PixelShader, but use
 		// calcBlinnPhongLighting instead.
 		if(iLightType[i] == 1) // directional
