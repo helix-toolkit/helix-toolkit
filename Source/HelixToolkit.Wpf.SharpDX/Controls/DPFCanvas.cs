@@ -27,6 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Device = global::SharpDX.Direct3D11.Device;
     using Model.Lights3D;
+    using Helpers;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -665,11 +666,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">Is in fact <see cref="RenderingEventArgs"/>.</param>
         private void OnRendering(object sender, EventArgs e)
         {
+            
             if (!renderTimer.IsRunning)
                 return;
             UpdateAndRender();
         }
 
+        private readonly EventSkipper skipper = new EventSkipper();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
@@ -677,10 +680,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                if (pendingValidationCycles > 0)
+                if (pendingValidationCycles > 0 && !skipper.IsSkip())
                 {
                     var t0 = renderTimer.Elapsed;
-
                     if (surfaceD3D != null && renderRenderable != null)
                     {
                         // Update all renderables before rendering 

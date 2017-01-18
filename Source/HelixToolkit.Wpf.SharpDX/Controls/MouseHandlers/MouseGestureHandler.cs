@@ -157,11 +157,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private Cursor OldCursor { get; set; }
 
         /// <summary>
-        /// Use to limit the mouse move event frequency
-        /// </summary>
-        private readonly EventSkipper skipper = new EventSkipper();
-
-        /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">
@@ -336,10 +331,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (skipper.IsSkip())
-            {
-                return;
-            }
             this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
         }
 
