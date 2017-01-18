@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// <summary>
         /// The threshold used to skip if previous event happened less than the threshold.
         /// </summary>
-        public long Threshold = 16;
+        public long Threshold = 15;
 
         /// <summary>
         /// Previous event happened.
