@@ -184,7 +184,8 @@
 
         private void OnColorChanged()
         {
-            CreateVertexBuffer();
+             if(IsAttached)
+                CreateVertexBuffer();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
