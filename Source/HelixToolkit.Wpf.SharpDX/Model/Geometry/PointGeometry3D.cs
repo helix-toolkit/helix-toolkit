@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using HelixToolkit.SharpDX.Shared.Utilities;
 
     [Serializable]
     public class PointGeometry3D : Geometry3D
@@ -15,6 +16,11 @@
                     yield return new Point { P0 = Positions[Indices[i]] };
                 }
             }
+        }
+
+        protected override IOctree CreateOctree(OctreeBuildParameter parameter)
+        {
+            return new PointGeometryOctree(Positions, parameter);
         }
     }
 }

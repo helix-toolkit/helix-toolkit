@@ -1130,7 +1130,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
                     if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
                     {
-                        if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                        if (d >= 0 && d < result.Distance) // If d is NaN, the condition is false.
                         {
                             result.IsValid = true;
                             result.ModelHit = model;
@@ -1168,6 +1168,145 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
 
             return isHit;
+        }
+    }
+
+    public class PointGeometryOctree : OctreeBase<int>
+    {
+        private Vector3Collection Positions;
+        private static readonly Vector3 BoundOffset = new Vector3(0.0001f);
+        public PointGeometryOctree(Vector3Collection positions, Queue<IOctree> queueCache = null)
+            : this(positions, null, queueCache)
+        {
+        }
+        public PointGeometryOctree(Vector3Collection positions,
+            OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
+               : base(null, parameter, queueCache)
+        {
+            Positions = positions;
+            Bound = BoundingBox.FromPoints(positions.Array);
+            Objects = Enumerable.Range(0, Positions.Count).ToList();
+        }
+
+        protected PointGeometryOctree(BoundingBox bound, Vector3Collection positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
+            Queue<IOctree> queueCache)
+            : base(ref bound, list, parent, paramter, queueCache)
+        {
+            Positions = positions;
+        }
+
+        public static T FindVisualAncestor<T>(FrameworkElement obj) where T : FrameworkElement
+        {
+            if (obj != null)
+            {
+                var parent = obj.Parent;
+                while (parent != null)
+                {
+                    var typed = parent as T;
+                    if (typed != null)
+                    {
+                        return typed;
+                    }
+
+                    parent = (parent as FrameworkElement).Parent;
+                }
+            }
+
+            return null;
+        }
+
+        public static double DistanceRayToPoint(Ray r, Vector3 p)
+        {
+            Vector3 v = r.Direction;
+            Vector3 w = p - r.Position;
+
+            float c1 = Vector3.Dot(w, v);
+            float c2 = Vector3.Dot(v, v);
+            float b = c1 / c2;
+
+            Vector3 pb = r.Position + v * b;
+            return (p - pb).Length();
+        }
+
+        public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
+        {
+            isIntersect = false;
+            if (!this.treeBuilt)
+            {
+                return false;
+            }
+            var isHit = false;
+            var result = new HitTestResult();
+            result.Distance = double.MaxValue;
+            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            Viewport3DX viewport = null;
+            if (rayWS.Intersects(ref bound) && (viewport = FindVisualAncestor<Viewport3DX>(model))!=null)
+            {
+                var svpm = viewport.GetScreenViewProjectionMatrix();
+                var smvpm = modelMatrix * svpm;
+                var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
+                var pos4 = new Vector4(rayWS.Position, 1);
+                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
+                Vector4.Transform(ref pos4, ref svpm, out pos4);
+                var clickPoint = clickPoint4.ToVector3();
+
+                isIntersect = true;
+                int idx = 0;
+                float dist = float.MaxValue;
+                foreach (var t in this.Objects)
+                {
+                    var v0 = Positions[t];
+                    var p0 = Vector3.TransformCoordinate(v0, smvpm);
+                    var pv = p0 - clickPoint;
+                    var d = pv.Length();
+                    if (d < dist) // If d is NaN, the condition is false.
+                    {
+                        dist = d;
+                        Vector4 res;
+                        Vector3.Transform(ref v0, ref modelMatrix, out res);
+                        var pvv = res.ToVector3();
+                        var dst = DistanceRayToPoint(rayWS, pvv);
+                        result.IsValid = true;
+                        result.ModelHit = model;
+                        // transform hit-info to world space now:
+                        result.PointHit = v0.ToPoint3D();
+                        result.Distance = dst;
+                        result.Tag = idx;     
+                        isHit = true;
+                    }
+                    ++idx;
+                }
+
+                if (isHit)
+                {
+                    isHit = false;
+                    if (hits.Count > 0)
+                    {
+                        if (hits[0].Distance > result.Distance)
+                        {
+                            hits[0] = result;
+                            isHit = true;
+                        }
+                    }
+                    else
+                    {
+                        hits.Add(result);
+                        isHit = true;
+                    }
+                }
+            }
+
+            return isHit;
+        }
+
+        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<int> objList, IOctree parent)
+        {
+            return new PointGeometryOctree(bound, Positions, objList, parent, Parameter, queue);
+        }
+
+        protected override BoundingBox GetBoundingBoxFromItem(int item)
+        {
+            return new BoundingBox(Positions[item]-BoundOffset, Positions[item]+BoundOffset);
         }
     }
 
