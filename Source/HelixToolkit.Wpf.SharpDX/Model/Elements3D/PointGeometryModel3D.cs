@@ -184,13 +184,14 @@
 
         private void OnColorChanged()
         {
-            CreateVertexBuffer();
+            if(IsAttached)
+                CreateVertexBuffer();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateVertexBuffer()
         {
-            var geometry = Geometry as LineGeometry3D;
+            var geometry = Geometry as PointGeometry3D;
             if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
