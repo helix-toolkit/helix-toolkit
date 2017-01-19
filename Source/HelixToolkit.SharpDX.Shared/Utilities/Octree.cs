@@ -1231,10 +1231,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
         {
             isIntersect = false;
-            if (!this.treeBuilt)
+            if (!this.treeBuilt|| !(model is PointGeometryModel3D))
             {
                 return false;
             }
+            var pointModel = model as PointGeometryModel3D;
             var isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
@@ -1252,7 +1253,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
                 isIntersect = true;
                 int idx = 0;
-                float dist = float.MaxValue;
+                var dist = pointModel.HitTestThickness;
                 foreach (var t in this.Objects)
                 {
                     var v0 = Positions[t];
