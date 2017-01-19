@@ -46,17 +46,19 @@
             </i:Interaction.Triggers>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <hx:MeshGeometryModel3D
+            <!--<hx:MeshGeometryModel3D
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding DefaultModel}"
                 IsRendering="{Binding Visibility}"
-                Material="{Binding Material}" />
+                Material="{Binding Material}" />-->
+            <hx:PointGeometryModel3D Geometry="{Binding PointsModel}" Color="{Binding PointColor}" Figure="Ellipse" Size="2 2"/>
+            <hx:PointGeometryModel3D Geometry="{Binding PointsHitModel}" Color="{Binding PointHitColor}" Figure="Ellipse" Size="5 5"/>
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
                 <hx:ItemsModel3D.OctreeManager>
                     <hx:GeometryModel3DOctreeManager MinObjectSizeToSplit="4"
                         x:Name="groupOctreeMgr" Cubify="True"
                         AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
-                        RecordHitPathBoundingBoxes="True" />
+                        RecordHitPathBoundingBoxes="False" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
@@ -67,7 +69,7 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
-            <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding LanderItems}">
+            <!--<hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding LanderItems}">
                 <hx:ItemsModel3D.OctreeManager>
                     <hx:GeometryModel3DOctreeManager
                         x:Name="landerOctreeMgr"
@@ -82,7 +84,8 @@
                             Material="{Binding Material}" />
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
-            </hx:ItemsModel3D>
+            </hx:ItemsModel3D>-->
+            <hx:OctreeLineGeometryModel3D Octree="{Binding PointsModel.Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
             <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
             <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
             <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" IsRendering="{Binding OctreeFrameVisible}"/>

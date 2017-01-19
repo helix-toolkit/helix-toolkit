@@ -1227,7 +1227,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Vector3 pb = r.Position + v * b;
             return (p - pb).Length();
         }
-
+        /// <summary>
+        /// Return nearest point it gets hit. And the distance from ray origin to the point it gets hit
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
         public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
         {
             isIntersect = false;
@@ -1263,15 +1271,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     if (d < dist) // If d is NaN, the condition is false.
                     {
                         dist = d;
-                        Vector4 res;
-                        Vector3.Transform(ref v0, ref modelMatrix, out res);
-                        var pvv = res.ToVector3();
-                        var dst = DistanceRayToPoint(rayWS, pvv);
+                        // Vector4 res;
+                        // Vector3.Transform(ref v0, ref modelMatrix, out res);
+                        // var pvv = res.ToVector3();
+                        //var dst = DistanceRayToPoint(rayWS, pvv);
+                        
                         result.IsValid = true;
                         result.ModelHit = model;
-                        // transform hit-info to world space now:
                         result.PointHit = v0.ToPoint3D();
-                        result.Distance = dst;
+                        result.Distance = (v0 - rayWS.Position).Length();
                         result.Tag = idx;     
                         isHit = true;
                     }
