@@ -175,6 +175,7 @@
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
+    <Compile Include="Model\Elements3D\InstancingMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\OctreeLineGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Model\Geometry\BillboardSingleImage3D.cs" />
     <Compile Include="Model\Geometry\BillboardSingleText3D.cs" />
     <Compile Include="Model\Geometry\BillboardText3D.cs" />
+    <Compile Include="Model\Geometry\InstancingGeometry3D.cs" />
     <Compile Include="Model\Geometry\PointGeometry3D.cs" />
     <Compile Include="Model\Lights3D\Light3DSceneShared.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
