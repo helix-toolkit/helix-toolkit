@@ -83,7 +83,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> hits, ref bool isIntersect);
+        bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
 
         /// <summary>
         /// Search nearest point by a search sphere for whole octree
@@ -93,7 +93,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         /// <param name="queue"></param>
         /// <param name="points"></param>
         /// <returns></returns>
-        bool FindNearestPointBySphere(ref BoundingSphere sphere, ref List<HitTestResult> points);
+        bool FindNearestPointBySphere(ref BoundingSphere sphere, ref List<HitTestResult> result);
 
         /// <summary>
         /// Search nearest point by a point and search radius
@@ -1078,10 +1078,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return node;
         }
 
-        public bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, int radius, ref List<HitTestResult> points)
+        public bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, int radius, ref List<HitTestResult> result)
         {
             var sphere = new BoundingSphere(point, radius);
-            return FindNearestPointBySphere(ref sphere, ref points);
+            return FindNearestPointBySphere(ref sphere, ref result);
         }
 
         #region Accessors
@@ -1243,11 +1243,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return isHit;
         }
 
-        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> hits, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
-            var result = new HitTestResult();
-            result.Distance = float.MaxValue;
+            var tempResult = new HitTestResult();
+            tempResult.Distance = float.MaxValue;
             var containment = Bound.Contains(ref sphere);
             if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
             {
@@ -1265,12 +1265,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                         var v2 = Positions[Indices[idx + 2]];
                         Collision.ClosestPointPointTriangle(ref sphere.Center, ref v0, ref v1, ref v2, out cloestPoint);
                         var d = (cloestPoint - sphere.Center).Length();
-                        if (result.Distance > d)
+                        if (tempResult.Distance > d)
                         {
-                            result.Distance = d;
-                            result.IsValid = true;
-                            result.PointHit = cloestPoint.ToPoint3D();
-                            result.TriangleIndices = new Tuple<int, int, int>(idx, idx + 1, idx + 2);
+                            tempResult.Distance = d;
+                            tempResult.IsValid = true;
+                            tempResult.PointHit = cloestPoint.ToPoint3D();
+                            tempResult.TriangleIndices = new Tuple<int, int, int>(idx, idx + 1, idx + 2);
                             isHit = true;
                         }
                     }
@@ -1278,17 +1278,17 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 if (isHit)
                 {
                     isHit = false;
-                    if (hits.Count > 0)
+                    if (result.Count > 0)
                     {
-                        if (hits[0].Distance > result.Distance)
+                        if (result[0].Distance > tempResult.Distance)
                         {
-                            hits[0] = result;
+                            result[0] = tempResult;
                             isHit = true;
                         }
                     }
                     else
                     {
-                        hits.Add(result);
+                        result.Add(tempResult);
                         isHit = true;
                     }
                 }
@@ -1448,9 +1448,55 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
 
-        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
-            throw new NotImplementedException();
+            bool isHit = false;
+            var resultTemp = new HitTestResult();
+            resultTemp.Distance = float.MaxValue;
+            var containment = Bound.Contains(ref sphere);
+            if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+            {
+                isIntersect = true;
+                foreach (var t in Objects)
+                {
+                    var p = Positions[t];
+                    containment = sphere.Contains(ref p);
+                    if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+                    {
+                        var d = (p - sphere.Center).Length();
+                        if (resultTemp.Distance > d)
+                        {
+                            resultTemp.Distance = d;
+                            resultTemp.IsValid = true;
+                            resultTemp.PointHit = p.ToPoint3D();
+                            resultTemp.Tag = t;
+                            isHit = true;
+                        }
+                    }
+                }
+                if (isHit)
+                {
+                    isHit = false;
+                    if (result.Count > 0)
+                    {
+                        if (result[0].Distance > resultTemp.Distance)
+                        {
+                            result[0] = resultTemp;
+                            isHit = true;
+                        }
+                    }
+                    else
+                    {
+                        result.Add(resultTemp);
+                        isHit = true;
+                    }
+                }
+            }
+            else
+            {
+                isIntersect = false;
+            }
+            return isHit;
         }
     }
 
