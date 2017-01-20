@@ -267,7 +267,7 @@ namespace OctreeDemo
             PointsModel.Positions = new Vector3Collection(DefaultModel.Positions.Select(x=>x+offset));
             PointsModel.Indices = new IntCollection(Enumerable.Range(0, PointsModel.Positions.Count));
             PointsModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
-          //  PointsModel.UpdateOctree();
+            PointsModel.UpdateOctree();
             for (int i = 0; i < 10; ++i)
             {
                 for (int j = 0; j < 10; ++j)

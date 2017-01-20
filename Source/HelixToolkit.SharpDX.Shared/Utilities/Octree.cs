@@ -1345,7 +1345,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             return null;
         }
 
-        public static double DistanceRayToPoint(Ray r, Vector3 p)
+        public static double DistanceRayToPoint(ref Ray r, ref Vector3 p)
         {
             Vector3 v = r.Direction;
             Vector3 w = p - r.Position;
@@ -1401,15 +1401,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     if (d < dist) // If d is NaN, the condition is false.
                     {
                         dist = d;
-                        // Vector4 res;
-                        // Vector3.Transform(ref v0, ref modelMatrix, out res);
-                        // var pvv = res.ToVector3();
-                        //var dst = DistanceRayToPoint(rayWS, pvv);
-
                         result.IsValid = true;
                         result.ModelHit = model;
                         result.PointHit = v0.ToPoint3D();
-                        result.Distance = (v0 - rayWS.Position).Length();
+                        var px = Vector3.TransformCoordinate(v0, modelMatrix);
+                        result.Distance = (rayWS.Position - px).Length();
                         result.Tag = idx;
                         isHit = true;
                     }

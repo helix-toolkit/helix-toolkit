@@ -144,8 +144,7 @@
                         var lp0 = point.P0;
                         Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
                         var pvv = res.ToVector3();
-                        var dst = DistanceRayToPoint(rayWS, pvv);
-                        result.Distance = dst;
+                        result.Distance = (rayWS.Position - res.ToVector3()).Length();
                         result.PointHit = pvv.ToPoint3D();
                         result.ModelHit = this;
                         result.IsValid = true;
