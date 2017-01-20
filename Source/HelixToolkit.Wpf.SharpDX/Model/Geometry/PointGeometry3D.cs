@@ -11,9 +11,9 @@
         {
             get
             {
-                for (int i = 0; i < Indices.Count; i += 2)
+                for (int i = 0; i < Positions.Count; ++i)
                 {
-                    yield return new Point { P0 = Positions[Indices[i]] };
+                    yield return new Point { P0 = Positions[i] };
                 }
             }
         }
