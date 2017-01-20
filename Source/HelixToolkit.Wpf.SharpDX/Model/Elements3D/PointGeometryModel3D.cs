@@ -21,7 +21,6 @@
         protected Buffer vertexBuffer;
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
-        protected EffectVectorVariable vViewport;
         protected EffectVectorVariable vPointParams;
 
         public override int VertexSizeInBytes
@@ -265,8 +264,6 @@
             CreateVertexBuffer();
 
             /// --- set up const variables
-            vViewport = effect.GetVariableByName("vViewport").AsVector();
-            //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 
             /// --- set effect per object const vars
@@ -284,7 +281,6 @@
         protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
-            Disposer.RemoveAndDispose(ref this.vViewport);
             Disposer.RemoveAndDispose(ref this.rasterState);
 
             this.renderTechnique = null;
@@ -313,16 +309,6 @@
         /// </summary>
         protected override void OnRender(RenderContext renderContext)
         {       
-            /// --- since these values are changed only per window resize, we set them only once here
-            if (renderContext.Camera is ProjectionCamera)
-            {
-                var c = renderContext.Camera as ProjectionCamera;
-                // viewport: W,H,0,0   
-                var viewport = new Vector4((float)renderContext.Canvas.ActualWidth, (float)renderContext.Canvas.ActualHeight, 0, 0);
-                var ar = viewport.X / viewport.Y;
-                this.vViewport.Set(ref viewport);
-            }
-            
             /// --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
