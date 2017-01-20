@@ -75,6 +75,35 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect);
 
         /// <summary>
+        /// Search nearest point by a search sphere at this node only
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="sphere"></param>
+        /// <param name="hits"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
+        bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
+
+        /// <summary>
+        /// Search nearest point by a search sphere for whole octree
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="radius"></param>
+        /// <param name="queue"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        bool FindNearestPointBySphere(ref BoundingSphere sphere, ref List<HitTestResult> result);
+
+        /// <summary>
+        /// Search nearest point by a point and search radius
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="radius"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, int radius, ref List<HitTestResult> points);
+        /// <summary>
         /// Build the whole tree from top to bottom iteratively.
         /// </summary>
         void BuildTree();
@@ -567,6 +596,10 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public virtual bool HitTest(GeometryModel3D model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
+            if (hits == null)
+            {
+                hits = new List<HitTestResult>();
+            }
             hitPathBoundingBoxes.Clear();
             var hitQueue = queue;
             hitQueue.Clear();
@@ -613,6 +646,39 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
         public abstract bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS,
             ref List<HitTestResult> hits, ref bool isIntersect);
+
+        public virtual bool FindNearestPointBySphere(ref BoundingSphere sphere, ref List<HitTestResult> points)
+        {
+            if (points == null)
+            {
+                points = new List<HitTestResult>();
+            }
+            var hitQueue = queue;
+            hitQueue.Clear();
+            hitQueue.Enqueue(this);
+            bool isHit = false;
+            while (hitQueue.Count > 0)
+            {
+                var node = hitQueue.Dequeue();
+                bool isIntersect = false;
+                bool nodeHit = node.FindNearestPointBySphereExcludeChild(ref sphere, ref points, ref isIntersect);
+                isHit |= nodeHit;
+                if (isIntersect && node.HasChildren)
+                {
+                    foreach (var child in node.ChildNodes)
+                    {
+                        if (child != null)
+                        {
+                            hitQueue.Enqueue(child);
+                        }
+                    }
+                }
+            }
+            hitQueue.Clear();
+            return isHit;
+        }
+
+        public abstract bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
 
         public bool Add(T item)
         {
@@ -766,12 +832,15 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 float diff = float.MaxValue;
                 for (int i = 0; i < newRoot.Octants.Length; ++i)
                 {
-                    var d = (newRoot.Octants[i].Maximum - rootBound.Maximum).LengthSquared()
-                        + (newRoot.Octants[i].Minimum - rootBound.Minimum).LengthSquared();
+                    var d = (newRoot.Octants[i].Minimum - rootBound.Minimum).LengthSquared();
                     if (d < diff)
                     {
                         diff = d;
                         idx = i;
+                        if (diff < 10e-8)
+                        {
+                            break;
+                        }
                     }
                 }
                 if (idx >= 0 && idx < newRoot.Octants.Length)
@@ -1008,6 +1077,13 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
             return node;
         }
+
+        public bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, int radius, ref List<HitTestResult> result)
+        {
+            var sphere = new BoundingSphere(point, radius);
+            return FindNearestPointBySphere(ref sphere, ref result);
+        }
+
         #region Accessors
         public bool IsRoot
         {
@@ -1127,7 +1203,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
 
                     if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
                     {
-                        if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                        if (d >= 0 && d < result.Distance) // If d is NaN, the condition is false.
                         {
                             result.IsValid = true;
                             result.ModelHit = model;
@@ -1164,6 +1240,258 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                 }
             }
 
+            return isHit;
+        }
+
+        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        {
+            bool isHit = false;
+            var tempResult = new HitTestResult();
+            tempResult.Distance = float.MaxValue;
+            var containment = Bound.Contains(ref sphere);
+            if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+            {
+                isIntersect = true;
+                foreach (var t in Objects)
+                {
+                    containment = t.Item2.Contains(sphere);
+                    if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+                    {
+                        Vector3 cloestPoint;
+
+                        var idx = t.Item1 * 3;
+                        var v0 = Positions[Indices[idx]];
+                        var v1 = Positions[Indices[idx + 1]];
+                        var v2 = Positions[Indices[idx + 2]];
+                        Collision.ClosestPointPointTriangle(ref sphere.Center, ref v0, ref v1, ref v2, out cloestPoint);
+                        var d = (cloestPoint - sphere.Center).Length();
+                        if (tempResult.Distance > d)
+                        {
+                            tempResult.Distance = d;
+                            tempResult.IsValid = true;
+                            tempResult.PointHit = cloestPoint.ToPoint3D();
+                            tempResult.TriangleIndices = new Tuple<int, int, int>(idx, idx + 1, idx + 2);
+                            isHit = true;
+                        }
+                    }
+                }
+                if (isHit)
+                {
+                    isHit = false;
+                    if (result.Count > 0)
+                    {
+                        if (result[0].Distance > tempResult.Distance)
+                        {
+                            result[0] = tempResult;
+                            isHit = true;
+                        }
+                    }
+                    else
+                    {
+                        result.Add(tempResult);
+                        isHit = true;
+                    }
+                }
+            }
+            else
+            {
+                isIntersect = false;
+            }
+            return isHit;
+        }
+    }
+
+    public class PointGeometryOctree : OctreeBase<int>
+    {
+        private Vector3Collection Positions;
+        private static readonly Vector3 BoundOffset = new Vector3(0.0001f);
+        public PointGeometryOctree(Vector3Collection positions, Queue<IOctree> queueCache = null)
+            : this(positions, null, queueCache)
+        {
+        }
+        public PointGeometryOctree(Vector3Collection positions,
+            OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
+               : base(null, parameter, queueCache)
+        {
+            Positions = positions;
+            Bound = BoundingBox.FromPoints(positions.Array);
+            Objects = Enumerable.Range(0, Positions.Count).ToList();
+        }
+
+        protected PointGeometryOctree(BoundingBox bound, Vector3Collection positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
+            Queue<IOctree> queueCache)
+            : base(ref bound, list, parent, paramter, queueCache)
+        {
+            Positions = positions;
+        }
+
+        public static T FindVisualAncestor<T>(FrameworkElement obj) where T : FrameworkElement
+        {
+            if (obj != null)
+            {
+                var parent = obj.Parent;
+                while (parent != null)
+                {
+                    var typed = parent as T;
+                    if (typed != null)
+                    {
+                        return typed;
+                    }
+
+                    parent = (parent as FrameworkElement).Parent;
+                }
+            }
+
+            return null;
+        }
+
+        public static double DistanceRayToPoint(ref Ray r, ref Vector3 p)
+        {
+            Vector3 v = r.Direction;
+            Vector3 w = p - r.Position;
+
+            float c1 = Vector3.Dot(w, v);
+            float c2 = Vector3.Dot(v, v);
+            float b = c1 / c2;
+
+            Vector3 pb = r.Position + v * b;
+            return (p - pb).Length();
+        }
+        /// <summary>
+        /// Return nearest point it gets hit. And the distance from ray origin to the point it gets hit
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
+        public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
+        {
+            isIntersect = false;
+            if (!this.treeBuilt || !(model is PointGeometryModel3D))
+            {
+                return false;
+            }
+            var pointModel = model as PointGeometryModel3D;
+            var isHit = false;
+            var result = new HitTestResult();
+            result.Distance = double.MaxValue;
+            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            Viewport3DX viewport = null;
+            if (rayWS.Intersects(ref bound) && (viewport = FindVisualAncestor<Viewport3DX>(model)) != null)
+            {
+                var svpm = viewport.GetScreenViewProjectionMatrix();
+                var smvpm = modelMatrix * svpm;
+                var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
+                var pos4 = new Vector4(rayWS.Position, 1);
+                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
+                Vector4.Transform(ref pos4, ref svpm, out pos4);
+                var clickPoint = clickPoint4.ToVector3();
+
+                isIntersect = true;
+                int idx = 0;
+                var dist = pointModel.HitTestThickness;
+                foreach (var t in this.Objects)
+                {
+                    var v0 = Positions[t];
+                    var p0 = Vector3.TransformCoordinate(v0, smvpm);
+                    var pv = p0 - clickPoint;
+                    var d = pv.Length();
+                    if (d < dist) // If d is NaN, the condition is false.
+                    {
+                        dist = d;
+                        result.IsValid = true;
+                        result.ModelHit = model;
+                        result.PointHit = v0.ToPoint3D();
+                        var px = Vector3.TransformCoordinate(v0, modelMatrix);
+                        result.Distance = (rayWS.Position - px).Length();
+                        result.Tag = idx;
+                        isHit = true;
+                    }
+                    ++idx;
+                }
+
+                if (isHit)
+                {
+                    isHit = false;
+                    if (hits.Count > 0)
+                    {
+                        if (hits[0].Distance > result.Distance)
+                        {
+                            hits[0] = result;
+                            isHit = true;
+                        }
+                    }
+                    else
+                    {
+                        hits.Add(result);
+                        isHit = true;
+                    }
+                }
+            }
+
+            return isHit;
+        }
+
+        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<int> objList, IOctree parent)
+        {
+            return new PointGeometryOctree(bound, Positions, objList, parent, Parameter, queue);
+        }
+
+        protected override BoundingBox GetBoundingBoxFromItem(int item)
+        {
+            return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
+        }
+
+        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        {
+            bool isHit = false;
+            var resultTemp = new HitTestResult();
+            resultTemp.Distance = float.MaxValue;
+            var containment = Bound.Contains(ref sphere);
+            if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+            {
+                isIntersect = true;
+                foreach (var t in Objects)
+                {
+                    var p = Positions[t];
+                    containment = sphere.Contains(ref p);
+                    if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+                    {
+                        var d = (p - sphere.Center).Length();
+                        if (resultTemp.Distance > d)
+                        {
+                            resultTemp.Distance = d;
+                            resultTemp.IsValid = true;
+                            resultTemp.PointHit = p.ToPoint3D();
+                            resultTemp.Tag = t;
+                            isHit = true;
+                        }
+                    }
+                }
+                if (isHit)
+                {
+                    isHit = false;
+                    if (result.Count > 0)
+                    {
+                        if (result[0].Distance > resultTemp.Distance)
+                        {
+                            result[0] = resultTemp;
+                            isHit = true;
+                        }
+                    }
+                    else
+                    {
+                        result.Add(resultTemp);
+                        isHit = true;
+                    }
+                }
+            }
+            else
+            {
+                isIntersect = false;
+            }
             return isHit;
         }
     }
@@ -1422,6 +1750,11 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             {
                 root.OctantDictionary.Remove(guid);
             }
+        }
+
+        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        {
+            throw new NotImplementedException();
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using DemoCore;
 using HelixToolkit.SharpDX.Shared.Utilities;
 using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
@@ -110,6 +111,11 @@ namespace OctreeDemo
         //public MeshGeometry3D Other { get; private set; }
         public Color4 AmbientLightColor { get; set; }
 
+        public Color PointColor
+        { get { return Color.Green; } }
+
+        public Color PointHitColor
+        { get { return Color.Red; } }
         public Color LineColor { set; get; }
 
         private PhongMaterial material;
@@ -125,6 +131,20 @@ namespace OctreeDemo
             }
         }
         public MeshGeometry3D DefaultModel { private set; get; }
+        public PointGeometry3D PointsModel { private set; get; }
+
+        private PointGeometry3D pointsHitModel;
+        public PointGeometry3D PointsHitModel
+        {
+            set
+            {
+                SetValue(ref pointsHitModel, value, nameof(PointsHitModel));
+            }
+            get
+            {
+                return pointsHitModel;
+            }
+        }
         public ObservableCollection<DataModel> Items { set; get; }
         public List<DataModel> LanderItems { private set; get; }
 
@@ -241,6 +261,13 @@ namespace OctreeDemo
             DefaultModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
             DefaultModel.UpdateOctree();
 
+            PointsModel = new PointGeometry3D();
+            var offset = new Vector3(1, 1, 1);
+            
+            PointsModel.Positions = new Vector3Collection(DefaultModel.Positions.Select(x=>x+offset));
+            PointsModel.Indices = new IntCollection(Enumerable.Range(0, PointsModel.Positions.Count));
+            PointsModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
+            PointsModel.UpdateOctree();
             for (int i = 0; i < 10; ++i)
             {
                 for (int j = 0; j < 10; ++j)
@@ -248,7 +275,7 @@ namespace OctreeDemo
                     Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), rnd.NextDouble(1,3)));
                 }
             }
-
+            PointsHitModel = new PointGeometry3D() { Positions = new Vector3Collection(), Indices = new IntCollection() };
             //var landerItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
             //var scale = new Vector3(0.007f);
             //var offset = new Vector3(15, 15, 15);
@@ -321,7 +348,19 @@ namespace OctreeDemo
                         }
                         else if (hit.ModelHit.DataContext == this)
                         {
-                            Material = PhongMaterials.Yellow;
+                            if (hit.TriangleIndices != null)
+                            {
+                                Material = PhongMaterials.Yellow;
+                            }
+                            else
+                            {
+                                var v = new Vector3Collection();
+                                v.Add(hit.PointHit.ToVector3());
+                                PointsHitModel.Positions = v;
+                                var idx = new IntCollection();
+                                idx.Add(0);
+                                PointsHitModel = new PointGeometry3D() { Positions = v, Indices = idx };
+                            }
                         }
                     }
                 }
@@ -336,7 +375,19 @@ namespace OctreeDemo
                     }
                     else if (hit.ModelHit.DataContext == this)
                     {
-                        Material = PhongMaterials.Yellow;
+                        if (hit.TriangleIndices != null)
+                        {
+                            Material = PhongMaterials.Yellow;
+                        }
+                        else
+                        {
+                            var v = new Vector3Collection();
+                            v.Add(hit.PointHit.ToVector3());
+                            PointsHitModel.Positions = v;
+                            var idx = new IntCollection();
+                            idx.Add(0);
+                            PointsHitModel = new PointGeometry3D() { Positions = v, Indices = idx };
+                        }
                     }
                 }
             }

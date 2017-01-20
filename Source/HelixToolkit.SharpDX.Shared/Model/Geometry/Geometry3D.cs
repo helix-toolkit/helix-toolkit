@@ -127,7 +127,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0)
             {
-                this.Octree = CreateOctree(minSize, autoDeleteIfEmpty);
+                OctreeParameter.MinimumOctantSize = minSize;
+                OctreeParameter.AutoDeleteIfEmpty = autoDeleteIfEmpty;
+                this.Octree = CreateOctree(this.OctreeParameter);
                 this.Octree?.BuildTree();
             }
             else
@@ -139,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Override to create different octree in subclasses.
         /// </summary>
         /// <returns></returns>
-        protected virtual IOctree CreateOctree(float minSize, bool autoDeleteIfEmpty)
+        protected virtual IOctree CreateOctree(OctreeBuildParameter parameter)
         {
             return null;
         }

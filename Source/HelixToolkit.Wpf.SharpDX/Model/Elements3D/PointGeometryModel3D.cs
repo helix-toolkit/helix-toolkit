@@ -21,7 +21,6 @@
         protected Buffer vertexBuffer;
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
-        protected EffectVectorVariable vViewport;
         protected EffectVectorVariable vPointParams;
 
         public override int VertexSizeInBytes
@@ -98,64 +97,70 @@
         /// <returns>True if the ray hits one or more times.</returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
-            PointGeometry3D pointGeometry3D;
-            Viewport3DX viewport;
-
-            if (this.Visibility == Visibility.Collapsed ||
-                this.IsHitTestVisible == false ||
-                (viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
-                (pointGeometry3D = this.Geometry as PointGeometry3D) == null)
+            if (Geometry.Octree != null)
             {
-                return false;
+                return Geometry.Octree.HitTest(this, ModelMatrix, rayWS, ref hits);
             }
-
-            var svpm = viewport.GetScreenViewProjectionMatrix();
-            var smvpm = this.modelMatrix * svpm;
-
-            var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-            var pos4 = new Vector4(rayWS.Position, 1);
-            var dir3 = new Vector3();
-            Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-            Vector4.Transform(ref pos4, ref svpm, out pos4);
-            Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
-            dir3.Normalize();
-
-            var clickPoint = clickPoint4.ToVector3();
-
-            var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
-            var maxDist = this.HitTestThickness;
-            var lastDist = double.MaxValue;
-            var index = 0;
-
-            foreach (var point in pointGeometry3D.Points)
+            else
             {
-                var p0 = Vector3.TransformCoordinate(point.P0, smvpm);
-                var pv = p0 - clickPoint;
-                var dist = pv.Length();
-                if (dist < lastDist && dist <= maxDist)
+                PointGeometry3D pointGeometry3D;
+                Viewport3DX viewport;
+
+                if (this.Visibility == Visibility.Collapsed ||
+                    this.IsHitTestVisible == false ||
+                    (viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
+                    (pointGeometry3D = this.Geometry as PointGeometry3D) == null)
                 {
-                    lastDist = dist;
-                    Vector4 res;
-                    var lp0 = point.P0;
-                    Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
-                    var pvv = res.ToVector3();
-                    var dst = DistanceRayToPoint(rayWS, pvv);
-                    result.Distance = dst;
-                    result.PointHit = pvv.ToPoint3D();
-                    result.ModelHit = this;
-                    result.IsValid = true;
-                    result.Tag = index;
+                    return false;
                 }
 
-                index++;
-            }
+                var svpm = viewport.GetScreenViewProjectionMatrix();
+                var smvpm = this.modelMatrix * svpm;
 
-            if (result.IsValid)
-            {
-                hits.Add(result);
-            }
+                var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
+                var pos4 = new Vector4(rayWS.Position, 1);
+               // var dir3 = new Vector3();
+                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
+                Vector4.Transform(ref pos4, ref svpm, out pos4);
+                //Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
+                //dir3.Normalize();
 
-            return result.IsValid;
+                var clickPoint = clickPoint4.ToVector3();
+
+                var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
+                var maxDist = this.HitTestThickness;
+                var lastDist = double.MaxValue;
+                var index = 0;
+
+                foreach (var point in pointGeometry3D.Points)
+                {
+                    var p0 = Vector3.TransformCoordinate(point.P0, smvpm);
+                    var pv = p0 - clickPoint;
+                    var dist = pv.Length();
+                    if (dist < lastDist && dist <= maxDist)
+                    {
+                        lastDist = dist;
+                        Vector4 res;
+                        var lp0 = point.P0;
+                        Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
+                        var pvv = res.ToVector3();
+                        result.Distance = (rayWS.Position - res.ToVector3()).Length();
+                        result.PointHit = pvv.ToPoint3D();
+                        result.ModelHit = this;
+                        result.IsValid = true;
+                        result.Tag = index;
+                    }
+
+                    index++;
+                }
+
+                if (result.IsValid)
+                {
+                    hits.Add(result);
+                }
+
+                return result.IsValid;
+            }
         }
 
         protected override void OnRasterStateChanged()
@@ -184,7 +189,7 @@
 
         private void OnColorChanged()
         {
-             if(IsAttached)
+            if(IsAttached)
                 CreateVertexBuffer();
         }
 
@@ -258,8 +263,6 @@
             CreateVertexBuffer();
 
             /// --- set up const variables
-            vViewport = effect.GetVariableByName("vViewport").AsVector();
-            //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 
             /// --- set effect per object const vars
@@ -277,7 +280,6 @@
         protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
-            Disposer.RemoveAndDispose(ref this.vViewport);
             Disposer.RemoveAndDispose(ref this.rasterState);
 
             this.renderTechnique = null;
@@ -306,16 +308,6 @@
         /// </summary>
         protected override void OnRender(RenderContext renderContext)
         {       
-            /// --- since these values are changed only per window resize, we set them only once here
-            if (renderContext.Camera is ProjectionCamera)
-            {
-                var c = renderContext.Camera as ProjectionCamera;
-                // viewport: W,H,0,0   
-                var viewport = new Vector4((float)renderContext.Canvas.ActualWidth, (float)renderContext.Canvas.ActualHeight, 0, 0);
-                var ar = viewport.X / viewport.Y;
-                this.vViewport.Set(ref viewport);
-            }
-            
             /// --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
