@@ -16,6 +16,8 @@ namespace DataTemplateDemo
     using System.Windows.Media.Media3D;
     using System.Collections.Specialized;
     using System.Collections.Generic;
+    using HelixToolkit.Wpf;
+    using System.Linq;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items.supports generating child items by a
@@ -33,6 +35,12 @@ namespace DataTemplateDemo
         /// </summary>
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
             "ItemTemplate", typeof(DataTemplate3D), typeof(ItemsVisual3D), new PropertyMetadata(null));
+
+        /// <summary>
+        ///     The item template selector property
+        /// </summary>
+        public static readonly DependencyProperty ItemTemplateSelectorProperty = DependencyProperty.Register(
+            "ItemTemplateSelector", typeof(DataTemplateSelector3D), typeof(ItemsVisual3D), new PropertyMetadata(new DefaultDataTemplateSelctor3D()));
 
         /// <summary>
         ///     The items source property
@@ -63,6 +71,25 @@ namespace DataTemplateDemo
         }
 
         /// <summary>
+        ///     Gets or sets the <see cref="DataTemplateSelector3D" /> used to locate the <see cref="DataTemplate3D"/> to use.
+        /// </summary>
+        /// <value>
+        ///     The item template selector.
+        /// </value>
+        public DataTemplateSelector3D ItemTemplateSelector
+        {
+            get
+            {
+                return (DataTemplateSelector3D)this.GetValue(ItemTemplateSelectorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ItemTemplateSelectorProperty, value);
+            }
+        }
+
+        /// <summary>
         ///     Gets or sets a collection used to generate the content of the <see cref="ItemsVisual3D" />.
         /// </summary>
         /// <value>
@@ -81,7 +108,6 @@ namespace DataTemplateDemo
             }
         }
 
-
         /// <summary>
         /// Keeps track of the visuals created for each item.
         /// </summary>
@@ -98,46 +124,57 @@ namespace DataTemplateDemo
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            var observableCollection = this.ItemsSource as INotifyCollectionChanged;
+            var oldObservableCollection = e.OldValue as INotifyCollectionChanged;
+            if (oldObservableCollection != null)
+            {
+                oldObservableCollection.CollectionChanged -= this.CollectionChanged;
+            }
+
+            var observableCollection = e.NewValue as INotifyCollectionChanged;
             if (observableCollection != null)
             {
-                // TODO: should also unsubscribe to avoid leaks.
                 observableCollection.CollectionChanged += this.CollectionChanged;
             }
 
             if (this.ItemsSource != null)
             {
-                foreach (var item in this.ItemsSource)
-                {
-                    this.AddItem(item);
-                }
+                AddItems(this.ItemsSource);
             }
         }
 
-        private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void AddItems(IEnumerable items)
+        {
+            if (items != null && items.Cast<object>().Any())
+            {
+                foreach (var item in items)
+                    AddItem(item);
+            }
+        }
+
+        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems)
-                    {
-                        this.AddItem(item);
-                    }
-
+                    AddItems(e.NewItems);
                     break;
+
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var rem in e.OldItems)
-                    {
-                        if (this.visuals.ContainsKey(rem))
-                        {
-                            if (this.visuals[rem] != null)
-                            {
-                                this.Children.Remove(this.visuals[rem]);
-                            }
-                        }
-                    }
-
+                    RemoveItems(e.OldItems);
                     break;
+
+                case NotifyCollectionChangedAction.Replace:
+                    RemoveItems(e.OldItems);
+                    AddItems(e.NewItems);
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    this.Children.Clear();
+                    this.visuals.Clear();
+
+                    this.AddItems(ItemsSource);
+                    break;
+
                 default:
                     break;
             }
@@ -145,18 +182,9 @@ namespace DataTemplateDemo
 
         private void AddItem(object item)
         {
-            Visual3D visual;
-            if (this.ItemTemplate != null)
-            {
-                visual = this.ItemTemplate.CreateItem(item);
-            }
-            else
-                visual = item as Visual3D;
-
+            var visual = CreateVisualFromModel(item);
             if (visual != null)
             {
-
-                // todo: set up bindings?
                 // Cannot set DataContext, set bindings manually
                 // http://stackoverflow.com/questions/7725313/how-can-i-use-databinding-for-3d-elements-like-visual3d-or-uielement3d
                 this.Children.Add(visual);
@@ -166,6 +194,47 @@ namespace DataTemplateDemo
             else
             {
                 throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
+            }
+        }
+        private void RemoveItems(IEnumerable items)
+        {
+            if (items == null)
+                return;
+
+            foreach (var rem in items)
+            {
+                if (visuals.ContainsKey(rem))
+                {
+                    if (visuals[rem] != null)
+                    {
+                        Children.Remove(visuals[rem]);
+                    }
+                }
+            }
+        }
+
+        private Visual3D CreateVisualFromModel(object item)
+        {
+            if (this.ItemTemplate != null)
+            {
+                return this.ItemTemplate.CreateItem(item);
+            }
+            else if (ItemTemplateSelector != null)
+            {
+                var viewPort = Visual3DHelper.GetViewport3D(this);
+                var dataTemplate = ItemTemplateSelector.SelectTemplate(item, viewPort);
+                if (dataTemplate != null)
+                {
+                    return dataTemplate.CreateItem(item);
+                }
+                else
+                {
+                    return item as Visual3D;
+                }
+            }
+            else
+            {
+                return item as Visual3D;
             }
         }
     }

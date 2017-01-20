@@ -95,6 +95,18 @@
     <Compile Include="Examples\CursorPosition\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\DataTemplate\BindingConverter.cs" />
+    <Compile Include="Examples\DataTemplate\BindingExtensions.cs" />
+    <Compile Include="Examples\DataTemplate\DataTemplateSelector3D.cs" />
+    <Compile Include="Examples\DataTemplate\DefaultDataTemplateSelctor3D.cs" />
+    <Compile Include="Examples\DataTemplate\CubeElement.cs" />
+    <Compile Include="Examples\DataTemplate\Extensions.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement2.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement1.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement.cs" />
+    <Compile Include="Examples\DataTemplate\MultiBindingConverter.cs" />
+    <Compile Include="Examples\DataTemplate\MultiConverterPassThrough.cs" />
+    <Compile Include="Examples\DataTemplate\SphereElement.cs" />
     <Compile Include="Examples\ExtrudedText\Extensions.cs" />
     <Compile Include="Examples\ExtrudedText\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
