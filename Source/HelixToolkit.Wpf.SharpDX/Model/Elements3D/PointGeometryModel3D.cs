@@ -178,7 +178,7 @@
                 IsDepthClipEnabled = true,
                 IsFrontCounterClockwise = false,
                 IsMultisampleEnabled = true,
-                IsScissorEnabled = IsScissorEnabled
+                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
 
             try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }

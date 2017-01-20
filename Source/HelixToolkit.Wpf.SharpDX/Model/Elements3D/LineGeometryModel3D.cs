@@ -198,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 IsMultisampleEnabled = IsMultisampleEnabled,
                 //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
-                IsScissorEnabled = IsScissorEnabled,
+                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
 
             try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
