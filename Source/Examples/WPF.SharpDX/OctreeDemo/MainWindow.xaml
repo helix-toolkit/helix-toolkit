@@ -20,12 +20,14 @@
             x:Name="view1"
             Title="{Binding Title}"
             Camera="{Binding Camera}"
-            CameraRotationMode="Trackball" CameraMode="WalkAround"
+            CameraMode="WalkAround"
+            CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
+            EnableRenderFrustum="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
-            ShowFrameRate="True" 
-            TextBrush="Black" EnableRenderFrustum="True"
+            ShowFrameRate="True"
+            TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -51,21 +53,33 @@
                 Geometry="{Binding DefaultModel}"
                 IsRendering="{Binding Visibility}"
                 Material="{Binding Material}" />-->
-            <hx:PointGeometryModel3D Geometry="{Binding PointsModel}" Color="{Binding PointColor}" Figure="Ellipse" Size="2 2"/>
-            <hx:PointGeometryModel3D Geometry="{Binding PointsHitModel}" Color="{Binding PointHitColor}" Figure="Ellipse" Size="5 5"/>
+            <hx:PointGeometryModel3D
+                Figure="Ellipse"
+                Geometry="{Binding PointsModel}"
+                Size="2 2"
+                Color="{Binding PointColor}" />
+            <hx:PointGeometryModel3D
+                Figure="Ellipse"
+                Geometry="{Binding PointsHitModel}"
+                Size="5 5"
+                Color="{Binding PointHitColor}" />
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
                 <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager MinObjectSizeToSplit="4"
-                        x:Name="groupOctreeMgr" Cubify="True"
+                    <hx:GeometryModel3DOctreeManager
+                        x:Name="groupOctreeMgr"
                         AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
+                        Cubify="True"
+                        MinObjectSizeToSplit="4"
                         RecordHitPathBoundingBoxes="False" />
                 </hx:ItemsModel3D.OctreeManager>
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
+                            CullMode="Back"
                             FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
-                            Geometry="{Binding Model}" Transform="{Binding DynamicTransform}"
-                            Material="{Binding Material}" />
+                            Geometry="{Binding Model}"
+                            Material="{Binding Material}"
+                            Transform="{Binding DynamicTransform}" />
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
@@ -85,10 +99,13 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>-->
-            <hx:OctreeLineGeometryModel3D Octree="{Binding PointsModel.Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
-            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
-            <hx:OctreeLineGeometryModel3D Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
-            <hx:OctreeLineGeometryModel3D LineColor="{Binding LineColor}" Octree="{Binding DefaultModel.Octree}" IsRendering="{Binding OctreeFrameVisible}"/>
+            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" />
+            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
+            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />
+            <hx:OctreeLineGeometryModel3D
+                IsRendering="{Binding OctreeFrameVisible}"
+                LineColor="{Binding LineColor}"
+                Octree="{Binding DefaultModel.Octree}" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
