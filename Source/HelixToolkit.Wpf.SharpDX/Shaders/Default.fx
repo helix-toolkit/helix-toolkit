@@ -316,7 +316,14 @@ PSInput VInstancingShader(VSInstancingInput input)
 
 	//set texture coords and color
 	output.t = input.t + input.tOffset;
-	output.c = input.diffuseC;
+	if (input.diffuseC.a == 0 && input.diffuseC.r == 0 && input.diffuseC.g == 0 && input.diffuseC.b == 0)
+	{
+		output.c = vMaterialDiffuse;
+	}
+	else 
+	{
+		output.c = input.diffuseC;
+	}
 
 	//set normal for interpolation	
 	output.n = normalize(mul(input.n, (float3x3)mWorld));
