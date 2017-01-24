@@ -37,7 +37,7 @@
 
             <hx:InstancingMeshGeometryModel3D
                 x:Name="mesh" InstanceColorArray="{Binding DiffuseColors}"
-                Geometry="{Binding Model}"
+                Geometry="{Binding Model}" InstanceTextureOffsetArray="{Binding TextureOffset}"
                 Instances="{Binding ModelInstances}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />

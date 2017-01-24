@@ -17,6 +17,7 @@ namespace InstancingDemo
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using HelixToolkit.Wpf;
     using System;
+    using System.IO;
 
     public class MainViewModel : BaseViewModel
     {
@@ -26,6 +27,8 @@ namespace InstancingDemo
         public IEnumerable<Matrix> ModelInstances { get; private set; }
 
         public IEnumerable<Color4> DiffuseColors { get; private set; }
+
+        public IEnumerable<Vector2> TextureOffset { get; private set; }
         public PhongMaterial ModelMaterial { get; private set; }        
         public Media3D.Transform3D ModelTransform { get; private set; }
 
@@ -47,10 +50,14 @@ namespace InstancingDemo
             this.DirectionalLightDirection = new Vector3(-2, -5, -2);
 
             // scene model3d
-            var b1 = new MeshBuilder(); 
-            b1.AddBox(new Vector3(0, 0, 0), 0.8, 0.8, 0.5, BoxFaces.All);
+            var b1 = new MeshBuilder(true, true); 
+            b1.AddBox(new Vector3(0, 0, 0), 1, 1, 1, BoxFaces.All);
             Model = b1.ToMeshGeometry3D();
-
+            for(int i=0; i<Model.TextureCoordinates.Count; ++i)
+            {
+                var tex = Model.TextureCoordinates[i];
+                Model.TextureCoordinates[i] = new Vector2(tex.X * 0.5f, tex.Y * 0.5f);
+            }
             var l1 = new LineBuilder();
             l1.AddBox(new Vector3(0, 0, 0), 0.8, 0.8, 0.5);
             Lines = l1.ToLineGeometry3D();   
@@ -58,16 +65,35 @@ namespace InstancingDemo
             int num = 10;
             var instances = new List<Matrix>();
             var colors = new List<Color4>();
+            var texOffset = new List<Vector2>();
             for (int i = -num; i < num; i++)
             {
                 for (int j = -num; j < num; j++)
                 {
                     instances.Add(Matrix.Translation(new Vector3(i / 1.0f, j / 1.0f, 0f)));
                     colors.Add(new Color4((float)Math.Abs(i)/num, (float)Math.Abs(j)/num, (float)Math.Abs(i+j)/(2*num), 1));
+                    var k = Math.Abs(i + j) % 4;
+                    if (k == 0)
+                    {
+                        texOffset.Add(new Vector2(0, 0));
+                    }
+                    else if (k == 1)
+                    {
+                        texOffset.Add(new Vector2(0.5f, 0));
+                    }
+                    else if (k == 2)
+                    {
+                        texOffset.Add(new Vector2(0.5f, 0.5f));
+                    }
+                    else
+                    {
+                        texOffset.Add(new Vector2(0, 0.5f));
+                    }
                 }
             }
             ModelInstances = instances;
             DiffuseColors = colors;
+            TextureOffset = texOffset;
             SubTitle = "Number of Instances: " + instances.Count.ToString();
 
             // model trafo
@@ -75,7 +101,7 @@ namespace InstancingDemo
 
             // model material
             ModelMaterial = PhongMaterials.Glass;
-
+            ModelMaterial.DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
