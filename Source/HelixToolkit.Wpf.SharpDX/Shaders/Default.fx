@@ -285,7 +285,7 @@ PSInput VInstancingShader(VSInstancingInput input)
 	float4 inputp = input.p;
 
 	// compose instance matrix
-	if (bHasInstances)
+	if (bHasInstances || bHasAdvInstancing)
 	{
 		matrix mInstance =
 		{
