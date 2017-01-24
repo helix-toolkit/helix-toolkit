@@ -97,9 +97,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="TextureCheckerboard2_dot3.jpg">
+    <Content Include="TextureCheckerboard2_dot3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
     <Content Include="TextureCheckerboard2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

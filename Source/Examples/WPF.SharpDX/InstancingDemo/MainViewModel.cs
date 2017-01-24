@@ -50,7 +50,7 @@ namespace InstancingDemo
             this.DirectionalLightDirection = new Vector3(-2, -5, -2);
 
             // scene model3d
-            var b1 = new MeshBuilder(true, true); 
+            var b1 = new MeshBuilder(true, true, true); 
             b1.AddBox(new Vector3(0, 0, 0), 1, 1, 1, BoxFaces.All);
             Model = b1.ToMeshGeometry3D();
             for(int i=0; i<Model.TextureCoordinates.Count; ++i)
@@ -102,6 +102,7 @@ namespace InstancingDemo
             // model material
             ModelMaterial = PhongMaterials.Glass;
             ModelMaterial.DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+            ModelMaterial.NormalMap = new FileStream(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
