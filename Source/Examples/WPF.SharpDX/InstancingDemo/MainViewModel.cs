@@ -16,6 +16,7 @@ namespace InstancingDemo
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using HelixToolkit.Wpf;
+    using System;
 
     public class MainViewModel : BaseViewModel
     {
@@ -23,6 +24,8 @@ namespace InstancingDemo
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
         public IEnumerable<Matrix> ModelInstances { get; private set; }
+
+        public IEnumerable<Color4> DiffuseColors { get; private set; }
         public PhongMaterial ModelMaterial { get; private set; }        
         public Media3D.Transform3D ModelTransform { get; private set; }
 
@@ -54,14 +57,17 @@ namespace InstancingDemo
 
             int num = 10;
             var instances = new List<Matrix>();
+            var colors = new List<Color4>();
             for (int i = -num; i < num; i++)
             {
                 for (int j = -num; j < num; j++)
                 {
                     instances.Add(Matrix.Translation(new Vector3(i / 1.0f, j / 1.0f, 0f)));
+                    colors.Add(new Color4((float)Math.Abs(i)/num, (float)Math.Abs(j)/num, (float)Math.Abs(i+j)/(2*num), 1));
                 }
             }
             ModelInstances = instances;
+            DiffuseColors = colors;
             SubTitle = "Number of Instances: " + instances.Count.ToString();
 
             // model trafo

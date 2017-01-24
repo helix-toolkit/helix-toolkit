@@ -6,7 +6,7 @@ using SharpDX.DXGI;
 using System.Collections.Generic;
 using System.Windows;
 
-namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
+namespace HelixToolkit.Wpf.SharpDX
 {
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
@@ -77,6 +77,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
             model.instanceTextureOffsetBufferChanged = true;
         }
 
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn];
+        }
+
         protected override void OnRender(RenderContext renderContext)
         {
             /// --- set constant paramerers             
@@ -135,8 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
             if (this.hasInstances)
             {
-                var bufferList = new List<VertexBufferBinding>(4);
-                bufferList.Add(new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
+                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
                 /// --- update instance buffer
                 if (this.isChanged)
                 {
@@ -149,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
                     Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
                     stream.Dispose();
                     this.isChanged = false;
-                    bufferList.Add(new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
+                    this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
                 }
 
                 if(instanceColorArrayChanged)
@@ -164,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
                         stream.WriteRange(this.instanceColorArray, 0, this.instanceColorArray.Length);
                         Device.ImmediateContext.UnmapSubresource(this.instanceColorBuffer, 0);
                         stream.Dispose();
-                        bufferList.Add(new VertexBufferBinding(this.instanceColorBuffer, Vector4.SizeInBytes, 0));
+                        this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceColorBuffer, Vector4.SizeInBytes, 0));
                     }
                     this.instanceColorArrayChanged = false;
                 }
@@ -181,13 +185,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Elements3D
                         stream.WriteRange(this.instanceTextureOffsetArray, 0, this.instanceTextureOffsetArray.Length);
                         Device.ImmediateContext.UnmapSubresource(this.instanceTextureOffsetBuffer, 0);
                         stream.Dispose();
-                        bufferList.Add(new VertexBufferBinding(this.instanceTextureOffsetBuffer, Vector2.SizeInBytes, 0));
+                        this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(3, new VertexBufferBinding(this.instanceTextureOffsetBuffer, Vector2.SizeInBytes, 0));
                     }
                     this.instanceTextureOffsetBufferChanged = false;
                 }
-                
-                /// --- INSTANCING: need to set 2 buffers            
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, bufferList.ToArray());
 
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
