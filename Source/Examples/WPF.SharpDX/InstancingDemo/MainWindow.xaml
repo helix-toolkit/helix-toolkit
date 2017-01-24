@@ -36,9 +36,9 @@
             <hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds" />
 
             <hx:InstancingMeshGeometryModel3D
-                x:Name="mesh" InstanceColorArray="{Binding DiffuseColors}"
-                Geometry="{Binding Model}" InstanceTextureOffsetArray="{Binding TextureOffset}"
-                Instances="{Binding ModelInstances}"
+                x:Name="mesh"
+                Geometry="{Binding Model}"
+                InstanceAdvArray="{Binding AdvInstances}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
 

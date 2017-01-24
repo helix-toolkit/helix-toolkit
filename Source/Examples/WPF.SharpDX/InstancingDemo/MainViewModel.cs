@@ -26,9 +26,8 @@ namespace InstancingDemo
         public LineGeometry3D Grid { get; private set; }
         public IEnumerable<Matrix> ModelInstances { get; private set; }
 
-        public IEnumerable<Color4> DiffuseColors { get; private set; }
+        public IEnumerable<InstanceParameter> AdvInstances { get; private set; }
 
-        public IEnumerable<Vector2> TextureOffset { get; private set; }
         public PhongMaterial ModelMaterial { get; private set; }        
         public Media3D.Transform3D ModelTransform { get; private set; }
 
@@ -63,37 +62,38 @@ namespace InstancingDemo
             Lines = l1.ToLineGeometry3D();   
 
             int num = 10;
-            var instances = new List<Matrix>();
-            var colors = new List<Color4>();
-            var texOffset = new List<Vector2>();
+            var instances1 = new List<Matrix>();
+            var instances = new List<InstanceParameter>();
             for (int i = -num; i < num; i++)
             {
                 for (int j = -num; j < num; j++)
                 {
-                    instances.Add(Matrix.Translation(new Vector3(i*1.2f / 1.0f, j*1.2f / 1.0f, 0f)));
-                    colors.Add(new Color4((float)Math.Abs(i)/num, (float)Math.Abs(j)/num, (float)Math.Abs(i+j)/(2*num), 1));
+                    var matrix = Matrix.Translation(new Vector3(i*1.2f / 1.0f, j*1.2f / 1.0f, 0f));
+                    var color = new Color4((float)Math.Abs(i)/num, (float)Math.Abs(j)/num, (float)Math.Abs(i+j)/(2*num), 1);
                     var k = Math.Abs(i + j) % 4;
+                    Vector2 offset;
                     if (k == 0)
                     {
-                        texOffset.Add(new Vector2(0, 0));
+                        offset = new Vector2(0, 0);
                     }
                     else if (k == 1)
                     {
-                        texOffset.Add(new Vector2(0.5f, 0));
+                        offset = new Vector2(0.5f, 0);
                     }
                     else if (k == 2)
                     {
-                        texOffset.Add(new Vector2(0.5f, 0.5f));
+                        offset = new Vector2(0.5f, 0.5f);
                     }
                     else
                     {
-                        texOffset.Add(new Vector2(0, 0.5f));
+                        offset = new Vector2(0, 0.5f);
                     }
+                    instances.Add(new InstanceParameter() { InstanceMatrix = matrix, DiffuseColor = color, TexCoordOffset = offset });
+                    instances1.Add(matrix);
                 }
             }
-            ModelInstances = instances;
-            DiffuseColors = colors;
-            TextureOffset = texOffset;
+            AdvInstances = instances;
+            ModelInstances = instances1;
             SubTitle = "Number of Instances: " + instances.Count.ToString();
 
             // model trafo

@@ -316,7 +316,7 @@ PSInput VInstancingShader(VSInstancingInput input)
 
 	//set texture coords and color
 	output.t = input.t + input.tOffset;
-	if (input.diffuseC.a == 0 && input.diffuseC.r == 0 && input.diffuseC.g == 0 && input.diffuseC.b == 0)
+	if (!bHasAdvInstancing)
 	{
 		output.c = vMaterialDiffuse;
 	}

@@ -10,71 +10,39 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
-        protected Buffer instanceColorBuffer = null;
-        protected Buffer instanceTextureOffsetBuffer = null;
-        protected bool instanceColorArrayChanged = true;
-        protected bool instanceTextureOffsetBufferChanged = true;
-
-        protected Color4[] instanceColorArray;
-        protected Vector2[] instanceTextureOffsetArray;
-
+        protected Buffer instanceAdvBuffer = null;
+        protected bool instanceAdvArrayChanged = true;
+        protected bool hasAdvInstancing = false;
+        protected InstanceParameter[] instanceAdvArray;
+        private EffectScalarVariable hasAdvInstancingVar;
         /// <summary>
         /// 
         /// </summary>
-        public IEnumerable<Color4> InstanceColorArray
+        public IEnumerable<InstanceParameter> InstanceAdvArray
         {
-            get { return (IEnumerable<Color4>)this.GetValue(InstanceColorArrayProperty); }
-            set { this.SetValue(InstanceColorArrayProperty, value); }
+            get { return (IEnumerable<InstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
+            set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public static readonly DependencyProperty InstanceColorArrayProperty =
-            DependencyProperty.Register("InstanceColorArray", typeof(IEnumerable<Color4>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesColorChanged));
+        public static readonly DependencyProperty InstanceAdvArrayProperty =
+            DependencyProperty.Register("InstanceAdvArray", typeof(IEnumerable<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public IEnumerable<Vector2> InstanceTextureOffsetArray
-        {
-            get { return (IEnumerable<Vector2>)this.GetValue(InstanceTextureOffsetArrayProperty); }
-            set { this.SetValue(InstanceTextureOffsetArrayProperty, value); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty InstanceTextureOffsetArrayProperty =
-            DependencyProperty.Register("InstanceTextureOffsetArray", typeof(IEnumerable<Vector2>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesTexOffsetChanged));
-
-        protected static void InstancesColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstancingMeshGeometryModel3D)d;
             if (e.NewValue != null)
             {
-                model.instanceColorArray = ((IEnumerable<Color4>)e.NewValue).ToArray();
+                model.instanceAdvArray = ((IEnumerable<InstanceParameter>)e.NewValue).ToArray();
             }
             else
             {
-                model.instanceColorArray = null;
+                model.instanceAdvArray = null;
             }
-            model.instanceColorArrayChanged = true;
-        }
-
-        protected static void InstancesTexOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var model = (InstancingMeshGeometryModel3D)d;
-            if (e.NewValue != null)
-            {
-                model.instanceTextureOffsetArray = ((IEnumerable<Vector2>)e.NewValue).ToArray();
-            }
-            else
-            {
-                model.instanceTextureOffsetArray = null;
-            }
-            model.instanceTextureOffsetBufferChanged = true;
+            model.instanceAdvArrayChanged = true;
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
@@ -126,11 +94,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- check instancing
             this.hasInstances = (this.Instances != null) && (this.Instances.Any());
-            if (this.bHasInstances != null)
-            {
-                this.bHasInstances.Set(this.hasInstances);
-            }
-
+            this.hasAdvInstancing = (this.InstanceAdvArray != null && this.instanceAdvArray.Any());
+            this.bHasInstances?.Set(this.hasInstances || this.hasAdvInstancing);
+            this.hasAdvInstancingVar?.Set(this.hasAdvInstancing);
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
@@ -138,9 +104,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             /// --- set rasterstate            
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
+            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
             if (this.hasInstances)
             {
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
                 /// --- update instance buffer
                 if (this.isChanged)
                 {
@@ -153,52 +119,38 @@ namespace HelixToolkit.Wpf.SharpDX
                     Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
                     stream.Dispose();
                     this.isChanged = false;
-                    this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
                 }
-
-                if(instanceColorArrayChanged)
-                {
-                    Disposer.RemoveAndDispose(ref instanceColorBuffer);
-                    if(instanceColorArray !=null && instanceColorArray.Length == instanceArray.Length)
-                    {
-                        this.instanceColorBuffer = Buffer.Create(this.Device, this.instanceColorArray, new BufferDescription(Vector4.SizeInBytes * this.instanceColorArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                        DataStream stream;
-                        Device.ImmediateContext.MapSubresource(this.instanceColorBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                        stream.Position = 0;
-                        stream.WriteRange(this.instanceColorArray, 0, this.instanceColorArray.Length);
-                        Device.ImmediateContext.UnmapSubresource(this.instanceColorBuffer, 0);
-                        stream.Dispose();
-                        this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceColorBuffer, Vector4.SizeInBytes, 0));
-                    }
-                    this.instanceColorArrayChanged = false;
-                }
-
-                if (instanceTextureOffsetBufferChanged)
-                {
-                    Disposer.RemoveAndDispose(ref instanceTextureOffsetBuffer);
-                    if(instanceTextureOffsetArray != null && instanceTextureOffsetArray.Length == instanceArray.Length)
-                    {
-                        this.instanceTextureOffsetBuffer = Buffer.Create(this.Device, this.instanceTextureOffsetArray, new BufferDescription(Vector2.SizeInBytes * this.instanceTextureOffsetArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                        DataStream stream;
-                        Device.ImmediateContext.MapSubresource(this.instanceTextureOffsetBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                        stream.Position = 0;
-                        stream.WriteRange(this.instanceTextureOffsetArray, 0, this.instanceTextureOffsetArray.Length);
-                        Device.ImmediateContext.UnmapSubresource(this.instanceTextureOffsetBuffer, 0);
-                        stream.Dispose();
-                        this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(3, new VertexBufferBinding(this.instanceTextureOffsetBuffer, Vector2.SizeInBytes, 0));
-                    }
-                    this.instanceTextureOffsetBufferChanged = false;
-                }
-
+                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
                 this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
             }
+            else if (this.hasAdvInstancing)
+            {
+                if (instanceAdvArrayChanged)
+                {
+                    Disposer.RemoveAndDispose(ref instanceAdvBuffer);
+                    if (instanceAdvArray != null)
+                    {
+                        this.instanceAdvBuffer = Buffer.Create(this.Device, this.instanceAdvArray, new BufferDescription(InstanceParameter.SizeInBytes * this.instanceAdvArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                        DataStream stream;
+                        Device.ImmediateContext.MapSubresource(this.instanceAdvBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                        stream.Position = 0;
+                        stream.WriteRange(this.instanceAdvArray, 0, this.instanceAdvArray.Length);
+                        Device.ImmediateContext.UnmapSubresource(this.instanceAdvBuffer, 0);
+                        stream.Dispose();
+                    }
+                    this.instanceAdvArrayChanged = false;
+                }
+                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceAdvBuffer, InstanceParameter.SizeInBytes, 0));
+                /// --- render the geometry
+                this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+                /// --- draw
+                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceAdvArray.Length, 0, 0, 0);
+            }
             else
             {
-                /// --- bind buffer                
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
                 /// --- render the geometry
                 /// 
                 var pass = this.effectTechnique.GetPassByIndex(0);
@@ -211,15 +163,15 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnAttached()
         {
             base.OnAttached();
-            instanceColorArrayChanged = true;
-            instanceTextureOffsetBufferChanged = true;
+            instanceAdvArrayChanged = true;
+            hasAdvInstancingVar = effect.GetVariableByName("bHasAdvInstancing").AsScalar();
         }
 
         protected override void OnDetach()
         {
             base.OnDetach();
-            Disposer.RemoveAndDispose(ref instanceColorBuffer);
-            Disposer.RemoveAndDispose(ref instanceTextureOffsetBuffer);
+            Disposer.RemoveAndDispose(ref instanceAdvBuffer);
+            Disposer.RemoveAndDispose(ref hasAdvInstancingVar);
         }
     }
 }
