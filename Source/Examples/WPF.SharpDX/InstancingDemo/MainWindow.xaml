@@ -39,11 +39,12 @@
             <hx:InstancingMeshGeometryModel3D
                 x:Name="mesh"
                 Geometry="{Binding Model}"
-                InstanceAdvArray="{Binding AdvInstances}"
+                InstanceParamArray="{Binding InstanceParam}"
+                Instances="{Binding ModelInstances}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}">
                 <hx:InstancingMeshGeometryModel3D.OctreeManager>
-                    <hx:InstancingModel3DOctreeManager x:Name="manager"  RecordHitPathBoundingBoxes="True"/>
+                    <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" />
                 </hx:InstancingMeshGeometryModel3D.OctreeManager>
             </hx:InstancingMeshGeometryModel3D>
             <hx:OctreeLineGeometryModel3D Octree="{Binding Octree, ElementName=manager}" />

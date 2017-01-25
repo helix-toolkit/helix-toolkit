@@ -12,16 +12,16 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
-        protected Buffer instanceAdvBuffer = null;
-        protected bool instanceAdvArrayChanged = true;
-        protected bool hasAdvInstancing = false;
-        protected InstanceParameter[] instanceAdvArray;
-        private EffectScalarVariable hasAdvInstancingVar;
-        public bool HasAdvInstancing { get { return hasAdvInstancing; } }
+        protected Buffer instanceParamBuffer = null;
+        protected bool instanceParamArrayChanged = true;
+        protected bool hasInstanceParam = false;
+        protected InstanceParameter[] instanceParamArray;
+        private EffectScalarVariable hasInstanceParamVar;
+        public bool HasAdvInstancing { get { return hasInstanceParam; } }
         /// <summary>
         /// 
         /// </summary>
-        public IEnumerable<InstanceParameter> InstanceAdvArray
+        public IEnumerable<InstanceParameter> InstanceParamArray
         {
             get { return (IEnumerable<InstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
             set { this.SetValue(InstanceAdvArrayProperty, value); }
@@ -60,28 +60,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
-            DependencyProperty.Register("InstanceAdvArray", typeof(IEnumerable<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("InstanceParamArray", typeof(IEnumerable<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
 
 
-        private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstancingMeshGeometryModel3D)d;
-            model.InstancesChanged();           
+            model.InstancesParamChanged();       
         }
 
-        protected override void InstancesChanged()
+        protected void InstancesParamChanged()
         {
-            if (InstanceAdvArray != null)
+            if (InstanceParamArray != null)
             {
-                instanceAdvArray = InstanceAdvArray.ToArray();
+                instanceParamArray = InstanceParamArray.ToArray();
             }
             else
             {
-                instanceAdvArray = null;
+                instanceParamArray = null;
             }
-            hasAdvInstancing = (instanceAdvArray != null && instanceAdvArray.Any());
-            instanceAdvArrayChanged = true;
-            base.InstancesChanged();
+            hasInstanceParam = (instanceParamArray != null && instanceParamArray.Any());
+            instanceParamArrayChanged = true;
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
@@ -89,24 +88,24 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn];
         }
 
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context);
-        }
+        //protected override bool CanRender(RenderContext context)
+        //{
+        //    return base.CanRender(context);
+        //}
 
-        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
-        {
-            if(hasAdvInstancing || hasInstances)
-            {
-                return boundingFrustum.Intersects(ref instancesBound);
-            }
-            return false;
-        }
+        //protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
+        //{
+        //    if(hasAdvInstancing || hasInstances)
+        //    {
+        //        return boundingFrustum.Intersects(ref instancesBound);
+        //    }
+        //    return false;
+        //}
 
         protected override void OnRender(RenderContext renderContext)
         {
             this.bHasInstances?.Set(this.hasInstances);
-            this.hasAdvInstancingVar?.Set(this.hasAdvInstancing);
+            this.hasInstanceParamVar?.Set(this.hasInstanceParam);
             /// --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
@@ -155,32 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- set rasterstate            
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
             this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
-            if (this.hasAdvInstancing)
-            {
-                if (instanceAdvArrayChanged)
-                {
-                    if (instanceAdvBuffer == null || this.instanceAdvBuffer.Description.SizeInBytes < InstanceParameter.SizeInBytes * this.instanceAdvArray.Length)
-                    {
-                        Disposer.RemoveAndDispose(ref instanceAdvBuffer);
-                        this.instanceAdvBuffer = Buffer.Create(this.Device, this.instanceAdvArray,
-                            new BufferDescription(InstanceParameter.SizeInBytes * this.instanceAdvArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
-                            CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                    }
-                    DataStream stream;
-                    Device.ImmediateContext.MapSubresource(this.instanceAdvBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                    stream.Position = 0;
-                    stream.WriteRange(this.instanceAdvArray, 0, this.instanceAdvArray.Length);
-                    Device.ImmediateContext.UnmapSubresource(this.instanceAdvBuffer, 0);
-                    stream.Dispose();
-                    this.instanceAdvArrayChanged = false;
-                }
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceAdvBuffer, InstanceParameter.SizeInBytes, 0));
-                /// --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-                /// --- draw
-                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceAdvArray.Length, 0, 0, 0);
-            }
-            else if (this.hasInstances)
+            if (this.hasInstances)
             {
                 /// --- update instance buffer
                 if (this.isInstanceChanged)
@@ -199,49 +173,57 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.isInstanceChanged = false;
                 }
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
-                /// --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-                /// --- draw
-                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
+                if (this.hasInstanceParam)
+                {
+                    if (instanceParamArrayChanged)
+                    {
+                        if (instanceParamBuffer == null || this.instanceParamBuffer.Description.SizeInBytes < InstanceParameter.SizeInBytes * this.instanceParamArray.Length)
+                        {
+                            Disposer.RemoveAndDispose(ref instanceParamBuffer);
+                            this.instanceParamBuffer = Buffer.Create(this.Device, this.instanceParamArray,
+                                new BufferDescription(InstanceParameter.SizeInBytes * this.instanceParamArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
+                                CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                        }
+                        DataStream stream;
+                        Device.ImmediateContext.MapSubresource(this.instanceParamBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                        stream.Position = 0;
+                        stream.WriteRange(this.instanceParamArray, 0, this.instanceParamArray.Length);
+                        Device.ImmediateContext.UnmapSubresource(this.instanceParamBuffer, 0);
+                        stream.Dispose();
+                        this.instanceParamArrayChanged = false;
+                    }
+                    this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, InstanceParameter.SizeInBytes, 0));
+                }
             }
+            /// --- render the geometry
+            this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+            /// --- draw
+            this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
         }
 
         protected override void OnAttached()
         {
             base.OnAttached();
-            instanceAdvArrayChanged = true;
-            hasAdvInstancingVar = effect.GetVariableByName("bHasAdvInstancing").AsScalar();
+            instanceParamArrayChanged = true;
+            hasInstanceParamVar = effect.GetVariableByName("bHasInstanceParams").AsScalar();
         }
 
         protected override void OnDetach()
         {
             base.OnDetach();
-            Disposer.RemoveAndDispose(ref instanceAdvBuffer);
-            Disposer.RemoveAndDispose(ref hasAdvInstancingVar);
+            Disposer.RemoveAndDispose(ref instanceParamBuffer);
+            Disposer.RemoveAndDispose(ref hasInstanceParamVar);
         }
 
         protected override void UpdateInstancesBounds()
         {
-            if (hasAdvInstancing)
-            {
-                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceAdvArray[0].InstanceMatrix)).ToArray());
-                foreach (var instance in instanceAdvArray)
-                {
-                    var b = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance.InstanceMatrix)).ToArray());
-                    BoundingBox.Merge(ref bound, ref b, out bound);
-                }
-                InstancesBound = bound;
-            }
-            else
-            {
-                base.UpdateInstancesBounds();
-            }
+            base.UpdateInstancesBounds();
             BuildOctree();
         }
 
         private void BuildOctree()
         {
-            if (IsHitTestVisible && (hasAdvInstancing || hasInstances))
+            if (IsHitTestVisible && (hasInstanceParam || hasInstances))
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
@@ -272,14 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         foreach (var hit in boundHits)
                         {
                             int instanceIdx = (int)hit.Tag;
-                            if (hasAdvInstancing)
-                            {
-                                instanceMatrix = instanceAdvArray[instanceIdx].InstanceMatrix;
-                            }
-                            else
-                            {
-                                instanceMatrix = instanceArray[instanceIdx];
-                            }
+                            instanceMatrix = instanceArray[instanceIdx];
                             this.PushMatrix(instanceMatrix);
                             var h = g.Octree.HitTest(this, ModelMatrix, rayWS, ref hits);
                             isHit |= h;
@@ -307,14 +282,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         foreach(var hit in boundHits)
                         {
                             int instanceIdx = (int)hit.Tag;
-                            if (hasAdvInstancing)
-                            {
-                                instanceMatrix = instanceAdvArray[instanceIdx].InstanceMatrix;
-                            }
-                            else
-                            {
-                                instanceMatrix = instanceArray[instanceIdx];
-                            }
+                            instanceMatrix = instanceArray[instanceIdx];
                             this.PushMatrix(instanceMatrix);
 
                             var m = this.modelMatrix;

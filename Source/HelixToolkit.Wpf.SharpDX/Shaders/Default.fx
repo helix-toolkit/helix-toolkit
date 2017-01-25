@@ -77,6 +77,8 @@ struct VSInstancingInput
 	float4 mr3			: TEXCOORD4;
 
 	float4 diffuseC		: COLOR1;
+	float4 ambientC		: COLOR2;
+	float4 emissiveC	: COLOR3;
 	float2 tOffset		: TEXCOORD5;
 };
 
@@ -91,6 +93,7 @@ struct PSInput
 	float3 t1			: TANGENT;		// tangent
 	float3 t2			: BINORMAL;		// bi-tangent	
 	float4 c			: COLOR;		// solid color (for debug)
+	float4 c2			: COLOR1;
 };
 
 
@@ -286,7 +289,7 @@ PSInput VInstancingShader(VSInstancingInput input)
 	float4 inputp = input.p;
 	float4 inputn = float4(input.n, 1);
 	// compose instance matrix
-	if (bHasInstances || bHasAdvInstancing)
+	if (bHasInstances)
 	{
 		matrix mInstance =
 		{
@@ -316,15 +319,18 @@ PSInput VInstancingShader(VSInstancingInput input)
 		}
 	}
 
-	//set texture coords and color
-	output.t = input.t + input.tOffset;
-	if (!bHasAdvInstancing)
+	if (!bHasInstanceParams)
 	{
+		output.t = input.t;
 		output.c = vMaterialDiffuse;
+		output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
 	}
 	else 
 	{
+		//set texture coords and color
+		output.t = input.t + input.tOffset;
 		output.c = input.diffuseC;
+		output.c2 = input.emissiveC + input.ambientC * vLightAmbient;
 	}
 
 	//set normal for interpolation	
@@ -576,7 +582,7 @@ float4 PSInstancingShaderBlinnPhong(PSInput input) : SV_Target
 	float3 eye = normalize(vEyePos - input.wp.xyz);
 
 	// light emissive intensity and add ambient light
-	float4 I = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+	float4 I = input.c2;
 
 	// get shadow color
 	float s = 1;

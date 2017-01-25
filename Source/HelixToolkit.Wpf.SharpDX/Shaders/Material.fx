@@ -49,4 +49,4 @@ Texture2D	texShadowMap;
 TextureCube texCubeMap;
 
 
-bool bHasAdvInstancing = false;
+bool bHasInstanceParams = false;

@@ -44,9 +44,10 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct InstanceParameter
     {
-        public Matrix InstanceMatrix;
         public Color4 DiffuseColor;
+        public Color4 EmissiveColor;
+        public Color4 AmbientColor;
         public Vector2 TexCoordOffset;
-        public const int SizeInBytes = 4 * (4 * 4 + 4 + 2);
+        public const int SizeInBytes = 4 * (4 * 3 + 2);
     }
 }

@@ -26,7 +26,7 @@ namespace InstancingDemo
         public LineGeometry3D Grid { get; private set; }
         public IEnumerable<Matrix> ModelInstances { get; private set; }
 
-        public IEnumerable<InstanceParameter> AdvInstances { get; private set; }
+        public IEnumerable<InstanceParameter> InstanceParam { get; private set; }
 
         public PhongMaterial ModelMaterial { get; private set; }        
         public Media3D.Transform3D ModelTransform { get; private set; }
@@ -62,13 +62,14 @@ namespace InstancingDemo
             Lines = l1.ToLineGeometry3D();   
 
             int num = 10;
-            var instances1 = new List<Matrix>();
-            var instances = new List<InstanceParameter>();
+            var instances = new List<Matrix>();
+            var parameters = new List<InstanceParameter>();
+            var rnd = new Random();
             for (int i = -num; i < num; i++)
             {
                 for (int j = -num; j < num; j++)
                 {
-                    var matrix = Matrix.Translation(new Vector3(i*1.2f / 1.0f, j*1.2f / 1.0f, i*j/2.0f));
+                    var matrix = Matrix.RotationAxis(new Vector3(rnd.NextFloat(0,1), rnd.NextFloat(0, 1), rnd.NextFloat(0, 1)), rnd.NextFloat(-1, 1)) * Matrix.Translation(new Vector3(i*1.2f / 1.0f, j*1.2f / 1.0f, i*j/2.0f));
                     var color = new Color4((float)Math.Abs(i)/num, (float)Math.Abs(j)/num, (float)Math.Abs(i+j)/(2*num), 1);
                     var k = Math.Abs(i + j) % 4;
                     Vector2 offset;
@@ -88,13 +89,14 @@ namespace InstancingDemo
                     {
                         offset = new Vector2(0, 0.5f);
                     }
-                    instances.Add(new InstanceParameter() { InstanceMatrix = matrix, DiffuseColor = color, TexCoordOffset = offset });
-                    instances1.Add(matrix);
+
+                    parameters.Add(new InstanceParameter() { DiffuseColor = color, TexCoordOffset = offset });
+                    instances.Add(matrix);
                 }
             }
-            AdvInstances = instances;
-            ModelInstances = instances1;
-            SubTitle = "Number of Instances: " + instances.Count.ToString();
+            InstanceParam = parameters;
+            ModelInstances = instances;
+            SubTitle = "Number of Instances: " + parameters.Count.ToString();
 
             // model trafo
             ModelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
