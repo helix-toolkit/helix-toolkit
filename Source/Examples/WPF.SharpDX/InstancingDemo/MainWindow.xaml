@@ -23,10 +23,11 @@
             Grid.Row="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
+            EnableRenderFrustum="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black" EnableRenderFrustum="True"
+            TextBrush="Black"
             UseDefaultGestures="True">
 
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
@@ -41,7 +42,7 @@
                 InstanceAdvArray="{Binding AdvInstances}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
-
+            <hx:OctreeLineGeometryModel3D Octree="{Binding Octree, ElementName=mesh}" />
             <hx:LineGeometryModel3D
                 x:Name="lines"
                 Geometry="{Binding Lines}"
@@ -51,7 +52,7 @@
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="0">
-            <Expander
+            <!--<Expander
                 x:Name="shadingPanel"
                 Width="150"
                 Margin="10"
@@ -82,7 +83,7 @@
                         SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
                         SelectedValuePath="Value" />
                 </Grid>
-            </Expander>
+            </Expander>-->
             <Expander
                 Width="150"
                 Margin="10"

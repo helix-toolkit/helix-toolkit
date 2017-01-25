@@ -5,6 +5,7 @@ using SharpDX.Direct3D;
 using SharpDX.DXGI;
 using System.Collections.Generic;
 using System.Windows;
+using HelixToolkit.SharpDX.Shared.Utilities;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -15,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool hasAdvInstancing = false;
         protected InstanceParameter[] instanceAdvArray;
         private EffectScalarVariable hasAdvInstancingVar;
+        private OctreeBuildParameter octreeParams = new OctreeBuildParameter();
+
         /// <summary>
         /// 
         /// </summary>
@@ -24,6 +27,19 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
 
+        public static readonly DependencyProperty OctreeProperty = DependencyProperty.Register("Octree", typeof(IOctree), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null));
+
+        public IOctree Octree
+        {
+            set
+            {
+                SetValue(OctreeProperty, value);
+            }
+            get
+            {
+                return (IOctree)GetValue(OctreeProperty);
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -203,6 +219,31 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 base.UpdateInstancesBounds();
+            }
+            BuildOctree();
+        }
+
+        private void BuildOctree()
+        {
+            if (IsHitTestVisible && (hasAdvInstancing || hasInstances))
+            {
+                IList<Matrix> instMatrix;
+                if (hasAdvInstancing)
+                {
+                    instMatrix = InstanceAdvArray.Select(x => x.InstanceMatrix).ToArray();
+                }
+                else
+                {
+                    instMatrix = instanceArray;
+                }
+                
+                var octree = new InstancingModel3DOctree(instMatrix, BoundsWithTransform, octreeParams, new Queue<IOctree>(256));
+                octree.BuildTree();
+                Octree = octree;
+            }
+            else
+            {
+                Octree = null;
             }
         }
     }

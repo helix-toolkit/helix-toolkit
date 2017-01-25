@@ -68,7 +68,7 @@ namespace InstancingDemo
             {
                 for (int j = -num; j < num; j++)
                 {
-                    var matrix = Matrix.Translation(new Vector3(i*1.2f / 1.0f, j*1.2f / 1.0f, 0f));
+                    var matrix = Matrix.Translation(new Vector3(i*1.2f / 1.0f, j*1.2f / 1.0f, i*j/2.0f));
                     var color = new Color4((float)Math.Abs(i)/num, (float)Math.Abs(j)/num, (float)Math.Abs(i+j)/(2*num), 1);
                     var k = Math.Abs(i + j) % 4;
                     Vector2 offset;
