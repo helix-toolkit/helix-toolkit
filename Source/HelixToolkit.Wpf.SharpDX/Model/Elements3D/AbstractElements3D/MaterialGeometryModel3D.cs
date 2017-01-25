@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isInstanceChanged = true;
         protected bool hasInstances = false;
         protected bool hasShadowMap = false;
-
+        public bool HasInstancing { get { return hasInstances; } }
         public MaterialGeometryModel3D()
         {
         }

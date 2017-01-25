@@ -41,8 +41,12 @@
                 Geometry="{Binding Model}"
                 InstanceAdvArray="{Binding AdvInstances}"
                 Material="{Binding ModelMaterial}"
-                Transform="{Binding ModelTransform}" />
-            <hx:OctreeLineGeometryModel3D Octree="{Binding Octree, ElementName=mesh}" />
+                Transform="{Binding ModelTransform}">
+                <hx:InstancingMeshGeometryModel3D.OctreeManager>
+                    <hx:InstancingModel3DOctreeManager x:Name="manager"  RecordHitPathBoundingBoxes="True"/>
+                </hx:InstancingMeshGeometryModel3D.OctreeManager>
+            </hx:InstancingMeshGeometryModel3D>
+            <hx:OctreeLineGeometryModel3D Octree="{Binding Octree, ElementName=manager}" />
             <hx:LineGeometryModel3D
                 x:Name="lines"
                 Geometry="{Binding Lines}"

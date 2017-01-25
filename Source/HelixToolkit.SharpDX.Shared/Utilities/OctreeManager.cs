@@ -144,12 +144,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected void UpdateOctree(GeometryModel3DOctree tree)
-        {
-            Octree = tree;
-            mOctree = tree;
-        }
-
         public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } protected set { mRequestUpdateOctree = value; } }
         private volatile bool mRequestUpdateOctree = false;
 
@@ -163,6 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public abstract void RequestRebuild();
     }
+
     /// <summary>
     /// Use to create geometryModel3D octree for groups. Each ItemsModel3D must has its own manager, do not share between two ItemsModel3D
     /// </summary>
@@ -171,7 +166,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public GeometryModel3DOctreeManager()
         {
         }
-
+        protected void UpdateOctree(GeometryModel3DOctree tree)
+        {
+            Octree = tree;
+            mOctree = tree;
+        }
         public override void RebuildTree(IList<Element3D> items)
         {
             RequestUpdateOctree = false;
@@ -365,6 +364,52 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Clear();
             RequestUpdateOctree = true;
+        }
+    }
+
+    public sealed class InstancingModel3DOctreeManager : OctreeManagerBase
+    {
+        public override bool AddPendingItem(Element3D item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Clear()
+        {
+            Octree = null;
+        }
+
+        public override void RebuildTree(IList<Element3D> items)
+        {
+            Clear();
+            if (items == null || items.Count == 0)
+            {
+                return;
+            }
+            var model3D = items.Where(x => x is InstancingMeshGeometryModel3D).FirstOrDefault() as InstancingMeshGeometryModel3D;
+            if(model3D == null) { return; }
+            IList<Matrix> instMatrix;
+            if (model3D.HasAdvInstancing)
+            {
+                instMatrix = model3D.InstanceAdvArray.Select(x => x.InstanceMatrix).ToArray();
+            }
+            else
+            {
+                instMatrix = model3D.Instances.ToArray();
+            }
+            var octree = new InstancingModel3DOctree(instMatrix, model3D.BoundsWithTransform, this.Parameter, new Queue<IOctree>(256));
+            octree.BuildTree();
+            Octree = octree;
+        }
+
+        public override void RemoveItem(Element3D item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RequestRebuild()
+        {
+            throw new NotImplementedException();
         }
     }
 }

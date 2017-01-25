@@ -17,8 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool hasAdvInstancing = false;
         protected InstanceParameter[] instanceAdvArray;
         private EffectScalarVariable hasAdvInstancingVar;
-        private OctreeBuildParameter octreeParams = new OctreeBuildParameter();
-
+        public bool HasAdvInstancing { get { return hasAdvInstancing; } }
         /// <summary>
         /// 
         /// </summary>
@@ -27,18 +26,34 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (IEnumerable<InstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
+        /// <summary>
+        /// Add octree manager to use octree hit test.
+        /// </summary>
+        public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
+            typeof(IOctreeManager),
+            typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
+            {
+                var d = s as InstancingMeshGeometryModel3D;
+                if (e.OldValue != null)
+                {
+                    d.RemoveLogicalChild(e.OldValue);
+                }
 
-        public static readonly DependencyProperty OctreeProperty = DependencyProperty.Register("Octree", typeof(IOctree), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null));
+                if (e.NewValue != null)
+                {
+                    d.AddLogicalChild(e.NewValue);
+                }
+            }));
 
-        public IOctree Octree
+        public IOctreeManager OctreeManager
         {
             set
             {
-                SetValue(OctreeProperty, value);
+                SetValue(OctreeManagerProperty, value);
             }
             get
             {
-                return (IOctree)GetValue(OctreeProperty);
+                return (IOctreeManager)GetValue(OctreeManagerProperty);
             }
         }
         /// <summary>
@@ -228,36 +243,25 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (IsHitTestVisible && (hasAdvInstancing || hasInstances))
             {
-                IList<Matrix> instMatrix;
-                if (hasAdvInstancing)
-                {
-                    instMatrix = InstanceAdvArray.Select(x => x.InstanceMatrix).ToArray();
-                }
-                else
-                {
-                    instMatrix = instanceArray;
-                }
-                
-                var octree = new InstancingModel3DOctree(instMatrix, BoundsWithTransform, octreeParams, new Queue<IOctree>(256));
-                octree.BuildTree();
-                Octree = octree;
+                OctreeManager?.RebuildTree(new Element3D[] { this });
             }
             else
             {
-                Octree = null;
+                OctreeManager?.Clear();
             }
         }
 
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
-            if (!IsHitTestVisible || Octree == null)
+            if (!IsHitTestVisible || OctreeManager == null || OctreeManager.Octree == null)
             {
                 return false;
             }
             else
             {
                 var boundHits = new List<HitTestResult>();
-                var isHit = Octree.HitTest(this, ModelMatrix, rayWS, ref boundHits);
+                bool isHit = false;
+                isHit = OctreeManager.Octree.HitTest(this, ModelMatrix, rayWS, ref boundHits);
                 if (isHit)
                 {
                     var g = this.Geometry as MeshGeometry3D;
