@@ -406,7 +406,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool CanRender(RenderContext context)
         {
-            if (context.EnableBoundingFrustum && !context.boundingFrustum.Intersects(ref boundsWithTransform))
+            if (CheckBoundingFrustum() && context.EnableBoundingFrustum && !context.boundingFrustum.Intersects(ref boundsWithTransform))
             {
                 return false;
             }
@@ -422,7 +422,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
         }
-
+        protected virtual bool CheckBoundingFrustum()
+        {
+            return true;
+        }
         ~GeometryModel3D()
         {
 

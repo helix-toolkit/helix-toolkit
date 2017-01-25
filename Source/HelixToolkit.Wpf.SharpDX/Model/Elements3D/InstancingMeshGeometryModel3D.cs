@@ -63,7 +63,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
         }
-
+        protected virtual bool CheckBoundingFrustum()
+        {
+            return false;
+        }
         protected override void OnRender(RenderContext renderContext)
         {
             this.bHasInstances?.Set(this.hasInstances);

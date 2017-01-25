@@ -184,7 +184,10 @@ namespace HelixToolkit.Wpf.SharpDX
             model.isChanged = true;
         }
 
-
+        protected override bool CheckBoundingFrustum()
+        {
+            return !hasInstances;
+        }
 
         /// <summary>
         /// 
