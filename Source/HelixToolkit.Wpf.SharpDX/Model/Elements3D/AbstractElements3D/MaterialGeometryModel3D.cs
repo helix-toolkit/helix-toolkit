@@ -186,12 +186,44 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 instanceArray = null;
             }
+            UpdateInstancesBounds();
             isInstanceChanged = true;
+        }
+
+        private BoundingBox instancesBound;
+        public BoundingBox InstancesBound
+        {
+            protected set
+            {
+                instancesBound = value;
+            }
+            get
+            {
+                return instancesBound;
+            }
+        }
+
+        protected virtual void UpdateInstancesBounds()
+        {
+            if(instanceArray == null || instanceArray.Length == 0)
+            {
+                InstancesBound = this.BoundsWithTransform;
+            }
+            else
+            {
+                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceArray[0])).ToArray());
+                foreach(var instance in instanceArray)
+                {
+                    var b = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
+                    BoundingBox.Merge(ref bound, ref b, out bound);
+                }
+                InstancesBound = bound;
+            }
         }
 
         protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
         {
-            return !hasInstances && base.CheckBoundingFrustum(ref boundingFrustum);
+            return !hasInstances && base.CheckBoundingFrustum(ref boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
         }
 
         /// <summary>
