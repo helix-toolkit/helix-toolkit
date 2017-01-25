@@ -109,17 +109,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (instanceAdvArrayChanged)
                 {
-                    Disposer.RemoveAndDispose(ref instanceAdvBuffer);
-                    if (instanceAdvArray != null)
+                    if (instanceAdvBuffer == null || this.instanceAdvBuffer.Description.SizeInBytes < InstanceParameter.SizeInBytes * this.instanceAdvArray.Length)
                     {
+                        Disposer.RemoveAndDispose(ref instanceAdvBuffer);
                         this.instanceAdvBuffer = Buffer.Create(this.Device, this.instanceAdvArray, new BufferDescription(InstanceParameter.SizeInBytes * this.instanceAdvArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                        DataStream stream;
-                        Device.ImmediateContext.MapSubresource(this.instanceAdvBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                        stream.Position = 0;
-                        stream.WriteRange(this.instanceAdvArray, 0, this.instanceAdvArray.Length);
-                        Device.ImmediateContext.UnmapSubresource(this.instanceAdvBuffer, 0);
-                        stream.Dispose();
                     }
+                    DataStream stream;
+                    Device.ImmediateContext.MapSubresource(this.instanceAdvBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                    stream.Position = 0;
+                    stream.WriteRange(this.instanceAdvArray, 0, this.instanceAdvArray.Length);
+                    Device.ImmediateContext.UnmapSubresource(this.instanceAdvBuffer, 0);
+                    stream.Dispose();
                     this.instanceAdvArrayChanged = false;
                 }
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceAdvBuffer, InstanceParameter.SizeInBytes, 0));
@@ -133,8 +133,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- update instance buffer
                 if (this.isChanged)
                 {
-                    Disposer.RemoveAndDispose(ref instanceBuffer);
-                    this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.instanceArray.Length)
+                    {
+                        Disposer.RemoveAndDispose(ref instanceBuffer);
+                        this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    }
                     DataStream stream;
                     Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
                     stream.Position = 0;
