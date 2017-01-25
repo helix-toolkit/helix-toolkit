@@ -6,6 +6,7 @@ using SharpDX.DXGI;
 using System.Collections.Generic;
 using System.Windows;
 using HelixToolkit.SharpDX.Shared.Utilities;
+using System.Diagnostics;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -244,6 +245,118 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 Octree = null;
+            }
+        }
+
+        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        {
+            if (!IsHitTestVisible || Octree == null)
+            {
+                return false;
+            }
+            else
+            {
+                var boundHits = new List<HitTestResult>();
+                var isHit = Octree.HitTest(this, ModelMatrix, rayWS, ref boundHits);
+                if (isHit)
+                {
+                    var g = this.Geometry as MeshGeometry3D;
+                    isHit = false;
+                    Matrix instanceMatrix;
+                    if (g.Octree != null)
+                    {                        
+                        foreach (var hit in boundHits)
+                        {
+                            int instanceIdx = (int)hit.Tag;
+                            if (hasAdvInstancing)
+                            {
+                                instanceMatrix = instanceAdvArray[instanceIdx].InstanceMatrix;
+                            }
+                            else
+                            {
+                                instanceMatrix = instanceArray[instanceIdx];
+                            }
+                            this.PushMatrix(instanceMatrix);
+                            var h = g.Octree.HitTest(this, ModelMatrix, rayWS, ref hits);
+                            isHit |= h;
+                            this.PopMatrix();
+                            if (h && hits.Count > 0)
+                            {
+                                var result = hits[0];
+                                hits[0] = new HitTestResult()
+                                {
+                                    Distance = result.Distance,
+                                    IsValid = result.IsValid,
+                                    ModelHit = result.ModelHit,
+                                    NormalAtHit = result.NormalAtHit,
+                                    PointHit = result.PointHit,
+                                    TriangleIndices = result.TriangleIndices,
+                                    Tag = instanceIdx
+                                };
+                            }
+                        }                        
+                    }
+                    else
+                    {
+                        var result = new HitTestResult();
+                        result.Distance = double.MaxValue;
+                        foreach(var hit in boundHits)
+                        {
+                            int instanceIdx = (int)hit.Tag;
+                            if (hasAdvInstancing)
+                            {
+                                instanceMatrix = instanceAdvArray[instanceIdx].InstanceMatrix;
+                            }
+                            else
+                            {
+                                instanceMatrix = instanceArray[instanceIdx];
+                            }
+                            this.PushMatrix(instanceMatrix);
+
+                            var m = this.modelMatrix;
+
+                            // put bounds to world space
+
+                            int index = 0;
+                            foreach (var t in g.Triangles)
+                            {
+                                float d;
+                                var p0 = Vector3.TransformCoordinate(t.P0, m);
+                                var p1 = Vector3.TransformCoordinate(t.P1, m);
+                                var p2 = Vector3.TransformCoordinate(t.P2, m);
+                                if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
+                                {
+                                    if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                                    {
+                                        result.IsValid = true;
+                                        result.ModelHit = this;
+                                        // transform hit-info to world space now:
+                                        result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
+                                        result.Distance = d;
+                                        result.Tag = instanceIdx;
+                                        var n = Vector3.Cross(p1 - p0, p2 - p0);
+                                        n.Normalize();
+                                        // transform hit-info to world space now:
+                                        result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
+                                        result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
+                                        isHit = true;
+                                    }
+                                }
+                                index += 3;
+                            }
+                            this.PopMatrix();
+                        }
+                        if (isHit)
+                        {
+                            hits.Add(result);
+                        }
+                    }
+                }
+#if DEBUG
+                if(isHit)
+                    Debug.WriteLine("Hit: " + hits[0].Tag + "; HitPoint: "+ hits[0].PointHit);
+#endif
+                return isHit;
             }
         }
     }

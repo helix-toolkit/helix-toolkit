@@ -1797,7 +1797,6 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             }
             bool isHit = false;
             var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
-            var tempHits = new List<HitTestResult>();
             if (rayWS.Intersects(ref bound))
             {
                 isIntersect = true;
@@ -1806,11 +1805,12 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
                     var b = BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
                     if(b.Intersects(ref rayWS))
                     {
-                        model.PushMatrix(InstanceMatrix[t.Item1] * modelMatrix);
-                        isHit |= model.HitTest(rayWS, ref tempHits);
-                        model.PopMatrix();
-                        hits.AddRange(tempHits);
-                        tempHits.Clear();
+                        var result = new HitTestResult()
+                        {
+                            Tag = t.Item1
+                        };
+                        hits.Add(result);
+                        isHit = true;
                     }
                 }
             }
