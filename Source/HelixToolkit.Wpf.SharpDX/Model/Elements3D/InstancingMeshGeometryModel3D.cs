@@ -149,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else if (this.hasInstances)
             {
                 /// --- update instance buffer
-                if (this.isChanged)
+                if (this.isInstanceChanged)
                 {
                     if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.instanceArray.Length)
                     {
@@ -162,7 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     stream.WriteRange(this.instanceArray, 0, this.instanceArray.Length);
                     Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
                     stream.Dispose();
-                    this.isChanged = false;
+                    this.isInstanceChanged = false;
                 }
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
                 /// --- render the geometry

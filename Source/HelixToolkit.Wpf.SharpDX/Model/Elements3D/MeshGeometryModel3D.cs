@@ -309,7 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.hasInstances)
             {
                 /// --- update instance buffer
-                if (this.isChanged)
+                if (this.isInstanceChanged)
                 {
                     Disposer.RemoveAndDispose(ref instanceBuffer);
                     this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
@@ -319,7 +319,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     stream.WriteRange(this.instanceArray, 0, this.instanceArray.Length);
                     Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
                     stream.Dispose();
-                    this.isChanged = false;
+                    this.isInstanceChanged = false;
                 }
 
                 /// --- INSTANCING: need to set 2 buffers            

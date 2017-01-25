@@ -200,7 +200,7 @@ namespace CustomShaderDemo
             if (hasInstances)
             {
                 /// --- update instance buffer
-                if (isChanged)
+                if (isInstanceChanged)
                 {
                     instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                     DataStream stream;
@@ -209,7 +209,7 @@ namespace CustomShaderDemo
                     stream.WriteRange(instanceArray, 0, instanceArray.Length);
                     Device.ImmediateContext.UnmapSubresource(instanceBuffer, 0);
                     stream.Dispose();
-                    isChanged = false;
+                    isInstanceChanged = false;
                 }
 
                 /// --- INSTANCING: need to set 2 buffers            

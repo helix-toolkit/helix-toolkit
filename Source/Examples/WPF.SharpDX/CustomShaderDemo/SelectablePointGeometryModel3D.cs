@@ -70,7 +70,7 @@ namespace CustomShaderDemo
             }
 
             /// --- set up const variables
-            vViewport = effect.GetVariableByName("vViewport").AsVector();
+           // vViewport = effect.GetVariableByName("vViewport").AsVector();
             //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 

@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected ShaderResourceView texDisplacementMapView;
         protected EffectScalarVariable bHasInstances;
         protected Matrix[] instanceArray;
-        protected bool isChanged = true;
+        protected bool isInstanceChanged = true;
         protected bool hasInstances = false;
         protected bool hasShadowMap = false;
 
@@ -173,15 +173,20 @@ namespace HelixToolkit.Wpf.SharpDX
         protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (MaterialGeometryModel3D)d;
-            if (e.NewValue != null)
+            model.InstancesChanged();
+        }
+
+        protected virtual void InstancesChanged()
+        {
+            if (Instances != null)
             {
-                model.instanceArray = ((IEnumerable<Matrix>)e.NewValue).ToArray();
+                instanceArray = Instances.ToArray();
             }
             else
             {
-                model.instanceArray = null;
+                instanceArray = null;
             }
-            model.isChanged = true;
+            isInstanceChanged = true;
         }
 
         protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
