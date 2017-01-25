@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (MaterialGeometryModel3D)d;
             model.InstancesChanged();
@@ -186,11 +186,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 instanceArray = null;
             }
+            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
             UpdateInstancesBounds();
             isInstanceChanged = true;
         }
 
-        private BoundingBox instancesBound;
+        protected BoundingBox instancesBound;
         public BoundingBox InstancesBound
         {
             protected set
@@ -205,7 +206,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void UpdateInstancesBounds()
         {
-            if(instanceArray == null || instanceArray.Length == 0)
+            if(!hasInstances)
             {
                 InstancesBound = this.BoundsWithTransform;
             }

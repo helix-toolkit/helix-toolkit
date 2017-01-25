@@ -31,18 +31,25 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("InstanceAdvArray", typeof(IEnumerable<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
 
 
-        protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstancingMeshGeometryModel3D)d;
-            if (e.NewValue != null)
+            model.InstancesChanged();           
+        }
+
+        protected override void InstancesChanged()
+        {
+            if (InstanceAdvArray != null)
             {
-                model.instanceAdvArray = ((IEnumerable<InstanceParameter>)e.NewValue).ToArray();
+                instanceAdvArray = InstanceAdvArray.ToArray();
             }
             else
             {
-                model.instanceAdvArray = null;
+                instanceAdvArray = null;
             }
-            model.instanceAdvArrayChanged = true;
+            hasAdvInstancing = (instanceAdvArray != null && instanceAdvArray.Any());
+            instanceAdvArrayChanged = true;
+            base.InstancesChanged();
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
@@ -52,20 +59,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(RenderContext context)
         {
-            if (base.CanRender(context))
-            {
-                this.hasInstances = (this.Instances != null) && (this.Instances.Any());
-                this.hasAdvInstancing = (this.InstanceAdvArray != null && this.instanceAdvArray.Any());
-                return hasInstances || hasAdvInstancing;
-            }
-            else
-            {
-                return false;
-            }
+            return base.CanRender(context);
         }
 
         protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
         {
+            if(hasAdvInstancing || hasInstances)
+            {
+                return boundingFrustum.Intersects(ref instancesBound);
+            }
             return false;
         }
 
@@ -184,6 +186,24 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
             Disposer.RemoveAndDispose(ref instanceAdvBuffer);
             Disposer.RemoveAndDispose(ref hasAdvInstancingVar);
+        }
+
+        protected override void UpdateInstancesBounds()
+        {
+            if (hasAdvInstancing)
+            {
+                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceAdvArray[0].InstanceMatrix)).ToArray());
+                foreach (var instance in instanceAdvArray)
+                {
+                    var b = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance.InstanceMatrix)).ToArray());
+                    BoundingBox.Merge(ref bound, ref b, out bound);
+                }
+                InstancesBound = bound;
+            }
+            else
+            {
+                base.UpdateInstancesBounds();
+            }
         }
     }
 }
