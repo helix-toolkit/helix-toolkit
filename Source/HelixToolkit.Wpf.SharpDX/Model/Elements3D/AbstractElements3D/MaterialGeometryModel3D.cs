@@ -184,9 +184,9 @@ namespace HelixToolkit.Wpf.SharpDX
             model.isChanged = true;
         }
 
-        protected override bool CheckBoundingFrustum()
+        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
         {
-            return !hasInstances;
+            return !hasInstances && base.CheckBoundingFrustum(ref boundingFrustum);
         }
 
         /// <summary>
