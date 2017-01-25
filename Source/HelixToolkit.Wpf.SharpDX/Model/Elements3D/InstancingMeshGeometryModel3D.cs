@@ -50,8 +50,24 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn];
         }
 
+        protected override bool CanRender(RenderContext context)
+        {
+            if (base.CanRender(context))
+            {
+                this.hasInstances = (this.Instances != null) && (this.Instances.Any());
+                this.hasAdvInstancing = (this.InstanceAdvArray != null && this.instanceAdvArray.Any());
+                return hasInstances || hasAdvInstancing;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         protected override void OnRender(RenderContext renderContext)
         {
+            this.bHasInstances?.Set(this.hasInstances);
+            this.hasAdvInstancingVar?.Set(this.hasAdvInstancing);
             /// --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
@@ -92,11 +108,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
-            /// --- check instancing
-            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
-            this.hasAdvInstancing = (this.InstanceAdvArray != null && this.instanceAdvArray.Any());
-            this.bHasInstances?.Set(this.hasInstances);
-            this.hasAdvInstancingVar?.Set(this.hasAdvInstancing);
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
@@ -112,7 +123,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (instanceAdvBuffer == null || this.instanceAdvBuffer.Description.SizeInBytes < InstanceParameter.SizeInBytes * this.instanceAdvArray.Length)
                     {
                         Disposer.RemoveAndDispose(ref instanceAdvBuffer);
-                        this.instanceAdvBuffer = Buffer.Create(this.Device, this.instanceAdvArray, new BufferDescription(InstanceParameter.SizeInBytes * this.instanceAdvArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                        this.instanceAdvBuffer = Buffer.Create(this.Device, this.instanceAdvArray,
+                            new BufferDescription(InstanceParameter.SizeInBytes * this.instanceAdvArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
+                            CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                     }
                     DataStream stream;
                     Device.ImmediateContext.MapSubresource(this.instanceAdvBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
@@ -151,15 +164,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
                 this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
-            }
-            else
-            {
-                /// --- render the geometry
-                /// 
-                var pass = this.effectTechnique.GetPassByIndex(0);
-                pass.Apply(Device.ImmediateContext);
-                /// --- draw
-                this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
             }
         }
 
