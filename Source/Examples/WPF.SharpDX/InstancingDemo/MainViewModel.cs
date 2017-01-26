@@ -35,7 +35,6 @@ namespace InstancingDemo
         public Color4 DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
 
-
         public MainViewModel()
         {
             Title = "Instancing Demo";            

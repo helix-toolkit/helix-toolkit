@@ -47,7 +47,7 @@
                     <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" />
                 </hx:InstancingMeshGeometryModel3D.OctreeManager>
             </hx:InstancingMeshGeometryModel3D>
-            <hx:OctreeLineGeometryModel3D Octree="{Binding Octree, ElementName=manager}" />
+            <hx:OctreeLineGeometryModel3D x:Name="octreelines" Octree="{Binding Octree, ElementName=manager}" />
             <hx:LineGeometryModel3D
                 x:Name="lines"
                 Geometry="{Binding Lines}"
@@ -100,24 +100,23 @@
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                <StackPanel>
                     <CheckBox
-                        Grid.Row="0"
                         Margin="4"
                         IsChecked="{Binding IsRendering, ElementName=mesh}">
                         Render Geometry
                     </CheckBox>
                     <CheckBox
-                        Grid.Row="1"
                         Margin="4"
                         IsChecked="{Binding IsRendering, ElementName=lines}">
                         Render Lines
                     </CheckBox>
-                </Grid>
+                    <CheckBox
+                        Margin="4"
+                        IsChecked="{Binding IsRendering, ElementName=octreelines}">
+                        Render Octree
+                    </CheckBox>
+                </StackPanel>
             </Expander>
         </StackPanel>
         <StatusBar Grid.Row="0" VerticalAlignment="Bottom">
