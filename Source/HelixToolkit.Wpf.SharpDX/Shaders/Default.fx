@@ -1,3 +1,5 @@
+#ifndef DEFAULT_FX
+#define DEFAULT_FX
 //--------------------------------------------------------------------------------------
 // File: Default Effect for HelixToolkitDX
 // Author: Przemyslaw Musialski
@@ -16,3 +18,5 @@
 #include "./Shaders/BillboardText.fx"
 #include "./Shaders/PixelShaders.fx"
 #include "./Shaders/VertexShaders.fx"
+
+#endif

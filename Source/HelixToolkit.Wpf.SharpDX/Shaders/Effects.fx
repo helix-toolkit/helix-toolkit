@@ -1,3 +1,5 @@
+#ifndef EFFECTS_FX
+#define EFFECTS_FX
 #include "./Shaders/Default.fx"
 
 //--------------------------------------------------------------------------------------
@@ -415,3 +417,4 @@ technique11 RenderPoints
 		SetPixelShader(CompileShader(ps_4_0, PShaderPoints()));
 	}
 }
+#endif
