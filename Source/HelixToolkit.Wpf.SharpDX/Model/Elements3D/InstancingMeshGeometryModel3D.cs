@@ -17,6 +17,21 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool hasInstanceParams = false;
         private EffectScalarVariable hasInstanceParamVar;
         public bool HasInstanceParams { get { return hasInstanceParams; } }
+
+        public System.Guid[] InstanceIdentifiers
+        {
+            set
+            {
+                SetValue(InstanceIdentifiersProperty, value);
+            }
+            get
+            {
+                return (System.Guid[])GetValue(InstanceIdentifiersProperty);
+            }
+        }
+
+        public static readonly DependencyProperty InstanceIdentifiersProperty = DependencyProperty.Register("InstanceIdentifiers", typeof(System.Guid[]),
+            typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null));
         /// <summary>
         /// Array of instance parameters. Must be InstanceParameter[].
         /// </summary>
@@ -65,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstancingMeshGeometryModel3D)d;
-            model.InstancesParamChanged();       
+            model.InstancesParamChanged();
         }
 
         protected void InstancesParamChanged()
@@ -216,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
-            if (IsHitTestVisible && (hasInstanceParams || hasInstances))
+            if (IsHitTestVisible && hasInstances)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
@@ -243,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     isHit = false;
                     Matrix instanceMatrix;
                     if (g.Octree != null)
-                    {                        
+                    {
                         foreach (var hit in boundHits)
                         {
                             int instanceIdx = (int)hit.Tag;
@@ -255,6 +270,15 @@ namespace HelixToolkit.Wpf.SharpDX
                             if (h && hits.Count > 0)
                             {
                                 var result = hits[0];
+                                object tag = null;
+                                if (InstanceIdentifiers != null && InstanceIdentifiers.Length == Instances.Length)
+                                {
+                                    tag = InstanceIdentifiers[instanceIdx];
+                                }
+                                else
+                                {
+                                    tag = instanceIdx;
+                                }
                                 hits[0] = new HitTestResult()
                                 {
                                     Distance = result.Distance,
@@ -263,16 +287,16 @@ namespace HelixToolkit.Wpf.SharpDX
                                     NormalAtHit = result.NormalAtHit,
                                     PointHit = result.PointHit,
                                     TriangleIndices = result.TriangleIndices,
-                                    Tag = instanceIdx
+                                    Tag = tag
                                 };
                             }
-                        }                        
+                        }
                     }
                     else
                     {
                         var result = new HitTestResult();
                         result.Distance = double.MaxValue;
-                        foreach(var hit in boundHits)
+                        foreach (var hit in boundHits)
                         {
                             int instanceIdx = (int)hit.Tag;
                             instanceMatrix = Instances[instanceIdx];
@@ -298,7 +322,16 @@ namespace HelixToolkit.Wpf.SharpDX
                                         // transform hit-info to world space now:
                                         result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
                                         result.Distance = d;
-                                        result.Tag = instanceIdx;
+                                        object tag = null;
+                                        if (InstanceIdentifiers != null && InstanceIdentifiers.Length == Instances.Length)
+                                        {
+                                            tag = InstanceIdentifiers[instanceIdx];
+                                        }
+                                        else
+                                        {
+                                            tag = instanceIdx;
+                                        }
+                                        result.Tag = tag;
                                         var n = Vector3.Cross(p1 - p0, p2 - p0);
                                         n.Normalize();
                                         // transform hit-info to world space now:
@@ -318,8 +351,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
 #if DEBUG
-                if(isHit)
-                    Debug.WriteLine("Hit: " + hits[0].Tag + "; HitPoint: "+ hits[0].PointHit);
+                if (isHit)
+                    Debug.WriteLine("Hit: " + hits[0].Tag + "; HitPoint: " + hits[0].PointHit);
 #endif
                 return isHit;
             }
