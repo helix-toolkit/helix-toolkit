@@ -25,9 +25,9 @@ namespace InstancingDemo
         public MeshGeometry3D Model { get; private set; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
-        public IEnumerable<Matrix> ModelInstances { get; private set; }
+        public Matrix[] ModelInstances { get; private set; }
 
-        public IEnumerable<InstanceParameter> InstanceParam { get; private set; }
+        public InstanceParameter[] InstanceParam { get; private set; }
 
         public PhongMaterial ModelMaterial { get; private set; }
         public Media3D.Transform3D ModelTransform { get; private set; }
@@ -91,11 +91,13 @@ namespace InstancingDemo
             CreateModels();
         }
 
+        const int num = 10;
+        List<Matrix> instances = new List<Matrix>(num * 2);
+        List<InstanceParameter> parameters = new List<InstanceParameter>(num * 2);
         private void CreateModels()
         {
-            int num = 10;
-            var instances = new List<Matrix>(num * 2);
-            var parameters = new List<InstanceParameter>(num * 2);
+            instances.Clear();
+            parameters.Clear();
             if (aniDir)
             {
                 aniX += 0.1f;
@@ -148,8 +150,8 @@ namespace InstancingDemo
                     instances.Add(matrix);
                 }
             }
-            InstanceParam = parameters;
-            ModelInstances = instances;
+            InstanceParam = parameters.ToArray();
+            ModelInstances = instances.ToArray();
             SubTitle = "Number of Instances: " + parameters.Count.ToString();
         }
     }

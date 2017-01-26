@@ -387,9 +387,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             var model3D = items.Where(x => x is InstancingMeshGeometryModel3D).FirstOrDefault() as InstancingMeshGeometryModel3D;
-            if(model3D == null) { return; }
-            IList<Matrix> instMatrix;
-            instMatrix = model3D.Instances.ToArray();
+            if(model3D == null)
+            { return; }
+            IList<Matrix> instMatrix = model3D.Instances;
             var octree = new InstancingModel3DOctree(instMatrix, model3D.BoundsWithTransform, this.Parameter, new Queue<IOctree>(256));
             octree.BuildTree();
             Octree = octree;
