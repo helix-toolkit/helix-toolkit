@@ -37,7 +37,7 @@
             <hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds" />
 
             <hx:InstancingMeshGeometryModel3D
-                x:Name="mesh"
+                x:Name="mesh" CullMode="Back"
                 Geometry="{Binding Model}"
                 InstanceParamArray="{Binding InstanceParam}"
                 Instances="{Binding ModelInstances}"
