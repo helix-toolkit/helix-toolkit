@@ -6,6 +6,7 @@ using SharpDX.DXGI;
 using System.Collections.Generic;
 using System.Windows;
 using HelixToolkit.Wpf.SharpDX.Extensions;
+using System.Diagnostics;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -94,8 +95,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
-            this.bHasInstances?.Set(this.hasInstances);
-            this.hasInstanceParamVar?.Set(this.hasInstanceParams);
+            this.bHasInstances.Set(this.hasInstances);
+            this.hasInstanceParamVar.Set(this.hasInstanceParams);
             /// --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
@@ -189,6 +190,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- draw
                 this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Length, 0, 0, 0);
             }
+            this.bHasInstances.Set(false);
+            this.hasInstanceParamVar.Set(false);
         }
 
         protected override void OnAttached()

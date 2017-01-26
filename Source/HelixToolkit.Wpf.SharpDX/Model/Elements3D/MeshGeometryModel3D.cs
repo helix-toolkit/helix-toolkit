@@ -190,13 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             /// --- init instances buffer            
-            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
             this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
-            if (this.hasInstances)
-            {
-                this.instanceBuffer = Buffer.Create(this.Device, this.Instances, new BufferDescription(Matrix.SizeInBytes * this.Instances.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-            }
-
             /// --- flush
             //this.Device.ImmediateContext.Flush();
             return true;
@@ -292,12 +286,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
-            /// --- check instancing
-            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
-            if (this.bHasInstances != null)
-            {
-                this.bHasInstances.Set(this.hasInstances);
-            }
+            this.bHasInstances.Set(this.hasInstances);
 
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
@@ -311,8 +300,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    Disposer.RemoveAndDispose(ref instanceBuffer);
-                    this.instanceBuffer = Buffer.Create(this.Device, this.Instances, new BufferDescription(Matrix.SizeInBytes * this.Instances.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Length)
+                    {
+                        Disposer.RemoveAndDispose(ref instanceBuffer);
+                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances, new BufferDescription(Matrix.SizeInBytes * this.Instances.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    }
                     DataStream stream;
                     Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
                     stream.Position = 0;
@@ -333,6 +325,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
                 this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Length, 0, 0, 0);
+                this.bHasInstances.Set(false);
             }
             else
             {
