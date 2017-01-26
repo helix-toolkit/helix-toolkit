@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private EffectScalarVariable hasInstanceParamVar;
         public bool HasInstanceParams { get { return hasInstanceParams; } }
         /// <summary>
-        /// 
+        /// Array of instance parameters. Must be InstanceParameter[].
         /// </summary>
         public InstanceParameter[] InstanceParamArray
         {
@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
-        /// 
+        /// Array of instance matrix. Must be Matrix[].
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(InstanceParameter[]), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
