@@ -101,21 +101,16 @@
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
                 <StackPanel>
-                    <CheckBox
-                        Margin="4"
-                        IsChecked="{Binding IsRendering, ElementName=mesh}">
+                    <CheckBox Margin="4" IsChecked="{Binding IsRendering, ElementName=mesh}">
                         Render Geometry
                     </CheckBox>
-                    <CheckBox
-                        Margin="4"
-                        IsChecked="{Binding IsRendering, ElementName=lines}">
+                    <CheckBox Margin="4" IsChecked="{Binding IsRendering, ElementName=lines}">
                         Render Lines
                     </CheckBox>
-                    <CheckBox
-                        Margin="4"
-                        IsChecked="{Binding IsRendering, ElementName=octreelines}">
+                    <CheckBox Margin="4" IsChecked="{Binding IsRendering, ElementName=octreelines}">
                         Render Octree
                     </CheckBox>
+                    <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
                 </StackPanel>
             </Expander>
         </StackPanel>
