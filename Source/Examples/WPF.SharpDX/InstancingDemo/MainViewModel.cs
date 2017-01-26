@@ -71,6 +71,7 @@ namespace InstancingDemo
                 {
                     var matrix = Matrix.RotationAxis(new Vector3(rnd.NextFloat(0,1), rnd.NextFloat(0, 1), rnd.NextFloat(0, 1)), rnd.NextFloat(-1, 1)) * Matrix.Translation(new Vector3(i*1.2f / 1.0f, j*1.2f / 1.0f, i*j/2.0f));
                     var color = new Color4((float)Math.Abs(i)/num, (float)Math.Abs(j)/num, (float)Math.Abs(i+j)/(2*num), 1);
+                  //  var emissiveColor = new Color4( rnd.NextFloat(0,1) , rnd.NextFloat(0, 1), rnd.NextFloat(0, 1), rnd.NextFloat(0, 0.2f));
                     var k = Math.Abs(i + j) % 4;
                     Vector2 offset;
                     if (k == 0)
