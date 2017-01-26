@@ -14,10 +14,10 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected Buffer instanceParamBuffer = null;
         protected bool instanceParamArrayChanged = true;
-        protected bool hasInstanceParam = false;
+        protected bool hasInstanceParams = false;
         protected InstanceParameter[] instanceParamArray;
         private EffectScalarVariable hasInstanceParamVar;
-        public bool HasAdvInstancing { get { return hasInstanceParam; } }
+        public bool HasInstanceParams { get { return hasInstanceParams; } }
         /// <summary>
         /// 
         /// </summary>
@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 instanceParamArray = null;
             }
-            hasInstanceParam = (instanceParamArray != null && instanceParamArray.Any());
+            hasInstanceParams = (instanceParamArray != null && instanceParamArray.Any());
             instanceParamArrayChanged = true;
         }
 
@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext renderContext)
         {
             this.bHasInstances?.Set(this.hasInstances);
-            this.hasInstanceParamVar?.Set(this.hasInstanceParam);
+            this.hasInstanceParamVar?.Set(this.hasInstanceParams);
             /// --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
@@ -173,7 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.isInstanceChanged = false;
                 }
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
-                if (this.hasInstanceParam)
+                if (this.hasInstanceParams)
                 {
                     if (instanceParamArrayChanged)
                     {
@@ -194,11 +194,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, InstanceParameter.SizeInBytes, 0));
                 }
+                /// --- render the geometry
+                this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+                /// --- draw
+                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
             }
-            /// --- render the geometry
-            this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-            /// --- draw
-            this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
         }
 
         protected override void OnAttached()
@@ -223,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
-            if (IsHitTestVisible && (hasInstanceParam || hasInstances))
+            if (IsHitTestVisible && (hasInstanceParams || hasInstances))
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
