@@ -1,3 +1,6 @@
+#ifndef COMMON_FX
+#define COMMON_FX
+
 //--------------------------------------------------------------------------------------
 // File: Header for HelixToolkitDX
 // Author: Przemyslaw Musialski
@@ -169,3 +172,4 @@ BlendState BSBlending
 	// camera position
 	float3 vEyePos;
 
+#endif

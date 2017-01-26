@@ -1,4 +1,5 @@
-
+#ifndef LINES_FX
+#define LINES_FX
 //--------------------------------------------------------------------------------------
 // File: Line Effects for HelixToolkitDX
 // Author: Przemyslaw Musialski
@@ -8,10 +9,9 @@
 // http://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf
 //-------------------------------------------------------------------------------------
 
-//#include "./Shaders/Common.fx"
-//#include "./Shaders/Default.fx"
-
-
+#include "./Shaders/Common.fx"
+#include "./Shaders/Material.fx"
+#include "./Shaders/DataStructs.fx"
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------
@@ -20,34 +20,6 @@
 	float4 vLineParams = float4(0,0,0,0);
 	//bool   bHasInstances	 = false;
 //}
-
-//--------------------------------------------------------------------------------------
-// VERTEX AND PIXEL SHADER INPUTS
-//--------------------------------------------------------------------------------------
-struct VSInputLS
-{
-	float4 p	: POSITION;
-	float4 c	: COLOR;
-
-	float4 mr0	: TEXCOORD1;
-	float4 mr1	: TEXCOORD2;
-	float4 mr2	: TEXCOORD3;
-	float4 mr3	: TEXCOORD4;
-};
-
-struct GSInputLS
-{
-	float4 p	: POSITION;
-	float4 c	: COLOR;
-};
-
-struct PSInputLS
-{
-	float4 p	: SV_POSITION;
-	noperspective 
-	float3 t	: TEXCOORD;
-	float4 c	: COLOR;
-};
 
 
 //--------------------------------------------------------------------------------------
@@ -243,40 +215,4 @@ float4 PSDrawTool( PSInputLS input) : SV_Target
     return color;
 }
 
-
-
-//--------------------------------------------------------------------------------------
-// Techniques
-//-------------------------------------------------------------------------------------
-technique11 RenderLines
-{
-    pass P0
-    {	
-        //SetDepthStencilState( DSSDepthLess, 0 );
-		//SetDepthStencilState( DSSDepthLessEqual, 0 );
-		//SetRasterizerState	( RSLines );
-        //SetRasterizerState( RSFillBiasBack );
-        //SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		SetVertexShader		( CompileShader( vs_4_0, VShaderLines() ) );
-        SetHullShader		( NULL );
-        SetDomainShader		( NULL );        
-        SetGeometryShader	( CompileShader( gs_4_0, GShaderLines() ) );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderLinesFade() ) );
-    }    
-}
-
-technique11 RenderLinesHard
-{
-    pass P0
-    {	        
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState( DSSDepthLessEqual, 0 );
-        SetRasterizerState	( RSSolid );
-        SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-        SetVertexShader		( CompileShader( vs_4_0, VShaderLines() ) );
-		SetHullShader		( NULL );
-        SetDomainShader		( NULL );        
-        SetGeometryShader	( CompileShader( gs_4_0, GShaderLines() ) );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderLines() ) );
-    }    
-}
+#endif
