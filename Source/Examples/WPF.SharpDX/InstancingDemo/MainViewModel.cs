@@ -91,9 +91,10 @@ namespace InstancingDemo
             CreateModels();
         }
 
-        const int num = 10;
+        const int num = 20;
         List<Matrix> instances = new List<Matrix>(num * 2);
         List<InstanceParameter> parameters = new List<InstanceParameter>(num * 2);
+        int counter = 0;
         private void CreateModels()
         {
             instances.Clear();
@@ -119,9 +120,10 @@ namespace InstancingDemo
             {
                 aniDir = true;
             }
-            for (int i = -num; i < num; i++)
+
+            for (int i = -num - (int)aniX; i < num + aniX; i++)
             {
-                for (int j = -num; j < num; j++)
+                for (int j = -num - (int)aniX; j < num + aniX; j++)
                 {
                     var matrix = Matrix.RotationAxis(new Vector3(0, 1, 0), aniX * Math.Sign(j))
                         * Matrix.Translation(new Vector3(i * 1.2f + Math.Sign(i), j * 1.2f + Math.Sign(j), i * j / 2.0f));
