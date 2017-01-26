@@ -1758,6 +1758,76 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         }
     }
 
+    public class InstancingModel3DOctree : OctreeBase<Tuple<int, BoundingBox>>
+    {
+        private IList<Matrix> InstanceMatrix;
+        public InstancingModel3DOctree(IList<Matrix> instanceMatrix, BoundingBox geometryBound, OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
+            :base(ref geometryBound, null, parameter, queueCache)
+        {
+            InstanceMatrix = instanceMatrix;
+            int counter = 0;
+            var totalBound = BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceMatrix[0])).ToArray());
+            foreach (var m in instanceMatrix)
+            {
+                var b = BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+                Objects.Add(new Tuple<int, BoundingBox>(counter, b));
+                BoundingBox.Merge(ref totalBound, ref b, out totalBound);
+                ++counter;
+            }
+            this.Bound = totalBound;
+        }
+
+        protected InstancingModel3DOctree(ref BoundingBox bound, IList<Matrix> instanceMatrix, List<Tuple<int, BoundingBox>> objects, IOctree parent, OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
+            :base(ref bound, objects, parent, parameter, queueCache)
+        {
+            InstanceMatrix = instanceMatrix;
+        }
+
+        public override bool FindNearestPointBySphereExcludeChild(ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool HitTestCurrentNodeExcludeChild(GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, ref bool isIntersect)
+        {
+            isIntersect = false;
+            if (!this.treeBuilt)
+            {
+                return false;
+            }
+            bool isHit = false;
+            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            if (rayWS.Intersects(ref bound))
+            {
+                isIntersect = true;
+                foreach (var t in this.Objects)
+                {
+                    var b = BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+                    if(b.Intersects(ref rayWS))
+                    {
+                        var result = new HitTestResult()
+                        {
+                            Tag = t.Item1
+                        };
+                        hits.Add(result);
+                        isHit = true;
+                    }
+                }
+            }
+            return isHit;
+        }
+
+        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<Tuple<int, BoundingBox>> objList, IOctree parent)
+        {
+            return new InstancingModel3DOctree(ref bound, this.InstanceMatrix, objList, parent, this.Parameter, this.queue);
+        }
+
+        protected override BoundingBox GetBoundingBoxFromItem(Tuple<int, BoundingBox> item)
+        {
+            return item.Item2;
+        }
+    }
+
     public sealed class OctreeBuildParameter
     {
         /// <summary>

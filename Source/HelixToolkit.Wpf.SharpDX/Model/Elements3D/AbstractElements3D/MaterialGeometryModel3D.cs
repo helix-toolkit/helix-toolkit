@@ -35,10 +35,10 @@ namespace HelixToolkit.Wpf.SharpDX
         protected ShaderResourceView texDisplacementMapView;
         protected EffectScalarVariable bHasInstances;
         protected Matrix[] instanceArray;
-        protected bool isChanged = true;
+        protected bool isInstanceChanged = true;
         protected bool hasInstances = false;
         protected bool hasShadowMap = false;
-
+        public bool HasInstancing { get { return hasInstances; } }
         public MaterialGeometryModel3D()
         {
         }
@@ -170,21 +170,62 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (MaterialGeometryModel3D)d;
-            if (e.NewValue != null)
+            model.InstancesChanged();
+        }
+
+        protected virtual void InstancesChanged()
+        {
+            if (Instances != null)
             {
-                model.instanceArray = ((IEnumerable<Matrix>)e.NewValue).ToArray();
+                instanceArray = Instances.ToArray();
             }
             else
             {
-                model.instanceArray = null;
+                instanceArray = null;
             }
-            model.isChanged = true;
+            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
+            UpdateInstancesBounds();
+            isInstanceChanged = true;
         }
 
+        protected BoundingBox instancesBound;
+        public BoundingBox InstancesBound
+        {
+            protected set
+            {
+                instancesBound = value;
+            }
+            get
+            {
+                return instancesBound;
+            }
+        }
 
+        protected virtual void UpdateInstancesBounds()
+        {
+            if(!hasInstances)
+            {
+                InstancesBound = this.BoundsWithTransform;
+            }
+            else
+            {
+                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceArray[0])).ToArray());
+                foreach(var instance in instanceArray)
+                {
+                    var b = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
+                    BoundingBox.Merge(ref bound, ref b, out bound);
+                }
+                InstancesBound = bound;
+            }
+        }
+
+        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
+        {
+            return !hasInstances && base.CheckBoundingFrustum(ref boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
+        }
 
         /// <summary>
         /// 

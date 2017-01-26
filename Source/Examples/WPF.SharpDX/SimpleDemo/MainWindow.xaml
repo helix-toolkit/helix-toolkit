@@ -59,7 +59,7 @@
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
-            <!--<hx:MeshGeometryModel3D
+            <hx:MeshGeometryModel3D
                 x:Name="model1"
                 Geometry="{Binding Model}"
                 Material="{Binding RedMaterial}"
@@ -83,9 +83,9 @@
             <hx:BillboardTextModel3D Geometry="{Binding Billboard1Model}" />
             <hx:BillboardTextModel3D Geometry="{Binding Billboard2Model}" />
             <hx:BillboardTextModel3D Geometry="{Binding Billboard3Model}" />
-            <hx:BillboardTextModel3D Geometry="{Binding BillboardImageModel}" />-->
+            <hx:BillboardTextModel3D Geometry="{Binding BillboardImageModel}" />
             <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
-            <hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Color="{x:Static sdxm:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>
+            <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Color="{x:Static sdxm:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
             <!--<hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>-->
         </hx:Viewport3DX>
 
