@@ -165,6 +165,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- update instance buffer
                 if (this.isInstanceChanged)
                 {
+                    BuildOctree();
                     if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Length)
                     {
                         Disposer.RemoveAndDispose(ref instanceBuffer);
@@ -225,8 +226,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void UpdateInstancesBounds()
         {
+            OctreeManager?.Clear();
             base.UpdateInstancesBounds();
-            BuildOctree();
         }
 
         private void BuildOctree()
