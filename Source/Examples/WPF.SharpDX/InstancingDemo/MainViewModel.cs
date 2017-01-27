@@ -156,5 +156,20 @@ namespace InstancingDemo
             ModelInstances = instances.ToArray();
             SubTitle = "Number of Instances: " + parameters.Count.ToString();
         }
+
+        public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (EnableAnimation) { return; }
+            var viewport = sender as Viewport3DX;
+            if (viewport == null) { return; }
+            var point = e.GetPosition(viewport);
+            var hitTests = viewport.FindHits(point);
+            if (hitTests.Count > 0)
+            {
+                var index = (int)hitTests[0].Tag;
+                InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == Color.Transparent? Color.Yellow : Color.Transparent;
+                InstanceParam = (InstanceParameter[])InstanceParam.Clone();
+            }
+        }
     }
 }
