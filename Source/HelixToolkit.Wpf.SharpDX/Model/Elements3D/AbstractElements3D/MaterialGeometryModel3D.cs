@@ -34,7 +34,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected ShaderResourceView texNormalMapView;
         protected ShaderResourceView texDisplacementMapView;
         protected EffectScalarVariable bHasInstances;
-        protected Matrix[] instanceArray;
         protected bool isInstanceChanged = true;
         protected bool hasInstances = false;
         protected bool hasShadowMap = false;
@@ -136,19 +135,19 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        /// Array of instance matrix. Must be Matrix[].
         /// </summary>
-        public IEnumerable<Matrix> Instances
+        public Matrix[] Instances
         {
-            get { return (IEnumerable<Matrix>)this.GetValue(InstancesProperty); }
+            get { return (Matrix[])this.GetValue(InstancesProperty); }
             set { this.SetValue(InstancesProperty, value); }
         }
 
         /// <summary>
-        /// 
+        /// Array of instance matrix. Must be Matrix[].
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IEnumerable<Matrix>), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(Matrix[]), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
 
         /// <summary>
         /// 
@@ -178,14 +177,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void InstancesChanged()
         {
-            if (Instances != null)
-            {
-                instanceArray = Instances.ToArray();
-            }
-            else
-            {
-                instanceArray = null;
-            }
             this.hasInstances = (this.Instances != null) && (this.Instances.Any());
             UpdateInstancesBounds();
             isInstanceChanged = true;
@@ -212,8 +203,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceArray[0])).ToArray());
-                foreach(var instance in instanceArray)
+                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, Instances[0])).ToArray());
+                foreach(var instance in Instances)
                 {
                     var b = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
                     BoundingBox.Merge(ref bound, ref b, out bound);

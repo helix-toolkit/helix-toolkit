@@ -25,9 +25,9 @@ namespace InstancingDemo
         public MeshGeometry3D Model { get; private set; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
-        public IEnumerable<Matrix> ModelInstances { get; private set; }
+        public Matrix[] ModelInstances { get; private set; }
 
-        public IEnumerable<InstanceParameter> InstanceParam { get; private set; }
+        public InstanceParameter[] InstanceParam { get; private set; }
 
         public PhongMaterial ModelMaterial { get; private set; }
         public Media3D.Transform3D ModelTransform { get; private set; }
@@ -91,11 +91,14 @@ namespace InstancingDemo
             CreateModels();
         }
 
+        const int num = 20;
+        List<Matrix> instances = new List<Matrix>(num * 2);
+        List<InstanceParameter> parameters = new List<InstanceParameter>(num * 2);
+        int counter = 0;
         private void CreateModels()
         {
-            int num = 10;
-            var instances = new List<Matrix>(num * 2);
-            var parameters = new List<InstanceParameter>(num * 2);
+            instances.Clear();
+            parameters.Clear();
             if (aniDir)
             {
                 aniX += 0.1f;
@@ -117,9 +120,10 @@ namespace InstancingDemo
             {
                 aniDir = true;
             }
-            for (int i = -num; i < num; i++)
+
+            for (int i = -num - (int)aniX; i < num + aniX; i++)
             {
-                for (int j = -num; j < num; j++)
+                for (int j = -num - (int)aniX; j < num + aniX; j++)
                 {
                     var matrix = Matrix.RotationAxis(new Vector3(0, 1, 0), aniX * Math.Sign(j))
                         * Matrix.Translation(new Vector3(i * 1.2f + Math.Sign(i), j * 1.2f + Math.Sign(j), i * j / 2.0f));
@@ -148,9 +152,24 @@ namespace InstancingDemo
                     instances.Add(matrix);
                 }
             }
-            InstanceParam = parameters;
-            ModelInstances = instances;
+            InstanceParam = parameters.ToArray();
+            ModelInstances = instances.ToArray();
             SubTitle = "Number of Instances: " + parameters.Count.ToString();
+        }
+
+        public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (EnableAnimation) { return; }
+            var viewport = sender as Viewport3DX;
+            if (viewport == null) { return; }
+            var point = e.GetPosition(viewport);
+            var hitTests = viewport.FindHits(point);
+            if (hitTests.Count > 0)
+            {
+                var index = (int)hitTests[0].Tag;
+                InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == Color.Transparent? Color.Yellow : Color.Transparent;
+                InstanceParam = (InstanceParameter[])InstanceParam.Clone();
+            }
         }
     }
 }

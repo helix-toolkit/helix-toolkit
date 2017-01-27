@@ -44,7 +44,6 @@ namespace HelixToolkit.Wpf.SharpDX
         //private DepthStencilState depthStencilState;
         //private LineGeometry3D geometry;
         protected EffectScalarVariable bHasInstances;
-        protected Matrix[] instanceArray;
         protected bool hasInstances = false;
         protected bool isChanged = true;
 
@@ -84,14 +83,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty SmoothnessProperty =
             DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(0.0));
 
-        public IEnumerable<Matrix> Instances
+        public Matrix[] Instances
         {
-            get { return (IEnumerable<Matrix>)this.GetValue(InstancesProperty); }
+            get { return (Matrix[])this.GetValue(InstancesProperty); }
             set { this.SetValue(InstancesProperty, value); }
         }
 
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IEnumerable<Matrix>), typeof(LineGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(Matrix[]), typeof(LineGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
 
         public double HitTestThickness
         {
@@ -105,14 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (LineGeometryModel3D)d;
-            if (e.NewValue != null)
-            {
-                model.instanceArray = ((IEnumerable<Matrix>)e.NewValue).ToArray();
-            }
-            else
-            {
-                model.instanceArray = null;
-            }
+            model.hasInstances = model.Instances != null && model.Instances.Any();
             model.isChanged = true;
         }
 
@@ -300,13 +292,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new ArgumentException("Geometry must be LineGeometry3D");
             }
-            /// --- init instances buffer            
-            hasInstances = (Instances != null)&&(Instances.Any());
+          
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
-            if (hasInstances)
-            {
-                instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-            }
 
             /// --- set up const variables
             vViewport = effect.GetVariableByName("vViewport").AsVector();
@@ -406,8 +393,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 
-            /// --- check instancing
-            this.hasInstances = (this.Instances != null)&&(this.Instances.Any());
             this.bHasInstances.Set(this.hasInstances);
 
             /// --- set rasterstate            
@@ -418,11 +403,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- update instance buffer
                 if (this.isChanged)
                 {
-                    this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    if(instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Length)
+                    {
+                        Disposer.RemoveAndDispose(ref instanceBuffer);
+                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances, new BufferDescription(Matrix.SizeInBytes * this.Instances.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    }
+
                     DataStream stream;
                     Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
                     stream.Position = 0;
-                    stream.WriteRange(this.instanceArray, 0, this.instanceArray.Length);
+                    stream.WriteRange(this.Instances, 0, this.Instances.Length);
                     Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
                     stream.Dispose();
                     this.isChanged = false;
@@ -439,8 +429,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 for (int i = 0; i < this.effectTechnique.Description.PassCount; i++)
                 {
                     this.effectTechnique.GetPassByIndex(i).Apply(Device.ImmediateContext);
-                    this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
+                    this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Length, 0, 0, 0);
                 }
+                this.bHasInstances.Set(false);
             }
             else
             {

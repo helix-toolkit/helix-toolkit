@@ -183,7 +183,6 @@
     <Compile Include="Model\Geometry\BillboardSingleImage3D.cs" />
     <Compile Include="Model\Geometry\BillboardSingleText3D.cs" />
     <Compile Include="Model\Geometry\BillboardText3D.cs" />
-    <Compile Include="Model\Geometry\InstancingGeometry3D.cs" />
     <Compile Include="Model\Geometry\PointGeometry3D.cs" />
     <Compile Include="Model\Lights3D\Light3DSceneShared.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
@@ -275,6 +274,11 @@
     <Resource Include="Model\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Shaders\DataStructs.fx" />
+    <Content Include="Shaders\Effects.fx" />
+    <Content Include="Shaders\Lighting.fx" />
+    <Content Include="Shaders\PixelShaders.fx" />
+    <Content Include="Shaders\VertexShaders.fx" />
     <Content Include="x64\d3dcompiler_47.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
