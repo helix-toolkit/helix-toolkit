@@ -267,17 +267,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Length)
+                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
                     {
                         Disposer.RemoveAndDispose(ref instanceBuffer);
-                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances, new BufferDescription(Matrix.SizeInBytes * this.Instances.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances.ToArray(), 
+                            new BufferDescription(Matrix.SizeInBytes * this.Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                     }
-                    DataStream stream;
-                    Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                    stream.Position = 0;
-                    stream.WriteRange(this.Instances, 0, this.Instances.Length);
-                    Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
-                    stream.Dispose();
+                    else
+                    {
+                        DataStream stream;
+                        Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                        stream.Position = 0;
+                        stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
+                        Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
+                        stream.Dispose();
+                    }
                     this.isInstanceChanged = false;
                 }
 
@@ -291,7 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
-                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Length, 0, 0, 0);
+                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
                 this.bHasInstances.Set(false);
             }
             else

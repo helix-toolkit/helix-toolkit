@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private EffectScalarVariable hasInstanceParamVar;
         public bool HasInstanceParams { get { return hasInstanceParams; } }
 
-        public System.Guid[] InstanceIdentifiers
+        public IList<System.Guid> InstanceIdentifiers
         {
             set
             {
@@ -26,16 +26,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (System.Guid[])GetValue(InstanceIdentifiersProperty);
+                return (IList<System.Guid>)GetValue(InstanceIdentifiersProperty);
             }
         }
 
-        public static readonly DependencyProperty InstanceIdentifiersProperty = DependencyProperty.Register("InstanceIdentifiers", typeof(System.Guid[]),
+        public static readonly DependencyProperty InstanceIdentifiersProperty = DependencyProperty.Register("InstanceIdentifiers", typeof(IList<System.Guid>),
             typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null));
         /// <summary>
         /// Array of instance parameters. Must be InstanceParameter[].
         /// </summary>
-        public InstanceParameter[] InstanceParamArray
+        public IList<InstanceParameter> InstanceParamArray
         {
             get { return (InstanceParameter[])this.GetValue(InstanceAdvArrayProperty); }
             set { this.SetValue(InstanceAdvArrayProperty, value); }
@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Array of instance matrix. Must be Matrix[].
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
-            DependencyProperty.Register("InstanceParamArray", typeof(InstanceParameter[]), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
+            DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
 
 
         private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -134,17 +134,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.isInstanceChanged)
                 {
                     BuildOctree();
-                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Length)
+                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
                     {
                         Disposer.RemoveAndDispose(ref instanceBuffer);
-                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances, new BufferDescription(Matrix.SizeInBytes * this.Instances.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * this.Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                     }
-                    DataStream stream;
-                    Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                    stream.Position = 0;
-                    stream.WriteRange(this.Instances, 0, this.Instances.Length);
-                    Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
-                    stream.Dispose();
+                    else
+                    {
+                        DataStream stream;
+                        Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                        stream.Position = 0;
+                        stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
+                        Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
+                        stream.Dispose();
+                    }
                     this.isInstanceChanged = false;
                 }
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
@@ -152,19 +155,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (instanceParamArrayChanged)
                     {
-                        if (instanceParamBuffer == null || this.instanceParamBuffer.Description.SizeInBytes < InstanceParameter.SizeInBytes * this.InstanceParamArray.Length)
+                        if (instanceParamBuffer == null || this.instanceParamBuffer.Description.SizeInBytes < InstanceParameter.SizeInBytes * this.InstanceParamArray.Count)
                         {
                             Disposer.RemoveAndDispose(ref instanceParamBuffer);
-                            this.instanceParamBuffer = Buffer.Create(this.Device, this.InstanceParamArray,
-                                new BufferDescription(InstanceParameter.SizeInBytes * this.InstanceParamArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
+                            this.instanceParamBuffer = Buffer.Create(this.Device, this.InstanceParamArray.ToArray(),
+                                new BufferDescription(InstanceParameter.SizeInBytes * this.InstanceParamArray.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
                                 CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                         }
-                        DataStream stream;
-                        Device.ImmediateContext.MapSubresource(this.instanceParamBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                        stream.Position = 0;
-                        stream.WriteRange(this.InstanceParamArray, 0, this.InstanceParamArray.Length);
-                        Device.ImmediateContext.UnmapSubresource(this.instanceParamBuffer, 0);
-                        stream.Dispose();
+                        else
+                        {
+                            DataStream stream;
+                            Device.ImmediateContext.MapSubresource(this.instanceParamBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                            stream.Position = 0;
+                            stream.WriteRange(this.InstanceParamArray.ToArray(), 0, this.InstanceParamArray.Count);
+                            Device.ImmediateContext.UnmapSubresource(this.instanceParamBuffer, 0);
+                            stream.Dispose();
+                        }
                         this.instanceParamArrayChanged = false;
                     }
                     this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, InstanceParameter.SizeInBytes, 0));
@@ -172,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
-                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Length, 0, 0, 0);
+                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
             }
             this.bHasInstances.Set(false);
             this.hasInstanceParamVar.Set(false);
@@ -240,7 +246,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 var result = hits[0];
                                 object tag = null;
-                                if (InstanceIdentifiers != null && InstanceIdentifiers.Length == Instances.Length)
+                                if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
                                 {
                                     tag = InstanceIdentifiers[instanceIdx];
                                 }
@@ -292,7 +298,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                         result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
                                         result.Distance = d;
                                         object tag = null;
-                                        if (InstanceIdentifiers != null && InstanceIdentifiers.Length == Instances.Length)
+                                        if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
                                         {
                                             tag = InstanceIdentifiers[instanceIdx];
                                         }
