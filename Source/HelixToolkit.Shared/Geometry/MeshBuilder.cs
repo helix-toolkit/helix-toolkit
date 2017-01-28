@@ -3686,7 +3686,7 @@ namespace HelixToolkit.Wpf
                 var count = path.Count;
                 if (backCap)
                 {
-                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).ToArray();
+                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
                     var normal = path[count - 1] - path[count - 2];
                     normal.Normalize();
                     for (int i = 0; i < normals.Length; ++i)
@@ -3816,7 +3816,7 @@ namespace HelixToolkit.Wpf
                 var count = path.Count;
                 if (backCap)
                 {
-                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).ToArray();
+                    var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
                     var normal = path[count - 1] - path[count - 2];
                     normal.Normalize();
                     for (int i = 0; i < normals.Length; ++i)
