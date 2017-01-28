@@ -239,6 +239,18 @@
         {
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
         }
+
+        protected override bool CheckGeometry()
+        {
+            if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
