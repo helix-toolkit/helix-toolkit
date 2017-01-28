@@ -64,7 +64,7 @@ namespace CustomShaderDemo
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
             if (hasInstances)
             {
-                instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                instanceBuffer = Buffer.Create(Device, Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
             }
 
             vViewport = effect.GetVariableByName("vViewport").AsVector();
