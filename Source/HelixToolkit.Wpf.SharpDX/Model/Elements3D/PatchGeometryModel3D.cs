@@ -279,37 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             /// --- set model transform paramerers                         
             effectTransforms.mWorld.SetMatrix(ref modelMatrix);
-
-            /// --- set material props
-            if (phongMaterial != null)
-            {
-                /// --- set material lighting-params      
-                effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
-
-                /// --- set samplers boolean flags
-                effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null && RenderDiffuseMap);
-                effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null && RenderNormalMap);
-                effectMaterial.bHasDisplacementMapVariable.Set(phongMaterial.DisplacementMap != null && RenderDisplacementMap);
-
-                /// --- set samplers
-                if (phongMaterial.DiffuseMap != null)
-                {
-                    effectMaterial.texDiffuseMapVariable.SetResource(texDiffuseMapView);
-                }
-                if (phongMaterial.NormalMap != null)
-                {
-                    effectMaterial.texNormalMapVariable.SetResource(texNormalMapView);
-                }
-                if (phongMaterial.DisplacementMap != null)
-                {
-                    effectMaterial.texDisplacementMapVariable.SetResource(texDisplacementMapView);
-                }
-            }
+            this.effectMaterial.AttachMaterial();
 
             /// --- set primitive type
             if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles])

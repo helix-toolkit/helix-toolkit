@@ -118,7 +118,7 @@ namespace CustomShaderDemo
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
             if (hasInstances)
             {
-                instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                instanceBuffer = Buffer.Create(Device, Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
             }
 
             OnRasterStateChanged();
@@ -134,12 +134,9 @@ namespace CustomShaderDemo
             Disposer.RemoveAndDispose(ref instanceBuffer);
             Disposer.RemoveAndDispose(ref effectMaterial);
             Disposer.RemoveAndDispose(ref effectTransforms);
-            Disposer.RemoveAndDispose(ref texDiffuseMapView);
-            Disposer.RemoveAndDispose(ref texNormalMapView);
             Disposer.RemoveAndDispose(ref bHasInstances);
 
             renderTechnique = null;
-            phongMaterial = null;
             effectTechnique = null;
             vertexLayout = null;
 
@@ -155,32 +152,7 @@ namespace CustomShaderDemo
             /// --- check shadowmaps
             hasShadowMap = renderHost.IsShadowMapEnabled;
             effectMaterial.bHasShadowMapVariable.Set(hasShadowMap);
-
-            /// --- set material params      
-            if (phongMaterial != null)
-            {
-                effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
-
-                /// --- has samples              
-                effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null);
-                effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null);
-
-                /// --- set samplers
-                if (phongMaterial.DiffuseMap != null)
-                {
-                    effectMaterial.texDiffuseMapVariable.SetResource(texDiffuseMapView);
-                }
-
-                if (phongMaterial.NormalMap != null)
-                {
-                    effectMaterial.texNormalMapVariable.SetResource(texNormalMapView);
-                }
-            }
+            effectMaterial.AttachMaterial();
 
             /// --- check instancing
             hasInstances = (Instances != null) && (Instances.Any());
@@ -202,13 +174,7 @@ namespace CustomShaderDemo
                 /// --- update instance buffer
                 if (isInstanceChanged)
                 {
-                    instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                    DataStream stream;
-                    Device.ImmediateContext.MapSubresource(instanceBuffer, MapMode.WriteDiscard, MapFlags.None, out stream);
-                    stream.Position = 0;
-                    stream.WriteRange(instanceArray, 0, instanceArray.Length);
-                    Device.ImmediateContext.UnmapSubresource(instanceBuffer, 0);
-                    stream.Dispose();
+                    instanceBuffer = Buffer.Create(Device, Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                     isInstanceChanged = false;
                 }
 
@@ -222,7 +188,7 @@ namespace CustomShaderDemo
                 /// --- render the geometry
                 effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
-                Device.ImmediateContext.DrawIndexedInstanced(Geometry.Indices.Count, instanceArray.Length, 0, 0, 0);
+                Device.ImmediateContext.DrawIndexedInstanced(Geometry.Indices.Count, Instances.Count, 0, 0, 0);
             }
             else
             {

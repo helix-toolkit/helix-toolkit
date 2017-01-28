@@ -231,13 +231,9 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.instanceBuffer);
             Disposer.RemoveAndDispose(ref this.effectMaterial);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
-            Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
-            Disposer.RemoveAndDispose(ref this.texNormalMapView);
-            Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
             Disposer.RemoveAndDispose(ref this.bHasInstances);
 
             this.renderTechnique = null;
-            this.phongMaterial = null;
             this.effectTechnique = null;
             this.vertexLayout = null;
 
@@ -255,36 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
             /// --- set material params      
-            if (phongMaterial != null)
-            {
-                this.effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                this.effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                this.effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                this.effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                this.effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                this.effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
-
-                /// --- has samples              
-                this.effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null);
-                this.effectMaterial.bHasDiffuseAlphaMapVariable.Set(phongMaterial.DiffuseAlphaMap != null);
-                this.effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null);
-
-                /// --- set samplers
-                if (phongMaterial.DiffuseMap != null)
-                {
-                    this.effectMaterial.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
-                }
-
-                if (phongMaterial.NormalMap != null)
-                {
-                    this.effectMaterial.texNormalMapVariable.SetResource(this.texNormalMapView);
-                }
-
-                if (phongMaterial.DiffuseAlphaMap != null)
-                {
-                    this.effectMaterial.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
-                }
-            }
+            this.effectMaterial.AttachMaterial();
 
             this.bHasInstances.Set(this.hasInstances);
 
@@ -300,17 +267,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Length)
+                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
                     {
                         Disposer.RemoveAndDispose(ref instanceBuffer);
-                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances, new BufferDescription(Matrix.SizeInBytes * this.Instances.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances.ToArray(), 
+                            new BufferDescription(Matrix.SizeInBytes * this.Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                     }
-                    DataStream stream;
-                    Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                    stream.Position = 0;
-                    stream.WriteRange(this.Instances, 0, this.Instances.Length);
-                    Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
-                    stream.Dispose();
+                    else
+                    {
+                        DataStream stream;
+                        Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                        stream.Position = 0;
+                        stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
+                        Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
+                        stream.Dispose();
+                    }
                     this.isInstanceChanged = false;
                 }
 
@@ -324,7 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
-                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Length, 0, 0, 0);
+                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
                 this.bHasInstances.Set(false);
             }
             else
