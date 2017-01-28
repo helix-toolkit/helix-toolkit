@@ -231,13 +231,9 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.instanceBuffer);
             Disposer.RemoveAndDispose(ref this.effectMaterial);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
-            Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
-            Disposer.RemoveAndDispose(ref this.texNormalMapView);
-            Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
             Disposer.RemoveAndDispose(ref this.bHasInstances);
 
             this.renderTechnique = null;
-            this.phongMaterial = null;
             this.effectTechnique = null;
             this.vertexLayout = null;
 
@@ -255,36 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
             /// --- set material params      
-            if (phongMaterial != null)
-            {
-                this.effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                this.effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                this.effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                this.effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                this.effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                this.effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
-
-                /// --- has samples              
-                this.effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null);
-                this.effectMaterial.bHasDiffuseAlphaMapVariable.Set(phongMaterial.DiffuseAlphaMap != null);
-                this.effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null);
-
-                /// --- set samplers
-                if (phongMaterial.DiffuseMap != null)
-                {
-                    this.effectMaterial.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
-                }
-
-                if (phongMaterial.NormalMap != null)
-                {
-                    this.effectMaterial.texNormalMapVariable.SetResource(this.texNormalMapView);
-                }
-
-                if (phongMaterial.DiffuseAlphaMap != null)
-                {
-                    this.effectMaterial.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
-                }
-            }
+            this.effectMaterial.AttachMaterial();
 
             this.bHasInstances.Set(this.hasInstances);
 

@@ -119,39 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// --- check shadowmaps
             this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
-
-            /// --- set material params      
-            if (phongMaterial != null)
-            {
-                this.effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                this.effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                this.effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                this.effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                this.effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                this.effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
-
-                /// --- has samples              
-                this.effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null);
-                this.effectMaterial.bHasDiffuseAlphaMapVariable.Set(phongMaterial.DiffuseAlphaMap != null);
-                this.effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null);
-
-                /// --- set samplers
-                if (phongMaterial.DiffuseMap != null)
-                {
-                    this.effectMaterial.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
-                }
-
-                if (phongMaterial.NormalMap != null)
-                {
-                    this.effectMaterial.texNormalMapVariable.SetResource(this.texNormalMapView);
-                }
-
-                if (phongMaterial.DiffuseAlphaMap != null)
-                {
-                    this.effectMaterial.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
-                }
-            }
-
+            this.effectMaterial.AttachMaterial();
             /// --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
