@@ -532,28 +532,17 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected BoundingBox FindEnclosingBox()
         {
-            Vector3 global_min = Bound.Minimum, global_max = Bound.Maximum;
-
-            //go through all the objects in the list and find the extremes for their bounding areas.
-            foreach (var obj in Objects)
+            if (Objects.Count == 0)
             {
-                Vector3 local_min = Vector3.Zero, local_max = Vector3.Zero;
-                var bound = GetBoundingBoxFromItem(obj);
-                if (bound != null && bound.Maximum != bound.Minimum)
-                {
-                    local_min = bound.Minimum;
-                    local_max = bound.Maximum;
-                }
-
-                if (local_min.X < global_min.X) global_min.X = local_min.X;
-                if (local_min.Y < global_min.Y) global_min.Y = local_min.Y;
-                if (local_min.Z < global_min.Z) global_min.Z = local_min.Z;
-
-                if (local_max.X > global_max.X) global_max.X = local_max.X;
-                if (local_max.Y > global_max.Y) global_max.Y = local_max.Y;
-                if (local_max.Z > global_max.Z) global_max.Z = local_max.Z;
+                return Bound;
             }
-            return new BoundingBox(global_min, global_max);
+            var b = GetBoundingBoxFromItem(Objects[0]);
+            foreach(var obj in Objects)
+            {
+                var bound = GetBoundingBoxFromItem(obj);
+                BoundingBox.Merge(ref b, ref bound, out b);
+            }
+            return b;
         }
         /// <summary>
         /// This finds the smallest enclosing cube which is a power of 2, for all objects in the list.
