@@ -129,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Array of instance matrix. Must be Matrix[].
+        /// List of instance matrix. 
         /// </summary>
         public IList<Matrix> Instances
         {
@@ -138,10 +138,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Array of instance matrix. Must be Matrix[].
+        /// List of instance matrix.
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IEnumerable<Matrix>), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
 
         /// <summary>
         /// 
@@ -340,8 +340,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
-            public void AttachMaterial()
+            public bool AttachMaterial()
             {
+                /// --- has samples              
+                this.bHasDiffuseMapVariable.Set(this.texDiffuseMapView != null);
+                this.bHasDiffuseAlphaMapVariable.Set(this.texDiffuseAlphaMapView != null);
+                this.bHasNormalMapVariable.Set(this.texNormalMapView != null);
+                this.bHasDisplacementMapVariable.Set(this.texDisplacementMapView != null);
+
                 if (material != null)
                 {
                     this.vMaterialDiffuseVariable.Set(material.DiffuseColor);
@@ -350,17 +356,15 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.vMaterialSpecularVariable.Set(material.SpecularColor);
                     this.vMaterialReflectVariable.Set(material.ReflectiveColor);
                     this.sMaterialShininessVariable.Set(material.SpecularShininess);
-
-                    /// --- has samples              
-                    this.bHasDiffuseMapVariable.Set(this.texDiffuseMapView != null);
-                    this.bHasDiffuseAlphaMapVariable.Set(this.texDiffuseAlphaMapView != null);
-                    this.bHasNormalMapVariable.Set(this.texNormalMapView != null);
-                    this.bHasDisplacementMapVariable.Set(this.texDisplacementMapView != null);
-
                     this.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
                     this.texNormalMapVariable.SetResource(this.texNormalMapView);
                     this.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
                     this.texDisplacementMapVariable.SetResource(this.texDisplacementMapView);
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
 
