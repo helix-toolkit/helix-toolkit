@@ -199,15 +199,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
 
-            if (renderContext.Camera is ProjectionCamera)
-            {
-                var c = renderContext.Camera as ProjectionCamera;
-                var width = ((float)renderContext.Canvas.ActualWidth);
-                var height = ((float)renderContext.Canvas.ActualHeight);
-                var viewport = new Vector4(width, height, 0, 0);
-                vViewport.Set(ref viewport);
-            }
-
             /// --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
