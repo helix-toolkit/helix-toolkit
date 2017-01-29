@@ -141,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Array of instance matrix. Must be Matrix[].
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IEnumerable<Matrix>), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(MaterialGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
 
         /// <summary>
         /// 
