@@ -17,7 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool hasInstanceParams = false;
         private EffectScalarVariable hasInstanceParamVar;
         public bool HasInstanceParams { get { return hasInstanceParams; } }
-
+        /// <summary>
+        /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
+        /// </summary>
         public IList<System.Guid> InstanceIdentifiers
         {
             set
@@ -29,15 +31,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (IList<System.Guid>)GetValue(InstanceIdentifiersProperty);
             }
         }
-
+        /// <summary>
+        /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
+        /// </summary>
         public static readonly DependencyProperty InstanceIdentifiersProperty = DependencyProperty.Register("InstanceIdentifiers", typeof(IList<System.Guid>),
             typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null));
         /// <summary>
-        /// Array of instance parameters. Must be InstanceParameter[].
+        /// List of instance parameters. 
         /// </summary>
         public IList<InstanceParameter> InstanceParamArray
         {
-            get { return (InstanceParameter[])this.GetValue(InstanceAdvArrayProperty); }
+            get { return (IList<InstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
         /// <summary>
@@ -71,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
-        /// Array of instance matrix. Must be Matrix[].
+        /// List of instance parameter. 
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
