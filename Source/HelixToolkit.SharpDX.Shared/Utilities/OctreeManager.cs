@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public GeometryModel3DOctreeManager()
         {
         }
-        protected void UpdateOctree(GeometryModel3DOctree tree)
+        private void UpdateOctree(GeometryModel3DOctree tree)
         {
             Octree = tree;
             mOctree = tree;

@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
@@ -248,10 +249,21 @@ namespace HelixToolkit.Wpf.SharpDX
             var target = this.Camera.Position + this.Camera.LookDirection;
             var relativeTarget = zoomAround - target;
             var relativePosition = zoomAround - this.Camera.Position;
-
+            if (relativePosition.Length < 1e-4)
+            {
+                if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
+                {
+                    relativePosition.Normalize();
+                    relativePosition /= 10;
+                }
+                else//If Zoom in too close, stop it.
+                {
+                    return;
+                }
+            }
             var newRelativePosition = relativePosition * (1 + delta);
             var newRelativeTarget = relativeTarget * (1 + delta);
-
+           
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
 
@@ -269,7 +281,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var newLookDirection = newTarget - newPosition;
-
             this.Camera.LookDirection = newLookDirection;
             this.Camera.Position = newPosition;
         }
