@@ -225,10 +225,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context) && effectMaterial!=null;
-        }
         /// <summary>
         /// 
         /// </summary>        
