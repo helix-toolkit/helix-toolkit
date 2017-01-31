@@ -254,6 +254,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
+
+            var newDistance = (newPosition - zoomAround).Length;
+            var oldDistance = (this.Camera.Position - zoomAround).Length;
+
+            if (newDistance > this.Viewport.ZoomDistanceLimitFar && (oldDistance < this.Viewport.ZoomDistanceLimitFar || newDistance > oldDistance))
+            {
+                return;
+            }
+
+            if (newDistance < this.Viewport.ZoomDistanceLimitNear && (oldDistance > this.Viewport.ZoomDistanceLimitNear || newDistance < oldDistance))
+            {
+                return;
+            }
+
             var newLookDirection = newTarget - newPosition;
 
             this.Camera.LookDirection = newLookDirection;

@@ -644,6 +644,18 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomCursor", typeof(Cursor), typeof(Viewport3DX), new PropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
+        /// The far zoom distance limit property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomDistanceLimitFarProperty = DependencyProperty.Register(
+            "ZoomDistanceLimitFar", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(double.PositiveInfinity));
+
+        /// <summary>
+        /// The near zoom distance limit property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomDistanceLimitNearProperty = DependencyProperty.Register(
+            "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.0));
+
+        /// <summary>
         /// The zoom extents when loaded property.
         /// </summary>
         public static readonly DependencyProperty ZoomExtentsWhenLoadedProperty = DependencyProperty.Register(
@@ -2365,6 +2377,39 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(ZoomCursorProperty, value);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating the far distance limit for zoom.
+        /// </summary>
+        public double ZoomDistanceLimitFar
+        {
+            get
+            {
+                return (double)this.GetValue(ZoomDistanceLimitFarProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomDistanceLimitFarProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the near distance limit for zoom.
+        /// </summary>
+        public double ZoomDistanceLimitNear
+        {
+            get
+            {
+                return (double)this.GetValue(ZoomDistanceLimitNearProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomDistanceLimitNearProperty, value);
+            }
+        }
+
 
         /// <summary>
         /// Gets or sets a value indicating whether to Zoom extents when the control has loaded.
