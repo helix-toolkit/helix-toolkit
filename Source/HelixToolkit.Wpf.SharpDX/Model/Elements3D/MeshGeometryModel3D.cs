@@ -239,7 +239,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             base.OnDetach();
         }
-
+        
+        protected override bool CanRender(RenderContext context)
+        {
+            return base.CanRender(context) && this.effectMaterial != null;
+        }
+        
         protected override void OnRender(RenderContext renderContext)
         {
             /// --- set constant paramerers             
