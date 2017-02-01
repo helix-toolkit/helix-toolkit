@@ -1,5 +1,4 @@
-﻿using HelixToolkit.SharpDX.Shared.Utilities;
-using SharpDX;
+﻿using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;

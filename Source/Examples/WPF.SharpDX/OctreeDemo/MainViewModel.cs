@@ -1,5 +1,4 @@
 ﻿using DemoCore;
-using HelixToolkit.SharpDX.Shared.Utilities;
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;

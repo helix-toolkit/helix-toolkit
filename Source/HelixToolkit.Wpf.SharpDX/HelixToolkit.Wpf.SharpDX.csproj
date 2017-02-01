@@ -191,6 +191,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\IOctreeManager.cs" />
+    <Compile Include="Utilities\Octree.cs" />
+    <Compile Include="Utilities\OctreeHelper.cs" />
+    <Compile Include="Utilities\OctreeManager.cs" />
     <Compile Include="Utilities\OffReader.cs" />
     <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="Utilities\StudioReader.cs" />

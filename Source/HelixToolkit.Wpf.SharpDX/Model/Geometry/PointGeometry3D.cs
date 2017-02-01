@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using HelixToolkit.SharpDX.Shared.Utilities;
 
     [Serializable]
     public class PointGeometry3D : Geometry3D
