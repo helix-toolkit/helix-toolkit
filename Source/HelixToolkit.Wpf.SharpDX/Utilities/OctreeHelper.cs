@@ -4,11 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
