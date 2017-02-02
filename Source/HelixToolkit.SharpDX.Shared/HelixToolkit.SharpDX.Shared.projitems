@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\Geometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\MeshGeometry3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Interfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\ComponentBase.cs" />
@@ -62,10 +63,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TypeConverter.cs" />

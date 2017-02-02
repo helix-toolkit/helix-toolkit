@@ -1,12 +1,16 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OctreeManager.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 using System.Windows;
 using SharpDX;
 using System.Diagnostics;
-using HelixToolkit.SharpDX.Shared.Utilities;
-using HelixToolkit.SharpDX.Shared.Model;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -306,7 +310,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     int counter = 0;
                     while (!tree.Add(model))
                     {
-                        var direction =(model.Bounds.Minimum + model.Bounds.Maximum)
+                        var direction = (model.Bounds.Minimum + model.Bounds.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
                         tree = tree.Expand(ref direction) as GeometryModel3DOctree;
                         ++counter;
@@ -387,7 +391,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             var model3D = items.Where(x => x is InstancingMeshGeometryModel3D).FirstOrDefault() as InstancingMeshGeometryModel3D;
-            if(model3D == null)
+            if (model3D == null)
             { return; }
             IList<Matrix> instMatrix = model3D.Instances;
             var octree = new InstancingModel3DOctree(instMatrix, model3D.BoundsWithTransform, this.Parameter, new Queue<IOctree>(256));

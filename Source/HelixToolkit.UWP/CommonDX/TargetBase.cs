@@ -35,10 +35,10 @@ namespace HelixToolkit.UWP.CommonDX
     /// </remarks>
     public abstract class TargetBase : DisposeCollector
     {
-        protected SharpDX.Direct3D11.RenderTargetView renderTargetView;
-        protected SharpDX.Direct3D11.DepthStencilView depthStencilView;
-        protected SharpDX.Direct2D1.Bitmap1 bitmapTarget;
-        protected SharpDX.Direct3D11.Texture2D backBuffer;
+        protected global::SharpDX.Direct3D11.RenderTargetView renderTargetView;
+        protected global::SharpDX.Direct3D11.DepthStencilView depthStencilView;
+        protected global::SharpDX.Direct2D1.Bitmap1 bitmapTarget;
+        protected global::SharpDX.Direct3D11.Texture2D backBuffer;
 
         /// <summary>
         /// Gets the <see cref="DeviceManager"/> attached to this instance.
@@ -48,19 +48,19 @@ namespace HelixToolkit.UWP.CommonDX
         /// <summary>
         /// Gets the Direct3D RenderTargetView used by this target.
         /// </summary>
-        public SharpDX.Direct3D11.RenderTargetView RenderTargetView { get { return renderTargetView; } }
+        public global::SharpDX.Direct3D11.RenderTargetView RenderTargetView { get { return renderTargetView; } }
 
-        public SharpDX.Direct3D11.Texture2D BackBuffer { get { return backBuffer; } }
+        public global::SharpDX.Direct3D11.Texture2D BackBuffer { get { return backBuffer; } }
 
         /// <summary>
         /// Gets the Direct3D DepthStencilView used by this target.
         /// </summary>
-        public SharpDX.Direct3D11.DepthStencilView DepthStencilView { get { return depthStencilView; } }
+        public global::SharpDX.Direct3D11.DepthStencilView DepthStencilView { get { return depthStencilView; } }
 
         /// <summary>
         /// Gets the Direct2D RenderTarget used by this target.
         /// </summary>
-        public SharpDX.Direct2D1.Bitmap1 BitmapTarget2D { get { return bitmapTarget; } }
+        public global::SharpDX.Direct2D1.Bitmap1 BitmapTarget2D { get { return bitmapTarget; } }
 
         /// <summary>
         /// Gets the bounds of the control linked to this render target

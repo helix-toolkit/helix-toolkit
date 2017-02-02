@@ -9,7 +9,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using HelixToolkit.SharpDX.Shared.Utilities;
     using global::SharpDX;
     using System.Diagnostics;
     using HelixToolkit.Wpf.SharpDX.Core;
@@ -130,9 +129,11 @@ namespace HelixToolkit.Wpf.SharpDX
             return mesh;
         }
 
+#if !NETFX_CORE
         protected override IOctree CreateOctree(OctreeBuildParameter parameter)
         {
             return new MeshGeometryOctree(this.Positions, this.Indices, parameter);
         }
+#endif
     }
 }

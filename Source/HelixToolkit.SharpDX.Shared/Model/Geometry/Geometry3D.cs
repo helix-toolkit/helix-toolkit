@@ -13,7 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using HelixToolkit.Wpf.SharpDX.Core;
-    using HelixToolkit.SharpDX.Shared.Utilities;
     using System.Runtime.InteropServices;
     using System.ComponentModel;
     using HelixToolkit.SharpDX.Shared.Model;
@@ -41,7 +40,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Set<IntCollection>(ref indices, value))
                 {
+#if !NETFX_CORE
                     Octree = null;
+#endif
                 }
             }
         }
@@ -57,7 +58,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Set<Vector3Collection>(ref position, value))
                 {
+#if !NETFX_CORE
                     Octree = null;
+#endif
                 }
             }
         }
@@ -98,12 +101,14 @@ namespace HelixToolkit.Wpf.SharpDX
             public Vector3 P0;
         }
 
+#if !NETFX_CORE
         /// <summary>
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
         public IOctree Octree { private set; get; }
 
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
+#endif
 
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="DisablePropertyChangedEvent"/>
@@ -120,6 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
             RaisePropertyChanged(TriangleBuffer);
         }
 
+#if !NETFX_CORE
         /// <summary>
         /// Create Octree for current model.
         /// </summary>
@@ -153,5 +159,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Octree = null;
         }
+#endif
     }
 }

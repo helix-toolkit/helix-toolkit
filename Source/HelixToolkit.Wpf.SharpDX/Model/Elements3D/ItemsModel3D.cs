@@ -17,7 +17,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using HelixToolkit.SharpDX.Shared.Utilities;
     using SharpDX;
     using System.Windows.Media;
     using System.Diagnostics;
