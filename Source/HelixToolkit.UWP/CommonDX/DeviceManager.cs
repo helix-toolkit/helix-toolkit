@@ -36,54 +36,54 @@ namespace HelixToolkit.UWP.CommonDX
     public class DeviceManager : DisposeCollector
     {
         // Declare Direct2D Objects
-        protected SharpDX.Direct2D1.Factory1           d2dFactory;
-        protected SharpDX.Direct2D1.Device             d2dDevice;
-        protected SharpDX.Direct2D1.DeviceContext      d2dContext;
+        protected global::SharpDX.Direct2D1.Factory1           d2dFactory;
+        protected global::SharpDX.Direct2D1.Device             d2dDevice;
+        protected global::SharpDX.Direct2D1.DeviceContext      d2dContext;
 
         // Declare DirectWrite & Windows Imaging Component Objects
-        protected SharpDX.DirectWrite.Factory          dwriteFactory;
-        protected SharpDX.WIC.ImagingFactory2          wicFactory;
+        protected global::SharpDX.DirectWrite.Factory          dwriteFactory;
+        protected global::SharpDX.WIC.ImagingFactory2          wicFactory;
 
         // Direct3D Objects
-        protected SharpDX.Direct3D11.Device1           d3dDevice;
-        protected SharpDX.Direct3D11.DeviceContext1    d3dContext;
+        protected global::SharpDX.Direct3D11.Device1           d3dDevice;
+        protected global::SharpDX.Direct3D11.DeviceContext1    d3dContext;
         protected FeatureLevel featureLevel;
         protected float dpi;
 
         /// <summary>
         /// Gets the Direct3D11 device.
         /// </summary>
-        public SharpDX.Direct3D11.Device1 DeviceDirect3D { get { return d3dDevice; } }
+        public global::SharpDX.Direct3D11.Device1 DeviceDirect3D { get { return d3dDevice; } }
 
         /// <summary>
         /// Gets the Direct3D11 context.
         /// </summary>
-        public SharpDX.Direct3D11.DeviceContext1 ContextDirect3D { get { return d3dContext; } }
+        public global::SharpDX.Direct3D11.DeviceContext1 ContextDirect3D { get { return d3dContext; } }
 
         /// <summary>
         /// Gets the Direct2D factory.
         /// </summary>
-        public SharpDX.Direct2D1.Factory1 FactoryDirect2D { get { return d2dFactory; } }
+        public global::SharpDX.Direct2D1.Factory1 FactoryDirect2D { get { return d2dFactory; } }
 
         /// <summary>
         /// Gets the Direct2D device.
         /// </summary>
-        public SharpDX.Direct2D1.Device DeviceDirect2D { get { return d2dDevice; } }
+        public global::SharpDX.Direct2D1.Device DeviceDirect2D { get { return d2dDevice; } }
 
         /// <summary>
         /// Gets the Direct2D context.
         /// </summary>
-        public SharpDX.Direct2D1.DeviceContext ContextDirect2D { get { return d2dContext; } }
+        public global::SharpDX.Direct2D1.DeviceContext ContextDirect2D { get { return d2dContext; } }
 
         /// <summary>
         /// Gets the DirectWrite factory.
         /// </summary>
-        public SharpDX.DirectWrite.Factory FactoryDirectWrite { get { return dwriteFactory; } }
+        public global::SharpDX.DirectWrite.Factory FactoryDirectWrite { get { return dwriteFactory; } }
 
         /// <summary>
         /// Gets the WIC factory.
         /// </summary>
-        public SharpDX.WIC.ImagingFactory2 WICFactory { get { return wicFactory; } }
+        public global::SharpDX.WIC.ImagingFactory2 WICFactory { get { return wicFactory; } }
 
         /// <summary>
         /// This event is fired when the <see cref="Dpi"/> is called,
@@ -118,9 +118,9 @@ namespace HelixToolkit.UWP.CommonDX
         /// </remarks>
         protected virtual void CreateDeviceIndependentResources() {
 #if DEBUG
-            var debugLevel = SharpDX.Direct2D1.DebugLevel.Information;
+            var debugLevel = global::SharpDX.Direct2D1.DebugLevel.Information;
 #else
-            var debugLevel = SharpDX.Direct2D1.DebugLevel.None;
+            var debugLevel = global::SharpDX.Direct2D1.DebugLevel.None;
 #endif
             // Dispose previous references and set to null
             RemoveAndDispose(ref d2dFactory);
@@ -128,9 +128,9 @@ namespace HelixToolkit.UWP.CommonDX
             RemoveAndDispose(ref wicFactory);
 
             // Allocate new references
-            d2dFactory = Collect(new SharpDX.Direct2D1.Factory1(SharpDX.Direct2D1.FactoryType.SingleThreaded, debugLevel));
-            dwriteFactory = Collect(new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Shared));
-            wicFactory = Collect(new SharpDX.WIC.ImagingFactory2());
+            d2dFactory = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.SingleThreaded, debugLevel));
+            dwriteFactory = Collect(new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Shared));
+            wicFactory = Collect(new global::SharpDX.WIC.ImagingFactory2());
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace HelixToolkit.UWP.CommonDX
             // Allocate new references
             // Enable compatibility with Direct2D
             // Retrieve the Direct3D 11.1 device amd device context
-            var creationFlags = SharpDX.Direct3D11.DeviceCreationFlags.VideoSupport | SharpDX.Direct3D11.DeviceCreationFlags.BgraSupport;
+            var creationFlags = global::SharpDX.Direct3D11.DeviceCreationFlags.VideoSupport | global::SharpDX.Direct3D11.DeviceCreationFlags.BgraSupport;
 
             // Decomment this line to have Debug. Unfortunately, debug is sometimes crashing applications, so it is disable by default
             try
@@ -173,25 +173,25 @@ namespace HelixToolkit.UWP.CommonDX
                 // Try to create it with Video Support
                 // If it is not working, we just use BGRA
                 // Force to FeatureLevel.Level_9_1
-                using (var defaultDevice = new SharpDX.Direct3D11.Device(DriverType.Hardware, creationFlags))
-                    d3dDevice = defaultDevice.QueryInterface<SharpDX.Direct3D11.Device1>();
+                using (var defaultDevice = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, creationFlags))
+                    d3dDevice = defaultDevice.QueryInterface<global::SharpDX.Direct3D11.Device1>();
             } catch (Exception)
             {
-                creationFlags = SharpDX.Direct3D11.DeviceCreationFlags.BgraSupport;
-                using (var defaultDevice = new SharpDX.Direct3D11.Device(DriverType.Hardware, creationFlags))
-                    d3dDevice = defaultDevice.QueryInterface<SharpDX.Direct3D11.Device1>();
+                creationFlags = global::SharpDX.Direct3D11.DeviceCreationFlags.BgraSupport;
+                using (var defaultDevice = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, creationFlags))
+                    d3dDevice = defaultDevice.QueryInterface<global::SharpDX.Direct3D11.Device1>();
             }
             featureLevel = d3dDevice.FeatureLevel;
 
             // Get Direct3D 11.1 context
-            d3dContext = Collect(d3dDevice.ImmediateContext.QueryInterface<SharpDX.Direct3D11.DeviceContext1>());
+            d3dContext = Collect(d3dDevice.ImmediateContext.QueryInterface<global::SharpDX.Direct3D11.DeviceContext1>());
 
             // Create Direct2D device
-            using (var dxgiDevice = d3dDevice.QueryInterface<SharpDX.DXGI.Device>())
-                d2dDevice = Collect(new SharpDX.Direct2D1.Device(d2dFactory, dxgiDevice));
+            using (var dxgiDevice = d3dDevice.QueryInterface<global::SharpDX.DXGI.Device>())
+                d2dDevice = Collect(new global::SharpDX.Direct2D1.Device(d2dFactory, dxgiDevice));
 
             // Create Direct2D context
-            d2dContext = Collect(new SharpDX.Direct2D1.DeviceContext(d2dDevice, SharpDX.Direct2D1.DeviceContextOptions.None));
+            d2dContext = Collect(new global::SharpDX.Direct2D1.DeviceContext(d2dDevice, global::SharpDX.Direct2D1.DeviceContextOptions.None));
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace HelixToolkit.UWP.CommonDX
                 if (dpi != value)
                 {
                     dpi = value;
-                    d2dContext.DotsPerInch = new SharpDX.Size2F(dpi, dpi);
+                    d2dContext.DotsPerInch = new Size2F(dpi, dpi);
 
                     if (OnDpiChanged != null)
                         OnDpiChanged(this);

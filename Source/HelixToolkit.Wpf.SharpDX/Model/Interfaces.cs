@@ -22,11 +22,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.IO;
     using System;
 
-    public interface IGUID
-    {
-        Guid GUID { get; }
-    }
-
     public interface ITraversable
     {
         IList<ITraversable> Items { get; }

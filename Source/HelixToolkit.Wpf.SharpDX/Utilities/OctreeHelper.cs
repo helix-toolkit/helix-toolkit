@@ -1,11 +1,13 @@
-﻿using HelixToolkit.SharpDX.Shared.Utilities;
-using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OctreeHelper.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkit.SharpDX.Shared.Utilities
+using SharpDX;
+using System.Collections.Generic;
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     public static class OctreeHelper
     {
@@ -61,7 +63,7 @@ namespace HelixToolkit.SharpDX.Shared.Utilities
             Vector3[] verts = new Vector3[8];
             var builder = new LineBuilder();
             foreach (var box in path)
-            {                
+            {
                 verts[0] = box.Minimum;
                 verts[1] = new Vector3(box.Minimum.X, box.Minimum.Y, box.Maximum.Z); //Z
                 verts[2] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Minimum.Z); //Y
