@@ -1173,8 +1173,14 @@ namespace HelixToolkit.Wpf.SharpDX
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
             var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
-            var boundSphere = model.BoundsSphere.TransformBoundingSphere(modelMatrix);
-            if (rayWS.Intersects(ref bound) && rayWS.Intersects(ref boundSphere))
+            bool checkBoundSphere = false;
+            var boundSphere = new global::SharpDX.BoundingSphere();
+            if (model != null)
+            {
+                checkBoundSphere = true;
+                boundSphere = model.BoundsSphere.TransformBoundingSphere(modelMatrix);
+            }
+            if (rayWS.Intersects(ref bound) && (!checkBoundSphere || rayWS.Intersects(ref boundSphere)))
             {
                 isIntersect = true;
                 foreach (var t in this.Objects)
