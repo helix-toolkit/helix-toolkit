@@ -51,8 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
             }
             else
             {
-                lag -= Threshold;
-                lag = Math.Max(0, lag);
+                lag = Math.Min(lag - Threshold, Threshold - 2);
                 return false;
             }
         }
