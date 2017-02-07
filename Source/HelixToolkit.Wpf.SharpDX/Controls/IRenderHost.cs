@@ -79,5 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
         Light3DSceneShared Light3DSceneShared { get; }
 
         bool EnableRenderFrustum { set; get; }
+
+        uint MaxFPS { set; get; }
     }
 }

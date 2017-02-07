@@ -756,6 +756,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// Set max FPS to provide a stable FPS for rendering
+        /// </summary>
+        public static readonly DependencyProperty MaxFPSProperty
+            = DependencyProperty.Register("MaxFPS", typeof(int), typeof(Viewport3DX), new PropertyMetadata(60, (s, e) => {
+                var viewport = s as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.RenderHost.MaxFPS = (uint)e.NewValue;
+                }
+            }, (s,e)=> { return Math.Max(1, (int)e); }));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         [TypeConverter(typeof(Color4Converter))]
@@ -2570,6 +2582,21 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(EnableRenderFrustumProperty);
+            }
+        }
+
+        /// <summary>
+        /// Set max FPS to provide a stable FPS for rendering, Default = 60Hz.
+        /// </summary>
+        public int MaxFPS
+        {
+            set
+            {
+                SetValue(MaxFPSProperty, value);
+            }
+            get
+            {
+                return (int)GetValue(MaxFPSProperty);
             }
         }
     }
