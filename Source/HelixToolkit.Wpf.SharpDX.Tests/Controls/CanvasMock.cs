@@ -58,6 +58,11 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             set;get;
         }
 
+        public uint MaxFPS
+        {
+            set;get;
+        }
+
         public void SetDefaultRenderTargets()
         {
         }

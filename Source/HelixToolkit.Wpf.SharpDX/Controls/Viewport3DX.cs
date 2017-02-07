@@ -525,6 +525,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.RenderHost.MSAA = this.MSAA;
             this.RenderHost.EnableRenderFrustum = this.EnableRenderFrustum;
             this.RenderHost.RenderCycles = this.RenderCycles;
+            this.RenderHost.MaxFPS = (uint)this.MaxFPS;
             if (this.RenderHost != null)
             {
                 this.RenderHost.ExceptionOccurred += this.HandleRenderException;

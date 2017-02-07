@@ -116,6 +116,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public TimeSpan MaxRenderingDuration { get; set; }
 
+        private uint mMaxFPS = 60;
+        public uint MaxFPS
+        {
+            set
+            {
+                mMaxFPS = value;
+                skipper.Threshold = (long)Math.Floor(1000.0 / mMaxFPS);
+            }
+            get
+            {
+                return mMaxFPS;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
