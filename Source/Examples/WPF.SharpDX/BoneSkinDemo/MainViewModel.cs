@@ -159,6 +159,7 @@ namespace BoneSkinDemo
         private const int NumSegments = 100;
         private const int Theta = 24;
         private IList<Vector3> path;
+        private int numSegmentPerBone;
         public MainViewModel()
         {
             this.Title = "BoneSkin Demo";
@@ -184,7 +185,7 @@ namespace BoneSkinDemo
                 path.Add(new Vector3(0, (float)i/10, 0));
             }
 
-            builder.AddTube(path, 2, Theta, false);
+            builder.AddTube(path, 2, Theta, false, false, true);
             Model = builder.ToMesh();
             for (int i = 0; i < Model.Positions.Count; ++i)
             {
@@ -202,14 +203,28 @@ namespace BoneSkinDemo
             {
                 Bones = boneInternal.ToArray()
             };
+
+            int boneId = 0;
+            numSegmentPerBone = (int)Math.Max(1, (double)Model.Positions.Count / Theta / (BoneMatricesStruct.NumberOfBones -1));
+            int count = 0;
             for(int i=0; i < Model.Positions.Count / Theta; ++i)
             {
-
-                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i, Weights = new Vector4(1f, 0, 0, 0) }, Theta));
-
+                boneParams.AddRange(Enumerable.Repeat(new BoneIds()
+                {
+                    Bone1 = Math.Min(BoneMatricesStruct.NumberOfBones -1, boneId),
+                    Bone2 = Math.Min(BoneMatricesStruct.NumberOfBones - 1, boneId-1),
+                    Bone3 = Math.Min(BoneMatricesStruct.NumberOfBones - 1, boneId+1),
+                    Weights = new Vector4(0.6f, 0.2f, 0.2f, 0)
+                }, Theta));
+                ++count;
+                if (count == numSegmentPerBone)
+                {
+                    count = 0;
+                    ++boneId;
+                }
             }
-            VertexBoneParams = boneParams.ToArray();
 
+            VertexBoneParams = boneParams.ToArray();
 
             Instances = new List<Matrix>();
             for (int i = 0; i < 3; ++i)
@@ -239,17 +254,18 @@ namespace BoneSkinDemo
             var yAxis = new Vector3(0, 1, 0);
             var rotation = Matrix.RotationAxis(xAxis, 0);
             double angleEach = 0;
-            for (int i=0; i< NumSegments; ++i)
+            int counter = 0;
+            for (int i=0; i< NumSegments && i < BoneMatricesStruct.NumberOfBones; ++i, counter+= numSegmentPerBone)
             {
                 if (i == 0)
                 {
-                    boneInternal[i] =rotation;
+                    boneInternal[0] =rotation;
                 }
                 else
                 {
-                    var vp = Vector3.Transform(path[i - 1], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
+                    var vp = Vector3.Transform(path[counter - numSegmentPerBone], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
                     angleEach += angle;
-                    var v = Vector3.Transform(path[i], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
+                    var v = Vector3.Transform(path[counter], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
                     var rad = Math.Acos(Vector3.Dot(yAxis, (v-vp).Normalized()));
                     if (angleEach < 0)
                     {
@@ -262,7 +278,7 @@ namespace BoneSkinDemo
             }
             Bones = new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
 
-            if (frame > 20 || frame < -20)
+            if (frame > 40 || frame < -40)
             {
                 direction = !direction;
             }

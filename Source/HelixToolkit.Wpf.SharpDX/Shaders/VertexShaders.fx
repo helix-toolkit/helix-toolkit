@@ -159,7 +159,7 @@ PSInputCube VShaderCubeMap(float4 p : POSITION)
 }
 
 int4 minBoneV = { 0,0,0,0 };
-int4 maxBoneV = { MaxBones, MaxBones, MaxBones, MaxBones };
+int4 maxBoneV = { MaxBones -1, MaxBones -1, MaxBones -1, MaxBones -1};
 
 PSInput VShaderBoneSkin(VSBoneSkinInput input)
 {
