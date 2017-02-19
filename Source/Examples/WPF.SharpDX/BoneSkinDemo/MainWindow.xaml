@@ -42,6 +42,7 @@
             VerticalAlignment="Bottom"
             Orientation="Vertical">
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

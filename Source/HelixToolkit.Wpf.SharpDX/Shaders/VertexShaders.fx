@@ -158,6 +158,8 @@ PSInputCube VShaderCubeMap(float4 p : POSITION)
 	return output;
 }
 
+int4 minBoneV = { 0,0,0,0 };
+int4 maxBoneV = { MaxBones, MaxBones, MaxBones, MaxBones };
 
 PSInput VShaderBoneSkin(VSBoneSkinInput input)
 {
@@ -167,19 +169,30 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 
 	output.p = inputp;
 	output.n = inputn;
-	if (bHasBones && input.bones.x >= 0 && input.bones.y >= 0 && input.bones.z >= 0 && input.bones.w >= 0
-		&& input.bones.x < MaxBones && input.bones.y < MaxBones && input.bones.z < MaxBones && input.bones.w < MaxBones)
-	{
-		matrix m = SkinMatrices[0];// { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
-		output.p = mul(inputp, SkinMatrices[input.bones.x]) * input.boneWeights.x;
-		output.p += mul(inputp, SkinMatrices[input.bones.y]) * input.boneWeights.y;
-		output.p += mul(inputp, SkinMatrices[input.bones.z]) * input.boneWeights.z;
-		output.p += mul(inputp, SkinMatrices[input.bones.w]) * input.boneWeights.w;
 
-		output.n = mul(inputn, SkinMatrices[input.bones.x]) * input.boneWeights.x;
-		output.n += mul(inputn, SkinMatrices[input.bones.y]) * input.boneWeights.y;
-		output.n += mul(inputn, SkinMatrices[input.bones.z]) * input.boneWeights.z;
-		output.n += mul(inputn, SkinMatrices[input.bones.w]) * input.boneWeights.w;
+	if (bHasBones)
+	{
+		int4 bones = clamp(input.bones, minBoneV, maxBoneV);
+		if (input.boneWeights.x != 0)
+		{
+			output.p += mul(inputp, SkinMatrices[bones.x]) * input.boneWeights.x;
+			output.n += mul(inputn, SkinMatrices[bones.x]) * input.boneWeights.x;
+		}
+		if (input.boneWeights.y != 0)
+		{
+			output.p += mul(inputp, SkinMatrices[bones.y]) * input.boneWeights.y;
+			output.n += mul(inputn, SkinMatrices[bones.y]) * input.boneWeights.y;
+		}
+		if (input.boneWeights.z != 0)
+		{
+			output.p += mul(inputp, SkinMatrices[bones.z]) * input.boneWeights.z;
+			output.n += mul(inputn, SkinMatrices[bones.z]) * input.boneWeights.z;
+		}
+		if (input.boneWeights.w != 0)
+		{
+			output.p += mul(inputp, SkinMatrices[bones.w]) * input.boneWeights.w;
+			output.n += mul(inputn, SkinMatrices[bones.w]) * input.boneWeights.w;
+		}
 	}
 
 	// compose instance matrix

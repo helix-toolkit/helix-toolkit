@@ -124,6 +124,28 @@ namespace BoneSkinDemo
             }
         }
 
+        private bool enableAnimation = true;
+        public bool EnableAnimation
+        {
+            set
+            {
+                enableAnimation = value;
+                OnPropertyChanged();
+                if (enableAnimation)
+                {
+                    timer.Start();
+                }
+                else
+                {
+                    timer.Stop();
+                }
+            }
+            get
+            {
+                return enableAnimation;
+            }
+        }
+
         public IList<Matrix> Instances { get; private set; }
 
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
