@@ -59,6 +59,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctreeDemo", "Examples\WPF.SharpDX\OctreeDemo\OctreeDemo.csproj", "{BE3C1DBD-3345-4E32-BE7E-C3CCFDDD7220}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoneSkinDemo", "Examples\WPF.SharpDX\BoneSkinDemo\BoneSkinDemo.csproj", "{676675F0-18A4-4D08-AEB5-C561473AF7EC}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
@@ -296,6 +298,18 @@ Global
 		{BE3C1DBD-3345-4E32-BE7E-C3CCFDDD7220}.Release|x64.Build.0 = Release|Any CPU
 		{BE3C1DBD-3345-4E32-BE7E-C3CCFDDD7220}.Release|x86.ActiveCfg = Release|Any CPU
 		{BE3C1DBD-3345-4E32-BE7E-C3CCFDDD7220}.Release|x86.Build.0 = Release|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Debug|x64.Build.0 = Debug|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Release|x64.ActiveCfg = Release|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Release|x64.Build.0 = Release|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -321,5 +335,6 @@ Global
 		{AEE87C0E-AA98-4D82-9ED8-9EBEA107DDD6} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{C7F68E1A-85B4-494A-BA4E-F4270FFF3852} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{BE3C1DBD-3345-4E32-BE7E-C3CCFDDD7220} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{676675F0-18A4-4D08-AEB5-C561473AF7EC} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 	EndGlobalSection
 EndGlobal

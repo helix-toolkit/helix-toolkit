@@ -222,7 +222,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText],
-                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn]
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn],
                 });
 
                 var phong = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
@@ -261,6 +262,24 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
                     new InputElement("COLOR", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                });
+
+                var boneSkinBlinn = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn];
+                var boneSkinInputLayout = new InputLayout(device, GetEffect(instancingblinn).GetTechniqueByName(DefaultRenderTechniqueNames.BoneSkinBlinn).GetPassByIndex(0).Description.Signature, new[]
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BONEIDS", 0, Format.R32G32B32A32_SInt, InputElement.AppendAligned, 1),
+                    new InputElement("BONEWEIGHTS", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1),
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
                 });
 
                 var lines = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
@@ -333,6 +352,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 }, defaultInputLayout);
 
                 RegisterLayout(new[] { instancingblinn }, instancingInputLayout);
+
+                RegisterLayout(new[] { boneSkinBlinn }, boneSkinInputLayout);
             }
             catch (Exception ex)
             {
