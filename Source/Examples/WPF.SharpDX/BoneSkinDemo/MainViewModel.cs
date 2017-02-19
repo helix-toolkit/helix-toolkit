@@ -102,6 +102,8 @@ namespace BoneSkinDemo
             }
         }
 
+        public IList<Matrix> Instances { get; private set; }
+
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
         private DispatcherTimer timer = new DispatcherTimer();
@@ -117,8 +119,8 @@ namespace BoneSkinDemo
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
-                Position = new Media3D.Point3D(10, 10, 10),
-                LookDirection = new Media3D.Vector3D(-10, -10, -10),
+                Position = new Media3D.Point3D(20, 20, 20),
+                LookDirection = new Media3D.Vector3D(-20, -20, -20),
                 UpDirection = new Media3D.Vector3D(0, 1, 0)
             };
             this.Light1Color = (Color4)Color.White;
@@ -130,7 +132,7 @@ namespace BoneSkinDemo
             var path = new List<Vector3>();
             for(int i=0; i<100; ++i)
             {
-                path.Add(new Vector3(0, -5 + (float)i/10, 0));
+                path.Add(new Vector3(0, (float)i/10, 0));
             }
 
             builder.AddTube(path, 2, 24, false);
@@ -160,8 +162,21 @@ namespace BoneSkinDemo
                 }
             }
 
-           
-          //  boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = 0, Bone2 = -1, Bone3 = -1, Bone4 = -1, Weights = Vector4.One }, Model.Positions.Count));
+            Instances = new List<Matrix>();
+            for(int i =0; i < 3; ++i)
+            {
+                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, -10)));
+            }
+            for (int i = 0; i < 3; ++i)
+            {
+                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 0)));
+            }
+            for (int i = 0; i < 3; ++i)
+            {
+                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 10)));
+            }
+
+            //  boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = 0, Bone2 = -1, Bone3 = -1, Bone4 = -1, Weights = Vector4.One }, Model.Positions.Count));
             VertexBoneParams = boneParams.ToArray();
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromMilliseconds(20);
@@ -173,15 +188,18 @@ namespace BoneSkinDemo
         {
             double angle = (0.05f*frame) * Math.PI / 180;
             var rotation = Matrix.RotationAxis(new Vector3(1, 0, 0), (float)angle);
+            var rotationPrev = rotation;
             for (int i=0; i<boneInternal.Length; ++i)
             {
+                var scale = Matrix.Scaling(new Vector3(1, (float)Math.Abs(frame)/20 + 1, 1));
                 if (i == 0)
                 {
-                    boneInternal[i] = rotation;
+                    boneInternal[i] = scale * rotation;
                 }
                 else
                 {
-                    boneInternal[i] = boneInternal[i - 1] * rotation;
+                    rotationPrev *= rotation;
+                    boneInternal[i] = scale * rotationPrev;
                 }
             }
             Bones = new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
