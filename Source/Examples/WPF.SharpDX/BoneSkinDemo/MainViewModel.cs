@@ -4,6 +4,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -154,6 +155,9 @@ namespace BoneSkinDemo
         private int frame = 0;
         private bool direction = false;
 
+        private const int NumSegments = 100;
+        private const int Theta = 24;
+        private IList<Vector3> path;
         public MainViewModel()
         {
             this.Title = "BoneSkin Demo";
@@ -172,19 +176,19 @@ namespace BoneSkinDemo
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             SetupCameraBindings(this.Camera);
 
-            var builder = new MeshBuilder(true, true);
-            var path = new List<Vector3>();
-            for(int i=0; i<100; ++i)
+            var builder = new MeshBuilder(true, true, true);
+            path = new List<Vector3>();
+            for(int i=0; i< NumSegments; ++i)
             {
                 path.Add(new Vector3(0, (float)i/10, 0));
             }
 
-            builder.AddTube(path, 2, 24, false);
+            builder.AddTube(path, 2, Theta, false);
             Model = builder.ToMesh();
 
             Material = new PhongMaterial()
             {
-                DiffuseColor = Color.Blue,
+                DiffuseColor = Color.WhiteSmoke
             };
             for(int i=0; i<BoneMatricesStruct.NumberOfBones; ++i)
             {
@@ -194,11 +198,11 @@ namespace BoneSkinDemo
             {
                 Bones = boneInternal.ToArray()
             };
-            for(int i=0; i<Model.Positions.Count/24; ++i)
+            for(int i=0; i<Model.Positions.Count / Theta; ++i)
             {
-                if (i == 0 || i == Model.Positions.Count / 24 - 1)
+                if (i == 0 || i == Model.Positions.Count / Theta - 1)
                 {
-                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i, Weights = new Vector4(1f, 0, 0, 0) }, 24));
+                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i, Weights = new Vector4(1f, 0, 0, 0) }, Theta));
                 }
                 else
                 {
@@ -235,7 +239,8 @@ namespace BoneSkinDemo
             double angle = (0.05f*frame) * Math.PI / 180;
             var rotation = Matrix.RotationAxis(new Vector3(1, 0, 0), (float)angle);
             var rotationPrev = rotation;
-            for (int i=0; i<boneInternal.Length; ++i)
+            double angleEach = angle;
+            for (int i=0; i< NumSegments; ++i)
             {
                 var scale = Matrix.Scaling(new Vector3(1, (float)Math.Abs(frame)/20 + 1, 1));
                 if (i == 0)
@@ -247,6 +252,7 @@ namespace BoneSkinDemo
                     rotationPrev *= rotation;
                     boneInternal[i] = scale * rotationPrev;
                 }
+                angleEach += angle;
             }
             Bones = new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
 
