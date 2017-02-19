@@ -57,4 +57,11 @@ TextureCube texCubeMap;
 
 bool bHasInstanceParams = false;
 
+bool bHasBones = false;
+
+#define MaxBones 128
+
+cbuffer BoneSkinning {
+	matrix SkinMatrices[MaxBones];
+};
 #endif

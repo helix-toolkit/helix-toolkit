@@ -50,4 +50,26 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector2 TexCoordOffset;
         public const int SizeInBytes = 4 * (4 * 3 + 2);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct BoneIds
+    {
+        public int Bone1;
+        public int Bone2;
+        public int Bone3;
+        public int Bone4;
+        public Vector4 Weights;
+
+        public const int SizeInBytes = 4 * (4 + 4);
+    }
+
+   
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct BoneMatricesStruct
+    {
+        public const int NumberOfBones = 128;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
+        public Matrix[] Bones;
+        public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
+    }
 }

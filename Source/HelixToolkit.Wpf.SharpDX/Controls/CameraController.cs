@@ -408,6 +408,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private double zoomSpeed;
 
+        private readonly EventSkipper skipper = new EventSkipper();
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
         /// </summary>
@@ -2105,6 +2106,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
+            if (skipper.IsSkip())
+                return;
             var ticks = e.RenderingTime.Ticks;
             var time = 100e-9 * (ticks - this.lastTick);
 

@@ -59,6 +59,34 @@ technique11 RenderBlinn
 	}
 }
 
+technique11 RenderBoneSkinBlinn
+{
+	pass P0
+	{
+		//SetRasterizerState	( RSSolid );
+		SetDepthStencilState(DSSDepthLess, 0);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+
+		SetVertexShader(CompileShader(vs_4_0, VShaderBoneSkin()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
+	}
+	pass P1
+	{
+		SetRasterizerState(RSWire);
+		SetDepthStencilState(DSSDepthLess, 0);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+
+		SetVertexShader(CompileShader(vs_4_0, VShaderBoneSkin()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
+	}
+}
+
 technique11 RenderInstancingBlinn
 {
 	pass P0
