@@ -59,7 +59,7 @@ bool bHasInstanceParams = false;
 
 bool bHasBones = false;
 
-#define MaxBones 128
+#define MaxBones 32
 
 cbuffer BoneSkinning {
 	matrix SkinMatrices[MaxBones];

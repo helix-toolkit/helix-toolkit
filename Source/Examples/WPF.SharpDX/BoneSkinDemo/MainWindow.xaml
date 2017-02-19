@@ -33,7 +33,7 @@
 
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <hx:BoneSkinMeshGeometryModel3D FillMode="{Binding FillMode}"
+            <hx:BoneSkinMeshGeometryModel3D FillMode="{Binding FillMode}" CullMode="Back"
                 Geometry="{Binding Model}" Instances="{Binding Instances}"
                 Material="{Binding Material}" VertexBoneIds="{Binding VertexBoneParams}" BoneMatrices="{Binding Bones}" />
         </hx:Viewport3DX>
