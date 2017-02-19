@@ -193,7 +193,7 @@ namespace BoneSkinDemo
             }
             Material = new PhongMaterial()
             {
-                DiffuseColor = Color.WhiteSmoke
+                DiffuseColor = Color.MistyRose
             };
             for(int i=0; i<BoneMatricesStruct.NumberOfBones; ++i)
             {
