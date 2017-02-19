@@ -186,7 +186,10 @@ namespace BoneSkinDemo
 
             builder.AddTube(path, 2, Theta, false);
             Model = builder.ToMesh();
-
+            for (int i = 0; i < Model.Positions.Count; ++i)
+            {
+                Model.Positions[i] = new Vector3(Model.Positions[i].X, 0, Model.Positions[i].Z);
+            }
             Material = new PhongMaterial()
             {
                 DiffuseColor = Color.WhiteSmoke
@@ -201,20 +204,15 @@ namespace BoneSkinDemo
             };
             for(int i=0; i < Model.Positions.Count / Theta; ++i)
             {
-                if (i == 0 || i == Model.Positions.Count / Theta - 1)
-                {
+
                     boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i, Weights = new Vector4(1f, 0, 0, 0) }, Theta));
-                }
-                else
-                {
-                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i - 1, Bone2 = i, Bone3 = i + 1, Weights = new Vector4(0.3f, 0.4f, 0.3f, 0) }, 24));
-                }
+
             }
             VertexBoneParams = boneParams.ToArray();
 
 
             Instances = new List<Matrix>();
-            for(int i =0; i < 3; ++i)
+            for (int i = 0; i < 3; ++i)
             {
                 Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, -10)));
             }
@@ -239,21 +237,28 @@ namespace BoneSkinDemo
             var xAxis = new Vector3(1, 0, 0);
             var zAxis = new Vector3(0, 0, 1);
             var yAxis = new Vector3(0, 1, 0);
-            var rotation = Matrix.RotationAxis(xAxis, (float)angle);
-            var rotationPrev = rotation;
-            double angleEach = angle;
+            var rotation = Matrix.RotationAxis(xAxis, 0);
+            double angleEach = 0;
             for (int i=0; i< NumSegments; ++i)
             {
                 if (i == 0)
                 {
-                    boneInternal[i] = Matrix.Identity;
+                    boneInternal[i] =rotation;
                 }
                 else
                 {
-                    rotationPrev *= rotation;
-                    boneInternal[i] = rotationPrev;
+                    var vp = Vector3.Transform(path[i - 1], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
+                    angleEach += angle;
+                    var v = Vector3.Transform(path[i], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
+                    var rad = Math.Acos(Vector3.Dot(yAxis, (v-vp).Normalized()));
+                    if (angleEach < 0)
+                    {
+                        rad = -rad;
+                    }
+                    var rot = Matrix.RotationAxis(xAxis, (float)rad);
+                    var trans = Matrix.Translation(v);
+                    boneInternal[i] = rot * trans;
                 }
-                angleEach += angle;
             }
             Bones = new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
 

@@ -175,8 +175,8 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 		int4 bones = clamp(input.bones, minBoneV, maxBoneV);
 		if (input.boneWeights.x != 0)
 		{
-			output.p += mul(inputp, SkinMatrices[bones.x]) * input.boneWeights.x;
-			output.n += mul(inputn, (float3x3)SkinMatrices[bones.x]) * input.boneWeights.x;
+			output.p = mul(inputp, SkinMatrices[bones.x]) * input.boneWeights.x;
+			output.n = mul(inputn, (float3x3)SkinMatrices[bones.x]) * input.boneWeights.x;
 		}
 		if (input.boneWeights.y != 0)
 		{
