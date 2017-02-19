@@ -165,7 +165,7 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 {
 	PSInput output = (PSInput)0;
 	float4 inputp = input.p;
-	float4 inputn = float4(input.n, 1);
+	float3 inputn = input.n;
 
 	output.p = inputp;
 	output.n = inputn;
@@ -176,22 +176,22 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 		if (input.boneWeights.x != 0)
 		{
 			output.p += mul(inputp, SkinMatrices[bones.x]) * input.boneWeights.x;
-			output.n += mul(inputn, SkinMatrices[bones.x]) * input.boneWeights.x;
+			output.n += mul(inputn, (float3x3)SkinMatrices[bones.x]) * input.boneWeights.x;
 		}
 		if (input.boneWeights.y != 0)
 		{
 			output.p += mul(inputp, SkinMatrices[bones.y]) * input.boneWeights.y;
-			output.n += mul(inputn, SkinMatrices[bones.y]) * input.boneWeights.y;
+			output.n += mul(inputn, (float3x3)SkinMatrices[bones.y]) * input.boneWeights.y;
 		}
 		if (input.boneWeights.z != 0)
 		{
 			output.p += mul(inputp, SkinMatrices[bones.z]) * input.boneWeights.z;
-			output.n += mul(inputn, SkinMatrices[bones.z]) * input.boneWeights.z;
+			output.n += mul(inputn, (float3x3)SkinMatrices[bones.z]) * input.boneWeights.z;
 		}
 		if (input.boneWeights.w != 0)
 		{
 			output.p += mul(inputp, SkinMatrices[bones.w]) * input.boneWeights.w;
-			output.n += mul(inputn, SkinMatrices[bones.w]) * input.boneWeights.w;
+			output.n += mul(inputn, (float3x3)SkinMatrices[bones.w]) * input.boneWeights.w;
 		}
 	}
 
@@ -206,7 +206,7 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
 		};
 		output.p = mul(mInstance, output.p);
-		output.n = mul(mInstance, output.n);
+		output.n = mul((float3x3)mInstance, output.n);
 	}
 		
 	//set position into camera clip space	

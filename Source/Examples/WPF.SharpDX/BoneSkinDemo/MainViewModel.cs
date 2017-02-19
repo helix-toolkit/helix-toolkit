@@ -46,6 +46,7 @@ namespace BoneSkinDemo
                 {
                     camLookDir = value;
                     OnPropertyChanged();
+                    Light1Direction = value.ToVector3();
                 }
             }
             get
@@ -198,7 +199,7 @@ namespace BoneSkinDemo
             {
                 Bones = boneInternal.ToArray()
             };
-            for(int i=0; i<Model.Positions.Count / Theta; ++i)
+            for(int i=0; i < Model.Positions.Count / Theta; ++i)
             {
                 if (i == 0 || i == Model.Positions.Count / Theta - 1)
                 {
@@ -206,7 +207,7 @@ namespace BoneSkinDemo
                 }
                 else
                 {
-                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i-1, Bone2 = i, Bone3 = i+1, Weights = new Vector4(0.3f, 0.4f, 0.3f, 0) }, 24));
+                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i - 1, Bone2 = i, Bone3 = i + 1, Weights = new Vector4(0.3f, 0.4f, 0.3f, 0) }, 24));
                 }
             }
             VertexBoneParams = boneParams.ToArray();
@@ -226,8 +227,6 @@ namespace BoneSkinDemo
                 Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 10)));
             }
 
-            //  boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = 0, Bone2 = -1, Bone3 = -1, Bone4 = -1, Weights = Vector4.One }, Model.Positions.Count));
-
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Start();
@@ -237,20 +236,22 @@ namespace BoneSkinDemo
         private void Timer_Tick(object sender, EventArgs e)
         {
             double angle = (0.05f*frame) * Math.PI / 180;
-            var rotation = Matrix.RotationAxis(new Vector3(1, 0, 0), (float)angle);
+            var xAxis = new Vector3(1, 0, 0);
+            var zAxis = new Vector3(0, 0, 1);
+            var yAxis = new Vector3(0, 1, 0);
+            var rotation = Matrix.RotationAxis(xAxis, (float)angle);
             var rotationPrev = rotation;
             double angleEach = angle;
             for (int i=0; i< NumSegments; ++i)
             {
-                var scale = Matrix.Scaling(new Vector3(1, (float)Math.Abs(frame)/20 + 1, 1));
                 if (i == 0)
                 {
-                    boneInternal[i] = scale * rotation;
+                    boneInternal[i] = Matrix.Identity;
                 }
                 else
                 {
                     rotationPrev *= rotation;
-                    boneInternal[i] = scale * rotationPrev;
+                    boneInternal[i] = rotationPrev;
                 }
                 angleEach += angle;
             }
