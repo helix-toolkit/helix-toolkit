@@ -13,21 +13,21 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class BoneSkinMeshGeometryModel3D : MeshGeometryModel3D
     {
-        public static DependencyProperty VertexBoneParamsProperty = DependencyProperty.Register("VertexBoneParams", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D), 
+        public static DependencyProperty VertexBoneIdsProperty = DependencyProperty.Register("VertexBoneIds", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D), 
             new PropertyMetadata(null, (d,e)=>
             {
                 (d as BoneSkinMeshGeometryModel3D).OnBoneParameterChanged();
             }));
 
-        public IList<BoneIds> VertexBoneParams
+        public IList<BoneIds> VertexBoneIds
         {
             set
             {
-                SetValue(VertexBoneParamsProperty, value);
+                SetValue(VertexBoneIdsProperty, value);
             }
             get
             {
-                return (IList<BoneIds>)GetValue(VertexBoneParamsProperty);
+                return (IList<BoneIds>)GetValue(VertexBoneIdsProperty);
             }
         }
 
@@ -55,7 +55,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool hasBoneParameter = false;
         private bool isBoneParamChanged = false;
         private bool hasBoneMatrices = false;
-       // private Buffer constBoneBuffer;
         private bool isBoneMatricesChanged = true;
         private BoneMatricesStruct mBones;
 
@@ -72,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void OnBoneParameterChanged()
         {
             isBoneParamChanged = true;
-            hasBoneParameter = VertexBoneParams != null;
+            hasBoneParameter = VertexBoneIds != null;
         }
 
         private void OnBoneMatricesChanged()
@@ -87,19 +86,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn];
         }
 
-        //private void CreateBoneConstBuffer()
-        //{
-        //    if (isBoneMatricesChanged)
-        //    {
-        //        Disposer.RemoveAndDispose(ref constBoneBuffer);
-        //        if (hasBoneMatrices)
-        //        {
-        //            constBoneBuffer = Buffer.Create(Device, ref mBones, cBufferDesc);
-        //        }
-        //        isBoneMatricesChanged = false;
-        //    }
-        //}
-
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -111,7 +97,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             base.OnDetach();
-         //   Disposer.RemoveAndDispose(ref constBoneBuffer);
             Disposer.RemoveAndDispose(ref vertexBoneParamsBuffer);
             Disposer.RemoveAndDispose(ref boneMatricesVar);
         }
@@ -143,13 +128,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.hasBoneParameter)
             {
-                if (isBoneParamChanged && this.VertexBoneParams.Count >= Geometry.Positions.Count)
+                if (isBoneParamChanged && this.VertexBoneIds.Count >= Geometry.Positions.Count)
                 {
-                    if (vertexBoneParamsBuffer == null || this.vertexBoneParamsBuffer.Description.SizeInBytes < BoneIds.SizeInBytes * this.VertexBoneParams.Count)
+                    if (vertexBoneParamsBuffer == null || this.vertexBoneParamsBuffer.Description.SizeInBytes < BoneIds.SizeInBytes * this.VertexBoneIds.Count)
                     {
                         Disposer.RemoveAndDispose(ref vertexBoneParamsBuffer);
-                        this.vertexBoneParamsBuffer = Buffer.Create(this.Device, this.VertexBoneParams.ToArray(),
-                            new BufferDescription(BoneIds.SizeInBytes * this.VertexBoneParams.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
+                        this.vertexBoneParamsBuffer = Buffer.Create(this.Device, this.VertexBoneIds.ToArray(),
+                            new BufferDescription(BoneIds.SizeInBytes * this.VertexBoneIds.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
                             CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
                     }
                     else
@@ -157,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         DataStream stream;
                         Device.ImmediateContext.MapSubresource(this.vertexBoneParamsBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
                         stream.Position = 0;
-                        stream.WriteRange(this.VertexBoneParams.ToArray(), 0, this.VertexBoneParams.Count);
+                        stream.WriteRange(this.VertexBoneIds.ToArray(), 0, this.VertexBoneIds.Count);
                         Device.ImmediateContext.UnmapSubresource(this.vertexBoneParamsBuffer, 0);
                         stream.Dispose();
                     }
@@ -204,6 +189,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// --- draw
                 this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
             }
+        }
+
+        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        {
+            if (hasBoneParameter)
+            {
+                //Disable for now. Pending implementation.
+                return false;
+            }
+            return base.HitTest(rayWS, ref hits);
         }
     }
 }

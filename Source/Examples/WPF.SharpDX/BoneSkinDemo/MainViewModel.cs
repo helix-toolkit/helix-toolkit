@@ -102,6 +102,28 @@ namespace BoneSkinDemo
             }
         }
 
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                showWireframe = value;
+                OnPropertyChanged();
+                if (showWireframe)
+                {
+                    FillMode = FillMode.Wireframe;
+                }
+                else
+                {
+                    FillMode = FillMode.Solid;
+                }
+            }
+            get
+            {
+                return showWireframe;
+            }
+        }
+
         public IList<Matrix> Instances { get; private set; }
 
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
@@ -112,7 +134,7 @@ namespace BoneSkinDemo
 
         public MainViewModel()
         {
-            this.Title = "DynamicTexture Demo";
+            this.Title = "BoneSkin Demo";
             this.SubTitle = "WPF & SharpDX";
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
@@ -158,9 +180,11 @@ namespace BoneSkinDemo
                 }
                 else
                 {
-                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i-1, Bone2 = i, Bone3 = i+1, Weights = new Vector4(0.2f, 0.6f, 0.2f, 0) }, 24));
+                    boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = i-1, Bone2 = i, Bone3 = i+1, Weights = new Vector4(0.3f, 0.4f, 0.3f, 0) }, 24));
                 }
             }
+            VertexBoneParams = boneParams.ToArray();
+
 
             Instances = new List<Matrix>();
             for(int i =0; i < 3; ++i)
@@ -177,9 +201,9 @@ namespace BoneSkinDemo
             }
 
             //  boneParams.AddRange(Enumerable.Repeat(new BoneIds() { Bone1 = 0, Bone2 = -1, Bone3 = -1, Bone4 = -1, Weights = Vector4.One }, Model.Positions.Count));
-            VertexBoneParams = boneParams.ToArray();
+
             timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromMilliseconds(20);
+            timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Start();
         }
     

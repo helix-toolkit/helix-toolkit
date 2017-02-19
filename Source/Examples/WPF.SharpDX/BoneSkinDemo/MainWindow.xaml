@@ -35,7 +35,13 @@
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <hx:BoneSkinMeshGeometryModel3D FillMode="{Binding FillMode}"
                 Geometry="{Binding Model}" Instances="{Binding Instances}"
-                Material="{Binding Material}" VertexBoneParams="{Binding VertexBoneParams}" BoneMatrices="{Binding Bones}" />
+                Material="{Binding Material}" VertexBoneIds="{Binding VertexBoneParams}" BoneMatrices="{Binding Bones}" />
         </hx:Viewport3DX>
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Vertical">
+            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+        </StackPanel>
     </Grid>
 </Window>
