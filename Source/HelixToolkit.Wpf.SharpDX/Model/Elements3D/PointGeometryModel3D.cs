@@ -97,6 +97,14 @@
         /// <returns>True if the ray hits one or more times.</returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
+            if (this.Visibility == Visibility.Collapsed)
+            {
+                return false;
+            }
+            if (this.IsHitTestVisible == false || this.Geometry == null)
+            {
+                return false;
+            }
             if (Geometry.Octree != null)
             {
                 return Geometry.Octree.HitTest(this, ModelMatrix, rayWS, ref hits);
