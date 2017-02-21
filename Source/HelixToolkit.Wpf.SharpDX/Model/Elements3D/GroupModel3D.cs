@@ -58,7 +58,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
-            base.OnRender(renderContext);
             foreach (var c in this.Children)
             {
                 var model = c as ITransformable;
