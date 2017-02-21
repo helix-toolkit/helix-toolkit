@@ -177,7 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
             if (!IsAttached) { return; }
-            /// --- set up rasterizer states
+            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode,
@@ -245,7 +245,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
-                /// --- set up buffers            
+                // --- set up buffers            
                 var data = this.CreateLinesVertexArray();
                 if (data != null)
                 {
@@ -261,7 +261,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnAttach(IRenderHost host)
         {
-            /// --- attach                        
+            // --- attach                        
             if (!base.OnAttach(host))
             {
                 return false;
@@ -283,9 +283,9 @@ namespace HelixToolkit.Wpf.SharpDX
             // -- set geometry if given
             if (geometry != null)
             {
-                /// --- set up buffers            
+                // --- set up buffers            
                 CreateVertexBuffer();
-                /// --- set up indexbuffer
+                // --- set up indexbuffer
                 indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
             }
             else
@@ -295,23 +295,23 @@ namespace HelixToolkit.Wpf.SharpDX
           
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
 
-            /// --- set up const variables
+            // --- set up const variables
             vViewport = effect.GetVariableByName("vViewport").AsVector();
             //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             vLineParams = effect.GetVariableByName("vLineParams").AsVector();
 
-            /// --- set effect per object const vars
+            // --- set effect per object const vars
             var lineParams = new Vector4((float)Thickness, (float)Smoothness, 0, 0);
             vLineParams.Set(lineParams);
 
-            /// === debug hack
+            // === debug hack
             //{
             //    var texDiffuseMapView = ShaderResourceView.FromFile(device, @"G:\Projects\Deformation Project\FrameworkWPF2012\Externals\HelixToolkit-SharpDX\Source\Examples\SharpDX.Wpf\LightingDemo\TextureCheckerboard2.jpg");
             //    var texDiffuseMap = effect.GetVariableByName("texDiffuseMap").AsShaderResource();
             //    texDiffuseMap.SetResource(texDiffuseMapView);                
             //}
 
-            /// --- flush
+            // --- flush
             //Device.ImmediateContext.Flush();
             return true;
         }        
@@ -357,7 +357,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
-            /// --- since these values are changed only per window resize, we set them only once here
+            // --- since these values are changed only per window resize, we set them only once here
             //if (this.isResized || renderContext.Camera != this.lastCamera)
             {
                 //this.isResized = false;
@@ -380,27 +380,27 @@ namespace HelixToolkit.Wpf.SharpDX
                     //this.vFrustum.Set(ref frustum);
                 }
             }
-            /// --- set transform paramerers             
+            // --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- set effect per object const vars
+            // --- set effect per object const vars
             var lineParams = new Vector4((float)this.Thickness, (float)this.Smoothness, 0, 0);
             this.vLineParams.Set(lineParams);
             
-            /// --- set context
+            // --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 
             this.bHasInstances.Set(this.hasInstances);
 
-            /// --- set rasterstate            
+            // --- set rasterstate            
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
 
             if (this.hasInstances)
             {
-                /// --- update instance buffer
+                // --- update instance buffer
                 if (this.isChanged)
                 {
                     if(instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
@@ -420,14 +420,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.isChanged = false;
                 }
 
-                /// --- INSTANCING: need to set 2 buffers            
+                // --- INSTANCING: need to set 2 buffers            
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[] 
                 {
                     new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
                     new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
                 });
 
-                /// --- render the geometry
+                // --- render the geometry
                 for (int i = 0; i < this.effectTechnique.Description.PassCount; i++)
                 {
                     this.effectTechnique.GetPassByIndex(i).Apply(Device.ImmediateContext);
@@ -437,10 +437,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                /// --- bind buffer                
+                // --- bind buffer                
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
 
-                /// --- render the geometry
+                // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);
                 this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
             }

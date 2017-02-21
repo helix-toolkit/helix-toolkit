@@ -242,7 +242,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Returns a line geometry of the axis-aligned bounding-box of the given mesh.
         /// </summary>
-        /// <param name="mesh">Input mesh for the computation of the b-box</param>
+        /// <param name="points">Input points for the computation of the b-box</param>
         /// <returns></returns>
         public static LineGeometry3D GenerateBoundingBox(Vector3[] points)
         {
@@ -251,9 +251,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Returns a line geometry of the axis-aligned bounding-box of the given mesh.
+        /// Returns a line geometry of the axis-aligned bounding-box.
         /// </summary>
-        /// <param name="mesh">Input mesh for the computation of the b-box</param>
+        /// <param name="bb">The bounding-box</param>
         /// <returns></returns>
         public static LineGeometry3D GenerateBoundingBox(global::SharpDX.BoundingBox bb)
         {            

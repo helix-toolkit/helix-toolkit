@@ -155,6 +155,9 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Finds the intersection between the plane and a line.
         /// </summary>
+        /// <param name="plane">
+        /// The plane.
+        /// </param>
         /// <param name="la">
         /// The first point defining the line.
         /// </param>

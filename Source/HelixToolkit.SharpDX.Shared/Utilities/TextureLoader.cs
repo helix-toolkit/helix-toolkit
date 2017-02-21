@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="fileName">The file name.</param>
+        /// <param name="disableAutoGenMipMap"></param>
         /// <returns></returns>
         public static ShaderResourceView FromFileAsShaderResourceView(Device device, string fileName, bool disableAutoGenMipMap = false)
         {
@@ -54,6 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="memory">The memory buffer.</param>
+        /// <param name="disableAutoGenMipMap"></param>
         /// <returns></returns>
         public static ShaderResourceView FromMemoryAsShaderResourceView(Device device, byte[] memory, bool disableAutoGenMipMap = false)
         {
@@ -68,6 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="memory">The memory stream.</param>
+        /// <param name="disableAutoGenMipMap"></param>
         /// <returns></returns>
         public static ShaderResourceView FromMemoryAsShaderResourceView(Device device, Stream memory, bool disableAutoGenMipMap = false)
         {

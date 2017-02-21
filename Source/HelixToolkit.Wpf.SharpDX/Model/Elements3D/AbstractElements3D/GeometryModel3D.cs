@@ -466,7 +466,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
         /// </summary>
         /// <param name="rayWS">Hitring ray from the camera.</param>
-        /// <param name="result">results of the hit.</param>
+        /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
         public virtual bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {

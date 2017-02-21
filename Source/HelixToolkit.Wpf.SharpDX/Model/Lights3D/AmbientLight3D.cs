@@ -22,14 +22,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnAttach(IRenderHost host)
         {
-            /// --- attach
+            // --- attach
             if (base.OnAttach(host))
             {
-                /// --- light constant params              
+                // --- light constant params              
                 this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
                 this.vLightAmbient.Set(this.Color);
 
-                /// --- flush
+                // --- flush
                 //this.Device.ImmediateContext.Flush();     
                 return true;
             }

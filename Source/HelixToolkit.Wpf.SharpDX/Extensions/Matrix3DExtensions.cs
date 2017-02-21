@@ -111,7 +111,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// This function assums that the translational component has been already removed, i.e. 
         /// that both point sets have the same centriod. 
         /// </summary>
-        /// <param name="w">weight: importance of each point </param>
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A similarity transform T: p = Tq</returns>
@@ -145,7 +144,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// This function assums that the translational component has been already removed, i.e. 
         /// that both point sets have the same centriod. 
         /// </summary>
-        /// <param name="w">weight: importance of each point </param>
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A rigid transform T: p = Tq</returns>
@@ -180,7 +178,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// This function assums that the translational component has been already removed, i.e. 
         /// that both point sets have the same centriod. 
         /// </summary>
-        /// <param name="w">weight: importance of each point </param>
         /// <param name="p">original points</param>
         /// <param name="q">transformed points</param>
         /// <returns>A rigid transform T: p = Tq</returns>
@@ -351,21 +348,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Computes an ansiotropic similarty for an object, which is only scaled along the X-axis, 
         /// but maintains its Y-scale constantly.
-        /// </summary>                    
-        /// <param name="p">original points</param>
-        /// <param name="q">transformed points</param>
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="q1"></param>
+        /// <param name="q2"></param>
         /// <returns>A ansiotropic similarty transform T: p = Tq</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D AnisotropicSimilarityX2D(Point3D p1, Point3D p2, Point3D q1, Point3D q2)
         {
-            /// rotation
+            // rotation
             double b = (p1.X * q1.X + p1.Y * q1.Y) + (p2.X * q2.X + p2.Y * q2.Y);
             double c = (p1.Y * q1.X - p1.X * q1.Y) + (p2.Y * q2.X - p2.X * q2.Y);
             double d = Math.Sqrt(b * b + c * c);
             double r1 = b / d;
             double r2 = c / d;
 
-            /// anisortropic scale
+            // anisortropic scale
             var s = Math.Sqrt(q1.X * q1.X + q1.Y * q1.Y) / Math.Sqrt(p1.X * p1.X + p1.Y * p1.Y);
 
             var m = new Matrix3D(
@@ -381,20 +380,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Computes an ansiotropic similarty for an object, which is only scaled along the Y-axis, 
         /// but maintains its X-scale constantly.
         /// </summary>                    
-        /// <param name="p">original points</param>
-        /// <param name="q">transformed points</param>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="q1"></param>
+        /// <param name="q2"></param>
         /// <returns>A ansiotropic similarty transform T: p = Tq</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D AnisotropicSimilarityY2D(Point3D p1, Point3D p2, Point3D q1, Point3D q2)
         {
-            /// rotation
+            // rotation
             double b = (p1.X * q1.X + p1.Y * q1.Y) + (p2.X * q2.X + p2.Y * q2.Y);
             double c = (p1.Y * q1.X - p1.X * q1.Y) + (p2.Y * q2.X - p2.X * q2.Y);
             double d = Math.Sqrt(b * b + c * c);
             double r1 = b / d;
             double r2 = c / d;
 
-            /// anisortropic scale
+            // anisortropic scale
             var s = Math.Sqrt(q1.X * q1.X + q1.Y * q1.Y) / Math.Sqrt(p1.X * p1.X + p1.Y * p1.Y);
 
             var m = new Matrix3D(
