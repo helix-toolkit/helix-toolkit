@@ -116,25 +116,25 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.bHasInstances.Set(this.hasInstances);
             this.hasInstanceParamVar.Set(this.hasInstanceParams);
-            /// --- set constant paramerers             
+            // --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- check shadowmaps
+            // --- check shadowmaps
             this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
             this.effectMaterial.AttachMaterial();
-            /// --- set context
+            // --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
 
-            /// --- set rasterstate            
+            // --- set rasterstate            
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
             this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
             if (this.hasInstances)
             {
-                /// --- update instance buffer
+                // --- update instance buffer
                 if (this.isInstanceChanged)
                 {
                     BuildOctree();
@@ -179,9 +179,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, InstanceParameter.SizeInBytes, 0));
                 }
-                /// --- render the geometry
+                // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-                /// --- draw
+                // --- draw
                 this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
             }
             this.bHasInstances.Set(false);

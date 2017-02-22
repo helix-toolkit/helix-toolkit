@@ -111,14 +111,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 
         /// <summary>
-        /// Call to manually update vertex buffer. Use with <see cref="DisablePropertyChangedEvent"/>
+        /// Call to manually update vertex buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
         /// </summary>
         public void UpdateVertices()
         {
             RaisePropertyChanged(VertexBuffer);
         }
         /// <summary>
-        /// Call to manually update triangle buffer. Use with <see cref="DisablePropertyChangedEvent"/>
+        /// Call to manually update triangle buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
         /// </summary>
         public void UpdateTriangles()
         {

@@ -87,15 +87,15 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         protected override bool OnAttach(IRenderHost host)
         {           
-            /// --- get variables               
+            // --- get variables               
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
             this.effectTransforms = new EffectTransformVariables(this.effect);
 
-            /// -- attach cube map 
+            // -- attach cube map 
             if (this.Filename != null)
             {
-                /// -- attach texture
+                // -- attach texture
                 using (var texture = TextureLoader.FromFileAsResource(this.Device, this.Filename))
                 {
                     this.texCubeMapView = new ShaderResourceView(this.Device, texture);
@@ -105,18 +105,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.bHasCubeMap = effect.GetVariableByName("bHasCubeMap").AsScalar();
                 this.bHasCubeMap.Set(true);
 
-                /// --- set up geometry
+                // --- set up geometry
                 var sphere = new MeshBuilder(false,true,false);
                 sphere.AddSphere(new Vector3(0, 0, 0));
                 this.geometry = sphere.ToMeshGeometry3D();
 
-                /// --- set up vertex buffer
+                // --- set up vertex buffer
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, CubeVertex.SizeInBytes, this.geometry.Positions.Select((x, ii) => new CubeVertex() { Position = new Vector4(x, 1f) }).ToArray());
 
-                /// --- set up index buffer
+                // --- set up index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
 
-                /// --- set up rasterizer states
+                // --- set up rasterizer states
                 var rasterStateDesc = new RasterizerStateDescription()
                 {
                     FillMode = FillMode.Solid,
@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 };
                 this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
 
-                /// --- set up depth stencil state
+                // --- set up depth stencil state
                 var depthStencilDesc = new DepthStencilStateDescription()
                 {
                     DepthComparison = Comparison.LessEqual,
@@ -135,7 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     IsDepthEnabled = true,
                 };
                 this.depthStencilState = new DepthStencilState(this.Device, depthStencilDesc);
-                /// --- flush
+                // --- flush
                 //this.Device.ImmediateContext.Flush();
                 return true;
             }
@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext context)
         {
-            /// --- set context
+            // --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = Direct3D.PrimitiveTopology.TriangleList;
             this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
@@ -180,11 +180,11 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.Rasterizer.State = rasterState;
             this.Device.ImmediateContext.OutputMerger.DepthStencilState = depthStencilState;
 
-            /// --- set constant paramerers 
+            // --- set constant paramerers 
             var worldMatrix = Matrix.Translation(((PerspectiveCamera)context.Camera).Position.ToVector3());
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- render the geometry
+            // --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
             this.Device.ImmediateContext.DrawIndexed(this.geometry.Indices.Count, 0, 0);
         }

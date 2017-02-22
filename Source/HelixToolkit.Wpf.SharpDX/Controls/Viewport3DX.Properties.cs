@@ -290,9 +290,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 null, FrameworkPropertyMetadataOptions.AffectsRender,
                 (s, e) => ((Viewport3DX)s).RenderTechniquesManagerPropertyChanged()));
 
-        /// <summary>
-        /// The is deferred shading enabled propery
-        /// </summary>
+        ///// <summary>
+        ///// The is deferred shading enabled propery
+        ///// </summary>
         //public static readonly DependencyProperty IsDeferredShadingEnabledProperty = DependencyProperty.Register(
         //    "IsDeferredShadingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) => ((Viewport3DX)s).ReAttach()));
 
@@ -918,12 +918,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// Gets the children.
-        /// </summary>
-        /// <value>
-        /// The children.
-        /// </value>
+        ///// <summary>
+        ///// Gets the children.
+        ///// </summary>
+        ///// <value>
+        ///// The children.
+        ///// </value>
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         //[Bindable(true)]
         //public Element3DCollection Children
@@ -1380,12 +1380,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(RenderTechniquesManagerProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether deferred shading is used
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
-        /// </value>
+        ///// <summary>
+        ///// Gets or sets a value indicating whether deferred shading is used
+        ///// </summary>
+        ///// <value>
+        ///// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
+        ///// </value>
         //public bool IsDeferredShadingEnabled
         //{
         //    get { return (bool)this.GetValue(IsDeferredShadingEnabledProperty); }

@@ -170,10 +170,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, geometry.AlphaTexture);
             }
-            /// --- set rasterstate
+            // --- set rasterstate
             OnRasterStateChanged();
 
-            /// --- flush
+            // --- flush
             //Device.ImmediateContext.Flush();
             return true;
         }
@@ -192,31 +192,31 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
-            /// --- check to render the model
+            // --- check to render the model
             var geometry = Geometry as IBillboardText;
             if (geometry == null)
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
 
-            /// --- set constant paramerers             
+            // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- check shadowmaps
+            // --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
-            /// --- set context
+            // --- set context
             Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
             Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            /// --- set rasterstate            
+            // --- set rasterstate            
             Device.ImmediateContext.Rasterizer.State = rasterState;
 
-            /// --- bind buffer                
+            // --- bind buffer                
             Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
-            /// --- render the geometry
+            // --- render the geometry
             this.bHasBillboardTexture.Set(geometry.Texture != null);
             if (geometry.Texture != null)
             {
@@ -233,33 +233,33 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (billboardType)
             {
                 case BillboardType.MultipleText:
-                    ///Use foreground shader to draw text
+                    // Use foreground shader to draw text
                     effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
 
-                    /// --- draw text, foreground vertex is beginning from 0.
+                    // --- draw text, foreground vertex is beginning from 0.
                     Device.ImmediateContext.Draw(vertexCount, 0);
                     break;
                 case BillboardType.SingleText:
                     if (vertexCount == 12)
                     {
                         var half = vertexCount / 2;
-                        ///Use background shader to draw background first
+                        // Use background shader to draw background first
                         effectTechnique.GetPassByIndex(1).Apply(Device.ImmediateContext);
-                        /// --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
+                        // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
                         Device.ImmediateContext.Draw(half, half);
 
-                        ///Use foreground shader to draw text
+                        // Use foreground shader to draw text
                         effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
 
-                        /// --- draw text, foreground vertex is beginning from 0.
+                        // --- draw text, foreground vertex is beginning from 0.
                         Device.ImmediateContext.Draw(half, 0);
                     }
                     break;
                 case BillboardType.SingleImage:
-                    ///Use foreground shader to draw text
+                    // Use foreground shader to draw text
                     effectTechnique.GetPassByIndex(2).Apply(Device.ImmediateContext);
 
-                    /// --- draw text, foreground vertex is beginning from 0.
+                    // --- draw text, foreground vertex is beginning from 0.
                     Device.ImmediateContext.Draw(vertexCount, 0);
                     break;
             }

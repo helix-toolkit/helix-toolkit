@@ -303,7 +303,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (material != null)
                 {
-                    /// --- has texture
+                    // --- has texture
                     if (material.DiffuseMap != null && model.RenderDiffuseMap)
                     {
                         this.texDiffuseMapView = TextureLoader.FromMemoryAsShaderResourceView(device, material.DiffuseMap);
@@ -342,7 +342,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public bool AttachMaterial()
             {
-                /// --- has samples              
+                // --- has samples              
                 this.bHasDiffuseMapVariable.Set(this.texDiffuseMapView != null);
                 this.bHasDiffuseAlphaMapVariable.Set(this.texDiffuseAlphaMapView != null);
                 this.bHasNormalMapVariable.Set(this.texNormalMapView != null);

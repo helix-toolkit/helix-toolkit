@@ -81,24 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///sampler2D billboardTexture : register(S0); // billboard text image
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// VERTEX AND PIXEL SHADER INPUTS
-        /////--------------------------------------------------------------------------------------
-        ///struct VSInputBT
-        ///{
-        ///	float4 p	: POSITION;
-        ///	float4 c	: COLOR;
-        ///	float4 t	: TEXCOORD0; // t.xy = texture coords, t.zw = offset in pixels.
-        ///};
-        ///
-        ///struct PSInputBT
-        ///{
-        ///	float4 p	: SV_POSITION;
-        ///	float4 c	: COLOR;
-        ///	float2 t	: T [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string BillboardText {
             get {
@@ -107,18 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Header for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        /////--------------------------------------------------------------------------------------
-        ///
-        ///
-        /////--------------------------------------------------------------------------------------
-        /////  STATES DEFININITIONS 
-        /////--------------------------------------------------------------------------------------
-        ///Sample [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string Common {
             get {
@@ -127,14 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Default Effect for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        ///// light equations from OpenGL Spec: http://www.opengl.org/documentation/specs/version1.2/OpenGL_spec_1.2.1.pdf
-        ///// spotlight equation from DX9: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
-        ///// parts of the code based on: http://takinginitiative.net/2010/08/30/dire [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string Default {
             get {
@@ -143,20 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Deferred G-Buffer Rendering for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 03/03/13
-        ///// References &amp; Sources: 
-        ///// code based on: http://hieroglyph3.codeplex.com/
-        /////--------------------------------------------------------------------------------------
-        ///
-        ///#include &quot;./Shaders/Common.fx&quot;
-        ///#include &quot;./Shaders/Material.fx&quot;
-        ///#include &quot;./Shaders/DeferredLighting.fx&quot;
-        ///
-        ///
-        /////---------------------------- [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string Deferred {
             get {
@@ -165,18 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Deferred Lighting for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Created:  03/03/13
-        ///// Modified: 06/18/13
-        ///// References &amp; Sources: 
-        ///// code based on the shader from: http://hieroglyph3.codeplex.com/
-        /////--------------------------------------------------------------------------------------
-        ///
-        /// 
-        /////-------------------------------------------------------------------------------------------------
-        ///// ST [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string DeferredLighting {
             get {
@@ -185,18 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        /////--------------------------------------------------------------------------------------
-        ///// File: Line Effects for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        ///// http://cgg-journal.com/2008-2/06/index.html
-        ///// http://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf
-        /////-------------------------------------------------------------------------------------
-        ///
-        /////#include &quot;./Shaders/Common.fx&quot;
-        /////#include &quot;./Shaders/De [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string Lines {
             get {
@@ -205,17 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Materials header for HelixToolkit.Wpf.SharpDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        /////--------------------------------------------------------------------------------------
-        ///
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// CONSTANT BUFF VARIABLES
-        /////------------------------------------------------------------------------- [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string Material {
             get {
@@ -244,16 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Tessellation Functions for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 03/21/13
-        ///// References &amp; Sources: Based on NVidia SDK 2011 
-        /////--------------------------------------------------------------------------------------
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// Work-around for an optimization rule problem in the June 2010 HLSL Compiler
-        ///// ( [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string.
         /// </summary>
         internal static string Tessellation {
             get {

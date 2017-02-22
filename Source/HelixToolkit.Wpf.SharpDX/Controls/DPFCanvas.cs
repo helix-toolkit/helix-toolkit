@@ -574,9 +574,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             if (renderRenderable != null)
             {
-                /// ---------------------------------------------------------------------------
-                /// this part is done only if the scene is not attached
-                /// it is an attach and init pass for all elements in the scene-graph                
+                // ---------------------------------------------------------------------------
+                // this part is done only if the scene is not attached
+                // it is an attach and init pass for all elements in the scene-graph                
                 if (!sceneAttached)
                 {
                     try
@@ -624,25 +624,25 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (RenderTechnique == deferred)
                 {
-                    /// set G-Buffer                    
+                    // set G-Buffer                    
                     deferredRenderer.SetGBufferTargets();
 
-                    /// render G-Buffer pass                
+                    // render G-Buffer pass                
                     renderRenderable.Render(renderContext);
 
-                    /// call deferred render 
+                    // call deferred render 
                     deferredRenderer.RenderDeferred(renderContext, renderRenderable);
 
                 }
                 else if (RenderTechnique == gbuffer)
                 {
-                    /// set G-Buffer
+                    // set G-Buffer
                     deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2);
 
-                    /// render G-Buffer pass                    
+                    // render G-Buffer pass                    
                     renderRenderable.Render(renderContext);
 
-                    /// reset render targets and run lighting pass                                         
+                    // reset render targets and run lighting pass                                         
 #if MSAA
                     deferredRenderer.RenderGBufferOutput(ref renderTargetNMS);
 #else

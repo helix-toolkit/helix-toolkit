@@ -245,6 +245,7 @@ namespace SharpDX.Toolkit.Graphics
         /// </summary>
         /// <param name="type">The file type (use integer and explicit casting to <see cref="ImageFileType"/> to register other file format.</param>
         /// <param name="loader">The loader delegate (can be null).</param>
+        /// <param name="saver">The saver delegate (can be null).</param>
         /// <exception cref="System.ArgumentException"></exception>
         public static void Register(ImageFileType type, ImageLoadDelegate loader, ImageSaveDelegate saver)
         {

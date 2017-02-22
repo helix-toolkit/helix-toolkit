@@ -39,7 +39,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="OffReader" /> class.
         /// </summary>
-        /// <param name="dispatcher">The dispatcher.</param>
         public OffReader()
         {
             this.Vertices = new List<Point3D>();
@@ -68,7 +67,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Reads the model from the specified stream.
         /// </summary>
-        /// <param name="s">The stream.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="info">The model info.</param>
         /// <returns>The model.</returns>
         public Object3DGroup Read(string path, ModelInfo info = default(ModelInfo))
         {
@@ -82,6 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
+        /// <param name="info">The model info.</param>
         /// <returns>The model.</returns>
         public Object3DGroup Read(Stream s, ModelInfo info = default(ModelInfo))
         {
@@ -92,6 +93,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Creates a MeshGeometry3D object from the loaded file. Polygons are triangulated using triangle fans.
         /// </summary>
+        /// <param name="info">
+        /// The model info.
+        /// </param>
         /// <returns>
         /// A MeshGeometry3D.
         /// </returns>
@@ -114,6 +118,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Creates a Model3D object from the loaded file.
         /// </summary>
+        /// <param name="info">
+        /// The model info.
+        /// </param>
         /// <returns>A Model3D group.</returns>
         public Object3DGroup BuildModel(ModelInfo info = default(ModelInfo))
         {

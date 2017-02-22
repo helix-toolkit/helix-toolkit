@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var uv_c = new Vector2(1, 0);
             var uv_d = new Vector2(1, 1);
 
-            ///Create foreground data
+            // Create foreground data
             Positions.Add(Center);
             Positions.Add(Center);
             Positions.Add(Center);

@@ -173,7 +173,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// Override in a derived class to control how effects are initialized.
         /// </summary>
-        /// <param name="shaderEffectString">The string representing the shader source.</param>
         protected virtual void InitEffects()
         {
             InputLayout defaultInputLayout;
@@ -436,7 +435,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Override in a derived class to control how effects are registered.
         /// </summary>
         /// <param name="shaderEffectString">A string representing the shader code.</param>
-        /// <param name="techniqueName"></param>
+        /// <param name="technique"></param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
         protected void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
