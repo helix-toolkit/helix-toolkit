@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
             if (!IsAttached) { return; }
-            /// --- set up rasterizer states
+            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode,
@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host"></param>
         protected override bool OnAttach(IRenderHost host)
         {
-            /// --- attach           
+            // --- attach           
             if (!base.OnAttach(host))
             {
                 return false;
@@ -213,10 +213,10 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- get the pass
             shaderPass = effectTechnique.GetPassByName(Shading);
 
-            /// --- model transformation
+            // --- model transformation
             effectTransforms = new EffectTransformVariables(effect);
 
-            /// --- material 
+            // --- material 
             AttachMaterial();
 
             // -- get geometry
@@ -227,10 +227,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 //throw new HelixToolkitException("Geometry not found!");
 
-                /// --- init vertex buffer
+                // --- init vertex buffer
                 vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, CreateDefaultVertexArray(), geometry.Positions.Count);
 
-                /// --- init index buffer
+                // --- init index buffer
                 indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array);
             }
             else
@@ -239,7 +239,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
 
-            ///// --- init instances buffer            
+            // --- init instances buffer            
             //this.hasInstances = this.Instances != null;            
             //this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
             //if (this.hasInstances)
@@ -247,10 +247,10 @@ namespace HelixToolkit.Wpf.SharpDX
             //    this.instanceBuffer = Buffer.Create(this.device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));                            
             //}
 
-            /// --- init tessellation vars
+            // --- init tessellation vars
             vTessellationVariables = effect.GetVariableByName("vTessellation").AsVector();
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
-            /// --- flush
+            // --- flush
             //Device.ImmediateContext.Flush();
             return true;
         }
@@ -277,11 +277,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnRender(RenderContext renderContext)
         {
-            /// --- set model transform paramerers                         
+            // --- set model transform paramerers                         
             effectTransforms.mWorld.SetMatrix(ref modelMatrix);
             this.effectMaterial.AttachMaterial();
 
-            /// --- set primitive type
+            // --- set primitive type
             if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles])
             {
                 Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
@@ -295,20 +295,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new System.Exception("Technique not supported by PatchGeometryModel3D");
             }
 
-            /// --- set vertex layout
+            // --- set vertex layout
             Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
 
-            /// --- set index buffer
+            // --- set index buffer
             Device.ImmediateContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
 
-            /// --- set vertex buffer                
+            // --- set vertex buffer                
             Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, DefaultVertex.SizeInBytes, 0));
 
             Device.ImmediateContext.Rasterizer.State = this.rasterState;
-            /// --- apply chosen pass
+            // --- apply chosen pass
             shaderPass.Apply(Device.ImmediateContext);
 
-            /// --- render the geometry
+            // --- render the geometry
             Device.ImmediateContext.DrawIndexed(Geometry.Indices.Count, 0, 0);
         }
 

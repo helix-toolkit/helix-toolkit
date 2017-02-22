@@ -145,12 +145,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var args = e as Mouse3DEventArgs;            
 
-            /// --- get the plane for translation (camera normal is a good choice)                     
+            // --- get the plane for translation (camera normal is a good choice)                     
             var normal = this.cameraNormal;
             var position = this.ModelMatrix.TranslationVector;
             //var position = this.totalModelMatrix.TranslationVector;
 
-            /// --- hit position 
+            // --- hit position 
             var newHit = this.viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normal);
 
             if (newHit.HasValue)
@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 
                 var rotateTransform = new System.Windows.Media.Media3D.RotateTransform3D(new System.Windows.Media.Media3D.AxisAngleRotation3D(this.Axis.ToVector3D(), theta), Pivot.ToPoint3D());
 
-                /// rotate target
+                // rotate target
                 if (this.TargetTransform != null)
                 {                    
                     this.TargetTransform = rotateTransform.AppendTransform(this.TargetTransform);

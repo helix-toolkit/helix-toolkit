@@ -19,19 +19,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnAttach(IRenderHost host)
         {
-            /// --- attach
+            // --- attach
             if (base.OnAttach(host))
             {
-                /// --- light constant params            
+                // --- light constant params            
                 this.vLightPos = this.effect.GetVariableByName("vLightPos").AsVector();
                 this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
                 this.vLightAtt = this.effect.GetVariableByName("vLightAtt").AsVector();
                 this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
-                /// --- Set light type
+                // --- Set light type
                 Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
 
-                /// --- flush
+                // --- flush
                 //this.Device.ImmediateContext.Flush();
                 return true;
             }
@@ -65,13 +65,13 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         protected override void OnRender(RenderContext context)
         {
-                /// --- turn-on the light            
+            // --- turn-on the light            
             Light3DSceneShared.LightColors[lightIndex] = this.Color;
-            /// --- Set lighting parameters
+            // --- Set lighting parameters
             Light3DSceneShared.LightPositions[lightIndex] = this.Position.ToVector4();
             Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.Attenuation.X, (float)this.Attenuation.Y, (float)this.Attenuation.Z, (float)this.Range);
 
-            /// --- Update lighting variables    
+            // --- Update lighting variables    
             this.vLightPos.Set(Light3DSceneShared.LightPositions);
             this.vLightColor.Set(Light3DSceneShared.LightColors);
             this.vLightAtt.Set(Light3DSceneShared.LightAtt);

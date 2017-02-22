@@ -203,7 +203,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         protected override void OnRender(RenderContext context)
         {
-            /// --- set rasterizes state here with proper shadow-bias, as depth-bias and slope-bias in the rasterizer            
+            // --- set rasterizes state here with proper shadow-bias, as depth-bias and slope-bias in the rasterizer            
             this.Device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
             this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            
             this.Device.ImmediateContext.ClearDepthStencilView(depthViewSM, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);

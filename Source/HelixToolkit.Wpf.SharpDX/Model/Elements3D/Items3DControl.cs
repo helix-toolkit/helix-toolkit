@@ -33,9 +33,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Handles changes in the Children collection.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
         /// <param name="e">
         /// The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.
         /// </param>
@@ -216,7 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
 
-                /// attach new elements if they are renderable
+                // attach new elements if they are renderable
                 if (this.IsAttached)
                 {
                     foreach (var item in newValue)
@@ -376,11 +373,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// a Model3D does not have bounds, 
-        /// if you want to have a model with bounds, use GeometryModel3D instead:
-        /// but this prevents the CompositeModel3D containg lights, etc. (Lights3D are Models3D, which do not have bounds)
-        /// </summary>
+        ///// <summary>
+        ///// a Model3D does not have bounds, 
+        ///// if you want to have a model with bounds, use GeometryModel3D instead:
+        ///// but this prevents the CompositeModel3D containg lights, etc. (Lights3D are Models3D, which do not have bounds)
+        ///// </summary>
         //private void UpdateBounds()
         //{
         //    var bb = this.Bounds;

@@ -93,7 +93,7 @@
         /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
         /// </summary>
         /// <param name="rayWS">Hitring ray from the camera.</param>
-        /// <param name="result">results of the hit.</param>
+        /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
@@ -176,7 +176,7 @@
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
             if (!IsAttached) { return; }
-            /// --- set up rasterizer states
+            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
@@ -209,7 +209,7 @@
             if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
-                /// --- set up buffers            
+                // --- set up buffers            
                 var data = CreateVertexArray();
                 if (data != null)
                 {
@@ -283,14 +283,14 @@
 
             CreateVertexBuffer();
 
-            /// --- set up const variables
+            // --- set up const variables
             vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 
-            /// --- set effect per object const vars
+            // --- set effect per object const vars
             var pointParams = new Vector4((float)Size.Width, (float)Size.Height, (float)Figure, (float)FigureRatio);
             vPointParams.Set(pointParams);
 
-            /// --- flush
+            // --- flush
             //Device.ImmediateContext.Flush();
             return true;
         }
@@ -329,26 +329,26 @@
         /// </summary>
         protected override void OnRender(RenderContext renderContext)
         {       
-            /// --- set transform paramerers             
+            // --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- set effect per object const vars
+            // --- set effect per object const vars
             var pointParams = new Vector4((float)this.Size.Width, (float)this.Size.Height, (float)this.Figure, (float)this.FigureRatio);
             this.vPointParams.Set(pointParams);
 
-            /// --- set context
+            // --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
 
-            /// --- set rasterstate            
+            // --- set rasterstate            
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
 
-            /// --- bind buffer                
+            // --- bind buffer                
             this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0,
                 new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
 
-            /// --- render the geometry
+            // --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);
 
             this.Device.ImmediateContext.Draw(this.Geometry.Positions.Count, 0);

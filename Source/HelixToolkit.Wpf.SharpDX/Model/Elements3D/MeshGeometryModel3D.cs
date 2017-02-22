@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref this.rasterState);
             if (!IsAttached) { return; }
-            /// --- set up rasterizer states
+            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode,
@@ -178,10 +178,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 //throw new HelixToolkitException("Geometry not found!");                
 
-                /// --- init vertex buffer
+                // --- init vertex buffer
                 CreateVertexBuffer(CreateDefaultVertexArray);
 
-                /// --- init index buffer
+                // --- init index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
             }
             else
@@ -189,9 +189,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new System.Exception("Geometry must not be null");
             }
 
-            /// --- init instances buffer            
+            // --- init instances buffer            
             this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
-            /// --- flush
+            // --- flush
             //this.Device.ImmediateContext.Flush();
             return true;
         }
@@ -247,29 +247,29 @@ namespace HelixToolkit.Wpf.SharpDX
         
         protected override void OnRender(RenderContext renderContext)
         {
-            /// --- set constant paramerers             
+            // --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- check shadowmaps
+            // --- check shadowmaps
             this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
-            /// --- set material params      
+            // --- set material params      
             this.effectMaterial.AttachMaterial();
 
             this.bHasInstances.Set(this.hasInstances);
 
-            /// --- set context
+            // --- set context
             this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
             this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
 
-            /// --- set rasterstate            
+            // --- set rasterstate            
             this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
             if (this.hasInstances)
             {
-                /// --- update instance buffer
+                // --- update instance buffer
                 if (this.isInstanceChanged)
                 {
                     if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
@@ -290,28 +290,28 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.isInstanceChanged = false;
                 }
 
-                /// --- INSTANCING: need to set 2 buffers            
+                // --- INSTANCING: need to set 2 buffers            
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
                     new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
                     new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
                 });
 
-                /// --- render the geometry
+                // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-                /// --- draw
+                // --- draw
                 this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
                 this.bHasInstances.Set(false);
             }
             else
             {
-                /// --- bind buffer                
+                // --- bind buffer                
                 this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
-                /// --- render the geometry
-                /// 
+                // --- render the geometry
+                // 
                 var pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(Device.ImmediateContext);
-                /// --- draw
+                // --- draw
                 this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
             }
         }

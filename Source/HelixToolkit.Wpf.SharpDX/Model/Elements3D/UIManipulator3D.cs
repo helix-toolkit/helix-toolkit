@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Binds this manipulator to a given Model3D.
         /// </summary>
-        /// <param name="target">
+        /// <param name="source">
         /// Source Visual3D which receives the manipulator transforms. 
         /// </param>
         public void Bind(GeometryModel3D source)

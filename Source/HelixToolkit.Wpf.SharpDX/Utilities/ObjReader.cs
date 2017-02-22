@@ -153,6 +153,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="path">
         /// The path.
         /// </param>
+        /// <param name="info">
+        /// The model info.
+        /// </param>
         /// <returns>
         /// The model.
         /// </returns>
@@ -172,6 +175,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="s">
         /// The stream.
+        /// </param>
+        /// <param name="info">
+        /// The model info.
         /// </param>
         /// <returns>
         /// The model.

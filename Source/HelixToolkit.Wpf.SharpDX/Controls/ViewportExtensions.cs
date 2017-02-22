@@ -202,8 +202,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <typeparam name="T">
         /// The type filter.
         /// </typeparam>
-        /// <param name="visuals">
-        /// The visuals.
+        /// <param name="viewport">
+        /// The viewport.
         /// </param>
         /// <param name="action">
         /// The action.
@@ -226,8 +226,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <typeparam name="T">
         /// The type filter.
         /// </typeparam>
-        /// <param name="visual">
-        /// The visual.
+        /// <param name="element">
+        /// The element.
         /// </param>
         /// <param name="action">
         /// The action.
@@ -287,8 +287,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="normal">
         /// The normal.
         /// </param>
-        /// <param name="visual">
-        /// The visual.
+        /// <param name="model">
+        /// The model.
         /// </param>
         /// <returns>
         /// The find nearest.
@@ -344,9 +344,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Un-projects a 2D screen point.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="pointIn">The input point.</param>
-        /// <param name="pointNear">The point at the near clipping plane.</param>
-        /// <param name="pointFar">The point at the far clipping plane.</param>
+        /// <param name="point2d">The input point.</param>
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
         {
@@ -394,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Un-projects a 2D screen point.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="pointIn">The input point.</param>
+        /// <param name="point2d">The input point.</param>
         /// <returns>The ray.</returns>
         public static Ray3D UnProject(this Viewport3DX viewport, Point point2d)
         {
@@ -752,6 +750,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Changes the field of view and tries to keep the scale fixed.
         /// </summary>
+        /// <param name="viewport">
+        /// The viewport.
+        /// </param>
         /// <param name="delta">
         /// The relative change in fov.
         /// </param>

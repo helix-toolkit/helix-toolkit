@@ -188,12 +188,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Looks for the first visual ancestor of type <see cref="T"/>>.
+        /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of visual ancestor.</typeparam>
         /// <param name="obj">The respective <see cref="DependencyObject"/>.</param>
         /// <returns>
-        /// The first visual ancestor of type <see cref="T"/> if exists, else <c>null</c>.
+        /// The first visual ancestor of type <typeparamref name="T"/> if exists, else <c>null</c>.
         /// </returns>
         public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
         {

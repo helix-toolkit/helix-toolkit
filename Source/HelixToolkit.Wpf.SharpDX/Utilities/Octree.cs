@@ -75,10 +75,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Search nearest point by a search sphere at this node only
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="modelMatrix"></param>
         /// <param name="sphere"></param>
-        /// <param name="hits"></param>
+        /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
         bool FindNearestPointBySphereExcludeChild(ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
@@ -86,10 +84,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Search nearest point by a search sphere for whole octree
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="radius"></param>
-        /// <param name="queue"></param>
-        /// <param name="points"></param>
+        /// <param name="sphere"></param>
+        /// <param name="result"></param>
         /// <returns></returns>
         bool FindNearestPointBySphere(ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result);
 
@@ -144,7 +140,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Expand the octree to direction
         /// </summary>
-        /// <param name="root"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
         IOctree Expand(ref Vector3 direction);
@@ -152,7 +147,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Shrink root if there is no objects
         /// </summary>
-        /// <param name="root"></param>
         /// <returns></returns>
         IOctree Shrink();
 
@@ -163,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>Return false if item not found</returns>
         bool RemoveByBound(T item);
         /// <summary>
-        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, BoundingBox, out int)"/>
+        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, ref BoundingBox, out int)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="bound"></param>
@@ -194,7 +188,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Fast search node by item bound
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The item.</param>
+        /// <param name="bound">The bounding-box.</param>
         /// <param name="index">The item index in Objects, if not found, output -1</param>
         /// <returns></returns>
         IOctree FindChildByItemBound(T item, ref BoundingBox bound, out int index);
@@ -289,7 +284,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="bound">The bounding region for the oct tree.</param>
         /// <param name="objList">The list of objects contained within the bounding region</param>
-        /// <param name="autoDeleteIfEmpty">Delete self if becomes empty</param>
+        /// <param name="parent"></param>
+        /// <param name="parameter"></param>
+        /// <param name="queueCache"></param>
         protected OctreeBase(ref BoundingBox bound, List<T> objList, IOctree parent, OctreeBuildParameter parameter, Queue<IOctree> queueCache)
             : this(parameter, queueCache)
         {
@@ -302,8 +299,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="parent"></param>
-        /// <param name="minSize"></param>
-        /// <param name="autoDeleteIfEmpty">Delete self if becomes empty</param>
+        /// <param name="parameter"></param>
+        /// <param name="queueCache"></param>
         protected OctreeBase(IOctree parent, OctreeBuildParameter parameter, Queue<IOctree> queueCache)
             : this(parameter, queueCache)
         {
@@ -317,6 +314,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="bound">The suggested dimensions for the bounding region. 
         /// Note: if items are outside this region, the region will be automatically resized.</param>
+        /// <param name="parent"></param>
+        /// <param name="parameter"></param>
+        /// <param name="queueCache"></param>
         protected OctreeBase(ref BoundingBox bound, IOctree parent, OctreeBuildParameter parameter, Queue<IOctree> queueCache)
             : this(parent, parameter, queueCache)
         {
@@ -710,6 +710,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
         /// Push existing item into child
         /// </summary>
         /// <param name="node"></param>
@@ -797,6 +798,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Return new root
         /// </summary>
         /// <param name="oldRoot"></param>
+        /// <param name="direction"></param>
+        /// <param name="createNodeFunc"></param>
         /// <returns></returns>
         public static IOctree Expand(IOctree oldRoot, ref Vector3 direction, CreateNodeDelegate createNodeFunc)
         {

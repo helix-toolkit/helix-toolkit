@@ -18,19 +18,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnAttach(IRenderHost host)
         {
-            /// --- attach
+            // --- attach
             if (base.OnAttach(host))
             {
 
-                /// --- light constant params            
+                // --- light constant params            
                 this.vLightDir = this.effect.GetVariableByName("vLightDir").AsVector();
                 this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
                 this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
-                /// --- Set light type
+                // --- Set light type
                 Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
 
-                /// --- flush
+                // --- flush
                 //this.Device.ImmediateContext.Flush();
                 return true;
             }
@@ -65,19 +65,19 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext context)
         {
             Light3DSceneShared.LightColors[lightIndex] = this.Color;
-            /// --- set lighting parameters
+            // --- set lighting parameters
             Light3DSceneShared.LightDirections[lightIndex] = -this.Direction.ToVector4();
 
-            /// --- update lighting variables               
+            // --- update lighting variables               
             this.vLightDir.Set(Light3DSceneShared.LightDirections);
             this.vLightColor.Set(Light3DSceneShared.LightColors);
             this.iLightType.Set(Light3DSceneShared.LightTypes);
 
 
-            /// --- if shadow-map enabled
+            // --- if shadow-map enabled
             if (this.renderHost.IsShadowMapEnabled)
             {
-                /// update shader
+                // update shader
                 this.mLightView.SetMatrix(Light3DSceneShared.LightViewMatrices);
                 this.mLightProj.SetMatrix(Light3DSceneShared.LightProjMatrices);
             }
