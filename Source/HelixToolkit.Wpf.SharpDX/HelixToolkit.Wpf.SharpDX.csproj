@@ -142,6 +142,7 @@
     <Compile Include="Controls\DeferredRenderer.cs" />
     <Compile Include="Controls\Disposer.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
+    <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />
     <Compile Include="Controls\IRenderHost.cs" />
