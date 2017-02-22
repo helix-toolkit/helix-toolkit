@@ -142,14 +142,14 @@ void GShaderLines(line GSInputLS input[2], inout TriangleStream<PSInputLS> outSt
     outStream.Append( output );
  
     output.p = lineCorners[2];
-	output.c = input[0].c;
+	output.c = input[1].c;
     output.t[0] = -1;
     output.t[1] = +1;
     output.t[2] = 1;	
     outStream.Append( output );
     
     output.p = lineCorners[3];
-	output.c = input[0].c;
+	output.c = input[1].c;
     output.t[0] = -1;
     output.t[1] = -1;
 	output.t[2] = 1;	
