@@ -77,7 +77,8 @@ namespace LineShadingDemo
             // lines model3d
             var e1 = new LineBuilder();
             e1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 2);
-            this.Lines = e1.ToLineGeometry3D().ToUnshared();
+            //this.Lines = e1.ToLineGeometry3D().ToUnshared();
+            this.Lines = e1.ToLineGeometry3D(true);
             this.Lines.Colors = new Color4Collection();
             var linesCount = this.Lines.Indices.Count;
             var rnd = new Random();
