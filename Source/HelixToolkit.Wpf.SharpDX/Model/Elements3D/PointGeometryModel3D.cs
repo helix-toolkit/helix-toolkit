@@ -114,14 +114,15 @@
                 PointGeometry3D pointGeometry3D;
                 Viewport3DX viewport;
 
-                if (this.Visibility == Visibility.Collapsed ||
-                    this.IsHitTestVisible == false ||
-                    (viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
+                if ((viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
                     (pointGeometry3D = this.Geometry as PointGeometry3D) == null)
                 {
                     return false;
                 }
-
+                if (pointGeometry3D.Points == null)
+                {
+                    return false;
+                }
                 var svpm = viewport.GetScreenViewProjectionMatrix();
                 var smvpm = this.modelMatrix * svpm;
 
@@ -140,16 +141,16 @@
                 var lastDist = double.MaxValue;
                 var index = 0;
 
-                foreach (var point in pointGeometry3D.Points)
+                foreach (var point in pointGeometry3D.Positions)
                 {
-                    var p0 = Vector3.TransformCoordinate(point.P0, smvpm);
+                    var p0 = Vector3.TransformCoordinate(point, smvpm);
                     var pv = p0 - clickPoint;
                     var dist = pv.Length();
                     if (dist < lastDist && dist <= maxDist)
                     {
                         lastDist = dist;
                         Vector4 res;
-                        var lp0 = point.P0;
+                        var lp0 = point;
                         Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
                         var pvv = res.ToVector3();
                         result.Distance = (rayWS.Position - res.ToVector3()).Length();
