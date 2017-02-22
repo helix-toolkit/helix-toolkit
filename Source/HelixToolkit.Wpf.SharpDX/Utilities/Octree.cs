@@ -492,17 +492,13 @@ namespace HelixToolkit.Wpf.SharpDX
             for (int i = Objects.Count - 1; i >= 0; --i)
             {
                 var obj = Objects[i];
-                var box = GetBoundingBoxFromItem(obj);
-                if (box.Minimum != box.Maximum)
-                {
-                    for (int x = 0; x < 8; ++x)
+                for (int x = 0; x < 8; ++x)
+                {                      
+                    if(IsContains(Octants[x], obj))
                     {
-                        if (Octants[x].Contains(ref box) == ContainmentType.Contains)
-                        {
-                            octList[x].Add(obj);
-                            Objects[i] = Objects[--count]; //Disard the existing object from location i, replaced with last valid object.
-                            break;
-                        }
+                        octList[x].Add(obj);
+                        Objects[i] = Objects[--count]; //Disard the existing object from location i, replaced with last valid object.
+                        break;
                     }
                 }
             }
@@ -676,7 +672,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual bool Add(T item, out IOctree octant)
         {
             var bound = GetBoundingBoxFromItem(item);
-            var node = FindSmallestNodeContainsBoundingBox(ref bound);
+            var node = FindSmallestNodeContainsBoundingBox(ref bound, item);
             octant = node;
             if (node == null)
             {
@@ -689,7 +685,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (nodeBase.Objects.Count > Parameter.MinObjectSizeToSplit)
                 {
                     int index = (node as IOctreeBase<T>).Objects.Count - 1;
-                    PushExistingToChild(nodeBase, index, GetBoundingBoxFromItem, CreateNodeWithParent, out octant);
+                    PushExistingToChild(nodeBase, index, IsContains, CreateNodeWithParent, out octant);
                 }
                 return true;
             }
@@ -706,7 +702,7 @@ namespace HelixToolkit.Wpf.SharpDX
             octant = this;
             if (this.Objects.Count > Parameter.MinObjectSizeToSplit)
             {
-                return PushExistingToChild(this, index, GetBoundingBoxFromItem, CreateNodeWithParent, out octant);
+                return PushExistingToChild(this, index, IsContains, CreateNodeWithParent, out octant);
             }
             else
             {
@@ -723,16 +719,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="createNodeFunc"></param>
         /// <param name="octant"></param>
         /// <returns>True: Pushed into child. Otherwise false.</returns>
-        public static bool PushExistingToChild(IOctreeBase<T> node, int index, Func<T, BoundingBox> getBound,
+        public static bool PushExistingToChild(IOctreeBase<T> node, int index, Func<BoundingBox, T, bool> isContains,
             CreateNodeDelegate createNodeFunc, out IOctree octant)
         {
             var item = node.Objects[index];
             octant = node;
             bool pushToChild = false;
-            var bound = getBound(item);
             for (int i = 0; i < node.Octants.Length; ++i)
             {
-                if (node.Octants[i].Contains(ref bound) == ContainmentType.Contains)
+                if (isContains(node.Octants[i], item))
                 {
                     node.Objects.RemoveAt(index);
                     if (node.ChildNodes[i] != null)
@@ -753,6 +748,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             return pushToChild;
+        }
+
+        protected bool IsContains(BoundingBox source, T targetObj)
+        {
+            var bound = GetBoundingBoxFromItem(targetObj);
+            return IsContains(source, bound, targetObj);
+        }
+
+        protected virtual bool IsContains(BoundingBox source, BoundingBox target, T targetObj)
+        {
+            return source.Contains(ref target) == ContainmentType.Contains;
         }
         /// <summary>
         /// Return new root
@@ -887,16 +893,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IOctree FindSmallestNodeContainsBoundingBox(ref BoundingBox bound)
+        public IOctree FindSmallestNodeContainsBoundingBox(ref BoundingBox bound, T item)
         {
-            return FindSmallestNodeContainsBoundingBox<T>(bound, this, this.queue);
+            return FindSmallestNodeContainsBoundingBox<T>(bound, item, IsContains, this, this.queue);
         }
 
-        private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, IOctreeBase<E> root, Queue<IOctree> queueCache)
+        private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, E item, Func<BoundingBox, E, bool> isContains, IOctreeBase<E> root, Queue<IOctree> queueCache)
         {
             IOctree result = null;
             TreeTraversal(root, queueCache,
-                (node) => { return node.Bound.Contains(ref bound) == ContainmentType.Contains; },
+                (node) => { return isContains(node.Bound, item); },
                 (node) => { result = node; });
             return result;
         }
@@ -1015,22 +1021,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public virtual IOctree FindChildByItemBound(T item, out int index)
         {
-            var bound = GetBoundingBoxFromItem(item);
             return FindChildByItemBound(item, ref bound, out index);
         }
 
         public virtual IOctree FindChildByItemBound(T item, ref BoundingBox bound, out int index)
         {
-            return FindChildByItemBound<T>(item, bound, this, this.queue, out index);
+            return FindChildByItemBound<T>(item, bound, IsContains, this, this.queue, out index);
         }
 
-        public static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, IOctreeBase<E> root, Queue<IOctree> queueCache, out int index)
+        public static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, Func<BoundingBox, BoundingBox, E, bool> isContains, IOctreeBase<E> root, Queue<IOctree> queueCache, out int index)
         {
             int idx = -1;
             IOctree result = null;
             IOctreeBase<E> lastNode = null;
             TreeTraversal(root, queueCache,
-                (node) => { return node.Bound.Contains(ref bound) == ContainmentType.Contains; },
+                (node) => { return isContains(node.Bound, bound, item); },
                 (node) =>
                 {
                     lastNode = node as IOctreeBase<E>;
@@ -1319,6 +1324,11 @@ namespace HelixToolkit.Wpf.SharpDX
             : base(ref bound, list, parent, paramter, queueCache)
         {
             Positions = positions;
+        }
+
+        protected override bool IsContains(BoundingBox source, BoundingBox target, int obj)
+        {
+            return source.Contains(Positions[obj]) != ContainmentType.Disjoint;
         }
 
         public static T FindVisualAncestor<T>(FrameworkElement obj) where T : FrameworkElement
