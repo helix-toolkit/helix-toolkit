@@ -6,9 +6,13 @@
 
 namespace LineShadingDemo
 {
+    using System;
+    using System.Linq;
+
     using DemoCore;
     using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     using SharpDX;
 
@@ -73,8 +77,15 @@ namespace LineShadingDemo
             // lines model3d
             var e1 = new LineBuilder();
             e1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 2);
-            //e1.AddLine(new Vector3(-1, 0, 0), new Vector3(1, 0, 0));
-            this.Lines = e1.ToLineGeometry3D();
+            //this.Lines = e1.ToLineGeometry3D().ToUnshared();
+            this.Lines = e1.ToLineGeometry3D(true);
+            this.Lines.Colors = new Color4Collection();
+            var linesCount = this.Lines.Indices.Count;
+            var rnd = new Random();
+            while (linesCount-- > 0)
+            {
+                this.Lines.Colors.Add(rnd.NextColor());
+            }
 
             // lines params
             this.LineThickness = 2;

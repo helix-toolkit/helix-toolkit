@@ -126,13 +126,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.AddLine(new Vector3(stepx * x, miny, 0), new Vector3(stepx * x, maxy, 0));           
             }
         }
-             
+
         /// <summary>
-        /// 
+        /// Creates the resulting <see cref="LineGeometry3D"/>.
         /// </summary>
-        /// <returns></returns>
-        public LineGeometry3D ToLineGeometry3D()
+        /// <param name="unshareVertices">
+        /// If true, the resulting <see cref="LineGeometry3D"/> has no shared vertices.
+        /// </param>
+        /// <returns>Returns the resulting <see cref="LineGeometry3D"/>.</returns>
+        public LineGeometry3D ToLineGeometry3D(bool unshareVertices = false)
         {
+            if (unshareVertices)
+            {
+                var count = this.lineListIndices.Count;
+                var pos = new Vector3Collection(count);
+                var idx = new IntCollection(count);
+                for (var i = 0; i < count; i++)
+                {
+                    pos.Add(this.positions[this.lineListIndices[i]]);
+                    idx.Add(i);
+                }
+
+                return new LineGeometry3D { Positions = pos, Indices = idx };
+            }
+
             return new LineGeometry3D { Positions = this.positions, Indices = this.lineListIndices };
         }
                
