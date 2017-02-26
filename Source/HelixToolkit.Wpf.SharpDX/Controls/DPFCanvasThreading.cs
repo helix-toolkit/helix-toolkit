@@ -839,15 +839,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
             {
-                if (mRenderThread.IsInitalized && RenderTechnique != null)
+                if (mRenderThread.IsInitalized)
                 {
-                    if (RenderTechnique == deferred)
+                    if (RenderTechnique != null)
                     {
-                        deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
-                    }
-                    else if (RenderTechnique == gbuffer)
-                    {
-                        deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                        if (RenderTechnique == deferred)
+                        {
+                            deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                        }
+                        else if (RenderTechnique == gbuffer)
+                        {
+                            deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                        }
                     }
 
                     CreateAndBindTargets();

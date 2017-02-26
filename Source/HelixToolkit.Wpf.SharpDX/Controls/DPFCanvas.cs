@@ -607,6 +607,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
+                        SetDefaultRenderTargets();
                     }
                     catch (Exception ex)
                     {
@@ -620,7 +621,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // this part is per frame
                 // ---------------------------------------------------------------------------
 
-                SetDefaultRenderTargets();
+                ClearRenderTarget();
 
                 if (RenderTechnique == deferred)
                 {
@@ -745,15 +746,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
             {
-                if (surfaceD3D != null && RenderTechnique != null)
+                if (surfaceD3D != null)
                 {
-                    if (RenderTechnique == deferred)
+                    if (RenderTechnique != null)
                     {
-                        deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
-                    }
-                    else if (RenderTechnique == gbuffer)
-                    {
-                        deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                        if (RenderTechnique == deferred)
+                        {
+                            deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                        }
+                        else if (RenderTechnique == gbuffer)
+                        {
+                            deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                        }
                     }
 
                     CreateAndBindTargets();
