@@ -91,7 +91,7 @@ namespace InstancingDemo
             CreateModels();
         }
 
-        const int num = 20;
+        const int num = 40;
         List<Matrix> instances = new List<Matrix>(num * 2);
         List<InstanceParameter> parameters = new List<InstanceParameter>(num * 2);
         int counter = 0;

@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf
                 var p2 = positions[index2];
                 Vector3D u = p1 - p0;
                 Vector3D v = p2 - p0;
-                Vector3D w = SharedFunctions.CrossProduct(u, v);
+                Vector3D w = SharedFunctions.CrossProduct(ref u, ref v);
                 w.Normalize();
                 normals[index0] += w;
                 normals[index1] += w;
@@ -95,9 +95,7 @@ namespace HelixToolkit.Wpf
 
             for (int i = 0; i < normals.Count; i++)
             {
-                var w = normals[i];
-                w.Normalize();
-                normals[i] = w;
+                normals[i].Normalize();
             }
 
             return normals;
@@ -215,7 +213,9 @@ namespace HelixToolkit.Wpf
                 var p0 = mesh.Positions[mesh.TriangleIndices[i0]];
                 var p1 = mesh.Positions[mesh.TriangleIndices[i0 + 1]];
                 var p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
-                var n = SharedFunctions.CrossProduct(p1 - p0, p2 - p0);
+                var p10 = p1 - p0;
+                var p20 = p2 - p0;
+                var n = SharedFunctions.CrossProduct(ref p10, ref p20);
                 n.Normalize();
                 for (int j = 0; j < 3; j++)
                 {
@@ -229,7 +229,7 @@ namespace HelixToolkit.Wpf
                     {
                         var n2 = value;
                         n2.Normalize();
-                        var angle = 180 / (DoubleOrSingle)Math.PI * (DoubleOrSingle)Math.Acos(SharedFunctions.DotProduct(n, n2));
+                        var angle = 180 / (DoubleOrSingle)Math.PI * (DoubleOrSingle)Math.Acos(SharedFunctions.DotProduct(ref n, ref n2));
                         if (angle > minimumAngle)
                         {
                             edgeIndices.Add(minIndex);
@@ -334,8 +334,8 @@ namespace HelixToolkit.Wpf
                     {
                         continue;
                     }
-
-                    var l2 = SharedFunctions.LengthSquared(mesh.Positions[i] - mesh.Positions[j]);
+                    var v = mesh.Positions[i] - mesh.Positions[j];
+                    var l2 = SharedFunctions.LengthSquared(ref v);
                     if (l2 < eps)
                     {
                         dict.Add(j, i);
@@ -675,7 +675,8 @@ namespace HelixToolkit.Wpf
             int result = -1;
             for (int i = 0; i < segments.Count; i++)
             {
-                var ls0 = SharedFunctions.LengthSquared(point - segments[i]);
+                var v = point - segments[i];
+                var ls0 = SharedFunctions.LengthSquared(ref v);
                 if (ls0 < best)
                 {
                     result = i;
