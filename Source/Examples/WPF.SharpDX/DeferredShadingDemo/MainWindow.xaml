@@ -25,7 +25,7 @@
             Camera="{Binding Camera}"
             Title="{Binding Title}"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black"            EnableDeferredRendering="True"
+            TextBrush="Black" 
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"
