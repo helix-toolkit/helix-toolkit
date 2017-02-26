@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
     // https://blogs.msdn.microsoft.com/dwayneneed/2007/04/26/multithreaded-ui-hostvisual/
     public class DPFCanvasThreading : VisualWrapper, IRenderHost
     {
-        private class RenderThreadWrapper
+        private sealed class RenderThreadWrapper
         {
             public bool IsInitalized { get { return surfaceD3D != null && renderContext != null; } }
             public volatile bool IsBusy = false;
@@ -64,10 +64,10 @@ namespace HelixToolkit.Wpf.SharpDX
             public void DestoryRenderThread()
             {
                 SynchronizeToCurrentThread(() => {
+                    image.Source = null;
                     Disposer.RemoveAndDispose(ref surfaceD3D);
                 });
                 image.Dispatcher.InvokeShutdown();
-                image = null;
             }
 
             private void RenderGraphics(object arg)
@@ -83,6 +83,8 @@ namespace HelixToolkit.Wpf.SharpDX
             public void CreateImageSource(int adapterIdx)
             {
                 SynchronizeToCurrentThread(() => {
+                    image.Source = null;
+                    Disposer.RemoveAndDispose(ref surfaceD3D);
                     surfaceD3D = new DX11ImageSource(adapterIdx);
                     image.Source = surfaceD3D;
                 });

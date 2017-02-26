@@ -520,8 +520,16 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.RenderHost.ExceptionOccurred -= this.HandleRenderException;
             }
-
-            this.RenderHost = this.GetTemplateChild("PART_Canvas") as IRenderHost;
+            var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
+            if (EnableDeferredRendering)
+            {
+                hostPresenter.Content = new DPFCanvasThreading();
+            }
+            else
+            {
+                hostPresenter.Content = new DPFCanvas();
+            }
+            this.RenderHost = hostPresenter.Content as IRenderHost;
             this.RenderHost.MSAA = this.MSAA;
             this.RenderHost.EnableRenderFrustum = this.EnableRenderFrustum;
             this.RenderHost.RenderCycles = this.RenderCycles;

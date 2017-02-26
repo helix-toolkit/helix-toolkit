@@ -768,6 +768,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }, (s,e)=> { return Math.Max(1, (int)e); }));
 
         /// <summary>
+        /// <para>Enable deferred rendering.</para> 
+        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
+        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892(v=vs.85).aspx"/></para>
+        /// </summary>
+        public static readonly DependencyProperty EnableDeferredRenderingProperty
+            = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+        /// <summary>
         /// Background Color
         /// </summary>
         [TypeConverter(typeof(Color4Converter))]
@@ -2597,6 +2605,24 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (int)GetValue(MaxFPSProperty);
+            }
+        }
+
+        /// <summary>
+        /// <para>Enable deferred rendering.</para> 
+        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
+        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892(v=vs.85).aspx"/></para>
+        /// </summary>
+        public bool EnableDeferredRendering
+        {
+            set
+            {
+                SetValue(EnableDeferredRenderingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableDeferredRenderingProperty);
             }
         }
     }
