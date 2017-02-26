@@ -625,7 +625,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (RenderTechnique == deferred)
                 {
                     // set G-Buffer                    
-                    deferredRenderer.SetGBufferTargets();
+                    deferredRenderer.SetGBufferTargets(renderContext);
 
                     // render G-Buffer pass                
                     renderRenderable.Render(renderContext);
@@ -637,14 +637,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (RenderTechnique == gbuffer)
                 {
                     // set G-Buffer
-                    deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2);
+                    deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2, renderContext);
 
                     // render G-Buffer pass                    
                     renderRenderable.Render(renderContext);
 
                     // reset render targets and run lighting pass                                         
 #if MSAA
-                    deferredRenderer.RenderGBufferOutput(ref renderTargetNMS);
+                    deferredRenderer.RenderGBufferOutput(renderContext, ref renderTargetNMS);
 #else
                     this.deferredRenderer.RenderGBufferOutput(ref this.colorBuffer);
 #endif
