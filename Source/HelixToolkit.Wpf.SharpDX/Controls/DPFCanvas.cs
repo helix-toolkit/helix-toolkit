@@ -28,6 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Device = global::SharpDX.Direct3D11.Device;
     using Model.Lights3D;
     using Helpers;
+    using System.Threading;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -50,15 +51,110 @@ namespace HelixToolkit.Wpf.SharpDX
     // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     // THE SOFTWARE.
 
-    public class DPFCanvas : Image, IRenderHost
+    public class DPFCanvas : VisualWrapper, IRenderHost
     {
+        private class RenderThreadWrapper
+        {
+            public bool IsInitalized { get { return surfaceD3D != null && renderContext != null; } }
+            public volatile bool IsBusy = false;
+            private Thread RenderThread;
+            private AutoResetEvent renderThreadEvent = new AutoResetEvent(false);
+            private Image image;
+            private DX11ImageSource surfaceD3D;
+            private DeviceContext renderContext;
+            private Texture2D colorBuffer;
+#if MSAA
+            private Texture2D renderTargetNMS;
+#endif
+
+            public HostVisual InitializeRenderThread()
+            {
+                HostVisual hostVisual = new HostVisual();
+                RenderThread = new Thread(new ParameterizedThreadStart(RenderGraphics));
+                RenderThread.SetApartmentState(ApartmentState.STA);
+                RenderThread.IsBackground = true;
+                RenderThread.Start(hostVisual);
+                renderThreadEvent.WaitOne();
+                return hostVisual;
+            }
+
+            public void DestoryRenderThread()
+            {
+                SynchronizeToCurrentThread(() => {
+                    Disposer.RemoveAndDispose(ref surfaceD3D);
+                });
+                image.Dispatcher.InvokeShutdown();
+                image = null;
+            }
+
+            private void RenderGraphics(object arg)
+            {
+                var hostVisual = (HostVisual)arg;
+                var visualTagetPS = new VisualTargetPresentationSource(hostVisual);
+                renderThreadEvent.Set();
+                image = new Image() { Stretch = Stretch.UniformToFill };
+                visualTagetPS.RootVisual = image;
+                Dispatcher.Run();
+            }
+
+            public void CreateImageSource(int adapterIdx)
+            {
+                SynchronizeToCurrentThread(() => {
+                    surfaceD3D = new DX11ImageSource(adapterIdx);
+                    image.Source = surfaceD3D;
+                });
+            }
+
+            public bool InvalidateD3D(CommandList command)
+            {
+                if (IsBusy)
+                { return false; }
+                IsBusy = true;
+                AsyncInvoke(() => {
+                    renderContext.ExecuteCommandList(command, true);
+#if MSAA
+                    renderContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif
+                    renderContext.Flush();
+                    surfaceD3D?.InvalidateD3DImage();
+                    Disposer.RemoveAndDispose(ref command);
+                    IsBusy = false;
+                });
+                return true;
+            }
+
+            private void SynchronizeToCurrentThread(Action action)
+            {
+                image?.Dispatcher?.Invoke(action);
+            }
+
+            private void AsyncInvoke(Action action, DispatcherPriority priority = DispatcherPriority.Normal)
+            {
+                image?.Dispatcher?.BeginInvoke(action, priority);
+            }
+
+            public void SetRenderTarget(Texture2D target)
+            {
+                SynchronizeToCurrentThread(() => {
+                    surfaceD3D?.SetRenderTargetDX11(target);
+                });
+            }
+
+            public void SetRenderDevice(Device device, Texture2D colorBuffer, Texture2D renderTarget)
+            {
+                this.renderContext = device.ImmediateContext;
+                this.colorBuffer = colorBuffer;
+                this.renderTargetNMS = renderTarget;
+            }
+        }
+        private readonly RenderThreadWrapper mRenderThread = new RenderThreadWrapper();
         private readonly Stopwatch renderTimer;
         private Device device;
         private Texture2D colorBuffer;
         private Texture2D depthStencilBuffer;
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
-        private DX11ImageSource surfaceD3D;
+        
         private IRenderer renderRenderable;
         private RenderContext renderContext;
         private DeferredRenderer deferredRenderer;
@@ -68,6 +164,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private TimeSpan lastRenderingDuration;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
+
+
 
         private int renderCycles = 1;
         /// <summary>
@@ -236,7 +334,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         static DPFCanvas()
         {
-            StretchProperty.OverrideMetadata(typeof(DPFCanvas), new FrameworkPropertyMetadata(Stretch.Fill));
+          //  StretchProperty.OverrideMetadata(typeof(DPFCanvas), new FrameworkPropertyMetadata(Stretch.Fill));
         }
 
         /// <summary>
@@ -313,6 +411,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             try
             {
+                Child = mRenderThread.InitializeRenderThread();
                 StartD3D();
                 StartRendering();
             }
@@ -344,6 +443,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             StopRendering();
             EndD3D();
+            mRenderThread.DestoryRenderThread();
         }
 
         /// <summary>
@@ -360,18 +460,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
                 return; // StardD3D() is called from DP changed handler
             }
-
-            surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
-            surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
+            mRenderThread.CreateImageSource(EffectsManager.AdapterIndex);
+         //   surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
+         //   surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             device = EffectsManager.Device;
             deferredRenderer = new DeferredRenderer();
             renderRenderable.DeferredRenderer = deferredRenderer;
 
             CreateAndBindTargets();
             SetDefaultRenderTargets();
-            Source = surfaceD3D;
+          //  Source = surfaceD3D;
             InvalidateRender();
         }
+
 
         /// <summary>
         /// 
@@ -384,16 +485,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 sceneAttached = false;
             }
 
-            if (surfaceD3D == null)
-            {
-                return;
-            }
+            //if (surfaceD3D == null)
+            //{
+            //    return;
+            //}
 
-            surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
-            Source = null;
+           // surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
+           // Source = null;
 
             Disposer.RemoveAndDispose(ref deferredRenderer);
-            Disposer.RemoveAndDispose(ref surfaceD3D);
+           // Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);
             Disposer.RemoveAndDispose(ref depthStencilBufferView);
             Disposer.RemoveAndDispose(ref colorBuffer);
@@ -408,8 +509,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void CreateAndBindTargets()
         {
-            surfaceD3D.SetRenderTargetDX11(null);
-
+           // surfaceD3D.SetRenderTargetDX11(null);
+            mRenderThread.SetRenderTarget(null);
             int width = System.Math.Max((int)ActualWidth, 100);
             int height = System.Math.Max((int)ActualHeight, 100);
 
@@ -500,11 +601,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             renderTargetNMS = new Texture2D(device, colordescNMS);
             device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-            surfaceD3D.SetRenderTargetDX11(renderTargetNMS);
+            mRenderThread.SetRenderTarget(renderTargetNMS);
+            //surfaceD3D.SetRenderTargetDX11(renderTargetNMS);
 #else
             this.surfaceD3D.SetRenderTargetDX11(this.colorBuffer);
-#endif
-            this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+#endif            
+            mRenderThread.SetRenderDevice(this.device, colorBuffer, renderTargetNMS);
         }
 
         /// <summary>
@@ -525,9 +627,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
             device.ImmediateContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
             device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
+            this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
 
-            device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-            device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+            renderContext?.DeviceContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
+            renderContext?.DeviceContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
+            renderContext?.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
         }
 
         /// <summary>
@@ -540,9 +644,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             device.ImmediateContext.OutputMerger.SetTargets(dsv, colorBufferView);
             device.ImmediateContext.Rasterizer.SetViewport(0, 0, colorBuffer.Description.Width, colorBuffer.Description.Height, 0.0f, 1.0f);
-
-            device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-            device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
         }
 
         /// <summary>
@@ -555,11 +656,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (clearBackBuffer)
             {
                 device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
+               // renderContext?.DeviceContext.ClearRenderTargetView(colorBufferView, ClearColor);
             }
 
             if (clearDepthStencilBuffer)
             {
                 device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+                //renderContext?.DeviceContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             }
         }
 
@@ -607,6 +710,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
+                        SetDefaultRenderTargets();
                     }
                     catch (Exception ex)
                     {
@@ -619,8 +723,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
-
-                SetDefaultRenderTargets();
+                ClearRenderTarget(true, true);
 
                 if (RenderTechnique == deferred)
                 {
@@ -653,11 +756,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     renderRenderable.Render(renderContext);
                 }
+                var command = renderContext.DeviceContext.FinishCommandList(true);
+                mRenderThread.InvalidateD3D(command);
             }
-#if MSAA
-            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
-            this.device.ImmediateContext.Flush();
+//#if MSAA
+//            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+//#endif
+//            this.device.ImmediateContext.Flush();
         }
 
         private void StartRendering()
@@ -700,10 +805,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                if (pendingValidationCycles > 0 && !skipper.IsSkip())
+                if (pendingValidationCycles > 0 && !mRenderThread.IsBusy && !skipper.IsSkip())
                 {
                     var t0 = renderTimer.Elapsed;
-                    if (surfaceD3D != null && renderRenderable != null)
+                    if (mRenderThread.IsInitalized && renderRenderable != null)
                     {
                         // Update all renderables before rendering 
                         // giving them the chance to invalidate the current render.                                                            
@@ -713,10 +818,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             Render();
                         }
-                        if (cycle == 0)
-                        {
-                            surfaceD3D.InvalidateD3DImage();
-                        }
+                        //if (cycle == 0)
+                        //{
+                        //    surfaceD3D.InvalidateD3DImage();
+                        //}
                     }
 
                     lastRenderingDuration = renderTimer.Elapsed - t0;
@@ -745,7 +850,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
             {
-                if (surfaceD3D != null && RenderTechnique != null)
+                if (mRenderThread.IsInitalized && RenderTechnique != null)
                 {
                     if (RenderTechnique == deferred)
                     {
