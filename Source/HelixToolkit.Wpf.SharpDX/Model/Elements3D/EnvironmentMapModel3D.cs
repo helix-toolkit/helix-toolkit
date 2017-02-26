@@ -169,24 +169,24 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(RenderContext renderContext)
         {
             // --- set context
-            this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
-            this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = Direct3D.PrimitiveTopology.TriangleList;
-            this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
-            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, CubeVertex.SizeInBytes, 0));
+            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = Direct3D.PrimitiveTopology.TriangleList;
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, CubeVertex.SizeInBytes, 0));
 
-            this.Device.ImmediateContext.Rasterizer.State = rasterState;
-            this.Device.ImmediateContext.OutputMerger.DepthStencilState = depthStencilState;
+            renderContext.DeviceContext.Rasterizer.State = rasterState;
+            renderContext.DeviceContext.OutputMerger.DepthStencilState = depthStencilState;
 
             // --- set constant paramerers 
-            var worldMatrix = Matrix.Translation(((PerspectiveCamera)context.Camera).Position.ToVector3());
+            var worldMatrix = Matrix.Translation(((PerspectiveCamera)renderContext.Camera).Position.ToVector3());
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             // --- render the geometry
-            this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-            this.Device.ImmediateContext.DrawIndexed(this.geometry.Indices.Count, 0, 0);
+            this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
+            renderContext.DeviceContext.DrawIndexed(this.geometry.Indices.Count, 0, 0);
         }
     }
 }

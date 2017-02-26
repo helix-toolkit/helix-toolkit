@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool IsDeferredPass { get; set; }
         
-        public RenderContext(IRenderHost canvas, Effect effect)
+        public RenderContext(IRenderHost canvas, Effect effect, DeviceContext renderContext)
         {
             this.Canvas = canvas;
             this.IsShadowPass = false;
@@ -97,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.vViewport = effect.GetVariableByName("vViewport").AsVector();
             this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             this.vEyePos = effect.GetVariableByName("vEyePos").AsVector();
-            DeviceContext = new DeviceContext(canvas.Device);          
+            DeviceContext = renderContext;     
         }
 
         ~RenderContext()
