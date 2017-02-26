@@ -44,6 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
             private Thread RenderThread;
             private AutoResetEvent renderThreadEvent = new AutoResetEvent(false);
             private Image image;
+            private VisualTargetPresentationSource visualTarget;
             private DX11ImageSource surfaceD3D;
             private DeviceContext renderContext;
             private Texture2D colorBuffer;
@@ -74,10 +75,10 @@ namespace HelixToolkit.Wpf.SharpDX
             private void RenderGraphics(object arg)
             {
                 var hostVisual = (HostVisual)arg;
-                var visualTagetPS = new VisualTargetPresentationSource(hostVisual);
+                visualTarget = new VisualTargetPresentationSource(hostVisual);                
                 renderThreadEvent.Set();
                 image = new Image() { Stretch = Stretch.UniformToFill };
-                visualTagetPS.RootVisual = image;
+                visualTarget.RootVisual = image;
                 Dispatcher.Run();
             }
 
@@ -98,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsBusy = true;
                 AsyncInvoke(() => {
                     Invalidate(command);
-                });
+                }, DispatcherPriority.Render);
                 return true;
             }
 
@@ -121,13 +122,13 @@ namespace HelixToolkit.Wpf.SharpDX
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void SynchronizeToCurrentThread(Action action)
             {
-                image?.Dispatcher?.Invoke(action);
+                visualTarget?.Dispatcher?.Invoke(action);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void AsyncInvoke(Action action, DispatcherPriority priority = DispatcherPriority.Normal)
             {
-                image?.Dispatcher?.BeginInvoke(action, priority);
+                visualTarget?.Dispatcher?.BeginInvoke(action, priority);
             }
 
             public void SetRenderTarget(Texture2D target)
