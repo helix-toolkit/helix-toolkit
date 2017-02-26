@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model.Lights3D;
     using Helpers;
     using System.Threading;
+    using System.Runtime.CompilerServices;
 
     // ---- BASED ON ORIGNAL CODE FROM DPFCanvas.cs-----
     // Seperate the rendering thread from Main Composite rendering thread. Use deferred rendering.
@@ -96,23 +97,34 @@ namespace HelixToolkit.Wpf.SharpDX
                 { return false; }
                 IsBusy = true;
                 AsyncInvoke(() => {
-                    renderContext.ExecuteCommandList(command, true);
-#if MSAA
-                    renderContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
-                    renderContext.Flush();
-                    surfaceD3D?.InvalidateD3DImage();
-                    Disposer.RemoveAndDispose(ref command);
-                    IsBusy = false;
+                    Invalidate(command);
                 });
                 return true;
             }
 
+            private void Invalidate(CommandList command)
+            {
+                if (!IsInitalized)
+                {
+                    return;
+                }
+                renderContext.ExecuteCommandList(command, true);
+#if MSAA
+                renderContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif
+                renderContext.Flush();
+                surfaceD3D.InvalidateD3DImage();
+                Disposer.RemoveAndDispose(ref command);
+                IsBusy = false;
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void SynchronizeToCurrentThread(Action action)
             {
                 image?.Dispatcher?.Invoke(action);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void AsyncInvoke(Action action, DispatcherPriority priority = DispatcherPriority.Normal)
             {
                 image?.Dispatcher?.BeginInvoke(action, priority);
