@@ -338,20 +338,20 @@
             this.vPointParams.Set(pointParams);
 
             // --- set context
-            this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
-            this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
+            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
 
             // --- set rasterstate            
-            this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
 
             // --- bind buffer                
-            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0,
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0,
                 new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
 
             // --- render the geometry
-            this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);
+            this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
 
-            this.Device.ImmediateContext.Draw(this.Geometry.Positions.Count, 0);
+            renderContext.DeviceContext.Draw(this.Geometry.Positions.Count, 0);
         }
 
         /// <summary>

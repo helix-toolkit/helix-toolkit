@@ -182,46 +182,46 @@ namespace HelixToolkit.Wpf.SharpDX
         /// It does not compute any lighting, it just copies the (resized) buffer-textures into the back-buffer. 
         /// It is called per frame. 
         /// </summary>
-        internal void RenderGBufferOutput(ref Texture2D renderTarget, bool merge = false)
+        internal void RenderGBufferOutput(RenderContext context, ref Texture2D renderTarget, bool merge = false)
         {
             var midX = this.targetWidth / 2;
             var midY = this.targetHeight / 2;
 
             if (merge)
             {
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[0], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[0], 0,
                     new ResourceRegion(0, 0, 0, midX, midY, 1),
                     renderTarget, 0, 0, 0, 0);
 
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[1], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[1], 0,
                     new ResourceRegion(midX, 0, 0, 2 * midX, midY, 1),
                     renderTarget, 0, midX, 0, 0);
 
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[2], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[2], 0,
                     new ResourceRegion(0, midY, 0, midX, 2 * midY, 1),
                     renderTarget, 0, 0, midY, 0);
 
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[3], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[3], 0,
                     new ResourceRegion(midX, midY, 0, 2 * midX, 2 * midY, 1),
                     renderTarget, 0, midX, midY, 0);
             }
             else
             {
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[0], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[0], 0,
                     new ResourceRegion(0, 0, 0, midX, midY, 1),
                     renderTarget, 0, 0, 0, 0);
 
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[1], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[1], 0,
                     new ResourceRegion(0, 0, 0, midX, midY, 1),
                     renderTarget, 0, midX, 0, 0);
 
-                //this.device.ImmediateContext.CopySubresourceRegion(this.ssBuffer[0], 0,
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[2], 0,
+                //context.DeviceContext.CopySubresourceRegion(this.ssBuffer[0], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[2], 0,
                     new ResourceRegion(0, 0, 0, midX, midY, 1),
                     renderTarget, 0, 0, midY, 0);
 
 
-                this.device.ImmediateContext.CopySubresourceRegion(this.gBuffer[3], 0,
+                context.DeviceContext.CopySubresourceRegion(this.gBuffer[3], 0,
                     new ResourceRegion(0, 0, 0, midX, midY, 1),
                     renderTarget, 0, midX, midY, 0);
             }
@@ -239,27 +239,27 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.RenderPass == DeferredRenderPasses.RenderDirectDiffuse)
                 {
                     // bind quad geometry (good for a full screen-space pass)
-                    this.BindQuadBuffer();
+                    this.BindQuadBuffer(renderContext);
 
                     // set SSAO render target and render SSAO
-                    this.SetSSBufferTarget(0);
+                    this.SetSSBufferTarget(0, renderContext);
                     this.RenderScreenSpaceAO(renderContext);
 
                     // render lighting to buffer
-                    this.SetSSBufferTarget(1);
+                    this.SetSSBufferTarget(1, renderContext);
                     this.RenderLighting(renderContext, renderRenderable.Items.OfType<ILight3D>());
 
                     // reset default render targets render the buffer-merge pass
                     if (FXAAEnabled)
                     {
-                        this.SetSSBufferTarget(2);
+                        this.SetSSBufferTarget(2, renderContext);
                     }
                     else
                     {
                         this.renderHost.SetDefaultRenderTargets();
                     }
 
-                    this.BindQuadBuffer();
+                    this.BindQuadBuffer(renderContext);
                     this.RenderMerge(renderContext);
 
                     // perform FXAA pass
@@ -273,10 +273,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (this.RenderPass == DeferredRenderPasses.RenderBlured)
                 {
                     // bind quad geometry (good for a full screen-space pass)
-                    this.BindQuadBuffer();
+                    this.BindQuadBuffer(renderContext);
 
                     // set SSAO render target and render SSAO
-                    this.SetSSBufferTarget(0);
+                    this.SetSSBufferTarget(0, renderContext);
                     this.RenderScreenSpaceAO(renderContext);
 
                     // render blur and merge
@@ -292,29 +292,29 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (this.RenderPass == DeferredRenderPasses.RenderBluredDiffuse)
                 {
                     // bind quad geometry (good for a full screen-space pass)
-                    this.BindQuadBuffer();
+                    this.BindQuadBuffer(renderContext);
 
                     // set SSAO render target and render SSAO
-                    this.SetSSBufferTarget(0);
+                    this.SetSSBufferTarget(0, renderContext);
                     this.RenderScreenSpaceAO(renderContext);
 
                     int target = this.RenderBlurPass(renderContext, renderRenderable, 0);
 
                     // render lighting to ping-pong buffer 1
-                    this.SetSSBufferTarget(1-target);
+                    this.SetSSBufferTarget(1-target, renderContext);
                     this.RenderLighting(renderContext, renderRenderable.Items.OfType<ILight3D>());
 
                     // render merge-pass of buffer 0 and 1
                     if (FXAAEnabled)
                     {
-                        this.SetSSBufferTarget(2);
+                        this.SetSSBufferTarget(2, renderContext);
                     }
                     else
                     {
                         this.renderHost.SetDefaultRenderTargets();
                     }
 
-                    this.BindQuadBuffer();
+                    this.BindQuadBuffer(renderContext);
                     this.RenderMerge(renderContext);
 
                     if (FXAAEnabled)
@@ -326,12 +326,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     // bind quad geometry (good for a full screen-space pass)
-                    this.BindQuadBuffer();
+                    this.BindQuadBuffer(renderContext);
 
                     // reset default render targets 
                     if (FXAAEnabled)
                     {
-                        this.SetSSBufferTarget(2);
+                        this.SetSSBufferTarget(2, renderContext);
                     }
                     else
                     {
@@ -344,7 +344,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (FXAAEnabled)
                     {
                         this.renderHost.SetDefaultRenderTargets();
-                        this.BindQuadBuffer();
+                        this.BindQuadBuffer(renderContext);
                         this.RenderFXAA(renderContext);
                     }
                 }
@@ -355,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //this.renderHost.SetDefaultColorTargets(this.depthStencilBufferView);
                 if (FXAAEnabled)
                 {
-                    this.SetSSBufferTarget(2);
+                    this.SetSSBufferTarget(2, renderContext);
                 }
                 else
                 {
@@ -368,7 +368,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (FXAAEnabled)
                 {
                     this.renderHost.SetDefaultRenderTargets();
-                    this.BindQuadBuffer();
+                    this.BindQuadBuffer(renderContext);
                     this.RenderFXAA(renderContext);
                 }
 #else
@@ -400,7 +400,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 
             // --- bind quad geometry (good for ambient and directional lights)
-            this.BindQuadBuffer();
+            this.BindQuadBuffer(context);
 
             // -- get the ambient light  (there must be only one)
             var ambientLight = lightsCollection.Where(l => l is AmbientLight3D);
@@ -411,8 +411,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- set and render the ambient light pass 
             this.deferredLightingVariables.vLightAmbient.Set(ambientLightColor);
-            this.deferredLightingVariables.renderPassAmbient.Apply(device.ImmediateContext);
-            this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+            this.deferredLightingVariables.renderPassAmbient.Apply(context.DeviceContext);
+            context.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
 
 
             // --- all next passes are with additive blending
@@ -426,12 +426,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.deferredLightingVariables.vLightDir.Set(light.Direction.ToVector4());
 
                 // --- render the geometry
-                pass.Apply(device.ImmediateContext);
-                this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+                pass.Apply(context.DeviceContext);
+                context.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
             }
 
             // --- now bind sphere geometry (good for point-lights)
-            this.BindSphereBuffer();
+            this.BindSphereBuffer(context);
 
             // --- set the point-light pass (with additive blending)
             pass = this.deferredLightingVariables.renderPassPointLight;
@@ -452,12 +452,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.deferredLightingVariables.mLightProj.SetMatrix(context.projectionMatrix);
 
                 // --- render the geometry
-                pass.Apply(device.ImmediateContext);
-                this.device.ImmediateContext.DrawIndexed(this.screenSphere.IndexCount, 0, 0);
+                pass.Apply(context.DeviceContext);
+                context.DeviceContext.DrawIndexed(this.screenSphere.IndexCount, 0, 0);
             }
 
             // --- bind cone buffer for spot-lights
-            this.BindConeBuffer();
+            this.BindConeBuffer(context);
 
             // --- set the spot-light pass (with additive blending)
             pass = this.deferredLightingVariables.renderPassSpotLight;
@@ -495,12 +495,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.deferredLightingVariables.mLightProj.SetMatrix(context.projectionMatrix);
 
                 // --- render the geometry
-                pass.Apply(device.ImmediateContext);
-                this.device.ImmediateContext.DrawIndexed(this.screenCone.IndexCount, 0, 0);
+                pass.Apply(context.DeviceContext);
+                context.DeviceContext.DrawIndexed(this.screenCone.IndexCount, 0, 0);
             }
 
             // --- deactivate blending
-            this.device.ImmediateContext.OutputMerger.SetBlendState(null);
+            context.DeviceContext.OutputMerger.SetBlendState(null);
         }
 
         /// <summary>
@@ -584,8 +584,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.deferredLightingVariables.vInvViewportSize.Set(new Vector4(1.0f / (float)contxt.Canvas.ActualWidth, 1.0f / (float)contxt.Canvas.ActualHeight, 0.0f, 0.0f));
 
             // --- perform screen-space processing
-            this.screenSpaceVariables.ssSSAOPass.Apply(this.device.ImmediateContext);
-            this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+            this.screenSpaceVariables.ssSSAOPass.Apply(contxt.DeviceContext);
+            contxt.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
         }
 
 
@@ -609,7 +609,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.SetSSBufferTarget(target);
+                    this.SetSSBufferTarget(target, renderContext);
                 }
                 this.RenderBlur4x4(renderContext);
                 return target;
@@ -617,7 +617,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else if (this.BlurPass == DeferredRenderPasses.BlurSeparableGaussian)
             {
                 int target = (renderTargetIndex == 1) ? 0 : renderTargetIndex;
-                this.SetSSBufferTarget(1);
+                this.SetSSBufferTarget(1, renderContext);
                 this.RenderBlurH(renderContext);
                 if (target == -1)
                 {
@@ -625,7 +625,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.SetSSBufferTarget(target);
+                    this.SetSSBufferTarget(target, renderContext);
                 }
                 this.RenderBlurV(renderContext);
                 return target;
@@ -633,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else if (this.BlurPass == DeferredRenderPasses.BlurCrossBilateral)
             {
                  int target = (renderTargetIndex == 1) ? 0 : renderTargetIndex;
-                this.SetSSBufferTarget(1);
+                this.SetSSBufferTarget(1, renderContext);
                 
                 if (target == -1)
                 {
@@ -641,7 +641,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.SetSSBufferTarget(target);
+                    this.SetSSBufferTarget(target, renderContext);
                 }                
                 return target;
             }
@@ -654,8 +654,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RenderMerge(RenderContext context)
         {
             // --- perform screen-space rendering
-            this.screenSpaceVariables.ssMergePass.Apply(this.device.ImmediateContext);
-            this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+            this.screenSpaceVariables.ssMergePass.Apply(context.DeviceContext);
+            context.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
         }
 
         /// <summary>
@@ -664,8 +664,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RenderBlurH(RenderContext context)
         {
             // --- perform screen-space rendering
-            this.screenSpaceVariables.ssBlurHPass.Apply(this.device.ImmediateContext);
-            this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+            this.screenSpaceVariables.ssBlurHPass.Apply(context.DeviceContext);
+            context.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
         }
 
         /// <summary>
@@ -674,8 +674,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RenderBlurV(RenderContext context)
         {
             // --- perform screen-space rendering
-            this.screenSpaceVariables.ssBlurVPass.Apply(this.device.ImmediateContext);
-            this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+            this.screenSpaceVariables.ssBlurVPass.Apply(context.DeviceContext);
+            context.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
         }
 
         /// <summary>
@@ -684,8 +684,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RenderBlur4x4(RenderContext context)
         {
             // --- perform screen-space rendering
-            this.screenSpaceVariables.ssBlur4x4Pass.Apply(this.device.ImmediateContext);
-            this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+            this.screenSpaceVariables.ssBlur4x4Pass.Apply(context.DeviceContext);
+            context.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
         }
 
         /// <summary>
@@ -694,8 +694,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RenderFXAA(RenderContext context)
         {
             // --- perform screen-space rendering
-            this.screenSpaceVariables.ssFXAAPass.Apply(this.device.ImmediateContext);
-            this.device.ImmediateContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
+            this.screenSpaceVariables.ssFXAAPass.Apply(context.DeviceContext);
+            context.DeviceContext.DrawIndexed(this.screenQuad.IndexCount, 0, 0);
         }
 
 #endif
@@ -886,9 +886,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        internal void SetGBufferTargets()
+        internal void SetGBufferTargets(RenderContext context)
         {
-            this.SetGBufferTargets(this.targetWidth, this.targetHeight);
+            this.SetGBufferTargets(this.targetWidth, this.targetHeight, context);
         }
 
         /// <summary>
@@ -896,17 +896,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        internal void SetGBufferTargets(int width, int height)
+        internal void SetGBufferTargets(int width, int height, RenderContext context)
         {
             // --- set rasterizes state here with proper shadow-bias, as depth-bias and slope-bias in the rasterizer            
-            this.device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
-            this.device.ImmediateContext.OutputMerger.SetTargets(this.depthStencilBufferView, this.gBufferRenderTargetView);
+          //  this.device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
+          //  this.device.ImmediateContext.OutputMerger.SetTargets(this.depthStencilBufferView, this.gBufferRenderTargetView);
 
+            context.DeviceContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
+            context.DeviceContext.OutputMerger.SetTargets(this.depthStencilBufferView, this.gBufferRenderTargetView);
             // 0 normal
             // 1 diffuse
             // 2 spec
             // 3 pos
+            ClearRenderTargetViews();
+        }
 
+        internal void ClearRenderTargetViews()
+        {
             // --- clear buffers
             this.device.ImmediateContext.ClearDepthStencilView(this.depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             this.device.ImmediateContext.ClearRenderTargetView(this.gBufferRenderTargetView[0], new Color4());
@@ -989,13 +995,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// call it in the render function
         /// minimize the number of calls
         /// </summary>
-        private void BindQuadBuffer()
+        private void BindQuadBuffer(RenderContext context)
         {
             // --- set quad context
-            this.device.ImmediateContext.InputAssembler.InputLayout = this.deferredLightingVariables.screenGeometryLayout;
-            this.device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            this.device.ImmediateContext.InputAssembler.SetIndexBuffer(this.screenQuad.IndexBuffer, Format.R32_UInt, 0);
-            this.device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.screenQuad.VertexBuffer, Vector4.SizeInBytes, 0));
+            context.DeviceContext.InputAssembler.InputLayout = this.deferredLightingVariables.screenGeometryLayout;
+            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            context.DeviceContext.InputAssembler.SetIndexBuffer(this.screenQuad.IndexBuffer, Format.R32_UInt, 0);
+            context.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.screenQuad.VertexBuffer, Vector4.SizeInBytes, 0));
         }
 
         /// <summary>
@@ -1003,13 +1009,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// call it in the render function
         /// minimize the number of calls
         /// </summary>
-        private void BindSphereBuffer()
+        private void BindSphereBuffer(RenderContext context)
         {
             // --- set sphere context
-            this.device.ImmediateContext.InputAssembler.InputLayout = this.deferredLightingVariables.screenGeometryLayout;
-            this.device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            this.device.ImmediateContext.InputAssembler.SetIndexBuffer(this.screenSphere.IndexBuffer, Format.R32_UInt, 0);
-            this.device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.screenSphere.VertexBuffer, Vector4.SizeInBytes, 0));
+            context.DeviceContext.InputAssembler.InputLayout = this.deferredLightingVariables.screenGeometryLayout;
+            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            context.DeviceContext.InputAssembler.SetIndexBuffer(this.screenSphere.IndexBuffer, Format.R32_UInt, 0);
+            context.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.screenSphere.VertexBuffer, Vector4.SizeInBytes, 0));
         }
 
         /// <summary>
@@ -1017,13 +1023,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// call it in the render function
         /// minimize the number of calls
         /// </summary>
-        private void BindConeBuffer()
+        private void BindConeBuffer(RenderContext context)
         {
             // --- set cone context
-            this.device.ImmediateContext.InputAssembler.InputLayout = this.deferredLightingVariables.screenGeometryLayout;
-            this.device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            this.device.ImmediateContext.InputAssembler.SetIndexBuffer(this.screenCone.IndexBuffer, Format.R32_UInt, 0);
-            this.device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.screenCone.VertexBuffer, Vector4.SizeInBytes, 0));
+            context.DeviceContext.InputAssembler.InputLayout = this.deferredLightingVariables.screenGeometryLayout;
+            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            context.DeviceContext.InputAssembler.SetIndexBuffer(this.screenCone.IndexBuffer, Format.R32_UInt, 0);
+            context.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.screenCone.VertexBuffer, Vector4.SizeInBytes, 0));
         }
 
 
@@ -1104,10 +1110,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Set screen-space buffer as render target
         /// </summary>
-        private void SetSSBufferTarget(int bufferIndex)
+        private void SetSSBufferTarget(int bufferIndex, RenderContext context)
         {
-            this.device.ImmediateContext.OutputMerger.SetTargets(this.ssBufferRenderTargetView[bufferIndex]);
-            //this.device.ImmediateContext.ClearRenderTargetView(this.ssBufferRenderTargetView, new Color4(1,1,1,1));            
+            context.DeviceContext.OutputMerger.SetTargets(this.ssBufferRenderTargetView[bufferIndex]);
+            //context.DeviceContext.ClearRenderTargetView(this.ssBufferRenderTargetView, new Color4(1,1,1,1));            
         }
 #endif
 

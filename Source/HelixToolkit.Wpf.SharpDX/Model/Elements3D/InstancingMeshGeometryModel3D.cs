@@ -125,13 +125,13 @@ namespace HelixToolkit.Wpf.SharpDX
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
             this.effectMaterial.AttachMaterial();
             // --- set context
-            this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
-            this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
+            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
 
             // --- set rasterstate            
-            this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
-            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
+            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
             if (this.hasInstances)
             {
                 // --- update instance buffer
@@ -146,15 +146,15 @@ namespace HelixToolkit.Wpf.SharpDX
                     else
                     {
                         DataStream stream;
-                        Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                        renderContext.DeviceContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
                         stream.Position = 0;
                         stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
-                        Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
+                        renderContext.DeviceContext.UnmapSubresource(this.instanceBuffer, 0);
                         stream.Dispose();
                     }
                     this.isInstanceChanged = false;
                 }
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
                 if (this.hasInstanceParams)
                 {
                     if (instanceParamArrayChanged)
@@ -169,20 +169,20 @@ namespace HelixToolkit.Wpf.SharpDX
                         else
                         {
                             DataStream stream;
-                            Device.ImmediateContext.MapSubresource(this.instanceParamBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                            renderContext.DeviceContext.MapSubresource(this.instanceParamBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
                             stream.Position = 0;
                             stream.WriteRange(this.InstanceParamArray.ToArray(), 0, this.InstanceParamArray.Count);
-                            Device.ImmediateContext.UnmapSubresource(this.instanceParamBuffer, 0);
+                            renderContext.DeviceContext.UnmapSubresource(this.instanceParamBuffer, 0);
                             stream.Dispose();
                         }
                         this.instanceParamArrayChanged = false;
                     }
-                    this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, InstanceParameter.SizeInBytes, 0));
+                    renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, InstanceParameter.SizeInBytes, 0));
                 }
                 // --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+                this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw
-                this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
+                renderContext.DeviceContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
             }
             this.bHasInstances.Set(false);
             this.hasInstanceParamVar.Set(false);

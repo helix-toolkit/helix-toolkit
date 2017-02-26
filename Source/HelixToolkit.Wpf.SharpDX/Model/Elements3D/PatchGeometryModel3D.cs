@@ -284,11 +284,11 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set primitive type
             if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles])
             {
-                Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
+                renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
             }
             else if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads])
             {
-                Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
+                renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
             }
             else
             {
@@ -296,20 +296,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             // --- set vertex layout
-            Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
+            renderContext.DeviceContext.InputAssembler.InputLayout = vertexLayout;
 
             // --- set index buffer
-            Device.ImmediateContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
 
             // --- set vertex buffer                
-            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, DefaultVertex.SizeInBytes, 0));
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, DefaultVertex.SizeInBytes, 0));
 
-            Device.ImmediateContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
             // --- apply chosen pass
-            shaderPass.Apply(Device.ImmediateContext);
+            shaderPass.Apply(renderContext.DeviceContext);
 
             // --- render the geometry
-            Device.ImmediateContext.DrawIndexed(Geometry.Indices.Count, 0, 0);
+            renderContext.DeviceContext.DrawIndexed(Geometry.Indices.Count, 0, 0);
         }
 
         /// <summary>
