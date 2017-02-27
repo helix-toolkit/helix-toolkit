@@ -3,16 +3,41 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
  namespace Workitem10048
 {
+    using System.Windows;
+    using System.Windows.Media.Media3D;
+
     using DemoCore;
 
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Extensions;
 
+    using GeometryModel3D = HelixToolkit.Wpf.SharpDX.GeometryModel3D;
+
     public class MainViewModel : BaseViewModel
     {
+        private static readonly Point3D NoHit = new Point3D(double.NaN, double.NaN, double.NaN);
+
+        private Point3D pointHit = NoHit;
+
+        public Point3D PointHit
+        {
+            get
+            {
+                return this.pointHit;
+            }
+
+            set
+            {
+                if (this.pointHit != value)
+                {
+                    this.pointHit = value;
+                    this.OnPropertyChanged(nameof(this.PointHit));
+                }
+            }
+        }
+
         public MainViewModel()
         {
             // titles
@@ -22,8 +47,16 @@
             if (this.RenderTechniquesManager != null)
             {
                 // default render technique
-                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
+                this.RenderTechnique = this.RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
             }
+
+            // mouse / hit test events need some love
+            EventManager.RegisterClassHandler(typeof(Viewport3DX), GeometryModel3D.MouseDown3DEvent, new RoutedEventHandler(this.OnMouseDown3D), true);
+        }
+
+        private void OnMouseDown3D(object sender, RoutedEventArgs e)
+        {
+            this.PointHit = (e as MouseDown3DEventArgs)?.HitTestResult?.PointHit ?? NoHit;
         }
     }
 }

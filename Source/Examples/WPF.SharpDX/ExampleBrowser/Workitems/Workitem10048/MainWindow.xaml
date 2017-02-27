@@ -35,7 +35,7 @@
             </MenuItem>
         </Menu>
 
-        <hx:Viewport3DX
+        <hx:Viewport3DX 
             x:Name="Viewport"
             Grid.Row="1"
             Camera="{StaticResource Camera}"
@@ -65,6 +65,13 @@
             <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
                                          Color="{x:Static sdxm:Color.Black}"
                                          HitTestThickness="2">
+                <local:MyLineGeometryModel3D.Transform>
+                    <RotateTransform3D CenterX="1">
+                        <RotateTransform3D.Rotation>
+                            <AxisAngleRotation3D Axis="0 0 1" Angle="45"/>
+                        </RotateTransform3D.Rotation>
+                    </RotateTransform3D>
+                </local:MyLineGeometryModel3D.Transform>
             </local:MyLineGeometryModel3D>
             <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
                                          Color="{x:Static sdxm:Color.Blue}"
@@ -72,6 +79,21 @@
                                          Thickness="8"
                                          HitTestThickness="8">
             </local:MyLineGeometryModel3D>
+            <hx:PointGeometryModel3D Color="{x:Static sdxm:Color.Green}" 
+                                     Size="16 16" 
+                                     Figure="Cross"
+                                     FigureRatio="0.12"
+                                     DepthBias="-10000">
+                <hx:PointGeometryModel3D.Geometry>
+                    <hx:PointGeometry3D Positions="0 0 0" Indices="0"/>
+                </hx:PointGeometryModel3D.Geometry>
+                <hx:PointGeometryModel3D.Transform>
+                    <TranslateTransform3D OffsetX="{Binding PointHit.X}"
+                                          OffsetY="{Binding PointHit.Y}"
+                                          OffsetZ="{Binding PointHit.Z}"/>
+                </hx:PointGeometryModel3D.Transform>
+            </hx:PointGeometryModel3D>
+
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1" Margin="0 24 0 0">
