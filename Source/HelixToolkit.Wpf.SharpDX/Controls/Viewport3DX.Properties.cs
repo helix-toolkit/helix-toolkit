@@ -774,7 +774,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892(v=vs.85).aspx"/></para>
         /// </summary>
         public static readonly DependencyProperty EnableDeferredRenderingProperty
-            = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+            = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
         /// <summary>
         /// Background Color
         /// </summary>
