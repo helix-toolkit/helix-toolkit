@@ -10,7 +10,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
@@ -144,6 +143,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private Viewport3D coordinateView;
 
         /// <summary>
+        /// The nearest valid result during a hit test.
+        /// </summary>
+        private HitTestResult currentHit;
+
+        /// <summary>
         /// The "control has been loaded before" flag.
         /// </summary>
         private bool hasBeenLoadedBefore;
@@ -157,7 +161,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is subscribed to rendering event.
         /// </summary>
         private bool isSubscribedToRenderingEvent;
-
 
         /// <summary>
         ///   The rectangle adorner.
@@ -283,7 +286,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddMoveForce(double dx, double dy, double dz)
         {
             this.cameraController?.AddMoveForce(new Vector3D(dx, dy, dz));
-           // this.AddMoveForce(new Vector3D(dx, dy, dz));
+            // this.AddMoveForce(new Vector3D(dx, dy, dz));
         }
 
         /// <summary>
@@ -624,7 +627,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.RenderHost != null)
             {
-                this.RenderHost.Renderable = null; 
+                this.RenderHost.Renderable = null;
                 this.RenderHost.Renderable = this;
             }
         }
@@ -638,7 +641,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.RenderHost != null)
             {
-                this.RenderHost.Renderable = null;                
+                this.RenderHost.Renderable = null;
             }
         }
 
@@ -793,7 +796,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="host">The host.</param>
         void IRenderer.Attach(IRenderHost host)
-        {            
+        {
             foreach (IRenderable e in this.Items)
             {
                 e.Attach(host);
@@ -817,7 +820,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Renders the scene.
         /// </summary>
         void IRenderer.Render(RenderContext context)
-        {            
+        {
             context.Camera = this.Camera;
             foreach (IRenderable e in this.Items)
             {
@@ -1063,10 +1066,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private static void AnimateOpacity(UIElement obj, double toOpacity, double animationTime)
         {
             var a = new DoubleAnimation(toOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
-                {
-                    AccelerationRatio = 0.3,
-                    DecelerationRatio = 0.5
-                };
+            {
+                AccelerationRatio = 0.3,
+                DecelerationRatio = 0.5
+            };
             obj.BeginAnimation(OpacityProperty, a);
         }
 
@@ -1608,11 +1611,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.ZoomExtents();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private List<HitTestResult> mouseHitModels = new List<HitTestResult>();
-
         public bool HittedSomething(MouseEventArgs e)
         {
             var hits = this.FindHits(e.GetPosition(this));
@@ -1634,8 +1632,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            mouseHitModels.Clear();
+
             var hits = this.FindHits(pt);
+            this.CameraPropertyChanged();
             if (hits.Count > 0)
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,
@@ -1645,14 +1644,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     Mouse.Capture(this, CaptureMode.SubTree);
                 }
 
-                foreach (var hit in hits.Where(x => x.IsValid))
+                this.currentHit = hits.FirstOrDefault(x => x.IsValid);
+                if (this.currentHit != null)
                 {
-                    hit.ModelHit.RaiseEvent(new MouseDown3DEventArgs(hit.ModelHit, hit, pt, this));
-                    this.mouseHitModels.Add(hit);
-
-                    // the winner takes it all: only the nearest hit is taken!
-                    break;
+                    this.currentHit.ModelHit.RaiseEvent(
+                        new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 }
+            }
+            else
+            {
+                // Raise event from Viewport3DX if there's no hit
+                this.RaiseEvent(new MouseDown3DEventArgs(this, null, pt, this));
             }
         }
 
@@ -1665,12 +1667,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (mouseHitModels.Count > 0)
+            if (this.currentHit != null)
             {
-                foreach (var hit in this.mouseHitModels)
-                {
-                    hit.ModelHit.RaiseEvent(new MouseMove3DEventArgs(hit.ModelHit, hit, pt, this));
-                }
+                this.currentHit.ModelHit.RaiseEvent(
+                    new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+            }
+            else
+            {
+                // Raise event from Viewport3DX if there's no hit
+                this.RaiseEvent(new MouseMove3DEventArgs(this, null, pt, this));
             }
         }
 
@@ -1683,15 +1688,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (mouseHitModels.Count > 0)
+            if (this.currentHit != null)
             {
                 Mouse.Capture(this, CaptureMode.None);
-                foreach (var hit in this.mouseHitModels)
-                {
-                    hit.ModelHit.RaiseEvent(new MouseUp3DEventArgs(hit.ModelHit, hit, pt, this));
-                }
-
-                this.mouseHitModels.Clear();
+                this.currentHit.ModelHit.RaiseEvent(
+                    new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                this.currentHit = null;
+            }
+            else
+            {
+                // Raise event from Viewport3DX if there's no hit
+                this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
             }
         }
     }
