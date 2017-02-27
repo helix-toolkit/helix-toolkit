@@ -13,8 +13,6 @@
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Extensions;
 
-    using GeometryModel3D = HelixToolkit.Wpf.SharpDX.GeometryModel3D;
-
     public class MainViewModel : BaseViewModel
     {
         private static readonly Point3D NoHit = new Point3D(double.NaN, double.NaN, double.NaN);
@@ -49,12 +47,9 @@
                 // default render technique
                 this.RenderTechnique = this.RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
             }
-
-            // mouse / hit test events need some love
-            EventManager.RegisterClassHandler(typeof(Viewport3DX), GeometryModel3D.MouseDown3DEvent, new RoutedEventHandler(this.OnMouseDown3D), true);
         }
 
-        private void OnMouseDown3D(object sender, RoutedEventArgs e)
+        public void OnMouseDown3D(object sender, RoutedEventArgs e)
         {
             this.PointHit = (e as MouseDown3DEventArgs)?.HitTestResult?.PointHit ?? NoHit;
         }

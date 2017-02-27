@@ -39,6 +39,33 @@ namespace HelixToolkit.Wpf.SharpDX
             "CameraChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Viewport3DX));
 
         /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseDown3D
+        {
+            add { this.AddHandler(GeometryModel3D.MouseDown3DEvent, value); }
+            remove { this.RemoveHandler(GeometryModel3D.MouseDown3DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseUp3D
+        {
+            add { this.AddHandler(GeometryModel3D.MouseUp3DEvent, value); }
+            remove { this.RemoveHandler(GeometryModel3D.MouseUp3DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseMove3D
+        {
+            add { this.AddHandler(GeometryModel3D.MouseMove3DEvent, value); }
+            remove { this.RemoveHandler(GeometryModel3D.MouseMove3DEvent, value); }
+        }
+
+        /// <summary>
         /// The camera inertia factor property.
         /// </summary>
         public static readonly DependencyProperty CameraInertiaFactorProperty = DependencyProperty.Register(

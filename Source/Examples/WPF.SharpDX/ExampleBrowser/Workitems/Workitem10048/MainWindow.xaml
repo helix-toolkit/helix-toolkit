@@ -6,6 +6,8 @@
         xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:Workitem10048"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
         Title="SharpDX in WPF (Workitem 10048 and 10052)" Height="500" Width="800">
     <Window.DataContext>
@@ -48,6 +50,11 @@
             RenderTechnique="{Binding RenderTechnique}"
             RotateAroundMouseDownPoint="True"
             ZoomAroundMouseDownPoint="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDown3D">
+                    <ei:CallMethodAction TargetObject="{Binding}" MethodName="OnMouseDown3D" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
