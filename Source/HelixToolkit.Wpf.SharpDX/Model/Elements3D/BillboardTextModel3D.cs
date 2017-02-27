@@ -208,14 +208,14 @@ namespace HelixToolkit.Wpf.SharpDX
             //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
             // --- set context
-            Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
-            Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            renderContext.DeviceContext.InputAssembler.InputLayout = vertexLayout;
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
             // --- set rasterstate            
-            Device.ImmediateContext.Rasterizer.State = rasterState;
+            renderContext.DeviceContext.Rasterizer.State = rasterState;
 
             // --- bind buffer                
-            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
             // --- render the geometry
             this.bHasBillboardTexture.Set(geometry.Texture != null);
             if (geometry.Texture != null)
@@ -234,33 +234,33 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 case BillboardType.MultipleText:
                     // Use foreground shader to draw text
-                    effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+                    effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
 
                     // --- draw text, foreground vertex is beginning from 0.
-                    Device.ImmediateContext.Draw(vertexCount, 0);
+                    renderContext.DeviceContext.Draw(vertexCount, 0);
                     break;
                 case BillboardType.SingleText:
                     if (vertexCount == 12)
                     {
                         var half = vertexCount / 2;
                         // Use background shader to draw background first
-                        effectTechnique.GetPassByIndex(1).Apply(Device.ImmediateContext);
+                        effectTechnique.GetPassByIndex(1).Apply(renderContext.DeviceContext);
                         // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
-                        Device.ImmediateContext.Draw(half, half);
+                        renderContext.DeviceContext.Draw(half, half);
 
                         // Use foreground shader to draw text
-                        effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
+                        effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
 
                         // --- draw text, foreground vertex is beginning from 0.
-                        Device.ImmediateContext.Draw(half, 0);
+                        renderContext.DeviceContext.Draw(half, 0);
                     }
                     break;
                 case BillboardType.SingleImage:
                     // Use foreground shader to draw text
-                    effectTechnique.GetPassByIndex(2).Apply(Device.ImmediateContext);
+                    effectTechnique.GetPassByIndex(2).Apply(renderContext.DeviceContext);
 
                     // --- draw text, foreground vertex is beginning from 0.
-                    Device.ImmediateContext.Draw(vertexCount, 0);
+                    renderContext.DeviceContext.Draw(vertexCount, 0);
                     break;
             }
         }

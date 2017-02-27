@@ -40,6 +40,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnableBoundingFrustum = false;
 
+        public DeviceContext DeviceContext { private set; get; }
+
         public Camera Camera
         {
             get { return this.camera; }
@@ -84,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool IsDeferredPass { get; set; }
         
-        public RenderContext(IRenderHost canvas, Effect effect)
+        public RenderContext(IRenderHost canvas, Effect effect, DeviceContext renderContext)
         {
             this.Canvas = canvas;
             this.IsShadowPass = false;
@@ -94,7 +96,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.mProjection = effect.GetVariableByName("mProjection").AsMatrix();
             this.vViewport = effect.GetVariableByName("vViewport").AsVector();
             this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
-            this.vEyePos = effect.GetVariableByName("vEyePos").AsVector();                     
+            this.vEyePos = effect.GetVariableByName("vEyePos").AsVector();
+            DeviceContext = renderContext;     
         }
 
         ~RenderContext()
