@@ -259,7 +259,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
-            if(RenderCycles == 1)
+            if (RenderCycles == 1)
             {
                 System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
             }
@@ -592,7 +592,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             renderContext.Dispose();
                         }
-                        renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique));
+                        renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), device.ImmediateContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         renderRenderable.Attach(this);
 
@@ -607,6 +607,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
+                        SetDefaultRenderTargets();
                     }
                     catch (Exception ex)
                     {
@@ -620,12 +621,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 // this part is per frame
                 // ---------------------------------------------------------------------------
 
-                SetDefaultRenderTargets();
+                ClearRenderTarget();
 
                 if (RenderTechnique == deferred)
                 {
                     // set G-Buffer                    
-                    deferredRenderer.SetGBufferTargets();
+                    deferredRenderer.SetGBufferTargets(renderContext);
 
                     // render G-Buffer pass                
                     renderRenderable.Render(renderContext);
@@ -637,14 +638,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (RenderTechnique == gbuffer)
                 {
                     // set G-Buffer
-                    deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2);
+                    deferredRenderer.SetGBufferTargets(targetWidth / 2, targetHeight / 2, renderContext);
 
                     // render G-Buffer pass                    
                     renderRenderable.Render(renderContext);
 
                     // reset render targets and run lighting pass                                         
 #if MSAA
-                    deferredRenderer.RenderGBufferOutput(ref renderTargetNMS);
+                    deferredRenderer.RenderGBufferOutput(renderContext, ref renderTargetNMS);
 #else
                     this.deferredRenderer.RenderGBufferOutput(ref this.colorBuffer);
 #endif
@@ -686,7 +687,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">Is in fact <see cref="RenderingEventArgs"/>.</param>
         private void OnRendering(object sender, EventArgs e)
         {
-            
+
             if (!renderTimer.IsRunning)
                 return;
             UpdateAndRender();
@@ -745,15 +746,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
             {
-                if (surfaceD3D != null && RenderTechnique != null)
+                if (surfaceD3D != null)
                 {
-                    if (RenderTechnique == deferred)
+                    if (RenderTechnique != null)
                     {
-                        deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
-                    }
-                    else if (RenderTechnique == gbuffer)
-                    {
-                        deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                        if (RenderTechnique == deferred)
+                        {
+                            deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                        }
+                        else if (RenderTechnique == gbuffer)
+                        {
+                            deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                        }
                     }
 
                     CreateAndBindTargets();
