@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a hit test result.
     /// </summary>
-    public struct HitTestResult
+    public class HitTestResult
     {
         /// <summary>
         /// Gets the distance between the hit intersection and the inner coordinate space
