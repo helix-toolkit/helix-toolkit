@@ -1396,7 +1396,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 var clickPoint = clickPoint4.ToVector3();
 
                 isIntersect = true;
-                int idx = 0;
                 var dist = pointModel.HitTestThickness;
                 foreach (var t in this.Objects)
                 {
@@ -1412,10 +1411,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.PointHit = v0.ToPoint3D();
                         var px = Vector3.TransformCoordinate(v0, modelMatrix);
                         result.Distance = (rayWS.Position - px).Length();
-                        result.Tag = idx;
+                        result.Tag = t;
                         isHit = true;
                     }
-                    ++idx;
                 }
 
                 if (isHit)
