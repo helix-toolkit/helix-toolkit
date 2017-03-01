@@ -646,14 +646,14 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (clearBackBuffer)
             {
-                device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-                // renderContext?.DeviceContext.ClearRenderTargetView(colorBufferView, ClearColor);
+               // device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
+                renderContext?.DeviceContext.ClearRenderTargetView(colorBufferView, ClearColor);
             }
 
             if (clearDepthStencilBuffer)
             {
-                device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-                //renderContext?.DeviceContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+              //  device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+                renderContext?.DeviceContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             }
         }
 
