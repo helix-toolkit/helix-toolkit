@@ -524,6 +524,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                     // transform hit-info to world space now:
                                     result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
                                     result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
+                                    result.Tag = index / 3;
                                     isHit = true;
                                 }
                             }
