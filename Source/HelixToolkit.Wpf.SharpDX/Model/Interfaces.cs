@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         bool IsThrowingShadow { get; set; }
     }
 
-    public interface IHitable : IVisible, IInputElement
+    public interface IHitable : IVisible
     {        
         bool HitTest(Ray ray, ref List<HitTestResult> hits);
         

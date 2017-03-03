@@ -21,5 +21,10 @@
         {
             return new PointGeometryOctree(Positions, parameter);
         }
+
+        protected override bool CanCreateOctree()
+        {
+            return Positions != null && Positions.Count > 0;
+        }
     }
 }

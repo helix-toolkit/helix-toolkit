@@ -1217,6 +1217,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             // transform hit-info to world space now:
                             result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
                             result.TriangleIndices = new System.Tuple<int, int, int>(Indices[idx], Indices[idx + 1], Indices[idx + 2]);
+                            result.Tag = idx / 3;
                             isHit = true;
                         }
                     }
@@ -1396,7 +1397,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 var clickPoint = clickPoint4.ToVector3();
 
                 isIntersect = true;
-                int idx = 0;
                 var dist = pointModel.HitTestThickness;
                 foreach (var t in this.Objects)
                 {
@@ -1412,10 +1412,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.PointHit = v0.ToPoint3D();
                         var px = Vector3.TransformCoordinate(v0, modelMatrix);
                         result.Distance = (rayWS.Position - px).Length();
-                        result.Tag = idx;
+                        result.Tag = t;
                         isHit = true;
                     }
-                    ++idx;
                 }
 
                 if (isHit)
