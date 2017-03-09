@@ -55,7 +55,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool hasBoneParameter = false;
         private bool isBoneParamChanged = false;
         private bool hasBoneMatrices = false;
-        private bool isBoneMatricesChanged = true;
         private BoneMatricesStruct mBones;
 
         private static readonly BufferDescription cBufferDesc = new BufferDescription()
@@ -76,7 +75,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OnBoneMatricesChanged()
         {
-            isBoneMatricesChanged = true;
             hasBoneMatrices = BoneMatrices.Bones != null;
             mBones = BoneMatrices;
         }
@@ -99,6 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
             Disposer.RemoveAndDispose(ref vertexBoneParamsBuffer);
             Disposer.RemoveAndDispose(ref boneMatricesVar);
+            Disposer.RemoveAndDispose(ref hasBonesVar);
         }
 
         protected override void OnRender(RenderContext renderContext)
