@@ -151,6 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
+            Disposer.RemoveAndDispose(ref vertexBuffer);
             // -- set geometry if given
             vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
                 VertexSizeInBytes, CreateBillboardVertexArray(), geometry.Positions.Count);
