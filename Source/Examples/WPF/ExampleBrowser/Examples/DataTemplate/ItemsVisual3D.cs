@@ -51,6 +51,10 @@ namespace DataTemplateDemo
             typeof(ItemsVisual3D),
             new PropertyMetadata(null, (s, e) => ((ItemsVisual3D)s).ItemsSourceChanged(e)));
 
+        // Using a DependencyProperty as the backing store for RefreshChildrenOnChange.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RefreshChildrenOnChangeProperty = DependencyProperty.Register(
+            "RefreshChildrenOnChange", typeof(bool), typeof(ItemsVisual3D), new PropertyMetadata(true));
+
         /// <summary>
         ///     Gets or sets the <see cref="DataTemplate3D" /> used to display each item.
         /// </summary>
@@ -109,6 +113,18 @@ namespace DataTemplateDemo
         }
 
         /// <summary>
+        /// Gets or sets whether to refresh all children on a change.
+        /// </summary>
+        /// <remarks>
+        /// This is done by re-attaching the <see cref="ItemsVisual3D"/> instance to the <see cref="Viewport.Children"/> collection.
+        /// </remarks>
+        public bool RefreshChildrenOnChange
+        {
+            get { return (bool)GetValue(RefreshChildrenOnChangeProperty); }
+            set { SetValue(RefreshChildrenOnChangeProperty, value); }
+        }
+
+        /// <summary>
         /// Keeps track of the visuals created for each item.
         /// </summary>
         private readonly Dictionary<object, Visual3D> visuals = new Dictionary<object, Visual3D>();
@@ -140,6 +156,20 @@ namespace DataTemplateDemo
             {
                 AddItems(this.ItemsSource);
             }
+
+            if (RefreshChildrenOnChange)
+                RefreshChildren();
+        }
+
+        /// <summary>
+        /// Re-attaches the instance to the viewport resulting in a refresh.
+        /// </summary>
+        public void RefreshChildren()
+        {
+            var viewPort = Visual3DHelper.GetViewport3D(this);
+            var index = viewPort.Children.IndexOf(this);
+            viewPort.Children.Remove(this);
+            viewPort.Children.Insert(index, this);
         }
 
         private void AddItems(IEnumerable items)
@@ -178,6 +208,9 @@ namespace DataTemplateDemo
                 default:
                     break;
             }
+
+            if (RefreshChildrenOnChange)
+                RefreshChildren();
         }
 
         private void AddItem(object item)

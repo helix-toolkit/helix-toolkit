@@ -19,6 +19,7 @@ namespace DataTemplateDemo
     using HelixToolkit.Wpf;
 
     using PropertyTools.Wpf;
+    using System.Windows.Media;
 
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
@@ -104,10 +105,22 @@ namespace DataTemplateDemo
                 for (int a = 0; a < 250; a++)
                     AddElementCommand.Execute(null);
             });
+            this.AddUIElementCommand = new DelegateCommand(() =>
+            {
+                ModelElement model = new ModelElement3
+                {
+                    IsVisible = true,
+                    Color = Colors.Pink
+                };
+                model.Position = new Point3D(0, -3, this.ObservableElements.Count);
+
+                this.ObservableElements.Add(model);
+            });
         }
 
         public DelegateCommand AddElementCommand { get; private set; }
         public DelegateCommand AddElementsCommand { get; private set; }
+        public DelegateCommand AddUIElementCommand { get; private set; }
 
         public DelegateCommand DeleteElementCommand { get; private set; }
 
