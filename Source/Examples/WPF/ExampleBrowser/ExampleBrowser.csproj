@@ -97,10 +97,12 @@
     </Compile>
     <Compile Include="Examples\DataTemplate\BindingConverter.cs" />
     <Compile Include="Examples\DataTemplate\BindingExtensions.cs" />
+    <Compile Include="Examples\DataTemplate\GenericUIElement3D.cs" />
     <Compile Include="Examples\DataTemplate\DataTemplateSelector3D.cs" />
     <Compile Include="Examples\DataTemplate\DefaultDataTemplateSelctor3D.cs" />
     <Compile Include="Examples\DataTemplate\CubeElement.cs" />
     <Compile Include="Examples\DataTemplate\Extensions.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement3.cs" />
     <Compile Include="Examples\DataTemplate\ModelElement2.cs" />
     <Compile Include="Examples\DataTemplate\ModelElement1.cs" />
     <Compile Include="Examples\DataTemplate\ModelElement.cs" />
