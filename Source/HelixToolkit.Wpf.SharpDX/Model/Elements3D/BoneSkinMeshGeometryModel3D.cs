@@ -87,7 +87,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnAttached()
         {
             base.OnAttached();
-            isBoneParamChanged = true;
+            OnBoneParameterChanged();
+            OnBoneMatricesChanged();
             hasBonesVar = effect.GetVariableByName("bHasBones").AsScalar();
             boneMatricesVar = effect.GetVariableByName("SkinMatrices").AsMatrix();
         }
