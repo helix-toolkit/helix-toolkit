@@ -182,6 +182,7 @@
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
     <Compile Include="Model\Elements3D\BoneSkinMeshGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\InstancingBillboardModel3D.cs" />
     <Compile Include="Model\Elements3D\InstancingMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\OctreeLineGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />

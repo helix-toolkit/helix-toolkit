@@ -425,7 +425,45 @@ technique11 RenderBillboard
 	}
 }
 
-
+technique11 RenderBillboardInstancing
+{
+	pass P0
+	{
+		//SetDepthStencilState( DSSDepthLess, 0 );
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardText()));
+	}
+	pass P1
+	{
+		//SetDepthStencilState( DSSDepthLess, 0 );
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
+	}
+	pass P2
+	{
+		//SetDepthStencilState( DSSDepthLess, 0 );
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardImage()));
+	}
+}
 //--------------------------------------------------------------------------------------
 // Point Techniques
 //-------------------------------------------------------------------------------------

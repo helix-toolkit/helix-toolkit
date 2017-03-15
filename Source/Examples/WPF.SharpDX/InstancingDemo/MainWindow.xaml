@@ -59,7 +59,7 @@
                 Geometry="{Binding Lines}"
                 Instances="{Binding ModelInstances}"
                 Transform="{Binding ModelTransform}" />
-
+            <hx:InstancingBillboardModel3D Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="0">

@@ -223,6 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing]
                 });
 
                 var phong = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
@@ -315,6 +316,24 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
                 });
 
+                var billboardinstancing = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing];
+                var billboardInstancingInputLayout = new InputLayout(device, GetEffect(billboardinstancing)
+                    .GetTechniqueByName(DefaultRenderTechniqueNames.BillboardInstancing).GetPassByIndex(0).Description.Signature, new[]
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+           
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 6, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                });
+
                 RegisterLayout(new[] { cubeMap }, cubeMapInputLayout);
 
                 RegisterLayout(new[]
@@ -353,6 +372,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 RegisterLayout(new[] { instancingblinn }, instancingInputLayout);
 
                 RegisterLayout(new[] { boneSkinBlinn }, boneSkinInputLayout);
+
+                RegisterLayout(new[] { billboardinstancing }, billboardInstancingInputLayout);
             }
             catch (Exception ex)
             {
