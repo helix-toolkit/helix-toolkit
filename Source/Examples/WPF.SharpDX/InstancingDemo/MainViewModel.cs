@@ -109,8 +109,7 @@ namespace InstancingDemo
         {
             instances.Clear();
             parameters.Clear();
-            billboardinstances.Clear();
-            billboardParams.Clear();
+
             if (aniDir)
             {
                 aniX += 0.1f;
@@ -168,15 +167,30 @@ namespace InstancingDemo
             ModelInstances = instances.ToArray();
             SubTitle = "Number of Instances: " + parameters.Count.ToString();
 
-            for (int i = 0; i < 2*num; ++i)
+            if(BillboardInstances == null)
             {
-                billboardParams.Add(new BillboardInstanceParameter()
-                { TexCoordOffset = new Vector2(1f/6 * rnd.Next(0, 6), 1f/6 * rnd.Next(0,6)), TexCoordScale = new Vector2(1f/6, 1f/6) });
-                billboardinstances.Add(Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
-                    * Matrix.Translation(new Vector3(rnd.NextFloat(50, 100), rnd.NextFloat(50, 100), rnd.NextFloat(0, 200))));
+                for (int i = 0; i < 2*num; ++i)
+                {
+                    billboardParams.Add(new BillboardInstanceParameter()
+                    { TexCoordOffset = new Vector2(1f/6 * rnd.Next(0, 6), 1f/6 * rnd.Next(0,6)), TexCoordScale = new Vector2(1f/6, 1f/6) });
+                    billboardinstances.Add(Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
+                        * Matrix.Translation(new Vector3(rnd.NextFloat(50, 100), rnd.NextFloat(50, 100), rnd.NextFloat(0, 200))));
+                }
+                BillboardInstanceParams = billboardParams.ToArray();
+                BillboardInstances = billboardinstances.ToArray();
             }
-            BillboardInstanceParams = billboardParams.ToArray();
-            BillboardInstances = billboardinstances.ToArray();
+            else
+            {
+                for(int i=0; i<billboardinstances.Count; ++i)
+                {
+                    var current = billboardinstances[i];
+                    current.M41 -= aniX/100;
+                    current.M42 -= aniY/100;
+                    current.M43 -= aniZ/100;
+                    billboardinstances[i] = current;
+                }
+                BillboardInstances = billboardinstances.ToArray();
+            }
         }
 
         public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
