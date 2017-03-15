@@ -174,7 +174,7 @@ namespace InstancingDemo
                     billboardParams.Add(new BillboardInstanceParameter()
                     { TexCoordOffset = new Vector2(1f/6 * rnd.Next(0, 6), 1f/6 * rnd.Next(0,6)), TexCoordScale = new Vector2(1f/6, 1f/6) });
                     billboardinstances.Add(Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
-                        * Matrix.Translation(new Vector3(rnd.NextFloat(50, 100), rnd.NextFloat(50, 100), rnd.NextFloat(0, 200))));
+                        * Matrix.Translation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
                 }
                 BillboardInstanceParams = billboardParams.ToArray();
                 BillboardInstances = billboardinstances.ToArray();
@@ -184,9 +184,9 @@ namespace InstancingDemo
                 for(int i=0; i<billboardinstances.Count; ++i)
                 {
                     var current = billboardinstances[i];
-                    current.M41 -= aniX/100;
-                    current.M42 -= aniY/100;
-                    current.M43 -= aniZ/100;
+                    current.M41 += i % 3 == 0? aniX/50 : -aniX / 50;
+                    current.M42 += i % 4 == 0 ? aniY / 50 : -aniY / 30;
+                    current.M43 += i % 5 == 0 ? aniZ / 100 : -aniZ / 50;
                     billboardinstances[i] = current;
                 }
                 BillboardInstances = billboardinstances.ToArray();
