@@ -64,14 +64,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 return BillboardVertex.SizeInBytes;
             }
         }
+
         /// <summary>
-        /// Initial implementation of hittest for billboard. Needs further improvement.
+        /// 
         /// </summary>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
+            //Implementation pending.
             return false;
         }
 

@@ -52,7 +52,7 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 	float4 inputc = input.c;
 	if (bHasInstances)
 	{
-		inputp += input.mr3; //Translation
+		inputp.xyz += input.mr3.xyz; //Translation
 		if (bHasInstanceParams)
 		{
 			inputt.x *= input.tScale.x;
