@@ -225,6 +225,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            InstancesChanged();
+        }
+
         /// <summary>
         /// 
         /// </summary>        
@@ -303,14 +309,16 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (material != null)
                 {
-                    // --- has texture
+                    /// --- has texture
                     if (material.DiffuseMap != null && model.RenderDiffuseMap)
                     {
+                        Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
                         this.texDiffuseMapView = TextureLoader.FromMemoryAsShaderResourceView(device, material.DiffuseMap);
                     }
 
                     if (material.DiffuseAlphaMap != null)
                     {
+                        Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
                         this.texDiffuseAlphaMapView = TextureLoader.FromMemoryAsShaderResourceView(device, material.DiffuseAlphaMap);
                     }
 
@@ -327,6 +335,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             }
                             else
                             {
+                                Disposer.RemoveAndDispose(ref this.texNormalMapView);
                                 this.texNormalMapView = TextureLoader.FromMemoryAsShaderResourceView(device, material.NormalMap);
                             }
                         }
@@ -335,6 +344,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     // --- has displacement map
                     if (material.DisplacementMap != null && model.RenderDisplacementMap)
                     {
+                        Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
                         this.texDisplacementMapView = TextureLoader.FromMemoryAsShaderResourceView(device, material.DisplacementMap);
                     }
                 }

@@ -29,6 +29,11 @@ namespace InstancingDemo
 
         public InstanceParameter[] InstanceParam { get; private set; }
 
+        public BillboardSingleImage3D BillboardModel { private set; get; }
+        public Matrix[] BillboardInstances { private set; get; }
+
+        public BillboardInstanceParameter[] BillboardInstanceParams { private set; get; }
+
         public PhongMaterial ModelMaterial { get; private set; }
         public Media3D.Transform3D ModelTransform { get; private set; }
 
@@ -79,6 +84,8 @@ namespace InstancingDemo
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
+
             CreateModels();
             timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Tick += Timer_Tick;
@@ -94,11 +101,15 @@ namespace InstancingDemo
         const int num = 40;
         List<Matrix> instances = new List<Matrix>(num * 2);
         List<InstanceParameter> parameters = new List<InstanceParameter>(num * 2);
+
+        List<Matrix> billboardinstances = new List<Matrix>(num * 2);
+        List<BillboardInstanceParameter> billboardParams = new List<BillboardInstanceParameter>(num * 2);
         int counter = 0;
         private void CreateModels()
         {
             instances.Clear();
             parameters.Clear();
+
             if (aniDir)
             {
                 aniX += 0.1f;
@@ -155,6 +166,31 @@ namespace InstancingDemo
             InstanceParam = parameters.ToArray();
             ModelInstances = instances.ToArray();
             SubTitle = "Number of Instances: " + parameters.Count.ToString();
+
+            if(BillboardInstances == null)
+            {
+                for (int i = 0; i < 2*num; ++i)
+                {
+                    billboardParams.Add(new BillboardInstanceParameter()
+                    { TexCoordOffset = new Vector2(1f/6 * rnd.Next(0, 6), 1f/6 * rnd.Next(0,6)), TexCoordScale = new Vector2(1f/6, 1f/6) });
+                    billboardinstances.Add(Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
+                        * Matrix.Translation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
+                }
+                BillboardInstanceParams = billboardParams.ToArray();
+                BillboardInstances = billboardinstances.ToArray();
+            }
+            else
+            {
+                for(int i=0; i<billboardinstances.Count; ++i)
+                {
+                    var current = billboardinstances[i];
+                    current.M41 += i % 3 == 0? aniX/50 : -aniX / 50;
+                    current.M42 += i % 4 == 0 ? aniY / 50 : -aniY / 30;
+                    current.M43 += i % 5 == 0 ? aniZ / 100 : -aniZ / 50;
+                    billboardinstances[i] = current;
+                }
+                BillboardInstances = billboardinstances.ToArray();
+            }
         }
 
         public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)

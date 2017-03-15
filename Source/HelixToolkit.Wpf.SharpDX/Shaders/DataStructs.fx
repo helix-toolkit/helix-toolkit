@@ -85,7 +85,7 @@ struct PSInputCube
 
 
 //--------------------------------------------------------------------------------------
-// VERTEX AND PIXEL SHADER INPUTS
+// Line VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------
 struct VSInputLS
 {
@@ -113,13 +113,28 @@ struct PSInputLS
 };
 
 //--------------------------------------------------------------------------------------
-// Line VERTEX AND PIXEL SHADER INPUTS
+// Billboard VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------
 struct VSInputBT
 {
 	float4 p	: POSITION;
 	float4 c	: COLOR;
 	float4 t	: TEXCOORD0; // t.xy = texture coords, t.zw = offset in pixels.
+};
+
+struct VSInputBTInstancing
+{
+	float4 p	: POSITION;
+	float4 c	: COLOR;
+	float4 t	: TEXCOORD0; // t.xy = texture coords, t.zw = offset in pixels.
+	float4 mr0			: TEXCOORD1;
+	float4 mr1			: TEXCOORD2;
+	float4 mr2			: TEXCOORD3;
+	float4 mr3			: TEXCOORD4;
+
+	float4 diffuseC	: COLOR1;
+	float2 tScale		: TEXCOORD5;
+	float2 tOffset		: TEXCOORD6;
 };
 
 struct PSInputBT

@@ -44,6 +44,43 @@ PSInputBT VShaderBillboardText( VSInputBT input )
 	return output;
 }
 
+PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
+{
+	PSInputBT output = (PSInputBT)0;
+	float4 inputp = input.p;
+	float4 inputt = input.t;
+	float4 inputc = input.c;
+	if (bHasInstances)
+	{
+		inputp.xyz += input.mr3.xyz; //Translation
+		if (bHasInstanceParams)
+		{
+			inputt.x *= input.tScale.x;
+			inputt.y *= input.tScale.y;
+			inputt.xy += input.tOffset;
+			inputc *= input.diffuseC;
+		}
+	}
+
+	float4 ndcPosition = float4(inputp.xyz, 1.0);
+
+	// Translate position into clip space
+	ndcPosition = mul(ndcPosition, mWorld);
+	ndcPosition = mul(ndcPosition, mView);
+	ndcPosition = mul(ndcPosition, mProjection);
+	float4 ndcTranslated = ndcPosition / ndcPosition.w;
+
+	// Translate offset into normalized device coordinates.
+	float2 offset = windowToNdc(inputt.zw);
+	offset.x *= input.mr0.x; // 2d scaling x
+	offset.y *= input.mr1.y; // 2d scaling y
+	output.p = float4(ndcTranslated.xy + offset, ndcTranslated.z, 1.0);
+
+	output.c = inputc;
+	output.t = inputt.xy;
+	return output;
+}
+
 float4 PShaderBillboardText( PSInputBT input ) : SV_Target
 {
     // Take the color off the texture, and use its red component as alpha.

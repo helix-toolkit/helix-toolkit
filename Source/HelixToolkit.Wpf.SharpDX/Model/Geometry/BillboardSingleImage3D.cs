@@ -86,6 +86,15 @@ namespace HelixToolkit.Wpf.SharpDX
             AlphaTexture.Position = 0;
         }
 
+        public BillboardSingleImage3D(Stream imageStream, float width, float height)
+            : this()
+        {
+            this.AlphaTexture = imageStream;
+            Width = width;
+            Height = height;
+            AlphaTexture.Position = 0;
+        }
+
         public override void DrawTexture()
         {
             Positions.Clear();

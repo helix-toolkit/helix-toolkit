@@ -302,7 +302,7 @@
         {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
             Disposer.RemoveAndDispose(ref this.rasterState);
-
+            Disposer.RemoveAndDispose(ref this.vPointParams);
             this.renderTechnique = null;
             this.effectTechnique = null;
             this.vertexLayout = null;

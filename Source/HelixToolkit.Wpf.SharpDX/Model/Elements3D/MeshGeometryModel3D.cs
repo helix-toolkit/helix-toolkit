@@ -180,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 // --- init vertex buffer
                 CreateVertexBuffer(CreateDefaultVertexArray);
-
+                Disposer.RemoveAndDispose(ref this.indexBuffer);
                 // --- init index buffer
                 this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
             }

@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class BillboardTextModel3D : MaterialGeometryModel3D
+    public class InstancingBillboardModel3D : MaterialGeometryModel3D
     {
         #region Private Class Data Members
 
@@ -21,7 +21,40 @@ namespace HelixToolkit.Wpf.SharpDX
         private EffectScalarVariable bHasBillboardAlphaTexture;
         private BillboardType billboardType;
         private BillboardVertex[] vertexArrayBuffer;
+
+        protected Buffer instanceParamBuffer = null;
+        protected bool instanceParamArrayChanged = true;
+        protected bool hasInstanceParams = false;
+        private EffectScalarVariable hasInstanceParamVar;
+        public bool HasInstanceParams { get { return hasInstanceParams; } }
         #endregion
+
+
+        /// <summary>
+        /// List of instance parameter. 
+        /// </summary>
+        public static readonly DependencyProperty InstanceAdvArrayProperty =
+            DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
+        /// <summary>
+        /// List of instance parameters. 
+        /// </summary>
+        public IList<BillboardInstanceParameter> InstanceParamArray
+        {
+            get { return (IList<BillboardInstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
+            set { this.SetValue(InstanceAdvArrayProperty, value); }
+        }
+
+        private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var model = (InstancingBillboardModel3D)d;
+            model.InstancesParamChanged();
+        }
+
+        protected void InstancesParamChanged()
+        {
+            hasInstanceParams = (InstanceParamArray != null && InstanceParamArray.Any());
+            instanceParamArrayChanged = true;
+        }
 
         #region Overridable Methods
         public override int VertexSizeInBytes
@@ -31,97 +64,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 return BillboardVertex.SizeInBytes;
             }
         }
+
         /// <summary>
-        /// Initial implementation of hittest for billboard. Needs further improvement.
+        /// 
         /// </summary>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
-            if (this.Visibility == Visibility.Collapsed || this.Visibility == Visibility.Hidden)
-            {
-                return false;
-            }
-            if (this.IsHitTestVisible == false)
-            {
-                return false;
-            }
-
-            var g = this.Geometry as IBillboardText;
-            var h = false;
-            var result = new HitTestResult();
-            result.Distance = double.MaxValue;
-            Viewport3DX viewport;
-
-            if ((viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null || g.Width == 0 || g.Height == 0)
-            {
-                return false;
-            }
-
-            if (g != null)
-            {
-                var visualToScreen = viewport.GetViewProjectionMatrix() * viewport.GetViewportMatrix();
-                float heightScale = 1;
-                var screenToVisual = visualToScreen.Inverted();
-
-                var center = new Vector4(g.Positions[0], 1);
-                var screenPoint = Vector4.Transform(center, visualToScreen);
-                var spw = screenPoint.W;
-                var spx = screenPoint.X;
-                var spy = screenPoint.Y;
-                var spz = screenPoint.Z;
-                var left = -g.Width / 2;
-                var right = g.Width / 2;
-                var top = -g.Height / 2 * heightScale;
-                var bottom = g.Height / 2 * heightScale;
-                //Debug.WriteLine(spw);
-                // Debug.WriteLine(string.Format("Z={0}; W={1}", spz, spw));
-                var bl = new Vector4(spx + left * spw, spy + bottom * spw, spz, spw);
-                bl = Vector4.Transform(bl, screenToVisual);
-                bl /= bl.W;
-
-                var br = new Vector4(spx + right * spw, spy + bottom * spw, spz, spw);
-                br = Vector4.Transform(br, screenToVisual);
-                br /= br.W;
-
-                var tr = new Vector4(spx + right * spw, spy + top * spw, spz, spw);
-                tr = Vector4.Transform(tr, screenToVisual);
-                tr /= tr.W;
-
-                var tl = new Vector4(spx + left * spw, spy + top * spw, spz, spw);
-                tl = Vector4.Transform(tl, screenToVisual);
-                tl /= tl.W;
-
-                var b = BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
-
-                // this all happens now in world space now:
-                //Debug.WriteLine(string.Format("RayPosition:{0}; Direction:{1};", rayWS.Position, rayWS.Direction));
-                if (rayWS.Intersects(ref b))
-                {
-
-                    float distance;
-                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
-                    {
-                        h = true;
-                        result.ModelHit = this;
-                        result.IsValid = true;
-                        result.PointHit = (rayWS.Position + (rayWS.Direction * distance)).ToPoint3D();
-                        result.Distance = distance;
-                        //Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
-                    }
-                }
-            }
-            if (h)
-            {
-                hits.Add(result);
-            }
-            return h;
+            //Implementation pending.
+            return false;
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing];
         }
 
         protected override bool CheckGeometry()
@@ -151,8 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
-            Disposer.RemoveAndDispose(ref vertexBuffer);
             // -- set geometry if given
+            Disposer.RemoveAndDispose(ref vertexBuffer);
             vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
                 VertexSizeInBytes, CreateBillboardVertexArray(), geometry.Positions.Count);
             // --- material 
@@ -171,12 +129,24 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, geometry.AlphaTexture);
             }
+
+            instanceParamArrayChanged = true;
+            hasInstanceParamVar = effect.GetVariableByName("bHasInstanceParams").AsScalar();
+            this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
+
+            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
             // --- set rasterstate
             OnRasterStateChanged();
 
             // --- flush
             //Device.ImmediateContext.Flush();
             return true;
+        }
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            InstancesParamChanged();
         }
 
         protected override void OnDetach()
@@ -188,6 +158,10 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
             Disposer.RemoveAndDispose(ref bHasBillboardAlphaTexture);
             Disposer.RemoveAndDispose(ref bHasBillboardTexture);
+
+            Disposer.RemoveAndDispose(ref instanceParamBuffer);
+            Disposer.RemoveAndDispose(ref hasInstanceParamVar);
+            Disposer.RemoveAndDispose(ref bHasInstances);
             base.OnDetach();
         }
 
@@ -199,7 +173,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
-
+            this.bHasInstances.Set(this.hasInstances);
+            this.hasInstanceParamVar.Set(this.hasInstanceParams);
             // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
@@ -229,41 +204,82 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 billboardAlphaTextureVariable.SetResource(billboardAlphaTextureView);
             }
-
             var vertexCount = Geometry.Positions.Count;
-            switch (billboardType)
+            if (this.hasInstances)
             {
-                case BillboardType.MultipleText:
-                    // Use foreground shader to draw text
-                    effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-
-                    // --- draw text, foreground vertex is beginning from 0.
-                    renderContext.DeviceContext.Draw(vertexCount, 0);
-                    break;
-                case BillboardType.SingleText:
-                    if (vertexCount == 12)
+                if (this.isInstanceChanged)
+                {
+                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Vector3.SizeInBytes * this.Instances.Count)
                     {
-                        var half = vertexCount / 2;
-                        // Use background shader to draw background first
-                        effectTechnique.GetPassByIndex(1).Apply(renderContext.DeviceContext);
-                        // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
-                        renderContext.DeviceContext.Draw(half, half);
+                        Disposer.RemoveAndDispose(ref instanceBuffer);
+                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * this.Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    }
+                    else
+                    {
+                        DataStream stream;
+                        renderContext.DeviceContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                        stream.Position = 0;
+                        stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
+                        renderContext.DeviceContext.UnmapSubresource(this.instanceBuffer, 0);
+                        stream.Dispose();
+                    }
+                    this.isInstanceChanged = false;
+                }
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
+                if (this.hasInstanceParams)
+                {
+                    if (instanceParamArrayChanged)
+                    {
+                        if (instanceParamBuffer == null || this.instanceParamBuffer.Description.SizeInBytes < BillboardInstanceParameter.SizeInBytes * this.InstanceParamArray.Count)
+                        {
+                            Disposer.RemoveAndDispose(ref instanceParamBuffer);
+                            this.instanceParamBuffer = Buffer.Create(this.Device, this.InstanceParamArray.ToArray(),
+                                new BufferDescription(BillboardInstanceParameter.SizeInBytes * this.InstanceParamArray.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
+                                CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                        }
+                        else
+                        {
+                            DataStream stream;
+                            renderContext.DeviceContext.MapSubresource(this.instanceParamBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
+                            stream.Position = 0;
+                            stream.WriteRange(this.InstanceParamArray.ToArray(), 0, this.InstanceParamArray.Count);
+                            renderContext.DeviceContext.UnmapSubresource(this.instanceParamBuffer, 0);
+                            stream.Dispose();
+                        }
+                        this.instanceParamArrayChanged = false;
+                    }
+                    renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, BillboardInstanceParameter.SizeInBytes, 0));
+                }
 
+                switch (billboardType)
+                {
+                    case BillboardType.SingleImage:
                         // Use foreground shader to draw text
-                        effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
+                        effectTechnique.GetPassByIndex(2).Apply(renderContext.DeviceContext);
 
                         // --- draw text, foreground vertex is beginning from 0.
-                        renderContext.DeviceContext.Draw(half, 0);
-                    }
-                    break;
-                case BillboardType.SingleImage:
-                    // Use foreground shader to draw text
-                    effectTechnique.GetPassByIndex(2).Apply(renderContext.DeviceContext);
+                        renderContext.DeviceContext.DrawInstanced(vertexCount, this.Instances.Count, 0, 0);
+                        break;
+                    case BillboardType.SingleText:
+                        if (vertexCount == 12)
+                        {
+                            var half = vertexCount / 2;
+                            // Use background shader to draw background first
+                            effectTechnique.GetPassByIndex(1).Apply(renderContext.DeviceContext);
+                            // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
+                            renderContext.DeviceContext.DrawInstanced(half, this.Instances.Count, half, 0);
 
-                    // --- draw text, foreground vertex is beginning from 0.
-                    renderContext.DeviceContext.Draw(vertexCount, 0);
-                    break;
+                            // Use foreground shader to draw text
+                            effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
+
+                            // --- draw text, foreground vertex is beginning from 0.
+                            renderContext.DeviceContext.DrawInstanced(half, this.Instances.Count, 0, 0);
+                        }
+                        break;
+                }
             }
+            this.bHasInstances.Set(false);
+            this.hasInstanceParamVar.Set(false);
         }
 
         #endregion
