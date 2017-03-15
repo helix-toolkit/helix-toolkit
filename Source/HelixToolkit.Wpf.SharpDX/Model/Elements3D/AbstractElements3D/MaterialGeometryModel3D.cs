@@ -225,6 +225,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            InstancesChanged();
+        }
+
         /// <summary>
         /// 
         /// </summary>        

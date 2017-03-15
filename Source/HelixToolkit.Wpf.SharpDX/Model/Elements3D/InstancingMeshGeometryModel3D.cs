@@ -191,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnAttached()
         {
             base.OnAttached();
-            instanceParamArrayChanged = true;
+            InstancesParamChanged();
             hasInstanceParamVar = effect.GetVariableByName("bHasInstanceParams").AsScalar();
         }
 
