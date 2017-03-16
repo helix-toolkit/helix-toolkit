@@ -825,19 +825,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private bool queued = false;
-
+        private DispatcherOperation resizeOperation = null;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sizeInfo"></param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            if (queued) return;
-
-            queued = true;
-
-            Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
+            if (resizeOperation != null && resizeOperation.Status == DispatcherOperationStatus.Pending)
+            {
+                resizeOperation.Abort();
+            }
+            resizeOperation = Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
             {
                 if (mRenderThread.IsInitalized)
                 {
@@ -852,13 +851,12 @@ namespace HelixToolkit.Wpf.SharpDX
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
                     }
-
+                    StopRendering();
                     CreateAndBindTargets();
                     SetDefaultRenderTargets();
+                    StartRendering();
                     InvalidateRender();
                 }
-
-                queued = false;
             }));
         }
 
