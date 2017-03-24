@@ -21,7 +21,33 @@ namespace HelixToolkit.Wpf.SharpDX
         private EffectScalarVariable bHasBillboardAlphaTexture;
         private BillboardType billboardType;
         private BillboardVertex[] vertexArrayBuffer;
+        private EffectScalarVariable bFixedSizeVariable;
         #endregion
+
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(BillboardTextModel3D),
+            new PropertyMetadata(true, (d, e) => { (d as Element3D).InvalidateRender(); }));
+
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public bool FixedSize
+        {
+            set
+            {
+                SetValue(FixedSizeProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FixedSizeProperty);
+            }
+        }
 
         #region Overridable Methods
         public override int VertexSizeInBytes
@@ -144,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- shader variables
             vViewport = effect.GetVariableByName("vViewport").AsVector();
-
+            bFixedSizeVariable = effect.GetVariableByName("bBillboardFixedSize").AsScalar();
             // --- get geometry
             var geometry = Geometry as IBillboardText;
             if (geometry == null)
@@ -188,6 +214,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
             Disposer.RemoveAndDispose(ref bHasBillboardAlphaTexture);
             Disposer.RemoveAndDispose(ref bHasBillboardTexture);
+            Disposer.RemoveAndDispose(ref bFixedSizeVariable);
             base.OnDetach();
         }
 
@@ -203,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
-
+            bFixedSizeVariable.Set(FixedSize);
             // --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);

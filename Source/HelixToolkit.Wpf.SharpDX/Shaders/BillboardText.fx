@@ -6,7 +6,7 @@ Texture2D billboardTexture; // billboard text image
 Texture2D billboardAlphaTexture;
 bool   bHasAlphaTexture = false;
 bool   bHasTexture = false;
-
+bool   bBillboardFixedSize = true;
 
 //--------------------------------------------------------------------------------------
 // GLOBAL FUNCTIONS
@@ -17,7 +17,7 @@ bool   bHasTexture = false;
 //--------------------------------------------------------------------------------------
 float2 windowToNdc(in float2 pos)
 {
-    return float2((pos.x / vViewport.x) * 2.0, (pos.y / vViewport.y) * 2.0);
+	return float2((pos.x / vViewport.x) * 2.0, (pos.y / vViewport.y) * 2.0);
 }
 
 //--------------------------------------------------------------------------------------
@@ -27,20 +27,28 @@ float2 windowToNdc(in float2 pos)
 PSInputBT VShaderBillboardText( VSInputBT input )
 {
 	PSInputBT output = (PSInputBT)0;
-    float4 ndcPosition = float4( input.p.xyz, 1.0 );
+	float4 ndcPosition = float4( input.p.xyz, 1.0 );
 
 	// Translate position into clip space
 	ndcPosition = mul( ndcPosition, mWorld );
 	ndcPosition = mul( ndcPosition, mView );
+
+	if (!bBillboardFixedSize) {
+		ndcPosition.xy += input.t.zw;
+	}
 	ndcPosition = mul( ndcPosition, mProjection );
-    float4 ndcTranslated = ndcPosition / ndcPosition.w;
+	float4 ndcTranslated = ndcPosition / ndcPosition.w;
 
-    // Translate offset into normalized device coordinates.
-    float2 offset = windowToNdc( input.t.zw );	
-	output.p = float4( ndcTranslated.xy + offset, ndcTranslated.z, 1.0 );
+	if (bBillboardFixedSize) {
+		// Translate offset into normalized device coordinates.
+		float2 offset = windowToNdc( input.t.zw );	
+		ndcTranslated.xy += offset;
+	} 
 
-    output.c = input.c;
-    output.t = input.t.xy;
+	output.p = float4( ndcTranslated.xyz, 1.0 );
+
+	output.c = input.c;
+	output.t = input.t.xy;
 	return output;
 }
 
@@ -63,18 +71,28 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 	}
 
 	float4 ndcPosition = float4(inputp.xyz, 1.0);
-
+	input.t.z *= input.mr0.x; // 2d scaling x
+	input.t.w *= input.mr1.y; // 2d scaling y
 	// Translate position into clip space
 	ndcPosition = mul(ndcPosition, mWorld);
 	ndcPosition = mul(ndcPosition, mView);
+
+	if (!bBillboardFixedSize) {
+		ndcPosition.xy += input.t.zw;
+	}
+
 	ndcPosition = mul(ndcPosition, mProjection);
+
 	float4 ndcTranslated = ndcPosition / ndcPosition.w;
 
-	// Translate offset into normalized device coordinates.
-	float2 offset = windowToNdc(inputt.zw);
-	offset.x *= input.mr0.x; // 2d scaling x
-	offset.y *= input.mr1.y; // 2d scaling y
-	output.p = float4(ndcTranslated.xy + offset, ndcTranslated.z, 1.0);
+	if (bBillboardFixedSize) {
+		// Translate offset into normalized device coordinates.
+
+		float2 offset = windowToNdc(input.t.zw);
+		ndcTranslated.xy += offset;
+	}
+
+	output.p = float4(ndcTranslated.xyz, 1.0);
 
 	output.c = inputc;
 	output.t = inputt.xy;
@@ -83,10 +101,10 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 
 float4 PShaderBillboardText( PSInputBT input ) : SV_Target
 {
-    // Take the color off the texture, and use its red component as alpha.
-    float4 pixelColor = billboardTexture.Sample(NormalSampler, input.t);
-    float4 intermediateColor = float4(1.0, 1.0, 1.0, pixelColor.x);
-    return intermediateColor * input.c;
+	// Take the color off the texture, and use its red component as alpha.
+	float4 pixelColor = billboardTexture.Sample(NormalSampler, input.t);
+	float4 intermediateColor = float4(1.0, 1.0, 1.0, pixelColor.x);
+	return intermediateColor * input.c;
 }
 
 float4 PShaderBillboardBackground(PSInputBT input) : SV_Target

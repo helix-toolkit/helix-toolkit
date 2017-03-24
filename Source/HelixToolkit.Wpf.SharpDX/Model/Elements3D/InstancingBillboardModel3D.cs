@@ -26,6 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool instanceParamArrayChanged = true;
         protected bool hasInstanceParams = false;
         private EffectScalarVariable hasInstanceParamVar;
+
+        private EffectScalarVariable bFixedSizeVariable;
         public bool HasInstanceParams { get { return hasInstanceParams; } }
         #endregion
 
@@ -54,6 +56,31 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             hasInstanceParams = (InstanceParamArray != null && InstanceParamArray.Any());
             instanceParamArrayChanged = true;
+        }
+
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(InstancingBillboardModel3D),
+            new PropertyMetadata(true, (d, e) => { (d as Element3D).InvalidateRender(); }));
+
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public bool FixedSize
+        {
+            set
+            {
+                SetValue(FixedSizeProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FixedSizeProperty);
+            }
         }
 
         #region Overridable Methods
@@ -100,6 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- transformations
             effectTransforms = new EffectTransformVariables(effect);
 
+            bFixedSizeVariable = effect.GetVariableByName("bBillboardFixedSize").AsScalar();
             // --- shader variables
             vViewport = effect.GetVariableByName("vViewport").AsVector();
 
@@ -162,6 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref instanceParamBuffer);
             Disposer.RemoveAndDispose(ref hasInstanceParamVar);
             Disposer.RemoveAndDispose(ref bHasInstances);
+            Disposer.RemoveAndDispose(ref bFixedSizeVariable);
             base.OnDetach();
         }
 
@@ -178,7 +207,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
-
+            this.bFixedSizeVariable.Set(FixedSize);
             // --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);

@@ -173,7 +173,7 @@ namespace InstancingDemo
                 {
                     billboardParams.Add(new BillboardInstanceParameter()
                     { TexCoordOffset = new Vector2(1f/6 * rnd.Next(0, 6), 1f/6 * rnd.Next(0,6)), TexCoordScale = new Vector2(1f/6, 1f/6) });
-                    billboardinstances.Add(Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
+                    billboardinstances.Add( Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
                         * Matrix.Translation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
                 }
                 BillboardInstanceParams = billboardParams.ToArray();
