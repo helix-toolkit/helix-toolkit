@@ -137,7 +137,7 @@ namespace SimpleDemo
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)),
                 FontColor =Color.Blue,
-                FontSize=16,
+                FontSize=12,
                 BackgroundColor =Color.Plum,
                 FontStyle= System.Windows.FontStyles.Italic,
                 Padding = new System.Windows.Thickness(2)
@@ -148,7 +148,7 @@ namespace SimpleDemo
             Billboard2Model = new BillboardSingleText3D()
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
-                FontSize = 14,
+                FontSize =12,
                 FontColor = Color.Green,
                 BackgroundColor = background,
                 FontWeight = System.Windows.FontWeights.Bold,
@@ -156,7 +156,7 @@ namespace SimpleDemo
             };
             background = Color.Purple;
             background.A = (byte)50;
-            Billboard3Model = new BillboardSingleText3D()
+            Billboard3Model = new BillboardSingleText3D(2,0.8f)
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(-2, 1, 0)),
                 FontSize = 12,
@@ -169,7 +169,7 @@ namespace SimpleDemo
 
 
             //BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
-            BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample());
+            BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1);
             BillboardImageModel.Center = new Vector3(2, 2, 0);
         }
 

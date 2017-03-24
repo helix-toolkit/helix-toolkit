@@ -59,7 +59,7 @@
                 Geometry="{Binding Lines}"
                 Instances="{Binding ModelInstances}"
                 Transform="{Binding ModelTransform}" />
-            <hx:InstancingBillboardModel3D Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
+            <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="0">
@@ -117,6 +117,7 @@
                         Render Octree
                     </CheckBox>
                     <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
+                    <CheckBox Margin="4" IsChecked="{Binding ElementName= billboardModel3D, Path=FixedSize, FallbackValue=true}">Billboard Fixed Size</CheckBox>
                 </StackPanel>
             </Expander>
         </StackPanel>

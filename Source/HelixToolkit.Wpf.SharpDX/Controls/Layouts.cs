@@ -76,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct BoneMatricesStruct
     {
-        public const int NumberOfBones = 32;
+        public const int NumberOfBones = 128;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
         public Matrix[] Bones;
         public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
