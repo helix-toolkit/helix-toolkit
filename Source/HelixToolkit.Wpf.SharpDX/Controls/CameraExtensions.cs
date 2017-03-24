@@ -17,6 +17,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using Matrix = global::SharpDX.Matrix;
+    using Matrix3x3 = global::SharpDX.Matrix3x3;
+    using Vector3 = global::SharpDX.Vector3;
 
     /// <summary>
     /// Provides extension methods for the cameras.
@@ -480,6 +482,25 @@ namespace HelixToolkit.Wpf.SharpDX
             throw new HelixToolkitException("Unknown camera type.");
         }
 
+        public static Matrix InversedGetViewMatrix(this Camera camera)
+        {
+            var viewMatrix = GetViewMatrix(camera);
+            return InverseViewMatrix(ref viewMatrix);
+        }
+
+        public static Matrix InverseViewMatrix(ref Matrix viewMatrix)
+        {
+            var v33Transpose = new Matrix3x3(
+                viewMatrix.M11, viewMatrix.M21, viewMatrix.M31,
+                viewMatrix.M12, viewMatrix.M22, viewMatrix.M32,
+                viewMatrix.M13, viewMatrix.M23, viewMatrix.M33);
+            var vpos = viewMatrix.Row4.ToVector3();
+            vpos = Vector3.Transform(vpos, v33Transpose) * -1;
+            var viewMatrixInv = new Matrix(v33Transpose.M11, v33Transpose.M12, v33Transpose.M13, 0,
+                v33Transpose.M21, v33Transpose.M22, v33Transpose.M23, 0,
+                v33Transpose.M31, v33Transpose.M32, v33Transpose.M33, 0, vpos.X, vpos.Y, vpos.Z, 1);
+            return viewMatrixInv;
+        }
         /// <summary>
         /// Set the camera target point without changing the look direction.
         /// </summary>

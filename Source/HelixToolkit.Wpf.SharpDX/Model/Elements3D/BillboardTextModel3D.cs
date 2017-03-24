@@ -87,39 +87,69 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (g != null)
             {
-                var visualToScreen = viewport.GetViewProjectionMatrix() * viewport.GetViewportMatrix();
-                float heightScale = 1;
-                var screenToVisual = visualToScreen.Inverted();
-
-                var center = new Vector4(g.Positions[0], 1);
-                var screenPoint = Vector4.Transform(center, visualToScreen);
-                var spw = screenPoint.W;
-                var spx = screenPoint.X;
-                var spy = screenPoint.Y;
-                var spz = screenPoint.Z;
+                BoundingBox b = new BoundingBox();
                 var left = -g.Width / 2;
                 var right = g.Width / 2;
-                var top = -g.Height / 2 * heightScale;
-                var bottom = g.Height / 2 * heightScale;
-                //Debug.WriteLine(spw);
-                // Debug.WriteLine(string.Format("Z={0}; W={1}", spz, spw));
-                var bl = new Vector4(spx + left * spw, spy + bottom * spw, spz, spw);
-                bl = Vector4.Transform(bl, screenToVisual);
-                bl /= bl.W;
+                var top = -g.Height / 2;
+                var bottom = g.Height / 2;
+                if (FixedSize)
+                {
+                    var visualToScreen = viewport.GetViewProjectionMatrix() * viewport.GetViewportMatrix();
 
-                var br = new Vector4(spx + right * spw, spy + bottom * spw, spz, spw);
-                br = Vector4.Transform(br, screenToVisual);
-                br /= br.W;
+                    var screenToVisual = visualToScreen.Inverted();
 
-                var tr = new Vector4(spx + right * spw, spy + top * spw, spz, spw);
-                tr = Vector4.Transform(tr, screenToVisual);
-                tr /= tr.W;
+                    var center = new Vector4(g.Positions[0], 1);
+                    var screenPoint = Vector4.Transform(center, visualToScreen);
+                    var spw = screenPoint.W;
+                    var spx = screenPoint.X;
+                    var spy = screenPoint.Y;
+                    var spz = screenPoint.Z;
 
-                var tl = new Vector4(spx + left * spw, spy + top * spw, spz, spw);
-                tl = Vector4.Transform(tl, screenToVisual);
-                tl /= tl.W;
+                    //Debug.WriteLine(spw);
+                    // Debug.WriteLine(string.Format("Z={0}; W={1}", spz, spw));
+                    var bl = new Vector4(spx + left * spw, spy + bottom * spw, spz, spw);
+                    bl = Vector4.Transform(bl, screenToVisual);
+                    bl /= bl.W;
 
-                var b = BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
+                    var br = new Vector4(spx + right * spw, spy + bottom * spw, spz, spw);
+                    br = Vector4.Transform(br, screenToVisual);
+                    br /= br.W;
+
+                    var tr = new Vector4(spx + right * spw, spy + top * spw, spz, spw);
+                    tr = Vector4.Transform(tr, screenToVisual);
+                    tr /= tr.W;
+
+                    var tl = new Vector4(spx + left * spw, spy + top * spw, spz, spw);
+                    tl = Vector4.Transform(tl, screenToVisual);
+                    tl /= tl.W;
+
+                    b = BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
+                }
+                else
+                {
+                    var center = new Vector4(g.Positions[0], 1);
+                    var viewMatrix = viewport.Camera.GetViewMatrix();
+                    
+                    var vcenter = Vector4.Transform(center, viewMatrix);
+                    var vcX = vcenter.X;
+                    var vcY = vcenter.Y;
+
+                    var bl = new Vector4(vcX + left, vcY + bottom, vcenter.Z, vcenter.W);
+                    var br = new Vector4(vcX + right, vcY + bottom, vcenter.Z, vcenter.W);
+                    var tr = new Vector4(vcX + right, vcY + top, vcenter.Z, vcenter.W);
+                    var tl = new Vector4(vcX + left, vcY + top, vcenter.Z, vcenter.W);
+                    var invViewMatrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+
+                    bl = Vector4.Transform(bl, invViewMatrix);
+                    bl /= bl.W;
+                    br = Vector4.Transform(br, invViewMatrix);
+                    br /= br.W;
+                    tr = Vector4.Transform(tr, invViewMatrix);
+                    tr /= tr.W;
+                    tl = Vector4.Transform(tl, invViewMatrix);
+                    tl /= tl.W;
+                    b = BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
+                }
 
                 // this all happens now in world space now:
                 //Debug.WriteLine(string.Format("RayPosition:{0}; Direction:{1};", rayWS.Position, rayWS.Direction));
@@ -134,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.IsValid = true;
                         result.PointHit = (rayWS.Position + (rayWS.Direction * distance)).ToPoint3D();
                         result.Distance = distance;
-                        //Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
+                        Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
                     }
                 }
             }
