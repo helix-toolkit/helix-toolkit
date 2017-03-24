@@ -150,6 +150,8 @@ namespace BoneSkinDemo
 
         public IList<Matrix> Instances { get; private set; }
 
+        private const int numBonesInModel = 32;
+
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
         private DispatcherTimer timer = new DispatcherTimer();
@@ -195,7 +197,7 @@ namespace BoneSkinDemo
             {
                 DiffuseColor = Color.MistyRose
             };
-            for(int i=0; i<BoneMatricesStruct.NumberOfBones; ++i)
+            for(int i=0; i< numBonesInModel; ++i)
             {
                 boneInternal[i] = Matrix.Identity;
             }
@@ -205,15 +207,15 @@ namespace BoneSkinDemo
             };
 
             int boneId = 0;
-            numSegmentPerBone = (int)Math.Max(1, (double)Model.Positions.Count / Theta / (BoneMatricesStruct.NumberOfBones -1));
+            numSegmentPerBone = (int)Math.Max(1, (double)Model.Positions.Count / Theta / (numBonesInModel - 1));
             int count = 0;
             for(int i=0; i < Model.Positions.Count / Theta; ++i)
             {
                 boneParams.AddRange(Enumerable.Repeat(new BoneIds()
                 {
-                    Bone1 = Math.Min(BoneMatricesStruct.NumberOfBones -1, boneId),
-                    Bone2 = Math.Min(BoneMatricesStruct.NumberOfBones - 1, boneId-1),
-                    Bone3 = Math.Min(BoneMatricesStruct.NumberOfBones - 1, boneId+1),
+                    Bone1 = Math.Min(numBonesInModel - 1, boneId),
+                    Bone2 = Math.Min(numBonesInModel - 1, boneId-1),
+                    Bone3 = Math.Min(numBonesInModel - 1, boneId+1),
                     Weights = new Vector4(0.6f, 0.2f, 0.2f, 0)
                 }, Theta));
                 ++count;
@@ -255,7 +257,7 @@ namespace BoneSkinDemo
             var rotation = Matrix.RotationAxis(xAxis, 0);
             double angleEach = 0;
             int counter = 0;
-            for (int i=0; i< NumSegments && i < BoneMatricesStruct.NumberOfBones; ++i, counter+= numSegmentPerBone)
+            for (int i=0; i< NumSegments && i < numBonesInModel; ++i, counter+= numSegmentPerBone)
             {
                 if (i == 0)
                 {
