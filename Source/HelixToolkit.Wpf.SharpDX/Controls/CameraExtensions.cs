@@ -482,7 +482,7 @@ namespace HelixToolkit.Wpf.SharpDX
             throw new HelixToolkitException("Unknown camera type.");
         }
 
-        public static Matrix InversedGetViewMatrix(this Camera camera)
+        public static Matrix GetInversedViewMatrix(this Camera camera)
         {
             var viewMatrix = GetViewMatrix(camera);
             return InverseViewMatrix(ref viewMatrix);

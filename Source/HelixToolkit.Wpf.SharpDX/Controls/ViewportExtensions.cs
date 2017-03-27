@@ -105,6 +105,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 : viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Matrix GetProjectionMatrix(this Viewport3DX viewport)
+        {
+            return viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix
+                : viewport.Camera.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+        }
         /// <summary>
         /// Gets the total transform for a Viewport3DX. 
         /// Old name of this function: GetTotalTransform
