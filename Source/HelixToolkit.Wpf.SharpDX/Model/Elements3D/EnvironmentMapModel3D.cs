@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.OutputMerger.DepthStencilState = depthStencilState;
 
             // --- set constant paramerers 
-            var worldMatrix = Matrix.Translation(((PerspectiveCamera)renderContext.Camera).Position.ToVector3());
+            var worldMatrix = Matrix.Translation(renderContext.Camera.Position.ToVector3());
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             // --- render the geometry
