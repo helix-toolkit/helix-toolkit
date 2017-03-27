@@ -42,6 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         IRenderer Renderable { get; set; }
 
+        RenderContext RenderContext { get; }
         /// <summary>
         /// Invalidates the current render and requests an update.
         /// </summary>

@@ -101,7 +101,8 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
         {
-            return viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+            return viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix * viewport.RenderContext.ProjectionMatrix
+                : viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
 
         /// <summary>
@@ -354,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var px = (float)point2d.X;
                 var py = (float)point2d.Y;
 
-                var viewMatrix = camera.GetViewMatrix();
+                var viewMatrix = viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix : camera.GetViewMatrix();
                 Vector3 v = new Vector3();
                 
                 var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
@@ -362,11 +363,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 float h = (float)viewport.ActualHeight;
                 var aspectRatio = w / h;
 
-                var proj = camera.GetProjectionMatrix(aspectRatio);
+                var projMatrix = viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix : camera.GetProjectionMatrix(aspectRatio);
                 Vector3 zn, zf;
-                v.X = (2 * px / w - 1) / proj.M11;
-                v.Y = -(2 * py / h - 1) / proj.M22;
-                v.Z = 1 / proj.M33;
+                v.X = (2 * px / w - 1) / projMatrix.M11;
+                v.Y = -(2 * py / h - 1) / projMatrix.M22;
+                v.Z = 1 / projMatrix.M33;
                 Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 
                 if (camera is PerspectiveCamera)

@@ -197,6 +197,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event EventHandler<RelayExceptionEventArgs> RenderExceptionOccurred = delegate { };
 
+        public RenderContext RenderContext { get { return this.RenderHost?.RenderContext; } }
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>

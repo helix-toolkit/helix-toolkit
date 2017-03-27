@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Matrix ViewMatrix { get { return this.viewMatrix; } }
 
-        public Matrix ProjectrionMatrix { get { return this.projectionMatrix; } }
+        public Matrix ProjectionMatrix { get { return this.projectionMatrix; } }
 
         public Matrix WorldMatrix { get { return worldMatrix; } }
 
