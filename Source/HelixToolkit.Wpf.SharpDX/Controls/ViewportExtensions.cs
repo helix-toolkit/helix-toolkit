@@ -351,39 +351,37 @@ namespace HelixToolkit.Wpf.SharpDX
             var camera = viewport.Camera as ProjectionCamera;
             if (camera != null)
             {
-                var p = new Vector3((float)point2d.X, (float)point2d.Y, 1);
+                var px = (float)point2d.X;
+                var py = (float)point2d.Y;
 
+                var viewMatrix = camera.GetViewMatrix();
+                Vector3 v = new Vector3();
+                
+                var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+                float w = (float)viewport.ActualWidth;
+                float h = (float)viewport.ActualHeight;
+                var aspectRatio = w / h;
 
-                //var wvp = GetViewProjectionMatrix(viewport);
-                //Vector3 r = Vector3.Unproject(p, 0f, 0f, (float)viewport.ActualWidth, (float)viewport.ActualHeight, 0f, 1f, wvp);
-                //r.Normalize();
-
-                var vp = GetScreenViewProjectionMatrix(viewport);
-                var vpi = Matrix.Invert(vp);
-
-                var test = 1f / ((p.X * vpi.M14) + (p.Y * vpi.M24) + (p.Z * vpi.M34) + vpi.M44);
-                if (double.IsInfinity(test))
-                {
-                    vpi.M44 = vpi.M44 + 0.000001f;
-                }
-
+                var proj = camera.GetProjectionMatrix(aspectRatio);
                 Vector3 zn, zf;
-                p.Z = 0;
-                Vector3.TransformCoordinate(ref p, ref vpi, out zn);
-                p.Z = 1;
-                Vector3.TransformCoordinate(ref p, ref vpi, out zf);
-                Vector3 r = zf - zn;
-
-                r.Normalize();
+                v.X = (2 * px / w - 1) / proj.M11;
+                v.Y = -(2 * py / h - 1) / proj.M22;
+                v.Z = 1 / proj.M33;
+                Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 
                 if (camera is PerspectiveCamera)
                 {
-                    return new Ray(camera.Position.ToVector3(), r);
+                    zn = camera.Position.ToVector3();
                 }
-                else if (camera is OrthographicCamera)
+                else
                 {
-                    return new Ray(zn, r);
-                }
+                    v.Z = 0;
+                    Vector3.TransformCoordinate(ref v, ref matrix, out zn);
+                }           
+                Vector3 r = zf - zn;
+                r.Normalize();               
+
+                return new Ray(zn, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }
