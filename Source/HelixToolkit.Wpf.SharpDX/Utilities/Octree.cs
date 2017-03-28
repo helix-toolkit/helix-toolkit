@@ -252,6 +252,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private BoundingBox[] octants = null;
         public BoundingBox[] Octants { get { return octants; } }
 
+        protected List<HitTestResult> modelHits = new List<HitTestResult>();
+
         public bool AutoDeleteIfEmpty
         {
             get
@@ -588,11 +590,12 @@ namespace HelixToolkit.Wpf.SharpDX
             hitQueue.Clear();
             hitQueue.Enqueue(this);
             bool isHit = false;
+            modelHits.Clear();
             while (hitQueue.Count > 0)
             {
                 var node = hitQueue.Dequeue();
                 bool isIntersect = false;
-                bool nodeHit = node.HitTestCurrentNodeExcludeChild(model, modelMatrix, ref rayWS, ref hits, ref isIntersect);
+                bool nodeHit = node.HitTestCurrentNodeExcludeChild(model, modelMatrix, ref rayWS, ref modelHits, ref isIntersect);
                 isHit |= nodeHit;
                 if (isIntersect && node.HasChildren)
                 {
@@ -620,6 +623,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
+                hits.AddRange(modelHits);
                 OnHit?.Invoke(this, new OnHitEventArgs());
             }
             hitQueue.Clear();
