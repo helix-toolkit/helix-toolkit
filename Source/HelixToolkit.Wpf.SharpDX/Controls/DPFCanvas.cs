@@ -80,6 +80,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderCycles; }
         }
 
+        /// <summary>
+        /// Get RenderContext
+        /// </summary>
+        public RenderContext RenderContext { get { return renderContext; } }
+
         private readonly Light3DSceneShared light3DPerScene = new Light3DSceneShared();
         /// <summary>
         /// Light3D shared data per each secne

@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
                 return light3DSceneShared;
             }
         }
-
+        public RenderContext RenderContext { get; }
         public bool EnableRenderFrustum
         {
             set;get;
