@@ -89,11 +89,68 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 BoundingBox b = new BoundingBox();
                 var left = -g.Width / 2;
-                var right = g.Width / 2;
+                var right = -left;
                 var top = -g.Height / 2;
-                var bottom = g.Height / 2;
+                var bottom = -top;
                 if (FixedSize)
                 {
+                    var viewportMatrix = viewport.GetViewportMatrix();
+                    var projectionMatrix = viewport.GetProjectionMatrix();
+                    var viewMatrix = viewport.Camera.GetViewMatrix();
+                    var visualToScreen = viewMatrix * projectionMatrix * viewportMatrix;
+
+                    var center = new Vector4(g.Positions[0], 1);
+                    var screenPoint = Vector4.Transform(center, visualToScreen);
+                    var spw = screenPoint.W;
+                    var spx = screenPoint.X;
+                    var spy = screenPoint.Y;
+                    var spz = screenPoint.Z / spw / projectionMatrix.M33;
+
+                    var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+                    var width = (float)viewport.ActualWidth;
+                    var height = (float)viewport.ActualHeight;
+                    Vector3 v = new Vector3();
+
+                    var x = spx + left * spw;
+                    var y = spy + bottom * spw;
+                    v.X = (2 * x / width / spw - 1) / projectionMatrix.M11;
+                    v.Y = -(2 * y / height / spw - 1) / projectionMatrix.M22;
+                    v.Z = spz;
+
+                    Vector3 bl;
+                    Vector3.TransformCoordinate(ref v, ref matrix, out bl);
+
+
+                    x = spx + right * spw;
+                    y = spy + bottom * spw;
+                    v.X = (2 * x / width / spw - 1) / projectionMatrix.M11;
+                    v.Y = -(2 * y / height / spw - 1) / projectionMatrix.M22;
+                    v.Z = spz;
+
+                    Vector3 br;
+                    Vector3.TransformCoordinate(ref v, ref matrix, out br);
+
+                    x = spx + right * spw;
+                    y = spy + top * spw;
+                    v.X = (2 * x / width / spw - 1) / projectionMatrix.M11;
+                    v.Y = -(2 * y / height / spw - 1) / projectionMatrix.M22;
+                    v.Z = spz;
+
+                    Vector3 tr;
+                    Vector3.TransformCoordinate(ref v, ref matrix, out tr);
+
+                    x = spx + left * spw;
+                    y = spy + top * spw;
+                    v.X = (2 * x / width / spw - 1) / projectionMatrix.M11;
+                    v.Y = -(2 * y / height / spw - 1) / projectionMatrix.M22;
+                    v.Z = spz;
+
+                    Vector3 tl;
+                    Vector3.TransformCoordinate(ref v, ref matrix, out tl);
+
+                    b = BoundingBox.FromPoints(new Vector3[] { tl, tr, bl, br });
+
+                    /*
                     var visualToScreen = viewport.GetViewProjectionMatrix() * viewport.GetViewportMatrix();
 
                     var screenToVisual = visualToScreen.Inverted();
@@ -123,7 +180,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     tl = Vector4.Transform(tl, screenToVisual);
                     tl /= tl.W;
 
-                    b = BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
+                    b = BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() }); 
+                    */
                 }
                 else
                 {
