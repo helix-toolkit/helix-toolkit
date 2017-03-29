@@ -191,6 +191,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
+        {
+            return true;
+        }
+
         public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
         {
             if (hasBoneParameter)
