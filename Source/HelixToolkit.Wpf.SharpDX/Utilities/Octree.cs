@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="radius"></param>
         /// <param name="points"></param>
         /// <returns></returns>
-        bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, int radius, ref List<HitTestResult> points);
+        bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, float radius, ref List<HitTestResult> points);
         /// <summary>
         /// Build the whole tree from top to bottom iteratively.
         /// </summary>
@@ -1077,7 +1077,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return node;
         }
 
-        public bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, int radius, ref List<HitTestResult> result)
+        public bool FindNearestPointByPointAndSearchRadius(ref Vector3 point, float radius, ref List<HitTestResult> result)
         {
             var sphere = new global::SharpDX.BoundingSphere(point, radius);
             return FindNearestPointBySphere(ref sphere, ref result);
@@ -1276,7 +1276,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             tempResult.Distance = d;
                             tempResult.IsValid = true;
                             tempResult.PointHit = cloestPoint.ToPoint3D();
-                            tempResult.TriangleIndices = new Tuple<int, int, int>(idx, idx + 1, idx + 2);
+                            tempResult.TriangleIndices = new Tuple<int, int, int>(Indices[idx], Indices[idx + 1], Indices[idx + 2]);
                             isHit = true;
                         }
                     }
