@@ -15,5 +15,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return new global::SharpDX.BoundingSphere(worldCenter.ToXYZ(), (worldEdge - worldCenter).Length());
         }
+
+        public static void TransformBoundingSphere(this global::SharpDX.BoundingSphere b, ref Matrix m, out global::SharpDX.BoundingSphere boundSphere)
+        {
+            var center = b.Center;
+            var edge = b.Center + Vector3.Right * b.Radius;
+
+            var worldCenter = Vector3.Transform(center, m);
+            var worldEdge = Vector3.Transform(edge, m);
+
+            boundSphere = new global::SharpDX.BoundingSphere(worldCenter.ToXYZ(), (worldEdge - worldCenter).Length());
+        }
     }
 }
