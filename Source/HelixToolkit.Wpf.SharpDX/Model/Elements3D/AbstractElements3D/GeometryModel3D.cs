@@ -107,18 +107,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsAttached)
             {
-                if (e.PropertyName.Equals(nameof(Geometry3D.Positions)) || e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
                 {
-                    if (this.Geometry == null)
-                    {
-                        this.Bounds = new BoundingBox();
-                        this.BoundsSphere = new BoundingSphere();
-                    }
-                    else
-                    {
-                        this.Bounds = this.Geometry.Bound;
-                        this.BoundsSphere = this.Geometry.BoundingSphere;
-                    }
+                    this.Bounds = this.Geometry != null ? this.Geometry.Bound : new BoundingBox();
+                }
+                else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
+                {
+                    this.BoundsSphere = this.Geometry != null ? this.Geometry.BoundingSphere : new BoundingSphere();
                 }
                 OnGeometryPropertyChanged(sender, e);
             }
