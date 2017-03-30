@@ -1198,9 +1198,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 foreach (var t in this.Objects)
                 {
                     var idx = t.Item1 * 3;
-                    var v0 = Positions[Indices[idx]];
-                    var v1 = Positions[Indices[idx + 1]];
-                    var v2 = Positions[Indices[idx + 2]];
+                    var t1 = Indices[idx];
+                    var t2 = Indices[idx + 1];
+                    var t3 = Indices[idx + 2];
+                    var v0 = Positions[t1];
+                    var v1 = Positions[t2];
+                    var v2 = Positions[t3];
                     float d;
                     var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
                     var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
@@ -1220,8 +1223,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             n.Normalize();
                             // transform hit-info to world space now:
                             result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
-                            result.TriangleIndices = new System.Tuple<int, int, int>(Indices[idx], Indices[idx + 1], Indices[idx + 2]);
-                            result.Tag = idx / 3;
+                            result.TriangleIndices = new System.Tuple<int, int, int>(t1, t2, t3);
+                            result.Tag = t.Item1;
                             isHit = true;
                         }
                     }
@@ -1266,9 +1269,12 @@ namespace HelixToolkit.Wpf.SharpDX
                         Vector3 cloestPoint;
 
                         var idx = t.Item1 * 3;
-                        var v0 = Positions[Indices[idx]];
-                        var v1 = Positions[Indices[idx + 1]];
-                        var v2 = Positions[Indices[idx + 2]];
+                        var t1 = Indices[idx];
+                        var t2 = Indices[idx + 1];
+                        var t3 = Indices[idx + 2];
+                        var v0 = Positions[t1];
+                        var v1 = Positions[t2];
+                        var v2 = Positions[t3];
                         Collision.ClosestPointPointTriangle(ref sphere.Center, ref v0, ref v1, ref v2, out cloestPoint);
                         var d = (cloestPoint - sphere.Center).Length();
                         if (tempResult.Distance > d)
@@ -1276,7 +1282,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             tempResult.Distance = d;
                             tempResult.IsValid = true;
                             tempResult.PointHit = cloestPoint.ToPoint3D();
-                            tempResult.TriangleIndices = new Tuple<int, int, int>(Indices[idx], Indices[idx + 1], Indices[idx + 2]);
+                            tempResult.TriangleIndices = new Tuple<int, int, int>(t1, t2, t3);
+                            tempResult.Tag = t.Item1;
                             isHit = true;
                         }
                     }
