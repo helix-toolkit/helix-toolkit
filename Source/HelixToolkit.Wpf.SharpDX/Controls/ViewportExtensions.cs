@@ -361,7 +361,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var px = (float)point2d.X;
                 var py = (float)point2d.Y;
 
-                var viewMatrix = viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix : camera.GetViewMatrix();
+                var viewMatrix = camera.GetViewMatrix();
                 Vector3 v = new Vector3();
                 
                 var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
@@ -369,7 +369,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 float h = (float)viewport.ActualHeight;
                 var aspectRatio = w / h;
 
-                var projMatrix = viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix : camera.GetProjectionMatrix(aspectRatio);
+                var projMatrix = camera.GetProjectionMatrix(aspectRatio);
                 Vector3 zn, zf;
                 v.X = (2 * px / w - 1) / projMatrix.M11;
                 v.Y = -(2 * py / h - 1) / projMatrix.M22;
