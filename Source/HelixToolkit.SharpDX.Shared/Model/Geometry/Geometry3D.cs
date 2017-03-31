@@ -56,15 +56,52 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                if (Set<Vector3Collection>(ref position, value))
+                if (Set(ref position, value))
                 {
 #if !NETFX_CORE
                     Octree = null;
+                    if (position == null || position.Count == 0)
+                    {
+                        Bound = new BoundingBox();
+                        BoundingSphere = new BoundingSphere();
+                    }
+                    else
+                    {
+                        Bound = BoundingBox.FromPoints(position.Array);
+                        BoundingSphere = BoundingSphere.FromPoints(position.Array);
+                    }
 #endif
                 }
             }
         }
 
+#if !NETFX_CORE
+        private BoundingBox bound;
+        public BoundingBox Bound
+        {
+            set
+            {
+                Set(ref bound, value);
+            }
+            get
+            {
+                return bound;
+            }
+        }
+
+        private BoundingSphere boundingSphere;
+        public BoundingSphere BoundingSphere
+        {
+            set
+            {
+                Set(ref boundingSphere, value);
+            }
+            get
+            {
+                return boundingSphere;
+            }
+        }
+#endif
         private Color4Collection colors = null;
         public Color4Collection Colors
         {

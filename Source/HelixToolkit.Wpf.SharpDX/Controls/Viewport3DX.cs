@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [DefaultProperty("Children")]
     [ContentProperty("Items")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
-    [TemplatePart(Name = "PART_Canvas", Type = typeof(IRenderHost))]
+    [TemplatePart(Name = "PART_Canvas", Type = typeof(ContentPresenter))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCubeViewport", Type = typeof(Viewport3D))]

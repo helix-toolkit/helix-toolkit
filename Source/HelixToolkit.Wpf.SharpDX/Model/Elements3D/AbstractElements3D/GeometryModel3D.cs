@@ -92,16 +92,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                if (this.Geometry.Positions.Count != 0)
-                {
-                    this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-                    this.BoundsSphere = BoundingSphere.FromPoints(this.Geometry.Positions.Array);
-                }
-                else
-                {
-                    this.Bounds = new BoundingBox();
-                    this.BoundsSphere = new BoundingSphere();
-                }
+                this.Bounds = this.Geometry.Bound;
+                this.BoundsSphere = this.Geometry.BoundingSphere;
                 if (renderHost != null)
                 {
                     var host = this.renderHost;
@@ -115,18 +107,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsAttached)
             {
-                if (e.PropertyName.Equals(nameof(Geometry3D.Positions)) || e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
                 {
-                    if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
-                    {
-                        this.Bounds = new BoundingBox();
-                        this.BoundsSphere = new BoundingSphere();
-                    }
-                    else
-                    {
-                        this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Array);
-                        this.BoundsSphere = BoundingSphere.FromPoints(this.Geometry.Positions.Array);
-                    }
+                    this.Bounds = this.Geometry != null ? this.Geometry.Bound : new BoundingBox();
+                }
+                else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
+                {
+                    this.BoundsSphere = this.Geometry != null ? this.Geometry.BoundingSphere : new BoundingSphere();
                 }
                 OnGeometryPropertyChanged(sender, e);
             }
