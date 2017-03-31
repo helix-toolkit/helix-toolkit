@@ -28,13 +28,19 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="BackText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackTextProperty = DependencyProperty.Register(
-            "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", VisualModelChanged));
+            "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", (d,e)=> 
+            {
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, Brushes.Red, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="BottomText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BottomTextProperty = DependencyProperty.Register(
-            "BottomText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("D", VisualModelChanged));
+            "BottomText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("D", (d, e) =>
+            {
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(5, Brushes.Blue, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="Center"/> dependency property.
@@ -46,13 +52,19 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="FrontText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FrontTextProperty = DependencyProperty.Register(
-            "FrontText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("F", VisualModelChanged));
+            "FrontText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("F", (d, e) =>
+            {
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(0, Brushes.Red, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="LeftText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftTextProperty = DependencyProperty.Register(
-            "LeftText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("L", VisualModelChanged));
+            "LeftText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("L", (d, e) =>
+            {
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(2, Brushes.Green, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="LeftText"/> dependency property.
@@ -74,7 +86,10 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="RightText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RightTextProperty = DependencyProperty.Register(
-            "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", VisualModelChanged));
+            "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", (d, e) =>
+            {
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, Brushes.Green, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="Size"/> dependency property.
@@ -86,7 +101,10 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="TopText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TopTextProperty = DependencyProperty.Register(
-            "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", VisualModelChanged));
+            "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", (d, e) =>
+            {
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, Brushes.Blue, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="Viewport"/> dependency property.
@@ -107,7 +125,10 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="EnableEdgeClicks"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnableEdgeClicksProperty =
-            DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, VisualModelChanged));
+            DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, (d,e)=>
+            {
+                (d as ViewCubeVisual3D).EnableDisableEdgeClicks();
+            }));
 
         /// <summary>
         /// The normal vectors.
@@ -347,12 +368,18 @@ namespace HelixToolkit.Wpf
             ((ViewCubeVisual3D)d).UpdateVisuals();
         }
 
+        private IList<GeometryModel3D> CubeFaceModels = new List<GeometryModel3D>(6);
+        private IList<ModelUIElement3D> EdgeCornerModels = new List<ModelUIElement3D>();
         /// <summary>
         /// Updates the visuals.
         /// </summary>
         private void UpdateVisuals()
         {
             this.Children.Clear();
+            faceNormals.Clear();
+            faceUpVectors.Clear();
+            CubeFaceModels.Clear();
+            EdgeCornerModels.Clear();
             var frontColor = Brushes.Red;
             var leftColor = Brushes.Green;
             var upColor = Brushes.Blue;
@@ -369,12 +396,12 @@ namespace HelixToolkit.Wpf
 
             var vecFront = Vector3D.CrossProduct(vecLeft, vecUp);
 
-            this.AddCubeFace(vecFront, vecUp, frontColor, this.FrontText);
-            this.AddCubeFace(-vecFront, vecUp, frontColor, this.BackText);
-            this.AddCubeFace(vecLeft, vecUp, leftColor, this.LeftText);
-            this.AddCubeFace(-vecLeft, vecUp, leftColor, this.RightText);
-            this.AddCubeFace(vecUp, vecLeft, upColor, this.TopText);
-            this.AddCubeFace(-vecUp, -vecLeft, upColor, this.BottomText);
+            CubeFaceModels.Add(this.AddCubeFace(vecFront, vecUp, frontColor, this.FrontText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecFront, vecUp, frontColor, this.BackText));
+            CubeFaceModels.Add(this.AddCubeFace(vecLeft, vecUp, leftColor, this.LeftText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecLeft, vecUp, leftColor, this.RightText));
+            CubeFaceModels.Add(this.AddCubeFace(vecUp, vecLeft, upColor, this.TopText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecUp, -vecLeft, upColor, this.BottomText));
 
             var circle = new PieSliceVisual3D();
             circle.BeginEdit();
@@ -389,10 +416,28 @@ namespace HelixToolkit.Wpf
             circle.EndEdit();
             this.Children.Add(circle);
 
-            if (EnableEdgeClicks)
+            AddCorners();
+            AddEdges();
+            EnableDisableEdgeClicks();
+        }
+
+        private void EnableDisableEdgeClicks()
+        {
+            foreach(var item in EdgeCornerModels)
             {
-                AddCorners();
-                AddEdges();
+                item.Visibility = EnableEdgeClicks ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        private void UpdateCubefaceMaterial(int index, Brush b, string text)
+        {
+            if(CubeFaceModels.Count > 0 && index < CubeFaceModels.Count)
+            {
+                CubeFaceModels[index].Material = CreateTextMaterial(b, text);
+            }
+            else
+            {
+                UpdateVisuals();
             }
         }
 
@@ -443,6 +488,7 @@ namespace HelixToolkit.Wpf
             element.MouseLeave += EdgesMouseLeaves;
 
             Children.Add(element);
+            EdgeCornerModels.Add(element);
         }
 
         private void AddCorners()
@@ -474,6 +520,7 @@ namespace HelixToolkit.Wpf
                 element.MouseLeave += CornersMouseLeave;
 
                 Children.Add(element);
+                EdgeCornerModels.Add(element);
             }
         }
 
@@ -516,24 +563,9 @@ namespace HelixToolkit.Wpf
         /// <param name="text">
         /// The text.
         /// </param>
-        private void AddCubeFace(Vector3D normal, Vector3D up, Brush b, string text)
+        private GeometryModel3D AddCubeFace(Vector3D normal, Vector3D up, Brush b, string text)
         {
-            var grid = new Grid { Width = 20, Height = 20, Background = b };
-            grid.Children.Add(
-                new TextBlock
-                {
-                    Text = text,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    FontSize = 15,
-                    Foreground = Brushes.White
-                });
-            grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
-
-            var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
-            bmp.Render(grid);
-
-            var material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
+            var material = CreateTextMaterial(b, text);
 
             double a = this.Size;
 
@@ -550,6 +582,27 @@ namespace HelixToolkit.Wpf
             this.faceUpVectors.Add(element, up);
 
             this.Children.Add(element);
+            return model;
+        }
+
+        private Material CreateTextMaterial(Brush b, string text)
+        {
+            var grid = new Grid { Width = 20, Height = 20, Background = b };
+            grid.Children.Add(
+                new TextBlock
+                {
+                    Text = text,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontSize = 15,
+                    Foreground = Brushes.White
+                });
+            grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
+
+            var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
+            bmp.Render(grid);
+
+            return MaterialHelper.CreateMaterial(new ImageBrush(bmp));
         }
 
         /// <summary>
