@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf
             "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", (d,e)=> 
             {
                 var b = (d as ViewCubeVisual3D).GetCubefaceColor(1);
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, Brushes.Red, e.NewValue == null ? "" : (string)e.NewValue);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, b, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
