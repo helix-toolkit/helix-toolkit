@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty BackTextProperty = DependencyProperty.Register(
             "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", (d,e)=> 
             {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(1);
                 (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, Brushes.Red, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
@@ -39,7 +40,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty BottomTextProperty = DependencyProperty.Register(
             "BottomText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("D", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(5, Brushes.Blue, e.NewValue == null ? "" : (string)e.NewValue);
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(5);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(5, b, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -54,7 +56,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty FrontTextProperty = DependencyProperty.Register(
             "FrontText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("F", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(0, Brushes.Red, e.NewValue == null ? "" : (string)e.NewValue);
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(0);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(0, b, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -63,7 +66,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty LeftTextProperty = DependencyProperty.Register(
             "LeftText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("L", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(2, Brushes.Green, e.NewValue == null ? "" : (string)e.NewValue);
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(2);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(2, b, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -88,7 +92,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty RightTextProperty = DependencyProperty.Register(
             "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, Brushes.Green, e.NewValue == null ? "" : (string)e.NewValue);
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(3);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, b, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -103,7 +108,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty TopTextProperty = DependencyProperty.Register(
             "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, Brushes.Blue, e.NewValue == null ? "" : (string)e.NewValue);
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(4);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, b, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -380,28 +386,19 @@ namespace HelixToolkit.Wpf
             faceUpVectors.Clear();
             CubeFaceModels.Clear();
             EdgeCornerModels.Clear();
-            var frontColor = Brushes.Red;
-            var leftColor = Brushes.Green;
-            var upColor = Brushes.Blue;
+
             var vecUp = this.ModelUpDirection;
             // create left vector 90° from up
             var vecLeft = new Vector3D(vecUp.Y, vecUp.Z, vecUp.X);
 
-            // change the colors if not a positive Z vector is used for up
-            if (vecUp.Z < 1)
-            {
-                leftColor = Brushes.Blue;
-                upColor = Brushes.Green;
-            }
-
             var vecFront = Vector3D.CrossProduct(vecLeft, vecUp);
 
-            CubeFaceModels.Add(this.AddCubeFace(vecFront, vecUp, frontColor, this.FrontText));
-            CubeFaceModels.Add(this.AddCubeFace(-vecFront, vecUp, frontColor, this.BackText));
-            CubeFaceModels.Add(this.AddCubeFace(vecLeft, vecUp, leftColor, this.LeftText));
-            CubeFaceModels.Add(this.AddCubeFace(-vecLeft, vecUp, leftColor, this.RightText));
-            CubeFaceModels.Add(this.AddCubeFace(vecUp, vecLeft, upColor, this.TopText));
-            CubeFaceModels.Add(this.AddCubeFace(-vecUp, -vecLeft, upColor, this.BottomText));
+            CubeFaceModels.Add(this.AddCubeFace(vecFront, vecUp, GetCubefaceColor(0), this.FrontText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecFront, vecUp, GetCubefaceColor(1), this.BackText));
+            CubeFaceModels.Add(this.AddCubeFace(vecLeft, vecUp, GetCubefaceColor(2), this.LeftText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecLeft, vecUp, GetCubefaceColor(3), this.RightText));
+            CubeFaceModels.Add(this.AddCubeFace(vecUp, vecLeft, GetCubefaceColor(4), this.TopText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecUp, -vecLeft, GetCubefaceColor(5), this.BottomText));
 
             var circle = new PieSliceVisual3D();
             circle.BeginEdit();
@@ -419,6 +416,38 @@ namespace HelixToolkit.Wpf
             AddCorners();
             AddEdges();
             EnableDisableEdgeClicks();
+        }
+
+        private Brush GetCubefaceColor(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                case 1:
+                    return Brushes.Red;
+                case 2:
+                case 3:
+                    if (ModelUpDirection.Z < 1)
+                    {
+                        return Brushes.Blue;
+                    }
+                    else
+                    {
+                        return Brushes.Green;
+                    }
+                case 4:
+                case 5:
+                    if (ModelUpDirection.Z < 1)
+                    {
+                        return Brushes.Green;
+                    }
+                    else
+                    {
+                        return Brushes.Blue;
+                    }
+                default:
+                    return Brushes.White;
+            }
         }
 
         private void EnableDisableEdgeClicks()
