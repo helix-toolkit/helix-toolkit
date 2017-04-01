@@ -146,12 +146,15 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
 
+        private readonly bool isInitialized = false;
+
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
         /// </summary>
         public ViewCubeVisual3D()
         {
             this.UpdateVisuals();
+            isInitialized = true;
         }
 
         /// <summary>
@@ -371,7 +374,8 @@ namespace HelixToolkit.Wpf
         /// </param>
         private static void VisualModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ViewCubeVisual3D)d).UpdateVisuals();
+            if (((ViewCubeVisual3D)d).isInitialized)
+            { ((ViewCubeVisual3D)d).UpdateVisuals(); }
         }
 
         private IList<GeometryModel3D> CubeFaceModels = new List<GeometryModel3D>(6);
@@ -460,6 +464,10 @@ namespace HelixToolkit.Wpf
 
         private void UpdateCubefaceMaterial(int index, Brush b, string text)
         {
+            if (!isInitialized)
+            {
+                return;
+            }
             if(CubeFaceModels.Count > 0 && index < CubeFaceModels.Count)
             {
                 CubeFaceModels[index].Material = CreateTextMaterial(b, text);
