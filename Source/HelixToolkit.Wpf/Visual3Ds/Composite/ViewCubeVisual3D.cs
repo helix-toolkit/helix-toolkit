@@ -146,6 +146,13 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
 
+        private readonly IList<GeometryModel3D> CubeFaceModels = new List<GeometryModel3D>(6);
+        private readonly IList<ModelUIElement3D> EdgeModels = new List<ModelUIElement3D>();
+        private readonly IList<ModelUIElement3D> CornerModels = new List<ModelUIElement3D>();
+
+        private readonly Brush CornerBrush = Brushes.Gold;
+        private readonly Brush EdgeBrush = Brushes.Silver;
+
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
         /// </summary>
@@ -374,8 +381,7 @@ namespace HelixToolkit.Wpf
             ((ViewCubeVisual3D)d).UpdateVisuals();
         }
 
-        private IList<GeometryModel3D> CubeFaceModels = new List<GeometryModel3D>(6);
-        private IList<ModelUIElement3D> EdgeCornerModels = new List<ModelUIElement3D>();
+
         /// <summary>
         /// Updates the visuals.
         /// </summary>
@@ -385,8 +391,8 @@ namespace HelixToolkit.Wpf
             faceNormals.Clear();
             faceUpVectors.Clear();
             CubeFaceModels.Clear();
-            EdgeCornerModels.Clear();
-
+            EdgeModels.Clear();
+            CornerModels.Clear();
             var vecUp = this.ModelUpDirection;
             // create left vector 90° from up
             var vecLeft = new Vector3D(vecUp.Y, vecUp.Z, vecUp.X);
@@ -452,9 +458,49 @@ namespace HelixToolkit.Wpf
 
         private void EnableDisableEdgeClicks()
         {
-            foreach(var item in EdgeCornerModels)
+            if (EnableEdgeClicks)
             {
-                item.Visibility = EnableEdgeClicks ? Visibility.Visible : Visibility.Collapsed;
+                foreach (var item in EdgeModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= EdggesMouseEnters;
+                    item.MouseLeave -= EdgesMouseLeaves;
+                    item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
+                    item.MouseEnter += EdggesMouseEnters;
+                    item.MouseLeave += EdgesMouseLeaves;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(EdgeBrush);
+                }
+                foreach (var item in CornerModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= CornersMouseEnters;
+                    item.MouseLeave -= CornersMouseLeave;
+                    item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
+                    item.MouseEnter += CornersMouseEnters;
+                    item.MouseLeave += CornersMouseLeave;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(CornerBrush);
+                }
+            }
+            else
+            {
+                foreach(var item in EdgeModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= EdggesMouseEnters;
+                    item.MouseLeave -= EdgesMouseLeaves;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                }
+                foreach (var item in CornerModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= CornersMouseEnters;
+                    item.MouseLeave -= CornersMouseLeave;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                }
             }
         }
 
@@ -506,7 +552,7 @@ namespace HelixToolkit.Wpf
             var geometry = builder.ToMesh();
             geometry.Freeze();
 
-            var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Silver) };
+            var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(EdgeBrush) };
             var element = new ModelUIElement3D { Model = model };
 
             faceNormals.Add(element, faceNormal);
@@ -517,7 +563,7 @@ namespace HelixToolkit.Wpf
             element.MouseLeave += EdgesMouseLeaves;
 
             Children.Add(element);
-            EdgeCornerModels.Add(element);
+            EdgeModels.Add(element);
         }
 
         private void AddCorners()
@@ -538,7 +584,7 @@ namespace HelixToolkit.Wpf
                 var geometry = builder.ToMesh();
                 geometry.Freeze();
 
-                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Gold) };
+                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(CornerBrush) };
                 var element = new ModelUIElement3D { Model = model };
 
                 faceNormals.Add(element, p.ToVector3D());
@@ -549,7 +595,7 @@ namespace HelixToolkit.Wpf
                 element.MouseLeave += CornersMouseLeave;
 
                 Children.Add(element);
-                EdgeCornerModels.Add(element);
+                CornerModels.Add(element);
             }
         }
 

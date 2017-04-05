@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
 
     using global::SharpDX;
+    using System;
 
     /// <summary>
     /// Represents an orthographic projection camera.
@@ -54,20 +55,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public override Matrix CreateProjectionMatrix(double aspectRatio)
         {
+            Matrix projM;
             if (this.CreateLeftHandSystem)
             {
-                return Matrix.OrthoLH(
+                projM = Matrix.OrthoLH(
                     (float)this.Width, 
                     (float)(this.Width / aspectRatio), 
-                    (float)this.NearPlaneDistance, 
-                    (float)this.FarPlaneDistance);
+                    (float)this.NearPlaneDistance,
+                    Math.Min(1e15f, (float)this.FarPlaneDistance));
             }
-
-            return Matrix.OrthoRH(
-                (float)this.Width, 
-                (float)(this.Width / aspectRatio), 
-                (float)this.NearPlaneDistance, 
-                (float)this.FarPlaneDistance);
+            else
+            {
+                projM = Matrix.OrthoRH(
+                    (float)this.Width, 
+                    (float)(this.Width / aspectRatio), 
+                    (float)this.NearPlaneDistance,
+                    Math.Min(1e15f, (float)this.FarPlaneDistance));
+            }
+            return projM;
         }
 
         /// <summary>
