@@ -50,18 +50,25 @@ namespace HelixToolkit.Wpf.SharpDX
         public override Matrix CreateProjectionMatrix(double aspectRatio)
         {
             var fov = this.FieldOfView*Math.PI/180;
-
+            Matrix projM;
             if (this.CreateLeftHandSystem)
             {
-                return global::SharpDX.Matrix.PerspectiveFovLH(
+                projM = global::SharpDX.Matrix.PerspectiveFovLH(
                     (float)fov,
                     (float)aspectRatio,
                     (float)this.NearPlaneDistance,
                     (float)this.FarPlaneDistance);
             }
-
-            return global::SharpDX.Matrix.PerspectiveFovRH(
-                (float)fov, (float)aspectRatio, (float)this.NearPlaneDistance, (float)this.FarPlaneDistance);
+            else
+            {
+                projM = global::SharpDX.Matrix.PerspectiveFovRH(
+                    (float)fov, (float)aspectRatio, (float)this.NearPlaneDistance, (float)this.FarPlaneDistance);
+            }
+            if(float.IsNaN(projM.M33) || float.IsNaN(projM.M43))
+            {
+                projM.M33 = projM.M43 = -1;
+            }
+            return projM;
         }
 
         /// <summary>
