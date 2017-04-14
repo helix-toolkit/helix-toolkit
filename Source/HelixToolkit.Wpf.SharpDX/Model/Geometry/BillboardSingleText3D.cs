@@ -179,11 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
 
-            Colors.Add(FontColor);
-            Colors.Add(FontColor);
             Colors.Add(FontColor);
             Colors.Add(FontColor);
             Colors.Add(FontColor);
@@ -192,15 +188,11 @@ namespace HelixToolkit.Wpf.SharpDX
             TextureCoordinates.Add(uv_b);
             TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_c);
 
             info.Offsets.Add(a);
             info.Offsets.Add(c);
             info.Offsets.Add(b);
-            info.Offsets.Add(b);
-            info.Offsets.Add(c);
             info.Offsets.Add(d);
 
             // Create background data
@@ -208,18 +200,12 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
 
             Colors.Add(BackgroundColor);
             Colors.Add(BackgroundColor);
             Colors.Add(BackgroundColor);
             Colors.Add(BackgroundColor);
-            Colors.Add(BackgroundColor);
-            Colors.Add(BackgroundColor);
 
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
             TextureCoordinates.Add(uv_a);
             TextureCoordinates.Add(uv_a);
             TextureCoordinates.Add(uv_a);
@@ -228,8 +214,6 @@ namespace HelixToolkit.Wpf.SharpDX
             info.Offsets.Add(a);
             info.Offsets.Add(c);
             info.Offsets.Add(b);
-            info.Offsets.Add(b);
-            info.Offsets.Add(c);
             info.Offsets.Add(d);
         }
     }

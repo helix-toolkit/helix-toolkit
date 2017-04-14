@@ -242,6 +242,35 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return Geometry is IBillboardText;
         }
+
+        protected override void OnRasterStateChanged()
+        {
+            Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
+            // --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
+            {
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.None,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = +0,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = false,
+
+                IsMultisampleEnabled = false,
+                //IsAntialiasedLineEnabled = true,                    
+                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
+            };
+            try
+            {
+                this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
+            }
+            catch (System.Exception)
+            {
+            }
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             // --- attach
@@ -318,14 +347,22 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
-            bFixedSizeVariable.Set(FixedSize);
+            bFixedSizeVariable?.Set(FixedSize);
             // --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
             // --- set context
             renderContext.DeviceContext.InputAssembler.InputLayout = vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            switch (billboardType)
+            {
+                case BillboardType.MultipleText:
+                    renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+                    break;
+                default:
+                    renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+                    break;
+            }
 
             // --- set rasterstate            
             renderContext.DeviceContext.Rasterizer.State = rasterState;
@@ -356,7 +393,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderContext.DeviceContext.Draw(vertexCount, 0);
                     break;
                 case BillboardType.SingleText:
-                    if (vertexCount == 12)
+                    if (vertexCount == 8)
                     {
                         var half = vertexCount / 2;
                         // Use background shader to draw background first

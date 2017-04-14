@@ -100,7 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions.Clear();
             Colors.Clear();
             TextureCoordinates.Clear();
-            mTextInfoOffsets = new List<Vector2>(6);
+            mTextInfoOffsets = new List<Vector2>(4);
             var w = Width;
             var h = Height;
             // CCW from top left 
@@ -119,11 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions.Add(Center);
             Positions.Add(Center);
             Positions.Add(Center);
-            Positions.Add(Center);
-            Positions.Add(Center);
 
-            Colors.Add(MaskColor);
-            Colors.Add(MaskColor);
             Colors.Add(MaskColor);
             Colors.Add(MaskColor);
             Colors.Add(MaskColor);
@@ -132,15 +128,11 @@ namespace HelixToolkit.Wpf.SharpDX
             TextureCoordinates.Add(uv_b);
             TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_c);
 
             mTextInfoOffsets.Add(a);
             mTextInfoOffsets.Add(c);
             mTextInfoOffsets.Add(b);
-            mTextInfoOffsets.Add(b);
-            mTextInfoOffsets.Add(c);
             mTextInfoOffsets.Add(d);
         }
     }

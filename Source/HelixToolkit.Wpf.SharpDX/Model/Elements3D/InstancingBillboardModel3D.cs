@@ -113,6 +113,35 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return Geometry is IBillboardText;
         }
+
+        protected override void OnRasterStateChanged()
+        {
+            Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
+            // --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
+            {
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.None,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = +0,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = false,
+
+                IsMultisampleEnabled = false,
+                //IsAntialiasedLineEnabled = true,                    
+                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
+            };
+            try
+            {
+                this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
+            }
+            catch (System.Exception)
+            {
+            }
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             // --- attach
@@ -214,7 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- set context
             renderContext.DeviceContext.InputAssembler.InputLayout = vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
 
             // --- set rasterstate            
             renderContext.DeviceContext.Rasterizer.State = rasterState;
@@ -290,7 +319,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         renderContext.DeviceContext.DrawInstanced(vertexCount, this.Instances.Count, 0, 0);
                         break;
                     case BillboardType.SingleText:
-                        if (vertexCount == 12)
+                        if (vertexCount == 8)
                         {
                             var half = vertexCount / 2;
                             // Use background shader to draw background first
