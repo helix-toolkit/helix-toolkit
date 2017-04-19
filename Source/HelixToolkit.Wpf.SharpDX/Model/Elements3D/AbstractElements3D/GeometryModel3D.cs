@@ -85,23 +85,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (this.Geometry == null || this.Geometry.Positions == null)
+            if (this.Geometry != null && this.Geometry.Positions != null && renderHost != null)
             {
-                this.Bounds = new BoundingBox();
-                this.BoundsSphere = new BoundingSphere();
+                var host = this.renderHost;
+                this.Detach();
+                this.Attach(host);
             }
-            else
-            {
-                this.Bounds = this.Geometry.Bound;
-                this.BoundsSphere = this.Geometry.BoundingSphere;
-                if (renderHost != null)
-                {
-                    var host = this.renderHost;
-                    this.Detach();
-                    this.Attach(host);
-                }
-            }
-        }
+        }              
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {
@@ -358,6 +348,11 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnAttached()
         {
             base.OnAttached();
+            if (Geometry != null)
+            {
+                this.Bounds = this.Geometry.Bound;
+                this.BoundsSphere = this.Geometry.BoundingSphere;
+            }
             OnRasterStateChanged();
         }
 
