@@ -60,16 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
 #if !NETFX_CORE
                     Octree = null;
-                    if (position == null || position.Count == 0)
-                    {
-                        Bound = new BoundingBox();
-                        BoundingSphere = new BoundingSphere();
-                    }
-                    else
-                    {
-                        Bound = BoundingBox.FromPoints(position.Array);
-                        BoundingSphere = BoundingSphere.FromPoints(position.Array);
-                    }
+                    UpdateBounds();
 #endif
                 }
             }
@@ -201,6 +192,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public void ClearOctree()
         {
             Octree = null;
+        }
+
+        public void UpdateBounds()
+        {
+            if (position == null || position.Count == 0)
+            {
+                Bound = new BoundingBox();
+                BoundingSphere = new BoundingSphere();
+            }
+            else
+            {
+                Bound = BoundingBox.FromPoints(position.Array);
+                BoundingSphere = BoundingSphere.FromPoints(position.Array);
+            }
         }
 #endif
     }

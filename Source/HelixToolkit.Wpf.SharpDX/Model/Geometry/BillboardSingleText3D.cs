@@ -154,6 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     TextInfo.Offsets.Clear();
                 }
                 isInitialized = true;
+                UpdateBounds();
             }
         }
 

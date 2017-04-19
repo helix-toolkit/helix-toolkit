@@ -134,6 +134,7 @@ namespace HelixToolkit.Wpf.SharpDX
             mTextInfoOffsets.Add(c);
             mTextInfoOffsets.Add(b);
             mTextInfoOffsets.Add(d);
+            UpdateBounds();
         }
     }
 }
