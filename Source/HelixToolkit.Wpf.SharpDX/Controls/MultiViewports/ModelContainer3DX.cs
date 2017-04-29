@@ -78,7 +78,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (currentRenderHost != value)
                 {
+                    if (currentRenderHost != null)
+                    { currentRenderHost.ExceptionOccurred -= ExceptionOccurred; }
                     currentRenderHost = value;
+                    currentRenderHost.ExceptionOccurred += ExceptionOccurred;
                     currentRenderHost.SetDefaultRenderTargets();
                 }
             }
