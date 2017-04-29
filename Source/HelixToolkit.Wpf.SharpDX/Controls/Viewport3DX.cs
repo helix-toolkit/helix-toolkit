@@ -26,6 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using MouseButtons = System.Windows.Forms.MouseButtons;
+    using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -201,6 +203,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Get current render context
         /// </summary>
         public RenderContext RenderContext { get { return this.RenderHost?.RenderContext; } }
+
+
+        public IEnumerable<IRenderable> Renderables
+        {
+            get
+            {
+                if(EnableSharedModelMode && SharedModelContainer != null)
+                {
+                    foreach(var item in SharedModelContainer.Renderables)
+                    {
+                        yield return item;
+                    }
+                }
+                else
+                {
+                    foreach(IRenderable item in Items)
+                    {
+                        yield return item;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
@@ -804,21 +828,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         void IRenderer.Attach(IRenderHost host)
         {
-            if (EnableSharedModelMode && SharedModelContainer != null)
+            foreach (IRenderable e in this.Renderables)
             {
-                foreach(var item in SharedModelContainer.Renderables)
-                {
-                    item.Attach(host);
-                }
+                e.Attach(host);
             }
-            else
-            {
-                foreach (IRenderable e in this.Items)
-                {
-                    e.Attach(host);
-                }
-            }
-
             StopWatch.Start();
         }
 
@@ -826,20 +839,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Detaches the elements.
         /// </summary>
         void IRenderer.Detach()
-        {
-            if (EnableSharedModelMode && SharedModelContainer != null)
+        {           
+            foreach (IRenderable e in this.Renderables)
             {
-                foreach (var item in SharedModelContainer.Renderables)
-                {
-                    item.Detach();
-                }
-            }
-            else
-            {
-                foreach (IRenderable e in this.Items)
-                {
-                    e.Detach();
-                }
+                e.Detach();
             }
         }
 
@@ -848,20 +851,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void IRenderer.Render(RenderContext context)
         {
-            context.Camera = this.Camera;
-            if (EnableSharedModelMode && SharedModelContainer != null)
+            context.Camera = this.Camera;                  
+            foreach (IRenderable e in this.Renderables)
             {
-                foreach (var item in SharedModelContainer.Renderables)
-                {
-                    item.Render(context);
-                }
-            }
-            else
-            {                
-                foreach (IRenderable e in this.Items)
-                {
-                    e.Render(context);
-                }
+                e.Render(context);
             }
         }
 
@@ -871,20 +864,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="timeSpan">The time span.</param>
         void IRenderer.Update(TimeSpan timeSpan)
         {
-            this.FpsCounter.AddFrame(timeSpan);
-            if (EnableSharedModelMode && SharedModelContainer != null)
+            this.FpsCounter.AddFrame(timeSpan);           
+            foreach (IRenderable e in this.Renderables)
             {
-                foreach (var item in SharedModelContainer.Renderables)
-                {
-                    item.Update(timeSpan);
-                }
-            }
-            else
-            {
-                foreach (IRenderable e in this.Items)
-                {
-                    e.Update(timeSpan);
-                }
+                e.Update(timeSpan);
             }
         }
 

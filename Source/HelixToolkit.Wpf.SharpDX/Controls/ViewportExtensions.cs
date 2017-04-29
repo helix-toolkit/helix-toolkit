@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static int GetTotalNumberOfTriangles(this Viewport3DX viewport)
         {
             int count = 0;
-            foreach (var item in viewport.Items)
+            foreach (var item in viewport.Renderables)
             {
                 var model = item as MeshGeometryModel3D;
                 if (model != null)
@@ -189,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Rect3D FindBounds(this Viewport3DX viewport)
         {
             var bounds = new global::SharpDX.BoundingBox();
-            foreach (var element in viewport.Items)
+            foreach (var element in viewport.Renderables)
             {
                 var model = element as IBoundable;
                 if (model != null)
@@ -217,7 +217,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Model3D
         {
-            foreach (var element in viewport.Items)
+            foreach (var element in viewport.Renderables)
             {
                 var model = element as Model3D; // ITraversable;
                 if (model != null)
@@ -267,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var ray = UnProject(viewport, new Vector2((float)position.X, (float)position.Y));
             var hits = new List<HitTestResult>();
                         
-            foreach (var element in viewport.Items)
+            foreach (var element in viewport.Renderables)
             {
                 var model = element as IHitable;
                 if (model != null)
