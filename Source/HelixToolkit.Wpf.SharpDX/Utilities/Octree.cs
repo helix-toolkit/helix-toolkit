@@ -1400,10 +1400,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
             var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
-            Viewport3DX viewport = null;
-            if (rayWS.Intersects(ref bound) && (viewport = FindVisualAncestor<Viewport3DX>(model)) != null)
+
+            if (rayWS.Intersects(ref bound) && context != null)
             {
-                var svpm = viewport.GetScreenViewProjectionMatrix();
+                var svpm = context.GetScreenViewProjectionMatrix();
                 var smvpm = modelMatrix * svpm;
                 var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
                 var pos4 = new Vector4(rayWS.Position, 1);
