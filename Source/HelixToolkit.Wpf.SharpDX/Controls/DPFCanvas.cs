@@ -641,7 +641,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     SharedModelContainer.CurrentRenderHost = this;
                 }
-                ClearRenderTarget();
+                else
+                {
+                    ClearRenderTarget();
+                }
 
                 if (RenderTechnique == deferred)
                 {
