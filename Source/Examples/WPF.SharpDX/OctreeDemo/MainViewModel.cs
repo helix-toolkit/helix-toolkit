@@ -217,6 +217,22 @@ namespace OctreeDemo
         public ICommand ClearModelCommand { private set; get; }
         public ICommand AutoTestCommand { private set; get; }
 
+        public ICommand MultiViewportCommand { private set; get; }
+
+        public Camera Camera1 { get; } = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
+            {
+                Position = new Media3D.Point3D(30, 30, 30),
+                LookDirection = new Media3D.Vector3D(-30, -30, -30),
+                UpDirection = new Media3D.Vector3D(0, 1, 0)
+            };
+
+        public Camera Camera2 { get; } = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
+            {
+                Position = new Media3D.Point3D(30, 30, 30),
+                LookDirection = new Media3D.Vector3D(-30, -30, -30),
+                UpDirection = new Media3D.Vector3D(0, 1, 0)
+            };
+
         public MainViewModel()
         {            // titles
             this.Title = "DynamicTexture Demo";
@@ -247,6 +263,11 @@ namespace OctreeDemo
             RemoveModelCommand = new RelayCommand(RemoveModel);
             ClearModelCommand = new RelayCommand(ClearModel);
             AutoTestCommand = new RelayCommand(AutoTestAddRemove);
+            MultiViewportCommand = new RelayCommand((o) => 
+            {
+                var win = new MultiviewportWin() { DataContext = this };
+                win.Show();
+            });
         }
 
         private void CreateDefaultModels()
