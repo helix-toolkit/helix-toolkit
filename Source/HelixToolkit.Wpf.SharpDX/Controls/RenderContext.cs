@@ -26,7 +26,6 @@ namespace HelixToolkit.Wpf.SharpDX
         internal Matrix viewMatrix;
         internal Matrix projectionMatrix;
         internal BoundingFrustum boundingFrustum;
-        internal Matrix viewportMatrix;
         private Camera camera; 
         private EffectVectorVariable vEyePos, vFrustum, vViewport;        
         private EffectMatrixVariable mView, mProjection;
@@ -38,7 +37,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Matrix WorldMatrix { get { return worldMatrix; } }
 
-        public Matrix ViewportMatrix { get { return viewportMatrix; } }
+        public Matrix ViewportMatrix
+        {
+            get
+            {
+                return new Matrix((float)(ActualWidth / 2), 0, 0, 0,
+                    0, (float)(-ActualHeight / 2), 0, 0, 
+                    0, 0, 1, 0,
+                    (float)((ActualWidth - 1) / 2), (float)((ActualHeight - 1) / 2), 0, 1);
+            }
+        }
 
         public bool EnableBoundingFrustum = false;
 
@@ -82,24 +90,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.vEyePos.Set(this.camera.Position.ToVector3());
                     this.mView.SetMatrix(ref viewMatrix);
                     this.mProjection.SetMatrix(ref projectionMatrix);
-
-                    viewportMatrix = new Matrix(
-                        (float)(ActualWidth / 2),
-                        0,
-                        0,
-                        0,
-                        0,
-                        (float)(-ActualHeight / 2),
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                        (float)((ActualWidth - 1) / 2),
-                        (float)((ActualHeight - 1) / 2),
-                        0,
-                        1);
                 }
             }
         }
@@ -127,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Matrix GetScreenViewProjectionMatrix()
         {
-            return viewMatrix * projectionMatrix * viewportMatrix;
+            return viewMatrix * projectionMatrix * ViewportMatrix;
         }
 
         ~RenderContext()
