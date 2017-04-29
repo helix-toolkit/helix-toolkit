@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public virtual bool HitTest(Ray ray, ref List<HitTestResult> hits)
+        public virtual bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             if (this.Visibility == Visibility.Collapsed)
             {
@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (tc != null)
                     {
                         tc.PushMatrix(this.modelMatrix);
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }
@@ -106,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }

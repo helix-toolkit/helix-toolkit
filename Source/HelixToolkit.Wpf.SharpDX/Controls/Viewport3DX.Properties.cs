@@ -802,6 +802,35 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty EnableDeferredRenderingProperty
             = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty EnableSharedModelModeProperty
+            = DependencyProperty.Register("EnableSharedModelMode", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) =>
+            {
+                var viewport = s as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.RenderHost.EnableSharingModelMode = (bool)e.NewValue;
+                }
+            }));
+
+        public static readonly DependencyProperty SharedModelContainerProperty
+            = DependencyProperty.Register("SharedModelContainer", typeof(IModelContainer), typeof(Viewport3DX), new PropertyMetadata(null,
+                (d,e)=>
+                {
+                    var viewport = d as Viewport3DX;
+                    if (e.OldValue is IModelContainer)
+                    {
+                        (e.OldValue as IModelContainer).DettachViewport3DX(viewport);
+                    }
+                    if(e.NewValue is IModelContainer)
+                    {
+                        (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
+                    }
+                    if (viewport.RenderHost != null)
+                    {
+                        viewport.RenderHost.SharedModelContainer = (IModelContainer)e.NewValue;
+                    }
+                }));
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2650,6 +2679,30 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(EnableDeferredRenderingProperty);
+            }
+        }
+
+        public bool EnableSharedModelMode
+        {
+            set
+            {
+                SetValue(EnableSharedModelModeProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableSharedModelModeProperty);
+            }
+        }
+
+        public IModelContainer SharedModelContainer
+        {
+            set
+            {
+                SetValue(SharedModelContainerProperty, value);
+            }
+            get
+            {
+                return (IModelContainer)GetValue(SharedModelContainerProperty);
             }
         }
     }

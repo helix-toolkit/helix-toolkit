@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (this.Visibility == Visibility.Collapsed || this.Visibility == Visibility.Hidden)
             {
@@ -78,9 +78,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var h = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
-            Viewport3DX viewport;
 
-            if ((viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null || g.Width == 0 || g.Height == 0)
+            if (context == null || g.Width == 0 || g.Height == 0)
             {
                 return false;
             }
@@ -94,9 +93,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 var bottom = -top;
                 if (FixedSize)
                 {
-                    var viewportMatrix = viewport.GetViewportMatrix();
-                    var projectionMatrix = viewport.GetProjectionMatrix();
-                    var viewMatrix = viewport.Camera.GetViewMatrix();
+                    var viewportMatrix = context.ViewportMatrix;
+                    var projectionMatrix = context.ProjectionMatrix; 
+                    var viewMatrix = context.ViewMatrix;
                     var visualToScreen = viewMatrix * projectionMatrix * viewportMatrix;
 
                     var center = new Vector4(g.Positions[0], 1);
@@ -107,8 +106,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     var spz = screenPoint.Z / spw / projectionMatrix.M33;
 
                     var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
-                    var width = (float)viewport.ActualWidth;
-                    var height = (float)viewport.ActualHeight;
+                    var width = (float)context.ActualWidth;
+                    var height = (float)context.ActualHeight;
                     Vector3 v = new Vector3();
 
                     var x = spx + left * spw;
@@ -186,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     var center = new Vector4(g.Positions[0], 1);
-                    var viewMatrix = viewport.Camera.GetViewMatrix();
+                    var viewMatrix = context.ViewMatrix;
                     
                     var vcenter = Vector4.Transform(center, viewMatrix);
                     var vcX = vcenter.X;

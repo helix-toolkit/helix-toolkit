@@ -546,6 +546,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.RenderHost.EnableRenderFrustum = this.EnableRenderFrustum;
             this.RenderHost.RenderCycles = this.RenderCycles;
             this.RenderHost.MaxFPS = (uint)this.MaxFPS;
+            this.RenderHost.EnableSharingModelMode = this.EnableSharedModelMode;
+            this.RenderHost.SharedModelContainer = this.SharedModelContainer;
             if (this.RenderHost != null)
             {
                 this.RenderHost.ExceptionOccurred += this.HandleRenderException;
@@ -802,9 +804,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         void IRenderer.Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Items)
+            if (EnableSharedModelMode && SharedModelContainer != null)
             {
-                e.Attach(host);
+                foreach(var item in SharedModelContainer.Renderables)
+                {
+                    item.Attach(host);
+                }
+            }
+            else
+            {
+                foreach (IRenderable e in this.Items)
+                {
+                    e.Attach(host);
+                }
             }
 
             StopWatch.Start();
@@ -815,9 +827,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void IRenderer.Detach()
         {
-            foreach (IRenderable e in this.Items)
+            if (EnableSharedModelMode && SharedModelContainer != null)
             {
-                e.Detach();
+                foreach (var item in SharedModelContainer.Renderables)
+                {
+                    item.Detach();
+                }
+            }
+            else
+            {
+                foreach (IRenderable e in this.Items)
+                {
+                    e.Detach();
+                }
             }
         }
 
@@ -827,9 +849,19 @@ namespace HelixToolkit.Wpf.SharpDX
         void IRenderer.Render(RenderContext context)
         {
             context.Camera = this.Camera;
-            foreach (IRenderable e in this.Items)
+            if (EnableSharedModelMode && SharedModelContainer != null)
             {
-                e.Render(context);
+                foreach (var item in SharedModelContainer.Renderables)
+                {
+                    item.Render(context);
+                }
+            }
+            else
+            {                
+                foreach (IRenderable e in this.Items)
+                {
+                    e.Render(context);
+                }
             }
         }
 
@@ -840,9 +872,19 @@ namespace HelixToolkit.Wpf.SharpDX
         void IRenderer.Update(TimeSpan timeSpan)
         {
             this.FpsCounter.AddFrame(timeSpan);
-            foreach (IRenderable e in this.Items)
+            if (EnableSharedModelMode && SharedModelContainer != null)
             {
-                e.Update(timeSpan);
+                foreach (var item in SharedModelContainer.Renderables)
+                {
+                    item.Update(timeSpan);
+                }
+            }
+            else
+            {
+                foreach (IRenderable e in this.Items)
+                {
+                    e.Update(timeSpan);
+                }
             }
         }
 

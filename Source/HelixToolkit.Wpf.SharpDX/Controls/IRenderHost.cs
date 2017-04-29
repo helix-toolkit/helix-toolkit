@@ -82,5 +82,9 @@ namespace HelixToolkit.Wpf.SharpDX
         bool EnableRenderFrustum { set; get; }
 
         uint MaxFPS { set; get; }
+
+        bool EnableSharingModelMode { set; get; }
+
+        IModelContainer SharedModelContainer { set; get; }
     }
 }

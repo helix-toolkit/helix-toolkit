@@ -272,7 +272,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var model = element as IHitable;
                 if (model != null)
                 {
-                    model.HitTest(ray, ref hits);
+                    model.HitTest(viewport.RenderContext, ray, ref hits);
                 }
             }
 
