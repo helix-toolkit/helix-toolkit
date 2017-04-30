@@ -20,7 +20,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <hx:ModelContainer3DX x:Name="sharedModels" RenderTechnique="{Binding RenderTechnique}">
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <!--<hx:MeshGeometryModel3D
                 FillMode="{Binding FillMode}"
@@ -50,7 +50,6 @@
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
                             CullMode="Back"
-                            FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
                             Geometry="{Binding Model}"
                             Material="{Binding Material}"
                             Transform="{Binding DynamicTransform}" />
@@ -75,7 +74,7 @@
             </hx:ItemsModel3D>-->
             <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" />
             <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />
+            <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
             <hx:OctreeLineGeometryModel3D
                 IsRendering="{Binding OctreeFrameVisible}"
                 LineColor="{Binding LineColor}"

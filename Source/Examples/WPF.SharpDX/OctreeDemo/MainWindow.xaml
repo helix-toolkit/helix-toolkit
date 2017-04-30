@@ -101,7 +101,7 @@
             </hx:ItemsModel3D>-->
             <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" />
             <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />
+            <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
             <hx:OctreeLineGeometryModel3D
                 IsRendering="{Binding OctreeFrameVisible}"
                 LineColor="{Binding LineColor}"
