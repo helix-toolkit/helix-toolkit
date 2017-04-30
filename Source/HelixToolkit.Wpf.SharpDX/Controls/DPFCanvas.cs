@@ -187,9 +187,14 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return device; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool EnableSharingModelMode { set; get; } = false;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IModelContainer SharedModelContainer { set; get; } = null;
 
         public static readonly DependencyProperty EffectsManagerProperty =

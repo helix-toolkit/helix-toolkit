@@ -204,21 +204,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public RenderContext RenderContext { get { return this.RenderHost?.RenderContext; } }
 
-
+        /// <summary>
+        /// <para>Return enumerable of all the rederable elements</para>
+        /// <para>If enabled shared model mode, the returned rederables are current viewport renderable plus shared models</para>
+        /// </summary>
         public IEnumerable<IRenderable> Renderables
         {
             get
             {
+                foreach (IRenderable item in Items)
+                {
+                    yield return item;
+                }
                 if(EnableSharedModelMode && SharedModelContainer != null)
                 {
                     foreach(var item in SharedModelContainer.Renderables)
-                    {
-                        yield return item;
-                    }
-                }
-                else
-                {
-                    foreach(IRenderable item in Items)
                     {
                         yield return item;
                     }

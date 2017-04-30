@@ -803,6 +803,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EnableDeferredRenderingProperty
             = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
+        /// <summary>
+        /// Used to create multiple viewport with shared models.
+        /// </summary>
         public static readonly DependencyProperty EnableSharedModelModeProperty
             = DependencyProperty.Register("EnableSharedModelMode", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) =>
             {
@@ -813,6 +816,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }));
 
+        /// <summary>
+        /// Binding to the element inherit with <see cref="IModelContainer"/> 
+        /// </summary>
         public static readonly DependencyProperty SharedModelContainerProperty
             = DependencyProperty.Register("SharedModelContainer", typeof(IModelContainer), typeof(Viewport3DX), new PropertyMetadata(null,
                 (d,e)=>
@@ -2682,6 +2688,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        /// Used to create multiple viewport with shared models.
+        /// </summary>
         public bool EnableSharedModelMode
         {
             set
@@ -2693,7 +2702,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(EnableSharedModelModeProperty);
             }
         }
-
+        /// <summary>
+        /// Binding to the element inherit with <see cref="IModelContainer"/> 
+        /// </summary>
         public IModelContainer SharedModelContainer
         {
             set
