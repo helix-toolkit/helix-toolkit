@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// The render-context is currently generated per frame
     /// Optimizations might be possible
     /// </summary>
-    public class RenderContext : IDisposable
+    public class RenderContext : IRenderMatrices, IDisposable
     {       
         internal Matrix worldMatrix = Matrix.Identity;
         internal Matrix viewMatrix;
@@ -45,6 +45,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     0, (float)(-ActualHeight / 2), 0, 0, 
                     0, 0, 1, 0,
                     (float)((ActualWidth - 1) / 2), (float)((ActualHeight - 1) / 2), 0, 1);
+            }
+        }
+
+        public Matrix ScreenViewProjectionMatrix
+        {
+            get
+            {
+                return GetScreenViewProjectionMatrix();
             }
         }
 

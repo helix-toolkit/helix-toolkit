@@ -220,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (!IsHitTestVisible || OctreeManager == null || OctreeManager.Octree == null)
             {

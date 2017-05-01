@@ -451,7 +451,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
-        public virtual bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public virtual bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (this.Visibility == Visibility.Collapsed)
             {

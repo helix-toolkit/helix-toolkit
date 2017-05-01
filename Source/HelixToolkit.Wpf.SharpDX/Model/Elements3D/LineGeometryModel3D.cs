@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
             model.isChanged = true;
         }
 
-        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             LineGeometry3D lineGeometry3D;
 
@@ -130,7 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3 sp, tp;
                 float sc, tc;
                 var distance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
-                var svpm = context.GetScreenViewProjectionMatrix();
+                var svpm = context.ScreenViewProjectionMatrix;
                 Vector4 sp4;
                 Vector4 tp4;
                 Vector3.Transform(ref sp, ref svpm, out sp4);

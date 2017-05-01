@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="ray"></param>
         /// <param name="hits"></param>
         /// <returns>Return all hitted details with distance from nearest to farest.</returns>
-        bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits);
+        bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits);
         
         //void OnMouse3DDown(object sender, RoutedEventArgs e);
         //void OnMouse3DUp(object sender, RoutedEventArgs e);

@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>        
-        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if ((this.Instances != null) && (this.Instances.Any()))
             {

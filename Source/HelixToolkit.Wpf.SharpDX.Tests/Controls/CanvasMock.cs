@@ -89,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             }
         }
 
-        public void SetDefaultRenderTargets()
+        public void SetDefaultRenderTargets(bool clear = true)
         {
         }
 

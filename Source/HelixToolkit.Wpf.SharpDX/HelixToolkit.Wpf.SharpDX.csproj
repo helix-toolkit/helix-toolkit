@@ -143,6 +143,7 @@
     <Compile Include="Controls\Disposer.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
     <Compile Include="Controls\DPFCanvasThreading.cs" />
+    <Compile Include="Controls\IRenderMatrices.cs" />
     <Compile Include="Controls\MultiViewports\IModelContainer.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />

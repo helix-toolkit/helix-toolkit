@@ -95,7 +95,7 @@
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
-        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (this.Visibility == Visibility.Collapsed)
             {
@@ -122,7 +122,7 @@
                 {
                     return false;
                 }
-                var svpm =  context.GetScreenViewProjectionMatrix();
+                var svpm =  context.ScreenViewProjectionMatrix;
                 var smvpm = this.modelMatrix * svpm;
 
                 var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);

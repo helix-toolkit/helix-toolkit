@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        public override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
 

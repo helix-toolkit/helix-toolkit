@@ -19,7 +19,7 @@ namespace Workitem10048
     {
         private Color? initialColor = null;
 
-        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (initialColor == null)
             {
@@ -38,7 +38,7 @@ namespace Workitem10048
         }
 
         // alternative way, 3.36 times faster, but wrong PointHit
-        protected bool HitTest2D(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        protected bool HitTest2D(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             LineGeometry3D lineGeometry3D;
 
@@ -51,7 +51,7 @@ namespace Workitem10048
             }
 
             // revert unprojection; probably better: overloaded HitTest() for LineGeometryModel3D?
-            var svpm = context.GetScreenViewProjectionMatrix();
+            var svpm = context.ScreenViewProjectionMatrix;
             var smvpm = this.modelMatrix * svpm;
             var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
             Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
