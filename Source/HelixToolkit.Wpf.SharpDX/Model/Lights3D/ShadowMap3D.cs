@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            
             this.Device.ImmediateContext.ClearDepthStencilView(depthViewSM, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
 
-            var root = context.Canvas.Renderable.Items;
+            var root = context.Canvas.Renderable.Renderables;
             foreach (var item in root)
             {
                 var light = item as Light3D;

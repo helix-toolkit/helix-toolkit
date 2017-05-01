@@ -30,7 +30,6 @@ namespace HelixToolkit.Wpf.SharpDX
        
         bool IsShadowMappingEnabled { get; }
         RenderTechnique RenderTechnique { get; }
-        ItemCollection Items { get; }
         Camera Camera { get; }
         Color4 BackgroundColor { get; }
 

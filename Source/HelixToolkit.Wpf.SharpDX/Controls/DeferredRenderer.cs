@@ -247,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                     // render lighting to buffer
                     this.SetSSBufferTarget(1, renderContext);
-                    this.RenderLighting(renderContext, renderRenderable.Items.OfType<ILight3D>());
+                    this.RenderLighting(renderContext, renderRenderable.Renderables.OfType<ILight3D>());
 
                     // reset default render targets render the buffer-merge pass
                     if (FXAAEnabled)
@@ -302,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                     // render lighting to ping-pong buffer 1
                     this.SetSSBufferTarget(1-target, renderContext);
-                    this.RenderLighting(renderContext, renderRenderable.Items.OfType<ILight3D>());
+                    this.RenderLighting(renderContext, renderRenderable.Renderables.OfType<ILight3D>());
 
                     // render merge-pass of buffer 0 and 1
                     if (FXAAEnabled)
@@ -363,7 +363,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
 
                 // set the lights
-                this.RenderLighting(renderContext, renderRenderable.Items.OfType<ILight3D>());
+                this.RenderLighting(renderContext, renderRenderable.Renderables.OfType<ILight3D>());
 
                 if (FXAAEnabled)
                 {
