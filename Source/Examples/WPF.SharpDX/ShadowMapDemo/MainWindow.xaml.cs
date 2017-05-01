@@ -32,5 +32,11 @@ namespace ShadowMapDemo
         {
             InitializeComponent();                                  
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new MultiViewportWin() { DataContext = this.DataContext };
+            win.Show();
+        }
     }
 }

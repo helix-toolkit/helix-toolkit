@@ -49,7 +49,8 @@ namespace ShadowMapDemo
 
         public double XValue { get { return this.xvalue; } set { this.SetXValue(value); } }
         public bool IsAnimated { get { return this.isAnimated; } set { this.OnAnimatedChanged(value); } }
-
+        public Camera Camera1 { private set; get; }
+        public Camera Camera2 { private set; get; }
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
@@ -68,7 +69,8 @@ namespace ShadowMapDemo
 
             // camera setup
             this.Camera = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
-
+            Camera1 = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
+            Camera2 = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
             // floor plane grid
             //Grid = LineBuilder.GenerateGrid();
             //GridColor = SharpDX.Color.Black;
