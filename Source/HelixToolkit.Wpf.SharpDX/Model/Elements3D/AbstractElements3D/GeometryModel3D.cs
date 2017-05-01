@@ -447,6 +447,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Checks if the ray hits the geometry of the model.
         /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
         /// </summary>
+        /// <param name="context">Render context from viewport</param>
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
