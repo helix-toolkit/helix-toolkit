@@ -12,6 +12,9 @@ using SharpDX.Direct3D11;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    /// <summary>
+    /// Use to contain shared models for multiple viewports.
+    /// </summary>
     public class ModelContainer3DX : ItemsControl, IModelContainer
     {
         /// <summary>
