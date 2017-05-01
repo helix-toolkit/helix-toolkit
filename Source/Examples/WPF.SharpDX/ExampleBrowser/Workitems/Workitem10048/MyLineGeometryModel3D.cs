@@ -19,14 +19,14 @@ namespace Workitem10048
     {
         private Color? initialColor = null;
 
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (initialColor == null)
             {
                 initialColor = this.Color;
             }
 
-            var result = base.HitTest(rayWS, ref hits); // this.HitTest2D(rayWS, ref hits);
+            var result = base.HitTest(context, rayWS, ref hits); // this.HitTest2D(rayWS, ref hits);
             var pressedMouseButtons = Viewport3DX.GetPressedMouseButtons();
 
             if (pressedMouseButtons == 0 || pressedMouseButtons.HasFlag(MouseButtons.Left))
@@ -38,21 +38,20 @@ namespace Workitem10048
         }
 
         // alternative way, 3.36 times faster, but wrong PointHit
-        protected bool HitTest2D(Ray rayWS, ref List<HitTestResult> hits)
+        protected bool HitTest2D(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             LineGeometry3D lineGeometry3D;
-            Viewport3DX viewport;
 
             if (this.Visibility == Visibility.Collapsed ||
                 this.IsHitTestVisible == false ||
-                (viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
+                context == null ||
                 (lineGeometry3D = this.Geometry as LineGeometry3D) == null)
             {
                 return false;
             }
 
             // revert unprojection; probably better: overloaded HitTest() for LineGeometryModel3D?
-            var svpm = viewport.GetScreenViewProjectionMatrix();
+            var svpm = context.ScreenViewProjectionMatrix;
             var smvpm = this.modelMatrix * svpm;
             var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
             Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);

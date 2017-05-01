@@ -10,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Controls;
 
     using global::SharpDX;
+    using System.Collections.Generic;
 
     public interface IRenderable
     {
@@ -29,10 +30,11 @@ namespace HelixToolkit.Wpf.SharpDX
        
         bool IsShadowMappingEnabled { get; }
         RenderTechnique RenderTechnique { get; }
-        ItemCollection Items { get; }
         Camera Camera { get; }
         Color4 BackgroundColor { get; }
 
         DeferredRenderer DeferredRenderer { get; set; }
+
+        IEnumerable<IRenderable> Renderables { get; }
     }
 }

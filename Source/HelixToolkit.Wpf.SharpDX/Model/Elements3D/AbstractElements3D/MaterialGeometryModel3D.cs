@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>        
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if ((this.Instances != null) && (this.Instances.Any()))
             {
@@ -244,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var b = this.Bounds;
                     this.PushMatrix(modelMatrix);
                     this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
-                    if (base.HitTest(rayWS, ref hits))
+                    if (base.HitTest(context, rayWS, ref hits))
                     {
                         hit = true;
                         var lastHit = hits[hits.Count - 1];
@@ -259,7 +259,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                return base.HitTest(rayWS, ref hits);
+                return base.HitTest(context, rayWS, ref hits);
             }
         }
 

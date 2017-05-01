@@ -38,8 +38,15 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     public interface IHitable : IVisible
-    {        
-        bool HitTest(Ray ray, ref List<HitTestResult> hits);
+    {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="context">Used to get view/projection matrices during hit test. <para>Only needs for screen space model hit test(line/point/billboard). Can be set to null for mesh geometry hit test.</para></param>
+        /// <param name="ray"></param>
+        /// <param name="hits"></param>
+        /// <returns>Return all hitted details with distance from nearest to farest.</returns>
+        bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits);
         
         //void OnMouse3DDown(object sender, RoutedEventArgs e);
         //void OnMouse3DUp(object sender, RoutedEventArgs e);

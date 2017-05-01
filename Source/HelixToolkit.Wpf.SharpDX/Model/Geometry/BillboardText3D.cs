@@ -146,6 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     previousCharacter = character;
                 }
             }
+            UpdateBounds();
         }
 
         private void DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)

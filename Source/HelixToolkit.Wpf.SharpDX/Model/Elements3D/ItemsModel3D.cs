@@ -365,12 +365,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool HitTest(global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (Octree != null)
             {
-                isHit = Octree.HitTest(this, modelMatrix, ray, ref hits);
+                isHit = Octree.HitTest(context, this, modelMatrix, ray, ref hits);
 #if DEBUG
                 if (isHit)
                 {
@@ -380,7 +380,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                isHit = base.HitTest(ray, ref hits);
+                isHit = base.HitTest(context, ray, ref hits);
             }
             return isHit;
         }

@@ -50,6 +50,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
         }
 
-        public abstract void DrawTexture();
+        public virtual void DrawTexture()
+        {
+            UpdateBounds();
+        }
     }
 }

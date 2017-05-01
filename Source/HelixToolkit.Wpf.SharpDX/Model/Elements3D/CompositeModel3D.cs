@@ -79,9 +79,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        public override bool HitTest(Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
-            bool hit = base.HitTest(ray, ref hits);
+            bool hit = base.HitTest(context, ray, ref hits);
 
             foreach (var c in this.Children)
             {
@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (tc != null)
                     {
                         tc.PushMatrix(this.modelMatrix);
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }
@@ -100,7 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }

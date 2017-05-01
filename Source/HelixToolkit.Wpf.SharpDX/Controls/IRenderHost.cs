@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Invalidates the current render and requests an update.
         /// </summary>
         void InvalidateRender();
-        void SetDefaultRenderTargets();
+        void SetDefaultRenderTargets(bool clear = true);
         void SetDefaultColorTargets(DepthStencilView dsv);
 
         IEffectsManager EffectsManager { get; set; }
@@ -82,5 +82,9 @@ namespace HelixToolkit.Wpf.SharpDX
         bool EnableRenderFrustum { set; get; }
 
         uint MaxFPS { set; get; }
+
+        bool EnableSharingModelMode { set; get; }
+
+        IModelContainer SharedModelContainer { set; get; }
     }
 }

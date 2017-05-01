@@ -220,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (!IsHitTestVisible || OctreeManager == null || OctreeManager.Octree == null)
             {
@@ -230,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var boundHits = new List<HitTestResult>();
                 bool isHit = false;
-                isHit = OctreeManager.Octree.HitTest(this, ModelMatrix, rayWS, ref boundHits);
+                isHit = OctreeManager.Octree.HitTest(context, this, ModelMatrix, rayWS, ref boundHits);
                 if (isHit)
                 {
                     var g = this.Geometry as MeshGeometry3D;
@@ -243,7 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             int instanceIdx = (int)hit.Tag;
                             instanceMatrix = Instances[instanceIdx];
                             this.PushMatrix(instanceMatrix);
-                            var h = g.Octree.HitTest(this, ModelMatrix, rayWS, ref hits);
+                            var h = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
                             isHit |= h;
                             this.PopMatrix();
                             if (h && hits.Count > 0)

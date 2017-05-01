@@ -187,6 +187,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return device; }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool EnableSharingModelMode { set; get; } = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IModelContainer SharedModelContainer { set; get; } = null;
 
         public static readonly DependencyProperty EffectsManagerProperty =
             DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas),
@@ -515,24 +524,25 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets()
+        public void SetDefaultRenderTargets(bool clear = true)
         {
-            SetDefaultRenderTargets(colorBuffer.Description.Width, colorBuffer.Description.Height);
+            SetDefaultRenderTargets(colorBuffer.Description.Width, colorBuffer.Description.Height, clear);
         }
 
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets(int width, int height)
+        public void SetDefaultRenderTargets(int width, int height, bool clear = true)
         {
             targetWidth = width;
             targetHeight = height;
 
             device.ImmediateContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
             device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
-
-            device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-            device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+            if (clear)
+            {
+                ClearRenderTarget();
+            }
         }
 
         /// <summary>
@@ -599,7 +609,15 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), device.ImmediateContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                        renderRenderable.Attach(this);
+                        if (EnableSharingModelMode && SharedModelContainer != null)
+                        {
+                            SharedModelContainer.CurrentRenderHost = this;
+                            renderRenderable.Attach(SharedModelContainer);
+                        }
+                        else
+                        {
+                            renderRenderable.Attach(this);
+                        }
 
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.GBuffer, out gbuffer);
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.Deferred, out deferred);
@@ -612,7 +630,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
-                        SetDefaultRenderTargets();
+                        SetDefaultRenderTargets(false);
                     }
                     catch (Exception ex)
                     {
@@ -625,7 +643,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
-
+                if (EnableSharingModelMode && SharedModelContainer != null)
+                {
+                    SharedModelContainer.CurrentRenderHost = this;
+                }
                 ClearRenderTarget();
 
                 if (RenderTechnique == deferred)

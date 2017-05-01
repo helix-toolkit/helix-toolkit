@@ -321,6 +321,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles > 0; } }
 
+        public bool EnableSharingModelMode
+        {
+            set; get;
+        } = false;
+
+        public IModelContainer SharedModelContainer
+        {
+            set; get;
+        } = null;
+
         /// <summary>
         /// 
         /// </summary>
@@ -605,15 +615,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets()
+        public void SetDefaultRenderTargets(bool clear = true)
         {
-            SetDefaultRenderTargets(colorBuffer.Description.Width, colorBuffer.Description.Height);
+            SetDefaultRenderTargets(colorBuffer.Description.Width, colorBuffer.Description.Height, clear);
         }
 
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets(int width, int height)
+        public void SetDefaultRenderTargets(int width, int height, bool clear = true)
         {
             targetWidth = width;
             targetHeight = height;
@@ -625,6 +635,10 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext?.DeviceContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
             renderContext?.DeviceContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
             renderContext?.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            if (clear)
+            {
+                ClearRenderTarget();
+            }
         }
 
         /// <summary>
@@ -690,7 +704,15 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), new DeviceContext(device));
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                        renderRenderable.Attach(this);
+                        if (EnableSharingModelMode && SharedModelContainer != null)
+                        {
+                            SharedModelContainer.CurrentRenderHost = this;
+                            renderRenderable.Attach(SharedModelContainer);
+                        }
+                        else
+                        {
+                            renderRenderable.Attach(this);
+                        }
 
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.GBuffer, out gbuffer);
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.Deferred, out deferred);
@@ -716,7 +738,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
-                ClearRenderTarget(true, true);
+                if (EnableSharingModelMode && SharedModelContainer != null)
+                {
+                    SharedModelContainer.CurrentRenderHost = this;
+                }
+                else
+                {
+                    ClearRenderTarget();
+                }
 
                 if (RenderTechnique == deferred)
                 {

@@ -43,9 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="ts"></param>
         public void AddFrame(TimeSpan ts)
-        {           
-            m_frames.Add(ts.TotalMilliseconds);
-            TrimFrames();
+        {
+            if (!m_frames.Add(ts.TotalMilliseconds))
+            {
+                m_frames.RemoveFirst();
+                m_frames.Add(ts.TotalMilliseconds);
+            }
+            //TrimFrames();
             UpdateValue();
         }
 
@@ -58,7 +62,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             var sec = AveragingInterval.TotalMilliseconds;
             var target = m_frames.Last - sec;           
-            while (m_frames.Count > 0 && (target > m_frames.First || m_frames.First > m_frames.Last)) //the second condition happened when switching tabs, the TotalMilliseconds reset to 0 from composite rendering
+            while (m_frames.Count > 10 && Math.Abs(m_frames.Last - m_frames.First) > MinimumUpdateDuration
+                && (target > m_frames.First || m_frames.First > m_frames.Last || m_frames.IsFull())) //the second condition happened when switching tabs, the TotalMilliseconds reset to 0 from composite rendering
             {
                 m_frames.RemoveFirst();
             }
@@ -100,7 +105,8 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 var dt = m_frames.Last - m_frames.First;
-                Value = dt > MinimumUpdateDuration ? m_frames.Count / (dt/1000) : -1;
+                if(dt > MinimumUpdateDuration)
+                    Value = m_frames.Count / (dt/1000);
             }
         }
 

@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             //Implementation pending.
             return false;

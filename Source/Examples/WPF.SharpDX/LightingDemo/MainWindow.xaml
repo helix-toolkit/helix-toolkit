@@ -19,11 +19,10 @@
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            Grid.Row="0" MSAA="Four"
+            Grid.Row="0" Grid.Column="0" MSAA="Four"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             IsShadowMappingEnabled="True"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -174,6 +173,7 @@
                     </CheckBox>
                 </Grid>
             </Expander>
+            <Button HorizontalAlignment="Right" Margin="0,0,10,0" Click="Button_Click">MultiViewport Demo</Button>
         </StackPanel>
         <StatusBar Grid.Row="0" VerticalAlignment="Bottom">
             <StatusBar.Background>

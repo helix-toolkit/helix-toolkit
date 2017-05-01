@@ -85,23 +85,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (this.Geometry == null || this.Geometry.Positions == null)
+            if (this.Geometry != null && this.Geometry.Positions != null && renderHost != null)
             {
-                this.Bounds = new BoundingBox();
-                this.BoundsSphere = new BoundingSphere();
+                var host = this.renderHost;
+                this.Detach();
+                this.Attach(host);
             }
-            else
-            {
-                this.Bounds = this.Geometry.Bound;
-                this.BoundsSphere = this.Geometry.BoundingSphere;
-                if (renderHost != null)
-                {
-                    var host = this.renderHost;
-                    this.Detach();
-                    this.Attach(host);
-                }
-            }
-        }
+        }              
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {
@@ -358,6 +348,11 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnAttached()
         {
             base.OnAttached();
+            if (Geometry != null)
+            {
+                this.Bounds = this.Geometry.Bound;
+                this.BoundsSphere = this.Geometry.BoundingSphere;
+            }
             OnRasterStateChanged();
         }
 
@@ -452,10 +447,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Checks if the ray hits the geometry of the model.
         /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
         /// </summary>
+        /// <param name="context">Render context from viewport</param>
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
-        public virtual bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public virtual bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (this.Visibility == Visibility.Collapsed)
             {
@@ -471,7 +467,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (g.Octree != null)
             {
-                isHit = g.Octree.HitTest(this, ModelMatrix, rayWS, ref hits);
+                isHit = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
             }
             else
             {

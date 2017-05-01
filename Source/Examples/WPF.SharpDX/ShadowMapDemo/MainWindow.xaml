@@ -133,6 +133,7 @@
                     
                 </Grid>
             </Expander>
+            <Button HorizontalAlignment="Right" Click="Button_Click">MultiViewports</Button>
         </StackPanel>
                 
         <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
