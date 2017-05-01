@@ -615,15 +615,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets()
+        public void SetDefaultRenderTargets(bool clear = true)
         {
-            SetDefaultRenderTargets(colorBuffer.Description.Width, colorBuffer.Description.Height);
+            SetDefaultRenderTargets(colorBuffer.Description.Width, colorBuffer.Description.Height, clear);
         }
 
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets(int width, int height)
+        public void SetDefaultRenderTargets(int width, int height, bool clear = true)
         {
             targetWidth = width;
             targetHeight = height;
@@ -635,6 +635,10 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext?.DeviceContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
             renderContext?.DeviceContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
             renderContext?.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            if (clear)
+            {
+                ClearRenderTarget();
+            }
         }
 
         /// <summary>

@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     { currentRenderHost.ExceptionOccurred -= ExceptionOccurred; }
                     currentRenderHost = value;
                     currentRenderHost.ExceptionOccurred += ExceptionOccurred;
-                    currentRenderHost.SetDefaultRenderTargets();
+                    currentRenderHost.SetDefaultRenderTargets(false);
                 }
             }
             get
@@ -153,9 +153,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public void SetDefaultRenderTargets()
+        public void SetDefaultRenderTargets(bool clear = true)
         {
-            CurrentRenderHost.SetDefaultRenderTargets();
+            CurrentRenderHost.SetDefaultRenderTargets(clear);
         }
 
         public void SetDefaultColorTargets(DepthStencilView dsv)

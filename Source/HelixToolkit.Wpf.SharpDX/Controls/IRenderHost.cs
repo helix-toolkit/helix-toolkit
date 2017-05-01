@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Invalidates the current render and requests an update.
         /// </summary>
         void InvalidateRender();
-        void SetDefaultRenderTargets();
+        void SetDefaultRenderTargets(bool clear = true);
         void SetDefaultColorTargets(DepthStencilView dsv);
 
         IEffectsManager EffectsManager { get; set; }
