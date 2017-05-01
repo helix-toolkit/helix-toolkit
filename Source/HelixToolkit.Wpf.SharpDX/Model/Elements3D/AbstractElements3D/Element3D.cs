@@ -72,6 +72,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
+            if (IsAttached)
+            {
+                return;
+            }
             this.renderTechnique = SetRenderTechnique(host);
             renderHost = host;
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);

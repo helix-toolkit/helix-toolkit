@@ -26,6 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using MouseButtons = System.Windows.Forms.MouseButtons;
+    using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -201,6 +203,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Get current render context
         /// </summary>
         public RenderContext RenderContext { get { return this.RenderHost?.RenderContext; } }
+
+        /// <summary>
+        /// <para>Return enumerable of all the rederable elements</para>
+        /// <para>If enabled shared model mode, the returned rederables are current viewport renderable plus shared models</para>
+        /// </summary>
+        public IEnumerable<IRenderable> Renderables
+        {
+            get
+            {
+                foreach (IRenderable item in Items)
+                {
+                    yield return item;
+                }
+                if(EnableSharedModelMode && SharedModelContainer != null)
+                {
+                    foreach(var item in SharedModelContainer.Renderables)
+                    {
+                        yield return item;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
@@ -546,6 +570,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.RenderHost.EnableRenderFrustum = this.EnableRenderFrustum;
             this.RenderHost.RenderCycles = this.RenderCycles;
             this.RenderHost.MaxFPS = (uint)this.MaxFPS;
+            this.RenderHost.EnableSharingModelMode = this.EnableSharedModelMode;
+            this.RenderHost.SharedModelContainer = this.SharedModelContainer;
             if (this.RenderHost != null)
             {
                 this.RenderHost.ExceptionOccurred += this.HandleRenderException;
@@ -802,11 +828,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         void IRenderer.Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Items)
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Attach(host);
             }
-
             StopWatch.Start();
         }
 
@@ -814,8 +839,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Detaches the elements.
         /// </summary>
         void IRenderer.Detach()
-        {
-            foreach (IRenderable e in this.Items)
+        {           
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Detach();
             }
@@ -826,8 +851,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void IRenderer.Render(RenderContext context)
         {
-            context.Camera = this.Camera;
-            foreach (IRenderable e in this.Items)
+            context.Camera = this.Camera;                  
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Render(context);
             }
@@ -839,8 +864,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="timeSpan">The time span.</param>
         void IRenderer.Update(TimeSpan timeSpan)
         {
-            this.FpsCounter.AddFrame(timeSpan);
-            foreach (IRenderable e in this.Items)
+            this.FpsCounter.AddFrame(timeSpan);           
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Update(timeSpan);
             }

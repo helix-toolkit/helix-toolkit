@@ -63,6 +63,32 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             set;get;
         }
 
+        public bool EnableSharingModelMode
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IModelContainer SharedModelContainer
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public void SetDefaultRenderTargets()
         {
         }

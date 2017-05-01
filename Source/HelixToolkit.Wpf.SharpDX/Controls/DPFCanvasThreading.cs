@@ -321,6 +321,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles > 0; } }
 
+        public bool EnableSharingModelMode
+        {
+            set; get;
+        } = false;
+
+        public IModelContainer SharedModelContainer
+        {
+            set; get;
+        } = null;
+
         /// <summary>
         /// 
         /// </summary>
@@ -690,7 +700,15 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), new DeviceContext(device));
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                        renderRenderable.Attach(this);
+                        if (EnableSharingModelMode && SharedModelContainer != null)
+                        {
+                            SharedModelContainer.CurrentRenderHost = this;
+                            renderRenderable.Attach(SharedModelContainer);
+                        }
+                        else
+                        {
+                            renderRenderable.Attach(this);
+                        }
 
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.GBuffer, out gbuffer);
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.Deferred, out deferred);
@@ -716,7 +734,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
-                ClearRenderTarget(true, true);
+                if (EnableSharingModelMode && SharedModelContainer != null)
+                {
+                    SharedModelContainer.CurrentRenderHost = this;
+                }
+                else
+                {
+                    ClearRenderTarget();
+                }
 
                 if (RenderTechnique == deferred)
                 {

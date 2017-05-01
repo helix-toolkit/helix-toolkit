@@ -187,6 +187,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return device; }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool EnableSharingModelMode { set; get; } = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IModelContainer SharedModelContainer { set; get; } = null;
 
         public static readonly DependencyProperty EffectsManagerProperty =
             DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas),
@@ -599,7 +608,15 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), device.ImmediateContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                        renderRenderable.Attach(this);
+                        if (EnableSharingModelMode && SharedModelContainer != null)
+                        {
+                            SharedModelContainer.CurrentRenderHost = this;
+                            renderRenderable.Attach(SharedModelContainer);
+                        }
+                        else
+                        {
+                            renderRenderable.Attach(this);
+                        }
 
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.GBuffer, out gbuffer);
                         RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.Deferred, out deferred);
@@ -625,8 +642,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
-
-                ClearRenderTarget();
+                if (EnableSharingModelMode && SharedModelContainer != null)
+                {
+                    SharedModelContainer.CurrentRenderHost = this;
+                }
+                else
+                {
+                    ClearRenderTarget();
+                }
 
                 if (RenderTechnique == deferred)
                 {

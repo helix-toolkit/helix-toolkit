@@ -318,7 +318,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             // disable hittesting for patchgeometry for now
             // need to be implemented

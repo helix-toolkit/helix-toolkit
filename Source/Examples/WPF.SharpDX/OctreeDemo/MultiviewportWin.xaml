@@ -1,5 +1,4 @@
-﻿<Window
-    x:Class="OctreeDemo.MainWindow"
+﻿<Window x:Class="OctreeDemo.MultiviewportWin"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +7,7 @@
     xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:local="clr-namespace:OctreeDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
+    Title="MultiViewportWindow"
     Width="800"
     Height="600"
     mc:Ignorable="d">
@@ -16,37 +15,12 @@
         <Grid.Resources>
             <local:BindingProxy x:Key="MainContext" Data="{Binding}" />
         </Grid.Resources>
-        <hx:Viewport3DX
-            x:Name="view1"
-            Title="{Binding Title}"
-            Camera="{Binding Camera}"
-            CameraMode="WalkAround"
-            CameraRotationMode="Trackball"
-            CoordinateSystemLabelForeground="White"
-            EnableRenderFrustum="True"
-            RenderTechnique="{Binding RenderTechnique}"
-            ShowCoordinateSystem="False"
-            ShowFrameRate="True"
-            TextBrush="Black"
-            UseDefaultGestures="False">
-            <hx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
-                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
-                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
-                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
-                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
-                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
-                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
-                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
-                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                <!--<MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />-->
-            </hx:Viewport3DX.InputBindings>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <ie:CallMethodAction MethodName="OnMouseLeftButtonDownHandler" TargetObject="{Binding}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <hx:ModelContainer3DX x:Name="sharedModels" RenderTechnique="{Binding RenderTechnique}">
+            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <!--<hx:MeshGeometryModel3D
                 FillMode="{Binding FillMode}"
@@ -76,7 +50,6 @@
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
                             CullMode="Back"
-                            FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
                             Geometry="{Binding Model}"
                             Material="{Binding Material}"
                             Transform="{Binding DynamicTransform}" />
@@ -106,40 +79,67 @@
                 IsRendering="{Binding OctreeFrameVisible}"
                 LineColor="{Binding LineColor}"
                 Octree="{Binding DefaultModel.Octree}" />
+        </hx:ModelContainer3DX>
+        <hx:Viewport3DX
+            x:Name="view1" Grid.Column="0"
+            Title="{Binding Title}"
+            Camera="{Binding Camera1}"
+            CameraMode="WalkAround"
+            CameraRotationMode="Trackball"
+            CoordinateSystemLabelForeground="White"
+            EnableRenderFrustum="True"            
+            ShowCoordinateSystem="False"
+            ShowFrameRate="True"
+            TextBrush="Black"
+            UseDefaultGestures="False" EnableSharedModelMode="True" SharedModelContainer="{Binding ElementName=sharedModels}">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <!--<MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />-->
+            </hx:Viewport3DX.InputBindings>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <ie:CallMethodAction MethodName="OnMouseLeftButtonDownHandler" TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
         </hx:Viewport3DX>
-        <StackPanel
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Orientation="Vertical">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type CheckBox}">
-                    <Setter Property="Margin" Value="4" />
-                </Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Margin" Value="4" />
-                </Style>
-            </StackPanel.Resources>
-            <CheckBox IsChecked="{Binding Visibility}">Model Visible</CheckBox>
-            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
-            <CheckBox IsChecked="{Binding HitThrough}">Hit Through</CheckBox>
-            <!--<CheckBox IsChecked="{Binding UseOctreeHitTest}">Enable Octree</CheckBox>-->
-            <CheckBox IsChecked="{Binding AutoDeleteEmptyNode}">Auto Delete Empty Node</CheckBox>
-            <CheckBox IsChecked="{Binding OctreeFrameVisible}">Octree Wireframe</CheckBox>
-            <Button Command="{Binding AddModelCommand}" IsEnabled="{Binding Enabled}">Add Model</Button>
-            <Button Command="{Binding RemoveModelCommand}" IsEnabled="{Binding Enabled}">Remove Model</Button>
-            <Button Command="{Binding ClearModelCommand}">Clear Models</Button>
-            <Button Command="{Binding AutoTestCommand}">Auto Test(Add/Remove)</Button>
-            <Button Command="{Binding MultiViewportCommand}">MultiViewport</Button>
-        </StackPanel>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <TextBlock>Change selected sphere radius</TextBlock>
-            <Slider
-                Width="200"
-                Maximum="20"
-                Minimum="1"
-                Value="{Binding SphereSize}" />
-            <TextBlock Text="{Binding SphereSize}" />
-        </StackPanel>
+        <hx:Viewport3DX
+            x:Name="view2" Grid.Column="1"
+            Title="{Binding Title}"
+            Camera="{Binding Camera2}"
+            CameraMode="WalkAround"
+            CameraRotationMode="Trackball"
+            CoordinateSystemLabelForeground="White"
+            EnableRenderFrustum="True"            
+            ShowCoordinateSystem="False"
+            ShowFrameRate="True"
+            TextBrush="Black"
+            UseDefaultGestures="False" EnableSharedModelMode="True" SharedModelContainer="{Binding ElementName=sharedModels}">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <!--<MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />-->
+            </hx:Viewport3DX.InputBindings>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <ie:CallMethodAction MethodName="OnMouseLeftButtonDownHandler" TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </hx:Viewport3DX>
     </Grid>
 </Window>
-

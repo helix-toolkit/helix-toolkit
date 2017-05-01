@@ -33,5 +33,11 @@ namespace LightingDemo
             InitializeComponent();
             this.DataContext = new MainViewModel();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MultiViewport viewportWin = new MultiViewport() { DataContext = this.DataContext };
+            viewportWin.Show();
+        }
     }
 }

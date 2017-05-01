@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IHitable : IVisible
     {        
-        bool HitTest(Ray ray, ref List<HitTestResult> hits);
+        bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits);
         
         //void OnMouse3DDown(object sender, RoutedEventArgs e);
         //void OnMouse3DUp(object sender, RoutedEventArgs e);
