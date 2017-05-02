@@ -430,7 +430,7 @@ namespace HelixToolkit.Wpf.SharpDX
             billboardType = billboardGeometry.Type;
             billboardGeometry.DrawTexture();
 
-            var position = billboardGeometry.Positions.Array;
+            var position = billboardGeometry.Positions;
             var vertexCount = billboardGeometry.Positions.Count;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
                 vertexArrayBuffer = new BillboardVertex[vertexCount];

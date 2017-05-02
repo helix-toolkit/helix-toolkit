@@ -114,7 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, CubeVertex.SizeInBytes, this.geometry.Positions.Select((x, ii) => new CubeVertex() { Position = new Vector4(x, 1f) }).ToArray());
 
                 // --- set up index buffer
-                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
+                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.IndicesArray);
 
                 // --- set up rasterizer states
                 var rasterStateDesc = new RasterizerStateDescription()

@@ -26,7 +26,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             : base(collection)
         {
         }
-
+        /// <summary>
+        /// Using with caustious(Array Length >= List.Count). Avoid using as much as possible.
+        /// </summary>
         internal T[] Array
         {
             get

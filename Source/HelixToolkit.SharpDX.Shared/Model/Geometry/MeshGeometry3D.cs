@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !NETFX_CORE
         protected override IOctree CreateOctree(OctreeBuildParameter parameter)
         {
-            return new MeshGeometryOctree(this.Positions, this.Indices, parameter);
+            return new MeshGeometryOctree(this.PositionArray, this.IndicesArray, parameter);
         }
 #endif
     }

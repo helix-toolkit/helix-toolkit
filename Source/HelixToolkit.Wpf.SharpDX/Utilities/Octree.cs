@@ -1116,17 +1116,17 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
-        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, Queue<IOctree> queueCache = null)
+        public MeshGeometryOctree(Vector3[] positions, IList<int> indices, Queue<IOctree> queueCache = null)
             : this(positions, indices, null, queueCache)
         {
         }
-        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices,
+        public MeshGeometryOctree(Vector3[] positions, IList<int> indices,
             OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
             : base(null, parameter, queueCache)
         {
             Positions = positions;
             Indices = indices;
-            Bound = BoundingBox.FromPoints(positions.Array);
+            Bound = BoundingBox.FromPoints(positions);
             Objects = new List<Tuple<int, BoundingBox>>(indices.Count / 3);
             // Construct triangle index and its bounding box tuple
             foreach (var i in Enumerable.Range(0, indices.Count / 3))
@@ -1320,22 +1320,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class PointGeometryOctree : OctreeBase<int>
     {
-        private Vector3Collection Positions;
+        private Vector3[] Positions;
         private static readonly Vector3 BoundOffset = new Vector3(0.0001f);
-        public PointGeometryOctree(Vector3Collection positions, Queue<IOctree> queueCache = null)
+        public PointGeometryOctree(Vector3[] positions, Queue<IOctree> queueCache = null)
             : this(positions, null, queueCache)
         {
         }
-        public PointGeometryOctree(Vector3Collection positions,
+        public PointGeometryOctree(Vector3[] positions,
             OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
                : base(null, parameter, queueCache)
         {
             Positions = positions;
-            Bound = BoundingBox.FromPoints(positions.Array);
-            Objects = Enumerable.Range(0, Positions.Count).ToList();
+            Bound = BoundingBox.FromPoints(positions);
+            Objects = Enumerable.Range(0, Positions.Length).ToList();
         }
 
-        protected PointGeometryOctree(BoundingBox bound, Vector3Collection positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
+        protected PointGeometryOctree(BoundingBox bound, Vector3[] positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
             Queue<IOctree> queueCache)
             : base(ref bound, list, parent, paramter, queueCache)
         {

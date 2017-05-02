@@ -366,7 +366,7 @@
         /// </summary>
         private Geometry3D.PointsVertex[] CreateVertexArray()
         {
-            var positions = this.Geometry.Positions.Array;
+            var positions = this.Geometry.Positions;
             var vertexCount = this.Geometry.Positions.Count;
             var color = this.Color;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)

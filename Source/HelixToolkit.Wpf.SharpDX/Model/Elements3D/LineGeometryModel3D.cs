@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (e.PropertyName.Equals(nameof(LineGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
-                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
+                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.IndicesArray);
                     InvalidateRender();
                 }
                 else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
@@ -274,7 +274,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- set up buffers            
                 CreateVertexBuffer();
                 // --- set up indexbuffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.IndicesArray);
             }
             else
             {
@@ -447,7 +447,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private LinesVertex[] CreateLinesVertexArray()
         {
-            var positions = this.Geometry.Positions.Array;
+            var positions = this.Geometry.Positions;
             var vertexCount = this.Geometry.Positions.Count;
             var color = this.Color;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)

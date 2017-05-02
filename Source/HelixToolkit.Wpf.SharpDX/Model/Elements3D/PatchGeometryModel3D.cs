@@ -231,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, CreateDefaultVertexArray(), geometry.Positions.Count);
 
                 // --- init index buffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.IndicesArray);
             }
             else
             {
@@ -343,13 +343,13 @@ namespace HelixToolkit.Wpf.SharpDX
         private DefaultVertex[] CreateDefaultVertexArray()
         {
             var geometry = (MeshGeometry3D)this.Geometry;
-            var colors = geometry.Colors != null ? geometry.Colors.Array : null;
-            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.Array : null;
+            var colors = geometry.Colors != null ? geometry.Colors : null;
+            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates : null;
             var texScale = this.TextureCoodScale;
-            var normals = geometry.Normals != null ? geometry.Normals.Array : null;
-            var tangents = geometry.Tangents != null ? geometry.Tangents.Array : null;
-            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
-            var positions = geometry.Positions.Array;
+            var normals = geometry.Normals != null ? geometry.Normals : null;
+            var tangents = geometry.Tangents != null ? geometry.Tangents : null;
+            var bitangents = geometry.BiTangents != null ? geometry.BiTangents : null;
+            var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
                 vertexArrayBuffer = new DefaultVertex[vertexCount];
