@@ -135,8 +135,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
-                    if (this.Geometry.IndicesArray != null && this.Geometry.IndicesArray.Length > 0)
-                    { this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.IndicesArray); }
+                    if (this.Geometry.Indices != null && this.Geometry.Indices.Count > 0)
+                    { this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array, this.Geometry.Indices.Count); }
                     InvalidateRender();
                 }
                 else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
@@ -183,7 +183,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 CreateVertexBuffer(CreateDefaultVertexArray);
                 Disposer.RemoveAndDispose(ref this.indexBuffer);
                 // --- init index buffer
-                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.IndicesArray);
+                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array, geometry.Indices.Count);
             }
             else
             {

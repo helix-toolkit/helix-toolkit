@@ -19,7 +19,7 @@
 
         protected override IOctree CreateOctree(OctreeBuildParameter parameter)
         {
-            return new PointGeometryOctree(PositionArray, parameter);
+            return new PointGeometryOctree(Positions, parameter);
         }
 
         protected override bool CanCreateOctree()

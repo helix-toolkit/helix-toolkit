@@ -231,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, CreateDefaultVertexArray(), geometry.Positions.Count);
 
                 // --- init index buffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.IndicesArray);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array, Geometry.Indices.Count);
             }
             else
             {

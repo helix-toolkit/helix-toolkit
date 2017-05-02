@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Polygon3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector3Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />

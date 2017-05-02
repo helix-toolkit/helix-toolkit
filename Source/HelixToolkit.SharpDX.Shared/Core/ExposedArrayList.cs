@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
         }
         /// <summary>
-        /// Using with caustious(Array Length >= List.Count). Avoid using as much as possible.
+        /// Using with caustious(Array Length >= List.Count).
         /// </summary>
         internal T[] Array
         {
