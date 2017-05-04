@@ -90,6 +90,14 @@ namespace HelixToolkit.Wpf.SharpDX
         bool FindNearestPointBySphere(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result);
 
         /// <summary>
+        /// Search nearest point from point on mesh
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="result"></param>
+        /// <param name="heuristic">Use huristic search, return proximated nearest point. Set to 1.0f to disable heuristic. Value must be 0.1f ~ 1.0f</param>
+        /// <returns></returns>
+        bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> result, float heuristicSearchFactor = 1f);
+        /// <summary>
         /// Search nearest point by a point and search radius
         /// </summary>
         /// <param name="point"></param>
@@ -662,6 +670,46 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             hitQueue.Clear();
+            return isHit;
+        }
+
+        public virtual bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
+        {
+            if (results == null)
+            {
+                results = new List<HitTestResult>();
+            }
+            var hitQueue = queue;
+            hitQueue.Clear();
+            hitQueue.Enqueue(this);
+
+            var sphere = new global::SharpDX.BoundingSphere(point, float.MaxValue);
+            bool isIntersect = false;
+            bool isHit = false;
+            heuristicSearchFactor = Math.Min(1.0f, Math.Max(0.1f, heuristicSearchFactor));
+            while (hitQueue.Count > 0)
+            {
+                var node = hitQueue.Dequeue();
+                isHit |= node.FindNearestPointBySphereExcludeChild(context, ref sphere, ref results, ref isIntersect);
+
+                if (isIntersect)
+                {
+                    if (results.Count > 0)
+                    {
+                        sphere.Radius = (float)results[0].Distance * heuristicSearchFactor;
+                    }
+                    if (node.HasChildren)
+                    {
+                        foreach (var child in node.ChildNodes)
+                        {
+                            if (child != null)
+                            {
+                                hitQueue.Enqueue(child);
+                            }
+                        }
+                    }
+                }
+            }
             return isHit;
         }
 
