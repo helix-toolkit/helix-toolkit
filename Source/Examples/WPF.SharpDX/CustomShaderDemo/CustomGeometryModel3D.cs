@@ -45,7 +45,7 @@ namespace CustomShaderDemo
         protected Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
 
         public static readonly DependencyProperty RequiresPerVertexColorationProperty =
-            DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false));
 
         public bool RequiresPerVertexColoration
         {
