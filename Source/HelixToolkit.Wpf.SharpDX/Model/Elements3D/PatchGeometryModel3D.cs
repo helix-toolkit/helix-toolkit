@@ -220,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
             AttachMaterial();
 
             // -- get geometry
-            var geometry = Geometry as MeshGeometry3D;
+            var geometry = geometryInternal as MeshGeometry3D;
 
             // -- get geometry
             if (geometry != null)
@@ -231,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, CreateDefaultVertexArray(), geometry.Positions.Count);
 
                 // --- init index buffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array, Geometry.Indices.Count);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometryInternal.Indices.Array, geometryInternal.Indices.Count);
             }
             else
             {
@@ -309,7 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX
             shaderPass.Apply(renderContext.DeviceContext);
 
             // --- render the geometry
-            renderContext.DeviceContext.DrawIndexed(Geometry.Indices.Count, 0, 0);
+            renderContext.DeviceContext.DrawIndexed(geometryInternal.Indices.Count, 0, 0);
         }
 
         /// <summary>
@@ -342,7 +342,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private DefaultVertex[] CreateDefaultVertexArray()
         {
-            var geometry = (MeshGeometry3D)this.Geometry;
+            var geometry = (MeshGeometry3D)this.geometryInternal;
             var colors = geometry.Colors != null ? geometry.Colors : null;
             var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates : null;
             var texScale = this.TextureCoodScale;

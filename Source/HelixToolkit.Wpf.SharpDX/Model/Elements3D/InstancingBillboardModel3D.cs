@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CheckGeometry()
         {
-            return Geometry is IBillboardText;
+            return geometryInternal is IBillboardText;
         }
 
         protected override void OnRasterStateChanged()
@@ -161,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX
             vViewport = effect.GetVariableByName("vViewport").AsVector();
 
             // --- get geometry
-            var geometry = Geometry as IBillboardText;
+            var geometry = geometryInternal as IBillboardText;
             if (geometry == null)
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
@@ -226,7 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext renderContext)
         {
             // --- check to render the model
-            var geometry = Geometry as IBillboardText;
+            var geometry = geometryInternal as IBillboardText;
             if (geometry == null)
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
@@ -262,7 +262,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 billboardAlphaTextureVariable.SetResource(billboardAlphaTextureView);
             }
-            var vertexCount = Geometry.Positions.Count;
+            var vertexCount = geometryInternal.Positions.Count;
             if (this.hasInstances)
             {
                 if (this.isInstanceChanged)
@@ -346,7 +346,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private BillboardVertex[] CreateBillboardVertexArray()
         {
-            var billboardGeometry = Geometry as IBillboardText;
+            var billboardGeometry = geometryInternal as IBillboardText;
 
             // Gather all of the textInfo offsets.
             // These should be equal in number to the positions.

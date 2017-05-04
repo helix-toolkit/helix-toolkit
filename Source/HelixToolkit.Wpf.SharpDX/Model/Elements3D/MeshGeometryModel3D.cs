@@ -135,8 +135,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
-                    if (this.Geometry.Indices != null && this.Geometry.Indices.Count > 0)
-                    { this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array, this.Geometry.Indices.Count); }
+                    if (this.geometryInternal.Indices != null && this.geometryInternal.Indices.Count > 0)
+                    { this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.geometryInternal.Indices.Array, this.geometryInternal.Indices.Count); }
                     InvalidateRender();
                 }
                 else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var texScale = TextureCoodScale;
 
             // --- get geometry
-            var geometry = this.Geometry as MeshGeometry3D;
+            var geometry = this.geometryInternal as MeshGeometry3D;
 
             // -- set geometry if given
             if (geometry != null)
@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void CreateVertexBuffer(Func<DefaultVertex[]> updateFunction)
         {
             // --- get geometry
-            var geometry = this.Geometry as MeshGeometry3D;
+            var geometry = this.geometryInternal as MeshGeometry3D;
 
             // -- set geometry if given
             if (geometry != null && geometry.Positions != null)
@@ -300,7 +300,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw
-                renderContext.DeviceContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
+                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
                 this.bHasInstances.Set(false);
             }
             else
@@ -312,7 +312,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(renderContext.DeviceContext);
                 // --- draw
-                renderContext.DeviceContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
+                renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
             }
         }
 
@@ -329,7 +329,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private DefaultVertex[] CreateDefaultVertexArray()
         {
-            var geometry = (MeshGeometry3D)this.Geometry;
+            var geometry = (MeshGeometry3D)this.geometryInternal;
             var colors = geometry.Colors != null ? geometry.Colors : null;
             var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates : null;
             var texScale = this.TextureCoodScale;
@@ -356,7 +356,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private DefaultVertex[] UpdateTextureOnly()
         {
-            var geometry = (MeshGeometry3D)this.Geometry;
+            var geometry = (MeshGeometry3D)this.geometryInternal;
             var vertexCount = geometry.Positions.Count;
             if (vertexArrayBuffer != null && geometry.TextureCoordinates != null && vertexArrayBuffer.Length >= vertexCount)
             {
@@ -381,7 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private DefaultVertex[] UpdatePositionOnly()
         {
-            var geometry = (MeshGeometry3D)this.Geometry;
+            var geometry = (MeshGeometry3D)this.geometryInternal;
             var vertexCount = geometry.Positions.Count;
             if (vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount)
             {
@@ -402,15 +402,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private DefaultVertex[] UpdateColorsOnly()
         {
-            var geometry = (MeshGeometry3D)this.Geometry;
-            var vertexCount = geometry.Positions.Count;
-            if (vertexArrayBuffer != null && geometry.Colors != null && vertexArrayBuffer.Length >= vertexCount)
+            var vertexCount = geometryInternal.Positions.Count;
+            if (vertexArrayBuffer != null && geometryInternal.Colors != null && vertexArrayBuffer.Length >= vertexCount)
             {
-                if (geometry.Colors != null && geometry.Colors.Count == vertexCount)
+                if (geometryInternal.Colors != null && geometryInternal.Colors.Count == vertexCount)
                 {
                     for (int i = 0; i < vertexCount; ++i)
                     {
-                        vertexArrayBuffer[i].Color = geometry.Colors[i];
+                        vertexArrayBuffer[i].Color = geometryInternal.Colors[i];
                     }
                 }
                 else

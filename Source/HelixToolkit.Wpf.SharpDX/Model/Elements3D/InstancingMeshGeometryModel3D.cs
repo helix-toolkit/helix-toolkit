@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw
-                renderContext.DeviceContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
+                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
             }
             this.bHasInstances.Set(false);
             this.hasInstanceParamVar.Set(false);
@@ -233,7 +233,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 isHit = OctreeManager.Octree.HitTest(context, this, ModelMatrix, rayWS, ref boundHits);
                 if (isHit)
                 {
-                    var g = this.Geometry as MeshGeometry3D;
+                    var g = this.geometryInternal as MeshGeometry3D;
                     isHit = false;
                     Matrix instanceMatrix;
                     if (g.Octree != null)

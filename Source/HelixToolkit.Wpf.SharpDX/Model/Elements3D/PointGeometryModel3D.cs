@@ -101,20 +101,20 @@
             {
                 return false;
             }
-            if (this.IsHitTestVisible == false || this.Geometry == null)
+            if (this.IsHitTestVisible == false || this.geometryInternal == null)
             {
                 return false;
             }
-            if (Geometry.Octree != null)
+            if (geometryInternal.Octree != null)
             {
-                return Geometry.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
+                return geometryInternal.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
             }
             else
             {
                 PointGeometry3D pointGeometry3D;
 
                 if (context == null ||
-                    (pointGeometry3D = this.Geometry as PointGeometry3D) == null)
+                    (pointGeometry3D = this.geometryInternal as PointGeometry3D) == null)
                 {
                     return false;
                 }
@@ -204,7 +204,7 @@
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateVertexBuffer()
         {
-            var geometry = Geometry as PointGeometry3D;
+            var geometry = geometryInternal as PointGeometry3D;
             if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
@@ -250,7 +250,7 @@
 
         protected override bool CheckGeometry()
         {
-            if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0)
+            if (this.geometryInternal == null || this.geometryInternal.Positions == null || this.geometryInternal.Positions.Count == 0)
             {
                 return false;
             }
@@ -350,7 +350,7 @@
             // --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
 
-            renderContext.DeviceContext.Draw(this.Geometry.Positions.Count, 0);
+            renderContext.DeviceContext.Draw(this.geometryInternal.Positions.Count, 0);
         }
 
         /// <summary>
@@ -366,15 +366,15 @@
         /// </summary>
         private Geometry3D.PointsVertex[] CreateVertexArray()
         {
-            var positions = this.Geometry.Positions;
-            var vertexCount = this.Geometry.Positions.Count;
+            var positions = this.geometryInternal.Positions;
+            var vertexCount = this.geometryInternal.Positions.Count;
             var color = this.Color;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
                 vertexArrayBuffer = new Geometry3D.PointsVertex[vertexCount];
 
-            if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
+            if (this.geometryInternal.Colors != null && this.geometryInternal.Colors.Any())
             {
-                var colors = this.Geometry.Colors;
+                var colors = this.geometryInternal.Colors;
                 for (var i = 0; i < vertexCount; i++)
                 {
                     vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);

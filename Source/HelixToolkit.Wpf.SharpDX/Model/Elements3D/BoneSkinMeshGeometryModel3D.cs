@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.hasBoneParameter)
             {
-                if (isBoneParamChanged && this.VertexBoneIds.Count >= Geometry.Positions.Count)
+                if (isBoneParamChanged && this.VertexBoneIds.Count >= geometryInternal.Positions.Count)
                 {
                     if (vertexBoneParamsBuffer == null || this.vertexBoneParamsBuffer.Description.SizeInBytes < BoneIds.SizeInBytes * this.VertexBoneIds.Count)
                     {
@@ -175,7 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw              
-                renderContext.DeviceContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
+                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
                 this.bHasInstances.Set(false);
             }
             else
@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(renderContext.DeviceContext);
                 // --- draw
-                renderContext.DeviceContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
+                renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
             }
         }
 

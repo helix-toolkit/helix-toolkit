@@ -243,7 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var b = this.Bounds;
                     this.PushMatrix(modelMatrix);
-                    this.Bounds = BoundingBox.FromPoints(this.Geometry.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
+                    this.Bounds = BoundingBox.FromPoints(this.geometryInternal.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
                     if (base.HitTest(context, rayWS, ref hits))
                     {
                         hit = true;
@@ -325,7 +325,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     // --- has bumpmap
                     if (material.NormalMap != null && model.RenderNormalMap)
                     {
-                        var geometry = model.Geometry as MeshGeometry3D;
+                        var geometry = model.geometryInternal as MeshGeometry3D;
                         if (geometry != null)
                         {
                             if (geometry.Tangents == null)
