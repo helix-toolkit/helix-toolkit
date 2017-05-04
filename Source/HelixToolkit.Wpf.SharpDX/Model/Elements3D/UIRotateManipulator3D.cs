@@ -26,31 +26,31 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The axis property.
         /// </summary>
         public static readonly DependencyProperty AxisProperty = DependencyProperty.Register(
-            "Axis", typeof(Vector3), typeof(UIRotateManipulator3D), new UIPropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
+            "Axis", typeof(Vector3), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
 
         /// <summary>
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty OuterDiameterProperty = DependencyProperty.Register(
-            "OuterDiameter", typeof(double), typeof(UIRotateManipulator3D), new UIPropertyMetadata(1.5, ModelChanged));
+            "OuterDiameter", typeof(double), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(1.5, ModelChanged));
 
         /// <summary>
         /// The inner diameter property.
         /// </summary>
         public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
-            "InnerDiameter", typeof(double), typeof(UIRotateManipulator3D), new UIPropertyMetadata(1.0, ModelChanged));
+            "InnerDiameter", typeof(double), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(1.0, ModelChanged));
 
         /// <summary>
         /// The length property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
-            "Length", typeof(double), typeof(UIRotateManipulator3D), new UIPropertyMetadata(0.1, ModelChanged));
+            "Length", typeof(double), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(0.1, ModelChanged));
 
         /// <summary>
         /// The pivot point property.
         /// </summary>
         public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
-            "Pivot", typeof(Vector3), typeof(UIRotateManipulator3D), new PropertyMetadata(new Vector3(0, 0, 0)));
+            "Pivot", typeof(Vector3), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 0)));
 
         /// <summary>
         /// Gets or sets the rotation axis.

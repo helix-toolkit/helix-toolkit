@@ -22,13 +22,13 @@ namespace HelixToolkit.Wpf.SharpDX
     public sealed class SpotLight3D : PointLightBase3D
     {
         public static readonly DependencyProperty FalloffProperty =
-            DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(1.0));
 
         public static readonly DependencyProperty InnerAngleProperty =
-            DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new UIPropertyMetadata(5.0));
+            DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(5.0));
 
         public static readonly DependencyProperty OuterAngleProperty =
-            DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new UIPropertyMetadata(45.0));
+            DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(45.0));
 
 
         /// <summary>

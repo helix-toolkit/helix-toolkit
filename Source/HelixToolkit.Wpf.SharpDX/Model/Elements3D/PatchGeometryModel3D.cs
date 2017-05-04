@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty ShadingProperty =
-            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new UIPropertyMetadata("Solid", ShadingChanged));
+            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new AffectsRenderPropertyMetadata("Solid", ShadingChanged));
 
         /// <summary>
         /// 
@@ -101,7 +101,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty TessellationFactorProperty =
-            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D), new UIPropertyMetadata(1.0, TessellationFactorChanged));
+            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D), 
+                new AffectsRenderPropertyMetadata(1.0, TessellationFactorChanged));
 
         /// <summary>
         /// 
@@ -115,7 +116,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public bool FrontCounterClockwise
         {
@@ -129,7 +131,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D), new PropertyMetadata(CullMode.None, RasterStateChanged));
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D), 
+            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
 
         public CullMode CullMode
         {
@@ -143,7 +146,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public bool IsDepthClipEnabled
         {

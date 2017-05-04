@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///     The item template property
         /// </summary>
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
+            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new AffectsRenderPropertyMetadata(null));
 
         /// <summary>
         ///     The items source property
@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ItemsSource",
             typeof(IEnumerable),
             typeof(ItemsModel3D),
-            new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
+            new AffectsRenderPropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
 
         /// <summary>
         /// Add octree manager to use octree hit test.

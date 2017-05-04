@@ -36,7 +36,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance parameter. 
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
-            DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
+            DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
+                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
         /// <summary>
         /// List of instance parameters. 
         /// </summary>
@@ -64,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
         /// </summary>
         public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(InstancingBillboardModel3D),
-            new PropertyMetadata(true, (d, e) => { (d as Element3D).InvalidateRender(); }));
+            new AffectsRenderPropertyMetadata(true));
 
         /// <summary>
         /// Fixed sized billboard. Default = true. 

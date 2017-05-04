@@ -78,7 +78,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance parameter. 
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
-            DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), new UIPropertyMetadata(null, InstancesParamChanged));
+            DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), 
+                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
 
 
         private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -37,7 +37,7 @@
 
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(PointGeometryModel3D),
-                new UIPropertyMetadata(Color.Black, (o, e) => ((PointGeometryModel3D)o).OnColorChanged()));
+                new AffectsRenderPropertyMetadata(Color.Black, (o, e) => ((PointGeometryModel3D)o).OnColorChanged()));
 
         public Size Size
         {
@@ -46,7 +46,7 @@
         }
 
         public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new UIPropertyMetadata(new Size(1.0, 1.0)));
+            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0)));
 
         public PointFigure Figure
         {
@@ -55,7 +55,7 @@
         }
 
         public static readonly DependencyProperty FigureProperty =
-            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new UIPropertyMetadata(PointFigure.Rect));
+            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect));
 
         public double FigureRatio
         {
@@ -64,7 +64,7 @@
         }
 
         public static readonly DependencyProperty FigureRatioProperty =
-            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(0.25));
+            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25));
 
         public double HitTestThickness
         {

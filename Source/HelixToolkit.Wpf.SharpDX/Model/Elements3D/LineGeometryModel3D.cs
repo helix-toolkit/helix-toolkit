@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new UIPropertyMetadata(Color.Black, (o, e) => ((LineGeometryModel3D)o).OnColorChanged()));
+            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(Color.Black, (o, e) => ((LineGeometryModel3D)o).OnColorChanged()));
 
         public double Thickness
         {
@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty ThicknessProperty =
-            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(1.0));
 
         public double Smoothness
         {
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty SmoothnessProperty =
-            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(0.0));
+            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(0.0));
 
         public IList<Matrix> Instances
         {
@@ -90,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(LineGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
 
         public double HitTestThickness
         {

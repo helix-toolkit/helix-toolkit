@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty GeometryProperty =
-            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new UIPropertyMetadata(GeometryChanged));
+            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, GeometryChanged));
 
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty DepthBiasProperty =
-            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new UIPropertyMetadata(0, RasterStateChanged));
+            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         protected static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -243,16 +243,16 @@ namespace HelixToolkit.Wpf.SharpDX
         public event BoundSphereChangedEventHandler OnTransformBoundSphereChanged;
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty IsMultisampleEnabledProperty =
-            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
+            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
-            new PropertyMetadata(FillMode.Solid, RasterStateChanged));
+            new FrameworkPropertyMetadata(FillMode.Solid, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         public static readonly DependencyProperty IsScissorEnabledProperty =
-            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
+            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         /// <summary>
         /// Provide CLR accessors for the event 

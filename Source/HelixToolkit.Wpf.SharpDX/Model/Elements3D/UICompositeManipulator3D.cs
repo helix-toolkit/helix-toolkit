@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can translate y property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateYProperty = DependencyProperty.Register(
-            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, ChildrenChanged));
+            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true,  ChildrenChanged));
 
         /// <summary>
         /// The can translate z property.
@@ -63,13 +63,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new UIPropertyMetadata(2.0, ChildrenChanged));
+            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new AffectsRenderPropertyMetadata(2.0, ChildrenChanged));
 
         /// <summary>
         ///   The target transform property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
-            "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), 
+            new AffectsRenderFrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         ///   Gets or sets TargetTransform.
