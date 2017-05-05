@@ -229,10 +229,14 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
             // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
-            var fmetadata = e.Property.GetMetadata(this);
-            if (fmetadata != null && (fmetadata is IAffectsRender || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)))
+            PropertyMetadata fmetadata = null;
+            if (e.Property.Name.Equals(nameof(Visibility))
+                || ((fmetadata = e.Property.GetMetadata(this)) != null
+                && (fmetadata is IAffectsRender
+                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
+                )))
             {
-                this.InvalidateRender();                
+                this.InvalidateRender();
             }
             base.OnPropertyChanged(e);
         }
