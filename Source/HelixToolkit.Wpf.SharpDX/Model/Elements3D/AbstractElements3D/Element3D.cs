@@ -227,18 +227,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
-            PropertyMetadata fmetadata = null;
-            if (e.Property.Name.Equals(nameof(Visibility))
-                || ((fmetadata = e.Property.GetMetadata(this)) != null
-                && (fmetadata is IAffectsRender
-                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
-                )))
+            if (CheckAffectsRender(e))
             {
                 this.InvalidateRender();
             }
             base.OnPropertyChanged(e);
+        }
+        /// <summary>
+        /// Check if dependency property changed event affects render
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
+        {            
+            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
+            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
+            PropertyMetadata fmetadata = null;
+            return (e.Property.Name.Equals(nameof(Visibility))
+                || ((fmetadata = e.Property.GetMetadata(this)) != null
+                && (fmetadata is IAffectsRender
+                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
+                )));
         }
     }
 }
