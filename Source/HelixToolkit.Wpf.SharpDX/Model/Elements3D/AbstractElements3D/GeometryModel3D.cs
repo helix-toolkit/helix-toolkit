@@ -86,6 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
+            GeometryValid = CheckGeometry();
             if (this.geometryInternal != null && this.geometryInternal.Positions != null && renderHost != null)
             {               
                 var host = this.renderHost;
@@ -96,6 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {
+            GeometryValid = CheckGeometry();
             if (this.IsAttached)
             {
                 if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
@@ -131,6 +133,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 BoundsSphereWithTransform = BoundsSphere;
             }
         }
+
+        public bool GeometryValid { private set; get; } = false;
 
         protected Geometry3D geometryInternal = null;
 
@@ -320,15 +324,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected virtual bool CheckGeometry()
         {
-            if (this.geometryInternal == null || this.geometryInternal.Positions == null || this.geometryInternal.Positions.Count == 0
-                || this.geometryInternal.Indices == null || this.geometryInternal.Indices.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return !(this.geometryInternal == null || this.geometryInternal.Positions == null || this.geometryInternal.Positions.Count == 0
+                || this.geometryInternal.Indices == null || this.geometryInternal.Indices.Count == 0);
         }
 
         /// <summary>
@@ -395,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-            if (base.CanRender(context) && CheckGeometry())
+            if (base.CanRender(context) && GeometryValid)
             {
                 if (context.IsShadowPass)
                     if (!IsThrowingShadow)
