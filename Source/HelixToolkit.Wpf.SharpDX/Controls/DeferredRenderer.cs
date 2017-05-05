@@ -958,11 +958,10 @@ namespace HelixToolkit.Wpf.SharpDX
             MeshGeometry3D meshGeometry = mesh.ToMeshGeometry3D();
 
             var vertices = meshGeometry.Positions.Select(p => new Vector4(p, 1.0f)).ToArray();
-            var indices = meshGeometry.Indices;
 
             this.screenSphere = new LightGeometryData()
             {
-                IndexBuffer = this.device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), indices.Array),
+                IndexBuffer = this.device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), meshGeometry.Indices.Array, meshGeometry.Indices.Count),
                 VertexBuffer = this.device.CreateBuffer(BindFlags.VertexBuffer, Vector4.SizeInBytes, vertices),
                 IndexCount = meshGeometry.Indices.Count,
             };
@@ -980,11 +979,10 @@ namespace HelixToolkit.Wpf.SharpDX
             MeshGeometry3D meshGeometry = mesh.ToMeshGeometry3D();
             
             var vertices = meshGeometry.Positions.Select(p => new Vector4(p, 1.0f)).ToArray();
-            var indices = meshGeometry.Indices;
 
             this.screenCone = new LightGeometryData()
             {
-                IndexBuffer = this.device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), indices.Array),
+                IndexBuffer = this.device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), meshGeometry.Indices.Array, meshGeometry.Indices.Count),
                 VertexBuffer = this.device.CreateBuffer(BindFlags.VertexBuffer, Vector4.SizeInBytes, vertices),
                 IndexCount = meshGeometry.Indices.Count,
             };

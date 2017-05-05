@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty ChildrenProperty =
-            DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(GroupElement3D), new UIPropertyMetadata(new Element3DCollection()));
+            DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(GroupElement3D), new FrameworkPropertyMetadata(new Element3DCollection(), FrameworkPropertyMetadataOptions.AffectsRender));
 
         public GroupElement3D()
         {

@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private int width = 1024, height = 1024;
 
         public static readonly DependencyProperty ResolutionProperty =
-            DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new UIPropertyMetadata(new Vector2(1024, 1024), ResolutionChanged));
+            DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(new Vector2(1024, 1024), ResolutionChanged));
 
         private static void ResolutionChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {            
@@ -49,13 +49,13 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty FactorPCFProperty =
-                DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new UIPropertyMetadata(1.5));
+                DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(1.5));
 
         public static readonly DependencyProperty BiasProperty =
-                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new UIPropertyMetadata(0.0015));
+                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.0015));
 
         public static readonly DependencyProperty IntensityProperty =
-                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new UIPropertyMetadata(0.5));
+                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.5));
 
 
         [TypeConverter(typeof(Vector2Converter))]

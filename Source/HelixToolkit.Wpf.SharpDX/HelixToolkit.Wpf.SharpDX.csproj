@@ -203,6 +203,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\AffectsRenderPropertyMetadata.cs" />
     <Compile Include="Utilities\IOctreeManager.cs" />
     <Compile Include="Utilities\Octree.cs" />
     <Compile Include="Utilities\OctreeHelper.cs" />

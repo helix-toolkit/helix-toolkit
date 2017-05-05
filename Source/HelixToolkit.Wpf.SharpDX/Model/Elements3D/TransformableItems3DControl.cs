@@ -45,7 +45,8 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(TransformableItems3DControl), new UIPropertyMetadata(Transform3D.Identity, TransformPropertyChanged));
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(TransformableItems3DControl),
+                new AffectsRenderPropertyMetadata(Transform3D.Identity, TransformPropertyChanged));
 
         private static void TransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

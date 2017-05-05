@@ -9,7 +9,9 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using SharpDX;
     using System;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Media;
 
@@ -178,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new UIPropertyMetadata(true));
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true));
 
         /// <summary>
         /// Indicates, if this element should be rendered.
@@ -225,15 +227,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            base.OnPropertyChanged(e);
-
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "Element3DPropertyMetadata".
-            //var fmetadata = e.Property.GetMetadata(this) as FrameworkPropertyMetadata;
-            //if (fmetadata != null && fmetadata.AffectsRender)
+            if (CheckAffectsRender(e))
             {
                 this.InvalidateRender();
             }
+            base.OnPropertyChanged(e);
+        }
+        /// <summary>
+        /// Check if dependency property changed event affects render
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
+        {            
+            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
+            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
+            PropertyMetadata fmetadata = null;
+            return (e.Property.Name.Equals(nameof(Visibility))
+                || ((fmetadata = e.Property.GetMetadata(this)) != null
+                && (fmetadata is IAffectsRender
+                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
+                )));
         }
     }
 }

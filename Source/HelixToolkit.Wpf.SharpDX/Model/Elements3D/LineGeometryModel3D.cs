@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new UIPropertyMetadata(Color.Black, (o, e) => ((LineGeometryModel3D)o).OnColorChanged()));
+            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(Color.Black, (o, e) => ((LineGeometryModel3D)o).OnColorChanged()));
 
         public double Thickness
         {
@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty ThicknessProperty =
-            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(1.0));
 
         public double Smoothness
         {
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty SmoothnessProperty =
-            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(0.0));
+            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(0.0));
 
         public IList<Matrix> Instances
         {
@@ -90,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(LineGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
 
         public double HitTestThickness
         {
@@ -115,7 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.Visibility == Visibility.Collapsed ||
                 this.IsHitTestVisible == false ||
                 context == null ||
-                (lineGeometry3D = this.Geometry as LineGeometry3D) == null)
+                (lineGeometry3D = this.geometryInternal as LineGeometry3D) == null)
             {
                 return false;
             }
@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (e.PropertyName.Equals(nameof(LineGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
                     Disposer.RemoveAndDispose(ref this.indexBuffer);
-                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.Geometry.Indices.Array);
+                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.geometryInternal.Indices.Array, geometryInternal.Indices.Count);
                     InvalidateRender();
                 }
                 else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
@@ -229,7 +229,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateVertexBuffer()
         {
-            var geometry = Geometry as LineGeometry3D;
+            var geometry = geometryInternal as LineGeometry3D;
             if (geometry != null && geometry.Positions != null)
             {
                 Disposer.RemoveAndDispose(ref vertexBuffer);
@@ -266,7 +266,7 @@ namespace HelixToolkit.Wpf.SharpDX
             effectTransforms = new EffectTransformVariables(effect);
             
             // --- get geometry
-            var geometry = Geometry as LineGeometry3D;
+            var geometry = geometryInternal as LineGeometry3D;
 
             // -- set geometry if given
             if (geometry != null)
@@ -274,7 +274,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- set up buffers            
                 CreateVertexBuffer();
                 // --- set up indexbuffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array, geometry.Indices.Count);
             }
             else
             {
@@ -419,7 +419,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 for (int i = 0; i < this.effectTechnique.Description.PassCount; i++)
                 {
                     this.effectTechnique.GetPassByIndex(i).Apply(renderContext.DeviceContext);
-                    renderContext.DeviceContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
+                    renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
                 }
                 this.bHasInstances.Set(false);
             }
@@ -430,7 +430,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-                renderContext.DeviceContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
+                renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
             }
         }
 
@@ -447,15 +447,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private LinesVertex[] CreateLinesVertexArray()
         {
-            var positions = this.Geometry.Positions.Array;
-            var vertexCount = this.Geometry.Positions.Count;
+            var positions = this.geometryInternal.Positions;
+            var vertexCount = this.geometryInternal.Positions.Count;
             var color = this.Color;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
                 vertexArrayBuffer = new LinesVertex[vertexCount];
 
-            if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
+            if (this.geometryInternal.Colors != null && this.geometryInternal.Colors.Any())
             {
-                var colors = this.Geometry.Colors;
+                var colors = this.geometryInternal.Colors;
 
                 for (var i = 0; i < vertexCount; i++)
                 {

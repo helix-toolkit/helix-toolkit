@@ -58,13 +58,13 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 
         /// <summary>
         /// Gets the internal array of a <see cref="List{T}"/>.
+        /// <para>Warning: Internal array length >= List.Count. Use with cautious.</para>
         /// </summary>
         /// <typeparam name="T">The type of the elements.</typeparam>
         /// <param name="list">The respective list.</param>
         /// <returns>The internal array of the list.</returns>
         public static T[] GetInternalArray<T>(this List<T> list)
         {
-            list.TrimExcess(); //Trim capacity before exposing underlying array.
             return ArrayAccessor<T>.Getter(list);
         }
 #endif

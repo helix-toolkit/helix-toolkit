@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                if (Set<IntCollection>(ref indices, value))
+                if (Set(ref indices, value))
                 {
 #if !NETFX_CORE
                     Octree = null;
@@ -46,6 +46,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
+
+        //private int[] indicesArray = new int[0];
+        ///// <summary>
+        ///// Used to avoid excessive array copy
+        ///// </summary>
+        //public int[] IndicesArray
+        //{
+        //    get
+        //    {
+        //        if (indicesArray == null)
+        //        {
+        //            indicesArray = Indices != null ? Indices.ToArray() : new int[0];
+        //        }
+        //        return indicesArray;
+        //    }
+        //}
 
         private Vector3Collection position = null;
         public Vector3Collection Positions
@@ -57,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 if (Set(ref position, value))
-                {
+                {                 
 #if !NETFX_CORE
                     Octree = null;
                     UpdateBounds();
@@ -65,6 +81,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
+
+        //private Vector3[] positionArray = new Vector3[0];
+        ///// <summary>
+        ///// Used to avoid excessive array copy
+        ///// </summary>
+        //public Vector3[] PositionArray
+        //{
+        //    get
+        //    {
+        //        if (positionArray == null)
+        //        {
+        //            positionArray = Positions != null ? Positions.ToArray() : new Vector3[0];
+        //        }
+        //        return positionArray;
+        //    }
+        //}
 
 #if !NETFX_CORE
         private BoundingBox bound;
@@ -203,8 +235,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                Bound = BoundingBox.FromPoints(position.Array);
-                BoundingSphere = BoundingSphere.FromPoints(position.Array);
+                Bound = BoundingBoxExtensions.FromPoints(Positions);
+                BoundingSphere = BoundingSphereExtensions.FromPoints(Positions);
             }
         }
 #endif

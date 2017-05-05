@@ -90,6 +90,14 @@ namespace HelixToolkit.Wpf.SharpDX
         bool FindNearestPointBySphere(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result);
 
         /// <summary>
+        /// Search nearest point from point on mesh
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="result"></param>
+        /// <param name="heuristic">Use huristic search, return proximated nearest point. Set to 1.0f to disable heuristic. Value must be 0.1f ~ 1.0f</param>
+        /// <returns></returns>
+        bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> result, float heuristicSearchFactor = 1f);
+        /// <summary>
         /// Search nearest point by a point and search radius
         /// </summary>
         /// <param name="point"></param>
@@ -665,6 +673,46 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
+        public virtual bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
+        {
+            if (results == null)
+            {
+                results = new List<HitTestResult>();
+            }
+            var hitQueue = queue;
+            hitQueue.Clear();
+            hitQueue.Enqueue(this);
+
+            var sphere = new global::SharpDX.BoundingSphere(point, float.MaxValue);
+            bool isIntersect = false;
+            bool isHit = false;
+            heuristicSearchFactor = Math.Min(1.0f, Math.Max(0.1f, heuristicSearchFactor));
+            while (hitQueue.Count > 0)
+            {
+                var node = hitQueue.Dequeue();
+                isHit |= node.FindNearestPointBySphereExcludeChild(context, ref sphere, ref results, ref isIntersect);
+
+                if (isIntersect)
+                {
+                    if (results.Count > 0)
+                    {
+                        sphere.Radius = (float)results[0].Distance * heuristicSearchFactor;
+                    }
+                    if (node.HasChildren)
+                    {
+                        foreach (var child in node.ChildNodes)
+                        {
+                            if (child != null)
+                            {
+                                hitQueue.Enqueue(child);
+                            }
+                        }
+                    }
+                }
+            }
+            return isHit;
+        }
+
         public abstract bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
 
         public bool Add(T item)
@@ -1116,17 +1164,17 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public IList<Vector3> Positions { private set; get; }
         public IList<int> Indices { private set; get; }
-        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices, Queue<IOctree> queueCache = null)
+        public MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, Queue<IOctree> queueCache = null)
             : this(positions, indices, null, queueCache)
         {
         }
-        public MeshGeometryOctree(Vector3Collection positions, IList<int> indices,
+        public MeshGeometryOctree(IList<Vector3>  positions, IList<int> indices,
             OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
             : base(null, parameter, queueCache)
         {
             Positions = positions;
             Indices = indices;
-            Bound = BoundingBox.FromPoints(positions.Array);
+            Bound = BoundingBoxExtensions.FromPoints(positions);
             Objects = new List<Tuple<int, BoundingBox>>(indices.Count / 3);
             // Construct triangle index and its bounding box tuple
             foreach (var i in Enumerable.Range(0, indices.Count / 3))
@@ -1320,22 +1368,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class PointGeometryOctree : OctreeBase<int>
     {
-        private Vector3Collection Positions;
+        private IList<Vector3> Positions;
         private static readonly Vector3 BoundOffset = new Vector3(0.0001f);
-        public PointGeometryOctree(Vector3Collection positions, Queue<IOctree> queueCache = null)
+        public PointGeometryOctree(IList<Vector3> positions, Queue<IOctree> queueCache = null)
             : this(positions, null, queueCache)
         {
         }
-        public PointGeometryOctree(Vector3Collection positions,
+        public PointGeometryOctree(IList<Vector3> positions,
             OctreeBuildParameter parameter, Queue<IOctree> queueCache = null)
                : base(null, parameter, queueCache)
         {
             Positions = positions;
-            Bound = BoundingBox.FromPoints(positions.Array);
+            Bound = BoundingBoxExtensions.FromPoints(positions);
             Objects = Enumerable.Range(0, Positions.Count).ToList();
         }
 
-        protected PointGeometryOctree(BoundingBox bound, Vector3Collection positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
+        protected PointGeometryOctree(BoundingBox bound, IList<Vector3> positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
             Queue<IOctree> queueCache)
             : base(ref bound, list, parent, paramter, queueCache)
         {

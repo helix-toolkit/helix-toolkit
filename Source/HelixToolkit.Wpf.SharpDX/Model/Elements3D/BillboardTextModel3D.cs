@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
         /// </summary>
         public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(BillboardTextModel3D),
-            new PropertyMetadata(true, (d, e) => { (d as Element3D).InvalidateRender(); }));
+            new AffectsRenderPropertyMetadata(true));
 
         /// <summary>
         /// Fixed sized billboard. Default = true. 
@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
 
-            var g = this.Geometry as IBillboardText;
+            var g = this.geometryInternal as IBillboardText;
             var h = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
@@ -239,7 +239,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CheckGeometry()
         {
-            return Geometry is IBillboardText;
+            return geometryInternal is IBillboardText;
         }
 
         protected override void OnRasterStateChanged()
@@ -288,7 +288,7 @@ namespace HelixToolkit.Wpf.SharpDX
             vViewport = effect.GetVariableByName("vViewport").AsVector();
             bFixedSizeVariable = effect.GetVariableByName("bBillboardFixedSize").AsScalar();
             // --- get geometry
-            var geometry = Geometry as IBillboardText;
+            var geometry = geometryInternal as IBillboardText;
             if (geometry == null)
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
@@ -337,7 +337,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext renderContext)
         {
             // --- check to render the model
-            var geometry = Geometry as IBillboardText;
+            var geometry = geometryInternal as IBillboardText;
             if (geometry == null)
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
@@ -381,7 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 billboardAlphaTextureVariable.SetResource(billboardAlphaTextureView);
             }
 
-            var vertexCount = Geometry.Positions.Count;
+            var vertexCount = geometryInternal.Positions.Count;
             switch (billboardType)
             {
                 case BillboardType.MultipleText:
@@ -430,7 +430,7 @@ namespace HelixToolkit.Wpf.SharpDX
             billboardType = billboardGeometry.Type;
             billboardGeometry.DrawTexture();
 
-            var position = billboardGeometry.Positions.Array;
+            var position = billboardGeometry.Positions;
             var vertexCount = billboardGeometry.Positions.Count;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
                 vertexArrayBuffer = new BillboardVertex[vertexCount];

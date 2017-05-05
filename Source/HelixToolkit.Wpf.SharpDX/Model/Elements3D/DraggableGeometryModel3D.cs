@@ -26,13 +26,13 @@ namespace HelixToolkit.Wpf.SharpDX
         private MatrixTransform3D dragTransform;
 
         public static readonly DependencyProperty DragXProperty =
-            DependencyProperty.Register("DragX", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(true));
+            DependencyProperty.Register("DragX", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
 
         public static readonly DependencyProperty DragYProperty =
-            DependencyProperty.Register("DragY", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(true));
+            DependencyProperty.Register("DragY", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
 
         public static readonly DependencyProperty DragZProperty =
-            DependencyProperty.Register("DragZ", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(true));
+            DependencyProperty.Register("DragZ", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
 
 
         public bool DragX

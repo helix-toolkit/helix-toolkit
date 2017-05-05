@@ -39,13 +39,13 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Light3DSceneShared Light3DSceneShared { private set; get; }
         public static readonly DependencyProperty DirectionProperty =
-            DependencyProperty.Register("Direction", typeof(Vector3), typeof(Light3D), new UIPropertyMetadata(new Vector3()));
+            DependencyProperty.Register("Direction", typeof(Vector3), typeof(Light3D), new AffectsRenderPropertyMetadata(new Vector3()));
 
         public static readonly DependencyProperty DirectionTransformProperty =
-            DependencyProperty.Register("DirectionTransform", typeof(Transform3D), typeof(Light3D), new UIPropertyMetadata(Transform3D.Identity, DirectionTransformPropertyChanged));
+            DependencyProperty.Register("DirectionTransform", typeof(Transform3D), typeof(Light3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, DirectionTransformPropertyChanged));
 
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color4), typeof(Light3D), new UIPropertyMetadata(new Color4(0.2f, 0.2f, 0.2f, 1.0f), ColorChanged));
+            DependencyProperty.Register("Color", typeof(Color4), typeof(Light3D), new AffectsRenderPropertyMetadata(new Color4(0.2f, 0.2f, 0.2f, 1.0f), ColorChanged));
 
 
         public LightType LightType { get; protected set; }
@@ -202,10 +202,10 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class PointLightBase3D : Light3D
     {
         public static readonly DependencyProperty AttenuationProperty =
-            DependencyProperty.Register("Attenuation", typeof(Vector3), typeof(PointLightBase3D), new UIPropertyMetadata(new Vector3(1.0f, 0.0f, 0.0f)));
+            DependencyProperty.Register("Attenuation", typeof(Vector3), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Vector3(1.0f, 0.0f, 0.0f)));
 
         public static readonly DependencyProperty RangeProperty =
-            DependencyProperty.Register("Range", typeof(double), typeof(PointLightBase3D), new UIPropertyMetadata(1000.0));
+            DependencyProperty.Register("Range", typeof(double), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(1000.0));
 
         /// <summary>
         /// The position of the model in world space.
@@ -217,7 +217,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private static readonly DependencyPropertyKey PositionPropertyKey =
-            DependencyProperty.RegisterReadOnly("Position", typeof(Point3D), typeof(PointLightBase3D), new UIPropertyMetadata(new Point3D()));
+            DependencyProperty.RegisterReadOnly("Position", typeof(Point3D), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Point3D()));
 
         public static readonly DependencyProperty PositionProperty = PositionPropertyKey.DependencyProperty;
 

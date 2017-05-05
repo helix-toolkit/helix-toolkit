@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty GeometryProperty =
-            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new UIPropertyMetadata(GeometryChanged));
+            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, GeometryChanged));
 
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -80,13 +80,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.NewValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
                 (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
             }
+            model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
             model.OnGeometryChanged(e);
         }
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (this.Geometry != null && this.Geometry.Positions != null && renderHost != null)
-            {
+            if (this.geometryInternal != null && this.geometryInternal.Positions != null && renderHost != null)
+            {               
                 var host = this.renderHost;
                 this.Detach();
                 this.Attach(host);
@@ -99,11 +100,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
                 {
-                    this.Bounds = this.Geometry != null ? this.Geometry.Bound : new BoundingBox();
+                    this.Bounds = this.geometryInternal != null ? this.geometryInternal.Bound : new BoundingBox();
                 }
                 else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
                 {
-                    this.BoundsSphere = this.Geometry != null ? this.Geometry.BoundingSphere : new BoundingSphere();
+                    this.BoundsSphere = this.geometryInternal != null ? this.geometryInternal.BoundingSphere : new BoundingSphere();
                 }
                 OnGeometryPropertyChanged(sender, e);
             }
@@ -117,7 +118,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnTransformChanged(e);
-            if (this.Geometry != null)
+            if (this.geometryInternal != null)
             {
                 BoundsWithTransform
                     = BoundingBox.FromPoints(Bounds.GetCorners()
@@ -130,6 +131,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 BoundsSphereWithTransform = BoundsSphere;
             }
         }
+
+        protected Geometry3D geometryInternal = null;
 
         private BoundingBox bounds;
         public BoundingBox Bounds
@@ -206,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty DepthBiasProperty =
-            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new UIPropertyMetadata(0, RasterStateChanged));
+            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         protected static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -240,16 +243,16 @@ namespace HelixToolkit.Wpf.SharpDX
         public event BoundSphereChangedEventHandler OnTransformBoundSphereChanged;
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty IsMultisampleEnabledProperty =
-            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
+            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
-            new PropertyMetadata(FillMode.Solid, RasterStateChanged));
+            new FrameworkPropertyMetadata(FillMode.Solid, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         public static readonly DependencyProperty IsScissorEnabledProperty =
-            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(true, RasterStateChanged));
+            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         /// <summary>
         /// Provide CLR accessors for the event 
@@ -311,14 +314,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// <para>Check geometry validity.</para>
-        /// Return false if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0 || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+        /// Return false if (this.geometryInternal == null || this.geometryInternal.Positions == null || this.geometryInternal.Positions.Count == 0 || this.geometryInternal.Indices == null || this.geometryInternal.Indices.Count == 0)
         /// </summary>
         /// <returns>
         /// </returns>
         protected virtual bool CheckGeometry()
         {
-            if (this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
+            if (this.geometryInternal == null || this.geometryInternal.Positions == null || this.geometryInternal.Positions.Count == 0
+                || this.geometryInternal.Indices == null || this.geometryInternal.Indices.Count == 0)
             {
                 return false;
             }
@@ -350,8 +353,8 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnAttached();
             if (Geometry != null)
             {
-                this.Bounds = this.Geometry.Bound;
-                this.BoundsSphere = this.Geometry.BoundingSphere;
+                this.Bounds = this.geometryInternal.Bound;
+                this.BoundsSphere = this.geometryInternal.BoundingSphere;
             }
             OnRasterStateChanged();
         }
@@ -367,8 +370,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (Geometry != null)
             {
-                Geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
-                Geometry.PropertyChanged += OnGeometryPropertyChangedPrivate;
+                geometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                geometryInternal.PropertyChanged += OnGeometryPropertyChangedPrivate;
             }
         }
 
@@ -376,7 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (Geometry != null)
             {
-                Geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                geometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
             }
         }
 
@@ -457,12 +460,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-            if (this.IsHitTestVisible == false || this.Geometry == null)
+            if (this.IsHitTestVisible == false || this.geometryInternal == null)
             {
                 return false;
             }
 
-            var g = this.Geometry as MeshGeometry3D;
+            var g = this.geometryInternal as MeshGeometry3D;
             bool isHit = false;
 
             if (g.Octree != null)
@@ -533,7 +536,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
-            var g = this.Geometry as MeshGeometry3D;
+            var g = this.geometryInternal as MeshGeometry3D;
             var h = false;
 
             if (g != null)

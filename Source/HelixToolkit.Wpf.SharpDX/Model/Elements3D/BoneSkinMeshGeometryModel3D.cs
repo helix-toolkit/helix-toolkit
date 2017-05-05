@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class BoneSkinMeshGeometryModel3D : MeshGeometryModel3D
     {
         public static DependencyProperty VertexBoneIdsProperty = DependencyProperty.Register("VertexBoneIds", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D), 
-            new PropertyMetadata(null, (d,e)=>
+            new AffectsRenderPropertyMetadata(null, (d,e)=>
             {
                 (d as BoneSkinMeshGeometryModel3D).OnBoneParameterChanged();
             }));
@@ -32,10 +32,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty BoneMatricesProperty = DependencyProperty.Register("BoneMatrices", typeof(BoneMatricesStruct), typeof(BoneSkinMeshGeometryModel3D),
-            new PropertyMetadata(new BoneMatricesStruct() { Bones = new Matrix[BoneMatricesStruct.NumberOfBones] }, (d, e) =>
-            {
-                (d as BoneSkinMeshGeometryModel3D).OnBoneMatricesChanged();
-            }));
+            new AffectsRenderPropertyMetadata(new BoneMatricesStruct() { Bones = new Matrix[BoneMatricesStruct.NumberOfBones] }, 
+                (d, e) =>
+                {
+                    (d as BoneSkinMeshGeometryModel3D).OnBoneMatricesChanged();
+                }));
 
         public BoneMatricesStruct BoneMatrices
         {
@@ -128,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.hasBoneParameter)
             {
-                if (isBoneParamChanged && this.VertexBoneIds.Count >= Geometry.Positions.Count)
+                if (isBoneParamChanged && this.VertexBoneIds.Count >= geometryInternal.Positions.Count)
                 {
                     if (vertexBoneParamsBuffer == null || this.vertexBoneParamsBuffer.Description.SizeInBytes < BoneIds.SizeInBytes * this.VertexBoneIds.Count)
                     {
@@ -175,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw              
-                renderContext.DeviceContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.Instances.Count, 0, 0, 0);
+                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
                 this.bHasInstances.Set(false);
             }
             else
@@ -187,7 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(renderContext.DeviceContext);
                 // --- draw
-                renderContext.DeviceContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
+                renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
             }
         }
 

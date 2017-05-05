@@ -252,7 +252,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public static LineGeometry3D GenerateBoundingBox(Geometry3D mesh)
         {
-            var bb = global::SharpDX.BoundingBox.FromPoints(mesh.Positions.Array);
+            var bb = BoundingBoxExtensions.FromPoints(mesh.Positions);
             return GenerateBoundingBox(bb);
         }
 

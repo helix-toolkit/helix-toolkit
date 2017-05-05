@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty FilenameProperty =
-            DependencyProperty.Register("Filename", typeof(string), typeof(EnvironmentMap3D), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Filename", typeof(string), typeof(EnvironmentMap3D), new AffectsRenderPropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the current environment map texture image
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// default is true.
         /// </summary>
         public static readonly DependencyProperty IsActiveProperty =
-            DependencyProperty.Register("IsActive", typeof(bool), typeof(Element3D), new UIPropertyMetadata(true, IsActiveChanged));
+            DependencyProperty.Register("IsActive", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true, IsActiveChanged));
 
         /// <summary>
         /// Indicates, if this element is active, if not, the model will be not 
@@ -114,7 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, CubeVertex.SizeInBytes, this.geometry.Positions.Select((x, ii) => new CubeVertex() { Position = new Vector4(x, 1f) }).ToArray());
 
                 // --- set up index buffer
-                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
+                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array, geometry.Indices.Count);
 
                 // --- set up rasterizer states
                 var rasterStateDesc = new RasterizerStateDescription()

@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty ShadingProperty =
-            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new UIPropertyMetadata("Solid", ShadingChanged));
+            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new AffectsRenderPropertyMetadata("Solid", ShadingChanged));
 
         /// <summary>
         /// 
@@ -101,7 +101,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty TessellationFactorProperty =
-            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D), new UIPropertyMetadata(1.0, TessellationFactorChanged));
+            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D), 
+                new AffectsRenderPropertyMetadata(1.0, TessellationFactorChanged));
 
         /// <summary>
         /// 
@@ -115,7 +116,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public bool FrontCounterClockwise
         {
@@ -129,7 +131,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D), new PropertyMetadata(CullMode.None, RasterStateChanged));
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D), 
+            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
 
         public CullMode CullMode
         {
@@ -143,7 +146,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public bool IsDepthClipEnabled
         {
@@ -220,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
             AttachMaterial();
 
             // -- get geometry
-            var geometry = Geometry as MeshGeometry3D;
+            var geometry = geometryInternal as MeshGeometry3D;
 
             // -- get geometry
             if (geometry != null)
@@ -231,7 +235,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, CreateDefaultVertexArray(), geometry.Positions.Count);
 
                 // --- init index buffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array);
+                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometryInternal.Indices.Array, geometryInternal.Indices.Count);
             }
             else
             {
@@ -309,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
             shaderPass.Apply(renderContext.DeviceContext);
 
             // --- render the geometry
-            renderContext.DeviceContext.DrawIndexed(Geometry.Indices.Count, 0, 0);
+            renderContext.DeviceContext.DrawIndexed(geometryInternal.Indices.Count, 0, 0);
         }
 
         /// <summary>
@@ -342,14 +346,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private DefaultVertex[] CreateDefaultVertexArray()
         {
-            var geometry = (MeshGeometry3D)this.Geometry;
-            var colors = geometry.Colors != null ? geometry.Colors.Array : null;
-            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.Array : null;
+            var geometry = (MeshGeometry3D)this.geometryInternal;
+            var colors = geometry.Colors != null ? geometry.Colors : null;
+            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates : null;
             var texScale = this.TextureCoodScale;
-            var normals = geometry.Normals != null ? geometry.Normals.Array : null;
-            var tangents = geometry.Tangents != null ? geometry.Tangents.Array : null;
-            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.Array : null;
-            var positions = geometry.Positions.Array;
+            var normals = geometry.Normals != null ? geometry.Normals : null;
+            var tangents = geometry.Tangents != null ? geometry.Tangents : null;
+            var bitangents = geometry.BiTangents != null ? geometry.BiTangents : null;
+            var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
                 vertexArrayBuffer = new DefaultVertex[vertexCount];
