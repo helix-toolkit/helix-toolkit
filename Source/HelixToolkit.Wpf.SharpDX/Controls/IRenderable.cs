@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         void Attach(IRenderHost host);
         void Detach();
-        void Update(TimeSpan timeSpan);
+        //void Update(TimeSpan timeSpan);
         void Render(RenderContext context);
         bool IsAttached { get; }
     }
@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         void Attach(IRenderHost host);
         void Detach();
-        void Update(TimeSpan timeSpan);
+        //void Update(TimeSpan timeSpan);
         void Render(RenderContext context);
        
         bool IsShadowMappingEnabled { get; }

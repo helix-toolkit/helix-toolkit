@@ -283,17 +283,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>        
-        public virtual void Update(TimeSpan timeSpan)
-        {
-            foreach (var item in this.children)
-            {
-                var element = item as IRenderable;
-                if (element != null)
-                {
-                    element.Update(timeSpan);
-                }
-            }
-        }
+        //public virtual void Update(TimeSpan timeSpan)
+        //{
+        //    //foreach (var item in this.children)
+        //    //{
+        //    //    var element = item as IRenderable;
+        //    //    if (element != null)
+        //    //    {
+        //    //        element.Update(timeSpan);
+        //    //    }
+        //    //}
+        //}
 
         /// <summary>
         /// Compute hit-testing for all children

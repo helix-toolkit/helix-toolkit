@@ -269,12 +269,6 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>        
-        public override void Update(System.TimeSpan timeSpan)
-        {
-        }
 
         /// <summary>
         /// 

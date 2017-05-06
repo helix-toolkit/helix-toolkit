@@ -673,7 +673,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void Render()
+        private void Render(TimeSpan timeStamp)
         {
             var device = this.device;
             if (device == null)
@@ -738,6 +738,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
+                renderContext.TimeStamp = timeStamp;
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
@@ -832,11 +833,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         // Update all renderables before rendering 
                         // giving them the chance to invalidate the current render.                                                            
-                        renderRenderable.Update(t0);
+                        //renderRenderable.Update(t0);
                         var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
                         if (cycle == RenderCycles - 1)
                         {
-                            Render();
+                            Render(t0);
                         }
                         //if (cycle == 0)
                         //{

@@ -851,6 +851,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void IRenderer.Render(RenderContext context)
         {
+            this.FpsCounter.AddFrame(context.TimeStamp);
             context.Camera = this.Camera;                  
             foreach (IRenderable e in this.Renderables)
             {
@@ -862,14 +863,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Updates the scene.
         /// </summary>
         /// <param name="timeSpan">The time span.</param>
-        void IRenderer.Update(TimeSpan timeSpan)
-        {
-            this.FpsCounter.AddFrame(timeSpan);           
-            foreach (IRenderable e in this.Renderables)
-            {
-                e.Update(timeSpan);
-            }
-        }
+        //void IRenderer.Update(TimeSpan timeSpan)
+        //{
+        //    //this.FpsCounter.AddFrame(timeSpan);           
+        //    //foreach (IRenderable e in this.Renderables)
+        //    //{
+        //    //    e.Update(timeSpan);
+        //    //}
+        //}
 
         /// <summary>
         /// Called when the camera is changed.

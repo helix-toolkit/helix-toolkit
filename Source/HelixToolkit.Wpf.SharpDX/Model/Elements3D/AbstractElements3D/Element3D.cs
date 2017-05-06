@@ -151,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Updates the element by the specified time span.
         /// </summary>
         /// <param name="timeSpan">The time since last update.</param>
-        public virtual void Update(TimeSpan timeSpan) { }
+        //public virtual void Update(TimeSpan timeSpan) { }
 
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
