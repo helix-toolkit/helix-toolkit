@@ -111,11 +111,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private static void DirectionTransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Light3D)d).DirectionTransformInternal = e.NewValue == null ? null : (Transform3D)e.NewValue;
-            if (e.NewValue != null)
+            var light = d as Light3D;
+            light.DirectionTransformInternal = e.NewValue == null ? null : (Transform3D)e.NewValue;
+            if (light.DirectionTransformInternal != null)
             {
-                var trafo = ((Transform3D)e.NewValue).Value;
-                ((Light3D)d).Direction = new Vector3((float)trafo.OffsetX, (float)trafo.OffsetY, (float)trafo.OffsetZ);
+                var trafo = light.DirectionTransformInternal.Value;
+                light.Direction = new Vector3((float)trafo.OffsetX, (float)trafo.OffsetY, (float)trafo.OffsetZ);
             }
         }
 
