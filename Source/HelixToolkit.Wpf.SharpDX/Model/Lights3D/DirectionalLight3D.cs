@@ -53,12 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var manager = renderHost.RenderTechniquesManager;
             if (base.CanRender(context))
             {
-                if (renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                    renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                {
-                    return false;
-                }
-                return true;
+                return !renderHost.IsDeferredLighting;
             }
             return false;
         }

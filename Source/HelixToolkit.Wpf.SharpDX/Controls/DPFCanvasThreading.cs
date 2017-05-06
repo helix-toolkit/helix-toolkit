@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
+    using HelixToolkit.Wpf.SharpDX.Extensions;
     using Device = global::SharpDX.Direct3D11.Device;
     using Model.Lights3D;
     using Helpers;
@@ -230,7 +231,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public RenderTechnique RenderTechnique { get; private set; }
+        public RenderTechnique RenderTechnique
+        {
+            get { return renderTechnique; }
+            private set
+            {
+                renderTechnique = value;
+                IsDeferredLighting = RenderTechniquesManager != null && (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
+                    || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
+            }
+        }
+        private RenderTechnique renderTechnique;
+
+        public bool IsDeferredLighting { private set; get; } = false;
 
         private bool enableRenderFrustum = false;
         public bool EnableRenderFrustum

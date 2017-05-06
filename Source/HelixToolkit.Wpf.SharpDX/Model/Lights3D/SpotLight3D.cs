@@ -122,12 +122,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (base.CanRender(context))
             {
-                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                {
-                    return false;
-                }
-                return true;
+                return !renderHost.IsDeferredLighting;
+                //if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
+                //    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+                //{
+                //    return false;
+                //}
+                //return true;
             }
             return false;
         }

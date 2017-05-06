@@ -270,8 +270,7 @@
                 return false;
             }
 
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+            if (renderHost.IsDeferredLighting)
                 return false;
 
             // --- get device
@@ -313,10 +312,7 @@
         {
             if(base.CanRender(context))
             {
-                if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                    return false;
-                else return true;
+                return !renderHost.IsDeferredLighting;
             }
             else
             {

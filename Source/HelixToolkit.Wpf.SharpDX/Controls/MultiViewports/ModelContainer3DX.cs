@@ -287,6 +287,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public bool IsDeferredLighting
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.IsDeferredLighting : false;
+            }
+        }
+
         public IModelContainer SharedModelContainer
         {
             set { } get { return this; }

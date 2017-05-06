@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Transform3D)this.GetValue(DirectionTransformProperty); }
             set { this.SetValue(DirectionTransformProperty, value); }
         }
-        internal Transform3D DirectionTransformInternal { private set; get; }
+        internal Transform3D DirectionTransformInternal { private set; get; } = Transform3D.Identity;
         /// <summary>
         /// Color of the light.
         /// For simplicity, this color applies to the diffuse and specular properties of the light.
@@ -257,7 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Vector3)this.GetValue(AttenuationProperty); }
             set { this.SetValue(AttenuationProperty, value); }
         }
-        internal Vector3 AttenuationInternal { private set; get; }
+        internal Vector3 AttenuationInternal { private set; get; } = new Vector3(1.0f, 0.0f, 0.0f);
         /// <summary>
         /// Range of this light. This is the maximum distance 
         /// of a pixel being lit by this light.
@@ -269,6 +269,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RangeProperty, value); }
         }
 
-        internal double RangeInternal { private set; get; }
+        internal double RangeInternal { private set; get; } = 1000;
     }
 }

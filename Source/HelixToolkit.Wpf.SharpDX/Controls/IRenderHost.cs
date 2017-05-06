@@ -61,6 +61,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         RenderTechnique RenderTechnique { get; }
 
+        bool IsDeferredLighting { get; }
+
         double ActualHeight { get; }
         double ActualWidth { get; }
 
