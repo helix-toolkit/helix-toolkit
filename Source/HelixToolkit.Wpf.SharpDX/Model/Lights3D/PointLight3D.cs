@@ -66,10 +66,10 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext context)
         {
             // --- turn-on the light            
-            Light3DSceneShared.LightColors[lightIndex] = this.Color;
+            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
             // --- Set lighting parameters
-            Light3DSceneShared.LightPositions[lightIndex] = this.Position.ToVector4();
-            Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.Attenuation.X, (float)this.Attenuation.Y, (float)this.Attenuation.Z, (float)this.Range);
+            Light3DSceneShared.LightPositions[lightIndex] = this.PositionInternal.ToVector4();
+            Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.AttenuationInternal.X, (float)this.AttenuationInternal.Y, (float)this.AttenuationInternal.Z, (float)this.RangeInternal);
 
             // --- Update lighting variables    
             this.vLightPos.Set(Light3DSceneShared.LightPositions);

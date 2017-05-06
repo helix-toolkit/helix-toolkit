@@ -22,13 +22,22 @@ namespace HelixToolkit.Wpf.SharpDX
     public sealed class SpotLight3D : PointLightBase3D
     {
         public static readonly DependencyProperty FalloffProperty =
-            DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(1.0));
+            DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(1.0,
+                (d,e)=> {
+                    (d as SpotLight3D).FalloffInternal = (double)e.NewValue;
+                }));
 
         public static readonly DependencyProperty InnerAngleProperty =
-            DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(5.0));
+            DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(5.0,
+                (d, e) => {
+                    (d as SpotLight3D).InnerAngleInternal = (double)e.NewValue;
+                }));
 
         public static readonly DependencyProperty OuterAngleProperty =
-            DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(45.0));
+            DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(45.0,
+                (d, e) => {
+                    (d as SpotLight3D).OuterAngleInternal = (double)e.NewValue;
+                }));
 
 
         /// <summary>
@@ -42,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)this.GetValue(FalloffProperty); }
             set { this.SetValue(FalloffProperty, value); }
         }
-
+        internal double FalloffInternal { private set; get; } = 1.0;
         /// <summary>
         /// Full outer angle of the spot (Phi) in degrees
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
@@ -53,6 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(OuterAngleProperty, value); }
         }
 
+        internal double OuterAngleInternal { private set; get; } = 45.0;
         /// <summary>
         /// Full inner angle of the spot (Theta) in degrees. 
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
@@ -63,6 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(InnerAngleProperty, value); }
         }
 
+        internal double InnerAngleInternal { private set; get; } = 5.0;
 
 
         public SpotLight3D()
@@ -124,12 +135,12 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext context)
         {
             // --- turn-on the light            
-            Light3DSceneShared.LightColors[lightIndex] = this.Color;
+            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
             // --- Set lighting parameters
-            Light3DSceneShared.LightPositions[lightIndex] = this.Position.ToVector4();
-            Light3DSceneShared.LightDirections[lightIndex] = this.Direction.ToVector4();
-            Light3DSceneShared.LightSpots[lightIndex] = new Vector4((float)Math.Cos(this.OuterAngle / 360.0 * Math.PI), (float)Math.Cos(this.InnerAngle / 360.0 * Math.PI), (float)this.Falloff, 0);
-            Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.Attenuation.X, (float)this.Attenuation.Y, (float)this.Attenuation.Z, (float)this.Range);
+            Light3DSceneShared.LightPositions[lightIndex] = this.PositionInternal.ToVector4();
+            Light3DSceneShared.LightDirections[lightIndex] = this.DirectionInternal.ToVector4();
+            Light3DSceneShared.LightSpots[lightIndex] = new Vector4((float)Math.Cos(this.OuterAngleInternal / 360.0 * Math.PI), (float)Math.Cos(this.InnerAngleInternal / 360.0 * Math.PI), (float)this.FalloffInternal, 0);
+            Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.AttenuationInternal.X, (float)this.AttenuationInternal.Y, (float)this.AttenuationInternal.Z, (float)this.RangeInternal);
 
             // --- Update lighting variables    
             this.vLightPos.Set(Light3DSceneShared.LightPositions);
