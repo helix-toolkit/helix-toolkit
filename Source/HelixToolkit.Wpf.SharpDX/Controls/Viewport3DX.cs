@@ -216,7 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     yield return item;
                 }
-                if(EnableSharedModelMode && SharedModelContainer != null)
+                if(RenderHost.EnableSharingModelMode && RenderHost.SharedModelContainer != null)
                 {
                     foreach(var item in SharedModelContainer.Renderables)
                     {

@@ -134,7 +134,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(AmbientColorProperty, value); }
         }
 
-        internal Color4 AmbientColorInternal { get; private set; }
+        internal Color4 AmbientColorInternal { get; private set; } = (Color4)Color.Gray;
         /// <summary>
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
@@ -146,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DiffuseColorProperty, value); }
         }
 
-        internal Color4 DiffuseColorInternal { private set; get; }
+        internal Color4 DiffuseColorInternal { private set; get; } = (Color4)Color.Gray;
         /// <summary>
         /// Gets or sets the emissive color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(EmissiveColorProperty, value); }
         }
 
-        internal Color4 EmissiveColorInternal { private set; get; }
+        internal Color4 EmissiveColorInternal { private set; get; } = (Color4)Color.Black;
 
         /// <summary>
         /// A fake parameter for reflectivity of the environment map
@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ReflectiveColorProperty, value); }
         }
 
-        internal Color4 ReflectiveColorInternal { private set; get; }
+        internal Color4 ReflectiveColorInternal { private set; get; } = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
         /// <summary>
         /// Gets or sets the specular color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(SpecularColorProperty, value); }
         }
 
-        internal Color4 SpecularColorInternal { private set; get; }
+        internal Color4 SpecularColorInternal { private set; get; } = (Color4)Color.Black;
         /// <summary>
         /// The power of specular reflections. 
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
@@ -193,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(SpecularShininessProperty, value); }
         }
 
-        internal float SpecularShininessInternal { private set; get; }
+        internal float SpecularShininessInternal { private set; get; } = 30f;
         /// <summary>
         /// System.Windows.Media.Brush to be applied as a System.Windows.Media.Media3D.Material
         /// to a 3-D model.
