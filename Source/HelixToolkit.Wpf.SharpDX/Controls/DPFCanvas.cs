@@ -867,6 +867,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (EffectsManager != null && RenderTechniquesManager != null)
             {
+                IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
+                    || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
                 StartD3D();
             }
         }
