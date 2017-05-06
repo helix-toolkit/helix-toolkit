@@ -31,6 +31,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly Guid guid = Guid.NewGuid();
 
         public Guid GUID { get { return guid; } }
+
+        protected bool isRenderingInternal { private set; get; } = true;
+
+        protected bool visibleInternal { private set; get; } = true;
         /// <summary>
         /// If this has been attached onto renderhost. 
         /// </summary>
@@ -64,6 +68,17 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual RenderTechnique SetRenderTechnique(IRenderHost host)
         {
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
+        }
+
+
+        public Element3D()
+        {
+            IsVisibleChanged += Element3D_IsVisibleChanged;
+        }
+
+        private void Element3D_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            visibleInternal = Visibility == Visibility.Visible;
         }
 
         /// <summary>
@@ -146,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected virtual bool CanRender(RenderContext context)
         {
-            return IsAttached && IsRendering && Visibility == Visibility.Visible;
+            return IsAttached && isRenderingInternal && visibleInternal;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
@@ -180,7 +195,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true, 
+                (d,e)=> 
+                {
+                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// Indicates, if this element should be rendered.
@@ -192,6 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsRenderingProperty); }
             set { SetValue(IsRenderingProperty, value); }
         }
+
 
         /// <summary>
         /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
