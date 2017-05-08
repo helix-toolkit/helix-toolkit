@@ -71,16 +71,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public Element3D()
-        {
-            IsVisibleChanged += Element3D_IsVisibleChanged;
-        }
-
-        private void Element3D_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            visibleInternal = Visibility == Visibility.Visible;
-        }
-
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
@@ -247,6 +237,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
+            if (e.Property.Name.Equals(nameof(Visibility)))
+            {
+                visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
+            }
             if (CheckAffectsRender(e))
             {
                 this.InvalidateRender();
