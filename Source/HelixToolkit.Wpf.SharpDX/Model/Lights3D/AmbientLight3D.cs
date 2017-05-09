@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 // --- light constant params              
                 this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
-                this.vLightAmbient.Set(this.Color);
+                this.vLightAmbient.Set(this.ColorInternal);
 
                 // --- flush
                 //this.Device.ImmediateContext.Flush();     
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (IsAttached)
             {
-                this.vLightAmbient.Set(this.Color);
+                this.vLightAmbient.Set(this.ColorInternal);
             }
         }
     }

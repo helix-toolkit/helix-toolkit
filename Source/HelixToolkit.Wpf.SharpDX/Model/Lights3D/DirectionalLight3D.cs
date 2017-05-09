@@ -53,20 +53,15 @@ namespace HelixToolkit.Wpf.SharpDX
             var manager = renderHost.RenderTechniquesManager;
             if (base.CanRender(context))
             {
-                if (renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                    renderHost.RenderTechnique == manager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                {
-                    return false;
-                }
-                return true;
+                return !renderHost.IsDeferredLighting;
             }
             return false;
         }
         protected override void OnRender(RenderContext context)
         {
-            Light3DSceneShared.LightColors[lightIndex] = this.Color;
+            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
             // --- set lighting parameters
-            Light3DSceneShared.LightDirections[lightIndex] = -this.Direction.ToVector4();
+            Light3DSceneShared.LightDirections[lightIndex] = -this.DirectionInternal.ToVector4();
 
             // --- update lighting variables               
             this.vLightDir.Set(Light3DSceneShared.LightDirections);

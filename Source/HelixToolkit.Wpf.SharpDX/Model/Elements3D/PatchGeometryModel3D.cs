@@ -269,12 +269,6 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>        
-        public override void Update(System.TimeSpan timeSpan)
-        {
-        }
 
         /// <summary>
         /// 
@@ -347,25 +341,32 @@ namespace HelixToolkit.Wpf.SharpDX
         private DefaultVertex[] CreateDefaultVertexArray()
         {
             var geometry = (MeshGeometry3D)this.geometryInternal;
-            var colors = geometry.Colors != null ? geometry.Colors : null;
-            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates : null;
-            var texScale = this.TextureCoodScale;
-            var normals = geometry.Normals != null ? geometry.Normals : null;
-            var tangents = geometry.Tangents != null ? geometry.Tangents : null;
-            var bitangents = geometry.BiTangents != null ? geometry.BiTangents : null;
-            var positions = geometry.Positions;
+            var positions = geometry.Positions.GetEnumerator();
             var vertexCount = geometry.Positions.Count;
+
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
+            var texScale = this.TextureCoodScale;
+            var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+            var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
                 vertexArrayBuffer = new DefaultVertex[vertexCount];
 
             for (var i = 0; i < vertexCount; i++)
             {
-                vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
-                vertexArrayBuffer[i].Color = colors != null ? colors[i] : new Color4(1f, 0f, 0f, 1f);
-                vertexArrayBuffer[i].TexCoord = textureCoordinates != null ? texScale * textureCoordinates[i] : Vector2.Zero;
-                vertexArrayBuffer[i].Normal = normals != null ? normals[i] : Vector3.Zero;
-                vertexArrayBuffer[i].Tangent = tangents != null ? tangents[i] : Vector3.Zero;
-                vertexArrayBuffer[i].BiTangent = bitangents != null ? bitangents[i] : Vector3.Zero;
+                positions.MoveNext();
+                colors.MoveNext();
+                textureCoordinates.MoveNext();
+                normals.MoveNext();
+                tangents.MoveNext();
+                bitangents.MoveNext();
+                vertexArrayBuffer[i].Position = new Vector4(positions.Current, 1f);
+                vertexArrayBuffer[i].Color = colors.Current;
+                vertexArrayBuffer[i].TexCoord = textureCoordinates.Current * texScale;
+                vertexArrayBuffer[i].Normal = normals.Current;
+                vertexArrayBuffer[i].Tangent = tangents.Current;
+                vertexArrayBuffer[i].BiTangent = bitangents.Current;
             }
 
             return vertexArrayBuffer;

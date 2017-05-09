@@ -108,6 +108,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool IsShadowPass { get; set; }
 
         public bool IsDeferredPass { get; set; }
+
+        public TimeSpan TimeStamp { set; get; }
         
         public RenderContext(IRenderHost canvas, Effect effect, DeviceContext renderContext)
         {

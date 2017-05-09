@@ -89,6 +89,14 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             }
         }
 
+        public bool IsDeferredLighting
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public void SetDefaultRenderTargets(bool clear = true)
         {
         }

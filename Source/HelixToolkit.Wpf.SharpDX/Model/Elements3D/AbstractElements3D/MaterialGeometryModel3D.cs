@@ -360,12 +360,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (material != null)
                 {
-                    this.vMaterialDiffuseVariable.Set(material.DiffuseColor);
-                    this.vMaterialAmbientVariable.Set(material.AmbientColor);
-                    this.vMaterialEmissiveVariable.Set(material.EmissiveColor);
-                    this.vMaterialSpecularVariable.Set(material.SpecularColor);
-                    this.vMaterialReflectVariable.Set(material.ReflectiveColor);
-                    this.sMaterialShininessVariable.Set(material.SpecularShininess);
+                    this.vMaterialDiffuseVariable.Set(material.DiffuseColorInternal);
+                    this.vMaterialAmbientVariable.Set(material.AmbientColorInternal);
+                    this.vMaterialEmissiveVariable.Set(material.EmissiveColorInternal);
+                    this.vMaterialSpecularVariable.Set(material.SpecularColorInternal);
+                    this.vMaterialReflectVariable.Set(material.ReflectiveColorInternal);
+                    this.sMaterialShininessVariable.Set(material.SpecularShininessInternal);
                     this.texDiffuseMapVariable.SetResource(this.texDiffuseMapView);
                     this.texNormalMapVariable.SetResource(this.texNormalMapView);
                     this.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);

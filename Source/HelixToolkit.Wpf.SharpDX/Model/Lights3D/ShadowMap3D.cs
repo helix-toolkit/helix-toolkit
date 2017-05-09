@@ -229,8 +229,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (light is DirectionalLight3D)
                     {
                         var dlight = (DirectionalLight3D)light;
-                        var dir = light.Direction.Normalized();
-                        var pos = -50 * light.Direction;
+                        var dir = light.DirectionInternal.Normalized();
+                        var pos = -50 * light.DirectionInternal;
                         
                         //lightCamera = new PerspectiveCamera()
                         //{

@@ -31,6 +31,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly Guid guid = Guid.NewGuid();
 
         public Guid GUID { get { return guid; } }
+
+        protected bool isRenderingInternal { private set; get; } = true;
+
+        protected bool visibleInternal { private set; get; } = true;
         /// <summary>
         /// If this has been attached onto renderhost. 
         /// </summary>
@@ -65,6 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
+
 
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
@@ -136,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Updates the element by the specified time span.
         /// </summary>
         /// <param name="timeSpan">The time since last update.</param>
-        public virtual void Update(TimeSpan timeSpan) { }
+        //public virtual void Update(TimeSpan timeSpan) { }
 
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
@@ -146,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected virtual bool CanRender(RenderContext context)
         {
-            return IsAttached && IsRendering && Visibility == Visibility.Visible;
+            return IsAttached && isRenderingInternal && visibleInternal;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
@@ -180,7 +185,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true, 
+                (d,e)=> 
+                {
+                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// Indicates, if this element should be rendered.
@@ -192,6 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsRenderingProperty); }
             set { SetValue(IsRenderingProperty, value); }
         }
+
 
         /// <summary>
         /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
@@ -227,6 +237,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
+            if (e.Property.Name.Equals(nameof(Visibility)))
+            {
+                visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
+            }
             if (CheckAffectsRender(e))
             {
                 this.InvalidateRender();
