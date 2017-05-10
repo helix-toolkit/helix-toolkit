@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {            
-            if (IsHitTestVisible)
+            if (IsHitTestVisibleInternal)
                 base.OnMouse3DMove(sender, e);
         }
     }

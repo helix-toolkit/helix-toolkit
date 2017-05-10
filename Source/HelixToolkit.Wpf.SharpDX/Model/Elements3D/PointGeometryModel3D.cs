@@ -101,7 +101,7 @@
             {
                 return false;
             }
-            if (this.IsHitTestVisible == false || this.geometryInternal == null)
+            if (this.IsHitTestVisibleInternal == false || this.geometryInternal == null)
             {
                 return false;
             }

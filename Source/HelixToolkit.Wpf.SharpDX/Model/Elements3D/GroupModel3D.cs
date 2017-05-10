@@ -83,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-            if (this.IsHitTestVisible == false)
+            if (this.IsHitTestVisibleInternal == false)
             {
                 return false;
             }

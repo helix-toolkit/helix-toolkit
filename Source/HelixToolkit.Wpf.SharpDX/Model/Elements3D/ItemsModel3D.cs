@@ -367,6 +367,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override bool HitTest(IRenderMatrices context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
+            if (!IsHitTestVisibleInternal)
+            {
+                return false;
+            }
             bool isHit = false;
             if (Octree != null)
             {

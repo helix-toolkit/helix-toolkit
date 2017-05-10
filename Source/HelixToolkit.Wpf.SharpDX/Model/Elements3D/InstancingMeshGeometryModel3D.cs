@@ -211,7 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
-            if (IsHitTestVisible && hasInstances)
+            if (IsHitTestVisibleInternal && hasInstances)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
@@ -223,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            if (!IsHitTestVisible || OctreeManager == null || OctreeManager.Octree == null)
+            if (!IsHitTestVisibleInternal || OctreeManager == null || OctreeManager.Octree == null)
             {
                 return false;
             }

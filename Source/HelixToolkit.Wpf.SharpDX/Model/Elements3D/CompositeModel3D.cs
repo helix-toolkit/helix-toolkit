@@ -81,6 +81,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
+            if (!IsHitTestVisibleInternal)
+            {
+                return false;
+            }
             bool hit = base.HitTest(context, ray, ref hits);
 
             foreach (var c in this.Children)

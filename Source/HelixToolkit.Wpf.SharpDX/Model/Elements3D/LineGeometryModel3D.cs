@@ -113,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
             LineGeometry3D lineGeometry3D;
 
             if (this.Visibility == Visibility.Collapsed ||
-                this.IsHitTestVisible == false ||
+                this.IsHitTestVisibleInternal == false ||
                 context == null ||
                 (lineGeometry3D = this.geometryInternal as LineGeometry3D) == null)
             {
