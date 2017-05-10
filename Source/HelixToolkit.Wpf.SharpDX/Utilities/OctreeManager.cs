@@ -17,7 +17,7 @@ using System.Windows.Markup;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public abstract class OctreeManagerBase : FrameworkElement, IOctreeManager
+    public abstract class OctreeManagerBase : FrameworkContentElement, IOctreeManager
     {
         public static readonly DependencyProperty OctreeProperty
             = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeManagerBase),

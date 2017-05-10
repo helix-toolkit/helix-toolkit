@@ -1395,26 +1395,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return source.Contains(Positions[obj]) != ContainmentType.Disjoint;
         }
 
-        public static T FindVisualAncestor<T>(FrameworkElement obj) where T : FrameworkElement
-        {
-            if (obj != null)
-            {
-                var parent = obj.Parent;
-                while (parent != null)
-                {
-                    var typed = parent as T;
-                    if (typed != null)
-                    {
-                        return typed;
-                    }
-
-                    parent = (parent as FrameworkElement).Parent;
-                }
-            }
-
-            return null;
-        }
-
         public static double DistanceRayToPoint(ref Ray r, ref Vector3 p)
         {
             Vector3 v = r.Direction;
