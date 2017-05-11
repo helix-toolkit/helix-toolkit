@@ -319,6 +319,74 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override bool CanHitTest(IRenderMatrices context)
+        {
+            return base.CanHitTest(context) && geometryInternal is MeshGeometry3D && geometryInternal.Indices != null && geometryInternal.Indices.Count > 0;
+        }
+
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            var g = this.geometryInternal as MeshGeometry3D;
+            bool isHit = false;
+
+            if (g.Octree != null)
+            {
+                isHit = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
+            }
+            else
+            {
+                var result = new HitTestResult();
+                result.Distance = double.MaxValue;
+                if (g != null)
+                {
+                    var m = this.modelMatrix;
+
+                    // put bounds to world space
+                    var b = BoundingBox.FromPoints(this.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+
+                    //var b = this.Bounds;
+
+                    // this all happens now in world space now:
+                    if (rayWS.Intersects(ref b))
+                    {
+                        int index = 0;
+                        foreach (var t in g.Triangles)
+                        {
+                            float d;
+                            var p0 = Vector3.TransformCoordinate(t.P0, m);
+                            var p1 = Vector3.TransformCoordinate(t.P1, m);
+                            var p2 = Vector3.TransformCoordinate(t.P2, m);
+                            if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
+                            {
+                                if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                                {
+                                    result.IsValid = true;
+                                    result.ModelHit = this;
+                                    // transform hit-info to world space now:
+                                    result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
+                                    result.Distance = d;
+
+                                    var n = Vector3.Cross(p1 - p0, p2 - p0);
+                                    n.Normalize();
+                                    // transform hit-info to world space now:
+                                    result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
+                                    result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
+                                    result.Tag = index / 3;
+                                    isHit = true;
+                                }
+                            }
+                            index += 3;
+                        }
+                    }
+                }
+                if (isHit)
+                {
+                    hits.Add(result);
+                }
+            }
+            return isHit;
+        }
+
         /// <summary>
         /// 
         /// </summary>

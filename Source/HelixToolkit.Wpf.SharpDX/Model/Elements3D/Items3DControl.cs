@@ -298,7 +298,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        public virtual bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        public bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        {
+            if (CanHitTest(context))
+            {
+                return OnHitTest(context, ray, ref hits);
+            }
+            else return false;
+        }
+
+        protected virtual bool CanHitTest(IRenderMatrices context)
+        {
+            return IsHitTestVisible && Visibility == System.Windows.Visibility.Visible;
+        }
+
+        protected virtual bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
 
@@ -328,6 +342,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return hit;
         }        
+
+
 
         /// <summary>
         /// 

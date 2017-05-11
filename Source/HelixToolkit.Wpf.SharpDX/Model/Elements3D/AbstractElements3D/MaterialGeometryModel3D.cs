@@ -231,35 +231,46 @@ namespace HelixToolkit.Wpf.SharpDX
             InstancesChanged();
         }
 
+        protected override bool CanHitTest(IRenderMatrices context)
+        {
+            return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0;
+        }
         /// <summary>
         /// 
         /// </summary>        
         public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            if ((this.Instances != null) && (this.Instances.Any()))
+            if (CanHitTest(context))
             {
-                bool hit = false;
-                foreach (var modelMatrix in Instances)
+                if ((this.Instances != null) && (this.Instances.Any()))
                 {
-                    var b = this.Bounds;
-                    this.PushMatrix(modelMatrix);
-                    this.Bounds = BoundingBox.FromPoints(this.geometryInternal.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
-                    if (base.HitTest(context, rayWS, ref hits))
+                    bool hit = false;
+                    foreach (var modelMatrix in Instances)
                     {
-                        hit = true;
-                        var lastHit = hits[hits.Count - 1];
-                        lastHit.Tag = modelMatrix;
-                        hits[hits.Count - 1] = lastHit;
+                        var b = this.Bounds;
+                        this.PushMatrix(modelMatrix);
+                        this.Bounds = BoundingBox.FromPoints(this.geometryInternal.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
+                        if (OnHitTest(context, rayWS, ref hits))
+                        {
+                            hit = true;
+                            var lastHit = hits[hits.Count - 1];
+                            lastHit.Tag = modelMatrix;
+                            hits[hits.Count - 1] = lastHit;
+                        }
+                        this.PopMatrix();
+                        this.Bounds = b;
                     }
-                    this.PopMatrix();
-                    this.Bounds = b;
-                }
 
-                return hit;
+                    return hit;
+                }
+                else
+                {
+                    return OnHitTest(context, rayWS, ref hits);
+                }
             }
             else
             {
-                return base.HitTest(context, rayWS, ref hits);
+                return false;
             }
         }
 

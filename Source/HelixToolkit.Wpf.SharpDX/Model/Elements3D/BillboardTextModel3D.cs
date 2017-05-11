@@ -63,17 +63,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            if (this.Visibility == Visibility.Collapsed || this.Visibility == Visibility.Hidden)
-            {
-                return false;
-            }
-            if (this.IsHitTestVisibleInternal == false)
-            {
-                return false;
-            }
-
             var g = this.geometryInternal as IBillboardText;
             var h = false;
             var result = new HitTestResult();

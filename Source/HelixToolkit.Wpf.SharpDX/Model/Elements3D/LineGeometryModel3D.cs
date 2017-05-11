@@ -110,15 +110,47 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            LineGeometry3D lineGeometry3D;
+            if (CanHitTest(context))
+            {
+                if ((this.Instances != null) && (this.Instances.Any()))
+                {
+                    bool hit = false;
+                    foreach (var modelMatrix in Instances)
+                    {
+                        this.PushMatrix(modelMatrix);
+                        if (OnHitTest(context, rayWS, ref hits))
+                        {
+                            hit = true;
+                            var lastHit = hits[hits.Count - 1];
+                            lastHit.Tag = modelMatrix;
+                            hits[hits.Count - 1] = lastHit;
+                        }
+                        this.PopMatrix();
+                    }
 
-            if (this.Visibility == Visibility.Collapsed ||
-                this.IsHitTestVisibleInternal == false ||
-                context == null ||
-                (lineGeometry3D = this.geometryInternal as LineGeometry3D) == null)
+                    return hit;
+                }
+                else
+                {
+                    return OnHitTest(context, rayWS, ref hits);
+                }
+            }
+            else
             {
                 return false;
             }
+        }
+
+
+        protected override bool CanHitTest(IRenderMatrices context)
+        {
+            return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0
+                && geometryInternal is LineGeometry3D && context != null;
+        }
+
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            LineGeometry3D lineGeometry3D = this.geometryInternal as LineGeometry3D;
 
             var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
             var lastDist = double.MaxValue;

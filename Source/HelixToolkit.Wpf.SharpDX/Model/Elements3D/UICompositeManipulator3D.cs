@@ -238,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="ray"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Children)
