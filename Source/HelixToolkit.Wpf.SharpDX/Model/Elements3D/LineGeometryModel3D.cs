@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     lastDist = dist;
                     result.PointHit = sp.ToPoint3D();
                     result.NormalAtHit = (sp - tp).ToVector3D(); // not normalized to get length
-                    result.Distance = distance;
+                    result.Distance = (rayWS.Position-sp).Length();
                     result.ModelHit = this;
                     result.IsValid = true;
                     result.Tag = index; // ToDo: LineHitTag with additional info
