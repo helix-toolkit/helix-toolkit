@@ -223,7 +223,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn],
-                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing]
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm]
                 });
 
                 var phong = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
@@ -334,6 +335,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 6, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
                 });
 
+                var particle = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm];
+                var particleLayout = new InputLayout(device, GetEffect(particle).GetTechniqueByName(DefaultRenderTechniqueNames.ParticleStorm).GetPassByIndex(2).Description.Signature,
+                    new[]
+                    {
+                        new InputElement("", 0, Format.R32_UInt, InputElement.AppendAligned, 0)
+                    });
+
                 RegisterLayout(new[] { cubeMap }, cubeMapInputLayout);
 
                 RegisterLayout(new[]
@@ -374,6 +382,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 RegisterLayout(new[] { boneSkinBlinn }, boneSkinInputLayout);
 
                 RegisterLayout(new[] { billboardinstancing }, billboardInstancingInputLayout);
+
+                RegisterLayout(new[] { particle }, particleLayout);
             }
             catch (Exception ex)
             {

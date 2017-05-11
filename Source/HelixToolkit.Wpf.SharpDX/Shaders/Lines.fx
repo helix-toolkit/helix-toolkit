@@ -9,9 +9,9 @@
 // http://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf
 //-------------------------------------------------------------------------------------
 
-#include "./Shaders/Common.fx"
-#include "./Shaders/Material.fx"
-#include "./Shaders/DataStructs.fx"
+#include "Common.fx"
+#include "Material.fx"
+#include "DataStructs.fx"
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------

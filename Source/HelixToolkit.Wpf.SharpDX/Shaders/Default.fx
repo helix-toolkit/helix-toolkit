@@ -13,10 +13,10 @@
 //--------------------------------------------------------------------------------------
 // pre-processor includes
 //--------------------------------------------------------------------------------------
-#include "./Shaders/Lines.fx"
-#include "./Shaders/Points.fx"
-#include "./Shaders/BillboardText.fx"
-#include "./Shaders/PixelShaders.fx"
-#include "./Shaders/VertexShaders.fx"
-
+#include "Lines.fx"
+#include "Points.fx"
+#include "BillboardText.fx"
+#include "PixelShaders.fx"
+#include "VertexShaders.fx"
+#include "Particles.fx"
 #endif

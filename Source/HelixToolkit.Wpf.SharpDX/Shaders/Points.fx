@@ -1,9 +1,9 @@
 #ifndef POINTS_FX
 #define POINTS_FX
 
-#include "./Shaders/Common.fx"
-#include "./Shaders/Material.fx"
-#include "./Shaders/DataStructs.fx"
+#include "Common.fx"
+#include "Material.fx"
+#include "DataStructs.fx"
 
 float4 vPointParams = float4(4, 4, 0, 0);
 

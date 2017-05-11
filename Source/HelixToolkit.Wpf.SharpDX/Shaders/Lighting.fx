@@ -1,9 +1,9 @@
 #ifndef LIGHTING_FX
 #define LIGHTING_FX
 
-#include "./Shaders/Common.fx"
-#include "./Shaders/Material.fx"
-#include "./Shaders/DataStructs.fx"
+#include "Common.fx"
+#include "Material.fx"
+#include "DataStructs.fx"
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------

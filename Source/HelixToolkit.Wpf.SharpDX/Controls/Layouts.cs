@@ -81,4 +81,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix[] Bones;
         public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct Particle
+    {
+        Vector3 position;
+        Vector3 direction;
+        Vector3 velocity;
+        float time;
+        public const int SizeInBytes = 4 * (3 * 3 + 1);
+    }
 }

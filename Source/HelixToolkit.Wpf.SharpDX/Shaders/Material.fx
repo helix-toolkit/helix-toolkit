@@ -54,6 +54,7 @@ Texture2D	texSpecularMap;
 Texture2D	texShadowMap;
 TextureCube texCubeMap;
 
+Texture2D ParticleTexture;
 
 bool bHasInstanceParams = false;
 

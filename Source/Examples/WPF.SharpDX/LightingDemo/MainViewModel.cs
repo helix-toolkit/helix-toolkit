@@ -19,6 +19,8 @@ namespace LightingDemo
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using HelixToolkit.Wpf;
     using System.IO;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MainViewModel : BaseViewModel
     {
@@ -27,6 +29,8 @@ namespace LightingDemo
         public MeshGeometry3D Model { get; private set; }
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
+
+        public IList<Particle> Particles { private set; get; }
         public LineGeometry3D CubeEdges { get; private set; }
         public Transform3D ModelTransform { get; private set; }
         public Transform3D FloorTransform { get; private set; }
@@ -155,6 +159,8 @@ namespace LightingDemo
                 DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
                 NormalMap = ModelMaterial.NormalMap
             };
+
+            Particles = new List<Particle>(Enumerable.Repeat(new Particle(), 100));
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)
