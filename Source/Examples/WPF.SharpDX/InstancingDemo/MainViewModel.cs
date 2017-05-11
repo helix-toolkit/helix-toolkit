@@ -19,6 +19,7 @@ namespace InstancingDemo
     using System;
     using System.IO;
     using System.Windows.Threading;
+    using System.Diagnostics;
 
     public class MainViewModel : BaseViewModel
     {
@@ -203,6 +204,7 @@ namespace InstancingDemo
             if (hitTests.Count > 0)
             {
                 var index = (int)hitTests[0].Tag;
+                Debug.WriteLine("Hit instance idx = " + index);
                 InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == Color.Transparent? Color.Yellow : Color.Transparent;
                 InstanceParam = (InstanceParameter[])InstanceParam.Clone();
             }

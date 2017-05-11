@@ -192,9 +192,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new System.Exception("Geometry must not be null");
             }
-
-            // --- init instances buffer            
-            this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
             // --- flush
             //this.Device.ImmediateContext.Flush();
             return true;

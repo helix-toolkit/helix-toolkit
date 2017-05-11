@@ -257,16 +257,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 tag = instanceIdx;
                             }
-                            hits[hits.Count - 1] = new HitTestResult()
-                            {
-                                Distance = result.Distance,
-                                IsValid = result.IsValid,
-                                ModelHit = result.ModelHit,
-                                NormalAtHit = result.NormalAtHit,
-                                PointHit = result.PointHit,
-                                TriangleIndices = result.TriangleIndices,
-                                Tag = tag
-                            };
+                            result.Tag = tag;
+                            hits[hits.Count - 1] = result;
                         }
                     }
                 }
