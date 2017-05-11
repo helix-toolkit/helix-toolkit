@@ -115,6 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if ((this.Instances != null) && (this.Instances.Any()))
                 {
                     bool hit = false;
+                    int idx = 0;
                     foreach (var modelMatrix in Instances)
                     {
                         this.PushMatrix(modelMatrix);
@@ -122,10 +123,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             hit = true;
                             var lastHit = hits[hits.Count - 1];
-                            lastHit.Tag = modelMatrix;
+                            lastHit.Tag = idx;
                             hits[hits.Count - 1] = lastHit;
                         }
                         this.PopMatrix();
+                        ++idx;
                     }
 
                     return hit;
