@@ -4,7 +4,6 @@ using System.Linq;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System.Diagnostics;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -99,9 +98,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool CanHitTest(IRenderMatrices context)
         {
             //Implementation pending.
+            return false;
+        }
+
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        {
             return false;
         }
 

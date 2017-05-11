@@ -77,17 +77,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public virtual bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected virtual bool CanHitTest()
         {
-            if (this.Visibility == Visibility.Collapsed)
-            {
-                return false;
-            }
-            if (this.IsHitTestVisible == false)
-            {
-                return false;
-            }
+            return visibleInternal && isRenderingInternal && IsHitTestVisibleInternal;
+        }
 
+        public bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        {
+            if (CanHitTest())
+            {
+                return OnHitTest(context, ray, ref hits);
+            }
+            else
+            {
+                return false;
+            }
+        }        
+
+        protected virtual bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        {
             bool hit = false;
             foreach (var c in this.Children)
             {
@@ -118,6 +126,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
             }            
             return hit;
-        }        
+        }
     }
 }

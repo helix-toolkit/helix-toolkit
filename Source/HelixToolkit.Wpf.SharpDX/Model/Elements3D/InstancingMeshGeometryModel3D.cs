@@ -211,7 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
-            if (IsHitTestVisible && hasInstances)
+            if (IsHitTestVisibleInternal && hasInstances)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
@@ -221,121 +221,159 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override bool CanHitTest(IRenderMatrices context)
+        {
+            return base.CanHitTest(context) && OctreeManager != null && OctreeManager.Octree != null;
+        }
+
         public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            if (!IsHitTestVisible || OctreeManager == null || OctreeManager.Octree == null)
-            {
-                return false;
-            }
-            else
+            bool isHit = false;
+            if (CanHitTest(context))
             {
                 var boundHits = new List<HitTestResult>();
-                bool isHit = false;
+                
                 isHit = OctreeManager.Octree.HitTest(context, this, ModelMatrix, rayWS, ref boundHits);
                 if (isHit)
                 {
-                    var g = this.geometryInternal as MeshGeometry3D;
-                    isHit = false;
                     Matrix instanceMatrix;
-                    if (g.Octree != null)
+                    foreach (var hit in boundHits)
                     {
-                        foreach (var hit in boundHits)
+                        int instanceIdx = (int)hit.Tag;
+                        instanceMatrix = Instances[instanceIdx];
+                        this.PushMatrix(instanceMatrix);
+                        var h = OnHitTest(context, rayWS, ref hits);
+                        isHit |= h;
+                        this.PopMatrix();
+                        if (h && hits.Count > 0)
                         {
-                            int instanceIdx = (int)hit.Tag;
-                            instanceMatrix = Instances[instanceIdx];
-                            this.PushMatrix(instanceMatrix);
-                            var h = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
-                            isHit |= h;
-                            this.PopMatrix();
-                            if (h && hits.Count > 0)
+                            var result = hits.Last();
+                            object tag = null;
+                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
                             {
-                                var result = hits[0];
-                                object tag = null;
-                                if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
-                                {
-                                    tag = InstanceIdentifiers[instanceIdx];
-                                }
-                                else
-                                {
-                                    tag = instanceIdx;
-                                }
-                                hits[0] = new HitTestResult()
-                                {
-                                    Distance = result.Distance,
-                                    IsValid = result.IsValid,
-                                    ModelHit = result.ModelHit,
-                                    NormalAtHit = result.NormalAtHit,
-                                    PointHit = result.PointHit,
-                                    TriangleIndices = result.TriangleIndices,
-                                    Tag = tag
-                                };
+                                tag = InstanceIdentifiers[instanceIdx];
                             }
-                        }
-                    }
-                    else
-                    {
-                        var result = new HitTestResult();
-                        result.Distance = double.MaxValue;
-                        foreach (var hit in boundHits)
-                        {
-                            int instanceIdx = (int)hit.Tag;
-                            instanceMatrix = Instances[instanceIdx];
-                            this.PushMatrix(instanceMatrix);
-
-                            var m = this.modelMatrix;
-
-                            // put bounds to world space
-
-                            int index = 0;
-                            foreach (var t in g.Triangles)
+                            else
                             {
-                                float d;
-                                var p0 = Vector3.TransformCoordinate(t.P0, m);
-                                var p1 = Vector3.TransformCoordinate(t.P1, m);
-                                var p2 = Vector3.TransformCoordinate(t.P2, m);
-                                if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
-                                {
-                                    if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
-                                    {
-                                        result.IsValid = true;
-                                        result.ModelHit = this;
-                                        // transform hit-info to world space now:
-                                        result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
-                                        result.Distance = d;
-                                        object tag = null;
-                                        if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
-                                        {
-                                            tag = InstanceIdentifiers[instanceIdx];
-                                        }
-                                        else
-                                        {
-                                            tag = instanceIdx;
-                                        }
-                                        result.Tag = tag;
-                                        var n = Vector3.Cross(p1 - p0, p2 - p0);
-                                        n.Normalize();
-                                        // transform hit-info to world space now:
-                                        result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
-                                        result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
-                                        isHit = true;
-                                    }
-                                }
-                                index += 3;
+                                tag = instanceIdx;
                             }
-                            this.PopMatrix();
-                        }
-                        if (isHit)
-                        {
-                            hits.Add(result);
+                            result.Tag = tag;
+                            hits[hits.Count - 1] = result;
                         }
                     }
                 }
-#if DEBUG
-                if (isHit)
-                    Debug.WriteLine("Hit: " + hits[0].Tag + "; HitPoint: " + hits[0].PointHit);
-#endif
-                return isHit;
             }
+            return isHit;
         }
+
+//        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+//        {
+//            var boundHits = new List<HitTestResult>();
+//            bool isHit = false;
+//            isHit = OctreeManager.Octree.HitTest(context, this, ModelMatrix, rayWS, ref boundHits);
+//            if (isHit)
+//            {
+//                var g = this.geometryInternal as MeshGeometry3D;
+//                isHit = false;
+//                Matrix instanceMatrix;
+//                if (g.Octree != null)
+//                {
+//                    foreach (var hit in boundHits)
+//                    {
+//                        int instanceIdx = (int)hit.Tag;
+//                        instanceMatrix = Instances[instanceIdx];
+//                        this.PushMatrix(instanceMatrix);
+//                        var h = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
+//                        isHit |= h;
+//                        this.PopMatrix();
+//                        if (h && hits.Count > 0)
+//                        {
+//                            var result = hits[0];
+//                            object tag = null;
+//                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
+//                            {
+//                                tag = InstanceIdentifiers[instanceIdx];
+//                            }
+//                            else
+//                            {
+//                                tag = instanceIdx;
+//                            }
+//                            hits[0] = new HitTestResult()
+//                            {
+//                                Distance = result.Distance,
+//                                IsValid = result.IsValid,
+//                                ModelHit = result.ModelHit,
+//                                NormalAtHit = result.NormalAtHit,
+//                                PointHit = result.PointHit,
+//                                TriangleIndices = result.TriangleIndices,
+//                                Tag = tag
+//                            };
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    var result = new HitTestResult();
+//                    result.Distance = double.MaxValue;
+//                    foreach (var hit in boundHits)
+//                    {
+//                        int instanceIdx = (int)hit.Tag;
+//                        instanceMatrix = Instances[instanceIdx];
+//                        this.PushMatrix(instanceMatrix);
+
+//                        var m = this.modelMatrix;
+
+//                        // put bounds to world space
+
+//                        int index = 0;
+//                        foreach (var t in g.Triangles)
+//                        {
+//                            float d;
+//                            var p0 = Vector3.TransformCoordinate(t.P0, m);
+//                            var p1 = Vector3.TransformCoordinate(t.P1, m);
+//                            var p2 = Vector3.TransformCoordinate(t.P2, m);
+//                            if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
+//                            {
+//                                if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+//                                {
+//                                    result.IsValid = true;
+//                                    result.ModelHit = this;
+//                                    // transform hit-info to world space now:
+//                                    result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
+//                                    result.Distance = d;
+//                                    object tag = null;
+//                                    if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
+//                                    {
+//                                        tag = InstanceIdentifiers[instanceIdx];
+//                                    }
+//                                    else
+//                                    {
+//                                        tag = instanceIdx;
+//                                    }
+//                                    result.Tag = tag;
+//                                    var n = Vector3.Cross(p1 - p0, p2 - p0);
+//                                    n.Normalize();
+//                                    // transform hit-info to world space now:
+//                                    result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
+//                                    result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
+//                                    isHit = true;
+//                                }
+//                            }
+//                            index += 3;
+//                        }
+//                        this.PopMatrix();
+//                    }
+//                    if (isHit)
+//                    {
+//                        hits.Add(result);
+//                    }
+//                }
+//#if DEBUG
+//                if (isHit)
+//                    Debug.WriteLine("Hit: " + hits[0].Tag + "; HitPoint: " + hits[0].PointHit);
+//#endif
+//            }
+//            return isHit;
+//        }
     }
 }

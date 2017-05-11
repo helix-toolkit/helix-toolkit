@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:dx="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
     Title="{Binding Title}"
     Width="800"
     Height="500"
@@ -56,9 +57,13 @@
             <hx:OctreeLineGeometryModel3D x:Name="octreelines" Octree="{Binding Octree, ElementName=manager}" />
             <hx:LineGeometryModel3D
                 x:Name="lines"
-                Geometry="{Binding Lines}"
+                Geometry="{Binding Lines}" Thickness="0.4"
                 Instances="{Binding ModelInstances}"
-                Transform="{Binding ModelTransform}" />
+                Transform="{Binding ModelTransform}" Color="{x:Static dx:Color.White}"/>
+            <hx:LineGeometryModel3D
+                Geometry="{Binding Lines}"
+                Instances="{Binding SelectedLineInstances}"
+                Color="{x:Static dx:Color.Orange}"/>
             <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
         </hx:Viewport3DX>
 

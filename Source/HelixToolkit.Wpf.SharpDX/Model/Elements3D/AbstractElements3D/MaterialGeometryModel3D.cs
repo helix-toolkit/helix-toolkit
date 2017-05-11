@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
-    public abstract class MaterialGeometryModel3D : GeometryModel3D
+    public abstract class MaterialGeometryModel3D : InstanceGeometryModel3D
     {
         protected InputLayout vertexLayout;
         protected Buffer vertexBuffer;
@@ -28,11 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
         protected EffectMaterialVariables effectMaterial;
-        protected EffectScalarVariable bHasInstances;
-        protected bool isInstanceChanged = true;
-        protected bool hasInstances = false;
+       
         protected bool hasShadowMap = false;
-        public bool HasInstancing { get { return hasInstances; } }
         public MaterialGeometryModel3D()
         {
         }
@@ -127,22 +124,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
-
-        /// <summary>
-        /// List of instance matrix. 
-        /// </summary>
-        public IList<Matrix> Instances
-        {
-            get { return (IList<Matrix>)this.GetValue(InstancesProperty); }
-            set { this.SetValue(InstancesProperty, value); }
-        }
-
-        /// <summary>
-        /// List of instance matrix.
-        /// </summary>
-        public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, InstancesChanged));
-
         /// <summary>
         /// 
         /// </summary>
@@ -159,59 +140,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TextureCoodScaleProperty =
             DependencyProperty.Register("TextureCoodScale", typeof(Vector2), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(new Vector2(1, 1), FrameworkPropertyMetadataOptions.AffectsRender));
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var model = (MaterialGeometryModel3D)d;
-            model.InstancesChanged();
-        }
-
-        protected virtual void InstancesChanged()
-        {
-            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
-            UpdateInstancesBounds();
-            isInstanceChanged = true;
-        }
-
-        protected BoundingBox instancesBound;
-        public BoundingBox InstancesBound
-        {
-            protected set
-            {
-                instancesBound = value;
-            }
-            get
-            {
-                return instancesBound;
-            }
-        }
-
-        protected virtual void UpdateInstancesBounds()
-        {
-            if(!hasInstances)
-            {
-                InstancesBound = this.BoundsWithTransform;
-            }
-            else
-            {
-                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, Instances[0])).ToArray());
-                foreach(var instance in Instances)
-                {
-                    var b = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
-                    BoundingBox.Merge(ref bound, ref b, out bound);
-                }
-                InstancesBound = bound;
-            }
-        }
-
-        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
-        {
-            return !hasInstances && base.CheckBoundingFrustum(ref boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -223,52 +151,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.effectMaterial = new EffectMaterialVariables(this.effect, phongMaterial);
                 this.effectMaterial.CreateTextureViews(Device, this);
             }
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            InstancesChanged();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>        
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
-        {
-            if ((this.Instances != null) && (this.Instances.Any()))
-            {
-                bool hit = false;
-                foreach (var modelMatrix in Instances)
-                {
-                    var b = this.Bounds;
-                    this.PushMatrix(modelMatrix);
-                    this.Bounds = BoundingBox.FromPoints(this.geometryInternal.Positions.Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
-                    if (base.HitTest(context, rayWS, ref hits))
-                    {
-                        hit = true;
-                        var lastHit = hits[hits.Count - 1];
-                        lastHit.Tag = modelMatrix;
-                        hits[hits.Count - 1] = lastHit;
-                    }
-                    this.PopMatrix();
-                    this.Bounds = b;
-                }
-
-                return hit;
-            }
-            else
-            {
-                return base.HitTest(context, rayWS, ref hits);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Dispose()
-        {
-            this.Detach();
         }
 
         public class EffectMaterialVariables : System.IDisposable
@@ -414,7 +296,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Disposer.RemoveAndDispose(ref this.effectMaterial);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
-            Disposer.RemoveAndDispose(ref this.bHasInstances);
 
             this.effectTechnique = null;
             this.vertexLayout = null;

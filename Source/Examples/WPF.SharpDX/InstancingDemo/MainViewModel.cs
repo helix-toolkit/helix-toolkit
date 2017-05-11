@@ -19,6 +19,8 @@ namespace InstancingDemo
     using System;
     using System.IO;
     using System.Windows.Threading;
+    using System.Diagnostics;
+    using System.Linq;
 
     public class MainViewModel : BaseViewModel
     {
@@ -26,6 +28,8 @@ namespace InstancingDemo
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
         public Matrix[] ModelInstances { get; private set; }
+
+        public Matrix[] SelectedLineInstances { private set; get; }
 
         public InstanceParameter[] InstanceParam { get; private set; }
 
@@ -71,9 +75,9 @@ namespace InstancingDemo
                 Model.TextureCoordinates[i] = new Vector2(tex.X * 0.5f, tex.Y * 0.5f);
             }
             var l1 = new LineBuilder();
-            l1.AddBox(new Vector3(0, 0, 0), 0.8, 0.8, 0.5);
+            l1.AddBox(new Vector3(0, 0, 0), 1.1, 1.1, 1.1);
             Lines = l1.ToLineGeometry3D();
-
+            Lines.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(Color.White.ToColor4(), Lines.Positions.Count));
             // model trafo
             ModelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
 
@@ -100,6 +104,7 @@ namespace InstancingDemo
 
         const int num = 40;
         List<Matrix> instances = new List<Matrix>(num * 2);
+        List<Matrix> selectedLineInstances = new List<Matrix>();
         List<InstanceParameter> parameters = new List<InstanceParameter>(num * 2);
 
         List<Matrix> billboardinstances = new List<Matrix>(num * 2);
@@ -203,8 +208,16 @@ namespace InstancingDemo
             if (hitTests.Count > 0)
             {
                 var index = (int)hitTests[0].Tag;
-                InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == Color.Transparent? Color.Yellow : Color.Transparent;
-                InstanceParam = (InstanceParameter[])InstanceParam.Clone();
+                if (hitTests[0].ModelHit is InstancingMeshGeometryModel3D)
+                {
+                    
+                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == Color.Transparent? Color.Yellow : Color.Transparent;
+                    InstanceParam = (InstanceParameter[])InstanceParam.Clone();
+                }
+                else if(hitTests[0].ModelHit is LineGeometryModel3D)
+                {
+                    SelectedLineInstances = new Matrix[] { ModelInstances[index] };
+                }
             }
         }
     }

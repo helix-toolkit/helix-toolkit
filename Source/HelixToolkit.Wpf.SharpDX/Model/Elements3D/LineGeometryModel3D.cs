@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Buffer = global::SharpDX.Direct3D11.Buffer;
     using System.Runtime.CompilerServices;
 
-    public class LineGeometryModel3D : GeometryModel3D
+    public class LineGeometryModel3D : InstanceGeometryModel3D
     {
         private LinesVertex[] vertexArrayBuffer = null;
         protected InputLayout vertexLayout;
@@ -41,11 +41,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
         protected EffectVectorVariable vViewport, vLineParams; // vFrustum, 
-        //private DepthStencilState depthStencilState;
-        //private LineGeometry3D geometry;
-        protected EffectScalarVariable bHasInstances;
-        protected bool hasInstances = false;
-        protected bool isChanged = true;
 
         public override int VertexSizeInBytes
         {
@@ -83,14 +78,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty SmoothnessProperty =
             DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(0.0));
 
-        public IList<Matrix> Instances
-        {
-            get { return (IList<Matrix>)this.GetValue(InstancesProperty); }
-            set { this.SetValue(InstancesProperty, value); }
-        }
-
-        public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
 
         public double HitTestThickness
         {
@@ -101,24 +88,51 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
-        protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        //{
+        //    if (CanHitTest(context))
+        //    {
+        //        if ((this.Instances != null) && (this.Instances.Any()))
+        //        {
+        //            bool hit = false;
+        //            int idx = 0;
+        //            foreach (var modelMatrix in Instances)
+        //            {
+        //                this.PushMatrix(modelMatrix);
+        //                if (OnHitTest(context, rayWS, ref hits))
+        //                {
+        //                    hit = true;
+        //                    var lastHit = hits[hits.Count - 1];
+        //                    lastHit.Tag = idx;
+        //                    hits[hits.Count - 1] = lastHit;
+        //                }
+        //                this.PopMatrix();
+        //                ++idx;
+        //            }
+
+        //            return hit;
+        //        }
+        //        else
+        //        {
+        //            return OnHitTest(context, rayWS, ref hits);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+
+
+        protected override bool CanHitTest(IRenderMatrices context)
         {
-            var model = (LineGeometryModel3D)d;
-            model.hasInstances = model.Instances != null && model.Instances.Any();
-            model.isChanged = true;
+            return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0
+                && geometryInternal is LineGeometry3D && context != null;
         }
 
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            LineGeometry3D lineGeometry3D;
-
-            if (this.Visibility == Visibility.Collapsed ||
-                this.IsHitTestVisible == false ||
-                context == null ||
-                (lineGeometry3D = this.geometryInternal as LineGeometry3D) == null)
-            {
-                return false;
-            }
+            LineGeometry3D lineGeometry3D = this.geometryInternal as LineGeometry3D;
 
             var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
             var lastDist = double.MaxValue;
@@ -144,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     lastDist = dist;
                     result.PointHit = sp.ToPoint3D();
                     result.NormalAtHit = (sp - tp).ToVector3D(); // not normalized to get length
-                    result.Distance = distance;
+                    result.Distance = (rayWS.Position-sp).Length();
                     result.ModelHit = this;
                     result.IsValid = true;
                     result.Tag = index; // ToDo: LineHitTag with additional info
@@ -279,8 +293,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new ArgumentException("Geometry must be LineGeometry3D");
             }
-          
-            bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
+         
 
             // --- set up const variables
             vViewport = effect.GetVariableByName("vViewport").AsVector();
@@ -315,8 +328,6 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.vViewport);
             Disposer.RemoveAndDispose(ref this.vLineParams);            
             Disposer.RemoveAndDispose(ref this.rasterState);
-            //Disposer.RemoveAndDispose(ref this.depthStencilState);
-            Disposer.RemoveAndDispose(ref this.bHasInstances);
 
             this.renderTechnique = null;
             this.effectTechnique = null;
@@ -383,7 +394,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.hasInstances)
             {
                 // --- update instance buffer
-                if (this.isChanged)
+                if (this.isInstanceChanged)
                 {
                     if(instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
                     {
@@ -399,7 +410,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         renderContext.DeviceContext.UnmapSubresource(this.instanceBuffer, 0);
                         stream.Dispose();
                     }
-                    this.isChanged = false;
+                    this.isInstanceChanged = false;
                 }
 
                 // --- INSTANCING: need to set 2 buffers            

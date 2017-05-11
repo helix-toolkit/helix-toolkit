@@ -18,8 +18,73 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkElement, IDisposable, IRenderable, IGUID
+    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID
     {
+        /// <summary>
+        /// Indicates, if this element should be rendered,
+        /// default is true
+        /// </summary>
+        public static readonly DependencyProperty IsRenderingProperty =
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true,
+                (d, e) =>
+                {
+                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Indicates, if this element should be rendered.
+        /// Use this also to make the model visible/unvisible
+        /// default is true
+        /// </summary>
+        public bool IsRendering
+        {
+            get { return (bool)GetValue(IsRenderingProperty); }
+            set { SetValue(IsRenderingProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsHitTestVisibleProperty =
+            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
+            {
+                (d as Element3D).IsHitTestVisibleInternal = (bool)e.NewValue;
+            }));
+
+        public bool IsHitTestVisible
+        {
+            set
+            {
+                SetValue(IsHitTestVisibleProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsHitTestVisibleProperty);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty VisibilityProperty =
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new AffectsRenderPropertyMetadata(Visibility.Visible, (d, e) =>
+            {
+                (d as Element3D).visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
+            }));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Visibility Visibility
+        {
+            set
+            {
+                SetValue(VisibilityProperty, value);
+            }
+            get
+            {
+                return (Visibility)GetValue(VisibilityProperty);
+            }
+        }
+
         protected global::SharpDX.Direct3D11.Effect effect;
 
         protected RenderTechnique renderTechnique;
@@ -35,6 +100,11 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isRenderingInternal { private set; get; } = true;
 
         protected bool visibleInternal { private set; get; } = true;
+
+        public bool IsHitTestVisibleInternal
+        {
+            private set; get;
+        } = true;
         /// <summary>
         /// If this has been attached onto renderhost. 
         /// </summary>
@@ -181,29 +251,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Indicates, if this element should be rendered,
-        /// default is true
-        /// </summary>
-        public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true, 
-                (d,e)=> 
-                {
-                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Indicates, if this element should be rendered.
-        /// Use this also to make the model visible/unvisible
-        /// default is true
-        /// </summary>
-        public bool IsRendering
-        {
-            get { return (bool)GetValue(IsRenderingProperty); }
-            set { SetValue(IsRenderingProperty, value); }
-        }
-
-
-        /// <summary>
         /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of visual ancestor.</typeparam>
@@ -237,10 +284,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (e.Property.Name.Equals(nameof(Visibility)))
-            {
-                visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
-            }
             if (CheckAffectsRender(e))
             {
                 this.InvalidateRender();
@@ -257,11 +300,10 @@ namespace HelixToolkit.Wpf.SharpDX
             // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
             // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
             PropertyMetadata fmetadata = null;
-            return (e.Property.Name.Equals(nameof(Visibility))
-                || ((fmetadata = e.Property.GetMetadata(this)) != null
+            return ((fmetadata = e.Property.GetMetadata(this)) != null
                 && (fmetadata is IAffectsRender
                 || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
-                )));
+                ));
         }
     }
 }

@@ -197,14 +197,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool CanHitTest(IRenderMatrices context)
         {
-            if (hasBoneParameter)
-            {
-                //Disable for now. Pending implementation.
-                return false;
-            }
-            return base.HitTest(context, rayWS, ref hits);
+            return base.CanHitTest(context) && !hasBoneParameter;
         }
     }
 }

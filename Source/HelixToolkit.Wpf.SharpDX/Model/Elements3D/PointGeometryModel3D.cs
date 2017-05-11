@@ -88,6 +88,11 @@
             return (p - pb).Length();
         }
 
+        protected override bool CanHitTest(IRenderMatrices context)
+        {
+            return base.CanHitTest(context) && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0 && geometryInternal is PointGeometry3D && context != null;
+        }
+
         /// <summary>
         /// Checks if the ray hits the geometry of the model.
         /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
@@ -95,33 +100,15 @@
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            if (this.Visibility == Visibility.Collapsed)
-            {
-                return false;
-            }
-            if (this.IsHitTestVisible == false || this.geometryInternal == null)
-            {
-                return false;
-            }
             if (geometryInternal.Octree != null)
             {
                 return geometryInternal.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
             }
             else
             {
-                PointGeometry3D pointGeometry3D;
-
-                if (context == null ||
-                    (pointGeometry3D = this.geometryInternal as PointGeometry3D) == null)
-                {
-                    return false;
-                }
-                if (pointGeometry3D.Points == null)
-                {
-                    return false;
-                }
+                PointGeometry3D pointGeometry3D = this.geometryInternal as PointGeometry3D;
                 var svpm =  context.ScreenViewProjectionMatrix;
                 var smvpm = this.modelMatrix * svpm;
 
