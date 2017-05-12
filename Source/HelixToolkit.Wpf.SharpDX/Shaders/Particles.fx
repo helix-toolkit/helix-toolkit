@@ -183,10 +183,12 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 //--------------------------------------------------------------------------------
 float4 ParticlePSMAIN(in ParticlePS_INPUT input) : SV_Target
 {
-    //float4 color = ParticleTexture.Sample(LinearSampler, input.texcoords);
-    //color = color * input.color;
-
-    return float4(1,1,1,1);
+    float4 color = input.color;
+    if (bHasDiffuseMap)
+    {
+        color *= texDiffuseMap.Sample(LinearSampler, input.texcoords);        
+    }
+    return color;
 }
 //--------------------------------------------------------------------------------
 

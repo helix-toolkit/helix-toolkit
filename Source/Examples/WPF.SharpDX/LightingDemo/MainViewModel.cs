@@ -29,8 +29,6 @@ namespace LightingDemo
         public MeshGeometry3D Model { get; private set; }
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
-
-        public IList<Particle> Particles { private set; get; }
         public LineGeometry3D CubeEdges { get; private set; }
         public Transform3D ModelTransform { get; private set; }
         public Transform3D FloorTransform { get; private set; }
@@ -66,6 +64,8 @@ namespace LightingDemo
         public Camera Camera3 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
 
         public Camera Camera4 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
+
+        public Stream ParticleTexture { set; get; }
 
         public MainViewModel()
         {
@@ -159,17 +159,8 @@ namespace LightingDemo
                 DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
                 NormalMap = ModelMaterial.NormalMap
             };
-            Random rnd = new Random();
-            Particles = new List<Particle>(512);
-            for(int i=0; i < 512; ++i)
-            {
-                Particles.Add(new Particle()
-                {
-                    Position = new Vector3(rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10)),
-                    Direction = new Vector3(rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1)),
-                    Velocity = new Vector3(rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1))
-                });
-            }
+
+            ParticleTexture = new FileStream(new System.Uri(@"Particle.png", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)
