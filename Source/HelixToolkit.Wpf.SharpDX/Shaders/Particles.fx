@@ -11,10 +11,10 @@ static const float scale = 0.5f;
 
 static const float4 g_positions[4] =
 {
+	float4(scale, scale, 0, 0),
     float4(-scale, scale, 0, 0),
-    float4(scale, scale, 0, 0),
+	float4(scale, -scale, 0, 0),
     float4(-scale, -scale, 0, 0),
-    float4(scale, -scale, 0, 0),
 };
 
 static const float2 g_texcoords[4] =
@@ -28,7 +28,9 @@ static const float2 g_texcoords[4] =
 struct Particle
 {
 	float3 position;
+	float pad0;
 	float3 direction;
+	float pad1;
     float3 velocity;
 	float time;
 };
@@ -77,6 +79,8 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 	p.time = 0.0f;
 
     p.velocity = 0;
+
+	p.pad0 = p.pad1 = 0;
 	// Append the new particle to the output buffer
     NewSimulationState.Append(p);
 }
@@ -137,6 +141,7 @@ struct ParticleGS_INPUT
 struct ParticlePS_INPUT
 {
     float4 position : SV_Position;
+	noperspective
     float2 texcoords : TEXCOORD0;
     float4 color : Color;
 };
@@ -146,12 +151,11 @@ StructuredBuffer<Particle> SimulationState;
 //--------------------------------------------------------------------------------
 ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
 {
-    ParticleGS_INPUT output;
-	
+	ParticleGS_INPUT output;
     output.position.xyz = SimulationState[input.vertexid].position;
-
     return output;
 }
+
 //--------------------------------------------------------------------------------
 [maxvertexcount(4)]
 void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT> SpriteStream)
@@ -163,8 +167,8 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 	//float4 color = float4( 0.2f, 1.0f, 1.0f, 0.0f ) * dist + float4( 1.0f, 0.1f, 0.1f, 0.0f ) * ( 1.0f - dist ); 
     float4 color = float4(0.2f, 0.2f, 1.0f, 0.0f) * dist + float4(1.0f, 0.1f, 0.1f, 0.0f) * (1.0f - dist);
 
-	// Transform to view space
-    float4 viewposition = mul(float4(input[0].position, 1.0f), mWorld);
+	//// Transform to view space
+    float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);
 
     // Emit two new triangles
     for (int i = 0; i < 4; i++)
@@ -185,7 +189,7 @@ float4 ParticlePSMAIN(in ParticlePS_INPUT input) : SV_Target
     //float4 color = ParticleTexture.Sample(LinearSampler, input.texcoords);
     //color = color * input.color;
 
-    return float4(1,0,0,1);
+    return float4(1,1,1,1);
 }
 //--------------------------------------------------------------------------------
 

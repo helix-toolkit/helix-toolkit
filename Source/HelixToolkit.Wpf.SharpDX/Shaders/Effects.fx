@@ -496,11 +496,15 @@ technique11 ParticleStorm
     }
     pass P2
     {
-        SetDepthStencilState(DSSDepthParticle, 0);
-        SetBlendState(BSParticleBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+   //     SetDepthStencilState(DSSDepthParticle, 0);
+   //     SetBlendState(BSParticleBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
         SetVertexShader(CompileShader(vs_4_0, ParticleVSMAIN()));
         SetHullShader(NULL);
-        SetDomainShader(NULL);        
+        SetDomainShader(NULL);       
+		//SetGeometryShader(NULL);
         SetGeometryShader(CompileShader(gs_4_0, ParticleGSMAIN()));
         SetPixelShader(CompileShader(ps_4_0, ParticlePSMAIN()));
     }

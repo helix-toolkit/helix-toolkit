@@ -85,10 +85,10 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Particle
     {
-        Vector3 position;
-        Vector3 direction;
-        Vector3 velocity;
-        float time;
+        public Vector3 Position;
+        public Vector3 Direction;
+        public Vector3 Velocity;
+        public float Time;
         public const int SizeInBytes = 4 * (3 * 3 + 1);
     }
 }

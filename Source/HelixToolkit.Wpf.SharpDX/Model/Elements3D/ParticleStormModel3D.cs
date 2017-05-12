@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected Vector3 emitterLocationInternal = Vector3.Zero;
 
-        protected Vector3 consumerLocationInternal = new Vector3(0, 10, 0);
+        protected Vector3 consumerLocationInternal = new Vector3(0, 100, 0);
 
         protected Vector3 randomVector = new Vector3(0,0.01f,0);
 
@@ -179,6 +179,30 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
+        protected override void OnRasterStateChanged()
+        {
+            Disposer.RemoveAndDispose(ref this.rasterState);
+            if (!IsAttached) { return; }
+            // --- set up rasterizer states
+            var rasterStateDesc = new RasterizerStateDescription()
+            {
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.None,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = -2,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = false,
+                IsMultisampleEnabled = true,
+                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
+            };
+
+            try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
+            catch (System.Exception)
+            {
+            }
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             if (!base.OnAttach(host))
@@ -251,25 +275,26 @@ namespace HelixToolkit.Wpf.SharpDX
 
             EffectPass pass;
 
-            totalElapsed += timeElapsed;
-            if (totalElapsed > insertThrottle)
-            {
-                newSimulationStateVar.Set(BufferProxies[0].UAV);
-                pass = this.effectTechnique.GetPassByIndex(0);
-                pass.Apply(context.DeviceContext);
-                context.DeviceContext.Dispatch(1, 1, 1);
-                totalElapsed = 0;
-            }
+            //totalElapsed += timeElapsed;
+            //if (totalElapsed > insertThrottle)
+            //{
+            //    newSimulationStateVar.Set(BufferProxies[0].UAV);
+            //    pass = this.effectTechnique.GetPassByIndex(0);
+            //    pass.Apply(context.DeviceContext);
+            //    context.DeviceContext.Dispatch(1, 1, 1);
+            //    totalElapsed = 0;
+            //}
             currentSimulationStateVar.Set(BufferProxies[0].UAV);
             newSimulationStateVar.Set(BufferProxies[1].UAV);
             pass = this.effectTechnique.GetPassByIndex(1);
             pass.Apply(context.DeviceContext);
             // --- draw
-            context.DeviceContext.Dispatch(particleCountInternal/512, 1, 1);
+            context.DeviceContext.Dispatch(particleCountInternal / 512, 1, 1);
 
             simulationStateVar.SetResource(BufferProxies[1].SRV);
             context.DeviceContext.InputAssembler.InputLayout = null;
-            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
+            context.DeviceContext.Rasterizer.State = this.rasterState;
             pass = this.effectTechnique.GetPassByIndex(2);
             pass.Apply(context.DeviceContext);
             context.DeviceContext.Draw(particleCountInternal, 0);

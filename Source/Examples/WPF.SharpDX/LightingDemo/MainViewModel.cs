@@ -159,8 +159,17 @@ namespace LightingDemo
                 DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
                 NormalMap = ModelMaterial.NormalMap
             };
-
-            Particles = new List<Particle>(Enumerable.Repeat(new Particle(), 512));
+            Random rnd = new Random();
+            Particles = new List<Particle>(512);
+            for(int i=0; i < 512; ++i)
+            {
+                Particles.Add(new Particle()
+                {
+                    Position = new Vector3(rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10)),
+                    Direction = new Vector3(rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10)),
+                    Velocity = new Vector3(rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10))
+                });
+            }
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)
