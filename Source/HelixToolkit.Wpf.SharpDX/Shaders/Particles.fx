@@ -40,15 +40,11 @@ cbuffer ParticleBasicParameters
     uint NumParticles;   
 };
 
-cbuffer ParticleInsertParameters
-{
-	float4 RandomVector;
-};
 
-cbuffer SimulationParameters
-{
-    float TimeFactors;
-};
+float4 RandomVector;
+
+float TimeFactors;
+
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
 AppendStructuredBuffer<Particle> NewSimulationState : register(u1);
@@ -186,10 +182,10 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 //--------------------------------------------------------------------------------
 float4 ParticlePSMAIN(in ParticlePS_INPUT input) : SV_Target
 {
-    float4 color = ParticleTexture.Sample(LinearSampler, input.texcoords);
-    color = color * input.color;
+    //float4 color = ParticleTexture.Sample(LinearSampler, input.texcoords);
+    //color = color * input.color;
 
-    return (color);
+    return float4(1,0,0,1);
 }
 //--------------------------------------------------------------------------------
 

@@ -47,7 +47,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Vector3), typeof(ParticleStormModel3D), new PropertyMetadata(Vector3.One,
+        public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Vector3), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Vector3(0,10,0),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).OnConsumerLocationChanged((Vector3)e.NewValue);
@@ -68,15 +69,37 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected int particleCountInternal = 0;
 
+        private float insertThrottle = 0;
+
+        private float prevTimeMillis = 0;
+
+        private float totalElapsed = 0;
+
         private bool isInitialParticleChanged = true;
 
         protected Vector3 emitterLocationInternal = Vector3.Zero;
 
-        protected Vector3 consumerLocationInternal = Vector3.Zero;
+        protected Vector3 consumerLocationInternal = new Vector3(0, 10, 0);
 
-        private EffectVectorVariable emitterLocationVar;
+        protected Vector3 randomVector = new Vector3(0,0.01f,0);
 
-        private EffectVectorVariable consumerLocationVar;
+        protected EffectVectorVariable emitterLocationVar;
+
+        protected EffectVectorVariable consumerLocationVar;
+
+        protected EffectScalarVariable numberOfParticlesVar;
+
+        protected EffectVectorVariable randomVectorVar;
+
+        protected EffectScalarVariable timeFactorsVar;
+
+        protected EffectUnorderedAccessViewVariable currentSimulationStateVar;
+
+        protected EffectUnorderedAccessViewVariable newSimulationStateVar;
+
+        protected EffectShaderResourceVariable simulationStateVar;
+
+        protected EffectTransformVariables effectTransforms;
 
         private BufferDescription bufferDesc = new BufferDescription()
         {
@@ -98,6 +121,8 @@ namespace HelixToolkit.Wpf.SharpDX
         };
 
         protected readonly BufferViewProxy[] BufferProxies = new BufferViewProxy[2];
+
+        protected EffectTechnique effectTechnique;
 
         private void OnInitialParticleChanged(IList<Particle> particles)
         {
@@ -123,6 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 BufferProxies[i] = new BufferViewProxy(array, Device, ref bufferDesc, ref UAVBufferViewDesc, ref SRVBufferViewDesc);
             }
 
+            insertThrottle = (long)(8.0 * 30.0 / particleCountInternal);
             isInitialParticleChanged = false;
         }
 
@@ -153,11 +179,28 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
+            emitterLocationVar = effect.GetVariableByName("EmitterLocation").AsVector();
+            consumerLocationVar = effect.GetVariableByName("ConsumerLocation").AsVector();
+            numberOfParticlesVar = effect.GetVariableByName("NumParticles").AsScalar();
+            randomVectorVar = effect.GetVariableByName("RandomVector").AsVector();
+            timeFactorsVar = effect.GetVariableByName("TimeFactors").AsScalar();
+            currentSimulationStateVar = effect.GetVariableByName("CurrentSimulationState").AsUnorderedAccessView();
+            newSimulationStateVar = effect.GetVariableByName("NewSimulationState").AsUnorderedAccessView();
+            simulationStateVar = effect.GetVariableByName("SimulationState").AsShaderResource();
+            effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+            this.effectTransforms = new EffectTransformVariables(this.effect);
+            return true;
+        }
+
         protected override void OnAttached()
         {
             base.OnAttached();
-            emitterLocationVar = effect.GetVariableByName("EmitterLocation").AsVector();
-            consumerLocationVar = effect.GetVariableByName("ConsumerLocation").AsVector();
             if (isInitialParticleChanged)
             {
                 OnInitialParticleChanged(InitialParticles);
@@ -168,6 +211,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref emitterLocationVar);
             Disposer.RemoveAndDispose(ref consumerLocationVar);
+            Disposer.RemoveAndDispose(ref numberOfParticlesVar);
+            Disposer.RemoveAndDispose(ref randomVectorVar);
+            Disposer.RemoveAndDispose(ref timeFactorsVar);
+            Disposer.RemoveAndDispose(ref currentSimulationStateVar);
+            Disposer.RemoveAndDispose(ref newSimulationStateVar);
+            Disposer.RemoveAndDispose(ref simulationStateVar);
+            Disposer.RemoveAndDispose(ref effectTransforms);
             DisposeBuffers();
             base.OnDetach();
         }
@@ -177,10 +227,52 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm];
         }
 
+        protected override bool CanRender(RenderContext context)
+        {
+            return BufferProxies != null && IsAttached && visibleInternal && isRenderingInternal;
+        }
+
         protected override void OnRender(RenderContext context)
         {
+            var worldMatrix = this.modelMatrix * context.worldMatrix;
+            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            var bproxy = BufferProxies[0];
+            BufferProxies[0] = BufferProxies[1];
+            BufferProxies[1] = bproxy;
+
             emitterLocationVar.Set(emitterLocationInternal);
             consumerLocationVar.Set(consumerLocationInternal);
+            numberOfParticlesVar.Set(particleCountInternal);
+            randomVectorVar.Set(randomVector);
+
+            float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) /1000;
+            prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
+            timeFactorsVar.Set(timeElapsed);
+
+            EffectPass pass;
+
+            totalElapsed += timeElapsed;
+            if (totalElapsed > insertThrottle)
+            {
+                newSimulationStateVar.Set(BufferProxies[0].UAV);
+                pass = this.effectTechnique.GetPassByIndex(0);
+                pass.Apply(context.DeviceContext);
+                context.DeviceContext.Dispatch(1, 1, 1);
+                totalElapsed = 0;
+            }
+            currentSimulationStateVar.Set(BufferProxies[0].UAV);
+            newSimulationStateVar.Set(BufferProxies[1].UAV);
+            pass = this.effectTechnique.GetPassByIndex(1);
+            pass.Apply(context.DeviceContext);
+            // --- draw
+            context.DeviceContext.Dispatch(particleCountInternal/512, 1, 1);
+
+            simulationStateVar.SetResource(BufferProxies[1].SRV);
+            context.DeviceContext.InputAssembler.InputLayout = null;
+            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            pass = this.effectTechnique.GetPassByIndex(2);
+            pass.Apply(context.DeviceContext);
+            context.DeviceContext.Draw(particleCountInternal, 0);
         }
 
         protected override bool CanHitTest(IRenderMatrices context)

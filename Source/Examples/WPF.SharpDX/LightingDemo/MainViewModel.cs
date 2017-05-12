@@ -160,7 +160,7 @@ namespace LightingDemo
                 NormalMap = ModelMaterial.NormalMap
             };
 
-            Particles = new List<Particle>(Enumerable.Repeat(new Particle(), 100));
+            Particles = new List<Particle>(Enumerable.Repeat(new Particle(), 512));
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)

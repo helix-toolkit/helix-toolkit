@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
     Title="LightingDemo SharpDX"
     Width="1200"
     Height="700"
@@ -22,9 +23,9 @@
             Grid.Row="0" Grid.Column="0" MSAA="Four"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
-            IsShadowMappingEnabled="True"
+            IsShadowMappingEnabled="False"
             ShowCoordinateSystem="False"
-            SubTitle="{Binding SubTitle}"
+            SubTitle="{Binding SubTitle}" BackgroundColor="{x:Static sdx:Color4.Black}"
             TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
@@ -39,7 +40,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:ShadowMap3D />
+            <!--<hx:ShadowMap3D />-->
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
@@ -65,7 +66,7 @@
                 Color="{Binding Light4Color}" />
 
             <!--<hx:EnvironmentMap x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>-->
-            <hx:MeshGeometryModel3D
+            <!--<hx:MeshGeometryModel3D
                 Geometry="{Binding Sphere}"
                 IsRendering="{Binding RenderLight1}"
                 Material="{Binding LightModelMaterial}"
@@ -94,7 +95,7 @@
                 x:Name="floor"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
-                Transform="{Binding FloorTransform}" />
+                Transform="{Binding FloorTransform}" />-->
             <hx:ParticleStormModel3D InitialParticles="{Binding Particles}" />
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
         </hx:Viewport3DX>
