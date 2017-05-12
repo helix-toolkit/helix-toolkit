@@ -86,9 +86,11 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct Particle
     {
         public Vector3 Position;
+        public float Pad0;
         public Vector3 Direction;
+        public float Pad1;
         public Vector3 Velocity;
         public float Time;
-        public const int SizeInBytes = 4 * (3 * 3 + 1);
+        public const int SizeInBytes = 4 * (4 * 3);
     }
 }

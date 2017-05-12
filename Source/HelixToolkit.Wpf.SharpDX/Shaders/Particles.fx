@@ -37,16 +37,13 @@ struct Particle
 
 cbuffer ParticleBasicParameters
 {
-    float4 EmitterLocation;
-    float4 ConsumerLocation;
+    float3 EmitterLocation;
+    float TimeFactors;  
+    float3 ConsumerLocation;
+    float ParticleLife;
+    float3 RandomVector;
     uint NumParticles;   
 };
-
-
-float4 RandomVector;
-
-float TimeFactors;
-
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
 AppendStructuredBuffer<Particle> NewSimulationState : register(u1);
@@ -70,10 +67,10 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 	Particle p;
 
 	// Initialize position to the current emitter location
-	p.position = EmitterLocation.xyz;
+    p.position = EmitterLocation;
 
 	// Initialize direction to a randomly reflected vector
-	p.direction = reflect(direction[GroupThreadID.x], RandomVector.xyz) * 5.0f;
+	p.direction = reflect(direction[GroupThreadID.x], RandomVector) * 5.0f;
 
 	// Initialize the lifetime of the particle in seconds
 	p.time = 0.0f;
@@ -98,7 +95,7 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
         Particle p = CurrentSimulationState.Consume();
 
 		// Calculate the current gravitational force applied to it
-        float3 d = ConsumerLocation.xyz - p.position;
+        float3 d = ConsumerLocation - p.position;
         float r = length(d);
         float3 Force = (G * m1m2 / (r * r)) * normalize(d);
 
@@ -108,16 +105,16 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 
 		// Calculate the new position, accounting for the new velocity value
 		// over the current time step.
-        p.position += p.velocity * TimeFactors;
+        p.position += Force * TimeFactors;
 
 		// Update the life time left for the particle.
         p.time = p.time + TimeFactors;
 
 		// Test to see how close the particle is to the black hole, and 
 		// don't pass it to the output list if it is too close.
-        if (r > eventHorizon)
+      //  if (r > eventHorizon)
         {
-            if (p.time < 30.0f)
+            if (p.time < ParticleLife)
             {
                 NewSimulationState.Append(p);
             }

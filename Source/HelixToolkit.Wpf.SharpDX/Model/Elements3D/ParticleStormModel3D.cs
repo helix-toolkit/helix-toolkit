@@ -4,12 +4,14 @@ using SharpDX;
 using System.Windows;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
+using HelixToolkit.Wpf.SharpDX.Randoms;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class ParticleStormModel3D : InstanceGeometryModel3D
     {
-        public static DependencyProperty InitialParticlesProperty = DependencyProperty.Register("InitialParticles", typeof(IList<Particle>), typeof(ParticleStormModel3D), new PropertyMetadata(null,
+        public static DependencyProperty InitialParticlesProperty = DependencyProperty.Register("InitialParticles", typeof(IList<Particle>), typeof(ParticleStormModel3D), 
+            new PropertyMetadata(null,
             (d, e) =>
             {
                 (d as ParticleStormModel3D).OnInitialParticleChanged((IList<Particle>)e.NewValue);
@@ -28,7 +30,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Vector3), typeof(ParticleStormModel3D), new PropertyMetadata(Vector3.Zero,
+        public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Vector3), typeof(ParticleStormModel3D), 
+            new PropertyMetadata(Vector3.Zero,
             (d, e) =>
             {
                 (d as ParticleStormModel3D).OnEmitterLocationChanged((Vector3)e.NewValue);
@@ -67,6 +70,46 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static DependencyProperty ParticleLifeProperty = DependencyProperty.Register("ParticleLife", typeof(float), typeof(ParticleStormModel3D),
+            new PropertyMetadata(30f,
+            (d, e) =>
+            {
+                (d as ParticleStormModel3D).particleLife = (float)e.NewValue;
+            }
+            ));
+
+        public float ParticleLife
+        {
+            set
+            {
+                SetValue(ParticleLifeProperty, value);
+            }
+            get
+            {
+                return (float)GetValue(ParticleLifeProperty);
+            }
+        }
+
+        public static DependencyProperty RandomVectorGeneratorProperty = DependencyProperty.Register("RandomVectorGenerator", typeof(IRandomVector), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new UniformRandomVectorGenerator(),
+            (d, e) =>
+            {
+                (d as ParticleStormModel3D).vectorGenerator = (IRandomVector)e.NewValue;
+            }
+            ));
+
+        public IRandomVector RandomVectorGenerator
+        {
+            set
+            {
+                SetValue(RandomVectorGeneratorProperty, value);
+            }
+            get
+            {
+                return (IRandomVector)GetValue(RandomVectorGeneratorProperty);
+            }
+        }
+
         protected int particleCountInternal = 0;
 
         private float insertThrottle = 0;
@@ -75,13 +118,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private float totalElapsed = 0;
 
+        private float particleLife = 30;
+
+        private IRandomVector vectorGenerator = new UniformRandomVectorGenerator();
+
         private bool isInitialParticleChanged = true;
+
+        private bool isRestart = true;
 
         protected Vector3 emitterLocationInternal = Vector3.Zero;
 
         protected Vector3 consumerLocationInternal = new Vector3(0, 100, 0);
-
-        protected Vector3 randomVector = new Vector3(0,0.01f,0);
 
         protected EffectVectorVariable emitterLocationVar;
 
@@ -92,6 +139,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectVectorVariable randomVectorVar;
 
         protected EffectScalarVariable timeFactorsVar;
+
+        protected EffectScalarVariable particleLifeVar;
 
         protected EffectUnorderedAccessViewVariable currentSimulationStateVar;
 
@@ -109,10 +158,13 @@ namespace HelixToolkit.Wpf.SharpDX
             CpuAccessFlags = CpuAccessFlags.None,
             Usage = ResourceUsage.Default
         };
-
+#if DEBUG
+        private Buffer particleCountStaging;
+#endif
         private UnorderedAccessViewDescription UAVBufferViewDesc = new UnorderedAccessViewDescription()
         {
-            Dimension = UnorderedAccessViewDimension.Buffer
+            Dimension = UnorderedAccessViewDimension.Buffer, Format = global::SharpDX.DXGI.Format.Unknown,
+            Buffer = new UnorderedAccessViewDescription.BufferResource { FirstElement = 0, Flags = UnorderedAccessViewBufferFlags.Append }
         };
 
         private ShaderResourceViewDescription SRVBufferViewDesc = new ShaderResourceViewDescription()
@@ -137,19 +189,31 @@ namespace HelixToolkit.Wpf.SharpDX
             var array = particles.ToArray();
 
             UAVBufferViewDesc.Buffer.ElementCount = particleCountInternal;
-            UAVBufferViewDesc.Buffer.Flags = UnorderedAccessViewBufferFlags.Append;
-            UAVBufferViewDesc.Buffer.FirstElement = 0;
 
             SRVBufferViewDesc.Buffer.ElementCount = particleCountInternal;
             SRVBufferViewDesc.Buffer.FirstElement = 0;
 
-            for(int i=0; i < BufferProxies.Length; ++i)
+            for (int i=0; i < BufferProxies.Length; ++i)
             {
                 BufferProxies[i] = new BufferViewProxy(array, Device, ref bufferDesc, ref UAVBufferViewDesc, ref SRVBufferViewDesc);
             }
 
-            insertThrottle = (long)(8.0 * 30.0 / particleCountInternal);
+            insertThrottle = (long)(8.0 * particleLife / particleCountInternal);
+
+#if DEBUG
+            BufferDescription stagingbufferDesc = new BufferDescription()
+            {
+                BindFlags = BindFlags.None,
+                OptionFlags = ResourceOptionFlags.None,
+                StructureByteStride = Particle.SizeInBytes,
+                CpuAccessFlags = CpuAccessFlags.Read,
+                Usage = ResourceUsage.Staging
+            };
+            particleCountStaging = Buffer.Create(this.Device, array, stagingbufferDesc);
+#endif
+
             isInitialParticleChanged = false;
+            isRestart = true;
         }
 
         private void DisposeBuffers()
@@ -217,6 +281,7 @@ namespace HelixToolkit.Wpf.SharpDX
             currentSimulationStateVar = effect.GetVariableByName("CurrentSimulationState").AsUnorderedAccessView();
             newSimulationStateVar = effect.GetVariableByName("NewSimulationState").AsUnorderedAccessView();
             simulationStateVar = effect.GetVariableByName("SimulationState").AsShaderResource();
+            particleLifeVar = effect.GetVariableByName("ParticleLife").AsScalar();
             effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
             this.effectTransforms = new EffectTransformVariables(this.effect);
             return true;
@@ -260,38 +325,56 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var worldMatrix = this.modelMatrix * context.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            emitterLocationVar.Set(emitterLocationInternal);
+            consumerLocationVar.Set(consumerLocationInternal);
+            var randomVector = vectorGenerator.RandomVector;
+            randomVectorVar.Set(randomVector);
+            numberOfParticlesVar.Set(particleCountInternal);
+            particleLifeVar.Set(particleLife);
+            float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) /1000;
+            prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
+            timeFactorsVar.Set(timeElapsed);
+            totalElapsed += timeElapsed;
+            EffectPass pass;
+
+            if (isRestart)
+            {
+                pass = this.effectTechnique.GetPassByIndex(0);
+                pass.Apply(context.DeviceContext);
+                context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[1].UAV, 0);
+                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[0].UAV, 0);
+                // --- draw
+                context.DeviceContext.Dispatch(1, 1, 1);
+                isRestart = false;
+            }
+            else if(totalElapsed > insertThrottle)
+            {
+                pass = this.effectTechnique.GetPassByIndex(0);
+                pass.Apply(context.DeviceContext);
+                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[0].UAV);
+                context.DeviceContext.Dispatch(1, 1, 1);
+                totalElapsed = 0;
+            }
+#if DEBUG
+            DebugCount("UAV 0", context.DeviceContext, BufferProxies[0].UAV);
+#endif
+            pass = this.effectTechnique.GetPassByIndex(1);
+            pass.Apply(context.DeviceContext);
+            context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[0].UAV);
+            context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV, 0);
+            context.DeviceContext.Dispatch(particleCountInternal / 512, 1, 1);
+
+#if DEBUG
+            DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
+#endif
+            // --- draw
+            context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, null);
+            context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, null);
             var bproxy = BufferProxies[0];
             BufferProxies[0] = BufferProxies[1];
             BufferProxies[1] = bproxy;
 
-            emitterLocationVar.Set(emitterLocationInternal);
-            consumerLocationVar.Set(consumerLocationInternal);
-            numberOfParticlesVar.Set(particleCountInternal);
-            randomVectorVar.Set(randomVector);
-
-            float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) /1000;
-            prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
-            timeFactorsVar.Set(timeElapsed);
-
-            EffectPass pass;
-
-            //totalElapsed += timeElapsed;
-            //if (totalElapsed > insertThrottle)
-            //{
-            //    newSimulationStateVar.Set(BufferProxies[0].UAV);
-            //    pass = this.effectTechnique.GetPassByIndex(0);
-            //    pass.Apply(context.DeviceContext);
-            //    context.DeviceContext.Dispatch(1, 1, 1);
-            //    totalElapsed = 0;
-            //}
-            currentSimulationStateVar.Set(BufferProxies[0].UAV);
-            newSimulationStateVar.Set(BufferProxies[1].UAV);
-            pass = this.effectTechnique.GetPassByIndex(1);
-            pass.Apply(context.DeviceContext);
-            // --- draw
-            context.DeviceContext.Dispatch(particleCountInternal / 512, 1, 1);
-
-            simulationStateVar.SetResource(BufferProxies[1].SRV);
+            simulationStateVar.SetResource(BufferProxies[0].SRV);
             context.DeviceContext.InputAssembler.InputLayout = null;
             context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             context.DeviceContext.Rasterizer.State = this.rasterState;
@@ -299,6 +382,18 @@ namespace HelixToolkit.Wpf.SharpDX
             pass.Apply(context.DeviceContext);
             context.DeviceContext.Draw(particleCountInternal, 0);
         }
+
+#if DEBUG
+        private void DebugCount(string src, DeviceContext context, UnorderedAccessView uav)
+        {
+                context.CopyStructureCount(particleCountStaging, 0, uav);
+                DataStream ds;
+                var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out ds);
+                int CurrentParticleCount = ds.ReadInt();
+                System.Diagnostics.Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
+                context.UnmapSubresource(particleCountStaging, 0);
+        }
+#endif
 
         protected override bool CanHitTest(IRenderMatrices context)
         {
@@ -320,7 +415,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public BufferViewProxy(Particle[] array, Device device, ref BufferDescription bufferDesc, ref UnorderedAccessViewDescription uavDesc, ref ShaderResourceViewDescription srvDesc)
         {
             Buffer = Buffer.Create(device, array, bufferDesc);
-            SRV = new ShaderResourceView(device, Buffer, srvDesc);
+            SRV = new ShaderResourceView(device, Buffer);
             UAV = new UnorderedAccessView(device, Buffer, uavDesc);
         }
 

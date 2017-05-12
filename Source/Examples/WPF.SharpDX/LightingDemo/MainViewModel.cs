@@ -166,8 +166,8 @@ namespace LightingDemo
                 Particles.Add(new Particle()
                 {
                     Position = new Vector3(rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10)),
-                    Direction = new Vector3(rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10)),
-                    Velocity = new Vector3(rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10), rnd.NextFloat(-10, 10))
+                    Direction = new Vector3(rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1)),
+                    Velocity = new Vector3(rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1), rnd.NextFloat(-1, 1))
                 });
             }
         }

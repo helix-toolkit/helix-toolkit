@@ -488,10 +488,18 @@ technique11 ParticleStorm
 {
     pass P0
     {
+        SetVertexShader(NULL);
+        SetHullShader(NULL);
+        SetDomainShader(NULL);
+        SetPixelShader(NULL);
         SetComputeShader(CompileShader(cs_5_0, ParticleInsertCSMAIN()));
     }
     pass P1
     {
+        SetVertexShader(NULL);
+        SetHullShader(NULL);
+        SetDomainShader(NULL);
+        SetPixelShader(NULL);
         SetComputeShader(CompileShader(cs_5_0, ParticleUpdateCSMAIN()));
     }
     pass P2

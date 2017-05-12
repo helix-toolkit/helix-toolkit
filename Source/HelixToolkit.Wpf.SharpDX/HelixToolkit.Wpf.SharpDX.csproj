@@ -149,6 +149,7 @@
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
+    <Compile Include="Extensions\DataStreamExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />
@@ -207,6 +208,7 @@
     </Compile>
     <Compile Include="Utilities\AffectsRenderPropertyMetadata.cs" />
     <Compile Include="Utilities\IOctreeManager.cs" />
+    <Compile Include="Utilities\IRandomVector.cs" />
     <Compile Include="Utilities\Octree.cs" />
     <Compile Include="Utilities\OctreeHelper.cs" />
     <Compile Include="Utilities\OctreeManager.cs" />
@@ -261,6 +263,7 @@
     <Compile Include="Utilities\LineBuilder.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
     <Compile Include="Utilities\ObjReader.cs" />
+    <Compile Include="Utilities\RandomVectorGenerators.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
