@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class ParticleStormModel3D : Model3D
     {
         #region Dependency Properties
-        public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D), 
+        public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),
             new PropertyMetadata(512,
             (d, e) =>
             {
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D), 
+        public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(new Media3D.Point3D(),
             (d, e) =>
             {
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Point3D(0,10,0),
+            new PropertyMetadata(new Media3D.Point3D(0, 10, 0),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).OnConsumerLocationChanged(((Media3D.Point3D)e.NewValue).ToVector3());
@@ -156,7 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSizeProperty", typeof(Size), typeof(ParticleStormModel3D),
             new AffectsRenderPropertyMetadata(new Size(1, 1),
-                (d, e) => 
+                (d, e) =>
                 {
                     var size = (Size)e.NewValue;
                     (d as ParticleStormModel3D).particleSize = new Vector2((float)size.Width, (float)size.Height);
@@ -176,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Vector3D(1, 1 ,1),
+            new PropertyMetadata(new Media3D.Vector3D(1, 1, 1),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).initialVelocity = ((Media3D.Vector3D)e.NewValue).ToVector3();
@@ -215,43 +215,64 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty BoundMaximumProperty = DependencyProperty.Register("BoundMaximum", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Point3D(10, 10, 10),
-                (d, e) => 
-                {
-                    (d as ParticleStormModel3D).boundMaximum = ((Media3D.Point3D)e.NewValue).ToVector3();
-                }));
+        public static DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(Media3D.Rect3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Media3D.Rect3D(0, 0, 0, 10, 10, 10),
+            (d, e) =>
+            {
+                var bound = (Media3D.Rect3D)e.NewValue;
+                (d as ParticleStormModel3D).boundMaximum = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
+                (d as ParticleStormModel3D).boundMinimum = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
+            }));
 
-        public Media3D.Point3D BoundMaximum
+        public Media3D.Rect3D ParticleBounds
         {
             set
             {
-                SetValue(BoundMaximumProperty, value);
+                SetValue(ParticleBoundsProperty, value);
             }
             get
             {
-                return (Media3D.Point3D)GetValue(BoundMaximumProperty);
+                return (Media3D.Rect3D)GetValue(ParticleBoundsProperty);
             }
         }
 
-        public static DependencyProperty BoundMinimumProperty = DependencyProperty.Register("BoundMinimum", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Point3D(-10, -10, -10),
-                (d, e) =>
-                {
-                    (d as ParticleStormModel3D).boundMinimum = ((Media3D.Point3D)e.NewValue).ToVector3();
-                }));
+        //public static DependencyProperty BoundMaximumProperty = DependencyProperty.Register("BoundMaximum", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
+        //    new PropertyMetadata(new Media3D.Point3D(10, 10, 10),
+        //        (d, e) =>
+        //        {
+        //            (d as ParticleStormModel3D).boundMaximum = ((Media3D.Point3D)e.NewValue).ToVector3();
+        //        }));
 
-        public Media3D.Point3D BoundMinimum
-        {
-            set
-            {
-                SetValue(BoundMinimumProperty, value);
-            }
-            get
-            {
-                return (Media3D.Point3D)GetValue(BoundMinimumProperty);
-            }
-        }
+        //public Media3D.Point3D BoundMaximum
+        //{
+        //    set
+        //    {
+        //        SetValue(BoundMaximumProperty, value);
+        //    }
+        //    get
+        //    {
+        //        return (Media3D.Point3D)GetValue(BoundMaximumProperty);
+        //    }
+        //}
+
+        //public static DependencyProperty BoundMinimumProperty = DependencyProperty.Register("BoundMinimum", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
+        //    new PropertyMetadata(new Media3D.Point3D(-10, -10, -10),
+        //        (d, e) =>
+        //        {
+        //            (d as ParticleStormModel3D).boundMinimum = ((Media3D.Point3D)e.NewValue).ToVector3();
+        //        }));
+
+        //public Media3D.Point3D BoundMinimum
+        //{
+        //    set
+        //    {
+        //        SetValue(BoundMinimumProperty, value);
+        //    }
+        //    get
+        //    {
+        //        return (Media3D.Point3D)GetValue(BoundMinimumProperty);
+        //    }
+        //}
         #endregion
         #region variables
         protected int particleCountInternal = 0;
@@ -341,7 +362,8 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         private UnorderedAccessViewDescription UAVBufferViewDesc = new UnorderedAccessViewDescription()
         {
-            Dimension = UnorderedAccessViewDimension.Buffer, Format = global::SharpDX.DXGI.Format.Unknown,
+            Dimension = UnorderedAccessViewDimension.Buffer,
+            Format = global::SharpDX.DXGI.Format.Unknown,
             Buffer = new UnorderedAccessViewDescription.BufferResource { FirstElement = 0, Flags = UnorderedAccessViewBufferFlags.Append }
         };
 
@@ -389,7 +411,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref particleCountGSIABuffer);
             Disposer.RemoveAndDispose(ref frameConstBuffer);
-           // Disposer.RemoveAndDispose(ref indirectArgsBuffer);
+            // Disposer.RemoveAndDispose(ref indirectArgsBuffer);
             if (BufferProxies != null)
             {
                 for (int i = 0; i < BufferProxies.Length; ++i)
@@ -423,7 +445,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
             particleCountStaging = new Buffer(this.Device, stagingbufferDesc);
 #endif
-            particleCountGSIABuffer = Buffer.Create(this.Device,new uint[4] { 0, 1, 0, 0 }, renderIndirectArgsBufDesc);
+            particleCountGSIABuffer = Buffer.Create(this.Device, new uint[4] { 0, 1, 0, 0 }, renderIndirectArgsBufDesc);
 
             frameConstBuffer = new Buffer(this.Device, ParticlePerFrame.SizeInBytes, ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
         }
@@ -445,7 +467,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if(texture == null)
+            if (texture == null)
             {
                 hasTexture = false;
             }
@@ -552,7 +574,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             SetVariables();
 
-            float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) /1000;
+            float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000;
             prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
             //timeFactorsVar.Set(timeElapsed);
             totalElapsed += timeElapsed;
@@ -562,7 +584,7 @@ namespace HelixToolkit.Wpf.SharpDX
             frameVariables.RandomSeed = vectorGenerator.Seed;
             //upload to const buffer
             context.DeviceContext.UpdateSubresource(ref frameVariables, frameConstBuffer);
-               
+
             EffectPass pass;
 
             if (isRestart)
@@ -580,7 +602,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 // Get consume buffer count
-                context.DeviceContext.CopyStructureCount(frameConstBuffer, ParticlePerFrame.NumParticlesOffset, BufferProxies[0].UAV);       
+                context.DeviceContext.CopyStructureCount(frameConstBuffer, ParticlePerFrame.NumParticlesOffset, BufferProxies[0].UAV);
                 // Calculate existing particles
                 pass = this.effectTechnique.GetPassByIndex(1);
                 pass.Apply(context.DeviceContext);
@@ -607,7 +629,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 context.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
 #if DEBUG
-           //     DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
+                //     DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
 #endif
             }
 
@@ -632,12 +654,12 @@ namespace HelixToolkit.Wpf.SharpDX
 #if DEBUG
         private void DebugCount(string src, DeviceContext context, UnorderedAccessView uav)
         {
-                context.CopyStructureCount(particleCountStaging, 0, uav);
-                DataStream ds;
-                var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out ds);
-                int CurrentParticleCount = ds.ReadInt();
-                System.Diagnostics.Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
-                context.UnmapSubresource(particleCountStaging, 0);
+            context.CopyStructureCount(particleCountStaging, 0, uav);
+            DataStream ds;
+            var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out ds);
+            int CurrentParticleCount = ds.ReadInt();
+            System.Diagnostics.Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
+            context.UnmapSubresource(particleCountStaging, 0);
         }
 #endif
     }
