@@ -96,7 +96,7 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />-->
-            <hx:ParticleStormModel3D ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" ParticleSize="0.2,0.2" />
+            <hx:ParticleStormModel3D ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" ParticleSize="0.1, 0.1" ConsumerLocation="0,100,0" Acceleration="0,1,0" ParticleLife="20"/>
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
         </hx:Viewport3DX>
         <StackPanel>

@@ -6,7 +6,7 @@ using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
 using HelixToolkit.Wpf.SharpDX.Randoms;
 using System.IO;
-using System.Diagnostics;
+using Media3D = System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -33,15 +33,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Vector3), typeof(ParticleStormModel3D), 
-            new PropertyMetadata(Vector3.Zero,
+        public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D), 
+            new PropertyMetadata(new Media3D.Point3D(),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).OnEmitterLocationChanged((Vector3)e.NewValue);
+                (d as ParticleStormModel3D).OnEmitterLocationChanged(((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
-        public Vector3 EmitterLocation
+        public Media3D.Point3D EmitterLocation
         {
             set
             {
@@ -49,19 +49,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Vector3)GetValue(EmitterLocationProperty);
+                return (Media3D.Point3D)GetValue(EmitterLocationProperty);
             }
         }
 
-        public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Vector3), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Vector3(0,10,0),
+        public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Media3D.Point3D(0,10,0),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).OnConsumerLocationChanged((Vector3)e.NewValue);
+                (d as ParticleStormModel3D).OnConsumerLocationChanged(((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
-        public Vector3 ConsumerLocation
+        public Media3D.Point3D ConsumerLocation
         {
             set
             {
@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Vector3)GetValue(ConsumerLocationProperty);
+                return (Media3D.Point3D)GetValue(ConsumerLocationProperty);
             }
         }
 
@@ -154,15 +154,15 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(Vector3), typeof(ParticleStormModel3D),
-            new PropertyMetadata(Vector3.One,
+        public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Media3D.Vector3D(1, 1 ,1),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).initialVelocity = (Vector3)e.NewValue;
+                (d as ParticleStormModel3D).initialVelocity = ((Media3D.Vector3D)e.NewValue).ToVector3();
             }
             ));
 
-        public Vector3 InitialVelocity
+        public Media3D.Vector3D InitialVelocity
         {
             set
             {
@@ -170,19 +170,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Vector3)GetValue(InitialVelocityProperty);
+                return (Media3D.Vector3D)GetValue(InitialVelocityProperty);
             }
         }
 
-        public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Vector3(0f, 1f, 0f),
+        public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Media3D.Vector3D(0, 0.1, 0),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).acceleration = (Vector3)e.NewValue;
+                (d as ParticleStormModel3D).acceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
             }
             ));
 
-        public Vector3 Acceleration
+        public Media3D.Vector3D Acceleration
         {
             set
             {
@@ -190,7 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Vector3)GetValue(AccelerationProperty);
+                return (Media3D.Vector3D)GetValue(AccelerationProperty);
             }
         }
         #endregion
@@ -217,9 +217,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private ParticlePerFrame frameVariables = new ParticlePerFrame();
 
-        private Vector3 initialVelocity = Vector3.One;
+        private Vector3 initialVelocity = new Vector3(1, 1, 1);
 
-        private Vector3 acceleration = new Vector3(0f,1f,0f);
+        private Vector3 acceleration = new Vector3(0, 0.1f, 0);
 
         protected Vector2 particleSize = new Vector2(1, 1);
 

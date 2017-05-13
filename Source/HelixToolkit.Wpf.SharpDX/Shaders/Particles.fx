@@ -15,10 +15,10 @@ static const float4 g_positions[4] =
 
 static const float2 g_texcoords[4] =
 {
-    float2(0, 1),
     float2(1, 1),
+    float2(0, 1),
+    float2(1, 0),    
     float2(0, 0),
-    float2(1, 0),
 };
 
 struct Particle
@@ -140,7 +140,7 @@ struct ParticlePS_INPUT
     float4 position : SV_Position;
 	noperspective
     float2 texcoords : TEXCOORD0;
-    float4 color : Color;
+    float opacity : OPACITY0;
 };
 
 StructuredBuffer<Particle> SimulationState;
@@ -160,9 +160,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
     ParticlePS_INPUT output;
 
     float dist = saturate(length(input[0].position - ConsumerLocation.xyz) / 100.0f);
-	//float4 color = float4( 0.2f, 1.0f, 0.2f, 0.0f ) * dist + float4( 1.0f, 0.1f, 0.1f, 0.0f ) * ( 1.0f - dist ); 
-	//float4 color = float4( 0.2f, 1.0f, 1.0f, 0.0f ) * dist + float4( 1.0f, 0.1f, 0.1f, 0.0f ) * ( 1.0f - dist ); 
-    float4 color = float4(1, 1, 1, 1.0f - dist);
+    float opacity = saturate(1 - dist);
 
 	//// Transform to view space
     float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);
@@ -174,7 +172,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 
         output.position = mul(viewposition + g_positions[i] * float4(ParticleSize, 0, 0), mProjection);
         output.texcoords = g_texcoords[i];
-        output.color = color;
+        output.opacity = opacity;
 
         SpriteStream.Append(output);
     }
@@ -184,7 +182,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 //--------------------------------------------------------------------------------
 float4 ParticlePSMAIN(in ParticlePS_INPUT input) : SV_Target
 {
-    float4 color = input.color;
+    float4 color = float4(1,1,1,input.opacity);
     if (bHasDiffuseMap)
     {
         color *= texDiffuseMap.Sample(LinearSampler, input.texcoords);        
