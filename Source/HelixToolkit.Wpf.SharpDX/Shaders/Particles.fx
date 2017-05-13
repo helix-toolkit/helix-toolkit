@@ -26,13 +26,13 @@ struct Particle
 	float3 position;
     float pad0;
     float3 velocity;
-	float time;	
+	float energy;	
 };
 
 cbuffer ParticleBasicParameters
 {
     float3 EmitterLocation; 
-    float ParticleLife;     
+    float InitialEnergy;     
     float3 ConsumerLocation;
     float pad0;
     float2 ParticleSize;
@@ -40,7 +40,7 @@ cbuffer ParticleBasicParameters
     float3 InitialVelocity;    
     float pad2;
     float3 Acceleration;
-    float pad3;
+	float EnergyDissipationRate; //Energy dissipation rate per second
 };
 
 cbuffer ParticleFrame : register(b1)
@@ -80,7 +80,7 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
     p.velocity = normalize(reflect(direction[GroupThreadID.x], RandomVector)) * InitialVelocity;
 
 	// Initialize the lifetime of the particle in seconds
-	p.time = 0.0f;
+	p.energy = InitialEnergy;
 
 	p.pad0 = 0;
 	// Append the new particle to the output buffer
@@ -108,16 +108,13 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
         p.position += p.velocity * TimeFactors;
 
 		// Update the life time left for the particle.
-        p.time = p.time + TimeFactors;
+		p.energy -= TimeFactors * EnergyDissipationRate;
 
 		// Test to see how close the particle is to the black hole, and 
 		// don't pass it to the output list if it is too close.
-      //  if (r > eventHorizon)
+        if (p.energy > 0)
         {
-            if (p.time < ParticleLife)
-            {
-                NewSimulationState.Append(p);
-            }
+            NewSimulationState.Append(p);
         }
     }
 }
@@ -133,6 +130,7 @@ struct ParticleVS_INPUT
 struct ParticleGS_INPUT
 {
     float3 position : Position;
+	float energy : Energy;
 };
 //--------------------------------------------------------------------------------
 struct ParticlePS_INPUT
@@ -149,7 +147,9 @@ StructuredBuffer<Particle> SimulationState;
 ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
 {
 	ParticleGS_INPUT output;
-    output.position.xyz = SimulationState[input.vertexid].position;
+	Particle p = SimulationState[input.vertexid];
+    output.position.xyz = p.position;
+	output.energy = p.energy;
     return output;
 }
 
@@ -159,8 +159,8 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 {
     ParticlePS_INPUT output;
 
-    float dist = saturate(length(input[0].position - ConsumerLocation.xyz) / 100.0f);
-    float opacity = saturate(1 - dist);
+  //  float dist = saturate(length(input[0].position - ConsumerLocation.xyz) / 100.0f);
+	float opacity = saturate(input[0].energy/InitialEnergy);
 
 	//// Transform to view space
     float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);
@@ -182,7 +182,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 //--------------------------------------------------------------------------------
 float4 ParticlePSMAIN(in ParticlePS_INPUT input) : SV_Target
 {
-    float4 color = float4(1,1,1,input.opacity);
+	float4 color = float4(input.opacity, input.opacity, input.opacity, 1);
     if (bHasDiffuseMap)
     {
         color *= texDiffuseMap.Sample(LinearSampler, input.texcoords);        

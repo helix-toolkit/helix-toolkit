@@ -65,8 +65,6 @@ namespace LightingDemo
 
         public Camera Camera4 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
 
-        public Stream ParticleTexture { set; get; }
-
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
@@ -159,8 +157,6 @@ namespace LightingDemo
                 DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
                 NormalMap = ModelMaterial.NormalMap
             };
-
-            ParticleTexture = new FileStream(new System.Uri(@"Particle.png", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)

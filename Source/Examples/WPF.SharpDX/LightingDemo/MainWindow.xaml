@@ -23,9 +23,9 @@
             Grid.Row="0" Grid.Column="0" MSAA="Four"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
-            IsShadowMappingEnabled="False"
+            IsShadowMappingEnabled="True"
             ShowCoordinateSystem="False"
-            SubTitle="{Binding SubTitle}" BackgroundColor="{x:Static sdx:Color4.Black}"
+            SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
@@ -40,7 +40,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <!--<hx:ShadowMap3D />-->
+            <hx:ShadowMap3D />
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
@@ -65,8 +65,7 @@
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light4Color}" />
 
-            <!--<hx:EnvironmentMap x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>-->
-            <!--<hx:MeshGeometryModel3D
+            <hx:MeshGeometryModel3D
                 Geometry="{Binding Sphere}"
                 IsRendering="{Binding RenderLight1}"
                 Material="{Binding LightModelMaterial}"
@@ -95,8 +94,7 @@
                 x:Name="floor"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
-                Transform="{Binding FloorTransform}" />-->
-            <hx:ParticleStormModel3D ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" ParticleSize="0.1, 0.1" ConsumerLocation="0,100,0" Acceleration="0,1,0" ParticleLife="20"/>
+                Transform="{Binding FloorTransform}" />
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
         </hx:Viewport3DX>
         <StackPanel>
