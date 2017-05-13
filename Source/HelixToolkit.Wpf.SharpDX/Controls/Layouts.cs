@@ -87,10 +87,20 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Vector3 Position;
         public float Pad0;
-        public Vector3 Direction;
-        public float Pad1;
         public Vector3 Velocity;
         public float Time;
-        public const int SizeInBytes = 4 * (4 * 3);
+        public const int SizeInBytes = 4 * (4 * 2);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ParticlePerFrame
+    {
+        public Vector3 RandomVector;
+        public float TimeFactors;
+        public uint RandomSeed;
+        public uint NumParticles;
+        public Vector2 Pad;
+        public const int SizeInBytes = 4 * (4 + 4);
+        public const int NumParticlesOffset = 4 * (4 + 1);
     }
 }

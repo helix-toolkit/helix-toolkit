@@ -9,7 +9,11 @@ namespace HelixToolkit.Wpf.SharpDX.Randoms
 {
     public class UniformRandomVectorGenerator : IRandomVector
     {
-        public Vector3 RandomVector
+        public Vector3 MinVector { set; get; } = -Vector3.One;
+
+        public Vector3 MaxVector { set; get; } = Vector3.One;
+
+        public Vector3 RandomVector3
         {
             get
             {
@@ -17,9 +21,13 @@ namespace HelixToolkit.Wpf.SharpDX.Randoms
             }
         }
 
-        public Vector3 MinVector { set; get; } = -Vector3.One;
-
-        public Vector3 MaxVector { set; get; } = Vector3.One;
+        public uint Seed
+        {
+            get
+            {
+                return (uint)Math.Abs(random.Next());
+            }
+        }
 
         private readonly Random random = new Random(DateTime.Now.Millisecond);
     }

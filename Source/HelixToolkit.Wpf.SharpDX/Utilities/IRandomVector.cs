@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace HelixToolkit.Wpf.SharpDX.Randoms
 {
-    public interface IRandomVector
+    public interface IRandomSeed
     {
-        Vector3 RandomVector { get; }
+        uint Seed { get; }
+    }
+    public interface IRandomVector : IRandomSeed
+    {
+        Vector3 RandomVector3 { get; }
     }
 }

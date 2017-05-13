@@ -2,11 +2,7 @@
 #define PARTICALES_FX
 #include "Common.fx"
 #include "Material.fx"
-static const float G = 10.0f;
-static const float m1 = 10.0f;
-static const float m2 = 500.0f;
-static const float m1m2 = m1 * m2;
-static const float eventHorizon = 5.0f;
+
 static const float scale = 0.5f;
 
 static const float4 g_positions[4] =
@@ -28,21 +24,32 @@ static const float2 g_texcoords[4] =
 struct Particle
 {
 	float3 position;
-	float pad0;
-	float3 direction;
-	float pad1;
+    float pad0;
     float3 velocity;
-	float time;
+	float time;	
 };
 
 cbuffer ParticleBasicParameters
 {
-    float3 EmitterLocation;
-    float TimeFactors;  
+    float3 EmitterLocation; 
+    float ParticleLife;     
     float3 ConsumerLocation;
-    float ParticleLife;
+    float pad0;
+    float2 ParticleSize;
+    float2 pad1;
+    float3 InitialVelocity;    
+    float pad2;
+    float3 Acceleration;
+    float pad3;
+};
+
+cbuffer ParticleFrame : register(b1)
+{    
     float3 RandomVector;
-    uint NumParticles;   
+    float TimeFactors; 
+    uint RandomSeed;
+    uint NumParticles;     
+    float2 Pad;
 };
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
@@ -70,14 +77,12 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
     p.position = EmitterLocation;
 
 	// Initialize direction to a randomly reflected vector
-	p.direction = reflect(direction[GroupThreadID.x], RandomVector) * 5.0f;
+    p.velocity = normalize(reflect(direction[GroupThreadID.x], RandomVector)) * InitialVelocity;
 
 	// Initialize the lifetime of the particle in seconds
 	p.time = 0.0f;
 
-    p.velocity = 0;
-
-	p.pad0 = p.pad1 = 0;
+	p.pad0 = 0;
 	// Append the new particle to the output buffer
     NewSimulationState.Append(p);
 }
@@ -94,18 +99,13 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 		// Get the current particle
         Particle p = CurrentSimulationState.Consume();
 
-		// Calculate the current gravitational force applied to it
-        float3 d = ConsumerLocation - p.position;
-        float r = length(d);
-        float3 Force = (G * m1m2 / (r * r)) * normalize(d);
-
 		// Calculate the new velocity, accounting for the acceleration from
 		// the gravitational force over the current time step.
-        p.velocity = p.velocity + (Force / m1) * TimeFactors;
+        p.velocity += Acceleration * TimeFactors;
 
 		// Calculate the new position, accounting for the new velocity value
 		// over the current time step.
-        p.position += Force * TimeFactors;
+        p.position += p.velocity * TimeFactors;
 
 		// Update the life time left for the particle.
         p.time = p.time + TimeFactors;
@@ -162,7 +162,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
     float dist = saturate(length(input[0].position - ConsumerLocation.xyz) / 100.0f);
 	//float4 color = float4( 0.2f, 1.0f, 0.2f, 0.0f ) * dist + float4( 1.0f, 0.1f, 0.1f, 0.0f ) * ( 1.0f - dist ); 
 	//float4 color = float4( 0.2f, 1.0f, 1.0f, 0.0f ) * dist + float4( 1.0f, 0.1f, 0.1f, 0.0f ) * ( 1.0f - dist ); 
-    float4 color = float4(0.2f, 0.2f, 1.0f, 0.0f) * dist + float4(1.0f, 0.1f, 0.1f, 0.0f) * (1.0f - dist);
+    float4 color = float4(1, 1, 1, 1.0f - dist);
 
 	//// Transform to view space
     float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);
@@ -171,7 +171,8 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
     for (int i = 0; i < 4; i++)
     {
 		// Transform to clip space
-        output.position = mul(viewposition + g_positions[i], mProjection);
+
+        output.position = mul(viewposition + g_positions[i] * float4(ParticleSize, 0, 0), mProjection);
         output.texcoords = g_texcoords[i];
         output.color = color;
 
