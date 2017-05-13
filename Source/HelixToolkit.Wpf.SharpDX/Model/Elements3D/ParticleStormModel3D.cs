@@ -78,6 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
             (d, e) =>
             {
                 (d as ParticleStormModel3D).initialEnergy = (float)e.NewValue;
+                (d as ParticleStormModel3D).UpdateInsertThrottle();
             }
             ));
 
@@ -213,6 +214,44 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (Media3D.Vector3D)GetValue(AccelerationProperty);
             }
         }
+
+        public static DependencyProperty BoundMaximumProperty = DependencyProperty.Register("BoundMaximum", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Media3D.Point3D(10, 10, 10),
+                (d, e) => 
+                {
+                    (d as ParticleStormModel3D).boundMaximum = ((Media3D.Point3D)e.NewValue).ToVector3();
+                }));
+
+        public Media3D.Point3D BoundMaximum
+        {
+            set
+            {
+                SetValue(BoundMaximumProperty, value);
+            }
+            get
+            {
+                return (Media3D.Point3D)GetValue(BoundMaximumProperty);
+            }
+        }
+
+        public static DependencyProperty BoundMinimumProperty = DependencyProperty.Register("BoundMinimum", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Media3D.Point3D(-10, -10, -10),
+                (d, e) =>
+                {
+                    (d as ParticleStormModel3D).boundMinimum = ((Media3D.Point3D)e.NewValue).ToVector3();
+                }));
+
+        public Media3D.Point3D BoundMinimum
+        {
+            set
+            {
+                SetValue(BoundMinimumProperty, value);
+            }
+            get
+            {
+                return (Media3D.Point3D)GetValue(BoundMinimumProperty);
+            }
+        }
         #endregion
         #region variables
         protected int particleCountInternal = 0;
@@ -249,6 +288,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected Vector3 consumerLocationInternal = new Vector3(0, 10, 0);
 
+        protected Vector3 boundMaximum = new Vector3(10, 10, 10);
+
+        protected Vector3 boundMinimum = new Vector3(-10, -10, -10);
+
         protected EffectVectorVariable emitterLocationVar;
 
         protected EffectVectorVariable consumerLocationVar;
@@ -276,6 +319,10 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectVectorVariable initialVelocityVar;
 
         protected EffectVectorVariable accelerationVar;
+
+        protected EffectVectorVariable boundMaximumVar;
+
+        protected EffectVectorVariable boundMinimumVar;
 
         private BufferDescription bufferDesc = new BufferDescription()
         {
@@ -328,9 +375,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             InitializeBuffers(count);
-            insertThrottle = (8.0f * initialEnergy / System.Math.Max(0, (particleCountInternal + 8)));
+            UpdateInsertThrottle();
             isInitialParticleChanged = false;
             isRestart = true;
+        }
+
+        private void UpdateInsertThrottle()
+        {
+            insertThrottle = (8.0f * initialEnergy / System.Math.Max(0, (particleCountInternal + 8)));
         }
 
         private void DisposeBuffers()
@@ -419,6 +471,8 @@ namespace HelixToolkit.Wpf.SharpDX
             particleSizeVar = effect.GetVariableByName("ParticleSize").AsVector();
             initialVelocityVar = effect.GetVariableByName("InitialVelocity").AsVector();
             accelerationVar = effect.GetVariableByName("Acceleration").AsVector();
+            boundMaximumVar = effect.GetVariableByName("DomainBoundsMax").AsVector();
+            boundMinimumVar = effect.GetVariableByName("DomainBoundsMin").AsVector();
             effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
             this.effectTransforms = new EffectTransformVariables(this.effect);
             System.Windows.Media.CompositionTarget.Rendering += CompositionTarget_Rendering;
@@ -455,6 +509,8 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref initialVelocityVar);
             Disposer.RemoveAndDispose(ref energyDissipationRateVar);
             Disposer.RemoveAndDispose(ref initialEnergyVar);
+            Disposer.RemoveAndDispose(ref boundMaximumVar);
+            Disposer.RemoveAndDispose(ref boundMinimumVar);
             DisposeBuffers();
             base.OnDetach();
         }
@@ -480,6 +536,8 @@ namespace HelixToolkit.Wpf.SharpDX
             initialVelocityVar.Set(initialVelocity);
             accelerationVar.Set(acceleration);
             energyDissipationRateVar.Set(energyDissipationRate);
+            boundMaximumVar.Set(boundMaximum);
+            boundMinimumVar.Set(boundMinimum);
         }
 
         protected override void OnRender(RenderContext context)
@@ -548,9 +606,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer);
                 context.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
-                // Debug.WriteLine("Add new particles");
 #if DEBUG
-                DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
+           //     DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
 #endif
             }
 

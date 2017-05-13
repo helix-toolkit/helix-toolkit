@@ -48,7 +48,10 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />-->
-            <hx:ParticleStormModel3D ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" ParticleSize="0.1, 0.1" ConsumerLocation="0,30,0" Acceleration="0,1,0" InitialEnergy="5" EnergyDissipationRate="1"/>
+            <hx:ParticleStormModel3D ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
+                                     ParticleSize="0.1, 0.1" ConsumerLocation="0,30,0" 
+                                     Acceleration="0,1,0" InitialEnergy="5" EnergyDissipationRate="1"
+                                     BoundMaximum="3,3,3" BoundMinimum="-3,-1,-3"/>
 
         </hx:Viewport3DX>
 
