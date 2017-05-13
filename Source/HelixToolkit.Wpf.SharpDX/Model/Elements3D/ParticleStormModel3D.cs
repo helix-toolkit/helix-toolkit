@@ -153,15 +153,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSizeProperty", typeof(System.Drawing.SizeF), typeof(ParticleStormModel3D),
-            new AffectsRenderPropertyMetadata(new System.Drawing.SizeF(1, 1),
+        public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSizeProperty", typeof(Size), typeof(ParticleStormModel3D),
+            new AffectsRenderPropertyMetadata(new Size(1, 1),
                 (d, e) => 
                 {
-                    var size = (System.Drawing.SizeF)e.NewValue;
-                    (d as ParticleStormModel3D).particleSize = new Vector2(size.Width, size.Height);
+                    var size = (Size)e.NewValue;
+                    (d as ParticleStormModel3D).particleSize = new Vector2((float)size.Width, (float)size.Height);
                 }));
 
-        public System.Drawing.SizeF ParticleSize
+        public Size ParticleSize
         {
             set
             {
@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (System.Drawing.SizeF)GetValue(ParticleSizeProperty);
+                return (Size)GetValue(ParticleSizeProperty);
             }
         }
 
