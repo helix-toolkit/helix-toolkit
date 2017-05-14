@@ -86,7 +86,7 @@
             <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
                                      ParticleSize="{Binding ParticleSize}" ConsumerLocation="0,30,0" 
                                      Acceleration="{Binding Acceleration}" InitialEnergy="5" EnergyDissipationRate="1"
-                                     ParticleBounds="{Binding ParticleBounds}"/>
+                                     ParticleBounds="{Binding ParticleBounds}" BlendColor="{Binding BlendColor}"/>
             <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
 
         </hx:Viewport3DX>
@@ -146,6 +146,30 @@
             <StackPanel Orientation="Horizontal">
                 <Label>Bound:</Label>
                 <Slider Value="{Binding BoundScale}" Minimum="1" Maximum="40" SmallChange="1" LargeChange="10"></Slider>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                
+                <StackPanel Orientation="Horizontal">
+                    <Label>Blend Color:</Label>
+                    <Rectangle Width="30" Height="20" Fill="{Binding BlendColorBrush}" Margin="10,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="Red">R:</Label>
+                        <TextBlock Text="{Binding RedValue}"/>
+                        <Slider Value="{Binding RedValue}" Minimum="0" Maximum="255" SmallChange="1" LargeChange="10"></Slider>                        
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="Green">G:</Label>
+                        <TextBlock Text="{Binding GreenValue}"/>
+                        <Slider Value="{Binding GreenValue}" Minimum="0" Maximum="255" SmallChange="1" LargeChange="10"></Slider>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="Blue">B:</Label>
+                        <TextBlock Text="{Binding BlueValue}"/>
+                        <Slider Value="{Binding BlueValue}" Minimum="0" Maximum="255" SmallChange="1" LargeChange="10"></Slider>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

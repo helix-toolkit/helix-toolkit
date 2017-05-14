@@ -16,7 +16,7 @@ using SharpDX.Direct3D;
 using HelixToolkit.Wpf.SharpDX.Randoms;
 using System.IO;
 using Media3D = System.Windows.Media.Media3D;
-
+using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class ParticleStormModel3D : Model3D
@@ -264,6 +264,24 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static DependencyProperty BlendColorProperty = DependencyProperty.Register("BlendColor", typeof(Media.Color), typeof(ParticleStormModel3D),
+            new PropertyMetadata(Media.Colors.White,
+                (d, e) =>
+                {
+                    (d as ParticleStormModel3D).parameters.blendColor = ((Media.Color)e.NewValue).ToColor4();
+                }));
+
+        public Media.Color BlendColor
+        {
+            set
+            {
+                SetValue(BlendColorProperty, value);
+            }
+            get
+            {
+                return (Media.Color)GetValue(BlendColorProperty);
+            }
+        }
         #endregion
         #region variables
 
@@ -609,6 +627,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public bool cumulateAtBound = false;
 
+            public Color4 blendColor = Color4.White;
+
             public EffectVectorVariable emitterLocationVar;
 
             public EffectVectorVariable consumerLocationVar;
@@ -634,6 +654,8 @@ namespace HelixToolkit.Wpf.SharpDX
             public EffectVectorVariable boundMinimumVar;
 
             public EffectScalarVariable cumulateAtBoundVar;
+
+            public EffectVectorVariable blendColorVar;
             public virtual void OnAttach(Effect effect)
             {
                 emitterLocationVar = effect.GetVariableByName("EmitterLocation").AsVector();
@@ -650,7 +672,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 boundMaximumVar = effect.GetVariableByName("DomainBoundsMax").AsVector();
                 boundMinimumVar = effect.GetVariableByName("DomainBoundsMin").AsVector();
                 cumulateAtBoundVar = effect.GetVariableByName("CumulateAtBound").AsScalar();
-               
+                blendColorVar = effect.GetVariableByName("ParticleBlendColor").AsVector();
             }
 
             public virtual void OnDettach()
@@ -670,6 +692,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref boundMaximumVar);
                 Disposer.RemoveAndDispose(ref boundMinimumVar);
                 Disposer.RemoveAndDispose(ref cumulateAtBoundVar);
+                Disposer.RemoveAndDispose(ref blendColorVar);
             }
 
             public void SetVariables()
@@ -684,6 +707,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 boundMaximumVar.Set(boundMaximum);
                 boundMinimumVar.Set(boundMinimum);
                 cumulateAtBoundVar.Set(cumulateAtBound);
+                blendColorVar.Set(blendColor);
             }
 
             public void UpdateInsertThrottle()

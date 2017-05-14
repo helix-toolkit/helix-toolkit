@@ -27,6 +27,7 @@ struct Particle
     float pad0;
     float3 velocity;
 	float energy;	
+	float4 color;
 };
 
 cbuffer ParticleBasicParameters
@@ -45,6 +46,7 @@ cbuffer ParticleBasicParameters
 	uint CumulateAtBound;
 	float3 DomainBoundsMin;
 	float pad4;
+	float4 ParticleBlendColor;
 };
 
 cbuffer ParticleFrame : register(b1)
@@ -91,6 +93,8 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 	p.energy = InitialEnergy;
 
 	p.pad0 = 0;
+
+	p.color = ParticleBlendColor;
 	// Append the new particle to the output buffer
     NewSimulationState.Append(p);
 }
@@ -141,14 +145,17 @@ struct ParticleGS_INPUT
 {
     float3 position : Position;
 	float energy : Energy;
+	float4 color : COLOR0;
 };
 //--------------------------------------------------------------------------------
 struct ParticlePS_INPUT
 {
     float4 position : SV_Position;
 	noperspective
+	float4 color : COLOR0;
     float2 texcoords : TEXCOORD0;
     float opacity : OPACITY0;
+	float pad0 : PAD;
 };
 
 StructuredBuffer<Particle> SimulationState;
@@ -160,6 +167,7 @@ ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
 	Particle p = SimulationState[input.vertexid];
     output.position.xyz = p.position;
 	output.energy = p.energy;
+	output.color = p.color;
     return output;
 }
 
@@ -183,7 +191,8 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
         output.position = mul(viewposition + g_positions[i] * float4(ParticleSize, 0, 0), mProjection);
         output.texcoords = g_texcoords[i];
         output.opacity = opacity;
-
+		output.color = input[0].color;
+		output.pad0 = 0;
         SpriteStream.Append(output);
     }
 
@@ -192,7 +201,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 //--------------------------------------------------------------------------------
 float4 ParticlePSMAIN(in ParticlePS_INPUT input) : SV_Target
 {
-	float4 color = float4(input.opacity, input.opacity, input.opacity, 1);
+	float4 color = input.color * input.opacity;
     if (bHasDiffuseMap)
     {
         color *= texDiffuseMap.Sample(LinearSampler, input.texcoords);        

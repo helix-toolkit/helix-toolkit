@@ -88,8 +88,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Position;
         public float Pad0;
         public Vector3 Velocity;
-        public float Time;
-        public const int SizeInBytes = 4 * (4 * 2);
+        public float Energy;
+        public Color Color;
+        public const int SizeInBytes = 4 * (4 * 3);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

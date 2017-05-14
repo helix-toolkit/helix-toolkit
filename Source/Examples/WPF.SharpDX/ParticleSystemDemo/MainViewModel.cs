@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace ParticleSystemDemo
@@ -137,6 +138,83 @@ namespace ParticleSystemDemo
             get
             {
                 return boundScale;
+            }
+        }
+
+        private Color blendColor = Colors.White;
+        public Color BlendColor
+        {
+            set
+            {
+                if(SetValue(ref blendColor, value))
+                {
+                    BlendColorBrush = new SolidColorBrush(value);
+                }
+            }
+            get
+            {
+                return blendColor;
+            }
+        }
+
+        private int redValue = 255;
+        public int RedValue
+        {
+            set
+            {
+                if(SetValue(ref redValue, value))
+                {
+                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                }
+            }
+            get
+            {
+                return redValue;
+            }
+        }
+
+        private int greenValue = 255;
+        public int GreenValue
+        {
+            set
+            {
+                if (SetValue(ref greenValue, value))
+                {
+                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                }
+            }
+            get
+            {
+                return greenValue;
+            }
+        }
+
+        private int blueValue = 255;
+        public int BlueValue
+        {
+            set
+            {
+                if (SetValue(ref blueValue, value))
+                {
+                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                }
+            }
+            get
+            {
+                return blueValue;
+            }
+        }
+
+        private SolidColorBrush blendColorBrush = new SolidColorBrush(Colors.White);
+        public SolidColorBrush BlendColorBrush
+        {
+            set
+            {
+                SetValue(ref blendColorBrush, value);
+            }
+            get
+            {
+                return blendColorBrush;
             }
         }
 
