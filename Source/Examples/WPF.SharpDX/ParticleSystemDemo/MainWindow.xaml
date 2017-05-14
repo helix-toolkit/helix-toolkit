@@ -86,7 +86,8 @@
             <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
                                      ParticleSize="{Binding ParticleSize}" ConsumerLocation="0,30,0" 
                                      Acceleration="{Binding Acceleration}" InitialEnergy="5" EnergyDissipationRate="1"
-                                     ParticleBounds="0,0,0,3,3,3"/>
+                                     ParticleBounds="{Binding ParticleBounds}"/>
+            <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
 
         </hx:Viewport3DX>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="320">
@@ -141,6 +142,10 @@
             <StackPanel Orientation="Horizontal">
                 <Label>Cumulate at bound:</Label>
                 <CheckBox IsChecked="{Binding ElementName=particleModel, Path=CumulateAtBound}"></CheckBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Bound:</Label>
+                <Slider Value="{Binding BoundScale}" Minimum="1" Maximum="40" SmallChange="1" LargeChange="10"></Slider>
             </StackPanel>
         </StackPanel>
     </Grid>

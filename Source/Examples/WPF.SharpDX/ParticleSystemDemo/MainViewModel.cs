@@ -1,4 +1,5 @@
 ﻿using DemoCore;
+using HelixToolkit.Wpf.SharpDX;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -104,10 +105,48 @@ namespace ParticleSystemDemo
             }
         }
 
+        const int DefaultBoundScale = 10;
+        public LineGeometry3D BoundingLines { private set; get; }
+
+        public ScaleTransform3D BoundingLineTransform { private set; get; } = new ScaleTransform3D(DefaultBoundScale, DefaultBoundScale, DefaultBoundScale);
+
+        private Rect3D particleBounds = new Rect3D(0, 0, 0, DefaultBoundScale, DefaultBoundScale, DefaultBoundScale);
+        public Rect3D ParticleBounds
+        {
+            set
+            {
+                SetValue(ref particleBounds, value);
+            }
+            get
+            {
+                return particleBounds;
+            }
+        }
+
+        private int boundScale = DefaultBoundScale;
+        public int BoundScale
+        {
+            set
+            {
+                if(SetValue(ref boundScale, value))
+                {
+                    ParticleBounds = new Rect3D(0, 0, 0, value, value, value);
+                    BoundingLineTransform.ScaleX = BoundingLineTransform.ScaleY = BoundingLineTransform.ScaleZ = value;
+                }
+            }
+            get
+            {
+                return boundScale;
+            }
+        }
 
         public MainViewModel()
         {
             ParticleTexture = new FileStream(new System.Uri(@"Snowflake.png", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+
+            var lineBuilder = new LineBuilder();
+            lineBuilder.AddBox(new SharpDX.Vector3(), 1, 1, 1);
+            BoundingLines = lineBuilder.ToLineGeometry3D();
         }
 
         private void UpdateAcceleration()

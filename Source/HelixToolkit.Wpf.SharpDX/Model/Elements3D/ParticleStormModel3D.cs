@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         #region Dependency Properties
         public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),
-            new PropertyMetadata(512,
+            new PropertyMetadata(ParticleParameters.DefaultParticleCount,
             (d, e) =>
             {
                 (d as ParticleStormModel3D).OnInitialParticleChanged((int)e.NewValue);
@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Point3D(),
+            new PropertyMetadata(ParticleParameters.DefaultEmitterLocation.ToPoint3D(),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).OnEmitterLocationChanged(((Media3D.Point3D)e.NewValue).ToVector3());
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Point3D(0, 10, 0),
+            new PropertyMetadata(ParticleParameters.DefaultConsumerLocation.ToPoint3D(),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).OnConsumerLocationChanged(((Media3D.Point3D)e.NewValue).ToVector3());
@@ -83,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty InitialEnergyProperty = DependencyProperty.Register("InitialEnergy", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(5f,
+            new PropertyMetadata(ParticleParameters.DefaultInitialEnergy,
             (d, e) =>
             {
                 (d as ParticleStormModel3D).parameters.initialEnergy = (float)e.NewValue;
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty EnergyDissipationRateProperty = DependencyProperty.Register("EnergyDissipationRate", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(0.1f,
+            new PropertyMetadata(ParticleParameters.DefaultEnergyDissipationRate,
             (d, e) =>
             {
                 (d as ParticleStormModel3D).parameters.energyDissipationRate = (float)e.NewValue;
@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSize", typeof(Size), typeof(ParticleStormModel3D),
-            new AffectsRenderPropertyMetadata(new Size(1, 1),
+            new AffectsRenderPropertyMetadata(new Size(ParticleParameters.DefaultParticleSize.X, ParticleParameters.DefaultParticleSize.Y),
                 (d, e) =>
                 {
                     var size = (Size)e.NewValue;
@@ -185,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Vector3D(1, 1, 1),
+            new PropertyMetadata(ParticleParameters.DefaultInitialVelocity.ToVector3D(),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).parameters.initialVelocity = ((Media3D.Vector3D)e.NewValue).ToVector3();
@@ -205,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Vector3D(0, 0.1, 0),
+            new PropertyMetadata(ParticleParameters.DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).parameters.acceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
@@ -225,7 +225,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(Media3D.Rect3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Rect3D(0, 0, 0, 10, 10, 10),
+            new PropertyMetadata(ParticleParameters.DefaultBound,
             (d, e) =>
             {
                 var bound = (Media3D.Rect3D)e.NewValue;
@@ -568,33 +568,44 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         protected class ParticleParameters : IParameterVariables
         {
-            public int particleCountInternal = 0;
+            public static readonly int DefaultParticleCount = 512;
+            public int particleCountInternal = DefaultParticleCount;
 
             public float insertThrottle = 0;
 
             public float prevTimeMillis = 0;
 
-            public float initialEnergy = 5;
+            public static readonly float DefaultInitialEnergy = 5;
+            public float initialEnergy = DefaultInitialEnergy;
 
-            public float energyDissipationRate = 0.1f;
+            public static readonly float DefaultEnergyDissipationRate = 0.1f;
+            public float energyDissipationRate = DefaultEnergyDissipationRate;
 
             public IRandomVector vectorGenerator = new UniformRandomVectorGenerator();           
 
             public ParticlePerFrame frameVariables = new ParticlePerFrame();
 
-            public Vector3 initialVelocity = new Vector3(1, 1, 1);
+            public static readonly Vector3 DefaultInitialVelocity = new Vector3(1, 1, 1);
+            public Vector3 initialVelocity = DefaultInitialVelocity;
 
-            public Vector3 acceleration = new Vector3(0, 0.1f, 0);
+            public static readonly Vector3 DefaultAcceleration = new Vector3(0, 0.1f, 0);
+            public Vector3 acceleration = DefaultAcceleration;
 
-            public Vector2 particleSize = new Vector2(1, 1);
+            public static readonly Vector2 DefaultParticleSize = new Vector2(1, 1);
+            public Vector2 particleSize = DefaultParticleSize;
 
-            public Vector3 emitterLocationInternal = Vector3.Zero;
+            public static readonly Vector3 DefaultEmitterLocation = Vector3.Zero;
+            public Vector3 emitterLocationInternal = DefaultEmitterLocation;
 
-            public Vector3 consumerLocationInternal = new Vector3(0, 10, 0);
+            public static readonly Vector3 DefaultConsumerLocation = new Vector3(0, 10, 0);
+            public Vector3 consumerLocationInternal = DefaultConsumerLocation;
 
-            public Vector3 boundMaximum = new Vector3(10, 10, 10);
+            public static readonly Media3D.Rect3D DefaultBound = new Media3D.Rect3D(0, 0, 0, 10, 10, 10);
+            public static readonly Vector3 DefaultBoundMaximum = new Vector3(5, 5, 5);
+            public Vector3 boundMaximum = new Vector3(5, 5, 5);
 
-            public Vector3 boundMinimum = new Vector3(-10, -10, -10);
+            public static readonly Vector3 DefaultBoundMinimum = new Vector3(-5, -5, -5);
+            public Vector3 boundMinimum = DefaultBoundMinimum;
 
             public bool cumulateAtBound = false;
 
