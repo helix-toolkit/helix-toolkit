@@ -85,23 +85,53 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Particle
     {
-        public Vector3 Position;
-        public float Pad0;
-        public Vector3 Velocity;
-        public float Energy;
-        public Color Color;
-        public const int SizeInBytes = 4 * (4 * 3);
+        Vector3 position;
+        float initEnergy;
+        Vector3 velocity;
+        float energy;
+        Color4 color;
+        Vector3 initAcceleration;
+        float dissipRate;
+        public const int SizeInBytes = 4 * (4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ParticlePerFrame
     {
-        public Vector3 RandomVector;
-        public float TimeFactors;
-        public uint RandomSeed;
         public uint NumParticles;
-        public Vector2 Pad;
-        public const int SizeInBytes = 4 * (4 + 4);
-        public const int NumParticlesOffset = 4 * (4 + 1);
+        private Vector3 Pad;
+
+        public Vector3 ExtraAcceleration;
+        public float TimeFactors;
+
+        public Vector3 DomainBoundsMax;
+        public uint RandomSeed;
+
+        public Vector3 DomainBoundsMin;
+        public uint CumulateAtBound;
+
+        public const int SizeInBytes = 4 * (4 * 4);
+        public const int NumParticlesOffset = 0;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ParticleInsertParameters
+    {
+        public Vector3 RandomVector;
+        float pad;
+
+        public Vector3 EmitterLocation;
+        public float InitialEnergy;
+
+        public Vector3 ConsumerLocation;
+        public float InitialVelocity;
+
+        public Color4 ParticleBlendColor;
+
+        public float EnergyDissipationRate; //Energy dissipation rate per second
+        public Vector3 InitialAcceleration;
+
+        public const int SizeInBytes = 4 * (4 * 5);
+        public const int NumParticlesOffset = 0;
     }
 }

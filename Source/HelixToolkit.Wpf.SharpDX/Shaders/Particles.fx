@@ -24,36 +24,24 @@ static const float2 g_texcoords[4] =
 struct Particle
 {
 	float3 position;
-    float pad0;
+	float initEnergy;
     float3 velocity;
 	float energy;	
 	float4 color;
-};
-
-cbuffer ParticleBasicParameters
-{
-    float3 EmitterLocation; 
-    float InitialEnergy;     
-    float3 ConsumerLocation;
-	float InitialVelocity;
-    float2 ParticleSize;
-    float2 pad1;
-    float3 Acceleration;
-	float EnergyDissipationRate; //Energy dissipation rate per second
-	float3 DomainBoundsMax;
-	uint CumulateAtBound;
-	float3 DomainBoundsMin;
-	float pad4;
-	float4 ParticleBlendColor;
+	float3 initAccelleration;
+	float dissipRate;
 };
 
 cbuffer ParticleFrame : register(b1)
-{    
-    float3 RandomVector;
+{
+	uint NumParticles;
+	float3 Pad;
+	float3 ExtraAccelation;
     float TimeFactors; 
+	float3 DomainBoundsMax;
     uint RandomSeed;
-    uint NumParticles;     
-    float2 Pad;
+	float3 DomainBoundsMin;         
+	uint CumulateAtBound;
 };
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
@@ -76,6 +64,19 @@ bool PointInBoundingBox(in float3 boundMax, in float3 boundMin, in float3 p)
 	return p.x < boundMax.x && p.x > boundMin.x && p.y < boundMax.y && p.y > boundMin.y && p.z < boundMax.z && p.z > boundMin.z;
 }
 
+cbuffer ParticleCreateParameters : register(b1)
+{
+	float3 RandomVector;
+	float pad;
+	float3 EmitterLocation;
+	float InitialEnergy;
+	float3 ConsumerLocation;
+	float InitialVelocity;
+	float4 ParticleBlendColor;
+	float EnergyDissipationRate; //Energy dissipation rate per second
+	float3 InitialAcceleration;
+};
+
 [numthreads(8, 1, 1)]
 void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 {
@@ -90,9 +91,13 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 	// Initialize the lifetime of the particle in seconds
 	p.energy = InitialEnergy;
 
-	p.pad0 = 0;
+	p.initEnergy = InitialEnergy;
 
 	p.color = ParticleBlendColor;
+
+	p.dissipRate = EnergyDissipationRate;
+
+	p.initAccelleration = InitialAcceleration;
 	// Append the new particle to the output buffer
     NewSimulationState.Append(p);
 }
@@ -111,7 +116,7 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 
 		// Calculate the new velocity, accounting for the acceleration from
 		// the gravitational force over the current time step.
-        p.velocity += Acceleration * TimeFactors;
+		p.velocity += (p.initAccelleration + ExtraAccelation) * TimeFactors;
 
 		// Calculate the new position, accounting for the new velocity value
 		// over the current time step.
@@ -120,7 +125,7 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 
 		p.position = inBound ? pnew : p.position;
 		// Update the life time left for the particle.
-		p.energy -= TimeFactors * EnergyDissipationRate;
+		p.energy -= TimeFactors * p.dissipRate;
 
 		// Test to see how close the particle is to the black hole, and 
 		// don't pass it to the output list if it is too close.
@@ -144,6 +149,7 @@ struct ParticleGS_INPUT
     float3 position : Position;
 	float energy : Energy;
 	float4 color : COLOR0;
+	float initEnergy : Energy1;
 };
 //--------------------------------------------------------------------------------
 struct ParticlePS_INPUT
@@ -158,6 +164,8 @@ struct ParticlePS_INPUT
 
 StructuredBuffer<Particle> SimulationState;
 
+float2 ParticleSize;
+
 //--------------------------------------------------------------------------------
 ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
 {
@@ -166,6 +174,7 @@ ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
     output.position.xyz = p.position;
 	output.energy = p.energy;
 	output.color = p.color;
+	output.initEnergy = p.initEnergy;
     return output;
 }
 
@@ -174,9 +183,7 @@ ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
 void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT> SpriteStream)
 {
     ParticlePS_INPUT output;
-
-  //  float dist = saturate(length(input[0].position - ConsumerLocation.xyz) / 100.0f);
-	float opacity = saturate(input[0].energy/InitialEnergy);
+	float opacity = saturate(input[0].energy / input[0].initEnergy);
 
 	//// Transform to view space
     float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);

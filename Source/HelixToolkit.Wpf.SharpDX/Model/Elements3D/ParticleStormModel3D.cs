@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(ParticleParameters.DefaultParticleCount,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).OnInitialParticleChanged((int)e.NewValue);
+                (d as ParticleStormModel3D).OnInitialParticleChanged(System.Math.Max(8, (int)e.NewValue));
             }
             ));
 
@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(ParticleParameters.DefaultInitialEnergy,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).parameters.initialEnergy = (float)e.NewValue;
+                (d as ParticleStormModel3D).parameters.insertVariables.InitialEnergy = System.Math.Max(1f, (float)e.NewValue);
                 (d as ParticleStormModel3D).parameters.UpdateInsertThrottle();
             }
             ));
@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(ParticleParameters.DefaultEnergyDissipationRate,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).parameters.energyDissipationRate = (float)e.NewValue;
+                (d as ParticleStormModel3D).parameters.insertVariables.EnergyDissipationRate = System.Math.Max(1f, (float)e.NewValue);
             }
             ));
 
@@ -188,7 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(ParticleParameters.DefaultInitialVelocity,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).parameters.initialVelocity = (float)e.NewValue;
+                (d as ParticleStormModel3D).parameters.insertVariables.InitialVelocity = (float)e.NewValue;
             }
             ));
 
@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(ParticleParameters.DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).parameters.acceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
+                (d as ParticleStormModel3D).parameters.insertVariables.InitialAcceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
             }
             ));
 
@@ -229,8 +229,8 @@ namespace HelixToolkit.Wpf.SharpDX
             (d, e) =>
             {
                 var bound = (Media3D.Rect3D)e.NewValue;
-                (d as ParticleStormModel3D).parameters.boundMaximum = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
-                (d as ParticleStormModel3D).parameters.boundMinimum = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
+                (d as ParticleStormModel3D).parameters.frameVariables.DomainBoundsMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
+                (d as ParticleStormModel3D).parameters.frameVariables.DomainBoundsMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
             }));
 
         public Media3D.Rect3D ParticleBounds
@@ -249,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    (d as ParticleStormModel3D).parameters.cumulateAtBound = (bool)e.NewValue;
+                    (d as ParticleStormModel3D).parameters.frameVariables.CumulateAtBound = (bool)e.NewValue ? 1u : 0;
                 }));
 
         public bool CumulateAtBound
@@ -268,7 +268,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.White,
                 (d, e) =>
                 {
-                    (d as ParticleStormModel3D).parameters.blendColor = ((Media.Color)e.NewValue).ToColor4();
+                    (d as ParticleStormModel3D).parameters.insertVariables.ParticleBlendColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public Media.Color BlendColor
@@ -316,6 +316,7 @@ namespace HelixToolkit.Wpf.SharpDX
         //Buffer indirectArgsBuffer;
         Buffer particleCountGSIABuffer;
         Buffer frameConstBuffer;
+        Buffer particleInsertBuffer;
 #if DEBUG
         private Buffer particleCountStaging;
 #endif
@@ -367,6 +368,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref particleCountGSIABuffer);
             Disposer.RemoveAndDispose(ref frameConstBuffer);
+            Disposer.RemoveAndDispose(ref particleInsertBuffer);
 #if DEBUG
             Disposer.RemoveAndDispose(ref particleCountStaging);
 #endif
@@ -381,7 +383,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private void InitializeBuffers(int count)
-        {            
+        {
             parameters.particleCountInternal = count;
             bufferDesc.SizeInBytes = parameters.particleCountInternal * Particle.SizeInBytes;
 
@@ -406,16 +408,17 @@ namespace HelixToolkit.Wpf.SharpDX
             particleCountGSIABuffer = Buffer.Create(this.Device, new uint[4] { 0, 1, 0, 0 }, renderIndirectArgsBufDesc);
 
             frameConstBuffer = new Buffer(this.Device, ParticlePerFrame.SizeInBytes, ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            particleInsertBuffer = new Buffer(this.Device, ParticleInsertParameters.SizeInBytes, ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
         }
 
         private void OnEmitterLocationChanged(Vector3 location)
         {
-            parameters.emitterLocationInternal = location;
+            parameters.insertVariables.EmitterLocation = location;
         }
 
         private void OnConsumerLocationChanged(Vector3 location)
         {
-            parameters.consumerLocationInternal = location;
+            parameters.insertVariables.ConsumerLocation = location;
         }
 
         private void OnTextureChanged(Stream texture)
@@ -456,7 +459,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnAttached()
         {
             base.OnAttached();
-            
+
             if (isInitialParticleChanged)
             {
                 OnInitialParticleChanged(ParticleCount);
@@ -488,7 +491,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             bHasTextureVar.Set(hasTexture);
             textureViewVar.SetResource(hasTexture ? textureView : null);
-            parameters.SetVariables();
+            parameters.SetRenderVariables();
         }
 
         protected override void OnRender(RenderContext context)
@@ -507,7 +510,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             SetVariables();
 
-            parameters.UpdateTime(context, frameConstBuffer, ref totalElapsed);
+            parameters.UpdateTime(context, ref totalElapsed);
 
             EffectPass pass;
 
@@ -525,6 +528,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
+                //upload framebuffer
+                context.DeviceContext.UpdateSubresource(ref parameters.frameVariables, frameConstBuffer);
                 // Get consume buffer count
                 context.DeviceContext.CopyStructureCount(frameConstBuffer, ParticlePerFrame.NumParticlesOffset, BufferProxies[0].UAV);
                 // Calculate existing particles
@@ -545,15 +550,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (totalElapsed > parameters.insertThrottle)
             {
+                parameters.SetInsertVariables();
+                context.DeviceContext.UpdateSubresource(ref parameters.insertVariables, particleInsertBuffer);
                 // Add more particles 
                 pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(context.DeviceContext);
                 context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV);
-                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer);
+                context.DeviceContext.ComputeShader.SetConstantBuffer(1, particleInsertBuffer);
                 context.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
 #if DEBUG
-                //     DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
+                DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
 #endif
             }
 
@@ -589,145 +596,78 @@ namespace HelixToolkit.Wpf.SharpDX
         protected class ParticleParameters : IParameterVariables
         {
             public static readonly int DefaultParticleCount = 512;
+            public static readonly float DefaultInitialVelocity = 1f;
+            public static readonly Vector3 DefaultAcceleration = new Vector3(0, 0.1f, 0);
+            public static readonly Vector2 DefaultParticleSize = new Vector2(1, 1);
+            public static readonly Vector3 DefaultEmitterLocation = Vector3.Zero;
+            public static readonly Vector3 DefaultConsumerLocation = new Vector3(0, 10, 0);
+            public static readonly Media3D.Rect3D DefaultBound = new Media3D.Rect3D(0, 0, 0, 10, 10, 10);
+            public static readonly Vector3 DefaultBoundMaximum = new Vector3(5, 5, 5);
+            public static readonly Vector3 DefaultBoundMinimum = new Vector3(-5, -5, -5);
+            public static readonly float DefaultInitialEnergy = 5;
+            public static readonly float DefaultEnergyDissipationRate = 1f;
+
             public int particleCountInternal = DefaultParticleCount;
 
             public float insertThrottle = 0;
 
             public float prevTimeMillis = 0;
 
-            public static readonly float DefaultInitialEnergy = 5;
-            public float initialEnergy = DefaultInitialEnergy;
+            public IRandomVector vectorGenerator = new UniformRandomVectorGenerator();
 
-            public static readonly float DefaultEnergyDissipationRate = 0.1f;
-            public float energyDissipationRate = DefaultEnergyDissipationRate;
-
-            public IRandomVector vectorGenerator = new UniformRandomVectorGenerator();           
-
-            public ParticlePerFrame frameVariables = new ParticlePerFrame();
-
-            public static readonly float DefaultInitialVelocity = 1f;
-            public float initialVelocity = DefaultInitialVelocity;
-
-            public static readonly Vector3 DefaultAcceleration = new Vector3(0, 0.1f, 0);
-            public Vector3 acceleration = DefaultAcceleration;
-
-            public static readonly Vector2 DefaultParticleSize = new Vector2(1, 1);
             public Vector2 particleSize = DefaultParticleSize;
 
-            public static readonly Vector3 DefaultEmitterLocation = Vector3.Zero;
-            public Vector3 emitterLocationInternal = DefaultEmitterLocation;
+            public ParticlePerFrame frameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum };
 
-            public static readonly Vector3 DefaultConsumerLocation = new Vector3(0, 10, 0);
-            public Vector3 consumerLocationInternal = DefaultConsumerLocation;
+            public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { ConsumerLocation = DefaultConsumerLocation, EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4(), RandomVector = new Vector3() };
 
-            public static readonly Media3D.Rect3D DefaultBound = new Media3D.Rect3D(0, 0, 0, 10, 10, 10);
-            public static readonly Vector3 DefaultBoundMaximum = new Vector3(5, 5, 5);
-            public Vector3 boundMaximum = new Vector3(5, 5, 5);
-
-            public static readonly Vector3 DefaultBoundMinimum = new Vector3(-5, -5, -5);
-            public Vector3 boundMinimum = DefaultBoundMinimum;
-
-            public bool cumulateAtBound = false;
-
-            public Color4 blendColor = Color4.White;
-
-            public EffectVectorVariable emitterLocationVar;
-
-            public EffectVectorVariable consumerLocationVar;
-
-            public EffectScalarVariable initialEnergyVar;
-
-            public EffectScalarVariable energyDissipationRateVar;
+            public EffectVectorVariable particleSizeVar;
 
             public EffectUnorderedAccessViewVariable currentSimulationStateVar;
 
             public EffectUnorderedAccessViewVariable newSimulationStateVar;
 
-            public EffectShaderResourceVariable simulationStateVar;          
+            public EffectShaderResourceVariable simulationStateVar;
 
-            public EffectVectorVariable particleSizeVar;
-
-            public EffectScalarVariable initialVelocityVar;
-
-            public EffectVectorVariable accelerationVar;
-
-            public EffectVectorVariable boundMaximumVar;
-
-            public EffectVectorVariable boundMinimumVar;
-
-            public EffectScalarVariable cumulateAtBoundVar;
-
-            public EffectVectorVariable blendColorVar;
             public virtual void OnAttach(Effect effect)
             {
-                emitterLocationVar = effect.GetVariableByName("EmitterLocation").AsVector();
-                consumerLocationVar = effect.GetVariableByName("ConsumerLocation").AsVector();
                 currentSimulationStateVar = effect.GetVariableByName("CurrentSimulationState").AsUnorderedAccessView();
                 newSimulationStateVar = effect.GetVariableByName("NewSimulationState").AsUnorderedAccessView();
                 simulationStateVar = effect.GetVariableByName("SimulationState").AsShaderResource();
-                initialEnergyVar = effect.GetVariableByName("InitialEnergy").AsScalar();
-                energyDissipationRateVar = effect.GetVariableByName("EnergyDissipationRate").AsScalar();
-
                 particleSizeVar = effect.GetVariableByName("ParticleSize").AsVector();
-                initialVelocityVar = effect.GetVariableByName("InitialVelocity").AsScalar();
-                accelerationVar = effect.GetVariableByName("Acceleration").AsVector();
-                boundMaximumVar = effect.GetVariableByName("DomainBoundsMax").AsVector();
-                boundMinimumVar = effect.GetVariableByName("DomainBoundsMin").AsVector();
-                cumulateAtBoundVar = effect.GetVariableByName("CumulateAtBound").AsScalar();
-                blendColorVar = effect.GetVariableByName("ParticleBlendColor").AsVector();
             }
 
             public virtual void OnDettach()
             {
-                Disposer.RemoveAndDispose(ref emitterLocationVar);
-                Disposer.RemoveAndDispose(ref consumerLocationVar);
                 Disposer.RemoveAndDispose(ref currentSimulationStateVar);
                 Disposer.RemoveAndDispose(ref newSimulationStateVar);
                 Disposer.RemoveAndDispose(ref simulationStateVar);
-               
-
                 Disposer.RemoveAndDispose(ref particleSizeVar);
-                Disposer.RemoveAndDispose(ref accelerationVar);
-                Disposer.RemoveAndDispose(ref initialVelocityVar);
-                Disposer.RemoveAndDispose(ref energyDissipationRateVar);
-                Disposer.RemoveAndDispose(ref initialEnergyVar);
-                Disposer.RemoveAndDispose(ref boundMaximumVar);
-                Disposer.RemoveAndDispose(ref boundMinimumVar);
-                Disposer.RemoveAndDispose(ref cumulateAtBoundVar);
-                Disposer.RemoveAndDispose(ref blendColorVar);
             }
 
-            public void SetVariables()
+            public void SetInsertVariables()
             {
-                emitterLocationVar.Set(emitterLocationInternal);
-                consumerLocationVar.Set(consumerLocationInternal);
-                initialEnergyVar.Set(initialEnergy);
+                insertVariables.RandomVector = vectorGenerator.RandomVector3;
+            }
+
+            public void SetRenderVariables()
+            {
                 particleSizeVar.Set(particleSize);
-                initialVelocityVar.Set(initialVelocity);
-                accelerationVar.Set(acceleration);
-                energyDissipationRateVar.Set(energyDissipationRate);
-                boundMaximumVar.Set(boundMaximum);
-                boundMinimumVar.Set(boundMinimum);
-                cumulateAtBoundVar.Set(cumulateAtBound);
-                blendColorVar.Set(blendColor);
             }
 
             public void UpdateInsertThrottle()
             {
-                insertThrottle = (8.0f * initialEnergy / System.Math.Max(0, (particleCountInternal + 8)));
+                insertThrottle = (8.0f * insertVariables.InitialEnergy / insertVariables.EnergyDissipationRate / System.Math.Max(0, (particleCountInternal + 8)));
             }
 
-            public void UpdateTime(RenderContext context, Buffer frameConstBuffer, ref float totalElapsed)
+            public void UpdateTime(RenderContext context, ref float totalElapsed)
             {
                 float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000;
                 prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
                 totalElapsed += timeElapsed;
                 //Update perframe variables
                 frameVariables.TimeFactors = timeElapsed;
-                frameVariables.RandomVector = vectorGenerator.RandomVector3;
                 frameVariables.RandomSeed = vectorGenerator.Seed;
-                //upload to const buffer
-                context.DeviceContext.UpdateSubresource(ref frameVariables, frameConstBuffer);
             }
         }
     }
@@ -745,7 +685,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UAV = new UnorderedAccessView(device, Buffer, uavDesc);
         }
 
-#region IDisposable Support
+        #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         void Dispose(bool disposing)
@@ -780,6 +720,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-#endregion
+        #endregion
     }
 }
