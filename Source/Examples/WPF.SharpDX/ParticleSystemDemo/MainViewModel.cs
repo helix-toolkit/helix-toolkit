@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Media3D;
 
 namespace ParticleSystemDemo
@@ -39,6 +40,35 @@ namespace ParticleSystemDemo
             get
             {
                 return accelerationX;
+            }
+        }
+
+        private Size particlesize = new Size(0.1, 0.1);
+        public Size ParticleSize
+        {
+            set
+            {
+                SetValue(ref particlesize, value);
+            }
+            get
+            {
+                return particlesize;
+            }
+        }
+
+        private int sizeSlider = 10;
+        public int SizeSlider
+        {
+            set
+            {
+                if(SetValue(ref sizeSlider, value))
+                {
+                    ParticleSize = new Size(((double)value)/100, ((double)value)/100);
+                }
+            }
+            get
+            {
+                return sizeSlider;
             }
         }
 

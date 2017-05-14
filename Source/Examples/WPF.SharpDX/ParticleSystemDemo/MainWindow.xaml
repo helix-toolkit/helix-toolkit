@@ -24,6 +24,7 @@
             </Style>
             <Style TargetType="TextBlock">
                 <Style.Setters>
+                    <Setter Property="MinWidth" Value="50"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Margin" Value="2"/>
@@ -35,6 +36,11 @@
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Margin" Value="2"/>
                     <Setter Property="Width" Value="150"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="CheckBox">
+                <Style.Setters>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style.Setters>
             </Style>
         </Grid.Resources>
@@ -78,22 +84,22 @@
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />-->
             <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
-                                     ParticleSize="0.1, 0.1" ConsumerLocation="0,30,0" 
+                                     ParticleSize="{Binding ParticleSize}" ConsumerLocation="0,30,0" 
                                      Acceleration="{Binding Acceleration}" InitialEnergy="5" EnergyDissipationRate="1"
                                      ParticleBounds="0,0,0,3,3,3"/>
 
         </hx:Viewport3DX>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Width="320">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="320">
             <StackPanel Orientation="Horizontal">
                 <Label>Max Particle Count:</Label>
                 <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleCount}" VerticalAlignment="Center"/>
-                <Slider Value="{Binding ElementName=particleModel, Path=ParticleCount}" Minimum="8" Maximum="1024" LargeChange="100" SmallChange="10" VerticalAlignment="Center"></Slider>
+                <Slider Value="{Binding ElementName=particleModel, Path=ParticleCount}" Minimum="8" Maximum="4096" LargeChange="100" SmallChange="10" VerticalAlignment="Center"></Slider>
             </StackPanel>
             <Separator></Separator>
             <StackPanel Orientation="Horizontal">
                 <Label>Particle Size:</Label>
                 <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleSize}" VerticalAlignment="Center"/>
-                <Slider Value="{Binding ElementName=particleModel, Path=ParticleSize, Converter={StaticResource particleSizeConverter}}" Minimum="1" Maximum="100" SmallChange="1" LargeChange="10"/>
+                <Slider Value="{Binding SizeSlider}" Minimum="1" Maximum="100" SmallChange="1" LargeChange="10"/>
             </StackPanel>
             <Separator></Separator>
             <Grid HorizontalAlignment="Stretch">
@@ -122,6 +128,20 @@
                 </StackPanel>
             </Grid>
             <Separator></Separator>
+            <StackPanel Orientation="Horizontal">
+                <Label>Initial Energy:</Label>
+                <TextBlock Text="{Binding ElementName=particleModel, Path=InitialEnergy}"/>
+                <Slider Value="{Binding ElementName=particleModel, Path=InitialEnergy}" Minimum="1" Maximum="30" SmallChange="1" LargeChange="10"></Slider>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Dissipation Rate(/s):</Label>
+                <TextBlock Text="{Binding ElementName=particleModel, Path=EnergyDissipationRate}"/>
+                <Slider Value="{Binding ElementName=particleModel, Path=EnergyDissipationRate}" Minimum="1" Maximum="30" SmallChange="1" LargeChange="10"></Slider>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Cumulate at bound:</Label>
+                <CheckBox IsChecked="{Binding ElementName=particleModel, Path=CumulateAtBound}"></CheckBox>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

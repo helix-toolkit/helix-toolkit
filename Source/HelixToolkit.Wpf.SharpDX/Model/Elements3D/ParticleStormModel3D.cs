@@ -163,7 +163,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSizeProperty", typeof(Size), typeof(ParticleStormModel3D),
+        public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSize", typeof(Size), typeof(ParticleStormModel3D),
             new AffectsRenderPropertyMetadata(new Size(1, 1),
                 (d, e) =>
                 {
@@ -266,9 +266,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #endregion
         #region variables
-        private bool isBufferInitialized = false;
-
-        private float prevTimeMillis = 0;
 
         private float totalElapsed = 0;
 
