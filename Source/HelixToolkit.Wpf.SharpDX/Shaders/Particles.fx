@@ -35,11 +35,9 @@ cbuffer ParticleBasicParameters
     float3 EmitterLocation; 
     float InitialEnergy;     
     float3 ConsumerLocation;
-    float pad0;
+	float InitialVelocity;
     float2 ParticleSize;
     float2 pad1;
-    float3 InitialVelocity;    
-    float pad2;
     float3 Acceleration;
 	float EnergyDissipationRate; //Energy dissipation rate per second
 	float3 DomainBoundsMax;

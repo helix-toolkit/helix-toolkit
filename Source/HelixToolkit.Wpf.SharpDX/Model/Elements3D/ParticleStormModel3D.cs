@@ -184,15 +184,15 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(ParticleParameters.DefaultInitialVelocity.ToVector3D(),
+        public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(float), typeof(ParticleStormModel3D),
+            new PropertyMetadata(ParticleParameters.DefaultInitialVelocity,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).parameters.initialVelocity = ((Media3D.Vector3D)e.NewValue).ToVector3();
+                (d as ParticleStormModel3D).parameters.initialVelocity = (float)e.NewValue;
             }
             ));
 
-        public Media3D.Vector3D InitialVelocity
+        public float InitialVelocity
         {
             set
             {
@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Media3D.Vector3D)GetValue(InitialVelocityProperty);
+                return (float)GetValue(InitialVelocityProperty);
             }
         }
 
@@ -605,8 +605,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public ParticlePerFrame frameVariables = new ParticlePerFrame();
 
-            public static readonly Vector3 DefaultInitialVelocity = new Vector3(1, 1, 1);
-            public Vector3 initialVelocity = DefaultInitialVelocity;
+            public static readonly float DefaultInitialVelocity = 1f;
+            public float initialVelocity = DefaultInitialVelocity;
 
             public static readonly Vector3 DefaultAcceleration = new Vector3(0, 0.1f, 0);
             public Vector3 acceleration = DefaultAcceleration;
@@ -647,7 +647,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public EffectVectorVariable particleSizeVar;
 
-            public EffectVectorVariable initialVelocityVar;
+            public EffectScalarVariable initialVelocityVar;
 
             public EffectVectorVariable accelerationVar;
 
@@ -669,7 +669,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 energyDissipationRateVar = effect.GetVariableByName("EnergyDissipationRate").AsScalar();
 
                 particleSizeVar = effect.GetVariableByName("ParticleSize").AsVector();
-                initialVelocityVar = effect.GetVariableByName("InitialVelocity").AsVector();
+                initialVelocityVar = effect.GetVariableByName("InitialVelocity").AsScalar();
                 accelerationVar = effect.GetVariableByName("Acceleration").AsVector();
                 boundMaximumVar = effect.GetVariableByName("DomainBoundsMax").AsVector();
                 boundMinimumVar = effect.GetVariableByName("DomainBoundsMin").AsVector();

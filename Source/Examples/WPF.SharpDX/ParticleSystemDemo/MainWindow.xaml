@@ -102,6 +102,11 @@
                 <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleSize}" VerticalAlignment="Center"/>
                 <Slider Value="{Binding SizeSlider}" Minimum="1" Maximum="100" SmallChange="1" LargeChange="10"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Initial Velocity:</Label>
+                <TextBlock Text="{Binding ElementName=particleModel,Path=InitialVelocity}" VerticalAlignment="Center"/>
+                <Slider Value="{Binding ElementName=particleModel,Path=InitialVelocity}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1"/>
+            </StackPanel>
             <Separator></Separator>
             <Grid HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
