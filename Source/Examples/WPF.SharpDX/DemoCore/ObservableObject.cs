@@ -21,7 +21,7 @@ namespace DemoCore
             }
         }
 
-        protected bool SetValue<T>(ref T backingField, T value, string propertyName)
+        protected bool SetValue<T>(ref T backingField, T value, [CallerMemberName]string propertyName = "")
         {
             if (object.Equals(backingField, value))
             {

@@ -108,4 +108,18 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         SingleText, MultipleText, SingleImage
     }
+
+    public interface IParameterVariables
+    {
+        /// <summary>
+        /// Create variables
+        /// </summary>
+        /// <param name="effect"></param>
+        void OnAttach(global::SharpDX.Direct3D11.Effect effect);
+
+        /// <summary>
+        /// Release variables
+        /// </summary>
+        void OnDettach();
+    }
 }

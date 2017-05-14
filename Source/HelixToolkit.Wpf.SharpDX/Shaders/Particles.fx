@@ -42,7 +42,7 @@ cbuffer ParticleBasicParameters
     float3 Acceleration;
 	float EnergyDissipationRate; //Energy dissipation rate per second
 	float3 DomainBoundsMax;
-	float pad3;
+	uint CumulateAtBound;
 	float3 DomainBoundsMin;
 	float pad4;
 };
@@ -114,13 +114,15 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 		// Calculate the new position, accounting for the new velocity value
 		// over the current time step.
 		float3 pnew = p.position + p.velocity * TimeFactors;
-		p.position = PointInBoundingBox(DomainBoundsMax, DomainBoundsMin, pnew) ? pnew : p.position;
+		bool inBound = PointInBoundingBox(DomainBoundsMax, DomainBoundsMin, pnew);
+
+		p.position = inBound ? pnew : p.position;
 		// Update the life time left for the particle.
 		p.energy -= TimeFactors * EnergyDissipationRate;
 
 		// Test to see how close the particle is to the black hole, and 
 		// don't pass it to the output list if it is too close.
-		if (p.energy > 0)
+		if (p.energy > 0 && (inBound || CumulateAtBound != 0))
         {
             NewSimulationState.Append(p);
         }

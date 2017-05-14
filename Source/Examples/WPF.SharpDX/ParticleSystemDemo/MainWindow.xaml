@@ -8,7 +8,36 @@
         xmlns:local="clr-namespace:ParticleSystemDemo"
         mc:Ignorable="d"
         Title="ParticleSystemDemo" Height="800" Width="1200">
-    <Grid>
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:ParticleSizeConverter x:Key="particleSizeConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="Black">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Style.Setters>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="2"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="2"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="Slider">
+                <Style.Setters>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="2"/>
+                    <Setter Property="Width" Value="150"/>
+                </Style.Setters>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -36,11 +65,11 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
 
-            <hx:DirectionalLight3D
+            <!--<hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
                 DirectionTransform="{Binding Light1DirectionTransform}"
                 IsRendering="{Binding RenderLight1}"
-                Color="{Binding Light1Color}" />
+                Color="{Binding Light1Color}" />-->
 
 
             <!--<hx:MeshGeometryModel3D
@@ -48,12 +77,51 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />-->
-            <hx:ParticleStormModel3D ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
+            <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
                                      ParticleSize="0.1, 0.1" ConsumerLocation="0,30,0" 
-                                     Acceleration="0,1,0" InitialEnergy="5" EnergyDissipationRate="1"
+                                     Acceleration="{Binding Acceleration}" InitialEnergy="5" EnergyDissipationRate="1"
                                      ParticleBounds="0,0,0,3,3,3"/>
 
         </hx:Viewport3DX>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Width="320">
+            <StackPanel Orientation="Horizontal">
+                <Label>Max Particle Count:</Label>
+                <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleCount}" VerticalAlignment="Center"/>
+                <Slider Value="{Binding ElementName=particleModel, Path=ParticleCount}" Minimum="8" Maximum="1024" LargeChange="100" SmallChange="10" VerticalAlignment="Center"></Slider>
+            </StackPanel>
+            <Separator></Separator>
+            <StackPanel Orientation="Horizontal">
+                <Label>Particle Size:</Label>
+                <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleSize}" VerticalAlignment="Center"/>
+                <Slider Value="{Binding ElementName=particleModel, Path=ParticleSize, Converter={StaticResource particleSizeConverter}}" Minimum="1" Maximum="100" SmallChange="1" LargeChange="10"/>
+            </StackPanel>
+            <Separator></Separator>
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
+                    <Label>Accerlation:</Label>
+                    <TextBlock Text="{Binding ElementName=particleModel, Path=Acceleration}"/>                    
+                </StackPanel>
 
+                <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Label>X: </Label>
+                        <Slider Value="{Binding AccelerationX}" Minimum="-500" Maximum="500" SmallChange="1" LargeChange="10" Width="250"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Y:</Label>
+                        <Slider Value="{Binding AccelerationY}" Minimum="-500" Maximum="500" SmallChange="1" LargeChange="10" Width="250"/>                        
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Z:</Label>
+                        <Slider Value="{Binding AccelerationZ}" Minimum="-500" Maximum="500" SmallChange="1" LargeChange="10" Width="250"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Separator></Separator>
+        </StackPanel>
     </Grid>
 </Window>
