@@ -367,7 +367,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref particleCountGSIABuffer);
             Disposer.RemoveAndDispose(ref frameConstBuffer);
+#if DEBUG
             Disposer.RemoveAndDispose(ref particleCountStaging);
+#endif
             if (BufferProxies != null)
             {
                 for (int i = 0; i < BufferProxies.Length; ++i)
@@ -743,7 +745,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UAV = new UnorderedAccessView(device, Buffer, uavDesc);
         }
 
-        #region IDisposable Support
+#region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         void Dispose(bool disposing)
@@ -778,6 +780,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
+#endregion
     }
 }

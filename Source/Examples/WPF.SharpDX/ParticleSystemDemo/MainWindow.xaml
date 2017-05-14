@@ -56,7 +56,7 @@
             IsShadowMappingEnabled="False"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}" BackgroundColor="{x:Static sdx:Color4.Black}"
-            TextBrush="Black"
+            TextBrush="Black" ShowFrameRate="True"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
