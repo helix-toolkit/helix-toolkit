@@ -17,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Randoms;
 using System.IO;
 using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
+using System.Diagnostics;
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class ParticleStormModel3D : Model3D
@@ -351,12 +353,17 @@ namespace HelixToolkit.Wpf.SharpDX
         private void OnInitialParticleChanged(int count)
         {
             isInitialParticleChanged = true;
-            DisposeBuffers();
+            parameters.particleCountInternal = count;
             if (count <= 0 || !IsAttached)
             {
                 return;
             }
-            InitializeBuffers(count);
+            else if (bufferDesc.SizeInBytes < count * Particle.SizeInBytes) // Create new buffer, otherwise reuse existing buffers
+            {
+                Debug.WriteLine("Create buffers");
+                DisposeBuffers();
+                InitializeBuffers(count);         
+            }
             parameters.UpdateInsertThrottle();
             isInitialParticleChanged = false;
             isRestart = true;
@@ -384,9 +391,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void InitializeBuffers(int count)
         {
-            parameters.particleCountInternal = count;
             bufferDesc.SizeInBytes = parameters.particleCountInternal * Particle.SizeInBytes;
-
             UAVBufferViewDesc.Buffer.ElementCount = parameters.particleCountInternal;
 
             for (int i = 0; i < BufferProxies.Length; ++i)
