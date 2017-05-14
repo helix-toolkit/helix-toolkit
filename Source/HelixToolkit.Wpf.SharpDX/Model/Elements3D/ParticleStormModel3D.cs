@@ -484,7 +484,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(RenderContext context)
         {
-            return BufferProxies != null && IsAttached && visibleInternal && isRenderingInternal;
+            return base.CanRender(context) && BufferProxies != null && !isInitialParticleChanged;
         }
 
         private void SetVariables()
@@ -495,11 +495,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected override void OnRender(RenderContext context)
-        {
-            if (isInitialParticleChanged)
-            {
-                return;
-            }
+        { 
             var worldMatrix = this.modelMatrix * context.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
