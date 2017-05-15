@@ -326,6 +326,25 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (Media.Color)GetValue(BlendColorProperty);
             }
         }
+
+        public static DependencyProperty AnimateSpriteByEnergyBoundProperty = DependencyProperty.Register("AnimateSpriteByEnergy", typeof(bool), typeof(ParticleStormModel3D),
+            new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    (d as ParticleStormModel3D).parameters.animateSpriteByEnergy = (bool)e.NewValue ? 1u : 0;
+                }));
+
+        public bool AnimateSpriteByEnergy
+        {
+            set
+            {
+                SetValue(AnimateSpriteByEnergyBoundProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(AnimateSpriteByEnergyBoundProperty);
+            }
+        }
         #endregion
         #region variables
 
@@ -659,6 +678,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public float prevTimeMillis = 0;
 
+            public uint animateSpriteByEnergy = 0;
+
             public IRandomVector vectorGenerator = new UniformRandomVectorGenerator();
 
             public Vector2 particleSize = DefaultParticleSize;
@@ -682,6 +703,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public EffectShaderResourceVariable simulationStateVar;
 
+            public EffectScalarVariable animateSpriteByEnergyVar;
+
             public virtual void OnAttach(Effect effect)
             {
                 currentSimulationStateVar = effect.GetVariableByName("CurrentSimulationState").AsUnorderedAccessView();
@@ -692,6 +715,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 randomSeedVar = effect.GetVariableByName("RandomSeed").AsScalar();
                 numTextureColumnVar = effect.GetVariableByName("NumTexCol").AsScalar();
                 numTextureRowVar = effect.GetVariableByName("NumTexRow").AsScalar();
+                animateSpriteByEnergyVar = effect.GetVariableByName("AnimateByEnergyLevel").AsScalar();
             }
 
             public virtual void OnDettach()
@@ -704,6 +728,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref randomSeedVar);
                 Disposer.RemoveAndDispose(ref numTextureColumnVar);
                 Disposer.RemoveAndDispose(ref numTextureRowVar);
+                Disposer.RemoveAndDispose(ref animateSpriteByEnergyVar);
             }
 
             public void SetRenderVariables()
@@ -713,6 +738,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 randomSeedVar.Set(vectorGenerator.Seed);
                 numTextureColumnVar.Set(NumTextureColumn);
                 numTextureRowVar.Set(NumTextureRow);
+                animateSpriteByEnergyVar.Set(animateSpriteByEnergy);
             }
 
             public void UpdateInsertThrottle()

@@ -22,10 +22,10 @@ static const float4 g_positions[4] =
 
 static const float2 g_texcoords[4] =
 {
+	float2(1, 0),
+    float2(0, 0),
     float2(1, 1),
     float2(0, 1),
-    float2(1, 0),    
-    float2(0, 0),
 };
 
 struct Particle
@@ -93,6 +93,8 @@ cbuffer ParticleCreateParameters : register(b1)
 
 	float EnergyDissipationRate; //Energy dissipation rate per second
 	float3 InitialAcceleration;
+
+	bool AnimateByEnergyLevel;
 };
 
 uint rand_lcg(inout uint rng_state)
@@ -132,10 +134,22 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 	p.dissipRate = EnergyDissipationRate;
 
 	p.initAccelleration = InitialAcceleration;
-	uint state = wang_hash(RandomSeed + GroupThreadID.x);
-	uint rndNumber1 = rand_lcg(state);
-	uint rndNumber2 = rand_lcg(state);
-	p.TexColRow = uint2(rndNumber1 % max(1, NumTexCol), rndNumber2 % max(1, NumTexRow));
+
+	if (AnimateByEnergyLevel)
+	{
+		p.TexColRow = uint2(0, 0);
+	}
+	else if(NumTexCol > 1 || NumTexRow > 1)
+	{
+		uint state = wang_hash(RandomSeed + GroupThreadID.x);
+		uint rndNumber1 = rand_lcg(state);
+		uint rndNumber2 = rand_lcg(state);
+		p.TexColRow = uint2(rndNumber1 % max(1, NumTexCol) - 1, rndNumber2 % max(1, NumTexRow) - 1);		
+	}
+	else
+	{
+		p.TexColRow = uint2(0, 0);
+	}
 	// Append the new particle to the output buffer
     NewSimulationState.Append(p);
 }
@@ -216,6 +230,9 @@ ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
     return output;
 }
 
+static float2 one = float2(1, 1);
+
+
 //--------------------------------------------------------------------------------
 [maxvertexcount(4)]
 void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT> SpriteStream)
@@ -226,19 +243,41 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 	//// Transform to view space
     float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);
 	float2 texScale = float2(1.0f / max(1, NumTexCol), 1.0f / max(1, NumTexRow));
+	if (AnimateByEnergyLevel)
+	{
+		float colrow = floor((1 - opacity) * (NumTexCol * NumTexRow - 1));
+		float column = colrow % NumTexCol;
+		float row = floor(colrow / NumTexCol);
+	
+		// Emit two new triangles
+		for (int i = 0; i < 4; i++)
+		{
+			// Transform to clip space
 
-    // Emit two new triangles
-    for (int i = 0; i < 4; i++)
-    {
-		// Transform to clip space
+			output.position = mul(viewposition + g_positions[i] * float4(ParticleSize, 0, 0), mProjection);
+			output.texcoords = (g_texcoords[i] + float2(column, row)) * texScale;
+			output.opacity = opacity;
+			output.color = input[0].color;
+			output.pad0 = 0;
+			SpriteStream.Append(output);
+		}		
+	}
+	else
+	{
+				// Emit two new triangles
+		for (int i = 0; i < 4; i++)
+		{
+			// Transform to clip space
 
-        output.position = mul(viewposition + g_positions[i] * float4(ParticleSize, 0, 0), mProjection);
-        output.texcoords = (g_texcoords[i] + input[0].texColRow) * texScale;
-        output.opacity = opacity;
-		output.color = input[0].color;
-		output.pad0 = 0;
-        SpriteStream.Append(output);
-    }
+			output.position = mul(viewposition + g_positions[i] * float4(ParticleSize, 0, 0), mProjection);
+			output.texcoords = (g_texcoords[i] + input[0].texColRow) * texScale;
+			output.opacity = opacity;
+			output.color = input[0].color;
+			output.pad0 = 0;
+			SpriteStream.Append(output);
+		}
+	}
+
 
     SpriteStream.RestartStrip();
 }

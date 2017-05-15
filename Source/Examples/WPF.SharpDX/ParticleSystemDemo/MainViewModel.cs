@@ -272,7 +272,7 @@ namespace ParticleSystemDemo
 
         public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4) };
         public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png"};
-        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 10 };
+        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 10};
         public MainViewModel()
         {
             var lineBuilder = new LineBuilder();
@@ -283,7 +283,10 @@ namespace ParticleSystemDemo
 
         private void LoadTexture(int index)
         {
-            ParticleTexture = new FileStream(new System.Uri(Textures[index], System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+            var file = new FileStream(new System.Uri(Textures[index], System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+            var mem = new MemoryStream();
+            file.CopyTo(mem);
+            ParticleTexture = mem;
             NumTextureColumns = TextureColumnsRows[index].Item1;
             NumTextureRows = TextureColumnsRows[index].Item2;
             SizeSlider = DefaultParticleSizes[index];

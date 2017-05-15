@@ -187,6 +187,10 @@
                     <ComboBoxItem>Sparks</ComboBoxItem>
                 </ComboBox>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Animate by energy level:</Label>
+                <CheckBox IsChecked="{Binding ElementName=particleModel, Path=AnimateSpriteByEnergy}"></CheckBox>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
