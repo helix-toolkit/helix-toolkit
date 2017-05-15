@@ -30,6 +30,8 @@ namespace HelixToolkit.Wpf.Tests
         public void SetUp() 
         {
             _objReader = new ObjReader();
+            var dir = Path.GetDirectoryName(typeof(ObjReaderTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
         }
 
         [Test, Ignore("")]
