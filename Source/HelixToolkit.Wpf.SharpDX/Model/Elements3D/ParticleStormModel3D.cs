@@ -345,6 +345,114 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(AnimateSpriteByEnergyBoundProperty);
             }
         }
+
+        public static DependencyProperty BlendProperty = DependencyProperty.Register("Blend", typeof(BlendOperation), typeof(ParticleStormModel3D),
+            new PropertyMetadata(BlendOperation.Add, (d, e) =>
+            {
+                (d as ParticleStormModel3D).isBlendChanged = true;
+            }));
+
+        public BlendOperation Blend
+        {
+            set
+            {
+                SetValue(BlendProperty, value);
+            }
+            get
+            {
+                return (BlendOperation)GetValue(BlendProperty);
+            }
+        }
+
+        public static DependencyProperty AlphaBlendProperty = DependencyProperty.Register("AlphaBlend", typeof(BlendOperation), typeof(ParticleStormModel3D),
+            new PropertyMetadata(BlendOperation.Add, (d, e) =>
+            {
+                (d as ParticleStormModel3D).isBlendChanged = true;
+            }));
+
+        public BlendOperation AlphaBlend
+        {
+            set
+            {
+                SetValue(AlphaBlendProperty, value);
+            }
+            get
+            {
+                return (BlendOperation)GetValue(AlphaBlendProperty);
+            }
+        }
+
+        public static DependencyProperty SourceBlendProperty = DependencyProperty.Register("SourceBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
+            new PropertyMetadata(BlendOption.One, (d, e) =>
+            {
+                (d as ParticleStormModel3D).isBlendChanged = true;
+            }));
+
+        public BlendOption SourceBlend
+        {
+            set
+            {
+                SetValue(SourceBlendProperty, value);
+            }
+            get
+            {
+                return (BlendOption)GetValue(SourceBlendProperty);
+            }
+        }
+
+        public static DependencyProperty DestBlendProperty = DependencyProperty.Register("DestBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
+            new PropertyMetadata(BlendOption.One, (d, e) =>
+            {
+                (d as ParticleStormModel3D).isBlendChanged = true;
+            }));
+
+        public BlendOption DestBlend
+        {
+            set
+            {
+                SetValue(DestBlendProperty, value);
+            }
+            get
+            {
+                return (BlendOption)GetValue(DestBlendProperty);
+            }
+        }
+
+        public static DependencyProperty SourceAlphaBlendProperty = DependencyProperty.Register("SourceAlphaBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
+            new PropertyMetadata(BlendOption.One, (d, e) =>
+            {
+                (d as ParticleStormModel3D).isBlendChanged = true;
+            }));
+
+        public BlendOption SourceAlphaBlend
+        {
+            set
+            {
+                SetValue(SourceAlphaBlendProperty, value);
+            }
+            get
+            {
+                return (BlendOption)GetValue(SourceAlphaBlendProperty);
+            }
+        }
+
+        public static DependencyProperty DestAlphaBlendProperty = DependencyProperty.Register("DestAlphaBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
+            new PropertyMetadata(BlendOption.Zero, (d, e) =>
+            {
+                (d as ParticleStormModel3D).isBlendChanged = true;
+            }));
+
+        public BlendOption DestAlphaBlend
+        {
+            set
+            {
+                SetValue(DestAlphaBlendProperty, value);
+            }
+            get
+            {
+                return (BlendOption)GetValue(DestAlphaBlendProperty);
+            }
+        }
         #endregion
         #region variables
 
@@ -358,15 +466,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected bool hasTexture = false;
 
+        private bool isBlendChanged = true;
+
         protected ParticleParameters parameters = new ParticleParameters();
 
-        public EffectScalarVariable bHasTextureVar;
+        protected EffectScalarVariable bHasTextureVar;
 
-        public EffectShaderResourceVariable textureViewVar;
+        protected EffectShaderResourceVariable textureViewVar;
 
-        public ShaderResourceView textureView;
+        protected ShaderResourceView textureView;
 
         protected EffectTransformVariables effectTransforms;
+
         private BufferDescription bufferDesc = new BufferDescription()
         {
             BindFlags = BindFlags.UnorderedAccess | BindFlags.ShaderResource,
@@ -409,7 +520,30 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected EffectTechnique effectTechnique;
 
+        protected BlendState blendState;
+        protected BlendStateDescription blendDesc = new BlendStateDescription() { IndependentBlendEnable = false, AlphaToCoverageEnable = false };
         #endregion
+
+        private void OnBlendStateChanged()
+        {
+            if (isBlendChanged)
+            {
+                Disposer.RemoveAndDispose(ref blendState);
+                blendDesc.RenderTarget[0] = new RenderTargetBlendDescription
+                {
+                    IsBlendEnabled = true,
+                    BlendOperation = this.Blend,
+                    AlphaBlendOperation = this.AlphaBlend,
+                    SourceBlend = this.SourceBlend,
+                    DestinationBlend = this.DestBlend,
+                    SourceAlphaBlend = this.SourceAlphaBlend,
+                    DestinationAlphaBlend = this.DestAlphaBlend,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All
+                };
+                blendState = new BlendState(this.Device, blendDesc);
+                isBlendChanged = false;
+            }
+        }
 
         private void OnInitialParticleChanged(int count)
         {
@@ -423,7 +557,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 Debug.WriteLine("Create buffers");
                 DisposeBuffers();
-                InitializeBuffers(count);         
+                InitializeBuffers(count);
             }
             parameters.UpdateInsertThrottle();
             isInitialParticleChanged = false;
@@ -487,23 +621,26 @@ namespace HelixToolkit.Wpf.SharpDX
             parameters.insertVariables.ConsumerLocation = location;
         }
 
-        private void OnTextureChanged(Stream texture)
+        private void OnTextureChanged()
         {
-            Disposer.RemoveAndDispose(ref textureView);
-            if (!IsAttached)
+            if (isTextureChanged)
             {
-                return;
+                Disposer.RemoveAndDispose(ref textureView);
+                if (!IsAttached)
+                {
+                    return;
+                }
+                if (ParticleTexture == null)
+                {
+                    hasTexture = false;
+                }
+                else
+                {
+                    textureView = TextureLoader.FromMemoryAsShaderResourceView(this.Device, ParticleTexture);
+                    hasTexture = true;
+                }
+                isTextureChanged = false;
             }
-            if (texture == null)
-            {
-                hasTexture = false;
-            }
-            else
-            {
-                textureView = TextureLoader.FromMemoryAsShaderResourceView(this.Device, texture);
-                hasTexture = true;
-            }
-            isTextureChanged = false;
         }
 
         protected override bool OnAttach(IRenderHost host)
@@ -539,6 +676,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref effectTransforms);
             Disposer.RemoveAndDispose(ref bHasTextureVar);
             Disposer.RemoveAndDispose(ref textureViewVar);
+            Disposer.RemoveAndDispose(ref blendState);
             DisposeBuffers();
             base.OnDetach();
         }
@@ -561,15 +699,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected override void OnRender(RenderContext context)
-        { 
+        {
             var worldMatrix = this.modelMatrix * context.worldMatrix;
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            if (isTextureChanged)
-            {
-                OnTextureChanged(ParticleTexture);
-            }
-
+            OnTextureChanged();
+            OnBlendStateChanged();
             SetVariables();
 
             parameters.UpdateTime(context, ref totalElapsed);
@@ -640,6 +775,7 @@ namespace HelixToolkit.Wpf.SharpDX
             context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             pass = this.effectTechnique.GetPassByIndex(2);
             pass.Apply(context.DeviceContext);
+            context.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
             context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer, 0);
         }
 
@@ -686,7 +822,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public ParticlePerFrame frameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum };
 
-            public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { ConsumerLocation = DefaultConsumerLocation, EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4()};
+            public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { ConsumerLocation = DefaultConsumerLocation, EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
             public EffectVectorVariable particleSizeVar;
 

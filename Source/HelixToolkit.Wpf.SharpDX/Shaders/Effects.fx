@@ -355,7 +355,7 @@ technique11 RenderLines
 		//SetDepthStencilState( DSSDepthLessEqual, 0 );
 		//SetRasterizerState	( RSLines );
 		//SetRasterizerState( RSFillBiasBack );
-		//SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
+		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
 		SetVertexShader(CompileShader(vs_4_0, VShaderLines()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);

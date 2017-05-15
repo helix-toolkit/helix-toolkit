@@ -43,6 +43,12 @@
                     <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style.Setters>
             </Style>
+            <Style TargetType="ComboBox">
+                <Style.Setters>
+                    <Setter Property="MinWidth" Value="100"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style.Setters>
+            </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -88,11 +94,24 @@
                                      Acceleration="{Binding Acceleration}" InitialEnergy="5" EnergyDissipationRate="1"
                                      ParticleBounds="{Binding ParticleBounds}" BlendColor="{Binding BlendColor}"
                                      NumTextureColumn="{Binding NumTextureColumns}"
-                                     NumTextureRow="{Binding NumTextureRows}"/>
+                                     NumTextureRow="{Binding NumTextureRows}"
+                                     SourceBlend="{Binding SourceBlendOption}"
+                                     SourceAlphaBlend="{Binding SourceAlphaBlendOption}"
+                                     DestBlend="{Binding DestBlendOption}"
+                                     DestAlphaBlend="{Binding DestAlphaBlendOption}"/>
             <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
 
         </hx:Viewport3DX>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="320">
+            <StackPanel Orientation="Horizontal">
+                <Label>Texture:</Label>
+                <ComboBox SelectedIndex="{Binding SelectedTextureIndex}" VerticalAlignment="Center" Margin="4" Width="100">
+                    <ComboBoxItem IsSelected="True">Snow flakes</ComboBoxItem>
+                    <ComboBoxItem>Fire</ComboBoxItem>
+                    <ComboBoxItem>Sparks</ComboBoxItem>
+                    <ComboBoxItem>Smoke</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label>Max Particle Count:</Label>
                 <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleCount}" VerticalAlignment="Center"/>
@@ -180,16 +199,46 @@
             </StackPanel>
             <Separator></Separator>
             <StackPanel Orientation="Horizontal">
-                <Label>Texture:</Label>
-                <ComboBox SelectedIndex="{Binding SelectedTextureIndex}" VerticalAlignment="Center" Margin="4" Width="100">
-                    <ComboBoxItem IsSelected="True">Snow flakes</ComboBoxItem>
-                    <ComboBoxItem>Fire</ComboBoxItem>
-                    <ComboBoxItem>Sparks</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
                 <Label>Animate by energy level:</Label>
                 <CheckBox IsChecked="{Binding ElementName=particleModel, Path=AnimateSpriteByEnergy}"></CheckBox>
+            </StackPanel>
+            <Separator></Separator>
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Style.Setters>
+                            <Setter Property="MinWidth" Value="80"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="2"/>
+                        </Style.Setters>
+                    </Style>
+                </StackPanel.Resources>
+                <Label>Blend State</Label>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Blend Operation:</Label>
+                    <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=Blend}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Alpha Blend Operation:</Label>
+                    <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=AlphaBlend}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Source Blend:</Label>
+                    <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceBlend}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Dest Blend:</Label>
+                    <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestBlend}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Source Alpha Blend:</Label>
+                    <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceAlphaBlend}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Dest Alpha Blend:</Label>
+                    <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestAlphaBlend}"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

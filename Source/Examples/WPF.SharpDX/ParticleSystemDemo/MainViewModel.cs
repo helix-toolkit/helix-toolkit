@@ -1,5 +1,6 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -270,9 +271,67 @@ namespace ParticleSystemDemo
             }
         }
 
-        public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4) };
-        public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png"};
-        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 10};
+        public Array BlendOperationArray { get; } = Enum.GetValues(typeof(BlendOperation));
+
+        public Array BlendOptionArray { get; } = Enum.GetValues(typeof(BlendOption));
+
+        private BlendOption sourceBlendOption = BlendOption.One;
+        public BlendOption SourceBlendOption
+        {
+            set
+            {
+                SetValue(ref sourceBlendOption, value);
+            }
+            get
+            {
+                return sourceBlendOption;
+            }
+        }
+
+        private BlendOption sourceAlphaBlendOption = BlendOption.One;
+        public BlendOption SourceAlphaBlendOption
+        {
+            set
+            {
+                SetValue(ref sourceAlphaBlendOption, value);
+            }
+            get
+            {
+                return sourceAlphaBlendOption;
+            }
+        }
+
+        private BlendOption destBlendOption = BlendOption.One;
+        public BlendOption DestBlendOption
+        {
+            set
+            {
+                SetValue(ref destBlendOption, value);
+            }
+            get
+            {
+                return destBlendOption;
+            }
+        }
+
+        private BlendOption destAlphaBlendOption = BlendOption.Zero;
+        public BlendOption DestAlphaBlendOption
+        {
+            set
+            {
+                SetValue(ref destAlphaBlendOption, value);
+            }
+            get
+            {
+                return destAlphaBlendOption;
+            }
+        }
+
+        public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4), new Tuple<int, int>(6,5) };
+        public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
+        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90};
+        
+
         public MainViewModel()
         {
             var lineBuilder = new LineBuilder();
@@ -290,6 +349,21 @@ namespace ParticleSystemDemo
             NumTextureColumns = TextureColumnsRows[index].Item1;
             NumTextureRows = TextureColumnsRows[index].Item2;
             SizeSlider = DefaultParticleSizes[index];
+            switch (index)
+            {
+                case 3:
+                    SourceBlendOption = BlendOption.SourceAlpha;
+                    SourceAlphaBlendOption = BlendOption.Zero;
+                    DestBlendOption = BlendOption.InverseSourceAlpha;
+                    DestAlphaBlendOption = BlendOption.Zero;
+                    break;
+                default:
+                    SourceBlendOption = BlendOption.One;
+                    SourceAlphaBlendOption = BlendOption.One;
+                    DestBlendOption = BlendOption.One;
+                    DestAlphaBlendOption = BlendOption.Zero;
+                    break;
+            }
         }
 
         private void UpdateAcceleration()
