@@ -178,9 +178,10 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
+            <Separator></Separator>
             <StackPanel Orientation="Horizontal">
                 <Label>Texture:</Label>
-                <ComboBox SelectedIndex="{Binding SelectedTextureIndex}">
+                <ComboBox SelectedIndex="{Binding SelectedTextureIndex}" VerticalAlignment="Center" Margin="4" Width="100">
                     <ComboBoxItem IsSelected="True">Snow flakes</ComboBoxItem>
                     <ComboBoxItem>Fire</ComboBoxItem>
                     <ComboBoxItem>Sparks</ComboBoxItem>

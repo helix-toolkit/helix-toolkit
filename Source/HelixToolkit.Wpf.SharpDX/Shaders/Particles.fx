@@ -1,3 +1,10 @@
+//--------------------------------------------------------------------------------------
+// File: Particle Functions for HelixToolkitDX
+// Author: Lunci Hua
+// Date: 05/10/17
+// Reference: https://github.com/spazzarama/Direct3D-Rendering-Cookbook
+// Copyright (c) 2017 Helix Toolkit contributors
+
 #ifndef PARTICALES_FX
 #define PARTICALES_FX
 #include "Common.fx"

@@ -2,8 +2,10 @@
 // <copyright file="ParticleStormModel3D.cs" company="Helix Toolkit">
 //   Copyright (c) 2017 Helix Toolkit contributors
 // </copyright>
+// <author>Lunci Hua</author>
 // <summary>
-//  Particle system
+//  Particle system.
+//  References: https://github.com/spazzarama/Direct3D-Rendering-Cookbook
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
