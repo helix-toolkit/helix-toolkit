@@ -165,6 +165,46 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static DependencyProperty NumTextureColumnProperty = DependencyProperty.Register("NumTextureColumn", typeof(int), typeof(ParticleStormModel3D),
+            new PropertyMetadata(1,
+            (d, e) =>
+            {
+                (d as ParticleStormModel3D).parameters.NumTextureColumn = (uint)System.Math.Max(1, (int)e.NewValue);
+            }
+            ));
+
+        public int NumTextureColumn
+        {
+            set
+            {
+                SetValue(NumTextureColumnProperty, value);
+            }
+            get
+            {
+                return (int)GetValue(NumTextureColumnProperty);
+            }
+        }
+
+        public static DependencyProperty NumTextureRowProperty = DependencyProperty.Register("NumTextureRow", typeof(int), typeof(ParticleStormModel3D),
+            new PropertyMetadata(1,
+            (d, e) =>
+            {
+                (d as ParticleStormModel3D).parameters.NumTextureRow = (uint)System.Math.Max(1, (int)e.NewValue);
+            }
+            ));
+
+        public int NumTextureRow
+        {
+            set
+            {
+                SetValue(NumTextureRowProperty, value);
+            }
+            get
+            {
+                return (int)GetValue(NumTextureRowProperty);
+            }
+        }
+
         public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSize", typeof(Size), typeof(ParticleStormModel3D),
             new AffectsRenderPropertyMetadata(new Size(ParticleParameters.DefaultParticleSize.X, ParticleParameters.DefaultParticleSize.Y),
                 (d, e) =>
@@ -607,6 +647,10 @@ namespace HelixToolkit.Wpf.SharpDX
             public static readonly float DefaultInitialEnergy = 5;
             public static readonly float DefaultEnergyDissipationRate = 1f;
 
+            public uint NumTextureColumn = 1;
+
+            public uint NumTextureRow = 1;
+
             public int particleCountInternal = DefaultParticleCount;
 
             public float insertThrottle = 0;
@@ -627,6 +671,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public EffectScalarVariable randomSeedVar;
 
+            public EffectScalarVariable numTextureColumnVar;
+            public EffectScalarVariable numTextureRowVar;
+
             public EffectUnorderedAccessViewVariable currentSimulationStateVar;
 
             public EffectUnorderedAccessViewVariable newSimulationStateVar;
@@ -641,6 +688,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 particleSizeVar = effect.GetVariableByName("ParticleSize").AsVector();
                 randomVectorVar = effect.GetVariableByName("RandomVector").AsVector();
                 randomSeedVar = effect.GetVariableByName("RandomSeed").AsScalar();
+                numTextureColumnVar = effect.GetVariableByName("NumTexCol").AsScalar();
+                numTextureRowVar = effect.GetVariableByName("NumTexRow").AsScalar();
             }
 
             public virtual void OnDettach()
@@ -651,6 +700,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref particleSizeVar);
                 Disposer.RemoveAndDispose(ref randomVectorVar);
                 Disposer.RemoveAndDispose(ref randomSeedVar);
+                Disposer.RemoveAndDispose(ref numTextureColumnVar);
+                Disposer.RemoveAndDispose(ref numTextureRowVar);
             }
 
             public void SetRenderVariables()
@@ -658,6 +709,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 particleSizeVar.Set(particleSize);
                 randomVectorVar.Set(vectorGenerator.RandomVector3);
                 randomSeedVar.Set(vectorGenerator.Seed);
+                numTextureColumnVar.Set(NumTextureColumn);
+                numTextureRowVar.Set(NumTextureRow);
             }
 
             public void UpdateInsertThrottle()

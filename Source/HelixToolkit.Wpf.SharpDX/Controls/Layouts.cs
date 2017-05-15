@@ -92,7 +92,9 @@ namespace HelixToolkit.Wpf.SharpDX
         Color4 color;
         Vector3 initAcceleration;
         float dissipRate;
-        public const int SizeInBytes = 4 * (4 * 4);
+        uint texRow;
+        uint texColumn;
+        public const int SizeInBytes = 4 * (4 * 4 + 2);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

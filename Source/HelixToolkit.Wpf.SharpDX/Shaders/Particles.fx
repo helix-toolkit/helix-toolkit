@@ -30,12 +30,16 @@ struct Particle
 	float4 color;
 	float3 initAccelleration;
 	float dissipRate;
+	uint2 TexColRow;
 };
 
 cbuffer ParticleRandoms
 {
 	uint RandomSeed;
 	float3 RandomVector;
+	float2 ParticleSize;
+	uint NumTexCol;
+	uint NumTexRow;
 };
 
 cbuffer ParticleFrame : register(b1)
@@ -121,6 +125,9 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 	p.dissipRate = EnergyDissipationRate;
 
 	p.initAccelleration = InitialAcceleration;
+	uint state = wang_hash(RandomSeed + GroupThreadID.x);
+	uint rndNumber = rand_lcg(state);
+	p.TexColRow = uint2(rndNumber % max(1, NumTexCol), rndNumber % max(1, NumTexRow));
 	// Append the new particle to the output buffer
     NewSimulationState.Append(p);
 }
@@ -173,6 +180,7 @@ struct ParticleGS_INPUT
 	float energy : Energy;
 	float4 color : COLOR0;
 	float initEnergy : Energy1;
+	uint2 texColRow : TexOff;
 };
 //--------------------------------------------------------------------------------
 struct ParticlePS_INPUT
@@ -187,8 +195,6 @@ struct ParticlePS_INPUT
 
 StructuredBuffer<Particle> SimulationState;
 
-float2 ParticleSize;
-
 //--------------------------------------------------------------------------------
 ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
 {
@@ -198,6 +204,7 @@ ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
 	output.energy = p.energy;
 	output.color = p.color;
 	output.initEnergy = p.initEnergy;
+	output.texColRow = p.TexColRow;
     return output;
 }
 
@@ -210,6 +217,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 
 	//// Transform to view space
     float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);
+	float2 texScale = float2(1.0f / max(1, NumTexCol), 1.0f / max(1, NumTexRow));
 
     // Emit two new triangles
     for (int i = 0; i < 4; i++)
@@ -217,7 +225,7 @@ void ParticleGSMAIN(point ParticleGS_INPUT input[1], inout TriangleStream<Partic
 		// Transform to clip space
 
         output.position = mul(viewposition + g_positions[i] * float4(ParticleSize, 0, 0), mProjection);
-        output.texcoords = g_texcoords[i];
+        output.texcoords = (g_texcoords[i] + input[0].texColRow) * texScale;
         output.opacity = opacity;
 		output.color = input[0].color;
 		output.pad0 = 0;
