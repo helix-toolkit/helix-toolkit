@@ -28,6 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
         public void SetUp()
         {
             _objReader = new ObjReader();
+            var dir = Path.GetDirectoryName(typeof(ObjReaderTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
         }
 
         /// <summary>

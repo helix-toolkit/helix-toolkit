@@ -11,6 +11,7 @@
 using System;
 using HelixToolkit.Wpf.SharpDX.Tests.Controls;
 using NUnit.Framework;
+using System.IO;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
 {
@@ -25,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
         public void CreateDefaultVertexArrayForTriangle()
         {
             var reader = new ObjReader();
-            var objects = reader.Read(@"Models\obj\Triangle.obj");
+            var objects = reader.Read(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Models\obj\Triangle.obj"));
 
             Assert.AreEqual(1, objects.Count);
 

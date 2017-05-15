@@ -30,9 +30,11 @@ namespace HelixToolkit.Wpf.Tests
         public void SetUp() 
         {
             _objReader = new ObjReader();
+            var dir = Path.GetDirectoryName(typeof(ObjReaderTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
         }
 
-        [Test, Ignore]
+        [Test, Ignore("")]
         public void Read_Bunny_ValidModel()
         {
             var model = _objReader.Read(@"Models\obj\bunny.obj");
@@ -56,7 +58,7 @@ namespace HelixToolkit.Wpf.Tests
             //// Assert.AreEqual(69451, mg1.TriangleIndices.Count / 3);
         }
 
-        [Test, Ignore]
+        [Test, Ignore("")]
         public void Read_Ducky_ValidModel()
         {
             var model = _objReader.Read(@"Models\obj\ducky.obj");

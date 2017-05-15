@@ -11,12 +11,19 @@ namespace HelixToolkit.Wpf.Tests
 
     using HelixToolkit.Wpf;
     using NUnit.Framework;
+    using System.IO;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class LwoReaderTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            var dir = Path.GetDirectoryName(typeof(LwoReaderTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
+        }
         [Test]
         public void Read_Teddy_ValidModel()
         {
@@ -31,7 +38,7 @@ namespace HelixToolkit.Wpf.Tests
             Assert.AreEqual(168, m2.TriangleIndices.Count / 3);
         }
 
-        [Test, Ignore]
+        [Test, Ignore("")]
         public void Read_Apple_ValidModel()
         {
             // LWO2 not yet supported

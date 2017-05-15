@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -235,7 +236,11 @@ namespace CustomShaderDemo
 
             return result;
         }
-   
+
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 #ifndef EFFECTS_FX
 #define EFFECTS_FX
-#include "./Shaders/Default.fx"
+#include "Default.fx"
 
 //--------------------------------------------------------------------------------------
 // Techniques
@@ -482,5 +482,39 @@ technique11 RenderPoints
 		SetGeometryShader(CompileShader(gs_4_0, GShaderPoints()));
 		SetPixelShader(CompileShader(ps_4_0, PShaderPoints()));
 	}
+}
+
+technique11 ParticleStorm
+{
+    pass P0
+    {
+        SetVertexShader(NULL);
+        SetHullShader(NULL);
+        SetDomainShader(NULL);
+        SetPixelShader(NULL);
+        SetComputeShader(CompileShader(cs_5_0, ParticleInsertCSMAIN()));
+    }
+    pass P1
+    {
+        SetVertexShader(NULL);
+        SetHullShader(NULL);
+        SetDomainShader(NULL);
+        SetPixelShader(NULL);
+        SetComputeShader(CompileShader(cs_5_0, ParticleUpdateCSMAIN()));
+    }
+    pass P2
+    {
+        SetDepthStencilState(DSSDepthParticle, 0);
+        SetBlendState(BSParticleBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+		//SetDepthStencilState(DSSDepthLessEqual, 0);
+		SetRasterizerState(RSSolid);
+		//SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+        SetVertexShader(CompileShader(vs_4_0, ParticleVSMAIN()));
+        SetHullShader(NULL);
+        SetDomainShader(NULL);       
+		//SetGeometryShader(NULL);
+        SetGeometryShader(CompileShader(gs_4_0, ParticleGSMAIN()));
+        SetPixelShader(CompileShader(ps_4_0, ParticlePSMAIN()));
+    }
 }
 #endif

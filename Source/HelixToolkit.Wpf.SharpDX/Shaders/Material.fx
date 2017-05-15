@@ -54,7 +54,6 @@ Texture2D	texSpecularMap;
 Texture2D	texShadowMap;
 TextureCube texCubeMap;
 
-
 bool bHasInstanceParams = false;
 
 bool bHasBones = false;

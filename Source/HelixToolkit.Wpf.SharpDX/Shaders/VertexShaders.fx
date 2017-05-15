@@ -1,8 +1,8 @@
 #ifndef VERTEXSHADERS_FX
 #define VERTEXSHADERS_FX
 
-#include "./Shaders/Lighting.fx"
-#include "./Shaders/Common.fx"
+#include "Lighting.fx"
+#include "Common.fx"
 
 //--------------------------------------------------------------------------------------
 // PER PIXEL LIGHTING  - Vertex Shader

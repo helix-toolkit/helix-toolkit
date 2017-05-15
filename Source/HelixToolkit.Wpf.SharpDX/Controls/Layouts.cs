@@ -81,4 +81,53 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix[] Bones;
         public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct Particle
+    {
+        Vector3 position;
+        float initEnergy;
+        Vector3 velocity;
+        float energy;
+        Color4 color;
+        Vector3 initAcceleration;
+        float dissipRate;
+        uint texRow;
+        uint texColumn;
+        public const int SizeInBytes = 4 * (4 * 4 + 2);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ParticlePerFrame
+    {
+        public uint NumParticles;
+        public Vector3 ExtraAcceleration;
+
+        public float TimeFactors;
+        public Vector3 DomainBoundsMax;
+
+        public Vector3 DomainBoundsMin;
+        public uint CumulateAtBound;
+
+        public const int SizeInBytes = 4 * (4 * 3);
+        public const int NumParticlesOffset = 0;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ParticleInsertParameters
+    {
+        public Vector3 EmitterLocation;
+        public float InitialEnergy;
+
+        public Vector3 ConsumerLocation;
+        public float InitialVelocity;
+
+        public Color4 ParticleBlendColor;
+
+        public float EnergyDissipationRate; //Energy dissipation rate per second
+        public Vector3 InitialAcceleration;
+
+        public const int SizeInBytes = 4 * (4 * 4);
+        public const int NumParticlesOffset = 0;
+    }
 }

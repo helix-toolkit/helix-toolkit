@@ -19,6 +19,8 @@ namespace LightingDemo
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using HelixToolkit.Wpf;
     using System.IO;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MainViewModel : BaseViewModel
     {

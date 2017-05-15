@@ -149,6 +149,7 @@
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
+    <Compile Include="Extensions\DataStreamExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Model\Elements3D\InstancingBillboardModel3D.cs" />
     <Compile Include="Model\Elements3D\InstancingMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\OctreeLineGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\ParticleStormModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Geometry\BillboardBase.cs" />
@@ -206,6 +208,7 @@
     </Compile>
     <Compile Include="Utilities\AffectsRenderPropertyMetadata.cs" />
     <Compile Include="Utilities\IOctreeManager.cs" />
+    <Compile Include="Utilities\IRandomVector.cs" />
     <Compile Include="Utilities\Octree.cs" />
     <Compile Include="Utilities\OctreeHelper.cs" />
     <Compile Include="Utilities\OctreeManager.cs" />
@@ -260,6 +263,7 @@
     <Compile Include="Utilities\LineBuilder.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
     <Compile Include="Utilities\ObjReader.cs" />
+    <Compile Include="Utilities\RandomVectorGenerators.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -295,6 +299,7 @@
     <Content Include="Shaders\DataStructs.fx" />
     <Content Include="Shaders\Effects.fx" />
     <Content Include="Shaders\Lighting.fx" />
+    <Content Include="Shaders\Particles.fx" />
     <Content Include="Shaders\PixelShaders.fx" />
     <Content Include="Shaders\VertexShaders.fx" />
     <Content Include="x64\d3dcompiler_47.dll">

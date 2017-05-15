@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
     Title="LightingDemo SharpDX"
     Width="1200"
     Height="700"
@@ -64,7 +65,6 @@
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light4Color}" />
 
-            <!--<hx:EnvironmentMap x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>-->
             <hx:MeshGeometryModel3D
                 Geometry="{Binding Sphere}"
                 IsRendering="{Binding RenderLight1}"

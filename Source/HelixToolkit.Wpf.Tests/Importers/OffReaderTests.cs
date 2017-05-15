@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.Tests
     using System.IO;
 
     using NUnit.Framework;
+    using System;
 
     /// <summary>
     /// Provides unit tests for the <see cref="OffReader" /> class.
@@ -19,6 +20,12 @@ namespace HelixToolkit.Wpf.Tests
     [TestFixture]
     public class OffReaderTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            var dir = Path.GetDirectoryName(typeof(OffReaderTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
+        }
         /// <summary>
         /// Tests the <see cref="OffReader.Load" /> method.
         /// </summary>

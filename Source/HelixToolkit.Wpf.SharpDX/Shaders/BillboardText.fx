@@ -1,6 +1,6 @@
 #ifndef BILLBOARDTEXT_FX
 #define BILLBOARDTEXT_FX
-#include "./Shaders/Common.fx"
+#include "Common.fx"
 
 Texture2D billboardTexture; // billboard text image
 Texture2D billboardAlphaTexture;

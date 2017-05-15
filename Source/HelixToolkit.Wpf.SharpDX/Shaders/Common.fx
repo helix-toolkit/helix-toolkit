@@ -131,6 +131,13 @@ DepthStencilState DSSDepthLess
 	DepthWriteMask				= All;
 	DepthFunc					= Less;
 };
+
+DepthStencilState DSSDepthParticle
+{
+	DepthEnable = true;
+    DepthWriteMask = Zero;
+};
+
 //--------------------------------------------------------------------------------------
 BlendState BSNoBlending
 {
@@ -150,6 +157,17 @@ BlendState BSBlending
     RenderTargetWriteMask[0]	= 0x0F;
 };
 
+BlendState BSParticleBlending
+{
+    BlendEnable[0] = true;
+	SrcBlend = ONE;
+	DestBlend = ONE;
+    BlendOp = ADD;
+    SrcBlendAlpha = ONE;
+    DestBlendAlpha = ZERO;
+    BlendOpAlpha = ADD;
+    RenderTargetWriteMask[0] = 0x0F;
+};
 
 //--------------------------------------------------------------------------------------
 // GLOBAL VARIABLES

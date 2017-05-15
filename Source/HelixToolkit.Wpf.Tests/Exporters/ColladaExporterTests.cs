@@ -11,12 +11,20 @@ namespace HelixToolkit.Wpf.Tests
     using System.Xml.Schema;
     using HelixToolkit.Wpf;
     using NUnit.Framework;
+    using System;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class ColladaExporterTests : ExporterTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            var dir = Path.GetDirectoryName(typeof(ColladaExporterTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
+        }
+
         [Test]
         public void Export_SimpleModel_ValidOutput()
         {
