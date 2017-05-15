@@ -99,27 +99,21 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct ParticlePerFrame
     {
         public uint NumParticles;
-        private Vector3 Pad;
-
         public Vector3 ExtraAcceleration;
-        public float TimeFactors;
 
+        public float TimeFactors;
         public Vector3 DomainBoundsMax;
-        public uint RandomSeed;
 
         public Vector3 DomainBoundsMin;
         public uint CumulateAtBound;
 
-        public const int SizeInBytes = 4 * (4 * 4);
+        public const int SizeInBytes = 4 * (4 * 3);
         public const int NumParticlesOffset = 0;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ParticleInsertParameters
     {
-        public Vector3 RandomVector;
-        float pad;
-
         public Vector3 EmitterLocation;
         public float InitialEnergy;
 
@@ -131,7 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public float EnergyDissipationRate; //Energy dissipation rate per second
         public Vector3 InitialAcceleration;
 
-        public const int SizeInBytes = 4 * (4 * 5);
+        public const int SizeInBytes = 4 * (4 * 4);
         public const int NumParticlesOffset = 0;
     }
 }

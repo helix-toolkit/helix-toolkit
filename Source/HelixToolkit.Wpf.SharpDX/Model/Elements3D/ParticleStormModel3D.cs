@@ -551,7 +551,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (totalElapsed > parameters.insertThrottle)
             {
-                parameters.SetInsertVariables();
                 context.DeviceContext.UpdateSubresource(ref parameters.insertVariables, particleInsertBuffer);
                 // Add more particles 
                 pass = this.effectTechnique.GetPassByIndex(0);
@@ -620,9 +619,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public ParticlePerFrame frameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum };
 
-            public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { ConsumerLocation = DefaultConsumerLocation, EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4(), RandomVector = new Vector3() };
+            public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { ConsumerLocation = DefaultConsumerLocation, EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4()};
 
             public EffectVectorVariable particleSizeVar;
+
+            public EffectVectorVariable randomVectorVar;
+
+            public EffectScalarVariable randomSeedVar;
 
             public EffectUnorderedAccessViewVariable currentSimulationStateVar;
 
@@ -636,6 +639,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 newSimulationStateVar = effect.GetVariableByName("NewSimulationState").AsUnorderedAccessView();
                 simulationStateVar = effect.GetVariableByName("SimulationState").AsShaderResource();
                 particleSizeVar = effect.GetVariableByName("ParticleSize").AsVector();
+                randomVectorVar = effect.GetVariableByName("RandomVector").AsVector();
+                randomSeedVar = effect.GetVariableByName("RandomSeed").AsScalar();
             }
 
             public virtual void OnDettach()
@@ -644,16 +649,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref newSimulationStateVar);
                 Disposer.RemoveAndDispose(ref simulationStateVar);
                 Disposer.RemoveAndDispose(ref particleSizeVar);
-            }
-
-            public void SetInsertVariables()
-            {
-                insertVariables.RandomVector = vectorGenerator.RandomVector3;
+                Disposer.RemoveAndDispose(ref randomVectorVar);
+                Disposer.RemoveAndDispose(ref randomSeedVar);
             }
 
             public void SetRenderVariables()
             {
                 particleSizeVar.Set(particleSize);
+                randomVectorVar.Set(vectorGenerator.RandomVector3);
+                randomSeedVar.Set(vectorGenerator.Seed);
             }
 
             public void UpdateInsertThrottle()
@@ -668,7 +672,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 totalElapsed += timeElapsed;
                 //Update perframe variables
                 frameVariables.TimeFactors = timeElapsed;
-                frameVariables.RandomSeed = vectorGenerator.Seed;
             }
         }
     }

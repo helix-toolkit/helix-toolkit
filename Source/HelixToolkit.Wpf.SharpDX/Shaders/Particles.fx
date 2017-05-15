@@ -32,14 +32,20 @@ struct Particle
 	float dissipRate;
 };
 
+cbuffer ParticleRandoms
+{
+	uint RandomSeed;
+	float3 RandomVector;
+};
+
 cbuffer ParticleFrame : register(b1)
 {
 	uint NumParticles;
-	float3 Pad;
 	float3 ExtraAccelation;
+
     float TimeFactors; 
 	float3 DomainBoundsMax;
-    uint RandomSeed;
+
 	float3 DomainBoundsMin;         
 	uint CumulateAtBound;
 };
@@ -66,16 +72,33 @@ bool PointInBoundingBox(in float3 boundMax, in float3 boundMin, in float3 p)
 
 cbuffer ParticleCreateParameters : register(b1)
 {
-	float3 RandomVector;
-	float pad;
 	float3 EmitterLocation;
 	float InitialEnergy;
+
 	float3 ConsumerLocation;
 	float InitialVelocity;
+
 	float4 ParticleBlendColor;
+
 	float EnergyDissipationRate; //Energy dissipation rate per second
 	float3 InitialAcceleration;
 };
+
+uint rand_lcg(inout uint rng_state)
+{
+    // LCG values from Numerical Recipes
+	rng_state = 1664525 * rng_state + 1013904223;
+	return rng_state;
+}
+uint wang_hash(uint seed)
+{
+	seed = (seed ^ 61) ^ (seed >> 16);
+	seed *= 9;
+	seed = seed ^ (seed >> 4);
+	seed *= 0x27d4eb2d;
+	seed = seed ^ (seed >> 15);
+	return seed;
+}
 
 [numthreads(8, 1, 1)]
 void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
