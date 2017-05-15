@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.Tests
             Assert.AreEqual(168, m2.TriangleIndices.Count / 3);
         }
 
-        [Test, Ignore]
+        [Test, Ignore("")]
         public void Read_Apple_ValidModel()
         {
             // LWO2 not yet supported
