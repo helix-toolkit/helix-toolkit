@@ -24,7 +24,7 @@
             </Style>
             <Style TargetType="TextBlock">
                 <Style.Setters>
-                    <Setter Property="MinWidth" Value="50"/>
+                    <Setter Property="Width" Value="50"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Margin" Value="2"/>
@@ -86,7 +86,9 @@
             <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
                                      ParticleSize="{Binding ParticleSize}" ConsumerLocation="0,30,0" 
                                      Acceleration="{Binding Acceleration}" InitialEnergy="5" EnergyDissipationRate="1"
-                                     ParticleBounds="{Binding ParticleBounds}" BlendColor="{Binding BlendColor}"/>
+                                     ParticleBounds="{Binding ParticleBounds}" BlendColor="{Binding BlendColor}"
+                                     NumTextureColumn="{Binding NumTextureColumns}"
+                                     NumTextureRow="{Binding NumTextureRows}"/>
             <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
 
         </hx:Viewport3DX>
@@ -175,6 +177,14 @@
                         <Slider Value="{Binding BlueValue}" Minimum="0" Maximum="255" SmallChange="1" LargeChange="10"></Slider>
                     </StackPanel>
                 </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Texture:</Label>
+                <ComboBox SelectedIndex="{Binding SelectedTextureIndex}">
+                    <ComboBoxItem IsSelected="True">Snow flakes</ComboBoxItem>
+                    <ComboBoxItem>Fire</ComboBoxItem>
+                    <ComboBoxItem>Sparks</ComboBoxItem>
+                </ComboBox>
             </StackPanel>
         </StackPanel>
     </Grid>

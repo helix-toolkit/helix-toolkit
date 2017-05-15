@@ -14,7 +14,18 @@ namespace ParticleSystemDemo
 {
     public class MainViewModel : BaseViewModel
     {
-        public Stream ParticleTexture { set; get; }
+        private Stream particleTexture;
+        public Stream ParticleTexture
+        {
+            set
+            {
+                SetValue(ref particleTexture, value);
+            }
+            get
+            {
+                return particleTexture;
+            }
+        }
 
         private Vector3D acceleration = new Vector3D(0, 1, 0);
         public Vector3D Acceleration
@@ -217,14 +228,63 @@ namespace ParticleSystemDemo
                 return blendColorBrush;
             }
         }
+        private int numTextureRows;
+        public int NumTextureRows
+        {
+            set
+            {
+                SetValue(ref numTextureRows, value);
+            }
+            get
+            {
+                return numTextureRows;
+            }
+        }
 
+        private int numTextureColumns;
+        public int NumTextureColumns
+        {
+            set
+            {
+                SetValue(ref numTextureColumns, value);
+            }
+            get
+            {
+                return numTextureColumns;
+            }
+        }
+
+        private int selectedTextureIndex = 0;
+        public int SelectedTextureIndex
+        {
+            set
+            {
+                if(SetValue(ref selectedTextureIndex, value))
+                {
+                    LoadTexture(value);
+                }
+            }
+            get
+            {
+                return selectedTextureIndex;
+            }
+        }
+
+        public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4) };
+        public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png"};
         public MainViewModel()
         {
-            ParticleTexture = new FileStream(new System.Uri(@"Snowflake.png", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
-
             var lineBuilder = new LineBuilder();
             lineBuilder.AddBox(new SharpDX.Vector3(), 1, 1, 1);
             BoundingLines = lineBuilder.ToLineGeometry3D();
+            LoadTexture(SelectedTextureIndex);
+        }
+
+        private void LoadTexture(int index)
+        {
+            ParticleTexture = new FileStream(new System.Uri(Textures[index], System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+            NumTextureColumns = TextureColumnsRows[index].Item1;
+            NumTextureRows = TextureColumnsRows[index].Item2;
         }
 
         private void UpdateAcceleration()

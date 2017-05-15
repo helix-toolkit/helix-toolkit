@@ -126,8 +126,9 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 
 	p.initAccelleration = InitialAcceleration;
 	uint state = wang_hash(RandomSeed + GroupThreadID.x);
-	uint rndNumber = rand_lcg(state);
-	p.TexColRow = uint2(rndNumber % max(1, NumTexCol), rndNumber % max(1, NumTexRow));
+	uint rndNumber1 = rand_lcg(state);
+	uint rndNumber2 = rand_lcg(state);
+	p.TexColRow = uint2(rndNumber1 % max(1, NumTexCol), rndNumber2 % max(1, NumTexRow));
 	// Append the new particle to the output buffer
     NewSimulationState.Append(p);
 }

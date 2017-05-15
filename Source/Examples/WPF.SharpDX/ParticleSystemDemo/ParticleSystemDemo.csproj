@@ -125,6 +125,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FXT_Explosion_Fireball_Atlas_d.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FXT_Sparks_01_Atlas_d.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Particle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
