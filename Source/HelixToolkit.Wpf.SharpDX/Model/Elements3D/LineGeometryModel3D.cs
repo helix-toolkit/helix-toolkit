@@ -132,11 +132,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            LineGeometry3D lineGeometry3D = this.geometryInternal as LineGeometry3D;
+            var lineGeometry3D = this.geometryInternal as LineGeometry3D;
+            if (lineGeometry3D == null)
+            {
+                return false;
+            }
 
-            var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
+            var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
             var lastDist = double.MaxValue;
-            var index = 0;
+            var lineIndex = 0;
             foreach (var line in lineGeometry3D.Lines)
             {
                 var t0 = Vector3.TransformCoordinate(line.P0, this.ModelMatrix);
@@ -158,13 +162,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     lastDist = dist;
                     result.PointHit = sp.ToPoint3D();
                     result.NormalAtHit = (sp - tp).ToVector3D(); // not normalized to get length
-                    result.Distance = (rayWS.Position-sp).Length();
+                    result.Distance = distance;
                     result.ModelHit = this;
                     result.IsValid = true;
-                    result.Tag = index; // ToDo: LineHitTag with additional info
+                    result.Tag = lineIndex; // ToDo: LineHitTag with additional info
+                    result.TriangleIndices = new Tuple<int, int, int>(lineIndex, lineIndex + 1, -1);
+                    result.Sc = sc;
+                    result.Tc = tc;
                 }
 
-                index++;
+                lineIndex++;
             }
 
             if (result.IsValid)
