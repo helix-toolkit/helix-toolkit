@@ -59,6 +59,9 @@ cbuffer ParticleFrame : register(b1)
 
 	float3 DomainBoundsMin;         
 	uint CumulateAtBound;
+
+	float3 ConsumerLocation;
+	float ConsumerGravity;
 };
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
@@ -86,7 +89,7 @@ cbuffer ParticleCreateParameters : register(b1)
 	float3 EmitterLocation;
 	float InitialEnergy;
 
-	float3 ConsumerLocation;
+	float3 Pad;
 	float InitialVelocity;
 
 	float4 ParticleBlendColor;
@@ -168,7 +171,23 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 
 		// Calculate the new velocity, accounting for the acceleration from
 		// the gravitational force over the current time step.
-		p.velocity += (p.initAccelleration + ExtraAccelation) * TimeFactors;
+		if (ConsumerGravity == 0)
+		{
+			p.velocity += (p.initAccelleration + ExtraAccelation) * TimeFactors;
+		}
+		else
+		{
+			float distance = length(ConsumerLocation - p.position);
+			if (distance >= 1e-7)
+			{
+				float gravityDrag = ConsumerGravity / (distance*distance);
+				p.velocity += (p.initAccelleration + ExtraAccelation + normalize(ConsumerLocation - p.position) * gravityDrag) * TimeFactors;			
+			}
+			else
+			{
+				return;
+			}
+		}
 
 		// Calculate the new position, accounting for the new velocity value
 		// over the current time step.

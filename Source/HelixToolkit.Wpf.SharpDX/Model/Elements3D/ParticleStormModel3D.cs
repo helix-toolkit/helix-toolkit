@@ -86,6 +86,26 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static DependencyProperty ConsumerGravityProperty = DependencyProperty.Register("ConsumerGravity", typeof(float), typeof(ParticleStormModel3D),
+            new PropertyMetadata(ParticleParameters.DefaultConsumerGravity,
+            (d, e) =>
+            {
+                (d as ParticleStormModel3D).parameters.frameVariables.ConsumerGravity = ((float)e.NewValue);
+            }
+            ));
+
+        public float ConsumerGravity
+        {
+            set
+            {
+                SetValue(ConsumerGravityProperty, value);
+            }
+            get
+            {
+                return (float)GetValue(ConsumerGravityProperty);
+            }
+        }
+
         public static DependencyProperty InitialEnergyProperty = DependencyProperty.Register("InitialEnergy", typeof(float), typeof(ParticleStormModel3D),
             new PropertyMetadata(ParticleParameters.DefaultInitialEnergy,
             (d, e) =>
@@ -618,7 +638,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OnConsumerLocationChanged(Vector3 location)
         {
-            parameters.insertVariables.ConsumerLocation = location;
+            parameters.frameVariables.ConsumerLocation = location;
         }
 
         private void OnTextureChanged()
@@ -798,6 +818,7 @@ namespace HelixToolkit.Wpf.SharpDX
             public static readonly Vector2 DefaultParticleSize = new Vector2(1, 1);
             public static readonly Vector3 DefaultEmitterLocation = Vector3.Zero;
             public static readonly Vector3 DefaultConsumerLocation = new Vector3(0, 10, 0);
+            public static readonly float DefaultConsumerGravity = 0;
             public static readonly Media3D.Rect3D DefaultBound = new Media3D.Rect3D(0, 0, 0, 10, 10, 10);
             public static readonly Vector3 DefaultBoundMaximum = new Vector3(5, 5, 5);
             public static readonly Vector3 DefaultBoundMinimum = new Vector3(-5, -5, -5);
@@ -820,9 +841,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public Vector2 particleSize = DefaultParticleSize;
 
-            public ParticlePerFrame frameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum };
+            public ParticlePerFrame frameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum, ConsumerGravity = DefaultConsumerGravity, ConsumerLocation = DefaultConsumerLocation };
 
-            public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { ConsumerLocation = DefaultConsumerLocation, EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
+            public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
             public EffectVectorVariable particleSizeVar;
 
