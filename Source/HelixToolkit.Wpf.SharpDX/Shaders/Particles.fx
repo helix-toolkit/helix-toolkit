@@ -171,14 +171,14 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 
 		// Calculate the new velocity, accounting for the acceleration from
 		// the gravitational force over the current time step.
-		if (ConsumerGravity == 0)
+		if (ConsumerGravity < 1e-7)
 		{
 			p.velocity += (p.initAccelleration + ExtraAccelation) * TimeFactors;
 		}
 		else
 		{
 			float distance = length(ConsumerLocation - p.position);
-			if (distance >= 1e-7)
+			if (distance > 1e-7)
 			{
 				float gravityDrag = ConsumerGravity / (distance*distance);
 				p.velocity += (p.initAccelleration + ExtraAccelation + normalize(ConsumerLocation - p.position) * gravityDrag) * TimeFactors;			
