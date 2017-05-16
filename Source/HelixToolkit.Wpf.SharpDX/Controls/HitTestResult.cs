@@ -59,4 +59,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public System.Tuple<int, int, int> TriangleIndices { set; get; }
     }
+
+    /// <summary>
+    /// A specialized line hit test result.
+    /// </summary>
+    public class LineHitTestResult : HitTestResult
+    {
+        /// <summary>
+        /// Scalar of the closest point on ray.
+        /// </summary>
+        public double Sc { get; set; }
+
+        /// <summary>
+        /// Scalar of the closest point on line.
+        /// </summary>
+        public double Tc { get; set; }
+    }
 }
