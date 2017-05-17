@@ -47,6 +47,7 @@ cbuffer ParticleRandoms
 	float2 ParticleSize;
 	uint NumTexCol;
 	uint NumTexRow;
+	bool AnimateByEnergyLevel;
 };
 
 cbuffer ParticleFrame : register(b1)
@@ -62,7 +63,11 @@ cbuffer ParticleFrame : register(b1)
 
 	float3 ConsumerLocation;
 	float ConsumerGravity;
+
+	float ConsumerRadius;
+	float3 Pad;
 };
+
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
 AppendStructuredBuffer<Particle> NewSimulationState : register(u1);
@@ -89,15 +94,14 @@ cbuffer ParticleCreateParameters : register(b1)
 	float3 EmitterLocation;
 	float InitialEnergy;
 
-	float3 Pad;
+	float EmitterRadius;
+	float2 Pad1;
 	float InitialVelocity;
 
 	float4 ParticleBlendColor;
 
 	float EnergyDissipationRate; //Energy dissipation rate per second
 	float3 InitialAcceleration;
-
-	bool AnimateByEnergyLevel;
 };
 
 uint rand_lcg(inout uint rng_state)
@@ -120,12 +124,17 @@ uint wang_hash(uint seed)
 void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 {
 	Particle p;
+	uint state = wang_hash(RandomSeed + GroupThreadID.x);
+	float f0 = float(rand_lcg(state)) * (1.0 / 4294967296.0);
+	float f1 = float(rand_lcg(state)) * (1.0 / 4294967296.0);
+	float f2 = float(rand_lcg(state)) * (1.0 / 4294967296.0);
 
+	float3 dir = direction[GroupThreadID.x];
 	// Initialize position to the current emitter location
-    p.position = EmitterLocation;
+	p.position = EmitterLocation + dir * float3(f0 * EmitterRadius, f1 * EmitterRadius, f2 * EmitterRadius);
 
 	// Initialize direction to a randomly reflected vector
-    p.velocity = normalize(reflect(direction[GroupThreadID.x], RandomVector)) * InitialVelocity;
+    p.velocity = normalize(reflect(dir, RandomVector)) * InitialVelocity;
 
 	// Initialize the lifetime of the particle in seconds
 	p.energy = InitialEnergy;
@@ -144,7 +153,6 @@ void ParticleInsertCSMAIN(uint3 GroupThreadID : SV_GroupThreadID)
 	}
 	else if(NumTexCol > 1 || NumTexRow > 1)
 	{
-		uint state = wang_hash(RandomSeed + GroupThreadID.x);
 		uint rndNumber1 = rand_lcg(state);
 		uint rndNumber2 = rand_lcg(state);
 		p.TexColRow = uint2(rndNumber1 % max(1, NumTexCol) - 1, rndNumber2 % max(1, NumTexRow) - 1);		
@@ -178,7 +186,7 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 		else
 		{
 			float distance = length(ConsumerLocation - p.position);
-			if (distance > 1e-7)
+			if (distance > ConsumerRadius)
 			{
 				float gravityDrag = ConsumerGravity / (distance*distance);
 				p.velocity += (p.initAccelleration + ExtraAccelation + normalize(ConsumerLocation - p.position) * gravityDrag) * TimeFactors;			

@@ -17,7 +17,7 @@ namespace ParticleSystemDemo
     {
         public MeshGeometry3D Model { private set; get; }
 
-        private Media3D.Transform3D emitterTransform = new Media3D.TranslateTransform3D(0, 0, 0);
+        private Media3D.Transform3D emitterTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 1));
         public Media3D.Transform3D EmitterTransform
         {
             get
@@ -28,6 +28,24 @@ namespace ParticleSystemDemo
             {
                 SetValue(ref emitterTransform, value);
                 EmitterLocation = new Media3D.Point3D(value.Value.OffsetX, value.Value.OffsetY, value.Value.OffsetZ);
+            }
+        }
+
+        private float emitterRadius = 0.5f;
+        public float EmitterRadius
+        {
+            set
+            {
+                if (SetValue(ref emitterRadius, value))
+                {
+                    var matrix = EmitterTransform.Value;
+                    matrix.M11 = matrix.M22 = matrix.M33 = value;
+                    EmitterTransform = new Media3D.MatrixTransform3D(matrix);
+                }
+            }
+            get
+            {
+                return emitterRadius;
             }
         }
 
@@ -44,7 +62,8 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Media3D.Transform3D consumerTransform = new Media3D.TranslateTransform3D(0, 5, 0);
+
+        private Media3D.Transform3D consumerTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 5, 0, 1));
         public Media3D.Transform3D ConsumerTransform
         {
             get
@@ -71,9 +90,27 @@ namespace ParticleSystemDemo
             }
         }
 
-        public Material EmitterMaterial { get; } = new PhongMaterial() { EmissiveColor = new SharpDX.Color4(1, 0, 1, 1) };
+        private float consumerRadius = 0.5f;
+        public float ConsumerRadius
+        {
+            set
+            {
+                if(SetValue(ref consumerRadius, value))
+                {
+                    var matrix = ConsumerTransform.Value;
+                    matrix.M11 = matrix.M22 = matrix.M33 = value;
+                    ConsumerTransform = new Media3D.MatrixTransform3D(matrix);
+                }
+            }
+            get
+            {
+                return consumerRadius;
+            }
+        }
 
-        public Material ConsumerMaterial { get; } = new PhongMaterial() { EmissiveColor = new SharpDX.Color4(0.5f, 1f, 0.5f, 1) };
+        public Material EmitterMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(1, 0, 1, 1) };
+
+        public Material ConsumerMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(0.5f, 1f, 0.5f, 1) };
 
         private Stream particleTexture;
         public Stream ParticleTexture
@@ -390,7 +427,8 @@ namespace ParticleSystemDemo
         public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4), new Tuple<int, int>(6,5) };
         public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
         public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90};
-        
+
+        public SharpDX.Color4 Light1Color { get; set; } = SharpDX.Color.White;
 
         public MainViewModel()
         {
@@ -399,7 +437,7 @@ namespace ParticleSystemDemo
             BoundingLines = lineBuilder.ToLineGeometry3D();
             LoadTexture(SelectedTextureIndex);
             var meshBuilder = new MeshBuilder();
-            meshBuilder.AddSphere(new SharpDX.Vector3(), 0.25, 16, 16);
+            meshBuilder.AddSphere(new SharpDX.Vector3(0,0,0), 0.5, 16, 16);
             Model = meshBuilder.ToMesh();
         }
 

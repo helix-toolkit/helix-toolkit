@@ -504,7 +504,7 @@ technique11 ParticleStorm
     }
     pass P2
     {
-        SetDepthStencilState(DSSDepthParticle, 0);
+		SetDepthStencilState(DSSDepthParticle, 0);
         SetBlendState(BSParticleBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		//SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);

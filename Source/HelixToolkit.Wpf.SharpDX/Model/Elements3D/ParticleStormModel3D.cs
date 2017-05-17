@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(ParticleParameters.DefaultEmitterLocation.ToPoint3D(),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).OnEmitterLocationChanged(((Media3D.Point3D)e.NewValue).ToVector3());
+                (d as ParticleStormModel3D).parameters.insertVariables.EmitterLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
@@ -66,11 +66,31 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static DependencyProperty EmitterRadiusProperty = DependencyProperty.Register("EmitterRadius", typeof(float), typeof(ParticleStormModel3D),
+            new PropertyMetadata(ParticleParameters.DefaultConsumerRadius,
+            (d, e) =>
+            {
+                (d as ParticleStormModel3D).parameters.insertVariables.EmitterRadius = ((float)e.NewValue);
+            }
+            ));
+
+        public float EmitterRadius
+        {
+            set
+            {
+                SetValue(EmitterRadiusProperty, value);
+            }
+            get
+            {
+                return (float)GetValue(EmitterRadiusProperty);
+            }
+        }
+
         public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(ParticleParameters.DefaultConsumerLocation.ToPoint3D(),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).OnConsumerLocationChanged(((Media3D.Point3D)e.NewValue).ToVector3());
+                (d as ParticleStormModel3D).parameters.frameVariables.ConsumerLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
@@ -103,6 +123,26 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (float)GetValue(ConsumerGravityProperty);
+            }
+        }
+
+        public static DependencyProperty ConsumerRadiusProperty = DependencyProperty.Register("ConsumerRadius", typeof(float), typeof(ParticleStormModel3D),
+            new PropertyMetadata(ParticleParameters.DefaultConsumerRadius,
+            (d, e) =>
+            {
+                (d as ParticleStormModel3D).parameters.frameVariables.ConsumerRadius = ((float)e.NewValue);
+            }
+            ));
+
+        public float ConsumerRadius
+        {
+            set
+            {
+                SetValue(ConsumerRadiusProperty, value);
+            }
+            get
+            {
+                return (float)GetValue(ConsumerRadiusProperty);
             }
         }
 
@@ -631,16 +671,6 @@ namespace HelixToolkit.Wpf.SharpDX
             particleInsertBuffer = new Buffer(this.Device, ParticleInsertParameters.SizeInBytes, ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
         }
 
-        private void OnEmitterLocationChanged(Vector3 location)
-        {
-            parameters.insertVariables.EmitterLocation = location;
-        }
-
-        private void OnConsumerLocationChanged(Vector3 location)
-        {
-            parameters.frameVariables.ConsumerLocation = location;
-        }
-
         private void OnTextureChanged()
         {
             if (isTextureChanged)
@@ -819,6 +849,7 @@ namespace HelixToolkit.Wpf.SharpDX
             public static readonly Vector3 DefaultEmitterLocation = Vector3.Zero;
             public static readonly Vector3 DefaultConsumerLocation = new Vector3(0, 10, 0);
             public static readonly float DefaultConsumerGravity = 0;
+            public static readonly float DefaultConsumerRadius = 0;
             public static readonly Media3D.Rect3D DefaultBound = new Media3D.Rect3D(0, 0, 0, 10, 10, 10);
             public static readonly Vector3 DefaultBoundMaximum = new Vector3(5, 5, 5);
             public static readonly Vector3 DefaultBoundMinimum = new Vector3(-5, -5, -5);
@@ -841,7 +872,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public Vector2 particleSize = DefaultParticleSize;
 
-            public ParticlePerFrame frameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum, ConsumerGravity = DefaultConsumerGravity, ConsumerLocation = DefaultConsumerLocation };
+            public ParticlePerFrame frameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum, ConsumerGravity = DefaultConsumerGravity, ConsumerLocation = DefaultConsumerLocation, ConsumerRadius = DefaultConsumerRadius };
 
             public ParticleInsertParameters insertVariables = new ParticleInsertParameters() { EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
