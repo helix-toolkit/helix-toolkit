@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var t1 = Vector3.TransformCoordinate(line.P1, this.ModelMatrix);
                 Vector3 sp, tp;
                 float sc, tc;
-                var distance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
+                var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
                 var svpm = context.ScreenViewProjectionMatrix;
                 Vector4 sp4;
                 Vector4 tp4;
@@ -162,7 +162,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     lastDist = dist;
                     result.PointHit = sp.ToPoint3D();
                     result.NormalAtHit = (sp - tp).ToVector3D(); // not normalized to get length
-                    result.Distance = distance;
+                    result.Distance = (rayWS.Position - sp).Length();
+                    result.RayToLineDistance = rayToLineDistance;
                     result.ModelHit = this;
                     result.IsValid = true;
                     result.Tag = lineIndex; // For compatibility
