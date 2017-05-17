@@ -66,6 +66,11 @@ namespace HelixToolkit.Wpf.SharpDX
     public class LineHitTestResult : HitTestResult
     {
         /// <summary>
+        /// Gets or sets the index of the line segment that was hit.
+        /// </summary>
+        public int LineIndex { get; set; }
+
+        /// <summary>
         /// Gets or sets the shortest distance between the hit test ray and the line that was hit.
         /// </summary>
         public double RayToLineDistance { get; set; }

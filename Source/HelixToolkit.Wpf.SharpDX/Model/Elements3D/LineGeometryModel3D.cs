@@ -167,7 +167,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     result.ModelHit = this;
                     result.IsValid = true;
                     result.Tag = lineIndex; // For compatibility
-                    result.TriangleIndices = new Tuple<int, int, int>(lineIndex, lineIndex + 1, -1);
+                    result.LineIndex = lineIndex;
+                    result.TriangleIndices = null; // Since triangles are shader-generated
                     result.Sc = sc;
                     result.Tc = tc;
                 }
