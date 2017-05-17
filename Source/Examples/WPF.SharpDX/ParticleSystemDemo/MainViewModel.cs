@@ -17,7 +17,7 @@ namespace ParticleSystemDemo
     {
         public MeshGeometry3D Model { private set; get; }
 
-        private Media3D.Transform3D emitterTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 1));
+        private Media3D.Transform3D emitterTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, -4, 0, 1));
         public Media3D.Transform3D EmitterTransform
         {
             get
@@ -49,7 +49,7 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Media3D.Point3D emitterLocation = new Media3D.Point3D(0,0,0);
+        private Media3D.Point3D emitterLocation = new Media3D.Point3D(0, -4 ,0);
         public Media3D.Point3D EmitterLocation
         {
             set
@@ -63,7 +63,7 @@ namespace ParticleSystemDemo
         }
 
 
-        private Media3D.Transform3D consumerTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 5, 0, 1));
+        private Media3D.Transform3D consumerTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 4, 0, 1));
         public Media3D.Transform3D ConsumerTransform
         {
             get
@@ -77,7 +77,7 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Media3D.Point3D consumerLocation = new Media3D.Point3D(0,5,0);
+        private Media3D.Point3D consumerLocation = new Media3D.Point3D(0,4,0);
         public Media3D.Point3D ConsumerLocation
         {
             set
@@ -429,7 +429,6 @@ namespace ParticleSystemDemo
         public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90};
 
         public SharpDX.Color4 Light1Color { get; set; } = SharpDX.Color.White;
-
         public MainViewModel()
         {
             var lineBuilder = new LineBuilder();
@@ -439,6 +438,7 @@ namespace ParticleSystemDemo
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddSphere(new SharpDX.Vector3(0,0,0), 0.5, 16, 16);
             Model = meshBuilder.ToMesh();
+            Camera = new PerspectiveCamera() { Position = new Media3D.Point3D(0, 0, 20), UpDirection = new Media3D.Vector3D(0, 1, 0), LookDirection = new Media3D.Vector3D(0, 0, -20) };
         }
 
         private void LoadTexture(int index)
