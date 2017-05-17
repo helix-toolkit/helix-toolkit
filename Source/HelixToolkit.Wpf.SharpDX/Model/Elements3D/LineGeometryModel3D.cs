@@ -132,18 +132,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            LineGeometry3D lineGeometry3D = this.geometryInternal as LineGeometry3D;
+            var lineGeometry3D = this.geometryInternal as LineGeometry3D;
+            if (lineGeometry3D == null)
+            {
+                return false;
+            }
 
-            var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
+            var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
             var lastDist = double.MaxValue;
-            var index = 0;
+            var lineIndex = 0;
             foreach (var line in lineGeometry3D.Lines)
             {
                 var t0 = Vector3.TransformCoordinate(line.P0, this.ModelMatrix);
                 var t1 = Vector3.TransformCoordinate(line.P1, this.ModelMatrix);
                 Vector3 sp, tp;
                 float sc, tc;
-                var distance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
+                var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
                 var svpm = context.ScreenViewProjectionMatrix;
                 Vector4 sp4;
                 Vector4 tp4;
@@ -158,13 +162,18 @@ namespace HelixToolkit.Wpf.SharpDX
                     lastDist = dist;
                     result.PointHit = sp.ToPoint3D();
                     result.NormalAtHit = (sp - tp).ToVector3D(); // not normalized to get length
-                    result.Distance = (rayWS.Position-sp).Length();
+                    result.Distance = (rayWS.Position - sp).Length();
+                    result.RayToLineDistance = rayToLineDistance;
                     result.ModelHit = this;
                     result.IsValid = true;
-                    result.Tag = index; // ToDo: LineHitTag with additional info
+                    result.Tag = lineIndex; // For compatibility
+                    result.LineIndex = lineIndex;
+                    result.TriangleIndices = null; // Since triangles are shader-generated
+                    result.RayHitPointScalar = sc;
+                    result.LineHitPointScalar = tc;
                 }
 
-                index++;
+                lineIndex++;
             }
 
             if (result.IsValid)
