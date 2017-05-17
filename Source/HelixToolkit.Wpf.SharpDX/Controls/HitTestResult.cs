@@ -66,12 +66,17 @@ namespace HelixToolkit.Wpf.SharpDX
     public class LineHitTestResult : HitTestResult
     {
         /// <summary>
-        /// Scalar of the closest point on ray.
+        /// Gets or sets the shortest distance between the hit test ray and the line that was hit.
+        /// </summary>
+        public double RayToLineDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scalar of the closest point on the hit test ray.
         /// </summary>
         public double Sc { get; set; }
 
         /// <summary>
-        /// Scalar of the closest point on line.
+        /// Gets or sets the scalar of the closest point on the line that was hit.
         /// </summary>
         public double Tc { get; set; }
     }
