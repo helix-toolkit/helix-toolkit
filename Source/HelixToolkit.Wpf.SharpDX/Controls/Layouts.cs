@@ -109,7 +109,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 DomainBoundsMin;
         public uint CumulateAtBound;
 
-        public const int SizeInBytes = 4 * (4 * 3);
+        public Vector3 ConsumerLocation;
+        public float ConsumerGravity;
+
+        public float ConsumerRadius;
+        private Vector3 Pad;
+
+        public const int SizeInBytes = 4 * (4 * 5);
         public const int NumParticlesOffset = 0;
     }
 
@@ -119,7 +125,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 EmitterLocation;
         public float InitialEnergy;
 
-        public Vector3 ConsumerLocation;
+        public float EmitterRadius;
+        private Vector2 Pad;
         public float InitialVelocity;
 
         public Color4 ParticleBlendColor;

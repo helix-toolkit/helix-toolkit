@@ -1,5 +1,6 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,12 +9,109 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
+using Media3D = System.Windows.Media.Media3D;
 
 namespace ParticleSystemDemo
 {
     public class MainViewModel : BaseViewModel
     {
+        public MeshGeometry3D Model { private set; get; }
+
+        private Media3D.Transform3D emitterTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, -4, 0, 1));
+        public Media3D.Transform3D EmitterTransform
+        {
+            get
+            {
+                return emitterTransform;
+            }
+            set
+            {
+                SetValue(ref emitterTransform, value);
+                EmitterLocation = new Media3D.Point3D(value.Value.OffsetX, value.Value.OffsetY, value.Value.OffsetZ);
+            }
+        }
+
+        private float emitterRadius = 0.5f;
+        public float EmitterRadius
+        {
+            set
+            {
+                if (SetValue(ref emitterRadius, value))
+                {
+                    var matrix = EmitterTransform.Value;
+                    matrix.M11 = matrix.M22 = matrix.M33 = value;
+                    EmitterTransform = new Media3D.MatrixTransform3D(matrix);
+                }
+            }
+            get
+            {
+                return emitterRadius;
+            }
+        }
+
+        private Media3D.Point3D emitterLocation = new Media3D.Point3D(0, -4 ,0);
+        public Media3D.Point3D EmitterLocation
+        {
+            set
+            {
+                SetValue(ref emitterLocation, value);
+            }
+            get
+            {
+                return emitterLocation;
+            }
+        }
+
+
+        private Media3D.Transform3D consumerTransform = new Media3D.MatrixTransform3D(new Media3D.Matrix3D(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.5, 0, 0, 4, 0, 1));
+        public Media3D.Transform3D ConsumerTransform
+        {
+            get
+            {
+                return consumerTransform;
+            }
+            set
+            {
+                SetValue(ref consumerTransform, value);
+                ConsumerLocation = new Media3D.Point3D(value.Value.OffsetX, value.Value.OffsetY, value.Value.OffsetZ);
+            }
+        }
+
+        private Media3D.Point3D consumerLocation = new Media3D.Point3D(0,4,0);
+        public Media3D.Point3D ConsumerLocation
+        {
+            set
+            {
+                SetValue(ref consumerLocation, value);
+            }
+            get
+            {
+                return consumerLocation;
+            }
+        }
+
+        private float consumerRadius = 0.5f;
+        public float ConsumerRadius
+        {
+            set
+            {
+                if(SetValue(ref consumerRadius, value))
+                {
+                    var matrix = ConsumerTransform.Value;
+                    matrix.M11 = matrix.M22 = matrix.M33 = value;
+                    ConsumerTransform = new Media3D.MatrixTransform3D(matrix);
+                }
+            }
+            get
+            {
+                return consumerRadius;
+            }
+        }
+
+        public Material EmitterMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(1, 0, 1, 1) };
+
+        public Material ConsumerMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(0.5f, 1f, 0.5f, 1) };
+
         private Stream particleTexture;
         public Stream ParticleTexture
         {
@@ -27,8 +125,8 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Vector3D acceleration = new Vector3D(0, 1, 0);
-        public Vector3D Acceleration
+        private Media3D.Vector3D acceleration = new Media3D.Vector3D(0, 1, 0);
+        public Media3D.Vector3D Acceleration
         {
             set
             {
@@ -120,10 +218,10 @@ namespace ParticleSystemDemo
         const int DefaultBoundScale = 10;
         public LineGeometry3D BoundingLines { private set; get; }
 
-        public ScaleTransform3D BoundingLineTransform { private set; get; } = new ScaleTransform3D(DefaultBoundScale, DefaultBoundScale, DefaultBoundScale);
+        public Media3D.ScaleTransform3D BoundingLineTransform { private set; get; } = new Media3D.ScaleTransform3D(DefaultBoundScale, DefaultBoundScale, DefaultBoundScale);
 
-        private Rect3D particleBounds = new Rect3D(0, 0, 0, DefaultBoundScale, DefaultBoundScale, DefaultBoundScale);
-        public Rect3D ParticleBounds
+        private Media3D.Rect3D particleBounds = new Media3D.Rect3D(0, 0, 0, DefaultBoundScale, DefaultBoundScale, DefaultBoundScale);
+        public Media3D.Rect3D ParticleBounds
         {
             set
             {
@@ -142,7 +240,7 @@ namespace ParticleSystemDemo
             {
                 if(SetValue(ref boundScale, value))
                 {
-                    ParticleBounds = new Rect3D(0, 0, 0, value, value, value);
+                    ParticleBounds = new Media3D.Rect3D(0, 0, 0, value, value, value);
                     BoundingLineTransform.ScaleX = BoundingLineTransform.ScaleY = BoundingLineTransform.ScaleZ = value;
                 }
             }
@@ -270,15 +368,77 @@ namespace ParticleSystemDemo
             }
         }
 
-        public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4) };
-        public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png"};
-        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 10};
+        public Array BlendOperationArray { get; } = Enum.GetValues(typeof(BlendOperation));
+
+        public Array BlendOptionArray { get; } = Enum.GetValues(typeof(BlendOption));
+
+        private BlendOption sourceBlendOption = BlendOption.One;
+        public BlendOption SourceBlendOption
+        {
+            set
+            {
+                SetValue(ref sourceBlendOption, value);
+            }
+            get
+            {
+                return sourceBlendOption;
+            }
+        }
+
+        private BlendOption sourceAlphaBlendOption = BlendOption.One;
+        public BlendOption SourceAlphaBlendOption
+        {
+            set
+            {
+                SetValue(ref sourceAlphaBlendOption, value);
+            }
+            get
+            {
+                return sourceAlphaBlendOption;
+            }
+        }
+
+        private BlendOption destBlendOption = BlendOption.One;
+        public BlendOption DestBlendOption
+        {
+            set
+            {
+                SetValue(ref destBlendOption, value);
+            }
+            get
+            {
+                return destBlendOption;
+            }
+        }
+
+        private BlendOption destAlphaBlendOption = BlendOption.Zero;
+        public BlendOption DestAlphaBlendOption
+        {
+            set
+            {
+                SetValue(ref destAlphaBlendOption, value);
+            }
+            get
+            {
+                return destAlphaBlendOption;
+            }
+        }
+
+        public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4), new Tuple<int, int>(6,5) };
+        public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
+        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90};
+
+        public SharpDX.Color4 Light1Color { get; set; } = SharpDX.Color.White;
         public MainViewModel()
         {
             var lineBuilder = new LineBuilder();
             lineBuilder.AddBox(new SharpDX.Vector3(), 1, 1, 1);
             BoundingLines = lineBuilder.ToLineGeometry3D();
             LoadTexture(SelectedTextureIndex);
+            var meshBuilder = new MeshBuilder();
+            meshBuilder.AddSphere(new SharpDX.Vector3(0,0,0), 0.5, 16, 16);
+            Model = meshBuilder.ToMesh();
+            Camera = new PerspectiveCamera() { Position = new Media3D.Point3D(0, 0, 20), UpDirection = new Media3D.Vector3D(0, 1, 0), LookDirection = new Media3D.Vector3D(0, 0, -20) };
         }
 
         private void LoadTexture(int index)
@@ -290,11 +450,26 @@ namespace ParticleSystemDemo
             NumTextureColumns = TextureColumnsRows[index].Item1;
             NumTextureRows = TextureColumnsRows[index].Item2;
             SizeSlider = DefaultParticleSizes[index];
+            switch (index)
+            {
+                case 3:
+                    SourceBlendOption = BlendOption.SourceAlpha;
+                    SourceAlphaBlendOption = BlendOption.Zero;
+                    DestBlendOption = BlendOption.InverseSourceAlpha;
+                    DestAlphaBlendOption = BlendOption.Zero;
+                    break;
+                default:
+                    SourceBlendOption = BlendOption.One;
+                    SourceAlphaBlendOption = BlendOption.One;
+                    DestBlendOption = BlendOption.One;
+                    DestAlphaBlendOption = BlendOption.Zero;
+                    break;
+            }
         }
 
         private void UpdateAcceleration()
         {
-            Acceleration = new Vector3D((double)AccelerationX/100, (double)AccelerationY /100, (double)AccelerationZ /100);
+            Acceleration = new Media3D.Vector3D((double)AccelerationX/100, (double)AccelerationY /100, (double)AccelerationZ /100);
         }
     }
 }
