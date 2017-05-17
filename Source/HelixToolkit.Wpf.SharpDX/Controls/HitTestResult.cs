@@ -78,11 +78,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the scalar of the closest point on the hit test ray.
         /// </summary>
-        public double Sc { get; set; }
+        public double RayHitPointScalar { get; set; }
 
         /// <summary>
         /// Gets or sets the scalar of the closest point on the line that was hit.
         /// </summary>
-        public double Tc { get; set; }
+        public double LineHitPointScalar { get; set; }
     }
 }
