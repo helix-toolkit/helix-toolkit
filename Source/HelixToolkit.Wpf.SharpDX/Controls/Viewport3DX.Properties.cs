@@ -737,20 +737,6 @@ namespace HelixToolkit.Wpf.SharpDX
             "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
         /// <summary>
-        /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
-        /// Default value = <value>1</value>
-        /// </summary>
-        public static readonly DependencyProperty RenderCyclesProperty = DependencyProperty.Register("RenderCycles", typeof(int),
-            typeof(Viewport3DX), new PropertyMetadata(1, (d,e)=> 
-            {
-                var viewport = d as Viewport3DX;
-                if (viewport.RenderHost != null)
-                {
-                    viewport.RenderHost.RenderCycles = (int)e.NewValue;
-                }
-            }));
-
-        /// <summary>
         /// Enable mouse button hit test
         /// </summary>
         public static readonly DependencyProperty EnableMouseButtonHitTestProperty = DependencyProperty.Register(
@@ -2590,22 +2576,6 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(FixedRotationPointEnabledProperty);
-            }
-        }
-
-        /// <summary>
-        /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
-        /// Default value = <value>1</value>
-        /// </summary>
-        public int RenderCycles
-        {
-            set
-            {
-                SetValue(RenderCyclesProperty, value);
-            }
-            get
-            {
-                return (int)GetValue(RenderCyclesProperty);
             }
         }
 

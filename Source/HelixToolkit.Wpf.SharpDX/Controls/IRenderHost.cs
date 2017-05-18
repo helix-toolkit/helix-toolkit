@@ -72,11 +72,6 @@ namespace HelixToolkit.Wpf.SharpDX
         bool IsBusy { get; }
 
         /// <summary>
-        /// Set render cycles per invalidation. Default = <value>1</value>
-        /// </summary>
-        int RenderCycles { set; get; }
-
-        /// <summary>
         /// Shared light data per scene
         /// </summary>
         Light3DSceneShared Light3DSceneShared { get; }
