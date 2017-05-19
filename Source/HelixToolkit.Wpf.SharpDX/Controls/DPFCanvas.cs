@@ -732,26 +732,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                if (pendingValidationCycles > 0 && !skipper.IsSkip())
+                if (pendingValidationCycles > 0 && !skipper.IsSkip() && surfaceD3D != null && renderRenderable != null)
                 {
                     var t0 = renderTimer.Elapsed;
-                    if (surfaceD3D != null && renderRenderable != null)
+
+                    // Update all renderables before rendering 
+                    // giving them the chance to invalidate the current render.                                                            
+                    //renderRenderable.Update(t0);
+                    if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(Math.Abs(skipper.lag)))))
                     {
-                        // Update all renderables before rendering 
-                        // giving them the chance to invalidate the current render.                                                            
-                        //renderRenderable.Update(t0);
-                        if(surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(Math.Abs(skipper.Threshold - lastRenderingDuration.Milliseconds)))))
-                        {
-                            System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
-                            Render(t0);
-                            surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));                                
-                        }
-                        else
-                        {
-                            Debug.WriteLine("Try lock failed. Last render Duration = " + lastRenderingDuration.Milliseconds);
-                        }
-                        surfaceD3D.Unlock();
+                        System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
+                        Render(t0);
+                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));                                
                     }
+                    surfaceD3D.Unlock();
 
                     lastRenderingDuration = renderTimer.Elapsed - t0;
                 }

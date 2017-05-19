@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// Stopwatch
         /// </summary>
         private static readonly Stopwatch watch = new Stopwatch();
-        private long lag = 0;
+        public long lag { private set; get; } = 0;
         /// <summary>
         /// 
         /// </summary>
