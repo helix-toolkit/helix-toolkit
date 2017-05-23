@@ -244,11 +244,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private DispatcherOperation pendingInvalidateOperation = null;
+        //private DispatcherOperation pendingInvalidateOperation = null;
         /// <summary>
         /// 
         /// </summary>
-        private readonly Action invalidAction;
+        //private readonly Action invalidAction;
         /// <summary>
         /// 
         /// </summary>
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
             MSAA = MSAALevel.Maximum;
-            invalidAction = new Action(InvalidateRender);
+           // invalidAction = new Action(InvalidateRender);
         }
 
         /// <summary>
