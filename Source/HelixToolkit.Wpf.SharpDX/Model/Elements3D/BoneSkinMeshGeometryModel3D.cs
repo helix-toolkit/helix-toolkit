@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.Instances);
                     this.isInstanceChanged = false;
                 }
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceBuffer.Buffer, this.vertexBoneParamsBuffer.StructureSize, 0));
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0));
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw              
