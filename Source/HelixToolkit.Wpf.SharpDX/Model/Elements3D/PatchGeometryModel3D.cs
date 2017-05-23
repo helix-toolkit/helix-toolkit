@@ -16,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
     using global::SharpDX.DXGI;
+    using Utilities;
+    using System;
 
     public static class TessellationTechniques
     {
@@ -161,6 +163,28 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private readonly ImmutableBufferProxy<DefaultVertex> vertexBuffer = new ImmutableBufferProxy<DefaultVertex>(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public override IBufferProxy IndexBuffer
+        {
+            get
+            {
+                return indexBuffer;
+            }
+        }
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public override IBufferProxy VertexBuffer
+        {
+            get
+            {
+                return vertexBuffer;
+            }
+        }
         private DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// 
@@ -232,10 +256,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");
 
                 // --- init vertex buffer
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, CreateDefaultVertexArray(), geometry.Positions.Count);
-
+                vertexBuffer.CreateBufferFromDataArray(Device, CreateDefaultVertexArray());
                 // --- init index buffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometryInternal.Indices.Array, geometryInternal.Indices.Count);
+                indexBuffer.CreateBufferFromDataArray(Device, geometryInternal.Indices.Array);
             }
             else
             {
@@ -264,6 +287,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnDetach()
         {
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
             Disposer.RemoveAndDispose(ref vTessellationVariables);
             Disposer.RemoveAndDispose(ref shaderPass);
             base.OnDetach();
@@ -297,10 +322,10 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.InputAssembler.InputLayout = vertexLayout;
 
             // --- set index buffer
-            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, 0);
 
             // --- set vertex buffer                
-            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, DefaultVertex.SizeInBytes, 0));
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));
 
             renderContext.DeviceContext.Rasterizer.State = this.rasterState;
             // --- apply chosen pass

@@ -22,13 +22,18 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class MaterialGeometryModel3D : InstanceGeometryModel3D
     {
         protected InputLayout vertexLayout;
-
-        protected Buffer vertexBuffer;
-        protected Buffer indexBuffer;
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
         protected EffectMaterialVariables effectMaterial;
-       
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public abstract IBufferProxy VertexBuffer { get; }
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public abstract IBufferProxy IndexBuffer { get; }
+
         protected bool hasShadowMap = false;
         public MaterialGeometryModel3D()
         {
@@ -290,8 +295,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref this.vertexBuffer);
-            Disposer.RemoveAndDispose(ref this.indexBuffer);
             Disposer.RemoveAndDispose(ref this.effectMaterial);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
 

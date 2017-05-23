@@ -25,6 +25,14 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PointsVertex
+    {
+        public Vector4 Position;
+        public Color4 Color;
+        public const int SizeInBytes = 4 * (4 + 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct CubeVertex
     {
         public Vector4 Position;

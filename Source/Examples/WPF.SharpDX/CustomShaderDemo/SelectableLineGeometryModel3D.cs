@@ -12,6 +12,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 namespace CustomShaderDemo
 {
     using HelixToolkit.Wpf.SharpDX.Extensions;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct CustomLinesVertex
@@ -24,14 +25,23 @@ namespace CustomShaderDemo
 
     public class SelectableLineGeometryModel3D : LineGeometryModel3D
     {
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<CustomLinesVertex> vertexBuffer = new ImmutableBufferProxy<CustomLinesVertex>(CustomLinesVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        public override IBufferProxy VertexBuffer
         {
             get
             {
-                return CustomLinesVertex.SizeInBytes;
+                return vertexBuffer;
             }
         }
 
+        public override IBufferProxy IndexBuffer
+        {
+            get
+            {
+                return indexBuffer;
+            }
+        }
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
@@ -56,15 +66,16 @@ namespace CustomShaderDemo
 
             if (geometry != null)
             {        
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.ToArray());
+                vertexBuffer.CreateBufferFromDataArray(Device, CreateVertexArray());
+                indexBuffer.CreateBufferFromDataArray(Device, geometry.Indices);
             }
           
             hasInstances = (Instances != null) && (Instances.Any());
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
             if (hasInstances)
             {
-                instanceBuffer = Buffer.Create(Device, Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                isInstanceChanged = true;
+                instanceBuffer.CreateBufferFromDataArray(Device, Instances);
             }
 
             vViewport = effect.GetVariableByName("vViewport").AsVector();
@@ -77,6 +88,13 @@ namespace CustomShaderDemo
 
             //  Device.ImmediateContext.Flush();
             return true;
+        }
+
+        protected override void OnDetach()
+        {
+            vertexBuffer.Dispose();
+            instanceBuffer.Dispose();
+            base.OnDetach();
         }
 
         private CustomLinesVertex[] CreateVertexArray()

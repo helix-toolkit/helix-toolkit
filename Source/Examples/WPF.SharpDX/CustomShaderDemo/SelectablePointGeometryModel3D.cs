@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 namespace CustomShaderDemo
 {
     using HelixToolkit.Wpf.SharpDX.Extensions;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     /// <summary>
     /// Our CustomPointsVertex class has an additional Vector4
@@ -24,19 +25,14 @@ namespace CustomShaderDemo
 
     public class SelectablePointGeometryModel3D: PointGeometryModel3D
     {
-        /// <summary>
-        /// Because we are using a custom vertex, we need
-        /// to override this method to provide the 
-        /// size of our custom vertex.
-        /// </summary>
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<CustomPointsVertex> vertexBuffer = new ImmutableBufferProxy<CustomPointsVertex>(CustomPointsVertex.SizeInBytes, BindFlags.VertexBuffer);
+        public override IBufferProxy VertexBuffer
         {
             get
             {
-                return CustomPointsVertex.SizeInBytes;
+                return vertexBuffer;
             }
         }
-
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
@@ -65,8 +61,7 @@ namespace CustomShaderDemo
 
             if (geometry != null)
             {
-                /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
+                vertexBuffer.CreateBufferFromDataArray(Device, CreateVertexArray());
             }
 
             /// --- set up const variables
@@ -84,6 +79,12 @@ namespace CustomShaderDemo
             /// --- flush
             //  Device.ImmediateContext.Flush();
             return true;
+        }
+
+        protected override void OnDetach()
+        {
+            vertexBuffer.Dispose();
+            base.OnDetach();
         }
 
         private CustomPointsVertex[] CreateVertexArray()

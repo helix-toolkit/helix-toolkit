@@ -5,13 +5,14 @@ using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using HelixToolkit.Wpf.SharpDX.Utilities;
+using System;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class InstancingBillboardModel3D : MaterialGeometryModel3D
     {
         #region Private Class Data Members
-
+        private readonly ImmutableBufferProxy<BillboardVertex> vertexBuffer = new ImmutableBufferProxy<BillboardVertex>(BillboardVertex.SizeInBytes, BindFlags.VertexBuffer);
         private EffectVectorVariable vViewport;
         private EffectScalarVariable bHasBillboardTexture;
         private ShaderResourceView billboardTextureView;
@@ -83,15 +84,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(FixedSizeProperty);
             }
         }
-
-        #region Overridable Methods
-        public override int VertexSizeInBytes
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public override IBufferProxy IndexBuffer
         {
             get
             {
-                return BillboardVertex.SizeInBytes;
+                return null;
             }
         }
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public override IBufferProxy VertexBuffer
+        {
+            get
+            {
+                return vertexBuffer;
+            }
+        }
+
+        #region Overridable Methods
 
         /// <summary>
         /// 
@@ -173,9 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
             // -- set geometry if given
-            Disposer.RemoveAndDispose(ref vertexBuffer);
-            vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer,
-                VertexSizeInBytes, CreateBillboardVertexArray(), geometry.Positions.Count);
+            vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray());
             // --- material 
             // this.AttachMaterial();
             this.bHasBillboardTexture = effect.GetVariableByName("bHasTexture").AsScalar();
@@ -255,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.Rasterizer.State = rasterState;
 
             // --- bind buffer                
-            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, BillboardVertex.SizeInBytes, 0));
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));
             // --- render the geometry
             this.bHasBillboardTexture.Set(geometry.Texture != null);
             if (geometry.Texture != null)
