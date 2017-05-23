@@ -75,7 +75,7 @@ namespace CustomShaderDemo
             if (hasInstances)
             {
                 isInstanceChanged = true;
-                instanceBuffer.CreateBufferFromDataArray(Device, Instances);
+                InstanceBuffer.CreateBufferFromDataArray(Device, Instances);
             }
 
             vViewport = effect.GetVariableByName("vViewport").AsVector();
@@ -93,7 +93,7 @@ namespace CustomShaderDemo
         protected override void OnDetach()
         {
             vertexBuffer.Dispose();
-            instanceBuffer.Dispose();
+            InstanceBuffer.Dispose();
             base.OnDetach();
         }
 

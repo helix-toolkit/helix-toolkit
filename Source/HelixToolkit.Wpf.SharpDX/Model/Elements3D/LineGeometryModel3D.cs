@@ -375,7 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
+                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
                     this.isInstanceChanged = false;
                 }
 
@@ -383,7 +383,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new[] 
                 {
                     new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0),
-                    new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0),
+                    new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0),
                 });
 
                 // --- render the geometry

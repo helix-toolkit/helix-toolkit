@@ -179,7 +179,7 @@ namespace CustomShaderDemo
                 /// --- update instance buffer
                 if (isInstanceChanged)
                 {
-                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, Instances.ToArray());
+                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, Instances.ToArray());
                     isInstanceChanged = false;
                 }
 
@@ -187,7 +187,7 @@ namespace CustomShaderDemo
                 Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
                     new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0),
-                    new VertexBufferBinding(instanceBuffer.Buffer, instanceBuffer.StructureSize, 0),
+                    new VertexBufferBinding(InstanceBuffer.Buffer, InstanceBuffer.StructureSize, 0),
                 });
 
                 /// --- render the geometry

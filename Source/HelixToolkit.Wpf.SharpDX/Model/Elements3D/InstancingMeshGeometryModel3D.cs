@@ -140,10 +140,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.isInstanceChanged)
                 {
                     BuildOctree();
-                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
+                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
                     this.isInstanceChanged = false;
                 }
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0));
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0));
                 if (this.hasInstanceParams)
                 {
                     if (instanceParamArrayChanged)

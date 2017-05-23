@@ -39,7 +39,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool HasInstancing { get { return hasInstances; } }
         protected IList<Matrix> instanceInternal;
         protected EffectScalarVariable bHasInstances;
-        protected readonly DynamicBufferProxy<Matrix> instanceBuffer = new DynamicBufferProxy<Matrix>(Matrix.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly DynamicBufferProxy<Matrix> instanceBuffer = new DynamicBufferProxy<Matrix>(Matrix.SizeInBytes, BindFlags.VertexBuffer);
+        public DynamicBufferProxy<Matrix> InstanceBuffer { get { return instanceBuffer; } }
 
         protected BoundingBox instancesBound;
         public BoundingBox InstancesBound
