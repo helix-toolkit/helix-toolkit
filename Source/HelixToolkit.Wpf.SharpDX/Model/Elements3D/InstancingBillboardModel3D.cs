@@ -4,6 +4,7 @@ using System.Linq;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using HelixToolkit.Wpf.SharpDX.Utilities;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -21,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private BillboardType billboardType;
         private BillboardVertex[] vertexArrayBuffer;
 
-        protected Buffer instanceParamBuffer = null;
+        protected readonly DynamicBufferProxy<BillboardInstanceParameter> instanceParamBuffer = new DynamicBufferProxy<BillboardInstanceParameter>(BillboardInstanceParameter.SizeInBytes, BindFlags.VertexBuffer);
         protected bool instanceParamArrayChanged = true;
         protected bool hasInstanceParams = false;
         private EffectScalarVariable hasInstanceParamVar;
@@ -221,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref bHasBillboardAlphaTexture);
             Disposer.RemoveAndDispose(ref bHasBillboardTexture);
 
-            Disposer.RemoveAndDispose(ref instanceParamBuffer);
+            instanceParamBuffer.Dispose();
             Disposer.RemoveAndDispose(ref hasInstanceParamVar);
             Disposer.RemoveAndDispose(ref bHasInstances);
             Disposer.RemoveAndDispose(ref bFixedSizeVariable);
@@ -272,46 +273,18 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (this.isInstanceChanged)
                 {
-                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
-                    {
-                        Disposer.RemoveAndDispose(ref instanceBuffer);
-                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * this.Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                    }
-                    else
-                    {
-                        DataStream stream;
-                        renderContext.DeviceContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                        stream.Position = 0;
-                        stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
-                        renderContext.DeviceContext.UnmapSubresource(this.instanceBuffer, 0);
-                        stream.Dispose();
-                    }
+                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.Instances);
                     this.isInstanceChanged = false;
                 }
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0));
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0));
                 if (this.hasInstanceParams)
                 {
                     if (instanceParamArrayChanged)
                     {
-                        if (instanceParamBuffer == null || this.instanceParamBuffer.Description.SizeInBytes < BillboardInstanceParameter.SizeInBytes * this.InstanceParamArray.Count)
-                        {
-                            Disposer.RemoveAndDispose(ref instanceParamBuffer);
-                            this.instanceParamBuffer = Buffer.Create(this.Device, this.InstanceParamArray.ToArray(),
-                                new BufferDescription(BillboardInstanceParameter.SizeInBytes * this.InstanceParamArray.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer,
-                                CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                        }
-                        else
-                        {
-                            DataStream stream;
-                            renderContext.DeviceContext.MapSubresource(this.instanceParamBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                            stream.Position = 0;
-                            stream.WriteRange(this.InstanceParamArray.ToArray(), 0, this.InstanceParamArray.Count);
-                            renderContext.DeviceContext.UnmapSubresource(this.instanceParamBuffer, 0);
-                            stream.Dispose();
-                        }
+                        instanceParamBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.InstanceParamArray);
                         this.instanceParamArrayChanged = false;
                     }
-                    renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer, BillboardInstanceParameter.SizeInBytes, 0));
+                    renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer.Buffer, this.instanceParamBuffer.StructureSize, 0));
                 }
 
                 switch (billboardType)

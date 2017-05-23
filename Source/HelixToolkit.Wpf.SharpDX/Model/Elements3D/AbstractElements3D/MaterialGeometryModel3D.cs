@@ -22,9 +22,9 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class MaterialGeometryModel3D : InstanceGeometryModel3D
     {
         protected InputLayout vertexLayout;
+
         protected Buffer vertexBuffer;
         protected Buffer indexBuffer;
-        protected Buffer instanceBuffer;
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
         protected EffectMaterialVariables effectMaterial;
@@ -292,8 +292,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
             Disposer.RemoveAndDispose(ref this.indexBuffer);
-            Disposer.RemoveAndDispose(ref this.instanceBuffer);
-
             Disposer.RemoveAndDispose(ref this.effectMaterial);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
 

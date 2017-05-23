@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Wpf.SharpDX.Utilities;
+using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool hasInstances = false;
         public bool HasInstancing { get { return hasInstances; } }
         protected EffectScalarVariable bHasInstances;
-
+        protected readonly DynamicBufferProxy<Matrix> instanceBuffer = new DynamicBufferProxy<Matrix>(Matrix.SizeInBytes, BindFlags.IndexBuffer);
 
         protected BoundingBox instancesBound;
         public BoundingBox InstancesBound
@@ -135,6 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.bHasInstances);
+            instanceBuffer.Dispose();
             base.OnDetach();
         }
     }

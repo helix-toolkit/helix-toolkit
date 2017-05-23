@@ -22,10 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using global::SharpDX.DXGI;
-
-    using Buffer = global::SharpDX.Direct3D11.Buffer;
     using System.Runtime.CompilerServices;
-    using System.Diagnostics;
     using System.Collections.Generic;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
@@ -229,7 +226,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref this.vertexBuffer);
             Disposer.RemoveAndDispose(ref this.indexBuffer);
-            Disposer.RemoveAndDispose(ref this.instanceBuffer);
             Disposer.RemoveAndDispose(ref this.effectMaterial);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
             Disposer.RemoveAndDispose(ref this.bHasInstances);
@@ -272,21 +268,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    if (instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
-                    {
-                        Disposer.RemoveAndDispose(ref instanceBuffer);
-                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances.ToArray(), 
-                            new BufferDescription(Matrix.SizeInBytes * this.Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                    }
-                    else
-                    {
-                        DataStream stream;
-                        renderContext.DeviceContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                        stream.Position = 0;
-                        stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
-                        renderContext.DeviceContext.UnmapSubresource(this.instanceBuffer, 0);
-                        stream.Dispose();
-                    }
+                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.Instances);
                     this.isInstanceChanged = false;
                 }
 
@@ -294,7 +276,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
                     new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
-                    new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
+                    new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0),
                 });
 
                 // --- render the geometry
