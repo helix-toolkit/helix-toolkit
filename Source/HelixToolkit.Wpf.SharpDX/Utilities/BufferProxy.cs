@@ -12,32 +12,28 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 {
     public class ImmutableBufferProxy<T> : DynamicBufferProxy<T> where T : struct
     {
-        public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None) : base(structureSize, bindFlags, optionFlags)
+        public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None) 
+            : base(structureSize, bindFlags, optionFlags)
         {
         }
 
-        public override void UploadDataToBuffer(DeviceContext context, ref T data)
+        public override void UploadDataToBuffer(DeviceContext context, IList<T> data, int length)
         {
-            throw new NotImplementedException();
+            CreateBufferFromDataArray(context.Device, data, length);
         }
 
-        public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
+        public override void CreateBufferFromDataArray(Device device, IList<T> data, int length)
         {
-            CreateBufferFromDataArray(context.Device, data);
-        }
-
-        public override void CreateBufferFromDataArray(Device device, IList<T> data)
-        {
+            Disposer.RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
             {
                 BindFlags = this.bindFlags,
                 CpuAccessFlags = CpuAccessFlags.None,
                 OptionFlags = this.optionFlags,
-                SizeInBytes = structureSize * data.Count,
-                StructureByteStride = structureSize,
+                SizeInBytes = StructureSize * length,
+                StructureByteStride = StructureSize,
                 Usage = ResourceUsage.Immutable
             };
-            Disposer.RemoveAndDispose(ref buffer);
             buffer = SDX11.Buffer.Create(device, data.GetArrayByType(), buffdesc);
         }
     }
@@ -46,38 +42,32 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
     {
         protected readonly BindFlags bindFlags;
         protected readonly ResourceOptionFlags optionFlags = ResourceOptionFlags.None;
-        protected readonly int structureSize;
-        public override int StructureSize { get { return structureSize; } }
+
         public DynamicBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None)
+            :base(structureSize)
         {
             this.bindFlags = bindFlags;
             this.optionFlags = optionFlags;
-            this.structureSize = structureSize;
         }
 
-        public override void UploadDataToBuffer(DeviceContext context, ref T data)
+        public virtual void UploadDataToBuffer(DeviceContext context, IList<T> data, int length)
         {
-            throw new NotImplementedException();
-        }
-
-        public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
-        {
-            if (buffer == null || buffer.Description.SizeInBytes < structureSize * data.Count)
+            if (buffer == null || buffer.Description.SizeInBytes < StructureSize * length)
             {
-                CreateBufferFromDataArray(context.Device, data);
+                CreateBufferFromDataArray(context.Device, data, length);
             }
             else
             {
                 DataStream stream;
                 context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
                 stream.Position = 0;
-                stream.WriteRange(data.GetArrayByType(), 0, data.Count);
+                stream.WriteRange(data.GetArrayByType(), 0, length);
                 context.UnmapSubresource(this.buffer, 0);
                 stream.Dispose();
             }
         }
 
-        public override void CreateBufferFromDataArray(Device device, IList<T> data)
+        public virtual void CreateBufferFromDataArray(Device device, IList<T> data, int length)
         {
             Disposer.RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
@@ -85,55 +75,62 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 BindFlags = this.bindFlags,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = this.optionFlags,
-                SizeInBytes = structureSize * data.Count,
-                StructureByteStride = structureSize,
+                SizeInBytes = StructureSize * length,
+                StructureByteStride = StructureSize,
                 Usage = ResourceUsage.Dynamic
             };           
             buffer = SDX11.Buffer.Create(device, data.GetArrayByType(), buffdesc);
+        }
+
+        public void CreateBufferFromDataArray(Device context, IList<T> data)
+        {
+            CreateBufferFromDataArray(context, data, data.Count);
+        }
+        public void UploadDataToBuffer(DeviceContext context, IList<T> data)
+        {
+            UploadDataToBuffer(context, data, data.Count);
         }
     }
 
     public class ConstantBufferProxy<T> : BufferProxyBase<T> where T : struct
     {
-        public ConstantBufferProxy(Device device, int structSize)
+        private readonly BufferDescription bufferDesc;
+        public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer, 
+            CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Default)
+            :base(structSize)
         {
-            buffer = new SDX11.Buffer(device, new BufferDescription()
+            bufferDesc = new BufferDescription()
             {
                 SizeInBytes = structSize,
-                BindFlags = BindFlags.ConstantBuffer,
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-                Usage = ResourceUsage.Default,
+                BindFlags = bindFlags,
+                CpuAccessFlags = cpuAccessFlags,
+                OptionFlags = optionFlags,
+                Usage = usage,
                 StructureByteStride = 0
-            });
+            };
         }
 
-        public override void CreateBufferFromDataArray(Device context, IList<T> data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void UploadDataToBuffer(DeviceContext context, ref T data)
+        public void UploadDataToBuffer(DeviceContext context, ref T data)
         {
             context.UpdateSubresource(ref data, buffer);
         }
 
-        public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
+        public void CreateBuffer(Device device)
         {
-            throw new NotImplementedException();
+            buffer = new SDX11.Buffer(device, bufferDesc);
         }
     }
 
     public abstract class BufferProxyBase<T> : IBufferProxy where T : struct  
     {
         protected SDX11.Buffer buffer;
-        public virtual int StructureSize { get; }
+        public int StructureSize { get; private set; }
         public SDX11.Buffer Buffer { get { return buffer; } }
 
-        public abstract void UploadDataToBuffer(DeviceContext context, IList<T> data);
-        public abstract void CreateBufferFromDataArray(Device device, IList<T> data);
-        public abstract void UploadDataToBuffer(DeviceContext context, ref T data);
-
+        public BufferProxyBase(int structureSize)
+        {
+            StructureSize = structureSize;
+        }
         public void Dispose()
         {
             Disposer.RemoveAndDispose(ref buffer);
