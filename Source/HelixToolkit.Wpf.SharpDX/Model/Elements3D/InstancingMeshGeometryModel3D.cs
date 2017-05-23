@@ -140,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.isInstanceChanged)
                 {
                     BuildOctree();
-                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.Instances);
+                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
                     this.isInstanceChanged = false;
                 }
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0));
@@ -156,7 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw
-                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
+                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
             }
             this.bHasInstances.Set(false);
             this.hasInstanceParamVar.Set(false);
@@ -213,7 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     foreach (var hit in boundHits)
                     {
                         int instanceIdx = (int)hit.Tag;
-                        instanceMatrix = Instances[instanceIdx];
+                        instanceMatrix = instanceInternal[instanceIdx];
                         this.PushMatrix(instanceMatrix);
                         var h = OnHitTest(context, rayWS, ref hits);
                         isHit |= h;
@@ -222,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             var result = hits.Last();
                             object tag = null;
-                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
+                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == instanceInternal.Count)
                             {
                                 tag = InstanceIdentifiers[instanceIdx];
                             }
@@ -254,7 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                    foreach (var hit in boundHits)
 //                    {
 //                        int instanceIdx = (int)hit.Tag;
-//                        instanceMatrix = Instances[instanceIdx];
+//                        instanceMatrix = instanceInternal[instanceIdx];
 //                        this.PushMatrix(instanceMatrix);
 //                        var h = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
 //                        isHit |= h;
@@ -263,7 +263,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                        {
 //                            var result = hits[0];
 //                            object tag = null;
-//                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
+//                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == instanceInternal.Count)
 //                            {
 //                                tag = InstanceIdentifiers[instanceIdx];
 //                            }
@@ -291,7 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                    foreach (var hit in boundHits)
 //                    {
 //                        int instanceIdx = (int)hit.Tag;
-//                        instanceMatrix = Instances[instanceIdx];
+//                        instanceMatrix = instanceInternal[instanceIdx];
 //                        this.PushMatrix(instanceMatrix);
 
 //                        var m = this.modelMatrix;
@@ -315,7 +315,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                                    result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
 //                                    result.Distance = d;
 //                                    object tag = null;
-//                                    if (InstanceIdentifiers != null && InstanceIdentifiers.Count == Instances.Count)
+//                                    if (InstanceIdentifiers != null && InstanceIdentifiers.Count == instanceInternal.Count)
 //                                    {
 //                                        tag = InstanceIdentifiers[instanceIdx];
 //                                    }

@@ -267,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
             // --- init instances buffer            
-            //this.hasInstances = this.Instances != null;            
+            //this.hasInstances = this.instanceInternal != null;            
             //this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
             //if (this.hasInstances)
             //{                

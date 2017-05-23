@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
             hasInstanceParamVar = effect.GetVariableByName("bHasInstanceParams").AsScalar();
             this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
 
-            this.hasInstances = (this.Instances != null) && (this.Instances.Any());
+            this.hasInstances = (this.instanceInternal != null) && (this.instanceInternal.Any());
             // --- set rasterstate
             OnRasterStateChanged();
 
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (this.isInstanceChanged)
                 {
-                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.Instances);
+                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
                     this.isInstanceChanged = false;
                 }
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0));
@@ -306,7 +306,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         effectTechnique.GetPassByIndex(2).Apply(renderContext.DeviceContext);
 
                         // --- draw text, foreground vertex is beginning from 0.
-                        renderContext.DeviceContext.DrawInstanced(vertexCount, this.Instances.Count, 0, 0);
+                        renderContext.DeviceContext.DrawInstanced(vertexCount, this.instanceInternal.Count, 0, 0);
                         break;
                     case BillboardType.SingleText:
                         if (vertexCount == 8)
@@ -315,13 +315,13 @@ namespace HelixToolkit.Wpf.SharpDX
                             // Use background shader to draw background first
                             effectTechnique.GetPassByIndex(1).Apply(renderContext.DeviceContext);
                             // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
-                            renderContext.DeviceContext.DrawInstanced(half, this.Instances.Count, half, 0);
+                            renderContext.DeviceContext.DrawInstanced(half, this.instanceInternal.Count, half, 0);
 
                             // Use foreground shader to draw text
                             effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
 
                             // --- draw text, foreground vertex is beginning from 0.
-                            renderContext.DeviceContext.DrawInstanced(half, this.Instances.Count, 0, 0);
+                            renderContext.DeviceContext.DrawInstanced(half, this.instanceInternal.Count, 0, 0);
                         }
                         break;
                 }

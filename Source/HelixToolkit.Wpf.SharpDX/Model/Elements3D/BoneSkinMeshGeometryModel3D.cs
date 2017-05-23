@@ -142,14 +142,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.Instances);
+                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
                     this.isInstanceChanged = false;
                 }
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceBuffer.Buffer, this.instanceBuffer.StructureSize, 0));
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw              
-                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
+                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
                 this.bHasInstances.Set(false);
             }
             else

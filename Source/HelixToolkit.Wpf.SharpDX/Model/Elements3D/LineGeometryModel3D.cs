@@ -99,41 +99,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
-        //public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
-        //{
-        //    if (CanHitTest(context))
-        //    {
-        //        if ((this.Instances != null) && (this.Instances.Any()))
-        //        {
-        //            bool hit = false;
-        //            int idx = 0;
-        //            foreach (var modelMatrix in Instances)
-        //            {
-        //                this.PushMatrix(modelMatrix);
-        //                if (OnHitTest(context, rayWS, ref hits))
-        //                {
-        //                    hit = true;
-        //                    var lastHit = hits[hits.Count - 1];
-        //                    lastHit.Tag = idx;
-        //                    hits[hits.Count - 1] = lastHit;
-        //                }
-        //                this.PopMatrix();
-        //                ++idx;
-        //            }
-
-        //            return hit;
-        //        }
-        //        else
-        //        {
-        //            return OnHitTest(context, rayWS, ref hits);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
 
         protected override bool CanHitTest(IRenderMatrices context)
         {
@@ -410,7 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.Instances);
+                    instanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
                     this.isInstanceChanged = false;
                 }
 
@@ -425,7 +390,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 for (int i = 0; i < this.effectTechnique.Description.PassCount; i++)
                 {
                     this.effectTechnique.GetPassByIndex(i).Apply(renderContext.DeviceContext);
-                    renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
+                    renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
                 }
                 this.bHasInstances.Set(false);
             }
