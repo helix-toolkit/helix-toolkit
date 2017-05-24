@@ -22,30 +22,6 @@
 //}
 
 
-//--------------------------------------------------------------------------------------
-// GLOBAL FUNCTIONS
-//--------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------
-// From projection frame to window pixel pos.
-//--------------------------------------------------------------------------------------
-float2 projToWindow(in float4 pos)
-{
-    return float2(vViewport.x * 0.5 * (1.0 + (pos.x / pos.w)),
-                  vViewport.y * 0.5 * (1.0 - (pos.y / pos.w)));
-}
-
-//--------------------------------------------------------------------------------------
-// From window pixel pos to projection frame at the specified z (view frame). 
-//--------------------------------------------------------------------------------------
-float4 windowToProj(in float2 pos, in float z, in float w)
-{
-    return float4(((pos.x * 2.0 / vViewport.x) - 1.0) * w,
-                  ((pos.y * 2.0 / vViewport.y) - 1.0) * -w,
-                  z, w);
-}
-
-
 
 //--------------------------------------------------------------------------------------
 // Make a a ribbon line of the specified pixel width from 2 points in the projection frame.

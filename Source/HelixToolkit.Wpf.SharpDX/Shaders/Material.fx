@@ -41,7 +41,6 @@
 // GLOBAL Variables (Varing)
 //--------------------------------------------------------------------------------------
 float4 vTessellation			= float4(2.0f, 0.0f, 0.0f, 0.0f); // the first value is the TS-factor, the other are free!
-float4 vLightAmbient			= float4(0.2f, 0.2f, 0.2f, 1.0f);
 
 //--------------------------------------------------------------------------------------
 // TEXTURES

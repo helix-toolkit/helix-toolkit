@@ -568,7 +568,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.RenderHost = hostPresenter.Content as IRenderHost;
             this.RenderHost.MSAA = this.MSAA;
             this.RenderHost.EnableRenderFrustum = this.EnableRenderFrustum;
-            this.RenderHost.RenderCycles = this.RenderCycles;
             this.RenderHost.MaxFPS = (uint)this.MaxFPS;
             this.RenderHost.EnableSharingModelMode = this.EnableSharedModelMode;
             this.RenderHost.SharedModelContainer = this.SharedModelContainer;

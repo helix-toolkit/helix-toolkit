@@ -10,6 +10,7 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
+using HelixToolkit.Wpf.SharpDX.Utilities;
 
 namespace CustomShaderDemo
 {
@@ -35,15 +36,25 @@ namespace CustomShaderDemo
 
     public class CustomGeometryModel3D : MaterialGeometryModel3D
     {
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<CustomVertex> vertexBuffer = new ImmutableBufferProxy<CustomVertex>(CustomVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        protected Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
+
+        public override IBufferProxy VertexBuffer
         {
             get
             {
-                return CustomVertex.SizeInBytes;
+                return vertexBuffer;
             }
         }
 
-        protected Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
+        public override IBufferProxy IndexBuffer
+        {
+            get
+            {
+                return indexBuffer;
+            }
+        }
 
         public static readonly DependencyProperty RequiresPerVertexColorationProperty =
             DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false));
@@ -109,30 +120,23 @@ namespace CustomShaderDemo
             {
                 throw new Exception("Geometry must not be null");
             }
-
-            vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes,
-                CreateCustomVertexArray());
-            indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int),
-                Geometry.Indices.ToArray());
-
+            vertexBuffer.CreateBufferFromDataArray(Device, CreateCustomVertexArray());
+            indexBuffer.CreateBufferFromDataArray(Device, Geometry.Indices.ToArray());
             hasInstances = (Instances != null) && (Instances.Any());
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
+            OnRasterStateChanged();
             if (hasInstances)
             {
-                instanceBuffer = Buffer.Create(Device, Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                isInstanceChanged = true;
             }
-
-            OnRasterStateChanged();
-
-           // Device.ImmediateContext.Flush();
+            // Device.ImmediateContext.Flush();
             return true;
         }
 
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref vertexBuffer);
-            Disposer.RemoveAndDispose(ref indexBuffer);
-            Disposer.RemoveAndDispose(ref instanceBuffer);
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
             Disposer.RemoveAndDispose(ref effectMaterial);
             Disposer.RemoveAndDispose(ref effectTransforms);
             Disposer.RemoveAndDispose(ref bHasInstances);
@@ -165,7 +169,7 @@ namespace CustomShaderDemo
             /// --- set context
             Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
             Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            Device.ImmediateContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
+            Device.ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, 0);
 
             /// --- set rasterstate            
             Device.ImmediateContext.Rasterizer.State = rasterState;
@@ -175,15 +179,15 @@ namespace CustomShaderDemo
                 /// --- update instance buffer
                 if (isInstanceChanged)
                 {
-                    instanceBuffer = Buffer.Create(Device, Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, Instances.ToArray());
                     isInstanceChanged = false;
                 }
 
                 /// --- INSTANCING: need to set 2 buffers            
                 Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
-                    new VertexBufferBinding(vertexBuffer, VertexSizeInBytes, 0),
-                    new VertexBufferBinding(instanceBuffer, Matrix.SizeInBytes, 0),
+                    new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0),
+                    new VertexBufferBinding(InstanceBuffer.Buffer, InstanceBuffer.StructureSize, 0),
                 });
 
                 /// --- render the geometry
@@ -194,7 +198,7 @@ namespace CustomShaderDemo
             else
             {
                 /// --- bind buffer                
-                Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, VertexSizeInBytes, 0));
+                Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));
                 /// --- render the geometry
                 effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
@@ -239,7 +243,7 @@ namespace CustomShaderDemo
 
         protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 

@@ -16,16 +16,21 @@
 
     public class PointGeometryModel3D : GeometryModel3D
     {
-        private Geometry3D.PointsVertex[] vertexArrayBuffer;
+        private PointsVertex[] vertexArrayBuffer;
         protected InputLayout vertexLayout;
-        protected Buffer vertexBuffer;
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
         protected EffectVectorVariable vPointParams;
-
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<PointsVertex> vertexBuffer = new ImmutableBufferProxy<PointsVertex>(PointsVertex.SizeInBytes, BindFlags.VertexBuffer);
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public virtual IBufferProxy VertexBuffer
         {
-            get { return Geometry3D.PointsVertex.SizeInBytes; }
+            get
+            {
+                return vertexBuffer;
+            }
         }
 
         [TypeConverter(typeof(ColorConverter))]
@@ -194,13 +199,9 @@
             var geometry = geometryInternal as PointGeometry3D;
             if (geometry != null && geometry.Positions != null)
             {
-                Disposer.RemoveAndDispose(ref vertexBuffer);
                 // --- set up buffers            
                 var data = CreateVertexArray();
-                if (data != null)
-                {
-                    this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, data, geometry.Positions.Count);
-                }
+                vertexBuffer.CreateBufferFromDataArray(this.Device, data);
             }
         }
 
@@ -224,9 +225,9 @@
             }
         }
 
-        private void OnUpdateVertexBuffer(System.Func<Geometry3D.PointsVertex[]> updateFunction)
+        private void OnUpdateVertexBuffer(System.Func<PointsVertex[]> updateFunction)
         {
-            CreateVertexBuffer();
+            updateFunction.Invoke();
             this.InvalidateRender();
         }
 
@@ -285,7 +286,7 @@
         /// </summary>
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref this.vertexBuffer);
+            vertexBuffer.Dispose();
             Disposer.RemoveAndDispose(ref this.rasterState);
             Disposer.RemoveAndDispose(ref this.vPointParams);
             this.renderTechnique = null;
@@ -328,7 +329,7 @@
 
             // --- bind buffer                
             renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0,
-                new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
+                new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
 
             // --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
@@ -347,13 +348,13 @@
         /// <summary>
         /// Creates a <see cref="T:PointsVertex[]"/>.
         /// </summary>
-        private Geometry3D.PointsVertex[] CreateVertexArray()
+        private PointsVertex[] CreateVertexArray()
         {
             var positions = this.geometryInternal.Positions;
             var vertexCount = this.geometryInternal.Positions.Count;
             var color = this.Color;
             if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
-                vertexArrayBuffer = new Geometry3D.PointsVertex[vertexCount];
+                vertexArrayBuffer = new PointsVertex[vertexCount];
 
             if (this.geometryInternal.Colors != null && this.geometryInternal.Colors.Any())
             {

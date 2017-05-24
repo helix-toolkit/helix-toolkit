@@ -28,14 +28,6 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class GeometryModel3D : Model3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
     {
         protected RasterizerState rasterState;
-        /// <summary>
-        /// Override in derived classes to specify the
-        /// size, in bytes, of the vertices used for rendering.
-        /// </summary>
-        public virtual int VertexSizeInBytes
-        {
-            get { return DefaultVertex.SizeInBytes; }
-        }
 
         public Geometry3D Geometry
         {

@@ -35,20 +35,31 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         private LinesVertex[] vertexArrayBuffer = null;
         protected InputLayout vertexLayout;
-        protected Buffer vertexBuffer;
-        protected Buffer indexBuffer;
-        protected Buffer instanceBuffer;
-        protected EffectTechnique effectTechnique;
-        protected EffectTransformVariables effectTransforms;
-        protected EffectVectorVariable vViewport, vLineParams; // vFrustum, 
-
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<LinesVertex> vertexBuffer = new ImmutableBufferProxy<LinesVertex>(LinesVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public virtual IBufferProxy VertexBuffer
         {
             get
             {
-                return LinesVertex.SizeInBytes;
+                return vertexBuffer;
             }
         }
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public virtual IBufferProxy IndexBuffer
+        {
+            get
+            {
+                return indexBuffer;
+            }
+        }
+        protected EffectTechnique effectTechnique;
+        protected EffectTransformVariables effectTransforms;
+        protected EffectVectorVariable vViewport, vLineParams; // vFrustum, 
 
         [TypeConverter(typeof(ColorConverter))]
         public Color Color
@@ -87,41 +98,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
-
-        //public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
-        //{
-        //    if (CanHitTest(context))
-        //    {
-        //        if ((this.Instances != null) && (this.Instances.Any()))
-        //        {
-        //            bool hit = false;
-        //            int idx = 0;
-        //            foreach (var modelMatrix in Instances)
-        //            {
-        //                this.PushMatrix(modelMatrix);
-        //                if (OnHitTest(context, rayWS, ref hits))
-        //                {
-        //                    hit = true;
-        //                    var lastHit = hits[hits.Count - 1];
-        //                    lastHit.Tag = idx;
-        //                    hits[hits.Count - 1] = lastHit;
-        //                }
-        //                this.PopMatrix();
-        //                ++idx;
-        //            }
-
-        //            return hit;
-        //        }
-        //        else
-        //        {
-        //            return OnHitTest(context, rayWS, ref hits);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
 
 
         protected override bool CanHitTest(IRenderMatrices context)
@@ -231,8 +207,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else if (e.PropertyName.Equals(nameof(LineGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
-                    Disposer.RemoveAndDispose(ref this.indexBuffer);
-                    this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), this.geometryInternal.Indices.Array, geometryInternal.Indices.Count);
+                    indexBuffer.CreateBufferFromDataArray(this.Device, geometryInternal.Indices);
                     InvalidateRender();
                 }
                 else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
@@ -254,14 +229,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var geometry = geometryInternal as LineGeometry3D;
             if (geometry != null && geometry.Positions != null)
-            {
-                Disposer.RemoveAndDispose(ref vertexBuffer);
+            { 
                 // --- set up buffers            
                 var data = this.CreateLinesVertexArray();
-                if (data != null)
-                {
-                    this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, data, geometry.Positions.Count);
-                }
+                vertexBuffer.CreateBufferFromDataArray(this.Device, data);
             }
         }
 
@@ -296,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- set up buffers            
                 CreateVertexBuffer();
                 // --- set up indexbuffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array, geometry.Indices.Count);
+                indexBuffer.CreateBufferFromDataArray(Device, geometry.Indices);
             }
             else
             {
@@ -330,9 +301,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref this.vertexBuffer);
-            Disposer.RemoveAndDispose(ref this.indexBuffer);
-            Disposer.RemoveAndDispose(ref this.instanceBuffer);
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
             //Disposer.RemoveAndDispose(ref this.vFrustum);
             Disposer.RemoveAndDispose(ref this.vViewport);
             Disposer.RemoveAndDispose(ref this.vLineParams);            
@@ -392,7 +362,7 @@ namespace HelixToolkit.Wpf.SharpDX
             
             // --- set context
             renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 
             this.bHasInstances.Set(this.hasInstances);
@@ -405,42 +375,29 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- update instance buffer
                 if (this.isInstanceChanged)
                 {
-                    if(instanceBuffer == null || instanceBuffer.Description.SizeInBytes < Matrix.SizeInBytes * this.Instances.Count)
-                    {
-                        Disposer.RemoveAndDispose(ref instanceBuffer);
-                        this.instanceBuffer = Buffer.Create(this.Device, this.Instances.ToArray(), new BufferDescription(Matrix.SizeInBytes * this.Instances.Count, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                    }
-                    else
-                    {
-                        DataStream stream;
-                        renderContext.DeviceContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                        stream.Position = 0;
-                        stream.WriteRange(this.Instances.ToArray(), 0, this.Instances.Count);
-                        renderContext.DeviceContext.UnmapSubresource(this.instanceBuffer, 0);
-                        stream.Dispose();
-                    }
+                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
                     this.isInstanceChanged = false;
                 }
 
                 // --- INSTANCING: need to set 2 buffers            
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new[] 
                 {
-                    new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
-                    new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
+                    new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0),
+                    new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0),
                 });
 
                 // --- render the geometry
                 for (int i = 0; i < this.effectTechnique.Description.PassCount; i++)
                 {
                     this.effectTechnique.GetPassByIndex(i).Apply(renderContext.DeviceContext);
-                    renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.Instances.Count, 0, 0, 0);
+                    renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
                 }
                 this.bHasInstances.Set(false);
             }
             else
             {
                 // --- bind buffer                
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
 
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);

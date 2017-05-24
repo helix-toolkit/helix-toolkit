@@ -20,6 +20,7 @@ using System.IO;
 using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
 using System.Diagnostics;
+using HelixToolkit.Wpf.SharpDX.Utilities;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -548,9 +549,10 @@ namespace HelixToolkit.Wpf.SharpDX
         };
 
         //Buffer indirectArgsBuffer;
-        Buffer particleCountGSIABuffer;
-        Buffer frameConstBuffer;
-        Buffer particleInsertBuffer;
+        private readonly ConstantBufferProxy<ParticleCountIndirectArgs> particleCountGSIABuffer = new ConstantBufferProxy<ParticleCountIndirectArgs>(ParticleCountIndirectArgs.SizeInBytes, 
+            BindFlags.None, CpuAccessFlags.None, ResourceOptionFlags.DrawIndirectArguments);
+        private readonly ConstantBufferProxy<ParticlePerFrame> frameConstBuffer = new ConstantBufferProxy<ParticlePerFrame>(ParticlePerFrame.SizeInBytes);
+        private readonly ConstantBufferProxy<ParticleInsertParameters> particleInsertBuffer = new ConstantBufferProxy<ParticleInsertParameters>(ParticleInsertParameters.SizeInBytes);
 #if DEBUG
         private Buffer particleCountStaging;
 #endif
@@ -628,9 +630,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void DisposeBuffers()
         {
-            Disposer.RemoveAndDispose(ref particleCountGSIABuffer);
-            Disposer.RemoveAndDispose(ref frameConstBuffer);
-            Disposer.RemoveAndDispose(ref particleInsertBuffer);
+            particleCountGSIABuffer.Dispose();
+            frameConstBuffer.Dispose();
+            particleInsertBuffer.Dispose();
 #if DEBUG
             Disposer.RemoveAndDispose(ref particleCountStaging);
 #endif
@@ -665,10 +667,12 @@ namespace HelixToolkit.Wpf.SharpDX
             };
             particleCountStaging = new Buffer(this.Device, stagingbufferDesc);
 #endif
-            particleCountGSIABuffer = Buffer.Create(this.Device, new uint[4] { 0, 1, 0, 0 }, renderIndirectArgsBufDesc);
-
-            frameConstBuffer = new Buffer(this.Device, ParticlePerFrame.SizeInBytes, ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
-            particleInsertBuffer = new Buffer(this.Device, ParticleInsertParameters.SizeInBytes, ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            particleCountGSIABuffer.CreateBuffer(this.Device);
+            ParticleCountIndirectArgs args = new ParticleCountIndirectArgs();
+            args.InstanceCount = 1;
+            Device.ImmediateContext.UpdateSubresource(ref args, particleCountGSIABuffer.Buffer);
+            frameConstBuffer.CreateBuffer(this.Device);
+            particleInsertBuffer.CreateBuffer(this.Device);
         }
 
         private void OnTextureChanged()
@@ -768,7 +772,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Reset Both UAV buffers
                 context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[0].UAV, 0);
                 context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV, 0);
-                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer);
+                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
                 // Call ComputeShader to add initial particles
                 context.DeviceContext.Dispatch(1, 1, 1);
                 isRestart = false;
@@ -776,18 +780,18 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 //upload framebuffer
-                context.DeviceContext.UpdateSubresource(ref parameters.frameVariables, frameConstBuffer);
+                context.DeviceContext.UpdateSubresource(ref parameters.frameVariables, frameConstBuffer.Buffer);
                 // Get consume buffer count
-                context.DeviceContext.CopyStructureCount(frameConstBuffer, ParticlePerFrame.NumParticlesOffset, BufferProxies[0].UAV);
+                context.DeviceContext.CopyStructureCount(frameConstBuffer.Buffer, ParticlePerFrame.NumParticlesOffset, BufferProxies[0].UAV);
                 // Calculate existing particles
                 pass = this.effectTechnique.GetPassByIndex(1);
                 pass.Apply(context.DeviceContext);
                 context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[0].UAV);
                 context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV, 0);
-                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer);
+                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
                 context.DeviceContext.Dispatch(System.Math.Max(1, parameters.particleCountInternal / 512), 1, 1);
                 // Get append buffer count
-                context.DeviceContext.CopyStructureCount(particleCountGSIABuffer, 0, BufferProxies[1].UAV);
+                context.DeviceContext.CopyStructureCount(particleCountGSIABuffer.Buffer, 0, BufferProxies[1].UAV);
             }
 
             //#if DEBUG
@@ -797,12 +801,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (totalElapsed > parameters.insertThrottle)
             {
-                context.DeviceContext.UpdateSubresource(ref parameters.insertVariables, particleInsertBuffer);
+                context.DeviceContext.UpdateSubresource(ref parameters.insertVariables, particleInsertBuffer.Buffer);
                 // Add more particles 
                 pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(context.DeviceContext);
                 context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV);
-                context.DeviceContext.ComputeShader.SetConstantBuffer(1, particleInsertBuffer);
+                context.DeviceContext.ComputeShader.SetConstantBuffer(1, particleInsertBuffer.Buffer);
                 context.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
 #if DEBUG
@@ -826,7 +830,7 @@ namespace HelixToolkit.Wpf.SharpDX
             pass = this.effectTechnique.GetPassByIndex(2);
             pass.Apply(context.DeviceContext);
             context.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
-            context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer, 0);
+            context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
         }
 
 #if DEBUG
@@ -836,7 +840,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DataStream ds;
             var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out ds);
             int CurrentParticleCount = ds.ReadInt();
-            System.Diagnostics.Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
+            Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
             context.UnmapSubresource(particleCountStaging, 0);
         }
 #endif

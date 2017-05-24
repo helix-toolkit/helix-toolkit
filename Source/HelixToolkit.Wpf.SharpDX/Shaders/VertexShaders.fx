@@ -23,7 +23,7 @@ PSInput VShaderDefault(VSInput input)
 			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
 		};
 		inputp = mul(mInstance, input.p);
-		inputn = mul(mInstance, input.n);
+		inputn = mul(mInstance, inputn);
 	}
 
 	//set position into camera clip space	
@@ -85,7 +85,7 @@ PSInput VInstancingShader(VSInstancingInput input)
 			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
 		};
 		inputp = mul(mInstance, input.p);
-		inputn = mul(mInstance, input.n);
+		inputn = mul(mInstance, inputn);
 	}
 
 	//set position into camera clip space	

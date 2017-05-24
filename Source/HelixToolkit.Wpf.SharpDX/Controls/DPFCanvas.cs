@@ -70,16 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
 
-        private int renderCycles = 1;
-        /// <summary>
-        /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
-        /// Default value = <value>1</value>
-        /// </summary>
-        public int RenderCycles
-        {
-            set { renderCycles = value; }
-            get { return renderCycles; }
-        }
+        private readonly int renderCycles = 1;
 
         /// <summary>
         /// Get RenderContext
@@ -253,11 +244,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private DispatcherOperation pendingInvalidateOperation = null;
+        //private DispatcherOperation pendingInvalidateOperation = null;
         /// <summary>
         /// 
         /// </summary>
-        private readonly Action invalidAction;
+        //private readonly Action invalidAction;
         /// <summary>
         /// 
         /// </summary>
@@ -278,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
             MSAA = MSAALevel.Maximum;
-            invalidAction = new Action(InvalidateRender);
+           // invalidAction = new Action(InvalidateRender);
         }
 
         /// <summary>
@@ -286,35 +277,36 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
-            if (RenderCycles == 1)
-            {
-                System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
-            }
-            else
-            {
-                //Use pendingInvalidateOperation to check if there is a pending operation.
-                if (pendingInvalidateOperation != null)
-                {
-                    switch (pendingInvalidateOperation.Status)
-                    {
-                        case DispatcherOperationStatus.Pending:
-                            //If there is a pending invalidation operation, try to set cycle to 2.
-                            //Does not matter if it is failed or not, since the pending one will eventually invalidate.
-                            //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
-                            System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
-                            return;
-                    }
-                    pendingInvalidateOperation = null;
-                }
-                // For some reason, we need two render cycles to recover from 
-                // UAC popup or sleep when MSAA is enabled.
-                if (System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0) != 0)
-                {
-                    //If invalidate failed, schedule an async operation to invalidate in future
-                    pendingInvalidateOperation
-                        = Dispatcher.BeginInvoke(invalidAction, DispatcherPriority.Background);
-                }
-            }
+            System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, renderCycles, 0);
+            //if (RenderCycles == 1)
+            //{
+            //    System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
+            //}
+            //else
+            //{
+            //    //Use pendingInvalidateOperation to check if there is a pending operation.
+            //    if (pendingInvalidateOperation != null)
+            //    {
+            //        switch (pendingInvalidateOperation.Status)
+            //        {
+            //            case DispatcherOperationStatus.Pending:
+            //                //If there is a pending invalidation operation, try to set cycle to 2.
+            //                //Does not matter if it is failed or not, since the pending one will eventually invalidate.
+            //                //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
+            //                System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
+            //                return;
+            //        }
+            //        pendingInvalidateOperation = null;
+            //    }
+            //    // For some reason, we need two render cycles to recover from 
+            //    // UAC popup or sleep when MSAA is enabled.
+            //    if (System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0) != 0)
+            //    {
+            //        //If invalidate failed, schedule an async operation to invalidate in future
+            //        pendingInvalidateOperation
+            //            = Dispatcher.BeginInvoke(invalidAction, DispatcherPriority.Background);
+            //    }
+            //}
         }
 
 
@@ -740,24 +732,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                if (pendingValidationCycles > 0 && !skipper.IsSkip())
+                if (pendingValidationCycles > 0 && !skipper.IsSkip() && surfaceD3D != null && renderRenderable != null)
                 {
                     var t0 = renderTimer.Elapsed;
-                    if (surfaceD3D != null && renderRenderable != null)
+
+                    // Update all renderables before rendering 
+                    // giving them the chance to invalidate the current render.                                                            
+                    //renderRenderable.Update(t0);
+                    if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(Math.Abs(skipper.lag)))))
                     {
-                        // Update all renderables before rendering 
-                        // giving them the chance to invalidate the current render.                                                            
-                        //renderRenderable.Update(t0);
-                        var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
-                        if (cycle == RenderCycles - 1)
-                        {
-                            Render(t0);
-                        }
-                        if (cycle == 0)
-                        {
-                            surfaceD3D.InvalidateD3DImage();
-                        }
+                        System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
+                        Render(t0);
+                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));                                
                     }
+                    surfaceD3D.Unlock();
 
                     lastRenderingDuration = renderTimer.Elapsed - t0;
                 }
