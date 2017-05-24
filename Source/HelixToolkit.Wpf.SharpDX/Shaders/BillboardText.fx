@@ -1,7 +1,8 @@
 #ifndef BILLBOARDTEXT_FX
 #define BILLBOARDTEXT_FX
 #include "Common.fx"
-
+#include "DataStructs.fx"
+#include "Material.fx"
 Texture2D billboardTexture; // billboard text image
 Texture2D billboardAlphaTexture;
 bool   bHasAlphaTexture = false;
