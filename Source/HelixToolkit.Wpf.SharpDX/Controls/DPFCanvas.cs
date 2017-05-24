@@ -730,32 +730,33 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            try
+            if (pendingValidationCycles > 0 && !skipper.IsSkip() && surfaceD3D != null && renderRenderable != null)
             {
-                if (pendingValidationCycles > 0 && !skipper.IsSkip() && surfaceD3D != null && renderRenderable != null)
-                {
-                    var t0 = renderTimer.Elapsed;
+                var t0 = renderTimer.Elapsed;
 
-                    // Update all renderables before rendering 
-                    // giving them the chance to invalidate the current render.                                                            
-                    //renderRenderable.Update(t0);
-                    if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(Math.Abs(skipper.lag)))))
+                // Update all renderables before rendering 
+                // giving them the chance to invalidate the current render.                                                            
+                //renderRenderable.Update(t0);
+                try
+                {                       
+                    if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))                    
                     {
-                        System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
+                        System.Threading.Interlocked.Decrement(ref pendingValidationCycles);                   
                         Render(t0);
-                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));                                
+                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                     }
-                    surfaceD3D.Unlock();
-
-                    lastRenderingDuration = renderTimer.Elapsed - t0;
                 }
-            }
-            catch (Exception ex)
-            {
-                if (!HandleExceptionOccured(ex))
+                catch (Exception ex)
                 {
-                    MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                    if (!HandleExceptionOccured(ex))
+                    {
+                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                    }
                 }
+                finally
+                { surfaceD3D.Unlock(); }
+
+                lastRenderingDuration = renderTimer.Elapsed - t0;
             }
         }
 
