@@ -70,6 +70,12 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
 
+        private static Lazy<IRenderTechniquesManager> DefaultRenderTechniquesManagerObj
+            = new Lazy<IRenderTechniquesManager>(() => new DefaultRenderTechniquesManager(), true);
+
+        private static Lazy<IEffectsManager> DefaultEffectsManagerObj
+            = new Lazy<IEffectsManager>(() => new DefaultEffectsManager(DefaultRenderTechniquesManagerObj.Value), true);
+
         private readonly int renderCycles = 1;
 
         /// <summary>
@@ -375,8 +381,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Make sure both are null
                 RenderTechniquesManager = null;
                 EffectsManager = null;
-                RenderTechniquesManager = new DefaultRenderTechniquesManager();
-                EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+                RenderTechniquesManager = DefaultRenderTechniquesManagerObj.Value;
+                EffectsManager = DefaultEffectsManagerObj.Value;
                 return; // StardD3D() is called from DP changed handler
             }
 

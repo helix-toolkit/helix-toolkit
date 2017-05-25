@@ -31,6 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// An Effects manager which includes all standard effects, 
     /// tessellation, and deferred effects.
+    /// <para>Make sure to dispose this if not being used. Otherwise may cause memory leak.</para>
     /// </summary>
     public class DefaultEffectsManager : IEffectsManager, IDisposable
     {
