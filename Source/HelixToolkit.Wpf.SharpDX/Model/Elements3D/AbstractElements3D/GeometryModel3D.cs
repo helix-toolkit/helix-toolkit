@@ -340,7 +340,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnAttached()
         {
             base.OnAttached();
-            if (Geometry != null)
+            if (geometryInternal != null)
             {
                 this.Bounds = this.geometryInternal.Bound;
                 this.BoundsSphere = this.geometryInternal.BoundingSphere;
@@ -357,7 +357,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void AttachOnGeometryPropertyChanged()
         {
-            if (Geometry != null)
+            if (geometryInternal != null)
             {
                 geometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
                 geometryInternal.PropertyChanged += OnGeometryPropertyChangedPrivate;
@@ -366,7 +366,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void DetachOnGeometryPropertyChanged()
         {
-            if (Geometry != null)
+            if (geometryInternal != null)
             {
                 geometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
             }
@@ -400,10 +400,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return viewFrustum.Intersects(ref boundsWithTransform);
         }
-        ~GeometryModel3D()
-        {
+        //~GeometryModel3D()
+        //{
 
-        }
+        //}
 
         //static ulong count = 0;
 
