@@ -13,6 +13,7 @@ namespace DemoCore
     using System.Collections.Generic;
 
     using HelixToolkit.Wpf.SharpDX;
+    using System.IO;
 
     /// <summary>
     /// Base ViewModel for Demo Applications?
@@ -176,6 +177,16 @@ namespace DemoCore
             if (eh != null)
             {
                 eh(this, new EventArgs());
+            }
+        }
+
+        public static MemoryStream LoadFileToMemory(string filePath)
+        {
+            using (var file = new FileStream(filePath, FileMode.Open))
+            {
+                var memory = new MemoryStream();
+                file.CopyTo(memory);
+                return memory;
             }
         }
 
