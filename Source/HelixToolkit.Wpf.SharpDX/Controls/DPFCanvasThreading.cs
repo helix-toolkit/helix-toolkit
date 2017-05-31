@@ -163,23 +163,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private TimeSpan lastRenderingDuration;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
-
-        private static Lazy<IRenderTechniquesManager> DefaultRenderTechniquesManagerObj
-            = new Lazy<IRenderTechniquesManager>(() => new DefaultRenderTechniquesManager(), true);
-
-        private static Lazy<IEffectsManager> DefaultEffectsManagerObj
-            = new Lazy<IEffectsManager>(() => new DefaultEffectsManager(DefaultRenderTechniquesManagerObj.Value), true);
-
+        private IEffectsManager defaultEffectsManager = null;
         private int renderCycles = 1;
-        /// <summary>
-        /// Set render cycles to 2 if experiences lagging during rotation. Benefits on some old laptop graphics cards.
-        /// Default value = <value>1</value>
-        /// </summary>
-        public int RenderCycles
-        {
-            set { renderCycles = value; }
-            get { return renderCycles; }
-        }
+        private bool loaded = false;
 
         public RenderContext RenderContext { get { return renderContext; } }
 
@@ -301,7 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EffectsManagerProperty =
             DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvasThreading),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((DPFCanvasThreading)s).EffectsManagerPropertyChanged()));
+                (s, e) => ((DPFCanvasThreading)s).RestartRendering()));
 
         public IEffectsManager EffectsManager
         {
@@ -309,16 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(EffectsManagerProperty, value); }
         }
 
-        public static readonly DependencyProperty RenderTechniquesManagerProperty =
-            DependencyProperty.Register("RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(DPFCanvasThreading),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((DPFCanvasThreading)s).RenderTechniquesManagerPropertyChanged()));
-
-        public IRenderTechniquesManager RenderTechniquesManager
-        {
-            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
-            set { SetValue(RenderTechniquesManagerProperty, value); }
-        }
+        public IRenderTechniquesManager RenderTechniquesManager { get { return EffectsManager != null ? EffectsManager.RenderTechniquesManager : null; } }
 
         /// <summary>
         /// Gets a value indicating whether the control is in design mode
@@ -351,10 +328,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private DispatcherOperation pendingInvalidateOperation = null;
-        /// <summary>
-        /// 
-        /// </summary>
         private readonly Action invalidAction;
 
         /// <summary>
@@ -377,35 +350,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
-            if (RenderCycles == 1)
-            {
-                System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
-            }
-            else
-            {
-                //Use pendingInvalidateOperation to check if there is a pending operation.
-                if (pendingInvalidateOperation != null)
-                {
-                    switch (pendingInvalidateOperation.Status)
-                    {
-                        case DispatcherOperationStatus.Pending:
-                            //If there is a pending invalidation operation, try to set cycle to 2.
-                            //Does not matter if it is failed or not, since the pending one will eventually invalidate.
-                            //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
-                            System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
-                            return;
-                    }
-                    pendingInvalidateOperation = null;
-                }
-                // For some reason, we need two render cycles to recover from 
-                // UAC popup or sleep when MSAA is enabled.
-                if (System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0) != 0)
-                {
-                    //If invalidate failed, schedule an async operation to invalidate in future
-                    pendingInvalidateOperation
-                        = Dispatcher.BeginInvoke(invalidAction, DispatcherPriority.Background);
-                }
-            }
+            Interlocked.CompareExchange(ref pendingValidationCycles, renderCycles, 0);
         }
 
 
@@ -428,12 +373,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            loaded = true;
             try
             {
                 Child = mRenderThread.InitializeRenderThread();
-                StartD3D();
-                StartRendering();
+                if (StartD3D())
+                {
+                    StartRendering();
+                }
             }
             catch (Exception ex)
             {
@@ -460,7 +407,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            loaded = false;
             StopRendering();
             EndD3D();
             mRenderThread.DestoryRenderThread();
@@ -469,16 +416,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private void StartD3D()
+        private bool StartD3D()
         {
-            if (EffectsManager == null || RenderTechniquesManager == null)
+            if (!loaded || EffectsManager == null || RenderTechniquesManager == null)
             {
-                // Make sure both are null
-                RenderTechniquesManager = null;
-                EffectsManager = null;
-                RenderTechniquesManager = DefaultRenderTechniquesManagerObj.Value;
-                EffectsManager = DefaultEffectsManagerObj.Value;
-                return; // StardD3D() is called from DP changed handler
+                if (EffectsManager == null)
+                {
+                    EffectsManager = defaultEffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());
+                }
+                return false; // StardD3D() is called from DP changed handler
             }
             mRenderThread.CreateImageSource(EffectsManager.AdapterIndex);
             //   surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
@@ -491,6 +437,7 @@ namespace HelixToolkit.Wpf.SharpDX
             SetDefaultRenderTargets();
             //  Source = surfaceD3D;
             InvalidateRender();
+            return true;
         }
 
 
@@ -512,7 +459,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
             // Source = null;
-
+            RenderContext?.Dispose();
             Disposer.RemoveAndDispose(ref deferredRenderer);
             // Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);
@@ -522,6 +469,10 @@ namespace HelixToolkit.Wpf.SharpDX
 #if MSAA
             Disposer.RemoveAndDispose(ref renderTargetNMS);
 #endif
+            if (defaultEffectsManager != null)
+            {
+                (defaultEffectsManager as IDisposable)?.Dispose();
+            }
         }
 
         /// <summary>
@@ -848,20 +799,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     var t0 = renderTimer.Elapsed;
                     if (mRenderThread.IsInitalized && renderRenderable != null)
                     {
-                        // Update all renderables before rendering 
-                        // giving them the chance to invalidate the current render.                                                            
-                        //renderRenderable.Update(t0);
-                        var cycle = System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
-                        if (cycle == RenderCycles - 1)
-                        {
-                            Render(t0);
-                        }
-                        //if (cycle == 0)
-                        //{
-                        //    surfaceD3D.InvalidateD3DImage();
-                        //}
+                        Interlocked.Decrement(ref pendingValidationCycles);
+                        Render(t0);
                     }
-
                     lastRenderingDuration = renderTimer.Elapsed - t0;
                 }
             }
@@ -912,12 +852,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>
-        private void EffectsManagerPropertyChanged()
+        private void RestartRendering()
         {
+            StopRendering();
+            EndD3D();
             if (EffectsManager != null && RenderTechniquesManager != null)
             {
-                StartD3D();
+                IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
+                    || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
             }
+            if (StartD3D())
+            { StartRendering(); }
         }
 
         /// <summary>
@@ -961,17 +906,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.StopRendering();
             }
 #endif
-        }
-
-        /// <summary>
-        /// Handles the change of the render techniques manager.       
-        /// </summary>
-        private void RenderTechniquesManagerPropertyChanged()
-        {
-            if (EffectsManager != null && RenderTechniquesManager != null)
-            {
-                StartD3D();
-            }
         }
     }
 }

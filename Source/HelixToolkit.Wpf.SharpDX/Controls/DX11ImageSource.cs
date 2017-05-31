@@ -50,9 +50,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public DX11ImageSource(int adapterIndex = 0)
         {
-            this.adapterIndex = adapterIndex;
-            Interlocked.Increment(ref activeClients);
+            this.adapterIndex = adapterIndex;        
             this.StartD3D();
+            Interlocked.Increment(ref activeClients);
             
         }
 
