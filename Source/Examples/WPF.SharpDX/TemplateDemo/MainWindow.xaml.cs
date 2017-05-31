@@ -9,6 +9,7 @@
 
 namespace TemplateDemo
 {
+    using System;
     using System.Windows;
 
     /// <summary>
@@ -20,6 +21,12 @@ namespace TemplateDemo
         {
             InitializeComponent();
             this.DataContext = new MainViewModel();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };
         }
     }
 }
