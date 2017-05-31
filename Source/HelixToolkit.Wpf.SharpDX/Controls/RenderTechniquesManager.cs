@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public static byte[] Default { get; } = Properties.Resources._default;
         public static byte[] Deferred { get; } = Properties.Resources._deferred;
-        public static string Tesselation { get; } = Properties.Resources.Tessellation;
+        public static string Tessellation { get; } = Properties.Resources.Tessellation;
     }
 
     public class DefaultRenderTechniquesManager: IRenderTechniquesManager
