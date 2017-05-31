@@ -161,14 +161,6 @@
       <Project>{bc976236-a1a1-4e44-8101-17823ea7c945}</Project>
       <Name>LineShadingDemo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManipulatorDemo\ManipulatorDemo.csproj">
-      <Project>{84f9c577-c2ce-4719-a5be-7c4985fe7a46}</Project>
-      <Name>ManipulatorDemo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MouseDragDemo\MouseDragDemo.csproj">
-      <Project>{734192f0-18e9-4a8f-8328-9215928ace1a}</Project>
-      <Name>MouseDragDemo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OctreeDemo\OctreeDemo.csproj">
       <Project>{be3c1dbd-3345-4e32-be7e-c3ccfddd7220}</Project>
       <Name>OctreeDemo</Name>
@@ -176,10 +168,6 @@
     <ProjectReference Include="..\ParticleSystemDemo\ParticleSystemDemo.csproj">
       <Project>{0045c5f8-76a9-420b-af44-47d1c1b60df4}</Project>
       <Name>ParticleSystemDemo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PolygonTriangulationDemo\PolygonTriangulationDemo.csproj">
-      <Project>{aee87c0e-aa98-4d82-9ed8-9ebea107ddd6}</Project>
-      <Name>PolygonTriangulationDemo</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScreenSpaceDemo\ScreenSpaceDemo.csproj">
       <Project>{5ce2d1a0-d79d-4dae-98dd-15ba0dfb1d22}</Project>

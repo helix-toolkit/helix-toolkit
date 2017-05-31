@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,11 +26,24 @@ namespace MemoryLeakTester
         private Window testWin;
         private DispatcherTimer timer = null;
         private SystemStateParams systemparams = new SystemStateParams();
-        private IList<Tuple<string, string>> ProjectWinPairs = new List<Tuple<string, string>>();
+        private IList<Tuple<string, Type>> ProjectWinPairs = new List<Tuple<string, Type>>();
+
         public MainWindow()
         {
             InitializeComponent();
-
+            ProjectWinPairs.Add(new Tuple<string, Type>("CustomShaderDemo", typeof(CustomShaderDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("BoneSkinDemo", typeof(BoneSkinDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("DeferredShadingDemo", typeof(DeferredShadingDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("DynamicTextureDemo", typeof(DynamicTextureDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("EnvironmentMapDemo", typeof(EnvironmentMapDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("InstancingDemo", typeof(InstancingDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("LightingDemo", typeof(LightingDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("OctreeDemo", typeof(OctreeDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("ParticleSystemDemo", typeof(ParticleSystemDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("ScreenSpaceDemo", typeof(ScreenSpaceDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("ShadowMapDemo", typeof(ShadowMapDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("TessellationDemo", typeof(TessellationDemo.MainWindow)));
+            projectCombo.ItemsSource = ProjectWinPairs;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -59,8 +73,7 @@ namespace MemoryLeakTester
         {
             if (testWin == null)
             {
-                testWin = new TestWindow();
-                testWin.Show();
+                CreateWindow();
             }
             else
             {
@@ -75,6 +88,16 @@ namespace MemoryLeakTester
                 var log = systemparams.Update();
                 paragraph.Inlines.Add(log);
                 logTextbox.ScrollToEnd();
+            }
+        }
+
+        private void CreateWindow()
+        {
+            var pair = ProjectWinPairs[projectCombo.SelectedIndex];
+            testWin = Activator.CreateInstance(pair.Item2) as Window;
+            if (testWin != null)
+            {
+                testWin.Show();
             }
         }
 
