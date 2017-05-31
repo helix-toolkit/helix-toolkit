@@ -29,6 +29,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnAttach(IRenderHost host)
         {
+            if (childrenInternal == null)
+            {
+                return false;
+            }
             foreach (var c in this.childrenInternal)
             {
                 if (c.Parent == null)
@@ -44,6 +48,10 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             base.OnDetach();
+            if (childrenInternal == null)
+            {
+                return;
+            }
             foreach (var c in this.childrenInternal)
             {
                 c.Detach();
@@ -52,6 +60,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.RemoveLogicalChild(c);                    
                 }
             }
+        }
+
+        protected override bool CanRender(RenderContext context)
+        {
+            return this.childrenInternal != null;
         }
 
         protected override void OnRender(RenderContext context)

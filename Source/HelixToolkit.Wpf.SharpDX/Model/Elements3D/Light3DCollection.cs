@@ -18,37 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override bool OnAttach(IRenderHost host)
         {
             Light3DSceneShared = host.Light3DSceneShared;
-            foreach (var c in this.Children)
-            {
-                if (c.Parent == null)
-                {
-                    this.AddLogicalChild(c);
-                }
-
-                c.Attach(host);
-            }
-            return true;
-        }
-
-        protected override void OnDetach()
-        {
-            base.OnDetach();
-            foreach (var c in this.Children)
-            {
-                c.Detach();
-                if (c.Parent == this)
-                {
-                    this.RemoveLogicalChild(c);
-                }
-            }
-        }
-
-        protected override void OnRender(RenderContext context)
-        {
-            foreach (var c in this.Children)
-            {
-                c.Render(context);
-            }
+            return base.OnAttach(host);
         }
     }
 }
