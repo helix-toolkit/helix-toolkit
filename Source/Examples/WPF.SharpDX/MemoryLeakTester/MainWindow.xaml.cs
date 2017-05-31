@@ -93,8 +93,15 @@ namespace MemoryLeakTester
 
         private void CreateWindow()
         {
-            var pair = ProjectWinPairs[projectCombo.SelectedIndex];
-            testWin = Activator.CreateInstance(pair.Item2) as Window;
+            if (projectCombo.SelectedIndex == -1)
+            {
+                testWin = new TestWindow();
+            }
+            else
+            {
+                var pair = ProjectWinPairs[projectCombo.SelectedIndex];
+                testWin = Activator.CreateInstance(pair.Item2) as Window;
+            }
             if (testWin != null)
             {
                 testWin.Show();
