@@ -11,6 +11,7 @@ using HelixToolkit.Wpf.SharpDX;
 
 namespace CustomShaderDemo
 {
+    using System;
     using System.Windows;
 
     /// <summary>
@@ -20,7 +21,13 @@ namespace CustomShaderDemo
     {
         public MainWindow()
         {
-            this.InitializeComponent();                                  
+            this.InitializeComponent();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Windows;
 
 namespace InstancingDemo
@@ -19,7 +20,13 @@ namespace InstancingDemo
         public MainWindow()
         {
             InitializeComponent();            
-            this.DataContext = new MainViewModel();            
+            this.DataContext = new MainViewModel();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };
         }
     }
 }

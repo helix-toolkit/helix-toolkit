@@ -204,8 +204,11 @@ namespace DemoCore
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-                var effectManager = EffectsManager as IDisposable;
-                Disposer.RemoveAndDispose(ref effectManager);
+                if (EffectsManager != null)
+                {
+                    var effectManager = EffectsManager as IDisposable;
+                    Disposer.RemoveAndDispose(ref effectManager);
+                }
                 disposedValue = true;
                 GC.SuppressFinalize(this);
             }
