@@ -22,6 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IEffectsManager
     {
+        IRenderTechniquesManager RenderTechniquesManager { get; }
         InputLayout GetLayout(RenderTechnique technique);
         Effect GetEffect(RenderTechnique technique);
         global::SharpDX.Direct3D11.Device Device { get; }
@@ -42,6 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected IRenderTechniquesManager renderTechniquesManager;
 
+        public IRenderTechniquesManager RenderTechniquesManager { get { return renderTechniquesManager; } }
         /// <summary>
         /// Construct an EffectsManager
         /// </summary>
@@ -518,20 +520,24 @@ namespace HelixToolkit.Wpf.SharpDX
             return (InputLayout)data[technique.Name + "Layout"];
         }
 
+
+        private bool disposed = false;
         public void Dispose()
         {
-            if (data != null)
+            if (!disposed)
             {
-                foreach (var item in data)
+                if (data != null)
                 {
-                    var o = item.Value as IDisposable;
-                    Disposer.RemoveAndDispose(ref o);
+                    foreach (var item in data)
+                    {
+                        var o = item.Value as IDisposable;
+                        Disposer.RemoveAndDispose(ref o);
+                    }
                 }
+                Disposer.RemoveAndDispose(ref device);
+                GC.SuppressFinalize(this);
+                disposed = true;
             }
-            data = null;
-
-            Disposer.RemoveAndDispose(ref device);
-            device = null;
         }
 
         #endregion

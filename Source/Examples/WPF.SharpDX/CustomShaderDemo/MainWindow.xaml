@@ -42,7 +42,6 @@
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"  
             RenderTechnique="{Binding RenderTechnique}"
-            RenderTechniquesManager="{Binding RenderTechniquesManager}"
             EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>

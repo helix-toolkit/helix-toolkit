@@ -576,7 +576,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.RenderHost.ExceptionOccurred += this.HandleRenderException;
                 this.RenderHost.Renderable = this;
                 this.RenderHost.EffectsManager = this.EffectsManager;
-                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager;
             }
 
             if (this.adornerLayer == null)
@@ -1183,17 +1182,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.RenderHost.Renderable = this;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Handles the change of the render techniques manager.       
-        /// </summary>
-        private void RenderTechniquesManagerPropertyChanged()
-        {
-            if (this.RenderHost != null)
-            {
-                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager;
             }
         }
 

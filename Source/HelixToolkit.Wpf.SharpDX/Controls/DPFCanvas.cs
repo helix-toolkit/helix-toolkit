@@ -69,12 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private TimeSpan lastRenderingDuration;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
-
-        private static Lazy<IRenderTechniquesManager> DefaultRenderTechniquesManagerObj
-            = new Lazy<IRenderTechniquesManager>(() => new DefaultRenderTechniquesManager(), true);
-
-        private static Lazy<IEffectsManager> DefaultEffectsManagerObj
-            = new Lazy<IEffectsManager>(() => new DefaultEffectsManager(DefaultRenderTechniquesManagerObj.Value), true);
+        private bool loaded = false;
 
         private readonly int renderCycles = 1;
 
@@ -207,27 +202,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IModelContainer SharedModelContainer { set; get; } = null;
 
-        public static readonly DependencyProperty EffectsManagerProperty =
-            DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((DPFCanvas)s).EffectsManagerPropertyChanged()));
-
+        private IEffectsManager effectsManager;
         public IEffectsManager EffectsManager
         {
-            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
-            set { SetValue(EffectsManagerProperty, value); }
+            set
+            {
+                if (effectsManager != value)
+                {
+                    effectsManager = value;
+                    RestartRendering();
+                }
+            }
+            get
+            {
+                return effectsManager;
+            }
         }
 
-        public static readonly DependencyProperty RenderTechniquesManagerProperty =
-            DependencyProperty.Register("RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(DPFCanvas),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((DPFCanvas)s).RenderTechniquesManagerPropertyChanged()));
-
-        public IRenderTechniquesManager RenderTechniquesManager
-        {
-            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
-            set { SetValue(RenderTechniquesManagerProperty, value); }
-        }
+        public IRenderTechniquesManager RenderTechniquesManager { get { return EffectsManager != null ? EffectsManager.RenderTechniquesManager : null; } }
 
         /// <summary>
         /// Gets a value indicating whether the control is in design mode
@@ -335,11 +327,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            loaded = true;
             try
             {
-                StartD3D();
-                StartRendering();
+                if (StartD3D())
+                { StartRendering(); }
             }
             catch (Exception ex)
             {
@@ -366,7 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            loaded = false;
             StopRendering();
             EndD3D();
         }
@@ -374,16 +366,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private void StartD3D()
+        private bool StartD3D()
         {
-            if (EffectsManager == null || RenderTechniquesManager == null)
+            if (!loaded || EffectsManager == null || RenderTechniquesManager == null)
             {
-                // Make sure both are null
-                RenderTechniquesManager = null;
-                EffectsManager = null;
-                RenderTechniquesManager = DefaultRenderTechniquesManagerObj.Value;
-                EffectsManager = DefaultEffectsManagerObj.Value;
-                return; // StardD3D() is called from DP changed handler
+                if(EffectsManager == null)
+                {
+                    EffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());
+                }
+                //RenderTechniquesManager = DefaultRenderTechniquesManagerObj.Value;
+                //EffectsManager = DefaultEffectsManagerObj.Value;
+                return false; // StardD3D() is called from DP changed handler
             }
 
             surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
@@ -396,6 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX
             SetDefaultRenderTargets();
             Source = surfaceD3D;
             InvalidateRender();
+            return true;
         }
 
         /// <summary>
@@ -773,6 +767,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="sizeInfo"></param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
+            if (!loaded)
+            {
+                return;
+            }
             if (resizeOperation != null && resizeOperation.Status == DispatcherOperationStatus.Pending)
             {
                 resizeOperation.Abort();
@@ -804,12 +802,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>
-        private void EffectsManagerPropertyChanged()
+        private void RestartRendering()
         {
-            if (EffectsManager != null && RenderTechniquesManager != null)
-            {
-                StartD3D();
-            }
+            StopRendering();
+            EndD3D();
+            if (StartD3D())
+            { StartRendering(); }
         }
 
         /// <summary>
@@ -864,8 +862,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
                     || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
-                StartD3D();
             }
+            RestartRendering();
         }
     }
 }
