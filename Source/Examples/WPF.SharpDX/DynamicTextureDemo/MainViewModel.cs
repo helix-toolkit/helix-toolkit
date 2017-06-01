@@ -142,8 +142,8 @@ namespace DynamicTextureDemo
                 Tangents = Model.Tangents,
                 BiTangents = Model.BiTangents
             };
-            var uri = new System.Uri(@"test.png", System.UriKind.RelativeOrAbsolute);
-            var image = new FileStream(uri.ToString(), FileMode.Open);
+
+            var image = LoadFileToMemory(new System.Uri(@"test.png", System.UriKind.RelativeOrAbsolute).ToString());
             this.ModelMaterial = new PhongMaterial
             {
                 AmbientColor = Color.Gray,
@@ -151,8 +151,8 @@ namespace DynamicTextureDemo
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
                 DiffuseAlphaMap = image,
-                DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
-                NormalMap = new FileStream(new System.Uri(@"TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
+                DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
+                NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
             };
 
             this.InnerModelMaterial = new PhongMaterial
@@ -162,7 +162,7 @@ namespace DynamicTextureDemo
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
                 DiffuseAlphaMap = image,
-                DiffuseMap = new FileStream(new System.Uri(@"TextureNoise1.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
+                DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureNoise1.jpg", System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap
             };
 
