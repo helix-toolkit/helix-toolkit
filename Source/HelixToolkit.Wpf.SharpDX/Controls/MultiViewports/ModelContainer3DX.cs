@@ -31,14 +31,6 @@ namespace HelixToolkit.Wpf.SharpDX
             "RenderTechnique", typeof(RenderTechnique), typeof(ModelContainer3DX), new PropertyMetadata(null,
                 (s, e) => ((ModelContainer3DX)s).RenderTechniquePropertyChanged()));
 
-        /// <summary>
-        /// The RenderTechniquesManager property.
-        /// </summary>
-        public static readonly DependencyProperty RenderTechniquesManagerProperty = DependencyProperty.Register(
-            "RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(ModelContainer3DX), new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((ModelContainer3DX)s).RenderTechniquesManagerPropertyChanged()));
-
 
         /// <summary>
         /// Gets or sets the <see cref="IEffectsManager"/>.
@@ -59,15 +51,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (RenderTechnique)this.GetValue(RenderTechniqueProperty); }
             set { this.SetValue(RenderTechniqueProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="IRenderTechniquesManager"/>.
-        /// </summary>
-        public IRenderTechniquesManager RenderTechniquesManager
-        {
-            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
-            set { SetValue(RenderTechniquesManagerProperty, value); }
         }
 
         private readonly IList<Viewport3DX> viewports = new List<Viewport3DX>();
@@ -94,10 +77,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public IRenderTechniquesManager RenderTechniquesManager { get { return EffectsManager != null ? EffectsManager.RenderTechniquesManager : null; } }
+
         public ModelContainer3DX()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());
         }
         /// <summary>
         /// Handles the change of the effects manager.
@@ -121,21 +105,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// Handles the change of the render techniques manager.       
-        /// </summary>
-        private void RenderTechniquesManagerPropertyChanged()
-        {
-            foreach (var viewport in viewports)
-            {
-                viewport.RenderTechniquesManager = this.RenderTechniquesManager;
-            }
-        }
-
         public void AttachViewport3DX(Viewport3DX viewport)
         {
             viewports.Add(viewport);
-            viewport.RenderTechniquesManager = this.RenderTechniquesManager;
             viewport.RenderTechnique = this.RenderTechnique;
             viewport.EffectsManager = this.EffectsManager;
         }

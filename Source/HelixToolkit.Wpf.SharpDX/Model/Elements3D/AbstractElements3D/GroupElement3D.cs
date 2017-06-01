@@ -9,10 +9,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Windows.Markup;
 
-    [ContentProperty("Children")]
     public abstract class GroupElement3D : Element3D //, IElement3DCollection
     {
-
+        private Element3DCollection childrenInternal = new Element3DCollection();
         public Element3DCollection Children
         {
             get { return (Element3DCollection)this.GetValue(ChildrenProperty); }
@@ -20,16 +19,21 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty ChildrenProperty =
-            DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(GroupElement3D), new FrameworkPropertyMetadata(new Element3DCollection(), FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("Children", typeof(Element3DCollection), typeof(GroupElement3D),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
+                    (d, e) => { (d as GroupElement3D).childrenInternal = e.NewValue as Element3DCollection; }));
 
         public GroupElement3D()
         {
-            this.Children = new Element3DCollection();
         }
 
         protected override bool OnAttach(IRenderHost host)
         {
-            foreach (var c in this.Children)
+            if (childrenInternal == null)
+            {
+                return false;
+            }
+            foreach (var c in this.childrenInternal)
             {
                 if (c.Parent == null)
                 {
@@ -44,7 +48,11 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             base.OnDetach();
-            foreach (var c in this.Children)
+            if (childrenInternal == null)
+            {
+                return;
+            }
+            foreach (var c in this.childrenInternal)
             {
                 c.Detach();
                 if (c.Parent == this)
@@ -54,9 +62,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override bool CanRender(RenderContext context)
+        {
+            return this.childrenInternal != null;
+        }
+
         protected override void OnRender(RenderContext context)
         {
-            foreach (var c in this.Children)
+            foreach (var c in this.childrenInternal)
             {
                 c.Render(context);
             }

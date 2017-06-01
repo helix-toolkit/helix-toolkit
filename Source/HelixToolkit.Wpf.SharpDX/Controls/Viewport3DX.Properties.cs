@@ -309,14 +309,6 @@ namespace HelixToolkit.Wpf.SharpDX
             "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
                 (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
 
-        /// <summary>
-        /// The RenderTechniquesManager property.
-        /// </summary>
-        public static readonly DependencyProperty RenderTechniquesManagerProperty = DependencyProperty.Register(
-            "RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((Viewport3DX)s).RenderTechniquesManagerPropertyChanged()));
-
         ///// <summary>
         ///// The is deferred shading enabled propery
         ///// </summary>
@@ -1425,15 +1417,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (RenderTechnique)this.GetValue(RenderTechniqueProperty); }
             set { this.SetValue(RenderTechniqueProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="IRenderTechniquesManager"/>.
-        /// </summary>
-        public IRenderTechniquesManager RenderTechniquesManager
-        {
-            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
-            set { SetValue(RenderTechniquesManagerProperty, value); }
         }
 
         ///// <summary>

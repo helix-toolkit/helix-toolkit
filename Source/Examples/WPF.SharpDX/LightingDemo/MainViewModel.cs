@@ -136,7 +136,7 @@ namespace LightingDemo
             this.ModelMaterial = PhongMaterials.Chrome;
             //this.ModelMaterial.TextureMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute));
             //var bitmap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute));
-            this.ModelMaterial.NormalMap = new FileStream(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+            this.ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
             //odelMaterial.NormalMap = new BitmapImage(new System.Uri(@"TextureNoise1_dot3.jpg", System.UriKind.RelativeOrAbsolute));
 
 
@@ -154,7 +154,7 @@ namespace LightingDemo
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
-                DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
+                DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap
             };
         }

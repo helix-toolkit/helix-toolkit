@@ -30,7 +30,6 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}"
-            RenderTechniquesManager="{Binding RenderTechniquesManager}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"

@@ -153,7 +153,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.bHasCubeMap.Set(false);
 
             this.effectTechnique = null;
-            this.effectTechnique = null;
             this.vertexLayout = null;
             this.geometry = null;
 

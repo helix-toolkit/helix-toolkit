@@ -122,9 +122,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="FodyWeavers.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DemoCore\DemoCore.csproj">
       <Project>{B475C12B-80F9-4BC0-88E5-815C88593BEE}</Project>
       <Name>DemoCore</Name>

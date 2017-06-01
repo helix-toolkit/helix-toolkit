@@ -69,7 +69,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private TimeSpan lastRenderingDuration;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
-
+        private bool loaded = false;
+        private IEffectsManager defaultEffectsManager = null;
         private readonly int renderCycles = 1;
 
         /// <summary>
@@ -201,27 +202,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IModelContainer SharedModelContainer { set; get; } = null;
 
-        public static readonly DependencyProperty EffectsManagerProperty =
-            DependencyProperty.Register("EffectsManager", typeof(IEffectsManager), typeof(DPFCanvas),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((DPFCanvas)s).EffectsManagerPropertyChanged()));
-
+        private IEffectsManager effectsManager;
         public IEffectsManager EffectsManager
         {
-            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
-            set { SetValue(EffectsManagerProperty, value); }
+            set
+            {
+                if (effectsManager != value)
+                {
+                    effectsManager = value;
+                    RestartRendering();
+                }
+            }
+            get
+            {
+                return effectsManager;
+            }
         }
 
-        public static readonly DependencyProperty RenderTechniquesManagerProperty =
-            DependencyProperty.Register("RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(DPFCanvas),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((DPFCanvas)s).RenderTechniquesManagerPropertyChanged()));
-
-        public IRenderTechniquesManager RenderTechniquesManager
-        {
-            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
-            set { SetValue(RenderTechniquesManagerProperty, value); }
-        }
+        public IRenderTechniquesManager RenderTechniquesManager { get { return EffectsManager != null ? EffectsManager.RenderTechniquesManager : null; } }
 
         /// <summary>
         /// Gets a value indicating whether the control is in design mode
@@ -329,11 +327,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            loaded = true;
             try
             {
-                StartD3D();
-                StartRendering();
+                if (StartD3D())
+                { StartRendering(); }
             }
             catch (Exception ex)
             {
@@ -360,7 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            loaded = false;
             StopRendering();
             EndD3D();
         }
@@ -368,16 +366,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private void StartD3D()
+        private bool StartD3D()
         {
-            if (EffectsManager == null || RenderTechniquesManager == null)
+            if (!loaded || EffectsManager == null || RenderTechniquesManager == null)
             {
-                // Make sure both are null
-                RenderTechniquesManager = null;
-                EffectsManager = null;
-                RenderTechniquesManager = new DefaultRenderTechniquesManager();
-                EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-                return; // StardD3D() is called from DP changed handler
+                if(EffectsManager == null)
+                {
+                    EffectsManager = defaultEffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());                      
+                }
+                //RenderTechniquesManager = DefaultRenderTechniquesManagerObj.Value;
+                //EffectsManager = DefaultEffectsManagerObj.Value;
+                return false; // StardD3D() is called from DP changed handler
             }
 
             surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
@@ -390,6 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX
             SetDefaultRenderTargets();
             Source = surfaceD3D;
             InvalidateRender();
+            return true;
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
             Source = null;
-
+            RenderContext?.Dispose();
             Disposer.RemoveAndDispose(ref deferredRenderer);
             Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);
@@ -420,6 +420,10 @@ namespace HelixToolkit.Wpf.SharpDX
 #if MSAA
             Disposer.RemoveAndDispose(ref renderTargetNMS);
 #endif
+            if (defaultEffectsManager != null)
+            {
+                (defaultEffectsManager as IDisposable)?.Dispose();
+            }
         }
 
         /// <summary>
@@ -730,32 +734,33 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            try
+            if (pendingValidationCycles > 0 && !skipper.IsSkip() && surfaceD3D != null && renderRenderable != null)
             {
-                if (pendingValidationCycles > 0 && !skipper.IsSkip() && surfaceD3D != null && renderRenderable != null)
-                {
-                    var t0 = renderTimer.Elapsed;
+                var t0 = renderTimer.Elapsed;
 
-                    // Update all renderables before rendering 
-                    // giving them the chance to invalidate the current render.                                                            
-                    //renderRenderable.Update(t0);
-                    if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(Math.Abs(skipper.lag)))))
+                // Update all renderables before rendering 
+                // giving them the chance to invalidate the current render.                                                            
+                //renderRenderable.Update(t0);
+                try
+                {                       
+                    if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))                    
                     {
-                        System.Threading.Interlocked.Decrement(ref pendingValidationCycles);
+                        System.Threading.Interlocked.Decrement(ref pendingValidationCycles);                   
                         Render(t0);
-                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));                                
+                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                     }
-                    surfaceD3D.Unlock();
-
-                    lastRenderingDuration = renderTimer.Elapsed - t0;
                 }
-            }
-            catch (Exception ex)
-            {
-                if (!HandleExceptionOccured(ex))
+                catch (Exception ex)
                 {
-                    MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                    if (!HandleExceptionOccured(ex))
+                    {
+                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                    }
                 }
+                finally
+                { surfaceD3D.Unlock(); }
+
+                lastRenderingDuration = renderTimer.Elapsed - t0;
             }
         }
 
@@ -766,6 +771,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="sizeInfo"></param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
+            if (!loaded)
+            {
+                return;
+            }
             if (resizeOperation != null && resizeOperation.Status == DispatcherOperationStatus.Pending)
             {
                 resizeOperation.Abort();
@@ -797,12 +806,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>
-        private void EffectsManagerPropertyChanged()
+        private void RestartRendering()
         {
+            StopRendering();
+            EndD3D();
             if (EffectsManager != null && RenderTechniquesManager != null)
             {
-                StartD3D();
+                IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
+                    || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
             }
+            if (StartD3D())
+            { StartRendering(); }
         }
 
         /// <summary>
@@ -846,19 +860,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.StopRendering();
             }
 #endif
-        }
-
-        /// <summary>
-        /// Handles the change of the render techniques manager.       
-        /// </summary>
-        private void RenderTechniquesManagerPropertyChanged()
-        {
-            if (EffectsManager != null && RenderTechniquesManager != null)
-            {
-                IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
-                    || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
-                StartD3D();
-            }
         }
     }
 }

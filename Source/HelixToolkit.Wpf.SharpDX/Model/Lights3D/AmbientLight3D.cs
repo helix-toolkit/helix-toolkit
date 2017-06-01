@@ -43,7 +43,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.vLightAmbient != null)
             {
-                this.vLightAmbient.Set(new global::SharpDX.Color4(0, 0, 0, 0));
+                if(!this.effect.IsDisposed)
+                    this.vLightAmbient.Set(new global::SharpDX.Color4(0, 0, 0, 0));
                 Disposer.RemoveAndDispose(ref this.vLightAmbient);
             }
             base.OnDetach();

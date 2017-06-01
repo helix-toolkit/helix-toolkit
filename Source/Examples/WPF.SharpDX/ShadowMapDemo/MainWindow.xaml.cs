@@ -30,7 +30,13 @@ namespace ShadowMapDemo
     {
         public MainWindow()
         {
-            InitializeComponent();                                  
+            InitializeComponent();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

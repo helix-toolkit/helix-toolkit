@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         IEffectsManager EffectsManager { get; set; }
 
-        IRenderTechniquesManager RenderTechniquesManager { get; set; }
+        IRenderTechniquesManager RenderTechniquesManager { get; }
 
         /// <summary>
         /// This technique is used for the entire render pass 

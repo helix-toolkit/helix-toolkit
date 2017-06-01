@@ -22,6 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IEffectsManager
     {
+        IRenderTechniquesManager RenderTechniquesManager { get; }
         InputLayout GetLayout(RenderTechnique technique);
         Effect GetEffect(RenderTechnique technique);
         global::SharpDX.Direct3D11.Device Device { get; }
@@ -31,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// An Effects manager which includes all standard effects, 
     /// tessellation, and deferred effects.
+    /// <para>Make sure to dispose this if not being used. Otherwise may cause memory leak.</para>
     /// </summary>
     public class DefaultEffectsManager : IEffectsManager, IDisposable
     {
@@ -41,6 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected IRenderTechniquesManager renderTechniquesManager;
 
+        public IRenderTechniquesManager RenderTechniquesManager { get { return renderTechniquesManager; } }
         /// <summary>
         /// Construct an EffectsManager
         /// </summary>
@@ -177,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
         }
 
         /// <summary>
@@ -517,20 +520,24 @@ namespace HelixToolkit.Wpf.SharpDX
             return (InputLayout)data[technique.Name + "Layout"];
         }
 
+
+        private bool disposed = false;
         public void Dispose()
         {
-            if (data != null)
+            if (!disposed)
             {
-                foreach (var item in data)
+                if (data != null)
                 {
-                    var o = item.Value as IDisposable;
-                    Disposer.RemoveAndDispose(ref o);
+                    foreach (var item in data)
+                    {
+                        var o = item.Value as IDisposable;
+                        Disposer.RemoveAndDispose(ref o);
+                    }
                 }
+                Disposer.RemoveAndDispose(ref device);
+                GC.SuppressFinalize(this);
+                disposed = true;
             }
-            data = null;
-
-            Disposer.RemoveAndDispose(ref device);
-            device = null;
         }
 
         #endregion
@@ -585,8 +592,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
-            RegisterDeferredLayoutsAndEffects(Properties.Resources.Tessellation, defaultInputLayout, cubeMapInputLayout);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterDeferredLayoutsAndEffects(ShaderResources.Tessellation, defaultInputLayout, cubeMapInputLayout);
         }
 
         private void RegisterDeferredLayoutsAndEffects(string shaderEffectString, InputLayout defaultInputLayout, InputLayout cubeMapInputLayout)
@@ -618,8 +625,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
-            RegisterTessellationLayoutsAndEffects(Properties.Resources.Tessellation);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterTessellationLayoutsAndEffects(ShaderResources.Tessellation);
         }
 
         private void RegisterTessellationLayoutsAndEffects(string shaderEffectString)

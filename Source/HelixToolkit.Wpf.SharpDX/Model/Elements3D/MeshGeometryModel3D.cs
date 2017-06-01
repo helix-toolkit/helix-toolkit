@@ -233,14 +233,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             vertexBuffer.Dispose();
             indexBuffer.Dispose();
-            Disposer.RemoveAndDispose(ref this.effectMaterial);
-            Disposer.RemoveAndDispose(ref this.effectTransforms);
-            Disposer.RemoveAndDispose(ref this.bHasInstances);
-
-            this.renderTechnique = null;
-            this.effectTechnique = null;
-            this.vertexLayout = null;
-
             base.OnDetach();
         }
         
@@ -371,14 +363,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             return isHit;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Dispose()
-        {
-            this.Detach();
         }
 
         /// <summary>

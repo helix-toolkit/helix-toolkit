@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class OctreeLineGeometryModel3D : GroupModel3D
+    public class OctreeLineGeometryModel3D : CompositeModel3D
     {
         public static readonly DependencyProperty OctreeProperty
             = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeLineGeometryModel3D),
