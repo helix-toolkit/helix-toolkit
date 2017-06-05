@@ -360,7 +360,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             loaded = false;
             StopRendering();
-            EndD3D();
+            EndD3D(true);
         }
 
         /// <summary>
@@ -395,7 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private void EndD3D()
+        private void EndD3D(bool dispose)
         {
             if (renderRenderable != null)
             {
@@ -420,9 +420,12 @@ namespace HelixToolkit.Wpf.SharpDX
 #if MSAA
             Disposer.RemoveAndDispose(ref renderTargetNMS);
 #endif
-            if (defaultEffectsManager != null)
+            if (dispose && defaultEffectsManager != null)
             {
                 (defaultEffectsManager as IDisposable)?.Dispose();
+                if (effectsManager == defaultEffectsManager)
+                { effectsManager = null; }
+                defaultEffectsManager = null;
             }
         }
 
@@ -809,14 +812,17 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RestartRendering()
         {
             StopRendering();
-            EndD3D();
-            if (EffectsManager != null && RenderTechniquesManager != null)
+            EndD3D(false);
+            if (loaded)
             {
-                IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
-                    || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
+                if (EffectsManager != null && RenderTechniquesManager != null)
+                {
+                    IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
+                        || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
+                }
+                if (StartD3D())
+                { StartRendering(); }
             }
-            if (StartD3D())
-            { StartRendering(); }
         }
 
         /// <summary>
@@ -828,7 +834,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             pendingValidationCycles = 0;
             StopRendering();
-            EndD3D();
+            EndD3D(true);
 
             var args = new RelayExceptionEventArgs(exception);
             ExceptionOccurred(this, args);
