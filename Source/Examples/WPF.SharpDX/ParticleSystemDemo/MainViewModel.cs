@@ -443,10 +443,13 @@ namespace ParticleSystemDemo
 
         private void LoadTexture(int index)
         {
-            var file = new FileStream(new System.Uri(Textures[index], System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
-            var mem = new MemoryStream();
-            file.CopyTo(mem);
-            ParticleTexture = mem;
+            using (var file = new FileStream(new System.Uri(Textures[index], System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open))
+            {
+                var mem = new MemoryStream();
+                file.CopyTo(mem);
+                ParticleTexture = mem;
+            }
+ 
             NumTextureColumns = TextureColumnsRows[index].Item1;
             NumTextureRows = TextureColumnsRows[index].Item2;
             SizeSlider = DefaultParticleSizes[index];

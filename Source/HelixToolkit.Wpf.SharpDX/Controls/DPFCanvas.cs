@@ -70,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
         private bool loaded = false;
-
+        private IEffectsManager defaultEffectsManager = null;
         private readonly int renderCycles = 1;
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             loaded = false;
             StopRendering();
-            EndD3D();
+            EndD3D(true);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(EffectsManager == null)
                 {
-                    EffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());
+                    EffectsManager = defaultEffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());                      
                 }
                 //RenderTechniquesManager = DefaultRenderTechniquesManagerObj.Value;
                 //EffectsManager = DefaultEffectsManagerObj.Value;
@@ -395,7 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        private void EndD3D()
+        private void EndD3D(bool dispose)
         {
             if (renderRenderable != null)
             {
@@ -410,7 +410,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
             Source = null;
-
+            RenderContext?.Dispose();
             Disposer.RemoveAndDispose(ref deferredRenderer);
             Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);
@@ -420,6 +420,13 @@ namespace HelixToolkit.Wpf.SharpDX
 #if MSAA
             Disposer.RemoveAndDispose(ref renderTargetNMS);
 #endif
+            if (dispose && defaultEffectsManager != null)
+            {
+                (defaultEffectsManager as IDisposable)?.Dispose();
+                if (effectsManager == defaultEffectsManager)
+                { effectsManager = null; }
+                defaultEffectsManager = null;
+            }
         }
 
         /// <summary>
@@ -805,9 +812,17 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RestartRendering()
         {
             StopRendering();
-            EndD3D();
-            if (StartD3D())
-            { StartRendering(); }
+            EndD3D(false);
+            if (loaded)
+            {
+                if (EffectsManager != null && RenderTechniquesManager != null)
+                {
+                    IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
+                        || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
+                }
+                if (StartD3D())
+                { StartRendering(); }
+            }
         }
 
         /// <summary>
@@ -819,7 +834,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             pendingValidationCycles = 0;
             StopRendering();
-            EndD3D();
+            EndD3D(true);
 
             var args = new RelayExceptionEventArgs(exception);
             ExceptionOccurred(this, args);
@@ -851,19 +866,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.StopRendering();
             }
 #endif
-        }
-
-        /// <summary>
-        /// Handles the change of the render techniques manager.       
-        /// </summary>
-        private void RenderTechniquesManagerPropertyChanged()
-        {
-            if (EffectsManager != null && RenderTechniquesManager != null)
-            {
-                IsDeferredLighting = (renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred)
-                    || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
-            }
-            RestartRendering();
         }
     }
 }

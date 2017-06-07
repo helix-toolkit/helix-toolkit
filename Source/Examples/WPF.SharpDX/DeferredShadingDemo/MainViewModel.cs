@@ -13,7 +13,7 @@ namespace DeferredShadingDemo
     using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Extensions;
-
+    using System.Linq;
     using SharpDX;
     using System;
     using System.Collections.Generic;
@@ -157,8 +157,8 @@ namespace DeferredShadingDemo
             this.GreenMaterial = PhongMaterials.Green;
             this.BlueMaterial = PhongMaterials.Blue;
             this.PlaneMaterial = PhongMaterials.DefaultVRML;
-            this.PlaneMaterial.DiffuseMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
-            this.PlaneMaterial.NormalMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
+            this.PlaneMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            this.PlaneMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.3f, 0.3f, 0.3f, 1.0f);

@@ -70,13 +70,13 @@ namespace CustomShaderDemo
                 indexBuffer.CreateBufferFromDataArray(Device, geometry.Indices);
             }
           
-            hasInstances = (Instances != null) && (Instances.Any());
-            bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
-            if (hasInstances)
-            {
-                isInstanceChanged = true;
-                InstanceBuffer.CreateBufferFromDataArray(Device, Instances);
-            }
+            //hasInstances = (Instances != null) && (Instances.Any());
+            //bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
+            //if (hasInstances)
+            //{
+            //    isInstanceChanged = true;
+            //    InstanceBuffer.CreateBufferFromDataArray(Device, Instances);
+            //}
 
             vViewport = effect.GetVariableByName("vViewport").AsVector();
             vLineParams = effect.GetVariableByName("vLineParams").AsVector();
@@ -93,7 +93,7 @@ namespace CustomShaderDemo
         protected override void OnDetach()
         {
             vertexBuffer.Dispose();
-            InstanceBuffer.Dispose();
+            indexBuffer.Dispose();
             base.OnDetach();
         }
 

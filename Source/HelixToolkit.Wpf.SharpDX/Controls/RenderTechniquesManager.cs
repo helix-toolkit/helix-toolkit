@@ -45,6 +45,13 @@ namespace HelixToolkit.Wpf.SharpDX
         IDictionary<string, RenderTechnique> RenderTechniques { get; }
     }
 
+    public static class ShaderResources
+    {
+        public static byte[] Default { get; } = Properties.Resources._default;
+        public static byte[] Deferred { get; } = Properties.Resources._deferred;
+        public static string Tessellation { get; } = Properties.Resources.Tessellation;
+    }
+
     public class DefaultRenderTechniquesManager: IRenderTechniquesManager
     {
         internal readonly Dictionary<RenderTechnique, byte[]> TechniquesSourceDict = new Dictionary<RenderTechnique, byte[]>();
@@ -92,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void AddDefaultTechnique(string techniqueName)
         {
-            AddRenderTechnique(techniqueName, Properties.Resources._default);
+            AddRenderTechnique(techniqueName, ShaderResources.Default);
         }
 
         #region IRenderTechniqueManager interface
@@ -128,7 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void AddDeferredTechnique(string techniqueName)
         {
-            AddRenderTechnique(techniqueName, Properties.Resources._deferred);
+            AddRenderTechnique(techniqueName, ShaderResources.Deferred);
         }
     }
 

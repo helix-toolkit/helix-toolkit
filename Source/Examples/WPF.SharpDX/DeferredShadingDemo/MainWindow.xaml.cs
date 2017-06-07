@@ -33,6 +33,12 @@ namespace DeferredShadingDemo
         {
             InitializeComponent();
             this.DataContext = new MainViewModel();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };
         }
     }
 }

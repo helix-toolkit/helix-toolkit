@@ -31,6 +31,12 @@ namespace EnvironmentMapDemo
         public MainWindow()
         {
             InitializeComponent();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };
         }
     }
 }

@@ -15,7 +15,7 @@
             <Button x:Name="startButton" Width="100" Height="30" Margin="4" Click="StartButton_Click">Start</Button>
             <Button x:Name="stopButton" Width="100" Height="30" Margin="4" Click="StopButton_Click" Visibility="Collapsed">Stop</Button>
         </StackPanel>
-        <ComboBox x:Name="projectCombo" HorizontalAlignment="Right" ItemsSource="{Binding DemoSources}" VerticalAlignment="Center" Width="200"/>
+        <ComboBox x:Name="projectCombo" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" DisplayMemberPath="Item1"/>
         <RichTextBox x:Name="logTextbox" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <FlowDocument x:Name="flowDocument">
                 <Paragraph x:Name="paragraph">

@@ -731,6 +731,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref bHasTextureVar);
             Disposer.RemoveAndDispose(ref textureViewVar);
             Disposer.RemoveAndDispose(ref blendState);
+            Disposer.RemoveAndDispose(ref textureView);
             DisposeBuffers();
             base.OnDetach();
         }

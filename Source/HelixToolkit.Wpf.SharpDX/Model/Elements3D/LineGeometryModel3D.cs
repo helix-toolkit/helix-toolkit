@@ -406,14 +406,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public override void Dispose()
-        {
-            this.Detach();
-        }
-
-        /// <summary>
         /// Creates a <see cref="T:LinesVertex[]"/>.
         /// </summary>
         private LinesVertex[] CreateLinesVertexArray()

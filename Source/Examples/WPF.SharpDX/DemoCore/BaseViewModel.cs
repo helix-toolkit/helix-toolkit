@@ -13,6 +13,7 @@ namespace DemoCore
     using System.Collections.Generic;
 
     using HelixToolkit.Wpf.SharpDX;
+    using System.IO;
 
     /// <summary>
     /// Base ViewModel for Demo Applications?
@@ -179,6 +180,16 @@ namespace DemoCore
             }
         }
 
+        public static MemoryStream LoadFileToMemory(string filePath)
+        {
+            using (var file = new FileStream(filePath, FileMode.Open))
+            {
+                var memory = new MemoryStream();
+                file.CopyTo(memory);
+                return memory;
+            }
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
@@ -193,8 +204,11 @@ namespace DemoCore
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-                var effectManager = EffectsManager as IDisposable;
-                Disposer.RemoveAndDispose(ref effectManager);
+                if (EffectsManager != null)
+                {
+                    var effectManager = EffectsManager as IDisposable;
+                    Disposer.RemoveAndDispose(ref effectManager);
+                }
                 disposedValue = true;
                 GC.SuppressFinalize(this);
             }

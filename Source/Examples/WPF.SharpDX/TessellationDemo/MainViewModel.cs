@@ -94,8 +94,8 @@ namespace TessellationDemo
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), // Colors.LightGray,
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
-                DiffuseMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
-                NormalMap = new FileStream(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open),
+                DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
+                NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
                 //DisplacementMap = new BitmapImage(new Uri(@"path", UriKind.RelativeOrAbsolute)),                
             };
 
