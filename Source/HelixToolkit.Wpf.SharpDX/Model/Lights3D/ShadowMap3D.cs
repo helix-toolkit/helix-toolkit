@@ -176,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.depthBufferSM);
             Disposer.RemoveAndDispose(ref this.depthViewSM);
             Disposer.RemoveAndDispose(ref this.colorBufferSM);
-
+            Disposer.RemoveAndDispose(ref this.renderTargetSM);
             Disposer.RemoveAndDispose(ref this.texColorMapView);
             Disposer.RemoveAndDispose(ref this.texShadowMapView);  
 

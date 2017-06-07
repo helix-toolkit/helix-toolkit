@@ -19,6 +19,7 @@ namespace TessellationDemo
     using Transform3DGroup = System.Windows.Media.Media3D.Transform3DGroup;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
+    using System;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -29,6 +30,12 @@ namespace TessellationDemo
         {
             this.InitializeComponent();
             this.DataContext = new MainViewModel();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };
         }
     }
 

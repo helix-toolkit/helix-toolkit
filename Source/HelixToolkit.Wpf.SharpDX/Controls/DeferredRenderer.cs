@@ -867,7 +867,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref this.depthStencilBuffer);
             Disposer.RemoveAndDispose(ref this.depthStencilBufferView);
-
+            Disposer.RemoveAndDispose(ref this.gBufferDepthStencilResourceView);
             // cleanup buffer if any
             if (this.gBuffer != null)
             {
@@ -1094,7 +1094,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.ssBuffer != null)
             {
-                for (int i = 0; i < NUMSSBUFFER; i++)
+                for (int i = 0; i < ssBufferShaderResourceView.Length; i++)
                 {
                     Disposer.RemoveAndDispose(ref this.ssBufferShaderResourceView[i]);
                     Disposer.RemoveAndDispose(ref this.ssBufferRenderTargetView[i]);
@@ -1234,10 +1234,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public void Dispose()
             {
-                Disposer.RemoveAndDispose(ref this.screenGeometryTechnique);
+                //Disposer.RemoveAndDispose(ref this.screenGeometryTechnique);
                 Disposer.RemoveAndDispose(ref this.renderPassAmbient);
                 Disposer.RemoveAndDispose(ref this.renderPassPointLight);
                 Disposer.RemoveAndDispose(ref this.renderPassDirectionalLight);
+                Disposer.RemoveAndDispose(ref this.renderPassSpotLight);
 
                 Disposer.RemoveAndDispose(ref this.vBackgroundColor);
                 Disposer.RemoveAndDispose(ref this.vLightDir);
@@ -1245,6 +1246,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.vLightAtt);
                 Disposer.RemoveAndDispose(ref this.vLightSpot);
                 Disposer.RemoveAndDispose(ref this.vLightColor);
+                Disposer.RemoveAndDispose(ref this.vLightAmbient);
+
                 Disposer.RemoveAndDispose(ref this.vEyePos);
                 Disposer.RemoveAndDispose(ref this.mLightModel);
                 Disposer.RemoveAndDispose(ref this.mLightView);
