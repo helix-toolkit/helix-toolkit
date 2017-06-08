@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [ContentProperty("Children")]
     public abstract class GroupElement3D : Element3D //, IElement3DCollection
     {
-        private Element3DCollection childrenInternal;
+        private Element3DCollection childrenInternal = new Element3DCollection();
         public Element3DCollection Children
         {
             get { return (Element3DCollection)this.GetValue(ChildrenProperty); }
@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public GroupElement3D()
         {
-            this.Children = new Element3DCollection();
+            this.Children = this.childrenInternal;
         }
 
         protected override bool OnAttach(IRenderHost host)
