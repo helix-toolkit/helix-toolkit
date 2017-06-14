@@ -76,17 +76,9 @@ namespace HelixToolkit.Wpf.SharpDX
             int index = 0;
             foreach (var part in meshes)
             {
-                for (int i = 0; i < part.Positions.Count; i++)
-                {
-                    positions.Add(part.Positions[i]);
-                }
-
-                for (int i = 0; i < part.Indices.Count; i++)
-                {
-                    indices.Add(index + part.Indices[i]);
-                }
-
-                index += part.Indices.Count;
+                positions.AddRange(part.Positions);
+                indices.AddRange(part.Indices.Select(x => x + index));
+                index += part.Positions.Count;
             }
 
             if (normals != null)
