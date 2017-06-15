@@ -114,9 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnTransformChanged(e);
             if (this.geometryInternal != null)
             {
-                BoundsWithTransform
-                    = BoundingBox.FromPoints(Bounds.GetCorners()
-                    .Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
+                BoundsWithTransform = Bounds.Transform(this.modelMatrix);
                 BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(this.modelMatrix);
             }
             else
@@ -141,8 +139,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var old = bounds;
                     bounds = value;
                     RaiseOnBoundChanged(value, old);
-                    BoundsWithTransform = Transform == null ? bounds : BoundingBox.FromPoints((bounds).GetCorners()
-                    .Select(x => Vector3.TransformCoordinate(x, this.modelMatrix)).ToArray());
+                    BoundsWithTransform = Transform == null ? bounds : bounds.Transform(this.modelMatrix);
                 }
             }
         }

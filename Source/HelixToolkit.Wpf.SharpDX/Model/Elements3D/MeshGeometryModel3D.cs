@@ -320,7 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var m = this.modelMatrix;
 
                     // put bounds to world space
-                    var b = BoundingBox.FromPoints(this.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+                    var b = this.Bounds.Transform(m);// BoundingBox.FromPoints(this.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
 
                     //var b = this.Bounds;
 
