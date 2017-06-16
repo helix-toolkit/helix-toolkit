@@ -20,13 +20,17 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class GroupElement3D : Element3D //, IElement3DCollection
     {
         private IList<Element3D> itemsSourceInternal;
-
+        /// <summary>
+        /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
+        /// </summary>
         public IList<Element3D> ItemsSource
         {
             get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
         }
-
+        /// <summary>
+        /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
+        /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
                 new AffectsRenderPropertyMetadata(null, 
