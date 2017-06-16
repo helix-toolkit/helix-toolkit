@@ -11,7 +11,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Windows.Markup;
     using System.Linq;
+    using System.Collections;
 
+    /// <summary>
+    /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
+    /// </summary>
     [ContentProperty("Children")]
     public abstract class GroupElement3D : Element3D //, IElement3DCollection
     {
@@ -52,40 +56,42 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (e.OldItems != null)
             {
-                foreach(Element3D c in e.OldItems)
-                {
-                    c.Detach();
-                    if (c.Parent == this)
-                    {
-                        this.RemoveLogicalChild(c);
-                    }
-                }
+                DetachChildren(e.OldItems);
             }
             if (IsAttached)
             {               
                 if(e.Action== NotifyCollectionChangedAction.Reset)
                 {
-                    foreach (Element3D c in (sender as IEnumerable<Element3D>))
-                    {
-                        if (c.Parent == null)
-                        {
-                            this.AddLogicalChild(c);
-                        }
-
-                        c.Attach(renderHost);
-                    }
+                    AttachChildren(sender as IList);
                 }
                 else if(e.NewItems != null)
                 {
-                    foreach (Element3D c in e.NewItems)
-                    {
-                        if (c.Parent == null)
-                        {
-                            this.AddLogicalChild(c);
-                        }
+                    AttachChildren(e.NewItems);
+                }
+            }
+        }
 
-                        c.Attach(renderHost);
-                    }
+        protected void AttachChildren(IList children)
+        {
+            foreach (Element3D c in children)
+            {
+                if (c.Parent == null)
+                {
+                    this.AddLogicalChild(c);
+                }
+
+                c.Attach(renderHost);
+            }
+        }
+
+        protected void DetachChildren(IList children)
+        {
+            foreach (Element3D c in children)
+            {
+                c.Detach();
+                if (c.Parent == this)
+                {
+                    this.RemoveLogicalChild(c);
                 }
             }
         }
@@ -95,14 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (itemsSourceInternal != null)
             {
                 itemsSourceInternal.CollectionChanged -= Items_CollectionChanged;
-                foreach (var c in this.itemsSourceInternal)
-                {
-                    c.Detach();
-                    if (c.Parent == this)
-                    {
-                        this.RemoveLogicalChild(c);
-                    }
-                }
+                DetachChildren(this.itemsSourceInternal);
             }
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
@@ -110,37 +109,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 itemsSourceInternal.CollectionChanged += Items_CollectionChanged;
                 if (IsAttached)
                 {
-                    foreach (var c in this.itemsSourceInternal)
-                    {
-                        if (c.Parent == null)
-                        {
-                            this.AddLogicalChild(c);
-                        }
-
-                        c.Attach(renderHost);                   
-                    }  
+                    AttachChildren(this.itemsSourceInternal); 
                 }            
             }
         }
 
         protected override bool OnAttach(IRenderHost host)
         {
-            foreach (var c in this.Items)
+            foreach (var c in Items)
             {
                 if (c.Parent == null)
                 {
                     this.AddLogicalChild(c);
                 }
 
-                c.Attach(host);
+                c.Attach(renderHost);
             }
             return true;
         }
 
         protected override void OnDetach()
-        {
-            base.OnDetach();
-            foreach (var c in this.Items)
+        {           
+            foreach (var c in Items)
             {
                 c.Detach();
                 if (c.Parent == this)
@@ -148,6 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.RemoveLogicalChild(c);
                 }
             }
+            base.OnDetach();
         }
 
         protected override bool CanRender(RenderContext context)
