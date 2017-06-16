@@ -140,24 +140,24 @@ namespace MouseDragDemo
             this.translateYR.Length = 0.5;
             this.translateZR.Length = 0.5;
 
-            this.ItemsSource.Clear();
+            this.Children.Clear();
 
             if (this.CanTranslateX)
             {
-                this.ItemsSource.Add(this.translateXL);
-                this.ItemsSource.Add(this.translateXR);
+                this.Children.Add(this.translateXL);
+                this.Children.Add(this.translateXR);
             }
 
             if (this.CanTranslateY)
             {
-                this.ItemsSource.Add(this.translateYL);
-                this.ItemsSource.Add(this.translateYR);
+                this.Children.Add(this.translateYL);
+                this.Children.Add(this.translateYR);
             }
 
             if (this.CanTranslateZ)
             {
-                this.ItemsSource.Add(this.translateZL);
-                this.ItemsSource.Add(this.translateZR);
+                this.Children.Add(this.translateZL);
+                this.Children.Add(this.translateZR);
             }
 
 
@@ -175,7 +175,7 @@ namespace MouseDragDemo
                     IsThrowingShadow = false,
                     Geometry = g.ToLineGeometry3D(),
                 };
-                this.ItemsSource.Add(this.selectionBounds);
+                this.Children.Add(this.selectionBounds);
             }            
         }
     }
