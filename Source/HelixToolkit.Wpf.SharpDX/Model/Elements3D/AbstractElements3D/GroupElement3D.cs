@@ -19,19 +19,19 @@ namespace HelixToolkit.Wpf.SharpDX
     [ContentProperty("Children")]
     public abstract class GroupElement3D : Element3D //, IElement3DCollection
     {
-        private ObservableElement3DCollection itemsSourceInternal;
+        private IList<Element3D> itemsSourceInternal;
 
-        public ObservableElement3DCollection ItemsSource
+        public IList<Element3D> ItemsSource
         {
-            get { return (ObservableElement3DCollection)this.GetValue(ItemsSourceProperty); }
+            get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(ObservableElement3DCollection), typeof(GroupElement3D),
+            DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
                 new AffectsRenderPropertyMetadata(null, 
                     (d, e) => {
-                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as ObservableElement3DCollection);
+                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
         public IEnumerable<Element3D> Items
@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {               
                 if(e.Action== NotifyCollectionChangedAction.Reset)
                 {
-                    AttachChildren(sender as IList);
+                    AttachChildren(sender as IEnumerable);
                 }
                 else if(e.NewItems != null)
                 {
@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected void AttachChildren(IList children)
+        protected void AttachChildren(IEnumerable children)
         {
             foreach (Element3D c in children)
             {
@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected void DetachChildren(IList children)
+        protected void DetachChildren(IEnumerable children)
         {
             foreach (Element3D c in children)
             {
@@ -96,17 +96,23 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void OnItemsSourceChanged(ObservableElement3DCollection itemsSource)
+        private void OnItemsSourceChanged(IList<Element3D> itemsSource)
         {
             if (itemsSourceInternal != null)
             {
-                itemsSourceInternal.CollectionChanged -= Items_CollectionChanged;
+                if (itemsSourceInternal is INotifyCollectionChanged)
+                {
+                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged -= Items_CollectionChanged;
+                }
                 DetachChildren(this.itemsSourceInternal);
             }
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
             {
-                itemsSourceInternal.CollectionChanged += Items_CollectionChanged;
+                if (itemsSourceInternal is INotifyCollectionChanged)
+                {
+                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
+                }
                 if (IsAttached)
                 {
                     AttachChildren(this.itemsSourceInternal); 
@@ -116,28 +122,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnAttach(IRenderHost host)
         {
-            foreach (var c in Items)
-            {
-                if (c.Parent == null)
-                {
-                    this.AddLogicalChild(c);
-                }
-
-                c.Attach(renderHost);
-            }
+            AttachChildren(Items);
             return true;
         }
 
         protected override void OnDetach()
-        {           
-            foreach (var c in Items)
-            {
-                c.Detach();
-                if (c.Parent == this)
-                {
-                    this.RemoveLogicalChild(c);
-                }
-            }
+        {
+            DetachChildren(Items);
             base.OnDetach();
         }
 
