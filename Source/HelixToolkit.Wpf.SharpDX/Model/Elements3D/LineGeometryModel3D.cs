@@ -37,6 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected InputLayout vertexLayout;
         private readonly ImmutableBufferProxy<LinesVertex> vertexBuffer = new ImmutableBufferProxy<LinesVertex>(LinesVertex.SizeInBytes, BindFlags.VertexBuffer);
         private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        protected Vector4 lineParams = new Vector4(1, 0, 0, 0);
         /// <summary>
         /// For subclass override
         /// </summary>
@@ -78,7 +79,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty ThicknessProperty =
-            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(1.0));
+            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
+            {
+                (d as LineGeometryModel3D).lineParams.X = (float)(double)e.NewValue;
+            }));
 
         public double Smoothness
         {
@@ -87,7 +91,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty SmoothnessProperty =
-            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(0.0));
+            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(0.0, 
+                (d,e)=>
+                {
+                    (d as LineGeometryModel3D).lineParams.Y = (float)(double)e.NewValue;
+                }));
 
 
         public double HitTestThickness
@@ -357,7 +365,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             // --- set effect per object const vars
-            var lineParams = new Vector4((float)this.Thickness, (float)this.Smoothness, 0, 0);
             this.vLineParams.Set(lineParams);
             
             // --- set context
