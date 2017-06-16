@@ -56,7 +56,7 @@ namespace DeferredShadingDemo
         public Transform3D PointLightTransform2 { get; private set; }
         public Transform3D PointLightTransform3 { get; private set; }
 
-        public Element3DCollection PointLightCollection { get; set; }
+        public ObservableElement3DCollection PointLightCollection { get; set; }
         public Color4 PointLightColor
         {
             get { return this.pointLightColor; }
@@ -78,7 +78,7 @@ namespace DeferredShadingDemo
             set { this.pointLightSpread = value; this.InitPointLightCollection(this.PointLightCount); }
         }
 
-        public Element3DCollection SpotLightCollection { get; set; }
+        public ObservableElement3DCollection SpotLightCollection { get; set; }
         public Color4 SpotLightColor
         {
             get { return this.spotLightColor; }
@@ -175,12 +175,12 @@ namespace DeferredShadingDemo
             this.SpotLightAttenuation = new Vector3(1.0f, 0.1f, 0.01f);
 
             // light collection
-            this.PointLightCollection = new Element3DCollection();
+            this.PointLightCollection = new ObservableElement3DCollection();
             this.PointLightCount = 7;
             this.PointLightSpread = 100;
 
             // spotlight collection
-            this.SpotLightCollection = new Element3DCollection();
+            this.SpotLightCollection = new ObservableElement3DCollection();
             this.SpotLightCount = 7;
             this.SpotLightSpread = 100;
         }
@@ -192,10 +192,10 @@ namespace DeferredShadingDemo
         private void InitPointLightCollection(int numberLights)
         {
             // store the current technique
-            var technique = this.RenderTechnique;
+          //  var technique = this.RenderTechnique;
 
             // detouch the renderer
-            this.RenderTechnique = null;
+         //   this.RenderTechnique = null;
 
             // random            
             var rndx = new Random();
@@ -220,7 +220,7 @@ namespace DeferredShadingDemo
             }
 
             // attach the renderer
-            this.RenderTechnique = technique;
+        //    this.RenderTechnique = technique;
         }
 
         /// <summary>
@@ -245,10 +245,10 @@ namespace DeferredShadingDemo
         private void InitSpotLightCollection(int numberLights)
         {
             // store the current technique
-            var technique = this.RenderTechnique;
+            //var technique = this.RenderTechnique;
 
             // detouch the renderer
-            this.RenderTechnique = null;
+            //this.RenderTechnique = null;
 
             // random            
             var rndx = new Random();
@@ -274,7 +274,7 @@ namespace DeferredShadingDemo
             }
 
             // attach the renderer
-            this.RenderTechnique = technique;
+            //this.RenderTechnique = technique;
         }
 
         /// <summary>

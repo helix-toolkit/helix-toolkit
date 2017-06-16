@@ -6,44 +6,54 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Markup;
+    using System.Linq;
 
-    [ContentProperty("Items")]
+    [ContentProperty("Children")]
     public abstract class GroupElement3D : Element3D //, IElement3DCollection
     {
-        private Element3DCollection childrenInternal;
+        private ObservableElement3DCollection itemsSourceInternal;
 
-        public Element3DCollection ItemsSource
+        public ObservableElement3DCollection ItemsSource
         {
-            get { return (Element3DCollection)this.GetValue(ItemsSourceProperty); }
+            get { return (ObservableElement3DCollection)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(Element3DCollection), typeof(GroupElement3D),
+            DependencyProperty.Register("ItemsSource", typeof(ObservableElement3DCollection), typeof(GroupElement3D),
                 new AffectsRenderPropertyMetadata(null, 
                     (d, e) => {
-                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as Element3DCollection);
+                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as ObservableElement3DCollection);
                     }));
 
-        public Element3DCollection Items
+        public IEnumerable<Element3D> Items
+        {
+            get
+            {
+                return itemsSourceInternal == null ? Children : Children.Concat(itemsSourceInternal);
+            }
+        }
+
+        public ObservableElement3DCollection Children
         {
             get;
-        } = new Element3DCollection();
+        } = new ObservableElement3DCollection();
 
         public GroupElement3D()
         {
+            Children.CollectionChanged += Items_CollectionChanged;
         }
 
-        private void OnItemsSourceChanged(Element3DCollection itemsSource)
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (childrenInternal != null)
+            if (e.OldItems != null)
             {
-                foreach (var c in this.childrenInternal)
+                foreach(Element3D c in e.OldItems)
                 {
-                    Items.Remove(c);
                     c.Detach();
                     if (c.Parent == this)
                     {
@@ -51,20 +61,63 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
-            childrenInternal = itemsSource;
-            if (childrenInternal != null)
-            {
-                Items.AddRange(childrenInternal);
-                if (IsAttached)
+            if (IsAttached)
+            {               
+                if(e.Action== NotifyCollectionChangedAction.Reset)
                 {
-                    foreach (var c in this.childrenInternal)
+                    foreach (Element3D c in (sender as IEnumerable<Element3D>))
                     {
                         if (c.Parent == null)
                         {
                             this.AddLogicalChild(c);
                         }
 
-                        c.Attach(this.RenderHost);                   
+                        c.Attach(renderHost);
+                    }
+                }
+                else if(e.NewItems != null)
+                {
+                    foreach (Element3D c in e.NewItems)
+                    {
+                        if (c.Parent == null)
+                        {
+                            this.AddLogicalChild(c);
+                        }
+
+                        c.Attach(renderHost);
+                    }
+                }
+            }
+        }
+
+        private void OnItemsSourceChanged(ObservableElement3DCollection itemsSource)
+        {
+            if (itemsSourceInternal != null)
+            {
+                itemsSourceInternal.CollectionChanged -= Items_CollectionChanged;
+                foreach (var c in this.itemsSourceInternal)
+                {
+                    c.Detach();
+                    if (c.Parent == this)
+                    {
+                        this.RemoveLogicalChild(c);
+                    }
+                }
+            }
+            itemsSourceInternal = itemsSource;
+            if (itemsSourceInternal != null)
+            {
+                itemsSourceInternal.CollectionChanged += Items_CollectionChanged;
+                if (IsAttached)
+                {
+                    foreach (var c in this.itemsSourceInternal)
+                    {
+                        if (c.Parent == null)
+                        {
+                            this.AddLogicalChild(c);
+                        }
+
+                        c.Attach(renderHost);                   
                     }  
                 }            
             }
@@ -99,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(RenderContext context)
         {
-            return Items.Count > 0;
+            return true;
         }
 
         protected override void OnRender(RenderContext context)
