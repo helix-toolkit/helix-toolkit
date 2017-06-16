@@ -1232,7 +1232,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
-            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
             bool checkBoundSphere = false;
             global::SharpDX.BoundingSphere boundSphere;
             if (model != null)
@@ -1427,7 +1427,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
-            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
 
             if (rayWS.Intersects(ref bound) && context != null)
             {
@@ -1584,7 +1584,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
             bool isHit = false;
-            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
             var tempHits = new List<HitTestResult>();
             if (rayWS.Intersects(ref bound))
             {
@@ -1814,10 +1814,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InstanceMatrix = instanceMatrix;
             int counter = 0;
-            var totalBound = BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceMatrix[0])).ToArray());
+            var totalBound = geometryBound.Transform(instanceMatrix[0]);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceMatrix[0])).ToArray());
             foreach (var m in instanceMatrix)
             {
-                var b = BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+                var b = geometryBound.Transform(m);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
                 Objects.Add(new Tuple<int, BoundingBox>(counter, b));
                 BoundingBox.Merge(ref totalBound, ref b, out totalBound);
                 ++counter;
@@ -1844,13 +1844,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
             bool isHit = false;
-            var bound = BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
             if (rayWS.Intersects(ref bound))
             {
                 isIntersect = true;
                 foreach (var t in this.Objects)
                 {
-                    var b = BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+                    var b = t.Item2.Transform(modelMatrix);// BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
                     if (b.Intersects(ref rayWS))
                     {
                         var result = new HitTestResult()

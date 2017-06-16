@@ -26,13 +26,19 @@ namespace HelixToolkit.Wpf.SharpDX
         private EffectScalarVariable bFixedSizeVariable;
         #endregion
 
+        protected bool fixedSize = true;
+
         /// <summary>
         /// Fixed sized billboard. Default = true. 
         /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
         /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
         /// </summary>
         public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(BillboardTextModel3D),
-            new AffectsRenderPropertyMetadata(true));
+            new AffectsRenderPropertyMetadata(true,
+                (d,e)=> 
+                {
+                    (d as BillboardTextModel3D).fixedSize = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// Fixed sized billboard. Default = true. 
@@ -350,7 +356,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
-            bFixedSizeVariable?.Set(FixedSize);
+            bFixedSizeVariable?.Set(fixedSize);
             // --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);

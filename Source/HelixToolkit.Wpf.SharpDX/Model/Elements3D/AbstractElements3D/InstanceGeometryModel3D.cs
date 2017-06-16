@@ -70,10 +70,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var bound = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceInternal[0])).ToArray());
+                var bound = this.BoundsWithTransform.Transform(instanceInternal[0]);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceInternal[0])).ToArray());
                 foreach (var instance in instanceInternal)
                 {
-                    var b = BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
+                    var b = this.BoundsWithTransform.Transform(instance);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
                     BoundingBox.Merge(ref bound, ref b, out bound);
                 }
                 InstancesBound = bound;

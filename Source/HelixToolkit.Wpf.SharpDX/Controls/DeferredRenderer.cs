@@ -389,7 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RenderLighting(RenderContext context, IEnumerable<ILight3D> lightsCollection)
         {
             // --- extract all lights from collections an build one IEnumerable seqence
-            var lights = lightsCollection.Where(l => l is Light3D).Concat(lightsCollection.Where(l => l is Light3DCollection).SelectMany(x => (x as Light3DCollection).Children.Select(xx => xx as ILight3D)));
+            var lights = lightsCollection.Where(l => l is Light3D).Concat(lightsCollection.Where(l => l is Light3DCollection).SelectMany(x => (x as Light3DCollection).Items.Select(xx => xx as ILight3D)));
 
             // --- eye position
             this.deferredLightingVariables.vEyePos.Set(context.Camera.Position.ToVector4());

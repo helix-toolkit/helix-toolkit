@@ -355,7 +355,7 @@ namespace MouseDragDemo
         {
             if (e.NewValue is PhongMaterial)
             {
-                foreach (var item in ((GroupModel3D)d).Children)
+                foreach (var item in ((GroupModel3D)d).Items)
                 {
                     var model = item as MaterialGeometryModel3D;
                     if (model != null)

@@ -10,7 +10,7 @@
         <hx:Viewport3DX x:Name="view">
             <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
-      <hx:GroupModel3D x:Name="group"   Children="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
+      <hx:GroupModel3D x:Name="group"   ItemsSource="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
     </hx:Viewport3DX>
     <Menu Height="20" VerticalAlignment="Top">
       <MenuItem Header="File"  >

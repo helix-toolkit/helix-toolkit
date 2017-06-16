@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
         protected override bool OnAttach(IRenderHost host)
         {
             Light3DSceneShared = host.Light3DSceneShared;
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 c.Attach(host);
             }
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
         protected override void OnDetach()
         {
             base.OnDetach();
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 c.Detach();
             }
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
 
         protected override void OnRender(RenderContext context)
         {
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 c.Render(context);
             }
