@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected InputLayout vertexLayout;
         private readonly ImmutableBufferProxy<LinesVertex> vertexBuffer = new ImmutableBufferProxy<LinesVertex>(LinesVertex.SizeInBytes, BindFlags.VertexBuffer);
         private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
-        protected Vector4 lineParams = new Vector4(1, 0, 0, 0);
+        protected Vector4 lineParams = new Vector4();
         /// <summary>
         /// For subclass override
         /// </summary>
@@ -106,6 +106,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
+
+
+        public LineGeometryModel3D() : base()
+        {
+            lineParams.X = (float)Thickness;
+            lineParams.Y = (float)Smoothness;
+        }
 
 
         protected override bool CanHitTest(IRenderMatrices context)

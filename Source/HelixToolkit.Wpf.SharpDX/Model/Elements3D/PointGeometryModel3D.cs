@@ -22,6 +22,7 @@
         protected EffectTransformVariables effectTransforms;
         protected EffectVectorVariable vPointParams;
         private readonly ImmutableBufferProxy<PointsVertex> vertexBuffer = new ImmutableBufferProxy<PointsVertex>(PointsVertex.SizeInBytes, BindFlags.VertexBuffer);
+        protected Vector4 pointParams = new Vector4();
         /// <summary>
         /// For subclass override
         /// </summary>
@@ -51,7 +52,14 @@
         }
 
         public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0)));
+            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0),
+                (d,e)=> 
+                {
+                    var size = (Size)e.NewValue;
+                    var model = (d as PointGeometryModel3D);
+                    model.pointParams.X = (float)size.Width;
+                    model.pointParams.Y = (float)size.Height;
+                }));
 
         public PointFigure Figure
         {
@@ -60,7 +68,13 @@
         }
 
         public static readonly DependencyProperty FigureProperty =
-            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect));
+            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect,
+                (d, e)=> 
+                {
+                    var figure = (PointFigure)e.NewValue;
+                    var model = (d as PointGeometryModel3D);
+                    model.pointParams.Z = (float)figure;
+                }));
 
         public double FigureRatio
         {
@@ -69,7 +83,13 @@
         }
 
         public static readonly DependencyProperty FigureRatioProperty =
-            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25));
+            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25,
+                (d, e)=> 
+                {
+                    var ratio = (double)e.NewValue;
+                    var model = (d as PointGeometryModel3D);
+                    model.pointParams.W = (float)ratio;
+                }));
 
         public double HitTestThickness
         {
@@ -79,6 +99,14 @@
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
+
+        public PointGeometryModel3D() : base()
+        {
+            pointParams.X = (float)Size.Width;
+            pointParams.Y = (float)Size.Height;
+            pointParams.Z = (float)Figure;
+            pointParams.W = (float)FigureRatio;
+        }
 
         public static double DistanceRayToPoint(Ray r, Vector3 p)
         {
@@ -317,7 +345,6 @@
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             // --- set effect per object const vars
-            var pointParams = new Vector4((float)this.Size.Width, (float)this.Size.Height, (float)this.Figure, (float)this.FigureRatio);
             this.vPointParams.Set(pointParams);
 
             // --- set context
