@@ -41,8 +41,8 @@
             <!--<hx:PointLight3D Color="{Binding PointLightColor}" Attenuation="{Binding PointLightAttenuation}" Transform="{Binding PointLightTransform1}"/>-->
             <!--<hx:PointLight3D Color="{Binding PointLightColor}" Attenuation="{Binding PointLightAttenuation}" Transform="{Binding PointLightTransform2}"/>-->
             <!--<hx:PointLight3D Color="{Binding PointLightColor}" Attenuation="{Binding PointLightAttenuation}" Transform="{Binding PointLightTransform3}"/>-->
-            <hx:Light3DCollection Children="{Binding PointLightCollection}" />
-            <hx:Light3DCollection Children="{Binding SpotLightCollection}" />
+            <hx:Light3DCollection ItemsSource="{Binding PointLightCollection}" />
+            <hx:Light3DCollection ItemsSource="{Binding SpotLightCollection}" />
             <hx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}"   />
             <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" />
             <hx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}"  />

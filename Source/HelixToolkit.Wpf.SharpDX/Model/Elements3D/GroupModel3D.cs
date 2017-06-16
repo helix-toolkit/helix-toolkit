@@ -58,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 var model = c as ITransformable;
                 if (model != null)
@@ -97,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 var hc = c as IHitable;
                 if (hc != null)

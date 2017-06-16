@@ -118,9 +118,9 @@ namespace MouseDragDemo
                 this.midpointHandles[i].MouseUp3D += OnNodeMouse3DUp;
                 this.midpointHandles[i].MouseDown3D += OnNodeMouse3DDown;
        
-                this.Children.Add(cornerHandles[i]);
-                this.Children.Add(edgeHandles[i]);
-                this.Children.Add(midpointHandles[i]);
+                this.ItemsSource.Add(cornerHandles[i]);
+                this.ItemsSource.Add(edgeHandles[i]);
+                this.ItemsSource.Add(midpointHandles[i]);
             }
 
             // 3 --- 2 
@@ -355,7 +355,7 @@ namespace MouseDragDemo
         {
             if (e.NewValue is PhongMaterial)
             {
-                foreach (var item in ((GroupModel3D)d).Children)
+                foreach (var item in ((GroupModel3D)d).ItemsSource)
                 {
                     var model = item as MaterialGeometryModel3D;
                     if (model != null)
