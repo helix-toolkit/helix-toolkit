@@ -300,8 +300,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnRender(RenderContext renderContext)
         {
-            // --- set model transform paramerers                         
-            effectTransforms.mWorld.SetMatrix(ref modelMatrix);
+            // --- set model transform paramerers        
+            var worldMatrix = modelMatrix * renderContext.worldMatrix;
+            effectTransforms.mWorld.SetMatrix(ref worldMatrix);
             this.effectMaterial.AttachMaterial();
 
             // --- set primitive type
