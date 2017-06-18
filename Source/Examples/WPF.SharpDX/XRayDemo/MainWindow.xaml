@@ -42,8 +42,8 @@
                 Material="{Binding FloorMaterial}"/>
             <hx:XRayMeshGeometryModel3D
                 x:Name="model" CullMode="Back" Transform="{Binding ModelTransform}"
-                Geometry="{Binding Model}" EnableXRay="True"
-                Material="{Binding ModelMaterial}"/>
+                Geometry="{Binding Model}" EnableXRay="True" Instances="{Binding Instances}"
+                Material="{Binding ModelMaterial}" XRayColor="Orange"/>
         </hx:Viewport3DX>
     </Grid>
 </Window>

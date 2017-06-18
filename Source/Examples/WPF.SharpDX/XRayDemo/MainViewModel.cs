@@ -62,6 +62,8 @@ namespace XRayDemo
             }
         }
 
+        public Matrix[] Instances { private set; get; }
+
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
@@ -114,6 +116,12 @@ namespace XRayDemo
             Model = MeshGeometry3D.Merge(caritems);
 
             ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
+
+            Instances = new Matrix[6];
+            for(int i=0; i<Instances.Length; ++i)
+            {
+                Instances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2) - 15, 0));
+            }
         }
 
         public List<Object3D> Load3ds(string path)
