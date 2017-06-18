@@ -63,4 +63,6 @@ tbuffer BoneSkinning
 {
 	matrix SkinMatrices[MaxBones];
 };
+
+float4 XRayObjectColor = float4(1,1,1,1);
 #endif
