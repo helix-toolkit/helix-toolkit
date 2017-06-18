@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty XRayColorProperty = DependencyProperty.Register("XRayColor", typeof(Media.Color), typeof(XRayMeshGeometryModel3D),
-            new PropertyMetadata(Media.Colors.White,
+            new AffectsRenderPropertyMetadata(Media.Colors.White,
             (d, e) =>
             {
                 (d as XRayMeshGeometryModel3D).xRayColor = ((Media.Color)e.NewValue).ToColor4();

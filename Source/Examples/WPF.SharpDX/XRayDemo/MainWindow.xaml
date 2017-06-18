@@ -41,7 +41,7 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"/>
             <hx:XRayMeshGeometryModel3D
-                x:Name="model" CullMode="Back"
+                x:Name="model" CullMode="Back" Transform="{Binding ModelTransform}"
                 Geometry="{Binding Model}" EnableXRay="True"
                 Material="{Binding ModelMaterial}"/>
         </hx:Viewport3DX>

@@ -24,6 +24,7 @@ namespace XRayDemo
     using SharpDX.Direct3D11;
     using System.Windows;
     using System.Windows.Data;
+    using HelixToolkit.Wpf.SharpDX.Extensions;
 
     public class MainViewModel : BaseViewModel
     {
@@ -32,15 +33,18 @@ namespace XRayDemo
         public MeshGeometry3D Model { get; private set; }
         public MeshGeometry3D Floor { get; private set; }
 
+        public MeshGeometry3D CarModel { private set; get; }
 
         public PhongMaterial ModelMaterial { get; set; }
         public PhongMaterial FloorMaterial { get; set; }
         public PhongMaterial LightModelMaterial { get; set; }
 
+        public Transform3D ModelTransform { private set; get; }
+
         public Vector3 Light1Direction { get; set; }
         public Color4 Light1Color { get; set; }
         public Color4 AmbientLightColor { get; set; }
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
+        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-100, -100, -100);
         public Media3D.Vector3D CamLookDir
         {
             set
@@ -71,39 +75,52 @@ namespace XRayDemo
 
             // ----------------------------------------------
             // camera setup
-            this.Camera = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
+            this.Camera = new PerspectiveCamera { Position = new Point3D(100, 100, 100), LookDirection = new Vector3D(-100, -100, -100), UpDirection = new Vector3D(0, 1, 0) };
             // ----------------------------------------------
             // setup scene
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             this.Light1Color = (Color4)Color.Gray;
 
 
-            this.Light1Direction = new Vector3(0, -10, -10);
-            //SetupCameraBindings(Camera);
+            this.Light1Direction = new Vector3(-100, -100, -100);
+            SetupCameraBindings(Camera);
             // ----------------------------------------------
             // ----------------------------------------------
             // scene model3d
-            var b1 = new MeshBuilder(true, true, true);
-            b1.AddSphere(new Vector3(0.25f, 0.25f, 0.25f), 0.75, 64, 64);
-            b1.AddBox(-new Vector3(0.25f, 0.25f, 0.25f), 1, 1, 1, BoxFaces.All);
-            b1.AddBox(-new Vector3(5.0f, 0.0f, 0.0f), 1, 1, 1, BoxFaces.All);
-            b1.AddSphere(new Vector3(5f, 0f, 0f), 0.75, 64, 64);
-            b1.AddCylinder(new Vector3(0f, -3f, -5f), new Vector3(0f, 3f, -5f), 1.2, 64);
-
-            this.Model = b1.ToMeshGeometry3D();
-            this.ModelMaterial = PhongMaterials.BlanchedAlmond;
-            this.ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            this.ModelMaterial = PhongMaterials.Bronze;
 
             // ----------------------------------------------
             // floor model3d
             var b2 = new MeshBuilder(true, true, true);
-            b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f), 15, 0.1, 15, BoxFaces.All);
-            b2.AddBox(new Vector3(0, -2.5f, 7), 15, 5, 2);
-            b2.AddBox(new Vector3(0, -2.5f, -7), 15, 5, 2);
+            b2.AddBox(new Vector3(0.0f, 0, 0.0f), 150, 0.1, 150, BoxFaces.All);
+            b2.AddBox(new Vector3(0, 25, 70), 150, 50, 20);
+            b2.AddBox(new Vector3(0, 25, -70), 150, 50, 20);
             this.Floor = b2.ToMeshGeometry3D();
-            this.FloorMaterial = PhongMaterials.BlackRubber;
+            this.FloorMaterial = PhongMaterials.Bisque;
             this.FloorMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
-            this.FloorMaterial.NormalMap = ModelMaterial.NormalMap;
+            this.FloorMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+
+            var caritems = Load3ds("leone.3DBuilder.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
+            var scale = new Vector3(1f);
+
+            foreach (var item in caritems)
+            {
+                for (int i = 0; i < item.Positions.Count; ++i)
+                {
+                    item.Positions[i] = item.Positions[i] * scale;
+                }
+                
+            }
+            Model = MeshGeometry3D.Merge(caritems);
+
+            ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
+        }
+
+        public List<Object3D> Load3ds(string path)
+        {
+            var reader = new ObjReader();
+            var list = reader.Read(path);
+            return list;
         }
 
         public void SetupCameraBindings(Camera camera)
