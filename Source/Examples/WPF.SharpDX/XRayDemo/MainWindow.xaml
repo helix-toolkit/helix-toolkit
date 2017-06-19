@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:XRayDemo"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="800">
     <Grid>
@@ -45,5 +46,9 @@
                 Geometry="{Binding Model}" EnableXRay="True" Instances="{Binding Instances}"
                 Material="{Binding ModelMaterial}" XRayColor="Orange"/>
         </hx:Viewport3DX>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical">
+            <Label>X Ray Color:</Label>
+            <pt:ColorPicker SelectedColor="{Binding ElementName=model, Path=XRayColor}"/>
+        </StackPanel>
     </Grid>
 </Window>
