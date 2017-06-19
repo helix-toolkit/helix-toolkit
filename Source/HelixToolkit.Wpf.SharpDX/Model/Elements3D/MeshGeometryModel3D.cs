@@ -277,25 +277,68 @@ namespace HelixToolkit.Wpf.SharpDX
                     new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0),
                     new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0),
                 });
-
+                OnBeforeInstancedDrawCall(renderContext);
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw
                 renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
+
+                OnAfterInstancedDrawCall(renderContext);
                 this.bHasInstances.Set(false);
             }
             else
             {
                 // --- bind buffer                
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
+
+                OnBeforeDrawCall(renderContext);
                 // --- render the geometry
                 // 
                 var pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(renderContext.DeviceContext);
                 // --- draw
                 renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
+
+                OnAfterDrawCall(renderContext);
             }
         }
+
+        /// <summary>
+        /// Just before calling DrawIndexedInstanced. All buffers are attached. Override to use for multipass drawing
+        /// </summary>
+        /// <param name="renderContext"></param>
+        protected virtual void OnBeforeInstancedDrawCall(RenderContext renderContext)
+        {
+
+        }
+
+        /// <summary>
+        /// Just before calling DrawIndexed. All buffers are attached. Override to use for multipass drawing
+        /// </summary>
+        /// <param name="renderContext"></param>
+        protected virtual void OnBeforeDrawCall(RenderContext renderContext)
+        {
+
+        }
+
+        /// <summary>
+        /// After calling DrawIndexedInstanced. Override to use for multipass drawing
+        /// </summary>
+        /// <param name="renderContext"></param>
+        protected virtual void OnAfterInstancedDrawCall(RenderContext renderContext)
+        {
+
+        }
+
+        /// <summary>
+        /// After calling DrawIndexed. Override to use for multipass drawing
+        /// </summary>
+        /// <param name="renderContext"></param>
+        protected virtual void OnAfterDrawCall(RenderContext renderContext)
+        {
+
+        }
+
 
         protected override bool CanHitTest(IRenderMatrices context)
         {

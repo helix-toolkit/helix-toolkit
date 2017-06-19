@@ -250,9 +250,9 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 }
 
 
-PSInput VShaderXRay(VSInput input)
+PSInputXRay VShaderXRay(VSInput input)
 {
-    PSInput output = (PSInput)0;
+    PSInputXRay output = (PSInputXRay)0;
 	float4 inputp = input.p;
 	float3 inputn = input.n;
 	// compose instance matrix
@@ -271,27 +271,13 @@ PSInput VShaderXRay(VSInput input)
 
 	//set position into camera clip space	
 	output.p = mul(inputp, mWorld);	
-    output.wp = float4(normalize(vEyePos - output.p.xyz), 1); //Use wp for camera->vertex direction
+    output.vEye = float4(normalize(vEyePos - output.p.xyz), 1); //Use wp for camera->vertex direction
 	output.p = mul(output.p, mView);
 
 	output.p = mul(output.p, mProjection);
 
     	//set normal for interpolation	
 	output.n = normalize(mul(inputn, (float3x3)mWorld));
-
-
-	if (bHasNormalMap)
-	{
-		// transform the tangents by the world matrix and normalize
-		output.t1 = normalize(mul(input.t1, (float3x3)mWorld));
-		output.t2 = normalize(mul(input.t2, (float3x3)mWorld));
-	}
-	else
-	{
-		output.t1 = 0.0f;
-		output.t2 = 0.0f;
-	}
-
     return output;
 }
 

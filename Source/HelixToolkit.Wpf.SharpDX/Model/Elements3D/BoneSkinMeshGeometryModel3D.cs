@@ -146,22 +146,27 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.isInstanceChanged = false;
                 }
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0));
+
+                OnBeforeInstancedDrawCall(renderContext);
                 // --- render the geometry
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 // --- draw              
                 renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
+                OnAfterInstancedDrawCall(renderContext);
                 this.bHasInstances.Set(false);
             }
             else
             {
                 // --- bind buffer                
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
+                OnBeforeDrawCall(renderContext);
                 // --- render the geometry
                 // 
                 var pass = this.effectTechnique.GetPassByIndex(0);
                 pass.Apply(renderContext.DeviceContext);
                 // --- draw
                 renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
+                OnAfterDrawCall(renderContext);
             }
         }
 

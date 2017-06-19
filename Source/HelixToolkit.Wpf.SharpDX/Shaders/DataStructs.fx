@@ -73,6 +73,13 @@ struct PSInput
 	float4 c2			: COLOR1;
 };
 
+struct PSInputXRay
+{
+	float4 p			: SV_POSITION;  
+	float4 vEye			: POSITION0;
+	float3 n			: NORMAL;	    // normal
+};
+
 //--------------------------------------------------------------------------------------
 // CUBE-MAP funcs
 //--------------------------------------------------------------------------------------

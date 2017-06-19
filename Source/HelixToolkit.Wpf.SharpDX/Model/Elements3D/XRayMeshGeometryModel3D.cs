@@ -56,84 +56,34 @@ namespace HelixToolkit.Wpf.SharpDX
             xRayColor = XRayColor.ToColor4();
         }
 
-        protected override void OnRender(RenderContext renderContext)
+        protected override void OnBeforeDrawCall(RenderContext renderContext)
         {
-            // --- set constant paramerers             
-            var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
-
-            // --- check shadowmaps
-            this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
-            this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
-
-            // --- set material params      
-            this.effectMaterial.AttachMaterial();
-
-            this.bHasInstances.Set(this.hasInstances);
-            // --- set context
-            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
-
-            // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
-            if (this.hasInstances)
+            if (enableXRay)
             {
-                // --- update instance buffer
-                if (this.isInstanceChanged)
-                {
-                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
-                    this.isInstanceChanged = false;
-                }
-
-                // --- INSTANCING: need to set 2 buffers            
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new[]
-                {
-                    new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0),
-                    new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0),
-                });
-
-                if (enableXRay)
-                {
-                    xRayColorVar.Set(xRayColor);
-                    // --- render the xray
-                    // 
-                    var pass1 = this.effectTechnique.GetPassByIndex(2);
-                    pass1.Apply(renderContext.DeviceContext);
-                    // --- draw
-                    renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
-                }
-
-                // --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-                // --- draw
-                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
-                this.bHasInstances.Set(false);
-            }
-            else
-            {
-                // --- bind buffer                
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
-
-                if (enableXRay)
-                {
-                    xRayColorVar.Set(xRayColor);
-                    // --- render the xray
-                    // 
-                    var pass1 = this.effectTechnique.GetPassByIndex(2);
-                    pass1.Apply(renderContext.DeviceContext);
-                    // --- draw
-                    renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
-                }
-
-                // --- render the geometry
+                xRayColorVar.Set(xRayColor);
+                // --- render the xray
                 // 
-                var pass = this.effectTechnique.GetPassByIndex(0);
-                pass.Apply(renderContext.DeviceContext);
+                var pass1 = this.effectTechnique.GetPassByIndex(2);
+                pass1.Apply(renderContext.DeviceContext);
                 // --- draw
                 renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
-
             }
+            base.OnBeforeDrawCall(renderContext);
+        }
+
+        protected override void OnBeforeInstancedDrawCall(RenderContext renderContext)
+        {
+            if (enableXRay)
+            {
+                xRayColorVar.Set(xRayColor);
+                // --- render the xray
+                // 
+                var pass1 = this.effectTechnique.GetPassByIndex(2);
+                pass1.Apply(renderContext.DeviceContext);
+                // --- draw
+                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
+            }
+            base.OnBeforeInstancedDrawCall(renderContext);
         }
 
         protected override void OnAttached()
