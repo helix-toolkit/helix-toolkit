@@ -138,6 +138,13 @@ DepthStencilState DSSDepthParticle
     DepthWriteMask = Zero;
 };
 
+DepthStencilState DSSDepthXRay
+{
+	DepthEnable = true;
+    DepthWriteMask = Zero;
+    DepthFunc = Greater;
+};
+
 //--------------------------------------------------------------------------------------
 BlendState BSNoBlending
 {
@@ -158,6 +165,18 @@ BlendState BSBlending
 };
 
 BlendState BSParticleBlending
+{
+    BlendEnable[0] = true;
+	SrcBlend = ONE;
+	DestBlend = ONE;
+    BlendOp = ADD;
+    SrcBlendAlpha = ONE;
+    DestBlendAlpha = ZERO;
+    BlendOpAlpha = ADD;
+    RenderTargetWriteMask[0] = 0x0F;
+};
+
+BlendState BSXRayBlending
 {
     BlendEnable[0] = true;
 	SrcBlend = ONE;

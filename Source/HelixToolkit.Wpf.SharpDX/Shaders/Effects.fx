@@ -29,6 +29,18 @@ technique11 RenderPhong
 		SetGeometryShader(NULL);
 		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
 	}
+    pass P2 //XRay
+    {
+    	SetDepthStencilState(DSSDepthXRay, 0);
+        //SetDepthStencilState(DSSDepthLess, 0);
+		SetBlendState(BSXRayBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+
+		SetVertexShader(CompileShader(vs_4_0, VShaderXRay()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PSShaderXRay()));
+    }
 }
 
 technique11 RenderBlinn
@@ -57,6 +69,18 @@ technique11 RenderBlinn
 		SetGeometryShader(NULL);
 		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
 	}
+
+    pass P2 //XRay
+    {
+    	//SetDepthStencilState(DSSDepthXRay, 0);
+		//SetBlendState(BSXRayBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+
+		SetVertexShader(CompileShader(vs_4_0, VShaderXRay()));
+		SetHullShader(NULL);
+		SetDomainShader(NULL);
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PSShaderXRay()));
+    }
 }
 
 technique11 RenderBoneSkinBlinn

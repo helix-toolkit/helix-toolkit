@@ -277,24 +277,42 @@ namespace HelixToolkit.Wpf.SharpDX
                     new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0),
                     new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0),
                 });
-
-                // --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-                // --- draw
-                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
+                OnInstancedDrawCall(renderContext);
                 this.bHasInstances.Set(false);
             }
             else
             {
                 // --- bind buffer                
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
-                // --- render the geometry
-                // 
-                var pass = this.effectTechnique.GetPassByIndex(0);
-                pass.Apply(renderContext.DeviceContext);
-                // --- draw
-                renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
+
+                OnDrawCall(renderContext);
             }
+        }
+
+        /// <summary>
+        /// Just before calling DrawIndexedInstanced. All buffers are attached. Override to use for multipass drawing
+        /// </summary>
+        /// <param name="renderContext"></param>
+        protected virtual void OnInstancedDrawCall(RenderContext renderContext)
+        {
+            // --- render the geometry
+            this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
+            // --- draw
+            renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Just before calling DrawIndexed. All buffers are attached. Override to use for multipass drawing
+        /// </summary>
+        /// <param name="renderContext"></param>
+        protected virtual void OnDrawCall(RenderContext renderContext)
+        {
+            // --- render the geometry
+            // 
+            var pass = this.effectTechnique.GetPassByIndex(0);
+            pass.Apply(renderContext.DeviceContext);
+            // --- draw
+            renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
         }
 
         protected override bool CanHitTest(IRenderMatrices context)
