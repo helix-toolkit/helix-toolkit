@@ -65,4 +65,5 @@ tbuffer BoneSkinning
 };
 
 float4 XRayObjectColor = float4(1,1,1,1);
+float XRayBorderFadingFactor = 1.5f;
 #endif

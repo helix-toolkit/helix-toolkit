@@ -63,6 +63,16 @@ namespace XRayDemo
         }
 
         public Matrix[] Instances { private set; get; }
+        public Matrix[] OutlineInstances { private set; get; }
+        public BlendStateDescription BlendDescription
+        {
+            set; get;
+        }
+
+        public DepthStencilStateDescription DepthStencilDescription
+        {
+            set;get;
+        }
 
         public MainViewModel()
         {
@@ -89,7 +99,7 @@ namespace XRayDemo
             // ----------------------------------------------
             // ----------------------------------------------
             // scene model3d
-            this.ModelMaterial = PhongMaterials.Bronze;
+            this.ModelMaterial = PhongMaterials.Silver;
 
             // ----------------------------------------------
             // floor model3d
@@ -120,8 +130,34 @@ namespace XRayDemo
             Instances = new Matrix[6];
             for(int i=0; i<Instances.Length; ++i)
             {
-                Instances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2) - 15, 0));
+                Instances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2) - 30, 0));
             }
+
+            OutlineInstances = new Matrix[6];
+            for (int i = 0; i < Instances.Length; ++i)
+            {
+                OutlineInstances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2), 0));
+            }
+
+            var blendDesc = new BlendStateDescription();
+            blendDesc.RenderTarget[0] = new RenderTargetBlendDescription
+            {
+                IsBlendEnabled = true,
+                BlendOperation = BlendOperation.Add,
+                AlphaBlendOperation = BlendOperation.Add,
+                SourceBlend = BlendOption.One,
+                DestinationBlend = BlendOption.One,
+                SourceAlphaBlend = BlendOption.Zero,
+                DestinationAlphaBlend = BlendOption.One,
+                RenderTargetWriteMask = ColorWriteMaskFlags.All
+            };
+            BlendDescription = blendDesc;
+            DepthStencilDescription = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = true,
+                DepthComparison = Comparison.LessEqual,
+                DepthWriteMask = DepthWriteMask.Zero
+            };
         }
 
         public List<Object3D> Load3ds(string path)

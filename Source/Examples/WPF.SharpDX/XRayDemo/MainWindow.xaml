@@ -19,7 +19,7 @@
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False"
-            RenderTechnique="{Binding RenderTechnique}">
+            RenderTechnique="{Binding RenderTechnique}" Background="Black" BackgroundColor="0,0,0,0">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -43,12 +43,21 @@
                 Material="{Binding FloorMaterial}"/>
             <hx:XRayMeshGeometryModel3D
                 x:Name="model" CullMode="Back" Transform="{Binding ModelTransform}"
-                Geometry="{Binding Model}" EnableXRay="True" Instances="{Binding Instances}"
-                Material="{Binding ModelMaterial}" XRayColor="Orange"/>
+                Geometry="{Binding Model}" EnableOutline="True" Instances="{Binding Instances}"
+                Material="{Binding ModelMaterial}" OutlineColor="Orange"/>
+
+            <hx:OutLineMeshGeometryModel3D
+                CullMode="Back" Transform="{Binding ModelTransform}"
+                Geometry="{Binding Model}" EnableOutline="True"  Instances="{Binding OutlineInstances}"
+                
+                Material="{Binding ModelMaterial}" OutlineColor="{Binding ElementName=model, Path=OutlineColor}" 
+                IsDrawGeometry="{Binding ElementName=model, Path=IsDrawGeometry}" OutlineFadingFactor="{Binding ElementName=model, Path=OutlineFadingFactor}"/>
         </hx:Viewport3DX>
-        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical">
-            <Label>X Ray Color:</Label>
-            <pt:ColorPicker SelectedColor="{Binding ElementName=model, Path=XRayColor}"/>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical" TextBlock.Foreground="White">
+            <Label Foreground="White">X Ray Color:</Label>
+            <pt:ColorPicker SelectedColor="{Binding ElementName=model, Path=OutlineColor}" Margin="4"/>
+            <CheckBox IsChecked="{Binding ElementName=model, Path=IsDrawGeometry}" Foreground="White" Margin="4">Draw Geometry</CheckBox>
+            <Slider Value="{Binding ElementName=model, Path=OutlineFadingFactor}" Minimum="1" Maximum="4"></Slider>
         </StackPanel>
     </Grid>
 </Window>

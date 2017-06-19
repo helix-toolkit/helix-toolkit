@@ -332,8 +332,8 @@ float4 PSInstancingShaderBlinnPhong(PSInput input) : SV_Target
 
 float4 PSShaderXRay(PSInputXRay input) : SV_Target
 {
-    float ndotv = 1 - dot(normalize(input.n), normalize(input.vEye.xyz))*2;
-    return float4(XRayObjectColor.xyz * ndotv, 1);
+    float ndotv = 1 - dot(normalize(input.n), normalize(input.vEye.xyz)) * XRayBorderFadingFactor;
+    return float4(XRayObjectColor.xyz * ndotv, 0);
 }
 
 //--------------------------------------------------------------------------------------
