@@ -38,7 +38,7 @@
                 Color="{Binding Light1Color}" />
 
             <hx:MeshGeometryModel3D
-                x:Name="floor"
+                x:Name="floor" CullMode="Back"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"/>
             <hx:XRayMeshGeometryModel3D
