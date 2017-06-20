@@ -112,6 +112,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\CanvasMock.cs" />
+    <Compile Include="Geometry\Polygon3DTests.cs" />
     <Compile Include="Elements3D\MeshGeometryModel3DTests.cs" />
     <Compile Include="Importers\ObjReaderTests.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
