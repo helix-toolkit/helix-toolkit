@@ -123,7 +123,9 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            throw new InvalidOperationException("Invalid polygon.");
+            Vector3D result = Vector3D.CrossProduct(v1, this.Points[2] - this.Points[0]);
+            result.Normalize();
+            return result;
         }
 
         /// <summary>

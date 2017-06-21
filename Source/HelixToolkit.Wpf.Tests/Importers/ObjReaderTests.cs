@@ -395,6 +395,42 @@ map_Ka " + prefix + Path.GetFileName(tempTexAmbient) + @"
                 File.Delete(tempTexAmbient);
             }
         }
+
+        [Test]
+        public void MaterialLib_LoadMultipleTimes_Valid()
+        {
+            var tempObj = Path.GetTempFileName();
+            var tempMtl = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(tempObj, @"
+mtllib " + Path.GetFileName(tempMtl) + @"
+mtllib " + Path.GetFileName(tempMtl) + @"
+v -0.5 0 0.5
+v 0.5 0 0.5
+v -0.5 0 -0.5
+vt 0 1
+usemtl TestMaterial
+f 1/1 2/1 3/1
+");
+
+                File.WriteAllText(tempMtl, @"
+newmtl TestMaterial
+Kd 1 1 1
+newmtl TestMaterial
+Kd 0 0 0
+");
+
+                var model = _objReader.Read(tempObj);
+                Assert.AreEqual(Color.FromRgb(255, 255, 255), _objReader.Materials["TestMaterial"].Diffuse);
+            }
+            finally
+            {
+                File.Delete(tempObj);
+                File.Delete(tempMtl);
+            }
+        }
     }
 
     public static class Model3DTestExtensions 

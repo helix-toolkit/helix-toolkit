@@ -860,10 +860,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     switch (keyword.ToLower())
                     {
                         case "newmtl":
-                            if (value != null && !Materials.ContainsKey(value))
+                            if (value != null)
                             {
-                                currentMaterial = new MaterialDefinition();
-                                this.Materials.Add(value, currentMaterial);
+                                if (this.Materials.ContainsKey(value))
+                                {
+                                    currentMaterial = null;
+                                }
+                                else
+                                {
+                                    currentMaterial = new MaterialDefinition();
+                                    this.Materials.Add(value, currentMaterial);
+                                }
                             }
 
                             break;
