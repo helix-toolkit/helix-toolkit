@@ -218,7 +218,6 @@
     <Compile Include="Utilities\OffReader.cs" />
     <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="Utilities\StudioReader.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\MatrixCamera.cs" />
     <Compile Include="Model\Camera\OrthographicCamera.cs" />

@@ -48,6 +48,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -103,7 +103,6 @@
     <Compile Include="Exporters\PovRayExporter.cs" />
     <Compile Include="Exporters\XamlExporter.cs" />
     <Compile Include="ExtensionMethods\Point3DExtensions.cs" />
-    <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Geometry\Polygon3D.cs" />
     <Compile Include="Geometry\Mesh3D.cs" />
     <Compile Include="Geometry\BoundingSphere.cs" />
