@@ -133,7 +133,6 @@
     <Compile Include="ExtensionMethods\Matrix3DExtensions.cs" />
     <Compile Include="ExtensionMethods\Vector3DExtensions.cs" />
     <Compile Include="Geometry\Plane3D.cs" />
-    <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\Ray3D.cs" />
     <Compile Include="Adorners\RectangleAdorner.cs" />
     <Compile Include="Helpers\ScreenSpace\CohenSutherlandClipping.cs" />
