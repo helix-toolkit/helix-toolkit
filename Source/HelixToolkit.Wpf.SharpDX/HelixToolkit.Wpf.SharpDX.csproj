@@ -345,6 +345,10 @@
       <Project>{3f3b4548-a9db-4874-86f7-e7c4fec8a351}</Project>
       <Name>HelixToolkit.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
