@@ -12,8 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\IntCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Polygon.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Polygon3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector3Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
