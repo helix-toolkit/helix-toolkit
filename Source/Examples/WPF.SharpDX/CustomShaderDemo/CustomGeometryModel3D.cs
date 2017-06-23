@@ -100,6 +100,13 @@ namespace CustomShaderDemo
         {
             return host.RenderTechniquesManager.RenderTechniques["RenderCustom"];
         }
+
+        protected override void OnCreateGeometryBuffers()
+        {
+            vertexBuffer.CreateBufferFromDataArray(Device, CreateCustomVertexArray());
+            indexBuffer.CreateBufferFromDataArray(Device, Geometry.Indices.ToArray());
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             if (!base.OnAttach(host))
@@ -112,7 +119,7 @@ namespace CustomShaderDemo
 
             effectTransforms = new EffectTransformVariables(effect);
 
-            AttachMaterial();
+            AttachMaterial(Material as PhongMaterial);
 
             var geometry = Geometry as MeshGeometry3D;
 
@@ -120,8 +127,7 @@ namespace CustomShaderDemo
             {
                 throw new Exception("Geometry must not be null");
             }
-            vertexBuffer.CreateBufferFromDataArray(Device, CreateCustomVertexArray());
-            indexBuffer.CreateBufferFromDataArray(Device, Geometry.Indices.ToArray());
+            OnCreateGeometryBuffers();
             hasInstances = (Instances != null) && (Instances.Any());
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
             OnRasterStateChanged();
