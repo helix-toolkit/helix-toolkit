@@ -121,12 +121,18 @@ namespace HelixToolkit.Wpf.SharpDX
             if (e.NewValue is PhongMaterial)
             {
                 var model = ((MaterialGeometryModel3D)d);
-                if (model.IsAttached && model.renderHost != null)
+                if (model.renderHost != null)
                 {
-                    model.AttachMaterial(e.NewValue as PhongMaterial);
-                    //var host = model.renderHost;
-                    //model.Detach();
-                    //model.Attach(host);
+                    if (model.IsAttached)
+                    {
+                        model.AttachMaterial(e.NewValue as PhongMaterial);
+                    }
+                    else
+                    {
+                        var host = model.renderHost;
+                        model.Detach();
+                        model.Attach(host);
+                    }
                 }
             }
         }
