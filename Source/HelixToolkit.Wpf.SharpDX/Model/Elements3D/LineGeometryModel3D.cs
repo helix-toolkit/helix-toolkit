@@ -220,31 +220,16 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnGeometryPropertyChanged(sender, e);
             if (sender is LineGeometry3D)
             {
-                if (e.PropertyName.Equals(nameof(LineGeometry3D.Positions)))
+                if (e.PropertyName.Equals(nameof(LineGeometry3D.Positions)) || e.PropertyName.Equals(nameof(LineGeometry3D.Colors)) || e.PropertyName.Equals(Geometry3D.VertexBuffer))
                 {
-                    OnUpdateVertexBuffer(CreateLinesVertexArray);
-                }
-                else if (e.PropertyName.Equals(nameof(LineGeometry3D.Colors)))
-                {
-                    OnUpdateVertexBuffer(CreateLinesVertexArray);
+                    CreateVertexBuffer();
                 }
                 else if (e.PropertyName.Equals(nameof(LineGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
                 {
                     indexBuffer.CreateBufferFromDataArray(this.Device, geometryInternal.Indices);
                     InvalidateRender();
                 }
-                else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
-                {
-                    OnUpdateVertexBuffer(CreateLinesVertexArray);
-                }
             }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void OnUpdateVertexBuffer(Func<LinesVertex[]> updateFunction)
-        {
-            CreateVertexBuffer();
-            this.InvalidateRender();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -255,8 +240,9 @@ namespace HelixToolkit.Wpf.SharpDX
             { 
                 // --- set up buffers            
                 var data = this.CreateLinesVertexArray();
-                vertexBuffer.CreateBufferFromDataArray(this.Device, data);
+                vertexBuffer.CreateBufferFromDataArray(this.Device, data);               
             }
+            this.InvalidateRender();
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)

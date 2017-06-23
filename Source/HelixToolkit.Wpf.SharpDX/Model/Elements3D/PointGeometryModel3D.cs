@@ -237,6 +237,7 @@
                 var data = CreateVertexArray();
                 vertexBuffer.CreateBufferFromDataArray(this.Device, data);
             }
+            InvalidateRender();
         }
 
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -244,25 +245,12 @@
             base.OnGeometryPropertyChanged(sender, e);
             if (sender is PointGeometry3D)
             {
-                if (e.PropertyName.Equals(nameof(PointGeometry3D.Positions)))
+                if (e.PropertyName.Equals(nameof(PointGeometry3D.Positions)) || e.PropertyName.Equals(nameof(PointGeometry3D.Colors))
+                    || e.PropertyName.Equals(Geometry3D.VertexBuffer))
                 {
-                    OnUpdateVertexBuffer(CreateVertexArray);
-                }
-                else if (e.PropertyName.Equals(nameof(PointGeometry3D.Colors)))
-                {
-                    OnUpdateVertexBuffer(CreateVertexArray);
-                }
-                else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
-                {
-                    OnUpdateVertexBuffer(CreateVertexArray);
+                    CreateVertexBuffer();
                 }
             }
-        }
-
-        private void OnUpdateVertexBuffer(System.Func<PointsVertex[]> updateFunction)
-        {
-            updateFunction.Invoke();
-            this.InvalidateRender();
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
