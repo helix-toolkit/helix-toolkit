@@ -79,13 +79,22 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
             GeometryValid = CheckGeometry();
-            if (this.geometryInternal != null && this.geometryInternal.Positions != null && renderHost != null)
-            {               
-                var host = this.renderHost;
-                this.Detach();
-                this.Attach(host);
+            if (GeometryValid && renderHost != null)
+            {
+                if (IsAttached)
+                {
+                    OnCreateGeometryBuffers();
+                }
+                else
+                {
+                    var host = renderHost;
+                    Detach();
+                    Attach(host);
+                }
             }
-        }              
+        }
+
+        protected abstract void OnCreateGeometryBuffers();
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {

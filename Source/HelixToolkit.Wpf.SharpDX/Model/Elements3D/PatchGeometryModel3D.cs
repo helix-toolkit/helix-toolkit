@@ -223,6 +223,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override void OnCreateGeometryBuffers()
+        {
+            // --- init vertex buffer
+            vertexBuffer.CreateBufferFromDataArray(Device, CreateDefaultVertexArray());
+            // --- init index buffer
+            indexBuffer.CreateBufferFromDataArray(Device, geometryInternal.Indices.Array);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -253,12 +261,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // -- get geometry
             if (geometry != null)
             {
-                //throw new HelixToolkitException("Geometry not found!");
-
-                // --- init vertex buffer
-                vertexBuffer.CreateBufferFromDataArray(Device, CreateDefaultVertexArray());
-                // --- init index buffer
-                indexBuffer.CreateBufferFromDataArray(Device, geometryInternal.Indices.Array);
+                OnCreateGeometryBuffers();
             }
             else
             {

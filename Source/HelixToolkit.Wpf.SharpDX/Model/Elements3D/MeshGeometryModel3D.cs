@@ -125,9 +125,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
+        protected override void OnCreateGeometryBuffers()
         {
-            base.OnGeometryChanged(e);
+            CreateVertexBuffer(CreateDefaultVertexArray);
+            indexBuffer.CreateBufferFromDataArray(this.Device, geometryInternal.Indices);
         }
 
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -193,8 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //throw new HelixToolkitException("Geometry not found!");                
 
                 // --- init vertex buffer
-                CreateVertexBuffer(CreateDefaultVertexArray);
-                indexBuffer.CreateBufferFromDataArray(this.Device, geometry.Indices);
+                OnCreateGeometryBuffers();
             }
             else
             {

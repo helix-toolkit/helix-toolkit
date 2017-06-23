@@ -162,6 +162,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override void OnCreateGeometryBuffers()
+        {
+            vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray());
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             // --- attach
@@ -187,7 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
             // -- set geometry if given
-            vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray());
+            OnCreateGeometryBuffers();
             // --- material 
             // this.AttachMaterial();
             this.bHasBillboardTexture = effect.GetVariableByName("bHasTexture").AsScalar();
