@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDiffuseMapProperty =
-            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// 
@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderAlphaDiffuseMapProperty =
-            DependencyProperty.Register("RenderAlphaDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("RenderAlphaDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// 
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderNormalMapProperty =
-            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true));
 
         /// <summary>
         /// 
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDisplacementMapProperty =
-            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true));
 
         /// <summary>
         /// 
@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty MaterialProperty =
-            DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, MaterialChanged));
+            DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
 
         /// <summary>
         /// 
@@ -121,11 +121,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (e.NewValue is PhongMaterial)
             {
                 var model = ((MaterialGeometryModel3D)d);
-                if (model.IsAttached)
+                if (model.IsAttached && model.renderHost != null)
                 {
-                    var host = model.renderHost;
-                    model.Detach();
-                    model.Attach(host);
+                    model.AttachMaterial(e.NewValue as PhongMaterial);
+                    //var host = model.renderHost;
+                    //model.Detach();
+                    //model.Attach(host);
                 }
             }
         }
@@ -148,11 +149,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        protected virtual void AttachMaterial()
+        protected virtual void AttachMaterial(PhongMaterial phongMaterial)
         {
-            var phongMaterial = Material as PhongMaterial;
             if (phongMaterial != null)
             {
+                Disposer.RemoveAndDispose(ref this.effectMaterial);
                 this.effectMaterial = new EffectMaterialVariables(this.effect, phongMaterial);
                 this.effectMaterial.CreateTextureViews(Device, this);
             }

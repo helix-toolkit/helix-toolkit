@@ -253,7 +253,7 @@ namespace HelixToolkit.Wpf.SharpDX
             effectTransforms = new EffectTransformVariables(effect);
 
             // --- material 
-            AttachMaterial();
+            AttachMaterial(Material as PhongMaterial);
 
             // -- get geometry
             var geometry = geometryInternal as MeshGeometry3D;

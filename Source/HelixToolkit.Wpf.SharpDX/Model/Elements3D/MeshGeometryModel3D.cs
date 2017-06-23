@@ -180,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.effectTransforms = new EffectTransformVariables(this.effect);
 
             // --- material 
-            this.AttachMaterial();
+            this.AttachMaterial(Material as PhongMaterial);
 
             // --- scale texcoords
             var texScale = TextureCoodScale;
