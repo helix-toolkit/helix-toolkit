@@ -200,11 +200,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.effectMaterial.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
                 this.effectMaterial.RenderNormalMap = this.RenderNormalMap;
                 this.effectMaterial.RenderDisplacementMap = this.RenderDisplacementMap;
+                this.effectMaterial.OnInvalidateRenderer += (s,e) => { InvalidateRender(); };
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void OnDetach()
+        {
+            Disposer.RemoveAndDispose(ref this.effectMaterial);
+            Disposer.RemoveAndDispose(ref this.effectTransforms);
+
+            this.effectTechnique = null;
+            this.vertexLayout = null;
+
+            base.OnDetach();
+        }
+
+
         public class EffectMaterialVariables : System.IDisposable
         {
+            public event System.EventHandler OnInvalidateRenderer;
             private readonly PhongMaterial material;
             private readonly Device device;
             private ShaderResourceView texDiffuseAlphaMapView;
@@ -263,6 +280,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     CreateTextureView(material.DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
                 }
+                OnInvalidateRenderer?.Invoke(this, null);
             }
 
             private void CreateTextureView(System.IO.Stream stream, ref ShaderResourceView textureView)
@@ -287,7 +305,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public bool AttachMaterial(MeshGeometry3D model)
             {
-                if(material == null || model == null)
+                if (material == null || model == null)
                 {
                     return false;
                 }
@@ -324,12 +342,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.texDisplacementMapVariable.SetResource(this.texDisplacementMapView);
                 }
-                return true;              
+                return true;
             }
 
             public void Dispose()
             {
                 this.material.OnMaterialPropertyChanged -= Material_OnMaterialPropertyChanged;
+                OnInvalidateRenderer = null;
                 Disposer.RemoveAndDispose(ref this.vMaterialAmbientVariable);
                 Disposer.RemoveAndDispose(ref this.vMaterialDiffuseVariable);
                 Disposer.RemoveAndDispose(ref this.vMaterialEmissiveVariable);
@@ -351,20 +370,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
                 Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void OnDetach()
-        {
-            Disposer.RemoveAndDispose(ref this.effectMaterial);
-            Disposer.RemoveAndDispose(ref this.effectTransforms);
-
-            this.effectTechnique = null;
-            this.vertexLayout = null;
-
-            base.OnDetach();
         }
 
     }
