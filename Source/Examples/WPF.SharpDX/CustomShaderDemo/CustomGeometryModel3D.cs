@@ -163,7 +163,7 @@ namespace CustomShaderDemo
             /// --- check shadowmaps
             hasShadowMap = renderHost.IsShadowMapEnabled;
             effectMaterial.bHasShadowMapVariable.Set(hasShadowMap);
-            effectMaterial.AttachMaterial();
+            effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
 
             /// --- check instancing
             hasInstances = (Instances != null) && (Instances.Any());
