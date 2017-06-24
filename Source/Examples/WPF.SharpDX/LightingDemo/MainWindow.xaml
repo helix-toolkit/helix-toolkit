@@ -88,11 +88,15 @@
                 Transform="{Binding Light4Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model"
+                RenderDiffuseMap="{Binding RenderDiffuseMap}"
+                RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
             <hx:MeshGeometryModel3D
                 x:Name="floor"
+                RenderDiffuseMap="{Binding RenderDiffuseMap}"
+                RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
@@ -147,6 +151,8 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <CheckBox
                         Grid.Row="1"
@@ -172,6 +178,8 @@
                         IsChecked="{Binding RenderLight4}">
                         Render SpotLight
                     </CheckBox>
+                    <CheckBox Grid.Row="5" Margin="4" IsChecked="{Binding RenderDiffuseMap}">Render Diffuse Map</CheckBox>
+                    <CheckBox Grid.Row="6" Margin="4" IsChecked="{Binding RenderNormalMap}">Render Normal Map</CheckBox>
                 </Grid>
             </Expander>
             <Button HorizontalAlignment="Right" Margin="0,0,10,0" Click="Button_Click">MultiViewport Demo</Button>

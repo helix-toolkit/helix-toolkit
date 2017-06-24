@@ -306,7 +306,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set model transform paramerers        
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             effectTransforms.mWorld.SetMatrix(ref worldMatrix);
-            this.effectMaterial.AttachMaterial();
+            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
 
             // --- set primitive type
             if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles])

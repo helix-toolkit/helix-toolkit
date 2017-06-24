@@ -252,7 +252,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
 
             // --- set material params      
-            this.effectMaterial.AttachMaterial();
+            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
 
             this.bHasInstances.Set(this.hasInstances);
             // --- set context
