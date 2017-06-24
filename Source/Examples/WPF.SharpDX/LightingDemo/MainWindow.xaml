@@ -6,6 +6,7 @@
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
+    xmlns:pt ="http://propertytools.org/wpf"
     Title="LightingDemo SharpDX"
     Width="1200"
     Height="700"
@@ -170,6 +171,12 @@
                         <CheckBox Margin="4" IsChecked="{Binding RenderNormalMap}">Render Normal Map</CheckBox>
                         <ComboBox ItemsSource="{Binding TextureFiles}" SelectedValue="{Binding SelectedDiffuseTexture}"></ComboBox>
                         <ComboBox ItemsSource="{Binding TextureFiles}" SelectedValue="{Binding SelectedNormalTexture}"></ComboBox>
+                        <Label>Diffuse Color</Label>
+                        <pt:ColorPicker SelectedColor="{Binding DiffuseColor}"/>
+                        <Label>Reflective Color</Label>
+                        <pt:ColorPicker SelectedColor="{Binding ReflectiveColor}" Text="Reflective Color"/>
+                        <Label>Emissive Color</Label>
+                        <pt:ColorPicker SelectedColor="{Binding EmissiveColor}" Text="Emissive Color"/>
                     </StackPanel>
 
                 </Grid>

@@ -44,6 +44,14 @@
       <HintPath>..\..\..\packages\PropertyChanged.Fody.2.1.0\lib\netstandard1.0\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PropertyTools, Version=2.0.1.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.1\lib\net45\PropertyTools.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PropertyTools.Wpf, Version=2.0.1.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.1\lib\net45\PropertyTools.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
       <Private>True</Private>
