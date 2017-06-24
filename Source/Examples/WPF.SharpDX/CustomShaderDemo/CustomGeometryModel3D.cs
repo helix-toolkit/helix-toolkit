@@ -119,7 +119,7 @@ namespace CustomShaderDemo
 
             effectTransforms = new EffectTransformVariables(effect);
 
-            AttachMaterial(Material as PhongMaterial);
+            AttachMaterial();
 
             var geometry = Geometry as MeshGeometry3D;
 

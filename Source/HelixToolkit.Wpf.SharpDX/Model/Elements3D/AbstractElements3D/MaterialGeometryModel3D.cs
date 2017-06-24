@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
         protected EffectMaterialVariables effectMaterial;
+        protected PhongMaterial materialInternal { private set; get; }
         /// <summary>
         /// For subclass override
         /// </summary>
@@ -121,11 +122,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (e.NewValue is PhongMaterial)
             {
                 var model = ((MaterialGeometryModel3D)d);
+                model.materialInternal = e.NewValue as PhongMaterial;
                 if (model.renderHost != null)
                 {
                     if (model.IsAttached)
                     {
-                        model.AttachMaterial(e.NewValue as PhongMaterial);
+                        model.AttachMaterial();
                     }
                     else
                     {
@@ -155,12 +157,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        protected virtual void AttachMaterial(PhongMaterial phongMaterial)
+        protected virtual void AttachMaterial()
         {
-            if (phongMaterial != null)
+            if (materialInternal != null)
             {
                 Disposer.RemoveAndDispose(ref this.effectMaterial);
-                this.effectMaterial = new EffectMaterialVariables(this.effect, phongMaterial);
+                this.effectMaterial = new EffectMaterialVariables(this.effect, materialInternal);
                 this.effectMaterial.CreateTextureViews(Device, this);
             }
         }
