@@ -247,28 +247,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private void Material_OnMaterialPropertyChanged(object sender, MaterialPropertyChanged e)
             {
-                if(sender == material && material != null)
+                if (e.PropertyName.Equals(nameof(material.DiffuseMap)))
                 {
-                    if (e.PropertyName.Equals(material.DiffuseMap))
-                    {
-                        CreateTextureView(material.DiffuseMap, ref this.texDiffuseMapView);
-                    }
-                    else if (e.PropertyName.Equals(material.NormalMap))
-                    {
-                        CreateTextureView(material.NormalMap, ref this.texNormalMapView);
-                    }
-                    else if (e.PropertyName.Equals(material.DisplacementMap))
-                    {
-                        CreateTextureView(material.DisplacementMap, ref this.texDisplacementMapView);
-                    }
-                    else if (e.PropertyName.Equals(material.DiffuseAlphaMap))
-                    {
-                        CreateTextureView(material.DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
-                    }
+                    CreateTextureView(material.DiffuseMap, ref this.texDiffuseMapView);
                 }
-                else
+                else if (e.PropertyName.Equals(nameof(material.NormalMap)))
                 {
-                    (sender as Material).OnMaterialPropertyChanged -= Material_OnMaterialPropertyChanged;
+                    CreateTextureView(material.NormalMap, ref this.texNormalMapView);
+                }
+                else if (e.PropertyName.Equals(nameof(material.DisplacementMap)))
+                {
+                    CreateTextureView(material.DisplacementMap, ref this.texDisplacementMapView);
+                }
+                else if (e.PropertyName.Equals(nameof(material.DiffuseAlphaMap)))
+                {
+                    CreateTextureView(material.DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
                 }
             }
 

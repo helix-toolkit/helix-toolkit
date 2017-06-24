@@ -145,41 +145,33 @@
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <CheckBox
-                        Grid.Row="1"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight1}">
-                        Render DirectionalLight
-                    </CheckBox>
-                    <CheckBox
-                        Grid.Row="2"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight2}">
-                        Render PointLight 1
-                    </CheckBox>
-                    <CheckBox
-                        Grid.Row="3"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight3}">
-                        Render PointLight 2
-                    </CheckBox>
-                    <CheckBox
-                        Grid.Row="4"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight4}">
-                        Render SpotLight
-                    </CheckBox>
-                    <CheckBox Grid.Row="5" Margin="4" IsChecked="{Binding RenderDiffuseMap}">Render Diffuse Map</CheckBox>
-                    <CheckBox Grid.Row="6" Margin="4" IsChecked="{Binding RenderNormalMap}">Render Normal Map</CheckBox>
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight1}">
+                            Render DirectionalLight
+                        </CheckBox>
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight2}">
+                            Render PointLight 1
+                        </CheckBox>
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight3}">
+                            Render PointLight 2
+                        </CheckBox>
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight4}">
+                            Render SpotLight
+                        </CheckBox>
+                        <CheckBox Margin="4" IsChecked="{Binding RenderDiffuseMap}">Render Diffuse Map</CheckBox>
+                        <CheckBox Margin="4" IsChecked="{Binding RenderNormalMap}">Render Normal Map</CheckBox>
+                        <ComboBox ItemsSource="{Binding TextureFiles}" SelectedValue="{Binding SelectedDiffuseTexture}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding TextureFiles}" SelectedValue="{Binding SelectedNormalTexture}"></ComboBox>
+                    </StackPanel>
+
                 </Grid>
             </Expander>
             <Button HorizontalAlignment="Right" Margin="0,0,10,0" Click="Button_Click">MultiViewport Demo</Button>
