@@ -207,6 +207,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 CreateVertexBuffer();
         }
 
+        protected override void OnCreateGeometryBuffers()
+        {
+            // --- set up buffers            
+            CreateVertexBuffer();
+            // --- set up indexbuffer
+            indexBuffer.CreateBufferFromDataArray(Device, geometryInternal.Indices);
+        }
+
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnGeometryPropertyChanged(sender, e);
@@ -265,10 +273,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // -- set geometry if given
             if (geometry != null)
             {
-                // --- set up buffers            
-                CreateVertexBuffer();
-                // --- set up indexbuffer
-                indexBuffer.CreateBufferFromDataArray(Device, geometry.Indices);
+                OnCreateGeometryBuffers();
             }
             else
             {

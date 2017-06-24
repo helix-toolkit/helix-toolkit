@@ -13,6 +13,7 @@
 
     using Color = global::SharpDX.Color;
     using System.Runtime.CompilerServices;
+    using System;
 
     public class PointGeometryModel3D : GeometryModel3D
     {
@@ -221,6 +222,11 @@
                 CreateVertexBuffer();
         }
 
+        protected override void OnCreateGeometryBuffers()
+        {
+            CreateVertexBuffer();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateVertexBuffer()
         {
@@ -283,7 +289,7 @@
 
             effectTransforms = new EffectTransformVariables(effect);
 
-            CreateVertexBuffer();
+            OnCreateGeometryBuffers();
 
             // --- set up const variables
             vPointParams = effect.GetVariableByName("vPointParams").AsVector();

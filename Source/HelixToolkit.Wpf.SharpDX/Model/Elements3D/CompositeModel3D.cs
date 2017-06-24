@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Markup;
     using System.Linq;
     using global::SharpDX;
+    using System;
 
     /// <summary>
     ///     Represents a composite Model3D.
@@ -228,6 +229,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
             }
             return hit;
+        }
+
+        protected override void OnCreateGeometryBuffers()
+        {
+            
         }
     }
 }

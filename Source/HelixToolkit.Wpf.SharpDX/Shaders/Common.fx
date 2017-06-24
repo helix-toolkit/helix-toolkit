@@ -231,4 +231,20 @@ float4 windowToProj(in float2 pos, in float z, in float w)
                   ((pos.y * 2.0 / vViewport.y) - 1.0) * -w,
                   z, w);
 }
+
+int whengt(float l, float cmp) {
+	return max(sign(l - cmp), 0);
+}
+
+int whenlt(float l, float cmp) {
+	return max(sign(cmp - l), 0);
+}
+
+int whenge(float l, float cmp) {
+	return 1 - whenlt(l, cmp);
+}
+
+int whenle(float l, float cmp) {
+	return 1 - whengt(l, cmp);
+}
 #endif

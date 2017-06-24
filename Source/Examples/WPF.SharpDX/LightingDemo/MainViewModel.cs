@@ -59,6 +59,83 @@ namespace LightingDemo
         public bool RenderLight3 { get; set; }
         public bool RenderLight4 { get; set; }
 
+        public bool RenderDiffuseMap { set; get; } = true;
+
+        public bool RenderNormalMap { set; get; } = true;
+
+        public string[] TextureFiles { get; } = new string[] { @"TextureCheckerboard2.jpg", @"TextureCheckerboard3.jpg", @"TextureNoise1.jpg", @"TextureNoise1_dot3.jpg", @"TextureCheckerboard2_dot3.jpg" };
+
+        private string selectedDiffuseTexture = @"TextureCheckerboard2.jpg";
+        public string SelectedDiffuseTexture
+        {
+            set
+            {
+                if(SetValue(ref selectedDiffuseTexture, value))
+                {
+                    ModelMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
+                    FloorMaterial.DiffuseMap = ModelMaterial.DiffuseMap;
+                }
+            }
+            get
+            {
+                return selectedDiffuseTexture;
+            }
+        }
+
+        private string selectedNormalTexture = @"TextureCheckerboard2_dot3.jpg";
+        public string SelectedNormalTexture
+        {
+            set
+            {
+                if (SetValue(ref selectedNormalTexture, value))
+                {
+                    ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
+                    FloorMaterial.NormalMap = ModelMaterial.NormalMap;
+                }
+            }
+            get
+            {
+                return selectedNormalTexture;
+            }
+        }
+
+        public System.Windows.Media.Color DiffuseColor
+        {
+            set
+            {
+                FloorMaterial.DiffuseColor = ModelMaterial.DiffuseColor = value.ToColor4();
+            }
+            get
+            {
+                return ModelMaterial.DiffuseColor.ToColor();
+            }
+        }
+
+
+        public System.Windows.Media.Color ReflectiveColor
+        {
+            set
+            {
+                FloorMaterial.ReflectiveColor = ModelMaterial.ReflectiveColor = value.ToColor4();
+            }
+            get
+            {
+                return ModelMaterial.ReflectiveColor.ToColor();
+            }
+        }
+
+        public System.Windows.Media.Color EmissiveColor
+        {
+            set
+            {
+                FloorMaterial.EmissiveColor = ModelMaterial.EmissiveColor = value.ToColor4();
+            }
+            get
+            {
+                return ModelMaterial.EmissiveColor.ToColor();
+            }
+        }
+
         public Camera Camera2 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
 
         public Camera Camera3 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
@@ -134,11 +211,8 @@ namespace LightingDemo
             this.Model = b1.ToMeshGeometry3D();
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.ModelMaterial = PhongMaterials.Chrome;
-            //this.ModelMaterial.TextureMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute));
-            //var bitmap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute));
-            this.ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
-            //odelMaterial.NormalMap = new BitmapImage(new System.Uri(@"TextureNoise1_dot3.jpg", System.UriKind.RelativeOrAbsolute));
 
+            this.ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(SelectedNormalTexture, System.UriKind.RelativeOrAbsolute).ToString());
 
             // ----------------------------------------------
             // floor model3d
@@ -154,9 +228,10 @@ namespace LightingDemo
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
-                DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString()),
+                DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap
             };
+            ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)

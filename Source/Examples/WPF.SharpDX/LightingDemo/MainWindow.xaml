@@ -6,6 +6,7 @@
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
+    xmlns:pt ="http://propertytools.org/wpf"
     Title="LightingDemo SharpDX"
     Width="1200"
     Height="700"
@@ -88,11 +89,15 @@
                 Transform="{Binding Light4Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model"
+                RenderDiffuseMap="{Binding RenderDiffuseMap}"
+                RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
             <hx:MeshGeometryModel3D
                 x:Name="floor"
+                RenderDiffuseMap="{Binding RenderDiffuseMap}"
+                RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
@@ -141,37 +146,39 @@
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <CheckBox
-                        Grid.Row="1"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight1}">
-                        Render DirectionalLight
-                    </CheckBox>
-                    <CheckBox
-                        Grid.Row="2"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight2}">
-                        Render PointLight 1
-                    </CheckBox>
-                    <CheckBox
-                        Grid.Row="3"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight3}">
-                        Render PointLight 2
-                    </CheckBox>
-                    <CheckBox
-                        Grid.Row="4"
-                        Margin="4"
-                        IsChecked="{Binding RenderLight4}">
-                        Render SpotLight
-                    </CheckBox>
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight1}">
+                            Render DirectionalLight
+                        </CheckBox>
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight2}">
+                            Render PointLight 1
+                        </CheckBox>
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight3}">
+                            Render PointLight 2
+                        </CheckBox>
+                        <CheckBox
+                            Margin="4"
+                            IsChecked="{Binding RenderLight4}">
+                            Render SpotLight
+                        </CheckBox>
+                        <CheckBox Margin="4" IsChecked="{Binding RenderDiffuseMap}">Render Diffuse Map</CheckBox>
+                        <CheckBox Margin="4" IsChecked="{Binding RenderNormalMap}">Render Normal Map</CheckBox>
+                        <ComboBox ItemsSource="{Binding TextureFiles}" SelectedValue="{Binding SelectedDiffuseTexture}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding TextureFiles}" SelectedValue="{Binding SelectedNormalTexture}"></ComboBox>
+                        <Label>Diffuse Color</Label>
+                        <pt:ColorPicker SelectedColor="{Binding DiffuseColor}"/>
+                        <Label>Reflective Color</Label>
+                        <pt:ColorPicker SelectedColor="{Binding ReflectiveColor}" Text="Reflective Color"/>
+                        <Label>Emissive Color</Label>
+                        <pt:ColorPicker SelectedColor="{Binding EmissiveColor}" Text="Emissive Color"/>
+                    </StackPanel>
+
                 </Grid>
             </Expander>
             <Button HorizontalAlignment="Right" Margin="0,0,10,0" Click="Button_Click">MultiViewport Demo</Button>

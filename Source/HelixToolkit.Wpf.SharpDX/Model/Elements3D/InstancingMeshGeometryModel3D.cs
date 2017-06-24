@@ -125,7 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- check shadowmaps
             this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
             this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
-            this.effectMaterial.AttachMaterial();
+            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
             // --- set context
             renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
