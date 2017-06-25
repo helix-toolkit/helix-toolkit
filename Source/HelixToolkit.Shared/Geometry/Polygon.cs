@@ -7,11 +7,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if SHARPDX
 namespace HelixToolkit.Wpf.SharpDX
+#else
+namespace HelixToolkit.Wpf
+#endif
 {
+#if SHARPDX
     using Int32Collection = System.Collections.Generic.List<int>;
     using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
-
+#else
+    using System.Windows.Media;
+#endif
 
     /// <summary>
     /// Represents a 2D polygon.
@@ -49,6 +56,5 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return SweepLinePolygonTriangulator.Triangulate(this.points);
         }
-
     }
 }

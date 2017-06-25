@@ -1,14 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Polygon3D.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//   Represents a 3D polygon.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
+#if SHARPDX
 namespace HelixToolkit.Wpf.SharpDX
+#else
+namespace HelixToolkit.Wpf
+#endif
 {
+#if SHARPDX
     using System;
     using System.Collections.Generic;
 
@@ -17,6 +17,13 @@ namespace HelixToolkit.Wpf.SharpDX
     using Point3D = global::SharpDX.Vector3;
     using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
     using Vector3D = global::SharpDX.Vector3;
+#else
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Media3D;
+#endif
 
     /// <summary>
     /// Represents a 3D polygon.
@@ -26,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The points.
         /// </summary>
-        internal IList<Point3D> points;
+        private IList<Point3D> points;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "Polygon3D" /> class.
@@ -64,10 +71,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        // http://en.wikipedia.org/wiki/Polygon_triangulation
-        // http://en.wikipedia.org/wiki/Monotone_polygon
-        // http://www.codeproject.com/KB/recipes/hgrd.aspx LGPL
-        // http://www.springerlink.com/content/g805787811vr1v9v/
+        //// http://en.wikipedia.org/wiki/Polygon_triangulation
+        //// http://en.wikipedia.org/wiki/Monotone_polygon
+        //// http://www.codeproject.com/KB/recipes/hgrd.aspx LGPL
+        //// http://www.springerlink.com/content/g805787811vr1v9v/
+
         /// <summary>
         /// Flattens this polygon.
         /// </summary>
@@ -80,21 +88,39 @@ namespace HelixToolkit.Wpf.SharpDX
             // http://stackoverflow.com/questions/1023948/rotate-normal-vector-onto-axis-plane
             var up = this.GetNormal();
             up.Normalize();
+#if SHARPDX
             var right = Vector3D.Cross(
+#else
+            var right = Vector3D.CrossProduct(
+#endif
                 up, Math.Abs(up.X) > Math.Abs(up.Z) ? new Vector3D(0, 0, 1) : new Vector3D(1, 0, 0));
-            var backward = Vector3D.Cross(right, up);
-            var m = new Matrix3D(
-                backward.X, right.X, up.X, 0, backward.Y, right.Y, up.Y, 0, backward.Z, right.Z, up.Z, 0, 0, 0, 0, 1);
+#if SHARPDX
+            var backward = Vector3D.Cross(
+#else
+            var backward = Vector3D.CrossProduct(
+#endif
+                right, up);
+            var m = new Matrix3D(backward.X, right.X, up.X, 0, backward.Y, right.Y, up.Y, 0, backward.Z, right.Z, up.Z, 0, 0, 0, 0, 1);
 
             // make first point origin
+#if SHARPDX
             var offs = Vector3D.TransformCoordinate(Points[0], m);
             m.M41 = -offs.X;
             m.M42 = -offs.Y;
+#else
+            var offs = m.Transform(this.Points[0]);
+            m.OffsetX = -offs.X;
+            m.OffsetY = -offs.Y;
+#endif
 
             var polygon = new Polygon { Points = new PointCollection(this.Points.Count) };
             foreach (var p in this.Points)
             {
+#if SHARPDX
                 var pp = Vector3D.TransformCoordinate(p, m);
+#else
+                var pp = m.Transform(p);
+#endif
                 polygon.Points.Add(new Point(pp.X, pp.Y));
             }
 
@@ -117,15 +143,28 @@ namespace HelixToolkit.Wpf.SharpDX
             Vector3D v1 = this.Points[1] - this.Points[0];
             for (int i = 2; i < this.Points.Count; i++)
             {
+#if SHARPDX
                 var n = Vector3D.Cross(v1, this.Points[i] - this.Points[0]);
-                if (n.LengthSquared() > 1e-8)
+
+                if (n.LengthSquared() > 1e-10)
+#else
+                var n = Vector3D.CrossProduct(v1, this.Points[i] - this.Points[0]);
+
+                if (n.LengthSquared > 1e-10)
+#endif
                 {
                     n.Normalize();
                     return n;
                 }
             }
 
-            throw new InvalidOperationException("Invalid polygon.");
+#if SHARPDX
+            Vector3D result = Vector3D.Cross(v1, this.Points[2] - this.Points[0]);
+#else
+            Vector3D result = Vector3D.CrossProduct(v1, this.Points[2] - this.Points[0]);
+#endif
+            result.Normalize();
+            return result;
         }
 
         /// <summary>
@@ -140,13 +179,21 @@ namespace HelixToolkit.Wpf.SharpDX
             var normal = new Vector3D();
             for (int i = 2; i < this.Points.Count; i++)
             {
+#if SHARPDX
                 var n = Vector3D.Cross(v1, this.Points[i] - this.Points[0]);
+#else
+                var n = Vector3D.CrossProduct(v1, this.Points[i] - this.Points[0]);
+#endif
                 n.Normalize();
                 if (i == 2)
                 {
                     normal = n;
                 }
+#if SHARPDX
                 else if (Math.Abs(Vector3D.Dot(n, normal) - 1) > 1e-8)
+#else
+                else if (Math.Abs(Vector3D.DotProduct(n, normal) - 1) > 1e-8)
+#endif
                 {
                     return false;
                 }
@@ -154,6 +201,5 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return true;
         }
-
     }
 }

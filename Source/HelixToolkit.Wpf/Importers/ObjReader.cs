@@ -773,8 +773,15 @@ namespace HelixToolkit.Wpf
                         case "newmtl":
                             if (value != null)
                             {
-                                currentMaterial = new MaterialDefinition(value);
-                                this.Materials.Add(value, currentMaterial);
+                                if (this.Materials.ContainsKey(value))
+                                {
+                                    currentMaterial = null;
+                                }
+                                else
+                                {
+                                    currentMaterial = new MaterialDefinition(value);
+                                    this.Materials.Add(value, currentMaterial);
+                                }
                             }
 
                             break;

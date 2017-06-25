@@ -13,10 +13,12 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.Shared", "Heli
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.Shared", "HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.shproj", "{1EAF532E-D750-497B-BB8F-EE85359C78A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 	EndGlobalSection
@@ -67,6 +69,22 @@ Global
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|x64.Build.0 = Release|x64
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|x86.ActiveCfg = Release|x86
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|x86.Build.0 = Release|x86
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|x64.Build.0 = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Debug|x86.Build.0 = Debug|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|ARM.Build.0 = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x64.ActiveCfg = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x64.Build.0 = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

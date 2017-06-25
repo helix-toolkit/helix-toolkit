@@ -103,8 +103,6 @@
     <Compile Include="Exporters\PovRayExporter.cs" />
     <Compile Include="Exporters\XamlExporter.cs" />
     <Compile Include="ExtensionMethods\Point3DExtensions.cs" />
-    <Compile Include="ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Geometry\Polygon3D.cs" />
     <Compile Include="Geometry\Mesh3D.cs" />
     <Compile Include="Geometry\BoundingSphere.cs" />
     <Compile Include="Helpers\CanonicalSplineHelper.cs" />
@@ -134,7 +132,6 @@
     <Compile Include="ExtensionMethods\Matrix3DExtensions.cs" />
     <Compile Include="ExtensionMethods\Vector3DExtensions.cs" />
     <Compile Include="Geometry\Plane3D.cs" />
-    <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\Ray3D.cs" />
     <Compile Include="Adorners\RectangleAdorner.cs" />
     <Compile Include="Helpers\ScreenSpace\CohenSutherlandClipping.cs" />
