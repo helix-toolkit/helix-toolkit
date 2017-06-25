@@ -117,8 +117,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanHitTest(IRenderMatrices context)
         {
-            return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0
-                && geometryInternal is LineGeometry3D && context != null;
+            return base.CanHitTest(context) && geometryInternal is LineGeometry3D && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0
+                 && context != null;
         }
 
         protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
