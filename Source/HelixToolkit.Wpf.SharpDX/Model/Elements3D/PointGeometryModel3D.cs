@@ -124,7 +124,7 @@
 
         protected override bool CanHitTest(IRenderMatrices context)
         {
-            return base.CanHitTest(context) && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0 && geometryInternal is PointGeometry3D && context != null;
+            return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0 && geometryInternal is PointGeometry3D && context != null;
         }
 
         /// <summary>
