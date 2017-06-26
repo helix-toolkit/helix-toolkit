@@ -124,7 +124,7 @@
 
         protected override bool CanHitTest(IRenderMatrices context)
         {
-            return base.CanHitTest(context) && geometryInternal is PointGeometry3D && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0 && context != null;
+            return base.CanHitTest(context) && context != null;
         }
 
         /// <summary>
@@ -260,14 +260,7 @@
 
         protected override bool CheckGeometry()
         {
-            if (this.geometryInternal == null || this.geometryInternal.Positions == null || this.geometryInternal.Positions.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return geometryInternal is PointGeometry3D && this.geometryInternal != null && this.geometryInternal.Positions != null && this.geometryInternal.Positions.Count > 0;
         }
         /// <summary>
         /// 

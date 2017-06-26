@@ -114,21 +114,19 @@ namespace HelixToolkit.Wpf.SharpDX
             lineParams.Y = (float)Smoothness;
         }
 
+        protected override bool CheckGeometry()
+        {
+            return base.CheckGeometry() && geometryInternal is LineGeometry3D;
+        }
 
         protected override bool CanHitTest(IRenderMatrices context)
         {
-            return base.CanHitTest(context) && geometryInternal is LineGeometry3D && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0
-                 && context != null;
+            return base.CanHitTest(context) && context != null;
         }
 
         protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             var lineGeometry3D = this.geometryInternal as LineGeometry3D;
-            if (lineGeometry3D == null)
-            {
-                return false;
-            }
-
             var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
             var lastDist = double.MaxValue;
             var lineIndex = 0;

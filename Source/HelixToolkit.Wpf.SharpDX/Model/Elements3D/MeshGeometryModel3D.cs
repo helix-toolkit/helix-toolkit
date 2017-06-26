@@ -134,29 +134,27 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnGeometryPropertyChanged(sender, e);
-            if (sender is MeshGeometry3D)
+
+            if (e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates)))
             {
-                if (e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates)))
-                {
-                    OnUpdateVertexBuffer(UpdateTextureOnly);
-                }
-                else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Positions)))
-                {
-                    OnUpdateVertexBuffer(UpdatePositionOnly);
-                }
-                else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
-                {
-                    OnUpdateVertexBuffer(UpdateColorsOnly);
-                }
-                else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
-                {
-                    indexBuffer.CreateBufferFromDataArray(this.Device, this.geometryInternal.Indices);
-                    InvalidateRender();
-                }
-                else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
-                {
-                    OnUpdateVertexBuffer(CreateDefaultVertexArray);
-                }
+                OnUpdateVertexBuffer(UpdateTextureOnly);
+            }
+            else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Positions)))
+            {
+                OnUpdateVertexBuffer(UpdatePositionOnly);
+            }
+            else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
+            {
+                OnUpdateVertexBuffer(UpdateColorsOnly);
+            }
+            else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
+            {
+                indexBuffer.CreateBufferFromDataArray(this.Device, this.geometryInternal.Indices);
+                InvalidateRender();
+            }
+            else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
+            {
+                OnUpdateVertexBuffer(CreateDefaultVertexArray);
             }
         }
 
@@ -315,9 +313,9 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CheckGeometry()
         {
-            return base.CanHitTest(context) && geometryInternal is MeshGeometry3D && geometryInternal.Indices != null && geometryInternal.Indices.Count > 0;
+            return base.CheckGeometry() && geometryInternal is MeshGeometry3D;
         }
 
         protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
@@ -388,7 +386,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private DefaultVertex[] CreateDefaultVertexArray()
         {
-            var geometry = (MeshGeometry3D)this.geometryInternal;
+            var geometry = this.geometryInternal as MeshGeometry3D;
             var positions = geometry.Positions.GetEnumerator();
             var vertexCount = geometry.Positions.Count;
 
@@ -422,7 +420,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private DefaultVertex[] UpdateTextureOnly()
         {
-            var geometry = (MeshGeometry3D)this.geometryInternal;
+            var geometry = this.geometryInternal as MeshGeometry3D;
             var vertexCount = geometry.Positions.Count;
             var texScale = this.TextureCoodScale;
             if (vertexArrayBuffer != null && geometry.TextureCoordinates != null && vertexArrayBuffer.Length >= vertexCount)
@@ -441,7 +439,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private DefaultVertex[] UpdatePositionOnly()
         {
-            var geometry = (MeshGeometry3D)this.geometryInternal;
+            var geometry = this.geometryInternal as MeshGeometry3D;
             var vertexCount = geometry.Positions.Count;
             if (vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount)
             {
