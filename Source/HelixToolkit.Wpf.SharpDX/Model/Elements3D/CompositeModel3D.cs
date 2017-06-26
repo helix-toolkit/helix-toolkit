@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(RenderContext context)
         {
-            return IsRendering && Visibility == System.Windows.Visibility.Visible;
+            return IsAttached && isRenderingInternal && visibleInternal;
         }
         /// <summary>
         /// Renders the specified context.
@@ -189,11 +189,15 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Bounds = bb;
         }
 
-        protected virtual bool CanHitTest()
+        protected override bool CanHitTest(IRenderMatrices context)
         {
             return visibleInternal && isRenderingInternal && IsHitTestVisibleInternal;
         }
 
+        protected override bool CheckGeometry()
+        {
+            return true;
+        }
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>

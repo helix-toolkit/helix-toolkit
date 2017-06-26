@@ -134,11 +134,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             DetachChildren(Items);
             base.OnDetach();
-        }
+        }        
 
         protected override bool CanRender(RenderContext context)
         {
-            return true;
+            return IsAttached && isRenderingInternal && visibleInternal;
         }
 
         protected override void OnRender(RenderContext context)

@@ -109,7 +109,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.BoundsSphere = this.geometryInternal != null ? this.geometryInternal.BoundingSphere : new BoundingSphere();
                 }
-                OnGeometryPropertyChanged(sender, e);
+                if (GeometryValid)
+                {
+                    OnGeometryPropertyChanged(sender, e);
+                }
             }
         }
 
@@ -465,7 +468,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual bool CanHitTest(IRenderMatrices context)
         {
-            return visibleInternal && isRenderingInternal && IsHitTestVisibleInternal;
+            return visibleInternal && isRenderingInternal && IsHitTestVisibleInternal && GeometryValid;
         }
 
         public bool IsThrowingShadow
