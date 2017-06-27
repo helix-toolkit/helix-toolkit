@@ -29,14 +29,23 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_SimpleModel_ValidOutput()
         {
             string path = "temp.dae";
-            var e = new ColladaExporter();
-            using (var stream = File.Create(path))
-            {
-                this.ExportSimpleModel(e, stream);
-            }
 
-            var result = this.Validate(path);
-            Assert.IsNull(result, result);
+            try
+            {
+                var e = new ColladaExporter();
+                using (var stream = File.Create(path))
+                {
+                    this.ExportSimpleModel(e, stream);
+                }
+
+                var result = this.Validate(path);
+                Assert.IsNull(result, result);
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
         }
 
         private string Validate(string path)
