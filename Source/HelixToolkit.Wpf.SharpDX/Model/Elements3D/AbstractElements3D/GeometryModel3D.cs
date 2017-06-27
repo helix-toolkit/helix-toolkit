@@ -468,7 +468,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual bool CanHitTest(IRenderMatrices context)
         {
-            return visibleInternal && isRenderingInternal && IsHitTestVisibleInternal && GeometryValid;
+            return visibleInternal && isRenderingInternal && isHitTestVisibleInternal && GeometryValid;
         }
 
         public bool IsThrowingShadow

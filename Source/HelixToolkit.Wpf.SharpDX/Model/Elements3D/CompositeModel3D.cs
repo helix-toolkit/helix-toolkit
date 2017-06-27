@@ -191,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanHitTest(IRenderMatrices context)
         {
-            return visibleInternal && isRenderingInternal && IsHitTestVisibleInternal;
+            return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
         }
 
         protected override bool CheckGeometry()

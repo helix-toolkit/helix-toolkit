@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual bool CanHitTest()
         {
-            return IsAttached && visibleInternal && isRenderingInternal && IsHitTestVisibleInternal;
+            return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
         }
 
         public bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)

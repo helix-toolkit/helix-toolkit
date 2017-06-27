@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
-            if (IsHitTestVisibleInternal && hasInstances)
+            if (isHitTestVisibleInternal && hasInstances)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
