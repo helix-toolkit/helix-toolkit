@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Windows;
     using System.Windows.Controls.Primitives;
 
     using global::SharpDX;
@@ -21,13 +22,29 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Represents a items control for Elements3D
     /// </summary>
     public class Items3DControl : Selector, IRenderable, IHitable, IThrowingShadow
-    {  
-  
+    {
+        protected bool visibleInternal { private set; get; }
+        protected bool isHitTestVisibleInternal { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeModel3D" /> class.
         /// </summary>
         public Items3DControl()
-        {                                   
+        {
+            visibleInternal = IsVisible;
+            isHitTestVisibleInternal = IsHitTestVisible;             
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.Property.Name.Equals(nameof(Visibility)))
+            {
+                visibleInternal = IsVisible;
+            }
+            else if(e.Property.Name.Equals(nameof(IsHitTestVisible)))
+            {
+                isHitTestVisibleInternal = IsHitTestVisible;
+            }
         }
 
         /// <summary>
@@ -309,7 +326,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual bool CanHitTest(IRenderMatrices context)
         {
-            return IsHitTestVisible && Visibility == System.Windows.Visibility.Visible;
+            return IsAttached && visibleInternal && isHitTestVisibleInternal;
         }
 
         protected virtual bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
@@ -359,7 +376,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        public virtual void Render(RenderContext context)
+        public void Render(RenderContext context)
+        {
+            if (CanRender(context))
+            {
+                OnRender(context);
+            }
+        }
+
+        protected virtual void OnRender(RenderContext context)
         {
             foreach (var item in this.children)
             {
@@ -387,6 +412,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
+        }
+
+        protected bool CanRender(RenderContext context)
+        {
+            return IsAttached && visibleInternal;
         }
 
         ///// <summary>
