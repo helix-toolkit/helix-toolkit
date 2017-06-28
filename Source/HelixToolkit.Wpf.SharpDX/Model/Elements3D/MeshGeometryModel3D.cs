@@ -28,7 +28,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
+        #region Dependency Properties
         public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(MeshGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D), 
+            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D),
             new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public bool FrontCounterClockwise
@@ -43,8 +48,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D), 
-            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
 
         public CullMode CullMode
         {
@@ -58,8 +61,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public bool IsDepthClipEnabled
         {
@@ -72,6 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsDepthClipEnabledProperty);
             }
         }
+        #endregion
 
         private DefaultVertex[] vertexArrayBuffer = null;
         private readonly ImmutableBufferProxy<DefaultVertex> vertexBuffer = new ImmutableBufferProxy<DefaultVertex>(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer);

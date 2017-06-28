@@ -17,6 +17,73 @@
 
     public class PointGeometryModel3D : GeometryModel3D
     {
+        #region Dependency Properties
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color", typeof(Color), typeof(PointGeometryModel3D),
+                new AffectsRenderPropertyMetadata(Color.Black, (o, e) => ((PointGeometryModel3D)o).OnColorChanged()));
+
+        public static readonly DependencyProperty SizeProperty =
+            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0),
+                (d,e)=> 
+                {
+                    var size = (Size)e.NewValue;
+                    var model = (d as PointGeometryModel3D);
+                    model.pointParams.X = (float)size.Width;
+                    model.pointParams.Y = (float)size.Height;
+                }));
+
+        public static readonly DependencyProperty FigureProperty =
+            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect,
+                (d, e)=> 
+                {
+                    var figure = (PointFigure)e.NewValue;
+                    var model = (d as PointGeometryModel3D);
+                    model.pointParams.Z = (float)figure;
+                }));
+
+        public static readonly DependencyProperty FigureRatioProperty =
+            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25,
+                (d, e)=> 
+                {
+                    var ratio = (double)e.NewValue;
+                    var model = (d as PointGeometryModel3D);
+                    model.pointParams.W = (float)ratio;
+                }));
+
+        public static readonly DependencyProperty HitTestThicknessProperty =
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
+
+        [TypeConverter(typeof(ColorConverter))]
+        public Color Color
+        {
+            get { return (Color)this.GetValue(ColorProperty); }
+            set { this.SetValue(ColorProperty, value); }
+        }
+
+        public Size Size
+        {
+            get { return (Size)this.GetValue(SizeProperty); }
+            set { this.SetValue(SizeProperty, value); }
+        }
+
+        public PointFigure Figure
+        {
+            get { return (PointFigure)this.GetValue(FigureProperty); }
+            set { this.SetValue(FigureProperty, value); }
+        }
+
+        public double FigureRatio
+        {
+            get { return (double)this.GetValue(FigureRatioProperty); }
+            set { this.SetValue(FigureRatioProperty, value); }
+        }
+
+        public double HitTestThickness
+        {
+            get { return (double)this.GetValue(HitTestThicknessProperty); }
+            set { this.SetValue(HitTestThicknessProperty, value); }
+        }
+        #endregion
         private PointsVertex[] vertexArrayBuffer;
         protected InputLayout vertexLayout;
         protected EffectTechnique effectTechnique;
@@ -35,71 +102,7 @@
             }
         }
 
-        [TypeConverter(typeof(ColorConverter))]
-        public Color Color
-        {
-            get { return (Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
-        }
 
-        public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(PointGeometryModel3D),
-                new AffectsRenderPropertyMetadata(Color.Black, (o, e) => ((PointGeometryModel3D)o).OnColorChanged()));
-
-        public Size Size
-        {
-            get { return (Size)this.GetValue(SizeProperty); }
-            set { this.SetValue(SizeProperty, value); }
-        }
-
-        public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0),
-                (d,e)=> 
-                {
-                    var size = (Size)e.NewValue;
-                    var model = (d as PointGeometryModel3D);
-                    model.pointParams.X = (float)size.Width;
-                    model.pointParams.Y = (float)size.Height;
-                }));
-
-        public PointFigure Figure
-        {
-            get { return (PointFigure)this.GetValue(FigureProperty); }
-            set { this.SetValue(FigureProperty, value); }
-        }
-
-        public static readonly DependencyProperty FigureProperty =
-            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect,
-                (d, e)=> 
-                {
-                    var figure = (PointFigure)e.NewValue;
-                    var model = (d as PointGeometryModel3D);
-                    model.pointParams.Z = (float)figure;
-                }));
-
-        public double FigureRatio
-        {
-            get { return (double)this.GetValue(FigureRatioProperty); }
-            set { this.SetValue(FigureRatioProperty, value); }
-        }
-
-        public static readonly DependencyProperty FigureRatioProperty =
-            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25,
-                (d, e)=> 
-                {
-                    var ratio = (double)e.NewValue;
-                    var model = (d as PointGeometryModel3D);
-                    model.pointParams.W = (float)ratio;
-                }));
-
-        public double HitTestThickness
-        {
-            get { return (double)this.GetValue(HitTestThicknessProperty); }
-            set { this.SetValue(HitTestThicknessProperty, value); }
-        }
-
-        public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
 
         public PointGeometryModel3D() : base()
         {

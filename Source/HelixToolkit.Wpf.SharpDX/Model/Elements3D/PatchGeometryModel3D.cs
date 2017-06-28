@@ -48,6 +48,30 @@ namespace HelixToolkit.Wpf.SharpDX
     public class PatchGeometryModel3D : MaterialGeometryModel3D
     {
 #if TESSELLATION
+        #region Dependency Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty ShadingProperty =
+            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new AffectsRenderPropertyMetadata("Solid", ShadingChanged));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty TessellationFactorProperty =
+            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D),
+                new AffectsRenderPropertyMetadata(1.0, TessellationFactorChanged));
+        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
+
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -56,12 +80,51 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (string)GetValue(ShadingProperty); }
             set { SetValue(ShadingProperty, value); }
         }
-
         /// <summary>
         /// 
         /// </summary>
-        public static readonly DependencyProperty ShadingProperty =
-            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new AffectsRenderPropertyMetadata("Solid", ShadingChanged));
+        public double TessellationFactor
+        {
+            get { return (double)GetValue(TessellationFactorProperty); }
+            set { SetValue(TessellationFactorProperty, value); }
+        }
+
+        public bool IsDepthClipEnabled
+        {
+            set
+            {
+                SetValue(IsDepthClipEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsDepthClipEnabledProperty);
+            }
+        }
+
+        public CullMode CullMode
+        {
+            set
+            {
+                SetValue(CullModeProperty, value);
+            }
+            get
+            {
+                return (CullMode)GetValue(CullModeProperty);
+            }
+        }
+
+        public bool FrontCounterClockwise
+        {
+            set
+            {
+                SetValue(FrontCounterClockwiseProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FrontCounterClockwiseProperty);
+            }
+        }
+        #endregion
 
         /// <summary>
         /// 
@@ -90,21 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double TessellationFactor
-        {
-            get { return (double)GetValue(TessellationFactorProperty); }
-            set { SetValue(TessellationFactorProperty, value); }
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty TessellationFactorProperty =
-            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D), 
-                new AffectsRenderPropertyMetadata(1.0, TessellationFactorChanged));
 
         /// <summary>
         /// 
@@ -115,51 +164,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (obj.IsAttached)
             {
                 obj.vTessellationVariables.Set(new Vector4((float)obj.TessellationFactor, 0, 0, 0));
-            }
-        }
-
-        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D),
-            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
-
-        public bool FrontCounterClockwise
-        {
-            set
-            {
-                SetValue(FrontCounterClockwiseProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(FrontCounterClockwiseProperty);
-            }
-        }
-
-        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D), 
-            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
-
-        public CullMode CullMode
-        {
-            set
-            {
-                SetValue(CullModeProperty, value);
-            }
-            get
-            {
-                return (CullMode)GetValue(CullModeProperty);
-            }
-        }
-
-        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D),
-            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
-
-        public bool IsDepthClipEnabled
-        {
-            set
-            {
-                SetValue(IsDepthClipEnabledProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsDepthClipEnabledProperty);
             }
         }
 
