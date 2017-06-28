@@ -12,22 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class BillboardTextModel3D : MaterialGeometryModel3D
     {
-        #region Private Class Data Members
-        private readonly ImmutableBufferProxy<BillboardVertex> vertexBuffer = new ImmutableBufferProxy<BillboardVertex>(BillboardVertex.SizeInBytes, BindFlags.VertexBuffer);
-        private EffectVectorVariable vViewport;
-        private EffectScalarVariable bHasBillboardTexture;
-        private ShaderResourceView billboardTextureView;
-        private ShaderResourceView billboardAlphaTextureView;
-        private EffectShaderResourceVariable billboardTextureVariable;
-        private EffectShaderResourceVariable billboardAlphaTextureVariable;
-        private EffectScalarVariable bHasBillboardAlphaTexture;
-        private BillboardType billboardType;
-        private BillboardVertex[] vertexArrayBuffer;
-        private EffectScalarVariable bFixedSizeVariable;
-        #endregion
-
-        protected bool fixedSize = true;
-
+        #region Dependency Properties
         /// <summary>
         /// Fixed sized billboard. Default = true. 
         /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
@@ -56,6 +41,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(FixedSizeProperty);
             }
         }
+        #endregion
+        #region Private Class Data Members
+        private readonly ImmutableBufferProxy<BillboardVertex> vertexBuffer = new ImmutableBufferProxy<BillboardVertex>(BillboardVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private EffectVectorVariable vViewport;
+        private EffectScalarVariable bHasBillboardTexture;
+        private ShaderResourceView billboardTextureView;
+        private ShaderResourceView billboardAlphaTextureView;
+        private EffectShaderResourceVariable billboardTextureVariable;
+        private EffectShaderResourceVariable billboardAlphaTextureVariable;
+        private EffectScalarVariable bHasBillboardAlphaTexture;
+        private BillboardType billboardType;
+        private BillboardVertex[] vertexArrayBuffer;
+        private EffectScalarVariable bFixedSizeVariable;
+        #endregion
+
+        protected bool fixedSize = true;
+
+
         /// <summary>
         /// For subclass override
         /// </summary>

@@ -17,44 +17,17 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
 
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
 
     public abstract class MaterialGeometryModel3D : InstanceGeometryModel3D
     {
-        protected InputLayout vertexLayout;
-        protected EffectTechnique effectTechnique;
-        protected EffectTransformVariables effectTransforms;
-        protected EffectMaterialVariables effectMaterial;
-        protected PhongMaterial materialInternal { private set; get; }
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public abstract IBufferProxy VertexBuffer { get; }
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public abstract IBufferProxy IndexBuffer { get; }
-
-        protected bool hasShadowMap = false;
-        public MaterialGeometryModel3D()
-        {
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseMap
-        {
-            get { return (bool)this.GetValue(RenderDiffuseMapProperty); }
-            set { this.SetValue(RenderDiffuseMapProperty, value); }
-        }
-
+        #region Dependency Properties
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDiffuseMapProperty =
-            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true, 
-                (d,e)=>
+            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true,
+                (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
                     if (model.effectMaterial != null)
@@ -62,22 +35,12 @@ namespace HelixToolkit.Wpf.SharpDX
                         model.effectMaterial.RenderDiffuseMap = (bool)e.NewValue;
                     }
                 }));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderNormalMap
-        {
-            get { return (bool)this.GetValue(RenderNormalMapProperty); }
-            set { this.SetValue(RenderNormalMapProperty, value); }
-        }
-
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDiffuseAlphaMapProperty =
             DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true,
-                (d, e)=>
+                (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
                     if (model.effectMaterial != null)
@@ -85,15 +48,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         model.effectMaterial.RenderDiffuseAlphaMap = (bool)e.NewValue;
                     }
                 }));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseAlphaMap
-        {
-            get { return (bool)this.GetValue(RenderDiffuseAlphaMapProperty); }
-            set { this.SetValue(RenderDiffuseAlphaMapProperty, value); }
-        }
         /// <summary>
         /// 
         /// </summary>
@@ -107,16 +61,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         model.effectMaterial.RenderNormalMap = (bool)e.NewValue;
                     }
                 }));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDisplacementMap
-        {
-            get { return (bool)this.GetValue(RenderDisplacementMapProperty); }
-            set { this.SetValue(RenderDisplacementMapProperty, value); }
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -130,6 +74,56 @@ namespace HelixToolkit.Wpf.SharpDX
                         model.effectMaterial.RenderDisplacementMap = (bool)e.NewValue;
                     }
                 }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty MaterialProperty =
+            DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty TextureCoodScaleProperty =
+            DependencyProperty.Register("TextureCoodScale", typeof(Vector2), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(new Vector2(1, 1)));
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseMap
+        {
+            get { return (bool)this.GetValue(RenderDiffuseMapProperty); }
+            set { this.SetValue(RenderDiffuseMapProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderNormalMap
+        {
+            get { return (bool)this.GetValue(RenderNormalMapProperty); }
+            set { this.SetValue(RenderNormalMapProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseAlphaMap
+        {
+            get { return (bool)this.GetValue(RenderDiffuseAlphaMapProperty); }
+            set { this.SetValue(RenderDiffuseAlphaMapProperty, value); }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDisplacementMap
+        {
+            get { return (bool)this.GetValue(RenderDisplacementMapProperty); }
+            set { this.SetValue(RenderDisplacementMapProperty, value); }
+        }
 
         /// <summary>
         /// 
@@ -139,13 +133,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Material)this.GetValue(MaterialProperty); }
             set { this.SetValue(MaterialProperty, value); }
         }
-
         /// <summary>
         /// 
         /// </summary>
-        public static readonly DependencyProperty MaterialProperty =
-            DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
+        [TypeConverter(typeof(Vector2Converter))]
+        public Vector2 TextureCoodScale
+        {
+            get { return (Vector2)this.GetValue(TextureCoodScaleProperty); }
+            set { this.SetValue(TextureCoodScaleProperty, value); }
+        }
+        #endregion
 
+        #region Static Methods
         /// <summary>
         /// 
         /// </summary>
@@ -170,21 +169,27 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        [TypeConverter(typeof(Vector2Converter))]
-        public Vector2 TextureCoodScale
-        {
-            get { return (Vector2)this.GetValue(TextureCoodScaleProperty); }
-            set { this.SetValue(TextureCoodScaleProperty, value); }
-        }
+        #endregion
 
+        #region Variables
+        protected bool hasShadowMap = false;
+        protected InputLayout vertexLayout;
+        protected EffectTechnique effectTechnique;
+        protected EffectTransformVariables effectTransforms;
+        protected EffectMaterialVariables effectMaterial;
+        #endregion
+        #region Properties
+        protected PhongMaterial materialInternal { private set; get; }
         /// <summary>
-        /// 
+        /// For subclass override
         /// </summary>
-        public static readonly DependencyProperty TextureCoodScaleProperty =
-            DependencyProperty.Register("TextureCoodScale", typeof(Vector2), typeof(MaterialGeometryModel3D), new FrameworkPropertyMetadata(new Vector2(1, 1), FrameworkPropertyMetadataOptions.AffectsRender));
+        public abstract IBufferProxy VertexBuffer { get; }
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public abstract IBufferProxy IndexBuffer { get; }
+
+        #endregion
 
         /// <summary>
         /// 

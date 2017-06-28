@@ -27,20 +27,39 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public abstract class GeometryModel3D : Model3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
     {
-        protected RasterizerState rasterState;
+        #region DependencyProperties
+        public static readonly DependencyProperty ReuseVertexArrayBufferProperty =
+            DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty GeometryProperty =
+            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(null, GeometryChanged));
+
+        public static readonly DependencyProperty DepthBiasProperty =
+            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(0, RasterStateChanged));
+
+        public static readonly DependencyProperty IsSelectedProperty =
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(false));
+
+        public static readonly DependencyProperty IsMultisampleEnabledProperty =
+            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+
+        public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
+            new AffectsRenderPropertyMetadata(FillMode.Solid, RasterStateChanged));
+
+        public static readonly DependencyProperty IsScissorEnabledProperty =
+            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public Geometry3D Geometry
         {
-            get { return (Geometry3D)this.GetValue(GeometryProperty); }
+            get
+            {
+                return (Geometry3D)this.GetValue(GeometryProperty);
+            }
             set
             {
                 this.SetValue(GeometryProperty, value);
             }
         }
-
-        public static readonly DependencyProperty ReuseVertexArrayBufferProperty = DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(GeometryModel3D),
-            new PropertyMetadata(false));
-
         /// <summary>
         /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
         /// Example: Repeatly updates textures, or geometries with close number of vertices.
@@ -57,8 +76,75 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty GeometryProperty =
-            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, GeometryChanged));
+        public int DepthBias
+        {
+            get
+            {
+                return (int)this.GetValue(DepthBiasProperty);
+            }
+            set
+            {
+                this.SetValue(DepthBiasProperty, value);
+            }
+        }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return (bool)this.GetValue(IsSelectedProperty);
+            }
+            set
+            {
+                this.SetValue(IsSelectedProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Only works under FillMode = Wireframe. MSAA is determined by viewport MSAA settings for FillMode = Solid
+        /// </summary>
+        public bool IsMultisampleEnabled
+        {
+            set
+            {
+                SetValue(IsMultisampleEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsMultisampleEnabledProperty);
+            }
+        }
+
+        public FillMode FillMode
+        {
+            set
+            {
+                SetValue(FillModeProperty, value);
+            }
+            get
+            {
+                return (FillMode)GetValue(FillModeProperty);
+            }
+        }
+
+        public bool IsScissorEnabled
+        {
+            set
+            {
+                SetValue(IsScissorEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsScissorEnabledProperty);
+            }
+        }
+        #endregion
+
+        #region Static Methods
+        protected static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((GeometryModel3D)d).OnRasterStateChanged();
+        }
 
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -75,70 +161,15 @@ namespace HelixToolkit.Wpf.SharpDX
             model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
             model.OnGeometryChanged(e);
         }
+        #endregion
 
-        protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
-        {
-            GeometryValid = CheckGeometry();
-            if (GeometryValid && renderHost != null)
-            {
-                if (IsAttached)
-                {
-                    OnCreateGeometryBuffers();
-                }
-                else
-                {
-                    var host = renderHost;
-                    Detach();
-                    Attach(host);
-                }
-            }
-        }
+        #region Variables
+        protected RasterizerState rasterState = null;
+        #endregion
 
-        protected abstract void OnCreateGeometryBuffers();
-
-        private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
-        {
-            GeometryValid = CheckGeometry();
-            if (this.IsAttached)
-            {
-                if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
-                {
-                    this.Bounds = this.geometryInternal != null ? this.geometryInternal.Bound : new BoundingBox();
-                }
-                else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
-                {
-                    this.BoundsSphere = this.geometryInternal != null ? this.geometryInternal.BoundingSphere : new BoundingSphere();
-                }
-                if (GeometryValid)
-                {
-                    OnGeometryPropertyChanged(sender, e);
-                }
-            }
-        }
-
-        protected virtual void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-
-        }
-
-        protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
-        {
-            base.OnTransformChanged(e);
-            if (this.geometryInternal != null)
-            {
-                BoundsWithTransform = Bounds.Transform(this.modelMatrix);
-                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(this.modelMatrix);
-            }
-            else
-            {
-                BoundsWithTransform = Bounds;
-                BoundsSphereWithTransform = BoundsSphere;
-            }
-        }
-
+        #region Properties
+        protected Geometry3D geometryInternal { private set; get; }
         public bool GeometryValid { private set; get; } = false;
-
-        protected Geometry3D geometryInternal = null;
 
         private BoundingBox bounds;
         public BoundingBox Bounds
@@ -205,27 +236,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 return boundsSphereWithTransform;
             }
         }
+        #endregion
 
-
-        public int DepthBias
-        {
-            get { return (int)this.GetValue(DepthBiasProperty); }
-            set { this.SetValue(DepthBiasProperty, value); }
-        }
-
-        public static readonly DependencyProperty DepthBiasProperty =
-            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
-
-        protected static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((GeometryModel3D)d).OnRasterStateChanged();
-        }
-
-        /// <summary>
-        /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
-        /// </summary>
-        protected virtual void OnRasterStateChanged() { }
-
+        #region Events
         public static readonly RoutedEvent MouseDown3DEvent =
             EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
 
@@ -247,17 +260,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public event BoundSphereChangedEventHandler OnTransformBoundSphereChanged;
 
-        public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
-
-        public static readonly DependencyProperty IsMultisampleEnabledProperty =
-            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
-
-        public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
-            new FrameworkPropertyMetadata(FillMode.Solid, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
-
-        public static readonly DependencyProperty IsScissorEnabledProperty =
-            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender, RasterStateChanged));
 
         /// <summary>
         /// Provide CLR accessors for the event 
@@ -285,6 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX
             add { AddHandler(MouseMove3DEvent, value); }
             remove { RemoveHandler(MouseMove3DEvent, value); }
         }
+        #endregion
         ///// <summary>
         ///// This method raises the MouseDown3D event 
         ///// </summary>        
@@ -314,7 +317,71 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
             this.IsThrowingShadow = true;
-            //count++;
+        }
+
+        /// <summary>
+        /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
+        /// </summary>
+        protected virtual void OnRasterStateChanged() { }
+
+        protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
+        {
+            GeometryValid = CheckGeometry();
+            if (GeometryValid && renderHost != null)
+            {
+                if (IsAttached)
+                {
+                    OnCreateGeometryBuffers();
+                }
+                else
+                {
+                    var host = renderHost;
+                    Detach();
+                    Attach(host);
+                }
+            }
+        }
+
+        protected abstract void OnCreateGeometryBuffers();
+
+        private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
+        {
+            GeometryValid = CheckGeometry();
+            if (this.IsAttached)
+            {
+                if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
+                {
+                    this.Bounds = this.geometryInternal != null ? this.geometryInternal.Bound : new BoundingBox();
+                }
+                else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
+                {
+                    this.BoundsSphere = this.geometryInternal != null ? this.geometryInternal.BoundingSphere : new BoundingSphere();
+                }
+                if (GeometryValid)
+                {
+                    OnGeometryPropertyChanged(sender, e);
+                }
+            }
+        }
+
+        protected virtual void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+        }
+
+        protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnTransformChanged(e);
+            if (this.geometryInternal != null)
+            {
+                BoundsWithTransform = Bounds.Transform(this.modelMatrix);
+                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(this.modelMatrix);
+            }
+            else
+            {
+                BoundsWithTransform = Bounds;
+                BoundsSphereWithTransform = BoundsSphere;
+            }
         }
 
         /// <summary>
@@ -409,12 +476,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return viewFrustum.Intersects(ref boundsWithTransform);
         }
-        //~GeometryModel3D()
-        //{
-
-        //}
-
-        //static ulong count = 0;
 
         public virtual void OnMouse3DDown(object sender, RoutedEventArgs e) { }
 
@@ -468,7 +529,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual bool CanHitTest(IRenderMatrices context)
         {
-            return visibleInternal && isRenderingInternal && IsHitTestVisibleInternal && GeometryValid;
+            return visibleInternal && isRenderingInternal && isHitTestVisibleInternal && GeometryValid;
         }
 
         public bool IsThrowingShadow
@@ -476,49 +537,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
             set;
         }
-
-        public bool IsSelected
-        {
-            get { return (bool)this.GetValue(IsSelectedProperty); }
-            set { this.SetValue(IsSelectedProperty, value); }
-        }
-
-        /// <summary>
-        /// Only works under FillMode = Wireframe. MSAA is determined by viewport MSAA settings for FillMode = Solid
-        /// </summary>
-        public bool IsMultisampleEnabled
-        {
-            set { SetValue(IsMultisampleEnabledProperty, value); }
-            get { return (bool)GetValue(IsMultisampleEnabledProperty); }
-        }
-
-        public FillMode FillMode
-        {
-            set
-            {
-                SetValue(FillModeProperty, value);
-            }
-            get
-            {
-                return (FillMode)GetValue(FillModeProperty);
-            }
-        }
-
-        public bool IsScissorEnabled
-        {
-            set
-            {
-                SetValue(IsScissorEnabledProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsScissorEnabledProperty);
-            }
-        }
     }
-
-
-
 
     public abstract class Mouse3DEventArgs : RoutedEventArgs
     {

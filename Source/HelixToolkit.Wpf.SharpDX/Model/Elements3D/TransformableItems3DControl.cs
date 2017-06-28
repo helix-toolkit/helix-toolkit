@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
             foreach (var item in this.children)
             {

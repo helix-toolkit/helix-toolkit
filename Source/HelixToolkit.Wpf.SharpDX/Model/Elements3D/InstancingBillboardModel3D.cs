@@ -11,6 +11,56 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class InstancingBillboardModel3D : MaterialGeometryModel3D
     {
+        #region Dependency Properties
+        /// <summary>
+        /// List of instance parameter. 
+        /// </summary>
+        public static readonly DependencyProperty InstanceAdvArrayProperty =
+            DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
+                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
+
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(InstancingBillboardModel3D),
+            new AffectsRenderPropertyMetadata(true));
+
+        /// <summary>
+        /// List of instance parameters. 
+        /// </summary>
+        public IList<BillboardInstanceParameter> InstanceParamArray
+        {
+            get { return (IList<BillboardInstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
+            set { this.SetValue(InstanceAdvArrayProperty, value); }
+        }
+
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public bool FixedSize
+        {
+            set
+            {
+                SetValue(FixedSizeProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FixedSizeProperty);
+            }
+        }
+        #endregion
+
+        #region Static Methods
+        private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var model = (InstancingBillboardModel3D)d;
+            model.InstancesParamChanged();
+        }
+        #endregion
         #region Private Class Data Members
         private readonly ImmutableBufferProxy<BillboardVertex> vertexBuffer = new ImmutableBufferProxy<BillboardVertex>(BillboardVertex.SizeInBytes, BindFlags.VertexBuffer);
         private EffectVectorVariable vViewport;
@@ -33,57 +83,13 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
 
-        /// <summary>
-        /// List of instance parameter. 
-        /// </summary>
-        public static readonly DependencyProperty InstanceAdvArrayProperty =
-            DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
-                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
-        /// <summary>
-        /// List of instance parameters. 
-        /// </summary>
-        public IList<BillboardInstanceParameter> InstanceParamArray
-        {
-            get { return (IList<BillboardInstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
-            set { this.SetValue(InstanceAdvArrayProperty, value); }
-        }
-
-        private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var model = (InstancingBillboardModel3D)d;
-            model.InstancesParamChanged();
-        }
-
         protected void InstancesParamChanged()
         {
             hasInstanceParams = (InstanceParamArray != null && InstanceParamArray.Any());
             instanceParamArrayChanged = true;
         }
 
-        /// <summary>
-        /// Fixed sized billboard. Default = true. 
-        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
-        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
-        /// </summary>
-        public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(InstancingBillboardModel3D),
-            new AffectsRenderPropertyMetadata(true));
 
-        /// <summary>
-        /// Fixed sized billboard. Default = true. 
-        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
-        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
-        /// </summary>
-        public bool FixedSize
-        {
-            set
-            {
-                SetValue(FixedSizeProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(FixedSizeProperty);
-            }
-        }
         /// <summary>
         /// For subclass override
         /// </summary>

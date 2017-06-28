@@ -21,6 +21,20 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public abstract class Model3D : Element3D, ITransformable
     {
+        #region Dependency Properties
+        public static readonly DependencyProperty TransformProperty =
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Model3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, TransformPropertyChanged));
+
+        protected static void TransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Model3D)d).OnTransformChanged(e);
+        }
+        public Transform3D Transform
+        {
+            get { return (Transform3D)this.GetValue(TransformProperty); }
+            set { this.SetValue(TransformProperty, value); }
+        }
+        #endregion
         /// <summary>
         /// This is a hack model matrix. It is always pushed but
         /// never poped. It can be used to get the total model matrix
@@ -31,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected Matrix modelMatrix = Matrix.Identity;
 
-        private Stack<Matrix> matrixStack = new Stack<Matrix>();
+        private readonly Stack<Matrix> matrixStack = new Stack<Matrix>();
 
         public void PushMatrix(Matrix matrix)
         {
@@ -53,20 +67,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix TotalModelMatrix
         {
             get { return this.totalModelMatrix; }
-        }
-
-        public Transform3D Transform
-        {
-            get { return (Transform3D)this.GetValue(TransformProperty); }
-            set { this.SetValue(TransformProperty, value); }
-        }
-
-        public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Model3D), new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.AffectsRender, TransformPropertyChanged));
-
-        protected static void TransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Model3D)d).OnTransformChanged(e);
         }
 
         protected virtual void OnTransformChanged(DependencyPropertyChangedEventArgs e)

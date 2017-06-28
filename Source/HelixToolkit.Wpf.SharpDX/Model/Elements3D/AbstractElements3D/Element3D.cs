@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsHitTestVisibleProperty =
             DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
             {
-                (d as Element3D).IsHitTestVisibleInternal = (bool)e.NewValue;
+                (d as Element3D).isHitTestVisibleInternal = (bool)e.NewValue;
             }));
 
         public bool IsHitTestVisible
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected bool visibleInternal { private set; get; } = true;
 
-        public bool IsHitTestVisibleInternal
+        protected bool isHitTestVisibleInternal
         {
             private set; get;
         } = true;
