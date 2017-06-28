@@ -65,7 +65,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IBoundable : IVisible
     {
-        BoundingBox Bounds { get; }        
+        BoundingBox Bounds { get; }
+        BoundingBox BoundsWithTransform { get; }
+        BoundingSphere BoundsSphere { get; }
+        BoundingSphere BoundsSphereWithTransform { get; }
     }
 
     public interface ITransformable
