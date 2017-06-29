@@ -17,7 +17,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (points == null)
                 throw new ArgumentNullException("points");
-
+            if (points.Count == 0)
+            {
+                result = new BoundingBox();
+            }
             Vector3 min = new Vector3(float.MaxValue);
             Vector3 max = new Vector3(float.MinValue);
 
@@ -41,7 +44,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (points == null)
                 throw new ArgumentNullException("points");
-
+            if (points.Count == 0)
+            {
+                return new BoundingBox();
+            }
             Vector3 min = new Vector3(float.MaxValue);
             Vector3 max = new Vector3(float.MinValue);
 
