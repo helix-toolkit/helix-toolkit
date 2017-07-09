@@ -300,7 +300,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render host property.
         /// </summary>
         public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
+            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) =>
+            {
+                (d as Viewport3DX).renderHostInternal = e.NewValue as IRenderHost;
+            }));
 
         /// <summary>
         /// The Render Technique property
@@ -1407,6 +1410,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RenderHostProperty, value); }
         }
 
+        protected IRenderHost renderHostInternal { private set; get; }
         /// <summary>
         /// Gets or sets value for the shading model shading is used
         /// </summary>
@@ -2669,5 +2673,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (IModelContainer)GetValue(SharedModelContainerProperty);
             }
         }
+
+        protected IModelContainer sharedModelContainerInternal { private set; get; } = null;
     }
 }

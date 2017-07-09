@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Get current render context
         /// </summary>
-        public RenderContext RenderContext { get { return this.RenderHost?.RenderContext; } }
+        public RenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
 
         /// <summary>
         /// <para>Return enumerable of all the rederable elements</para>
@@ -212,15 +212,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                if (RenderHost != null)
+                if (renderHostInternal != null)
                 {
                     foreach (IRenderable item in Items)
                     {
                         yield return item;
                     }
-                    if(RenderHost.EnableSharingModelMode && RenderHost.SharedModelContainer != null)
+                    if(renderHostInternal.EnableSharingModelMode && renderHostInternal.SharedModelContainer != null)
                     {
-                        foreach(var item in SharedModelContainer.Renderables)
+                        foreach(var item in renderHostInternal.SharedModelContainer.Renderables)
                         {
                             yield return item;
                         }
@@ -432,7 +432,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideTargetAdorner()
         {
-            var visual = this.RenderHost as Visual;
+            var visual = this.renderHostInternal as Visual;
             if (visual == null)
             {
                 return;
@@ -455,7 +455,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideZoomRectangle()
         {
-            var visual = this.RenderHost as Visual;
+            var visual = this.renderHostInternal as Visual;
             if (visual == null)
             {
                 return;
@@ -477,7 +477,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateRender()
         {
-            var rh = this.RenderHost;
+            var rh = this.renderHostInternal;
             if (rh != null)
             {
                 rh.InvalidateRender();
@@ -551,9 +551,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnApplyTemplate();
 
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.ExceptionOccurred -= this.HandleRenderException;
+                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
             var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 #if DX11
@@ -568,17 +568,17 @@ namespace HelixToolkit.Wpf.SharpDX
 #else
             hostPresenter.Content = new DPFCanvas();
 #endif
-            this.RenderHost = hostPresenter.Content as IRenderHost;
-            this.RenderHost.MSAA = this.MSAA;
-            this.RenderHost.EnableRenderFrustum = this.EnableRenderFrustum;
-            this.RenderHost.MaxFPS = (uint)this.MaxFPS;
-            this.RenderHost.EnableSharingModelMode = this.EnableSharedModelMode;
-            this.RenderHost.SharedModelContainer = this.SharedModelContainer;
-            if (this.RenderHost != null)
+            this.renderHostInternal = hostPresenter.Content as IRenderHost;
+            this.renderHostInternal.MSAA = this.MSAA;
+            this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
+            this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
+            this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
+            this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.ExceptionOccurred += this.HandleRenderException;
-                this.RenderHost.Renderable = this;
-                this.RenderHost.EffectsManager = this.EffectsManager;
+                this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
+                this.renderHostInternal.Renderable = this;
+                this.renderHostInternal.EffectsManager = this.EffectsManager;
             }
 
             if (this.adornerLayer == null)
@@ -657,10 +657,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void ReAttach()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.Renderable = null;
-                this.RenderHost.Renderable = this;
+                this.renderHostInternal.Renderable = null;
+                this.renderHostInternal.Renderable = this;
             }
         }
 
@@ -671,9 +671,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void Detach()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.Renderable = null;
+                this.renderHostInternal.Renderable = null;
             }
         }
 
@@ -740,7 +740,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.RenderHost as UIElement;
+            var visual = this.renderHostInternal as UIElement;
             if (visual == null)
             {
                 return;
@@ -762,7 +762,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.RenderHost as UIElement;
+            var visual = this.renderHostInternal as UIElement;
             if (visual == null)
             {
                 return;
@@ -1164,9 +1164,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EffectsManagerPropertyChanged()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.EffectsManager = this.EffectsManager;
+                this.renderHostInternal.EffectsManager = this.EffectsManager;
             }
         }
 
@@ -1175,15 +1175,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void RenderTechniquePropertyChanged()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
                 // remove the scene
-                this.RenderHost.Renderable = null;
+                this.renderHostInternal.Renderable = null;
 
                 // if new rendertechnique set, attach the scene
                 if (this.RenderTechnique != null)
                 {
-                    this.RenderHost.Renderable = this;
+                    this.renderHostInternal.Renderable = this;
                 }
             }
         }
