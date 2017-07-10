@@ -22,11 +22,11 @@ namespace HelixToolkit.Wpf.SharpDX
     public class ShadowMap3D : Element3D
     {
         private Texture2D depthBufferSM;
-        private Texture2D colorBufferSM;
+        //private Texture2D colorBufferSM;
         private DepthStencilView depthViewSM;
-        private RenderTargetView renderTargetSM;
+       // private RenderTargetView renderTargetSM;
         private ShaderResourceView texShadowMapView;
-        private ShaderResourceView texColorMapView;
+       // private ShaderResourceView texColorMapView;
         private EffectShaderResourceVariable texShadowMapVariable;
         private EffectVectorVariable vShadowMapInfoVariable;
         private EffectVectorVariable vShadowMapSizeVariable;
@@ -114,23 +114,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 OptionFlags = ResourceOptionFlags.None,
             });
 
-            this.colorBufferSM = new Texture2D(this.Device, new Texture2DDescription
-            {
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.B8G8R8A8_UNorm,
-                Width = width,
-                Height = height,
-                MipLevels = 1,
-                SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
-                OptionFlags = ResourceOptionFlags.None,
-                CpuAccessFlags = CpuAccessFlags.None,
-                ArraySize = 1
-            });
+            //this.colorBufferSM = new Texture2D(this.Device, new Texture2DDescription
+            //{
+            //    BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+            //    Format = Format.B8G8R8A8_UNorm,
+            //    Width = width,
+            //    Height = height,
+            //    MipLevels = 1,
+            //    SampleDescription = new SampleDescription(1, 0),
+            //    Usage = ResourceUsage.Default,
+            //    OptionFlags = ResourceOptionFlags.None,
+            //    CpuAccessFlags = CpuAccessFlags.None,
+            //    ArraySize = 1
+            //});
 
-            this.renderTargetSM = new RenderTargetView(this.Device, colorBufferSM)
-            {
-            };
+            //this.renderTargetSM = new RenderTargetView(this.Device, colorBufferSM)
+            //{
+            //};
 
             this.depthViewSM = new DepthStencilView(Device, depthBufferSM, new DepthStencilViewDescription()
             {
@@ -153,16 +153,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }); //!!!!
 
-            this.texColorMapView = new ShaderResourceView(this.Device, colorBufferSM, new ShaderResourceViewDescription()
-            {
-                Format = Format.B8G8R8A8_UNorm,
-                Dimension = ShaderResourceViewDimension.Texture2D,
-                Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-                {
-                    MipLevels = 1,
-                    MostDetailedMip = 0,
-                }
-            });
+            //this.texColorMapView = new ShaderResourceView(this.Device, colorBufferSM, new ShaderResourceViewDescription()
+            //{
+            //    Format = Format.B8G8R8A8_UNorm,
+            //    Dimension = ShaderResourceViewDimension.Texture2D,
+            //    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+            //    {
+            //        MipLevels = 1,
+            //        MostDetailedMip = 0,
+            //    }
+            //});
 
             this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
             this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
@@ -175,9 +175,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Disposer.RemoveAndDispose(ref this.depthBufferSM);
             Disposer.RemoveAndDispose(ref this.depthViewSM);
-            Disposer.RemoveAndDispose(ref this.colorBufferSM);
-            Disposer.RemoveAndDispose(ref this.renderTargetSM);
-            Disposer.RemoveAndDispose(ref this.texColorMapView);
+            //Disposer.RemoveAndDispose(ref this.colorBufferSM);
+            //Disposer.RemoveAndDispose(ref this.renderTargetSM);
+            //Disposer.RemoveAndDispose(ref this.texColorMapView);
             Disposer.RemoveAndDispose(ref this.texShadowMapView);  
 
             Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
@@ -207,7 +207,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
             this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            
             this.Device.ImmediateContext.ClearDepthStencilView(depthViewSM, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-
             var root = context.Canvas.Renderable.Renderables;
             foreach (var item in root)
             {
@@ -285,7 +284,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.vShadowMapSizeVariable.Set(new Vector2(width, height));
 
             //System.Console.WriteLine("ShadowMap rendered!");
-            context.Canvas.SetDefaultRenderTargets();
+            context.Canvas.SetDefaultRenderTargets(false);
         }
     }
 }
