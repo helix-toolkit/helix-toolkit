@@ -192,7 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var element in viewport.Renderables)
             {
                 var model = element as IBoundable;
-                if (model != null)
+                if (model != null && !model.Bounds.Minimum.IsUndefined() && !model.Bounds.Maximum.IsUndefined())
                 {
                     if (model.Visibility != Visibility.Collapsed)
                     {
