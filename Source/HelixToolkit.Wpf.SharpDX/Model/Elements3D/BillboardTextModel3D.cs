@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(BillboardTextModel3D),
             new AffectsRenderPropertyMetadata(true,
-                (d,e)=> 
+                (d, e) =>
                 {
                     (d as BillboardTextModel3D).fixedSize = (bool)e.NewValue;
                 }));
@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (FixedSize)
                 {
                     var viewportMatrix = context.ViewportMatrix;
-                    var projectionMatrix = context.ProjectionMatrix; 
+                    var projectionMatrix = context.ProjectionMatrix;
                     var viewMatrix = context.ViewMatrix;
                     var visualToScreen = viewMatrix * projectionMatrix * viewportMatrix;
 
@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var center = new Vector4(g.Positions[0], 1);
                     var viewMatrix = context.ViewMatrix;
-                    
+
                     var vcenter = Vector4.Transform(center, viewMatrix);
                     var vcX = vcenter.X;
                     var vcY = vcenter.Y;
@@ -288,6 +288,21 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnCreateGeometryBuffers()
         {
             vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray());
+            Disposer.RemoveAndDispose(ref billboardTextureView);
+            Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
+            var billboardGeometry = geometryInternal as IBillboardText;
+            if (billboardGeometry != null)
+            {
+                if (billboardGeometry.Texture != null)
+                {
+                    var textureBytes = billboardGeometry.Texture.ToByteArray();
+                    billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
+                }
+                if (billboardGeometry.AlphaTexture != null)
+                {
+                    billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, billboardGeometry.AlphaTexture);
+                }
+            }
         }
 
         protected override bool OnAttach(IRenderHost host)
@@ -313,23 +328,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
-            OnCreateGeometryBuffers();
+
             // --- material 
             // this.AttachMaterial();
             this.bHasBillboardTexture = effect.GetVariableByName("bHasTexture").AsScalar();
             this.billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
-            if (geometry.Texture != null)
-            {
-                var textureBytes = geometry.Texture.ToByteArray();
-                billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
-            }
-
             this.billboardAlphaTextureVariable = effect.GetVariableByName("billboardAlphaTexture").AsShaderResource();
             this.bHasBillboardAlphaTexture = effect.GetVariableByName("bHasAlphaTexture").AsScalar();
-            if (geometry.AlphaTexture != null)
-            {
-                billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, geometry.AlphaTexture);
-            }
+            OnCreateGeometryBuffers();
             // --- set rasterstate
             OnRasterStateChanged();
 
@@ -441,8 +447,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private BillboardVertex[] CreateBillboardVertexArray()
         {
-            var billboardGeometry = Geometry as IBillboardText;
-
+            var billboardGeometry = geometryInternal as IBillboardText;
             // Gather all of the textInfo offsets.
             // These should be equal in number to the positions.
             billboardType = billboardGeometry.Type;
