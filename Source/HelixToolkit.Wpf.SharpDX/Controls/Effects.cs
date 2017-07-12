@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.D3DCompiler;
     using global::SharpDX.Direct3D;
     using System.IO;
+    using HelixToolkit.SharpDX.Helpers;
 
     public interface IEffectsManager
     {
@@ -86,8 +87,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Adapter bestAdapter = null;
                 bestAdapterIndex = -1;
                 int adapterIndex = -1;
-                long bestVideoMemory = 0;
-                long bestSystemMemory = 0;
+                ulong bestVideoMemory = 0;
+                ulong bestSystemMemory = 0;
 
                 foreach (var item in f.Adapters)
                 {
@@ -110,8 +111,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         continue;
                     }
 
-                    long videoMemory = item.Description.DedicatedVideoMemory;
-                    long systemMemory = item.Description.DedicatedSystemMemory;
+                    ulong videoMemory = item.Description.DedicatedVideoMemory.ToUInt64();
+                    ulong systemMemory = item.Description.DedicatedSystemMemory.ToUInt64();
 
                     if ((bestAdapter == null) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
                     {
