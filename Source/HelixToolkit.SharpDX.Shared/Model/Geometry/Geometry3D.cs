@@ -230,6 +230,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 Bound = BoundingBoxExtensions.FromPoints(Positions);
                 BoundingSphere = BoundingSphereExtensions.FromPoints(Positions);
             }
+            if(Bound.Maximum.IsUndefined() || Bound.Minimum.IsUndefined() || BoundingSphere.Center.IsUndefined())
+            {
+                throw new Exception("Position vertex contains invalid value(Example: Float.NaN).");
+            }
         }
 #endif
     }
