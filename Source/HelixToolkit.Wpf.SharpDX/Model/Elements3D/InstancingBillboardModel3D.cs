@@ -171,6 +171,21 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnCreateGeometryBuffers()
         {
             vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray());
+            Disposer.RemoveAndDispose(ref billboardTextureView);
+            Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
+            var geometry = geometryInternal as IBillboardText;
+            if (geometry != null)
+            {
+                if (geometry.Texture != null)
+                {
+                    var textureBytes = geometry.Texture.ToByteArray();
+                    billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
+                }
+                if (geometry.AlphaTexture != null)
+                {
+                    billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, geometry.AlphaTexture);
+                }
+            }
         }
 
         protected override bool OnAttach(IRenderHost host)
@@ -198,29 +213,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new System.Exception("Geometry must implement IBillboardText");
             }
             // -- set geometry if given
-            OnCreateGeometryBuffers();
+            
             // --- material 
             // this.AttachMaterial();
             this.bHasBillboardTexture = effect.GetVariableByName("bHasTexture").AsScalar();
             this.billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
-            if (geometry.Texture != null)
-            {
-                var textureBytes = geometry.Texture.ToByteArray();
-                billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
-            }
 
             this.billboardAlphaTextureVariable = effect.GetVariableByName("billboardAlphaTexture").AsShaderResource();
             this.bHasBillboardAlphaTexture = effect.GetVariableByName("bHasAlphaTexture").AsScalar();
-            if (geometry.AlphaTexture != null)
-            {
-                billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, geometry.AlphaTexture);
-            }
 
             instanceParamArrayChanged = true;
             hasInstanceParamVar = effect.GetVariableByName("bHasInstanceParams").AsScalar();
-            this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
-
-            this.hasInstances = (this.instanceInternal != null) && (this.instanceInternal.Any());
+            OnCreateGeometryBuffers();
             // --- set rasterstate
             OnRasterStateChanged();
 
