@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance matrix.
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(InstanceGeometryModel3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(InstanceGeometryModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
 
         /// <summary>
         /// 
