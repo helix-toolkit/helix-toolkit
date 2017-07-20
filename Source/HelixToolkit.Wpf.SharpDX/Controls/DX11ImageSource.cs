@@ -125,13 +125,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
 
             context = new Direct3DEx();
-
+            // Ref: https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/wpf-and-direct3d9-interoperation
             var presentparams = new PresentParameters
             {
                 Windowed = true,
                 SwapEffect = SwapEffect.Discard,
                 DeviceWindowHandle = GetDesktopWindow(),
-                PresentationInterval = PresentInterval.Default,    
+                PresentationInterval = PresentInterval.Default,
+                BackBufferHeight = 1, BackBufferWidth = 1, BackBufferFormat = Format.Unknown
             };
                         
             device = new DeviceEx(context, this.adapterIndex, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
