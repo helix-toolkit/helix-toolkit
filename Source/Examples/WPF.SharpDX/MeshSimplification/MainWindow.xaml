@@ -11,12 +11,12 @@
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            Grid.Row="0" Grid.Column="0" MSAA="Four"
+            Grid.Row="0" Grid.Column="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black"
+            TextBrush="Black" MSAA="Disable"
             UseDefaultGestures="False"
             RenderTechnique="{Binding RenderTechnique}" Background="Black" BackgroundColor="0,0,0,0">
             <hx:Viewport3DX.InputBindings>
