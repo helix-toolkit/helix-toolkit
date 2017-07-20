@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MeshSimplification"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
         <hx:Viewport3DX
             x:Name="view1"
@@ -35,18 +35,14 @@
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
                 Color="{Binding Light1Color}" />
-
-            <hx:MeshGeometryModel3D
-                x:Name="floor" CullMode="Back"
-                Geometry="{Binding Floor}"
-                Material="{Binding FloorMaterial}"/>
             <hx:MeshGeometryModel3D
                 CullMode="Back" Transform="{Binding ModelTransform}"
-                Geometry="{Binding Model}" FillMode="Wireframe"
+                Geometry="{Binding Model}" FillMode="{Binding FillMode}"
                 Material="{Binding ModelMaterial}"/>
         </hx:Viewport3DX>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <Button Command="{Binding SimplifyCommand}">Simplify</Button>
+            <Button Command="{Binding SimplifyCommand}" Margin="10" Height="30" Width="80">Simplify</Button>
+            <CheckBox IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

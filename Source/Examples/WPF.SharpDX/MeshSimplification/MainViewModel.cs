@@ -26,6 +26,7 @@ namespace MeshSimplification
     using System.Windows.Data;
     using HelixToolkit.Wpf.SharpDX.Extensions;
     using System.Windows.Input;
+    using System.Threading.Tasks;
 
     public class MainViewModel : BaseViewModel
     {
@@ -62,6 +63,26 @@ namespace MeshSimplification
         public ICommand SimplifyCommand { private set; get; }
 
         private MeshSimplification simHelper;
+
+        public bool Busy { set; get; } = false;
+
+        private bool showWireframe = true;
+        public bool ShowWireframe
+        {
+            set
+            {
+                if(SetValue(ref showWireframe, value))
+                {
+                    FillMode = value ? FillMode.Wireframe : FillMode.Solid;
+                }
+            }
+            get
+            {
+                return showWireframe;
+            }
+        }
+
+        public FillMode FillMode { set; get; } = FillMode.Wireframe;
 
         public MainViewModel()
         {
@@ -105,7 +126,7 @@ namespace MeshSimplification
 
             ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
 
-            SimplifyCommand = new RelayCommand(Simplify);
+            SimplifyCommand = new RelayCommand(Simplify, CanSimplify);
 
             simHelper = new MeshSimplification(Model);
         }
@@ -133,11 +154,22 @@ namespace MeshSimplification
             BindingOperations.SetBinding(dobj, property, binding);
         }
 
+        private bool CanSimplify(object obj) { return !Busy; }
         private void Simplify(object obj)
         {
-            var model = simHelper.Simplify(Model.Indices.Count/3/2);
-            model.Normals = model.CalculateNormals();
-            Model = model;
+            if (!CanSimplify(null)) { return; }
+            Busy = true;
+            int size = Model.Indices.Count / 3 / 2;
+            Task.Factory.StartNew(() => 
+            {
+                var model = simHelper.Simplify(size);
+                model.Normals = model.CalculateNormals();
+                return model;
+            }).ContinueWith(x => 
+            {
+                Busy = false;
+                Model = x.Result;
+            }, TaskScheduler.FromCurrentSynchronizationContext());           
         }
     }
 }
