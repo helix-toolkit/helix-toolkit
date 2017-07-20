@@ -30,6 +30,12 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         public long Threshold = 15;
 
         /// <summary>
+        /// Sometimes invalidate renderer ran too fast, causes sence not reflect the latest update. 
+        /// Set this to always update the sence once exceed some interval. Default is 1 second.
+        /// </summary>
+        public long ForceRefreshInterval = 1000;
+
+        /// <summary>
         /// Previous event happened.
         /// </summary>
         private long previous = 0;
@@ -52,6 +58,22 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
             else
             {
                 lag = Math.Min(lag - Threshold, Threshold - 2);
+                return false;
+            }
+        }
+        /// <summary>
+        /// A constant interval for refresh
+        /// </summary>
+        /// <returns></returns>
+        public bool ForceRender()
+        {
+            if(watch.ElapsedMilliseconds - previous > ForceRefreshInterval)
+            {
+                previous = watch.ElapsedMilliseconds;
+                return true;
+            }
+            else
+            {
                 return false;
             }
         }
