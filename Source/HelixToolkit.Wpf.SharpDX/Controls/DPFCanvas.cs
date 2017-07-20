@@ -737,7 +737,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            if ((pendingValidationCycles > 0 || skipper.ForceRender()) && !skipper.IsSkip() && surfaceD3D != null && renderRenderable != null)
+            if (((pendingValidationCycles > 0 &&!skipper.IsSkip()) || skipper.ForceRender()) && surfaceD3D != null && renderRenderable != null)
             {
                 var t0 = renderTimer.Elapsed;
 
@@ -748,7 +748,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 {                       
                     if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))                    
                     {
-                        System.Threading.Interlocked.Decrement(ref pendingValidationCycles);                   
+                        if (pendingValidationCycles > 0)
+                        { System.Threading.Interlocked.Decrement(ref pendingValidationCycles); }
                         Render(t0);
                         surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                     }

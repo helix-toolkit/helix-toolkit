@@ -40,6 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// </summary>
         private long previous = 0;
 
+        private long previous1 = 0;
         /// <summary>
         /// Determine if this event should be skipped.
         /// </summary>
@@ -67,9 +68,9 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// <returns></returns>
         public bool ForceRender()
         {
-            if(watch.ElapsedMilliseconds - previous > ForceRefreshInterval)
+            if(watch.ElapsedMilliseconds - previous1 > ForceRefreshInterval)
             {
-                previous = watch.ElapsedMilliseconds;
+                previous1 = watch.ElapsedMilliseconds;
                 return true;
             }
             else
