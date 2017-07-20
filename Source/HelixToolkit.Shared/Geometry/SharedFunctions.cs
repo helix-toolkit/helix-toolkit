@@ -13,7 +13,6 @@ namespace HelixToolkit.Wpf
     using Point3D = global::SharpDX.Vector3;
     using DoubleOrSingle = System.Single;
     using System.Linq;
-
 #else
     using System.Windows;
     using System.Windows.Media;
@@ -33,6 +32,16 @@ namespace HelixToolkit.Wpf
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D CrossProduct(ref Vector3D first, ref Vector3D second)
+        {
+#if SHARPDX
+            return Vector3.Cross(first, second);
+#else
+            return Vector3D.CrossProduct(first, second);
+#endif
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3D CrossProduct(Vector3D first, Vector3D second)
         {
 #if SHARPDX
             return Vector3.Cross(first, second);
