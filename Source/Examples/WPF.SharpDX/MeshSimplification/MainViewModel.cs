@@ -32,7 +32,20 @@ namespace MeshSimplification
     {
         public string Name { get; set; }
         public MainViewModel ViewModel { get { return this; } }
-        public MeshGeometry3D Model { get; private set; }
+
+        private MeshGeometry3D model;
+        public MeshGeometry3D Model
+        {
+            get { return model; }
+            private set
+            {
+                if(SetValue(ref model, value))
+                {
+                    NumberOfTriangles = model.Indices.Count;
+                    NumberOfVertices = model.Positions.Count;
+                }
+            }
+        }
 
         public PhongMaterial ModelMaterial { get; set; }
         public PhongMaterial LightModelMaterial { get; set; }
@@ -83,6 +96,9 @@ namespace MeshSimplification
         }
 
         public FillMode FillMode { set; get; } = FillMode.Wireframe;
+
+        public int NumberOfTriangles { set; get; } = 0;
+        public int NumberOfVertices { set; get; } = 0;
 
         public MainViewModel()
         {

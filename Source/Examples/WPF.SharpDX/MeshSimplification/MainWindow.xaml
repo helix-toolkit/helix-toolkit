@@ -35,7 +35,7 @@
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
                 Color="{Binding Light1Color}" />
-            <hx:MeshGeometryModel3D
+            <hx:MeshGeometryModel3D IsMultisampleEnabled="False"
                 CullMode="Back" Transform="{Binding ModelTransform}"
                 Geometry="{Binding Model}" FillMode="{Binding FillMode}"
                 Material="{Binding ModelMaterial}"/>
@@ -43,6 +43,12 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Button Command="{Binding SimplifyCommand}" Margin="10" Height="30" Width="80">Simplify</Button>
             <CheckBox IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" TextBlock.Foreground="White">
+            <TextBlock Margin="10">Num Vertices</TextBlock>
+            <TextBlock Margin="10" Text="{Binding NumberOfVertices, StringFormat='#,#'}"/>
+            <TextBlock Margin="10">Num Triangles</TextBlock>
+            <TextBlock Margin="10" Text="{Binding NumberOfTriangles, StringFormat='#,#'}"/>
         </StackPanel>
     </Grid>
 </Window>
