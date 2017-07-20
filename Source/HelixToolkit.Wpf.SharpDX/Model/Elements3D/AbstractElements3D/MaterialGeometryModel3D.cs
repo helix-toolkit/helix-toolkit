@@ -159,6 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (model.IsAttached)
                     {
                         model.AttachMaterial();
+                        model.InvalidateRender();
                     }
                     else
                     {
@@ -166,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         model.Detach();
                         model.Attach(host);
                     }
-                }
+                }               
             }
         }
         #endregion
