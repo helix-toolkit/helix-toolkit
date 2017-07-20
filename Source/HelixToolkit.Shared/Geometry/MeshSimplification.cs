@@ -1,4 +1,14 @@
-﻿#if SHARPDX
+﻿/////////////////////////////////////////////
+//
+// Mesh Simplification
+// Port from https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification
+// Original Author: Sven Forstmann in 2014
+// Port and Modified by Lunci 2017
+// License : MIT
+// http://opensource.org/licenses/MIT
+/////////////////////////////////////////////
+
+#if SHARPDX
 namespace HelixToolkit.Wpf.SharpDX
 #else
 namespace HelixToolkit.Wpf
@@ -104,6 +114,19 @@ namespace HelixToolkit.Wpf
                 dirty = false;
                 normal = new Vector3D();
             }
+
+            public Triangle Clone()
+            {
+                var t = new Triangle() { deleted = this.deleted, dirty = this.dirty, normal = this.normal };
+                t.v[0] = this.v[0];
+                t.v[1] = this.v[1];
+                t.v[2] = this.v[2];
+                t.err[0] = this.err[0];
+                t.err[1] = this.err[1];
+                t.err[2] = this.err[2];
+                t.err[3] = this.err[3];
+                return t;
+            }
         }
 
         private sealed class Vertex
@@ -125,12 +148,23 @@ namespace HelixToolkit.Wpf
             {
                 p = v;
             }
+
+            public Vertex Clone()
+            {
+                return new Vertex() { p = this.p, border = this.border, q = this.q, tCount = this.tCount, tStart = this.tStart };
+            }
         }
 
         private sealed class Ref
         {
             public int tid;
             public int tvertex;
+            public Ref() { }
+
+            public Ref Clone()
+            {
+                return new Ref() { tid = this.tid, tvertex = this.tvertex };
+            }
         }
 
         private readonly List<Triangle> triangles;
@@ -160,13 +194,13 @@ namespace HelixToolkit.Wpf
         /// <returns></returns>
         public MeshGeometry3D Simplify(bool verbose = false)
         {
-            return Simplify(int.MaxValue, 0, verbose, true);
+            return Simplify(int.MaxValue, 7, verbose, true);
         }
         /// <summary>
-        /// 
+        /// Mesh Simplification using Fast-Quadric-Mesh-Simplification
         /// </summary>
-        /// <param name="targetCount"></param>
-        /// <param name="aggressive"></param>
+        /// <param name="targetCount">Target Number of Triangles</param>
+        /// <param name="aggressive">sharpness to increase the threshold, 5->8 are usually good, more iteration yields higher quality</param>
         /// <param name="verbose"></param>
         /// <param name="lossless"></param>
         /// <returns></returns>
@@ -206,10 +240,10 @@ namespace HelixToolkit.Wpf
                 // The following numbers works well for most models.
                 // If it does not, try to adjust the 3 parameters
                 //
-                double threshold = 0.000001;
+                double threshold = 0.001;
                 if(!lossless)
-                    threshold = 0.00000001 * Math.Pow(iteration + 3.0, aggressive);
-                if (verbose && (iteration % 5 == 0))
+                    threshold = 0.000000001 * Math.Pow(iteration + 3.0, aggressive);
+                if (verbose)
                 {
                     Debug.WriteLine($"Iteration: {iteration}; Triangles: {triCount - deletedTris}; Threshold: {threshold};");
                 }
@@ -242,7 +276,6 @@ namespace HelixToolkit.Wpf
                             if (Flipped(ref p, i0, i1, ref v0, ref v1, deleted0)
                                 || Flipped(ref p, i1, i0, ref v1, ref v0, deleted1))
                             { continue; }
-
                             v0.p = p;
                             v0.q = v1.q + v0.q;
 
@@ -255,9 +288,9 @@ namespace HelixToolkit.Wpf
                             {
                                 if (tcount > 0)
                                 {
-                                    for (int k = v0.tStart; k < tcount; ++k)
+                                    for (int k = 0; k < tcount; ++k)
                                     {
-                                        refs[v0.tStart + k] = refs[tStart + k];
+                                        refs[v0.tStart + k] = refs[tStart + k].Clone();
                                     }
                                 }
                             }
@@ -360,7 +393,7 @@ namespace HelixToolkit.Wpf
                 t.err[1] = CalculateError(t.v[1], t.v[2], out p);
                 t.err[2] = CalculateError(t.v[2], t.v[0], out p);
                 t.err[3] = Math.Min(t.err[0], Math.Min(t.err[1], t.err[2]));
-                refs.Add(r);
+                refs.Add(r.Clone());
             }
         }
 
@@ -375,7 +408,6 @@ namespace HelixToolkit.Wpf
             double det = q.det(0, 1, 2, 1, 4, 5, 2, 5, 7);
             if (det != 0 && !border)
             {
-
                 // q_delta is invertible
                 p_result.X = (float)(-1 / det * (q.det(1, 2, 3, 4, 5, 6, 5, 7, 8))); // vx = A41/det(q_delta)
                 p_result.Y = (float)(1 / det * (q.det(0, 2, 3, 1, 5, 6, 2, 7, 8)));  // vy = A42/det(q_delta)
@@ -440,6 +472,15 @@ namespace HelixToolkit.Wpf
                     {
                         vertices[tri.v[j]].q += new SymmetricMatrix(n.X, n.Y, n.Z, -SharedFunctions.DotProduct(ref n, ref p0));
                     }
+                }
+                Vector3D p;
+                foreach (var tri in triangles)
+                {
+                    for (int i = 0; i < 3; ++i)
+                    {                       
+                        tri.err[i] = CalculateError(tri.v[i], tri.v[(i + 1) % 3], out p);
+                    }
+                    tri.err[3] = Math.Min(tri.err[0], Math.Min(tri.err[1], tri.err[2]));
                 }
             }
 
@@ -554,8 +595,7 @@ namespace HelixToolkit.Wpf
                 if (vert.tCount > 0)
                 {
                     vert.tStart = dst;
-                    vertices[dst].p = vert.p;
-                    dst++;
+                    vertices[dst++].p = vert.p;
                 }
             }
 
