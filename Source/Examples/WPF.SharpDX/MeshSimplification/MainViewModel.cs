@@ -27,6 +27,7 @@ namespace MeshSimplification
     using HelixToolkit.Wpf.SharpDX.Extensions;
     using System.Windows.Input;
     using System.Threading.Tasks;
+    using System.Diagnostics;
 
     public class MainViewModel : BaseViewModel
     {
@@ -105,7 +106,7 @@ namespace MeshSimplification
 
         public bool Lossless { set; get; } = false;
 
-
+        public long CalculationTime { set; get; } = 0;
 
         public MainViewModel()
         {
@@ -184,9 +185,13 @@ namespace MeshSimplification
             if (!CanSimplify(null)) { return; }
             Busy = true;
             int size = Model.Indices.Count / 3 / 2;
+            CalculationTime = 0;
             Task.Factory.StartNew(() => 
-            {              
+            {
+                var sw = Stopwatch.StartNew();
                 var model = simHelper.Simplify(size, 7, true, Lossless);
+                sw.Stop();
+                CalculationTime = sw.ElapsedMilliseconds;
                 model.Normals = model.CalculateNormals();
                 return model;
             }).ContinueWith(x => 

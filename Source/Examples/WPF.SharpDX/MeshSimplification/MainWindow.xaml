@@ -43,6 +43,11 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
             <CheckBox Margin="4" IsChecked="{Binding Lossless}" Foreground="White">Lossless</CheckBox>
             <Button Margin="4" Command="{Binding SimplifyCommand}" Height="30" Width="80">Simplify</Button>
+            <TextBlock Margin="10">Calculation Time</TextBlock>
+            <StackPanel Margin="0, 0, 0, 10"  Orientation="Horizontal">
+                <TextBlock Text="{Binding CalculationTime, StringFormat='#,#'}"/>
+                <TextBlock Margin="10, 0, 0, 0"> ms</TextBlock>
+            </StackPanel>
             <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
             <Button Margin="4" Command="{Binding ResetCommand}">Reset</Button>
         </StackPanel>
