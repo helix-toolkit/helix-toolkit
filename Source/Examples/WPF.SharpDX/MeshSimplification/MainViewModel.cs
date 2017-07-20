@@ -41,7 +41,7 @@ namespace MeshSimplification
             {
                 if(SetValue(ref model, value))
                 {
-                    NumberOfTriangles = model.Indices.Count;
+                    NumberOfTriangles = model.Indices.Count/3;
                     NumberOfVertices = model.Positions.Count;
                 }
             }

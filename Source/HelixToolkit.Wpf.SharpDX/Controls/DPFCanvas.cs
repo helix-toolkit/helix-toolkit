@@ -761,7 +761,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
                 finally
-                { surfaceD3D.Unlock(); }
+                {
+                    surfaceD3D.Unlock();
+                }
 
                 lastRenderingDuration = renderTimer.Elapsed - t0;
             }
