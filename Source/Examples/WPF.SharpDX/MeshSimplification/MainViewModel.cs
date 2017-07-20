@@ -74,6 +74,7 @@ namespace MeshSimplification
         }
 
         public ICommand SimplifyCommand { private set; get; }
+        public ICommand ResetCommand { private set; get; }
 
         private MeshSimplification simHelper;
 
@@ -99,6 +100,12 @@ namespace MeshSimplification
 
         public int NumberOfTriangles { set; get; } = 0;
         public int NumberOfVertices { set; get; } = 0;
+
+        private MeshGeometry3D OrgMesh;
+
+        public bool Lossless { set; get; } = false;
+
+
 
         public MainViewModel()
         {
@@ -138,12 +145,13 @@ namespace MeshSimplification
                 }
                 
             }
-            Model = MeshGeometry3D.Merge(caritems);
+            Model = caritems[0];// MeshGeometry3D.Merge(caritems);
+            OrgMesh = Model;
 
             ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
 
             SimplifyCommand = new RelayCommand(Simplify, CanSimplify);
-
+            ResetCommand = new RelayCommand((o)=> { Model = OrgMesh; simHelper = new MeshSimplification(Model); }, CanSimplify);
             simHelper = new MeshSimplification(Model);
         }
 
@@ -177,14 +185,15 @@ namespace MeshSimplification
             Busy = true;
             int size = Model.Indices.Count / 3 / 2;
             Task.Factory.StartNew(() => 
-            {
-                var model = simHelper.Simplify(size);
+            {              
+                var model = simHelper.Simplify(size, 7, true, Lossless);
                 model.Normals = model.CalculateNormals();
                 return model;
             }).ContinueWith(x => 
             {
                 Busy = false;
                 Model = x.Result;
+                CommandManager.InvalidateRequerySuggested();
             }, TaskScheduler.FromCurrentSynchronizationContext());           
         }
     }
