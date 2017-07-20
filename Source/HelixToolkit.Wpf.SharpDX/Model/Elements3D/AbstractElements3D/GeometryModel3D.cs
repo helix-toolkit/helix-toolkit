@@ -160,7 +160,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
             model.OnGeometryChanged(e);
-            Debug.WriteLine("Geometry Changed");
+            //Debug.WriteLine("Geometry Changed");
+            model.InvalidateRender();
         }
         #endregion
 
@@ -333,7 +334,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (IsAttached)
                 {
                     OnCreateGeometryBuffers();
-                    InvalidateRender();
                 }
                 else
                 {
