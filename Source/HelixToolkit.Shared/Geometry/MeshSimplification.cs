@@ -1,8 +1,4 @@
-﻿/// <summary>
-/// Port from https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification
-/// </summary>
-
-#if SHARPDX
+﻿#if SHARPDX
 namespace HelixToolkit.Wpf.SharpDX
 #else
 namespace HelixToolkit.Wpf
@@ -140,7 +136,10 @@ namespace HelixToolkit.Wpf
         private readonly List<Triangle> triangles;
         private readonly List<Vertex> vertices;
         private readonly List<Ref> refs;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
         public MeshSimplification(MeshGeometry3D model)
         {
             triangles = new List<Triangle>(Enumerable.Range(0, model.TriangleIndices.Count / 3).Select(x=>new Triangle()));
@@ -154,12 +153,23 @@ namespace HelixToolkit.Wpf
             vertices = model.Positions.Select(x => new Vertex(x)).ToList();
             refs = new List<Ref>(Enumerable.Range(0, model.TriangleIndices.Count).Select(x=>new Ref()));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="verbose"></param>
+        /// <returns></returns>
         public MeshGeometry3D Simplify(bool verbose = false)
         {
             return Simplify(int.MaxValue, 0, verbose, true);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetCount"></param>
+        /// <param name="aggressive"></param>
+        /// <param name="verbose"></param>
+        /// <param name="lossless"></param>
+        /// <returns></returns>
         public MeshGeometry3D Simplify(int targetCount, double aggressive = 7, bool verbose = false, bool lossless = false)
         {
             foreach (var tri in triangles)
@@ -278,7 +288,10 @@ namespace HelixToolkit.Wpf
             CompactMesh();
             return GetMesh();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public MeshGeometry3D GetMesh()
         {
             var pos = new Point3DCollection(vertices.Select(x=>new Point3D(x.p.X, x.p.Y, x.p.Z)));
