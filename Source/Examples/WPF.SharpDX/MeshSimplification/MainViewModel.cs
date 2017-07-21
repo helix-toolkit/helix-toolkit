@@ -135,21 +135,21 @@ namespace MeshSimplification
             // scene model3d
             this.ModelMaterial = PhongMaterials.Silver;
 
-            var caritems = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
-            var scale = new Vector3(1f);
+            var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
+            //var scale = new Vector3(1f);
 
-            foreach (var item in caritems)
-            {
-                for (int i = 0; i < item.Positions.Count; ++i)
-                {
-                    item.Positions[i] = item.Positions[i] * scale;
-                }
-                
-            }
-            Model = caritems[0];// MeshGeometry3D.Merge(caritems);
+            //foreach (var item in caritems)
+            //{
+            //    for (int i = 0; i < item.Positions.Count; ++i)
+            //    {
+            //        item.Positions[i] = item.Positions[i] * scale;
+            //    }
+
+            //}
+            Model = models[0];
             OrgMesh = Model;
 
-            ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
+            //ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
 
             SimplifyCommand = new RelayCommand(Simplify, CanSimplify);
             ResetCommand = new RelayCommand((o)=> { Model = OrgMesh; simHelper = new MeshSimplification(Model); }, CanSimplify);
