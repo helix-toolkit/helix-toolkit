@@ -160,6 +160,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
             model.OnGeometryChanged(e);
+            //Debug.WriteLine("Geometry Changed");
+            model.InvalidateRender();
         }
         #endregion
 

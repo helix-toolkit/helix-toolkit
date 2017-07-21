@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance matrix.
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(InstanceGeometryModel3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(InstanceGeometryModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
 
         /// <summary>
         /// 
@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var model = (InstanceGeometryModel3D)d;
             model.instanceInternal = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
             model.InstancesChanged();
+            model.InvalidateRender();
         }
 
         protected bool isInstanceChanged = true;

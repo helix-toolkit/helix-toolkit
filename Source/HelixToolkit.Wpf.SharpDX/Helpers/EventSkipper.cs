@@ -30,10 +30,17 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         public long Threshold = 15;
 
         /// <summary>
+        /// Sometimes invalidate renderer ran too fast, causes sence not reflect the latest update. 
+        /// Set this to delay render one more time after last rendering. Default is 1 second.
+        /// </summary>
+        public long ForceRefreshInterval = 1000;
+
+        /// <summary>
         /// Previous event happened.
         /// </summary>
         private long previous = 0;
 
+        private bool forceRender = false;
         /// <summary>
         /// Determine if this event should be skipped.
         /// </summary>
@@ -46,12 +53,30 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
             lag += elpased;
 
             if (lag < Threshold)
-            {
+            {                
                 return true;
             }
             else
             {
                 lag = Math.Min(lag - Threshold, Threshold - 2);
+                forceRender = true;
+                return false;
+            }
+        }
+        /// <summary>
+        /// Delay certain time to render one more time after last rendering, ensure scene is update to latest.
+        /// (Used to solve latest scene is not reflected glitch)
+        /// </summary>
+        /// <returns></returns>
+        public bool DelayTrigger()
+        {
+            if(forceRender && watch.ElapsedMilliseconds - previous > ForceRefreshInterval)
+            {
+                forceRender = false;
+                return true;
+            }
+            else
+            {
                 return false;
             }
         }
