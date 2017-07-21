@@ -40,53 +40,62 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class MeshSimplification
     {
-        private sealed class SymmetricMatrix
+        private struct SymmetricMatrix
         {
             const int Size = 10;
-            private readonly double[] m = new double[Size];
-            public double[] M { get { return m; } }
+            public double M11, M12, M13, M14, M22, M23, M24, M33, M34, M44;
             public SymmetricMatrix(double c = 0)
             {
-                for (int i = 0; i < Size; ++i)
-                {
-                    m[i] = c;
-                }
+                M11 = M12 = M13 = M14 = M22 = M23 = M24 = M33 = M34 = M44 = c;
             }
 
             public SymmetricMatrix(double a, double b, double c, double d)
             {
-                m[0] = a * a; m[1] = a * b; m[2] = a * c; m[3] = a * d;
-                m[4] = b * b; m[5] = b * c; m[6] = b * d;
-                m[7] = c * c; m[8] = c * d;
-                m[9] = d * d;
+                M11 = a * a; M12 = a * b; M13 = a * c; M14 = a * d;
+                M22 = b * b; M23 = b * c; M24 = b * d;
+                M33 = c * c; M34 = c * d;
+                M44 = d * d;
             }
 
             public SymmetricMatrix(double m11, double m12, double m13, double m14, double m22, double m23, double m24, double m33, double m34, double m44)
             {
-                m[0] = m11;
-                m[1] = m12;
-                m[2] = m13;
-                m[3] = m14;
-                m[4] = m22;
-                m[5] = m23;
-                m[6] = m24;
-                m[7] = m33;
-                m[8] = m34;
-                m[9] = m44;
+                M11 = m11;
+                M12 = m12;
+                M13 = m13;
+                M14 = m14;
+                M22 = m22;
+                M23 = m23;
+                M24 = m24;
+                M33 = m33;
+                M34 = m34;
+                M44 = m44;
             }
 
             public double this[int c]
             {
                 get
                 {
-                    return m[c];
+                    switch (c)
+                    {
+                        case 0: return M11;
+                        case 1: return M12;
+                        case 2: return M13;
+                        case 3: return M14;
+                        case 4: return M22;
+                        case 5: return M23;
+                        case 6: return M24;
+                        case 7: return M33;
+                        case 8: return M34;
+                        case 9: return M44;
+                        default: throw new ArgumentOutOfRangeException();
+                    }
                 }
             }
 
             public double det(int a11, int a12, int a13, int a21, int a22, int a23, int a31, int a32, int a33)
             {
-                double det = m[a11] * m[a22] * m[a33] + m[a13] * m[a21] * m[a32] + m[a12] * m[a23] * m[a31]
-                            - m[a13] * m[a22] * m[a31] - m[a11] * m[a23] * m[a32] - m[a12] * m[a21] * m[a33];
+                double det = this[a11] * this[a22] * this[a33] + this[a13] * this[a21] * this[a32] + this[a12] * this[a23] * this[a31]
+                            - this[a13] * this[a22] * this[a31] - this[a11] * this[a23] * this[a32] - this[a12] * this[a21] * this[a33];
                 return det;
             }
 
@@ -97,23 +106,20 @@ namespace HelixToolkit.Wpf
                                                                      n1[7] + n2[7], n1[8] + n2[8],
                                                                                   n1[9] + n2[9]);
             }
+
+            public void SetAll(double c)
+            {
+                M11 = M12 = M13 = M14 = M22 = M23 = M24 = M33 = M34 = M44 = c;
+            }
         }
 
         private sealed class Triangle
         {
-            public readonly int[] v;
-            public readonly double[] err;
-            public bool deleted;
-            public bool dirty;
-            public Vector3D normal;
-            public Triangle()
-            {
-                v = new int[3];
-                err = new double[4];
-                deleted = false;
-                dirty = false;
-                normal = new Vector3D();
-            }
+            public readonly int[] v = new int[3];
+            public readonly double[] err = new double[4];
+            public bool deleted = false;
+            public bool dirty = false;
+            public Vector3D normal = new Vector3D();
 
             public Triangle Clone()
             {
@@ -132,13 +138,13 @@ namespace HelixToolkit.Wpf
         private sealed class Vertex
         {
             public Vector3D p;
-            public int tStart;
-            public int tCount;
+            public int tStart = 0;
+            public int tCount = 0;
             public SymmetricMatrix q = new SymmetricMatrix();
-            public bool border;
+            public bool border = false;
             public Vertex()
             {
-
+                p = new Vector3D();
             }
             public Vertex(Point3D v)
             {
@@ -155,15 +161,22 @@ namespace HelixToolkit.Wpf
             }
         }
 
-        private sealed class Ref
+        private struct Ref
         {
             public int tid;
             public int tvertex;
-            public Ref() { }
+            public Ref(int id = 0, int tvert = 0)
+            { tid = id; tvertex = tvert; }
 
-            public Ref Clone()
+            //public Ref Clone()
+            //{
+            //    return new Ref() { tid = this.tid, tvertex = this.tvertex };
+            //}
+
+            public void Reset()
             {
-                return new Ref() { tid = this.tid, tvertex = this.tvertex };
+                tid = 0;
+                tvertex = 0;
             }
         }
 
@@ -290,7 +303,7 @@ namespace HelixToolkit.Wpf
                                 {
                                     for (int k = 0; k < tcount; ++k)
                                     {
-                                        refs[v0.tStart + k] = refs[tStart + k].Clone();
+                                        refs[v0.tStart + k] = refs[tStart + k];
                                     }
                                 }
                             }
@@ -393,7 +406,7 @@ namespace HelixToolkit.Wpf
                 t.err[1] = CalculateError(t.v[1], t.v[2], out p);
                 t.err[2] = CalculateError(t.v[2], t.v[0], out p);
                 t.err[3] = Math.Min(t.err[0], Math.Min(t.err[1], t.err[2]));
-                refs.Add(r.Clone());
+                refs.Add(r);
             }
         }
 
@@ -413,7 +426,7 @@ namespace HelixToolkit.Wpf
                 p_result.Y = (float)(1 / det * (q.det(0, 2, 3, 1, 5, 6, 2, 7, 8)));  // vy = A42/det(q_delta)
                 p_result.Z = (float)(-1 / det * (q.det(0, 1, 3, 1, 4, 6, 2, 5, 8))); // vz = A43/det(q_delta)
 
-                error = VertexError(q, p_result.X, p_result.Y, p_result.Z);
+                error = VertexError(ref q, p_result.X, p_result.Y, p_result.Z);
             }
             else
             {
@@ -421,9 +434,9 @@ namespace HelixToolkit.Wpf
                 var p1 = vertices[id_v1].p;
                 var p2 = vertices[id_v2].p;
                 var p3 = (p1 + p2) / 2;
-                double error1 = VertexError(q, p1.X, p1.Y, p1.Z);
-                double error2 = VertexError(q, p2.X, p2.Y, p2.Z);
-                double error3 = VertexError(q, p3.X, p3.Y, p3.Z);
+                double error1 = VertexError(ref q, p1.X, p1.Y, p1.Z);
+                double error2 = VertexError(ref q, p2.X, p2.Y, p2.Z);
+                double error3 = VertexError(ref q, p3.X, p3.Y, p3.Z);
                 error = Math.Min(error1, Math.Min(error2, error3));
                 if (error1 == error) p_result = p1;
                 if (error2 == error) p_result = p2;
@@ -432,10 +445,10 @@ namespace HelixToolkit.Wpf
             return error;
         }
 
-        private double VertexError(SymmetricMatrix q, double x, double y, double z)
+        private double VertexError(ref SymmetricMatrix q, double x, double y, double z)
         {
-            return q[0] * x * x + 2 * q[1] * x * y + 2 * q[2] * x * z + 2 * q[3] * x + q[4] * y * y
-                 + 2 * q[5] * y * z + 2 * q[6] * y + q[7] * z * z + 2 * q[8] * z + q[9];
+            return q.M11 * x * x + 2 * q.M12 * x * y + 2 * q.M13 * x * z + 2 * q.M14 * x + q.M22 * y * y
+                 + 2 * q.M23 * y * z + 2 * q.M24 * y + q.M33 * z * z + 2 * q.M34 * z + q.M44;
         }
 
         private void UpdateMesh(int iteration)
@@ -457,7 +470,7 @@ namespace HelixToolkit.Wpf
             {
                 foreach (var vert in vertices)
                 {
-                    vert.q = new SymmetricMatrix(0);
+                    vert.q.SetAll(0);
                 }
 
                 foreach (var tri in triangles)
@@ -504,9 +517,17 @@ namespace HelixToolkit.Wpf
                 tstart += vert.tCount;
                 vert.tCount = 0;
             }
-
-            refs.Clear();
-            refs.AddRange(Enumerable.Range(0, triangles.Count*3).Select(x=>new Ref()));
+            int totalTris = triangles.Count * 3;
+            if(refs.Count < totalTris)
+            {
+                refs.Clear();
+                refs.AddRange(Enumerable.Range(0, totalTris).Select(x=>new Ref()));
+            }
+            else
+            {
+                refs.RemoveRange(totalTris, refs.Count - totalTris);
+                refs.ForEach(x => x.Reset());
+            }
             int count = 0;
             foreach (var tri in triangles)
             {
@@ -516,7 +537,9 @@ namespace HelixToolkit.Wpf
                     var r = refs[v.tStart + v.tCount];
                     r.tid = count;
                     r.tvertex = j;
+                    refs[v.tStart + v.tCount] = r;
                     v.tCount++;
+                    
                 }
                 ++count;
             }
