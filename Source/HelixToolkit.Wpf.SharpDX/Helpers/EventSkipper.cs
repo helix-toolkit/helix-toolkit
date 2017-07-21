@@ -64,11 +64,11 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
             }
         }
         /// <summary>
-        /// Delay certain time to render one more time after previous rendering, ensure scene is update to latest.
+        /// Delay certain time to render one more time after last rendering, ensure scene is update to latest.
         /// (Used to solve latest scene is not reflected glitch)
         /// </summary>
         /// <returns></returns>
-        public bool ForceRender()
+        public bool DelayTrigger()
         {
             if(forceRender && watch.ElapsedMilliseconds - previous > ForceRefreshInterval)
             {
