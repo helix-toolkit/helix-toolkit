@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
 
         /// <summary>
         /// Sometimes invalidate renderer ran too fast, causes sence not reflect the latest update. 
-        /// Set this to always update the sence once exceed some interval. Default is 1 second.
+        /// Set this to delay render one more time after last rendering. Default is 1 second.
         /// </summary>
         public long ForceRefreshInterval = 1000;
 
@@ -40,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// </summary>
         private long previous = 0;
 
-        private long previous1 = 0;
+        private bool forceRender = false;
         /// <summary>
         /// Determine if this event should be skipped.
         /// </summary>
@@ -53,24 +53,26 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
             lag += elpased;
 
             if (lag < Threshold)
-            {
+            {                
                 return true;
             }
             else
             {
                 lag = Math.Min(lag - Threshold, Threshold - 2);
+                forceRender = true;
                 return false;
             }
         }
         /// <summary>
-        /// A constant interval for refresh
+        /// Delay certain time to render one more time after previous rendering, ensure scene is update to latest.
+        /// (Used to solve latest scene is not reflected glitch)
         /// </summary>
         /// <returns></returns>
         public bool ForceRender()
         {
-            if(watch.ElapsedMilliseconds - previous1 > ForceRefreshInterval)
+            if(forceRender && watch.ElapsedMilliseconds - previous > ForceRefreshInterval)
             {
-                previous1 = watch.ElapsedMilliseconds;
+                forceRender = false;
                 return true;
             }
             else

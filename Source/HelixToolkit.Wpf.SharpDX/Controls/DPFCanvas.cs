@@ -737,7 +737,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            if (((pendingValidationCycles > 0 &&!skipper.IsSkip()) || skipper.ForceRender()) && surfaceD3D != null && renderRenderable != null)
+            if (((pendingValidationCycles > 0 && !skipper.IsSkip()) || skipper.ForceRender()) && surfaceD3D != null && renderRenderable != null)
             {
                 var t0 = renderTimer.Elapsed;
 
