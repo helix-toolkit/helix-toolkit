@@ -222,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (geometry != null && geometry.Positions != null)
             {
                 var data = updateFunction();
-                vertexBuffer.CreateBufferFromDataArray(this.Device, data);
+                vertexBuffer.CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
             }
         }
 

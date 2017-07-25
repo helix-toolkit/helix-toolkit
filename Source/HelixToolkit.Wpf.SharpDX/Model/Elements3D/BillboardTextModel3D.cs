@@ -287,7 +287,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnCreateGeometryBuffers()
         {
-            vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray());
+            if(geometryInternal != null && geometryInternal.Positions != null)
+            {
+                vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray(), geometryInternal.Positions.Count);
+            }
             Disposer.RemoveAndDispose(ref billboardTextureView);
             Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
             var billboardGeometry = geometryInternal as IBillboardText;

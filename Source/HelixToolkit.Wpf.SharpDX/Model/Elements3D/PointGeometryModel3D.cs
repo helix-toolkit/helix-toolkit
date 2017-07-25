@@ -238,7 +238,7 @@
             {
                 // --- set up buffers            
                 var data = CreateVertexArray();
-                vertexBuffer.CreateBufferFromDataArray(this.Device, data);
+                vertexBuffer.CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
             }
             InvalidateRender();
         }
