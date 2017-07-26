@@ -65,13 +65,12 @@ namespace HelixToolkit.Wpf.SharpDX
         private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
         private int targetWidth, targetHeight;
-        private int pendingValidationCycles;
+        private bool pendingValidationCycles = true;
         private TimeSpan lastRenderingDuration;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
         private bool loaded = false;
         private IEffectsManager defaultEffectsManager = null;
-        private readonly int renderCycles = 1;
 
         /// <summary>
         /// Get RenderContext
@@ -237,7 +236,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
-        public bool IsBusy { get { return pendingValidationCycles > 0; } }
+        public bool IsBusy { get { return pendingValidationCycles; } }
 
         /// <summary>
         /// 
@@ -275,36 +274,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
-            System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, renderCycles, 0);
-            //if (RenderCycles == 1)
-            //{
-            //    System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
-            //}
-            //else
-            //{
-            //    //Use pendingInvalidateOperation to check if there is a pending operation.
-            //    if (pendingInvalidateOperation != null)
-            //    {
-            //        switch (pendingInvalidateOperation.Status)
-            //        {
-            //            case DispatcherOperationStatus.Pending:
-            //                //If there is a pending invalidation operation, try to set cycle to 2.
-            //                //Does not matter if it is failed or not, since the pending one will eventually invalidate.
-            //                //But this is required for mouse rotation, because it requires invalidate asap (Input priority is higher than background).
-            //                System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0);
-            //                return;
-            //        }
-            //        pendingInvalidateOperation = null;
-            //    }
-            //    // For some reason, we need two render cycles to recover from 
-            //    // UAC popup or sleep when MSAA is enabled.
-            //    if (System.Threading.Interlocked.CompareExchange(ref pendingValidationCycles, RenderCycles, 0) != 0)
-            //    {
-            //        //If invalidate failed, schedule an async operation to invalidate in future
-            //        pendingInvalidateOperation
-            //            = Dispatcher.BeginInvoke(invalidAction, DispatcherPriority.Background);
-            //    }
-            //}
+            pendingValidationCycles = true;
         }
 
 
@@ -737,7 +707,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            if (((pendingValidationCycles > 0 && !skipper.IsSkip()) || skipper.ForceRender()) && surfaceD3D != null && renderRenderable != null)
+            if (((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && surfaceD3D != null && renderRenderable != null)
             {
                 var t0 = renderTimer.Elapsed;
 
@@ -748,8 +718,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {                       
                     if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))                    
                     {
-                        if (pendingValidationCycles > 0)
-                        { System.Threading.Interlocked.Decrement(ref pendingValidationCycles); }
+                        pendingValidationCycles = false;
                         Render(t0);
                         surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                     }
@@ -835,7 +804,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns><c>true</c> if the exception has been handled, <c>false</c> otherwise.</returns>
         private bool HandleExceptionOccured(Exception exception)
         {
-            pendingValidationCycles = 0;
+            pendingValidationCycles = false;
             StopRendering();
             EndD3D(true);
 

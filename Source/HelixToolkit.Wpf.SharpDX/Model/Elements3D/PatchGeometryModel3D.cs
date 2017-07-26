@@ -230,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnCreateGeometryBuffers()
         {
             // --- init vertex buffer
-            vertexBuffer.CreateBufferFromDataArray(Device, CreateDefaultVertexArray());
+            vertexBuffer.CreateBufferFromDataArray(Device, CreateDefaultVertexArray(), geometryInternal.Positions.Count);
             // --- init index buffer
             indexBuffer.CreateBufferFromDataArray(Device, geometryInternal.Indices.Array);
         }

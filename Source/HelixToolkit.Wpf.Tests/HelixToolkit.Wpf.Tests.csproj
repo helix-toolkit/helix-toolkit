@@ -94,6 +94,7 @@
     <Compile Include="Helpers\MeshBuilderTests.cs" />
     <Compile Include="Helpers\ScreenSpace\LineGeometryBuilderTests.cs" />
     <Compile Include="Geometry\TriangleTests.cs" />
+    <Compile Include="Helpers\Viewport3DHelperTests.cs" />
     <Compile Include="Importers\ModelImporterTests.cs" />
     <Compile Include="Importers\OffReaderTests.cs" />
     <Compile Include="Importers\StudioReaderTests.cs" />

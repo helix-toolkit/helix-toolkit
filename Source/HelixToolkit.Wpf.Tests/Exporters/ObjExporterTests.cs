@@ -23,10 +23,19 @@ namespace HelixToolkit.Wpf.Tests
         public void ShouldThrowExceptionIfMaterialsFileIsNotSpecified()
         {
             string path = "temp.obj";
-            var e = new ObjExporter();
-            using (var stream = File.Create(path))
+
+            try
             {
-                Assert.Throws<InvalidOperationException>(() => this.ExportSimpleModel(e, stream));
+                var e = new ObjExporter();
+                using (var stream = File.Create(path))
+                {
+                    Assert.Throws<InvalidOperationException>(() => this.ExportSimpleModel(e, stream));
+                }
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
             }
         }
 
@@ -34,10 +43,23 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_SimpleModel_ValidOutput()
         {
             string path = "temp.obj";
-            var e = new ObjExporter { MaterialsFile = Path.ChangeExtension(path, ".mtl") };
-            using (var stream = File.Create(path))
+            string mtlPath = Path.ChangeExtension(path, ".mtl");
+
+            try
             {
-                this.ExportSimpleModel(e, stream);
+                var e = new ObjExporter { MaterialsFile = mtlPath };
+                using (var stream = File.Create(path))
+                {
+                    this.ExportSimpleModel(e, stream);
+                }
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+
+                if(File.Exists(mtlPath))
+                    File.Delete(mtlPath);
             }
         }
 
@@ -45,10 +67,26 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_BoxWithGradientTexture_TextureExportedAsPng()
         {
             var path = "box_gradient_png.obj";
-            var e = new ObjExporter { MaterialsFile = Path.ChangeExtension(path, ".mtl") };
-            using (var stream = File.Create(path))
+            var mtlPath = Path.ChangeExtension(path, ".mtl");
+
+            try
             {
-                this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
+                var e = new ObjExporter { MaterialsFile = mtlPath };
+                using (var stream = File.Create(path))
+                {
+                    this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
+                }
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+
+                if (File.Exists(mtlPath))
+                    File.Delete(mtlPath);
+
+                if (File.Exists("mat1.png"))
+                    File.Delete("mat1.png");
             }
         }
 
@@ -56,10 +94,26 @@ namespace HelixToolkit.Wpf.Tests
         public void Export_BoxWithGradientTexture_TextureExportedAsJpg()
         {
             var path = "box_gradient_jpg.obj";
-            var e = new ObjExporter { TextureExtension = ".jpg", MaterialsFile = Path.ChangeExtension(path, ".mtl") };
-            using (var stream = File.Create(path))
+            var mtlPath = Path.ChangeExtension(path, ".mtl");
+
+            try
             {
-                this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
+                var e = new ObjExporter { TextureExtension = ".jpg", MaterialsFile = mtlPath };
+                using (var stream = File.Create(path))
+                {
+                    this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
+                }
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+
+                if (File.Exists(mtlPath))
+                    File.Delete(mtlPath);
+
+                if (File.Exists("mat1.jpg"))
+                    File.Delete("mat1.jpg");
             }
         }
     }
