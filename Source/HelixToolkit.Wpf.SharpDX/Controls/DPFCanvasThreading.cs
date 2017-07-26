@@ -159,12 +159,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
         private int targetWidth, targetHeight;
-        private int pendingValidationCycles;
+        private bool pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
         private RenderTechnique deferred;
         private RenderTechnique gbuffer;
         private IEffectsManager defaultEffectsManager = null;
-        private int renderCycles = 1;
         private bool loaded = false;
 
         public RenderContext RenderContext { get { return renderContext; } }
@@ -319,7 +318,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
-        public bool IsBusy { get { return pendingValidationCycles > 0; } }
+        public bool IsBusy { get { return pendingValidationCycles; } }
 
         public bool EnableSharingModelMode
         {
@@ -356,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InvalidateRender()
         {
-            Interlocked.CompareExchange(ref pendingValidationCycles, renderCycles, 0);
+            pendingValidationCycles = true;
         }
 
 
@@ -803,12 +802,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                if (pendingValidationCycles > 0 && !mRenderThread.IsBusy && !skipper.IsSkip())
+                if (pendingValidationCycles && !mRenderThread.IsBusy && !skipper.IsSkip())
                 {
                     var t0 = renderTimer.Elapsed;
                     if (mRenderThread.IsInitalized && renderRenderable != null)
                     {
-                        Interlocked.Decrement(ref pendingValidationCycles);
+                        pendingValidationCycles = false;
                         Render(t0);
                     }
                     lastRenderingDuration = renderTimer.Elapsed - t0;
@@ -884,7 +883,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns><c>true</c> if the exception has been handled, <c>false</c> otherwise.</returns>
         private bool HandleExceptionOccured(Exception exception)
         {
-            pendingValidationCycles = 0;
+            pendingValidationCycles = false;
             StopRendering();
             EndD3D(true);
 
