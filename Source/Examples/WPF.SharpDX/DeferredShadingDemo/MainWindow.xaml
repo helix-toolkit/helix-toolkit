@@ -31,7 +31,7 @@
             TextBrush="Black" 
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False" EnableSwapChainRendering="True"
+            UseDefaultGestures="False"
             RenderTechnique="{Binding RenderTechnique}"
             EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>

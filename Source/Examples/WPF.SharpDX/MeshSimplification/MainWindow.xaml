@@ -20,7 +20,6 @@
             x:Name="view1"
             Title="{Binding Title}"
             Grid.Row="0" Grid.Column="0"
-            EnableSwapChainRendering="True"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             ShowCoordinateSystem="False"
