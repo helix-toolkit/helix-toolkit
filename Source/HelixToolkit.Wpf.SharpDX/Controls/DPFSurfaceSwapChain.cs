@@ -493,6 +493,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual global::SharpDX.DXGI.SwapChainDescription1 CreateSwapChainDescription()
         {
             // SwapChain description
+
             var desc = new global::SharpDX.DXGI.SwapChainDescription1()
             {
                 Width = (int)ActualWidth,
@@ -501,7 +502,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
                 Stereo = false,
                 SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
+#if MSAA
+                Usage = Usage.BackBuffer,
+#else
                 Usage = Usage.RenderTargetOutput,
+#endif
                 BufferCount = 2,
                 Scaling = global::SharpDX.DXGI.Scaling.Stretch,
                 SwapEffect = global::SharpDX.DXGI.SwapEffect.FlipSequential,
