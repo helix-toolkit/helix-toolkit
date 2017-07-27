@@ -653,7 +653,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     // this.viewCube.Viewport = this.Viewport;
                 }
             }
-
+            if (EnableSwapChainRendering)
+            {
+                ShowCoordinateSystem = false;
+                ShowViewCube = false;
+            }
             // update the coordinateview camera
             this.OnCameraChanged();
         }
