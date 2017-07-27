@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Texture2D depthStencilBuffer;
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
-        private global::SharpDX.Windows.RenderControl surfaceD3D;
+        private RenderControl surfaceD3D;
         private IRenderer renderRenderable;
         private RenderContext renderContext;
         private DeferredRenderer deferredRenderer;
@@ -337,7 +337,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false; // StardD3D() is called from DP changed handler
             }
             this.IsHitTestVisible = false;
-            surfaceD3D = new global::SharpDX.Windows.RenderControl();
+            surfaceD3D = new RenderControl();
             Child = surfaceD3D;
             device = EffectsManager.Device;
             deferredRenderer = new DeferredRenderer();
