@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:SwapChainRenderingDemo"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"
-        Title="High Performance SwapChain Rendering" Height="350" Width="525">
-    <Grid>
+        Title="High Performance SwapChain Rendering" Height="600" Width="800">
+    <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
@@ -77,11 +77,15 @@
             <hx:MeshGeometryModel3D
                 x:Name="floor"
                 CullMode="Back"
+                FillMode="{Binding FillMode}"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
             <hx:CoordinateSystemModel3D/>
         </hx:Viewport3DX>
+        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
+        </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
             <TextBlock Margin="10">Num Vertices</TextBlock>
             <TextBlock Margin="10" Text="{Binding NumberOfVertices, StringFormat='#,#'}"/>

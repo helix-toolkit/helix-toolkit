@@ -123,7 +123,21 @@
 
         public int NumberOfTriangles { set; get; } = 0;
         public int NumberOfVertices { set; get; } = 0;
-
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                if (SetValue(ref showWireframe, value))
+                {
+                    FillMode = value ? FillMode.Wireframe : FillMode.Solid;
+                }
+            }
+            get
+            {
+                return showWireframe;
+            }
+        }
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
