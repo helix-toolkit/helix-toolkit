@@ -62,6 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly Stopwatch renderTimer;
         private Device device;
         private Texture2D depthStencilBuffer;
+        private Texture2D colorBuffer;
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
         private RenderControl surfaceD3D;
@@ -366,10 +367,11 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref deferredRenderer);
             Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);
+            Disposer.RemoveAndDispose(ref colorBuffer);
             Disposer.RemoveAndDispose(ref backBuffer);
             Disposer.RemoveAndDispose(ref depthStencilBufferView);
-
             Disposer.RemoveAndDispose(ref depthStencilBuffer);
+            Disposer.RemoveAndDispose(ref swapChain);
             if (dispose && defaultEffectsManager != null)
             {
                 (defaultEffectsManager as IDisposable)?.Dispose();
@@ -390,10 +392,56 @@ namespace HelixToolkit.Wpf.SharpDX
             int height = System.Math.Max((int)ActualHeight, 100);
             device.ImmediateContext.OutputMerger.ResetTargets();
             Disposer.RemoveAndDispose(ref colorBufferView);
+            Disposer.RemoveAndDispose(ref colorBuffer);
             Disposer.RemoveAndDispose(ref backBuffer);
             Disposer.RemoveAndDispose(ref depthStencilBufferView);
             Disposer.RemoveAndDispose(ref depthStencilBuffer);
             CreateSwapChain();
+            backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
+
+            int sampleCount = 1;
+            int sampleQuality = 0;
+#if MSAA
+            if (MSAA != MSAALevel.Disable)
+            {
+                do
+                {
+                    var newSampleCount = sampleCount * 2;
+                    var newSampleQuality = device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, newSampleCount) - 1;
+
+                    if (newSampleQuality < 0)
+                        break;
+
+                    sampleCount = newSampleCount;
+                    sampleQuality = newSampleQuality;
+                    if (sampleCount == (int)MSAA)
+                    {
+                        break;
+                    }
+                } while (sampleCount < 32);
+            }
+            var sampleDesc = new SampleDescription(sampleCount, sampleQuality);
+            var optionFlags = ResourceOptionFlags.None;
+            var colordesc = new Texture2DDescription
+            {
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.B8G8R8A8_UNorm,
+                Width = width,
+                Height = height,
+                MipLevels = 1,
+                SampleDescription = sampleDesc,
+                Usage = ResourceUsage.Default,
+                OptionFlags = optionFlags,
+                CpuAccessFlags = CpuAccessFlags.None,
+                ArraySize = 1
+            };
+            colorBuffer = new Texture2D(device, colordesc);
+            colorBufferView = new RenderTargetView(device, colorBuffer);
+#else
+            var sampleDesc = new SampleDescription(1, 0);
+            var optionFlags = ResourceOptionFlags.Shared;
+            colorBufferView = new RenderTargetView(device, backBuffer);
+#endif
             var depthdesc = new Texture2DDescription
             {
                 BindFlags = BindFlags.DepthStencil,
@@ -402,25 +450,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 Width = width,
                 Height = height,
                 MipLevels = 1,
-                SampleDescription = swapChain.Description1.SampleDescription,
+                SampleDescription = sampleDesc,
                 Usage = ResourceUsage.Default,
                 OptionFlags = ResourceOptionFlags.None,
                 CpuAccessFlags = CpuAccessFlags.None,
                 ArraySize = 1,
             };
-            depthStencilBuffer = new Texture2D(device, depthdesc);
-            depthStencilBufferView = new DepthStencilView(device, depthStencilBuffer);
-            backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
-            colorBufferView = new RenderTargetView(device, backBuffer);
+            depthStencilBuffer = new Texture2D(device, depthdesc);        
+            depthStencilBufferView = new DepthStencilView(device, depthStencilBuffer);                     
             this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
         }
         private void CreateSwapChain()
         {
-            //if (swapChain != null)
-            //{
-            //    swapChain.ResizeBuffers(swapChain.Description1.BufferCount, (int)ActualWidth, (int)ActualHeight, swapChain.Description.ModeDescription.Format, swapChain.Description.Flags);
-            //}
-            //else
+            if (swapChain != null)
+            {
+                swapChain.ResizeBuffers(swapChain.Description1.BufferCount, (int)ActualWidth, (int)ActualHeight, swapChain.Description.ModeDescription.Format, swapChain.Description.Flags);
+            }
+            else
             {
                 Disposer.RemoveAndDispose(ref swapChain);
                 var desc = CreateSwapChainDescription();
@@ -446,28 +492,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         protected virtual global::SharpDX.DXGI.SwapChainDescription1 CreateSwapChainDescription()
         {
-            int sampleCount = 1;
-            int sampleQuality = 0;
-#if MSAA
-            //if (MSAA != MSAALevel.Disable)
-            //{
-            //    do
-            //    {
-            //        var newSampleCount = sampleCount * 2;
-            //        var newSampleQuality = device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, newSampleCount) - 1;
-
-            //        if (newSampleQuality < 0)
-            //            break;
-
-            //        sampleCount = newSampleCount;
-            //        sampleQuality = newSampleQuality;
-            //        if (sampleCount == (int)MSAA)
-            //        {
-            //            break;
-            //        }
-            //    } while (sampleCount < 32);
-            //}
-#endif
             // SwapChain description
             var desc = new global::SharpDX.DXGI.SwapChainDescription1()
             {
@@ -476,12 +500,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 // B8G8R8A8_UNorm gives us better performance 
                 Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
                 Stereo = false,
-                SampleDescription = new global::SharpDX.DXGI.SampleDescription(sampleCount, sampleQuality),
+                SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
                 Usage = Usage.RenderTargetOutput,
                 BufferCount = 2,
                 Scaling = global::SharpDX.DXGI.Scaling.Stretch,
                 SwapEffect = global::SharpDX.DXGI.SwapEffect.FlipSequential,
-                Flags = SwapChainFlags.None
+                Flags = SwapChainFlags.AllowModeSwitch
             };
             return desc;
         }
@@ -641,6 +665,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     renderRenderable.Render(renderContext);
                 }
+#if MSAA
+            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, backBuffer, 0, Format.B8G8R8A8_UNorm);
+#endif
             }
         }
 
@@ -677,6 +704,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly EventSkipper skipper = new EventSkipper();
+        private readonly PresentParameters presentParams = new PresentParameters();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
@@ -691,20 +719,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 //renderRenderable.Update(t0);
                 try
                 {
-                    // if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))
+                    Render(t0);
+                    var res = swapChain.Present(0, PresentFlags.None, presentParams);
+                    if (res.Success)
                     {
-
-                        Render(t0);
-                        var res = swapChain.TryPresent(0, PresentFlags.None);
-                        if (res.Success)
-                        {
-                            pendingValidationCycles = false;
-                        }
-                        //Disposer.RemoveAndDispose(ref colorBufferView);
-                        //Disposer.RemoveAndDispose(ref backBuffer);
-                        //backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
-                        //colorBufferView = new RenderTargetView(device, backBuffer);
-                        //    surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
+                        pendingValidationCycles = false;
+                    }
+                    else
+                    {
+                        swapChain.Present(0, PresentFlags.Restart, presentParams);
                     }
                 }
                 catch (Exception ex)
@@ -714,11 +737,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
                     }
                 }
-                finally
-                {
-                    //   surfaceD3D.Unlock();
-                }
-
                 lastRenderingDuration = renderTimer.Elapsed - t0;
             }
         }
