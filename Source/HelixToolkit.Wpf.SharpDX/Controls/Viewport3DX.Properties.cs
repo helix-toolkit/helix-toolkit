@@ -818,6 +818,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         viewport.RenderHost.SharedModelContainer = (IModelContainer)e.NewValue;
                     }
                 }));
+
+        public static readonly DependencyProperty EnableSwapChainRenderingProperty
+            = DependencyProperty.Register("EnableSwapChainRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2675,5 +2678,22 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected IModelContainer sharedModelContainerInternal { private set; get; } = null;
+
+        /// <summary>
+        /// <para>Use HwndHost as rendering surface, swapchain for rendering. Much faster than using D3DImage.</para> 
+        /// <para>Drawbacks: The rendering surface will cover all WPF controls in the same Viewport region. Move controls out of viewport region to solve this problem.</para>
+        /// <para>For displaying ViewCube and CoordinateSystem, separate Model needs to create to render along with the other models. WPF viewport will not be visibled.</para>
+        /// </summary>
+        public bool EnableSwapChainRendering
+        {
+            set
+            {
+                SetValue(EnableSwapChainRenderingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableSwapChainRenderingProperty);
+            }
+        }
     }
 }

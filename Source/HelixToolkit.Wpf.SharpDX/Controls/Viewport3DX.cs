@@ -557,18 +557,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 #if DX11
-            if (EnableDeferredRendering)
+            if (EnableSwapChainRendering)
             {
-                hostPresenter.Content = new DPFCanvasThreading();
+                hostPresenter.Content = new DPFSurfaceSwapChain();
             }
             else
             {
-                hostPresenter.Content = new DPFCanvas();
+                if (EnableDeferredRendering)
+                {
+                    hostPresenter.Content = new DPFCanvasThreading();
+                }
+                else
+                {
+                    hostPresenter.Content = new DPFCanvas();
+                }
             }
 #else
             hostPresenter.Content = new DPFCanvas();
 #endif
-            this.renderHostInternal = hostPresenter.Content as IRenderHost;
+            this.RenderHost = this.renderHostInternal = hostPresenter.Content as IRenderHost;
             this.renderHostInternal.MSAA = this.MSAA;
             this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
             this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
