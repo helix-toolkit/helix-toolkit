@@ -7,6 +7,7 @@ using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using System;
 using System.Linq;
 using System.Windows;
 using Media = System.Windows.Media;
@@ -227,8 +228,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (base.OnAttach(host))
             {
-                screenRatio = (float)(host.ActualWidth / host.ActualHeight);
-                CreateProjectionMatrix(SizeScale);
                 viewMatrixVar = effect.GetVariableByName("mView").AsMatrix();
                 projectionMatrixVar = effect.GetVariableByName("mProjection").AsMatrix();
                 foreach (var billboard in axisBillboards)
@@ -269,6 +268,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
+            var ratio = (float)(renderContext.ActualWidth / renderContext.ActualHeight);
+            if (screenRatio != ratio)
+            {
+                screenRatio = ratio;
+                CreateProjectionMatrix(SizeScale);
+            }
             // --- set constant paramerers             
             var worldMatrix = renderContext.worldMatrix;
             worldMatrix.Row4 = new Vector4(0, 0, 0, 1);

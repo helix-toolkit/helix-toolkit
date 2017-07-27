@@ -138,6 +138,7 @@
                 return showWireframe;
             }
         }
+
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
@@ -146,7 +147,7 @@
 
             // ----------------------------------------------
             // titles
-            this.Title = "Lighting Demo";
+            this.Title = "SwapChain Top Surface Rendering Demo";
             this.SubTitle = "WPF & SharpDX";
 
             // ----------------------------------------------

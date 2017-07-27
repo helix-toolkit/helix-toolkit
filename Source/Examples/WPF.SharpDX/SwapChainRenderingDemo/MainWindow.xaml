@@ -20,7 +20,6 @@
             Grid.Row="0" Grid.Column="0" MSAA="Four"
             Camera="{Binding Camera}" EnableSwapChainRendering="True"
              Background="Black" BackgroundColor="0,0,0,0"
-            IsShadowMappingEnabled="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False"
@@ -37,7 +36,6 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:ShadowMap3D />
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
@@ -89,7 +87,7 @@
                 Transform="{Binding FloorTransform}" />
             <hx:CoordinateSystemModel3D/>
         </hx:Viewport3DX>
-        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" TextBlock.Foreground="White">
             <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" TextBlock.Foreground="White">
