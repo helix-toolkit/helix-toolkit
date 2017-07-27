@@ -162,7 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
         private Matrix projectionMatrix;
         private DepthStencilState depthStencil;
-
+        private float screenRatio = 1f;
         protected override bool CanHitTest(IRenderMatrices context)
         {
             return false;
@@ -183,12 +183,11 @@ namespace HelixToolkit.Wpf.SharpDX
             UpdateAxisColor(mesh, 1, AxisYColor.ToColor4());
             UpdateAxisColor(mesh, 2, AxisZColor.ToColor4());
             Geometry = mesh;
-            CreateProjectionMatrix(SizeScale);
         }
 
         private void CreateProjectionMatrix(float scale)
         {
-            projectionMatrix = Matrix.OrthoRH(140 / scale, 140 / scale, 0.1f, 200);
+            projectionMatrix = Matrix.OrthoRH(140 * screenRatio / scale, 140 / scale, 0.1f, 200);
             projectionMatrix.M41 = RelativeScreenLocationX;
             projectionMatrix.M42 = RelativeScreenLocationY;
         }
@@ -228,6 +227,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (base.OnAttach(host))
             {
+                screenRatio = (float)(host.ActualWidth / host.ActualHeight);
+                CreateProjectionMatrix(SizeScale);
                 viewMatrixVar = effect.GetVariableByName("mView").AsMatrix();
                 projectionMatrixVar = effect.GetVariableByName("mProjection").AsMatrix();
                 foreach (var billboard in axisBillboards)
@@ -273,7 +274,6 @@ namespace HelixToolkit.Wpf.SharpDX
             worldMatrix.Row4 = new Vector4(0, 0, 0, 1);
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
             this.viewMatrixVar.SetMatrix(CreateViewMatrix(renderContext));
-
             this.projectionMatrixVar.SetMatrix(projectionMatrix);
             this.effectMaterial.bHasShadowMapVariable.Set(false);
 
