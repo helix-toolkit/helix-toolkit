@@ -23,6 +23,7 @@
       <dependency id="SharpDX.Direct3D9" version="4.0.1" />
       <dependency id="SharpDX.DXGI" version="4.0.1" />
       <dependency id="SharpDX.Mathematics" version="4.0.1" />
+	  <dependency id="SharpDX.Desktop" version="4.0.1" />
     </dependencies>
   </metadata>
   <files>
