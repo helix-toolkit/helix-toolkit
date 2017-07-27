@@ -75,6 +75,12 @@
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light4Transform}" />
             <hx:MeshGeometryModel3D
+                CullMode="Back"
+                FillMode="{Binding FillMode}"
+                Geometry="{Binding Model}"
+                Material="{Binding ModelMaterial}"
+                Transform="{Binding ModelTransform}"/>
+            <hx:MeshGeometryModel3D
                 x:Name="floor"
                 CullMode="Back"
                 FillMode="{Binding FillMode}"
@@ -86,7 +92,7 @@
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
             <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" TextBlock.Foreground="White">
             <TextBlock Margin="10">Num Vertices</TextBlock>
             <TextBlock Margin="10" Text="{Binding NumberOfVertices, StringFormat='#,#'}"/>
             <TextBlock Margin="10">Num Triangles</TextBlock>

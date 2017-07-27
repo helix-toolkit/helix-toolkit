@@ -197,18 +197,38 @@
                 AmbientColor = Color.Gray,
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
-                SpecularShininess = 100f,
-                DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
+                SpecularShininess = 100f
             };
-            NumberOfTriangles = Floor.Indices.Count / 3;
-            NumberOfVertices = Floor.Positions.Count;
+
+            var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
+            Model = MeshGeometry3D.Merge(landerItems);
+            ModelMaterial = PhongMaterials.BlackRubber;
+            var transGroup = new Media3D.Transform3DGroup();
+            transGroup.Children.Add(new Media3D.ScaleTransform3D(0.04, 0.04, 0.04));
+            transGroup.Children.Add(new Media3D.TranslateTransform3D(0, 60, 0));
+            ModelTransform = transGroup;
+            NumberOfTriangles = Floor.Indices.Count / 3 + Model.Indices.Count/3;
+            NumberOfVertices = Floor.Positions.Count + Model.Positions.Count;
         }
 
         public List<Object3D> Load3ds(string path)
         {
-            var reader = new ObjReader();
-            var list = reader.Read(path);
-            return list;
+            if (path.EndsWith(".obj", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var reader = new ObjReader();
+                var list = reader.Read(path);
+                return list;
+            }
+            else if(path.EndsWith(".3ds", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var reader = new StudioReader();
+                var list = reader.Read(path);
+                return list;
+            }
+            else
+            {
+                return new List<Object3D>();
+            }
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)
