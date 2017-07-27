@@ -58,7 +58,6 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
             if (!wpfButton.HasValue)
                 return;
-            this.Focus();
             this.CaptureMouse();
             this.ReleaseMouseCapture();
             RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, wpfButton.Value)
