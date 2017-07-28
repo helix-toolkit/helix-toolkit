@@ -44,12 +44,21 @@ namespace HelixToolkit.Wpf.SharpDX
             builder = new MeshBuilder(false, false, false);
             builder.AddTriangleStrip(pts);
             var pie = builder.ToMesh();
-            pie.Normals = pie.CalculateNormals();
-
+            int count = pie.Indices.Count;
             var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh});
+
+            for (int i = 0; i < count; i += 3)
+            {
+                newMesh.Indices.Add(pie.Indices[i + 2]);
+                newMesh.Indices.Add(pie.Indices[i + 1]);
+                newMesh.Indices.Add(pie.Indices[i]);
+            }
 
             newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(0, 0), pie.Positions.Count));
             newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
+            newMesh.TextureCoordinates.AddRange(Enumerable.Repeat(new Vector2(0, 0), pie.Positions.Count));
+
+            newMesh.Normals = newMesh.CalculateNormals();
 
             defaultBoxModel = newMesh;
         }
