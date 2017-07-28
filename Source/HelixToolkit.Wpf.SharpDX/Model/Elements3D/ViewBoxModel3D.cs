@@ -18,19 +18,18 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class ViewBoxModel3D : ScreenSpaceMeshGeometry3D
     {
-        public ViewBoxModel3D()
+        private static readonly MeshGeometry3D defaultBoxModel;
+        static ViewBoxModel3D()
         {
             var builder = new MeshBuilder(true, true, false);
             builder.AddBox(Vector3.Zero, 10, 10, 10);
             var mesh = builder.ToMesh();
             CreateTextureCoordinates(mesh);
-            UpdateAxisColor(mesh, 0, Color.Red);
-            UpdateAxisColor(mesh, 1, Color.Blue);
-            UpdateAxisColor(mesh, 2, Color.Green);
-            UpdateAxisColor(mesh, 3, Color.Purple);
-            UpdateAxisColor(mesh, 4, Color.Yellow);
-            UpdateAxisColor(mesh, 5, Color.Gray);
-            Geometry = mesh;
+            defaultBoxModel = mesh;
+        }
+        public ViewBoxModel3D()
+        {
+            Geometry = defaultBoxModel;
             var map = new MemoryStream();
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.DefaultViewboxTexture.jpg");
             stream.CopyTo(map);
@@ -48,18 +47,8 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse];
         }
 
-        private void UpdateAxisColor(Geometry3D mesh, int which, Color4 color)
-        {
-            int segment = mesh.Positions.Count / 6;
-            var colors = new Core.Color4Collection(mesh.Colors == null ? Enumerable.Repeat<Color4>(Color.Black, mesh.Positions.Count) : mesh.Colors);
-            for (int i = segment * which; i < segment * (which + 1); ++i)
-            {
-                colors[i] = color;
-            }
-            mesh.Colors = colors;
-        }
 
-        protected virtual void CreateTextureCoordinates(MeshGeometry3D mesh)
+        private static void CreateTextureCoordinates(MeshGeometry3D mesh)
         {
             int faces = 6;
             int segment = 4;
@@ -68,6 +57,20 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i/segment), mesh.TextureCoordinates[i].Y);
             }
+            ///Correct texture orientation
+            var t = mesh.TextureCoordinates[3];
+            for(int i = 2; i >=0; --i)
+            {
+                mesh.TextureCoordinates[i+1] = mesh.TextureCoordinates[i];
+            }
+            mesh.TextureCoordinates[0] = t;
+
+            t = mesh.TextureCoordinates[4];
+            for(int i=4; i<7; ++i)
+            {
+                mesh.TextureCoordinates[i] = mesh.TextureCoordinates[i + 1];
+            }
+            mesh.TextureCoordinates[7] = t;
         }
     }
 }
