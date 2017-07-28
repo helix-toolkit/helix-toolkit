@@ -710,7 +710,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Set MSAA Level
         /// </summary>
         public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX), 
-            new PropertyMetadata(MSAALevel.Maximum, (s,e)=> 
+            new PropertyMetadata(MSAALevel.Disable, (s,e)=> 
             {
                 var viewport = s as Viewport3DX;
                 if (viewport.RenderHost != null)
