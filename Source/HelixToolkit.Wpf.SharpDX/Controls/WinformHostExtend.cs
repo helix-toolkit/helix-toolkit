@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
@@ -11,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 {
     public class WinformHostExtend : WindowsFormsHost
     {
+        protected UIElement ParentControl { set; get; }
         public WinformHostExtend()
         {
             ChildChanged += OnChildChanged;
@@ -40,26 +42,20 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             });
         }
 
-        private void Child_MouseUp(object sender, System.Windows.Forms.MouseEventArgs mouseEventArgs)
-        {
-            MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
-            if (!wpfButton.HasValue)
-                return;
-
-            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, wpfButton.Value)
-            {
-                RoutedEvent = Mouse.MouseUpEvent,
-                Source = this,
-            });
-        }
-
         private void OnMouseDown(object sender, System.Windows.Forms.MouseEventArgs mouseEventArgs)
         {
             MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
             if (!wpfButton.HasValue)
                 return;
-            this.CaptureMouse();
-            this.ReleaseMouseCapture();
+            if (ParentControl != null)
+            {
+                Mouse.Capture(ParentControl, CaptureMode.Element);
+            }
+            else
+            {
+                this.CaptureMouse();
+                this.ReleaseMouseCapture();
+            }
             RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, wpfButton.Value)
             {
                 RoutedEvent = Mouse.MouseDownEvent,

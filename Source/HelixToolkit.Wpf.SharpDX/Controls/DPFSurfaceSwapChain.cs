@@ -182,6 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 sceneAttached = false;
                 renderRenderable = value;
+                ParentControl = renderRenderable as UIElement;
                 InvalidateRender();
             }
         }
