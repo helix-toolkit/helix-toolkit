@@ -7,7 +7,15 @@
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="800">
-    <Grid TextBlock.Foreground="White">
+    <Grid TextBlock.Foreground="White" Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
@@ -40,7 +48,7 @@
                 Geometry="{Binding Model}" FillMode="{Binding FillMode}"
                 Material="{Binding ModelMaterial}"/>
         </hx:Viewport3DX>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
             <CheckBox Margin="4" IsChecked="{Binding Lossless}" Foreground="White">Lossless</CheckBox>
             <Button Margin="4" Command="{Binding SimplifyCommand}" Height="30" Width="80">Simplify</Button>
             <TextBlock Margin="10">Calculation Time</TextBlock>
@@ -51,7 +59,7 @@
             <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
             <Button Margin="4" Command="{Binding ResetCommand}">Reset</Button>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
             <TextBlock Margin="10">Num Vertices</TextBlock>
             <TextBlock Margin="10" Text="{Binding NumberOfVertices, StringFormat='#,#'}"/>
             <TextBlock Margin="10">Num Triangles</TextBlock>

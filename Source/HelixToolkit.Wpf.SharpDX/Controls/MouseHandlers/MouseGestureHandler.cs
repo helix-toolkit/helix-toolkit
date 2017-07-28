@@ -199,11 +199,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
-            this.Viewport.MouseMove += this.OnMouseMove;
             this.Viewport.MouseUp += this.OnMouseUp;
-            this.OnMouseDown(sender, null);
             this.Viewport.Focus();
             this.Viewport.CaptureMouse();
+            this.OnMouseDown(sender, null);
+            this.Viewport.MouseMove += this.OnMouseMove;
         }
 
         /// <summary>

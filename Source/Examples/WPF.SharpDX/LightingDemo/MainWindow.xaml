@@ -17,7 +17,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
@@ -103,7 +108,7 @@
                 Transform="{Binding FloorTransform}" />
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
         </hx:Viewport3DX>
-        <StackPanel>
+        <StackPanel Grid.Column="1">
             <Expander
                 x:Name="shadingPanel"
                 Width="200"
@@ -183,7 +188,7 @@
             </Expander>
             <Button HorizontalAlignment="Right" Margin="0,0,10,0" Click="Button_Click">MultiViewport Demo</Button>
         </StackPanel>
-        <StatusBar Grid.Row="0" VerticalAlignment="Bottom">
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
             <StatusBar.Background>
                 <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
             </StatusBar.Background>

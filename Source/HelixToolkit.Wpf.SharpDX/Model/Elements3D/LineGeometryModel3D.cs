@@ -239,7 +239,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 // --- set up buffers            
                 var data = this.CreateLinesVertexArray();
-                vertexBuffer.CreateBufferFromDataArray(this.Device, data);
+                vertexBuffer.CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
             }
             this.InvalidateRender();
         }

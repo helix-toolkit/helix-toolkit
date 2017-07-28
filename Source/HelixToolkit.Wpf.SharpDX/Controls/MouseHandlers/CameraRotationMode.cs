@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
         Turntable,
 
         /// <summary>
-        /// Turntable using three axes (look direction, right direction and up direction (on the left/right edges)).
+        /// Turnball using three axes (look direction, right direction and up direction (on the left/right edges)).
         /// </summary>
         Turnball,
 

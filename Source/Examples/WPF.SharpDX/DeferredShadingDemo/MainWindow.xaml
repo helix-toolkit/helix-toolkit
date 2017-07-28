@@ -18,7 +18,10 @@
             <RowDefinition/>
             <!--<RowDefinition Height="Auto"/>-->
         </Grid.RowDefinitions>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <hx:Viewport3DX 
             Grid.Row="1" 
             x:Name="view1" 
@@ -49,7 +52,7 @@
             <hx:MeshGeometryModel3D x:Name="model4" Geometry="{Binding Plane}" Transform = "{Binding PlaneTransform}"  Material="{Binding PlaneMaterial}"  />
         </hx:Viewport3DX>
 
-        <StackPanel Grid.Row="1" >
+        <StackPanel Grid.Row="1" Grid.Column="1">
             <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>

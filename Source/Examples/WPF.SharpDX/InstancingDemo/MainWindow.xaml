@@ -19,14 +19,17 @@
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
             Grid.Row="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
-            EnableRenderFrustum="True" EnableDeferredRendering="True"
+            EnableRenderFrustum="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
@@ -67,7 +70,7 @@
             <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
         </hx:Viewport3DX>
 
-        <StackPanel Grid.Row="0">
+        <StackPanel Grid.Column="1" Grid.Row="0">
             <!--<Expander
                 x:Name="shadingPanel"
                 Width="150"
