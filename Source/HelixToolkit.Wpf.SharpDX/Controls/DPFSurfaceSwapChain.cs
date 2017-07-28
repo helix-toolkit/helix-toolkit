@@ -6,7 +6,7 @@
 //
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+//#define DoubleBuffer
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
@@ -105,12 +105,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsShadowMapEnabled { get; private set; }
 
-#if MSAA
         /// <summary>
         /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
         /// </summary>
         public MSAALevel MSAA { get; set; }
-#endif
         /// <summary>
         /// Gets or sets the maximum time that rendering is allowed to take. When exceeded,
         /// the next cycle will be enqueued at <see cref="DispatcherPriority.Input"/> to reduce input lag.
@@ -253,9 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Unloaded += OnUnloaded;
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
-#if MSAA
             MSAA = MSAALevel.Maximum;
-#endif
         }
 
         /// <summary>
@@ -401,7 +397,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int sampleCount = 1;
             int sampleQuality = 0;
-#if MSAA
+#if DoubleBuffer
             if (MSAA != MSAALevel.Disable)
             {
                 do
@@ -421,7 +417,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 } while (sampleCount < 32);
             }
             var sampleDesc = new SampleDescription(sampleCount, sampleQuality);
-            var optionFlags = ResourceOptionFlags.None;
             var colordesc = new Texture2DDescription
             {
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
@@ -431,15 +426,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 MipLevels = 1,
                 SampleDescription = sampleDesc,
                 Usage = ResourceUsage.Default,
-                OptionFlags = optionFlags,
+                OptionFlags = ResourceOptionFlags.None,
                 CpuAccessFlags = CpuAccessFlags.None,
                 ArraySize = 1
             };
             colorBuffer = new Texture2D(device, colordesc);
             colorBufferView = new RenderTargetView(device, colorBuffer);
 #else
-            var sampleDesc = new SampleDescription(1, 0);
-            var optionFlags = ResourceOptionFlags.Shared;
+            var sampleDesc = swapChain.Description1.SampleDescription;
             colorBufferView = new RenderTargetView(device, backBuffer);
 #endif
             var depthdesc = new Texture2DDescription
@@ -460,6 +454,7 @@ namespace HelixToolkit.Wpf.SharpDX
             depthStencilBufferView = new DepthStencilView(device, depthStencilBuffer);                     
             this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
         }
+
         private void CreateSwapChain()
         {
             if (swapChain != null)
@@ -492,8 +487,30 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         protected virtual global::SharpDX.DXGI.SwapChainDescription1 CreateSwapChainDescription()
         {
+            int sampleCount = 1;
+            int sampleQuality = 0;
             // SwapChain description
+#if DoubleBuffer
+#else
+            if (MSAA != MSAALevel.Disable)
+            {
+                do
+                {
+                    var newSampleCount = sampleCount * 2;
+                    var newSampleQuality = device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, newSampleCount) - 1;
 
+                    if (newSampleQuality < 0)
+                        break;
+
+                    sampleCount = newSampleCount;
+                    sampleQuality = newSampleQuality;
+                    if (sampleCount == (int)MSAA)
+                    {
+                        break;
+                    }
+                } while (sampleCount < 32);
+            }
+#endif
             var desc = new global::SharpDX.DXGI.SwapChainDescription1()
             {
                 Width = (int)ActualWidth,
@@ -501,15 +518,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 // B8G8R8A8_UNorm gives us better performance 
                 Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
                 Stereo = false,
-                SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
-#if MSAA
+                SampleDescription = new global::SharpDX.DXGI.SampleDescription(sampleCount, sampleQuality),
+#if DoubleBuffer
                 Usage = Usage.BackBuffer,
+                BufferCount = 2,
+                SwapEffect = global::SharpDX.DXGI.SwapEffect.FlipSequential,
 #else
                 Usage = Usage.RenderTargetOutput,
+                BufferCount = 1,
+                SwapEffect = global::SharpDX.DXGI.SwapEffect.Discard,
 #endif
-                BufferCount = 2,
                 Scaling = global::SharpDX.DXGI.Scaling.Stretch,
-                SwapEffect = global::SharpDX.DXGI.SwapEffect.FlipSequential,
                 Flags = SwapChainFlags.AllowModeSwitch
             };
             return desc;
@@ -660,18 +679,18 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderRenderable.Render(renderContext);
 
                     // reset render targets and run lighting pass                                         
-#if MSAA
+#if DoubleBuffer
                     deferredRenderer.RenderGBufferOutput(renderContext, ref backBuffer);
 #else
-                    this.deferredRenderer.RenderGBufferOutput(ref this.colorBuffer);
+                    this.deferredRenderer.RenderGBufferOutput(renderContext, ref this.backBuffer);
 #endif
                 }
                 else
                 {
                     renderRenderable.Render(renderContext);
                 }
-#if MSAA
-            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, backBuffer, 0, Format.B8G8R8A8_UNorm);
+#if DoubleBuffer
+                device.ImmediateContext.ResolveSubresource(colorBuffer, 0, backBuffer, 0, Format.B8G8R8A8_UNorm);
 #endif
             }
         }
