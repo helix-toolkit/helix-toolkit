@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnCreateProjectionMatrix(float scale)
         {
-            projectionMatrix = Matrix.OrthoRH(140 * screenRatio / scale, 140 / scale, 0.1f, 200);
+            projectionMatrix = Matrix.OrthoRH(140 * screenRatio / scale, 140 / scale, 1f, 200000);
             projectionMatrix.M41 = RelativeScreenLocationX;
             projectionMatrix.M42 = RelativeScreenLocationY;
         }
@@ -137,7 +137,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual DepthStencilState CreateDepthStencilState(global::SharpDX.Direct3D11.Device device)
         {
-            return new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = false, IsStencilEnabled = false });
+            return new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = true, IsStencilEnabled = false, DepthWriteMask = DepthWriteMask.All, DepthComparison = Comparison.LessEqual });
         }
 
         protected override void OnDetach()

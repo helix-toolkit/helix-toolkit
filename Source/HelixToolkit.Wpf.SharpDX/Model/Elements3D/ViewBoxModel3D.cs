@@ -81,6 +81,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse];
         }
+        protected override DepthStencilState CreateDepthStencilState(global::SharpDX.Direct3D11.Device device)
+        {
+            return new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = false, IsStencilEnabled = false });
+        }
 
         private static void CreateTextureCoordinates(MeshGeometry3D mesh)
         {
