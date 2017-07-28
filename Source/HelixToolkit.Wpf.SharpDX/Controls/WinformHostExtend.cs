@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             if (previousChild != null)
             {
                 previousChild.MouseDown -= OnMouseDown;
-                Child.MouseWheel -= OnMouseWheel;
+                previousChild.MouseWheel -= OnMouseWheel;
             }
             if (Child != null)
             {
