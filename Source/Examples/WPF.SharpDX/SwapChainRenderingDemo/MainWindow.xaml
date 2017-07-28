@@ -16,7 +16,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <hx:Viewport3DX
+        <hx:Viewport3DX x:Name="view1"
             Grid.Row="0" Grid.Column="0" MSAA="Four"
             Camera="{Binding Camera}" EnableSwapChainRendering="True"
              Background="Black" BackgroundColor="0,0,0,0"
@@ -96,6 +96,10 @@
             <TextBlock Margin="10" Text="{Binding NumberOfVertices, StringFormat='#,#'}"/>
             <TextBlock Margin="10">Num Triangles</TextBlock>
             <TextBlock Margin="10" Text="{Binding NumberOfTriangles, StringFormat='#,#'}"/>
+            <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
         </StackPanel>
     </Grid>
 </Window>
