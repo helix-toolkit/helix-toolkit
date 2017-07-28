@@ -14,35 +14,8 @@ using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class CoordinateSystemModel3D : MeshGeometryModel3D
+    public class CoordinateSystemModel3D : ScreenSpaceMeshGeometry3D
     {
-        /// <summary>
-        /// <see cref="RelativeScreenLocationX"/>
-        /// </summary>
-        public static readonly DependencyProperty RelativeScreenLocationXProperty = DependencyProperty.Register("RelativeScreenLocationX", typeof(float), typeof(CoordinateSystemModel3D),
-            new AffectsRenderPropertyMetadata(-0.8f,
-                (d, e) =>
-                {
-                    (d as CoordinateSystemModel3D).projectionMatrix.M41 = (float)e.NewValue;
-                }));
-        /// <summary>
-        /// <see cref="RelativeScreenLocationY"/>
-        /// </summary>
-        public static readonly DependencyProperty RelativeScreenLocationYProperty = DependencyProperty.Register("RelativeScreenLocationY", typeof(float), typeof(CoordinateSystemModel3D),
-            new AffectsRenderPropertyMetadata(-0.8f,
-                (d, e) =>
-                {
-                    (d as CoordinateSystemModel3D).projectionMatrix.M42 = (float)e.NewValue;
-                }));
-        /// <summary>
-        /// <see cref="SizeScale"/>
-        /// </summary>
-        public static readonly DependencyProperty SizeScaleProperty = DependencyProperty.Register("SizeScale", typeof(float), typeof(CoordinateSystemModel3D),
-            new AffectsRenderPropertyMetadata(1f,
-                (d, e) =>
-                {
-                    (d as CoordinateSystemModel3D).CreateProjectionMatrix((float)e.NewValue);
-                }));
         /// <summary>
         /// <see cref="AxisXColor"/>
         /// </summary>
@@ -71,50 +44,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as CoordinateSystemModel3D).UpdateAxisColor(2, ((Media.Color)e.NewValue).ToColor4());
                 }));
 
-        /// <summary>
-        /// Relative Location X on screen. Range from -1~1
-        /// </summary>
-        public float RelativeScreenLocationX
-        {
-            set
-            {
-                SetValue(RelativeScreenLocationXProperty, value);
-            }
-            get
-            {
-                return (float)GetValue(RelativeScreenLocationXProperty);
-            }
-        }
-
-        /// <summary>
-        /// Relative Location Y on screen. Range from -1~1
-        /// </summary>
-        public float RelativeScreenLocationY
-        {
-            set
-            {
-                SetValue(RelativeScreenLocationYProperty, value);
-            }
-            get
-            {
-                return (float)GetValue(RelativeScreenLocationYProperty);
-            }
-        }
-
-        /// <summary>
-        /// Size scaling
-        /// </summary>
-        public float SizeScale
-        {
-            set
-            {
-                SetValue(SizeScaleProperty, value);
-            }
-            get
-            {
-                return (float)GetValue(SizeScaleProperty);
-            }
-        }
         /// <summary>
         /// Axis X Color
         /// </summary>
@@ -158,16 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private EffectMatrixVariable viewMatrixVar;
-        private EffectMatrixVariable projectionMatrixVar;
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
-        private Matrix projectionMatrix;
-        private DepthStencilState depthStencil;
-        private float screenRatio = 1f;
-        protected override bool CanHitTest(IRenderMatrices context)
-        {
-            return false;
-        }
 
         public CoordinateSystemModel3D()
         {
@@ -184,13 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UpdateAxisColor(mesh, 1, AxisYColor.ToColor4());
             UpdateAxisColor(mesh, 2, AxisZColor.ToColor4());
             Geometry = mesh;
-        }
-
-        private void CreateProjectionMatrix(float scale)
-        {
-            projectionMatrix = Matrix.OrthoRH(140 * screenRatio / scale, 140 / scale, 0.1f, 200);
-            projectionMatrix.M41 = RelativeScreenLocationX;
-            projectionMatrix.M42 = RelativeScreenLocationY;
+            CullMode = CullMode.Back;
         }
 
         private void UpdateAxisColor(int which, Color4 color)
@@ -228,13 +142,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (base.OnAttach(host))
             {
-                viewMatrixVar = effect.GetVariableByName("mView").AsMatrix();
-                projectionMatrixVar = effect.GetVariableByName("mProjection").AsMatrix();
                 foreach (var billboard in axisBillboards)
                 {
                     billboard.Attach(host);
                 }
-                CreateDepthStencilState(this.Device);
                 return true;
             }
             else
@@ -243,17 +154,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void CreateDepthStencilState(global::SharpDX.Direct3D11.Device device)
-        {
-            Disposer.RemoveAndDispose(ref depthStencil);
-            depthStencil = new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = false, IsStencilEnabled = false });
-        }
-
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref viewMatrixVar);
-            Disposer.RemoveAndDispose(ref projectionMatrixVar);
-            Disposer.RemoveAndDispose(ref depthStencil);
             foreach (var billboard in axisBillboards)
             {
                 billboard.Detach();
@@ -268,12 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
-            var ratio = (float)(renderContext.ActualWidth / renderContext.ActualHeight);
-            if (screenRatio != ratio)
-            {
-                screenRatio = ratio;
-                CreateProjectionMatrix(SizeScale);
-            }
+            UpdateProjectionMatrix(renderContext.ActualWidth, renderContext.ActualHeight);
             // --- set constant paramerers             
             var worldMatrix = renderContext.worldMatrix;
             worldMatrix.Row4 = new Vector4(0, 0, 0, 1);
@@ -313,14 +210,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.viewMatrixVar.SetMatrix(renderContext.ViewMatrix);
             this.projectionMatrixVar.SetMatrix(renderContext.ProjectionMatrix);
             renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStateBack);
-        }
-
-        private Matrix CreateViewMatrix(RenderContext renderContext)
-        {
-            return global::SharpDX.Matrix.LookAtRH(
-                -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20,
-                Vector3.Zero,
-                renderContext.Camera.UpDirection.ToVector3());
         }
     }
 }

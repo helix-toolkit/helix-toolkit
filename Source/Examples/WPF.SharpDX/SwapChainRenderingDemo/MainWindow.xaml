@@ -86,6 +86,7 @@
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
             <hx:CoordinateSystemModel3D/>
+            <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" TextBlock.Foreground="White">
             <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
