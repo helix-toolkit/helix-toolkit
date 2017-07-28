@@ -17,6 +17,11 @@ using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    /// <summary>
+    /// <para>Viewbox replacement for Viewport using swapchain rendering.</para>
+    /// <para>To replace box texture (such as text, colors), bind to custom material with different diffuseMap. </para>
+    /// <para>Create a image with 1 row and 6 evenly distributed columns. Each column occupies one box face. The face order is Front, Back, Down, Up, Left, Right</para>
+    /// </summary>
     public class ViewBoxModel3D : ScreenSpaceMeshGeometry3D
     {
         private static readonly MeshGeometry3D defaultBoxModel;
