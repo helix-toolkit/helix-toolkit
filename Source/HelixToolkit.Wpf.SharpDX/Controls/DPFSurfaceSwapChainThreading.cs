@@ -811,7 +811,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            if (!renderThread.IsBusy && ((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && renderRenderable != null)
+            if (((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && !renderThread.IsBusy && renderRenderable != null)
             {
                 var t0 = renderTimer.Elapsed;
 
@@ -822,7 +822,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     Render(t0);
                     var commandList = renderContext.DeviceContext.FinishCommandList(true);
-                    if (!renderThread.InvalidateD3D(commandList))
+                    if (renderThread.InvalidateD3D(commandList))
                     {
                         pendingValidationCycles = false;
                     }
