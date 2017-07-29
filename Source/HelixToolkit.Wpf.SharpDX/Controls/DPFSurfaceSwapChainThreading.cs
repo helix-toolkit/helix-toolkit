@@ -54,7 +54,8 @@ namespace HelixToolkit.Wpf.SharpDX
     // THE SOFTWARE.
 
     /// <summary>
-    /// <para>Use HwndHost as rendering surface, swapchain for rendering. Much faster than using D3DImage.</para> 
+    /// <para>Use HwndHost as rendering surface, use seperate rendering thread. Faster than DPFSwapChainRendering.</para> 
+    /// <para>EnableSwapChainRendering=True and EnableDeferredRendering=Ture to use this rendering method.</para>
     /// <para>Drawbacks: The rendering surface will cover all WPF controls in the same Viewport region. Move controls out of viewport region to solve this problem.</para>
     /// <para>For displaying ViewCube and CoordinateSystem, separate Model needs to create to render along with the other models. WPF viewport will not be visibled.</para>
     /// </summary>
