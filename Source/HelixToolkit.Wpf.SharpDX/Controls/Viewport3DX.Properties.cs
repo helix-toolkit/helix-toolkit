@@ -710,7 +710,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Set MSAA Level
         /// </summary>
         public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX), 
-            new PropertyMetadata(MSAALevel.Maximum, (s,e)=> 
+            new PropertyMetadata(MSAALevel.Disable, (s,e)=> 
             {
                 var viewport = s as Viewport3DX;
                 if (viewport.RenderHost != null)
@@ -776,7 +776,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }, (s,e)=> { return Math.Max(1, (int)e); }));
 
         /// <summary>
-        /// <para>Enable deferred rendering.</para> 
+        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
         /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
         /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
         /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892(v=vs.85).aspx"/></para>
@@ -2631,7 +2631,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// <para>Enable deferred rendering.</para> 
+        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
         /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
         /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
         /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892(v=vs.85).aspx"/></para>
@@ -2683,6 +2683,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>Use HwndHost as rendering surface, swapchain for rendering. Much faster than using D3DImage.</para> 
         /// <para>Drawbacks: The rendering surface will cover all WPF controls in the same Viewport region. Move controls out of viewport region to solve this problem.</para>
         /// <para>For displaying ViewCube and CoordinateSystem, separate Model needs to create to render along with the other models. WPF viewport will not be visibled.</para>
+        /// <para>Note: Enable deferred rendering will use seperate rendering thread or rendering.</para>
         /// </summary>
         public bool EnableSwapChainRendering
         {

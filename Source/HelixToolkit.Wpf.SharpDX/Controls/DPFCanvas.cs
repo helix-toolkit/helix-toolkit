@@ -265,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Unloaded += OnUnloaded;
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
-            MSAA = MSAALevel.Maximum;
+            MSAA = MSAALevel.Disable;
            // invalidAction = new Action(InvalidateRender);
         }
 

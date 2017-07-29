@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <hx:Viewport3DX x:Name="view1"
             Grid.Row="0" Grid.Column="0" MSAA="Four"
-            Camera="{Binding Camera}" EnableSwapChainRendering="True"
+            Camera="{Binding Camera}" EnableSwapChainRendering="True" EnableDeferredRendering="True"
              Background="Black" BackgroundColor="0,0,0,0"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
