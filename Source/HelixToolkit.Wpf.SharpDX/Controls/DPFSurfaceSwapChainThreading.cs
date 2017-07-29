@@ -854,7 +854,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 try
                 {
                     Render(t0);
-                    var commandList = renderContext.DeviceContext.FinishCommandList(true);
+                    var commandList = deferredContext.FinishCommandList(true);
                     if (renderThread.InvalidateD3D(commandList))
                     {
                         pendingValidationCycles = false;

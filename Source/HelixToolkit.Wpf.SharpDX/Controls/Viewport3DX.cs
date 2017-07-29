@@ -559,7 +559,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #if DX11
             if (EnableSwapChainRendering)
             {
-                if (EnableDeferredRendering)
+                if (EnableDeferredRendering && !EnableSharedModelMode)
                 {
                     hostPresenter.Content = new DPFSurfaceSwapChainThreading();
                 }
@@ -570,7 +570,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                if (EnableDeferredRendering)
+                if (EnableDeferredRendering && !EnableSharedModelMode)
                 {
                     hostPresenter.Content = new DPFCanvasThreading();
                 }

@@ -9,6 +9,7 @@ using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
 using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.Direct3D11;
+using System.ComponentModel;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -81,7 +82,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public ModelContainer3DX()
         {
-            EffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());
+            if(!DesignerProperties.GetIsInDesignMode(this))
+                EffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());
         }
         /// <summary>
         /// Handles the change of the effects manager.
