@@ -70,6 +70,8 @@ namespace HelixToolkit.Wpf.SharpDX
             private SwapChain1 swapChain;
             private CancellationTokenSource tsc;
             private CommandList commandList;
+            private bool paused = false;
+            private readonly object mlock = new object();
             public void InitializeRenderThread(DeviceContext renderContext, SwapChain1 swapChain)
             {
                 DestoryRenderThread();
@@ -88,9 +90,15 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 break;
                             }
-                            renderContext.ExecuteCommandList(commandList, true);
-                            renderContext.Flush();
-                            swapChain.Present(0, 0);
+                            lock (mlock)
+                            {
+                                if (!paused)
+                                {
+                                    renderContext.ExecuteCommandList(commandList, true);
+                                    renderContext.Flush();
+                                    swapChain.Present(0, 0);
+                                }                             
+                            }
                         }
                         finally
                         {
@@ -125,6 +133,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 renderThreadEvent.Set();
                 return true;
             }
+
+            public void Pause()
+            {
+                lock (mlock)
+                {
+                    paused = true;
+                }
+            }
+
+            public void Resume()
+            {
+                lock (mlock)
+                {
+                    paused = false;
+                }
+            }
         }
         private RenderThreadWrapper renderThread = new RenderThreadWrapper();
         private readonly Stopwatch renderTimer;
@@ -136,6 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderControl surfaceD3D;
         private IRenderer renderRenderable;
         private RenderContext renderContext;
+        private DeviceContext deferredContext;
         private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
         private int targetWidth, targetHeight;
@@ -411,7 +436,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             CreateAndBindTargets();
             SetDefaultRenderTargets();
-            //Source = surfaceD3D;
+            renderThread.InitializeRenderThread(device.ImmediateContext, swapChain);
             InvalidateRender();
             return true;
         }
@@ -426,8 +451,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 renderRenderable.Detach();
                 sceneAttached = false;
             }
+            renderThread.DestoryRenderThread();
             this.Child = null;
             Disposer.RemoveAndDispose(ref renderContext);
+            Disposer.RemoveAndDispose(ref deferredContext);
             Disposer.RemoveAndDispose(ref deferredRenderer);
             Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);
@@ -455,13 +482,16 @@ namespace HelixToolkit.Wpf.SharpDX
             int width = System.Math.Max((int)ActualWidth, 100);
             int height = System.Math.Max((int)ActualHeight, 100);
             device.ImmediateContext.OutputMerger.ResetTargets();
+            renderContext?.DeviceContext?.OutputMerger.ResetTargets();
             Disposer.RemoveAndDispose(ref colorBufferView);
             Disposer.RemoveAndDispose(ref colorBuffer);
             Disposer.RemoveAndDispose(ref backBuffer);
             Disposer.RemoveAndDispose(ref depthStencilBufferView);
             Disposer.RemoveAndDispose(ref depthStencilBuffer);
+            Disposer.RemoveAndDispose(ref deferredContext);
             device.ImmediateContext.Flush();
             CreateSwapChain();
+            deferredContext = new DeviceContext(device);
             backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
 
             int sampleCount = 1;
@@ -526,11 +556,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void CreateSwapChain()
         {
-            //if (swapChain != null)
-            //{
-            //    swapChain.ResizeBuffers(swapChain.Description1.BufferCount, (int)ActualWidth, (int)ActualHeight, swapChain.Description.ModeDescription.Format, swapChain.Description.Flags);
-            //}
-            //else
+            if (swapChain != null)
+            {
+                swapChain.ResizeBuffers(swapChain.Description1.BufferCount, (int)ActualWidth, (int)ActualHeight, swapChain.Description.ModeDescription.Format, swapChain.Description.Flags);
+            }
+            else
             {
                 Disposer.RemoveAndDispose(ref swapChain);
                 var desc = CreateSwapChainDescription();
@@ -622,9 +652,9 @@ namespace HelixToolkit.Wpf.SharpDX
             device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
             device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
 
-            renderContext?.DeviceContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
-            renderContext?.DeviceContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
-            renderContext?.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            deferredContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
+            deferredContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
+            deferredContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
             if (clear)
             {
                 ClearRenderTarget();
@@ -656,13 +686,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (clearBackBuffer)
             {
                 // device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-                renderContext?.DeviceContext.ClearRenderTargetView(colorBufferView, ClearColor);
+                deferredContext.ClearRenderTargetView(colorBufferView, ClearColor);
             }
 
             if (clearDepthStencilBuffer)
             {
                 //  device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-                renderContext?.DeviceContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+                deferredContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             }
         }
 
@@ -693,7 +723,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             renderContext.Dispose();
                         }
-                        renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), new DeviceContext(device));
+                        renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), deferredContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {
@@ -726,6 +756,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
                 renderContext.TimeStamp = timeStamp;
+                renderContext.DeviceContext = deferredContext;
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
@@ -777,16 +808,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
 
             lastRenderingDuration = TimeSpan.Zero;
-            renderThread.InitializeRenderThread(device.ImmediateContext, swapChain);
             CompositionTarget.Rendering += OnRendering;
-            renderTimer.Start();
+            renderTimer.Restart();
+            renderThread.Resume();
+            InvalidateRender();
         }
 
         private void StopRendering()
         {
             if (!renderTimer.IsRunning)
                 return;
-            renderThread.DestoryRenderThread();
+            renderThread.Pause();
             CompositionTarget.Rendering -= OnRendering;
             renderTimer.Stop();
         }
