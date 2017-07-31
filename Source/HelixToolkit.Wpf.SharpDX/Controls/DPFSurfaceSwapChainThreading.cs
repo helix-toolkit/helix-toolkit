@@ -839,7 +839,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly EventSkipper skipper = new EventSkipper();
-        private readonly PresentParameters presentParams = new PresentParameters();
+        //private readonly PresentParameters presentParams = new PresentParameters();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
