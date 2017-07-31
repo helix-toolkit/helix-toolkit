@@ -109,6 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                     }
                 }));
+                RenderThread.SetApartmentState(ApartmentState.STA);
+                RenderThread.IsBackground = true;
                 RenderThread.Start();
             }
 
