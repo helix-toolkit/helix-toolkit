@@ -20,6 +20,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D;
     using System.IO;
     using HelixToolkit.SharpDX.Helpers;
+    using System.ComponentModel;
+    using System.Windows;
 
     public interface IEffectsManager
     {
@@ -36,7 +38,19 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <para>Make sure to dispose this if not being used. Otherwise may cause memory leak.</para>
     /// </summary>
     public class DefaultEffectsManager : IEffectsManager, IDisposable
-    {
+    {        
+        /// <summary>
+        /// Gets a value indicating whether the control is in design mode
+        /// (running in Blend or Visual Studio).
+        /// </summary>
+        public static bool IsInDesignMode
+        {
+            get
+            {
+                var prop = DesignerProperties.IsInDesignModeProperty;
+                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
+            }
+        }
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
@@ -73,6 +87,10 @@ namespace HelixToolkit.Wpf.SharpDX
 #else
             this.device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
+            if (IsInDesignMode)
+            {
+                return;
+            }
             InitEffects();
         }
 
