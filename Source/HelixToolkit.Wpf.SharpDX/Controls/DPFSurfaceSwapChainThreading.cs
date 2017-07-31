@@ -495,9 +495,10 @@ namespace HelixToolkit.Wpf.SharpDX
             deferredContext = new DeviceContext(device);
             backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
 
+
+#if DoubleBuffer
             int sampleCount = 1;
             int sampleQuality = 0;
-#if DoubleBuffer
             if (MSAA != MSAALevel.Disable)
             {
                 do
