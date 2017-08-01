@@ -39,11 +39,11 @@
             <!--<hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
                 Geometry="{Binding Other}"
                 Material="{Binding OtherMaterial}" />-->
-            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
+            <hx:MeshGeometryModel3D FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"
                 Geometry="{Binding InnerModel}" CullMode="Front" FrontCounterClockwise="True"
                 Material="{Binding InnerModelMaterial}" />
             <hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
-                CullMode="Back"
+                CullMode="Back" ReuseVertexArrayBuffer="True"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}" />
 

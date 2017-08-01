@@ -28,12 +28,12 @@
                 IsRendering="{Binding Visibility}"
                 Material="{Binding Material}" />-->
             <hx:PointGeometryModel3D
-                Figure="Ellipse"
+                Figure="Ellipse" ReuseVertexArrayBuffer="True"
                 Geometry="{Binding PointsModel}"
                 Size="2 2"
                 Color="{Binding PointColor}" />
             <hx:PointGeometryModel3D
-                Figure="Ellipse"
+                Figure="Ellipse" ReuseVertexArrayBuffer="True"
                 Geometry="{Binding PointsHitModel}"
                 Size="5 5"
                 Color="{Binding PointHitColor}" />
@@ -49,7 +49,7 @@
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
-                            CullMode="Back"
+                            CullMode="Back" ReuseVertexArrayBuffer="True"
                             Geometry="{Binding Model}"
                             Material="{Binding Material}"
                             Transform="{Binding DynamicTransform}" />
@@ -72,13 +72,13 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>-->
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" />
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
+            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" ReuseVertexArrayBuffer="True"/>
+            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" ReuseVertexArrayBuffer="True"/>
             <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
             <hx:OctreeLineGeometryModel3D
                 IsRendering="{Binding OctreeFrameVisible}"
                 LineColor="{Binding LineColor}"
-                Octree="{Binding DefaultModel.Octree}" />
+                Octree="{Binding DefaultModel.Octree}" ReuseVertexArrayBuffer="True"/>
         </hx:ModelContainer3DX>
         <hx:Viewport3DX
             x:Name="view1" Grid.Column="0"
