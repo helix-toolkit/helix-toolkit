@@ -67,8 +67,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private readonly LineGeometryModel3D OctreeVisual = new LineGeometryModel3D();
-        private readonly LineGeometryModel3D HitVisual = new LineGeometryModel3D();
+        private readonly LineGeometryModel3D OctreeVisual = new LineGeometryModel3D() { ReuseVertexArrayBuffer = true };
+        private readonly LineGeometryModel3D HitVisual = new LineGeometryModel3D() { ReuseVertexArrayBuffer = true };
 
         public OctreeLineGeometryModel3D()
         {
