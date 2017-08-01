@@ -110,14 +110,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     return;
                 }
-                renderContext.ExecuteCommandList(command, true);
-#if MSAA
-                renderContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
-                renderContext.Flush();
-                surfaceD3D.InvalidateD3DImage();
-                Disposer.RemoveAndDispose(ref command);
-                IsBusy = false;
+                try
+                {
+                    renderContext.ExecuteCommandList(command, true);
+                    renderContext.Flush();
+                    surfaceD3D.InvalidateD3DImage();
+                }
+                finally
+                {                    
+                    Disposer.RemoveAndDispose(ref command);
+                    IsBusy = false;
+                }              
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -156,6 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private IRenderer renderRenderable;
         private RenderContext renderContext;
+        private DeviceContext deferredContext;
         private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
         private int targetWidth, targetHeight;
@@ -440,6 +444,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             CreateAndBindTargets();
             SetDefaultRenderTargets();
+            deferredContext = new DeviceContext(device);
             //  Source = surfaceD3D;
             InvalidateRender();
             return true;
@@ -465,6 +470,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
             // Source = null;
             RenderContext?.Dispose();
+            Disposer.RemoveAndDispose(ref deferredContext);
             Disposer.RemoveAndDispose(ref deferredRenderer);
             // Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);
@@ -678,7 +684,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             renderContext.Dispose();
                         }
-                        renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), new DeviceContext(device));
+                        renderContext = new RenderContext(this, EffectsManager.GetEffect(RenderTechnique), deferredContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {
@@ -753,12 +759,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     renderRenderable.Render(renderContext);
                 }
+#if MSAA
+                renderContext.DeviceContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif
                 var command = renderContext.DeviceContext.FinishCommandList(true);
                 mRenderThread.InvalidateD3D(command);
             }
-            //#if MSAA
-            //            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-            //#endif
+
             //            this.device.ImmediateContext.Flush();
         }
 

@@ -174,28 +174,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public MSAALevel MSAA
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set;get;
         }
 
         public IRenderer Renderable
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set;get;
         }
 
         public RenderContext RenderContext
@@ -216,15 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public int RenderCycles
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set;get;
         }
 
         public Light3DSceneShared Light3DSceneShared
@@ -237,28 +213,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnableRenderFrustum
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set;get;
         }
 
         public uint MaxFPS
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set;get;
         }
 
         public bool IsDeferredLighting

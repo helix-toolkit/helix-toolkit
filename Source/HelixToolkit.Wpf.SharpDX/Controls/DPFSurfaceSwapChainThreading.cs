@@ -109,6 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                     }
                 }));
+                RenderThread.SetApartmentState(ApartmentState.STA);
+                RenderThread.IsBackground = true;
                 RenderThread.Start();
             }
 
@@ -495,9 +497,10 @@ namespace HelixToolkit.Wpf.SharpDX
             deferredContext = new DeviceContext(device);
             backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
 
+
+#if DoubleBuffer
             int sampleCount = 1;
             int sampleQuality = 0;
-#if DoubleBuffer
             if (MSAA != MSAALevel.Disable)
             {
                 do
@@ -838,7 +841,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly EventSkipper skipper = new EventSkipper();
-        private readonly PresentParameters presentParams = new PresentParameters();
+        //private readonly PresentParameters presentParams = new PresentParameters();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
