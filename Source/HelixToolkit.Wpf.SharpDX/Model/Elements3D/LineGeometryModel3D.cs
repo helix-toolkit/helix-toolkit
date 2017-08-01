@@ -79,7 +79,8 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(HitTestThicknessProperty, value); }
         }
         #endregion
-        private LinesVertex[] vertexArrayBuffer = null;
+        [ThreadStatic]
+        private static LinesVertex[] vertexArrayBuffer = null;
         protected InputLayout vertexLayout;
         private readonly ImmutableBufferProxy<LinesVertex> vertexBuffer = new ImmutableBufferProxy<LinesVertex>(LinesVertex.SizeInBytes, BindFlags.VertexBuffer);
         private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
@@ -417,29 +418,31 @@ namespace HelixToolkit.Wpf.SharpDX
             var positions = this.geometryInternal.Positions;
             var vertexCount = this.geometryInternal.Positions.Count;
             var color = this.Color;
-            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
-                vertexArrayBuffer = new LinesVertex[vertexCount];
-
+            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
+            if (ReuseVertexArrayBuffer)
+            {
+                vertexArrayBuffer = array;
+            }
             if (this.geometryInternal.Colors != null && this.geometryInternal.Colors.Any())
             {
                 var colors = this.geometryInternal.Colors;
 
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
-                    vertexArrayBuffer[i].Color = color * colors[i];
+                    array[i].Position = new Vector4(positions[i], 1f);
+                    array[i].Color = color * colors[i];
                 }
             }
             else
             {
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
-                    vertexArrayBuffer[i].Color = color;
+                    array[i].Position = new Vector4(positions[i], 1f);
+                    array[i].Color = color;
                 }
             }
 
-            return vertexArrayBuffer;
+            return array;
         }
     }
 }

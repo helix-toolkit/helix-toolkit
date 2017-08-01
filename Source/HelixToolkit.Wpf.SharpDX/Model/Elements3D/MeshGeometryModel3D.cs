@@ -74,8 +74,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         #endregion
-
-        private DefaultVertex[] vertexArrayBuffer = null;
+        [ThreadStatic]
+        private static DefaultVertex[] vertexArrayBuffer = null;
         private readonly ImmutableBufferProxy<DefaultVertex> vertexBuffer = new ImmutableBufferProxy<DefaultVertex>(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer);
         private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
         /// <summary>
@@ -137,26 +137,17 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnGeometryPropertyChanged(sender, e);
 
-            if (e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates)))
+            if (e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates))
+                || e.PropertyName.Equals(nameof(MeshGeometry3D.Positions))
+                || e.PropertyName.Equals(nameof(MeshGeometry3D.Colors))
+                || e.PropertyName.Equals(Geometry3D.VertexBuffer))
             {
-                OnUpdateVertexBuffer(UpdateTextureOnly);
-            }
-            else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Positions)))
-            {
-                OnUpdateVertexBuffer(UpdatePositionOnly);
-            }
-            else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Colors)))
-            {
-                OnUpdateVertexBuffer(UpdateColorsOnly);
+                OnUpdateVertexBuffer(CreateDefaultVertexArray);
             }
             else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
             {
                 indexBuffer.CreateBufferFromDataArray(this.Device, this.geometryInternal.Indices);
                 InvalidateRender();
-            }
-            else if (e.PropertyName.Equals(Geometry3D.VertexBuffer))
-            {
-                OnUpdateVertexBuffer(CreateDefaultVertexArray);
             }
         }
 
@@ -398,9 +389,11 @@ namespace HelixToolkit.Wpf.SharpDX
             var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
             var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
             var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
-                vertexArrayBuffer = new DefaultVertex[vertexCount];
-            
+            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
+            if (ReuseVertexArrayBuffer)
+            {
+                vertexArrayBuffer = array;
+            }
             for (var i = 0; i < vertexCount; i++)
             {
                 positions.MoveNext();
@@ -409,76 +402,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 normals.MoveNext();
                 tangents.MoveNext();
                 bitangents.MoveNext();
-                vertexArrayBuffer[i].Position = new Vector4(positions.Current, 1f);
-                vertexArrayBuffer[i].Color = colors.Current;
-                vertexArrayBuffer[i].TexCoord = textureCoordinates.Current * texScale;
-                vertexArrayBuffer[i].Normal = normals.Current;
-                vertexArrayBuffer[i].Tangent = tangents.Current;
-                vertexArrayBuffer[i].BiTangent = bitangents.Current;
+                array[i].Position = new Vector4(positions.Current, 1f);
+                array[i].Color = colors.Current;
+                array[i].TexCoord = textureCoordinates.Current * texScale;
+                array[i].Normal = normals.Current;
+                array[i].Tangent = tangents.Current;
+                array[i].BiTangent = bitangents.Current;
             }
 
-            return vertexArrayBuffer;
-        }
-
-        private DefaultVertex[] UpdateTextureOnly()
-        {
-            var geometry = this.geometryInternal as MeshGeometry3D;
-            var vertexCount = geometry.Positions.Count;
-            var texScale = this.TextureCoodScale;
-            if (vertexArrayBuffer != null && geometry.TextureCoordinates != null && vertexArrayBuffer.Length >= vertexCount)
-            {
-                var textureCoordinates = geometry.TextureCoordinates != null && geometry.TextureCoordinates.Count == vertexCount ? 
-                    geometry.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
-
-                for (int i = 0; i < vertexCount; ++i)
-                {
-                    textureCoordinates.MoveNext();
-                    vertexArrayBuffer[i].TexCoord = textureCoordinates.Current * texScale;
-                }
-            }
-            return vertexArrayBuffer;
-        }
-
-        private DefaultVertex[] UpdatePositionOnly()
-        {
-            var geometry = this.geometryInternal as MeshGeometry3D;
-            var vertexCount = geometry.Positions.Count;
-            if (vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount)
-            {
-                var positions = geometry.Positions.GetEnumerator();
-                var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-                var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-                var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-                for (int i = 0; i < vertexCount; ++i)
-                {
-                    positions.MoveNext();
-                    normals.MoveNext();
-                    tangents.MoveNext();
-                    bitangents.MoveNext();
-                    vertexArrayBuffer[i].Position = new Vector4(positions.Current, 1f);
-                    vertexArrayBuffer[i].Normal = normals.Current;
-                    vertexArrayBuffer[i].Tangent = tangents.Current;
-                    vertexArrayBuffer[i].BiTangent = bitangents.Current;
-                }
-            }
-            return vertexArrayBuffer;
-        }
-
-        private DefaultVertex[] UpdateColorsOnly()
-        {
-            var vertexCount = geometryInternal.Positions.Count;
-            if (vertexArrayBuffer != null && geometryInternal.Colors != null && vertexArrayBuffer.Length >= vertexCount)
-            {
-                var colors = geometryInternal.Colors != null && geometryInternal.Colors.Count == vertexCount ?
-                    geometryInternal.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-
-                for (int i = 0; i < vertexCount; ++i)
-                {
-                    colors.MoveNext();
-                    vertexArrayBuffer[i].Color = colors.Current;
-                }
-            }
-            return vertexArrayBuffer;
+            return array;
         }
     }
 }

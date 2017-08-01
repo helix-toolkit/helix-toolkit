@@ -84,7 +84,8 @@
             set { this.SetValue(HitTestThicknessProperty, value); }
         }
         #endregion
-        private PointsVertex[] vertexArrayBuffer;
+        [ThreadStatic]
+        private static PointsVertex[] vertexArrayBuffer;
         protected InputLayout vertexLayout;
         protected EffectTechnique effectTechnique;
         protected EffectTransformVariables effectTransforms;
@@ -370,28 +371,30 @@
             var positions = this.geometryInternal.Positions;
             var vertexCount = this.geometryInternal.Positions.Count;
             var color = this.Color;
-            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
-                vertexArrayBuffer = new PointsVertex[vertexCount];
-
+            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
+            if (ReuseVertexArrayBuffer)
+            {
+                vertexArrayBuffer = array;
+            }
             if (this.geometryInternal.Colors != null && this.geometryInternal.Colors.Any())
             {
                 var colors = this.geometryInternal.Colors;
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
-                    vertexArrayBuffer[i].Color = color * colors[i];
+                    array[i].Position = new Vector4(positions[i], 1f);
+                    array[i].Color = color * colors[i];
                 }
             }
             else
             {
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    vertexArrayBuffer[i].Position = new Vector4(positions[i], 1f);
-                    vertexArrayBuffer[i].Color = color;
+                    array[i].Position = new Vector4(positions[i], 1f);
+                    array[i].Color = color;
                 }
             }
 
-            return vertexArrayBuffer;
+            return array;
         }
 
         public enum PointFigure
