@@ -62,6 +62,8 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
         #region Private Class Data Members
+        [ThreadStatic]
+        private static BillboardVertex[] vertexArrayBuffer;
         private readonly ImmutableBufferProxy<BillboardVertex> vertexBuffer = new ImmutableBufferProxy<BillboardVertex>(BillboardVertex.SizeInBytes, BindFlags.VertexBuffer);
         private EffectVectorVariable vViewport;
         private EffectScalarVariable bHasBillboardTexture;
@@ -71,7 +73,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private EffectShaderResourceVariable billboardAlphaTextureVariable;
         private EffectScalarVariable bHasBillboardAlphaTexture;
         private BillboardType billboardType;
-        private BillboardVertex[] vertexArrayBuffer;
 
         protected readonly DynamicBufferProxy<BillboardInstanceParameter> instanceParamBuffer = new DynamicBufferProxy<BillboardInstanceParameter>(BillboardInstanceParameter.SizeInBytes, BindFlags.VertexBuffer);
         protected bool instanceParamArrayChanged = true;
@@ -363,20 +364,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var position = billboardGeometry.Positions;
             var vertexCount = billboardGeometry.Positions.Count;
-            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
-                vertexArrayBuffer = new BillboardVertex[vertexCount];
-
+            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];
+            if (ReuseVertexArrayBuffer)
+            {
+                vertexArrayBuffer = array;
+            }
             var allOffsets = billboardGeometry.TextureOffsets;
-
             for (var i = 0; i < vertexCount; i++)
             {
                 var tc = billboardGeometry.TextureCoordinates[i];
-                vertexArrayBuffer[i].Position = new Vector4(position[i], 1.0f);
-                vertexArrayBuffer[i].Color = billboardGeometry.Colors[i];
-                vertexArrayBuffer[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
+                array[i].Position = new Vector4(position[i], 1.0f);
+                array[i].Color = billboardGeometry.Colors[i];
+                array[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
             }
 
-            return vertexArrayBuffer;
+            return array;
         }
 
         #endregion

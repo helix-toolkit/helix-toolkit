@@ -189,7 +189,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 return vertexBuffer;
             }
         }
-        private DefaultVertex[] vertexArrayBuffer = null;
+        [ThreadStatic]
+        private static DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// 
         /// </summary>
@@ -383,9 +384,11 @@ namespace HelixToolkit.Wpf.SharpDX
             var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
             var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
             var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            if (!ReuseVertexArrayBuffer || vertexArrayBuffer == null || vertexArrayBuffer.Length < vertexCount)
-                vertexArrayBuffer = new DefaultVertex[vertexCount];
-
+            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
+            if (ReuseVertexArrayBuffer)
+            {
+                vertexArrayBuffer = array;
+            }
             for (var i = 0; i < vertexCount; i++)
             {
                 positions.MoveNext();
@@ -394,15 +397,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 normals.MoveNext();
                 tangents.MoveNext();
                 bitangents.MoveNext();
-                vertexArrayBuffer[i].Position = new Vector4(positions.Current, 1f);
-                vertexArrayBuffer[i].Color = colors.Current;
-                vertexArrayBuffer[i].TexCoord = textureCoordinates.Current * texScale;
-                vertexArrayBuffer[i].Normal = normals.Current;
-                vertexArrayBuffer[i].Tangent = tangents.Current;
-                vertexArrayBuffer[i].BiTangent = bitangents.Current;
+                array[i].Position = new Vector4(positions.Current, 1f);
+                array[i].Color = colors.Current;
+                array[i].TexCoord = textureCoordinates.Current * texScale;
+                array[i].Normal = normals.Current;
+                array[i].Tangent = tangents.Current;
+                array[i].BiTangent = bitangents.Current;
             }
 
-            return vertexArrayBuffer;
+            return array;
         }
 #endif
     }

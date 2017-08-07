@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections.ObjectModel;
 
     using global::SharpDX;
+    using System;
 
     public class PhongMaterialCollection : ObservableCollection<PhongMaterial>
     {
@@ -61,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static PhongMaterial GetMaterial(string materialName)
         {
-            var mat =  Materials.FirstOrDefault(x => x.Name == materialName);
+            var mat = Materials.FirstOrDefault(x => x.Name == materialName);
             return mat != null ? mat : PhongMaterials.DefaultVRML;
         }
 
@@ -79,6 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         // factory
+        [ThreadStatic]
         public static readonly PhongMaterial Red = new PhongMaterial
         {
             Name = "Red",
@@ -88,6 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Blue = new PhongMaterial
         {
             Name = "Blue",
@@ -97,6 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Green = new PhongMaterial
         {
             Name = "Green",
@@ -106,6 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Orange = new PhongMaterial
         {
             Name = "Orange",
@@ -115,6 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial BlanchedAlmond = new PhongMaterial
         {
             Name = "BlanchedAlmond",
@@ -124,6 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Bisque = new PhongMaterial
         {
             Name = "Bisque",
@@ -133,6 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Yellow = new PhongMaterial
         {
             Name = "Yellow",
@@ -142,6 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Indigo = new PhongMaterial
         {
             Name = "Indigo",
@@ -151,6 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Violet = new PhongMaterial
         {
             Name = "Violet",
@@ -160,6 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial White = new PhongMaterial
         {
             Name = "White",
@@ -169,6 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial PureWhite = new PhongMaterial
         {
             Name = "PureWhite",
@@ -178,6 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 1000000f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Black = new PhongMaterial
         {
             Name = "Black",
@@ -187,6 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Gray = new PhongMaterial
         {
             Name = "Gray",
@@ -196,6 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial MediumGray = new PhongMaterial
         {
             Name = "MediumGray",
@@ -205,6 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial LightGray = new PhongMaterial
         {
             Name = "LightGray",
@@ -216,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }.Clone();
 
         // Materials from: http://globe3d.sourceforge.net/g3d_html/gl-materials__ads.htm
-
+        [ThreadStatic]
         public static readonly PhongMaterial Glass = new PhongMaterial
         {
             Name = "Glass",
@@ -226,6 +242,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 1.0),
             SpecularShininess = 96.0f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Brass = new PhongMaterial
         {
             Name = "Brass",
@@ -235,6 +252,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 27.8974f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Bronze = new PhongMaterial
         {
             Name = "Bronze",
@@ -244,6 +262,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 25.6f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial PolishedBronze = new PhongMaterial
         {
             Name = "PolishedBronze",
@@ -253,6 +272,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 76.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Chrome = new PhongMaterial
         {
             Name = "Chrome",
@@ -262,6 +282,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0f, 0f, 0f, 0f),
             SpecularShininess = 76.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Copper = new PhongMaterial
         {
             Name = "Copper",
@@ -271,6 +292,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial PolishedCopper = new PhongMaterial
         {
             Name = "PolishedCopper",
@@ -280,6 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 51.2f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Gold = new PhongMaterial
         {
             Name = "Gold",
@@ -289,6 +312,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 51.2f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial PolishedGold = new PhongMaterial
         {
             Name = "PolishedGold",
@@ -298,6 +322,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 83.2f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Pewter = new PhongMaterial
         {
             Name = "Pewter",
@@ -307,6 +332,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 9.84615f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Silver = new PhongMaterial
         {
             Name = "Silver",
@@ -316,6 +342,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 51.2f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial PolishedSilver = new PhongMaterial
         {
             Name = "PolishedSilver",
@@ -325,6 +352,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 89.6f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Emerald = new PhongMaterial
         {
             Name = "Emerald",
@@ -334,6 +362,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 76.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Jade = new PhongMaterial
         {
             Name = "Jade",
@@ -343,6 +372,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Obsidian = new PhongMaterial
         {
             Name = "Obsidian",
@@ -352,6 +382,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 38.4f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Pearl = new PhongMaterial
         {
             Name = "Pearl",
@@ -361,6 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 11.264f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Ruby = new PhongMaterial
         {
             Name = "Ruby",
@@ -370,6 +402,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 76.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial Turquoise = new PhongMaterial
         {
             Name = "Turquoise",
@@ -379,6 +412,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 12.8f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial BlackPlastic = new PhongMaterial
         {
             Name = "BlackPlastic",
@@ -388,6 +422,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 32f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial BlackRubber = new PhongMaterial
         {
             Name = "BlackRubber",
@@ -397,6 +432,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EmissiveColor = ToColor(0.0, 0.0, 0.0, 0.0),
             SpecularShininess = 10f,
         }.Clone();
+        [ThreadStatic]
         public static readonly PhongMaterial DefaultVRML = new PhongMaterial
         {
             Name = "DefaultVRML",
