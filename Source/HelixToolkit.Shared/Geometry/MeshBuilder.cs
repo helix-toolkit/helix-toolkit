@@ -505,7 +505,10 @@ namespace HelixToolkit.Wpf
             }
             for (int i = 0; i < normals.Count; i++)
             {
-                normals[i].Normalize();
+            //Cannot use normals[i].normalize() if using Media3D.Vector3DCollection. Does not change the internal value in Vector3DCollection.
+                var n = normals[i];
+                n.Normalize();
+                normals[i] = n;
             }
         }
         /// <summary>
