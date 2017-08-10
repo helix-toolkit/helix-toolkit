@@ -229,7 +229,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public event System.EventHandler OnInvalidateRenderer;
             private readonly PhongMaterial material;
-            private readonly Device device;
+            private Device device;
             private ShaderResourceView texDiffuseAlphaMapView;
             private ShaderResourceView texDiffuseMapView;
             private ShaderResourceView texNormalMapView;
@@ -375,6 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.texNormalMapView);
                 Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
                 Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
+                Disposer.RemoveAndDispose(ref this.device);
             }
         }
 
