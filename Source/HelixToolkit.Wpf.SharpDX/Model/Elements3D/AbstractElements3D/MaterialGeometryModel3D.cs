@@ -248,7 +248,6 @@ namespace HelixToolkit.Wpf.SharpDX
             public EffectMaterialVariables(Effect effect, PhongMaterial material)
             {
                 this.material = material;
-                device = effect.Device;
                 this.material.OnMaterialPropertyChanged += Material_OnMaterialPropertyChanged;
                 this.vMaterialAmbientVariable = effect.GetVariableByName("vMaterialAmbient").AsVector();
                 this.vMaterialDiffuseVariable = effect.GetVariableByName("vMaterialDiffuse").AsVector();
@@ -292,7 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
             private void CreateTextureView(System.IO.Stream stream, ref ShaderResourceView textureView)
             {
                 Disposer.RemoveAndDispose(ref textureView);
-                if (stream != null)
+                if (stream != null && device != null)
                 {
                     textureView = TextureLoader.FromMemoryAsShaderResourceView(device, stream);
                 }
@@ -300,12 +299,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public void CreateTextureViews(Device device, MaterialGeometryModel3D model)
             {
+                this.device = device;
                 if (material != null)
                 {
                     CreateTextureView(material.DiffuseMap, ref this.texDiffuseMapView);
                     CreateTextureView(material.NormalMap, ref this.texNormalMapView);
                     CreateTextureView(material.DisplacementMap, ref this.texDisplacementMapView);
                     CreateTextureView(material.DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
+                }
+                else
+                {
+                    Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
+                    Disposer.RemoveAndDispose(ref this.texNormalMapView);
+                    Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
+                    Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
                 }
             }
 
@@ -375,7 +382,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Disposer.RemoveAndDispose(ref this.texNormalMapView);
                 Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
                 Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
-                Disposer.RemoveAndDispose(ref this.device);
+                
             }
         }
 
