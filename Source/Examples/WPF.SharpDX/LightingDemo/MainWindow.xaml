@@ -26,7 +26,7 @@
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            Grid.Row="0" Grid.Column="0" MSAA="Four"
+            Grid.Row="0" Grid.Column="0" MSAA="{Binding MSAA}"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             IsShadowMappingEnabled="True"
@@ -121,20 +121,18 @@
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical">
                     <!--<ComboBox  Grid.Row="3" Text="- Select Model -" ItemsSource="{Binding ShadingModelCollection}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3"/>-->
                     <ComboBox
-                        Grid.Row="3"
                         Margin="3"
                         DisplayMemberPath="Key"
                         ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
                         SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
                         SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
                         SelectedValuePath="Value" />
-                </Grid>
+                    <TextBlock>MSAA</TextBlock>
+                    <ComboBox Margin="3" SelectedItem="{Binding MSAA}" ItemsSource="{Binding MSAAs}"/>
+                </StackPanel>
             </Expander>
             <Expander
                 Grid.Row="0"
