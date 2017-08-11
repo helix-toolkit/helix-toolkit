@@ -105,11 +105,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public bool IsShadowMapEnabled { get; private set; }
-
+        
+        private MSAALevel msaa = MSAALevel.Disable;
         /// <summary>
         /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
         /// </summary>
-        public MSAALevel MSAA { get; set; }
+        public MSAALevel MSAA
+        {
+            get { return msaa; }
+            set
+            {
+                if (msaa != value)
+                {
+                    msaa = value;
+                    if (renderTimer.IsRunning)
+                    {
+                        StopRendering();
+                        EndD3D(false);
+                        StartD3D();
+                        StartRendering();
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Gets or sets the maximum time that rendering is allowed to take. When exceeded,
         /// the next cycle will be enqueued at <see cref="DispatcherPriority.Input"/> to reduce input lag.
@@ -253,7 +271,6 @@ namespace HelixToolkit.Wpf.SharpDX
             Unloaded += OnUnloaded;
             ClearColor = global::SharpDX.Color.Gray;
             IsShadowMapEnabled = false;
-            MSAA = MSAALevel.Disable;
         }
 
         /// <summary>
