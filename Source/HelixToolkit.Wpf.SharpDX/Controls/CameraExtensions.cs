@@ -472,11 +472,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (camera is ProjectionCamera)
             {
-                var projcam = camera as ProjectionCamera;
-                return Matrix.LookAtRH(
-                    projcam.Position.ToVector3(),
-                    (projcam.Position + projcam.LookDirection).ToVector3(),
-                    projcam.UpDirection.ToVector3());
+                return camera.CreateViewMatrix();
             }
 
             throw new HelixToolkitException("Unknown camera type.");
