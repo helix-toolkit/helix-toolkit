@@ -871,7 +871,8 @@ namespace HelixToolkit.Wpf.SharpDX
         void IRenderer.Render(RenderContext context)
         {
             this.FpsCounter.AddFrame(context.TimeStamp);
-            context.Camera = this.Camera;                  
+            context.Camera = this.Camera;
+            context.worldMatrix = this.worldMatrixInternal;   
             foreach (IRenderable e in this.Renderables)
             {
                 e.Render(context);
