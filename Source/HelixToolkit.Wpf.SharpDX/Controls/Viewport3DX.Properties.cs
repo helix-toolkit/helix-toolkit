@@ -821,6 +821,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty EnableSwapChainRenderingProperty
             = DependencyProperty.Register("EnableSwapChainRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty WorldMatrixProperty
+            = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity, 
+                (d,e)=> {
+                    (d as Viewport3DX).worldMatrixInternal = (global::SharpDX.Matrix)e.NewValue;
+                    (d as Viewport3DX).InvalidateRender();
+                }));
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2694,6 +2701,20 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(EnableSwapChainRenderingProperty);
+            }
+        }
+
+        private global::SharpDX.Matrix worldMatrixInternal = global::SharpDX.Matrix.Identity;
+
+        public global::SharpDX.Matrix WorldMatrix
+        {
+            set
+            {
+                SetValue(WorldMatrixProperty, value);
+            }
+            get
+            {
+                return (global::SharpDX.Matrix)GetValue(WorldMatrixProperty);
             }
         }
     }
