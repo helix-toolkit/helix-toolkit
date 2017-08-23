@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTechnique gbuffer;
         private bool loaded = false;
         private IEffectsManager defaultEffectsManager = null;
-
+        public bool IsRendering { set; get; } = true;
         /// <summary>
         /// Get RenderContext
         /// </summary>
@@ -713,8 +713,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">Is in fact <see cref="RenderingEventArgs"/>.</param>
         private void OnRendering(object sender, EventArgs e)
         {
-
-            if (!renderTimer.IsRunning)
+            if (!renderTimer.IsRunning || !IsRendering)
                 return;
             UpdateAndRender();
         }

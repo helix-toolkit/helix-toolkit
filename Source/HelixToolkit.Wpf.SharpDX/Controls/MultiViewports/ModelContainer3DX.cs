@@ -58,6 +58,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
 
+        public bool IsRendering { set; get; } = true;
+
         private IRenderHost currentRenderHost = null;
         public IRenderHost CurrentRenderHost
         {
