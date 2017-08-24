@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTechnique gbuffer;
         private IEffectsManager defaultEffectsManager = null;
         private bool loaded = false;
-
+        public bool IsRendering { set; get; } = true;
         public RenderContext RenderContext { get { return renderContext; } }
 
         private readonly Light3DSceneShared light3DPerScene = new Light3DSceneShared();
@@ -814,7 +814,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void OnRendering(object sender, EventArgs e)
         {
 
-            if (!renderTimer.IsRunning)
+            if (!renderTimer.IsRunning || !IsRendering)
                 return;
             UpdateAndRender();
         }

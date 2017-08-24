@@ -80,6 +80,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool loaded = false;
         private IEffectsManager defaultEffectsManager = null;
         private global::SharpDX.DXGI.SwapChain1 swapChain;
+
+        public bool IsRendering { set; get; } = true;
         /// <summary>
         /// Get RenderContext
         /// </summary>
@@ -741,7 +743,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void OnRendering(object sender, EventArgs e)
         {
 
-            if (!renderTimer.IsRunning)
+            if (!renderTimer.IsRunning || !IsRendering)
                 return;
             UpdateAndRender();
         }

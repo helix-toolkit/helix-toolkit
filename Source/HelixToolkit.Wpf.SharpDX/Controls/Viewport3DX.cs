@@ -583,16 +583,17 @@ namespace HelixToolkit.Wpf.SharpDX
             hostPresenter.Content = new DPFCanvas();
 #endif
             this.RenderHost = this.renderHostInternal = hostPresenter.Content as IRenderHost;
-            this.renderHostInternal.MSAA = this.MSAA;
-            this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
-            this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
-            this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
-            this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
             if (this.renderHostInternal != null)
             {
+                this.renderHostInternal.MSAA = this.MSAA;
+                this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
+                this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
+                this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
+                this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.Renderable = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
+                this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
             }
 
             if (this.adornerLayer == null)
@@ -1740,6 +1741,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Raise event from Viewport3DX if there's no hit
                 this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
             }
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if(e.Property == VisibilityProperty && RenderHost != null)
+            {
+                RenderHost.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
+            }
+            base.OnPropertyChanged(e);
         }
     }
 }

@@ -83,5 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         bool EnableSharingModelMode { set; get; }
 
         IModelContainer SharedModelContainer { set; get; }
+
+        bool IsRendering { set; get; }
     }
 }
