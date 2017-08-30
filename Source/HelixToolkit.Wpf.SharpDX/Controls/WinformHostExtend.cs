@@ -49,6 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             if (ParentControl != null)
             {
                 Mouse.Capture(ParentControl, CaptureMode.Element);
+                ParentControl.ReleaseMouseCapture();
             }
             else
             {
