@@ -18,7 +18,7 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <hx:ModelContainer3DX x:Name="sharedModels"  RenderTechnique="{Binding RenderTechnique}">
+        <hx:ModelContainer3DX x:Name="sharedModels" EffectsManager="{Binding EffectsManager}"  RenderTechnique="{Binding RenderTechnique}">
             <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" />
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"  DirectionTransform="{Binding LightDirectionTransform}"/>
