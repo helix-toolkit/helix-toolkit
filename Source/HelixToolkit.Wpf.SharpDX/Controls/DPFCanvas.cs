@@ -191,13 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
 
-                if (renderRenderable != null)
-                {
-                    renderRenderable.Detach();
-                    renderRenderable = null;
-                }
-
-                sceneAttached = false;
+                DetachRenderables();
                 renderRenderable = value;
                 InvalidateRender();
             }
@@ -385,12 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EndD3D(bool dispose)
         {
-            if (renderRenderable != null)
-            {
-                renderRenderable.Detach();
-                sceneAttached = false;
-            }
-
+            DetachRenderables();
             if (surfaceD3D == null)
             {
                 return;
@@ -417,6 +406,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private void DetachRenderables()
+        {
+            if (renderRenderable != null && sceneAttached)
+            {
+                renderRenderable.Detach();
+            }
+            sceneAttached = false;
+        }
         /// <summary>
         /// 
         /// </summary>

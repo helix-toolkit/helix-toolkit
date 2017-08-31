@@ -19,7 +19,7 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <hx:ModelContainer3DX x:Name="sharedContainer"
+        <hx:ModelContainer3DX x:Name="sharedContainer" EffectsManager="{Binding EffectsManager}"
                               RenderTechnique="{Binding RenderTechnique}">
             <hx:ShadowMap3D />
 
