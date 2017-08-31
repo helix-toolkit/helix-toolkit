@@ -15,12 +15,13 @@ using System.Threading;
 namespace HelixToolkit.Wpf.SharpDX
 {
     /// <summary>
-    /// Use to contain shared models for multiple viewports.
+    /// Use to contain shared models for multiple viewports. 
+    /// <para>Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</para>
     /// </summary>
     public class ModelContainer3DX : ItemsControl, IModelContainer
     {
         /// <summary>
-        /// The EffectsManager property.
+        /// The EffectsManager property. Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak
         /// </summary>
         public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
             "EffectsManager", typeof(IEffectsManager), typeof(ModelContainer3DX), new FrameworkPropertyMetadata(
@@ -35,7 +36,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// Gets or sets the <see cref="IEffectsManager"/>.
+        /// Gets or sets the <see cref="EffectsManagerProperty"/>.
+        /// <para>The EffectsManager property. Suggest bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak.</para>
         /// </summary>
         public IEffectsManager EffectsManager
         {
@@ -87,9 +89,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public ModelContainer3DX()
         {
-            if(!DesignerProperties.GetIsInDesignMode(this))
-                EffectsManager = new DefaultEffectsManager(new DefaultRenderTechniquesManager());
         }
+       
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>
@@ -247,14 +248,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void Attach(IRenderHost host)
         {
-            if (d3dCounter == 0)
+            if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)
             {
                 foreach (var renderable in Renderables)
                 {
                     renderable.Attach(host);
                 }
             }
-            Interlocked.Increment(ref d3dCounter);
         }
 
         public void Detach()
