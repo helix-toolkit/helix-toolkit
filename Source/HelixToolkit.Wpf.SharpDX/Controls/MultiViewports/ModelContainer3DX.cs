@@ -10,6 +10,7 @@ using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
+using System.Threading;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -59,6 +60,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
 
         public bool IsRendering { set; get; } = true;
+
+        private int d3dCounter = 0;
 
         private IRenderHost currentRenderHost = null;
         public IRenderHost CurrentRenderHost
@@ -240,6 +243,33 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             set { }
             get { return true; }
+        }
+
+        public void Attach(IRenderHost host)
+        {
+            if (d3dCounter == 0)
+            {
+                foreach (var renderable in Renderables)
+                {
+                    renderable.Attach(host);
+                }
+            }
+            Interlocked.Increment(ref d3dCounter);
+        }
+
+        public void Detach()
+        {
+            if (Interlocked.Decrement(ref d3dCounter) == 0)
+            {
+                foreach (var renderable in Renderables)
+                {
+                    renderable.Detach();
+                }
+            }
+            else if (d3dCounter < 0)
+            {
+                throw new IndexOutOfRangeException("D3DCounter is negative.");
+            }
         }
     }
 }

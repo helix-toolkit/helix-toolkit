@@ -30,5 +30,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
         IRenderHost CurrentRenderHost { set; get; }
+
+        void Attach(IRenderHost host);
+        void Detach();
     }
 }

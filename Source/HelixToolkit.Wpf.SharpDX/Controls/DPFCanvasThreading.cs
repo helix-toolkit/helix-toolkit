@@ -286,13 +286,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
 
-                if (renderRenderable != null)
-                {
-                    renderRenderable.Detach();
-                    renderRenderable = null;
-                }
-
-                sceneAttached = false;
+                DetachRenderables();
                 renderRenderable = value;
                 InvalidateRender();
             }
@@ -474,19 +468,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EndD3D(bool dispose)
         {
-            if (renderRenderable != null)
-            {
-                renderRenderable.Detach();
-                sceneAttached = false;
-            }
-
-            //if (surfaceD3D == null)
-            //{
-            //    return;
-            //}
-
-            // surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
-            // Source = null;
+            DetachRenderables();
             RenderContext?.Dispose();
             Disposer.RemoveAndDispose(ref deferredContext);
             Disposer.RemoveAndDispose(ref deferredRenderer);
@@ -506,7 +488,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 defaultEffectsManager = null;
             }
         }
-
+        private void DetachRenderables()
+        {
+            if (renderRenderable != null && sceneAttached)
+            {
+                renderRenderable.Detach();
+            }
+            sceneAttached = false;
+        }
         /// <summary>
         /// 
         /// </summary>

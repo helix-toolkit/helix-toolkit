@@ -848,9 +848,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         void IRenderer.Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Renderables)
+            foreach (IRenderable e in this.Items)
             {
                 e.Attach(host);
+            }
+            if (EnableSharedModelMode && SharedModelContainer != null)
+            {
+                SharedModelContainer.Attach(host);
             }
             StopWatch.Start();
         }
@@ -859,10 +863,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Detaches the elements.
         /// </summary>
         void IRenderer.Detach()
-        {           
-            foreach (IRenderable e in this.Renderables)
+        {
+            foreach (IRenderable e in this.Items)
             {
                 e.Detach();
+            }
+            if (EnableSharedModelMode && SharedModelContainer != null)
+            {
+                SharedModelContainer.Detach();
             }
         }
 

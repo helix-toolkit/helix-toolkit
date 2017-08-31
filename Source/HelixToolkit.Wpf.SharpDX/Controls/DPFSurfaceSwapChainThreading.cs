@@ -290,13 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
 
-                if (renderRenderable != null)
-                {
-                    renderRenderable.Detach();
-                    renderRenderable = null;
-                }
-
-                sceneAttached = false;
+                DetachRenderables();
                 renderRenderable = value;
                 ParentControl = renderRenderable as UIElement;
                 InvalidateRender();
@@ -468,11 +462,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EndD3D(bool dispose)
         {
-            if (renderRenderable != null)
-            {
-                renderRenderable.Detach();
-                sceneAttached = false;
-            }
+            DetachRenderables();
             renderThread.DestoryRenderThread();
             this.Child = null;
             Disposer.RemoveAndDispose(ref renderContext);
@@ -493,7 +483,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 defaultEffectsManager = null;
             }
         }
-
+        private void DetachRenderables()
+        {
+            if (renderRenderable != null && sceneAttached)
+            {
+                renderRenderable.Detach();
+            }
+            sceneAttached = false;
+        }
         /// <summary>
         /// 
         /// </summary>
