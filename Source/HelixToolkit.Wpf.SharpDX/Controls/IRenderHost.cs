@@ -85,5 +85,8 @@ namespace HelixToolkit.Wpf.SharpDX
         IModelContainer SharedModelContainer { set; get; }
 
         bool IsRendering { set; get; }
+
+        RenderTargetView ColorBufferView { get; }
+        DepthStencilView DepthStencilBufferView { get; }
     }
 }

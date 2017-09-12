@@ -192,6 +192,7 @@
     <Compile Include="Controls\ViewportCommands.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
+    <Compile Include="Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\InstanceGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
@@ -308,6 +309,7 @@
     <Resource Include="Model\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Shaders\CrossSection.fx" />
     <Content Include="Shaders\DataStructs.fx" />
     <Content Include="Shaders\Effects.fx" />
     <Content Include="Shaders\Lighting.fx" />

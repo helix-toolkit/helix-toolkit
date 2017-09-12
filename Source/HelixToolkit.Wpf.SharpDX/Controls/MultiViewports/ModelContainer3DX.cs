@@ -246,6 +246,22 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return true; }
         }
 
+        public RenderTargetView ColorBufferView
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.ColorBufferView : null;
+            }
+        }
+
+        public DepthStencilView DepthStencilBufferView
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.DepthStencilBufferView : null;
+            }
+        }
+
         public void Attach(IRenderHost host)
         {
             if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)

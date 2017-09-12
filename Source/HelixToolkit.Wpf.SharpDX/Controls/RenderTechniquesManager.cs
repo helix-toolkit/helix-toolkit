@@ -23,6 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string InstancingBlinn = "RenderInstancingBlinn";
         public const string BoneSkinBlinn = "RenderBoneSkinBlinn";
         public const string ParticleStorm = "ParticleStorm";
+        public const string CrossSection = "RenderCrossSectionBlinn";
     }
 
     public struct TessellationRenderTechniqueNames
@@ -95,6 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
             AddDefaultTechnique(DefaultRenderTechniqueNames.InstancingBlinn);
             AddDefaultTechnique(DefaultRenderTechniqueNames.BoneSkinBlinn);
             AddDefaultTechnique(DefaultRenderTechniqueNames.ParticleStorm);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.CrossSection);
         }
 
         protected void AddDefaultTechnique(string techniqueName)

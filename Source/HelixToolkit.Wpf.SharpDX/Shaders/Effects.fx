@@ -83,6 +83,42 @@ technique11 RenderBlinn
     }
 }
 
+technique11 RenderCrossSectionBlinn
+{
+    pass P0
+    {
+		//SetRasterizerState	( RSSolid );
+        SetDepthStencilState(DSSDepthLess, 0);
+        SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+
+        SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+        SetHullShader(NULL);
+        SetDomainShader(NULL);
+        SetGeometryShader(NULL);
+        SetPixelShader(CompileShader(ps_4_0, PSCrossSectionShaderBlinnPhong()));
+    }
+    pass P1
+    {
+        //SetDepthStencilState(DSSDepthLess, 0);
+        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+
+        SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+        SetHullShader(NULL);
+        SetDomainShader(NULL);
+        SetGeometryShader(NULL);
+        SetPixelShader(CompileShader(ps_4_0, PSCrossSectionBackFaceShader()));
+    }
+    pass P2
+    {
+        SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
+        SetVertexShader(CompileShader(vs_4_0, CrossSectionVSMAIN()));
+        SetHullShader(NULL);
+        SetDomainShader(NULL);
+        SetGeometryShader(NULL);
+        SetPixelShader(CompileShader(ps_4_0, CrossSectionPSMAIN()));
+    }
+}
+
 technique11 RenderBoneSkinBlinn
 {
 	pass P0

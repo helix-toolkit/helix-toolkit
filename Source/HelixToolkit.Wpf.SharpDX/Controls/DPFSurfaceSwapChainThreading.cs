@@ -175,7 +175,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool loaded = false;
         private IEffectsManager defaultEffectsManager = null;
         private global::SharpDX.DXGI.SwapChain1 swapChain;
-
+        public RenderTargetView ColorBufferView { get { return colorBufferView; } }
+        public DepthStencilView DepthStencilBufferView { get { return depthStencilBufferView; } }
         public bool IsRendering { set; get; } = true;
         /// <summary>
         /// Get RenderContext

@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeshSimplification", "Examp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwapChainRenderingDemo", "Examples\WPF.SharpDX\SwapChainRenderingDemo\SwapChainRenderingDemo.csproj", "{E23D3A8B-376F-4B10-B2BD-ADC3F082805C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossSectionDemo", "Examples\WPF.SharpDX\CrossSectionDemo\CrossSectionDemo.csproj", "{7B612920-493C-448B-B21B-D5A453045AAD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
@@ -380,6 +382,18 @@ Global
 		{E23D3A8B-376F-4B10-B2BD-ADC3F082805C}.Release|x64.Build.0 = Release|Any CPU
 		{E23D3A8B-376F-4B10-B2BD-ADC3F082805C}.Release|x86.ActiveCfg = Release|Any CPU
 		{E23D3A8B-376F-4B10-B2BD-ADC3F082805C}.Release|x86.Build.0 = Release|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Debug|x64.Build.0 = Debug|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Debug|x86.Build.0 = Debug|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|x64.ActiveCfg = Release|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|x64.Build.0 = Release|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -411,5 +425,6 @@ Global
 		{C4F7AE1D-C03F-4060-A89B-C8CE47AD5EB0} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{F03D69ED-DEE5-4245-9A2D-8AD000EC0584} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{E23D3A8B-376F-4B10-B2BD-ADC3F082805C} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{7B612920-493C-448B-B21B-D5A453045AAD} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 	EndGlobalSection
 EndGlobal
