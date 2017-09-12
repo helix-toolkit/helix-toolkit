@@ -1,4 +1,10 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿// <copyright file="CrossSectionMeshGeometryModel3D.cs" company="Helix Toolkit">
+//   Copyright (c) 2017 Helix Toolkit contributors
+//   Author: Lunci Hua
+// </copyright>
+
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using global::SharpDX;
     using global::SharpDX.Direct3D;
@@ -245,6 +251,8 @@
             }
         }
         #endregion
+
+        #region Private Variables
         /// <summary>
         /// Defines the planeParamsVar
         /// </summary>
@@ -295,6 +303,7 @@
         /// </summary>
         private Matrix planeParams = new Matrix();
 
+        #endregion
         /// <summary>
         /// The SetRenderTechnique
         /// </summary>

@@ -18,13 +18,27 @@
     using SharpDX.Direct3D11;
     using System.Windows.Data;
     using System.Windows;
+    using System.Windows.Threading;
 
     public class MainViewModel : BaseViewModel
     {
         public string Name { get; set; }
         public MainViewModel ViewModel { get { return this; } }
         public MeshGeometry3D Model { get; private set; }
+
+        public MeshGeometry3D FloorModel { private set; get; }
+        public PhongMaterial FloorMaterial { private set; get; }
         public Transform3D ModelTransform { get; private set; }
+
+        public MeshGeometry3D Plane1Model { private set; get; }
+
+        public MeshGeometry3D Plane2Model { private set; get; }
+        public TranslateTransform3D Plane1Transform { private set; get; }
+
+        public TranslateTransform3D Plane2Transform { private set; get; }
+
+        public PhongMaterial PlaneMaterial { private set; get; }
+
         public PhongMaterial ModelMaterial { get; set; }
 
         public PhongMaterial LightModelMaterial { get; set; }
@@ -50,16 +64,16 @@
         }
 
         public bool EnablePlane1 { set; get; } = true;
-        public Plane Plane1 { set; get; } = new Plane(new Vector3(0, -1, 0), 0);
+        public Plane Plane1 { set; get; } = new Plane(new Vector3(0, -1, 0), -15);
+        private float plane1Factor = 0.05f;
 
         public bool EnablePlane2 { set; get; } = true;
-        public Plane Plane2 { set; get; } = new Plane(new Vector3(-1, 0, 0), 0);
+        public Plane Plane2 { set; get; } = new Plane(new Vector3(-1, 0, 0), -15);
+        private float plane2Factor = 0.05f;
 
-        public bool EnablePlane3 { set; get; } = false;
-        public Plane Plane3 { set; get; } = new Plane(new Vector3(0, 1, 1), 0);
+        public bool EnableAnimation { set; get; } = true;
 
-        public bool EnablePlane4 { set; get; } = false;
-        public Plane Plane4 { set; get; } = new Plane(new Vector3(0, 1, 0), 0);
+        private DispatcherTimer timer;
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
@@ -73,9 +87,13 @@
 
             // ----------------------------------------------
             // camera setup
-            this.Camera = new OrthographicCamera { Position = new Point3D(100,100,100), LookDirection = new Vector3D(-100,-100,-100),
-                UpDirection = new Vector3D(0, 1, 0) };
-            (Camera as OrthographicCamera).FarPlaneDistance = 10000;
+            this.Camera = new PerspectiveCamera
+            {
+                Position = new Point3D(20, 20, 20),
+                LookDirection = new Vector3D(-1, -1, -1),
+                UpDirection = new Vector3D(0, 1, 0)
+            };
+            // (Camera as ProjectionCamera).FarPlaneDistance = 10000;
             this.Light1Direction = new Vector3(-100, -100, -100);
             SetupCameraBindings(this.Camera);
             // ----------------------------------------------
@@ -83,16 +101,63 @@
 
             this.Light1Color = (Color4)Color.White;
 
-            
-           // var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
+
+            var builder = new MeshBuilder(true, false, false);
+            builder.AddBox(new Vector3(), 40, 0.1, 40);
+            Plane1Model = FloorModel = builder.ToMeshGeometry3D();
+
+            builder = new MeshBuilder(true, false, false);
+            builder.AddBox(new Vector3(), 0.1, 40, 40);
+            Plane2Model = builder.ToMeshGeometry3D();
+
+            FloorMaterial = new PhongMaterial();
+            FloorMaterial.DiffuseColor = new Color4(1f, 1f, 1f, 0.2f);
+            FloorMaterial.AmbientColor = new Color4(0, 0, 0, 0);
+            FloorMaterial.ReflectiveColor = new Color4(0, 0, 0, 0);
+            FloorMaterial.SpecularColor = new Color4(0, 0, 0, 0);
+
+            PlaneMaterial = new PhongMaterial() { DiffuseColor = new Color4(0.1f, 0.1f, 0.8f, 0.2f) };
 
             var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Model = MeshGeometry3D.Merge(landerItems);
-            ModelMaterial = PhongMaterials.BlackRubber;
+            ModelMaterial = PhongMaterials.Obsidian;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.01, 0.01, 0.01));
-            //transGroup.Children.Add(new Media3D.TranslateTransform3D(0, 60, 0));
+            transGroup.Children.Add(new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Media3D.Vector3D(1, 0, 0), -90)));
+            transGroup.Children.Add(new Media3D.TranslateTransform3D(new Media3D.Vector3D(0, 6, 0)));
+
             ModelTransform = transGroup;
+
+            Plane1Transform = new TranslateTransform3D(new Vector3D(0, 15, 0));
+            Plane2Transform = new TranslateTransform3D(new Vector3D(15, 0, 0));
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(30);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (!EnableAnimation) { return; }
+            if (EnablePlane1)
+            {
+                Plane1 = new Plane(Plane1.Normal, Plane1.D + plane1Factor);
+                if (Plane1.D < -15 || Plane1.D > 0)
+                {
+                    plane1Factor = -plane1Factor;
+                }
+                Plane1Transform.OffsetY = -Plane1.D;
+            }
+            if (EnablePlane2)
+            {
+                Plane2 = new Plane(Plane2.Normal, Plane2.D + plane2Factor);
+                if (Plane2.D < -15 || Plane2.D > 5)
+                {
+                    plane2Factor = -plane2Factor;
+                }
+                Plane2Transform.OffsetX = -Plane2.D;
+            }
         }
 
         public List<Object3D> Load3ds(string path)
@@ -103,7 +168,7 @@
                 var list = reader.Read(path);
                 return list;
             }
-            else if(path.EndsWith(".3ds", StringComparison.CurrentCultureIgnoreCase))
+            else if (path.EndsWith(".3ds", StringComparison.CurrentCultureIgnoreCase))
             {
                 var reader = new StudioReader();
                 var list = reader.Read(path);

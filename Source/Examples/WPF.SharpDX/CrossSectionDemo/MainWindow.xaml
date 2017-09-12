@@ -19,11 +19,11 @@
         <hx:Viewport3DX x:Name="view1"
             Grid.Row="0" Grid.Column="0" MSAA="Disable"
             Camera="{Binding Camera}"
-            Background="White" BackgroundColor="1,1,1,1"
+            Background="Black" BackgroundColor="0.8,0.8,0.8,1"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black" CameraRotationMode="Trackball"
             UseDefaultGestures="False" ShowCameraInfo="True"
-            RenderTechnique="{Binding RenderTechnique}">
+            RenderTechnique="{Binding RenderTechnique}" RotateAroundMouseDownPoint="False" FixedRotationPoint="0,0,0" FixedRotationPointEnabled="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -39,35 +39,27 @@
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
                 Color="{Binding Light1Color}" />
+            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}"/>
             <hx:CrossSectionMeshGeometryModel3D
                 CullMode="Back"
-                FillMode="Solid"
+                ReuseVertexArrayBuffer="True"
+                FillMode="Solid" CrossSectionColor="GreenYellow"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}"
                 Plane1="{Binding Plane1}"
                 Plane2="{Binding Plane2}"
-                Plane3="{Binding Plane3}"
-                Plane4="{Binding Plane4}"
                 EnablePlane1="{Binding EnablePlane1}"
-                EnablePlane2="{Binding EnablePlane2}"
-                EnablePlane3="{Binding EnablePlane3}"
-                EnablePlane4="{Binding EnablePlane4}"/>
+                EnablePlane2="{Binding EnablePlane2}"/>
             <hx:CoordinateSystemModel3D/>
+            <hx:MeshGeometryModel3D CullMode="Back" ReuseVertexArrayBuffer="True" Geometry="{Binding Plane1Model}" Material="{Binding PlaneMaterial}" Transform="{Binding Plane1Transform}" IsRendering="{Binding EnablePlane1}"/>
+            <hx:MeshGeometryModel3D CullMode="Back" ReuseVertexArrayBuffer="True" Geometry="{Binding Plane2Model}" Material="{Binding PlaneMaterial}" Transform="{Binding Plane2Transform}" IsRendering="{Binding EnablePlane2}"/>
             <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>
         </hx:Viewport3DX>
-        <!--<StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" TextBlock.Foreground="White">
-            <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>
+        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" TextBlock.Foreground="White">
+            <CheckBox Margin="4" IsChecked="{Binding EnablePlane1}" Foreground="White">Cut Plane 1</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding EnablePlane2}" Foreground="White">Cut Plane 2</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}" Foreground="White">Animate</CheckBox>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" TextBlock.Foreground="White">
-            <TextBlock Margin="10">Num Vertices</TextBlock>
-            <TextBlock Margin="10" Text="{Binding NumberOfVertices, StringFormat='#,#'}"/>
-            <TextBlock Margin="10">Num Triangles</TextBlock>
-            <TextBlock Margin="10" Text="{Binding NumberOfTriangles, StringFormat='#,#'}"/>
-            <TextBlock
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
-        </StackPanel>-->
     </Grid>
 </Window>
