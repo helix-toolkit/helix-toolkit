@@ -131,7 +131,7 @@
             Plane1Transform = new TranslateTransform3D(new Vector3D(0, 15, 0));
             Plane2Transform = new TranslateTransform3D(new Vector3D(15, 0, 0));
 
-            timer = new DispatcherTimer();
+            timer = new DispatcherTimer(DispatcherPriority.Render);           
             timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Tick += Timer_Tick;
             timer.Start();
