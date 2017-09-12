@@ -19,4 +19,5 @@
 #include "PixelShaders.fx"
 #include "VertexShaders.fx"
 #include "Particles.fx"
+#include "CrossSection.fx"
 #endif

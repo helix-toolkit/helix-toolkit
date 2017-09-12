@@ -72,6 +72,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool loaded = false;
         private IEffectsManager defaultEffectsManager = null;
         public bool IsRendering { set; get; } = true;
+
+        public RenderTargetView ColorBufferView { get { return colorBufferView; } }
+        public DepthStencilView DepthStencilBufferView { get { return depthStencilBufferView; } }
         /// <summary>
         /// Get RenderContext
         /// </summary>

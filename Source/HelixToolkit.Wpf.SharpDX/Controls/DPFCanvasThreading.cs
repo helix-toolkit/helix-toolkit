@@ -169,6 +169,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTechnique gbuffer;
         private IEffectsManager defaultEffectsManager = null;
         private bool loaded = false;
+        public RenderTargetView ColorBufferView { get { return colorBufferView; } }
+        public DepthStencilView DepthStencilBufferView { get { return depthStencilBufferView; } }
         public bool IsRendering { set; get; } = true;
         public RenderContext RenderContext { get { return renderContext; } }
 

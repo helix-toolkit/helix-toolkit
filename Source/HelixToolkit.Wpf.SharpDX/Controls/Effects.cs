@@ -246,7 +246,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing],
-                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm]
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CrossSection]
                 });
 
                 var phong = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
@@ -395,6 +396,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.TexCoords],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Wires],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CrossSection]
                 }, defaultInputLayout);
 
                 RegisterLayout(new[] { instancingblinn }, instancingInputLayout);
