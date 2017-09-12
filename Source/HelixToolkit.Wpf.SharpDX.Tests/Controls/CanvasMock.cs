@@ -99,6 +99,22 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             }
         }
 
+        public RenderTargetView ColorBufferView
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public DepthStencilView DepthStencilBufferView
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public void SetDefaultRenderTargets(bool clear = true)
         {
         }

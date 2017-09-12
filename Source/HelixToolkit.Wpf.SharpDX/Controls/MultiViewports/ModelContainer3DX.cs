@@ -250,7 +250,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                throw new NotImplementedException();
+                return CurrentRenderHost != null ? CurrentRenderHost.ColorBufferView : null;
             }
         }
 
@@ -258,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                throw new NotImplementedException();
+                return CurrentRenderHost != null ? CurrentRenderHost.DepthStencilBufferView : null;
             }
         }
 
