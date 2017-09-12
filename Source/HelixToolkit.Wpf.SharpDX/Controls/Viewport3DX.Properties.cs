@@ -779,7 +779,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
         /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
         /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
-        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892(v=vs.85).aspx"/></para>
+        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
         /// </summary>
         public static readonly DependencyProperty EnableDeferredRenderingProperty
             = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
@@ -2641,7 +2641,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
         /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
         /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
-        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892(v=vs.85).aspx"/></para>
+        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
         /// </summary>
         public bool EnableDeferredRendering
         {
