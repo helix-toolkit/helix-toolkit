@@ -168,6 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.bHasInstances.Set(false);
             int depthStateRef;
             var depthStateBack = renderContext.DeviceContext.OutputMerger.GetDepthStencilState(out depthStateRef);
+            renderContext.DeviceContext.ClearDepthStencilView(renderContext.Canvas.DepthStencilBufferView, DepthStencilClearFlags.Depth, 1f, 0);
             // --- set context
             renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
