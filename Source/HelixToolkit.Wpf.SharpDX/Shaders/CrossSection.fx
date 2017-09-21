@@ -16,20 +16,6 @@ float4 CrossSectionColor;
 bool HasSectionFillTexture = false;
 Texture2D SectionFillTexture;
 
-//--------------------------------------------------------------------------------
-// Inter-stage structures
-//--------------------------------------------------------------------------------
-struct CrossSectionVS_INPUT
-{
-    uint vertexid : SV_VertexID;
-};
-//--------------------------------------------------------------------------------
-struct CrossSectionGS_INPUT
-{
-    float3 position : Position;
-    float3 normal : Normal;
-};
-
 void DetermineCutPlane(float3 pixelPos)
 {
     if (EnableCrossPlane.x)
@@ -78,23 +64,7 @@ float4 PSCrossSectionBackFaceShader(PSInput input) : SV_Target
     return float4(0,0,0,0);
 } 
 
-//--------------------------------------------------------------------------------
-struct CrossSectionPS_INPUT
-{
-    float4 position : SV_Position;
-	float4 color : COLOR0;
-    float2 texcoords : TEXCOORD0;
-};
-
-static const float4 qualpositions[4] =
-{
-    float4(1, 1, 0, 0),
-    float4(-1, 1, 0, 0),
-	float4(1, -1, 0, 0),
-    float4(-1, -1, 0, 0),
-};
-
-static const float2 qualtexcoords[4] =
+static const float2 quadtexcoords[4] =
 {
     float2(1, 0),
     float2(0, 0),
@@ -104,7 +74,7 @@ static const float2 qualtexcoords[4] =
 
 float4 CrossSectionVSMAIN(uint vI : SV_VERTEXID) : SV_Position
 {
-    float2 texcoord = qualtexcoords[vI];
+    float2 texcoord = quadtexcoords[vI];
     return float4((texcoord.x - 0.5f) * 2, -(texcoord.y - 0.5f) * 2, 0, 1);
 }
 
