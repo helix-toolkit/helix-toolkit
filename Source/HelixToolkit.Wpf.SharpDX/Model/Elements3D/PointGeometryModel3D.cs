@@ -86,9 +86,6 @@
         #endregion
         [ThreadStatic]
         private static PointsVertex[] vertexArrayBuffer;
-        protected InputLayout vertexLayout;
-        protected EffectTechnique effectTechnique;
-        protected EffectTransformVariables effectTransforms;
         protected EffectVectorVariable vPointParams;
         private readonly ImmutableBufferProxy<PointsVertex> vertexBuffer = new ImmutableBufferProxy<PointsVertex>(PointsVertex.SizeInBytes, BindFlags.VertexBuffer);
         protected Vector4 pointParams = new Vector4();
@@ -196,11 +193,8 @@
             }
         }
 
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            Disposer.RemoveAndDispose(ref this.rasterState);
-            if (!IsAttached) { return; }
-            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
@@ -214,10 +208,7 @@
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
 
-            try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
-            catch (System.Exception)
-            {
-            }
+            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         private void OnColorChanged()
@@ -280,12 +271,6 @@
             if (renderHost.IsDeferredLighting)
                 return false;
 
-            // --- get device
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
-            effectTransforms = new EffectTransformVariables(effect);
-
             OnCreateGeometryBuffers();
 
             // --- set up const variables
@@ -306,12 +291,8 @@
         protected override void OnDetach()
         {
             vertexBuffer.Dispose();
-            Disposer.RemoveAndDispose(ref this.rasterState);
             Disposer.RemoveAndDispose(ref this.vPointParams);
             this.renderTechnique = null;
-            this.effectTechnique = null;
-            this.vertexLayout = null;
-
             base.OnDetach();
         }
 
@@ -333,7 +314,7 @@
         {       
             // --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             // --- set effect per object const vars
             this.vPointParams.Set(pointParams);
@@ -343,7 +324,7 @@
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
 
             // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
 
             // --- bind buffer                
             renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0,

@@ -99,11 +99,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            Disposer.RemoveAndDispose(ref this.rasterState);
-            if (!IsAttached) { return; }
-            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode,
@@ -118,13 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,                    
                 IsScissorEnabled = IsThrowingShadow? false : IsScissorEnabled,
             };
-            try
-            {
-                this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
-            }
-            catch (System.Exception)
-            {
-            }
+            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         protected override void OnCreateGeometryBuffers()
@@ -162,16 +153,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-
-            // --- get variables
-            this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
-            this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
-
-            // --- transformations
-            this.effectTransforms = new EffectTransformVariables(this.effect);
-
-            // --- material 
-            this.AttachMaterial();
 
             // --- scale texcoords
             var texScale = TextureCoodScale;
@@ -236,7 +217,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             // --- check shadowmaps
             this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
@@ -252,7 +233,7 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
 
             // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
             if (this.hasInstances)
             {
                 // --- update instance buffer

@@ -157,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set constant paramerers             
             var worldMatrix = renderContext.worldMatrix;
             worldMatrix.Row4 = new Vector4(0, 0, 0, 1);
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
             this.viewMatrixVar.SetMatrix(CreateViewMatrix(renderContext));
             this.projectionMatrixVar.SetMatrix(projectionMatrix);
             this.effectMaterial.bHasShadowMapVariable.Set(false);
@@ -168,13 +168,14 @@ namespace HelixToolkit.Wpf.SharpDX
             this.bHasInstances.Set(false);
             int depthStateRef;
             var depthStateBack = renderContext.DeviceContext.OutputMerger.GetDepthStencilState(out depthStateRef);
+            renderContext.DeviceContext.ClearDepthStencilView(renderContext.Canvas.DepthStencilBufferView, DepthStencilClearFlags.Depth, 1f, 0);
             // --- set context
             renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
 
             // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
 
             // --- bind buffer                
             renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));

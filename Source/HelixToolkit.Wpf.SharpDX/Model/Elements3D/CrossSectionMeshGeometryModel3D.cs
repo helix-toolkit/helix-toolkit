@@ -422,18 +422,19 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.ClearDepthStencilView(RenderHost.DepthStencilBufferView, DepthStencilClearFlags.Stencil, 0, 0);
             var pass = this.effectTechnique.GetPassByIndex(1);
             pass.Apply(renderContext.DeviceContext);
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillStencilState, 1);
+            renderContext.DeviceContext.OutputMerger.SetRenderTargets(RenderHost.DepthStencilBufferView, new RenderTargetView[0]);//Remove render target
+            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillStencilState, 1); //Draw backface onto stencil buffer, set value to 1
             renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
 
             //Draw full screen quad to fill cross section
             crossSectionColorVar.Set(sectionColor);
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            renderContext.DeviceContext.Rasterizer.State = rasterState;
+            renderContext.DeviceContext.Rasterizer.State = RasterState;
 
             pass = this.effectTechnique.GetPassByIndex(2);
             pass.Apply(renderContext.DeviceContext);
-
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillCrossSectionState, 1);
+            renderContext.DeviceContext.OutputMerger.SetRenderTargets(RenderHost.DepthStencilBufferView, RenderHost.ColorBufferView);//Rebind render target
+            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillCrossSectionState, 1); //Only pass stencil buffer test if value is 1
             renderContext.DeviceContext.Draw(4, 0);
         }
 
