@@ -81,12 +81,9 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
         [ThreadStatic]
         private static LinesVertex[] vertexArrayBuffer = null;
-        protected InputLayout vertexLayout;
         private readonly ImmutableBufferProxy<LinesVertex> vertexBuffer = new ImmutableBufferProxy<LinesVertex>(LinesVertex.SizeInBytes, BindFlags.VertexBuffer);
         private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
         protected Vector4 lineParams = new Vector4();
-        protected EffectTechnique effectTechnique;
-        protected EffectTransformVariables effectTransforms;
         protected EffectVectorVariable vViewport, vLineParams; // vFrustum, 
 
         /// <summary>
@@ -175,11 +172,8 @@ namespace HelixToolkit.Wpf.SharpDX
             return result.IsValid;
         }
 
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            Disposer.RemoveAndDispose(ref this.rasterState);
-            if (!IsAttached) { return; }
-            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode,
@@ -195,10 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
 
-            try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
-            catch (System.Exception)
-            {
-            }
+            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         private void OnColorChanged()
@@ -261,12 +252,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (renderHost.IsDeferredLighting)
                 return false;
 
-            // --- get device
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
-            effectTransforms = new EffectTransformVariables(effect);
-
             // --- get geometry
             var geometry = geometryInternal as LineGeometry3D;
 
@@ -312,12 +297,6 @@ namespace HelixToolkit.Wpf.SharpDX
             //Disposer.RemoveAndDispose(ref this.vFrustum);
             Disposer.RemoveAndDispose(ref this.vViewport);
             Disposer.RemoveAndDispose(ref this.vLineParams);
-            Disposer.RemoveAndDispose(ref this.rasterState);
-
-            this.renderTechnique = null;
-            this.effectTechnique = null;
-            this.vertexLayout = null;
-
             base.OnDetach();
         }
 
@@ -360,7 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             // --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             // --- set effect per object const vars
             this.vLineParams.Set(lineParams);
@@ -373,7 +352,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.bHasInstances.Set(this.hasInstances);
 
             // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
 
             if (this.hasInstances)
             {

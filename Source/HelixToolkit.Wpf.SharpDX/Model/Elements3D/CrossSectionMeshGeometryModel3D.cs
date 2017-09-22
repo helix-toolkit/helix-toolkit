@@ -429,7 +429,7 @@ namespace HelixToolkit.Wpf.SharpDX
             //Draw full screen quad to fill cross section
             crossSectionColorVar.Set(sectionColor);
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            renderContext.DeviceContext.Rasterizer.State = rasterState;
+            renderContext.DeviceContext.Rasterizer.State = RasterState;
 
             pass = this.effectTechnique.GetPassByIndex(2);
             pass.Apply(renderContext.DeviceContext);

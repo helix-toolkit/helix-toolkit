@@ -68,11 +68,8 @@ namespace CustomShaderDemo
             set { SetValue(RequiresPerVertexColorationProperty, value); }
         }
 
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            Disposer.RemoveAndDispose(ref rasterState);
-            if (!IsAttached) { return; }
-            /// --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
@@ -87,13 +84,7 @@ namespace CustomShaderDemo
                 //IsAntialiasedLineEnabled = true,                    
                 //IsScissorEnabled = true,
             };
-            try
-            {
-                rasterState = new RasterizerState(Device, rasterStateDesc);
-            }
-            catch (Exception)
-            {
-            }
+            return new RasterizerState(Device, rasterStateDesc);         
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
@@ -113,11 +104,6 @@ namespace CustomShaderDemo
             {
                 return false;
             }
-
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
-            effectTransforms = new EffectTransformVariables(effect);
 
             AttachMaterial();
 
@@ -144,13 +130,7 @@ namespace CustomShaderDemo
             vertexBuffer.Dispose();
             indexBuffer.Dispose();
             Disposer.RemoveAndDispose(ref effectMaterial);
-            Disposer.RemoveAndDispose(ref effectTransforms);
             Disposer.RemoveAndDispose(ref bHasInstances);
-
-            renderTechnique = null;
-            effectTechnique = null;
-            vertexLayout = null;
-
             base.OnDetach();
         }
 
@@ -158,7 +138,7 @@ namespace CustomShaderDemo
         {
             /// --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.WorldMatrix;
-            effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             /// --- check shadowmaps
             hasShadowMap = renderHost.IsShadowMapEnabled;
@@ -178,7 +158,7 @@ namespace CustomShaderDemo
             Device.ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, 0);
 
             /// --- set rasterstate            
-            Device.ImmediateContext.Rasterizer.State = rasterState;
+            Device.ImmediateContext.Rasterizer.State = RasterState;
 
             if (hasInstances)
             {

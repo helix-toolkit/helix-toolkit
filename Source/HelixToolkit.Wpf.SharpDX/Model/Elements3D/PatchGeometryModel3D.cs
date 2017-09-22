@@ -199,12 +199,8 @@ namespace HelixToolkit.Wpf.SharpDX
             // System.Console.WriteLine();
 
         }
-
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            Disposer.RemoveAndDispose(ref this.rasterState);
-            if (!IsAttached) { return; }
-            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode,
@@ -219,13 +215,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
-            try
-            {
-                this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
-            }
-            catch (System.Exception)
-            {
-            }
+            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         protected override void OnCreateGeometryBuffers()
@@ -247,15 +237,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-            // --- get variables
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
 
             // --- get the pass
             shaderPass = effectTechnique.GetPassByName(Shading);
-
-            // --- model transformation
-            effectTransforms = new EffectTransformVariables(effect);
 
             // --- material 
             AttachMaterial();
@@ -310,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // --- set model transform paramerers        
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
-            effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
             this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
 
             // --- set primitive type
@@ -336,7 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set vertex buffer                
             renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));
 
-            renderContext.DeviceContext.Rasterizer.State = this.rasterState;
+            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
             // --- apply chosen pass
             shaderPass.Apply(renderContext.DeviceContext);
 

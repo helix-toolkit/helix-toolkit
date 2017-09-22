@@ -52,11 +52,6 @@ namespace CustomShaderDemo
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
                 return false;
 
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
-            effectTransforms = new EffectTransformVariables(effect);
-
             var geometry = Geometry as PointGeometry3D;
 
             if (geometry != null)
