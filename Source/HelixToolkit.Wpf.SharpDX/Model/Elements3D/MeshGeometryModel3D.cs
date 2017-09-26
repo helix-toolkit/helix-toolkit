@@ -35,6 +35,8 @@ namespace HelixToolkit.Wpf.SharpDX
             new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D),
             new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+        public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
+            new AffectsRenderPropertyMetadata(false, (d,e)=> { (d as MeshGeometryModel3D).invertNormal = (bool)e.NewValue; }));
 
         public bool FrontCounterClockwise
         {
@@ -73,11 +75,29 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsDepthClipEnabledProperty);
             }
         }
+        /// <summary>
+        /// Invert the surface normal during rendering
+        /// </summary>
+        public bool InvertNormal
+        {
+            set
+            {
+                SetValue(InvertNormalProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(InvertNormalProperty);
+            }
+        }
         #endregion
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
         private readonly ImmutableBufferProxy<DefaultVertex> vertexBuffer = new ImmutableBufferProxy<DefaultVertex>(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer);
         private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+
+        protected bool invertNormal { private set; get; } = false;
+
+        protected EffectScalarVariable bInvertNormalVar;
         /// <summary>
         /// For subclass override
         /// </summary>
@@ -172,6 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new System.Exception("Geometry must not be null");
             }
+            bInvertNormalVar = effect.GetVariableByName("bInvertNormal").AsScalar();
             // --- flush
             //this.Device.ImmediateContext.Flush();
             return true;
@@ -203,6 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnDetach()
         {
+            Disposer.RemoveAndDispose(ref bInvertNormalVar);
             vertexBuffer.Dispose();
             indexBuffer.Dispose();
             base.OnDetach();
@@ -225,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- set material params      
             this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
-
+            this.bInvertNormalVar.Set(invertNormal);
             this.bHasInstances.Set(this.hasInstances);
             // --- set context
             renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
@@ -259,6 +281,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 OnDrawCall(renderContext);
             }
+            this.bInvertNormalVar.Set(false);
         }
 
         /// <summary>

@@ -121,6 +121,10 @@ HSInput VShaderTessellated( VSIn input )
     HSInput output;        
     output.p		= input.p.xyz;
     output.t		= input.t;       
+    if (bInvertNormal)
+    {
+        input.n = -input.n;
+    }
     output.n		= input.n; 
     output.t1		= input.t1;
 	output.t2		= input.t2;
