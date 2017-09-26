@@ -166,7 +166,14 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Variables
-        protected RasterizerState rasterState = null;
+        private RasterizerState rasterState = null;
+        protected RasterizerState RasterState { get { return rasterState; } }
+        protected InputLayout vertexLayout { private set; get; }
+        protected EffectTechnique effectTechnique { private set; get; }
+
+        private EffectTransformVariables effectTransforms;
+        protected EffectTransformVariables EffectTransforms { get { return effectTransforms; } }
+        
         #endregion
 
         #region Properties
@@ -324,7 +331,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
         /// </summary>
-        protected virtual void OnRasterStateChanged() { }
+        protected virtual void OnRasterStateChanged()
+        {
+            Disposer.RemoveAndDispose(ref rasterState);
+            if (!IsAttached) { return; }
+            rasterState = CreateRasterState();
+        }
+
+        protected abstract RasterizerState CreateRasterState();
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -407,6 +421,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (CheckGeometry())
             {
                 AttachOnGeometryPropertyChanged();
+
+                // --- get variables
+                this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
+                this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
+
+                // --- transformations
+                this.effectTransforms = new EffectTransformVariables(this.effect);
                 return true;
             }
             else
@@ -430,6 +451,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             DetachOnGeometryPropertyChanged();
             Disposer.RemoveAndDispose(ref rasterState);
+            Disposer.RemoveAndDispose(ref this.effectTransforms);
+            this.effectTechnique = null;
+            this.vertexLayout = null;
             base.OnDetach();
         }
 

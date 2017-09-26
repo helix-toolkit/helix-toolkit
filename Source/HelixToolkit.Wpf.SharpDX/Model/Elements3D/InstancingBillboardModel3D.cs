@@ -141,11 +141,8 @@ namespace HelixToolkit.Wpf.SharpDX
             return geometryInternal is IBillboardText;
         }
 
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            Disposer.RemoveAndDispose(ref this.rasterState);
-            if (!IsAttached) { return; }
-            // --- set up rasterizer states
             var rasterStateDesc = new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
@@ -160,13 +157,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,                    
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
-            try
-            {
-                this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
-            }
-            catch (System.Exception)
-            {
-            }
+
+            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         protected override void OnCreateGeometryBuffers()
@@ -199,12 +191,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-
-            // --- get variables
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-            // --- transformations
-            effectTransforms = new EffectTransformVariables(effect);
 
             bFixedSizeVariable = effect.GetVariableByName("bBillboardFixedSize").AsScalar();
             // --- shader variables
@@ -272,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.hasInstanceParamVar.Set(this.hasInstanceParams);
             // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
-            effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
             this.bFixedSizeVariable.Set(FixedSize);
             // --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
@@ -283,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
 
             // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = rasterState;
+            renderContext.DeviceContext.Rasterizer.State = RasterState;
 
             // --- bind buffer                
             renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));

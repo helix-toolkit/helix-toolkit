@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Linq;
     using global::SharpDX;
     using System;
+    using global::SharpDX.Direct3D11;
 
     /// <summary>
     ///     Represents a composite Model3D.
@@ -32,6 +33,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.children = new ObservableElement3DCollection();
             this.children.CollectionChanged += this.ChildrenChanged;
         }
+
+        protected override RasterizerState CreateRasterState() { return null; }
 
         /// <summary>
         ///     Gets the children.

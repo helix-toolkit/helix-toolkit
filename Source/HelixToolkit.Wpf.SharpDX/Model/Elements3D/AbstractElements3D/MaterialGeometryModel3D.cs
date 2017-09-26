@@ -174,9 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Variables
         protected bool hasShadowMap = false;
-        protected InputLayout vertexLayout;
-        protected EffectTechnique effectTechnique;
-        protected EffectTransformVariables effectTransforms;
+
         protected EffectMaterialVariables effectMaterial;
         #endregion
         #region Properties
@@ -210,17 +208,24 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override bool OnAttach(IRenderHost host)
+        {
+            // --- attach
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
+            // --- material 
+            this.AttachMaterial();
+            return true;
+        }
+
         /// <summary>
         /// 
         /// </summary>
         protected override void OnDetach()
         {
             Disposer.RemoveAndDispose(ref this.effectMaterial);
-            Disposer.RemoveAndDispose(ref this.effectTransforms);
-
-            this.effectTechnique = null;
-            this.vertexLayout = null;
-
             base.OnDetach();
         }
 
