@@ -56,7 +56,10 @@ PSInput VShaderDeferred( VSInput input )
 {
 	PSInput output = (PSInput)0;
 	float4 inputp  = input.p;	
-
+    if (bInvertNormal)
+    {
+        input.n = -input.n;
+    }
 	// compose instance matrix
 	if(bHasInstances)
 	{
