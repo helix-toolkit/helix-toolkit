@@ -732,12 +732,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 // giving them the chance to invalidate the current render.                                                            
                 //renderRenderable.Update(t0);
                 try
-                {                       
-                    if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))                    
+                {
+                    try
                     {
-                        pendingValidationCycles = false;
-                        Render(t0);
-                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
+                        // Unfortunately, if DeviceRemoved/DeviceReset occurs while trying to acquire a lock,
+                        // the render thread will throw "COMException: UCEERR_RENDERTHREADFAILURE".
+                        // You can test this by executing the following command as administrator while running a demo: 
+                        //
+                        // "dxcap -forcetdr"
+                        //
+                        // Demos with permanent rendering like "LightingDemo" will fail to recover from 
+                        // DeviceRemoved/DeviceReset while static ones like "SimpleDemo" succeed.
+                        // See: https://blogs.msdn.microsoft.com/dsui_team/2013/11/18/wpf-render-thread-failures/
+                        // See: https://github.com/Microsoft/WPFDXInterop/issues/22
+                        // See: https://docs.microsoft.com/en-us/windows/uwp/gaming/handling-device-lost-scenarios
+                        if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))
+                        {
+                            pendingValidationCycles = false;
+                            Render(t0);
+                            surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
+                        }
+                    }
+                    finally
+                    {
+                        surfaceD3D.Unlock();
                     }
                 }
                 catch (Exception ex)
@@ -746,10 +764,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
                     }
-                }
-                finally
-                {
-                    surfaceD3D?.Unlock();
                 }
 
                 lastRenderingDuration = renderTimer.Elapsed - t0;
@@ -775,22 +789,33 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (surfaceD3D != null)
                 {
-                    if (RenderTechnique != null)
+                    try
                     {
-                        if (RenderTechnique == deferred)
+                        if (RenderTechnique != null)
                         {
-                            deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                            if (RenderTechnique == deferred)
+                            {
+                                deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                            }
+                            else if (RenderTechnique == gbuffer)
+                            {
+                                deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                            }
                         }
-                        else if (RenderTechnique == gbuffer)
+
+                        StopRendering();
+                        CreateAndBindTargets();
+                        SetDefaultRenderTargets();
+                        StartRendering();
+                        InvalidateRender();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!HandleExceptionOccured(ex))
                         {
-                            deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                            MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
                         }
                     }
-                    StopRendering();
-                    CreateAndBindTargets();
-                    SetDefaultRenderTargets();
-                    StartRendering();
-                    InvalidateRender();
                 }
             }));
         }
@@ -823,11 +848,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             pendingValidationCycles = false;
             StopRendering();
-            EndD3D(true);
 
-            var args = new RelayExceptionEventArgs(exception);
-            ExceptionOccurred(this, args);
-            return args.Handled;
+            var sdxException = exception as SharpDXException;
+            if (sdxException != null &&
+                (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved || 
+                 sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
+            {
+                return true;
+            }
+            else
+            {
+                var args = new RelayExceptionEventArgs(exception);
+                ExceptionOccurred(this, args);
+                return args.Handled;
+            }
         }
 
         /// <summary>
@@ -837,24 +871,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            // We don't need to handle this on NET45+ because of software fallback (Remote Desktop, Sleep).
-            // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
-#if NET40
             // this fires when the screensaver kicks in, the machine goes into sleep or hibernate
             // and any other catastrophic losses of the d3d device from WPF's point of view
-            if (this.surfaceD3D.IsFrontBufferAvailable)
+            if (true.Equals(e.NewValue))
             {
-                // We need to re-create the render targets because the get lost on NET40.
-                this.CreateAndBindTargets();
-                this.SetDefaultRenderTargets();
-                this.InvalidateRender();
-                this.StartRendering();
+                try
+                {
+                    // Try to recover from DeviceRemoved/DeviceReset
+                    EndD3D(true);
+                    RestartRendering();
+                }
+                catch (Exception ex)
+                {
+                    if (!HandleExceptionOccured(ex))
+                    {
+                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                    }
+                }
             }
             else
             {
-                this.StopRendering();
+                pendingValidationCycles = false;
+                StopRendering();
             }
-#endif
         }
     }
 }
