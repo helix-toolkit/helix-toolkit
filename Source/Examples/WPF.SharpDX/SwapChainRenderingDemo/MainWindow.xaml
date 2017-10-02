@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SwapChainRenderingDemo"
+            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"
         Title="High Performance SwapChain Rendering" Height="600" Width="800">
@@ -34,8 +36,12 @@
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <ie:CallMethodAction MethodName="OnMouseLeftButtonDownHandler" TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
@@ -85,6 +91,7 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
+            <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="0,1,1,1"/>
             <hx:CoordinateSystemModel3D/>
             <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>
         </hx:Viewport3DX>
