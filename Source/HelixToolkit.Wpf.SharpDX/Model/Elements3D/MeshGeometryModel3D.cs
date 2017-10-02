@@ -330,33 +330,34 @@ namespace HelixToolkit.Wpf.SharpDX
                 result.Distance = double.MaxValue;
                 if (g != null)
                 {
-                    var m = this.modelMatrix;
+                    var modelInvert = this.modelMatrix.Inverted();
+                    //transform ray into model coordinates
+                    var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.TransformNormal(rayWS.Direction, modelInvert));
 
-                    // put bounds to world space
-                    var b = this.Bounds.Transform(m);// BoundingBox.FromPoints(this.Bounds.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
-
-                    //var b = this.Bounds;
-
-                    // this all happens now in world space now:
-                    if (rayWS.Intersects(ref b))
+                    var b = Bounds;
+                    //Do hit test in local space
+                    if (rayModel.Intersects(ref b))
                     {
                         int index = 0;
                         foreach (var t in g.Triangles)
                         {
                             float d;
-                            var p0 = Vector3.TransformCoordinate(t.P0, m);
-                            var p1 = Vector3.TransformCoordinate(t.P1, m);
-                            var p2 = Vector3.TransformCoordinate(t.P2, m);
-                            if (Collision.RayIntersectsTriangle(ref rayWS, ref p0, ref p1, ref p2, out d))
+                            var v0 = t.P0;
+                            var v1 = t.P1;
+                            var v2 = t.P2;
+                            if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out d))
                             {
                                 if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
                                 {
                                     result.IsValid = true;
                                     result.ModelHit = this;
                                     // transform hit-info to world space now:
-                                    result.PointHit = (rayWS.Position + (rayWS.Direction * d)).ToPoint3D();
-                                    result.Distance = d;
-
+                                    var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
+                                    result.PointHit = pointWorld.ToPoint3D();
+                                    result.Distance = (rayWS.Position - pointWorld).Length();
+                                    var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
+                                    var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
+                                    var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
                                     var n = Vector3.Cross(p1 - p0, p2 - p0);
                                     n.Normalize();
                                     // transform hit-info to world space now:
