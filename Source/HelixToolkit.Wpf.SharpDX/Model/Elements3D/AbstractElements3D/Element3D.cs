@@ -149,12 +149,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
-            if (IsAttached)
+            if (IsAttached || host == null)
             {
                 return;
             }
-            this.renderTechnique = SetRenderTechnique(host);
             renderHost = host;
+            if (host.EffectsManager == null)
+            {
+                throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
+            }
+            this.renderTechnique = SetRenderTechnique(host);           
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             IsAttached = OnAttach(host);
             if (IsAttached)

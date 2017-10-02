@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return this.EffectsManager.Device;
+                return this.EffectsManager != null ? this.EffectsManager.Device : null;
             }
         }
 

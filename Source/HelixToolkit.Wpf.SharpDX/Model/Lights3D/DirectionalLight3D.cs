@@ -50,7 +50,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(RenderContext context)
         {
-            var manager = renderHost.RenderTechniquesManager;
             if (base.CanRender(context))
             {
                 return !renderHost.IsDeferredLighting;
