@@ -181,8 +181,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!base.CanRender(context))
             {
-                Light3DSceneShared.LightColors[lightIndex] = NoLight;
-                this.vLightColor.Set(Light3DSceneShared.LightColors);
+                if (IsAttached)
+                {
+                    Light3DSceneShared.LightColors[lightIndex] = NoLight;
+                    this.vLightColor.Set(Light3DSceneShared.LightColors);
+                }
                 return false;
             }
             else
