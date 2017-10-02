@@ -1430,9 +1430,9 @@ namespace HelixToolkit.Wpf.SharpDX
             var isHit = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
-            var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var bound = Bound;
 
-            if (rayWS.Intersects(ref bound) && context != null)
+            if (rayModel.Intersects(ref bound) && context != null)
             {
                 var svpm = context.ScreenViewProjectionMatrix;
                 var smvpm = modelMatrix * svpm;
@@ -1455,8 +1455,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         dist = d;
                         result.IsValid = true;
                         result.ModelHit = model;
-                        result.PointHit = v0.ToPoint3D();
                         var px = Vector3.TransformCoordinate(v0, modelMatrix);
+                        result.PointHit = px.ToPoint3D();                      
                         result.Distance = (rayWS.Position - px).Length();
                         result.Tag = t;
                         isHit = true;
