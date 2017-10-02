@@ -16,6 +16,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using SharpDX.Direct3D11;
+    using System.Diagnostics;
 
     public class MainViewModel : BaseViewModel
     {
@@ -138,7 +139,7 @@
                 return showWireframe;
             }
         }
-
+        public LineGeometry3D LineGeo { set; get; }
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
@@ -169,14 +170,14 @@
 
             this.Light1Direction = new Vector3(0, -10, -10);
             this.Light1Transform = new TranslateTransform3D(-Light1Direction.ToVector3D());
-            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction.ToVector3D(), new Vector3D(0, 1, -1), 24);
+            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction.ToVector3D(), new Vector3D(0, 1, -1), 36);
 
             this.Light2Transform = CreateAnimatedTransform1(new Vector3D(-100, 50, 0), new Vector3D(0, 0, 1), 3);
             this.Light3Transform = CreateAnimatedTransform1(new Vector3D(0, 50, 100), new Vector3D(0, 1, 0), 5);
 
             this.Light4Direction = new Vector3(0, -100, 0);
             this.Light4Transform = new TranslateTransform3D(-Light4Direction.ToVector3D());
-            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12);
+            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 48);
 
             // ----------------------------------------------
             // light model3d
@@ -192,6 +193,7 @@
             };
             var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Floor = models[0];
+            Floor.UpdateOctree();
             this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.FloorMaterial = new PhongMaterial
             {
@@ -203,9 +205,20 @@
 
             var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Model = MeshGeometry3D.Merge(landerItems);
+            Model.UpdateOctree();
             ModelMaterial = PhongMaterials.BlackRubber;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.04, 0.04, 0.04));
+            var rotateAnimation = new Rotation3DAnimation
+            {
+                RepeatBehavior = RepeatBehavior.Forever,
+                By = new Media3D.AxisAngleRotation3D(new Vector3D(0, 1, 0), 90),
+                Duration = TimeSpan.FromSeconds(4),
+                IsCumulative = true,
+            };
+            var rotateTransform = new Media3D.RotateTransform3D();
+            transGroup.Children.Add(rotateTransform);
+            rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
             transGroup.Children.Add(new Media3D.TranslateTransform3D(0, 60, 0));
             ModelTransform = transGroup;
             NumberOfTriangles = Floor.Indices.Count / 3 + Model.Indices.Count/3;
@@ -272,6 +285,26 @@
             rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
             lightTrafo.Children.Add(rotateTransform);
             return lightTrafo;
+        }
+
+        public void OnMouseLeftButtonDownHandler(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var viewport = sender as Viewport3DX;
+            if (viewport == null) { return; }
+            var point = e.GetPosition(viewport);
+            var watch = Stopwatch.StartNew();
+            var hitTests = viewport.FindHits(point);
+            watch.Stop();
+            Console.WriteLine("Hit test time =" + watch.ElapsedMilliseconds);
+            if (hitTests.Count > 0)
+            {
+                var lineBuilder = new LineBuilder();
+                foreach(var hit in hitTests)
+                {
+                    lineBuilder.AddLine(hit.PointHit.ToVector3(), (hit.PointHit + hit.NormalAtHit * 10).ToVector3());
+                }
+                LineGeo = lineBuilder.ToLineGeometry3D();
+            }
         }
     }
 
