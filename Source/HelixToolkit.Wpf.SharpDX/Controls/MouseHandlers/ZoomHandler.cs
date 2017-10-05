@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
@@ -204,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var ocamera = this.Camera as OrthographicCamera;
                     if (ocamera != null)
                     {
-                        ocamera.Width *= 1 + delta;
+                        ocamera.Width *= Math.Pow(2.5, delta);
                     }
 
                     break;
@@ -261,8 +262,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
             }
-            var newRelativePosition = relativePosition * (1 + delta);
-            var newRelativeTarget = relativeTarget * (1 + delta);
+            var f = Math.Pow(2.5, delta);
+            var newRelativePosition = relativePosition * f;
+            var newRelativeTarget = relativeTarget * f;
            
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
