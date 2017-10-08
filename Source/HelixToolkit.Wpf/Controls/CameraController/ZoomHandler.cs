@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf
                     var ocamera = this.Camera as OrthographicCamera;
                     if (ocamera != null)
                     {
-                        ocamera.Width *= 1 + delta;
+                        ocamera.Width *= Math.Pow(2.5, delta);
                     }
 
                     break;
