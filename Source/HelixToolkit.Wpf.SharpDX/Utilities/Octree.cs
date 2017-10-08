@@ -1236,14 +1236,11 @@ namespace HelixToolkit.Wpf.SharpDX
             result.Distance = double.MaxValue;
             var bound = Bound;
             bool checkBoundSphere = false;
-            global::SharpDX.BoundingSphere boundSphere = model.BoundsSphere;
+            global::SharpDX.BoundingSphere boundSphere = new global::SharpDX.BoundingSphere();
             if (model != null)
             {
                 checkBoundSphere = true;
-            }
-            else
-            {
-                boundSphere = new global::SharpDX.BoundingSphere();
+                boundSphere = model.BoundsSphere;
             }
             //Hit test in local space.
             if (rayModel.Intersects(ref bound) && (!checkBoundSphere || rayModel.Intersects(ref boundSphere)))
