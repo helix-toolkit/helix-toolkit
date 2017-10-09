@@ -848,6 +848,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             pendingValidationCycles = false;
             StopRendering();
+            EndD3D(true);
 
             var sdxException = exception as SharpDXException;
             if (sdxException != null &&

@@ -53,6 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
             private Texture2D renderTargetNMS;
 #endif
 
+            public event DependencyPropertyChangedEventHandler IsFrontBufferAvailableChanged = delegate { };
+
             public HostVisual InitializeRenderThread()
             {
                 HostVisual hostVisual = new HostVisual();
@@ -85,11 +87,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public void CreateImageSource(int adapterIdx)
             {
+                var cd = Dispatcher.CurrentDispatcher;
                 SynchronizeToCurrentThread(() => {
                     image.Source = null;
                     Disposer.RemoveAndDispose(ref surfaceD3D);
                     surfaceD3D = new DX11ImageSource(adapterIdx);
                     image.Source = surfaceD3D;
+                    surfaceD3D.IsFrontBufferAvailableChanged +=
+                        (s, e) => cd.BeginInvoke(new Action(() => IsFrontBufferAvailableChanged(s, e)));
                 });
             }
 
@@ -450,6 +455,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false; // StardD3D() is called from DP changed handler
             }
             mRenderThread.CreateImageSource(EffectsManager.AdapterIndex);
+            mRenderThread.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             //   surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
             //   surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             device = EffectsManager.Device;
@@ -457,7 +463,7 @@ namespace HelixToolkit.Wpf.SharpDX
             renderRenderable.DeferredRenderer = deferredRenderer;
 
             CreateAndBindTargets();
-            SetDefaultRenderTargets();
+            //SetDefaultRenderTargets();
             deferredContext = new DeviceContext(device);
             //  Source = surfaceD3D;
             InvalidateRender();
@@ -853,22 +859,33 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (loaded && mRenderThread.IsInitalized)
                 {
-                    if (RenderTechnique != null)
+                    try
                     {
-                        if (RenderTechnique == deferred)
+                        if (RenderTechnique != null)
                         {
-                            deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                            if (RenderTechnique == deferred)
+                            {
+                                deferredRenderer.InitBuffers(this, Format.R32G32B32A32_Float);
+                            }
+                            else if (RenderTechnique == gbuffer)
+                            {
+                                deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                            }
                         }
-                        else if (RenderTechnique == gbuffer)
+
+                        StopRendering();
+                        CreateAndBindTargets();
+                        SetDefaultRenderTargets();
+                        StartRendering();
+                        InvalidateRender();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!HandleExceptionOccured(ex))
                         {
-                            deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
+                            MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
                         }
                     }
-                    StopRendering();
-                    CreateAndBindTargets();
-                    SetDefaultRenderTargets();
-                    StartRendering();
-                    InvalidateRender();
                 }
             }));
         }
@@ -903,9 +920,19 @@ namespace HelixToolkit.Wpf.SharpDX
             StopRendering();
             EndD3D(true);
 
-            var args = new RelayExceptionEventArgs(exception);
-            ExceptionOccurred(this, args);
-            return args.Handled;
+            var sdxException = exception as SharpDXException;
+            if (sdxException != null &&
+                (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved ||
+                 sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
+            {
+                return true;
+            }
+            else
+            {
+                var args = new RelayExceptionEventArgs(exception);
+                ExceptionOccurred(this, args);
+                return args.Handled;
+            }
         }
 
         /// <summary>
@@ -915,24 +942,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            // We don't need to handle this on NET45+ because of software fallback (Remote Desktop, Sleep).
-            // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
-#if NET40
             // this fires when the screensaver kicks in, the machine goes into sleep or hibernate
             // and any other catastrophic losses of the d3d device from WPF's point of view
-            if (this.surfaceD3D.IsFrontBufferAvailable)
+            if (true.Equals(e.NewValue))
             {
-                // We need to re-create the render targets because the get lost on NET40.
-                this.CreateAndBindTargets();
-                this.SetDefaultRenderTargets();
-                this.InvalidateRender();
-                this.StartRendering();
+                try
+                {
+                    // Try to recover from DeviceRemoved/DeviceReset
+                    EndD3D(true);
+                    RestartRendering();
+                }
+                catch (Exception ex)
+                {
+                    if (!HandleExceptionOccured(ex))
+                    {
+                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                    }
+                }
             }
             else
             {
-                this.StopRendering();
+                pendingValidationCycles = false;
+                StopRendering();
             }
-#endif
         }
     }
 }
