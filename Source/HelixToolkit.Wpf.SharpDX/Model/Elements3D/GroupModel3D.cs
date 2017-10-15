@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(GroupModel3D), new UIPropertyMetadata(Transform3D.Identity, TransformPropertyChanged));
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(GroupModel3D), new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.AffectsRender, TransformPropertyChanged));
 
         private static void TransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -56,28 +56,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.modelMatrix = trafo.ToMatrix();
         }
 
-        public override void Attach(IRenderHost host)
+        protected override void OnRender(RenderContext renderContext)
         {
-            this.renderTechnique = host.RenderTechnique;
-            base.Attach(host);
-        }
-
-        public override void Render(RenderContext renderContext)
-        {
-            /// --- check to render the model
-            {
-                if (!this.IsRendering)
-                    return;
-
-                if (this.Visibility != System.Windows.Visibility.Visible)
-                    return;
-
-                //if (renderContext.IsShadowPass)
-                //    if (!this.IsThrowingShadow)
-                //        return;
-            }
-
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 var model = c as ITransformable;
                 if (model != null)
@@ -96,19 +77,27 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public virtual bool HitTest(Ray ray, ref List<HitTestResult> hits)
+        protected virtual bool CanHitTest()
         {
-            if (this.Visibility == Visibility.Collapsed)
-            {
-                return false;
-            }
-            if (this.IsHitTestVisible == false)
-            {
-                return false;
-            }
+            return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
+        }
 
+        public bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        {
+            if (CanHitTest())
+            {
+                return OnHitTest(context, ray, ref hits);
+            }
+            else
+            {
+                return false;
+            }
+        }        
+
+        protected virtual bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        {
             bool hit = false;
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 var hc = c as IHitable;
                 if (hc != null)
@@ -117,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (tc != null)
                     {
                         tc.PushMatrix(this.modelMatrix);
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }
@@ -125,7 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }
@@ -137,6 +126,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
             }            
             return hit;
-        }        
+        }
     }
 }

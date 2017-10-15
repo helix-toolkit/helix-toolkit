@@ -10,12 +10,14 @@
 namespace DeferredShadingDemo
 {
     using DemoCore;
+    using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Extensions;
-
+    using System.Linq;
     using SharpDX;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Windows.Data;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
@@ -54,7 +56,7 @@ namespace DeferredShadingDemo
         public Transform3D PointLightTransform2 { get; private set; }
         public Transform3D PointLightTransform3 { get; private set; }
 
-        public Element3DCollection PointLightCollection { get; set; }
+        public ObservableElement3DCollection PointLightCollection { get; set; }
         public Color4 PointLightColor
         {
             get { return this.pointLightColor; }
@@ -76,7 +78,7 @@ namespace DeferredShadingDemo
             set { this.pointLightSpread = value; this.InitPointLightCollection(this.PointLightCount); }
         }
 
-        public Element3DCollection SpotLightCollection { get; set; }
+        public ObservableElement3DCollection SpotLightCollection { get; set; }
         public Color4 SpotLightColor
         {
             get { return this.spotLightColor; }
@@ -122,7 +124,7 @@ namespace DeferredShadingDemo
 
             //load model
             var reader = new ObjReader();
-            var objModel = reader.Read(@"./Media/bunny.obj");            
+            var objModel = reader.Read(@"./Media/bunny.obj");
             this.Model = objModel[0].Geometry as MeshGeometry3D;
             var scale = 2.0;
 
@@ -147,7 +149,7 @@ namespace DeferredShadingDemo
             // floor plane
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddBox(new Vector3(0, 0, 0), 100, 0.0, 100, BoxFaces.PositiveY);
-            this.Plane = meshBuilder.ToMeshGeometry3D();            
+            this.Plane = meshBuilder.ToMeshGeometry3D();
             this.PlaneTransform = new TranslateTransform3D(0, -1.05, 0);
 
             // model materials
@@ -155,8 +157,8 @@ namespace DeferredShadingDemo
             this.GreenMaterial = PhongMaterials.Green;
             this.BlueMaterial = PhongMaterials.Blue;
             this.PlaneMaterial = PhongMaterials.DefaultVRML;
-            this.PlaneMaterial.DiffuseMap = new BitmapImage(new System.Uri(@"./Media/TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute));
-            this.PlaneMaterial.NormalMap = new BitmapImage(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute));
+            this.PlaneMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            this.PlaneMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.3f, 0.3f, 0.3f, 1.0f);
@@ -173,14 +175,14 @@ namespace DeferredShadingDemo
             this.SpotLightAttenuation = new Vector3(1.0f, 0.1f, 0.01f);
 
             // light collection
-            this.PointLightCollection = new Element3DCollection();
+            this.PointLightCollection = new ObservableElement3DCollection();
             this.PointLightCount = 7;
-            this.PointLightSpread = 100; 
+            this.PointLightSpread = 100;
 
             // spotlight collection
-            this.SpotLightCollection = new Element3DCollection();
+            this.SpotLightCollection = new ObservableElement3DCollection();
             this.SpotLightCount = 7;
-            this.SpotLightSpread = 100; 
+            this.SpotLightSpread = 100;
         }
 
         /// <summary>
@@ -190,10 +192,10 @@ namespace DeferredShadingDemo
         private void InitPointLightCollection(int numberLights)
         {
             // store the current technique
-            var technique = this.RenderTechnique;
+          //  var technique = this.RenderTechnique;
 
             // detouch the renderer
-            this.RenderTechnique = null;
+         //   this.RenderTechnique = null;
 
             // random            
             var rndx = new Random();
@@ -218,7 +220,7 @@ namespace DeferredShadingDemo
             }
 
             // attach the renderer
-            this.RenderTechnique = technique;
+        //    this.RenderTechnique = technique;
         }
 
         /// <summary>
@@ -243,10 +245,10 @@ namespace DeferredShadingDemo
         private void InitSpotLightCollection(int numberLights)
         {
             // store the current technique
-            var technique = this.RenderTechnique;
+            //var technique = this.RenderTechnique;
 
             // detouch the renderer
-            this.RenderTechnique = null;
+            //this.RenderTechnique = null;
 
             // random            
             var rndx = new Random();
@@ -272,7 +274,7 @@ namespace DeferredShadingDemo
             }
 
             // attach the renderer
-            this.RenderTechnique = technique;
+            //this.RenderTechnique = technique;
         }
 
         /// <summary>

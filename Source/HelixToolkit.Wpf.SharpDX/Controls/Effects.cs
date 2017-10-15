@@ -19,9 +19,13 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.D3DCompiler;
     using global::SharpDX.Direct3D;
     using System.IO;
+    using HelixToolkit.SharpDX.Helpers;
+    using System.ComponentModel;
+    using System.Windows;
 
     public interface IEffectsManager
     {
+        IRenderTechniquesManager RenderTechniquesManager { get; }
         InputLayout GetLayout(RenderTechnique technique);
         Effect GetEffect(RenderTechnique technique);
         global::SharpDX.Direct3D11.Device Device { get; }
@@ -31,9 +35,22 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// An Effects manager which includes all standard effects, 
     /// tessellation, and deferred effects.
+    /// <para>Make sure to dispose this if not being used. Otherwise may cause memory leak.</para>
     /// </summary>
     public class DefaultEffectsManager : IEffectsManager, IDisposable
-    {
+    {        
+        /// <summary>
+        /// Gets a value indicating whether the control is in design mode
+        /// (running in Blend or Visual Studio).
+        /// </summary>
+        public static bool IsInDesignMode
+        {
+            get
+            {
+                var prop = DesignerProperties.IsInDesignModeProperty;
+                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
+            }
+        }
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
@@ -41,6 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected IRenderTechniquesManager renderTechniquesManager;
 
+        public IRenderTechniquesManager RenderTechniquesManager { get { return renderTechniquesManager; } }
         /// <summary>
         /// Construct an EffectsManager
         /// </summary>
@@ -69,6 +87,10 @@ namespace HelixToolkit.Wpf.SharpDX
 #else
             this.device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
+            if (IsInDesignMode)
+            {
+                return;
+            }
             InitEffects();
         }
 
@@ -78,13 +100,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         private static Adapter GetBestAdapter(out int bestAdapterIndex)
         {
-            using (var f = new Factory())
+            using (var f = new Factory1())
             {
                 Adapter bestAdapter = null;
                 bestAdapterIndex = -1;
                 int adapterIndex = -1;
-                long bestVideoMemory = 0;
-                long bestSystemMemory = 0;
+                ulong bestVideoMemory = 0;
+                ulong bestSystemMemory = 0;
 
                 foreach (var item in f.Adapters)
                 {
@@ -107,8 +129,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         continue;
                     }
 
-                    long videoMemory = item.Description.DedicatedVideoMemory;
-                    long systemMemory = item.Description.DedicatedSystemMemory;
+                    ulong videoMemory = item.Description.DedicatedVideoMemory.ToUInt64();
+                    ulong systemMemory = item.Description.DedicatedSystemMemory.ToUInt64();
 
                     if ((bestAdapter == null) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
                     {
@@ -173,12 +195,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// Override in a derived class to control how effects are initialized.
         /// </summary>
-        /// <param name="shaderEffectString">The string representing the shader source.</param>
         protected virtual void InitEffects()
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
         }
 
         /// <summary>
@@ -222,6 +243,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CrossSection]
                 });
 
                 var phong = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
@@ -239,6 +265,45 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
                     new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                });
+
+                var instancingblinn = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn];
+                var instancingInputLayout = new InputLayout(device, GetEffect(instancingblinn).GetTechniqueByName(DefaultRenderTechniqueNames.InstancingBlinn).GetPassByIndex(0).Description.Signature, new[]
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
+           
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                });
+
+                var boneSkinBlinn = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn];
+                var boneSkinInputLayout = new InputLayout(device, GetEffect(instancingblinn).GetTechniqueByName(DefaultRenderTechniqueNames.BoneSkinBlinn).GetPassByIndex(0).Description.Signature, new[]
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BONEIDS", 0, Format.R32G32B32A32_SInt, InputElement.AppendAligned, 1),
+                    new InputElement("BONEWEIGHTS", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1),
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
                 });
 
                 var lines = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
@@ -275,6 +340,29 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
                 });
 
+                var billboardinstancing = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardInstancing];
+                var billboardInstancingInputLayout = new InputLayout(device, GetEffect(billboardinstancing)
+                    .GetTechniqueByName(DefaultRenderTechniqueNames.BillboardInstancing).GetPassByIndex(0).Description.Signature, new[]
+                {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+           
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 6, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                });
+
+                //var particle = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm];
+                //var particleLayout = new InputLayout(device, GetEffect(particle).GetTechniqueByName(DefaultRenderTechniqueNames.ParticleStorm)
+                //    .GetPassByIndex(2).Description.Signature,
+                //    null);
+
                 RegisterLayout(new[] { cubeMap }, cubeMapInputLayout);
 
                 RegisterLayout(new[]
@@ -308,7 +396,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.TexCoords],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors],
                     renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Wires],
+                    renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CrossSection]
                 }, defaultInputLayout);
+
+                RegisterLayout(new[] { instancingblinn }, instancingInputLayout);
+
+                RegisterLayout(new[] { boneSkinBlinn }, boneSkinInputLayout);
+
+                RegisterLayout(new[] { billboardinstancing }, billboardInstancingInputLayout);
+
+             //   RegisterLayout(new[] { particle }, particleLayout);
             }
             catch (Exception ex)
             {
@@ -391,7 +488,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Override in a derived class to control how effects are registered.
         /// </summary>
         /// <param name="shaderEffectString">A string representing the shader code.</param>
-        /// <param name="techniqueName"></param>
+        /// <param name="technique"></param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
         protected void RegisterEffect(string shaderEffectString, RenderTechnique technique, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
@@ -444,20 +541,24 @@ namespace HelixToolkit.Wpf.SharpDX
             return (InputLayout)data[technique.Name + "Layout"];
         }
 
+
+        private bool disposed = false;
         public void Dispose()
         {
-            if (data != null)
+            if (!disposed)
             {
-                foreach (var item in data)
+                if (data != null)
                 {
-                    var o = item.Value as IDisposable;
-                    Disposer.RemoveAndDispose(ref o);
+                    foreach (var item in data)
+                    {
+                        var o = item.Value as IDisposable;
+                        Disposer.RemoveAndDispose(ref o);
+                    }
                 }
+                Disposer.RemoveAndDispose(ref device);
+                GC.SuppressFinalize(this);
+                disposed = true;
             }
-            data = null;
-
-            Disposer.RemoveAndDispose(ref device);
-            device = null;
         }
 
         #endregion
@@ -512,8 +613,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
-            RegisterDeferredLayoutsAndEffects(Properties.Resources.Tessellation, defaultInputLayout, cubeMapInputLayout);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterDeferredLayoutsAndEffects(ShaderResources.Tessellation, defaultInputLayout, cubeMapInputLayout);
         }
 
         private void RegisterDeferredLayoutsAndEffects(string shaderEffectString, InputLayout defaultInputLayout, InputLayout cubeMapInputLayout)
@@ -545,8 +646,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(Properties.Resources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
-            RegisterTessellationLayoutsAndEffects(Properties.Resources.Tessellation);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterTessellationLayoutsAndEffects(ShaderResources.Tessellation);
         }
 
         private void RegisterTessellationLayoutsAndEffects(string shaderEffectString)

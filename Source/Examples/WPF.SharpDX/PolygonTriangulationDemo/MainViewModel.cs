@@ -8,13 +8,13 @@
 namespace PolygonTriangulationDemo
 {
     using DemoCore;
-using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
-using System;
-using Point3D = System.Windows.Media.Media3D.Point3D;
-using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using HelixToolkit.Wpf.SharpDX;
+    using SharpDX;
+    using System;
+    using Point3D = System.Windows.Media.Media3D.Point3D;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {

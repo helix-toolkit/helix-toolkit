@@ -16,6 +16,8 @@ namespace DataTemplateDemo
     using System.Windows.Media.Media3D;
     using System.Collections.Specialized;
     using System.Collections.Generic;
+    using HelixToolkit.Wpf;
+    using System.Linq;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items.supports generating child items by a
@@ -35,6 +37,12 @@ namespace DataTemplateDemo
             "ItemTemplate", typeof(DataTemplate3D), typeof(ItemsVisual3D), new PropertyMetadata(null));
 
         /// <summary>
+        ///     The item template selector property
+        /// </summary>
+        public static readonly DependencyProperty ItemTemplateSelectorProperty = DependencyProperty.Register(
+            "ItemTemplateSelector", typeof(DataTemplateSelector3D), typeof(ItemsVisual3D), new PropertyMetadata(new DefaultDataTemplateSelctor3D()));
+
+        /// <summary>
         ///     The items source property
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
@@ -42,6 +50,10 @@ namespace DataTemplateDemo
             typeof(IEnumerable),
             typeof(ItemsVisual3D),
             new PropertyMetadata(null, (s, e) => ((ItemsVisual3D)s).ItemsSourceChanged(e)));
+
+        // Using a DependencyProperty as the backing store for RefreshChildrenOnChange.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RefreshChildrenOnChangeProperty = DependencyProperty.Register(
+            "RefreshChildrenOnChange", typeof(bool), typeof(ItemsVisual3D), new PropertyMetadata(true));
 
         /// <summary>
         ///     Gets or sets the <see cref="DataTemplate3D" /> used to display each item.
@@ -59,6 +71,25 @@ namespace DataTemplateDemo
             set
             {
                 this.SetValue(ItemTemplateProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="DataTemplateSelector3D" /> used to locate the <see cref="DataTemplate3D"/> to use.
+        /// </summary>
+        /// <value>
+        ///     The item template selector.
+        /// </value>
+        public DataTemplateSelector3D ItemTemplateSelector
+        {
+            get
+            {
+                return (DataTemplateSelector3D)this.GetValue(ItemTemplateSelectorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ItemTemplateSelectorProperty, value);
             }
         }
 
@@ -81,6 +112,17 @@ namespace DataTemplateDemo
             }
         }
 
+        /// <summary>
+        /// Gets or sets whether to refresh all children on a change.
+        /// </summary>
+        /// <remarks>
+        /// This is done by re-attaching the <see cref="ItemsVisual3D"/> instance to the <see cref="Viewport.Children"/> collection.
+        /// </remarks>
+        public bool RefreshChildrenOnChange
+        {
+            get { return (bool)GetValue(RefreshChildrenOnChangeProperty); }
+            set { SetValue(RefreshChildrenOnChangeProperty, value); }
+        }
 
         /// <summary>
         /// Keeps track of the visuals created for each item.
@@ -98,65 +140,84 @@ namespace DataTemplateDemo
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            var observableCollection = this.ItemsSource as INotifyCollectionChanged;
+            var oldObservableCollection = e.OldValue as INotifyCollectionChanged;
+            if (oldObservableCollection != null)
+            {
+                oldObservableCollection.CollectionChanged -= this.CollectionChanged;
+            }
+
+            var observableCollection = e.NewValue as INotifyCollectionChanged;
             if (observableCollection != null)
             {
-                // TODO: should also unsubscribe to avoid leaks.
                 observableCollection.CollectionChanged += this.CollectionChanged;
             }
 
             if (this.ItemsSource != null)
             {
-                foreach (var item in this.ItemsSource)
-                {
-                    this.AddItem(item);
-                }
+                AddItems(this.ItemsSource);
+            }
+
+            if (RefreshChildrenOnChange)
+                RefreshChildren();
+        }
+
+        /// <summary>
+        /// Re-attaches the instance to the viewport resulting in a refresh.
+        /// </summary>
+        public void RefreshChildren()
+        {
+            var viewPort = Visual3DHelper.GetViewport3D(this);
+            var index = viewPort.Children.IndexOf(this);
+            viewPort.Children.Remove(this);
+            viewPort.Children.Insert(index, this);
+        }
+
+        private void AddItems(IEnumerable items)
+        {
+            if (items != null && items.Cast<object>().Any())
+            {
+                foreach (var item in items)
+                    AddItem(item);
             }
         }
 
-        private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems)
-                    {
-                        this.AddItem(item);
-                    }
-
+                    AddItems(e.NewItems);
                     break;
+
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var rem in e.OldItems)
-                    {
-                        if (this.visuals.ContainsKey(rem))
-                        {
-                            if (this.visuals[rem] != null)
-                            {
-                                this.Children.Remove(this.visuals[rem]);
-                            }
-                        }
-                    }
-
+                    RemoveItems(e.OldItems);
                     break;
+
+                case NotifyCollectionChangedAction.Replace:
+                    RemoveItems(e.OldItems);
+                    AddItems(e.NewItems);
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    this.Children.Clear();
+                    this.visuals.Clear();
+
+                    this.AddItems(ItemsSource);
+                    break;
+
                 default:
                     break;
             }
+
+            if (RefreshChildrenOnChange)
+                RefreshChildren();
         }
 
         private void AddItem(object item)
         {
-            Visual3D visual;
-            if (this.ItemTemplate != null)
-            {
-                visual = this.ItemTemplate.CreateItem(item);
-            }
-            else
-                visual = item as Visual3D;
-
+            var visual = CreateVisualFromModel(item);
             if (visual != null)
             {
-
-                // todo: set up bindings?
                 // Cannot set DataContext, set bindings manually
                 // http://stackoverflow.com/questions/7725313/how-can-i-use-databinding-for-3d-elements-like-visual3d-or-uielement3d
                 this.Children.Add(visual);
@@ -166,6 +227,47 @@ namespace DataTemplateDemo
             else
             {
                 throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
+            }
+        }
+        private void RemoveItems(IEnumerable items)
+        {
+            if (items == null)
+                return;
+
+            foreach (var rem in items)
+            {
+                if (visuals.ContainsKey(rem))
+                {
+                    if (visuals[rem] != null)
+                    {
+                        Children.Remove(visuals[rem]);
+                    }
+                }
+            }
+        }
+
+        private Visual3D CreateVisualFromModel(object item)
+        {
+            if (this.ItemTemplate != null)
+            {
+                return this.ItemTemplate.CreateItem(item);
+            }
+            else if (ItemTemplateSelector != null)
+            {
+                var viewPort = Visual3DHelper.GetViewport3D(this);
+                var dataTemplate = ItemTemplateSelector.SelectTemplate(item, viewPort);
+                if (dataTemplate != null)
+                {
+                    return dataTemplate.CreateItem(item);
+                }
+                else
+                {
+                    return item as Visual3D;
+                }
+            }
+            else
+            {
+                return item as Visual3D;
             }
         }
     }

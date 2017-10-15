@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can translate y property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateYProperty = DependencyProperty.Register(
-            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, ChildrenChanged));
+            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true,  ChildrenChanged));
 
         /// <summary>
         /// The can translate z property.
@@ -63,13 +63,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new UIPropertyMetadata(2.0, ChildrenChanged));
+            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new AffectsRenderPropertyMetadata(2.0, ChildrenChanged));
 
         /// <summary>
         ///   The target transform property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
-            "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), 
+            new AffectsRenderFrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         ///   Gets or sets TargetTransform.
@@ -188,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Binds this manipulator to a given Model3D.
         /// </summary>
-        /// <param name="target">
+        /// <param name="source">
         /// Source Visual3D which receives the manipulator transforms. 
         /// </param>
         public void Bind(GeometryModel3D source)
@@ -210,7 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="context"></param>
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
             foreach (var c in this.Children)
             {
@@ -237,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="ray"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Children)
@@ -245,7 +246,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var hc = c as IHitable;
                 if (hc != null)
                 {
-                    if (hc.HitTest(ray, ref hits))
+                    if (hc.HitTest(context, ray, ref hits))
                     {
                         hit = true;
                     }

@@ -13,12 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
 
-    public enum MeshFaces
-    {
-        Default, 
-        QuadPatches,
-    }
-
     public struct ModelInfo
     {
         public MeshFaces Faces { get; set; }
@@ -37,6 +31,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="path">
         /// The path.
         /// </param>
+        /// <param name="info">
+        /// The model info.
+        /// </param>
         /// <returns>
         /// The model.
         /// </returns>
@@ -47,6 +44,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="s">
         /// The stream.
+        /// </param>
+        /// <param name="info">
+        /// The model info.
         /// </param>
         /// <returns>
         /// The model.

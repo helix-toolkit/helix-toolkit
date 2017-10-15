@@ -4,6 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
 {
     public class ThreePointLight3D : GroupElement3D, ILight3D
@@ -13,25 +15,33 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
             //TODO: http://www.3drender.com/light/3point.html
         }
 
-        public override void Attach(IRenderHost host)
+        public Light3DSceneShared Light3DSceneShared
         {
-            foreach (var c in this.Children)
+            private set; get;
+        }
+
+        protected override bool OnAttach(IRenderHost host)
+        {
+            Light3DSceneShared = host.Light3DSceneShared;
+            foreach (var c in this.Items)
             {
                 c.Attach(host);
             }
+            return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
-            foreach (var c in this.Children)
+            base.OnDetach();
+            foreach (var c in this.Items)
             {
                 c.Detach();
             }
         }
 
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
-            foreach (var c in this.Children)
+            foreach (var c in this.Items)
             {
                 c.Render(context);
             }

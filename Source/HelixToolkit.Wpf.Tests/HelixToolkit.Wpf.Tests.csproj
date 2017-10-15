@@ -54,8 +54,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore">
@@ -68,6 +68,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase">
@@ -83,23 +84,23 @@
     <Compile Include="Exporters\ObjExporterTests.cs" />
     <Compile Include="Exporters\ExporterTests.cs" />
     <Compile Include="Exporters\X3DExporterTests.cs" />
-    <Compile Include="ExtensionMethods\StringExtensionsTests.cs" />
     <Compile Include="Geometry\BoundingSphereTests.cs" />
     <Compile Include="Geometry\CuttingEarsTriangulatorTests.cs" />
     <Compile Include="Geometry\LineSegmentTests.cs" />
+    <Compile Include="Geometry\Polygon3DTests.cs" />
     <Compile Include="Geometry\Ray3DTests.cs" />
     <Compile Include="Helpers\ContourHelperTests.cs" />
     <Compile Include="Helpers\Vector3DExtensionsTests.cs" />
     <Compile Include="Helpers\MeshBuilderTests.cs" />
     <Compile Include="Helpers\ScreenSpace\LineGeometryBuilderTests.cs" />
     <Compile Include="Geometry\TriangleTests.cs" />
+    <Compile Include="Helpers\Viewport3DHelperTests.cs" />
     <Compile Include="Importers\ModelImporterTests.cs" />
     <Compile Include="Importers\OffReaderTests.cs" />
     <Compile Include="Importers\StudioReaderTests.cs" />
     <Compile Include="Importers\StlReaderTests.cs" />
     <Compile Include="Importers\ObjReaderTests.cs" />
     <Compile Include="Importers\LwoReaderTests.cs" />
-    <Compile Include="Polygon3DTests.cs" />
     <Compile Include="StereoHelperTests.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\CubeVisual3DTests.cs" />
@@ -181,6 +182,10 @@
     <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf.csproj">
       <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
       <Name>HelixToolkit.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -7,12 +7,13 @@
 namespace DemoCore
 {
     using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
     public abstract class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string info)
+        protected void OnPropertyChanged([CallerMemberName]string info = "")
         {
             if (this.PropertyChanged != null)
             {
@@ -20,7 +21,7 @@ namespace DemoCore
             }
         }
 
-        protected bool SetValue<T>(ref T backingField, T value, string propertyName)
+        protected bool SetValue<T>(ref T backingField, T value, [CallerMemberName]string propertyName = "")
         {
             if (object.Equals(backingField, value))
             {

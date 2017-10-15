@@ -1,30 +1,11 @@
-//#include "./Shaders/Common.fx"
-//#include "./Shaders/Default.fx"
+#ifndef POINTS_FX
+#define POINTS_FX
+
+#include "Common.fx"
+#include "Material.fx"
+#include "DataStructs.fx"
 
 float4 vPointParams = float4(4, 4, 0, 0);
-
-//--------------------------------------------------------------------------------------
-// VERTEX AND PIXEL SHADER INPUTS
-//--------------------------------------------------------------------------------------
-struct VSInputPS
-{
-    float4 p	: POSITION;
-    float4 c	: COLOR;
-};
-
-struct GSInputPS
-{
-    float4 p	: POSITION;
-    float4 c	: COLOR;
-};
-
-struct PSInputPS
-{
-    float4 p	: SV_POSITION;
-    noperspective 
-    float3 t	: TEXCOORD;
-    float4 c	: COLOR;
-};
 
 void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
 {
@@ -119,23 +100,4 @@ float4 PShaderPoints( PSInputPS input ) : SV_Target
 
     return input.c;
 }
-
-//--------------------------------------------------------------------------------------
-// Techniques
-//-------------------------------------------------------------------------------------
-technique11 RenderPoints
-{
-    pass P0
-    {	
-        //SetDepthStencilState( DSSDepthLess, 0 );
-        //SetDepthStencilState( DSSDepthLessEqual, 0 );
-        //SetRasterizerState	( RSLines );
-        //SetRasterizerState( RSFillBiasBack );
-        //SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-        SetVertexShader		( CompileShader( vs_4_0, VShaderPoints() ) );
-        SetHullShader		( NULL );
-        SetDomainShader		( NULL );        
-        SetGeometryShader	( CompileShader( gs_4_0, GShaderPoints() ) );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderPoints() ) );
-    }    
-}
+#endif

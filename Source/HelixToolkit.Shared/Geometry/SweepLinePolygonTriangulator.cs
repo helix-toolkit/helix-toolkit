@@ -6,8 +6,11 @@
 //   A polygon triangulator for simple polygons with no holes. Expected runtime is O(n log n)
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
     using System.Collections.Generic;
@@ -22,6 +25,7 @@ namespace HelixToolkit.Wpf
     using DoubleOrSingle = System.Double;
 #endif
 
+#pragma warning disable 0436
     /// <summary>
     /// Triangulate a simple Polygon with the Sweep-Line Algorithm
     /// </summary>
@@ -1083,4 +1087,5 @@ namespace HelixToolkit.Wpf
             }
         }
     }
+#pragma warning restore 0436
 }

@@ -17,6 +17,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using Matrix = global::SharpDX.Matrix;
+    using Matrix3x3 = global::SharpDX.Matrix3x3;
+    using Vector3 = global::SharpDX.Vector3;
 
     /// <summary>
     /// Provides extension methods for the cameras.
@@ -399,21 +401,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var perspectiveCamera = camera as PerspectiveCamera;
             if (perspectiveCamera != null)
             {
-                return Matrix.PerspectiveFovRH(
-                    (float)perspectiveCamera.FieldOfView,
-                    (float)(aspectRatio),
-                    (float)perspectiveCamera.NearPlaneDistance,
-                    (float)perspectiveCamera.FarPlaneDistance);
+                return perspectiveCamera.CreateProjectionMatrix(aspectRatio);
             }
 
             var orthographicCamera = camera as OrthographicCamera;
             if (orthographicCamera != null)
             {
-                return Matrix.OrthoRH(
-                    (float)orthographicCamera.Width,
-                    (float)(orthographicCamera.Width / aspectRatio),
-                    (float)orthographicCamera.NearPlaneDistance,
-                    (float)orthographicCamera.FarPlaneDistance);
+                return orthographicCamera.CreateProjectionMatrix(aspectRatio);
             }
             throw new HelixToolkitException("Unknown camera type.");
         }
@@ -478,16 +472,38 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (camera is ProjectionCamera)
             {
-                var projcam = camera as ProjectionCamera;
-                return Matrix.LookAtRH(
-                    projcam.Position.ToVector3(),
-                    (projcam.Position + projcam.LookDirection).ToVector3(),
-                    projcam.UpDirection.ToVector3());
+                return camera.CreateViewMatrix();
             }
 
             throw new HelixToolkitException("Unknown camera type.");
         }
 
+        public static Matrix GetInversedViewMatrix(this Camera camera)
+        {
+            var viewMatrix = GetViewMatrix(camera);
+            return InverseViewMatrix(ref viewMatrix);
+        }
+
+        public static Matrix InverseViewMatrix(ref Matrix viewMatrix)
+        {
+            //var v33Transpose = new Matrix3x3(
+            //    viewMatrix.M11, viewMatrix.M21, viewMatrix.M31,
+            //    viewMatrix.M12, viewMatrix.M22, viewMatrix.M32,
+            //    viewMatrix.M13, viewMatrix.M23, viewMatrix.M33);
+            
+            //var vpos = viewMatrix.Row4.ToVector3();
+
+            //     vpos = Vector3.Transform(vpos, v33Transpose) * -1;
+
+            var x = viewMatrix.M41 * viewMatrix.M11 + viewMatrix.M42 * viewMatrix.M12 + viewMatrix.M43 * viewMatrix.M13;
+            var y = viewMatrix.M41 * viewMatrix.M21 + viewMatrix.M42 * viewMatrix.M22 + viewMatrix.M43 * viewMatrix.M23;
+            var z = viewMatrix.M41 * viewMatrix.M31 + viewMatrix.M42 * viewMatrix.M32 + viewMatrix.M43 * viewMatrix.M33;
+      
+            return new Matrix(
+                viewMatrix.M11, viewMatrix.M21, viewMatrix.M31, 0,
+                viewMatrix.M12, viewMatrix.M22, viewMatrix.M32, 0,
+                viewMatrix.M13, viewMatrix.M23, viewMatrix.M33, 0, -x, -y, -z, 1);
+        }
         /// <summary>
         /// Set the camera target point without changing the look direction.
         /// </summary>

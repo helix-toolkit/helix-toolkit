@@ -1,3 +1,6 @@
+#ifndef COMMON_FX
+#define COMMON_FX
+
 //--------------------------------------------------------------------------------------
 // File: Header for HelixToolkitDX
 // Author: Przemyslaw Musialski
@@ -128,6 +131,20 @@ DepthStencilState DSSDepthLess
 	DepthWriteMask				= All;
 	DepthFunc					= Less;
 };
+
+DepthStencilState DSSDepthParticle
+{
+	DepthEnable = true;
+    DepthWriteMask = Zero;
+};
+
+DepthStencilState DSSDepthXRay
+{
+	DepthEnable = true;
+    DepthWriteMask = Zero;
+    DepthFunc = Greater;
+};
+
 //--------------------------------------------------------------------------------------
 BlendState BSNoBlending
 {
@@ -147,6 +164,29 @@ BlendState BSBlending
     RenderTargetWriteMask[0]	= 0x0F;
 };
 
+BlendState BSParticleBlending
+{
+    BlendEnable[0] = true;
+	SrcBlend = ONE;
+	DestBlend = ONE;
+    BlendOp = ADD;
+    SrcBlendAlpha = ONE;
+    DestBlendAlpha = ZERO;
+    BlendOpAlpha = ADD;
+    RenderTargetWriteMask[0] = 0x0F;
+};
+
+BlendState BSXRayBlending
+{
+    BlendEnable[0] = true;
+	SrcBlend = ONE;
+	DestBlend = ONE;
+    BlendOp = ADD;
+    SrcBlendAlpha = ONE;
+    DestBlendAlpha = ZERO;
+    BlendOpAlpha = ADD;
+    RenderTargetWriteMask[0] = 0x0F;
+};
 
 //--------------------------------------------------------------------------------------
 // GLOBAL VARIABLES
@@ -169,3 +209,42 @@ BlendState BSBlending
 	// camera position
 	float3 vEyePos;
 
+//--------------------------------------------------------------------------------------
+// GLOBAL FUNCTIONS
+//--------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------
+// From projection frame to window pixel pos.
+//--------------------------------------------------------------------------------------
+float2 projToWindow(in float4 pos)
+{
+    return float2(vViewport.x * 0.5 * (1.0 + (pos.x / pos.w)),
+                  vViewport.y * 0.5 * (1.0 - (pos.y / pos.w)));
+}
+
+//--------------------------------------------------------------------------------------
+// From window pixel pos to projection frame at the specified z (view frame). 
+//--------------------------------------------------------------------------------------
+float4 windowToProj(in float2 pos, in float z, in float w)
+{
+    return float4(((pos.x * 2.0 / vViewport.x) - 1.0) * w,
+                  ((pos.y * 2.0 / vViewport.y) - 1.0) * -w,
+                  z, w);
+}
+
+int whengt(float l, float cmp) {
+	return max(sign(l - cmp), 0);
+}
+
+int whenlt(float l, float cmp) {
+	return max(sign(cmp - l), 0);
+}
+
+int whenge(float l, float cmp) {
+	return 1 - whenlt(l, cmp);
+}
+
+int whenle(float l, float cmp) {
+	return 1 - whengt(l, cmp);
+}
+#endif

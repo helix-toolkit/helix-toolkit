@@ -1,0 +1,263 @@
+﻿<Window x:Class="ParticleSystemDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
+        xmlns:local="clr-namespace:ParticleSystemDemo"
+        mc:Ignorable="d"
+        Title="ParticleSystemDemo" Height="800" Width="1200">
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:ParticleSizeConverter x:Key="particleSizeConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="Black">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Style.Setters>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="2"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="Width" Value="50"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="2"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="Slider">
+                <Style.Setters>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="2"/>
+                    <Setter Property="Width" Value="150"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="CheckBox">
+                <Style.Setters>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Style.Setters>
+                    <Setter Property="MinWidth" Value="100"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style.Setters>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX
+            x:Name="view1"
+            Title="{Binding Title}"
+            Grid.Row="0" Grid.Column="0" MSAA="Four"
+            Camera="{Binding Camera}"
+            CoordinateSystemLabelForeground="White"
+            IsShadowMappingEnabled="False"
+            ShowCoordinateSystem="False"
+            SubTitle="{Binding SubTitle}" BackgroundColor="{x:Static sdx:Color4.Black}"
+            TextBrush="Black" ShowFrameRate="True"
+            UseDefaultGestures="False">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <!--<MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />-->
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="MiddleClick" />
+            </hx:Viewport3DX.InputBindings>
+
+            <hx:DirectionalLight3D
+                Direction="0,0,-1"
+                Color="{Binding Light1Color}" />
+
+            <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
+            <hx:DraggableGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding EmitterTransform, Mode=TwoWay}" Material="{Binding EmitterMaterial}"  />
+            <hx:DraggableGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding ConsumerTransform, Mode=TwoWay}" Material="{Binding ConsumerMaterial}"  />
+            <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
+                                     ParticleSize="{Binding ParticleSize}" 
+                                     EmitterLocation="{Binding EmitterLocation}" 
+                                     ConsumerLocation="{Binding ConsumerLocation}"
+                                     Acceleration="{Binding Acceleration}" InitialEnergy="5" EnergyDissipationRate="1"
+                                     ParticleBounds="{Binding ParticleBounds}" BlendColor="{Binding BlendColor}"
+                                     NumTextureColumn="{Binding NumTextureColumns}"
+                                     NumTextureRow="{Binding NumTextureRows}"
+                                     SourceBlend="{Binding SourceBlendOption}"
+                                     SourceAlphaBlend="{Binding SourceAlphaBlendOption}"
+                                     DestBlend="{Binding DestBlendOption}"
+                                     DestAlphaBlend="{Binding DestAlphaBlendOption}"
+                                     ConsumerRadius="{Binding ConsumerRadius}"
+                                     EmitterRadius="{Binding EmitterRadius}"/>
+        </hx:Viewport3DX>
+        <ScrollViewer Grid.Column="1">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="320">
+                <StackPanel Orientation="Horizontal">
+                    <Label>Texture:</Label>
+                    <ComboBox SelectedIndex="{Binding SelectedTextureIndex}" VerticalAlignment="Center" Margin="4" Width="100">
+                        <ComboBoxItem IsSelected="True">Snow flakes</ComboBoxItem>
+                        <ComboBoxItem>Fire</ComboBoxItem>
+                        <ComboBoxItem>Sparks</ComboBoxItem>
+                        <ComboBoxItem>Smoke</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Max Particle Count:</Label>
+                    <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleCount}" VerticalAlignment="Center"/>
+                    <Slider Value="{Binding ElementName=particleModel, Path=ParticleCount}" Minimum="8" Maximum="4096" LargeChange="100" SmallChange="10" VerticalAlignment="Center"></Slider>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Particle Size:</Label>
+                    <TextBlock Text="{Binding ElementName=particleModel,Path=ParticleSize}" VerticalAlignment="Center"/>
+                    <Slider Value="{Binding SizeSlider}" Minimum="1" Maximum="100" SmallChange="1" LargeChange="10"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Initial Velocity:</Label>
+                    <TextBlock Text="{Binding ElementName=particleModel,Path=InitialVelocity}" VerticalAlignment="Center"/>
+                    <Slider Value="{Binding ElementName=particleModel,Path=InitialVelocity}" Minimum="0" Maximum="10" SmallChange="0.1" LargeChange="1"/>
+                </StackPanel>
+                <Separator></Separator>
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Label>Accerlation:</Label>
+                        <TextBlock Text="{Binding ElementName=particleModel, Path=Acceleration}"/>                    
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Label>X: </Label>
+                            <Slider Value="{Binding AccelerationX}" Minimum="-500" Maximum="500" SmallChange="1" LargeChange="10" Width="250"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Y:</Label>
+                            <Slider Value="{Binding AccelerationY}" Minimum="-500" Maximum="500" SmallChange="1" LargeChange="10" Width="250"/>                        
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Z:</Label>
+                            <Slider Value="{Binding AccelerationZ}" Minimum="-500" Maximum="500" SmallChange="1" LargeChange="10" Width="250"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Consumer Gravity:</Label>
+                    <TextBlock Text="{Binding ElementName=particleModel, Path=ConsumerGravity}"/>
+                    <Slider Value="{Binding ElementName=particleModel, Path=ConsumerGravity}" Minimum="0" Maximum="40" SmallChange="1" LargeChange="10" Width="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Consumer Radius:</Label>
+                    <TextBlock Text="{Binding ConsumerRadius}"/>
+                    <Slider Value="{Binding ConsumerRadius}" Minimum="0" Maximum="10" SmallChange="1" LargeChange="2" Width="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Emitter Radius:</Label>
+                    <TextBlock Text="{Binding EmitterRadius}"/>
+                    <Slider Value="{Binding EmitterRadius}" Minimum="0" Maximum="10" SmallChange="1" LargeChange="2" Width="150"/>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Initial Energy:</Label>
+                    <TextBlock Text="{Binding ElementName=particleModel, Path=InitialEnergy}"/>
+                    <Slider Value="{Binding ElementName=particleModel, Path=InitialEnergy}" Minimum="1" Maximum="30" SmallChange="1" LargeChange="10"></Slider>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Dissipation Rate(/s):</Label>
+                    <TextBlock Text="{Binding ElementName=particleModel, Path=EnergyDissipationRate}"/>
+                    <Slider Value="{Binding ElementName=particleModel, Path=EnergyDissipationRate}" Minimum="1" Maximum="30" SmallChange="1" LargeChange="10"></Slider>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Cumulate at bound:</Label>
+                    <CheckBox IsChecked="{Binding ElementName=particleModel, Path=CumulateAtBound}"></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Bound:</Label>
+                    <Slider Value="{Binding BoundScale}" Minimum="1" Maximum="40" SmallChange="1" LargeChange="10"></Slider>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Blend Color:</Label>
+                        <Rectangle Width="30" Height="20" Fill="{Binding BlendColorBrush}" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Foreground="Red">R:</Label>
+                            <TextBlock Text="{Binding RedValue}"/>
+                            <Slider Value="{Binding RedValue}" Minimum="0" Maximum="255" SmallChange="1" LargeChange="10"></Slider>                        
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Foreground="Green">G:</Label>
+                            <TextBlock Text="{Binding GreenValue}"/>
+                            <Slider Value="{Binding GreenValue}" Minimum="0" Maximum="255" SmallChange="1" LargeChange="10"></Slider>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Foreground="Blue">B:</Label>
+                            <TextBlock Text="{Binding BlueValue}"/>
+                            <Slider Value="{Binding BlueValue}" Minimum="0" Maximum="255" SmallChange="1" LargeChange="10"></Slider>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Animate by energy level:</Label>
+                    <CheckBox IsChecked="{Binding ElementName=particleModel, Path=AnimateSpriteByEnergy}"></CheckBox>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Style.Setters>
+                                <Setter Property="MinWidth" Value="80"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="2"/>
+                            </Style.Setters>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Label>Blend State</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Blend Operation:</Label>
+                        <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=Blend}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Alpha Blend Operation:</Label>
+                        <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=AlphaBlend}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Source Blend:</Label>
+                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceBlend}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Dest Blend:</Label>
+                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestBlend}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Source Alpha Blend:</Label>
+                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceAlphaBlend}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Dest Alpha Blend:</Label>
+                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestAlphaBlend}"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>  
+        </ScrollViewer>        
+    </Grid>
+</Window>

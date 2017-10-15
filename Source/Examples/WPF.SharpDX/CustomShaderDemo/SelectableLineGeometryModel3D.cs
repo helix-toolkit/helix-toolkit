@@ -12,6 +12,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 namespace CustomShaderDemo
 {
     using HelixToolkit.Wpf.SharpDX.Extensions;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct CustomLinesVertex
@@ -24,44 +25,53 @@ namespace CustomShaderDemo
 
     public class SelectableLineGeometryModel3D : LineGeometryModel3D
     {
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<CustomLinesVertex> vertexBuffer = new ImmutableBufferProxy<CustomLinesVertex>(CustomLinesVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        public override IBufferProxy VertexBuffer
         {
             get
             {
-                return CustomLinesVertex.SizeInBytes;
+                return vertexBuffer;
             }
         }
-        public override void Attach(IRenderHost host)
-        {          
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
-            base.Attach(host);
 
-            if (Geometry == null)
-                return;
+        public override IBufferProxy IndexBuffer
+        {
+            get
+            {
+                return indexBuffer;
+            }
+        }
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+        }
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
-
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
-            effectTransforms = new EffectTransformVariables(effect);
+                return false;
 
             var geometry = Geometry as LineGeometry3D;
 
             if (geometry != null)
             {        
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.ToArray());
+                vertexBuffer.CreateBufferFromDataArray(Device, CreateVertexArray());
+                indexBuffer.CreateBufferFromDataArray(Device, geometry.Indices);
             }
           
-            hasInstances = (Instances != null) && (Instances.Any());
-            bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
-            if (hasInstances)
-            {
-                instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-            }
+            //hasInstances = (Instances != null) && (Instances.Any());
+            //bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
+            //if (hasInstances)
+            //{
+            //    isInstanceChanged = true;
+            //    InstanceBuffer.CreateBufferFromDataArray(Device, Instances);
+            //}
 
             vViewport = effect.GetVariableByName("vViewport").AsVector();
             vLineParams = effect.GetVariableByName("vLineParams").AsVector();
@@ -71,7 +81,15 @@ namespace CustomShaderDemo
 
             OnRasterStateChanged();
 
-            Device.ImmediateContext.Flush();
+            //  Device.ImmediateContext.Flush();
+            return true;
+        }
+
+        protected override void OnDetach()
+        {
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
+            base.OnDetach();
         }
 
         private CustomLinesVertex[] CreateVertexArray()

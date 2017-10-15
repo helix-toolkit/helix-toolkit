@@ -19,6 +19,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Matrix = global::SharpDX.Matrix;
     using System.Windows.Media.Imaging;
     using HelixToolkit.Wpf.SharpDX.Core;
+    using System.IO;
+    using System;
 
     public interface ITraversable
     {
@@ -35,9 +37,16 @@ namespace HelixToolkit.Wpf.SharpDX
         bool IsThrowingShadow { get; set; }
     }
 
-    public interface IHitable : IVisible, IInputElement
-    {        
-        bool HitTest(Ray ray, ref List<HitTestResult> hits);
+    public interface IHitable : IVisible
+    {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="context">Used to get view/projection matrices during hit test. <para>Only needs for screen space model hit test(line/point/billboard). Can be set to null for mesh geometry hit test.</para></param>
+        /// <param name="ray"></param>
+        /// <param name="hits"></param>
+        /// <returns>Return all hitted details with distance from nearest to farest.</returns>
+        bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits);
         
         //void OnMouse3DDown(object sender, RoutedEventArgs e);
         //void OnMouse3DUp(object sender, RoutedEventArgs e);
@@ -56,7 +65,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IBoundable : IVisible
     {
-        BoundingBox Bounds { get; }        
+        BoundingBox Bounds { get; }
+        BoundingBox BoundsWithTransform { get; }
+        BoundingSphere BoundsSphere { get; }
+        BoundingSphere BoundsSphereWithTransform { get; }
     }
 
     public interface ITransformable
@@ -82,13 +94,35 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IBillboardText
     {
+        BillboardType Type { get; }
         BitmapSource Texture { get; }
-        void DrawText();
+
+        Stream AlphaTexture { get; }
+        void DrawTexture();
         Vector3Collection Positions { get; }
-        IList<Vector2> TextInfoOffsets { get; }
+        IList<Vector2> TextureOffsets { get; }
         Vector2Collection TextureCoordinates { get; }
         Color4Collection Colors { get; }
         float Width { get; }
         float Height { get; }
+    }
+
+    public enum BillboardType
+    {
+        SingleText, MultipleText, SingleImage
+    }
+
+    public interface IParameterVariables
+    {
+        /// <summary>
+        /// Create variables
+        /// </summary>
+        /// <param name="effect"></param>
+        void OnAttach(global::SharpDX.Direct3D11.Effect effect);
+
+        /// <summary>
+        /// Release variables
+        /// </summary>
+        void OnDettach();
     }
 }

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 namespace CustomShaderDemo
 {
     using HelixToolkit.Wpf.SharpDX.Extensions;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
 
     /// <summary>
     /// Our CustomPointsVertex class has an additional Vector4
@@ -24,50 +25,42 @@ namespace CustomShaderDemo
 
     public class SelectablePointGeometryModel3D: PointGeometryModel3D
     {
-        /// <summary>
-        /// Because we are using a custom vertex, we need
-        /// to override this method to provide the 
-        /// size of our custom vertex.
-        /// </summary>
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<CustomPointsVertex> vertexBuffer = new ImmutableBufferProxy<CustomPointsVertex>(CustomPointsVertex.SizeInBytes, BindFlags.VertexBuffer);
+        public override IBufferProxy VertexBuffer
         {
             get
             {
-                return CustomPointsVertex.SizeInBytes;
+                return vertexBuffer;
             }
         }
-
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
+        }
         /// <summary>
         /// By overriding Attach, we can provide our own vertex array.
         /// </summary>
         /// <param name="host">An object whose type implements IRenderHost.</param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
-            base.Attach(host);
-
-            if (Geometry == null)
-                return;
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
                 renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
-
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
-            effectTransforms = new EffectTransformVariables(effect);
+                return false;
 
             var geometry = Geometry as PointGeometry3D;
 
             if (geometry != null)
             {
-                /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateVertexArray());
+                vertexBuffer.CreateBufferFromDataArray(Device, CreateVertexArray());
             }
 
             /// --- set up const variables
-            vViewport = effect.GetVariableByName("vViewport").AsVector();
+           // vViewport = effect.GetVariableByName("vViewport").AsVector();
             //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             vPointParams = effect.GetVariableByName("vPointParams").AsVector();
 
@@ -79,7 +72,14 @@ namespace CustomShaderDemo
             OnRasterStateChanged();
 
             /// --- flush
-            Device.ImmediateContext.Flush();
+            //  Device.ImmediateContext.Flush();
+            return true;
+        }
+
+        protected override void OnDetach()
+        {
+            vertexBuffer.Dispose();
+            base.OnDetach();
         }
 
         private CustomPointsVertex[] CreateVertexArray()

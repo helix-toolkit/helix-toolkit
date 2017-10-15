@@ -95,6 +95,20 @@
     <Compile Include="Examples\CursorPosition\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\DataTemplate\BindingConverter.cs" />
+    <Compile Include="Examples\DataTemplate\BindingExtensions.cs" />
+    <Compile Include="Examples\DataTemplate\GenericUIElement3D.cs" />
+    <Compile Include="Examples\DataTemplate\DataTemplateSelector3D.cs" />
+    <Compile Include="Examples\DataTemplate\DefaultDataTemplateSelctor3D.cs" />
+    <Compile Include="Examples\DataTemplate\CubeElement.cs" />
+    <Compile Include="Examples\DataTemplate\Extensions.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement3.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement2.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement1.cs" />
+    <Compile Include="Examples\DataTemplate\ModelElement.cs" />
+    <Compile Include="Examples\DataTemplate\MultiBindingConverter.cs" />
+    <Compile Include="Examples\DataTemplate\MultiConverterPassThrough.cs" />
+    <Compile Include="Examples\DataTemplate\SphereElement.cs" />
     <Compile Include="Examples\ExtrudedText\Extensions.cs" />
     <Compile Include="Examples\ExtrudedText\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -1043,6 +1057,10 @@
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf\HelixToolkit.Wpf.csproj">
       <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
       <Name>HelixToolkit.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

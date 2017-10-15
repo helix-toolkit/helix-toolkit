@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -19,7 +20,12 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
             Device = EffectsManager.Device;
         }
-
+        private int renderCycles = 1;
+        public int RenderCycles
+        {
+            set { renderCycles = value; }
+            get { return renderCycles; }
+        }
         public Device Device { get; private set; }
         public Color4 ClearColor { get; private set; }
         public bool IsShadowMapEnabled { get; private set; }
@@ -33,12 +39,83 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
 
         public IRenderTechniquesManager RenderTechniquesManager { get; set; }
 
+        public bool IsRendering { set; get; } = true;
+
         public bool IsBusy
         {
             get;private set;
         }
 
-        public void SetDefaultRenderTargets()
+        private readonly Light3DSceneShared light3DSceneShared = new Light3DSceneShared();
+        public Light3DSceneShared Light3DSceneShared
+        {
+            get
+            {
+                return light3DSceneShared;
+            }
+        }
+        public RenderContext RenderContext { get; }
+        public bool EnableRenderFrustum
+        {
+            set;get;
+        }
+
+        public uint MaxFPS
+        {
+            set;get;
+        }
+
+        public bool EnableSharingModelMode
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IModelContainer SharedModelContainer
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsDeferredLighting
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public RenderTargetView ColorBufferView
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public DepthStencilView DepthStencilBufferView
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void SetDefaultRenderTargets(bool clear = true)
         {
         }
 

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX" 
+        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics" 
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:ShadowMapDemo"
         mc:Ignorable="d"         
@@ -64,7 +64,7 @@
             <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>
             <hx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform="{Binding Model3Transform}" Material="{Binding BlueMaterial}" />
             <hx:MeshGeometryModel3D x:Name="plane"  Geometry="{Binding Plane}" Transform="{Binding PlaneTransform}"  Material="{Binding GrayMaterial}" />
-            <hx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform="{Binding Model1Transform}" Color="{x:Static sdx:Color.Black}"/>
+            <hx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform="{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}"/>
             <hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform="{Binding GridTransform}"   Color="{Binding GridColor}"/>
             
         </hx:Viewport3DX>
@@ -133,6 +133,7 @@
                     
                 </Grid>
             </Expander>
+            <Button HorizontalAlignment="Right" Click="Button_Click">MultiViewports</Button>
         </StackPanel>
                 
         <StatusBar Grid.Row="1" VerticalAlignment="Bottom">

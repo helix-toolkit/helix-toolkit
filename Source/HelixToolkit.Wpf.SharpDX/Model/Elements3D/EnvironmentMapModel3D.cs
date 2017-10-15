@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty FilenameProperty =
-            DependencyProperty.Register("Filename", typeof(string), typeof(EnvironmentMap3D), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Filename", typeof(string), typeof(EnvironmentMap3D), new AffectsRenderPropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the current environment map texture image
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// default is true.
         /// </summary>
         public static readonly DependencyProperty IsActiveProperty =
-            DependencyProperty.Register("IsActive", typeof(bool), typeof(Element3D), new UIPropertyMetadata(true, IsActiveChanged));
+            DependencyProperty.Register("IsActive", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true, IsActiveChanged));
 
         /// <summary>
         /// Indicates, if this element is active, if not, the model will be not 
@@ -81,22 +81,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 obj.bHasCubeMap.Set((bool)e.NewValue);
         }
 
-        public override void Attach(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            /// --- attach
-            this.renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
-            base.Attach(host);
-
-            /// --- get variables               
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
+        }
+        protected override bool OnAttach(IRenderHost host)
+        {           
+            // --- get variables               
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
             this.effectTransforms = new EffectTransformVariables(this.effect);
 
-            /// -- attach cube map 
+            // -- attach cube map 
             if (this.Filename != null)
             {
-                /// -- attach texture
-                using (var texture = Texture2D.FromFile<Texture2D>(this.Device, this.Filename))
+                // -- attach texture
+                using (var texture = TextureLoader.FromFileAsResource(this.Device, this.Filename))
                 {
                     this.texCubeMapView = new ShaderResourceView(this.Device, texture);
                 }
@@ -105,18 +105,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.bHasCubeMap = effect.GetVariableByName("bHasCubeMap").AsScalar();
                 this.bHasCubeMap.Set(true);
 
-                /// --- set up geometry
+                // --- set up geometry
                 var sphere = new MeshBuilder(false,true,false);
                 sphere.AddSphere(new Vector3(0, 0, 0));
                 this.geometry = sphere.ToMeshGeometry3D();
 
-                /// --- set up vertex buffer
+                // --- set up vertex buffer
                 this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, CubeVertex.SizeInBytes, this.geometry.Positions.Select((x, ii) => new CubeVertex() { Position = new Vector4(x, 1f) }).ToArray());
 
-                /// --- set up index buffer
-                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
+                // --- set up index buffer
+                this.indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array, geometry.Indices.Count);
 
-                /// --- set up rasterizer states
+                // --- set up rasterizer states
                 var rasterStateDesc = new RasterizerStateDescription()
                 {
                     FillMode = FillMode.Solid,
@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 };
                 this.rasterState = new RasterizerState(this.Device, rasterStateDesc);
 
-                /// --- set up depth stencil state
+                // --- set up depth stencil state
                 var depthStencilDesc = new DepthStencilStateDescription()
                 {
                     DepthComparison = Comparison.LessEqual,
@@ -135,20 +135,23 @@ namespace HelixToolkit.Wpf.SharpDX
                     IsDepthEnabled = true,
                 };
                 this.depthStencilState = new DepthStencilState(this.Device, depthStencilDesc);
+                // --- flush
+                //this.Device.ImmediateContext.Flush();
+                return true;
             }
-
-            /// --- flush
-            this.Device.ImmediateContext.Flush();
+            else
+            {
+                return false;
+            }
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
             if (!this.IsAttached)
                 return;
 
             this.bHasCubeMap.Set(false);
 
-            this.effectTechnique = null;
             this.effectTechnique = null;
             this.vertexLayout = null;
             this.geometry = null;
@@ -162,29 +165,27 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.depthStencilState);
             Disposer.RemoveAndDispose(ref this.effectTransforms);
 
-            base.Detach();
+            base.OnDetach();
         }
 
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext renderContext)
         {
-            if (!this.IsRendering) return;
+            // --- set context
+            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = Direct3D.PrimitiveTopology.TriangleList;
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, CubeVertex.SizeInBytes, 0));
 
-            /// --- set context
-            this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
-            this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = Direct3D.PrimitiveTopology.TriangleList;
-            this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
-            this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, CubeVertex.SizeInBytes, 0));
+            renderContext.DeviceContext.Rasterizer.State = rasterState;
+            renderContext.DeviceContext.OutputMerger.DepthStencilState = depthStencilState;
 
-            this.Device.ImmediateContext.Rasterizer.State = rasterState;
-            this.Device.ImmediateContext.OutputMerger.DepthStencilState = depthStencilState;
-
-            /// --- set constant paramerers 
-            var worldMatrix = Matrix.Translation(((PerspectiveCamera)context.Camera).Position.ToVector3());
+            // --- set constant paramerers 
+            var worldMatrix = Matrix.Translation(renderContext.Camera.Position.ToVector3());
             this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- render the geometry
-            this.effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
-            this.Device.ImmediateContext.DrawIndexed(this.geometry.Indices.Count, 0, 0);
+            // --- render the geometry
+            this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
+            renderContext.DeviceContext.DrawIndexed(this.geometry.Indices.Count, 0, 0);
         }
     }
 }

@@ -10,7 +10,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
@@ -27,6 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using MouseButtons = System.Windows.Forms.MouseButtons;
+    using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -35,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [DefaultProperty("Children")]
     [ContentProperty("Items")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
-    [TemplatePart(Name = "PART_Canvas", Type = typeof(IRenderHost))]
+    [TemplatePart(Name = "PART_Canvas", Type = typeof(ContentPresenter))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCubeViewport", Type = typeof(Viewport3D))]
@@ -77,14 +78,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The stop watch
         /// </summary>
         public static readonly Stopwatch StopWatch = new Stopwatch();
-
-        /// <summary>
-        ///   The camera history stack.
-        /// </summary>
-        /// <remarks>
-        ///   Implemented as a list since we want to remove items at the bottom of the stack.
-        /// </remarks>
-        private readonly List<CameraSetting> cameraHistory = new List<CameraSetting>();
 
         /// <summary>
         /// The change field of view handler
@@ -152,9 +145,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private Viewport3D coordinateView;
 
         /// <summary>
-        /// The frame counter.
+        /// The nearest valid result during a hit test.
         /// </summary>
-        private int frameCounter;
+        private HitTestResult currentHit;
 
         /// <summary>
         /// The "control has been loaded before" flag.
@@ -167,64 +160,14 @@ namespace HelixToolkit.Wpf.SharpDX
         private int infoFrameCounter;
 
         /// <summary>
-        ///   The is spinning flag.
-        /// </summary>
-        private bool isSpinning;
-
-        /// <summary>
         /// The is subscribed to rendering event.
         /// </summary>
         private bool isSubscribedToRenderingEvent;
 
         /// <summary>
-        ///   The last tick.
-        /// </summary>
-        private long lastTick;
-
-        /// <summary>
-        ///   The move speed.
-        /// </summary>
-        private Vector3D moveSpeed;
-
-        /// <summary>
-        ///   The pan speed.
-        /// </summary>
-        private Vector3D panSpeed;
-
-        /// <summary>
         ///   The rectangle adorner.
         /// </summary>
         private RectangleAdorner rectangleAdorner;
-
-        /// <summary>
-        ///   The 3D rotation point.
-        /// </summary>
-        private Point3D rotationPoint3D;
-
-        /// <summary>
-        ///   The rotation position.
-        /// </summary>
-        private Point rotationPosition;
-
-        /// <summary>
-        ///   The rotation speed.
-        /// </summary>
-        private Vector rotationSpeed;
-
-        /// <summary>
-        ///   The 3D point to spin around.
-        /// </summary>
-        private Point3D spinningPoint3D;
-
-        /// <summary>
-        ///   The spinning position.
-        /// </summary>
-        private Point spinningPosition;
-
-        /// <summary>
-        ///   The spinning speed.
-        /// </summary>
-        private Vector spinningSpeed;
 
         /// <summary>
         ///   The target adorner.
@@ -252,19 +195,39 @@ namespace HelixToolkit.Wpf.SharpDX
         private Viewport3D viewCubeViewport;
 
         /// <summary>
-        ///   The point to zoom around.
-        /// </summary>
-        private Point3D zoomPoint3D;
-
-        /// <summary>
-        ///   The zoom speed.
-        /// </summary>
-        private double zoomSpeed;
-
-        /// <summary>
         /// Fired whenever an exception occurred at rendering subsystem.
         /// </summary>
         public event EventHandler<RelayExceptionEventArgs> RenderExceptionOccurred = delegate { };
+
+        /// <summary>
+        /// Get current render context
+        /// </summary>
+        public RenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
+
+        /// <summary>
+        /// <para>Return enumerable of all the rederable elements</para>
+        /// <para>If enabled shared model mode, the returned rederables are current viewport renderable plus shared models</para>
+        /// </summary>
+        public IEnumerable<IRenderable> Renderables
+        {
+            get
+            {
+                if (renderHostInternal != null)
+                {
+                    foreach (IRenderable item in Items)
+                    {
+                        yield return item;
+                    }
+                    if(renderHostInternal.EnableSharingModelMode && renderHostInternal.SharedModelContainer != null)
+                    {
+                        foreach(var item in renderHostInternal.SharedModelContainer.Renderables)
+                        {
+                            yield return item;
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
@@ -354,7 +317,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddMoveForce(double dx, double dy, double dz)
         {
-            this.AddMoveForce(new Vector3D(dx, dy, dz));
+            this.cameraController?.AddMoveForce(new Vector3D(dx, dy, dz));
+            // this.AddMoveForce(new Vector3D(dx, dy, dz));
         }
 
         /// <summary>
@@ -365,13 +329,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddMoveForce(Vector3D delta)
         {
-            if (!this.IsMoveEnabled)
-            {
-                return;
-            }
-
-            this.PushCameraSetting();
-            this.moveSpeed += delta * 40;
+            this.cameraController?.AddMoveForce(delta);
         }
 
         /// <summary>
@@ -385,8 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddPanForce(double dx, double dy)
         {
-            var pcam = this.Camera as ProjectionCamera;
-            this.AddPanForce(pcam.FindPanVector(dx, dy));
+            this.cameraController?.AddPanForce(dx, dy);
         }
 
         /// <summary>
@@ -397,13 +354,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddPanForce(Vector3D pan)
         {
-            if (!this.IsPanEnabled)
-            {
-                return;
-            }
-
-            this.PushCameraSetting();
-            this.panSpeed += pan * 40;
+            this.cameraController?.AddPanForce(pan);
         }
 
         /// <summary>
@@ -417,18 +368,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddRotateForce(double dx, double dy)
         {
-            var pcam = this.Camera as ProjectionCamera;
-
-            if (!this.IsRotationEnabled || pcam == null)
-            {
-                return;
-            }
-
-            this.PushCameraSetting();
-            this.rotationPoint3D = pcam.Target;
-            this.rotationPosition = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
-            this.rotationSpeed.X += dx * 40;
-            this.rotationSpeed.Y += dy * 40;
+            this.cameraController?.AddRotateForce(dx, dy);
         }
 
         /// <summary>
@@ -439,13 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddZoomForce(double dx)
         {
-            var pcam = this.Camera as ProjectionCamera;
-            if (!this.IsZoomEnabled || pcam == null)
-            {
-                return;
-            }
-
-            this.AddZoomForce(dx, pcam.Target);
+            this.cameraController?.AddZoomForce(dx);
         }
 
         /// <summary>
@@ -459,14 +393,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddZoomForce(double dx, Point3D zoomOrigin)
         {
-            if (!this.IsZoomEnabled)
-            {
-                return;
-            }
-
-            this.PushCameraSetting();
-            this.zoomPoint3D = zoomOrigin;
-            this.zoomSpeed += dx * 8;
+            this.cameraController?.AddZoomForce(dx, zoomOrigin);
         }
 
         /// <summary>
@@ -483,13 +410,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void ChangeDirection(Vector3D lookDir, Vector3D upDir, double animationTime = 500)
         {
-            this.StopAnimations();
-            this.PushCameraSetting();
-            var pcam = this.Camera as ProjectionCamera;
-            if (pcam != null)
-            {
-                pcam.ChangeDirection(lookDir, upDir, animationTime);
-            }
+            this.cameraController?.ChangeDirection(lookDir, upDir, animationTime);
         }
 
         /// <summary>
@@ -511,7 +432,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideTargetAdorner()
         {
-            var visual = this.RenderHost as Visual;
+            var visual = this.renderHostInternal as Visual;
             if (visual == null)
             {
                 return;
@@ -534,7 +455,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideZoomRectangle()
         {
-            var visual = this.RenderHost as Visual;
+            var visual = this.renderHostInternal as Visual;
             if (visual == null)
             {
                 return;
@@ -556,7 +477,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateRender()
         {
-            var rh = this.RenderHost;
+            var rh = this.renderHostInternal;
             if (rh != null)
             {
                 rh.InvalidateRender();
@@ -571,7 +492,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p)
         {
-            this.LookAt(p, 0);
+            this.cameraController?.ActualCamera?.LookAt(p, 0);
         }
 
         /// <summary>
@@ -585,13 +506,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, double animationTime)
         {
-            var projectionCamera = this.Camera as ProjectionCamera;
-            if (projectionCamera == null)
-            {
-                return;
-            }
-
-            projectionCamera.LookAt(p, animationTime);
+            this.cameraController?.ActualCamera?.LookAt(p, animationTime);
         }
 
         /// <summary>
@@ -608,13 +523,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, double distance, double animationTime)
         {
-            var projectionCamera = this.Camera as ProjectionCamera;
-            if (projectionCamera == null)
-            {
-                return;
-            }
-
-            projectionCamera.LookAt(p, distance, animationTime);
+            this.cameraController?.ActualCamera?.LookAt(p, distance, animationTime);
         }
 
         /// <summary>
@@ -631,13 +540,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D p, Vector3D direction, double animationTime)
         {
-            var projectionCamera = this.Camera as ProjectionCamera;
-            if (projectionCamera == null)
-            {
-                return;
-            }
-
-            projectionCamera.LookAt(p, direction, animationTime);
+            this.cameraController?.ActualCamera?.LookAt(p, direction, animationTime);
         }
 
         /// <summary>
@@ -648,19 +551,49 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnApplyTemplate();
 
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.ExceptionOccurred -= this.HandleRenderException;
+                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
-
-            this.RenderHost = this.GetTemplateChild("PART_Canvas") as IRenderHost;
-            this.RenderHost.MSAA = this.MSAA;
-            if (this.RenderHost != null)
+            var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
+#if DX11
+            if (EnableSwapChainRendering)
             {
-                this.RenderHost.ExceptionOccurred += this.HandleRenderException;
-                this.RenderHost.Renderable = this;
-                this.RenderHost.EffectsManager = this.EffectsManager;
-                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager;
+                if (EnableDeferredRendering && !EnableSharedModelMode)
+                {
+                    hostPresenter.Content = new DPFSurfaceSwapChainThreading();
+                }
+                else
+                {
+                    hostPresenter.Content = new DPFSurfaceSwapChain();
+                }
+            }
+            else
+            {
+                if (EnableDeferredRendering && !EnableSharedModelMode)
+                {
+                    hostPresenter.Content = new DPFCanvasThreading();
+                }
+                else
+                {
+                    hostPresenter.Content = new DPFCanvas();
+                }
+            }
+#else
+            hostPresenter.Content = new DPFCanvas();
+#endif
+            this.RenderHost = this.renderHostInternal = hostPresenter.Content as IRenderHost;
+            if (this.renderHostInternal != null)
+            {
+                this.renderHostInternal.MSAA = this.MSAA;
+                this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
+                this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
+                this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
+                this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
+                this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
+                this.renderHostInternal.Renderable = this;
+                this.renderHostInternal.EffectsManager = this.EffectsManager;
+                this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
             }
 
             if (this.adornerLayer == null)
@@ -728,21 +661,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     // this.viewCube.Viewport = this.Viewport;
                 }
             }
-
+            if (EnableSwapChainRendering)
+            {
+                ShowCoordinateSystem = false;
+                ShowViewCube = false;
+            }
             // update the coordinateview camera
             this.OnCameraChanged();
-        }
-
-        /// <summary>
-        /// Pushes the camera setting.
-        /// </summary>
-        public void PushCameraSetting()
-        {
-            this.cameraHistory.Add(new CameraSetting(this.Camera as ProjectionCamera));
-            if (this.cameraHistory.Count > 100)
-            {
-                this.cameraHistory.RemoveAt(0);
-            }
         }
 
         /// <summary>
@@ -751,10 +676,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void ReAttach()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.Renderable = null; 
-                this.RenderHost.Renderable = this;
+                this.renderHostInternal.Renderable = null;
+                this.renderHostInternal.Renderable = this;
             }
         }
 
@@ -765,9 +690,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void Detach()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.Renderable = null;                
+                this.renderHostInternal.Renderable = null;
             }
         }
 
@@ -781,7 +706,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            this.PushCameraSetting();
             if (this.DefaultCamera != null)
             {
                 this.DefaultCamera.CopyTo(this.Camera as ProjectionCamera);
@@ -835,7 +759,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.RenderHost as UIElement;
+            var visual = this.renderHostInternal as UIElement;
             if (visual == null)
             {
                 return;
@@ -857,7 +781,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.RenderHost as UIElement;
+            var visual = this.renderHostInternal as UIElement;
             if (visual == null)
             {
                 return;
@@ -877,10 +801,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="aroundPoint">The point to spin around.</param>
         public void StartSpin(Vector speed, Point position, Point3D aroundPoint)
         {
-            this.spinningSpeed = speed;
-            this.spinningPosition = position;
-            this.spinningPoint3D = aroundPoint;
-            this.isSpinning = true;
+            cameraController?.StartSpin(speed, position, aroundPoint);
         }
 
         /// <summary>
@@ -888,7 +809,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void StopSpin()
         {
-            this.isSpinning = false;
+            cameraController?.StopSpin();
         }
 
         /// <summary>
@@ -918,7 +839,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            this.PushCameraSetting();
             ViewportExtensions.ZoomExtents(this, animationTime);
         }
 
@@ -932,7 +852,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 e.Attach(host);
             }
-
+            if (EnableSharedModelMode && SharedModelContainer != null)
+            {
+                SharedModelContainer.Attach(host);
+            }
             StopWatch.Start();
         }
 
@@ -945,15 +868,21 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 e.Detach();
             }
+            if (EnableSharedModelMode && SharedModelContainer != null)
+            {
+                SharedModelContainer.Detach();
+            }
         }
 
         /// <summary>
         /// Renders the scene.
         /// </summary>
         void IRenderer.Render(RenderContext context)
-        {            
+        {
+            this.FpsCounter.AddFrame(context.TimeStamp);
             context.Camera = this.Camera;
-            foreach (IRenderable e in this.Items)
+            context.worldMatrix = this.worldMatrixInternal;   
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Render(context);
             }
@@ -963,14 +892,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Updates the scene.
         /// </summary>
         /// <param name="timeSpan">The time span.</param>
-        void IRenderer.Update(TimeSpan timeSpan)
-        {
-            this.FpsCounter.AddFrame(timeSpan);
-            foreach (IRenderable e in this.Items)
-            {
-                e.Update(timeSpan);
-            }
-        }
+        //void IRenderer.Update(TimeSpan timeSpan)
+        //{
+        //    //this.FpsCounter.AddFrame(timeSpan);           
+        //    //foreach (IRenderable e in this.Renderables)
+        //    //{
+        //    //    e.Update(timeSpan);
+        //    //}
+        //}
 
         /// <summary>
         /// Called when the camera is changed.
@@ -1173,36 +1102,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Invoked when an unhandled MouseWheel attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
-        /// </summary>
-        /// <param name="e">The <see cref="T:System.Windows.Input.MouseWheelEventArgs" /> that contains the event data.</param>
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            base.OnMouseWheel(e);
-            if (!this.IsZoomEnabled)
-            {
-                return;
-            }
-
-            if (this.ZoomAroundMouseDownPoint)
-            {
-                Point point = e.GetPosition(this);
-                Point3D nearestPoint;
-                Vector3D normal;
-                Model3D visual;
-                if (this.FindNearest(point, out nearestPoint, out normal, out visual))
-                {
-                    this.AddZoomForce(-e.Delta * 0.001, nearestPoint);
-                    e.Handled = true;
-                    return;
-                }
-            }
-
-            this.AddZoomForce(-e.Delta * 0.001);
-            e.Handled = true;
-        }
-
-        /// <summary>
         /// Raises the camera changed event.
         /// </summary>
         protected virtual void RaiseCameraChangedEvent()
@@ -1227,10 +1126,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private static void AnimateOpacity(UIElement obj, double toOpacity, double animationTime)
         {
             var a = new DoubleAnimation(toOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
-                {
-                    AccelerationRatio = 0.3,
-                    DecelerationRatio = 0.5
-                };
+            {
+                AccelerationRatio = 0.3,
+                DecelerationRatio = 0.5
+            };
             obj.BeginAnimation(OpacityProperty, a);
         }
 
@@ -1293,9 +1192,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EffectsManagerPropertyChanged()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
-                this.RenderHost.EffectsManager = this.EffectsManager;
+                this.renderHostInternal.EffectsManager = this.EffectsManager;
             }
         }
 
@@ -1304,27 +1203,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void RenderTechniquePropertyChanged()
         {
-            if (this.RenderHost != null)
+            if (this.renderHostInternal != null)
             {
                 // remove the scene
-                this.RenderHost.Renderable = null;
+                this.renderHostInternal.Renderable = null;
 
                 // if new rendertechnique set, attach the scene
                 if (this.RenderTechnique != null)
                 {
-                    this.RenderHost.Renderable = this;
+                    this.renderHostInternal.Renderable = this;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Handles the change of the render techniques manager.       
-        /// </summary>
-        private void RenderTechniquesManagerPropertyChanged()
-        {
-            if (this.RenderHost != null)
-            {
-                this.RenderHost.RenderTechniquesManager = this.RenderTechniquesManager;
             }
         }
 
@@ -1466,24 +1354,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
-            var ticks = e.RenderingTime.Ticks;
-            double time = 100e-9 * (ticks - this.lastTick);
-
-            if (this.lastTick != 0)
-            {
-                this.OnTimeStep(time);
-            }
-
-            this.lastTick = ticks;
-
-            this.frameCounter++;
             if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
             {
-                this.FrameRate = (int)(this.frameCounter / (0.001 * this.fpsWatch.ElapsedMilliseconds));
+                this.FrameRate = (int)this.FpsCounter.Value;
                 this.FrameRateText = this.FrameRate + " FPS";
-                this.frameCounter = 0;
-                this.fpsWatch.Reset();
-                this.fpsWatch.Start();
+                this.fpsWatch.Restart();
             }
 
             // update the info fields every 100 frames
@@ -1494,63 +1369,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 int count = this.GetTotalNumberOfTriangles();
                 this.TriangleCountInfo = string.Format("Triangles: {0}", count);
                 this.infoFrameCounter = 0;
-            }
-        }
-
-        /// <summary>
-        /// The on time step.
-        /// </summary>
-        /// <param name="time">
-        /// The time. 
-        /// </param>
-        private void OnTimeStep(double time)
-        {
-            // should be independent of time
-            double factor = Math.Pow(this.CameraInertiaFactor, time / 0.012);
-            factor = this.Clamp(factor, 0.2, 1);
-
-            if (this.isSpinning && this.spinningSpeed.LengthSquared > 0)
-            {
-                this.rotateHandler.Rotate(
-                    this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
-
-                if (!this.InfiniteSpin)
-                {
-                    this.spinningSpeed *= factor;
-                }
-            }
-
-            if (this.rotationSpeed.LengthSquared > 0.1)
-            {
-                this.rotateHandler.Rotate(
-                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
-                this.rotationSpeed *= factor;
-            }
-
-            if (Math.Abs(this.panSpeed.LengthSquared) > 0.0001)
-            {
-                this.panHandler.Pan(this.panSpeed * time);
-                this.panSpeed *= factor;
-            }
-
-            if (Math.Abs(this.moveSpeed.LengthSquared) > 0.0001)
-            {
-                switch (this.CameraMode)
-                {
-                    case CameraMode.Inspect:
-                    case CameraMode.WalkAround:
-                        var pcam = this.Camera as ProjectionCamera;
-                        pcam.MoveCameraPosition(this.moveSpeed * time);
-                        break;
-                }
-
-                this.moveSpeed *= factor;
-            }
-
-            if (Math.Abs(this.zoomSpeed) > 0.1)
-            {
-                this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D);
-                this.zoomSpeed *= factor;
             }
         }
 
@@ -1657,7 +1475,6 @@ namespace HelixToolkit.Wpf.SharpDX
             //this.InputBindings.Add(new KeyBinding(ViewportCommands.BackView, Key.B, ModifierKeys.None));
             //this.InputBindings.Add(new KeyBinding(ViewportCommands.LeftView, Key.L, ModifierKeys.None));
             //this.InputBindings.Add(new KeyBinding(ViewportCommands.RightView, Key.R, ModifierKeys.None));
-
             this.InputBindings.Add(new KeyBinding(ViewportCommands.ZoomExtents, Key.E, ModifierKeys.Control));
             this.InputBindings.Add(
                 new MouseBinding(
@@ -1684,22 +1501,26 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Tunnel Keydown event into camera controller.
+        /// There is an issue that camera controller grid cannot get keydown event(maybe not able to get focus properly), has to manually tunnel this event into the controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Viewport3DX_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (this.cameraController != null)
+            {
+                this.cameraController.OnKeyDown(sender, e);
+            }
+        }
+
+        /// <summary>
         /// Handles the SetTarget command.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="ExecutedRoutedEventArgs" /> instance containing the event data.</param>
         private void SetTargetHandler(object sender, ExecutedRoutedEventArgs e)
         {
-        }
-
-        /// <summary>
-        ///   The stop animations.
-        /// </summary>
-        private void StopAnimations()
-        {
-            this.rotationSpeed = new Vector();
-            this.panSpeed = new Vector3D();
-            this.zoomSpeed = 0;
         }
 
         /// <summary>
@@ -1712,6 +1533,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderingEventManager.AddListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = true;
             }
+            this.KeyDown += Viewport3DX_KeyDown;
         }
 
         /// <summary>
@@ -1745,6 +1567,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderingEventManager.RemoveListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = false;
             }
+            this.KeyDown -= Viewport3DX_KeyDown;
         }
 
         /// <summary>
@@ -1837,11 +1660,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.ZoomExtents();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private List<HitTestResult> mouseHitModels = new List<HitTestResult>();
-
         public bool HittedSomething(MouseEventArgs e)
         {
             var hits = this.FindHits(e.GetPosition(this));
@@ -1859,7 +1677,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (!EnableMouseButtonHitTest)
+            {
+                return;
+            }
+
             var hits = this.FindHits(pt);
+            this.CameraPropertyChanged();
             if (hits.Count > 0)
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,
@@ -1869,14 +1693,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     Mouse.Capture(this, CaptureMode.SubTree);
                 }
 
-                foreach (var hit in hits.Where(x => x.IsValid))
+                this.currentHit = hits.FirstOrDefault(x => x.IsValid);
+                if (this.currentHit != null)
                 {
-                    hit.ModelHit.RaiseEvent(new MouseDown3DEventArgs(hit.ModelHit, hit, pt, this));
-                    this.mouseHitModels.Add(hit);
-
-                    // the winner takes it all: only the nearest hit is taken!
-                    break;
+                    this.currentHit.ModelHit.RaiseEvent(
+                        new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 }
+            }
+            else
+            {
+                // Raise event from Viewport3DX if there's no hit
+                this.RaiseEvent(new MouseDown3DEventArgs(this, null, pt, this));
             }
         }
 
@@ -1889,12 +1716,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (mouseHitModels.Count > 0)
+            if (this.currentHit != null)
             {
-                foreach (var hit in this.mouseHitModels)
-                {
-                    hit.ModelHit.RaiseEvent(new MouseMove3DEventArgs(hit.ModelHit, hit, pt, this));
-                }
+                this.currentHit.ModelHit.RaiseEvent(
+                    new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+            }
+            else
+            {
+                // Raise event from Viewport3DX if there's no hit
+                this.RaiseEvent(new MouseMove3DEventArgs(this, null, pt, this));
             }
         }
 
@@ -1907,16 +1737,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (mouseHitModels.Count > 0)
+            if (this.currentHit != null)
             {
                 Mouse.Capture(this, CaptureMode.None);
-                foreach (var hit in this.mouseHitModels)
-                {
-                    hit.ModelHit.RaiseEvent(new MouseUp3DEventArgs(hit.ModelHit, hit, pt, this));
-                }
-
-                this.mouseHitModels.Clear();
+                this.currentHit.ModelHit.RaiseEvent(
+                    new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                this.currentHit = null;
             }
+            else
+            {
+                // Raise event from Viewport3DX if there's no hit
+                this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
+            }
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if(e.Property == VisibilityProperty && RenderHost != null)
+            {
+                RenderHost.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
+            }
+            base.OnPropertyChanged(e);
         }
     }
 }

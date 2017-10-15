@@ -12,12 +12,12 @@ namespace CustomShaderDemo
             typeof(GeometryModel3D),
             new PropertyMetadata(false, ShowSelectedPropertyChanged));
 
-        public static void SetShowSelected(UIElement element, bool value)
+        public static void SetShowSelected(DependencyObject element, bool value)
         {
             element.SetValue(ShowSelectedProperty, value);
         }
 
-        public static bool GetShowSelected(UIElement element)
+        public static bool GetShowSelected(DependencyObject element)
         {
             return (bool)element.GetValue(ShowSelectedProperty);
         }

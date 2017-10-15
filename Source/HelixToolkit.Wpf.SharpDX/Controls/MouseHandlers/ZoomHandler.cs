@@ -9,6 +9,8 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
@@ -203,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var ocamera = this.Camera as OrthographicCamera;
                     if (ocamera != null)
                     {
-                        ocamera.Width *= 1 + delta;
+                        ocamera.Width *= Math.Pow(2.5, delta);
                     }
 
                     break;
@@ -248,14 +250,39 @@ namespace HelixToolkit.Wpf.SharpDX
             var target = this.Camera.Position + this.Camera.LookDirection;
             var relativeTarget = zoomAround - target;
             var relativePosition = zoomAround - this.Camera.Position;
-
-            var newRelativePosition = relativePosition * (1 + delta);
-            var newRelativeTarget = relativeTarget * (1 + delta);
-
+            if (relativePosition.Length < 1e-4)
+            {
+                if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
+                {
+                    relativePosition.Normalize();
+                    relativePosition /= 10;
+                }
+                else//If Zoom in too close, stop it.
+                {
+                    return;
+                }
+            }
+            var f = Math.Pow(2.5, delta);
+            var newRelativePosition = relativePosition * f;
+            var newRelativeTarget = relativeTarget * f;
+           
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
-            var newLookDirection = newTarget - newPosition;
 
+            var newDistance = (newPosition - zoomAround).Length;
+            var oldDistance = (this.Camera.Position - zoomAround).Length;
+
+            if (newDistance > this.Viewport.ZoomDistanceLimitFar && (oldDistance < this.Viewport.ZoomDistanceLimitFar || newDistance > oldDistance))
+            {
+                return;
+            }
+
+            if (newDistance < this.Viewport.ZoomDistanceLimitNear && (oldDistance > this.Viewport.ZoomDistanceLimitNear || newDistance < oldDistance))
+            {
+                return;
+            }
+
+            var newLookDirection = newTarget - newPosition;
             this.Camera.LookDirection = newLookDirection;
             this.Camera.Position = newPosition;
         }

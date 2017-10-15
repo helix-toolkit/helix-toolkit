@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Model.Lights3D;
 
 #if MSAA
     public enum MSAALevel
@@ -41,16 +42,17 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         IRenderer Renderable { get; set; }
 
+        RenderContext RenderContext { get; }
         /// <summary>
         /// Invalidates the current render and requests an update.
         /// </summary>
         void InvalidateRender();
-        void SetDefaultRenderTargets();
+        void SetDefaultRenderTargets(bool clear = true);
         void SetDefaultColorTargets(DepthStencilView dsv);
 
         IEffectsManager EffectsManager { get; set; }
 
-        IRenderTechniquesManager RenderTechniquesManager { get; set; }
+        IRenderTechniquesManager RenderTechniquesManager { get; }
 
         /// <summary>
         /// This technique is used for the entire render pass 
@@ -59,6 +61,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         RenderTechnique RenderTechnique { get; }
 
+        bool IsDeferredLighting { get; }
+
         double ActualHeight { get; }
         double ActualWidth { get; }
 
@@ -66,5 +70,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
         bool IsBusy { get; }
+
+        /// <summary>
+        /// Shared light data per scene
+        /// </summary>
+        Light3DSceneShared Light3DSceneShared { get; }
+
+        bool EnableRenderFrustum { set; get; }
+
+        uint MaxFPS { set; get; }
+
+        bool EnableSharingModelMode { set; get; }
+
+        IModelContainer SharedModelContainer { set; get; }
+
+        bool IsRendering { set; get; }
+
+        RenderTargetView ColorBufferView { get; }
+        DepthStencilView DepthStencilBufferView { get; }
     }
 }

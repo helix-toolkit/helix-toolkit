@@ -1,0 +1,48 @@
+﻿<Window x:Class="BoneSkinDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BoneSkinDemo"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <hx:Viewport3DX
+            x:Name="view1"
+            Title="{Binding Title}"
+            Camera="{Binding Camera}"
+            CoordinateSystemLabelForeground="White"
+            RenderTechnique="{Binding RenderTechnique}"
+            ShowCoordinateSystem="False"
+            ShowFrameRate="True"
+            TextBrush="Black"
+            UseDefaultGestures="False">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
+
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
+            <hx:BoneSkinMeshGeometryModel3D FillMode="{Binding FillMode}" CullMode="Back"
+                Geometry="{Binding Model}" Instances="{Binding Instances}"
+                Material="{Binding Material}" VertexBoneIds="{Binding VertexBoneParams}" BoneMatrices="{Binding Bones}" />
+        </hx:Viewport3DX>
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Vertical">
+            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
+        </StackPanel>
+    </Grid>
+</Window>

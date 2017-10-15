@@ -6,15 +6,21 @@
 //   Represents errors that occurs in the Helix 3D Toolkit.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if SHARPDX
+namespace HelixToolkit.Wpf.SharpDX
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
 
+#pragma warning disable 0436
     /// <summary>
     /// Represents errors that occurs in the Helix 3D Toolkit.
     /// </summary>
+#if !NETFX_CORE
     [Serializable]
+#endif
     public class HelixToolkitException : Exception
     {
         /// <summary>
@@ -31,4 +37,5 @@ namespace HelixToolkit.Wpf
         {
         }
     }
+#pragma warning restore 0436
 }

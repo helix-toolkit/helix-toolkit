@@ -27,6 +27,30 @@ namespace NUnitHelpers
             r.Run(new ThreadStart(action), ApartmentState.STA);
         }
 
+        public static void RunInSTAThrowException(Action action)
+        {
+            Exception exception = null;
+
+            Action action2 = () =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+            };
+
+            RunInSTA(action2);
+
+            if (exception != null)
+            {
+                throw exception;
+            }
+        }
+
         //public void RunInMTA(ThreadStart userDelegate)
         //{
         //    this.Run(userDelegate, ApartmentState.MTA);

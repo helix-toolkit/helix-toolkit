@@ -19,6 +19,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string Points = "RenderPoints";
         public const string CubeMap = "RenderCubeMap";
         public const string BillboardText = "RenderBillboard";
+        public const string BillboardInstancing = "RenderBillboardInstancing";
+        public const string InstancingBlinn = "RenderInstancingBlinn";
+        public const string BoneSkinBlinn = "RenderBoneSkinBlinn";
+        public const string ParticleStorm = "ParticleStorm";
+        public const string CrossSection = "RenderCrossSectionBlinn";
     }
 
     public struct TessellationRenderTechniqueNames
@@ -39,6 +44,13 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         void AddRenderTechnique(string techniqueName, byte[] techniqueSource);
         IDictionary<string, RenderTechnique> RenderTechniques { get; }
+    }
+
+    public static class ShaderResources
+    {
+        public static byte[] Default { get; } = Properties.Resources._default;
+        public static byte[] Deferred { get; } = Properties.Resources._deferred;
+        public static string Tessellation { get; } = Properties.Resources.Tessellation;
     }
 
     public class DefaultRenderTechniquesManager: IRenderTechniquesManager
@@ -80,11 +92,16 @@ namespace HelixToolkit.Wpf.SharpDX
             AddDefaultTechnique(DefaultRenderTechniqueNames.Lines);
             AddDefaultTechnique(DefaultRenderTechniqueNames.Points);
             AddDefaultTechnique(DefaultRenderTechniqueNames.BillboardText);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.BillboardInstancing);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.InstancingBlinn);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.BoneSkinBlinn);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.ParticleStorm);
+            AddDefaultTechnique(DefaultRenderTechniqueNames.CrossSection);
         }
 
         protected void AddDefaultTechnique(string techniqueName)
         {
-            AddRenderTechnique(techniqueName, Properties.Resources._default);
+            AddRenderTechnique(techniqueName, ShaderResources.Default);
         }
 
         #region IRenderTechniqueManager interface
@@ -120,7 +137,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void AddDeferredTechnique(string techniqueName)
         {
-            AddRenderTechnique(techniqueName, Properties.Resources._deferred);
+            AddRenderTechnique(techniqueName, ShaderResources.Deferred);
         }
     }
 

@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP.CommonDX
         private int pixelHeight;
         private SurfaceImageSource surfaceImageSource;
         private ISurfaceImageSourceNative surfaceImageSourceNative;
-        private SharpDX.Point position;
+        private global::SharpDX.Point position;
 
         /// <summary>
         /// Initialzes a new <see cref="SurfaceImageSourceTarget"/> instance.
@@ -44,7 +44,7 @@ namespace HelixToolkit.UWP.CommonDX
             this.pixelWidth = pixelWidth;
             this.pixelHeight = pixelHeight;
             this.surfaceImageSource = new SurfaceImageSource(pixelWidth, pixelHeight, supportOpacity);
-            surfaceImageSourceNative = Collect(ComObject.As<SharpDX.DXGI.ISurfaceImageSourceNative>(surfaceImageSource));
+            surfaceImageSourceNative = Collect(ComObject.As<global::SharpDX.DXGI.ISurfaceImageSourceNative>(surfaceImageSource));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP.CommonDX
         public override void Initialize(DeviceManager deviceManager)
         {
             base.Initialize(deviceManager);
-            surfaceImageSourceNative.Device = Collect(DeviceManager.DeviceDirect3D.QueryInterface<SharpDX.DXGI.Device>());
+            surfaceImageSourceNative.Device = Collect(DeviceManager.DeviceDirect3D.QueryInterface<global::SharpDX.DXGI.Device>());
         }
 
         /// <inveritdoc/>
@@ -76,19 +76,19 @@ namespace HelixToolkit.UWP.CommonDX
         /// <summary>
         /// Gets the relative position to use to draw on the surface.
         /// </summary>
-        public SharpDX.Point DrawingPosition { get { return position; } }
+        public global::SharpDX.Point DrawingPosition { get { return position; } }
 
         /// <inveritdoc/>
         public override void RenderAll()
         {
             SurfaceViewData viewData;
 
-            var regionToDraw = new SharpDX.Rectangle(0, 0, pixelWidth, pixelHeight);
+            var regionToDraw = new Rectangle(0, 0, pixelWidth, pixelHeight);
 
             // Unlike other targets, we can only get the DXGI surface to render to
             // just before rendering.
 
-            SharpDX.Mathematics.Interop.RawPoint rawPoint;
+            global::SharpDX.Mathematics.Interop.RawPoint rawPoint;
 
             using (var surface = surfaceImageSourceNative.BeginDraw(regionToDraw, out rawPoint))
             {
@@ -104,44 +104,44 @@ namespace HelixToolkit.UWP.CommonDX
 
                     // Allocate a new renderTargetView if size is different
                     // Cache the rendertarget dimensions in our helper class for convenient use.
-                    viewData.BackBuffer = Collect(surface.QueryInterface<SharpDX.Direct3D11.Texture2D>());
+                    viewData.BackBuffer = Collect(surface.QueryInterface<global::SharpDX.Direct3D11.Texture2D>());
                     {
                         var desc = viewData.BackBuffer.Description;
                         viewData.RenderTargetSize = new Size(desc.Width, desc.Height);
-                        viewData.RenderTargetView = Collect(new SharpDX.Direct3D11.RenderTargetView(DeviceManager.DeviceDirect3D, viewData.BackBuffer));
+                        viewData.RenderTargetView = Collect(new global::SharpDX.Direct3D11.RenderTargetView(DeviceManager.DeviceDirect3D, viewData.BackBuffer));
                     }
 
                     // Create a descriptor for the depth/stencil buffer.
                     // Allocate a 2-D surface as the depth/stencil buffer.
                     // Create a DepthStencil view on this surface to use on bind.
                     // TODO: Recreate a DepthStencilBuffer is inefficient. We should only have one depth buffer. Shared depth buffer?
-                    using (var depthBuffer = new SharpDX.Direct3D11.Texture2D(DeviceManager.DeviceDirect3D, new SharpDX.Direct3D11.Texture2DDescription()
+                    using (var depthBuffer = new global::SharpDX.Direct3D11.Texture2D(DeviceManager.DeviceDirect3D, new global::SharpDX.Direct3D11.Texture2DDescription()
                     {
-                        Format = SharpDX.DXGI.Format.D24_UNorm_S8_UInt,
+                        Format = global::SharpDX.DXGI.Format.D24_UNorm_S8_UInt,
                         ArraySize = 1,
                         MipLevels = 1,
                         Width = (int)viewData.RenderTargetSize.Width,
                         Height = (int)viewData.RenderTargetSize.Height,
-                        SampleDescription = new SharpDX.DXGI.SampleDescription(1, 0),
-                        BindFlags = SharpDX.Direct3D11.BindFlags.DepthStencil,
+                        SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
+                        BindFlags = global::SharpDX.Direct3D11.BindFlags.DepthStencil,
                     }))
-                        viewData.DepthStencilView = Collect(new SharpDX.Direct3D11.DepthStencilView(DeviceManager.DeviceDirect3D, depthBuffer, new SharpDX.Direct3D11.DepthStencilViewDescription() { Dimension = SharpDX.Direct3D11.DepthStencilViewDimension.Texture2D }));
+                        viewData.DepthStencilView = Collect(new global::SharpDX.Direct3D11.DepthStencilView(DeviceManager.DeviceDirect3D, depthBuffer, new global::SharpDX.Direct3D11.DepthStencilViewDescription() { Dimension = global::SharpDX.Direct3D11.DepthStencilViewDimension.Texture2D }));
 
                     // Now we set up the Direct2D render target bitmap linked to the swapchain. 
                     // Whenever we render to this bitmap, it will be directly rendered to the 
                     // swapchain associated with the window.
-                    var bitmapProperties = new SharpDX.Direct2D1.BitmapProperties1(
-                        new SharpDX.Direct2D1.PixelFormat(SharpDX.DXGI.Format.B8G8R8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied),
+                    var bitmapProperties = new global::SharpDX.Direct2D1.BitmapProperties1(
+                        new global::SharpDX.Direct2D1.PixelFormat(Format.B8G8R8A8_UNorm, global::SharpDX.Direct2D1.AlphaMode.Premultiplied),
                         DeviceManager.Dpi,
                         DeviceManager.Dpi,
-                        SharpDX.Direct2D1.BitmapOptions.Target | SharpDX.Direct2D1.BitmapOptions.CannotDraw);
+                        global::SharpDX.Direct2D1.BitmapOptions.Target | global::SharpDX.Direct2D1.BitmapOptions.CannotDraw);
 
                     // Direct2D needs the dxgi version of the backbuffer surface pointer.
                     // Get a D2D surface from the DXGI back buffer to use as the D2D render target.
-                    viewData.BitmapTarget = Collect(new SharpDX.Direct2D1.Bitmap1(DeviceManager.ContextDirect2D, surface, bitmapProperties));
+                    viewData.BitmapTarget = Collect(new global::SharpDX.Direct2D1.Bitmap1(DeviceManager.ContextDirect2D, surface, bitmapProperties));
 
                     // Create a viewport descriptor of the full window size.
-                    viewData.Viewport = new SharpDX.ViewportF(position.X, position.Y, (float)viewData.RenderTargetSize.Width - position.X, (float)viewData.RenderTargetSize.Height - position.Y, 0.0f, 1.0f);
+                    viewData.Viewport = new global::SharpDX.ViewportF(position.X, position.Y, (float)viewData.RenderTargetSize.Width - position.X, (float)viewData.RenderTargetSize.Height - position.Y, 0.0f, 1.0f);
                 }
 
                 backBuffer = viewData.BackBuffer;
@@ -167,11 +167,11 @@ namespace HelixToolkit.UWP.CommonDX
         /// </summary>
         class SurfaceViewData
         {
-            public SharpDX.Direct3D11.Texture2D BackBuffer;
-            public SharpDX.Direct3D11.RenderTargetView RenderTargetView;
-            public SharpDX.Direct3D11.DepthStencilView DepthStencilView;
-            public SharpDX.Direct2D1.Bitmap1 BitmapTarget;
-            public SharpDX.ViewportF Viewport;
+            public global::SharpDX.Direct3D11.Texture2D BackBuffer;
+            public global::SharpDX.Direct3D11.RenderTargetView RenderTargetView;
+            public global::SharpDX.Direct3D11.DepthStencilView DepthStencilView;
+            public global::SharpDX.Direct2D1.Bitmap1 BitmapTarget;
+            public global::SharpDX.ViewportF Viewport;
             public Size RenderTargetSize;
         }
     }
