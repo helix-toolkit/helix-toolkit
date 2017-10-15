@@ -13,5 +13,6 @@ using System.Reflection;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("2017.10.9.1")]
-[assembly: AssemblyFileVersion("2017.10.9.1")]
+// The version numbers are patched by GitVersion, see the `before_build` step in appveyor.yml
+[assembly: AssemblyVersion("0.0.0.1")]
+[assembly: AssemblyFileVersion("0.0.0.1")]
