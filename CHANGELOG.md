@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Pending Release]
+## [1.0.0] - 2017-10-15
 ### Added
 - Gitlink build step (#123)
 - HelixViewport3D.CursorPosition (#133)
