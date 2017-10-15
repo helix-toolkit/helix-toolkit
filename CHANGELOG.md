@@ -72,10 +72,12 @@ All notable changes to this project will be documented in this file.
 - Issue with lighting after update (#390)
 - DPFCanvas OnRenderSizeChanged crash Application on Startup (#415)
 - Drawing a lot of lines of different color question SharpDX (#439)
+- Data Template example: Cannot find governing FrameworkElement (#442)
 - Wrong PointHit returned by LineGeometryModel3D.HitTest (#443)
 - OrthographicCamera is broken (SharpDX) (#467)
 - HelixToolkit.Wpf.SharpDX refers SharpDX.Mathematics v4.0.1.0 but default installation refers v3.1.1.0 (#514)
 - NotImplementedException in ModelContainer3DX (#522)
+- Some problem about model share after update (#556)
 
 ## [2014.2.452] - 2014-12-16
 ### Added
