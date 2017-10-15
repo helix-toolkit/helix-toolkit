@@ -11,7 +11,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+    using System.Linq;
     /// <summary>
     /// Provides a collection of Element3D.
     /// </summary>
@@ -29,11 +31,15 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class ObservableElement3DCollection : ObservableCollection<Element3D>
     {
-        //internal void PreRenderSort()
-        //{
-        //    var comparer = new ElementComparer();
-        //    this.Sort(comparer);
-        //}
+        protected override void ClearItems()
+        {
+            CheckReentrancy();
+            var items = Items.ToList();
+            base.ClearItems();
+            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items, -1));
+        }
     }
 
     //public class ElementComparer : IComparer

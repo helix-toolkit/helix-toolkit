@@ -9,9 +9,21 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Windows;
 
+    public class MaterialPropertyChanged: EventArgs
+    {
+        public readonly string PropertyName;
+        public MaterialPropertyChanged(string propertyName)
+        {
+            PropertyName = propertyName;
+        }
+    }
+
     [Serializable]
     public abstract class Material : DependencyObject
     {
+        public delegate void OnPropertyChangedHandler(object sender, MaterialPropertyChanged e);
+        public event OnPropertyChangedHandler OnMaterialPropertyChanged;
+
         public static readonly DependencyProperty NameProperty =
             DependencyProperty.Register("Name", typeof(string), typeof(Material), new UIPropertyMetadata(null));
 
@@ -24,7 +36,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public override string ToString()
         {
             return Name;
-        }       
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            OnMaterialPropertyChanged?.Invoke(this, new MaterialPropertyChanged(e.Property.Name));
+        }
     }
 
 }

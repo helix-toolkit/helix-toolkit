@@ -26,31 +26,31 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The axis property.
         /// </summary>
         public static readonly DependencyProperty AxisProperty = DependencyProperty.Register(
-            "Axis", typeof(Vector3), typeof(UIRotateManipulator3D), new UIPropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
+            "Axis", typeof(Vector3), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
 
         /// <summary>
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty OuterDiameterProperty = DependencyProperty.Register(
-            "OuterDiameter", typeof(double), typeof(UIRotateManipulator3D), new UIPropertyMetadata(1.5, ModelChanged));
+            "OuterDiameter", typeof(double), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(1.5, ModelChanged));
 
         /// <summary>
         /// The inner diameter property.
         /// </summary>
         public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
-            "InnerDiameter", typeof(double), typeof(UIRotateManipulator3D), new UIPropertyMetadata(1.0, ModelChanged));
+            "InnerDiameter", typeof(double), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(1.0, ModelChanged));
 
         /// <summary>
         /// The length property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
-            "Length", typeof(double), typeof(UIRotateManipulator3D), new UIPropertyMetadata(0.1, ModelChanged));
+            "Length", typeof(double), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(0.1, ModelChanged));
 
         /// <summary>
         /// The pivot point property.
         /// </summary>
         public static readonly DependencyProperty PivotProperty = DependencyProperty.Register(
-            "Pivot", typeof(Vector3), typeof(UIRotateManipulator3D), new PropertyMetadata(new Vector3(0, 0, 0)));
+            "Pivot", typeof(Vector3), typeof(UIRotateManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 0)));
 
         /// <summary>
         /// Gets or sets the rotation axis.
@@ -130,10 +130,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Geometry = mb.ToMeshGeometry3D();
         }
 
-        public override void Render(RenderContext renderContext)
+        protected override void OnRender(RenderContext renderContext)
         {
+            base.OnRender(renderContext);
             var position = this.totalModelMatrix.TranslationVector;
-            base.Render(renderContext);
         }
 
         /// <summary>
@@ -145,12 +145,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var args = e as Mouse3DEventArgs;            
 
-            /// --- get the plane for translation (camera normal is a good choice)                     
+            // --- get the plane for translation (camera normal is a good choice)                     
             var normal = this.cameraNormal;
             var position = this.ModelMatrix.TranslationVector;
             //var position = this.totalModelMatrix.TranslationVector;
 
-            /// --- hit position 
+            // --- hit position 
             var newHit = this.viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normal);
 
             if (newHit.HasValue)
@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 
                 var rotateTransform = new System.Windows.Media.Media3D.RotateTransform3D(new System.Windows.Media.Media3D.AxisAngleRotation3D(this.Axis.ToVector3D(), theta), Pivot.ToPoint3D());
 
-                /// rotate target
+                // rotate target
                 if (this.TargetTransform != null)
                 {                    
                     this.TargetTransform = rotateTransform.AppendTransform(this.TargetTransform);
@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {            
-            if (IsHitTestVisible)
+            if (isHitTestVisibleInternal)
                 base.OnMouse3DMove(sender, e);
         }
     }

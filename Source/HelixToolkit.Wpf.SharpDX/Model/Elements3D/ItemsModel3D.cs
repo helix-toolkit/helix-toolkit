@@ -17,6 +17,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using SharpDX;
+    using System.Windows.Media;
+    using System.Diagnostics;
+    using System.Windows.Markup;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a
@@ -33,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///     The item template property
         /// </summary>
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
+            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new AffectsRenderPropertyMetadata(null));
 
         /// <summary>
         ///     The items source property
@@ -42,7 +46,26 @@ namespace HelixToolkit.Wpf.SharpDX
             "ItemsSource",
             typeof(IEnumerable),
             typeof(ItemsModel3D),
-            new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
+            new AffectsRenderPropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
+
+        /// <summary>
+        /// Add octree manager to use octree hit test.
+        /// </summary>
+        public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
+            typeof(IOctreeManager),
+            typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
+            {
+                var d = s as ItemsModel3D;
+                if (e.OldValue != null)
+                {
+                    d.RemoveLogicalChild(e.OldValue);
+                }
+
+                if (e.NewValue != null)
+                {
+                    d.AddLogicalChild(e.NewValue);
+                }
+            }));
 
         /// <summary>
         ///     Gets or sets the <see cref="DataTemplate" /> used to display each item.
@@ -68,7 +91,52 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
+        public IOctreeManager OctreeManager
+        {
+            set
+            {
+                SetValue(OctreeManagerProperty, value);
+            }
+            get
+            {
+                return (IOctreeManager)GetValue(OctreeManagerProperty);
+            }
+        }
+
         private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
+        //private bool loaded = false;
+        private IOctree Octree
+        {
+            get { return OctreeManager == null ? null : OctreeManager.Octree; }
+        }
+
+        public ItemsModel3D()
+        {
+            //this.Loaded += ItemsModel3D_Loaded;
+            //this.Unloaded += ItemsModel3D_Unloaded;
+        }
+
+        //private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
+        //{
+        //    loaded = false;
+        //    OctreeManager?.Clear();
+        //}
+
+        //private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    loaded = true;
+        //    UpdateBounds();
+        //    //if (Children.Count > 0)
+        //    //{
+        //    //    OctreeManager?.RequestRebuild();
+        //    //}
+        //}
+
+        private void UpdateOctree()
+        {
+            OctreeManager?.RebuildTree(this.Children);
+        }
+
         /// <summary>
         /// Handles changes in the ItemsSource property.
         /// </summary>
@@ -80,15 +148,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            mDictionary.Clear();
-            Children.Clear();
-
             if (e.OldValue is INotifyCollectionChanged)
             {
                 (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
+
+            foreach (Model3D item in Children)
+            {
+                item.DataContext = null;
+            }
+
+            OctreeManager?.Clear();
+            mDictionary.Clear();
+            Children.Clear();
+
             if (e.NewValue is INotifyCollectionChanged)
             {
+                (e.NewValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
                 (e.NewValue as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
             }
 
@@ -137,10 +213,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
+            if (Children.Count > 0)
+            {
+                OctreeManager?.RequestRebuild();
+            }
         }
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Reset:
+                    OctreeManager?.Clear();
+                    OctreeManager?.RequestRebuild();
+                    break;
+            }
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Replace:
@@ -152,7 +239,9 @@ namespace HelixToolkit.Wpf.SharpDX
                             if (mDictionary.ContainsKey(item))
                             {
                                 var model = mDictionary[item];
-                                model.Detach();
+                                if (model is GeometryModel3D)
+                                    OctreeManager?.RemoveItem(model as GeometryModel3D);
+                                model.DataContext = null;
                                 this.Children.Remove(model);
                                 mDictionary.Remove(item);
                             }
@@ -164,7 +253,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var array = this.Children.ToArray();
                     foreach (var item in array)
                     {
-                        item.Detach();
+                        item.DataContext = null;
                         this.Children.Remove(item);
                     }
                     mDictionary.Clear();
@@ -227,6 +316,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = this.ItemTemplate.LoadContent() as Model3D;
                                 if (model != null)
                                 {
+                                    OctreeManager?.AddPendingItem(model);
                                     model.DataContext = item;
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
@@ -248,6 +338,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = item as Model3D;
                                 if (model != null)
                                 {
+                                    OctreeManager?.AddPendingItem(model);
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
                                 }
@@ -260,6 +351,38 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
+        }
+
+        protected override void OnRender(RenderContext context)
+        {
+            base.OnRender(context);
+            if (OctreeManager != null)
+            {
+                if (OctreeManager.RequestUpdateOctree)
+                {
+                    UpdateOctree();
+                }
+            }
+        }
+
+        protected override bool OnHitTest(IRenderMatrices context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        {
+            bool isHit = false;
+            if (Octree != null)
+            {
+                isHit = Octree.HitTest(context, this, modelMatrix, ray, ref hits);
+#if DEBUG
+                if (isHit)
+                {
+                    Debug.WriteLine("Octree hit test, hit at " + hits[0].PointHit);
+                }
+#endif
+            }
+            else
+            {
+                isHit = base.OnHitTest(context, ray, ref hits);
+            }
+            return isHit;
         }
     }
 }

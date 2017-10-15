@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace HelixToolkit.Wpf.SharpDX
-{    
+{
     using global::SharpDX;
 
     using HelixToolkit.Wpf.SharpDX.Extensions;
@@ -13,65 +13,63 @@ namespace HelixToolkit.Wpf.SharpDX
     public sealed class PointLight3D : PointLightBase3D
     {
         public PointLight3D()
-        {            
+        {
             this.LightType = LightType.Point;
         }
-        
-        public override void Attach(IRenderHost host)
+
+        protected override bool OnAttach(IRenderHost host)
         {
-            /// --- attach
-            base.Attach(host);
+            // --- attach
+            if (base.OnAttach(host))
+            {
+                // --- light constant params            
+                this.vLightPos = this.effect.GetVariableByName("vLightPos").AsVector();
+                this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
+                this.vLightAtt = this.effect.GetVariableByName("vLightAtt").AsVector();
+                this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
-            /// --- light constant params            
-            this.vLightPos = this.effect.GetVariableByName("vLightPos").AsVector();
-            this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
-            this.vLightAtt = this.effect.GetVariableByName("vLightAtt").AsVector();
-            this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();                        
+                // --- Set light type
+                Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
 
-            /// --- Set light type
-            lightTypes[lightIndex] = (int)Light3D.Type.Point;   
-
-            /// --- flush
-            this.Device.ImmediateContext.Flush();
+                // --- flush
+                //this.Device.ImmediateContext.Flush();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public override void Detach()
-        {            
+        protected override void OnDetach()
+        {
             Disposer.RemoveAndDispose(ref this.vLightPos);
             Disposer.RemoveAndDispose(ref this.vLightColor);
             Disposer.RemoveAndDispose(ref this.vLightAtt);
             Disposer.RemoveAndDispose(ref this.iLightType);
-            base.Detach();       
+            base.OnDetach();
         }
-
-        public override void Render(RenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
+            if (base.CanRender(context))
             {
-                return;
+                return !renderHost.IsDeferredLighting;
             }
+            return false;
+        }
+        protected override void OnRender(RenderContext context)
+        {
+            // --- turn-on the light            
+            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
+            // --- Set lighting parameters
+            Light3DSceneShared.LightPositions[lightIndex] = this.PositionInternal.ToVector4();
+            Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.AttenuationInternal.X, (float)this.AttenuationInternal.Y, (float)this.AttenuationInternal.Z, (float)this.RangeInternal);
 
-            if (this.IsRendering)
-            {
-                /// --- turn-on the light            
-                lightColors[lightIndex] = this.Color;
-            }
-            else
-            {
-                // --- turn-off the light
-                lightColors[lightIndex] = new global::SharpDX.Color4(0, 0, 0, 0);
-            }
-
-            /// --- Set lighting parameters
-            lightPositions[lightIndex] = this.Position.ToVector4();                      
-            lightAtt[lightIndex] = new Vector4((float)this.Attenuation.X, (float)this.Attenuation.Y, (float)this.Attenuation.Z, (float)this.Range);
-
-            /// --- Update lighting variables    
-            this.vLightPos.Set(lightPositions);
-            this.vLightColor.Set(lightColors);
-            this.vLightAtt.Set(lightAtt);
-            this.iLightType.Set(lightTypes);
+            // --- Update lighting variables    
+            this.vLightPos.Set(Light3DSceneShared.LightPositions);
+            this.vLightColor.Set(Light3DSceneShared.LightColors);
+            this.vLightAtt.Set(Light3DSceneShared.LightAtt);
+            this.iLightType.Set(Light3DSceneShared.LightTypes);
         }
     }
 }

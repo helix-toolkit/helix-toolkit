@@ -33,19 +33,19 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   Bind the Tranform of the Target to this Property
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
-            "TargetTransform", typeof(Transform3D), typeof(UIManipulator3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            "TargetTransform", typeof(Transform3D), typeof(UIManipulator3D), new AffectsRenderFrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         ///   The offset property.
         /// </summary>
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
-            "Offset", typeof(Vector3), typeof(UIManipulator3D), new UIPropertyMetadata(new Vector3(0, 0, 0), ModelChanged));
+            "Offset", typeof(Vector3), typeof(UIManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 0), ModelChanged));
 
         /// <summary>
         ///   The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(UIManipulator3D), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
+            "Value", typeof(double), typeof(UIManipulator3D), new AffectsRenderFrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, ValueChanged));
 
 
         //public static readonly DependencyProperty PositionProperty =
@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Binds this manipulator to a given Model3D.
         /// </summary>
-        /// <param name="target">
+        /// <param name="source">
         /// Source Visual3D which receives the manipulator transforms. 
         /// </param>
         public void Bind(GeometryModel3D source)

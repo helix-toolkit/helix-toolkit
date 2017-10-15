@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media;
 #endif
 
+#pragma warning disable 0436
     /// <summary>
     /// Provides a cutting ears triangulation algorithm for simple polygons with no holes. O(n^2)
     /// </summary>
@@ -260,4 +261,5 @@ namespace HelixToolkit.Wpf
             return true;
         }
     }
+#pragma warning restore 0436
 }

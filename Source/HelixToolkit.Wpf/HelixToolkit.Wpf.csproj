@@ -103,13 +103,10 @@
     <Compile Include="Exporters\PovRayExporter.cs" />
     <Compile Include="Exporters\XamlExporter.cs" />
     <Compile Include="ExtensionMethods\Point3DExtensions.cs" />
-    <Compile Include="ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Geometry\Polygon3D.cs" />
     <Compile Include="Geometry\Mesh3D.cs" />
     <Compile Include="Geometry\BoundingSphere.cs" />
     <Compile Include="Helpers\CanonicalSplineHelper.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
-    <Compile Include="Helpers\ContourHelper.cs" />
     <Compile Include="Helpers\DependencyPropertyEx.cs" />
     <Compile Include="Helpers\IBoundsIgnoredVisual3D.cs" />
     <Compile Include="Helpers\Model3DHelper.cs" />
@@ -135,7 +132,6 @@
     <Compile Include="ExtensionMethods\Matrix3DExtensions.cs" />
     <Compile Include="ExtensionMethods\Vector3DExtensions.cs" />
     <Compile Include="Geometry\Plane3D.cs" />
-    <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\Ray3D.cs" />
     <Compile Include="Adorners\RectangleAdorner.cs" />
     <Compile Include="Helpers\ScreenSpace\CohenSutherlandClipping.cs" />
@@ -217,7 +213,6 @@
     <Compile Include="Importers\LwoReader.cs" />
     <Compile Include="Importers\StLReader.cs" />
     <Compile Include="MarkupExtensions\MaterialExtension.cs" />
-    <Compile Include="Helpers\MeshBuilder.cs" />
     <Compile Include="Visual3Ds\Composite\ClonedVisual3D.cs" />
     <Compile Include="Helpers\GZipHelper.cs" />
     <Compile Include="Visual3Ds\Composite\PanoramaCube3D.cs" />
@@ -234,7 +229,6 @@
     <Compile Include="Visual3Ds\LightSetups\DefaultLights.cs" />
     <Compile Include="Helpers\MaterialHelper.cs" />
     <Compile Include="Helpers\Materials.cs" />
-    <Compile Include="Helpers\MeshGeometryHelper.cs" />
     <Compile Include="Helpers\ElementSortingHelper.cs" />
     <Compile Include="Helpers\StereoHelper.cs" />
     <Compile Include="Adorners\TargetSymbolAdorner.cs" />

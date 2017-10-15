@@ -31,7 +31,6 @@
             UseDefaultGestures="False"  
             BackgroundColor="{Binding BackgroundColor}"
             RenderTechnique="{Binding RenderTechnique}"
-            RenderTechniquesManager="{Binding RenderTechniquesManager}"
             EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
@@ -42,7 +41,7 @@
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection1}"/>
             <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection2}"/>
-            <hx:GroupModel3D x:Name="group"  Children="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
+            <hx:GroupModel3D x:Name="group"  ItemsSource="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
         </hx:Viewport3DX>
         
         <StackPanel Grid.Row="0" >

@@ -9,6 +9,7 @@
 
 namespace SimpleDemo
 {
+    using System;
     using System.Windows;
 
     /// <summary>
@@ -18,7 +19,13 @@ namespace SimpleDemo
     {
         public MainWindow()
         {
-            this.InitializeComponent();                                  
+            this.InitializeComponent();
+            Closed += (s, e) => {
+                if (DataContext is IDisposable)
+                {
+                    (DataContext as IDisposable).Dispose();
+                }
+            };                           
         }
     }
 

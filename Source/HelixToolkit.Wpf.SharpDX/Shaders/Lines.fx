@@ -1,4 +1,5 @@
-
+#ifndef LINES_FX
+#define LINES_FX
 //--------------------------------------------------------------------------------------
 // File: Line Effects for HelixToolkitDX
 // Author: Przemyslaw Musialski
@@ -8,10 +9,9 @@
 // http://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf
 //-------------------------------------------------------------------------------------
 
-//#include "./Shaders/Common.fx"
-//#include "./Shaders/Default.fx"
-
-
+#include "Common.fx"
+#include "Material.fx"
+#include "DataStructs.fx"
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------
@@ -20,58 +20,6 @@
 	float4 vLineParams = float4(0,0,0,0);
 	//bool   bHasInstances	 = false;
 //}
-
-//--------------------------------------------------------------------------------------
-// VERTEX AND PIXEL SHADER INPUTS
-//--------------------------------------------------------------------------------------
-struct VSInputLS
-{
-	float4 p	: POSITION;
-	float4 c	: COLOR;
-
-	float4 mr0	: TEXCOORD1;
-	float4 mr1	: TEXCOORD2;
-	float4 mr2	: TEXCOORD3;
-	float4 mr3	: TEXCOORD4;
-};
-
-struct GSInputLS
-{
-	float4 p	: POSITION;
-	float4 c	: COLOR;
-};
-
-struct PSInputLS
-{
-	float4 p	: SV_POSITION;
-	noperspective 
-	float3 t	: TEXCOORD;
-	float4 c	: COLOR;
-};
-
-
-//--------------------------------------------------------------------------------------
-// GLOBAL FUNCTIONS
-//--------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------
-// From projection frame to window pixel pos.
-//--------------------------------------------------------------------------------------
-float2 projToWindow(in float4 pos)
-{
-    return float2(vViewport.x * 0.5 * (1.0 + (pos.x / pos.w)),
-                  vViewport.y * 0.5 * (1.0 - (pos.y / pos.w)));
-}
-
-//--------------------------------------------------------------------------------------
-// From window pixel pos to projection frame at the specified z (view frame). 
-//--------------------------------------------------------------------------------------
-float4 windowToProj(in float2 pos, in float z, in float w)
-{
-    return float4(((pos.x * 2.0 / vViewport.x) - 1.0) * w,
-                  ((pos.y * 2.0 / vViewport.y) - 1.0) * -w,
-                  z, w);
-}
 
 
 
@@ -170,14 +118,14 @@ void GShaderLines(line GSInputLS input[2], inout TriangleStream<PSInputLS> outSt
     outStream.Append( output );
  
     output.p = lineCorners[2];
-	output.c = input[0].c;
+	output.c = input[1].c;
     output.t[0] = -1;
     output.t[1] = +1;
     output.t[2] = 1;	
     outStream.Append( output );
     
     output.p = lineCorners[3];
-	output.c = input[0].c;
+	output.c = input[1].c;
     output.t[0] = -1;
     output.t[1] = -1;
 	output.t[2] = 1;	
@@ -243,40 +191,4 @@ float4 PSDrawTool( PSInputLS input) : SV_Target
     return color;
 }
 
-
-
-//--------------------------------------------------------------------------------------
-// Techniques
-//-------------------------------------------------------------------------------------
-technique11 RenderLines
-{
-    pass P0
-    {	
-        //SetDepthStencilState( DSSDepthLess, 0 );
-		//SetDepthStencilState( DSSDepthLessEqual, 0 );
-		//SetRasterizerState	( RSLines );
-        //SetRasterizerState( RSFillBiasBack );
-        //SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		SetVertexShader		( CompileShader( vs_4_0, VShaderLines() ) );
-        SetHullShader		( NULL );
-        SetDomainShader		( NULL );        
-        SetGeometryShader	( CompileShader( gs_4_0, GShaderLines() ) );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderLinesFade() ) );
-    }    
-}
-
-technique11 RenderLinesHard
-{
-    pass P0
-    {	        
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState( DSSDepthLessEqual, 0 );
-        SetRasterizerState	( RSSolid );
-        SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-        SetVertexShader		( CompileShader( vs_4_0, VShaderLines() ) );
-		SetHullShader		( NULL );
-        SetDomainShader		( NULL );        
-        SetGeometryShader	( CompileShader( gs_4_0, GShaderLines() ) );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderLines() ) );
-    }    
-}
+#endif

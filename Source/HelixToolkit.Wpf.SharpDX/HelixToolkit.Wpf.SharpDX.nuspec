@@ -12,22 +12,26 @@
     <description>Provides custom controls for WPF and a scene graph based on SharpDX.</description>
     <tags>wpf SharpDX 3D</tags>
     <dependencies>
-      <dependency id="Cyotek.Drawing.BitmapFont" version="1.3.1" />
+      <dependency id="Cyotek.Drawing.BitmapFont" version="1.3.2" />
       <dependency id="HelixToolkit" version="[$version$]" />
       <dependency id="HelixToolkit.Wpf" version="[$version$]" />
-      <dependency id="SharpDX" version="2.6.3" />
-      <dependency id="SharpDX.D3DCompiler" version="2.6.3" />
-      <dependency id="SharpDX.Direct2D1" version="2.6.3" />
-      <dependency id="SharpDX.Direct3D11" version="2.6.3" />
-      <dependency id="SharpDX.Direct3D11.Effects" version="2.6.3" />
-      <dependency id="SharpDX.Direct3D9" version="2.6.3" />
-      <dependency id="SharpDX.DXGI" version="2.6.3" />
-      <dependency id="SharpDX.Toolkit" version="2.6.3" />
-      <dependency id="SharpDX.Toolkit.Graphics" version="2.6.3" />
+      <dependency id="SharpDX" version="4.0.1" />
+      <dependency id="SharpDX.D3DCompiler" version="4.0.1" />
+      <dependency id="SharpDX.Direct2D1" version="4.0.1" />
+      <dependency id="SharpDX.Direct3D11" version="4.0.1" />
+      <dependency id="SharpDX.Direct3D11.Effects" version="4.0.1" />
+      <dependency id="SharpDX.Direct3D9" version="4.0.1" />
+      <dependency id="SharpDX.DXGI" version="4.0.1" />
+      <dependency id="SharpDX.Mathematics" version="4.0.1" />
     </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\HelixToolkit.Wpf.SharpDX.???" target="lib\net45" />
+    <file src="bin\Release\x86\d3dcompiler_47.dll" target="Content\x86\" />
+    <file src="bin\Release\x64\d3dcompiler_47.dll" target="Content\x64\" />
+    <file src="bin\Release\sharpdx_direct3d11_1_effects_arm.dll" target="Content\" />
+    <file src="bin\Release\sharpdx_direct3d11_1_effects_x64.dll" target="Content\" />
+    <file src="bin\Release\sharpdx_direct3d11_1_effects_x86.dll" target="Content\" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />

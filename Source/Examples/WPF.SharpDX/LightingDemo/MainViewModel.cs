@@ -17,11 +17,15 @@ namespace LightingDemo
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using HelixToolkit.Wpf;
+    using System.IO;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MainViewModel : BaseViewModel
     {
         public string Name { get; set; }
-        public MainViewModel ViewModel { get { return this; } }        
+        public MainViewModel ViewModel { get { return this; } }
         public MeshGeometry3D Model { get; private set; }
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
@@ -41,7 +45,7 @@ namespace LightingDemo
 
         public Vector3 Light1Direction { get; set; }
         public Vector3 Light4Direction { get; set; }
-        public Vector3D LightDirection4 { get; set; }        
+        public Vector3D LightDirection4 { get; set; }
         public Color4 Light1Color { get; set; }
         public Color4 Light2Color { get; set; }
         public Color4 Light3Color { get; set; }
@@ -54,7 +58,96 @@ namespace LightingDemo
         public bool RenderLight2 { get; set; }
         public bool RenderLight3 { get; set; }
         public bool RenderLight4 { get; set; }
-                
+
+        public bool RenderDiffuseMap { set; get; } = true;
+
+        public bool RenderNormalMap { set; get; } = true;
+
+        public string[] TextureFiles { get; } = new string[] { @"TextureCheckerboard2.jpg", @"TextureCheckerboard3.jpg", @"TextureNoise1.jpg", @"TextureNoise1_dot3.jpg", @"TextureCheckerboard2_dot3.jpg" };
+
+        private string selectedDiffuseTexture = @"TextureCheckerboard2.jpg";
+        public string SelectedDiffuseTexture
+        {
+            set
+            {
+                if(SetValue(ref selectedDiffuseTexture, value))
+                {
+                    ModelMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
+                    FloorMaterial.DiffuseMap = ModelMaterial.DiffuseMap;
+                }
+            }
+            get
+            {
+                return selectedDiffuseTexture;
+            }
+        }
+
+        private string selectedNormalTexture = @"TextureCheckerboard2_dot3.jpg";
+        public string SelectedNormalTexture
+        {
+            set
+            {
+                if (SetValue(ref selectedNormalTexture, value))
+                {
+                    ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
+                    FloorMaterial.NormalMap = ModelMaterial.NormalMap;
+                }
+            }
+            get
+            {
+                return selectedNormalTexture;
+            }
+        }
+
+        public System.Windows.Media.Color DiffuseColor
+        {
+            set
+            {
+                FloorMaterial.DiffuseColor = ModelMaterial.DiffuseColor = value.ToColor4();
+            }
+            get
+            {
+                return ModelMaterial.DiffuseColor.ToColor();
+            }
+        }
+
+
+        public System.Windows.Media.Color ReflectiveColor
+        {
+            set
+            {
+                FloorMaterial.ReflectiveColor = ModelMaterial.ReflectiveColor = value.ToColor4();
+            }
+            get
+            {
+                return ModelMaterial.ReflectiveColor.ToColor();
+            }
+        }
+
+        public System.Windows.Media.Color EmissiveColor
+        {
+            set
+            {
+                FloorMaterial.EmissiveColor = ModelMaterial.EmissiveColor = value.ToColor4();
+            }
+            get
+            {
+                return ModelMaterial.EmissiveColor.ToColor();
+            }
+        }
+
+        public MSAALevel MSAA
+        {
+            set; get;
+        } = MSAALevel.Disable;
+
+        public MSAALevel[] MSAAs { get; } = new MSAALevel[] { MSAALevel.Disable, MSAALevel.Two, MSAALevel.Four, MSAALevel.Eight, MSAALevel.Maximum };
+
+        public Camera Camera2 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
+
+        public Camera Camera3 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
+
+        public Camera Camera4 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
 
         public MainViewModel()
         {
@@ -98,8 +191,8 @@ namespace LightingDemo
 
             this.Light4Direction = new Vector3(0, -5, 0);
             this.Light4Transform = new TranslateTransform3D(-Light4Direction.ToVector3D());
-            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12); 
-            
+            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12);
+
             // ----------------------------------------------
             // light model3d
             var sphere = new MeshBuilder();
@@ -125,10 +218,8 @@ namespace LightingDemo
             this.Model = b1.ToMeshGeometry3D();
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.ModelMaterial = PhongMaterials.Chrome;
-            //this.ModelMaterial.TextureMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute));
-            this.ModelMaterial.NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute));
-            //odelMaterial.NormalMap = new BitmapImage(new System.Uri(@"TextureNoise1_dot3.jpg", System.UriKind.RelativeOrAbsolute));
 
+            this.ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(SelectedNormalTexture, System.UriKind.RelativeOrAbsolute).ToString());
 
             // ----------------------------------------------
             // floor model3d
@@ -141,12 +232,13 @@ namespace LightingDemo
             this.FloorMaterial = new PhongMaterial
             {
                 AmbientColor = Color.Gray,
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), 
+                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
-                DiffuseMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute)),
-                NormalMap = new BitmapImage(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute)),
-            };            
+                DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
+                NormalMap = ModelMaterial.NormalMap
+            };
+            ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)

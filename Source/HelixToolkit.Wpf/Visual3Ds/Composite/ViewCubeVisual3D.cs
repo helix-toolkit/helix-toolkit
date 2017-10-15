@@ -28,13 +28,21 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="BackText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackTextProperty = DependencyProperty.Register(
-            "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", VisualModelChanged));
+            "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", (d,e)=> 
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(1);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="BottomText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BottomTextProperty = DependencyProperty.Register(
-            "BottomText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("D", VisualModelChanged));
+            "BottomText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("D", (d, e) =>
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(5);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(5, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="Center"/> dependency property.
@@ -46,13 +54,21 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="FrontText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FrontTextProperty = DependencyProperty.Register(
-            "FrontText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("F", VisualModelChanged));
+            "FrontText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("F", (d, e) =>
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(0);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(0, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="LeftText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftTextProperty = DependencyProperty.Register(
-            "LeftText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("L", VisualModelChanged));
+            "LeftText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("L", (d, e) =>
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(2);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(2, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="LeftText"/> dependency property.
@@ -74,7 +90,11 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="RightText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RightTextProperty = DependencyProperty.Register(
-            "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", VisualModelChanged));
+            "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", (d, e) =>
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(3);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="Size"/> dependency property.
@@ -86,7 +106,11 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="TopText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TopTextProperty = DependencyProperty.Register(
-            "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", VisualModelChanged));
+            "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", (d, e) =>
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(4);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
 
         /// <summary>
         /// Identifies the <see cref="Viewport"/> dependency property.
@@ -107,7 +131,10 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="EnableEdgeClicks"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnableEdgeClicksProperty =
-            DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, VisualModelChanged));
+            DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, (d,e)=>
+            {
+                (d as ViewCubeVisual3D).EnableDisableEdgeClicks();
+            }));
 
         /// <summary>
         /// The normal vectors.
@@ -118,6 +145,13 @@ namespace HelixToolkit.Wpf
         /// The up vectors.
         /// </summary>
         private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
+
+        private readonly IList<GeometryModel3D> CubeFaceModels = new List<GeometryModel3D>(6);
+        private readonly IList<ModelUIElement3D> EdgeModels = new List<ModelUIElement3D>();
+        private readonly IList<ModelUIElement3D> CornerModels = new List<ModelUIElement3D>();
+
+        private readonly Brush CornerBrush = Brushes.Gold;
+        private readonly Brush EdgeBrush = Brushes.Silver;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
@@ -347,34 +381,30 @@ namespace HelixToolkit.Wpf
             ((ViewCubeVisual3D)d).UpdateVisuals();
         }
 
+
         /// <summary>
         /// Updates the visuals.
         /// </summary>
         private void UpdateVisuals()
         {
             this.Children.Clear();
-            var frontColor = Brushes.Red;
-            var leftColor = Brushes.Green;
-            var upColor = Brushes.Blue;
+            faceNormals.Clear();
+            faceUpVectors.Clear();
+            CubeFaceModels.Clear();
+            EdgeModels.Clear();
+            CornerModels.Clear();
             var vecUp = this.ModelUpDirection;
             // create left vector 90° from up
             var vecLeft = new Vector3D(vecUp.Y, vecUp.Z, vecUp.X);
 
-            // change the colors if not a positive Z vector is used for up
-            if (vecUp.Z < 1)
-            {
-                leftColor = Brushes.Blue;
-                upColor = Brushes.Green;
-            }
-
             var vecFront = Vector3D.CrossProduct(vecLeft, vecUp);
 
-            this.AddCubeFace(vecFront, vecUp, frontColor, this.FrontText);
-            this.AddCubeFace(-vecFront, vecUp, frontColor, this.BackText);
-            this.AddCubeFace(vecLeft, vecUp, leftColor, this.LeftText);
-            this.AddCubeFace(-vecLeft, vecUp, leftColor, this.RightText);
-            this.AddCubeFace(vecUp, vecLeft, upColor, this.TopText);
-            this.AddCubeFace(-vecUp, -vecLeft, upColor, this.BottomText);
+            CubeFaceModels.Add(this.AddCubeFace(vecFront, vecUp, GetCubefaceColor(0), this.FrontText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecFront, vecUp, GetCubefaceColor(1), this.BackText));
+            CubeFaceModels.Add(this.AddCubeFace(vecLeft, vecUp, GetCubefaceColor(2), this.LeftText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecLeft, vecUp, GetCubefaceColor(3), this.RightText));
+            CubeFaceModels.Add(this.AddCubeFace(vecUp, vecLeft, GetCubefaceColor(4), this.TopText));
+            CubeFaceModels.Add(this.AddCubeFace(-vecUp, -vecLeft, GetCubefaceColor(5), this.BottomText));
 
             var circle = new PieSliceVisual3D();
             circle.BeginEdit();
@@ -389,10 +419,100 @@ namespace HelixToolkit.Wpf
             circle.EndEdit();
             this.Children.Add(circle);
 
+            AddCorners();
+            AddEdges();
+            EnableDisableEdgeClicks();
+        }
+
+        private Brush GetCubefaceColor(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                case 1:
+                    return Brushes.Red;
+                case 2:
+                case 3:
+                    if (ModelUpDirection.Z < 1)
+                    {
+                        return Brushes.Blue;
+                    }
+                    else
+                    {
+                        return Brushes.Green;
+                    }
+                case 4:
+                case 5:
+                    if (ModelUpDirection.Z < 1)
+                    {
+                        return Brushes.Green;
+                    }
+                    else
+                    {
+                        return Brushes.Blue;
+                    }
+                default:
+                    return Brushes.White;
+            }
+        }
+
+        private void EnableDisableEdgeClicks()
+        {
             if (EnableEdgeClicks)
             {
-                AddCorners();
-                AddEdges();
+                foreach (var item in EdgeModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= EdggesMouseEnters;
+                    item.MouseLeave -= EdgesMouseLeaves;
+                    item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
+                    item.MouseEnter += EdggesMouseEnters;
+                    item.MouseLeave += EdgesMouseLeaves;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(EdgeBrush);
+                }
+                foreach (var item in CornerModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= CornersMouseEnters;
+                    item.MouseLeave -= CornersMouseLeave;
+                    item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
+                    item.MouseEnter += CornersMouseEnters;
+                    item.MouseLeave += CornersMouseLeave;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(CornerBrush);
+                }
+            }
+            else
+            {
+                foreach(var item in EdgeModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= EdggesMouseEnters;
+                    item.MouseLeave -= EdgesMouseLeaves;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                }
+                foreach (var item in CornerModels)
+                {
+                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
+                    item.MouseEnter -= CornersMouseEnters;
+                    item.MouseLeave -= CornersMouseLeave;
+                    ModelUIElement3D s = item as ModelUIElement3D;
+                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                }
+            }
+        }
+
+        private void UpdateCubefaceMaterial(int index, Brush b, string text)
+        {
+            if(CubeFaceModels.Count > 0 && index < CubeFaceModels.Count)
+            {
+                CubeFaceModels[index].Material = CreateTextMaterial(b, text);
+            }
+            else
+            {
+                UpdateVisuals();
             }
         }
 
@@ -432,7 +552,7 @@ namespace HelixToolkit.Wpf
             var geometry = builder.ToMesh();
             geometry.Freeze();
 
-            var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Silver) };
+            var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(EdgeBrush) };
             var element = new ModelUIElement3D { Model = model };
 
             faceNormals.Add(element, faceNormal);
@@ -443,6 +563,7 @@ namespace HelixToolkit.Wpf
             element.MouseLeave += EdgesMouseLeaves;
 
             Children.Add(element);
+            EdgeModels.Add(element);
         }
 
         private void AddCorners()
@@ -463,7 +584,7 @@ namespace HelixToolkit.Wpf
                 var geometry = builder.ToMesh();
                 geometry.Freeze();
 
-                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(Colors.Gold) };
+                var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(CornerBrush) };
                 var element = new ModelUIElement3D { Model = model };
 
                 faceNormals.Add(element, p.ToVector3D());
@@ -474,6 +595,7 @@ namespace HelixToolkit.Wpf
                 element.MouseLeave += CornersMouseLeave;
 
                 Children.Add(element);
+                CornerModels.Add(element);
             }
         }
 
@@ -516,24 +638,9 @@ namespace HelixToolkit.Wpf
         /// <param name="text">
         /// The text.
         /// </param>
-        private void AddCubeFace(Vector3D normal, Vector3D up, Brush b, string text)
+        private GeometryModel3D AddCubeFace(Vector3D normal, Vector3D up, Brush b, string text)
         {
-            var grid = new Grid { Width = 20, Height = 20, Background = b };
-            grid.Children.Add(
-                new TextBlock
-                {
-                    Text = text,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    FontSize = 15,
-                    Foreground = Brushes.White
-                });
-            grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
-
-            var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
-            bmp.Render(grid);
-
-            var material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
+            var material = CreateTextMaterial(b, text);
 
             double a = this.Size;
 
@@ -550,6 +657,27 @@ namespace HelixToolkit.Wpf
             this.faceUpVectors.Add(element, up);
 
             this.Children.Add(element);
+            return model;
+        }
+
+        private Material CreateTextMaterial(Brush b, string text)
+        {
+            var grid = new Grid { Width = 20, Height = 20, Background = b };
+            grid.Children.Add(
+                new TextBlock
+                {
+                    Text = text,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontSize = 15,
+                    Foreground = Brushes.White
+                });
+            grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
+
+            var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
+            bmp.Render(grid);
+
+            return MaterialHelper.CreateMaterial(new ImageBrush(bmp));
         }
 
         /// <summary>

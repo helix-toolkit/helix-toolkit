@@ -29,30 +29,29 @@ namespace HelixToolkit.Wpf.SharpDX
     using Color = global::SharpDX.Color;
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
+    using System.Runtime.CompilerServices;
 
-    public class LineGeometryModel3D : GeometryModel3D
+    public class LineGeometryModel3D : InstanceGeometryModel3D
     {
-        protected InputLayout vertexLayout;
-        protected Buffer vertexBuffer;
-        protected Buffer indexBuffer;
-        protected Buffer instanceBuffer;
-        protected EffectTechnique effectTechnique;
-        protected EffectTransformVariables effectTransforms;
-        protected EffectVectorVariable vViewport, vLineParams; // vFrustum, 
-        //private DepthStencilState depthStencilState;
-        //private LineGeometry3D geometry;
-        protected EffectScalarVariable bHasInstances;
-        protected Matrix[] instanceArray;
-        protected bool hasInstances = false;
-        protected bool isChanged = true;
+        #region Dependency Properties
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(Color.Black, (o, e) => ((LineGeometryModel3D)o).OnColorChanged()));
 
-        public override int VertexSizeInBytes
-        {
-            get
+        public static readonly DependencyProperty ThicknessProperty =
+            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
             {
-                return LinesVertex.SizeInBytes;
-            }
-        }
+                (d as LineGeometryModel3D).lineParams.X = (float)(double)e.NewValue;
+            }));
+
+        public static readonly DependencyProperty SmoothnessProperty =
+            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    (d as LineGeometryModel3D).lineParams.Y = (float)(double)e.NewValue;
+                }));
+
+        public static readonly DependencyProperty HitTestThicknessProperty =
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
         [TypeConverter(typeof(ColorConverter))]
         public Color Color
@@ -61,17 +60,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ColorProperty, value); }
         }
 
-        public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new UIPropertyMetadata(Color.Black, (o, e) => ((LineGeometryModel3D)o).OnColorChanged()));
-
         public double Thickness
         {
             get { return (double)this.GetValue(ThicknessProperty); }
             set { this.SetValue(ThicknessProperty, value); }
         }
 
-        public static readonly DependencyProperty ThicknessProperty =
-            DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
         public double Smoothness
         {
@@ -79,96 +73,95 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(SmoothnessProperty, value); }
         }
 
-        public static readonly DependencyProperty SmoothnessProperty =
-            DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(0.0));
-
-        public IEnumerable<Matrix> Instances
-        {
-            get { return (IEnumerable<Matrix>)this.GetValue(InstancesProperty); }
-            set { this.SetValue(InstancesProperty, value); }
-        }
-
-        public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IEnumerable<Matrix>), typeof(LineGeometryModel3D), new UIPropertyMetadata(null, InstancesChanged));
-
         public double HitTestThickness
         {
             get { return (double)this.GetValue(HitTestThicknessProperty); }
             set { this.SetValue(HitTestThicknessProperty, value); }
         }
+        #endregion
+        [ThreadStatic]
+        private static LinesVertex[] vertexArrayBuffer = null;
+        private readonly ImmutableBufferProxy<LinesVertex> vertexBuffer = new ImmutableBufferProxy<LinesVertex>(LinesVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        protected Vector4 lineParams = new Vector4();
+        protected EffectVectorVariable vViewport, vLineParams; // vFrustum, 
 
-        public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
-
-        protected static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public virtual IBufferProxy VertexBuffer
         {
-            var model = (LineGeometryModel3D)d;
-            if (e.NewValue != null)
+            get
             {
-                model.instanceArray = ((IEnumerable<Matrix>)e.NewValue).ToArray();
+                return vertexBuffer;
             }
-            else
+        }
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public virtual IBufferProxy IndexBuffer
+        {
+            get
             {
-                model.instanceArray = null;
+                return indexBuffer;
             }
-            model.isChanged = true;
         }
 
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        public LineGeometryModel3D() : base()
         {
-            LineGeometry3D lineGeometry3D;
-            Viewport3DX viewport;
+            lineParams.X = (float)Thickness;
+            lineParams.Y = (float)Smoothness;
+        }
 
-            if (this.Visibility == Visibility.Collapsed ||
-                this.IsHitTestVisible == false ||
-                (viewport = FindVisualAncestor<Viewport3DX>(this.renderHost as DependencyObject)) == null ||
-                (lineGeometry3D = this.Geometry as LineGeometry3D) == null)
-            {
-                return false;
-            }
+        protected override bool CheckGeometry()
+        {
+            return base.CheckGeometry() && geometryInternal is LineGeometry3D;
+        }
 
-            // revert unprojection; probably better: overloaded HitTest() for LineGeometryModel3D?
-            var svpm = viewport.GetScreenViewProjectionMatrix();
-            var smvpm = this.modelMatrix * svpm;
-            var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-            Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-            var clickPoint = clickPoint4.ToVector3();
+        protected override bool CanHitTest(IRenderMatrices context)
+        {
+            return base.CanHitTest(context) && context != null;
+        }
 
-            var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
-            var maxDist = this.HitTestThickness;
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            var lineGeometry3D = this.geometryInternal as LineGeometry3D;
+            var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
             var lastDist = double.MaxValue;
-            var index = 0;
-
+            var lineIndex = 0;
             foreach (var line in lineGeometry3D.Lines)
             {
-                var p0 = Vector3.TransformCoordinate(line.P0, smvpm);
-                var p1 = Vector3.TransformCoordinate(line.P1, smvpm);
-                Vector3 hitPoint;
-                float t;
-
-                var dist = LineBuilder.GetPointToLineDistance2D(ref clickPoint, ref p0, ref p1, out hitPoint, out t);
-                if (dist < lastDist && dist <= maxDist)
+                var t0 = Vector3.TransformCoordinate(line.P0, this.ModelMatrix);
+                var t1 = Vector3.TransformCoordinate(line.P1, this.ModelMatrix);
+                Vector3 sp, tp;
+                float sc, tc;
+                var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
+                var svpm = context.ScreenViewProjectionMatrix;
+                Vector4 sp4;
+                Vector4 tp4;
+                Vector3.Transform(ref sp, ref svpm, out sp4);
+                Vector3.Transform(ref tp, ref svpm, out tp4);
+                var sp3 = sp4.ToVector3();
+                var tp3 = tp4.ToVector3();
+                var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
+                var dist = tv2.Length();
+                if (dist < lastDist && dist <= this.HitTestThickness)
                 {
                     lastDist = dist;
-                    Vector4 res;
-                    var lp0 = line.P0;
-                    Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
-                    lp0 = res.ToVector3();
-
-                    var lp1 = line.P1;
-                    Vector3.Transform(ref lp1, ref this.modelMatrix, out res);
-                    lp1 = res.ToVector3();
-
-                    var lv = lp1 - lp0;
-                    var hitPointWS = lp0 + lv * t;
-                    result.Distance = (rayWS.Position - hitPointWS).Length();
-                    result.PointHit = hitPointWS.ToPoint3D();
+                    result.PointHit = sp.ToPoint3D();
+                    result.NormalAtHit = (sp - tp).ToVector3D(); // not normalized to get length
+                    result.Distance = (rayWS.Position - sp).Length();
+                    result.RayToLineDistance = rayToLineDistance;
                     result.ModelHit = this;
                     result.IsValid = true;
-                    result.Tag = index; // ToDo: LineHitTag with additional info
+                    result.Tag = lineIndex; // For compatibility
+                    result.LineIndex = lineIndex;
+                    result.TriangleIndices = null; // Since triangles are shader-generated
+                    result.RayHitPointScalar = sc;
+                    result.LineHitPointScalar = tc;
                 }
 
-                index++;
+                lineIndex++;
             }
 
             if (result.IsValid)
@@ -179,174 +172,149 @@ namespace HelixToolkit.Wpf.SharpDX
             return result.IsValid;
         }
 
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            if (this.IsAttached)
+            var rasterStateDesc = new RasterizerStateDescription()
             {
-                Disposer.RemoveAndDispose(ref this.rasterState);
-                /// --- set up rasterizer states
-                var rasterStateDesc = new RasterizerStateDescription()
-                {
-                    FillMode = FillMode.Solid,
-                    CullMode = CullMode.None,
-                    DepthBias = DepthBias,
-                    DepthBiasClamp = -1000,
-                    SlopeScaledDepthBias = -2,
-                    IsDepthClipEnabled = true,
-                    IsFrontCounterClockwise = false,
+                FillMode = FillMode,
+                CullMode = CullMode.None,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = -2,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = false,
 
-                    IsMultisampleEnabled = true,
-                    //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
-                    //IsScissorEnabled = true,
-                };
+                IsMultisampleEnabled = IsMultisampleEnabled,
+                //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
+                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
+            };
 
-                try { this.rasterState = new RasterizerState(this.Device, rasterStateDesc); }
-                catch (System.Exception)
-                {
-                }
-            }
+            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         private void OnColorChanged()
         {
-            if (this.IsAttached && Geometry!=null)
+            if (IsAttached)
+                CreateVertexBuffer();
+        }
+
+        protected override void OnCreateGeometryBuffers()
+        {
+            // --- set up buffers            
+            CreateVertexBuffer();
+            // --- set up indexbuffer
+            indexBuffer.CreateBufferFromDataArray(Device, geometryInternal.Indices);
+        }
+
+        protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnGeometryPropertyChanged(sender, e);
+            if (sender is LineGeometry3D)
             {
-                /// --- set up buffers            
-                this.vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, this.CreateLinesVertexArray());
+                if (e.PropertyName.Equals(nameof(LineGeometry3D.Positions)) || e.PropertyName.Equals(nameof(LineGeometry3D.Colors)) || e.PropertyName.Equals(Geometry3D.VertexBuffer))
+                {
+                    CreateVertexBuffer();
+                }
+                else if (e.PropertyName.Equals(nameof(LineGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
+                {
+                    indexBuffer.CreateBufferFromDataArray(this.Device, geometryInternal.Indices);
+                    InvalidateRender();
+                }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        public override void Attach(IRenderHost host)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void CreateVertexBuffer()
         {
-            /// --- attach            
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
-            base.Attach(host);
+            var geometry = geometryInternal as LineGeometry3D;
+            if (geometry != null && geometry.Positions != null)
+            {
+                // --- set up buffers            
+                var data = this.CreateLinesVertexArray();
+                vertexBuffer.CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
+            }
+            this.InvalidateRender();
+        }
 
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-            { return; }
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
+        }
 
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
+        protected override bool OnAttach(IRenderHost host)
+        {
+            // --- attach                        
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
-            // --- get device
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
+            if (renderHost.IsDeferredLighting)
+                return false;
 
-            effectTransforms = new EffectTransformVariables(effect);
-            
             // --- get geometry
-            var geometry = Geometry as LineGeometry3D;
+            var geometry = geometryInternal as LineGeometry3D;
 
             // -- set geometry if given
             if (geometry != null)
             {
-                /// --- set up buffers            
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes, CreateLinesVertexArray());
-
-                /// --- set up indexbuffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), geometry.Indices.Array);
+                OnCreateGeometryBuffers();
             }
-
-            /// --- init instances buffer            
-            hasInstances = (Instances != null)&&(Instances.Any());
-            bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
-            if (hasInstances)
+            else
             {
-                instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                throw new ArgumentException("Geometry must be LineGeometry3D");
             }
 
-            /// --- set up const variables
+
+            // --- set up const variables
             vViewport = effect.GetVariableByName("vViewport").AsVector();
             //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             vLineParams = effect.GetVariableByName("vLineParams").AsVector();
 
-            /// --- set effect per object const vars
+            // --- set effect per object const vars
             var lineParams = new Vector4((float)Thickness, (float)Smoothness, 0, 0);
             vLineParams.Set(lineParams);
 
-            /// === debug hack
+            // === debug hack
             //{
             //    var texDiffuseMapView = ShaderResourceView.FromFile(device, @"G:\Projects\Deformation Project\FrameworkWPF2012\Externals\HelixToolkit-SharpDX\Source\Examples\SharpDX.Wpf\LightingDemo\TextureCheckerboard2.jpg");
             //    var texDiffuseMap = effect.GetVariableByName("texDiffuseMap").AsShaderResource();
             //    texDiffuseMap.SetResource(texDiffuseMapView);                
             //}
 
-            /// --- create raster state
-            OnRasterStateChanged();
-            
-
-            
-            //this.rasterState = new RasterizerState(this.device, rasterStateDesc);
-
-            /// --- set up depth stencil state
-            //var depthStencilDesc = new DepthStencilStateDescription()
-            //{
-            //    DepthComparison = Comparison.Less,
-            //    DepthWriteMask = global::SharpDX.Direct3D11.DepthWriteMask.All,
-            //    IsDepthEnabled = true,
-            //};
-            //this.depthStencilState = new DepthStencilState(this.device, depthStencilDesc);   
-           
-
-            /// --- flush
-            Device.ImmediateContext.Flush();
-        }        
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Detach()
-        {
-            Disposer.RemoveAndDispose(ref this.vertexBuffer);
-            Disposer.RemoveAndDispose(ref this.indexBuffer);
-            Disposer.RemoveAndDispose(ref this.instanceBuffer);
-            //Disposer.RemoveAndDispose(ref this.vFrustum);
-            Disposer.RemoveAndDispose(ref this.vViewport);
-            Disposer.RemoveAndDispose(ref this.vLineParams);            
-            Disposer.RemoveAndDispose(ref this.rasterState);
-            //Disposer.RemoveAndDispose(ref this.depthStencilState);
-            Disposer.RemoveAndDispose(ref this.bHasInstances);
-
-            this.renderTechnique = null;
-            this.effectTechnique = null;
-            this.vertexLayout = null;
-
-            base.Detach();
+            // --- flush
+            //Device.ImmediateContext.Flush();
+            return true;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override void Render(RenderContext renderContext)
+        protected override void OnDetach()
         {
-            /// --- do not render, if not enabled
-            if (!this.IsRendering)
-                return;
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
+            //Disposer.RemoveAndDispose(ref this.vFrustum);
+            Disposer.RemoveAndDispose(ref this.vViewport);
+            Disposer.RemoveAndDispose(ref this.vLineParams);
+            base.OnDetach();
+        }
 
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-            { return; }
+        protected override bool CanRender(RenderContext context)
+        {
+            if (base.CanRender(context))
+            {
+                return !renderHost.IsDeferredLighting;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-            if (this.Visibility != System.Windows.Visibility.Visible)
-                return;
-
-            if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                return;
-
-            if (renderContext.IsShadowPass)
-                if (!this.IsThrowingShadow)
-                    return;
-
-            /// --- since these values are changed only per window resize, we set them only once here
+        protected override void OnRender(RenderContext renderContext)
+        {
+            // --- since these values are changed only per window resize, we set them only once here
             //if (this.isResized || renderContext.Camera != this.lastCamera)
             {
                 //this.isResized = false;
@@ -369,72 +337,56 @@ namespace HelixToolkit.Wpf.SharpDX
                     //this.vFrustum.Set(ref frustum);
                 }
             }
-            /// --- set transform paramerers             
+            // --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
-            /// --- set effect per object const vars
-            var lineParams = new Vector4((float)this.Thickness, (float)this.Smoothness, 0, 0);
+            // --- set effect per object const vars
             this.vLineParams.Set(lineParams);
-            
-            /// --- set context
-            this.Device.ImmediateContext.InputAssembler.InputLayout = this.vertexLayout;
-            this.Device.ImmediateContext.InputAssembler.SetIndexBuffer(this.indexBuffer, Format.R32_UInt, 0);
-            this.Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
 
-            /// --- check instancing
-            this.hasInstances = (this.Instances != null)&&(this.Instances.Any());
+            // --- set context
+            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
+
             this.bHasInstances.Set(this.hasInstances);
 
-            /// --- set rasterstate            
-            this.Device.ImmediateContext.Rasterizer.State = this.rasterState;
+            // --- set rasterstate            
+            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
 
             if (this.hasInstances)
             {
-                /// --- update instance buffer
-                if (this.isChanged)
+                // --- update instance buffer
+                if (this.isInstanceChanged)
                 {
-                    this.instanceBuffer = Buffer.Create(this.Device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                    DataStream stream;
-                    Device.ImmediateContext.MapSubresource(this.instanceBuffer, MapMode.WriteDiscard, global::SharpDX.Direct3D11.MapFlags.None, out stream);
-                    stream.Position = 0;
-                    stream.WriteRange(this.instanceArray, 0, this.instanceArray.Length);
-                    Device.ImmediateContext.UnmapSubresource(this.instanceBuffer, 0);
-                    stream.Dispose();
-                    this.isChanged = false;
+                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
+                    this.isInstanceChanged = false;
                 }
 
-                /// --- INSTANCING: need to set 2 buffers            
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[] 
+                // --- INSTANCING: need to set 2 buffers            
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
-                    new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0),
-                    new VertexBufferBinding(this.instanceBuffer, Matrix.SizeInBytes, 0),
+                    new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0),
+                    new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0),
                 });
 
-                /// --- render the geometry
+                // --- render the geometry
                 for (int i = 0; i < this.effectTechnique.Description.PassCount; i++)
                 {
-                    this.effectTechnique.GetPassByIndex(i).Apply(Device.ImmediateContext);
-                    this.Device.ImmediateContext.DrawIndexedInstanced(this.Geometry.Indices.Count, this.instanceArray.Length, 0, 0, 0);
+                    this.effectTechnique.GetPassByIndex(i).Apply(renderContext.DeviceContext);
+                    renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
                 }
+                this.bHasInstances.Set(false);
             }
             else
             {
-                /// --- bind buffer                
-                this.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.vertexBuffer, VertexSizeInBytes, 0));
+                // --- bind buffer                
+                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
 
-                /// --- render the geometry
-                this.effectTechnique.GetPassByIndex(0).Apply(this.Device.ImmediateContext);
-                this.Device.ImmediateContext.DrawIndexed(this.Geometry.Indices.Count, 0, 0);
+                // --- render the geometry
+                this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
+                renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Dispose()
-        {
-            this.Detach();
         }
 
         /// <summary>
@@ -442,37 +394,34 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private LinesVertex[] CreateLinesVertexArray()
         {
-            var positions = this.Geometry.Positions.Array;
-            var vertexCount = this.Geometry.Positions.Count;        
+            var positions = this.geometryInternal.Positions;
+            var vertexCount = this.geometryInternal.Positions.Count;
             var color = this.Color;
-            var result = new LinesVertex[vertexCount];
-
-            if (this.Geometry.Colors != null && this.Geometry.Colors.Any())
+            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
+            if (ReuseVertexArrayBuffer)
             {
-                var colors = this.Geometry.Colors;
+                vertexArrayBuffer = array;
+            }
+            if (this.geometryInternal.Colors != null && this.geometryInternal.Colors.Any())
+            {
+                var colors = this.geometryInternal.Colors;
 
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i] = new LinesVertex
-                    {
-                        Position = new Vector4(positions[i], 1f),
-                        Color = color * colors[i],
-                    };
+                    array[i].Position = new Vector4(positions[i], 1f);
+                    array[i].Color = color * colors[i];
                 }
             }
             else
             {
                 for (var i = 0; i < vertexCount; i++)
                 {
-                    result[i] = new LinesVertex
-                    {
-                        Position = new Vector4(positions[i], 1f),
-                        Color = color,
-                    };
+                    array[i].Position = new Vector4(positions[i], 1f);
+                    array[i].Color = color;
                 }
             }
 
-            return result;
+            return array;
         }
     }
 }

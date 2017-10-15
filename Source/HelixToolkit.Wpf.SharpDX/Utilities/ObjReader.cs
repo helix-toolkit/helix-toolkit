@@ -153,6 +153,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="path">
         /// The path.
         /// </param>
+        /// <param name="info">
+        /// The model info.
+        /// </param>
         /// <returns>
         /// The model.
         /// </returns>
@@ -173,6 +176,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="s">
         /// The stream.
         /// </param>
+        /// <param name="info">
+        /// The model info.
+        /// </param>
         /// <returns>
         /// The model.
         /// </returns>
@@ -191,10 +197,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
 
                     line = line.Trim();
-                    while (line.EndsWith("\\")) 
+                    while (line.EndsWith("\\"))
                     {
                         var nextLine = this.Reader.ReadLine();
-                        while (nextLine.Length == 0) 
+                        while (nextLine.Length == 0)
                         {
                             nextLine = this.Reader.ReadLine();
                         }
@@ -823,7 +829,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
-            var path = Path.Combine(this.TexturePath, mtlFile);
+            var path = Path.GetFullPath(Path.Combine(this.TexturePath, "./" + mtlFile));
             if (!File.Exists(path))
             {
                 return;
@@ -856,8 +862,15 @@ namespace HelixToolkit.Wpf.SharpDX
                         case "newmtl":
                             if (value != null)
                             {
-                                currentMaterial = new MaterialDefinition();
-                                this.Materials.Add(value, currentMaterial);
+                                if (this.Materials.ContainsKey(value))
+                                {
+                                    currentMaterial = null;
+                                }
+                                else
+                                {
+                                    currentMaterial = new MaterialDefinition();
+                                    this.Materials.Add(value, currentMaterial);
+                                }
                             }
 
                             break;
@@ -1178,13 +1191,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     //AmbientMap = this.AmbientMap,
 
                     DiffuseColor = this.Diffuse,
-                    DiffuseMap = (this.DiffuseMap == null) ? null : LoadImage(Path.Combine(texturePath, this.DiffuseMap)),
+                    DiffuseMap = (this.DiffuseMap == null) ? null : new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap)), FileMode.Open),
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
                     //SpecularMap = this.SpecularMap,
 
-                    NormalMap = (this.BumpMap == null) ? null : LoadImage(Path.Combine(texturePath, this.BumpMap)),
+                    NormalMap = (this.BumpMap == null) ? null : new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap)), FileMode.Open),
                     //Dissolved = this.Dissolved,
                     //Illumination = this.Illumination,
 
@@ -1197,7 +1210,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private static BitmapImage LoadImage(string path)
             {
-                var bmp = new BitmapImage(new Uri(path,UriKind.RelativeOrAbsolute));
+                var bmp = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                 return bmp;
             }
 

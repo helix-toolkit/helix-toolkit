@@ -33,46 +33,29 @@ namespace HelixToolkit.Wpf.SharpDX
         } 
 #endif
 
-
-        public static byte[] ToByteArray(this System.Windows.Media.Imaging.BitmapSource bitmapSource)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                var encoder = new System.Windows.Media.Imaging.BmpBitmapEncoder();
-                encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmapSource));
-                encoder.Save(ms);
-                return ms.ToArray();
-            }
-        }
-
         /// <summary>
-        /// 
+        /// Create buffer
         /// </summary>
-        public static Direct3D11.Buffer CreateBuffer<T>(this Direct3D11.Device device, BindFlags flags, int sizeofT, T[] range)
+        public static Direct3D11.Buffer CreateBuffer<T>(this Direct3D11.Device device, BindFlags flags, int sizeofT, T[] range, int length)
             where T : struct
         {
             return Direct3D11.Buffer.Create<T>(device, range, new BufferDescription()
             {
                 BindFlags = flags,
-                SizeInBytes = (int)range.Length * sizeofT,
+                SizeInBytes = length * sizeofT,
                 CpuAccessFlags = CpuAccessFlags.None,
                 OptionFlags = ResourceOptionFlags.None,
                 Usage = ResourceUsage.Default,
             });
-            ////sizeofT = sizeofT == 0 ? sizeofT = Marshal.SizeOf(typeof(T)) : sizeofT;
-            //using (var stream = new DataStream(range.Length * sizeofT, true, true))
-            //{                
-            //    stream.WriteRange(range);
-            //    stream.Position = 0;
-            //    return new Direct3D11.Buffer(device, stream, new BufferDescription
-            //    {
-            //        BindFlags = flags,
-            //        SizeInBytes = (int)stream.Length,
-            //        CpuAccessFlags = CpuAccessFlags.None,
-            //        OptionFlags = ResourceOptionFlags.None,
-            //        Usage = ResourceUsage.Default,
-            //    });
-            //}
+        }
+
+        /// <summary>
+        /// Create buffer
+        /// </summary>
+        public static Direct3D11.Buffer CreateBuffer<T>(this Direct3D11.Device device, BindFlags flags, int sizeofT, T[] range)
+            where T : struct
+        {
+            return CreateBuffer<T>(device, flags, sizeofT, range, range.Length);
         }
     }
 }

@@ -12,9 +12,14 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
     public class FpsCounter : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Minimum FPS Update Duration, Unit = Milliseconds.
+        /// </summary>
+        private const int MinimumUpdateDuration = 200;
         /// <summary>
         /// 
         /// </summary>
@@ -25,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (value == m_averagingInterval)
                     return;
-                if (value < TimeSpan.FromSeconds(0.1))
+                if (value < TimeSpan.FromMilliseconds(MinimumUpdateDuration))
                     throw new ArgumentOutOfRangeException();
 
                 m_averagingInterval = value;
@@ -39,13 +44,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="ts"></param>
         public void AddFrame(TimeSpan ts)
         {
-            var sec = AveragingInterval;
-            var index = m_frames.FindLastIndex(aTS => ts - aTS > sec);
-            if (index > -1)
-                m_frames.RemoveRange(0, index);
-            m_frames.Add(ts);
-
+            if (!m_frames.Add(ts.TotalMilliseconds))
+            {
+                m_frames.RemoveFirst();
+                m_frames.Add(ts.TotalMilliseconds);
+            }
+            //TrimFrames();
             UpdateValue();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void TrimFrames()
+        {
+            if (m_frames.Count == 0)
+            {
+                return;
+            }
+            var sec = AveragingInterval.TotalMilliseconds;
+            var target = m_frames.Last - sec;           
+            while (m_frames.Count > 10 && Math.Abs(m_frames.Last - m_frames.First) > MinimumUpdateDuration
+                && (target > m_frames.First || m_frames.First > m_frames.Last || m_frames.IsFull())) //the second condition happened when switching tabs, the TotalMilliseconds reset to 0 from composite rendering
+            {
+                m_frames.RemoveFirst();
+            }
         }
 
         /// <summary>
@@ -83,8 +104,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var dt = m_frames[m_frames.Count - 1] - m_frames[0];
-                Value = dt.Ticks > 100 ? m_frames.Count / dt.TotalSeconds : -1;
+                var dt = m_frames.Last - m_frames.First;
+                if(dt > MinimumUpdateDuration)
+                    Value = m_frames.Count / (dt/1000);
             }
         }
 
@@ -104,6 +126,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private double m_value;
         private TimeSpan m_averagingInterval = TimeSpan.FromSeconds(1);
-        private List<TimeSpan> m_frames = new List<TimeSpan>();
+        private readonly SimpleRingBuffer<double> m_frames = new SimpleRingBuffer<double>(250);
     }
 }

@@ -10,11 +10,21 @@
         {
             get
             {
-                for (int i = 0; i < Indices.Count; i += 2)
+                for (int i = 0; i < Positions.Count; ++i)
                 {
-                    yield return new Point { P0 = Positions[Indices[i]] };
+                    yield return new Point { P0 = Positions[i] };
                 }
             }
+        }
+
+        protected override IOctree CreateOctree(OctreeBuildParameter parameter)
+        {
+            return new PointGeometryOctree(Positions, parameter);
+        }
+
+        protected override bool CanCreateOctree()
+        {
+            return Positions != null && Positions.Count > 0;
         }
     }
 }

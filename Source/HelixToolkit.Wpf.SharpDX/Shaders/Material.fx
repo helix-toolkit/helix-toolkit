@@ -1,3 +1,6 @@
+#ifndef MATERIAL_FX
+#define MATERIAL_FX
+
 //--------------------------------------------------------------------------------------
 // File: Materials header for HelixToolkit.Wpf.SharpDX
 // Author: Przemyslaw Musialski
@@ -5,7 +8,10 @@
 // References & Sources: 
 //--------------------------------------------------------------------------------------
 
-
+//--------------------------------------------------------------------------------------
+// pre-processor defines
+//--------------------------------------------------------------------------------------
+#define LIGHTS 16
 //--------------------------------------------------------------------------------------
 // CONSTANT BUFF VARIABLES
 //--------------------------------------------------------------------------------------
@@ -18,6 +24,7 @@
 	float4 vMaterialReflect 	= 0.0f;   //Kr := surface material's reflectivity coefficient
 	float  sMaterialShininess	= 1.0f;	  //Ps := surface material's shininess
 	
+	bool   bHasAlphaMap			= false;
 	bool   bHasDiffuseMap		= false;
 	bool   bHasNormalMap		= false;
 	bool   bHasDisplacementMap  = false;	
@@ -34,12 +41,11 @@
 // GLOBAL Variables (Varing)
 //--------------------------------------------------------------------------------------
 float4 vTessellation			= float4(2.0f, 0.0f, 0.0f, 0.0f); // the first value is the TS-factor, the other are free!
-float4 vLightAmbient			= float4(0.2f, 0.2f, 0.2f, 1.0f);
 
 //--------------------------------------------------------------------------------------
 // TEXTURES
 //--------------------------------------------------------------------------------------
-
+Texture2D   texAlphaMap;
 Texture2D	texDiffuseMap;
 Texture2D	texNormalMap;
 Texture2D	texDisplacementMap;
@@ -47,4 +53,19 @@ Texture2D	texSpecularMap;
 Texture2D	texShadowMap;
 TextureCube texCubeMap;
 
+bool bHasInstanceParams = false;
 
+bool bHasBones = false;
+
+#define MaxBones 128
+
+tbuffer BoneSkinning
+{
+	matrix SkinMatrices[MaxBones];
+};
+
+float4 XRayObjectColor = float4(1,1,1,1);
+float XRayBorderFadingFactor = 1.5f;
+
+bool bInvertNormal = false;
+#endif

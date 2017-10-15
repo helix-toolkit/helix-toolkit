@@ -19,6 +19,7 @@ namespace DataTemplateDemo
     using HelixToolkit.Wpf;
 
     using PropertyTools.Wpf;
+    using System.Windows.Media;
 
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
@@ -57,21 +58,69 @@ namespace DataTemplateDemo
             this.DataContext = this;
             this.AddElementCommand = new DelegateCommand(() =>
             {
-                this.ObservableElements.Add(new Element
+                if (this.ObservableElements.Count % 3 == 1)
                 {
-                    Position = new Point3D(0, -3, this.ObservableElements.Count),
-                    Material = Materials.Green,
-                    Radius = 0.4
-                });
+                    var modelBuilder = new MeshBuilder();
+                    modelBuilder.AddCylinder(new Point3D(0, 0, 0), new Point3D(0, 1, 0), 0.75, 15);
+
+                    ModelElement model = new ModelElement1();
+                    if (this.ObservableElements.Count % 2 == 0)
+                        model = new ModelElement2();
+
+                    model.IsVisible = true;
+                    model.Model = new GeometryModel3D
+                    {
+                        Material = new DiffuseMaterial(System.Windows.Media.Brushes.Orange),
+                        BackMaterial = new DiffuseMaterial(System.Windows.Media.Brushes.Orange),
+                        Geometry = modelBuilder.ToMesh()
+                    };
+                    model.Position = new Point3D(0, -3, this.ObservableElements.Count);
+
+                    this.ObservableElements.Add(model);
+                }
+                else if (this.ObservableElements.Count % 2 == 0)
+                {
+                    this.ObservableElements.Add(new SphereElement
+                    {
+                        Position = new Point3D(-2, -3, this.ObservableElements.Count),
+                        Material = Materials.Green,
+                        Radius = 0.4
+                    });
+                }
+                else
+                {
+                    this.ObservableElements.Add(new CubeElement
+                    {
+                        Position = new Point3D(2, -3, this.ObservableElements.Count)
+                    });
+                }
             });
             this.DeleteElementCommand = new DelegateCommand(() =>
             {
                 this.ObservableElements.RemoveAt(this.ObservableElements.Count - 1);
             },
             () => this.ObservableElements.Count > 0);
+            this.AddElementsCommand = new DelegateCommand(() =>
+            {
+                for (int a = 0; a < 250; a++)
+                    AddElementCommand.Execute(null);
+            });
+            this.AddUIElementCommand = new DelegateCommand(() =>
+            {
+                ModelElement model = new ModelElement3
+                {
+                    IsVisible = true,
+                    Color = Colors.Pink
+                };
+                model.Position = new Point3D(0, -3, this.ObservableElements.Count);
+
+                this.ObservableElements.Add(model);
+            });
         }
 
         public DelegateCommand AddElementCommand { get; private set; }
+        public DelegateCommand AddElementsCommand { get; private set; }
+        public DelegateCommand AddUIElementCommand { get; private set; }
 
         public DelegateCommand DeleteElementCommand { get; private set; }
 

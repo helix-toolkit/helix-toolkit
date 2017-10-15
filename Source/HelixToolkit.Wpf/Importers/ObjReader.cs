@@ -740,7 +740,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
-            var path = Path.Combine(this.TexturePath, mtlFile);
+            var path = Path.GetFullPath(Path.Combine(this.TexturePath, "./" + mtlFile));
             if (!File.Exists(path))
             {
                 return;
@@ -773,8 +773,15 @@ namespace HelixToolkit.Wpf
                         case "newmtl":
                             if (value != null)
                             {
-                                currentMaterial = new MaterialDefinition(value);
-                                this.Materials.Add(value, currentMaterial);
+                                if (this.Materials.ContainsKey(value))
+                                {
+                                    currentMaterial = null;
+                                }
+                                else
+                                {
+                                    currentMaterial = new MaterialDefinition(value);
+                                    this.Materials.Add(value, currentMaterial);
+                                }
                             }
 
                             break;
@@ -1104,7 +1111,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    var path = Path.Combine(texturePath, this.DiffuseMap);
+                    var path = Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap));
                     if (File.Exists(path))
                     {
                         mg.Children.Add(new DiffuseMaterial(this.CreateTextureBrush(path)));
@@ -1118,7 +1125,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    var path = Path.Combine(texturePath, this.AmbientMap);
+                    var path = Path.GetFullPath(Path.Combine(texturePath, "./" + this.AmbientMap));
                     if (File.Exists(path))
                     {
                         mg.Children.Add(new EmissiveMaterial(this.CreateTextureBrush(path)));

@@ -1,20 +1,26 @@
 ﻿using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
-using System;
+using System.Windows;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using HelixToolkit.Wpf.SharpDX.Extensions;
+using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class BillboardSingleText3D: MeshGeometry3D, IBillboardText
+    public class BillboardSingleText3D : BillboardBase
     {
         private volatile bool isInitialized = false;
-
-        public BitmapSource Texture { get; private set; }
+        private readonly bool predefinedSize = false;
+        /// <summary>
+        /// Billboard type, <see cref="BillboardType"/>
+        /// </summary>
+        public override BillboardType Type
+        {
+            get
+            {
+                return BillboardType.SingleText;
+            }
+        }
 
         private TextInfo mTextInfo = new TextInfo("", new Vector3());
         public TextInfo TextInfo
@@ -27,17 +33,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IList<Vector2> TextInfoOffsets { get { return TextInfo.Offsets; } }
-
-        public float Width { private set; get; }
-
-        public float Height { private set; get; }
+        public override IList<Vector2> TextureOffsets { get { return TextInfo.Offsets; } }
 
         private Color4 mFontColor = Color.Black;
         public Color4 FontColor
         {
             set { mFontColor = value; }
             get { return mFontColor; }
+        }
+
+        private Color4 mBackgroundColor = Color.Transparent;
+        public Color4 BackgroundColor
+        {
+            set { mBackgroundColor = value; }
+            get { return mBackgroundColor; }
         }
 
         private int mFontSize = 12;
@@ -47,36 +56,105 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return mFontSize; }
         }
 
-        public BillboardSingleText3D()
+        private Media.FontFamily mFontFamily = new Media.FontFamily("Arial");
+        public Media.FontFamily FontFamily
         {
-            Positions = new Vector3Collection();
-            Colors = new Color4Collection();
-            TextureCoordinates = new Vector2Collection();
-            TextInfo = new TextInfo();
+            set
+            {
+                mFontFamily = value;
+            }
+            get
+            {
+                return mFontFamily;
+            }
         }
 
-        public void DrawText()
+        private FontWeight mFontWeight = FontWeights.Normal;
+        public FontWeight FontWeight
+        {
+            set
+            {
+                mFontWeight = value;
+            }
+            get
+            {
+                return mFontWeight;
+            }
+        }
+
+        private FontStyle mFontStyle = FontStyles.Normal;
+        public FontStyle FontStyle
+        {
+            set
+            {
+                mFontStyle = value;
+            }
+            get
+            {
+                return mFontStyle;
+            }
+        }
+
+        private Thickness mPadding = new Thickness(0);
+        public Thickness Padding
+        {
+            set
+            {
+                mPadding = value;
+            }get
+            {
+                return mPadding;
+            }
+        }
+
+        public BillboardSingleText3D()
+        {
+            Positions = new Vector3Collection(12);
+            Colors = new Color4Collection(12);
+            TextureCoordinates = new Vector2Collection(12);
+            TextInfo = new TextInfo();
+        }
+        public BillboardSingleText3D(float width, float height)
+        {
+            Positions = new Vector3Collection(12);
+            Colors = new Color4Collection(12);
+            TextureCoordinates = new Vector2Collection(12);
+            TextInfo = new TextInfo();
+            Width = width;
+            Height = height;
+            predefinedSize = true;
+        }
+        public override void DrawTexture()
         {
             if (!isInitialized)
             {
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
-                    Texture = TextInfo.Text.StringToBitmapSource(FontSize, System.Windows.Media.Colors.White, System.Windows.Media.Colors.Black);
-                    Width = (float)Texture.Width;
-                    Height = (float)Texture.Height;
-                    DrawCharacter(TextInfo.Text, TextInfo.Origin, (float)Texture.Width, (float)Texture.Height, TextInfo);
+                    Texture = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black, 
+                        this.FontFamily, this.FontWeight, this.FontStyle, Padding);
+                    Texture.Freeze();
+                    if (!predefinedSize)
+                    {
+                        Width = (float)Texture.Width;
+                        Height = (float)Texture.Height;
+                    }
+                    DrawCharacter(TextInfo.Text, TextInfo.Origin, Width, Height, TextInfo);
                 }
                 else
                 {
                     Texture = null;
-                    Width = 0; 
-                    Height = 0;
+                    if (!predefinedSize)
+                    {
+                        Width = 0;
+                        Height = 0;
+                    }
                     Positions.Clear();
                     Colors.Clear();
                     TextureCoordinates.Clear();
                     TextInfo.Offsets.Clear();
                 }
                 isInitialized = true;
+                UpdateBounds();
             }
         }
 
@@ -97,14 +175,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var uv_c = new Vector2(1, 0);
             var uv_d = new Vector2(1, 1);
 
+            // Create foreground data
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Colors.Add(FontColor);
-            Colors.Add(FontColor);
+
             Colors.Add(FontColor);
             Colors.Add(FontColor);
             Colors.Add(FontColor);
@@ -113,15 +189,32 @@ namespace HelixToolkit.Wpf.SharpDX
             TextureCoordinates.Add(uv_b);
             TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_c);
 
             info.Offsets.Add(a);
             info.Offsets.Add(c);
             info.Offsets.Add(b);
-            info.Offsets.Add(b);
+            info.Offsets.Add(d);
+
+            // Create background data
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+            Positions.Add(info.Origin);
+
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+            Colors.Add(BackgroundColor);
+
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+            TextureCoordinates.Add(uv_a);
+
+            info.Offsets.Add(a);
             info.Offsets.Add(c);
+            info.Offsets.Add(b);
             info.Offsets.Add(d);
         }
     }

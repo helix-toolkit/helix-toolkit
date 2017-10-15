@@ -11,24 +11,41 @@ namespace HelixToolkit.Wpf.Tests
     using System.Xml.Schema;
     using HelixToolkit.Wpf;
     using NUnit.Framework;
+    using System;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class ColladaExporterTests : ExporterTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            var dir = Path.GetDirectoryName(typeof(ColladaExporterTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
+        }
+
         [Test]
         public void Export_SimpleModel_ValidOutput()
         {
             string path = "temp.dae";
-            var e = new ColladaExporter();
-            using (var stream = File.Create(path))
-            {
-                this.ExportSimpleModel(e, stream);
-            }
 
-            var result = this.Validate(path);
-            Assert.IsNull(result, result);
+            try
+            {
+                var e = new ColladaExporter();
+                using (var stream = File.Create(path))
+                {
+                    this.ExportSimpleModel(e, stream);
+                }
+
+                var result = this.Validate(path);
+                Assert.IsNull(result, result);
+            }
+            finally
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
         }
 
         private string Validate(string path)

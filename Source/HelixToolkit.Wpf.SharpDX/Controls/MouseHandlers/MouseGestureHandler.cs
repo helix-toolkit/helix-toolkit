@@ -157,11 +157,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private Cursor OldCursor { get; set; }
 
         /// <summary>
-        /// Use to limit the mouse move event frequency
-        /// </summary>
-        private readonly EventSkipper skipper = new EventSkipper();
-
-        /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">
@@ -202,12 +197,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            this.Viewport.PushCameraSetting();
-            this.Viewport.MouseMove += this.OnMouseMove;
+            this.Viewport.MouseMove -= this.OnMouseMove;
+            this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.MouseUp += this.OnMouseUp;
-            this.OnMouseDown(sender, null);
             this.Viewport.Focus();
             this.Viewport.CaptureMouse();
+            this.OnMouseDown(sender, null);
+            this.Viewport.MouseMove += this.OnMouseMove;
         }
 
         /// <summary>
@@ -293,7 +289,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// A ray
         /// </returns>
         protected Ray3D GetRay(Point position)
-        {            
+        {
             return this.Viewport.UnProject(position);
         }
 
@@ -317,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
-        {           
+        {
             this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
 
             this.OldCursor = this.Viewport.Cursor;
@@ -335,10 +331,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (skipper.IsSkip())
-            {
-                return;
-            }
             this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
         }
 
@@ -387,7 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Point3D nearestPoint;
             Vector3D normal;
             Model3D visual;
-            if (this.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }

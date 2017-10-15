@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -38,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static int GetTotalNumberOfTriangles(this Viewport3DX viewport)
         {
             int count = 0;
-            foreach (var item in viewport.Items)
+            foreach (var item in viewport.Renderables)
             {
                 var model = item as MeshGeometryModel3D;
                 if (model != null)
@@ -82,6 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The camera transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetViewProjectionMatrix3D(this Viewport3DX viewport)
         {
             return GetViewProjectionMatrix(viewport).ToMatrix3D();
@@ -96,18 +98,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The camera transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
         {
-            return viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+            return viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix * viewport.RenderContext.ProjectionMatrix
+                : viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Matrix GetProjectionMatrix(this Viewport3DX viewport)
+        {
+            return viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix
+                : viewport.Camera.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+        }
         /// <summary>
         /// Gets the total transform for a Viewport3DX. 
         /// Old name of this function: GetTotalTransform
         /// New name of the function: GetScreenViewProjectionTransform
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <returns>The total transform.</returns>        
+        /// <returns>The total transform.</returns>     
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetScreenViewProjectionMatrix3D(this Viewport3DX viewport)
         {
             return GetScreenViewProjectionMatrix(viewport).ToMatrix3D();
@@ -119,7 +130,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// New name of the function: GetScreenViewProjectionTransform
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <returns>The total transform.</returns>        
+        /// <returns>The total transform.</returns>       
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetScreenViewProjectionMatrix(this Viewport3DX viewport)
         {
             return GetViewProjectionMatrix(viewport) * GetViewportMatrix(viewport);
@@ -133,6 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         /// <returns>The transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetViewportMatrix3D(this Viewport3DX viewport)
         {
             return GetViewportMatrix(viewport).ToMatrix3D();
@@ -146,6 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         /// <returns>The transform.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetViewportMatrix(this Viewport3DX viewport)
         {
             return new Matrix(
@@ -175,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Rect3D FindBounds(this Viewport3DX viewport)
         {
             var bounds = new global::SharpDX.BoundingBox();
-            foreach (var element in viewport.Items)
+            foreach (var element in viewport.Renderables)
             {
                 var model = element as IBoundable;
                 if (model != null)
@@ -195,15 +209,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <typeparam name="T">
         /// The type filter.
         /// </typeparam>
-        /// <param name="visuals">
-        /// The visuals.
+        /// <param name="viewport">
+        /// The viewport.
         /// </param>
         /// <param name="action">
         /// The action.
         /// </param>
         public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Model3D
         {
-            foreach (var element in viewport.Items)
+            foreach (var element in viewport.Renderables)
             {
                 var model = element as Model3D; // ITraversable;
                 if (model != null)
@@ -219,8 +233,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <typeparam name="T">
         /// The type filter.
         /// </typeparam>
-        /// <param name="visual">
-        /// The visual.
+        /// <param name="element">
+        /// The element.
         /// </param>
         /// <param name="action">
         /// The action.
@@ -253,12 +267,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var ray = UnProject(viewport, new Vector2((float)position.X, (float)position.Y));
             var hits = new List<HitTestResult>();
                         
-            foreach (var element in viewport.Items)
+            foreach (var element in viewport.Renderables)
             {
                 var model = element as IHitable;
                 if (model != null)
                 {
-                    model.HitTest(ray, ref hits);
+                    model.HitTest(viewport.RenderContext, ray, ref hits);
                 }
             }
 
@@ -280,8 +294,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="normal">
         /// The normal.
         /// </param>
-        /// <param name="visual">
-        /// The visual.
+        /// <param name="model">
+        /// The model.
         /// </param>
         /// <returns>
         /// The find nearest.
@@ -337,48 +351,44 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Un-projects a 2D screen point.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="pointIn">The input point.</param>
-        /// <param name="pointNear">The point at the near clipping plane.</param>
-        /// <param name="pointFar">The point at the far clipping plane.</param>
+        /// <param name="point2d">The input point.</param>
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
         {
             var camera = viewport.Camera as ProjectionCamera;
             if (camera != null)
             {
-                var p = new Vector3((float)point2d.X, (float)point2d.Y, 1);
+                var px = (float)point2d.X;
+                var py = (float)point2d.Y;
 
+                var viewMatrix = camera.GetViewMatrix();
+                Vector3 v = new Vector3();
+                
+                var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+                float w = (float)viewport.ActualWidth;
+                float h = (float)viewport.ActualHeight;
+                var aspectRatio = w / h;
 
-                //var wvp = GetViewProjectionMatrix(viewport);
-                //Vector3 r = Vector3.Unproject(p, 0f, 0f, (float)viewport.ActualWidth, (float)viewport.ActualHeight, 0f, 1f, wvp);
-                //r.Normalize();
-
-                var vp = GetScreenViewProjectionMatrix(viewport);
-                var vpi = Matrix.Invert(vp);
-
-                var test = 1f / ((p.X * vpi.M14) + (p.Y * vpi.M24) + (p.Z * vpi.M34) + vpi.M44);
-                if (double.IsInfinity(test))
-                {
-                    vpi.M44 = vpi.M44 + 0.000001f;
-                }
-
+                var projMatrix = camera.GetProjectionMatrix(aspectRatio);
                 Vector3 zn, zf;
-                p.Z = 0;
-                Vector3.TransformCoordinate(ref p, ref vpi, out zn);
-                p.Z = 1;
-                Vector3.TransformCoordinate(ref p, ref vpi, out zf);
-                Vector3 r = zf - zn;
-
-                r.Normalize();
+                v.X = (2 * px / w - 1) / projMatrix.M11;
+                v.Y = -(2 * py / h - 1) / projMatrix.M22;
+                v.Z = 1 / projMatrix.M33;
+                Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 
                 if (camera is PerspectiveCamera)
                 {
-                    return new Ray(camera.Position.ToVector3(), r);
+                    zn = camera.Position.ToVector3();
                 }
-                else if (camera is OrthographicCamera)
+                else
                 {
-                    return new Ray(zn, r);
-                }
+                    v.Z = 0;
+                    Vector3.TransformCoordinate(ref v, ref matrix, out zn);
+                }           
+                Vector3 r = zf - zn;
+                r.Normalize();               
+
+                return new Ray(zn, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }
@@ -387,7 +397,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Un-projects a 2D screen point.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="pointIn">The input point.</param>
+        /// <param name="point2d">The input point.</param>
         /// <returns>The ray.</returns>
         public static Ray3D UnProject(this Viewport3DX viewport, Point point2d)
         {
@@ -745,6 +755,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Changes the field of view and tries to keep the scale fixed.
         /// </summary>
+        /// <param name="viewport">
+        /// The viewport.
+        /// </param>
         /// <param name="delta">
         /// The relative change in fov.
         /// </param>

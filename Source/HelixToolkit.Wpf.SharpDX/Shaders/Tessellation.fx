@@ -17,7 +17,7 @@
 //--------------------------------------------------------------------------------------
 // pre-processor includes
 //--------------------------------------------------------------------------------------
-#include "./Shaders/Default.fx"
+#include "Effects.fx"
 
 //--------------------------------------------------------------------------------------
 // SHADER STRUCTURES
@@ -121,6 +121,10 @@ HSInput VShaderTessellated( VSIn input )
     HSInput output;        
     output.p		= input.p.xyz;
     output.t		= input.t;       
+    if (bInvertNormal)
+    {
+        input.n = -input.n;
+    }
     output.n		= input.n; 
     output.t1		= input.t1;
 	output.t2		= input.t2;
@@ -436,7 +440,7 @@ technique11 RenderPNTriangs
 {
     pass Solid
     {
-		SetRasterizerState	( RSSolid );
+		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );			
 		SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                		
@@ -447,7 +451,7 @@ technique11 RenderPNTriangs
     } 
 	pass Wires
     {
-		SetRasterizerState	( RSWire );
+	//	SetRasterizerState	( RSWire );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -458,7 +462,7 @@ technique11 RenderPNTriangs
     }
 	pass Positions
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -469,7 +473,7 @@ technique11 RenderPNTriangs
     }
 	pass Normals
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -480,7 +484,7 @@ technique11 RenderPNTriangs
     }		
 	pass TexCoords
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -491,7 +495,7 @@ technique11 RenderPNTriangs
     }
 	pass Tangents
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -502,7 +506,7 @@ technique11 RenderPNTriangs
     }		
 	pass Colors
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -517,7 +521,7 @@ technique11 RenderPNQuads
 {
     pass Solid
     {
-		SetRasterizerState	( RSSolid );
+		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -528,7 +532,7 @@ technique11 RenderPNQuads
     } 
 	pass Wires
     {
-		SetRasterizerState	( RSWire );
+		//SetRasterizerState	( RSWire );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -540,7 +544,7 @@ technique11 RenderPNQuads
 		
 	pass Positions
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -551,7 +555,7 @@ technique11 RenderPNQuads
     }
 	pass Normals
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -562,7 +566,7 @@ technique11 RenderPNQuads
     }		
 	pass TexCoords
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -573,7 +577,7 @@ technique11 RenderPNQuads
     }
 	pass Tangents
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
@@ -584,7 +588,7 @@ technique11 RenderPNQuads
     }		
 	pass Colors
     {
-		SetRasterizerState	( RSSolid );
+	//	SetRasterizerState	( RSSolid );
 		SetDepthStencilState( DSSDepthLess, 0);
 		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
         SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                

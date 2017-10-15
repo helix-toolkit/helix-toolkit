@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -9,6 +10,7 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
+using HelixToolkit.Wpf.SharpDX.Utilities;
 
 namespace CustomShaderDemo
 {
@@ -34,18 +36,28 @@ namespace CustomShaderDemo
 
     public class CustomGeometryModel3D : MaterialGeometryModel3D
     {
-        public override int VertexSizeInBytes
+        private readonly ImmutableBufferProxy<CustomVertex> vertexBuffer = new ImmutableBufferProxy<CustomVertex>(CustomVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        protected Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
+
+        public override IBufferProxy VertexBuffer
         {
             get
             {
-                return CustomVertex.SizeInBytes;
+                return vertexBuffer;
             }
         }
 
-        protected Color4 selectionColor = new Color4(1.0f, 0.0f, 1.0f, 1.0f);
+        public override IBufferProxy IndexBuffer
+        {
+            get
+            {
+                return indexBuffer;
+            }
+        }
 
         public static readonly DependencyProperty RequiresPerVertexColorationProperty =
-            DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new UIPropertyMetadata(false));
+            DependencyProperty.Register("RequiresPerVertexColoration", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false));
 
         public bool RequiresPerVertexColoration
         {
@@ -56,49 +68,42 @@ namespace CustomShaderDemo
             set { SetValue(RequiresPerVertexColorationProperty, value); }
         }
 
-        protected override void OnRasterStateChanged()
+        protected override RasterizerState CreateRasterState()
         {
-            if (IsAttached)
+            var rasterStateDesc = new RasterizerStateDescription()
             {
-                Disposer.RemoveAndDispose(ref rasterState);
-                /// --- set up rasterizer states
-                var rasterStateDesc = new RasterizerStateDescription()
-                {
-                    FillMode = FillMode.Solid,
-                    CullMode = CullMode.Back,
-                    DepthBias = DepthBias,
-                    DepthBiasClamp = -1000,
-                    SlopeScaledDepthBias = +0,
-                    IsDepthClipEnabled = true,
-                    IsFrontCounterClockwise = true,
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.Back,
+                DepthBias = DepthBias,
+                DepthBiasClamp = -1000,
+                SlopeScaledDepthBias = +0,
+                IsDepthClipEnabled = true,
+                IsFrontCounterClockwise = true,
 
-                    //IsMultisampleEnabled = true,
-                    //IsAntialiasedLineEnabled = true,                    
-                    //IsScissorEnabled = true,
-                };
-                try
-                {
-                    rasterState = new RasterizerState(Device, rasterStateDesc);
-                }
-                catch (Exception)
-                {
-                }
-            }
+                //IsMultisampleEnabled = true,
+                //IsAntialiasedLineEnabled = true,                    
+                //IsScissorEnabled = true,
+            };
+            return new RasterizerState(Device, rasterStateDesc);         
         }
 
-        public override void Attach(IRenderHost host)
+        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            base.Attach(host);
+            return host.RenderTechniquesManager.RenderTechniques["RenderCustom"];
+        }
 
-            renderTechnique = host.RenderTechniquesManager.RenderTechniques["RenderCustom"];
+        protected override void OnCreateGeometryBuffers()
+        {
+            vertexBuffer.CreateBufferFromDataArray(Device, CreateCustomVertexArray());
+            indexBuffer.CreateBufferFromDataArray(Device, Geometry.Indices.ToArray());
+        }
 
-            if (Geometry == null)
-                return;
-
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
-
-            effectTransforms = new EffectTransformVariables(effect);
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             AttachMaterial();
 
@@ -108,94 +113,37 @@ namespace CustomShaderDemo
             {
                 throw new Exception("Geometry must not be null");
             }
-
-            vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, VertexSizeInBytes,
-                CreateCustomVertexArray());
-            indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int),
-                Geometry.Indices.ToArray());
-
+            OnCreateGeometryBuffers();
             hasInstances = (Instances != null) && (Instances.Any());
             bHasInstances = effect.GetVariableByName("bHasInstances").AsScalar();
+            OnRasterStateChanged();
             if (hasInstances)
             {
-                instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
+                isInstanceChanged = true;
             }
-
-            OnRasterStateChanged();
-
-            Device.ImmediateContext.Flush();
+            // Device.ImmediateContext.Flush();
+            return true;
         }
 
-        public override void Detach()
+        protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref vertexBuffer);
-            Disposer.RemoveAndDispose(ref indexBuffer);
-            Disposer.RemoveAndDispose(ref instanceBuffer);
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
             Disposer.RemoveAndDispose(ref effectMaterial);
-            Disposer.RemoveAndDispose(ref effectTransforms);
-            Disposer.RemoveAndDispose(ref texDiffuseMapView);
-            Disposer.RemoveAndDispose(ref texNormalMapView);
             Disposer.RemoveAndDispose(ref bHasInstances);
-
-            renderTechnique = null;
-            phongMaterial = null;
-            effectTechnique = null;
-            vertexLayout = null;
-
-            base.Detach();
+            base.OnDetach();
         }
 
-        public override void Render(RenderContext renderContext)
+        protected override void OnRender(RenderContext renderContext)
         {
-            /// --- check to render the model
-            {
-                if (!IsRendering)
-                    return;
-
-                if (Geometry == null)
-                    return;
-
-                if (Visibility != Visibility.Visible)
-                    return;
-
-                if (renderContext.IsShadowPass)
-                    if (!IsThrowingShadow)
-                        return;
-            }
-
             /// --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.WorldMatrix;
-            effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
 
             /// --- check shadowmaps
             hasShadowMap = renderHost.IsShadowMapEnabled;
             effectMaterial.bHasShadowMapVariable.Set(hasShadowMap);
-
-            /// --- set material params      
-            if (phongMaterial != null)
-            {
-                effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
-
-                /// --- has samples              
-                effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null);
-                effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null);
-
-                /// --- set samplers
-                if (phongMaterial.DiffuseMap != null)
-                {
-                    effectMaterial.texDiffuseMapVariable.SetResource(texDiffuseMapView);
-                }
-
-                if (phongMaterial.NormalMap != null)
-                {
-                    effectMaterial.texNormalMapVariable.SetResource(texNormalMapView);
-                }
-            }
+            effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
 
             /// --- check instancing
             hasInstances = (Instances != null) && (Instances.Any());
@@ -207,42 +155,36 @@ namespace CustomShaderDemo
             /// --- set context
             Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
             Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            Device.ImmediateContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
+            Device.ImmediateContext.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, 0);
 
             /// --- set rasterstate            
-            Device.ImmediateContext.Rasterizer.State = rasterState;
+            Device.ImmediateContext.Rasterizer.State = RasterState;
 
             if (hasInstances)
             {
                 /// --- update instance buffer
-                if (isChanged)
+                if (isInstanceChanged)
                 {
-                    instanceBuffer = Buffer.Create(Device, instanceArray, new BufferDescription(Matrix.SizeInBytes * instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));
-                    DataStream stream;
-                    Device.ImmediateContext.MapSubresource(instanceBuffer, MapMode.WriteDiscard, MapFlags.None, out stream);
-                    stream.Position = 0;
-                    stream.WriteRange(instanceArray, 0, instanceArray.Length);
-                    Device.ImmediateContext.UnmapSubresource(instanceBuffer, 0);
-                    stream.Dispose();
-                    isChanged = false;
+                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, Instances.ToArray());
+                    isInstanceChanged = false;
                 }
 
                 /// --- INSTANCING: need to set 2 buffers            
                 Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new[]
                 {
-                    new VertexBufferBinding(vertexBuffer, VertexSizeInBytes, 0),
-                    new VertexBufferBinding(instanceBuffer, Matrix.SizeInBytes, 0),
+                    new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0),
+                    new VertexBufferBinding(InstanceBuffer.Buffer, InstanceBuffer.StructureSize, 0),
                 });
 
                 /// --- render the geometry
                 effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
-                Device.ImmediateContext.DrawIndexedInstanced(Geometry.Indices.Count, instanceArray.Length, 0, 0, 0);
+                Device.ImmediateContext.DrawIndexedInstanced(Geometry.Indices.Count, Instances.Count, 0, 0, 0);
             }
             else
             {
                 /// --- bind buffer                
-                Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, VertexSizeInBytes, 0));
+                Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));
                 /// --- render the geometry
                 effectTechnique.GetPassByIndex(0).Apply(Device.ImmediateContext);
                 /// --- draw
@@ -284,7 +226,11 @@ namespace CustomShaderDemo
 
             return result;
         }
-   
+
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            return false;
+        }
     }
 
 }

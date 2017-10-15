@@ -15,7 +15,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
-    using global::SharpDX.DXGI;    
+    using global::SharpDX.DXGI;
+    using Utilities;
+    using System;
 
     public static class TessellationTechniques
     {
@@ -46,6 +48,30 @@ namespace HelixToolkit.Wpf.SharpDX
     public class PatchGeometryModel3D : MaterialGeometryModel3D
     {
 #if TESSELLATION
+        #region Dependency Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty ShadingProperty =
+            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new AffectsRenderPropertyMetadata("Solid", ShadingChanged));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty TessellationFactorProperty =
+            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D),
+                new AffectsRenderPropertyMetadata(1.0, TessellationFactorChanged));
+        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
+
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(PatchGeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -54,12 +80,51 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (string)GetValue(ShadingProperty); }
             set { SetValue(ShadingProperty, value); }
         }
-
         /// <summary>
         /// 
         /// </summary>
-        public static readonly DependencyProperty ShadingProperty =
-            DependencyProperty.Register("Shading", typeof(string), typeof(PatchGeometryModel3D), new UIPropertyMetadata("Solid", ShadingChanged));
+        public double TessellationFactor
+        {
+            get { return (double)GetValue(TessellationFactorProperty); }
+            set { SetValue(TessellationFactorProperty, value); }
+        }
+
+        public bool IsDepthClipEnabled
+        {
+            set
+            {
+                SetValue(IsDepthClipEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsDepthClipEnabledProperty);
+            }
+        }
+
+        public CullMode CullMode
+        {
+            set
+            {
+                SetValue(CullModeProperty, value);
+            }
+            get
+            {
+                return (CullMode)GetValue(CullModeProperty);
+            }
+        }
+
+        public bool FrontCounterClockwise
+        {
+            set
+            {
+                SetValue(FrontCounterClockwiseProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FrontCounterClockwiseProperty);
+            }
+        }
+        #endregion
 
         /// <summary>
         /// 
@@ -76,24 +141,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     // --- change the pass
                     obj.shaderPass = obj.effectTechnique.GetPassByName(shadingPass);
+                    if (shadingPass.Equals("Wires"))
+                    {
+                        obj.FillMode = FillMode.Wireframe;
+                    }
+                    else
+                    {
+                        obj.FillMode = FillMode.Solid;
+                    }
                 }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double TessellationFactor
-        {
-            get { return (double)GetValue(TessellationFactorProperty); }
-            set { SetValue(TessellationFactorProperty, value); }
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty TessellationFactorProperty =
-            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(PatchGeometryModel3D), new UIPropertyMetadata(1.0, TessellationFactorChanged));
 
         /// <summary>
         /// 
@@ -107,63 +167,90 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private readonly ImmutableBufferProxy<DefaultVertex> vertexBuffer = new ImmutableBufferProxy<DefaultVertex>(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer);
+        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public override IBufferProxy IndexBuffer
+        {
+            get
+            {
+                return indexBuffer;
+            }
+        }
+        /// <summary>
+        /// For subclass override
+        /// </summary>
+        public override IBufferProxy VertexBuffer
+        {
+            get
+            {
+                return vertexBuffer;
+            }
+        }
+        [ThreadStatic]
+        private static DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// 
         /// </summary>
         public PatchGeometryModel3D()
         {
-           // System.Console.WriteLine();
+            // System.Console.WriteLine();
 
+        }
+        protected override RasterizerState CreateRasterState()
+        {
+            var rasterStateDesc = new RasterizerStateDescription()
+            {
+                FillMode = FillMode,
+                CullMode = CullMode,
+                DepthBias = -5,
+                DepthBiasClamp = -10,
+                SlopeScaledDepthBias = +0,
+                IsDepthClipEnabled = IsDepthClipEnabled,
+                IsFrontCounterClockwise = FrontCounterClockwise,
+
+                IsMultisampleEnabled = IsMultisampleEnabled,
+                //IsAntialiasedLineEnabled = true,
+                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
+            };
+            return new RasterizerState(this.Device, rasterStateDesc);
+        }
+
+        protected override void OnCreateGeometryBuffers()
+        {
+            // --- init vertex buffer
+            vertexBuffer.CreateBufferFromDataArray(Device, CreateDefaultVertexArray(), geometryInternal.Positions.Count);
+            // --- init index buffer
+            indexBuffer.CreateBufferFromDataArray(Device, geometryInternal.Indices.Array);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="host"></param>
-        public override void Attach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            /// --- attach
-            renderTechnique = host.RenderTechnique;
-            base.Attach(host);
-
-            if (this.Geometry == null
-                || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-            { return; }
-            // --- get variables
-            vertexLayout = renderHost.EffectsManager.GetLayout(renderTechnique);
-            effectTechnique = effect.GetTechniqueByName(renderTechnique.Name);
+            // --- attach           
+            if (!base.OnAttach(host))
+            {
+                return false;
+            }
 
             // --- get the pass
             shaderPass = effectTechnique.GetPassByName(Shading);
 
-            /// --- model transformation
-            effectTransforms = new EffectTransformVariables(effect);
-
-            /// --- material 
+            // --- material 
             AttachMaterial();
 
             // -- get geometry
-            var geometry = Geometry as MeshGeometry3D;
+            var geometry = geometryInternal as MeshGeometry3D;
 
             // -- get geometry
             if (geometry != null)
             {
-                //throw new HelixToolkitException("Geometry not found!");
-
-                /// --- init vertex buffer
-                vertexBuffer = Device.CreateBuffer(BindFlags.VertexBuffer, DefaultVertex.SizeInBytes, geometry.Positions.Select((x, ii) => new DefaultVertex()
-                {
-                    Position = new Vector4(x, 1f),
-                    Color = geometry.Colors != null ? geometry.Colors[ii] : new Color4(1f, 0f, 0f, 1f),
-                    TexCoord = geometry.TextureCoordinates != null ? geometry.TextureCoordinates[ii] : new Vector2(),
-                    Normal = geometry.Normals != null ? geometry.Normals[ii] : new Vector3(),
-                    Tangent = geometry.Tangents != null ? geometry.BiTangents[ii] : new Vector3(),
-                    BiTangent = geometry.BiTangents != null ? geometry.BiTangents[ii] : new Vector3(),
-                }).ToArray());
-
-                /// --- init index buffer
-                indexBuffer = Device.CreateBuffer(BindFlags.IndexBuffer, sizeof(int), Geometry.Indices.Array);
+                OnCreateGeometryBuffers();
             }
             else
             {
@@ -171,124 +258,74 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
 
-            ///// --- init instances buffer            
-            //this.hasInstances = this.Instances != null;            
+            // --- init instances buffer            
+            //this.hasInstances = this.instanceInternal != null;            
             //this.bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
             //if (this.hasInstances)
             //{                
             //    this.instanceBuffer = Buffer.Create(this.device, this.instanceArray, new BufferDescription(Matrix.SizeInBytes * this.instanceArray.Length, ResourceUsage.Dynamic, BindFlags.VertexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0));                            
             //}
 
-            /// --- init tessellation vars
+            // --- init tessellation vars
             vTessellationVariables = effect.GetVariableByName("vTessellation").AsVector();
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
-
-            /// --- flush
-            Device.ImmediateContext.Flush();
+            // --- flush
+            //Device.ImmediateContext.Flush();
+            return true;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override void Detach()
+        protected override void OnDetach()
         {
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
             Disposer.RemoveAndDispose(ref vTessellationVariables);
             Disposer.RemoveAndDispose(ref shaderPass);
-            base.Detach();
+            base.OnDetach();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>        
-        public override void Update(System.TimeSpan timeSpan)
-        {
-        }
 
         /// <summary>
         /// 
         /// </summary>
-        public override void Render(RenderContext renderContext)
+        protected override void OnRender(RenderContext renderContext)
         {
-            /// --- check if to render the model
-            {
-                if (!IsRendering)
-                    return;
+            // --- set model transform paramerers        
+            var worldMatrix = modelMatrix * renderContext.worldMatrix;
+            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
 
-                if (this.Geometry == null
-                    || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                    || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0)
-                { return; }
-
-                if (Visibility != System.Windows.Visibility.Visible)
-                    return;
-
-                if (renderContext.IsShadowPass)
-                    if (!IsThrowingShadow)
-                        return;
-            }
-
-            /// --- set model transform paramerers                         
-            effectTransforms.mWorld.SetMatrix(ref modelMatrix);
-
-            /// --- set material props
-            if (phongMaterial != null)
-            {
-                /// --- set material lighting-params      
-                effectMaterial.vMaterialDiffuseVariable.Set(phongMaterial.DiffuseColor);
-                effectMaterial.vMaterialAmbientVariable.Set(phongMaterial.AmbientColor);
-                effectMaterial.vMaterialEmissiveVariable.Set(phongMaterial.EmissiveColor);
-                effectMaterial.vMaterialSpecularVariable.Set(phongMaterial.SpecularColor);
-                effectMaterial.vMaterialReflectVariable.Set(phongMaterial.ReflectiveColor);
-                effectMaterial.sMaterialShininessVariable.Set(phongMaterial.SpecularShininess);
-
-                /// --- set samplers boolean flags
-                effectMaterial.bHasDiffuseMapVariable.Set(phongMaterial.DiffuseMap != null && RenderDiffuseMap);
-                effectMaterial.bHasNormalMapVariable.Set(phongMaterial.NormalMap != null && RenderNormalMap);
-                effectMaterial.bHasDisplacementMapVariable.Set(phongMaterial.DisplacementMap != null && RenderDisplacementMap);
-
-                /// --- set samplers
-                if (phongMaterial.DiffuseMap != null)
-                {
-                    effectMaterial.texDiffuseMapVariable.SetResource(texDiffuseMapView);
-                }
-                if (phongMaterial.NormalMap != null)
-                {
-                    effectMaterial.texNormalMapVariable.SetResource(texNormalMapView);
-                }
-                if (phongMaterial.DisplacementMap != null)
-                {
-                    effectMaterial.texDisplacementMapVariable.SetResource(texDisplacementMapView);
-                }
-            }
-
-            /// --- set primitive type
+            // --- set primitive type
             if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles])
             {
-                Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
+                renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
             }
             else if (renderTechnique == renderHost.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads])
             {
-                Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
+                renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
             }
             else
             {
                 throw new System.Exception("Technique not supported by PatchGeometryModel3D");
             }
 
-            /// --- set vertex layout
-            Device.ImmediateContext.InputAssembler.InputLayout = vertexLayout;
+            // --- set vertex layout
+            renderContext.DeviceContext.InputAssembler.InputLayout = vertexLayout;
 
-            /// --- set index buffer
-            Device.ImmediateContext.InputAssembler.SetIndexBuffer(indexBuffer, Format.R32_UInt, 0);
+            // --- set index buffer
+            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, 0);
 
-            /// --- set vertex buffer                
-            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, DefaultVertex.SizeInBytes, 0));
+            // --- set vertex buffer                
+            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));
 
-            /// --- apply chosen pass
-            shaderPass.Apply(Device.ImmediateContext);
+            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
+            // --- apply chosen pass
+            shaderPass.Apply(renderContext.DeviceContext);
 
-            /// --- render the geometry
-            Device.ImmediateContext.DrawIndexed(Geometry.Indices.Count, 0, 0);
+            // --- render the geometry
+            renderContext.DeviceContext.DrawIndexed(geometryInternal.Indices.Count, 0, 0);
         }
 
         /// <summary>
@@ -297,7 +334,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public override bool HitTest(Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
         {
             // disable hittesting for patchgeometry for now
             // need to be implemented
@@ -315,6 +352,45 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private EffectVectorVariable vTessellationVariables;
         private EffectPass shaderPass;
+
+        /// <summary>
+        /// Creates a <see cref="T:DefaultVertex[]"/>.
+        /// </summary>
+        private DefaultVertex[] CreateDefaultVertexArray()
+        {
+            var geometry = (MeshGeometry3D)this.geometryInternal;
+            var positions = geometry.Positions.GetEnumerator();
+            var vertexCount = geometry.Positions.Count;
+
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
+            var texScale = this.TextureCoodScale;
+            var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+            var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
+            if (ReuseVertexArrayBuffer)
+            {
+                vertexArrayBuffer = array;
+            }
+            for (var i = 0; i < vertexCount; i++)
+            {
+                positions.MoveNext();
+                colors.MoveNext();
+                textureCoordinates.MoveNext();
+                normals.MoveNext();
+                tangents.MoveNext();
+                bitangents.MoveNext();
+                array[i].Position = new Vector4(positions.Current, 1f);
+                array[i].Color = colors.Current;
+                array[i].TexCoord = textureCoordinates.Current * texScale;
+                array[i].Normal = normals.Current;
+                array[i].Tangent = tangents.Current;
+                array[i].BiTangent = bitangents.Current;
+            }
+
+            return array;
+        }
 #endif
-    } 
+    }
 }

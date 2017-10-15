@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX"
+        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:Workitem10051"
         mc:Ignorable="d"
@@ -79,11 +79,11 @@
                 <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="0.1,0.1,0.1,1.0"/>
-            <hx:DirectionalLight3D Color="{x:Static sdx:Color4.White}" Direction="-2,-5,-2"/>
+            <hx:DirectionalLight3D Color="{x:Static sdxm:Color4.White}" Direction="-2,-5,-2"/>
             <hx:MeshGeometryModel3D Geometry="{StaticResource Model}" Transform="{StaticResource Model1Transform}" Material="{x:Static hx:PhongMaterials.Red}"/>
             <hx:MeshGeometryModel3D Geometry="{StaticResource Model}" Transform="{StaticResource Model2Transform}" Material="{x:Static hx:PhongMaterials.Green}"/>
             <hx:MeshGeometryModel3D Geometry="{StaticResource Model}" Transform="{StaticResource Model3Transform}" Material="{x:Static hx:PhongMaterials.Blue}"/>
-            <hx:LineGeometryModel3D Geometry="{StaticResource Lines}" Transform="{StaticResource Model1Transform}" Color="{x:Static sdx:Color.Black}" Thickness="1.5"/>
+            <hx:LineGeometryModel3D Geometry="{StaticResource Lines}" Transform="{StaticResource Model1Transform}" Color="{x:Static sdxm:Color.Black}" Thickness="1.5"/>
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1" Margin="0 24 0 0">

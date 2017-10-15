@@ -1,3 +1,5 @@
+#ifndef DEFERREDLIGHTING
+#define DEFERREDLIGHTING
 //--------------------------------------------------------------------------------------
 // File: Deferred Lighting for HelixToolkitDX
 // Author: Przemyslaw Musialski
@@ -11,6 +13,7 @@
 //-------------------------------------------------------------------------------------------------
 // STATES
 //-------------------------------------------------------------------------------------------------
+#include"Common.fx"
 
 RasterizerState RSFront
 {
@@ -73,6 +76,7 @@ cbuffer LightParams
 	float3 vLightAtt;		// const, linerar, quadratic, 
 	float4 vLightSpot;		//(outer angle , inner angle, falloff, light-range!!!)	
 	float4 vLightColor;
+    float4 vLightAmbient;
 	// redefinition float4 vLightAmbient	= float4(0.2f, 0.2f, 0.2f, 1.0f);
 	matrix mLightModel;
 };
@@ -913,3 +917,4 @@ technique11 RenderScreenSpace
 }  
 #endif // SSAO
 
+#endif

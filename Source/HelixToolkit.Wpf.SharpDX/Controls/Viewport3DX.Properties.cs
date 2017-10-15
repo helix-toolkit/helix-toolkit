@@ -39,6 +39,33 @@ namespace HelixToolkit.Wpf.SharpDX
             "CameraChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Viewport3DX));
 
         /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseDown3D
+        {
+            add { this.AddHandler(GeometryModel3D.MouseDown3DEvent, value); }
+            remove { this.RemoveHandler(GeometryModel3D.MouseDown3DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseUp3D
+        {
+            add { this.AddHandler(GeometryModel3D.MouseUp3DEvent, value); }
+            remove { this.RemoveHandler(GeometryModel3D.MouseUp3DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseMove3D
+        {
+            add { this.AddHandler(GeometryModel3D.MouseMove3DEvent, value); }
+            remove { this.RemoveHandler(GeometryModel3D.MouseMove3DEvent, value); }
+        }
+
+        /// <summary>
         /// The camera inertia factor property.
         /// </summary>
         public static readonly DependencyProperty CameraInertiaFactorProperty = DependencyProperty.Register(
@@ -273,7 +300,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render host property.
         /// </summary>
         public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new FrameworkPropertyMetadata(null));
+            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) =>
+            {
+                (d as Viewport3DX).renderHostInternal = e.NewValue as IRenderHost;
+            }));
 
         /// <summary>
         /// The Render Technique property
@@ -282,17 +312,9 @@ namespace HelixToolkit.Wpf.SharpDX
             "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
                 (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
 
-        /// <summary>
-        /// The RenderTechniquesManager property.
-        /// </summary>
-        public static readonly DependencyProperty RenderTechniquesManagerProperty = DependencyProperty.Register(
-            "RenderTechniquesManager", typeof(IRenderTechniquesManager), typeof(Viewport3DX), new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.AffectsRender,
-                (s, e) => ((Viewport3DX)s).RenderTechniquesManagerPropertyChanged()));
-
-        /// <summary>
-        /// The is deferred shading enabled propery
-        /// </summary>
+        ///// <summary>
+        ///// The is deferred shading enabled propery
+        ///// </summary>
         //public static readonly DependencyProperty IsDeferredShadingEnabledProperty = DependencyProperty.Register(
         //    "IsDeferredShadingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) => ((Viewport3DX)s).ReAttach()));
 
@@ -644,6 +666,18 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomCursor", typeof(Cursor), typeof(Viewport3DX), new PropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
+        /// The far zoom distance limit property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomDistanceLimitFarProperty = DependencyProperty.Register(
+            "ZoomDistanceLimitFar", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(double.PositiveInfinity));
+
+        /// <summary>
+        /// The near zoom distance limit property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomDistanceLimitNearProperty = DependencyProperty.Register(
+            "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.0));
+
+        /// <summary>
         /// The zoom extents when loaded property.
         /// </summary>
         public static readonly DependencyProperty ZoomExtentsWhenLoadedProperty = DependencyProperty.Register(
@@ -676,7 +710,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Set MSAA Level
         /// </summary>
         public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX), 
-            new PropertyMetadata(MSAALevel.Maximum, (s,e)=> 
+            new PropertyMetadata(MSAALevel.Disable, (s,e)=> 
             {
                 var viewport = s as Viewport3DX;
                 if (viewport.RenderHost != null)
@@ -685,6 +719,115 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }));
 #endif
+        /// <summary>
+        /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabledProperty"/> 
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
+            "FixedRotationPoint", typeof(Point3D), typeof(Viewport3DX), new PropertyMetadata(new Point3D()));
+
+        /// <summary>
+        /// Enable fixed rotation mode and use FixedRotationPoint for rotation. Only works under CameraMode = Inspect
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointEnabledProperty = DependencyProperty.Register(
+            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Enable mouse button hit test
+        /// </summary>
+        public static readonly DependencyProperty EnableMouseButtonHitTestProperty = DependencyProperty.Register(
+            "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+
+        /// <summary>
+        /// Manually move camera to look at a point in 3D space
+        /// </summary>
+        public static readonly DependencyProperty ManualLookAtPointProperty = DependencyProperty.Register(
+            "ManualLookAtPoint", typeof(Point3D), typeof(Viewport3DX), new FrameworkPropertyMetadata(new Point3D(), (d, e) => { },
+                (d, e) =>
+                {
+                    ((Viewport3DX)d).LookAt((Point3D)e);
+                    return e;
+                })
+            { BindsTwoWayByDefault = false });
+
+        /// <summary>
+        /// Enable render frustum to avoid rendering model if it is out of view frustum
+        /// </summary>
+        public static readonly DependencyProperty EnableRenderFrustumProperty
+            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+                (s, e) =>
+            {
+                var viewport = s as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.EnableRenderFrustum = (bool)e.NewValue;
+                }
+            }));
+
+        /// <summary>
+        /// Set max FPS to provide a stable FPS for rendering
+        /// </summary>
+        public static readonly DependencyProperty MaxFPSProperty
+            = DependencyProperty.Register("MaxFPS", typeof(int), typeof(Viewport3DX), new PropertyMetadata(60, (s, e) => {
+                var viewport = s as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.RenderHost.MaxFPS = (uint)e.NewValue;
+                }
+            }, (s,e)=> { return Math.Max(1, (int)e); }));
+
+        /// <summary>
+        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
+        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
+        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// </summary>
+        public static readonly DependencyProperty EnableDeferredRenderingProperty
+            = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Used to create multiple viewport with shared models.
+        /// </summary>
+        public static readonly DependencyProperty EnableSharedModelModeProperty
+            = DependencyProperty.Register("EnableSharedModelMode", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) =>
+            {
+                var viewport = s as Viewport3DX;
+                if (viewport.RenderHost != null)
+                {
+                    viewport.RenderHost.EnableSharingModelMode = (bool)e.NewValue;
+                }
+            }));
+
+        /// <summary>
+        /// Binding to the element inherit with <see cref="IModelContainer"/> 
+        /// </summary>
+        public static readonly DependencyProperty SharedModelContainerProperty
+            = DependencyProperty.Register("SharedModelContainer", typeof(IModelContainer), typeof(Viewport3DX), new PropertyMetadata(null,
+                (d,e)=>
+                {
+                    var viewport = d as Viewport3DX;
+                    if (e.OldValue is IModelContainer)
+                    {
+                        (e.OldValue as IModelContainer).DettachViewport3DX(viewport);
+                    }
+                    if(e.NewValue is IModelContainer)
+                    {
+                        (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
+                    }
+                    if (viewport.RenderHost != null)
+                    {
+                        viewport.RenderHost.SharedModelContainer = (IModelContainer)e.NewValue;
+                    }
+                }));
+
+        public static readonly DependencyProperty EnableSwapChainRenderingProperty
+            = DependencyProperty.Register("EnableSwapChainRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty WorldMatrixProperty
+            = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity, 
+                (d,e)=> {
+                    (d as Viewport3DX).worldMatrixInternal = (global::SharpDX.Matrix)e.NewValue;
+                    (d as Viewport3DX).InvalidateRender();
+                }));
         /// <summary>
         /// Background Color
         /// </summary>
@@ -836,12 +979,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// Gets the children.
-        /// </summary>
-        /// <value>
-        /// The children.
-        /// </value>
+        ///// <summary>
+        ///// Gets the children.
+        ///// </summary>
+        ///// <value>
+        ///// The children.
+        ///// </value>
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         //[Bindable(true)]
         //public Element3DCollection Children
@@ -1277,6 +1420,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RenderHostProperty, value); }
         }
 
+        protected IRenderHost renderHostInternal { private set; get; }
         /// <summary>
         /// Gets or sets value for the shading model shading is used
         /// </summary>
@@ -1289,21 +1433,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RenderTechniqueProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="IRenderTechniquesManager"/>.
-        /// </summary>
-        public IRenderTechniquesManager RenderTechniquesManager
-        {
-            get { return (IRenderTechniquesManager)GetValue(RenderTechniquesManagerProperty); }
-            set { SetValue(RenderTechniquesManagerProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether deferred shading is used
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
-        /// </value>
+        ///// <summary>
+        ///// Gets or sets a value indicating whether deferred shading is used
+        ///// </summary>
+        ///// <value>
+        ///// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
+        ///// </value>
         //public bool IsDeferredShadingEnabled
         //{
         //    get { return (bool)this.GetValue(IsDeferredShadingEnabledProperty); }
@@ -2309,6 +2444,39 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Gets or sets a value indicating the far distance limit for zoom.
+        /// </summary>
+        public double ZoomDistanceLimitFar
+        {
+            get
+            {
+                return (double)this.GetValue(ZoomDistanceLimitFarProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomDistanceLimitFarProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the near distance limit for zoom.
+        /// </summary>
+        public double ZoomDistanceLimitNear
+        {
+            get
+            {
+                return (double)this.GetValue(ZoomDistanceLimitNearProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomDistanceLimitNearProperty, value);
+            }
+        }
+
+
+        /// <summary>
         /// Gets or sets a value indicating whether to Zoom extents when the control has loaded.
         /// </summary>
         public bool ZoomExtentsWhenLoaded
@@ -2378,5 +2546,176 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 #endif
+        /// <summary>
+        /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabled"/> 
+        /// </summary>
+        public Point3D FixedRotationPoint
+        {
+            set
+            {
+                SetValue(FixedRotationPointProperty, value);
+            }
+            get
+            {
+                return (Point3D)GetValue(FixedRotationPointProperty);
+            }
+        }
+
+        /// <summary>
+        /// Enable fixed rotation mode and use <see cref="FixedRotationPoint"/>  for rotation. Only works under <see cref="CameraMode"/> = Inspect
+        /// </summary>
+        public bool FixedRotationPointEnabled
+        {
+            set
+            {
+                SetValue(FixedRotationPointEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FixedRotationPointEnabledProperty);
+            }
+        }
+
+        /// <summary>
+        /// Enable mouse button hit test
+        /// </summary>
+        public bool EnableMouseButtonHitTest
+        {
+            set
+            {
+                SetValue(EnableMouseButtonHitTestProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableMouseButtonHitTestProperty);
+            }
+        }
+
+        /// <summary>
+        /// Manually move camera to look at a point in 3D space. (Same as calling Viewport3DX.LookAt() function)
+        /// Since camera may have been moved by mouse, the value gets does not reflect the actual point camera currently looking at.
+        /// </summary>
+        public Point3D ManualLookAtPoint
+        {
+            set
+            {
+                SetValue(ManualLookAtPointProperty, value);
+            }
+            get
+            {
+                return (Point3D)GetValue(ManualLookAtPointProperty);
+            }
+        }
+
+        /// <summary>
+        /// Enable render frustum to skip rendering model if model is out of the camera bounding frustum
+        /// </summary>
+        public bool EnableRenderFrustum
+        {
+            set
+            {
+                SetValue(EnableRenderFrustumProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableRenderFrustumProperty);
+            }
+        }
+
+        /// <summary>
+        /// Set max FPS to provide a stable FPS for rendering, Default = 60Hz.
+        /// </summary>
+        public int MaxFPS
+        {
+            set
+            {
+                SetValue(MaxFPSProperty, value);
+            }
+            get
+            {
+                return (int)GetValue(MaxFPSProperty);
+            }
+        }
+
+        /// <summary>
+        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
+        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
+        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// </summary>
+        public bool EnableDeferredRendering
+        {
+            set
+            {
+                SetValue(EnableDeferredRenderingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableDeferredRenderingProperty);
+            }
+        }
+
+        /// <summary>
+        /// Used to create multiple viewport with shared models.
+        /// </summary>
+        public bool EnableSharedModelMode
+        {
+            set
+            {
+                SetValue(EnableSharedModelModeProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableSharedModelModeProperty);
+            }
+        }
+        /// <summary>
+        /// Binding to the element inherit with <see cref="IModelContainer"/> 
+        /// </summary>
+        public IModelContainer SharedModelContainer
+        {
+            set
+            {
+                SetValue(SharedModelContainerProperty, value);
+            }
+            get
+            {
+                return (IModelContainer)GetValue(SharedModelContainerProperty);
+            }
+        }
+
+        protected IModelContainer sharedModelContainerInternal { private set; get; } = null;
+
+        /// <summary>
+        /// <para>Use HwndHost as rendering surface, swapchain for rendering. Much faster than using D3DImage.</para> 
+        /// <para>Drawbacks: The rendering surface will cover all WPF controls in the same Viewport region. Move controls out of viewport region to solve this problem.</para>
+        /// <para>For displaying ViewCube and CoordinateSystem, separate Model needs to create to render along with the other models. WPF viewport will not be visibled.</para>
+        /// <para>Note: Enable deferred rendering will use seperate rendering thread or rendering.</para>
+        /// </summary>
+        public bool EnableSwapChainRendering
+        {
+            set
+            {
+                SetValue(EnableSwapChainRenderingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableSwapChainRenderingProperty);
+            }
+        }
+
+        private global::SharpDX.Matrix worldMatrixInternal = global::SharpDX.Matrix.Identity;
+
+        public global::SharpDX.Matrix WorldMatrix
+        {
+            set
+            {
+                SetValue(WorldMatrixProperty, value);
+            }
+            get
+            {
+                return (global::SharpDX.Matrix)GetValue(WorldMatrixProperty);
+            }
+        }
     }
 }

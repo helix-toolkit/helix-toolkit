@@ -180,36 +180,7 @@ namespace HelixToolkit.Wpf
                 this.Section,
                 sectionXAxis,
                 this.IsPathClosed,
-                this.IsSectionClosed);
-
-            // Add Caps if wanted and needed
-            if (this.AddCaps && !this.IsPathClosed && builder.Positions.Count >= Section.Count)
-            {
-                var sCount = Section.Count;
-                var normals = new Vector3D[sCount];
-                var vertices = new Point3D[sCount];
-                var pCount = Path.Count;
-                
-                //Add back cap
-                var circleBack = builder.Positions.Skip(builder.Positions.Count - sCount).Take(sCount).ToArray();
-                var normal = Path[pCount - 1] - Path[pCount - 2];
-                normal.Normalize();
-                for (int i = 0; i < normals.Length; ++i)
-                {
-                    normals[i] = normal;
-                }
-                builder.AddTriangleFan(circleBack, normals);
-                //Add front cap
-                var circleFront = builder.Positions.Take(sCount).ToArray();
-                normal = Path[0] - Path[1];
-                normal.Normalize();
-
-                for (int i = 0; i < normals.Length; ++i)
-                {
-                    normals[i] = normal;
-                }
-                builder.AddTriangleFan(circleFront, normals);
-            }
+                this.IsSectionClosed, this.AddCaps, this.AddCaps);
 
             return builder.ToMesh();
         }

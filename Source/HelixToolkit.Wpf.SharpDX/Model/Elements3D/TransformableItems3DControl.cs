@@ -45,7 +45,8 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(TransformableItems3DControl), new UIPropertyMetadata(Transform3D.Identity, TransformPropertyChanged));
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(TransformableItems3DControl),
+                new AffectsRenderPropertyMetadata(Transform3D.Identity, TransformPropertyChanged));
 
         private static void TransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -62,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        public override bool HitTest(Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
 
@@ -75,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (tc != null)
                     {
                         tc.PushMatrix(this.modelMatrix);
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }
@@ -83,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        if (hc.HitTest(ray, ref hits))
+                        if (hc.HitTest(context, ray, ref hits))
                         {
                             hit = true;
                         }
@@ -100,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        public override void Render(RenderContext context)
+        protected override void OnRender(RenderContext context)
         {
             foreach (var item in this.children)
             {

@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [DllImport("user32.dll", SetLastError = false)]
         private static extern IntPtr GetDesktopWindow();
 
-        private static int activeClients;
+        private static long activeClients;
         private static Direct3DEx context;
         private static DeviceEx device;
 
@@ -50,9 +50,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public DX11ImageSource(int adapterIndex = 0)
         {
-            this.adapterIndex = adapterIndex;
+            this.adapterIndex = adapterIndex;        
             this.StartD3D();
             Interlocked.Increment(ref activeClients);
+            
         }
 
         public void Dispose()
@@ -124,13 +125,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
 
             context = new Direct3DEx();
-
+            // Ref: https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/wpf-and-direct3d9-interoperation
             var presentparams = new PresentParameters
             {
                 Windowed = true,
                 SwapEffect = SwapEffect.Discard,
                 DeviceWindowHandle = GetDesktopWindow(),
-                PresentationInterval = PresentInterval.Default,    
+                PresentationInterval = PresentInterval.Default,
+                BackBufferHeight = 1, BackBufferWidth = 1, BackBufferFormat = Format.Unknown
             };
                         
             device = new DeviceEx(context, this.adapterIndex, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
@@ -138,10 +140,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void EndD3D()
         {
-            if (activeClients != 0)
+            Disposer.RemoveAndDispose(ref this.renderTarget);
+            if (Interlocked.Read(ref activeClients) != 0)
                 return;
 
-            Disposer.RemoveAndDispose(ref this.renderTarget);
             Disposer.RemoveAndDispose(ref device);
             Disposer.RemoveAndDispose(ref context);
         }

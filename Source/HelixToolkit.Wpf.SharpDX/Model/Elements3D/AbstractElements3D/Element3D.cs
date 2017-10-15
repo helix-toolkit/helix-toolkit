@@ -9,24 +9,115 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using SharpDX;
     using System;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Media;
 
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkElement, IDisposable, IRenderable
+    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID
     {
+        /// <summary>
+        /// Indicates, if this element should be rendered,
+        /// default is true
+        /// </summary>
+        public static readonly DependencyProperty IsRenderingProperty =
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true,
+                (d, e) =>
+                {
+                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Indicates, if this element should be rendered.
+        /// Use this also to make the model visible/unvisible
+        /// default is true
+        /// </summary>
+        public bool IsRendering
+        {
+            get { return (bool)GetValue(IsRenderingProperty); }
+            set { SetValue(IsRenderingProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsHitTestVisibleProperty =
+            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
+            {
+                (d as Element3D).isHitTestVisibleInternal = (bool)e.NewValue;
+            }));
+
+        public bool IsHitTestVisible
+        {
+            set
+            {
+                SetValue(IsHitTestVisibleProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsHitTestVisibleProperty);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty VisibilityProperty =
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new AffectsRenderPropertyMetadata(Visibility.Visible, (d, e) =>
+            {
+                (d as Element3D).visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
+            }));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Visibility Visibility
+        {
+            set
+            {
+                SetValue(VisibilityProperty, value);
+            }
+            get
+            {
+                return (Visibility)GetValue(VisibilityProperty);
+            }
+        }
+
         protected global::SharpDX.Direct3D11.Effect effect;
 
         protected RenderTechnique renderTechnique;
 
         protected IRenderHost renderHost;
 
+        private bool isAttached = false;
+
+        private readonly Guid guid = Guid.NewGuid();
+
+        public Guid GUID { get { return guid; } }
+
+        protected bool isRenderingInternal { private set; get; } = true;
+
+        protected bool visibleInternal { private set; get; } = true;
+
+        protected bool isHitTestVisibleInternal
+        {
+            private set; get;
+        } = true;
+        /// <summary>
+        /// If this has been attached onto renderhost. 
+        /// </summary>
         public bool IsAttached
         {
-            get { return renderHost != null; }
+            get
+            {
+                return isAttached && renderHost != null;
+            }
+            protected set
+            {
+                isAttached = value;
+            }
         }
 
         public IRenderHost RenderHost
@@ -40,22 +131,69 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Attaches the element to the specified host.
+        /// Override this function to set render technique during Attach Host.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>Return RenderTechnique</returns>
+        protected virtual RenderTechnique SetRenderTechnique(IRenderHost host)
+        {
+            return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
+        }
+
+
+        /// <summary>
+        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
+        /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
+        /// <para>Attach Flow: <see cref="SetRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
-        public virtual void Attach(IRenderHost host)
+        public void Attach(IRenderHost host)
         {
-            renderTechnique = this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
+            if (IsAttached || host == null)
+            {
+                return;
+            }
             renderHost = host;
+            if (host.EffectsManager == null)
+            {
+                throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
+            }
+            this.renderTechnique = SetRenderTechnique(host);           
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
+            IsAttached = OnAttach(host);
+            if (IsAttached)
+            {
+                OnAttached();
+            }
             InvalidateRender();
         }
 
         /// <summary>
-        /// Detaches the element from the host.
+        /// Called after <see cref="OnAttach(IRenderHost)"/>
         /// </summary>
-        public virtual void Detach()
+        protected virtual void OnAttached()
         {
+
+        }
+        /// <summary>
+        /// To override Attach routine, please override this.
+        /// </summary>
+        /// <param name="host"></param>       
+        /// <returns>Return true if attached</returns>
+        protected abstract bool OnAttach(IRenderHost host);
+        /// <summary>
+        /// Detaches the element from the host. Override <see cref="OnDetach"/>
+        /// </summary>
+        public void Detach()
+        {
+            OnDetach();
+        }
+        /// <summary>
+        /// Used to override Detach
+        /// </summary>
+        protected virtual void OnDetach()
+        {
+            IsAttached = false;
             renderTechnique = null;            
             effect = null;
             renderHost = null;           
@@ -77,15 +215,36 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Updates the element by the specified time span.
         /// </summary>
         /// <param name="timeSpan">The time since last update.</param>
-        public virtual void Update(TimeSpan timeSpan) { }
+        //public virtual void Update(TimeSpan timeSpan) { }
 
         /// <summary>
-        /// Renders the element in the specified context.
+        /// <para>Determine if this can be rendered.</para>
+        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        protected virtual bool CanRender(RenderContext context)
+        {
+            return IsAttached && isRenderingInternal && visibleInternal;
+        }
+        /// <summary>
+        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
+        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
-        public virtual void Render(RenderContext context)
+        public void Render(RenderContext context)
         {
+            if (CanRender(context))
+            {
+                OnRender(context);
+            }
         }
+
+        /// <summary>
+        /// Used to overriding <see cref="Render"/> routine.
+        /// </summary>
+        /// <param name="context"></param>
+        protected abstract void OnRender(RenderContext context);
 
         /// <summary>
         /// Disposes the Element3D. Frees all DX resources.
@@ -96,30 +255,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Indicates, if this element should be rendered,
-        /// default is true
-        /// </summary>
-        public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new UIPropertyMetadata(true));
-
-        /// <summary>
-        /// Indicates, if this element should be rendered.
-        /// Use this also to make the model visible/unvisible
-        /// default is true
-        /// </summary>
-        public bool IsRendering
-        {
-            get { return (bool)GetValue(IsRenderingProperty); }
-            set { SetValue(IsRenderingProperty, value); }
-        }
-
-        /// <summary>
-        /// Looks for the first visual ancestor of type <see cref="T"/>>.
+        /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of visual ancestor.</typeparam>
         /// <param name="obj">The respective <see cref="DependencyObject"/>.</param>
         /// <returns>
-        /// The first visual ancestor of type <see cref="T"/> if exists, else <c>null</c>.
+        /// The first visual ancestor of type <typeparamref name="T"/> if exists, else <c>null</c>.
         /// </returns>
         public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
         {
@@ -147,15 +288,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            base.OnPropertyChanged(e);
-
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "Element3DPropertyMetadata".
-            //var fmetadata = e.Property.GetMetadata(this) as FrameworkPropertyMetadata;
-            //if (fmetadata != null && fmetadata.AffectsRender)
+            if (CheckAffectsRender(e))
             {
                 this.InvalidateRender();
             }
+            base.OnPropertyChanged(e);
+        }
+        /// <summary>
+        /// Check if dependency property changed event affects render
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
+        {            
+            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
+            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
+            PropertyMetadata fmetadata = null;
+            return ((fmetadata = e.Property.GetMetadata(this)) != null
+                && (fmetadata is IAffectsRender
+                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
+                ));
         }
     }
 }

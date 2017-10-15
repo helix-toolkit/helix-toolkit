@@ -13,10 +13,13 @@ namespace SimpleDemo
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Core;
 
-    using SharpDX;    
+    using SharpDX;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using HelixToolkit.Wpf;
+    using System.Windows.Media.Imaging;
+    using System.IO;
 
     public class MainViewModel : BaseViewModel
     {
@@ -25,6 +28,11 @@ namespace SimpleDemo
         public LineGeometry3D Grid { get; private set; }
         public PointGeometry3D Points { get; private set; }
         public BillboardText3D Text { get; private set; }
+
+        public BillboardSingleText3D Billboard1Model { private set; get; }
+        public BillboardSingleText3D Billboard2Model { private set; get; }
+        public BillboardSingleText3D Billboard3Model { private set; get; }
+        public BillboardSingleImage3D BillboardImageModel { private set; get; }
 
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
@@ -124,6 +132,65 @@ namespace SimpleDemo
                     Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
                 }
             }
+
+            Billboard1Model = new BillboardSingleText3D()
+            {
+                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)),
+                FontColor =Color.Blue,
+                FontSize=12,
+                BackgroundColor =Color.Plum,
+                FontStyle= System.Windows.FontStyles.Italic,
+                Padding = new System.Windows.Thickness(2)
+            };
+
+            var background = Color.Blue;
+            background.A = (byte)120;
+            Billboard2Model = new BillboardSingleText3D()
+            {
+                TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
+                FontSize =12,
+                FontColor = Color.Green,
+                BackgroundColor = background,
+                FontWeight = System.Windows.FontWeights.Bold,
+                Padding = new System.Windows.Thickness(2)
+            };
+            background = Color.Purple;
+            background.A = (byte)50;
+            Billboard3Model = new BillboardSingleText3D(2,0.8f)
+            {
+                TextInfo = new TextInfo("Model 1", new Vector3(-2, 1, 0)),
+                FontSize = 12,
+                FontColor = Color.Red,
+                BackgroundColor = background,
+                FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
+                FontStyle= System.Windows.FontStyles.Italic,
+                Padding = new System.Windows.Thickness(2)
+            };
+
+
+            //BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
+            BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1);
+            BillboardImageModel.Center = new Vector3(2, 2, 0);
+        }
+
+        private BitmapSource CreateBitmapSample()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            //Read the texture description           
+            var texDescriptionStream = assembly.GetManifestResourceStream("SimpleDemo.Sample.png");
+            var decoder = new PngBitmapDecoder(texDescriptionStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnDemand);
+            return decoder.Frames[0];
+        }
+
+        private Stream CreatePNGSample()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            //Read the texture description           
+            var texDescriptionStream = assembly.GetManifestResourceStream("SimpleDemo.Sample.png");
+            texDescriptionStream.Position = 0;
+            return texDescriptionStream;
         }
     }
 }
