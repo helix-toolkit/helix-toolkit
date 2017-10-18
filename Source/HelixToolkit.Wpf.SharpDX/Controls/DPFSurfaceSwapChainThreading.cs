@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Controls;
     using System.Threading;
     using System.Windows.Interop;
+    using D2DControls;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -364,7 +365,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles; } }
-
+        public D2DControlWrapper D2DControls { get; } = new D2DControlWrapper();
         /// <summary>
         /// 
         /// </summary>
@@ -481,6 +482,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DetachRenderables();
             renderThread.DestoryRenderThread();
             this.Child = null;
+            D2DControls.Dispose();
             Disposer.RemoveAndDispose(ref renderContext);
             Disposer.RemoveAndDispose(ref deferredContext);
             Disposer.RemoveAndDispose(ref deferredRenderer);
@@ -518,6 +520,7 @@ namespace HelixToolkit.Wpf.SharpDX
             int height = System.Math.Max((int)ActualHeight, 100);
             device.ImmediateContext.OutputMerger.ResetTargets();
             renderContext?.DeviceContext?.OutputMerger.ResetTargets();
+            D2DControls.Dispose();
             Disposer.RemoveAndDispose(ref colorBufferView);
             Disposer.RemoveAndDispose(ref colorBuffer);
             Disposer.RemoveAndDispose(ref backBuffer);
@@ -588,6 +591,7 @@ namespace HelixToolkit.Wpf.SharpDX
             depthStencilBuffer = new Texture2D(device, depthdesc);
             depthStencilBufferView = new DepthStencilView(device, depthStencilBuffer);
             this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            D2DControls.Initialize(swapChain);
         }
 
         private void CreateSwapChain()

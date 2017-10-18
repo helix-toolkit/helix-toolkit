@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Interop;
 
     using Controls;
+    using D2DControls;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -259,6 +260,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles; } }
 
+        public D2DControlWrapper D2DControls { get; } = new D2DControlWrapper();
         /// <summary>
         /// 
         /// </summary>
@@ -375,6 +377,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             DetachRenderables();
             this.Child = null;
+            D2DControls.Dispose();
             Disposer.RemoveAndDispose(ref renderContext);
             Disposer.RemoveAndDispose(ref deferredRenderer);
             Disposer.RemoveAndDispose(ref surfaceD3D);
@@ -415,6 +418,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref backBuffer);
             Disposer.RemoveAndDispose(ref depthStencilBufferView);
             Disposer.RemoveAndDispose(ref depthStencilBuffer);
+            D2DControls.Dispose();
             CreateSwapChain();
             backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
 
@@ -476,6 +480,8 @@ namespace HelixToolkit.Wpf.SharpDX
             depthStencilBuffer = new Texture2D(device, depthdesc);        
             depthStencilBufferView = new DepthStencilView(device, depthStencilBuffer);                     
             this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+
+            D2DControls.Initialize(swapChain);
         }
 
         private void CreateSwapChain()
