@@ -42,6 +42,20 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 
+
+    public class ObservableElement2DCollection : ObservableCollection<Element2D>
+    {
+        protected override void ClearItems()
+        {
+            CheckReentrancy();
+            var items = Items.ToList();
+            base.ClearItems();
+            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items, -1));
+        }
+    }
+
     //public class ElementComparer : IComparer
     //{
     //    // Calls CaseInsensitiveComparer.Compare with the parameters reversed. 

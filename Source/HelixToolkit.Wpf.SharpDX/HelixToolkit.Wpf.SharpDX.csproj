@@ -147,7 +147,6 @@
     <Compile Include="Controls\DPFCanvasThreading.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChainThreading.cs" />
-    <Compile Include="Controls\IRenderMatrices.cs" />
     <Compile Include="Controls\MultiViewports\IModelContainer.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">
@@ -156,7 +155,6 @@
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
-    <Compile Include="D2DControls\D2DControlWrapper.cs" />
     <Compile Include="Extensions\DataStreamExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
@@ -193,6 +191,9 @@
     <Compile Include="Controls\ViewportCommands.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
+    <Compile Include="Model\Elements2D\D2DTextModel.cs" />
+    <Compile Include="Model\Elements2D\Element2D.cs" />
+    <Compile Include="Model\Elements2D\GroupElement2D.cs" />
     <Compile Include="Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\InstanceGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />

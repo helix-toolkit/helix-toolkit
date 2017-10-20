@@ -229,6 +229,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public IEnumerable<IRenderable> D2DRenderables
+        {
+            get
+            {
+                if (renderHostInternal != null && D2DItems != null)
+                {
+                    foreach(IRenderable item in D2DItems.Items)
+                    {
+                        yield return item;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -243,6 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
+            D2DItems = new GroupElement2D();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
@@ -856,6 +871,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SharedModelContainer.Attach(host);
             }
+            if (this.D2DItems != null)
+            {
+                this.D2DItems.Attach(host);
+            }
             StopWatch.Start();
         }
 
@@ -872,6 +891,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SharedModelContainer.Detach();
             }
+            if (this.D2DItems != null)
+            {
+                this.D2DItems.Detach();
+            }
         }
 
         /// <summary>
@@ -883,6 +906,14 @@ namespace HelixToolkit.Wpf.SharpDX
             context.Camera = this.Camera;
             context.worldMatrix = this.worldMatrixInternal;   
             foreach (IRenderable e in this.Renderables)
+            {
+                e.Render(context);
+            }
+        }
+
+        void IRenderer.RenderD2D(RenderContext context)
+        {
+            foreach (IRenderable e in this.D2DRenderables)
             {
                 e.Render(context);
             }

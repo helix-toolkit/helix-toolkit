@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color4 = global::SharpDX.Color4;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Provides the dependency properties for Viewport3DX.
@@ -828,6 +829,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Viewport3DX).worldMatrixInternal = (global::SharpDX.Matrix)e.NewValue;
                     (d as Viewport3DX).InvalidateRender();
                 }));
+
+        public static readonly DependencyProperty D2DItemsProperty
+            = DependencyProperty.Register("D2DItems", typeof(GroupElement2D), typeof(Viewport3DX), new PropertyMetadata(null));
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2715,6 +2719,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (global::SharpDX.Matrix)GetValue(WorldMatrixProperty);
+            }
+        }
+
+        public GroupElement2D D2DItems
+        {
+            get
+            {
+                return (GroupElement2D)GetValue(D2DItemsProperty);
+            }
+            set
+            {
+                SetValue(D2DItemsProperty, value);
             }
         }
     }

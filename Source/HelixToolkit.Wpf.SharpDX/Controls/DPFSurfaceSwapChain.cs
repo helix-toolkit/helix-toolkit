@@ -724,6 +724,12 @@ namespace HelixToolkit.Wpf.SharpDX
 #if DoubleBuffer
                 device.ImmediateContext.ResolveSubresource(colorBuffer, 0, backBuffer, 0, Format.B8G8R8A8_UNorm);
 #endif
+                if (D2DControls.D2DTarget != null)
+                {
+                    D2DControls.D2DTarget.BeginDraw();
+                    renderRenderable.RenderD2D(renderContext);
+                    D2DControls.D2DTarget.EndDraw();
+                }
             }
         }
 

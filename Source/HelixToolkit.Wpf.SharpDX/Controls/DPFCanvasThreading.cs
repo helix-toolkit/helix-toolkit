@@ -31,6 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Helpers;
     using System.Threading;
     using System.Runtime.CompilerServices;
+    using D2DControls;
 
     // ---- BASED ON ORIGNAL CODE FROM DPFCanvas.cs-----
     // Seperate the rendering thread from Main Composite rendering thread. Use deferred rendering.
@@ -343,6 +344,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles; } }
+
+        public D2DControlWrapper D2DControls { get; } = new D2DControlWrapper();
 
         public bool EnableSharingModelMode
         {
