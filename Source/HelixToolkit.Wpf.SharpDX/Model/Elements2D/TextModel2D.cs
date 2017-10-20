@@ -7,9 +7,9 @@ using HelixToolkit.SharpDX.Shared.D2DControls;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class D2DTextModel : Element2D
+    public class TextModel2D : Element2D
     {
-        protected override ID2DRenderable CreateRenderCore(IRenderHost host)
+        protected override IRenderable2D CreateRenderCore(IRenderHost host)
         {
             return new TextRenderable();
         }

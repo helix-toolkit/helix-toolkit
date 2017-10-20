@@ -14,10 +14,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\IntCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector3Collection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)D2DControls\D2DControlWrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)D2DControls\D2DRenderableBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)D2DControls\ID2DRenderable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)D2DControls\TextRenderable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)2DControls\2DControlWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)2DControls\Renderable2DBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)2DControls\IRenderable2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)2DControls\TextRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />

@@ -233,9 +233,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                if (renderHostInternal != null && D2DItems != null)
+                if (renderHostInternal != null && Items2D != null)
                 {
-                    foreach(IRenderable item in D2DItems.Items)
+                    foreach(IRenderable item in Items2D.Items)
                     {
                         yield return item;
                     }
@@ -257,7 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
-            D2DItems = new GroupElement2D();
+            Items2D = new GroupElement2D();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
@@ -871,9 +871,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SharedModelContainer.Attach(host);
             }
-            if (this.D2DItems != null)
+            if (this.Items2D != null)
             {
-                this.D2DItems.Attach(host);
+                this.Items2D.Attach(host);
             }
             StopWatch.Start();
         }
@@ -891,9 +891,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SharedModelContainer.Detach();
             }
-            if (this.D2DItems != null)
+            if (this.Items2D != null)
             {
-                this.D2DItems.Detach();
+                this.Items2D.Detach();
             }
         }
 

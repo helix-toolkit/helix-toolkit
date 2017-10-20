@@ -8,7 +8,7 @@ using HelixToolkit.Wpf.SharpDX;
 
 namespace HelixToolkit.SharpDX.Shared.D2DControls
 {
-    public class TextRenderable : D2DRenderableBase
+    public class TextRenderable : Renderable2DBase
     {
         public string Text { set; get; } = "Text";
 

@@ -9,11 +9,15 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <hx:Viewport3DX EnableSwapChainRendering="True" Camera="{Binding Camera}" EffectsManager="{Binding EffectsManager}">
-            <hx:Viewport3DX.D2DItems>
+            <hx:DirectionalLight3D
+                Direction="{Binding VM3D.Light1Direction}"
+                Color="{Binding VM3D.Light1Color}" />
+            <hx:MeshGeometryModel3D Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>
+            <hx:Viewport3DX.Items2D>
                 <hx:GroupElement2D>
-                    <hx:D2DTextModel/>
+                    <hx:TextModel2D/>
                 </hx:GroupElement2D>
-            </hx:Viewport3DX.D2DItems>
+            </hx:Viewport3DX.Items2D>
         </hx:Viewport3DX>
     </Grid>
 </Window>

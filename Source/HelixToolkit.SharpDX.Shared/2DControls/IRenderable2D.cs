@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HelixToolkit.SharpDX.Shared.D2DControls
 {
-    public interface ID2DRenderable : IDisposable
+    public interface IRenderable2D : IDisposable
     {
         bool IsRendering { set; get; }
         void Render(IRenderMatrices matrics, RenderTarget target);

@@ -151,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override ID2DRenderable CreateRenderCore(IRenderHost host)
+        protected override IRenderable2D CreateRenderCore(IRenderHost host)
         {
             return null;
         }

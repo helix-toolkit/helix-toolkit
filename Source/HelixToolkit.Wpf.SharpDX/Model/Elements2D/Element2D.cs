@@ -66,9 +66,9 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderHost; }
         }
 
-        protected ID2DRenderable renderCore { private set; get; }
+        protected IRenderable2D renderCore { private set; get; }
 
-        protected abstract ID2DRenderable CreateRenderCore(IRenderHost host);
+        protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
 
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>

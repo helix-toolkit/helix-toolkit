@@ -830,8 +830,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Viewport3DX).InvalidateRender();
                 }));
 
-        public static readonly DependencyProperty D2DItemsProperty
-            = DependencyProperty.Register("D2DItems", typeof(GroupElement2D), typeof(Viewport3DX), new PropertyMetadata(null));
+        public static readonly DependencyProperty Items2DProperty
+            = DependencyProperty.Register("Items2D", typeof(GroupElement2D), typeof(Viewport3DX), new PropertyMetadata(null));
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2722,15 +2722,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public GroupElement2D D2DItems
+        public GroupElement2D Items2D
         {
             get
             {
-                return (GroupElement2D)GetValue(D2DItemsProperty);
+                return (GroupElement2D)GetValue(Items2DProperty);
             }
             set
             {
-                SetValue(D2DItemsProperty, value);
+                SetValue(Items2DProperty, value);
             }
         }
     }
