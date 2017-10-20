@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using global::SharpDX.Direct3D11;
+    using HelixToolkit.SharpDX;
 
     /// <summary>
     /// The render-context is currently generated per frame
@@ -27,15 +28,48 @@ namespace HelixToolkit.Wpf.SharpDX
         internal Matrix projectionMatrix;
         internal BoundingFrustum boundingFrustum;
         private Camera camera; 
-        private EffectVectorVariable vEyePos, vFrustum, vViewport;        
-        private EffectMatrixVariable mView, mProjection;
+        private EffectVectorVariable vEyePos, vFrustum, vViewport;
+        private EffectMatrixVariable mView, mProjection, mVP;
+        private bool matrixChanged = true;
 
+        public Matrix ViewMatrix
+        {
+            get { return this.viewMatrix; }
+            private set
+            {
+                if (viewMatrix == value) { return; }
+                viewMatrix = value;
+                matrixChanged = true;
+            }
+        }
 
-        public Matrix ViewMatrix { get { return this.viewMatrix; } }
+        public Matrix ProjectionMatrix
+        {
+            get { return this.projectionMatrix; }
+            set
+            {
+                if (projectionMatrix == value)
+                {
+                    return;
+                }
+                projectionMatrix = value;
+                matrixChanged = true;
+            }
+        }
 
-        public Matrix ProjectionMatrix { get { return this.projectionMatrix; } }
-
-        public Matrix WorldMatrix { get { return worldMatrix; } }
+        public Matrix WorldMatrix
+        {
+            get { return worldMatrix; }
+            set
+            {
+                if (worldMatrix == value)
+                {
+                    return;
+                }
+                worldMatrix = value;
+                matrixChanged = true;
+            }
+        }
 
         public Matrix ViewportMatrix
         {
@@ -48,11 +82,21 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private Matrix screenViewProjectionMatrix = Matrix.Identity;
         public Matrix ScreenViewProjectionMatrix
         {
             get
             {
                 return GetScreenViewProjectionMatrix();
+            }
+        }
+
+        private Matrix viewProjectionMatrix = Matrix.Identity;
+        public Matrix ViewProjectionMatrix
+        {
+            get
+            {
+                return GetViewProjectionMatrix();
             }
         }
 
@@ -72,9 +116,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.camera = value;
                 ActualHeight = this.Canvas.ActualHeight;
                 ActualWidth = this.Canvas.ActualWidth;
-                this.viewMatrix = this.camera.CreateViewMatrix();
+                ViewMatrix = this.camera.CreateViewMatrix();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
-                this.projectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
+                ProjectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
                 if (this.camera is ProjectionCamera)
                 {
                     var c = this.camera as ProjectionCamera;
@@ -98,6 +142,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.vEyePos.Set(this.camera.Position.ToVector3());
                     this.mView.SetMatrix(ref viewMatrix);
                     this.mProjection.SetMatrix(ref projectionMatrix);
+
+                    UpdateMatrices();
+                    this.mVP.SetMatrix(ref viewProjectionMatrix);
                 }
             }
         }
@@ -119,15 +166,31 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.mView = effect.GetVariableByName("mView").AsMatrix();
             this.mProjection = effect.GetVariableByName("mProjection").AsMatrix();
+            this.mVP = effect.GetVariableByName("mVP").AsMatrix();
             this.vViewport = effect.GetVariableByName("vViewport").AsVector();
             this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
             this.vEyePos = effect.GetVariableByName("vEyePos").AsVector();
+           
             DeviceContext = renderContext;     
         }
 
         public Matrix GetScreenViewProjectionMatrix()
         {
-            return viewMatrix * projectionMatrix * ViewportMatrix;
+            return screenViewProjectionMatrix;
+        }
+        public Matrix GetViewProjectionMatrix()
+        {
+            return viewProjectionMatrix;
+        }
+
+        private void UpdateMatrices()
+        {
+            if (matrixChanged)
+            {
+                viewProjectionMatrix = viewMatrix * projectionMatrix;
+                screenViewProjectionMatrix = viewProjectionMatrix * ViewportMatrix;
+                matrixChanged = false;
+            }
         }
 
         ~RenderContext()
