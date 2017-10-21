@@ -12,7 +12,13 @@
             <hx:DirectionalLight3D
                 Direction="{Binding VM3D.Light1Direction}"
                 Color="{Binding VM3D.Light1Color}" />
-            <hx:MeshGeometryModel3D Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>
+            <hx:DirectionalLight3D
+                Direction="{Binding VM3D.Light2Direction}"
+                Color="{Binding VM3D.Light2Color}" />
+            <hx:DirectionalLight3D
+                Direction="{Binding VM3D.Light3Direction}"
+                Color="{Binding VM3D.Light3Color}" />
+            <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>
             <hx:Viewport3DX.Items2D>
                 <hx:GroupElement2D>
                     <hx:TextModel2D/>
