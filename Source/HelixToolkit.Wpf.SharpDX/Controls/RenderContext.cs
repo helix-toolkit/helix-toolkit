@@ -106,14 +106,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.camera = value;
                 ActualHeight = this.Canvas.ActualHeight;
                 ActualWidth = this.Canvas.ActualWidth;
-                this.viewMatrix = this.camera.CreateViewMatrix();
+                ViewMatrix = this.camera.CreateViewMatrix();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
-                this.projectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
+                ProjectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
                 if (this.camera is ProjectionCamera)
                 {
                     var c = this.camera as ProjectionCamera;
                     // viewport: W,H,0,0   
-                    var viewport = new Vector4((float)this.ActualWidth, (float)this.ActualHeight, 0, 0);
+                    var viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 0, 0);
                     var ar = viewport.X / viewport.Y;
                     
                     var  pc = c as PerspectiveCamera;
@@ -124,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     // frustum: FOV,AR,N,F
                     var frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
                     if(EnableBoundingFrustum)
-                        boundingFrustum = new BoundingFrustum(this.viewMatrix * this.projectionMatrix);
+                        boundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
 
                     this.vViewport.Set(ref viewport);
                     this.vFrustum.Set(ref frustum);
