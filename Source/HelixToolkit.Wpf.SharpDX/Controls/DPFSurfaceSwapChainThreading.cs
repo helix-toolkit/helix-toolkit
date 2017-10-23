@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Controls;
     using System.Threading;
     using System.Windows.Interop;
-    using D2DControls;
+    using HelixToolkit.SharpDX.Core2D;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel

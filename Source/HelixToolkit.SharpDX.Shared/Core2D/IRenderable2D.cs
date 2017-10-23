@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace HelixToolkit.SharpDX.Shared.D2DControls
+namespace HelixToolkit.SharpDX.Core2D
 {
     public interface IRenderable2D : IDisposable
     {

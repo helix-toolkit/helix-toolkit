@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct2D1;
+﻿using HelixToolkit.Wpf.SharpDX;
+using SharpDX.Direct2D1;
 using SharpDX.DXGI;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelixToolkit.Wpf.SharpDX.D2DControls
+namespace HelixToolkit.SharpDX.Core2D
 {
     public sealed class D2DControlWrapper : IDisposable
     {

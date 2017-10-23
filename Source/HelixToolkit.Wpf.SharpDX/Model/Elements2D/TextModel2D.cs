@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HelixToolkit.SharpDX.Shared.D2DControls;
+using HelixToolkit.SharpDX.Core2D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {

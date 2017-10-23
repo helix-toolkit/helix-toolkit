@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Markup;
     using System.Linq;
     using System.Collections;
-    using HelixToolkit.SharpDX.Shared.D2DControls;
+    using HelixToolkit.SharpDX.Core2D;
     using System;
 
     /// <summary>

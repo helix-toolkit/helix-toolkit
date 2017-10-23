@@ -1,4 +1,4 @@
-﻿using HelixToolkit.SharpDX.Shared.D2DControls;
+﻿using HelixToolkit.SharpDX.Core2D;
 using System;
 using System.Collections.Generic;
 using System.Linq;

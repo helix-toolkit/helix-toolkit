@@ -6,7 +6,7 @@ using SharpDX.DirectWrite;
 using SharpDX;
 using HelixToolkit.Wpf.SharpDX;
 
-namespace HelixToolkit.SharpDX.Shared.D2DControls
+namespace HelixToolkit.SharpDX.Core2D
 {
     public class TextRenderable : Renderable2DBase
     {

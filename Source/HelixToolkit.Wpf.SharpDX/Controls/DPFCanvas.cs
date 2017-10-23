@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Device = global::SharpDX.Direct3D11.Device;
     using Model.Lights3D;
     using Helpers;
-    using D2DControls;
+    using HelixToolkit.SharpDX.Core2D;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel

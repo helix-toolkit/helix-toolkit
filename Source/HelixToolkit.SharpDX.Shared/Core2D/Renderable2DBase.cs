@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using D2D = global::SharpDX.Direct2D1;
 
-namespace HelixToolkit.SharpDX.Shared.D2DControls
+namespace HelixToolkit.SharpDX.Core2D
 {
     public abstract class Renderable2DBase : IRenderable2D
     {
