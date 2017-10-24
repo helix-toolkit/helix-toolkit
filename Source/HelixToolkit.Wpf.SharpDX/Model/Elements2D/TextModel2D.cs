@@ -17,7 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D), 
                 new AffectsRenderPropertyMetadata("Text", (d,e)=>
                 {
-                    (d as TextModel2D).OnTextPropertyChanged();
+                    var model = (d as TextModel2D);
+                    if (model.textRenderable == null) { return; }
+                    model.textRenderable.Text = e.NewValue == null ? "" : (string)e.NewValue;
                 }));
 
         public string Text
@@ -36,7 +38,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("FontSize", typeof(int), typeof(TextModel2D),
                 new AffectsRenderPropertyMetadata(12, (d, e) =>
                 {
-                    (d as TextModel2D).OnTextPropertyChanged();
+                    var model = (d as TextModel2D);
+                    if (model.textRenderable == null) { return; }
+                    model.textRenderable.FontSize = Math.Max(1, (int)e.NewValue);
                 }));
 
         public int FontSize
@@ -55,7 +59,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("Font", typeof(string), typeof(TextModel2D),
                 new AffectsRenderPropertyMetadata(DefaultFont, (d, e) =>
                 {
-                    (d as TextModel2D).OnTextPropertyChanged();
+                    var model = (d as TextModel2D);
+                    if (model.textRenderable == null) { return; }
+                    model.textRenderable.Font = e.NewValue == null ? "Arial" : (string)e.NewValue;
                 }));
 
         public string Font
@@ -74,7 +80,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
                 new AffectsRenderPropertyMetadata(FontWeights.Normal, (d, e) =>
                 {
-                    (d as TextModel2D).OnTextPropertyChanged();
+                    var model = (d as TextModel2D);
+                    if (model.textRenderable == null) { return; }
+                    model.textRenderable.FontWeight = ((FontWeight)e.NewValue).ToDXFontWeight();
                 }));
 
         public FontWeight FontWeight
@@ -93,7 +101,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(TextModel2D),
                 new AffectsRenderPropertyMetadata(FontStyles.Normal, (d, e) =>
                 {
-                    (d as TextModel2D).OnTextPropertyChanged();
+                    var model = (d as TextModel2D);
+                    if (model.textRenderable == null) { return; }
+                    model.textRenderable.FontStyle = ((FontStyle)e.NewValue).ToDXFontStyle();
                 }));
 
         public FontStyle FontStyle
@@ -113,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override IRenderable2D CreateRenderCore(IRenderHost host)
         {
             textRenderable = new TextRenderable();
-            OnTextPropertyChanged();
+            AssignProperties();
             return textRenderable;
         }
 
@@ -124,7 +134,7 @@ namespace HelixToolkit.Wpf.SharpDX
             renderCore.Render(context, RenderHost.D2DControls.D2DTarget);
         }
 
-        protected virtual void OnTextPropertyChanged()
+        protected virtual void AssignProperties()
         {
             if (textRenderable == null) { return; }
             textRenderable.Text = Text == null ? "" : Text;
