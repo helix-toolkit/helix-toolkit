@@ -29,12 +29,19 @@ namespace HelixToolkit.SharpDX.Core2D
 
         public Color Foreground { set; get; } = Color.Black;
 
-        public int FontSize { set; get; } = 14;
+        public int FontSize { set; get; } = 12;
+
+        public FontWeight FontWeight { set; get; } = FontWeight.Normal;
+
+        public FontStyle FontStyle { set; get; } = FontStyle.Normal;
+
+        public D2D.DrawTextOptions DrawingOptions { set; get; } = D2D.DrawTextOptions.None;
 
         private Factory TextFactory = new Factory(FactoryType.Isolated);
 
         protected override void OnTargetChanged(D2D.RenderTarget target)
         {
+            base.OnTargetChanged(target);
             Disposer.RemoveAndDispose(ref brush);
             if(target ==null || target.IsDisposed)
             {
@@ -46,9 +53,9 @@ namespace HelixToolkit.SharpDX.Core2D
 
         protected override void OnRender(IRenderMatrices matrices)
         {
-            RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight.Bold, FontStyle.Normal, 14), 
-               LocalDrawingRect, Brush, D2D.DrawTextOptions.None);
-            RenderTarget.DrawRectangle(LocalDrawingRect, Brush);
+            base.OnRender(matrices);
+            RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight, FontStyle, FontSize), 
+               LocalDrawingRect, Brush, DrawingOptions);
         }
 
         public override void Dispose()

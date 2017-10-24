@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PointerSizeHelpers.cs" />

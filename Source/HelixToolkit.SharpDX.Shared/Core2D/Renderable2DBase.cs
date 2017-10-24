@@ -66,7 +66,36 @@ namespace HelixToolkit.SharpDX.Core2D
             }
         }
 
-        protected abstract void OnTargetChanged(D2D.RenderTarget target);
+        private D2D.Brush borderBrush = null;
+        public D2D.Brush BorderBrush
+        {
+            set
+            {
+                borderBrush = value;
+            }
+            get
+            {
+                return borderBrush;
+            }
+        }
+
+        private D2D.StrokeStyle borderStyle;
+#if DEBUG
+        public bool ShowDrawingBorder { set; get; } = true;
+#else
+        public bool ShowDrawingBorder { set; get; } = false;
+#endif
+        protected virtual void OnTargetChanged(D2D.RenderTarget target)
+        {
+            Disposer.RemoveAndDispose(ref borderBrush);
+            Disposer.RemoveAndDispose(ref borderStyle);
+            if (target == null || target.IsDisposed)
+            {
+                return;
+            }
+            borderBrush = new D2D.SolidColorBrush(target, Color.LightBlue);
+            borderStyle =  new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot });
+        }
 
         public void Render(IRenderMatrices matrices, D2D.RenderTarget target)
         {
@@ -89,7 +118,13 @@ namespace HelixToolkit.SharpDX.Core2D
             }
         }
 
-        protected abstract void OnRender(IRenderMatrices matrices);
+        protected virtual void OnRender(IRenderMatrices matrices)
+        {
+            if (ShowDrawingBorder && BorderBrush != null)
+            {
+                RenderTarget.DrawRectangle(LocalDrawingRect, BorderBrush, 0.5f, borderStyle);
+            }
+        }
 
         protected virtual bool CanRender(D2D.RenderTarget target)
         {
@@ -98,6 +133,7 @@ namespace HelixToolkit.SharpDX.Core2D
 
         public virtual void Dispose()
         {
+            Disposer.RemoveAndDispose(ref borderBrush);
             RenderTarget = null;
         }
     }
