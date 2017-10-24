@@ -53,7 +53,6 @@ namespace HelixToolkit.SharpDX.Core2D
 
         protected override void OnRender(IRenderMatrices matrices)
         {
-            base.OnRender(matrices);
             RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight, FontStyle, FontSize), 
                LocalDrawingRect, Brush, DrawingOptions);
         }

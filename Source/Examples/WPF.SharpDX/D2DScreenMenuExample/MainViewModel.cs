@@ -114,7 +114,7 @@ namespace D2DScreenMenuExample
             var scaleAnimation = new Media.Animation.DoubleAnimation
             {
                 RepeatBehavior = Media.Animation.RepeatBehavior.Forever,
-                From = 0.5, To = 5,
+                From = 1, To = 5,
                 AutoReverse = true,
                 Duration = TimeSpan.FromSeconds(speed / 4),
             };

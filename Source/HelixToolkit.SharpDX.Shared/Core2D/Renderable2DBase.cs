@@ -103,7 +103,15 @@ namespace HelixToolkit.SharpDX.Core2D
             {
                 RenderTarget = target;
                 UpdateRenderVariables();
+                if (ShowDrawingBorder && BorderBrush != null)
+                {
+                    RenderTarget.DrawRectangle(Rect, BorderBrush, 1f, borderStyle);
+                }
                 RenderTarget.Transform = RenderTargetTransform;
+                if (ShowDrawingBorder && BorderBrush != null)
+                {
+                    RenderTarget.DrawRectangle(LocalDrawingRect, BorderBrush, 0.5f, borderStyle);
+                }
                 OnRender(matrices);
             }
         }
@@ -118,13 +126,7 @@ namespace HelixToolkit.SharpDX.Core2D
             }
         }
 
-        protected virtual void OnRender(IRenderMatrices matrices)
-        {
-            if (ShowDrawingBorder && BorderBrush != null)
-            {
-                RenderTarget.DrawRectangle(LocalDrawingRect, BorderBrush, 0.5f, borderStyle);
-            }
-        }
+        protected abstract void OnRender(IRenderMatrices matrices);
 
         protected virtual bool CanRender(D2D.RenderTarget target)
         {
