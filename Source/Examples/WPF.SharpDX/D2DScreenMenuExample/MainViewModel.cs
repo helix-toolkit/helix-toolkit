@@ -91,7 +91,7 @@ namespace D2DScreenMenuExample
 
         public ViewModel2D()
         {
-            TextTransform = CreateAnimatedTransform2();
+            TextTransform = CreateAnimatedTransform2(8);
         }
 
         private Media.Transform CreateAnimatedTransform2(double speed = 4)
@@ -100,7 +100,7 @@ namespace D2DScreenMenuExample
             var rotateAnimation = new Media.Animation.DoubleAnimation
             {
                 RepeatBehavior = Media.Animation.RepeatBehavior.Forever,
-                By=180,
+                By=360,
                 AutoReverse = false,
                 Duration = TimeSpan.FromSeconds(speed / 4),                
             };
