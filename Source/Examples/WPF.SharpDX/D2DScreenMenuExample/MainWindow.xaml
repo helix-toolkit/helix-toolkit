@@ -21,7 +21,7 @@
             <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>-->
             <hx:Viewport3DX.Items2D>
                 <hx:GroupElement2D>
-                    <hx:TextModel2D Left="200" Top="240" Width="100" Height="20" Text="{Binding VM2D.Text}" Transform="{Binding VM2D.TextTransform}"/>
+                    <hx:TextModel2D Left="200" Top="100" Width="100" Height="20" Text="{Binding VM2D.Text}" Transform="{Binding VM2D.TextTransform}"/>
                 </hx:GroupElement2D>
             </hx:Viewport3DX.Items2D>
         </hx:Viewport3DX>

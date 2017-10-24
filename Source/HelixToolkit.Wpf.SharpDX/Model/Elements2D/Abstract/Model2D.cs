@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TransformProperty = 
             DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Model2D), new AffectsRenderPropertyMetadata(Media.Transform.Identity, (d, e) =>
             {
-                (d as Model2D).transformMatrix = e.NewValue == null ? Matrix3x3.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x3();
+                (d as Model2D).transformMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
             }));
 
         /// <summary>
@@ -34,6 +34,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected Matrix3x3 transformMatrix { private set; get; } = Matrix3x3.Identity;
+        protected Matrix3x2 transformMatrix { private set; get; } = Matrix3x2.Identity;
     }
 }

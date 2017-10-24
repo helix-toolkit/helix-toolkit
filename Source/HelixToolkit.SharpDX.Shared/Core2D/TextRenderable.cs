@@ -46,10 +46,9 @@ namespace HelixToolkit.SharpDX.Core2D
 
         protected override void OnRender(IRenderMatrices matrices)
         {
-            var rect = new RectangleF(-Rect.Width / 2, -Rect.Height / 2, Rect.Width, Rect.Height);
             RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight.Bold, FontStyle.Normal, 14), 
-               rect, Brush, D2D.DrawTextOptions.None);
-            RenderTarget.DrawRectangle(rect, Brush);
+               LocalDrawingRect, Brush, D2D.DrawTextOptions.None);
+            RenderTarget.DrawRectangle(LocalDrawingRect, Brush);
         }
 
         public override void Dispose()

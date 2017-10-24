@@ -91,6 +91,7 @@ namespace D2DScreenMenuExample
 
         public ViewModel2D()
         {
+            //TextTransform = new Media.RotateTransform(45, 100, 0);
             TextTransform = CreateAnimatedTransform2(8);
         }
 
@@ -105,9 +106,22 @@ namespace D2DScreenMenuExample
                 Duration = TimeSpan.FromSeconds(speed / 4),                
             };
 
-            var rotateTransform = new Media.RotateTransform();
+            var rotateTransform = new Media.RotateTransform(0, 50, 10);
             rotateTransform.BeginAnimation(Media.RotateTransform.AngleProperty, rotateAnimation);
             lightTrafo.Children.Add(rotateTransform);
+
+
+            var scaleAnimation = new Media.Animation.DoubleAnimation
+            {
+                RepeatBehavior = Media.Animation.RepeatBehavior.Forever,
+                From = 0.5, To = 5,
+                AutoReverse = true,
+                Duration = TimeSpan.FromSeconds(speed / 4),
+            };
+            var scaleTransform = new Media.ScaleTransform(1, 1, 0, 0);
+            scaleTransform.BeginAnimation(Media.ScaleTransform.ScaleXProperty, scaleAnimation);
+            scaleTransform.BeginAnimation(Media.ScaleTransform.ScaleYProperty, scaleAnimation);
+            lightTrafo.Children.Add(scaleTransform);
             return lightTrafo;
         }
     }

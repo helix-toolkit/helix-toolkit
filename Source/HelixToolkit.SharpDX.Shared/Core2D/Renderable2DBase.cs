@@ -9,12 +9,31 @@ namespace HelixToolkit.SharpDX.Core2D
 {
     public abstract class Renderable2DBase : IRenderable2D
     {
+        public bool IsChanged { private set; get; } = true;
+
+        public Matrix3x2 RenderTargetTransform { private set; get; }
+
         public bool IsRendering
         {
             set; get;
         } = true;
 
-        public global::SharpDX.RectangleF Rect { set; get; } = new RectangleF(0, 0, 100, 100);
+        private RectangleF rect = new RectangleF(0, 0, 100, 100);
+        public RectangleF Rect
+        {
+            set
+            {
+                if (rect == value) { return; }
+                rect = value;
+                IsChanged = true;
+            }
+            get
+            {
+                return rect;
+            }
+        }
+
+        public RectangleF LocalDrawingRect { private set; get; }
 
         private D2D.RenderTarget renderTarget;
         protected D2D.RenderTarget RenderTarget
@@ -23,6 +42,7 @@ namespace HelixToolkit.SharpDX.Core2D
             {
                 if (renderTarget == value) { return; }
                 renderTarget = value;
+                IsChanged = true;
                 OnTargetChanged(value);
             }
             get
@@ -31,15 +51,14 @@ namespace HelixToolkit.SharpDX.Core2D
             }
         }
 
-        private Matrix3x3 transform = Matrix3x3.Identity;
-        public Matrix3x3 Transform
+        private Matrix3x2 transform = Matrix3x2.Identity;
+        public Matrix3x2 Transform
         {
             set
             {
-                if (transform != value)
-                {
-                    transform = value;
-                }
+                if (transform == value) { return; }
+                transform = value;
+                IsChanged = true;
             }
             get
             {
@@ -54,9 +73,19 @@ namespace HelixToolkit.SharpDX.Core2D
             if (CanRender(target))
             {
                 RenderTarget = target;
-                var trans = transform * new Matrix3x3(1, 0, 0, 0, 1, 0, (Rect.Left + Rect.Width / 2), (Rect.Top + Rect.Height / 2), 1);
-                RenderTarget.Transform = new global::SharpDX.Mathematics.Interop.RawMatrix3x2(trans.M11,trans.M12,trans.M21,trans.M22, trans.M31, trans.M32);
+                UpdateRenderVariables();
+                RenderTarget.Transform = RenderTargetTransform;
                 OnRender(matrices);
+            }
+        }
+
+        protected virtual void UpdateRenderVariables()
+        {
+            if (IsChanged)
+            {
+                RenderTargetTransform = transform * new Matrix3x2(1, 0, 0, 1, (Rect.Left), (Rect.Top));
+                LocalDrawingRect = new RectangleF(0, 0, Rect.Width, Rect.Height);
+                IsChanged = false;
             }
         }
 
