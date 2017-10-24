@@ -15,7 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\IntCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector3Collection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core2D\2DControlWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\D2DControlWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\Renderable2DBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderable.cs" />

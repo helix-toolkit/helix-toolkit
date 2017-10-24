@@ -12,8 +12,6 @@ namespace HelixToolkit.SharpDX.Core2D
     {
         public string Text { set; get; } = "Text";
 
-        public global::SharpDX.RectangleF Rect { set; get; } = new RectangleF(0, 0, 100, 100);
-
         private D2D.Brush brush = null;
         public D2D.Brush Brush
         {
@@ -48,7 +46,10 @@ namespace HelixToolkit.SharpDX.Core2D
 
         protected override void OnRender(IRenderMatrices matrices)
         {
-            RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight.Bold, FontStyle.Normal, 14), Rect, Brush, D2D.DrawTextOptions.None);
+            var rect = new RectangleF(-Rect.Width / 2, -Rect.Height / 2, Rect.Width, Rect.Height);
+            RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight.Bold, FontStyle.Normal, 14), 
+               rect, Brush, D2D.DrawTextOptions.None);
+            RenderTarget.DrawRectangle(rect, Brush);
         }
 
         public override void Dispose()

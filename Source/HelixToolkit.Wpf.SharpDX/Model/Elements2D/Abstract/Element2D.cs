@@ -1,4 +1,5 @@
 ﻿using HelixToolkit.SharpDX.Core2D;
+using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,65 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(double), typeof(Element2D),
+            new AffectsRenderPropertyMetadata(0.0));
+
+        public double Left
+        {
+            set
+            {
+                SetValue(LeftProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(LeftProperty);
+            }
+        }
+        public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(double), typeof(Element2D),
+            new AffectsRenderPropertyMetadata(0.0));
+
+        public double Top
+        {
+            set
+            {
+                SetValue(TopProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(TopProperty);
+            }
+        }
+
+        public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
+            new AffectsRenderPropertyMetadata(100.0));
+
+        public double Width
+        {
+            set
+            {
+                SetValue(WidthProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(WidthProperty);
+            }
+        }
+
+        public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
+            new AffectsRenderPropertyMetadata(100.0));
+
+        public double Height
+        {
+            set
+            {
+                SetValue(HeightProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(HeightProperty);
+            }
+        }
+
         private readonly Guid guid = Guid.NewGuid();
 
         public Guid GUID { get { return guid; } }
@@ -59,6 +119,11 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isHitTestVisibleInternal { private set; get; } = true;
 
         public bool IsAttached { private set; get; }
+
+        public RectangleF Bound
+        {
+            get { return new RectangleF((float)Left, (float)Top, (float)Width, (float)Height); }
+        }
 
         protected IRenderHost renderHost;
         public IRenderHost RenderHost
@@ -197,6 +262,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 && (fmetadata is IAffectsRender
                 || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
                 ));
-        }
+        }              
     }
 }

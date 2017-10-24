@@ -710,8 +710,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Set MSAA Level
         /// </summary>
-        public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX), 
-            new PropertyMetadata(MSAALevel.Disable, (s,e)=> 
+        public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX),
+            new PropertyMetadata(MSAALevel.Disable, (s, e) =>
             {
                 var viewport = s as Viewport3DX;
                 if (viewport.RenderHost != null)
@@ -754,7 +754,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable render frustum to avoid rendering model if it is out of view frustum
         /// </summary>
         public static readonly DependencyProperty EnableRenderFrustumProperty
-            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
                 (s, e) =>
             {
                 var viewport = s as Viewport3DX;
@@ -774,7 +774,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     viewport.RenderHost.MaxFPS = (uint)e.NewValue;
                 }
-            }, (s,e)=> { return Math.Max(1, (int)e); }));
+            }, (s, e) => { return Math.Max(1, (int)e); }));
 
         /// <summary>
         /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
@@ -803,14 +803,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty SharedModelContainerProperty
             = DependencyProperty.Register("SharedModelContainer", typeof(IModelContainer), typeof(Viewport3DX), new PropertyMetadata(null,
-                (d,e)=>
+                (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
                     if (e.OldValue is IModelContainer)
                     {
                         (e.OldValue as IModelContainer).DettachViewport3DX(viewport);
                     }
-                    if(e.NewValue is IModelContainer)
+                    if (e.NewValue is IModelContainer)
                     {
                         (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
                     }
@@ -824,14 +824,24 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("EnableSwapChainRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
         public static readonly DependencyProperty WorldMatrixProperty
-            = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity, 
-                (d,e)=> {
+            = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity,
+                (d, e) => {
                     (d as Viewport3DX).worldMatrixInternal = (global::SharpDX.Matrix)e.NewValue;
                     (d as Viewport3DX).InvalidateRender();
                 }));
 
         public static readonly DependencyProperty Items2DProperty
-            = DependencyProperty.Register("Items2D", typeof(GroupElement2D), typeof(Viewport3DX), new PropertyMetadata(null));
+            = DependencyProperty.Register("Items2D", typeof(GroupElement2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
+            {
+                if (e.OldValue != null)
+                {
+                    (d as Viewport3DX).RemoveLogicalChild(e.OldValue);
+                }
+                if (e.NewValue != null)
+                {
+                    (d as Viewport3DX).AddLogicalChild(e.NewValue);
+                }
+            }));
         /// <summary>
         /// Background Color
         /// </summary>

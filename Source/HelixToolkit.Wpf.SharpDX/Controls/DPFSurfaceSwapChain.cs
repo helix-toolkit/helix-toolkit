@@ -728,6 +728,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     D2DControls.D2DTarget.BeginDraw();
                     renderRenderable.RenderD2D(renderContext);
+                    D2DControls.D2DTarget.Transform = Matrix3x2.Identity;
                     D2DControls.D2DTarget.EndDraw();
                 }
             }

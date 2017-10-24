@@ -8,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Media3D = System.Windows.Media.Media3D;
+using Media = System.Windows.Media;
 
 namespace D2DScreenMenuExample
 {
     public class MainViewModel : BaseViewModel
     {
-        public ViewModel3D VM3D { set; get; } = new ViewModel3D();
-
+        public ViewModel3D VM3D { get; } = new ViewModel3D();
+        public ViewModel2D VM2D { get; } = new ViewModel2D();
         public MainViewModel()
         {
             RenderTechniquesManager = new DefaultRenderTechniquesManager();
@@ -73,6 +74,41 @@ namespace D2DScreenMenuExample
                 file.CopyTo(memory);
                 return memory;
             }
+        }
+    }
+
+    public class ViewModel2D : ObservableObject
+    {
+        public Media.Transform TextTransform
+        {
+            set;get;
+        }
+
+        public string Text
+        {
+            set; get;
+        } = "Text Model 2D";
+
+        public ViewModel2D()
+        {
+            TextTransform = CreateAnimatedTransform2();
+        }
+
+        private Media.Transform CreateAnimatedTransform2(double speed = 4)
+        {
+            var lightTrafo = new Media.TransformGroup();
+            var rotateAnimation = new Media.Animation.DoubleAnimation
+            {
+                RepeatBehavior = Media.Animation.RepeatBehavior.Forever,
+                By=180,
+                AutoReverse = false,
+                Duration = TimeSpan.FromSeconds(speed / 4),                
+            };
+
+            var rotateTransform = new Media.RotateTransform();
+            rotateTransform.BeginAnimation(Media.RotateTransform.AngleProperty, rotateAnimation);
+            lightTrafo.Children.Add(rotateTransform);
+            return lightTrafo;
         }
     }
 }
