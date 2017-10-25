@@ -131,6 +131,23 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderHost; }
         }
 
+        private global::SharpDX.Direct2D1.RenderTarget renderTarget = null;
+        protected global::SharpDX.Direct2D1.RenderTarget RenderTarget
+        {
+            set
+            {
+                if (renderTarget != value)
+                {
+                    renderTarget = value;
+                    OnRenderTargetChanged(value);
+                }
+            }
+            get
+            {
+                return renderTarget;
+            }
+        }
+
         protected IRenderable2D renderCore { private set; get; }
 
         protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
@@ -178,6 +195,8 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
+        protected abstract void OnRenderTargetChanged(global::SharpDX.Direct2D1.RenderTarget newTarget);
+
         public virtual void Dispose()
         {
             Detach();
@@ -206,7 +225,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected virtual bool CanRender(RenderContext context)
         {
-            return IsAttached && isRenderingInternal;
+            return IsAttached && isRenderingInternal && RenderHost.D2DControls.D2DTarget != null && renderCore != null;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
@@ -217,6 +236,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (CanRender(context))
             {
+                PreRender(context);
                 OnRender(context);
             }
         }
@@ -225,8 +245,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Used to overriding <see cref="Render"/> routine.
         /// </summary>
         /// <param name="context"></param>
-        protected abstract void OnRender(RenderContext context);
+        protected virtual void OnRender(RenderContext context)
+        {
+            renderCore.Render(context, RenderTarget);
+        }
 
+        protected virtual void PreRender(RenderContext context)
+        {
+            RenderTarget = RenderHost.D2DControls.D2DTarget;
+            renderCore.Rect = this.Bound;
+        }
 
         /// <summary>
         /// Tries to invalidate the current render.

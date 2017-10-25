@@ -35,5 +35,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected Matrix3x2 transformMatrix { private set; get; } = Matrix3x2.Identity;
+
+        protected override void PreRender(RenderContext context)
+        {
+            base.PreRender(context);
+            renderCore.Transform = transformMatrix;
+        }
     }
 }

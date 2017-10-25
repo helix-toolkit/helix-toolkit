@@ -7,6 +7,7 @@ using HelixToolkit.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using System.Windows.Media;
+using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -37,12 +38,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         public static readonly DependencyProperty ForegroundProperty
-            = DependencyProperty.Register("Foreground", typeof(string), typeof(TextModel2D),
+            = DependencyProperty.Register("Foreground", typeof(Brush), typeof(TextModel2D),
                 new AffectsRenderPropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
-                    model.textRenderable.Foreground = e.NewValue == null ? null : (Brush)e.NewValue;
+                    model.foregroundChanged = true;
                 }));
 
         public Brush Foreground
@@ -142,7 +143,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private TextRenderable textRenderable;
-        private bool foregroundChanged = true;
+        protected bool foregroundChanged = true;
 
         protected override IRenderable2D CreateRenderCore(IRenderHost host)
         {
@@ -151,11 +152,21 @@ namespace HelixToolkit.Wpf.SharpDX
             return textRenderable;
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRenderTargetChanged(D2D.RenderTarget newTarget)
         {
+            foregroundChanged = true;
+        }
+
+        protected override void PreRender(RenderContext context)
+        {
+            base.PreRender(context);
+            if (foregroundChanged)
+            {
+                Disposer.RemoveAndDispose(ref textRenderable.Foreground);
+                textRenderable.Foreground = Foreground.ToD2DBrush(RenderTarget);
+            }
             textRenderable.Rect = this.Bound;
-            textRenderable.Transform = transformMatrix;         
-            renderCore.Render(context, RenderHost.D2DControls.D2DTarget);
+            textRenderable.Transform = transformMatrix; 
         }
 
         protected virtual void AssignProperties()
@@ -166,6 +177,12 @@ namespace HelixToolkit.Wpf.SharpDX
             textRenderable.FontWeight = FontWeight.ToDXFontWeight();
             textRenderable.FontStyle = FontStyle.ToDXFontStyle();
             textRenderable.FontSize = FontSize;
+        }
+
+        protected override void OnDetach()
+        {
+            foregroundChanged = true;
+            base.OnDetach();
         }
     }
 }

@@ -105,6 +105,7 @@ namespace HelixToolkit.SharpDX.Core2D
                 UpdateRenderVariables();
                 if (ShowDrawingBorder && BorderBrush != null)
                 {
+                    RenderTarget.Transform = Matrix3x2.Identity;
                     RenderTarget.DrawRectangle(Rect, BorderBrush, 1f, borderStyle);
                 }
                 RenderTarget.Transform = RenderTargetTransform;

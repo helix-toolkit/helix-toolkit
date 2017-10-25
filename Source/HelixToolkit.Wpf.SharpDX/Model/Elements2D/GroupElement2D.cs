@@ -155,5 +155,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return null;
         }
+
+        protected override void OnRenderTargetChanged(global::SharpDX.Direct2D1.RenderTarget newTarget)
+        {
+            
+        }
     }
 }

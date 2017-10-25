@@ -166,5 +166,37 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                 throw new NotImplementedException("Brush does not support yet.");
             }
         }
+
+        public static D2D.CapStyle ToD2DCapStyle(this Media.PenLineCap cap)
+        {
+            switch (cap)
+            {
+                case Media.PenLineCap.Flat:
+                    return D2D.CapStyle.Flat;
+                case Media.PenLineCap.Round:
+                    return D2D.CapStyle.Round;
+                case Media.PenLineCap.Square:
+                    return D2D.CapStyle.Square;
+                case Media.PenLineCap.Triangle:
+                    return D2D.CapStyle.Triangle;
+                default:
+                    throw new ArgumentException("Cap type not support.");
+            }
+        }
+
+        public static D2D.LineJoin ToD2DLineJoin(this Media.PenLineJoin lineJoin)
+        {
+            switch (lineJoin)
+            {
+                case Media.PenLineJoin.Bevel:
+                    return D2D.LineJoin.Bevel;
+                case Media.PenLineJoin.Miter:
+                    return D2D.LineJoin.Miter;
+                case Media.PenLineJoin.Round:
+                    return D2D.LineJoin.Round;
+                default:
+                    throw new ArgumentException("LineJoin type not support");
+            }
+        }
     }
 }

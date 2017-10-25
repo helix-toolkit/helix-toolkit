@@ -8,17 +8,20 @@ namespace HelixToolkit.SharpDX.Core2D
 {
     public class EllipseRenderable : ShapeRenderable2DBase
     {
-        public D2D.Ellipse ellipse { set; get; } = new D2D.Ellipse();
+        private D2D.Ellipse ellipse = new D2D.Ellipse();
 
         protected override void OnRender(IRenderMatrices matrices)
         {
-            if (StrokeBrush != null && StrokeStyle != null)
-            {
-                RenderTarget.DrawEllipse(ellipse, StrokeBrush, StrokeWidth, StrokeStyle);
-            }
+            ellipse.Point = LocalDrawingRect.Center;
+            ellipse.RadiusX = LocalDrawingRect.Width / 2;
+            ellipse.RadiusY = LocalDrawingRect.Height / 2;
             if (FillBrush != null)
             {
                 RenderTarget.FillEllipse(ellipse, FillBrush);
+            }
+            if (StrokeBrush != null && StrokeStyle != null)
+            {
+                RenderTarget.DrawEllipse(ellipse, StrokeBrush, StrokeWidth, StrokeStyle);
             }
         }
     }

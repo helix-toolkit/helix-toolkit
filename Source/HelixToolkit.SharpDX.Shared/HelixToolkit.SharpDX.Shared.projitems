@@ -9,8 +9,10 @@
     <Import_RootNamespace>HelixToolkit.SharpDX.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Abstract\Renderable2DBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Abstract\ShapeRenderable2DBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\EllipseRenderable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core2D\ShapeRenderable2DBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\RectangleRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Disposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ExposedArrayList.cs" />
@@ -18,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector3Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\D2DControlWrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Renderable2DBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />

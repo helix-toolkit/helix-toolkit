@@ -106,7 +106,7 @@ namespace D2DScreenMenuExample
                 Duration = TimeSpan.FromSeconds(speed / 4),                
             };
 
-            var rotateTransform = new Media.RotateTransform(0, 50, 10);
+            var rotateTransform = new Media.RotateTransform(0, 0, 0);
             rotateTransform.BeginAnimation(Media.RotateTransform.AngleProperty, rotateAnimation);
             lightTrafo.Children.Add(rotateTransform);
 

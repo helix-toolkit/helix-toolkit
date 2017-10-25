@@ -14,26 +14,7 @@ namespace HelixToolkit.SharpDX.Core2D
     {
         public string Text { set; get; } = "Text";
 
-        private Media.Brush foreground;
-        public Media.Brush Foreground
-        {
-            set
-            {
-                if(foreground != value)
-                {
-                    foreground = value;
-                    foregroundChanged = true;
-                    Disposer.RemoveAndDispose(ref foregroundBrush);
-                }                
-            }
-            get
-            {
-                return foreground;
-            }
-        }
-
-        private bool foregroundChanged = true;
-        private D2D.Brush foregroundBrush = null;
+        public D2D.Brush Foreground = null;
 
         public string Font { set; get; } = "Arial";
 
@@ -47,13 +28,6 @@ namespace HelixToolkit.SharpDX.Core2D
 
         private Factory TextFactory = new Factory(FactoryType.Isolated);
 
-        protected override void OnTargetChanged(D2D.RenderTarget target)
-        {
-            Disposer.RemoveAndDispose(ref foregroundBrush);
-            foregroundChanged = true;
-            base.OnTargetChanged(target);
-        }
-
         protected override bool CanRender(D2D.RenderTarget target)
         {
             return base.CanRender(target) && Foreground != null;
@@ -61,19 +35,13 @@ namespace HelixToolkit.SharpDX.Core2D
 
         protected override void OnRender(IRenderMatrices matrices)
         {
-            if (foregroundChanged)
-            {
-                foregroundBrush = Foreground.ToD2DBrush(RenderTarget);
-                foregroundChanged = false;
-            }
             RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight, FontStyle, FontSize), 
-               LocalDrawingRect, foregroundBrush, DrawingOptions);
+               LocalDrawingRect, Foreground, DrawingOptions);
         }
 
         public override void Dispose()
         {
-            Disposer.RemoveAndDispose(ref foregroundBrush);
-            foregroundChanged = true;
+            Disposer.RemoveAndDispose(ref Foreground);
             base.Dispose();
         }
     }

@@ -7,9 +7,9 @@
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"
         Title="MainWindow" Background="Black" Width="600" Height="600">
-    <Grid Height="500" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid>
         <hx:Viewport3DX EnableSwapChainRendering="True" Camera="{Binding Camera}" EffectsManager="{Binding EffectsManager}">
-            <!--<hx:DirectionalLight3D
+            <hx:DirectionalLight3D
                 Direction="{Binding VM3D.Light1Direction}"
                 Color="{Binding VM3D.Light1Color}" />
             <hx:DirectionalLight3D
@@ -18,10 +18,12 @@
             <hx:DirectionalLight3D
                 Direction="{Binding VM3D.Light3Direction}"
                 Color="{Binding VM3D.Light3Color}" />
-            <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>-->
+            <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>
             <hx:Viewport3DX.Items2D>
                 <hx:GroupElement2D>
                     <hx:TextModel2D Left="200" Top="100" Width="100" Height="20" Text="{Binding VM2D.Text}" Transform="{Binding VM2D.TextTransform}"/>
+                    <hx:RectangleModel2D Left="100" Top="200" Width="50" Height="100" Fill="#A6F0F8FF" Stroke="Yellow" Transform="{Binding VM2D.TextTransform}"/>
+                    <hx:EllipseModel2D Left="300" Top="200" Width="100" Height="50" Fill="#A6EE82EE" Stroke="Red" Transform="{Binding VM2D.TextTransform}"/>
                 </hx:GroupElement2D>
             </hx:Viewport3DX.Items2D>
         </hx:Viewport3DX>
