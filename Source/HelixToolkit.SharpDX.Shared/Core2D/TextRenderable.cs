@@ -5,6 +5,8 @@ using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX;
 using HelixToolkit.Wpf.SharpDX;
+using Media = System.Windows.Media;
+using HelixToolkit.Wpf.SharpDX.Extensions;
 
 namespace HelixToolkit.SharpDX.Core2D
 {
@@ -12,22 +14,28 @@ namespace HelixToolkit.SharpDX.Core2D
     {
         public string Text { set; get; } = "Text";
 
-        private D2D.Brush brush = null;
-        public D2D.Brush Brush
+        private Media.Brush foreground;
+        public Media.Brush Foreground
         {
             set
             {
-                brush = value;
+                if(foreground != value)
+                {
+                    foreground = value;
+                    foregroundChanged = true;
+                    Disposer.RemoveAndDispose(ref foregroundBrush);
+                }                
             }
             get
             {
-                return brush;
+                return foreground;
             }
         }
 
-        public string Font { set; get; } = "Arial";
+        private bool foregroundChanged = true;
+        private D2D.Brush foregroundBrush = null;
 
-        public Color Foreground { set; get; } = Color.Black;
+        public string Font { set; get; } = "Arial";
 
         public int FontSize { set; get; } = 12;
 
@@ -41,26 +49,32 @@ namespace HelixToolkit.SharpDX.Core2D
 
         protected override void OnTargetChanged(D2D.RenderTarget target)
         {
+            Disposer.RemoveAndDispose(ref foregroundBrush);
+            foregroundChanged = true;
             base.OnTargetChanged(target);
-            Disposer.RemoveAndDispose(ref brush);
-            if(target ==null || target.IsDisposed)
-            {
-                return;
-            }
-            Brush = new D2D.SolidColorBrush(target, Foreground);
         }
 
+        protected override bool CanRender(D2D.RenderTarget target)
+        {
+            return base.CanRender(target) && Foreground != null;
+        }
 
         protected override void OnRender(IRenderMatrices matrices)
         {
+            if (foregroundChanged)
+            {
+                foregroundBrush = Foreground.ToD2DBrush(RenderTarget);
+                foregroundChanged = false;
+            }
             RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight, FontStyle, FontSize), 
-               LocalDrawingRect, Brush, DrawingOptions);
+               LocalDrawingRect, foregroundBrush, DrawingOptions);
         }
 
         public override void Dispose()
         {
+            Disposer.RemoveAndDispose(ref foregroundBrush);
+            foregroundChanged = true;
             base.Dispose();
-            Disposer.RemoveAndDispose(ref brush);           
         }
     }
 }

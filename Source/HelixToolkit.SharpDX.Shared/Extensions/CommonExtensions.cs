@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using D2D = SharpDX.Direct2D1;
+using Media = System.Windows.Media;
 using System.Windows;
+using System.Linq;
 
 namespace HelixToolkit.Wpf.SharpDX.Extensions
 {
@@ -96,6 +97,73 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             else
             {
                 throw new ArgumentException("FontStyle not found.");
+            }
+        }
+
+        public static D2D.ExtendMode ToD2DExtendMode(this Media.GradientSpreadMethod mode)
+        {
+            switch (mode)
+            {
+                case Media.GradientSpreadMethod.Pad:
+                    return D2D.ExtendMode.Clamp;
+                case Media.GradientSpreadMethod.Reflect:
+                    return D2D.ExtendMode.Mirror;
+                case Media.GradientSpreadMethod.Repeat:
+                    return D2D.ExtendMode.Wrap;
+                default:
+                    throw new ArgumentException("GradientSpreadMethod cannot convert to Direct2D ExtendMode");
+            }
+        }
+
+        public static D2D.Gamma ToD2DColorInterpolationMode(this Media.ColorInterpolationMode mode)
+        {
+            switch (mode)
+            {
+                case Media.ColorInterpolationMode.ScRgbLinearInterpolation:
+                    return D2D.Gamma.Linear;
+                case Media.ColorInterpolationMode.SRgbLinearInterpolation:
+                    return D2D.Gamma.StandardRgb;
+                default:
+                    throw new ArgumentException("ColorInterpolationMode cannot convert to Direct2D Gama");
+            }
+        }
+
+        public static D2D.Brush ToD2DBrush(this Media.Brush brush, global::SharpDX.Direct2D1.RenderTarget target)
+        {
+            if(brush is Media.SolidColorBrush)
+            {
+                return new global::SharpDX.Direct2D1.SolidColorBrush(target, (brush as Media.SolidColorBrush).Color.ToColor4());
+            }
+            else if(brush is Media.LinearGradientBrush)
+            {
+                var b = brush as Media.LinearGradientBrush;
+                return new D2D.LinearGradientBrush(target,
+                    new D2D.LinearGradientBrushProperties() { StartPoint = b.StartPoint.ToVector2(), EndPoint = b.EndPoint.ToVector2() },
+                    new D2D.GradientStopCollection
+                    (
+                        target,
+                        b.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToColor4(), Position = (float)x.Offset }).ToArray(),
+                        b.ColorInterpolationMode.ToD2DColorInterpolationMode(),
+                        b.SpreadMethod.ToD2DExtendMode()
+                    )
+                    );
+            }
+            else if(brush is Media.RadialGradientBrush)
+            {
+                var b = brush as Media.RadialGradientBrush;
+                return new D2D.RadialGradientBrush(target,
+                    new D2D.RadialGradientBrushProperties() { Center = b.Center.ToVector2(), GradientOriginOffset = b.GradientOrigin.ToVector2(), RadiusX = (float)b.RadiusX, RadiusY = (float)b.RadiusY },
+                    new D2D.GradientStopCollection
+                    (
+                        target,
+                        b.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToColor4(), Position = (float)x.Offset }).ToArray(),
+                        b.ColorInterpolationMode.ToD2DColorInterpolationMode(),
+                        b.SpreadMethod.ToD2DExtendMode()
+                    ));
+            }
+            else
+            {
+                throw new NotImplementedException("Brush does not support yet.");
             }
         }
     }

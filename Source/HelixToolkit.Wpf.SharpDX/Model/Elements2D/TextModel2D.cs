@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HelixToolkit.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
+using System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -31,6 +32,28 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (string)GetValue(TextProperty);
+            }
+        }
+
+
+        public static readonly DependencyProperty ForegroundProperty
+            = DependencyProperty.Register("Foreground", typeof(string), typeof(TextModel2D),
+                new AffectsRenderPropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
+                {
+                    var model = (d as TextModel2D);
+                    if (model.textRenderable == null) { return; }
+                    model.textRenderable.Foreground = e.NewValue == null ? null : (Brush)e.NewValue;
+                }));
+
+        public Brush Foreground
+        {
+            set
+            {
+                SetValue(ForegroundProperty, value);
+            }
+            get
+            {
+                return (Brush)GetValue(ForegroundProperty);
             }
         }
 
@@ -119,6 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private TextRenderable textRenderable;
+        private bool foregroundChanged = true;
 
         protected override IRenderable2D CreateRenderCore(IRenderHost host)
         {
