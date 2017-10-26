@@ -24,11 +24,13 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             {
                 previousChild.MouseDown -= OnMouseDown;
                 previousChild.MouseWheel -= OnMouseWheel;
+                previousChild.MouseUp -= OnMouseUp;
             }
             if (Child != null)
             {
                 Child.MouseDown += OnMouseDown;
                 Child.MouseWheel += OnMouseWheel;
+                Child.MouseUp += OnMouseUp;
             }
         }
 
@@ -62,7 +64,27 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 Source = this,
             });
         }
-
+        private void OnMouseUp(object sender, System.Windows.Forms.MouseEventArgs mouseEventArgs)
+        {
+            MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
+            if (!wpfButton.HasValue)
+                return;
+            if (ParentControl != null)
+            {
+                Mouse.Capture(ParentControl, CaptureMode.Element);
+                ParentControl.ReleaseMouseCapture();
+            }
+            else
+            {
+                this.CaptureMouse();
+                this.ReleaseMouseCapture();
+            }
+            ParentControl.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, wpfButton.Value)
+            {
+                RoutedEvent = Mouse.MouseUpEvent,
+                Source = this,
+            });
+        }
         private MouseButton? ConvertToWpf(MouseButtons winformButton)
         {
             switch (winformButton)
