@@ -113,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
             {
-                if (itemsSourceInternal is ObservableElement3DCollection)
+                if (itemsSourceInternal is INotifyCollectionChanged)
                 {
                     (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
                 }
