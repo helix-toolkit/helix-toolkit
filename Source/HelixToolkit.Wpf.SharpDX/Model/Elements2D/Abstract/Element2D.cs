@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable, IGUID
     {

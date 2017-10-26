@@ -9,7 +9,7 @@ using System.Windows.Media;
 using D2D = global::SharpDX.Direct2D1;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public abstract class ShapeModel2D : Model2D
     {

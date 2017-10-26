@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:D2DScreenMenuExample"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:hx2D ="clr-namespace:HelixToolkit.Wpf.SharpDX.Elements2D;assembly=HelixToolkit.Wpf.SharpDX"
         mc:Ignorable="d"
         Title="MainWindow" Background="Black" Width="600" Height="600">
     <Grid>
@@ -20,11 +21,11 @@
                 Color="{Binding VM3D.Light3Color}" />
             <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>
             <hx:Viewport3DX.Items2D>
-                <hx:GroupElement2D>
-                    <hx:TextModel2D Left="200" Top="100" Width="100" Height="20" Text="{Binding VM2D.Text}" Transform="{Binding VM2D.TextTransform}"/>
-                    <hx:RectangleModel2D Left="100" Top="200" Width="50" Height="100" Fill="#A6F0F8FF" Stroke="Yellow" Transform="{Binding VM2D.TextTransform}"/>
-                    <hx:EllipseModel2D Left="300" Top="200" Width="100" Height="50" Fill="#A6EE82EE" Stroke="Red" Transform="{Binding VM2D.TextTransform}"/>
-                </hx:GroupElement2D>
+                <hx2D:GroupElement2D>
+                    <hx2D:TextModel2D Left="200" Top="100" Width="100" Height="20" Text="{Binding VM2D.Text}" Transform="{Binding VM2D.TextTransform}"/>
+                    <hx2D:RectangleModel2D Left="100" Top="200" Width="50" Height="100" Fill="#A6F0F8FF" Stroke="Yellow" Transform="{Binding VM2D.TextTransform}"/>
+                    <hx2D:EllipseModel2D Left="300" Top="200" Width="100" Height="50" Fill="#A6EE82EE" Stroke="Red" Transform="{Binding VM2D.TextTransform}"/>
+                </hx2D:GroupElement2D>
             </hx:Viewport3DX.Items2D>
         </hx:Viewport3DX>
     </Grid>

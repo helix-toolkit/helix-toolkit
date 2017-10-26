@@ -7,7 +7,7 @@ using HelixToolkit.SharpDX.Core2D;
 using System.Windows;
 using D2D = global::SharpDX.Direct2D1;
 
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public class EllipseModel2D : ShapeModel2D
     {

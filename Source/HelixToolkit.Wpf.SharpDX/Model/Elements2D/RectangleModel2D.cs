@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HelixToolkit.SharpDX.Core2D;
 
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public class RectangleModel2D : ShapeModel2D
     {

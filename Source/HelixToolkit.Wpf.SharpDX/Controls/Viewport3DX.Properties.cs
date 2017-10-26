@@ -20,6 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Color4 = global::SharpDX.Color4;
     using System.Collections.ObjectModel;
+    using Elements2D;
 
     /// <summary>
     /// Provides the dependency properties for Viewport3DX.

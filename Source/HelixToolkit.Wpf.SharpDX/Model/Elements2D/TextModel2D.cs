@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Media;
 using D2D = SharpDX.Direct2D1;
 
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public class TextModel2D : Model2D
     {

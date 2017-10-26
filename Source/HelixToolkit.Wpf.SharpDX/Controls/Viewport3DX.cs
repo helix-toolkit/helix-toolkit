@@ -28,6 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using MouseButtons = System.Windows.Forms.MouseButtons;
     using System.Collections;
     using System.Collections.Generic;
+    using Elements2D;
 
     /// <summary>
     /// Provides a Viewport control.
