@@ -782,7 +782,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
-                        SetDefaultRenderTargets(false);
                     }
                     catch (Exception ex)
                     {
@@ -799,8 +798,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
+                    ClearRenderTarget();
                 }
-                ClearRenderTarget();
+                else
+                {
+                    SetDefaultRenderTargets(true);
+                }
                 if (RenderTechnique == deferred)
                 {
                     // set G-Buffer                    
