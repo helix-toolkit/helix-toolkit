@@ -1768,7 +1768,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (Items2D.HitTest(pt.ToVector2(), out hit2D))
                 {
                     hit2D.ModelHit.RaiseEvent(new MouseMove2DEventArgs(hit2D.ModelHit, hit2D, pt, this));
-                    Debug.WriteLine("Mouse move 2D");
                     return;
                 }
             }
