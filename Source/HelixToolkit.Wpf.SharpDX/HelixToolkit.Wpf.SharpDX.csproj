@@ -192,7 +192,7 @@
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
     <Compile Include="Model\Elements2D\EllipseModel2D.cs" />
-    <Compile Include="Model\Elements2D\ITransformable2D.cs" />
+    <Compile Include="Model\Elements2D\Interfaces.cs" />
     <Compile Include="Model\Elements2D\Abstract\Model2D.cs" />
     <Compile Include="Model\Elements2D\RectangleModel2D.cs" />
     <Compile Include="Model\Elements2D\TextModel2D.cs" />

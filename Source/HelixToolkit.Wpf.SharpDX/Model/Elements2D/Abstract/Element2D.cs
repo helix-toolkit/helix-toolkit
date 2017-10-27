@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable, IGUID
+    public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable, IGUID, IHitable2D
     {
         /// <summary>
         /// Indicates, if this element should be rendered,
@@ -152,6 +153,44 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
 
+        #region Events
+        public static readonly RoutedEvent MouseDown2DEvent =
+            EventManager.RegisterRoutedEvent("MouseDown2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+
+        public static readonly RoutedEvent MouseUp2DEvent =
+            EventManager.RegisterRoutedEvent("MouseUp2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+
+        public static readonly RoutedEvent MouseMove2DEvent =
+            EventManager.RegisterRoutedEvent("MouseMove2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseDown2D
+        {
+            add { AddHandler(MouseDown2DEvent, value); }
+            remove { RemoveHandler(MouseDown2DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseUp2D
+        {
+            add { AddHandler(MouseUp2DEvent, value); }
+            remove { RemoveHandler(MouseUp2DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseMove2D
+        {
+            add { AddHandler(MouseMove2DEvent, value); }
+            remove { RemoveHandler(MouseMove2DEvent, value); }
+        }
+        #endregion
+
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
@@ -256,6 +295,20 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             renderCore.Rect = this.Bound;
         }
 
+        public bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
+        {      
+            if (!IsHitTestVisible || !IsAttached)
+            {
+                hitResult = null;
+                return false;
+            }
+            return OnHitTest(ref mousePoint, out hitResult);
+        }
+
+        protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult);
+
+        
+
         /// <summary>
         /// Tries to invalidate the current render.
         /// </summary>
@@ -290,6 +343,43 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 && (fmetadata is IAffectsRender
                 || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
                 ));
-        }              
+        }
+
+
+    }
+
+    public abstract class Mouse2DEventArgs : RoutedEventArgs
+    {
+        public HitTest2DResult HitTest2DResult { get; private set; }
+        public Viewport3DX Viewport { get; private set; }
+        public System.Windows.Point Position { get; private set; }
+
+        public Mouse2DEventArgs(RoutedEvent routedEvent, object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
+            : base(routedEvent, source)
+        {
+            this.HitTest2DResult = hitTestResult;
+            this.Position = position;
+            this.Viewport = viewport;
+        }
+    }
+    public class MouseMove2DEventArgs : Mouse2DEventArgs
+    {
+        public MouseMove2DEventArgs(object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
+        : base(Element2D.MouseMove2DEvent, source, hitTestResult, position, viewport)
+        { }
+    }
+
+    public class MouseDown2DEventArgs : Mouse2DEventArgs
+    {
+        public MouseDown2DEventArgs(object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
+        : base(Element2D.MouseMove2DEvent, source, hitTestResult, position, viewport)
+        { }
+    }
+
+    public class MouseUp2DEventArgs : Mouse2DEventArgs
+    {
+        public MouseUp2DEventArgs(object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
+        : base(Element2D.MouseMove2DEvent, source, hitTestResult, position, viewport)
+        { }
     }
 }

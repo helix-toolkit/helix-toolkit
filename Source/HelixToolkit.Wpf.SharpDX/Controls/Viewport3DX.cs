@@ -151,6 +151,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private HitTestResult currentHit;
 
         /// <summary>
+        /// Current 2D model hit
+        /// </summary>
+        private HitTest2DResult currentHit2D;
+
+        /// <summary>
         /// The "control has been loaded before" flag.
         /// </summary>
         private bool hasBeenLoadedBefore;
@@ -595,6 +600,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     hostPresenter.Content = new DPFCanvas();
                 }
             }
+
 #else
             hostPresenter.Content = new DPFCanvas();
 #endif
@@ -1709,6 +1715,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (Items2D != null)
+            {
+                if (Items2D.HitTest(pt.ToVector2(), out currentHit2D))
+                {
+                    currentHit2D.ModelHit.RaiseEvent(new MouseDown2DEventArgs(currentHit2D.ModelHit, currentHit2D, pt, this));
+                    return;
+                }
+            }
             if (!EnableMouseButtonHitTest)
             {
                 return;
@@ -1748,6 +1762,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (Items2D != null)
+            {
+                HitTest2DResult hit2D;
+                if (Items2D.HitTest(pt.ToVector2(), out hit2D))
+                {
+                    hit2D.ModelHit.RaiseEvent(new MouseMove2DEventArgs(hit2D.ModelHit, hit2D, pt, this));
+                    Debug.WriteLine("Mouse move 2D");
+                    return;
+                }
+            }
             if (this.currentHit != null)
             {
                 this.currentHit.ModelHit.RaiseEvent(
@@ -1769,6 +1793,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (currentHit2D != null)
+            {
+                currentHit2D.ModelHit.RaiseEvent(new MouseUp2DEventArgs(currentHit2D.ModelHit, currentHit2D, pt, this));
+                currentHit2D = null;
+            }
+
             if (this.currentHit != null)
             {
                 Mouse.Capture(this, CaptureMode.None);

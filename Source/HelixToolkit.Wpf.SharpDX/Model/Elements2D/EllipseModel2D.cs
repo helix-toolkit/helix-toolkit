@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HelixToolkit.SharpDX.Core2D;
 using System.Windows;
 using D2D = global::SharpDX.Direct2D1;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {

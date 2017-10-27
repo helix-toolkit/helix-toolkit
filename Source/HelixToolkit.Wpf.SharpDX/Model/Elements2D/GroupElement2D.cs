@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using System.Collections;
     using HelixToolkit.SharpDX.Core2D;
     using System;
+    using SharpDX;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 
@@ -159,6 +160,19 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override void OnRenderTargetChanged(global::SharpDX.Direct2D1.RenderTarget newTarget)
         {
             
+        }
+
+        protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            hitResult = null;
+            foreach (var item in Items.Reverse())
+            {
+                if (item.HitTest(mousePoint, out hitResult))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
