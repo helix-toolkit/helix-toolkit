@@ -142,12 +142,10 @@
     </Compile>
     <Compile Include="Controls\CameraController.cs" />
     <Compile Include="Controls\DeferredRenderer.cs" />
-    <Compile Include="Controls\Disposer.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
     <Compile Include="Controls\DPFCanvasThreading.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChainThreading.cs" />
-    <Compile Include="Controls\IRenderMatrices.cs" />
     <Compile Include="Controls\MultiViewports\IModelContainer.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">
@@ -192,6 +190,14 @@
     <Compile Include="Controls\ViewportCommands.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
+    <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
+    <Compile Include="Model\Elements2D\EllipseModel2D.cs" />
+    <Compile Include="Model\Elements2D\Interfaces.cs" />
+    <Compile Include="Model\Elements2D\Abstract\Model2D.cs" />
+    <Compile Include="Model\Elements2D\RectangleModel2D.cs" />
+    <Compile Include="Model\Elements2D\TextModel2D.cs" />
+    <Compile Include="Model\Elements2D\Abstract\Element2D.cs" />
+    <Compile Include="Model\Elements2D\GroupElement2D.cs" />
     <Compile Include="Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\InstanceGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />

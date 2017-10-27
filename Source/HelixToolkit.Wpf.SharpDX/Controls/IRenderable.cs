@@ -27,6 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX
         void Detach();
         //void Update(TimeSpan timeSpan);
         void Render(RenderContext context);
+
+        void RenderD2D(RenderContext context);
        
         bool IsShadowMappingEnabled { get; }
         RenderTechnique RenderTechnique { get; }
@@ -36,5 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
         DeferredRenderer DeferredRenderer { get; set; }
 
         IEnumerable<IRenderable> Renderables { get; }
+
+        IEnumerable<IRenderable> D2DRenderables { get; }
     }
 }
