@@ -11,6 +11,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
 using System.Threading;
+using HelixToolkit.SharpDX.Core2D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -259,6 +260,14 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return CurrentRenderHost != null ? CurrentRenderHost.DepthStencilBufferView : null;
+            }
+        }
+
+        public D2DControlWrapper D2DControls
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.D2DControls : null;
             }
         }
 

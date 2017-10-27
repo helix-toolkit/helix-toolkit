@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
     using Model.Lights3D;
+    using HelixToolkit.SharpDX.Core2D;
 
 #if MSAA
     public enum MSAALevel
@@ -88,5 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         RenderTargetView ColorBufferView { get; }
         DepthStencilView DepthStencilBufferView { get; }
+
+        D2DControlWrapper D2DControls { get; }
     }
 }

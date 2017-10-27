@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections;
     using System.Collections.Generic;
     using Controls;
+    using Elements2D;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -151,6 +152,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private HitTestResult currentHit;
 
         /// <summary>
+        /// Current 2D model hit
+        /// </summary>
+        private HitTest2DResult currentHit2D;
+
+        /// <summary>
         /// The "control has been loaded before" flag.
         /// </summary>
         private bool hasBeenLoadedBefore;
@@ -230,6 +236,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public IEnumerable<IRenderable> D2DRenderables
+        {
+            get
+            {
+                if (renderHostInternal != null && Items2D != null)
+                {
+                    foreach(IRenderable item in Items2D.Items)
+                    {
+                        yield return item;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -244,6 +264,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
+            Items2D = new GroupElement2D();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
@@ -581,6 +602,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     hostPresenter.Content = new DPFCanvas();
                 }
             }
+
 #else
             hostPresenter.Content = new DPFCanvas();
 #endif
@@ -858,6 +880,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SharedModelContainer.Attach(host);
             }
+            if (this.Items2D != null)
+            {
+                this.Items2D.Attach(host);
+            }
             StopWatch.Start();
         }
 
@@ -874,6 +900,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SharedModelContainer.Detach();
             }
+            if (this.Items2D != null)
+            {
+                this.Items2D.Detach();
+            }
         }
 
         /// <summary>
@@ -885,6 +915,14 @@ namespace HelixToolkit.Wpf.SharpDX
             context.Camera = this.Camera;
             context.worldMatrix = this.worldMatrixInternal;   
             foreach (IRenderable e in this.Renderables)
+            {
+                e.Render(context);
+            }
+        }
+
+        void IRenderer.RenderD2D(RenderContext context)
+        {
+            foreach (IRenderable e in this.D2DRenderables)
             {
                 e.Render(context);
             }
@@ -1688,6 +1726,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (Items2D != null)
+            {
+                if (Items2D.HitTest(pt.ToVector2(), out currentHit2D))
+                {
+                    currentHit2D.ModelHit.RaiseEvent(new MouseDown2DEventArgs(currentHit2D.ModelHit, currentHit2D, pt, this));
+                    return;
+                }
+            }
             if (!EnableMouseButtonHitTest)
             {
                 return;
@@ -1727,6 +1773,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (Items2D != null)
+            {
+                HitTest2DResult hit2D;
+                if (Items2D.HitTest(pt.ToVector2(), out hit2D))
+                {
+                    hit2D.ModelHit.RaiseEvent(new MouseMove2DEventArgs(hit2D.ModelHit, hit2D, pt, this));
+                    return;
+                }
+            }
             if (this.currentHit != null)
             {
                 this.currentHit.ModelHit.RaiseEvent(
@@ -1748,6 +1803,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            if (currentHit2D != null)
+            {
+                currentHit2D.ModelHit.RaiseEvent(new MouseUp2DEventArgs(currentHit2D.ModelHit, currentHit2D, pt, this));
+                currentHit2D = null;
+            }
+
             if (this.currentHit != null)
             {
                 Mouse.Capture(this, CaptureMode.None);

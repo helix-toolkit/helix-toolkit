@@ -85,4 +85,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public double LineHitPointScalar { get; set; }
     }
+
+    public class HitTest2DResult
+    {
+        public Elements2D.Element2D ModelHit { private set; get; }
+
+        public HitTest2DResult(Elements2D.Element2D model)
+        {
+            ModelHit = model;
+        }
+    }
 }
