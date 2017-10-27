@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color4 = global::SharpDX.Color4;
+    using Controls;
 
     /// <summary>
     /// Provides the dependency properties for Viewport3DX.
@@ -65,6 +66,11 @@ namespace HelixToolkit.Wpf.SharpDX
             remove { this.RemoveHandler(GeometryModel3D.MouseMove3DEvent, value); }
         }
 
+        public event WinformHostExtend.FormMouseMoveEventHandler FormMouseMove
+        {
+            add { this.AddHandler(WinformHostExtend.FormMouseMoveEvent, value); }
+            remove { this.RemoveHandler(WinformHostExtend.FormMouseMoveEvent, value); }
+        }
         /// <summary>
         /// The camera inertia factor property.
         /// </summary>

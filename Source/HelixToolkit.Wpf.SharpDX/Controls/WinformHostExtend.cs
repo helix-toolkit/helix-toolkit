@@ -12,6 +12,16 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 {
     public class WinformHostExtend : WindowsFormsHost
     {
+        public delegate void FormMouseMoveEventHandler(object sender, FormMouseMoveEventArgs e);
+        public static readonly RoutedEvent FormMouseMoveEvent =
+            EventManager.RegisterRoutedEvent("FormMouseMove", RoutingStrategy.Bubble, typeof(FormMouseMoveEventHandler), typeof(WinformHostExtend));
+
+        public event FormMouseMoveEventHandler FormMouseMove
+        {
+            add { this.AddHandler(FormMouseMoveEvent, value); }
+            remove { this.RemoveHandler(FormMouseMoveEvent, value); }
+        }
+
         protected UIElement ParentControl { set; get; }
         public WinformHostExtend()
         {
@@ -27,8 +37,6 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 previousChild.MouseWheel -= OnMouseWheel;
                 previousChild.MouseMove -= OnMouseMove;
                 previousChild.MouseUp -= OnMouseUp;
-                previousChild.MouseEnter -= OnMouseEnter;
-                previousChild.MouseLeave -= OnMouseLeave;
             }
             if (Child != null)
             {
@@ -36,42 +44,12 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 Child.MouseWheel += OnMouseWheel;
                 Child.MouseMove += OnMouseMove;
                 Child.MouseUp += OnMouseUp;
-                Child.MouseEnter += OnMouseEnter;
-                Child.MouseLeave += OnMouseLeave;
             }
         }
 
-        private void OnMouseLeave(object sender, EventArgs e)
-        {
-            Capture();
-            RaiseEvent(new System.Windows.Input.MouseEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond)
-            {
-                RoutedEvent = Mouse.MouseLeaveEvent,
-                Source = this,
-            });
-        }
-
-        private void OnMouseEnter(object sender, EventArgs e)
-        {
-            Capture();
-            RaiseEvent(new System.Windows.Input.MouseEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond)
-            {
-                RoutedEvent = Mouse.MouseEnterEvent,
-                Source = this,
-            });
-        }
-
-        private System.Drawing.Point prevP;
         private void OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if(prevP == e.Location) { return; }
-            prevP = e.Location;
-            Capture();
-            RaiseEvent(new System.Windows.Input.MouseEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond)
-            {
-                RoutedEvent = Mouse.MouseMoveEvent,
-                Source = this,
-            });
+            RaiseEvent(new FormMouseMoveEventArgs(FormMouseMoveEvent, new Point(e.Location.X, e.Location.Y), e.X, e.Y, e.Delta) { Source = this });
         }
 
         private void OnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -136,6 +114,49 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                     return MouseButton.XButton2;
                 default:
                     throw new ArgumentOutOfRangeException("winformButton");
+            }
+        }
+
+        public class FormMouseMoveEventArgs : RoutedEventArgs
+        {
+            //
+            // Summary:
+            //     Gets a signed count of the number of detents the mouse wheel has rotated, multiplied
+            //     by the WHEEL_DELTA constant. A detent is one notch of the mouse wheel.
+            //
+            // Returns:
+            //     A signed count of the number of detents the mouse wheel has rotated, multiplied
+            //     by the WHEEL_DELTA constant.
+            public int Delta { get; private set; }
+            //
+            // Summary:
+            //     Gets the location of the mouse during the generating mouse event.
+            //
+            // Returns:
+            //     A System.Drawing.Point that contains the x- and y- mouse coordinates, in pixels,
+            //     relative to the upper-left corner of the form.
+            public Point Location { get; private set; }
+            //
+            // Summary:
+            //     Gets the x-coordinate of the mouse during the generating mouse event.
+            //
+            // Returns:
+            //     The x-coordinate of the mouse, in pixels.
+            public int X { get; private set; }
+            //
+            // Summary:
+            //     Gets the y-coordinate of the mouse during the generating mouse event.
+            //
+            // Returns:
+            //     The y-coordinate of the mouse, in pixels.
+            public int Y { get; private set; }
+            public FormMouseMoveEventArgs(RoutedEvent routedEvent, Point p, int x, int y, int delta)
+                :base(routedEvent)
+            {
+                Location = p;
+                X = x;
+                Y = y;
+                Delta = delta;
             }
         }
     }
