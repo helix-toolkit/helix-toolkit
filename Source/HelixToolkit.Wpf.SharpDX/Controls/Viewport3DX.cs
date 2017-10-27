@@ -1067,7 +1067,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.touchDownDevice == null)
             {            
                 var pt = e.Location;
-                Debug.WriteLine("Viewport3DX_FormMouseMove " + pt);
                 this.MouseMoveHitTest(pt);
                 this.UpdateCurrentPosition(pt);
             }
