@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -24,19 +25,58 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             {
                 previousChild.MouseDown -= OnMouseDown;
                 previousChild.MouseWheel -= OnMouseWheel;
+                previousChild.MouseMove -= OnMouseMove;
                 previousChild.MouseUp -= OnMouseUp;
+                previousChild.MouseEnter -= OnMouseEnter;
+                previousChild.MouseLeave -= OnMouseLeave;
             }
             if (Child != null)
             {
                 Child.MouseDown += OnMouseDown;
                 Child.MouseWheel += OnMouseWheel;
+                Child.MouseMove += OnMouseMove;
                 Child.MouseUp += OnMouseUp;
+                Child.MouseEnter += OnMouseEnter;
+                Child.MouseLeave += OnMouseLeave;
             }
+        }
+
+        private void OnMouseLeave(object sender, EventArgs e)
+        {
+            Capture();
+            RaiseEvent(new System.Windows.Input.MouseEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond)
+            {
+                RoutedEvent = Mouse.MouseLeaveEvent,
+                Source = this,
+            });
+        }
+
+        private void OnMouseEnter(object sender, EventArgs e)
+        {
+            Capture();
+            RaiseEvent(new System.Windows.Input.MouseEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond)
+            {
+                RoutedEvent = Mouse.MouseEnterEvent,
+                Source = this,
+            });
+        }
+
+        private System.Drawing.Point prevP;
+        private void OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if(prevP == e.Location) { return; }
+            prevP = e.Location;
+            Capture();
+            RaiseEvent(new System.Windows.Input.MouseEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond)
+            {
+                RoutedEvent = Mouse.MouseMoveEvent,
+                Source = this,
+            });
         }
 
         private void OnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            RaiseEvent(new MouseWheelEventArgs(Mouse.PrimaryDevice, 0, e.Delta)
+            RaiseEvent(new MouseWheelEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond, e.Delta)
             {
                 RoutedEvent = Mouse.MouseWheelEvent,
                 Source = this,
@@ -48,17 +88,8 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
             if (!wpfButton.HasValue)
                 return;
-            if (ParentControl != null)
-            {
-                Mouse.Capture(ParentControl, CaptureMode.Element);
-                ParentControl.ReleaseMouseCapture();
-            }
-            else
-            {
-                this.CaptureMouse();
-                this.ReleaseMouseCapture();
-            }
-            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, wpfButton.Value)
+            Capture();
+            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond, wpfButton.Value)
             {
                 RoutedEvent = Mouse.MouseDownEvent,
                 Source = this,
@@ -69,22 +100,24 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
             if (!wpfButton.HasValue)
                 return;
-            if (ParentControl != null)
-            {
-                Mouse.Capture(ParentControl, CaptureMode.Element);
-                ParentControl.ReleaseMouseCapture();
-            }
-            else
-            {
-                this.CaptureMouse();
-                this.ReleaseMouseCapture();
-            }
-            ParentControl.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, wpfButton.Value)
+            Capture();
+            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond, wpfButton.Value)
             {
                 RoutedEvent = Mouse.MouseUpEvent,
                 Source = this,
             });
         }
+
+        /// <summary>
+        /// Has to do this, otherwise the mouse point is wrong in mouse event.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void Capture()
+        {
+            this.CaptureMouse();
+            this.ReleaseMouseCapture();
+        }
+
         private MouseButton? ConvertToWpf(MouseButtons winformButton)
         {
             switch (winformButton)
