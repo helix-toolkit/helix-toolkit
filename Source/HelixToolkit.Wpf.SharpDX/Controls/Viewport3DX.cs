@@ -28,6 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using MouseButtons = System.Windows.Forms.MouseButtons;
     using System.Collections;
     using System.Collections.Generic;
+    using Controls;
     using Elements2D;
 
     /// <summary>
@@ -305,6 +306,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.Loaded += this.ControlLoaded;
             this.Unloaded += this.ControlUnloaded;
+            FormMouseMove += Viewport3DX_FormMouseMove;
         }
 
         /// <summary>
@@ -1060,6 +1062,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private void Viewport3DX_FormMouseMove(object sender, WinformHostExtend.FormMouseMoveEventArgs e)
+        {
+            if (this.touchDownDevice == null)
+            {            
+                var pt = e.Location;
+                Debug.WriteLine("Viewport3DX_FormMouseMove " + pt);
+                this.MouseMoveHitTest(pt);
+                this.UpdateCurrentPosition(pt);
+            }
+        }
         /// <inheritdoc/>
         protected override void OnPreviewTouchMove(TouchEventArgs e)
         {
