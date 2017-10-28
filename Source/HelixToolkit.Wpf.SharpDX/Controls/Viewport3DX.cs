@@ -156,6 +156,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private HitTest2DResult currentHit2D;
 
+        private Element2D mouseOverModel2D;
+        public Element2D MouseOverModel2D
+        {
+            private set
+            {
+                if(mouseOverModel2D == value) { return; }
+                mouseOverModel2D?.RaiseEvent(new MouseLeave2DEventArgs(mouseOverModel2D, this));
+                mouseOverModel2D = value;
+                mouseOverModel2D?.RaiseEvent(new MouseEnter2DEventArgs(mouseOverModel2D, this));
+            }
+            get { return mouseOverModel2D; }
+        }
+
         /// <summary>
         /// The "control has been loaded before" flag.
         /// </summary>
@@ -1778,8 +1791,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 HitTest2DResult hit2D;
                 if (Items2D.HitTest(pt.ToVector2(), out hit2D))
                 {
+                    MouseOverModel2D = hit2D.ModelHit;
                     hit2D.ModelHit.RaiseEvent(new MouseMove2DEventArgs(hit2D.ModelHit, hit2D, pt, this));
                     return;
+                }
+                else
+                {
+                    MouseOverModel2D = null;
                 }
             }
             if (this.currentHit != null)

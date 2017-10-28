@@ -79,22 +79,28 @@ namespace HelixToolkit.SharpDX.Core2D
             }
         }
 
-        private D2D.StrokeStyle borderStyle;
+        private D2D.StrokeStyle borderDotStyle;
+        private D2D.StrokeStyle borderLineStyle;
 #if DEBUG
         public bool ShowDrawingBorder { set; get; } = true;
 #else
         public bool ShowDrawingBorder { set; get; } = false;
 #endif
+
+        public bool IsMouseOver { set; get; } = false;
+
         protected virtual void OnTargetChanged(D2D.RenderTarget target)
         {
             Disposer.RemoveAndDispose(ref borderBrush);
-            Disposer.RemoveAndDispose(ref borderStyle);
+            Disposer.RemoveAndDispose(ref borderDotStyle);
+            Disposer.RemoveAndDispose(ref borderLineStyle);
             if (target == null || target.IsDisposed)
             {
                 return;
             }
             borderBrush = new D2D.SolidColorBrush(target, Color.LightBlue);
-            borderStyle =  new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot });
+            borderDotStyle =  new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot });
+            borderLineStyle = new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid });
         }
 
         public void Render(IRenderMatrices matrices, D2D.RenderTarget target)
@@ -106,12 +112,12 @@ namespace HelixToolkit.SharpDX.Core2D
                 if (ShowDrawingBorder && BorderBrush != null)
                 {
                     RenderTarget.Transform = Matrix3x2.Identity;
-                    RenderTarget.DrawRectangle(Rect, BorderBrush, 1f, borderStyle);
+                    RenderTarget.DrawRectangle(Rect, BorderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
                 }
                 RenderTarget.Transform = RenderTargetTransform;
                 if (ShowDrawingBorder && BorderBrush != null)
                 {
-                    RenderTarget.DrawRectangle(LocalDrawingRect, BorderBrush, 0.5f, borderStyle);
+                    RenderTarget.DrawRectangle(LocalDrawingRect, BorderBrush, 0.5f, borderDotStyle);
                 }
                 OnRender(matrices);
             }

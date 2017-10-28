@@ -13,5 +13,7 @@ namespace HelixToolkit.SharpDX.Core2D
         Matrix3x2 Transform { set; get; }
         bool IsRendering { set; get; }
         void Render(IRenderMatrices matrics, RenderTarget target);
+
+        bool IsMouseOver { set; get; }
     }
 }

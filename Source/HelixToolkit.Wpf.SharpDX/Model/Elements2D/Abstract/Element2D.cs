@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable, IGUID, IHitable2D
     {
+        #region Dependency Properties
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
@@ -110,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 return (double)GetValue(HeightProperty);
             }
         }
-
+        #endregion
         private readonly Guid guid = Guid.NewGuid();
 
         public Guid GUID { get { return guid; } }
@@ -153,6 +154,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
 
+        public new bool IsMouseOver { get { return renderCore == null ? false : renderCore.IsMouseOver; } }
+
         #region Events
         public static readonly RoutedEvent MouseDown2DEvent =
             EventManager.RegisterRoutedEvent("MouseDown2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
@@ -163,6 +166,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly RoutedEvent MouseMove2DEvent =
             EventManager.RegisterRoutedEvent("MouseMove2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
 
+        public static readonly RoutedEvent MouseEnter2DEvent =
+            EventManager.RegisterRoutedEvent("MouseEnter2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+
+        public static readonly RoutedEvent MouseLeave2DEvent =
+            EventManager.RegisterRoutedEvent("MouseLeave2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
         /// <summary>
         /// Provide CLR accessors for the event 
         /// </summary>
@@ -189,6 +197,18 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             add { AddHandler(MouseMove2DEvent, value); }
             remove { RemoveHandler(MouseMove2DEvent, value); }
         }
+
+        public event RoutedEventHandler MouseEnter2D
+        {
+            add { AddHandler(MouseEnter2DEvent, value); }
+            remove { RemoveHandler(MouseEnter2DEvent, value); }
+        }
+
+        public event RoutedEventHandler MouseLeave2D
+        {
+            add { AddHandler(MouseLeave2DEvent, value); }
+            remove { RemoveHandler(MouseLeave2DEvent, value); }
+        }
         #endregion
 
         /// <summary>
@@ -210,7 +230,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             IsAttached = OnAttach(host);
             if (IsAttached)
-            {               
+            {
+                this.MouseEnter2D += Element2D_MouseEnter2D;
+                this.MouseLeave2D += Element2D_MouseLeave2D;
                 OnAttached();
             }
             InvalidateRender();
@@ -223,6 +245,19 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
 
         }
+
+        protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
+        {
+            if (renderCore == null) { return; }
+            renderCore.IsMouseOver = false;
+        }
+
+        protected virtual void Element2D_MouseEnter2D(object sender, RoutedEventArgs e)
+        {
+            if (renderCore == null) { return; }
+            renderCore.IsMouseOver = true;
+        }
+
         /// <summary>
         /// To override Attach routine, please override this.
         /// </summary>
@@ -243,6 +278,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public void Detach()
         {
+            this.MouseEnter2D -= Element2D_MouseEnter2D;
+            this.MouseLeave2D -= Element2D_MouseLeave2D;
             OnDetach();
         }
 
@@ -361,6 +398,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             this.Position = position;
             this.Viewport = viewport;
         }
+        public Mouse2DEventArgs(RoutedEvent routedEvent, object source, Viewport3DX viewport = null)
+            : base(routedEvent, source)
+        {
+            this.Viewport = viewport;
+        }
     }
     public class MouseMove2DEventArgs : Mouse2DEventArgs
     {
@@ -380,6 +422,20 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         public MouseUp2DEventArgs(object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
         : base(Element2D.MouseMove2DEvent, source, hitTestResult, position, viewport)
+        { }
+    }
+
+    public class MouseEnter2DEventArgs : Mouse2DEventArgs
+    {
+        public MouseEnter2DEventArgs(object source, Viewport3DX viewport = null)
+        : base(Element2D.MouseEnter2DEvent, source, viewport)
+        { }
+    }
+
+    public class MouseLeave2DEventArgs : Mouse2DEventArgs
+    {
+        public MouseLeave2DEventArgs(object source, Viewport3DX viewport = null)
+        : base(Element2D.MouseLeave2DEvent, source, viewport)
         { }
     }
 }
