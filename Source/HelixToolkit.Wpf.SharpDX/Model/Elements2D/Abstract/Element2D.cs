@@ -2,6 +2,7 @@
 using SharpDX;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,20 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 return (bool)GetValue(IsHitTestVisibleProperty);
             }
+        }
+
+        public new static readonly DependencyProperty IsMouseOverProperty =
+            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D), new AffectsRenderPropertyMetadata(false, (d, e) =>
+            {
+                var model = d as Element2D;
+                if(model.renderCore == null) { return; }
+                model.renderCore.IsMouseOver = (bool)e.NewValue;
+            }));
+
+        public new bool IsMouseOver
+        {
+            get { return (bool)GetValue(IsMouseOverProperty); }
+            private set { SetValue(IsMouseOverProperty, value); }
         }
 
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(double), typeof(Element2D),
@@ -154,8 +169,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
 
-        public new bool IsMouseOver { get { return renderCore == null ? false : renderCore.IsMouseOver; } }
-
         #region Events
         public static readonly RoutedEvent MouseDown2DEvent =
             EventManager.RegisterRoutedEvent("MouseDown2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
@@ -249,13 +262,19 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
         {
             if (renderCore == null) { return; }
-            renderCore.IsMouseOver = false;
+            IsMouseOver = false;
+#if DEBUG
+            //Debug.WriteLine("Element2D_MouseLeave2D");
+#endif
         }
 
         protected virtual void Element2D_MouseEnter2D(object sender, RoutedEventArgs e)
         {
             if (renderCore == null) { return; }
-            renderCore.IsMouseOver = true;
+            IsMouseOver = true;
+#if DEBUG
+            //Debug.WriteLine("Element2D_MouseEnter2D");
+#endif
         }
 
         /// <summary>
