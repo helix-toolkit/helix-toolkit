@@ -2,7 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 ## For Next Release
+### Added
+
+### Improvement and Changes
+- Call update bound automatically if not updated. Refer to #571 (WPF.SharpDX)
+
 ### Fixed
+- SharpDX GetBestAdapter method will not always get (The Best) one for .NET 4.5 (#282)
 - BillboardTextVisual3D with Emissive material still affected by lights (#127)
 
 ## [1.0.0] - 2017-10-15
