@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+#if NETFX_CORE
+using Media = Windows.UI.Xaml.Media;
+#else
 using Media = System.Windows.Media;
+#endif
 using global::SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX

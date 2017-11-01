@@ -1,76 +1,130 @@
 ﻿using System;
 using D2D = SharpDX.Direct2D1;
+#if NETFX_CORE
+using Windows.UI.Text;
+using Media = Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media;
+using Windows.Foundation;
+#else
 using Media = System.Windows.Media;
 using System.Windows;
+#endif
 using System.Linq;
 
 namespace HelixToolkit.Wpf.SharpDX.Extensions
 {
     public static class CommonExtensions
     {
-        public static global::SharpDX.DirectWrite.FontWeight ToDXFontWeight(this System.Windows.FontWeight fontWeight)
+        public static global::SharpDX.DirectWrite.FontWeight ToDXFontWeight(this FontWeight fontWeight)
         {
-            if(fontWeight == System.Windows.FontWeights.Black)
+#if NETFX_CORE
+            var w = fontWeight.Weight;
+            if (w == FontWeights.Black.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.Black;
             }
-            else if(fontWeight == System.Windows.FontWeights.Bold)
+            else if (w == FontWeights.Bold.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.Bold;
             }
-            else if (fontWeight == System.Windows.FontWeights.DemiBold)
-            {
-                return global::SharpDX.DirectWrite.FontWeight.DemiBold;
-            }
-            else if (fontWeight == System.Windows.FontWeights.ExtraBlack)
+            else if (w == FontWeights.ExtraBlack.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.ExtraBlack;
             }
-            else if (fontWeight == System.Windows.FontWeights.ExtraBold)
+            else if (w == FontWeights.ExtraBold.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.ExtraBold;
             }
-            else if (fontWeight == System.Windows.FontWeights.ExtraLight)
+            else if (w == FontWeights.ExtraLight.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.ExtraLight;
             }
-            else if (fontWeight == System.Windows.FontWeights.Heavy)
-            {
-                return global::SharpDX.DirectWrite.FontWeight.Heavy;
-            }
-            else if (fontWeight == System.Windows.FontWeights.Light)
+            else if (w == FontWeights.Light.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.Light;
             }
-            else if (fontWeight == System.Windows.FontWeights.Medium)
+            else if (w == FontWeights.Medium.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.Medium;
             }
-            else if (fontWeight == System.Windows.FontWeights.Normal)
+            else if (w == FontWeights.Normal.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.Normal;
             }
-            else if (fontWeight == System.Windows.FontWeights.Regular)
-            {
-                return global::SharpDX.DirectWrite.FontWeight.Regular;
-            }
-            else if (fontWeight == System.Windows.FontWeights.SemiBold)
+            else if (w == FontWeights.SemiBold.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.SemiBold;
             }
-            else if (fontWeight == System.Windows.FontWeights.Thin)
+            else if (w == FontWeights.Thin.Weight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.Thin;
             }
-            else if (fontWeight == System.Windows.FontWeights.UltraBlack)
+            else
+            {
+                throw new ArgumentException("FontWeight not found.");
+            }
+#else
+            if (fontWeight == FontWeights.Black)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Black;
+            }
+            else if(fontWeight == FontWeights.Bold)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Bold;
+            }
+            else if (fontWeight == FontWeights.DemiBold)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.DemiBold;
+            }
+            else if (fontWeight == FontWeights.ExtraBlack)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.ExtraBlack;
+            }
+            else if (fontWeight == FontWeights.ExtraBold)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.ExtraBold;
+            }
+            else if (fontWeight == FontWeights.ExtraLight)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.ExtraLight;
+            }
+            else if (fontWeight == FontWeights.Heavy)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Heavy;
+            }
+            else if (fontWeight == FontWeights.Light)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Light;
+            }
+            else if (fontWeight == FontWeights.Medium)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Medium;
+            }
+            else if (fontWeight == FontWeights.Normal)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Normal;
+            }
+            else if (fontWeight == FontWeights.Regular)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Regular;
+            }
+            else if (fontWeight == FontWeights.SemiBold)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.SemiBold;
+            }
+            else if (fontWeight == FontWeights.Thin)
+            {
+                return global::SharpDX.DirectWrite.FontWeight.Thin;
+            }
+            else if (fontWeight == FontWeights.UltraBlack)
             {
                 return global::SharpDX.DirectWrite.FontWeight.UltraBlack;
             }
-            else if (fontWeight == System.Windows.FontWeights.UltraBold)
+            else if (fontWeight == FontWeights.UltraBold)
             {
                 return global::SharpDX.DirectWrite.FontWeight.UltraBold;
             }
-            else if (fontWeight == System.Windows.FontWeights.UltraLight)
+            else if (fontWeight == FontWeights.UltraLight)
             {
                 return global::SharpDX.DirectWrite.FontWeight.UltraLight;
             }
@@ -78,11 +132,30 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             {
                 throw new ArgumentException("FontWeight not found.");
             }
+#endif
         }
 
         public static global::SharpDX.DirectWrite.FontStyle ToDXFontStyle(this FontStyle style)
         {
-            if(style == FontStyles.Italic)
+#if NETFX_CORE
+            if (style == FontStyle.Italic)
+            {
+                return global::SharpDX.DirectWrite.FontStyle.Italic;
+            }
+            else if (style == FontStyle.Normal)
+            {
+                return global::SharpDX.DirectWrite.FontStyle.Normal;
+            }
+            else if (style == FontStyle.Oblique)
+            {
+                return global::SharpDX.DirectWrite.FontStyle.Oblique;
+            }
+            else
+            {
+                throw new ArgumentException("FontStyle not found.");
+            }
+#else
+            if (style == FontStyles.Italic)
             {
                 return global::SharpDX.DirectWrite.FontStyle.Italic;
             }
@@ -98,6 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             {
                 throw new ArgumentException("FontStyle not found.");
             }
+#endif
         }
 
         public static D2D.ExtendMode ToD2DExtendMode(this Media.GradientSpreadMethod mode)
@@ -148,6 +222,8 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                     )
                     );
             }
+#if NETFX_CORE
+#else
             else if(brush is Media.RadialGradientBrush)
             {
                 var b = brush as Media.RadialGradientBrush;
@@ -161,6 +237,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                         b.SpreadMethod.ToD2DExtendMode()
                     ));
             }
+#endif
             else
             {
                 throw new NotImplementedException("Brush does not support yet.");
