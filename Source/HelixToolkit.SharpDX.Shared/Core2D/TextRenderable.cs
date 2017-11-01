@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using D2D = SharpDX.Direct2D1;
+﻿using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
-using SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using Media = System.Windows.Media;
-using HelixToolkit.Wpf.SharpDX.Extensions;
 
 namespace HelixToolkit.SharpDX.Core2D
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HelixToolkit.Wpf.SharpDX;
+﻿using HelixToolkit.Wpf.SharpDX;
 using D2D = global::SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D

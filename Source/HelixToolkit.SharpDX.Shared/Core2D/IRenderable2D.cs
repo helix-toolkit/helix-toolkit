@@ -2,8 +2,6 @@
 using SharpDX;
 using SharpDX.Direct2D1;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HelixToolkit.SharpDX.Core2D
 {

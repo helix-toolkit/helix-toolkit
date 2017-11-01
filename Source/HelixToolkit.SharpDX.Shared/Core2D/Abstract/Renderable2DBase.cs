@@ -1,8 +1,5 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using D2D = global::SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D
