@@ -7,7 +7,11 @@
 using SharpDX.Direct3D11;
 using System.IO;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     /// <summary>
     /// Utilities to load textures.

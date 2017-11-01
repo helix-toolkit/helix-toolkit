@@ -4,14 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using global::SharpDX;
     using System.Diagnostics;
-    using HelixToolkit.Wpf.SharpDX.Core;
+    using Core;
 
 #if !NETFX_CORE
     [Serializable]
@@ -121,8 +125,10 @@ namespace HelixToolkit.Wpf.SharpDX
             return mesh;
         }
 
-#if !NETFX_CORE
-        protected override IOctree CreateOctree(OctreeBuildParameter parameter)
+#if NETFX_CORE
+
+#else
+        protected override IOctree<GeometryModel3D> CreateOctree(OctreeBuildParameter parameter)
         {
             return new MeshGeometryOctree(this.Positions, this.Indices, parameter);
         }

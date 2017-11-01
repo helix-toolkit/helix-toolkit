@@ -4,7 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Core
+#else
 namespace HelixToolkit.Wpf.SharpDX.Core
+#endif
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using System.Globalization;
     using System.Text;
 
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
 
 #if !NETFX_CORE
     [Serializable]

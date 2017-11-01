@@ -129,6 +129,7 @@
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Model\Element3D.cs" />
     <Compile Include="Model\ExampleCube3D.cs" />
+    <Compile Include="Model\GeometryModel3D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>

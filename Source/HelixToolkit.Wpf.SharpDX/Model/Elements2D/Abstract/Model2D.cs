@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Media = System.Windows.Media;
-using HelixToolkit.SharpDX.Core2D;
 using System.Windows;
 using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Core2D;
     public abstract class Model2D : Element2D, ITransformable2D
     {
         public static readonly DependencyProperty TransformProperty = 

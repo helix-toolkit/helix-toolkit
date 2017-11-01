@@ -1,5 +1,4 @@
-﻿using HelixToolkit.SharpDX.Core2D;
-using SharpDX;
+﻿using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +10,7 @@ using System.Windows.Input;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Core2D;
     public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable, IGUID, IHitable2D
     {
         #region Dependency Properties

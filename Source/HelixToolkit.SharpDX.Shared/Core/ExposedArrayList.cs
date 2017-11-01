@@ -4,11 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Core
+#else
 namespace HelixToolkit.Wpf.SharpDX.Core
+#endif
 {
     using System.Collections.Generic;
-
-    using HelixToolkit.Wpf.SharpDX.Extensions;
+    using Extensions;
 
     public class ExposedArrayList<T> : List<T>
     {

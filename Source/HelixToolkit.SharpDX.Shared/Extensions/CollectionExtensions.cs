@@ -3,8 +3,11 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Extensions
+#else
 namespace HelixToolkit.Wpf.SharpDX.Extensions
+#endif
 {
 #if NETFX_CORE
     using System.Collections.Generic;

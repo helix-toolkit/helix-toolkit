@@ -1,6 +1,10 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 
-namespace HelixToolkit.SharpDX.Core2D
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Core2D
+#else
+namespace HelixToolkit.Wpf.SharpDX.Core2D
+#endif
 {
     public class RectangleRenderable : ShapeRenderable2DBase
     {

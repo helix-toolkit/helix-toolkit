@@ -3,7 +3,11 @@ using SharpDX;
 using SharpDX.Direct2D1;
 using System;
 
-namespace HelixToolkit.SharpDX.Core2D
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Core2D
+#else
+namespace HelixToolkit.Wpf.SharpDX.Core2D
+#endif
 {
     public interface IRenderable2D : IDisposable
     {

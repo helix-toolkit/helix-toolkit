@@ -11,7 +11,11 @@ using System.Windows;
 #endif
 using System.Linq;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Extensions
+#else
 namespace HelixToolkit.Wpf.SharpDX.Extensions
+#endif
 {
     public static class CommonExtensions
     {

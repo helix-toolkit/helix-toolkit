@@ -171,7 +171,6 @@
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\DX11ImageSource.cs" />
     <Compile Include="Controls\Effects.cs" />
-    <Compile Include="Controls\HitTestResult.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
@@ -229,7 +228,7 @@
     <Compile Include="Utilities\BufferProxy.cs" />
     <Compile Include="Utilities\IOctreeManager.cs" />
     <Compile Include="Utilities\IRandomVector.cs" />
-    <Compile Include="Utilities\Octree.cs" />
+    <Compile Include="Utilities\OctreeGeometryModel3D.cs" />
     <Compile Include="Utilities\OctreeHelper.cs" />
     <Compile Include="Utilities\OctreeManager.cs" />
     <Compile Include="Utilities\OffReader.cs" />

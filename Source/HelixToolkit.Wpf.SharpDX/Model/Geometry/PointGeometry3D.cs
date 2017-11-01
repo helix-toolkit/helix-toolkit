@@ -17,7 +17,7 @@
             }
         }
 
-        protected override IOctree CreateOctree(OctreeBuildParameter parameter)
+        protected override IOctree<GeometryModel3D> CreateOctree(OctreeBuildParameter parameter)
         {
             return new PointGeometryOctree(Positions, parameter);
         }

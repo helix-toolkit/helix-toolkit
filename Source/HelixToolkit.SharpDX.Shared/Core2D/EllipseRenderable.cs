@@ -1,7 +1,11 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using D2D = global::SharpDX.Direct2D1;
 
-namespace HelixToolkit.SharpDX.Core2D
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Core2D
+#else
+namespace HelixToolkit.Wpf.SharpDX.Core2D
+#endif
 {
     public class EllipseRenderable : ShapeRenderable2DBase
     {

@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -108,6 +109,14 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         }
 
         public DepthStencilView DepthStencilBufferView
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public D2DControlWrapper D2DControls
         {
             get
             {

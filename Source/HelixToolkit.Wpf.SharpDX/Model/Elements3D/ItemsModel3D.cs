@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
         //private bool loaded = false;
-        private IOctree Octree
+        private IOctree<GeometryModel3D> Octree
         {
             get { return OctreeManager == null ? null : OctreeManager.Octree; }
         }

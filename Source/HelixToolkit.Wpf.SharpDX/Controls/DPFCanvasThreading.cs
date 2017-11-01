@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Helpers;
     using System.Threading;
     using System.Runtime.CompilerServices;
-    using HelixToolkit.SharpDX.Core2D;
+    using Core2D;
 
     // ---- BASED ON ORIGNAL CODE FROM DPFCanvas.cs-----
     // Seperate the rendering thread from Main Composite rendering thread. Use deferred rendering.

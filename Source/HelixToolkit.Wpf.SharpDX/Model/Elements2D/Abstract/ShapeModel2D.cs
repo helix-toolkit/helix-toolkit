@@ -1,4 +1,4 @@
-﻿using HelixToolkit.SharpDX.Core2D;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ using HelixToolkit.Wpf.SharpDX.Extensions;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Core2D;
     public abstract class ShapeModel2D : Model2D
     {
         public static DependencyProperty FillProperty 

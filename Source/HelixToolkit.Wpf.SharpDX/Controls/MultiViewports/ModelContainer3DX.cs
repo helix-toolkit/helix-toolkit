@@ -11,7 +11,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
 using System.Threading;
-using HelixToolkit.SharpDX.Core2D;
+using HelixToolkit.Wpf.SharpDX.Core2D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {

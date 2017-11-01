@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HelixToolkit.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using System.Windows.Media;
@@ -11,6 +10,7 @@ using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Core2D;
     public class TextModel2D : Model2D
     {
         public static readonly string DefaultFont = "Arial";

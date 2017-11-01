@@ -17,6 +17,7 @@ using System.Windows.Markup;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using IOctree = IOctree<GeometryModel3D>;
     public abstract class OctreeManagerBase : FrameworkContentElement, IOctreeManager
     {
         public static readonly DependencyProperty OctreeProperty

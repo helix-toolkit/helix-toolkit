@@ -8,7 +8,11 @@ using Media = System.Windows.Media;
 #endif
 using global::SharpDX;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     public static class MatrixExtensions
     {

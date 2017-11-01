@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
     using Model.Lights3D;
-    using HelixToolkit.SharpDX.Core2D;
+    using HelixToolkit.Wpf.SharpDX.Core2D;
 
 #if MSAA
     public enum MSAALevel

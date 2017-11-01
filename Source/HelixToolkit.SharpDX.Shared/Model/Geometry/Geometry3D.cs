@@ -5,18 +5,27 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using System;
 
     using global::SharpDX;
 
-    using HelixToolkit.Wpf.SharpDX.Core;
+    using Core;
+
     using System.Runtime.InteropServices;
     using System.ComponentModel;
     using HelixToolkit.SharpDX.Shared.Model;
     using System.Diagnostics;
+
+#if NETFX_CORE
+#else
+
+#endif
 
 #if !NETFX_CORE
     [Serializable]
@@ -40,28 +49,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Set(ref indices, value))
                 {
-#if !NETFX_CORE
                     Octree = null;
-#endif
                 }
             }
         }
-
-        //private int[] indicesArray = new int[0];
-        ///// <summary>
-        ///// Used to avoid excessive array copy
-        ///// </summary>
-        //public int[] IndicesArray
-        //{
-        //    get
-        //    {
-        //        if (indicesArray == null)
-        //        {
-        //            indicesArray = Indices != null ? Indices.ToArray() : new int[0];
-        //        }
-        //        return indicesArray;
-        //    }
-        //}
 
         private Vector3Collection position = null;
         public Vector3Collection Positions
@@ -74,31 +65,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Set(ref position, value))
                 {                 
-#if !NETFX_CORE
                     Octree = null;
                     UpdateBounds();
-#endif
                 }
             }
         }
 
-        //private Vector3[] positionArray = new Vector3[0];
-        ///// <summary>
-        ///// Used to avoid excessive array copy
-        ///// </summary>
-        //public Vector3[] PositionArray
-        //{
-        //    get
-        //    {
-        //        if (positionArray == null)
-        //        {
-        //            positionArray = Positions != null ? Positions.ToArray() : new Vector3[0];
-        //        }
-        //        return positionArray;
-        //    }
-        //}
-
-#if !NETFX_CORE
         private BoundingBox bound;
         public BoundingBox Bound
         {
@@ -124,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return boundingSphere;
             }
         }
-#endif
+
         private Color4Collection colors = null;
         public Color4Collection Colors
         {
@@ -153,15 +125,12 @@ namespace HelixToolkit.Wpf.SharpDX
             public Vector3 P0;
         }
 
-#if !NETFX_CORE
         /// <summary>
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
-        public IOctree Octree { private set; get; }
+        public IOctree<GeometryModel3D> Octree { private set; get; }
 
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
-#endif
-
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
         /// </summary>
@@ -177,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
             RaisePropertyChanged(TriangleBuffer);
         }
 
-#if !NETFX_CORE
+
         /// <summary>
         /// Create Octree for current model.
         /// </summary>
@@ -201,14 +170,16 @@ namespace HelixToolkit.Wpf.SharpDX
             return Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0;
         }
 
+
         /// <summary>
         /// Override to create different octree in subclasses.
         /// </summary>
         /// <returns></returns>
-        protected virtual IOctree CreateOctree(OctreeBuildParameter parameter)
+        protected virtual IOctree<GeometryModel3D> CreateOctree(OctreeBuildParameter parameter)
         {
             return null;
         }
+
 
         /// <summary>
         /// Set octree to null
@@ -235,6 +206,5 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new Exception("Position vertex contains invalid value(Example: Float.NaN).");
             }
         }
-#endif
     }
 }
