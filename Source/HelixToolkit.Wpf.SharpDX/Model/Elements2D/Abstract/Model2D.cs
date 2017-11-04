@@ -36,10 +36,28 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected Matrix3x2 transformMatrix { private set; get; } = Matrix3x2.Identity;
 
+        private readonly Stack<Matrix3x2> matrixStack = new Stack<Matrix3x2>();
+
+        public Matrix3x2 TransformMatrix
+        {
+            get { return this.transformMatrix; }
+        }
+
+        public void PushMatrix(Matrix3x2 matrix)
+        {
+            matrixStack.Push(this.transformMatrix);
+            this.transformMatrix = this.transformMatrix * matrix;
+        }
+
+        public void PopMatrix(Matrix3x2 matrix)
+        {
+            this.transformMatrix = matrixStack.Pop();
+        }
+
         protected override void PreRender(RenderContext context)
         {
             base.PreRender(context);
-            renderCore.Transform = transformMatrix;
+            renderCore.Transform = TransformMatrix;
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
