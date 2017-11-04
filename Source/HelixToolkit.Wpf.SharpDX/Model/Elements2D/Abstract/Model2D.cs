@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        protected Matrix3x2 transformMatrix { private set; get; } = Matrix3x2.Identity;
+        private Matrix3x2 transformMatrix = Matrix3x2.Identity;
 
         private readonly Stack<Matrix3x2> matrixStack = new Stack<Matrix3x2>();
 
@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             this.transformMatrix = this.transformMatrix * matrix;
         }
 
-        public void PopMatrix(Matrix3x2 matrix)
+        public void PopMatrix()
         {
             this.transformMatrix = matrixStack.Pop();
         }

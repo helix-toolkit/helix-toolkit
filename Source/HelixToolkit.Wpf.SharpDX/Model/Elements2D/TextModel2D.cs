@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 textRenderable.Foreground = Foreground.ToD2DBrush(RenderTarget);
             }
             textRenderable.Rect = this.Bound;
-            textRenderable.Transform = transformMatrix; 
+            textRenderable.Transform = TransformMatrix; 
         }
 
         protected virtual void AssignProperties()

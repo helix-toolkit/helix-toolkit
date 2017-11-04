@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 
     /// </summary>
     [ContentProperty("Children")]
-    public class GroupElement2D : Element2D 
+    public class GroupElement2D : Model2D
     {
         private IList<Element2D> itemsSourceInternal;
         /// <summary>
@@ -148,7 +148,17 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             foreach (var c in this.Items)
             {
-                c.Render(context);
+                var model = c as ITransformable2D;
+                if (model != null)
+                {
+                    model.PushMatrix(this.TransformMatrix);
+                    c.Render(context);
+                    model.PopMatrix();
+                }
+                else
+                {
+                    c.Render(context);
+                }
             }
         }
 
@@ -167,7 +177,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             hitResult = null;
             foreach (var item in Items.Reverse())
             {
-                if (item.HitTest(mousePoint, out hitResult))
+                var model = item as ITransformable2D;
+                if (model != null)
+                {
+                    model.PushMatrix(this.TransformMatrix);
+                    bool isHit = item.HitTest(mousePoint, out hitResult);
+                    model.PopMatrix();
+                    if (isHit)
+                    { return true; }
+                }
+                else if (item.HitTest(mousePoint, out hitResult))
                 {
                     return true;
                 }
