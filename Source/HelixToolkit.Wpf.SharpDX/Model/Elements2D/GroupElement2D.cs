@@ -144,6 +144,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             return IsAttached && isRenderingInternal;
         }
 
+        protected override void PreRender(RenderContext context)
+        {
+            
+        }
+
         protected override void OnRender(RenderContext context)
         {
             foreach (var c in this.Items)
