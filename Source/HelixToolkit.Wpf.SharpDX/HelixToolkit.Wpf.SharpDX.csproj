@@ -189,7 +189,10 @@
     <Compile Include="Controls\ViewportCommands.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
+    <Compile Include="Model\Elements2D\Abstract\Clickable2D.cs" />
+    <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
+    <Compile Include="Model\Elements2D\Button2D.cs" />
     <Compile Include="Model\Elements2D\EllipseModel2D.cs" />
     <Compile Include="Model\Elements2D\Interfaces.cs" />
     <Compile Include="Model\Elements2D\Abstract\Model2D.cs" />

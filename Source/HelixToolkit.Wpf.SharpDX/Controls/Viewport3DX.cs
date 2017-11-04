@@ -162,9 +162,9 @@ namespace HelixToolkit.Wpf.SharpDX
             private set
             {
                 if(mouseOverModel2D == value) { return; }
-                mouseOverModel2D?.RaiseEvent(new MouseLeave2DEventArgs(mouseOverModel2D, this));
+                mouseOverModel2D?.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseLeave2DEvent, mouseOverModel2D, this));
                 mouseOverModel2D = value;
-                mouseOverModel2D?.RaiseEvent(new MouseEnter2DEventArgs(mouseOverModel2D, this));
+                mouseOverModel2D?.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseEnter2DEvent, mouseOverModel2D, this));
             }
             get { return mouseOverModel2D; }
         }
@@ -1743,7 +1743,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Items2D.HitTest(pt.ToVector2(), out currentHit2D))
                 {
-                    currentHit2D.ModelHit.RaiseEvent(new MouseDown2DEventArgs(currentHit2D.ModelHit, currentHit2D, pt, this));
+                    currentHit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseDown2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
                     return;
                 }
             }
@@ -1792,7 +1792,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (Items2D.HitTest(pt.ToVector2(), out hit2D))
                 {
                     MouseOverModel2D = hit2D.ModelHit;
-                    hit2D.ModelHit.RaiseEvent(new MouseMove2DEventArgs(hit2D.ModelHit, hit2D, pt, this));
+                    hit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseMove2DEvent, hit2D.ModelHit, hit2D, pt, this, originalInputEventArgs));
                     return;
                 }
                 else
@@ -1823,7 +1823,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (currentHit2D != null)
             {
-                currentHit2D.ModelHit.RaiseEvent(new MouseUp2DEventArgs(currentHit2D.ModelHit, currentHit2D, pt, this));
+                currentHit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseUp2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
                 currentHit2D = null;
             }
 

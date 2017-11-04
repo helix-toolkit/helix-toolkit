@@ -170,54 +170,47 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
 
         #region Events
+        public delegate void Mouse2DRoutedEventHandler(object sender, Mouse2DEventArgs e);
         public static readonly RoutedEvent MouseDown2DEvent =
-            EventManager.RegisterRoutedEvent("MouseDown2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+            EventManager.RegisterRoutedEvent("MouseDown2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
 
         public static readonly RoutedEvent MouseUp2DEvent =
-            EventManager.RegisterRoutedEvent("MouseUp2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+            EventManager.RegisterRoutedEvent("MouseUp2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
 
         public static readonly RoutedEvent MouseMove2DEvent =
-            EventManager.RegisterRoutedEvent("MouseMove2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+            EventManager.RegisterRoutedEvent("MouseMove2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
 
         public static readonly RoutedEvent MouseEnter2DEvent =
-            EventManager.RegisterRoutedEvent("MouseEnter2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
+            EventManager.RegisterRoutedEvent("MouseEnter2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
 
         public static readonly RoutedEvent MouseLeave2DEvent =
-            EventManager.RegisterRoutedEvent("MouseLeave2D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element2D));
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseDown2D
+            EventManager.RegisterRoutedEvent("MouseLeave2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
+
+        public event Mouse2DRoutedEventHandler MouseDown2D
         {
             add { AddHandler(MouseDown2DEvent, value); }
             remove { RemoveHandler(MouseDown2DEvent, value); }
         }
 
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseUp2D
+        public event Mouse2DRoutedEventHandler MouseUp2D
         {
             add { AddHandler(MouseUp2DEvent, value); }
             remove { RemoveHandler(MouseUp2DEvent, value); }
         }
 
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseMove2D
+        public event Mouse2DRoutedEventHandler MouseMove2D
         {
             add { AddHandler(MouseMove2DEvent, value); }
             remove { RemoveHandler(MouseMove2DEvent, value); }
         }
 
-        public event RoutedEventHandler MouseEnter2D
+        public event Mouse2DRoutedEventHandler MouseEnter2D
         {
             add { AddHandler(MouseEnter2DEvent, value); }
             remove { RemoveHandler(MouseEnter2DEvent, value); }
         }
 
-        public event RoutedEventHandler MouseLeave2D
+        public event Mouse2DRoutedEventHandler MouseLeave2D
         {
             add { AddHandler(MouseLeave2DEvent, value); }
             remove { RemoveHandler(MouseLeave2DEvent, value); }
@@ -404,57 +397,25 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
     }
 
-    public abstract class Mouse2DEventArgs : RoutedEventArgs
+    public class Mouse2DEventArgs : RoutedEventArgs
     {
         public HitTest2DResult HitTest2DResult { get; private set; }
         public Viewport3DX Viewport { get; private set; }
         public System.Windows.Point Position { get; private set; }
 
-        public Mouse2DEventArgs(RoutedEvent routedEvent, object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
+        public InputEventArgs InputArgs { get; private set; }
+        public Mouse2DEventArgs(RoutedEvent routedEvent, object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null, InputEventArgs inputArgs = null)
             : base(routedEvent, source)
         {
             this.HitTest2DResult = hitTestResult;
             this.Position = position;
             this.Viewport = viewport;
+            InputArgs = inputArgs;
         }
         public Mouse2DEventArgs(RoutedEvent routedEvent, object source, Viewport3DX viewport = null)
             : base(routedEvent, source)
         {
             this.Viewport = viewport;
         }
-    }
-    public class MouseMove2DEventArgs : Mouse2DEventArgs
-    {
-        public MouseMove2DEventArgs(object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
-        : base(Element2D.MouseMove2DEvent, source, hitTestResult, position, viewport)
-        { }
-    }
-
-    public class MouseDown2DEventArgs : Mouse2DEventArgs
-    {
-        public MouseDown2DEventArgs(object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
-        : base(Element2D.MouseMove2DEvent, source, hitTestResult, position, viewport)
-        { }
-    }
-
-    public class MouseUp2DEventArgs : Mouse2DEventArgs
-    {
-        public MouseUp2DEventArgs(object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null)
-        : base(Element2D.MouseMove2DEvent, source, hitTestResult, position, viewport)
-        { }
-    }
-
-    public class MouseEnter2DEventArgs : Mouse2DEventArgs
-    {
-        public MouseEnter2DEventArgs(object source, Viewport3DX viewport = null)
-        : base(Element2D.MouseEnter2DEvent, source, viewport)
-        { }
-    }
-
-    public class MouseLeave2DEventArgs : Mouse2DEventArgs
-    {
-        public MouseLeave2DEventArgs(object source, Viewport3DX viewport = null)
-        : base(Element2D.MouseLeave2DEvent, source, viewport)
-        { }
     }
 }
