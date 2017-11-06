@@ -9,20 +9,56 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 {
     public abstract class ShapeRenderable2DBase : Renderable2DBase
     {
-        public D2D.Brush FillBrush = null;
-        public D2D.Brush StrokeBrush = null;
+        private D2D.Brush fillBrush = null;
+        public D2D.Brush FillBrush
+        {
+            set
+            {
+                if (fillBrush == value) { return; }
+                RemoveAndDispose(ref fillBrush);
+                fillBrush = value;
+                Collect(fillBrush);
+            }
+            get
+            {
+                return fillBrush;
+            }
+        }
+
+        private D2D.Brush strokeBrush = null;
+        public D2D.Brush StrokeBrush
+        {
+            set
+            {
+                if (strokeBrush == value) { return; }
+                RemoveAndDispose(ref strokeBrush);
+                strokeBrush = value;
+                Collect(strokeBrush);
+            }
+            get
+            {
+                return strokeBrush;
+            }
+        }
         public int StrokeWidth
         {
             set; get;
         } = 1;
-        public D2D.StrokeStyle StrokeStyle = null;
 
-        public override void Dispose()
+        private D2D.StrokeStyle strokeStyle = null;
+        public D2D.StrokeStyle StrokeStyle
         {
-            Disposer.RemoveAndDispose(ref FillBrush);
-            Disposer.RemoveAndDispose(ref StrokeBrush);
-            Disposer.RemoveAndDispose(ref StrokeStyle);
-            base.Dispose();
+            set
+            {
+                if(strokeStyle == value) { return; }
+                RemoveAndDispose(ref strokeStyle);
+                strokeStyle = value;
+                Collect(strokeStyle);
+            }
+            get
+            {
+                return strokeStyle;
+            }
         }
     }
 }

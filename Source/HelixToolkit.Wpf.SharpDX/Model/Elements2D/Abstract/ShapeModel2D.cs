@@ -239,19 +239,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.PreRender(context);
             if (fillChanged)
             {
-                Disposer.RemoveAndDispose(ref shapeRenderable.FillBrush);
                 shapeRenderable.FillBrush = Fill.ToD2DBrush(RenderTarget);
                 fillChanged = false;
             }
             if (strokeChanged)
             {
-                Disposer.RemoveAndDispose(ref shapeRenderable.StrokeBrush);
                 shapeRenderable.StrokeBrush = Stroke.ToD2DBrush(RenderTarget);
                 strokeChanged = false;
             }
             if (strokeStyleChanged)
             {
-                Disposer.RemoveAndDispose(ref shapeRenderable.StrokeStyle);
                 shapeRenderable.StrokeStyle = new D2D.StrokeStyle(RenderTarget.Factory,
                     new D2D.StrokeStyleProperties()
                     {

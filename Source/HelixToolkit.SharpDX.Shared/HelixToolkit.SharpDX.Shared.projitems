@@ -74,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />

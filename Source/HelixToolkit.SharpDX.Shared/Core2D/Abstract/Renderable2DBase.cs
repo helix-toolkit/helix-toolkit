@@ -8,7 +8,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public abstract class Renderable2DBase : IRenderable2D
+    public abstract class Renderable2DBase : DisposeObject, IRenderable2D
     {
         public bool IsChanged { private set; get; } = true;
 
@@ -97,9 +97,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected virtual void OnTargetChanged(D2D.RenderTarget target)
         {
-            Disposer.RemoveAndDispose(ref borderBrush);
-            Disposer.RemoveAndDispose(ref borderDotStyle);
-            Disposer.RemoveAndDispose(ref borderLineStyle);
+            RemoveAndDispose(ref borderBrush);
+            RemoveAndDispose(ref borderDotStyle);
+            RemoveAndDispose(ref borderLineStyle);
             if (target == null || target.IsDisposed)
             {
                 return;
@@ -107,6 +107,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             borderBrush = new D2D.SolidColorBrush(target, Color.LightBlue);
             borderDotStyle =  new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot });
             borderLineStyle = new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid });
+            Collect(borderBrush);
+            Collect(borderDotStyle);
+            Collect(borderLineStyle);
         }
 
         public void Render(IRenderMatrices matrices, D2D.RenderTarget target)
@@ -144,12 +147,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         protected virtual bool CanRender(D2D.RenderTarget target)
         {
             return IsRendering && target != null && !target.IsDisposed;
-        }
-
-        public virtual void Dispose()
-        {
-            Disposer.RemoveAndDispose(ref borderBrush);
-            RenderTarget = null;
         }
     }
 }

@@ -162,7 +162,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.PreRender(context);
             if (foregroundChanged)
             {
-                Disposer.RemoveAndDispose(ref textRenderable.Foreground);
                 textRenderable.Foreground = Foreground.ToD2DBrush(RenderTarget);
             }
             textRenderable.Rect = this.Bound;

@@ -12,7 +12,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     {
         public string Text { set; get; } = "Text";
 
-        public D2D.Brush Foreground = null;
+        private D2D.Brush foreGround = null;
+        public D2D.Brush Foreground
+        {
+            set
+            {
+                if(foreGround == value) { return; }
+                RemoveAndDispose(ref foreGround);
+                foreGround = value;
+                Collect(foreGround);
+            }
+            get
+            {
+                return foreGround;
+            }
+        }
 
         public string Font { set; get; } = "Arial";
 
@@ -35,12 +49,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight, FontStyle, FontSize), 
                LocalDrawingRect, Foreground, DrawingOptions);
-        }
-
-        public override void Dispose()
-        {
-            Disposer.RemoveAndDispose(ref Foreground);
-            base.Dispose();
         }
     }
 }
