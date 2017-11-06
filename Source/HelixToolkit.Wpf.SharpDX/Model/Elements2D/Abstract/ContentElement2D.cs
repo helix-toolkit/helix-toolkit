@@ -60,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnLayoutTranslationChanged(translation);
             if (contentInternal != null)
             {
-                contentInternal.LayoutTranslation = translation;
+                contentInternal.LayoutTranslate = translation;
             }
         }
 

@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         }
 
-        public class DefaultButtonRenderer : GroupElement2D
+        public class DefaultButtonRenderer : Canvas2D
         {
             public DefaultButtonRenderer()
             {

@@ -68,35 +68,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             private set { SetValue(IsMouseOverProperty, value); }
         }
 
-        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(0.0, (d,e)=> { (d as Element2D).layoutTranslationChanged = true; }));
-
-        public double Left
-        {
-            set
-            {
-                SetValue(LeftProperty, value);
-            }
-            get
-            {
-                return (double)GetValue(LeftProperty);
-            }
-        }
-        public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(0.0, (d, e) => { (d as Element2D).layoutTranslationChanged = true; }));
-
-        public double Top
-        {
-            set
-            {
-                SetValue(TopProperty, value);
-            }
-            get
-            {
-                return (double)GetValue(TopProperty);
-            }
-        }
-
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
             new AffectsRenderPropertyMetadata(100.0));
 
@@ -139,30 +110,31 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public RectangleF Bound
         {
-            get { return new RectangleF((float)Left + layoutTranslation.X, (float)Top + layoutTranslation.Y, (float)Width, (float)Height); }
+            get { return new RectangleF(layoutTranslate.X, layoutTranslate.Y, (float)Width, (float)Height); }
         }
 
-        private Vector2 layoutTranslation = Vector2.Zero;
+        private readonly Stack<Vector2> layoutTranslateStack = new Stack<Vector2>();
+        private Vector2 layoutTranslate = Vector2.Zero;
         /// <summary>
         /// Layout Translation matrix. Layout only allows translation
         /// </summary>
-        public Vector2 LayoutTranslation
+        public Vector2 LayoutTranslate
         {
             set
             {
-                if (layoutTranslation != value)
+                if (layoutTranslate != value)
                 {
-                    layoutTranslation = value;
+                    layoutTranslate = value;
                     layoutTranslationChanged = true;
                 }
             }
             get
             {
-                return this.layoutTranslation;
+                return this.layoutTranslate;
             }
         }
 
-        private bool layoutTranslationChanged = true;
+        private bool layoutTranslationChanged { set; get; } = true;
 
         protected IRenderHost renderHost;
         public IRenderHost RenderHost
@@ -327,6 +299,17 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             renderHost = null;
         }
 
+        public void PushLayoutTranslate(Vector2 v)
+        {
+            layoutTranslateStack.Push(layoutTranslate);
+            layoutTranslate = layoutTranslate + v;
+        }
+
+        public void PopLayoutTranslate()
+        {
+            layoutTranslate = layoutTranslateStack.Pop();
+        }
+
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
         /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
@@ -348,7 +331,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 if (layoutTranslationChanged)
                 {
-                    OnLayoutTranslationChanged(layoutTranslation);
+                    OnLayoutTranslationChanged(layoutTranslate);
                     layoutTranslationChanged = false;
                 }
                 PreRender(context);

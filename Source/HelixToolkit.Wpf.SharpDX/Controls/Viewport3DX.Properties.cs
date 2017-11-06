@@ -838,7 +838,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         public static readonly DependencyProperty Items2DProperty
-            = DependencyProperty.Register("Items2D", typeof(GroupElement2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
+            = DependencyProperty.Register("Items2D", typeof(Canvas2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
                 if (e.OldValue != null)
                 {
@@ -2739,11 +2739,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public GroupElement2D Items2D
+        public Canvas2D Items2D
         {
             get
             {
-                return (GroupElement2D)GetValue(Items2DProperty);
+                return (Canvas2D)GetValue(Items2DProperty);
             }
             set
             {

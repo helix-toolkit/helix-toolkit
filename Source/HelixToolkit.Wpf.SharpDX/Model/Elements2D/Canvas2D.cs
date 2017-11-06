@@ -21,8 +21,35 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 
     /// </summary>
     [ContentProperty("Children")]
-    public class GroupElement2D : Model2D
+    public class Canvas2D : Model2D
     {
+        #region Attached Properties
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
+            new AffectsRenderPropertyMetadata(0.0, (d,e)=> { (d as Element2D).LayoutTranslate = new Vector2((float)(double)e.NewValue, (d as Element2D).LayoutTranslate.Y); }));
+
+        public static void SetLeft(Element2D element, double value)
+        {
+            element.SetValue(LeftProperty, value);
+        }
+
+        public static double GetLeft(Element2D element)
+        {
+            return (double)element.GetValue(LeftProperty);
+        }
+
+        public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
+            new AffectsRenderPropertyMetadata(0.0, (d, e) => { (d as Element2D).LayoutTranslate = new Vector2((d as Element2D).LayoutTranslate.X, (float)(double)e.NewValue); }));
+        public static void SetTop(Element2D element, double value)
+        {
+            element.SetValue(TopProperty, value);
+        }
+
+        public static double GetTop(Element2D element)
+        {
+            return (double)element.GetValue(TopProperty);
+        }
+        #endregion
+
         private IList<Element2D> itemsSourceInternal;
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement2DCollection for observable, otherwise may cause memory leak.
@@ -36,10 +63,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// ItemsSource for binding to collection. Please use ObservableElement2DCollection for observable, otherwise may cause memory leak.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IList<Element2D>), typeof(GroupElement2D),
+            DependencyProperty.Register("ItemsSource", typeof(IList<Element2D>), typeof(Canvas2D),
                 new AffectsRenderPropertyMetadata(null, 
                     (d, e) => {
-                        (d as GroupElement2D).OnItemsSourceChanged(e.NewValue as IList<Element2D>);
+                        (d as Canvas2D).OnItemsSourceChanged(e.NewValue as IList<Element2D>);
                     }));
 
         public IEnumerable<Element2D> Items
@@ -55,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             get;
         } = new ObservableElement2DCollection();
 
-        public GroupElement2D()
+        public Canvas2D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
         }
@@ -154,6 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             foreach (var c in this.Items)
             {
+                c.PushLayoutTranslate(this.LayoutTranslate);
                 var model = c as ITransformable2D;
                 if (model != null)
                 {                   
@@ -165,15 +193,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 {
                     c.Render(context);
                 }
+                c.PopLayoutTranslate();
             }
         }
 
         protected override void OnLayoutTranslationChanged(Vector2 translation)
         {
-            foreach(var c in this.Items)
-            {
-                c.LayoutTranslation = new Vector2(translation.X + (float)Left, translation.Y + (float)Top);
-            }
+
         }
 
         protected override IRenderable2D CreateRenderCore(IRenderHost host)
