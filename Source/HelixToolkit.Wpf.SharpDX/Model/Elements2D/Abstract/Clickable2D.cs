@@ -60,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if(e.InputArgs is TouchEventArgs || (e.InputArgs is MouseEventArgs && (e.InputArgs as MouseEventArgs).LeftButton == MouseButtonState.Pressed))
             {
-                long time = DateTime.Now.Millisecond;
+                long time = e.InputArgs.Timestamp;
                 if (time - lastClickedTime < DoubleClickThreshold)
                 {
                     RaiseEvent(new Mouse2DEventArgs(DoubleClicked2DEvent, this));
