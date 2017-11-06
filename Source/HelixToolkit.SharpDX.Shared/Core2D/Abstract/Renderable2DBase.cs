@@ -20,6 +20,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         } = true;
 
         private RectangleF rect = new RectangleF(0, 0, 100, 100);
+        /// <summary>
+        /// Absolute layout rectangle cooridnate for renderable
+        /// </summary>
         public RectangleF Rect
         {
             set
@@ -33,7 +36,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return rect;
             }
         }
-
+        /// <summary>
+        /// Absolute visual rendering rectangle coordinate for renderable
+        /// </summary>
         public RectangleF LocalDrawingRect { private set; get; }
 
         private D2D.RenderTarget renderTarget;
@@ -109,7 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             if (CanRender(target))
             {
                 RenderTarget = target;
-                UpdateRenderVariables();
+                UpdateRenderVariables();                
                 if (ShowDrawingBorder && BorderBrush != null)
                 {
                     RenderTarget.Transform = Matrix3x2.Identity;
