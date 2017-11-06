@@ -21,11 +21,16 @@
                 Color="{Binding VM3D.Light3Color}" />
             <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding VM3D.Model}" Material="{Binding VM3D.ModelMaterial}"/>
             <hx:Viewport3DX.Items2D>
-                <hx2D:GroupElement2D>
-                    <hx2D:TextModel2D Left="200" Top="100" Width="100" Height="20" Text="{Binding VM2D.Text}" Transform="{Binding VM2D.TextTransform}"/>
-                    <hx2D:RectangleModel2D Left="100" Top="200" Width="50" Height="100" Fill="#A6F0F8FF" Stroke="Yellow" Transform="{Binding VM2D.TextTransform}"/>
-                    <hx2D:EllipseModel2D Left="300" Top="200" Width="100" Height="50" Fill="#A6EE82EE" Stroke="Red" Transform="{Binding VM2D.TextTransform}"/>
-                </hx2D:GroupElement2D>
+                <hx2D:Canvas2D>
+                    <hx2D:TextModel2D hx2D:Canvas2D.Left="200" hx2D:Canvas2D.Top="100" Width="100" Height="20" Text="{Binding VM2D.Text}" Transform="{Binding VM2D.TextTransform}"/>
+                    <hx2D:Canvas2D hx2D:Canvas2D.Left="100" hx2D:Canvas2D.Top="100">
+                        <hx2D:RectangleModel2D hx2D:Canvas2D.Left="100" hx2D:Canvas2D.Top="200" Width="50" Height="100" Fill="#A6F0F8FF" Stroke="Yellow" Transform="{Binding VM2D.TextTransform}"/>
+                        <hx2D:EllipseModel2D hx2D:Canvas2D.Left="300" hx2D:Canvas2D.Top="200" Width="100" Height="50" Fill="#A6EE82EE" Stroke="Red" Transform="{Binding VM2D.TextTransform}"/>
+                        <hx2D:Button2D Width="100" Height="30">
+                            
+                        </hx2D:Button2D>
+                    </hx2D:Canvas2D>
+                </hx2D:Canvas2D>
             </hx:Viewport3DX.Items2D>
         </hx:Viewport3DX>
     </Grid>
