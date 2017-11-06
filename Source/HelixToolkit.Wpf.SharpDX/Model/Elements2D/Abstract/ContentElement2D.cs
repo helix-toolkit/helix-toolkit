@@ -14,11 +14,18 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             new AffectsRenderPropertyMetadata(null, (d,e)=>
             {
                 var model = d as ContentElement2D;
-                model.contentInternal?.Detach();
-                model.RemoveLogicalChild(model.contentInternal);
+
+                if (model.contentInternal != null)
+                {
+                    model.RemoveLogicalChild(model.contentInternal);
+                    model.contentInternal.Detach();                
+                }
                 model.contentInternal = e.NewValue == null ? null : (Element2D)e.NewValue;
-                model.contentInternal?.Attach(model.renderHost);
-                model.AddLogicalChild(model.contentInternal);
+                if (model.contentInternal != null)
+                {
+                    model.contentInternal.Attach(model.renderHost);
+                    model.AddLogicalChild(model.contentInternal);
+                }
             }));
 
         public Element2D Content2D
