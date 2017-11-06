@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using Core2D;
     using System;
     using SharpDX;
+    using global::SharpDX;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 
@@ -155,7 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 var model = c as ITransformable2D;
                 if (model != null)
-                {
+                {                   
                     model.PushMatrix(this.TransformMatrix);
                     c.Render(context);
                     model.PopMatrix();
@@ -164,6 +165,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 {
                     c.Render(context);
                 }
+            }
+        }
+
+        protected override void OnLayoutTranslationChanged(Vector2 translation)
+        {
+            foreach(var c in this.Items)
+            {
+                c.LayoutTranslation = new Vector2(translation.X + (float)Left, translation.Y + (float)Top);
             }
         }
 
@@ -177,21 +186,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             
         }
 
-        protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;
             foreach (var item in Items.Reverse())
             {
-                var model = item as ITransformable2D;
-                if (model != null)
-                {
-                    model.PushMatrix(this.TransformMatrix);
-                    bool isHit = item.HitTest(mousePoint, out hitResult);
-                    model.PopMatrix();
-                    if (isHit)
-                    { return true; }
-                }
-                else if (item.HitTest(mousePoint, out hitResult))
+                if (item.HitTest(mousePoint, out hitResult))
                 {
                     return true;
                 }

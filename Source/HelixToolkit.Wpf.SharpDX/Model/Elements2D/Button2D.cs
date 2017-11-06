@@ -9,23 +9,28 @@ using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    public class Button2D : Clickable2D
+    public class Button2D : ContentElement2D
     {
+        public Button2D()
+        {
+            Content2D = new DefaultButtonRenderer();
+        }
+
         protected override IRenderable2D CreateRenderCore(IRenderHost host)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         protected override void OnRenderTargetChanged(RenderTarget newTarget)
         {
-            throw new NotImplementedException();
+
         }
 
         public class DefaultButtonRenderer : GroupElement2D
         {
             public DefaultButtonRenderer()
             {
-                Children.Add(new RectangleModel2D() { Fill = new Media.SolidColorBrush(Media.Colors.Gray) });
+                Children.Add(new RectangleModel2D() { Fill = new Media.SolidColorBrush(Media.Colors.Gray), Width = 100, Height = 30 });
             }
         }
     }

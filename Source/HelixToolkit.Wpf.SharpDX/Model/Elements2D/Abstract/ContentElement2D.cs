@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
@@ -32,6 +33,18 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         private Element2D contentInternal;
 
+        protected override bool OnAttach(IRenderHost host)
+        {
+            contentInternal?.Attach(host);
+            return base.OnAttach(host) && contentInternal.IsAttached; 
+        }
+
+        protected override void OnDetach()
+        {
+            contentInternal?.Detach();
+            base.OnDetach();
+        }
+
         protected override bool CanRender(RenderContext context)
         {
             return IsAttached && isRenderingInternal;
@@ -40,6 +53,28 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override void OnRender(RenderContext context)
         {
             contentInternal?.Render(context);
+        }
+
+        protected override void OnLayoutTranslationChanged(Vector2 translation)
+        {
+            base.OnLayoutTranslationChanged(translation);
+            if (contentInternal != null)
+            {
+                contentInternal.LayoutTranslation = translation;
+            }
+        }
+
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            if (contentInternal != null)
+            {
+                return contentInternal.HitTest(mousePoint, out hitResult);
+            }
+            else
+            {
+                hitResult = null;
+                return false;
+            }
         }
     }
 }

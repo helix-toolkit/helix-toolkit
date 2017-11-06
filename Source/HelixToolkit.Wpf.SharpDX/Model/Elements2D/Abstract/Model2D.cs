@@ -57,12 +57,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override void PreRender(RenderContext context)
         {
             base.PreRender(context);
-            renderCore.Transform = TransformMatrix;
+            if (renderCore != null)
+            {
+                renderCore.Transform = TransformMatrix;
+            }
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
-            if (renderCore.Rect.Contains(mousePoint))
+            if (renderCore != null && renderCore.Rect.Contains(mousePoint))
             {
                 hitResult = new HitTest2DResult(this);
                 return true;

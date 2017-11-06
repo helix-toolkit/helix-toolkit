@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(0.0));
+            new AffectsRenderPropertyMetadata(0.0, (d,e)=> { (d as Element2D).layoutTranslationChanged = true; }));
 
         public double Left
         {
@@ -83,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
         public static readonly DependencyProperty TopProperty = DependencyProperty.Register("Top", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(0.0));
+            new AffectsRenderPropertyMetadata(0.0, (d, e) => { (d as Element2D).layoutTranslationChanged = true; }));
 
         public double Top
         {
@@ -139,8 +139,30 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public RectangleF Bound
         {
-            get { return new RectangleF((float)Left, (float)Top, (float)Width, (float)Height); }
+            get { return new RectangleF((float)Left + layoutTranslation.X, (float)Top + layoutTranslation.Y, (float)Width, (float)Height); }
         }
+
+        private Vector2 layoutTranslation = Vector2.Zero;
+        /// <summary>
+        /// Layout Translation matrix. Layout only allows translation
+        /// </summary>
+        public Vector2 LayoutTranslation
+        {
+            set
+            {
+                if (layoutTranslation != value)
+                {
+                    layoutTranslation = value;
+                    layoutTranslationChanged = true;
+                }
+            }
+            get
+            {
+                return this.layoutTranslation;
+            }
+        }
+
+        private bool layoutTranslationChanged = true;
 
         protected IRenderHost renderHost;
         public IRenderHost RenderHost
@@ -324,6 +346,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (CanRender(context))
             {
+                if (layoutTranslationChanged)
+                {
+                    OnLayoutTranslationChanged(layoutTranslation);
+                    layoutTranslationChanged = false;
+                }
                 PreRender(context);
                 OnRender(context);
             }
@@ -341,7 +368,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void PreRender(RenderContext context)
         {
             RenderTarget = RenderHost.D2DControls.D2DTarget;
-            renderCore.Rect = this.Bound;
+            if (renderCore != null)
+            {
+                renderCore.Rect = this.Bound;
+            }
         }
 
         public bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
@@ -357,6 +387,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult);
 
         
+        protected virtual void OnLayoutTranslationChanged(Vector2 translation)
+        {
+
+        }
 
         /// <summary>
         /// Tries to invalidate the current render.
@@ -393,8 +427,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
                 ));
         }
-
-
     }
 
     public class Mouse2DEventArgs : RoutedEventArgs
