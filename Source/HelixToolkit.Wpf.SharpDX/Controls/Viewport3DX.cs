@@ -115,6 +115,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly RotateHandler rotateHandler;
 
         /// <summary>
+        /// The set target handler.
+        /// </summary>
+        private RotateHandler setTargetHandler;
+
+        /// <summary>
         /// The zoom handler
         /// </summary>
         private readonly ZoomHandler zoomHandler;
@@ -253,13 +258,14 @@ namespace HelixToolkit.Wpf.SharpDX
             //this.Children = new Element3DCollection();
 
             this.rotateHandler = new RotateHandler(this);
+            this.setTargetHandler = new RotateHandler(this, true);
             this.panHandler = new PanHandler(this);
             this.zoomHandler = new ZoomHandler(this);
             this.changeFieldOfViewHandler = new ZoomHandler(this, true);
             this.zoomRectangleHandler = new ZoomRectangleHandler(this);
 
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.ZoomExtents, this.ZoomExtentsHandler));
-            this.CommandBindings.Add(new CommandBinding(ViewportCommands.SetTarget, this.SetTargetHandler));
+            this.CommandBindings.Add(new CommandBinding(ViewportCommands.SetTarget, this.setTargetHandler.Execute));
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.Reset, this.ResetHandler));
 
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.Zoom, this.zoomHandler.Execute));
@@ -1512,15 +1518,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.cameraController.OnKeyDown(sender, e);
             }
-        }
-
-        /// <summary>
-        /// Handles the SetTarget command.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="ExecutedRoutedEventArgs" /> instance containing the event data.</param>
-        private void SetTargetHandler(object sender, ExecutedRoutedEventArgs e)
-        {
         }
 
         /// <summary>
