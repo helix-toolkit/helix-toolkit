@@ -601,6 +601,8 @@ namespace HelixToolkit.Wpf.SharpDX
             hitQueue.Enqueue(this);
             bool isHit = false;
             modelHits.Clear();
+            if (modelMatrix.Determinant() == 0)//Cannot be inverted
+            { return false; }
             var modelInv = modelMatrix.Inverted();
             var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.TransformNormal(rayWS.Direction, modelInv));
             while (hitQueue.Count > 0)
