@@ -328,9 +328,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var result = new HitTestResult();
                 result.Distance = double.MaxValue;
-                if (g != null && modelMatrix.Determinant() != 0)//Check if model matrix can be inverted.
+                if (g != null)
                 {
                     var modelInvert = this.modelMatrix.Inverted();
+                    if(modelInvert == Matrix.Zero)//Check if model matrix can be inverted.
+                    {
+                        return false;
+                    }
                     //transform ray into model coordinates
                     var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.TransformNormal(rayWS.Direction, modelInvert));
 
