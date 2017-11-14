@@ -230,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public class EffectMaterialVariables : System.IDisposable
+        public class EffectMaterialVariables : DisposeObject
         {
             public event System.EventHandler OnInvalidateRenderer;
             private readonly PhongMaterial material;
@@ -254,22 +254,22 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.material = material;
                 this.material.OnMaterialPropertyChanged += Material_OnMaterialPropertyChanged;
-                this.vMaterialAmbientVariable = effect.GetVariableByName("vMaterialAmbient").AsVector();
-                this.vMaterialDiffuseVariable = effect.GetVariableByName("vMaterialDiffuse").AsVector();
-                this.vMaterialEmissiveVariable = effect.GetVariableByName("vMaterialEmissive").AsVector();
-                this.vMaterialSpecularVariable = effect.GetVariableByName("vMaterialSpecular").AsVector();
-                this.vMaterialReflectVariable = effect.GetVariableByName("vMaterialReflect").AsVector();
-                this.sMaterialShininessVariable = effect.GetVariableByName("sMaterialShininess").AsScalar();
-                this.bHasDiffuseMapVariable = effect.GetVariableByName("bHasDiffuseMap").AsScalar();
-                this.bHasDiffuseAlphaMapVariable = effect.GetVariableByName("bHasAlphaMap").AsScalar();
-                this.bHasNormalMapVariable = effect.GetVariableByName("bHasNormalMap").AsScalar();
-                this.bHasDisplacementMapVariable = effect.GetVariableByName("bHasDisplacementMap").AsScalar();
-                this.bHasShadowMapVariable = effect.GetVariableByName("bHasShadowMap").AsScalar();
-                this.texDiffuseMapVariable = effect.GetVariableByName("texDiffuseMap").AsShaderResource();
-                this.texNormalMapVariable = effect.GetVariableByName("texNormalMap").AsShaderResource();
-                this.texDisplacementMapVariable = effect.GetVariableByName("texDisplacementMap").AsShaderResource();
-                this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
-                this.texDiffuseAlphaMapVariable = effect.GetVariableByName("texAlphaMap").AsShaderResource();
+                Collect(this.vMaterialAmbientVariable = effect.GetVariableByName("vMaterialAmbient").AsVector());
+                Collect(this.vMaterialDiffuseVariable = effect.GetVariableByName("vMaterialDiffuse").AsVector());
+                Collect(this.vMaterialEmissiveVariable = effect.GetVariableByName("vMaterialEmissive").AsVector());
+                Collect(this.vMaterialSpecularVariable = effect.GetVariableByName("vMaterialSpecular").AsVector());
+                Collect(this.vMaterialReflectVariable = effect.GetVariableByName("vMaterialReflect").AsVector());
+                Collect(this.sMaterialShininessVariable = effect.GetVariableByName("sMaterialShininess").AsScalar());
+                Collect(this.bHasDiffuseMapVariable = effect.GetVariableByName("bHasDiffuseMap").AsScalar());
+                Collect(this.bHasDiffuseAlphaMapVariable = effect.GetVariableByName("bHasAlphaMap").AsScalar());
+                Collect(this.bHasNormalMapVariable = effect.GetVariableByName("bHasNormalMap").AsScalar());
+                Collect(this.bHasDisplacementMapVariable = effect.GetVariableByName("bHasDisplacementMap").AsScalar());
+                Collect(this.bHasShadowMapVariable = effect.GetVariableByName("bHasShadowMap").AsScalar());
+                Collect(this.texDiffuseMapVariable = effect.GetVariableByName("texDiffuseMap").AsShaderResource());
+                Collect(this.texNormalMapVariable = effect.GetVariableByName("texNormalMap").AsShaderResource());
+                Collect(this.texDisplacementMapVariable = effect.GetVariableByName("texDisplacementMap").AsShaderResource());
+                Collect(this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource());
+                Collect(this.texDiffuseAlphaMapVariable = effect.GetVariableByName("texAlphaMap").AsShaderResource());
             }
 
             private void Material_OnMaterialPropertyChanged(object sender, MaterialPropertyChanged e)
@@ -295,10 +295,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private void CreateTextureView(System.IO.Stream stream, ref ShaderResourceView textureView)
             {
-                Disposer.RemoveAndDispose(ref textureView);
+                RemoveAndDispose(ref textureView);
                 if (stream != null && device != null)
                 {
-                    textureView = TextureLoader.FromMemoryAsShaderResourceView(device, stream);
+                    Collect(textureView = TextureLoader.FromMemoryAsShaderResourceView(device, stream));
                 }
             }
 
@@ -314,10 +314,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
-                    Disposer.RemoveAndDispose(ref this.texNormalMapView);
-                    Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
-                    Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
+                    RemoveAndDispose(ref this.texDiffuseMapView);
+                    RemoveAndDispose(ref this.texNormalMapView);
+                    RemoveAndDispose(ref this.texDisplacementMapView);
+                    RemoveAndDispose(ref this.texDiffuseAlphaMapView);
                 }
             }
 
@@ -363,33 +363,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return true;
             }
 
-            public void Dispose()
+            protected override void Dispose(bool disposeManagedResources)
             {
                 this.material.OnMaterialPropertyChanged -= Material_OnMaterialPropertyChanged;
-                OnInvalidateRenderer = null;
-                Disposer.RemoveAndDispose(ref this.vMaterialAmbientVariable);
-                Disposer.RemoveAndDispose(ref this.vMaterialDiffuseVariable);
-                Disposer.RemoveAndDispose(ref this.vMaterialEmissiveVariable);
-                Disposer.RemoveAndDispose(ref this.vMaterialSpecularVariable);
-                Disposer.RemoveAndDispose(ref this.sMaterialShininessVariable);
-                Disposer.RemoveAndDispose(ref this.vMaterialReflectVariable);
-                Disposer.RemoveAndDispose(ref this.bHasDiffuseMapVariable);
-                Disposer.RemoveAndDispose(ref this.bHasNormalMapVariable);
-                Disposer.RemoveAndDispose(ref this.bHasDisplacementMapVariable);
-                Disposer.RemoveAndDispose(ref this.bHasShadowMapVariable);
-                Disposer.RemoveAndDispose(ref this.bHasDiffuseAlphaMapVariable);
-                Disposer.RemoveAndDispose(ref this.texDiffuseMapVariable);
-                Disposer.RemoveAndDispose(ref this.texNormalMapVariable);
-                Disposer.RemoveAndDispose(ref this.texDisplacementMapVariable);
-                Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
-                Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapVariable);
-                Disposer.RemoveAndDispose(ref this.texDiffuseMapView);
-                Disposer.RemoveAndDispose(ref this.texNormalMapView);
-                Disposer.RemoveAndDispose(ref this.texDisplacementMapView);
-                Disposer.RemoveAndDispose(ref this.texDiffuseAlphaMapView);
-                
+                OnInvalidateRenderer = null;               
+                base.Dispose(disposeManagedResources);
             }
         }
-
     }
 }

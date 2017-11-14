@@ -294,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             // --- set model transform paramerers        
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
-            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.World.SetMatrix(ref worldMatrix);
             this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
 
             // --- set primitive type

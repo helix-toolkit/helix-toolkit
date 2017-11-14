@@ -757,7 +757,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext context)
         {
             var worldMatrix = this.modelMatrix * context.worldMatrix;
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.effectTransforms.World.SetMatrix(ref worldMatrix);
 
             OnTextureChanged();
             OnBlendStateChanged();

@@ -138,7 +138,7 @@ namespace CustomShaderDemo
         {
             /// --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.WorldMatrix;
-            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.World.SetMatrix(ref worldMatrix);
 
             /// --- check shadowmaps
             hasShadowMap = renderHost.IsShadowMapEnabled;

@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- set constant paramerers 
             var worldMatrix = Matrix.Translation(renderContext.Camera.Position.ToVector3());
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.effectTransforms.World.SetMatrix(ref worldMatrix);
 
             // --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);

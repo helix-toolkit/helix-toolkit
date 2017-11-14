@@ -358,7 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
-            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.World.SetMatrix(ref worldMatrix);
             bFixedSizeVariable?.Set(fixedSize);
             // --- check shadowmaps
             //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;

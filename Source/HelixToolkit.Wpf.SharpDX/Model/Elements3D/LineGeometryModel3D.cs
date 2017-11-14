@@ -339,7 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             // --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.EffectTransforms.World.SetMatrix(ref worldMatrix);
 
             // --- set effect per object const vars
             this.vLineParams.Set(lineParams);

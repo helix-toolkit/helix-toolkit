@@ -157,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- set constant paramerers             
             var worldMatrix = renderContext.worldMatrix;
             worldMatrix.Row4 = new Vector4(0, 0, 0, 1);
-            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            this.EffectTransforms.World.SetMatrix(ref worldMatrix);
             this.viewMatrixVar.SetMatrix(CreateViewMatrix(renderContext));
             this.projectionMatrixVar.SetMatrix(projectionMatrix);
             this.effectMaterial.bHasShadowMapVariable.Set(false);
