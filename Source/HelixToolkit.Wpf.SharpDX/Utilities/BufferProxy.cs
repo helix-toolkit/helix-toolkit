@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpDX;
 using HelixToolkit.Wpf.SharpDX.Extensions;
+using SharpDX.Direct3D;
 
 namespace HelixToolkit.Wpf.SharpDX.Utilities
 {
@@ -35,6 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 Usage = ResourceUsage.Immutable
             };
             buffer = SDX11.Buffer.Create(device, data.GetArrayByType(), buffdesc);
+            Count = length;
         }
     }
 
@@ -52,6 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         public virtual void UploadDataToBuffer(DeviceContext context, IList<T> data, int length)
         {
+            Count = length;
             if (buffer == null || buffer.Description.SizeInBytes < StructureSize * length)
             {
                 CreateBufferFromDataArray(context.Device, data, length);
@@ -80,6 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 Usage = ResourceUsage.Dynamic
             };           
             buffer = SDX11.Buffer.Create(device, data.GetArrayByType(), buffdesc);
+            Count = length;
         }
 
         public void CreateBufferFromDataArray(Device context, IList<T> data)
@@ -125,6 +129,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
     {
         protected SDX11.Buffer buffer;
         public int StructureSize { get; private set; }
+        public int Count { get; protected set; } = 0;
+        public int Offset { get; protected set; } = 0;
         public SDX11.Buffer Buffer { get { return buffer; } }
 
         public BufferProxyBase(int structureSize)
