@@ -29,9 +29,9 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Modified version of DisposeCollector from SharpDX. Add null check in RemoveAndDispose(ref object)
     /// </summary>
-    public class DisposeObject : DisposeBase
+    public abstract class DisposeObject : DisposeBase
     {
-        private List<object> disposables;
+        private readonly HashSet<object> disposables = new HashSet<object>();
 
         /// <summary>
         /// Gets the number of elements to dispose.
@@ -50,14 +50,8 @@ namespace HelixToolkit.UWP
         /// </remarks>
         public void DisposeAndClear()
         {
-            if (disposables == null)
+            foreach(var valueToDispose in disposables)
             {
-                return;
-            }
-
-            for (int i = disposables.Count - 1; i >= 0; i--)
-            {
-                var valueToDispose = disposables[i];
                 if (valueToDispose is IDisposable)
                 {
                     ((IDisposable)valueToDispose).Dispose();
@@ -66,8 +60,6 @@ namespace HelixToolkit.UWP
                 {
                     global::SharpDX.Utilities.FreeMemory((IntPtr)valueToDispose);
                 }
-
-                disposables.RemoveAt(i);
             }
             disposables.Clear();
         }
@@ -80,7 +72,6 @@ namespace HelixToolkit.UWP
         protected override void Dispose(bool disposeManagedResources)
         {
             DisposeAndClear();
-            disposables = null;
         }
 
         /// <summary>
@@ -101,15 +92,9 @@ namespace HelixToolkit.UWP
                     throw new ArgumentException("Memory pointer is invalid. Memory must have been allocated with Utilties.AllocateMemory");
             }
 
-            if (!Equals(toDispose, default(T)))
+            if (!Equals(toDispose, default(T)) && !disposables.Contains(toDispose))
             {
-                if (disposables == null)
-                    disposables = new List<object>();
-
-                if (!disposables.Contains(toDispose))
-                {
-                    disposables.Add(toDispose);
-                }
+                disposables.Add(toDispose);
             }
             return toDispose;
         }
@@ -120,7 +105,7 @@ namespace HelixToolkit.UWP
         /// <param name="objectToDispose">Object to dispose.</param>
         public void RemoveAndDispose<T>(ref T objectToDispose)
         {
-            if (disposables != null && objectToDispose != null)
+            if (objectToDispose != null)
             {
                 Remove(objectToDispose);
 
@@ -147,7 +132,7 @@ namespace HelixToolkit.UWP
         /// <param name="toDisposeArg">To dispose.</param>
         public void Remove<T>(T toDisposeArg)
         {
-            if (disposables != null && disposables.Contains(toDisposeArg))
+            if (disposables.Contains(toDisposeArg))
             {
                 disposables.Remove(toDisposeArg);
             }
