@@ -2,14 +2,13 @@
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
 using HelixToolkit.Wpf.SharpDX.Extensions;
-using SharpDX.Direct3D;
-
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
+#else
+namespace HelixToolkit.UWP.Utilities
+#endif
 {
     public class ImmutableBufferProxy<T> : DynamicBufferProxy<T> where T : struct
     {

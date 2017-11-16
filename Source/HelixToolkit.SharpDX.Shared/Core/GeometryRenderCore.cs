@@ -1,4 +1,7 @@
-﻿using SharpDX.Direct3D11;
+﻿using HelixToolkit.Wpf.SharpDX.Utilities;
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +18,10 @@ namespace HelixToolkit.UWP.Core
         public InputLayout VertexLayout { private set; get; }
         public EffectTechnique EffectTechnique { private set; get; }
 
+        protected EffectScalarVariable hasInstancesVar;
+
+        public bool HasInstances { set; get; }
+
         public virtual void SetRasterState(Device device, RasterizerStateDescription description)
         {
             RemoveAndDispose(ref rasterState);
@@ -27,6 +34,7 @@ namespace HelixToolkit.UWP.Core
             {
                 this.VertexLayout = host.EffectsManager.GetLayout(technique);
                 this.EffectTechnique = Effect.GetTechniqueByName(technique.Name);
+                hasInstancesVar = Collect(Effect.GetVariableByName("bHasInstances").AsScalar());
                 return true;
             }
             return false;

@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\GeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\IntCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\BufferModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\RenderCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Vector3Collection.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\BufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />

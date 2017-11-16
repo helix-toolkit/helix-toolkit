@@ -228,7 +228,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\AffectsRenderPropertyMetadata.cs" />
-    <Compile Include="Utilities\BufferProxy.cs" />
     <Compile Include="Utilities\IOctreeManager.cs" />
     <Compile Include="Utilities\IRandomVector.cs" />
     <Compile Include="Utilities\OctreeGeometryModel3D.cs" />
