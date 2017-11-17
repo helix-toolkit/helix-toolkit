@@ -3,13 +3,13 @@ using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using SharpDX;
-using HelixToolkit.Wpf.SharpDX.Extensions;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
 #else
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+    using Extensions;
     public class ImmutableBufferProxy<T> : DynamicBufferProxy<T> where T : struct
     {
         public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None) 
@@ -27,9 +27,9 @@ namespace HelixToolkit.UWP.Utilities
             Disposer.RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
             {
-                BindFlags = this.bindFlags,
+                BindFlags = this.BindFlags,
                 CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = this.optionFlags,
+                OptionFlags = this.OptionFlags,
                 SizeInBytes = StructureSize * length,
                 StructureByteStride = StructureSize,
                 Usage = ResourceUsage.Immutable
@@ -41,14 +41,12 @@ namespace HelixToolkit.UWP.Utilities
 
     public class DynamicBufferProxy<T> : BufferProxyBase<T> where T : struct
     {
-        protected readonly BindFlags bindFlags;
-        protected readonly ResourceOptionFlags optionFlags = ResourceOptionFlags.None;
+        public ResourceOptionFlags OptionFlags { private set; get; }
 
         public DynamicBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None)
-            :base(structureSize)
+            :base(structureSize, bindFlags)
         {
-            this.bindFlags = bindFlags;
-            this.optionFlags = optionFlags;
+            this.OptionFlags = optionFlags;
         }
 
         public virtual void UploadDataToBuffer(DeviceContext context, IList<T> data, int length)
@@ -74,9 +72,9 @@ namespace HelixToolkit.UWP.Utilities
             Disposer.RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
             {
-                BindFlags = this.bindFlags,
+                BindFlags = this.BindFlags,
                 CpuAccessFlags = CpuAccessFlags.Write,
-                OptionFlags = this.optionFlags,
+                OptionFlags = this.OptionFlags,
                 SizeInBytes = StructureSize * length,
                 StructureByteStride = StructureSize,
                 Usage = ResourceUsage.Dynamic
@@ -89,9 +87,19 @@ namespace HelixToolkit.UWP.Utilities
         {
             CreateBufferFromDataArray(context, data, data.Count);
         }
-        public void UploadDataToBuffer(DeviceContext context, IList<T> data)
+        public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
         {
             UploadDataToBuffer(context, data, data.Count);
+        }
+
+        public override void UploadDataToBuffer(DeviceContext context, ref T data)
+        {
+            UploadDataToBuffer(context, new[] { data }, 1);
+        }
+
+        public override void CreateBuffer(Device device)
+        {
+            throw new ArgumentException("Method does not supported.");
         }
     }
 
@@ -100,7 +108,7 @@ namespace HelixToolkit.UWP.Utilities
         private readonly BufferDescription bufferDesc;
         public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer, 
             CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Default)
-            :base(structSize)
+            :base(structSize, bindFlags)
         {
             bufferDesc = new BufferDescription()
             {
@@ -113,38 +121,78 @@ namespace HelixToolkit.UWP.Utilities
             };
         }
 
-        public void UploadDataToBuffer(DeviceContext context, ref T data)
+        public override void UploadDataToBuffer(DeviceContext context, ref T data)
         {
             context.UpdateSubresource(ref data, buffer);
         }
 
-        public void CreateBuffer(Device device)
+        public override void CreateBuffer(Device device)
         {
             buffer = new SDX11.Buffer(device, bufferDesc);
         }
+
+        public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
+        {
+            throw new ArgumentException("Constant Buffer does not support data array.");
+        }
     }
 
-    public abstract class BufferProxyBase<T> : IBufferProxy where T : struct  
+    public abstract class BufferProxyBase<T> : IBufferProxy<T> where T : struct  
     {
         protected SDX11.Buffer buffer;
         public int StructureSize { get; private set; }
         public int Count { get; protected set; } = 0;
         public int Offset { get; protected set; } = 0;
         public SDX11.Buffer Buffer { get { return buffer; } }
+        public BindFlags BindFlags { private set; get; }
+        
 
-        public BufferProxyBase(int structureSize)
+        public BufferProxyBase(int structureSize, BindFlags bindFlags)
         {
             StructureSize = structureSize;
+            BindFlags = bindFlags;
         }
+
+        public abstract void UploadDataToBuffer(DeviceContext context, ref T data);
+
+        public abstract void UploadDataToBuffer(DeviceContext context, IList<T> data);
+
+        public abstract void CreateBuffer(Device device);
+
         public void Dispose()
         {
             Disposer.RemoveAndDispose(ref buffer);
         }
     }
 
+    public interface IBufferProxy<T> : IBufferProxy where T : struct
+    {
+        void UploadDataToBuffer(DeviceContext context, ref T data);
+        void UploadDataToBuffer(DeviceContext context, IList<T> data);
+        void CreateBuffer(Device device);
+    }
+
     public interface IBufferProxy : IDisposable
     {
+        /// <summary>
+        /// Raw Buffer
+        /// </summary>
         SDX11.Buffer Buffer { get; }
+        /// <summary>
+        /// Element Size
+        /// </summary>
         int StructureSize { get; }
+        /// <summary>
+        /// Element count
+        /// </summary>
+        int Count { get; }
+        /// <summary>
+        /// Buffer offset
+        /// </summary>
+        int Offset { get; }
+        /// <summary>
+        /// Buffer binding flag
+        /// </summary>
+        BindFlags BindFlags { get; }
     }
 }

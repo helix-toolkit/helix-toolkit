@@ -13,6 +13,8 @@ namespace HelixToolkit.UWP.Core
 {
     public abstract class RenderCoreBase : DisposeObject, IRenderCore
     {
+        public delegate void OnRenderEvent(IRenderMatrices context);
+        public OnRenderEvent OnRender;
         private EffectTransformVariables effectTransformVar;   
         public Effect Effect { private set; get; }  
 
@@ -46,16 +48,15 @@ namespace HelixToolkit.UWP.Core
 
         public void Render(IRenderMatrices context)
         {
-            if (!IsAttached)
+            if (CanRender())
             {
-                return;
+                OnRender?.Invoke(context);
             }
-            OnRender(context);
         }        
 
-        protected virtual void OnRender(IRenderMatrices context)
+        protected virtual bool CanRender()
         {
-
+            return IsAttached;
         }
 
         public void SetModelWorldMatrix(Matrix matrix)

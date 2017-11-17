@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         double ActualWidth { get; }
         double ActualHeight { get; }
+
+        DeviceContext DeviceContext { get; }
     }
 }
