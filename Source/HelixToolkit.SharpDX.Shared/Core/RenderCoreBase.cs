@@ -13,6 +13,8 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class RenderCoreBase : DisposeObject, IRenderCore
     {
+        public Guid GUID { get; } = Guid.NewGuid();
+
         private EffectTransformVariables effectTransformVar;   
         public delegate void OnRenderEvent(IRenderMatrices context);
         /// <summary>

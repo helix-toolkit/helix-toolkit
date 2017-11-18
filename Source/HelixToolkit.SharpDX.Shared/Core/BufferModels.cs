@@ -12,8 +12,9 @@ namespace HelixToolkit.UWP.Core
     using System.Collections;
     using System.Collections.Generic;
 
-    public class InstanceBufferModel : DisposeObject
+    public class InstanceBufferModel : DisposeObject, IGUID
     {
+        public System.Guid GUID { get; } = System.Guid.NewGuid();
         public bool HasInstance { set; get; } = false;
         public DynamicBufferProxy<Matrix> InstanceBuffer { private set; get; }
 
@@ -53,8 +54,9 @@ namespace HelixToolkit.UWP.Core
         }
     }
 
-    public class BufferModel : DisposeObject
-    {       
+    public class BufferModel : DisposeObject, IGUID
+    {
+        public System.Guid GUID { get; } = System.Guid.NewGuid();
         /// <summary>
         /// Vertex buffer layout, binds into vertex shader
         /// </summary>

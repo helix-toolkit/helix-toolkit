@@ -8,7 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    public interface IRenderCore
+    public interface IRenderCore : IGUID
     {
         void Attach(IRenderHost host, RenderTechnique technique);
 
