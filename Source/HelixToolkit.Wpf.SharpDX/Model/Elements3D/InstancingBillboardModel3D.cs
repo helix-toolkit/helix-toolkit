@@ -90,28 +90,6 @@ namespace HelixToolkit.Wpf.SharpDX
             instanceParamArrayChanged = true;
         }
 
-
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public override IBufferProxy IndexBuffer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public override IBufferProxy VertexBuffer
-        {
-            get
-            {
-                return vertexBuffer;
-            }
-        }
-
         #region Overridable Methods
 
         /// <summary>
@@ -141,9 +119,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return geometryInternal is IBillboardText;
         }
 
-        protected override RasterizerState CreateRasterState()
+        protected override RasterizerStateDescription CreateRasterState()
         {
-            var rasterStateDesc = new RasterizerStateDescription()
+            return new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
                 CullMode = CullMode.None,
@@ -157,8 +135,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,                    
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
-
-            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         protected override void OnCreateGeometryBuffers()
@@ -241,13 +217,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
             instanceParamBuffer.Dispose();
             Disposer.RemoveAndDispose(ref hasInstanceParamVar);
-            Disposer.RemoveAndDispose(ref bHasInstances);
             Disposer.RemoveAndDispose(ref bFixedSizeVariable);
             base.OnDetach();
         }
 
         protected override void OnRender(RenderContext renderContext)
         {
+            /*
             // --- check to render the model
             var geometry = geometryInternal as IBillboardText;
             if (geometry == null)
@@ -333,6 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             this.bHasInstances.Set(false);
             this.hasInstanceParamVar.Set(false);
+            */
         }
 
         #endregion

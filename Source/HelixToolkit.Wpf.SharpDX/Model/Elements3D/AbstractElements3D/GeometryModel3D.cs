@@ -21,6 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System;
     using System.Runtime.CompilerServices;
+    using Core;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -159,6 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
             }
             model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
+            (model.RenderCore as GeometryRenderCore).Geometry = model.geometryInternal;
             if (model.geometryInternal != null && model.geometryInternal.Bound.Maximum == Vector3.Zero && model.geometryInternal.Bound.Minimum == Vector3.Zero)
             {
                 model.geometryInternal.UpdateBounds();
@@ -169,19 +171,8 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-        #region Variables
-        private RasterizerState rasterState = null;
-        protected RasterizerState RasterState { get { return rasterState; } }
-        protected InputLayout vertexLayout { private set; get; }
-        protected EffectTechnique effectTechnique { private set; get; }
-
-        private EffectTransformVariables effectTransforms;
-        protected EffectTransformVariables EffectTransforms { get { return effectTransforms; } }
-        
-        #endregion
-
         #region Properties
-        protected Geometry3D geometryInternal { private set; get; }
+        protected Geometry3D geometryInternal;
         public bool GeometryValid { private set; get; } = false;
 
         private BoundingBox bounds;
@@ -337,12 +328,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected virtual void OnRasterStateChanged()
         {
-            Disposer.RemoveAndDispose(ref rasterState);
             if (!IsAttached) { return; }
-            rasterState = CreateRasterState();
+            (RenderCore as GeometryRenderCore)?.CreateRasterState(CreateRasterState());
         }
 
-        protected abstract RasterizerState CreateRasterState();
+        protected abstract RasterizerStateDescription CreateRasterState();
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -425,13 +415,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (CheckGeometry())
             {
                 AttachOnGeometryPropertyChanged();
-
-                // --- get variables
-                this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
-                this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
-
-                // --- transformations
-                this.effectTransforms = new EffectTransformVariables(this.effect);
                 return true;
             }
             else
@@ -454,10 +437,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             DetachOnGeometryPropertyChanged();
-            Disposer.RemoveAndDispose(ref rasterState);
-            Disposer.RemoveAndDispose(ref this.effectTransforms);
-            this.effectTechnique = null;
-            this.vertexLayout = null;
             base.OnDetach();
         }
 

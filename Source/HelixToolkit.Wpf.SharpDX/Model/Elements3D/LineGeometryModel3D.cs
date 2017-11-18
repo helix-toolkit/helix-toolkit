@@ -172,9 +172,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return result.IsValid;
         }
 
-        protected override RasterizerState CreateRasterState()
+        protected override RasterizerStateDescription CreateRasterState()
         {
-            var rasterStateDesc = new RasterizerStateDescription()
+            return new RasterizerStateDescription()
             {
                 FillMode = FillMode,
                 CullMode = CullMode.None,
@@ -188,8 +188,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
-
-            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         private void OnColorChanged()
@@ -314,6 +312,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
+            /*
             // --- since these values are changed only per window resize, we set them only once here
             //if (this.isResized || renderContext.Camera != this.lastCamera)
             {
@@ -387,6 +386,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
                 renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
             }
+            */
         }
 
         /// <summary>

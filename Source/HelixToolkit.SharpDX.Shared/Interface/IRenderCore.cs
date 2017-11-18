@@ -10,6 +10,7 @@ namespace HelixToolkit.UWP
 {
     public interface IRenderCore : IGUID
     {
+        event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
         /// If render core is attached or not
         /// </summary>
@@ -29,5 +30,9 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context"></param>
         void Render(IRenderMatrices context);
+        /// <summary>
+        /// Unsubscribe all OnInvalidateRenderer event handler;
+        /// </summary>
+        void ResetInvalidateHandler();
     }
 }

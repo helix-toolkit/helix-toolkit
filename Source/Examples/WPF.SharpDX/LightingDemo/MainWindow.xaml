@@ -29,7 +29,7 @@
             Grid.Row="0" Grid.Column="0" MSAA="{Binding MSAA}"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
-            IsShadowMappingEnabled="True"
+            IsShadowMappingEnabled="False"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -47,7 +47,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:ShadowMap3D />
+            <!--<hx:ShadowMap3D />-->
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"

@@ -109,6 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
+            /*
             this.bHasInstances.Set(this.hasInstances);
             this.hasInstanceParamVar.Set(this.hasInstanceParams);
             // --- set constant paramerers             
@@ -151,6 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             this.bHasInstances.Set(false);
             this.hasInstanceParamVar.Set(false);
+            */
         }
 
         protected override void OnAttached()
@@ -175,6 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
+            /*
             if (isHitTestVisibleInternal && hasInstances)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
@@ -183,6 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 OctreeManager?.Clear();
             }
+            */
         }
 
         protected override bool CanHitTest(IRenderMatrices context)
@@ -191,8 +195,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
-        {
+        {            
             bool isHit = false;
+            /*
             if (CanHitTest(context))
             {
                 var boundHits = new List<HitTestResult>();
@@ -227,6 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
+            */
             return isHit;
         }
     }

@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.children.CollectionChanged += this.ChildrenChanged;
         }
 
-        protected override RasterizerState CreateRasterState() { return null; }
+        protected override RasterizerStateDescription CreateRasterState() { return new RasterizerStateDescription(); }
 
         /// <summary>
         ///     Gets the children.

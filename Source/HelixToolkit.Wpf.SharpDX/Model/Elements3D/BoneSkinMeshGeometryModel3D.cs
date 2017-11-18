@@ -105,6 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
+            /*
             this.bHasInstances.Set(this.hasInstances);
             // --- set constant paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
@@ -154,6 +155,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
                 OnDrawCall(renderContext);
             }
+            */
         }
 
         protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)

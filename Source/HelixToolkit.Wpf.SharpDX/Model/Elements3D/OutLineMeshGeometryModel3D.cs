@@ -195,67 +195,67 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnDrawCall(RenderContext renderContext)
-        {
-            if (isDrawBeforeGeometry)
-            {
-                OnOutLineDrawCall(renderContext);
-            }
-            if (isDrawGeometry)
-            {
-                base.OnDrawCall(renderContext);
-            }
-            if (!isDrawBeforeGeometry)
-            {
-                OnOutLineDrawCall(renderContext);
-            }
-        }
+        //protected override void OnDrawCall(RenderContext renderContext)
+        //{
+        //    if (isDrawBeforeGeometry)
+        //    {
+        //        OnOutLineDrawCall(renderContext);
+        //    }
+        //    if (isDrawGeometry)
+        //    {
+        //        base.OnDrawCall(renderContext);
+        //    }
+        //    if (!isDrawBeforeGeometry)
+        //    {
+        //        OnOutLineDrawCall(renderContext);
+        //    }
+        //}
 
-        protected override void OnInstancedDrawCall(RenderContext renderContext)
-        {
-            if (isDrawBeforeGeometry)
-            {
-                OnOutLineInstancedDrawCall(renderContext);
-            }
-            if (isDrawGeometry)
-            { base.OnInstancedDrawCall(renderContext); }
-            if (!isDrawBeforeGeometry)
-            {
-                OnOutLineInstancedDrawCall(renderContext);
-            }
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void OnOutLineDrawCall(RenderContext renderContext)
-        {
-            if (enableOutline)
-            {
-                SetParameters();
-                // --- render the xray
-                // 
-                var pass1 = this.effectTechnique.GetPassByIndex(2);
-                pass1.Apply(renderContext.DeviceContext);
-                renderContext.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
-                renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStencilState, 0);
-                // --- draw
-                renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
-            }
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void OnOutLineInstancedDrawCall(RenderContext renderContext)
-        {
-            if (enableOutline)
-            {
-                SetParameters();
-                // --- render the xray
-                // 
-                var pass1 = this.effectTechnique.GetPassByIndex(2);
-                pass1.Apply(renderContext.DeviceContext);
-                renderContext.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
-                renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStencilState, 0);
-                // --- draw
-                renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
-            }
-        }
+        //protected override void OnInstancedDrawCall(RenderContext renderContext)
+        //{
+        //    if (isDrawBeforeGeometry)
+        //    {
+        //        OnOutLineInstancedDrawCall(renderContext);
+        //    }
+        //    if (isDrawGeometry)
+        //    { base.OnInstancedDrawCall(renderContext); }
+        //    if (!isDrawBeforeGeometry)
+        //    {
+        //        OnOutLineInstancedDrawCall(renderContext);
+        //    }
+        //}
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //protected virtual void OnOutLineDrawCall(RenderContext renderContext)
+        //{
+        //    if (enableOutline)
+        //    {
+        //        SetParameters();
+        //        // --- render the xray
+        //        // 
+        //        var pass1 = this.effectTechnique.GetPassByIndex(2);
+        //        pass1.Apply(renderContext.DeviceContext);
+        //        renderContext.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
+        //        renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStencilState, 0);
+        //        // --- draw
+        //        renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
+        //    }
+        //}
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //protected virtual void OnOutLineInstancedDrawCall(RenderContext renderContext)
+        //{
+        //    if (enableOutline)
+        //    {
+        //        SetParameters();
+        //        // --- render the xray
+        //        // 
+        //        var pass1 = this.effectTechnique.GetPassByIndex(2);
+        //        pass1.Apply(renderContext.DeviceContext);
+        //        renderContext.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
+        //        renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStencilState, 0);
+        //        // --- draw
+        //        renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
+        //    }
+        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SetParameters()

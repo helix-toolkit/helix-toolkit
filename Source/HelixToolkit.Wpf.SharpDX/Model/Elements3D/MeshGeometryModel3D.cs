@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Runtime.CompilerServices;
     using System.Collections.Generic;
     using Utilities;
+    using Core;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
@@ -36,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D),
             new AffectsRenderPropertyMetadata(true, RasterStateChanged));
         public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(false, (d,e)=> { (d as MeshGeometryModel3D).invertNormal = (bool)e.NewValue; }));
+            new AffectsRenderPropertyMetadata(false, (d,e)=> { ((d as MeshGeometryModel3D).RenderCore as MeshRenderCore).InvertNormal = (bool)e.NewValue; }));
 
         public bool FrontCounterClockwise
         {
@@ -92,36 +93,17 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
-        private readonly ImmutableBufferProxy<DefaultVertex> vertexBuffer = new ImmutableBufferProxy<DefaultVertex>(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer);
-        private readonly ImmutableBufferProxy<int> indexBuffer = new ImmutableBufferProxy<int>(sizeof(int), BindFlags.IndexBuffer);
 
-        protected bool invertNormal { private set; get; } = false;
+        private BufferModel Buffers;
 
-        protected EffectScalarVariable bInvertNormalVar;
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public override IBufferProxy VertexBuffer
+        protected override IRenderCore CreateRenderCore()
         {
-            get
-            {
-                return vertexBuffer;
-            }
-        }
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public override IBufferProxy IndexBuffer
-        {
-            get
-            {
-                return indexBuffer;
-            }
+            return new MeshRenderCore();
         }
 
-        protected override RasterizerState CreateRasterState()
+        protected override RasterizerStateDescription CreateRasterState()
         {
-            var rasterStateDesc = new RasterizerStateDescription()
+            return new RasterizerStateDescription()
             {
                 FillMode = FillMode,
                 CullMode = CullMode,
@@ -135,13 +117,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,                    
                 IsScissorEnabled = IsThrowingShadow? false : IsScissorEnabled,
             };
-            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         protected override void OnCreateGeometryBuffers()
         {
             CreateVertexBuffer(CreateDefaultVertexArray);
-            indexBuffer.CreateBufferFromDataArray(this.Device, geometryInternal.Indices);
+            (Buffers.IndexBuffer as IBufferProxy<int>).CreateBufferFromDataArray(this.Device, geometryInternal.Indices);
         }
 
         protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -157,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
             {
-                indexBuffer.CreateBufferFromDataArray(this.Device, this.geometryInternal.Indices);
+                (Buffers.IndexBuffer as IBufferProxy<int>).CreateBufferFromDataArray(this.Device, this.geometryInternal.Indices);
                 InvalidateRender();
             }
         }
@@ -173,7 +154,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-
+            var core = RenderCore as GeometryRenderCore;
+            Buffers = BufferModel.CreateMeshBufferModel<DefaultVertex>(core.VertexLayout, DefaultVertex.SizeInBytes);
+            core.GeometryBuffer = Buffers;
+            core.InstanceBuffer = InstanceBuffer;
             // --- scale texcoords
             var texScale = TextureCoodScale;
 
@@ -192,7 +176,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new System.Exception("Geometry must not be null");
             }
-            bInvertNormalVar = effect.GetVariableByName("bInvertNormal").AsScalar();
             // --- flush
             //this.Device.ImmediateContext.Flush();
             return true;
@@ -215,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (geometry != null && geometry.Positions != null)
             {
                 var data = updateFunction();
-                vertexBuffer.CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
+                (Buffers.VertexBuffer as IBufferProxy<DefaultVertex>).CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
             }
         }
 
@@ -224,91 +207,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref bInvertNormalVar);
-            vertexBuffer.Dispose();
-            indexBuffer.Dispose();
+            Disposer.RemoveAndDispose(ref Buffers);
             base.OnDetach();
-        }
-        
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context) && this.effectMaterial != null;
-        }
-        
-        protected override void OnRender(RenderContext renderContext)
-        {
-            // --- set constant paramerers             
-            var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.EffectTransforms.World.SetMatrix(ref worldMatrix);
-
-            // --- check shadowmaps
-            this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
-            this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
-
-            // --- set material params      
-            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
-            this.bInvertNormalVar.Set(invertNormal);
-            this.bHasInstances.Set(this.hasInstances);
-            // --- set context
-            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
-
-            // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
-            if (this.hasInstances)
-            {
-                // --- update instance buffer
-                if (this.isInstanceChanged)
-                {
-                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
-                    this.isInstanceChanged = false;
-                }
-
-                // --- INSTANCING: need to set 2 buffers            
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new[]
-                {
-                    new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0),
-                    new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0),
-                });
-                OnInstancedDrawCall(renderContext);
-                this.bHasInstances.Set(false);
-            }
-            else
-            {
-                // --- bind buffer                
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
-
-                OnDrawCall(renderContext);
-            }
-            this.bInvertNormalVar.Set(false);
-        }
-
-        /// <summary>
-        /// Just before calling DrawIndexedInstanced. All buffers are attached. Override to use for multipass drawing
-        /// </summary>
-        /// <param name="renderContext"></param>
-        protected virtual void OnInstancedDrawCall(RenderContext renderContext)
-        {
-            // --- render the geometry
-            this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-            // --- draw
-            renderContext.DeviceContext.DrawIndexedInstanced(this.geometryInternal.Indices.Count, this.instanceInternal.Count, 0, 0, 0);
-        }
-
-        /// <summary>
-        /// Just before calling DrawIndexed. All buffers are attached. Override to use for multipass drawing
-        /// </summary>
-        /// <param name="renderContext"></param>
-        protected virtual void OnDrawCall(RenderContext renderContext)
-        {
-            // --- render the geometry
-            // 
-            var pass = this.effectTechnique.GetPassByIndex(0);
-            pass.Apply(renderContext.DeviceContext);
-            // --- draw
-            renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
-        }
+        }     
 
         protected override bool CheckGeometry()
         {

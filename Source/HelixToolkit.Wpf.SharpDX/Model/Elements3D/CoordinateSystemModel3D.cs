@@ -170,6 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
+            /*
             UpdateProjectionMatrix(renderContext.ActualWidth, renderContext.ActualHeight);
             // --- set constant paramerers             
             var worldMatrix = renderContext.worldMatrix;
@@ -211,6 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.viewMatrixVar.SetMatrix(renderContext.ViewMatrix);
             this.projectionMatrixVar.SetMatrix(renderContext.ProjectionMatrix);
             renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStateBack);
+            */
         }
     }
 }

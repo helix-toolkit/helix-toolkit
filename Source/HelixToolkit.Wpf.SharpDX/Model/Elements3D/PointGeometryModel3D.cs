@@ -193,9 +193,9 @@
             }
         }
 
-        protected override RasterizerState CreateRasterState()
+        protected override RasterizerStateDescription CreateRasterState()
         {
-            var rasterStateDesc = new RasterizerStateDescription()
+            return new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
                 CullMode = CullMode.None,
@@ -207,8 +207,6 @@
                 IsMultisampleEnabled = true,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
-
-            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         private void OnColorChanged()
@@ -312,6 +310,7 @@
         /// </summary>
         protected override void OnRender(RenderContext renderContext)
         {       
+            /*
             // --- set transform paramerers             
             var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
             this.EffectTransforms.World.SetMatrix(ref worldMatrix);
@@ -334,6 +333,7 @@
             this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
 
             renderContext.DeviceContext.Draw(this.geometryInternal.Positions.Count, 0);
+            */
         }
 
         /// <summary>

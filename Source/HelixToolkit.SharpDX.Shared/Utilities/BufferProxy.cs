@@ -67,7 +67,7 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
 
-        public virtual void CreateBufferFromDataArray(Device device, IList<T> data, int length)
+        public override void CreateBufferFromDataArray(Device device, IList<T> data, int length)
         {
             Disposer.RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
@@ -83,7 +83,7 @@ namespace HelixToolkit.UWP.Utilities
             Count = length;
         }
 
-        public void CreateBufferFromDataArray(Device context, IList<T> data)
+        public override void CreateBufferFromDataArray(Device context, IList<T> data)
         {
             CreateBufferFromDataArray(context, data, data.Count);
         }
@@ -131,6 +131,14 @@ namespace HelixToolkit.UWP.Utilities
             buffer = new SDX11.Buffer(device, bufferDesc);
         }
 
+        public override void CreateBufferFromDataArray(Device context, IList<T> data)
+        {
+            throw new ArgumentException("Constant Buffer does not support data array.");
+        }
+        public override void CreateBufferFromDataArray(Device context, IList<T> data, int count)
+        {
+            throw new ArgumentException("Constant Buffer does not support data array.");
+        }
         public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
         {
             throw new ArgumentException("Constant Buffer does not support data array.");
@@ -159,6 +167,8 @@ namespace HelixToolkit.UWP.Utilities
 
         public abstract void CreateBuffer(Device device);
 
+        public abstract void CreateBufferFromDataArray(Device context, IList<T> data);
+        public abstract void CreateBufferFromDataArray(Device context, IList<T> data, int count);
         public void Dispose()
         {
             Disposer.RemoveAndDispose(ref buffer);
@@ -170,6 +180,8 @@ namespace HelixToolkit.UWP.Utilities
         void UploadDataToBuffer(DeviceContext context, ref T data);
         void UploadDataToBuffer(DeviceContext context, IList<T> data);
         void CreateBuffer(Device device);
+        void CreateBufferFromDataArray(Device context, IList<T> data);
+        void CreateBufferFromDataArray(Device context, IList<T> data, int count);
     }
 
     public interface IBufferProxy : IDisposable

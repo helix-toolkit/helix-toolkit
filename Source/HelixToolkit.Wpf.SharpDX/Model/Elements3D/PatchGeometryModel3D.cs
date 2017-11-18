@@ -139,6 +139,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var shadingPass = e.NewValue as string;
                 if (TessellationTechniques.Shading.Contains(shadingPass))
                 {
+                    /*
                     // --- change the pass
                     obj.shaderPass = obj.effectTechnique.GetPassByName(shadingPass);
                     if (shadingPass.Equals("Wires"))
@@ -149,6 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         obj.FillMode = FillMode.Solid;
                     }
+                    */
                 }
             }
         }
@@ -172,23 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// For subclass override
         /// </summary>
-        public override IBufferProxy IndexBuffer
-        {
-            get
-            {
-                return indexBuffer;
-            }
-        }
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public override IBufferProxy VertexBuffer
-        {
-            get
-            {
-                return vertexBuffer;
-            }
-        }
+
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
         /// <summary>
@@ -199,9 +185,9 @@ namespace HelixToolkit.Wpf.SharpDX
             // System.Console.WriteLine();
 
         }
-        protected override RasterizerState CreateRasterState()
+        protected override RasterizerStateDescription CreateRasterState()
         {
-            var rasterStateDesc = new RasterizerStateDescription()
+            return new RasterizerStateDescription()
             {
                 FillMode = FillMode,
                 CullMode = CullMode,
@@ -215,7 +201,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
-            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         protected override void OnCreateGeometryBuffers()
@@ -232,6 +217,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host"></param>
         protected override bool OnAttach(IRenderHost host)
         {
+/*
             // --- attach           
             if (!base.OnAttach(host))
             {
@@ -271,7 +257,9 @@ namespace HelixToolkit.Wpf.SharpDX
             vTessellationVariables.Set(new Vector4((float)TessellationFactor, 0, 0, 0));
             // --- flush
             //Device.ImmediateContext.Flush();
+*/
             return true;
+            
         }
 
         /// <summary>
@@ -292,6 +280,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnRender(RenderContext renderContext)
         {
+            /*
             // --- set model transform paramerers        
             var worldMatrix = modelMatrix * renderContext.worldMatrix;
             EffectTransforms.World.SetMatrix(ref worldMatrix);
@@ -326,6 +315,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- render the geometry
             renderContext.DeviceContext.DrawIndexed(geometryInternal.Indices.Count, 0, 0);
+            */
         }
 
         /// <summary>

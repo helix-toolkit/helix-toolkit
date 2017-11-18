@@ -409,6 +409,8 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnRender(renderContext);
         }
 
+
+        /*
         /// <summary>
         /// The OnDrawCall
         /// </summary>
@@ -437,7 +439,7 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillCrossSectionState, 1); //Only pass stencil buffer test if value is 1
             renderContext.DeviceContext.Draw(4, 0);
         }
-
+        */
         /// <summary>
         /// The OnDetach
         /// </summary>

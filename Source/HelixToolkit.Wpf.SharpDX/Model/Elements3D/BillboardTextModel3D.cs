@@ -59,28 +59,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected bool fixedSize = true;
 
-
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public override IBufferProxy VertexBuffer
-        {
-            get
-            {
-                return vertexBuffer;
-            }
-        }
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public override IBufferProxy IndexBuffer
-        {
-            get
-            {
-                return null;
-            }
-        }
-
         #region Overridable Methods
         /// <summary>
         /// Initial implementation of hittest for billboard. Needs further improvement.
@@ -258,9 +236,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return geometryInternal is IBillboardText;
         }
 
-        protected override RasterizerState CreateRasterState()
+        protected override RasterizerStateDescription CreateRasterState()
         {
-            var rasterStateDesc = new RasterizerStateDescription()
+            return new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
                 CullMode = CullMode.None,
@@ -274,7 +252,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,                    
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
-            return new RasterizerState(this.Device, rasterStateDesc);
         }
 
         protected override void OnCreateGeometryBuffers()
@@ -349,6 +326,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext renderContext)
         {
+            /*
             // --- check to render the model
             var geometry = geometryInternal as IBillboardText;
             if (geometry == null)
@@ -428,6 +406,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     renderContext.DeviceContext.Draw(vertexCount, 0);
                     break;
             }
+            */
         }
 
         #endregion

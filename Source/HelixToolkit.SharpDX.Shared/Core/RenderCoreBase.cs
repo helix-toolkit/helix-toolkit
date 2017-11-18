@@ -27,6 +27,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Matrix ModelMatrix { set; get; } = Matrix.Identity;      
         public Effect Effect { private set; get; }  
+        public Device Device { get { return Effect == null ? null : Effect.Device; } }
         /// <summary>
         /// Is render core has been attached
         /// </summary>
@@ -111,6 +112,10 @@ namespace HelixToolkit.UWP.Core
             OnInvalidateRenderer?.Invoke(sender, e);
         }
 
+        public void ResetInvalidateHandler()
+        {
+            OnInvalidateRenderer = null;
+        }
         /// <summary>
         /// Used to handle world constant variable from shader
         /// </summary>

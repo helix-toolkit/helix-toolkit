@@ -18,10 +18,11 @@ namespace HelixToolkit.UWP.Core
         public Geometry3D Geometry { set; get; }
         public BufferModel GeometryBuffer { set; get; }
 
-        public virtual void CreateRasterState(Device device, RasterizerStateDescription description)
+        public void CreateRasterState(RasterizerStateDescription description)
         {
+            if (!IsAttached) { return; }
             RemoveAndDispose(ref rasterState);
-            rasterState = Collect(new RasterizerState(device, description));
+            rasterState = Collect(new RasterizerState(Device, description));
         }
 
         public bool SetRasterState(DeviceContext context)

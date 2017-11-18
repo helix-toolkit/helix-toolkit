@@ -85,6 +85,34 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private IRenderCore renderCore = null;
+        public IRenderCore RenderCore
+        {
+            private set
+            {
+                if (renderCore != value)
+                {
+                    if (renderCore != null)
+                    {
+                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
+                    }
+                    renderCore = value;
+                    if (renderCore != null)
+                    {
+                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
+                    }
+                }
+            }
+            get
+            {
+                if(renderCore == null)
+                {
+                    RenderCore = CreateRenderCore();
+                }
+                return renderCore;
+            }
+        }
+
         protected global::SharpDX.Direct3D11.Effect effect;
 
         protected RenderTechnique renderTechnique;
@@ -112,11 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return isAttached && renderHost != null;
-            }
-            protected set
-            {
-                isAttached = value;
+                return RenderCore != null && RenderCore.IsAttached && renderHost != null;
             }
         }
 
@@ -130,6 +154,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderHost.Device; }
         }
 
+        private void RenderCore_OnInvalidateRenderer(object sender, bool e)
+        {
+            InvalidateRender();
+        }
+
         /// <summary>
         /// Override this function to set render technique during Attach Host.
         /// </summary>
@@ -140,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
 
-
+        protected virtual IRenderCore CreateRenderCore() { return null; }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
@@ -158,15 +187,16 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
             }
-            this.renderTechnique = SetRenderTechnique(host);           
+            this.renderTechnique = SetRenderTechnique(host);
+            RenderCore?.Attach(host, renderTechnique);
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
-            IsAttached = OnAttach(host);
-            if (IsAttached)
+            if (OnAttach(host))
             {
                 OnAttached();
             }
+
             InvalidateRender();
-        }
+        }       
 
         /// <summary>
         /// Called after <see cref="OnAttach(IRenderHost)"/>
@@ -186,6 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void Detach()
         {
+            RenderCore?.Detach();
             OnDetach();
         }
         /// <summary>
@@ -193,7 +224,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected virtual void OnDetach()
         {
-            IsAttached = false;
             renderTechnique = null;            
             effect = null;
             renderHost = null;           
@@ -225,7 +255,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected virtual bool CanRender(RenderContext context)
         {
-            return IsAttached && isRenderingInternal && visibleInternal;
+            return isRenderingInternal && visibleInternal;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
@@ -240,11 +270,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// Used to overriding <see cref="Render"/> routine.
-        /// </summary>
-        /// <param name="context"></param>
-        protected abstract void OnRender(RenderContext context);
+        protected virtual void OnRender(RenderContext context)
+        {
+            RenderCore?.Render(context);
+        }
 
         /// <summary>
         /// Disposes the Element3D. Frees all DX resources.
