@@ -123,12 +123,19 @@ namespace HelixToolkit.Wpf.SharpDX
             return !HasInstances && base.CheckBoundingFrustum(ref boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
         }
 
-        protected override void OnAttached()
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.OnAttached();
-            // --- init instances buffer            
-            InstanceBuffer.Initialize(effect);
-            InstancesChanged();
+            if (base.OnAttach(host))
+            {
+                // --- init instances buffer            
+                InstanceBuffer.Initialize(effect);
+                InstancesChanged();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override void OnDetach()

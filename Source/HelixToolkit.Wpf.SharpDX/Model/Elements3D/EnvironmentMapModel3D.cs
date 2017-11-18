@@ -20,6 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Direct3D = global::SharpDX.Direct3D;
     using Matrix = global::SharpDX.Matrix;
     using Texture2D = global::SharpDX.Direct3D11.Texture2D;
+    using static Core.RenderCoreBase;
 
     public sealed class EnvironmentMap3D : Model3D
     {

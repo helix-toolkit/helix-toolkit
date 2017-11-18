@@ -16,4 +16,10 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         Guid GUID { get; }
     }
+
+    public interface IEffectMaterialVariables : IMaterialRenderCore, IDisposable
+    {
+        event System.EventHandler<bool> OnInvalidateRenderer;
+        bool AttachMaterial(MeshGeometry3D model);
+    }
 }

@@ -78,16 +78,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public class EffectTransformVariables : DisposeObject
+        protected override void OnRender(RenderContext context)
         {
-            public EffectTransformVariables(Effect effect)
-            {
-                // openGL: uniform variables            
-                Collect(mWorld = effect.GetVariableByName("mWorld").AsMatrix());
-            }
-
-            private EffectMatrixVariable mWorld;
-            public EffectMatrixVariable World { get { return mWorld; } }           
-        }        
+            RenderCore.ModelMatrix = this.ModelMatrix;
+            base.OnRender(context);
+        }
     }
 }

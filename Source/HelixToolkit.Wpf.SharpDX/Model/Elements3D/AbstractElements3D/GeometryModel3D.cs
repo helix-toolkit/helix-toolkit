@@ -21,7 +21,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System;
     using System.Runtime.CompilerServices;
-    using Core;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -160,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
             }
             model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
-            (model.RenderCore as GeometryRenderCore).Geometry = model.geometryInternal;
+            (model.RenderCore as IGeometryRenderCore).Geometry = model.geometryInternal;
             if (model.geometryInternal != null && model.geometryInternal.Bound.Maximum == Vector3.Zero && model.geometryInternal.Bound.Minimum == Vector3.Zero)
             {
                 model.geometryInternal.UpdateBounds();
@@ -329,7 +328,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void OnRasterStateChanged()
         {
             if (!IsAttached) { return; }
-            (RenderCore as GeometryRenderCore)?.CreateRasterState(CreateRasterState());
+            (RenderCore as IGeometryRenderCore)?.CreateRasterState(CreateRasterState());
         }
 
         protected abstract RasterizerStateDescription CreateRasterState();
@@ -412,7 +411,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host"></param>
         protected override bool OnAttach(IRenderHost host)
         {
-            if (CheckGeometry())
+            if (base.OnAttach(host) && CheckGeometry())
             {
                 AttachOnGeometryPropertyChanged();
                 return true;

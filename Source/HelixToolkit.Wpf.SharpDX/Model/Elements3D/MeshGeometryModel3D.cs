@@ -17,11 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX;
 
-    using global::SharpDX.Direct3D;
-
     using global::SharpDX.Direct3D11;
-
-    using global::SharpDX.DXGI;
     using System.Runtime.CompilerServices;
     using System.Collections.Generic;
     using Utilities;

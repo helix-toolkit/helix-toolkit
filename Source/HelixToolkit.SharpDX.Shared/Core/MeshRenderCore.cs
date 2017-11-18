@@ -14,11 +14,11 @@ namespace HelixToolkit.UWP.Core
         public MeshRenderCore()
         {
             OnRender = (context) => 
-            {
-                EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
+            {               
                 SetConstantVariables(context);
                 SetMaterialVariables(Geometry as MeshGeometry3D);
                 SetRasterState(context.DeviceContext);
+                EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
                 GeometryBuffer.AttachAndDraw(context.DeviceContext, InstanceBuffer);
             };
         }

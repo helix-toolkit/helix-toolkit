@@ -21,6 +21,7 @@ using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
 using System.Diagnostics;
 using HelixToolkit.Wpf.SharpDX.Utilities;
+using static HelixToolkit.Wpf.SharpDX.Core.RenderCoreBase;
 
 namespace HelixToolkit.Wpf.SharpDX
 {

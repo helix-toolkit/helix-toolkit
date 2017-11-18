@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HelixToolkit.Wpf.SharpDX.Core;
+using SharpDX;
+using SharpDX.Direct3D11;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +14,10 @@ namespace HelixToolkit.UWP
     public interface IRenderCore : IGUID
     {
         event EventHandler<bool> OnInvalidateRenderer;
+
+        Matrix ModelMatrix { set; get; }
+        Effect Effect { get; }
+        Device Device { get; }
         /// <summary>
         /// If render core is attached or not
         /// </summary>
@@ -34,5 +41,25 @@ namespace HelixToolkit.UWP
         /// Unsubscribe all OnInvalidateRenderer event handler;
         /// </summary>
         void ResetInvalidateHandler();
+    }
+
+    public interface IGeometryRenderCore
+    {
+        InputLayout VertexLayout { get; }
+        InstanceBufferModel InstanceBuffer { set; get; }
+        Geometry3D Geometry { set; get; }
+        BufferModel GeometryBuffer { set; get; }
+        void CreateRasterState(RasterizerStateDescription description);
+        bool SetRasterState(DeviceContext context);
+    }
+
+    public interface IMaterialRenderCore
+    {
+        Material Material { set; get; }
+        bool RenderDiffuseMap { set; get; }
+        bool RenderDiffuseAlphaMap { set; get; }
+        bool RenderNormalMap { set; get; }
+        bool RenderDisplacementMap { set; get; }
+        bool HasShadowMap { set; get; }
     }
 }

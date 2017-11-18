@@ -187,8 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
             }
-            this.renderTechnique = SetRenderTechnique(host);
-            RenderCore?.Attach(host, renderTechnique);
+            this.renderTechnique = SetRenderTechnique(host);           
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             if (OnAttach(host))
             {
@@ -210,7 +209,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="host"></param>       
         /// <returns>Return true if attached</returns>
-        protected abstract bool OnAttach(IRenderHost host);
+        protected virtual bool OnAttach(IRenderHost host)
+        {
+            RenderCore?.Attach(host, renderTechnique);
+            return RenderCore == null ? false : RenderCore.IsAttached;
+        }
         /// <summary>
         /// Detaches the element from the host. Override <see cref="OnDetach"/>
         /// </summary>

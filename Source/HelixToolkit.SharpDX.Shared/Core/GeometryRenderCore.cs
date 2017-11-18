@@ -6,7 +6,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public abstract class GeometryRenderCore : RenderCoreBase
+    public abstract class GeometryRenderCore : RenderCoreBase, IGeometryRenderCore
     {
         private RasterizerState rasterState = null;
         public RasterizerState RasterState { get { return rasterState; } }
