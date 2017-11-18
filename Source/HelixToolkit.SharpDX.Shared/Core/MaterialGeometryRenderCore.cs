@@ -11,8 +11,29 @@ namespace HelixToolkit.UWP.Core
     public abstract class MaterialGeometryRenderCore : GeometryRenderCore
     {
         private EffectMaterialVariables materialVariables;
-
-        public PhongMaterial Material { set; get; } = PhongMaterials.Black;
+        /// <summary>
+        /// Used to wrap all material resources
+        /// </summary>
+        public EffectMaterialVariables MaterialVariables { get { return materialVariables; } }
+        private PhongMaterial material = PhongMaterials.Black;
+        public PhongMaterial Material
+        {
+            set
+            {
+                if (material != value)
+                {
+                    material = value;
+                    if (materialVariables != null)
+                    {
+                        materialVariables.Material = value;
+                    }
+                }
+            }
+            get
+            {
+                return material;
+            }
+        }
         public MeshGeometry3D Geometry { set; get; }
         public bool HasShadowMap { set; get; } = false;
 
@@ -20,8 +41,13 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(host, technique))
             {
-                RemoveAndDispose(ref materialVariables);
+                if (materialVariables != null)
+                {
+                    materialVariables.OnInvalidateRenderer -= InvalidateRenderer;
+                    RemoveAndDispose(ref materialVariables);
+                }
                 materialVariables = Collect(new EffectMaterialVariables(Effect, Material));
+                materialVariables.OnInvalidateRenderer += InvalidateRenderer;
                 return true;
             }
             else
@@ -37,11 +63,11 @@ namespace HelixToolkit.UWP.Core
             materialVariables?.AttachMaterial(model);
         }        
 
-        public class EffectMaterialVariables : DisposeObject
+        public sealed class EffectMaterialVariables : DisposeObject
         {
-            public event System.EventHandler OnInvalidateRenderer;
-            private readonly PhongMaterial material;
-            private Device device;
+            public event System.EventHandler<bool> OnInvalidateRenderer;
+            private PhongMaterial material;
+            private readonly Effect effect;
             private ShaderResourceView texDiffuseAlphaMapView;
             private ShaderResourceView texDiffuseMapView;
             private ShaderResourceView texNormalMapView;
@@ -57,8 +83,29 @@ namespace HelixToolkit.UWP.Core
             public bool RenderNormalMap { set; get; } = true;
             public bool RenderDisplacementMap { set; get; } = true;
 
+            public PhongMaterial Material
+            {
+                set
+                {
+                    if (material != value)
+                    {
+                        if (material != null)
+                        {
+                            material.OnMaterialPropertyChanged -= Material_OnMaterialPropertyChanged;
+                        }
+                        material = value;
+                        if (material != null)
+                        {
+                            material.OnMaterialPropertyChanged += Material_OnMaterialPropertyChanged;                           
+                        }
+                        CreateTextureViews();
+                    }
+                }
+            }
+
             public EffectMaterialVariables(Effect effect, PhongMaterial material)
             {
+                this.effect = effect;
                 this.material = material;
                 this.material.OnMaterialPropertyChanged += Material_OnMaterialPropertyChanged;
                 Collect(this.vMaterialAmbientVariable = effect.GetVariableByName("vMaterialAmbient").AsVector());
@@ -77,6 +124,7 @@ namespace HelixToolkit.UWP.Core
                 Collect(this.texDisplacementMapVariable = effect.GetVariableByName("texDisplacementMap").AsShaderResource());
                 Collect(this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource());
                 Collect(this.texDiffuseAlphaMapVariable = effect.GetVariableByName("texAlphaMap").AsShaderResource());
+                CreateTextureViews();
             }
 
             private void Material_OnMaterialPropertyChanged(object sender, MaterialPropertyChanged e)
@@ -97,21 +145,20 @@ namespace HelixToolkit.UWP.Core
                 {
                     CreateTextureView(material.DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
                 }
-                OnInvalidateRenderer?.Invoke(this, null);
+                OnInvalidateRenderer?.Invoke(this, true);
             }
 
             private void CreateTextureView(System.IO.Stream stream, ref ShaderResourceView textureView)
             {
                 RemoveAndDispose(ref textureView);
-                if (stream != null && device != null)
+                if (stream != null && effect != null && !effect.IsDisposed)
                 {
-                    Collect(textureView = TextureLoader.FromMemoryAsShaderResourceView(device, stream));
+                    Collect(textureView = TextureLoader.FromMemoryAsShaderResourceView(effect.Device, stream));
                 }
             }
 
-            public void CreateTextureViews(Device device, MaterialGeometryModel3D model)
+            private void CreateTextureViews()
             {
-                this.device = device;
                 if (material != null)
                 {
                     CreateTextureView(material.DiffuseMap, ref this.texDiffuseMapView);
@@ -172,7 +219,7 @@ namespace HelixToolkit.UWP.Core
 
             protected override void Dispose(bool disposeManagedResources)
             {
-                this.material.OnMaterialPropertyChanged -= Material_OnMaterialPropertyChanged;
+                this.material = null;
                 OnInvalidateRenderer = null;
                 base.Dispose(disposeManagedResources);
             }

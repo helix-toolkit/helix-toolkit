@@ -1,5 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
+using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -18,6 +19,7 @@ namespace HelixToolkit.UWP.Core
         /// Render function delegate. Used to attach different render routine
         /// </summary>
         public OnRenderEvent OnRender;
+        public event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
         /// Model matrix
         /// </summary>
@@ -100,6 +102,11 @@ namespace HelixToolkit.UWP.Core
         protected virtual void SetConstantVariables(IRenderMatrices matrices)
         {
             SetModelWorldMatrix(ModelMatrix * matrices.WorldMatrix);
+        }
+
+        protected void InvalidateRenderer(object sender, bool e)
+        {
+            OnInvalidateRenderer?.Invoke(sender, e);
         }
 
         /// <summary>
