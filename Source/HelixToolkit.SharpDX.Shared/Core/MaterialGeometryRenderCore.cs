@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP.Core
                 return material;
             }
         }
-        public MeshGeometry3D Geometry { set; get; }
+
         public bool HasShadowMap { set; get; } = false;
 
         protected override bool OnAttach(IRenderHost host, RenderTechnique technique)

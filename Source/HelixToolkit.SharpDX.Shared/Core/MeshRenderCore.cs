@@ -11,23 +11,16 @@ namespace HelixToolkit.UWP.Core
         public bool InvertNormal { set; get; } = false;
 
         private EffectScalarVariable bInvertNormalVar;
-        public BufferModel MeshBuffer { set; get; } = null;
-
         public MeshRenderCore()
         {
             OnRender = (context) => 
             {
                 EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
                 SetConstantVariables(context);
-                SetMaterialVariables(Geometry);
+                SetMaterialVariables(Geometry as MeshGeometry3D);
                 SetRasterState(context.DeviceContext);
-                MeshBuffer.AttachAndDraw(context.DeviceContext, InstanceBuffer);
+                GeometryBuffer.AttachAndDraw(context.DeviceContext, InstanceBuffer);
             };
-        }
-
-        protected override bool CanRender()
-        {
-            return base.CanRender() && MeshBuffer != null;
         }
 
         protected override bool OnAttach(IRenderHost host, RenderTechnique technique)

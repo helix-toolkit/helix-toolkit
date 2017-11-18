@@ -15,6 +15,9 @@ namespace HelixToolkit.UWP.Core
 
         public InstanceBufferModel InstanceBuffer { set; get; }
 
+        public Geometry3D Geometry { set; get; }
+        public BufferModel GeometryBuffer { set; get; }
+
         public virtual void CreateRasterState(Device device, RasterizerStateDescription description)
         {
             RemoveAndDispose(ref rasterState);
@@ -43,6 +46,11 @@ namespace HelixToolkit.UWP.Core
                 return true;
             }
             return false;
+        }
+
+        protected override bool CanRender()
+        {
+            return base.CanRender() && GeometryBuffer != null;
         }
     }
 }
