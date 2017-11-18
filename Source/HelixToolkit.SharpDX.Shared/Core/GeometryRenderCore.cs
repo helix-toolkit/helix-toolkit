@@ -15,15 +15,13 @@ namespace HelixToolkit.UWP.Core
 
         public InstanceBufferModel InstanceBuffer { set; get; }
 
-        public Matrix ModelMatrix { set; get; } = Matrix.Identity;
-
         public virtual void CreateRasterState(Device device, RasterizerStateDescription description)
         {
             RemoveAndDispose(ref rasterState);
             rasterState = Collect(new RasterizerState(device, description));
         }
 
-        public bool AttachRasterState(DeviceContext context)
+        public bool SetRasterState(DeviceContext context)
         {
             if (rasterState != null)
             {
