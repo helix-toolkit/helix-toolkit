@@ -14,6 +14,7 @@
     using Color = global::SharpDX.Color;
     using System.Runtime.CompilerServices;
     using System;
+    using Core;
 
     public class PointGeometryModel3D : GeometryModel3D
     {
@@ -123,6 +124,11 @@
             return (p - pb).Length();
         }
 
+        protected override GeometryBufferModel OnCreateBufferModel()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override bool CanHitTest(IRenderMatrices context)
         {
             return base.CanHitTest(context) && context != null;
@@ -215,7 +221,7 @@
                 CreateVertexBuffer();
         }
 
-        protected override void OnCreateGeometryBuffers()
+        protected void OnCreateGeometryBuffers()
         {
             CreateVertexBuffer();
         }

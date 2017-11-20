@@ -6,6 +6,7 @@ using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using HelixToolkit.Wpf.SharpDX.Utilities;
 using System;
+using HelixToolkit.Wpf.SharpDX.Core;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -91,7 +92,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         #region Overridable Methods
-
+        protected override GeometryBufferModel OnCreateBufferModel()
+        {
+            throw new NotImplementedException();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -137,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        protected override void OnCreateGeometryBuffers()
+        protected void OnCreateGeometryBuffers()
         {
             if (geometryInternal != null && geometryInternal.Positions != null)
             {

@@ -16,10 +16,10 @@ namespace HelixToolkit.UWP.Core
             OnRender = (context) => 
             {               
                 SetConstantVariables(context);
-                SetMaterialVariables(Geometry as MeshGeometry3D);
+                SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D);
                 SetRasterState(context.DeviceContext);
                 EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
-                GeometryBuffer.AttachAndDraw(context.DeviceContext, InstanceBuffer);
+                GeometryBuffer.AttachBuffersAndDraw(context.DeviceContext, this.VertexLayout, InstanceBuffer);
             };
         }
 

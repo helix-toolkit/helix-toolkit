@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Buffer = global::SharpDX.Direct3D11.Buffer;
     using System.Runtime.CompilerServices;
+    using Core;
 
     public class LineGeometryModel3D : InstanceGeometryModel3D
     {
@@ -111,6 +112,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             lineParams.X = (float)Thickness;
             lineParams.Y = (float)Smoothness;
+        }
+
+        protected override GeometryBufferModel OnCreateBufferModel()
+        {
+            throw new NotImplementedException();
         }
 
         protected override bool CheckGeometry()
@@ -196,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 CreateVertexBuffer();
         }
 
-        protected override void OnCreateGeometryBuffers()
+        protected void OnCreateGeometryBuffers()
         {
             // --- set up buffers            
             CreateVertexBuffer();

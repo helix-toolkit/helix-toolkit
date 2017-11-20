@@ -47,8 +47,7 @@ namespace HelixToolkit.UWP
     {
         InputLayout VertexLayout { get; }
         InstanceBufferModel InstanceBuffer { set; get; }
-        Geometry3D Geometry { set; get; }
-        BufferModel GeometryBuffer { set; get; }
+        GeometryBufferModel GeometryBuffer { set; get; }
         void CreateRasterState(RasterizerStateDescription description);
         bool SetRasterState(DeviceContext context);
     }

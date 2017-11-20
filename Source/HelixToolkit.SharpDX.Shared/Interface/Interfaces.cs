@@ -22,4 +22,9 @@ namespace HelixToolkit.Wpf.SharpDX
         event System.EventHandler<bool> OnInvalidateRenderer;
         bool AttachMaterial(MeshGeometry3D model);
     }
+
+    public interface IBufferModel : IDisposable
+    {
+
+    }
 }

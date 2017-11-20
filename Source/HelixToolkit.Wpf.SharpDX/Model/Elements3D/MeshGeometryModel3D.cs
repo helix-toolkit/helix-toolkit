@@ -90,11 +90,16 @@ namespace HelixToolkit.Wpf.SharpDX
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
 
-        private BufferModel Buffers;
-
         protected override IRenderCore CreateRenderCore()
         {
             return new MeshRenderCore();
+        }
+
+        protected override GeometryBufferModel OnCreateBufferModel()
+        {
+            var buffer = new MeshGeometryBufferModel<DefaultVertex>(DefaultVertex.SizeInBytes);
+            buffer.OnBuildVertexArray = CreateDefaultVertexArray;
+            return buffer;
         }
 
         protected override RasterizerStateDescription CreateRasterState()
@@ -114,98 +119,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsScissorEnabled = IsThrowingShadow? false : IsScissorEnabled,
             };
         }
-
-        protected override void OnCreateGeometryBuffers()
-        {
-            CreateVertexBuffer(CreateDefaultVertexArray);
-            (Buffers.IndexBuffer as IBufferProxy<int>).CreateBufferFromDataArray(this.Device, geometryInternal.Indices);
-        }
-
-        protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.OnGeometryPropertyChanged(sender, e);
-
-            if (e.PropertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates))
-                || e.PropertyName.Equals(nameof(MeshGeometry3D.Positions))
-                || e.PropertyName.Equals(nameof(MeshGeometry3D.Colors))
-                || e.PropertyName.Equals(Geometry3D.VertexBuffer))
-            {
-                OnUpdateVertexBuffer(CreateDefaultVertexArray);
-            }
-            else if (e.PropertyName.Equals(nameof(MeshGeometry3D.Indices)) || e.PropertyName.Equals(Geometry3D.TriangleBuffer))
-            {
-                (Buffers.IndexBuffer as IBufferProxy<int>).CreateBufferFromDataArray(this.Device, this.geometryInternal.Indices);
-                InvalidateRender();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        protected override bool OnAttach(IRenderHost host)
-        {
-            // --- attach
-            if (!base.OnAttach(host))
-            {
-                return false;
-            }
-            var core = RenderCore as GeometryRenderCore;
-            Buffers = BufferModel.CreateMeshBufferModel<DefaultVertex>(core.VertexLayout, DefaultVertex.SizeInBytes);
-            core.GeometryBuffer = Buffers;
-            core.InstanceBuffer = InstanceBuffer;
-            // --- scale texcoords
-            var texScale = TextureCoodScale;
-
-            // --- get geometry
-            var geometry = this.geometryInternal as MeshGeometry3D;
-
-            // -- set geometry if given
-            if (geometry != null)
-            {
-                //throw new HelixToolkitException("Geometry not found!");                
-
-                // --- init vertex buffer
-                OnCreateGeometryBuffers();
-            }
-            else
-            {
-                throw new System.Exception("Geometry must not be null");
-            }
-            // --- flush
-            //this.Device.ImmediateContext.Flush();
-            return true;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void OnUpdateVertexBuffer(Func<DefaultVertex[]> updateFunction)
-        {
-            CreateVertexBuffer(updateFunction);
-            InvalidateRender();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CreateVertexBuffer(Func<DefaultVertex[]> updateFunction)
-        {
-            // --- get geometry
-            var geometry = this.geometryInternal as MeshGeometry3D;
-
-            // -- set geometry if given
-            if (geometry != null && geometry.Positions != null)
-            {
-                var data = updateFunction();
-                (Buffers.VertexBuffer as IBufferProxy<DefaultVertex>).CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void OnDetach()
-        {
-            Disposer.RemoveAndDispose(ref Buffers);
-            base.OnDetach();
-        }     
 
         protected override bool CheckGeometry()
         {
@@ -283,9 +196,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Creates a <see cref="T:DefaultVertex[]"/>.
         /// </summary>
-        private DefaultVertex[] CreateDefaultVertexArray()
+        private DefaultVertex[] CreateDefaultVertexArray(MeshGeometry3D geometry)
         {
-            var geometry = this.geometryInternal as MeshGeometry3D;
+            //var geometry = this.geometryInternal as MeshGeometry3D;
             var positions = geometry.Positions.GetEnumerator();
             var vertexCount = geometry.Positions.Count;
 

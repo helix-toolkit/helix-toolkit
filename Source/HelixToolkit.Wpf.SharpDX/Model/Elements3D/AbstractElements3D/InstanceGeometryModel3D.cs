@@ -130,6 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 // --- init instances buffer            
                 InstanceBuffer.Initialize(effect);
                 InstancesChanged();
+                (RenderCore as IGeometryRenderCore).InstanceBuffer = InstanceBuffer;
                 return true;
             }
             else

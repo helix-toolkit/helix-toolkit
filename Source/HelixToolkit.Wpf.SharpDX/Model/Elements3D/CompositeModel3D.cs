@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using System;
     using global::SharpDX.Direct3D11;
+    using Core;
 
     /// <summary>
     ///     Represents a composite Model3D.
@@ -238,9 +239,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return hit;
         }
 
-        protected override void OnCreateGeometryBuffers()
+        protected override GeometryBufferModel OnCreateBufferModel()
         {
-            
+            return null;
         }
     }
 }

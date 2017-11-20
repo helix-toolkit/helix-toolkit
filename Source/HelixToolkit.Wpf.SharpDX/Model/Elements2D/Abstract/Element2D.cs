@@ -159,7 +159,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        protected IRenderable2D renderCore { private set; get; }
+        private IRenderable2D renderCore;
+        protected IRenderable2D RenderCore { get { return renderCore; } }
 
         protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
 
@@ -294,8 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// </summary>
         protected virtual void OnDetach()
         {
-            renderCore.Dispose();
-            renderCore = null;
+            Disposer.RemoveAndDispose(ref renderCore);
             renderHost = null;
         }
 

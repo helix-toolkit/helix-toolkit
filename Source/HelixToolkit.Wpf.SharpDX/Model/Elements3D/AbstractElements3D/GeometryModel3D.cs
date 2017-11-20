@@ -21,6 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System;
     using System.Runtime.CompilerServices;
+    using Core;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -48,6 +49,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty IsScissorEnabledProperty =
             DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+
+        public static readonly DependencyProperty BufferModelProperty =
+            DependencyProperty.Register("BufferModel", typeof(GeometryBufferModel), typeof(GeometryModel3D), new PropertyMetadata(null, (d,e)=> 
+            {
+                (d as GeometryModel3D).BufferModelInternal = e.NewValue as GeometryBufferModel;
+            }));
 
         public Geometry3D Geometry
         {
@@ -138,6 +145,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsScissorEnabledProperty);
             }
         }
+        /// <summary>
+        /// <para>BufferModel property is used for external buffer model sharing. 
+        /// If two models are binding to same geometry model, sharing buffer model only creates one buffer for both models, reduces video card memory usage and buffer creation time
+        /// </para>
+        /// </summary>
+        public GeometryBufferModel BufferModel
+        {
+            set
+            {
+                SetValue(BufferModelProperty, value);
+            }
+            get
+            {
+                return (GeometryBufferModel)GetValue(BufferModelProperty);
+            }
+        }
         #endregion
 
         #region Static Methods
@@ -159,7 +182,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
             }
             model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
-            (model.RenderCore as IGeometryRenderCore).Geometry = model.geometryInternal;
             if (model.geometryInternal != null && model.geometryInternal.Bound.Maximum == Vector3.Zero && model.geometryInternal.Bound.Minimum == Vector3.Zero)
             {
                 model.geometryInternal.UpdateBounds();
@@ -171,7 +193,55 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Properties
-        protected Geometry3D geometryInternal;
+        private GeometryBufferModel bufferModelInternal;
+        /// <summary>
+        /// Internal buffer model. Call OnCreateBufferModel to create default buffer model.
+        /// </summary>
+        protected GeometryBufferModel BufferModelInternal
+        {
+            private set
+            {
+                if(bufferModelInternal == value)
+                {
+                    return;
+                }
+                if (bufferModelInternal != null)
+                {
+                    bufferModelInternal.InvalidateRenderer -= BufferModel_InvalidateRenderer;
+                }
+                bufferModelInternal = value;
+                if (bufferModelInternal != null)
+                {
+                    bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
+                }
+            }
+            get
+            {
+                if(bufferModelInternal == null)
+                {
+                    BufferModel = OnCreateBufferModel();
+                }
+                return bufferModelInternal;
+            }
+        }
+
+        private void BufferModel_InvalidateRenderer(object sender, bool e)
+        {
+            this.InvalidateRender();
+        }
+
+        protected Geometry3D geometryInternal
+        {
+            set
+            {
+                BufferModelInternal.Geometry = value;
+            }
+            get
+            {
+                return BufferModelInternal.Geometry;
+            }
+        }
+
         public bool GeometryValid { private set; get; } = false;
 
         private BoundingBox bounds;
@@ -322,6 +392,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.IsThrowingShadow = true;
         }
 
+        protected abstract GeometryBufferModel OnCreateBufferModel();
+
         /// <summary>
         /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
         /// </summary>
@@ -336,22 +408,22 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
             GeometryValid = CheckGeometry();
-            if (GeometryValid && renderHost != null)
-            {
-                if (IsAttached)
-                {
-                    OnCreateGeometryBuffers();
-                }
-                else
-                {
-                    var host = renderHost;
-                    Detach();
-                    Attach(host);
-                }
-            }
+            //if (GeometryValid && renderHost != null)
+            //{
+            //    if (IsAttached)
+            //    {
+            //        //OnCreateGeometryBuffers();
+            //    }
+            //    else
+            //    {
+            //        var host = renderHost;
+            //        Detach();
+            //        Attach(host);
+            //    }
+            //}
         }
 
-        protected abstract void OnCreateGeometryBuffers();
+        //protected abstract void OnCreateGeometryBuffers();
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {
@@ -414,6 +486,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (base.OnAttach(host) && CheckGeometry())
             {
                 AttachOnGeometryPropertyChanged();
+                (RenderCore as IGeometryRenderCore).GeometryBuffer = BufferModelInternal;
                 return true;
             }
             else
@@ -435,6 +508,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
+            BufferModelInternal.DisposeAndClear();
             DetachOnGeometryPropertyChanged();
             base.OnDetach();
         }

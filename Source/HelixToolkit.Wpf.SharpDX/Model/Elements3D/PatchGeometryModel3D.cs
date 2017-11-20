@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.DXGI;
     using Utilities;
     using System;
+    using Core;
 
     public static class TessellationTechniques
     {
@@ -185,6 +186,11 @@ namespace HelixToolkit.Wpf.SharpDX
             // System.Console.WriteLine();
 
         }
+
+        protected override GeometryBufferModel OnCreateBufferModel()
+        {
+            throw new NotImplementedException();
+        }
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()
@@ -203,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        protected override void OnCreateGeometryBuffers()
+        protected void OnCreateGeometryBuffers()
         {
             // --- init vertex buffer
             vertexBuffer.CreateBufferFromDataArray(Device, CreateDefaultVertexArray(), geometryInternal.Positions.Count);

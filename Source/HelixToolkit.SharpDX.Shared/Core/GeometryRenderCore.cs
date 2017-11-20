@@ -15,12 +15,15 @@ namespace HelixToolkit.UWP.Core
 
         public InstanceBufferModel InstanceBuffer { set; get; }
 
-        public Geometry3D Geometry { set; get; }
-        public BufferModel GeometryBuffer { set; get; }
+        public GeometryBufferModel GeometryBuffer{ set; get; }
+
+        private RasterizerStateDescription rasterDescription;
 
         public void CreateRasterState(RasterizerStateDescription description)
         {
-            if (!IsAttached) { return; }
+            rasterDescription = description;
+            if (!IsAttached)
+            { return; }
             RemoveAndDispose(ref rasterState);
             rasterState = Collect(new RasterizerState(Device, description));
         }
@@ -44,6 +47,7 @@ namespace HelixToolkit.UWP.Core
             {
                 this.VertexLayout = host.EffectsManager.GetLayout(technique);
                 this.EffectTechnique = Effect.GetTechniqueByName(technique.Name);
+                CreateRasterState(rasterDescription);
                 return true;
             }
             return false;
