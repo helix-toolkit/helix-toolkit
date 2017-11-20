@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\RectangleRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\GeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BufferModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\LineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MaterialGeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\RenderCoreBase.cs" />

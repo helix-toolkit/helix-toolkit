@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(renderCore == null)
                 {
-                    RenderCore = CreateRenderCore();
+                    RenderCore = OnCreateRenderCore();
                 }
                 return renderCore;
             }
@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
 
-        protected virtual IRenderCore CreateRenderCore() { return null; }
+        protected virtual IRenderCore OnCreateRenderCore() { return null; }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>

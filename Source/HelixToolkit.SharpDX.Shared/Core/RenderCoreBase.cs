@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Set additional per model shader constant variables such as model->world matrix etc.
         /// </summary>
-        protected virtual void SetConstantVariables(IRenderMatrices matrices)
+        protected virtual void SetShaderVariables(IRenderMatrices matrices)
         {
             SetModelWorldMatrix(ModelMatrix * matrices.WorldMatrix);
         }

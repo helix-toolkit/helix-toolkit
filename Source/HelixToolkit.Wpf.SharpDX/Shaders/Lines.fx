@@ -15,11 +15,12 @@
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------
-//cbuffer cbPerObject
-//{
-	float4 vLineParams = float4(0,0,0,0);
+cbuffer lineObject
+{
+float4 vLineParams = float4(0,0,0,0);
+float4 vLineColor = float4(1, 0, 0, 0);
 	//bool   bHasInstances	 = false;
-//}
+}
 
 
 
@@ -145,7 +146,7 @@ float4 PShaderLines( PSInputLS input ) : SV_Target
  //   float4 color = input.c;
  //   color.a *= alpha;
  //   return color;	
-	return input.c;
+    return input.c * vLineColor;
 }
 
 float4 PShaderLinesFade( PSInputLS input) : SV_Target
@@ -169,7 +170,7 @@ float4 PShaderLinesFade( PSInputLS input) : SV_Target
 	//if(alpha<0.1) discard;
 
     // Standard wire color
-    float4 color = input.c;	
+    float4 color = input.c * vLineColor;
 	
 	//color = texDiffuseMap.Sample(SSLinearSamplerWrap, input.t.xy);	
 	color.a = alpha;
@@ -186,7 +187,7 @@ float4 PSDrawTool( PSInputLS input) : SV_Target
     float dist = arrowScale * alpha;
     alpha = exp2(-4*dist*dist*dist*dist);
     
-    float4 color = input.c;
+    float4 color = input.c * vLineColor;
     color.a *= alpha;
     return color;
 }

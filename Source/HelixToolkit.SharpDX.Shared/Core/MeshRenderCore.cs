@@ -1,6 +1,5 @@
-﻿#if !NETFX_CORE
-using SharpDX.Direct3D11;
-
+﻿using SharpDX.Direct3D11;
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
@@ -8,14 +7,14 @@ namespace HelixToolkit.UWP.Core
 {
     public class MeshRenderCore : MaterialGeometryRenderCore
     {
-        public bool InvertNormal { set; get; } = false;
+        public bool InvertNormal = false;
 
         private EffectScalarVariable bInvertNormalVar;
         public MeshRenderCore()
         {
             OnRender = (context) => 
             {               
-                SetConstantVariables(context);
+                SetShaderVariables(context);
                 SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D);
                 SetRasterState(context.DeviceContext);
                 EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
@@ -36,9 +35,9 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void SetConstantVariables(IRenderMatrices context)
+        protected override void SetShaderVariables(IRenderMatrices context)
         {
-            base.SetConstantVariables(context);
+            base.SetShaderVariables(context);
             bInvertNormalVar.Set(InvertNormal);
         }
     }

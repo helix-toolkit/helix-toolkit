@@ -15,7 +15,7 @@ namespace LineShadingDemo
     using HelixToolkit.Wpf.SharpDX.Core;
 
     using SharpDX;
-
+    using Media = System.Windows.Media;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
@@ -34,7 +34,7 @@ namespace LineShadingDemo
         public PhongMaterial Material1 { get; private set; }
         public PhongMaterial Material2 { get; private set; }
         public PhongMaterial Material3 { get; private set; }        
-        public SharpDX.Color GridColor { get; private set; }
+        public Media.Color GridColor { get; private set; }
 
         public Transform3D Model1Transform { get; private set; }
         public Transform3D Model2Transform { get; private set; }
@@ -65,7 +65,7 @@ namespace LineShadingDemo
 
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid();
-            this.GridColor = SharpDX.Color.Black;
+            this.GridColor = Media.Colors.Black;
             this.GridTransform = new TranslateTransform3D(-5, -1, -5);
 
             // scene model3d

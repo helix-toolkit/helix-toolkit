@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Core
 
     public class InstanceBufferModel : DisposeObject, IGUID
     {
-        public System.Guid GUID { get; } = System.Guid.NewGuid();
+        public Guid GUID { get; } = Guid.NewGuid();
         public bool Initialized { private set; get; }
         public bool HasInstance { set; get; } = false;
         public DynamicBufferProxy<Matrix> InstanceBuffer { private set; get; }
@@ -173,18 +173,31 @@ namespace HelixToolkit.UWP.Core
             {
                 if (instanceModel == null || !instanceModel.HasInstance)
                 {
-                    context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset * VertexBuffer.StructureSize));
+                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings());
                 }
                 else
                 {
                     instanceModel.Attach(context);
-                    context.InputAssembler.SetVertexBuffers(0, new[] {
-                        new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset*VertexBuffer.StructureSize),
-                        new VertexBufferBinding(instanceModel.InstanceBuffer.Buffer, instanceModel.InstanceBuffer.StructureSize, instanceModel.InstanceBuffer.Offset * instanceModel.InstanceBuffer.StructureSize)
-                    });
+                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings(instanceModel.InstanceBuffer));
                 }
             }
             return true;
+        }
+
+        protected virtual VertexBufferBinding[] CreateBufferBindings(IBufferProxy instanceBuffer = null)
+        {
+            if (instanceBuffer == null)
+            {
+                return new[] { new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset * VertexBuffer.StructureSize) };
+            }
+            else
+            {
+                return new[]
+                {
+                    new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset*VertexBuffer.StructureSize),
+                    new VertexBufferBinding(instanceBuffer.Buffer, instanceBuffer.StructureSize, instanceBuffer.Offset * instanceBuffer.StructureSize)
+                };
+            }
         }
         /// <summary>
         /// Attach buffers and draw
@@ -243,7 +256,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public static GeometryBufferModel CreateLineBufferModel<VertexStruct>(int structSize) where VertexStruct : struct
         {
-            return CreateBufferModel<VertexStruct>(PrimitiveTopology.LineList, structSize);
+            return new LineGeometryBufferModel<VertexStruct>(structSize);
         }
         /// <summary>
         /// Create point geometry buffer model with Topology = PointList
@@ -254,7 +267,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public static GeometryBufferModel CreatePointBufferModel<VertexStruct>(int structSize) where VertexStruct : struct
         {
-            return CreateBufferModel<VertexStruct>(PrimitiveTopology.PointList, structSize, false);
+            return new PointGeometryBufferModel<VertexStruct>(structSize);
         }
         /// <summary>
         /// Create billboard geometry buffer model with Topology = TriangleStrip
@@ -311,6 +324,75 @@ namespace HelixToolkit.UWP.Core
         protected override bool IsVertexBufferChanged(string propertyName)
         {
             return base.IsVertexBufferChanged(propertyName) || propertyName.Equals(nameof(MeshGeometry3D.Colors)) || propertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates));
+        }
+    }
+
+    public class LineGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
+    {
+        public delegate VertexStruct[] BuildVertexArrayHandler(LineGeometry3D geometry);
+        /// <summary>
+        /// Create VertexStruct[] from geometry position, texturecoord, colors, etc.
+        /// </summary>
+        public BuildVertexArrayHandler OnBuildVertexArray;
+
+        public LineGeometryBufferModel(int structSize) : base(PrimitiveTopology.LineList,
+            new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer))
+        {
+            OnCreateVertexBuffer = (context, buffer, geometry) =>
+            {
+                // -- set geometry if given
+                if (geometry != null && geometry.Positions != null && OnBuildVertexArray != null)
+                {
+                    // --- get geometry
+                    var mesh = geometry as LineGeometry3D;
+                    var data = OnBuildVertexArray(mesh);
+                    (buffer as IBufferProxy<VertexStruct>).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                }
+                else
+                {
+                    buffer.Dispose();
+                }
+            };
+            OnCreateIndexBuffer = (context, buffer, geometry) =>
+            {
+                if (geometry.Indices != null)
+                {
+                    (buffer as IBufferProxy<int>).CreateBufferFromDataArray(context.Device, geometry.Indices);
+                }
+                else
+                {
+                    buffer.Dispose();
+                }
+            };
+        }
+    }
+
+    public class PointGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
+    {
+        public delegate VertexStruct[] BuildVertexArrayHandler(PointGeometry3D geometry);
+        /// <summary>
+        /// Create VertexStruct[] from geometry position, texturecoord, colors, etc.
+        /// </summary>
+        public BuildVertexArrayHandler OnBuildVertexArray;
+
+        public PointGeometryBufferModel(int structSize) : base(PrimitiveTopology.PointList,
+            new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), null)
+        {
+            OnCreateVertexBuffer = (context, buffer, geometry) =>
+            {
+                // -- set geometry if given
+                if (geometry != null && geometry.Positions != null && OnBuildVertexArray != null)
+                {
+                    // --- get geometry
+                    var mesh = geometry as PointGeometry3D;
+                    var data = OnBuildVertexArray(mesh);
+                    (buffer as IBufferProxy<VertexStruct>).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                }
+                else
+                {
+                    buffer.Dispose();
+                }
+            };
         }
     }
 }

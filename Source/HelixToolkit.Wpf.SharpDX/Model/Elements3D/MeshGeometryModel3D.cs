@@ -90,9 +90,9 @@ namespace HelixToolkit.Wpf.SharpDX
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
 
-        protected override IRenderCore CreateRenderCore()
+        protected override IRenderCore OnCreateRenderCore()
         {
-            return new MeshRenderCore();
+            return new MeshRenderCore() { InvertNormal = this.InvertNormal };
         }
 
         protected override GeometryBufferModel OnCreateBufferModel()
