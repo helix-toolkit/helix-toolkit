@@ -13,16 +13,10 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
-    public class GeometryBufferModel : DisposeObject, IGUID
+    public abstract class GeometryBufferModel : DisposeObject, IGUID
     {
         public Guid GUID { get; } = Guid.NewGuid();
-        public delegate void OnCreateBufferHandler(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
-        public delegate bool OnAttachBufferHanlder(DeviceContext context, InputLayout vertexLayout, InstanceBufferModel instanceModel);
-        public delegate void OnDrawHanlder(DeviceContext context, InstanceBufferModel instanceModel);
-        public OnCreateBufferHandler OnCreateVertexBuffer;
-        public OnCreateBufferHandler OnCreateIndexBuffer;
-        public OnAttachBufferHanlder OnAttachBuffer;
-        public OnDrawHanlder OnDraw;
+
         public event EventHandler<bool> InvalidateRenderer;
         /// <summary>
         /// change flags
@@ -66,89 +60,75 @@ namespace HelixToolkit.UWP.Core
             VertexBuffer = Collect(vertexBuffer);
             if (indexBuffer != null)
             { IndexBuffer = Collect(indexBuffer); }
+        }
 
-            OnAttachBuffer = (context, vertexLayout, instanceModel) =>
+        #endregion
+
+        protected abstract void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
+        protected abstract void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
+
+        protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, InstanceBufferModel instanceModel)
+        {
+            if (VertexChanged)
             {
-                if (VertexChanged)
+                OnCreateVertexBuffer(context, VertexBuffer, Geometry);
+                VertexChanged = false;
+            }
+            if (IndexChanged)
+            {
+                OnCreateIndexBuffer(context, IndexBuffer, Geometry);
+                IndexChanged = false;
+            }
+            context.InputAssembler.InputLayout = vertexLayout;
+            context.InputAssembler.PrimitiveTopology = Topology;
+            if (IndexBuffer != null)
+            {
+                context.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset * IndexBuffer.StructureSize);
+            }
+            else
+            {
+                context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
+            }
+            if (VertexBuffer != null)
+            {
+                if (instanceModel == null || !instanceModel.HasInstance)
                 {
-                    OnCreateVertexBuffer?.Invoke(context, VertexBuffer, Geometry);
-                    VertexChanged = false;
-                }
-                if (IndexChanged)
-                {
-                    OnCreateIndexBuffer?.Invoke(context, IndexBuffer, Geometry);
-                    IndexChanged = false;
-                }
-                context.InputAssembler.InputLayout = vertexLayout;
-                context.InputAssembler.PrimitiveTopology = Topology;
-                if (IndexBuffer != null)
-                {
-                    context.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset * IndexBuffer.StructureSize);
+                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings());
                 }
                 else
                 {
-                    context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
+                    instanceModel.Attach(context);
+                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings(instanceModel.InstanceBuffer));
                 }
-                if (VertexBuffer != null)
-                {
-                    if (instanceModel == null || !instanceModel.HasInstance)
-                    {
-                        context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings());
-                    }
-                    else
-                    {
-                        instanceModel.Attach(context);
-                        context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings(instanceModel.InstanceBuffer));
-                    }
-                }
-                return true;
-            };
-            OnDraw = (context, instanceModel) =>
+            }
+            return true;
+        }
+        protected virtual void OnDraw(DeviceContext context, InstanceBufferModel instanceModel)
+        {
+            if (IndexBuffer != null)
             {
-                if (IndexBuffer != null)
+                if (instanceModel == null || !instanceModel.HasInstance)
                 {
-                    if (instanceModel == null || !instanceModel.HasInstance)
-                    {
-                        context.DrawIndexed(IndexBuffer.Count, IndexBuffer.Offset, 0);
-                    }
-                    else
-                    {
-                        context.DrawIndexedInstanced(IndexBuffer.Count, instanceModel.InstanceBuffer.Count, IndexBuffer.Offset, 0, instanceModel.InstanceBuffer.Offset);
-                    }
+                    context.DrawIndexed(IndexBuffer.Count, IndexBuffer.Offset, 0);
                 }
-                else if (VertexBuffer != null)
+                else
                 {
-                    if (instanceModel == null || !instanceModel.HasInstance)
-                    {
-                        context.Draw(VertexBuffer.Count, VertexBuffer.Offset);
-                    }
-                    else
-                    {
-                        context.DrawInstanced(VertexBuffer.Count, instanceModel.InstanceBuffer.Count,
-                            VertexBuffer.Offset, instanceModel.InstanceBuffer.Offset);
-                    }
+                    context.DrawIndexedInstanced(IndexBuffer.Count, instanceModel.InstanceBuffer.Count, IndexBuffer.Offset, 0, instanceModel.InstanceBuffer.Offset);
                 }
-            };
+            }
+            else if (VertexBuffer != null)
+            {
+                if (instanceModel == null || !instanceModel.HasInstance)
+                {
+                    context.Draw(VertexBuffer.Count, VertexBuffer.Offset);
+                }
+                else
+                {
+                    context.DrawInstanced(VertexBuffer.Count, instanceModel.InstanceBuffer.Count,
+                        VertexBuffer.Offset, instanceModel.InstanceBuffer.Offset);
+                }
+            }
         }
-
-
-        public GeometryBufferModel(PrimitiveTopology topology, IBufferProxy vertexBuffer, IBufferProxy indexBuffer,
-            OnCreateBufferHandler onCreateVertexBuffer, OnCreateBufferHandler onCreateIndexBuffer)
-            : this(topology, vertexBuffer, indexBuffer)
-        {
-            OnCreateVertexBuffer = onCreateVertexBuffer;
-            OnCreateIndexBuffer = onCreateIndexBuffer;
-        }
-
-        public GeometryBufferModel(PrimitiveTopology topology, IBufferProxy vertexBuffer, IBufferProxy indexBuffer, 
-            OnCreateBufferHandler onCreateVertexBuffer, OnCreateBufferHandler onCreateIndexBuffer, 
-            OnAttachBufferHanlder attachBufferHandler, OnDrawHanlder drawHandler) 
-            : this(topology, vertexBuffer, indexBuffer, onCreateVertexBuffer, onCreateIndexBuffer)
-        {
-            OnAttachBuffer = attachBufferHandler;
-            OnDraw = drawHandler;
-        }
-        #endregion
 
         private void Geometry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -182,7 +162,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, InstanceBufferModel instanceModel)
         {
-            return OnAttachBuffer != null ? OnAttachBuffer.Invoke(context, vertexLayout, instanceModel) : false;
+            return OnAttachBuffer(context, vertexLayout, instanceModel);
         }
 
         protected virtual VertexBufferBinding[] CreateBufferBindings(IBufferProxy instanceBuffer = null)
@@ -210,7 +190,7 @@ namespace HelixToolkit.UWP.Core
         {           
             if(AttachBuffers(context, vertexLayout, instanceModel))
             {
-                OnDraw?.Invoke(context, instanceModel);
+                OnDraw(context, instanceModel);
                 return true;
             }
             else
@@ -221,20 +201,9 @@ namespace HelixToolkit.UWP.Core
 
         public void Draw(DeviceContext context, InstanceBufferModel instanceModel)
         {
-            OnDraw?.Invoke(context, instanceModel);
+            OnDraw(context, instanceModel);
         }
-        /// <summary>
-        /// Create buffer model, contains vertex buffer and index buffer
-        /// </summary>
-        /// <typeparam name="VertexStruct"></typeparam>
-        /// <param name="layout">Input layout for vertex shader binding</param>
-        /// <param name="structSize">VertexStruct size by bytes</param>
-        /// <returns></returns>
-        public static GeometryBufferModel CreateBufferModel<VertexStruct>(PrimitiveTopology topology, int structSize, bool hasIndexBuffer = true) where VertexStruct : struct
-        {
-            return new GeometryBufferModel(topology, 
-                new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer));
-        }
+
         /// <summary>
         /// Create mesh geometry buffer model with Topology = TriangleList
         /// </summary>
@@ -277,7 +246,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public static GeometryBufferModel CreateBillboardBufferModel<VertexStruct>(int structSize) where VertexStruct : struct
         {
-            return CreateBufferModel<VertexStruct>(PrimitiveTopology.TriangleStrip, structSize);
+            return new BillboardBufferModel<VertexStruct>(structSize);
         }
     }
 
