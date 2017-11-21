@@ -189,32 +189,46 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 throw GetConvertFromException(value);
             }
-
-            var source = value as string;
-
-            if (source != null)
+            if(value is string)
             {
-                var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
-                var result = new Color(
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
-                return result;
-            }
+                var source = value as string;
 
+                if (source != null)
+                {
+                    var color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(source);
+                    return new Color(color.R, color.G, color.B, color.A);
+                    //var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
+                    //var result = new Color(
+                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                    //return result;
+                }
+            }
+            else if(value is System.Windows.Media.Color)
+            {
+                return (Color)((System.Windows.Media.Color)value).ToColor4();
+            }
             return base.ConvertFrom(context, culture, value);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(string) && value is Color)
+            if(value is Color)
             {
                 var val = (Color)value;
-                var str = string.Format("{0},{1},{2},{3}", val.R, val.G, val.B, val.A);
-                return str;
+                if (destinationType == typeof(string) && value is Color)
+                {
+                   
+                    var str = string.Format("{0},{1},{2},{3}", val.R, val.G, val.B, val.A);
+                    return str;
+                }
+                else if(destinationType == typeof(System.Windows.Media.Color))
+                {
+                    return System.Windows.Media.Color.FromArgb(val.A, val.R, val.G, val.B);
+                }
             }
-
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }

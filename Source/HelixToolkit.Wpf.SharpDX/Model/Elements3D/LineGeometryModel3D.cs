@@ -15,7 +15,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Linq;
     using System.Windows;
     using Core;
-    using Media = System.Windows.Media;
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
 
@@ -23,9 +22,9 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(Media.Colors.Black, (d, e) =>
+            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(Color.Black, (d, e) =>
             {
-                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
+                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).LineColor = (Color)e.NewValue;
             }));
 
         public static readonly DependencyProperty ThicknessProperty =
@@ -44,9 +43,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
-        public Media.Color Color
+        [TypeConverter(typeof(Utilities.ColorConverter))]
+        public Color Color
         {
-            get { return (Media.Color)this.GetValue(ColorProperty); }
+            get { return (Color)this.GetValue(ColorProperty); }
             set { this.SetValue(ColorProperty, value); }
         }
 
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override IRenderCore OnCreateRenderCore()
         {
             var core = new LineRenderCore();
-            core.LineColor = Color.ToColor4();
+            core.LineColor = Color;
             core.LineParams.X = (float)Thickness;
             core.LineParams.Y = (float)Smoothness;
             return core;
@@ -222,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 for (var i = 0; i < vertexCount; i++)
                 {
                     array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = global::SharpDX.Color.White;
+                    array[i].Color = Color.White;
                 }
             }
 

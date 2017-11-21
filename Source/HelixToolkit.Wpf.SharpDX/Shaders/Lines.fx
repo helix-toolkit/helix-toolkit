@@ -15,12 +15,9 @@
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------
-cbuffer lineObject
-{
-float4 vLineParams = float4(0,0,0,0);
-float4 vLineColor = float4(1, 0, 0, 0);
-	//bool   bHasInstances	 = false;
-}
+
+float4 vLineParams = float4( 0, 0, 0, 0);
+float4 vLineColor = float4(1, 1, 1, 1);
 
 
 

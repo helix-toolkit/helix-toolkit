@@ -28,10 +28,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         public static readonly DependencyProperty LineColorProperty
-            = DependencyProperty.Register("LineColor", typeof(Media.Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Media.Colors.Green));
+            = DependencyProperty.Register("LineColor", typeof(Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Color.Green));
 
         public static readonly DependencyProperty HitLineColorProperty
-            = DependencyProperty.Register("HitLineColor", typeof(Media.Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Media.Colors.Red));
+            = DependencyProperty.Register("HitLineColor", typeof(Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Color.Red));
 
         public IOctree<GeometryModel3D> Octree
         {
@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public Media.Color LineColor
+        public Color LineColor
         {
             set
             {
@@ -53,10 +53,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Media.Color)GetValue(LineColorProperty);
+                return (Color)GetValue(LineColorProperty);
             }
         }
-        public Media.Color HitLineColor
+        public Color HitLineColor
         {
             set
             {
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Media.Color)GetValue(HitLineColorProperty);
+                return (Color)GetValue(HitLineColorProperty);
             }
         }
 

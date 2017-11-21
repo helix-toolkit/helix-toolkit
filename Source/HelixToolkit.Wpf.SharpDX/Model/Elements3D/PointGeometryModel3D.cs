@@ -12,7 +12,6 @@
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Color = global::SharpDX.Color;
-    using System.Runtime.CompilerServices;
     using System;
     using Core;
 
@@ -21,16 +20,19 @@
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(PointGeometryModel3D),
-                new AffectsRenderPropertyMetadata(Color.Black, (o, e) => ((PointGeometryModel3D)o).OnColorChanged()));
+                new AffectsRenderPropertyMetadata(Color.Black, (d, e) =>
+                {
+                    ((d as GeometryModel3D).RenderCore as PointRenderCore).PointColor = (Color)e.NewValue;
+                }));
 
         public static readonly DependencyProperty SizeProperty =
             DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0),
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
-                    var model = (d as PointGeometryModel3D);
-                    model.pointParams.X = (float)size.Width;
-                    model.pointParams.Y = (float)size.Height;
+                    var model = (d as GeometryModel3D);
+                    (model.RenderCore as PointRenderCore).PointParams.X = (float)size.Width;
+                    (model.RenderCore as PointRenderCore).PointParams.Y = (float)size.Height;
                 }));
 
         public static readonly DependencyProperty FigureProperty =
@@ -38,8 +40,8 @@
                 (d, e)=> 
                 {
                     var figure = (PointFigure)e.NewValue;
-                    var model = (d as PointGeometryModel3D);
-                    model.pointParams.Z = (float)figure;
+                    var model = (d as GeometryModel3D);
+                    (model.RenderCore as PointRenderCore).PointParams.Z = (float)figure;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
@@ -47,8 +49,8 @@
                 (d, e)=> 
                 {
                     var ratio = (double)e.NewValue;
-                    var model = (d as PointGeometryModel3D);
-                    model.pointParams.W = (float)ratio;
+                    var model = (d as GeometryModel3D);
+                    (model.RenderCore as PointRenderCore).PointParams.W = (float)ratio;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
@@ -87,29 +89,6 @@
         #endregion
         [ThreadStatic]
         private static PointsVertex[] vertexArrayBuffer;
-        protected EffectVectorVariable vPointParams;
-        private readonly ImmutableBufferProxy<PointsVertex> vertexBuffer = new ImmutableBufferProxy<PointsVertex>(PointsVertex.SizeInBytes, BindFlags.VertexBuffer);
-        protected Vector4 pointParams = new Vector4();
-        /// <summary>
-        /// For subclass override
-        /// </summary>
-        public virtual IBufferProxy VertexBuffer
-        {
-            get
-            {
-                return vertexBuffer;
-            }
-        }
-
-
-
-        public PointGeometryModel3D() : base()
-        {
-            pointParams.X = (float)Size.Width;
-            pointParams.Y = (float)Size.Height;
-            pointParams.Z = (float)Figure;
-            pointParams.W = (float)FigureRatio;
-        }
 
         public static double DistanceRayToPoint(Ray r, Vector3 p)
         {
@@ -126,7 +105,20 @@
 
         protected override GeometryBufferModel OnCreateBufferModel()
         {
-            throw new NotImplementedException();
+            var buffer = new PointGeometryBufferModel<PointsVertex>(PointsVertex.SizeInBytes);
+            buffer.OnBuildVertexArray = CreateVertexArray;
+            return buffer;
+        }
+
+        protected override IRenderCore OnCreateRenderCore()
+        {
+            var core = new PointRenderCore();
+            core.PointParams.X = (float)Size.Width;
+            core.PointParams.Y = (float)Size.Height;
+            core.PointParams.Z = (float)Figure;
+            core.PointParams.W = (float)FigureRatio;
+            core.PointColor = Color;
+            return core;
         }
 
         protected override bool CanHitTest(IRenderMatrices context)
@@ -215,43 +207,6 @@
             };
         }
 
-        private void OnColorChanged()
-        {
-            if(IsAttached)
-                CreateVertexBuffer();
-        }
-
-        protected void OnCreateGeometryBuffers()
-        {
-            CreateVertexBuffer();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CreateVertexBuffer()
-        {
-            var geometry = geometryInternal as PointGeometry3D;
-            if (geometry != null && geometry.Positions != null)
-            {
-                // --- set up buffers            
-                var data = CreateVertexArray();
-                vertexBuffer.CreateBufferFromDataArray(this.Device, data, geometry.Positions.Count);
-            }
-            InvalidateRender();
-        }
-
-        protected override void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.OnGeometryPropertyChanged(sender, e);
-            if (sender is PointGeometry3D)
-            {
-                if (e.PropertyName.Equals(nameof(PointGeometry3D.Positions)) || e.PropertyName.Equals(nameof(PointGeometry3D.Colors))
-                    || e.PropertyName.Equals(Geometry3D.VertexBuffer))
-                {
-                    CreateVertexBuffer();
-                }
-            }
-        }
-
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
@@ -261,44 +216,7 @@
         {
             return geometryInternal is PointGeometry3D && this.geometryInternal != null && this.geometryInternal.Positions != null && this.geometryInternal.Positions.Count > 0;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (!base.OnAttach(host))
-            {
-                return false;
-            }
 
-            if (renderHost.IsDeferredLighting)
-                return false;
-
-            OnCreateGeometryBuffers();
-
-            // --- set up const variables
-            vPointParams = effect.GetVariableByName("vPointParams").AsVector();
-
-            // --- set effect per object const vars
-            var pointParams = new Vector4((float)Size.Width, (float)Size.Height, (float)Figure, (float)FigureRatio);
-            vPointParams.Set(pointParams);
-
-            // --- flush
-            //Device.ImmediateContext.Flush();
-            return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void OnDetach()
-        {
-            vertexBuffer.Dispose();
-            Disposer.RemoveAndDispose(ref this.vPointParams);
-            this.renderTechnique = null;
-            base.OnDetach();
-        }
 
         protected override bool CanRender(RenderContext context)
         {
@@ -311,65 +229,56 @@
                 return false;
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void OnRender(RenderContext renderContext)
-        {       
-            /*
-            // --- set transform paramerers             
-            var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.EffectTransforms.World.SetMatrix(ref worldMatrix);
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //protected override void OnRender(RenderContext renderContext)
+        //{       
+        //    /*
+        //    // --- set transform paramerers             
+        //    var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
+        //    this.EffectTransforms.World.SetMatrix(ref worldMatrix);
 
-            // --- set effect per object const vars
-            this.vPointParams.Set(pointParams);
+        //    // --- set effect per object const vars
+        //    this.vPointParams.Set(pointParams);
 
-            // --- set context
-            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
+        //    // --- set context
+        //    renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
+        //    renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
 
-            // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
+        //    // --- set rasterstate            
+        //    renderContext.DeviceContext.Rasterizer.State = this.RasterState;
 
-            // --- bind buffer                
-            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0,
-                new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
+        //    // --- bind buffer                
+        //    renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0,
+        //        new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
 
-            // --- render the geometry
-            this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
+        //    // --- render the geometry
+        //    this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
 
-            renderContext.DeviceContext.Draw(this.geometryInternal.Positions.Count, 0);
-            */
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Dispose()
-        {
-            this.Detach();
-        }
+        //    renderContext.DeviceContext.Draw(this.geometryInternal.Positions.Count, 0);
+        //    */
+        //}
 
         /// <summary>
         /// Creates a <see cref="T:PointsVertex[]"/>.
         /// </summary>
-        private PointsVertex[] CreateVertexArray()
+        private PointsVertex[] CreateVertexArray(PointGeometry3D geometry)
         {
-            var positions = this.geometryInternal.Positions;
-            var vertexCount = this.geometryInternal.Positions.Count;
-            var color = this.Color;
+            var positions = geometry.Positions;
+            var vertexCount = geometry.Positions.Count;
             var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
             if (ReuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }
-            if (this.geometryInternal.Colors != null && this.geometryInternal.Colors.Any())
+            if (geometry.Colors != null && geometry.Colors.Any())
             {
-                var colors = this.geometryInternal.Colors;
+                var colors = geometry.Colors;
                 for (var i = 0; i < vertexCount; i++)
                 {
                     array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = color * colors[i];
+                    array[i].Color = colors[i];
                 }
             }
             else
@@ -377,7 +286,7 @@
                 for (var i = 0; i < vertexCount; i++)
                 {
                     array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = color;
+                    array[i].Color = Color.White;
                 }
             }
 

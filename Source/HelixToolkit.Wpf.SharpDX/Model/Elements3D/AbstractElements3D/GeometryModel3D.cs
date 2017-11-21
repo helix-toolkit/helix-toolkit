@@ -214,6 +214,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
                 }
+                (RenderCore as IGeometryRenderCore).GeometryBuffer = bufferModelInternal;
             }
             get
             {
@@ -408,19 +409,12 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
             GeometryValid = CheckGeometry();
-            //if (GeometryValid && renderHost != null)
-            //{
-            //    if (IsAttached)
-            //    {
-            //        //OnCreateGeometryBuffers();
-            //    }
-            //    else
-            //    {
-            //        var host = renderHost;
-            //        Detach();
-            //        Attach(host);
-            //    }
-            //}
+            if (GeometryValid && renderHost != null && !IsAttached)
+            {
+                var host = renderHost;
+                Detach();
+                Attach(host);
+            }
         }
 
         //protected abstract void OnCreateGeometryBuffers();
@@ -483,7 +477,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host"></param>
         protected override bool OnAttach(IRenderHost host)
         {
-            if (base.OnAttach(host) && CheckGeometry())
+            if (GeometryValid && base.OnAttach(host))
             {
                 AttachOnGeometryPropertyChanged();
                 (RenderCore as IGeometryRenderCore).GeometryBuffer = BufferModelInternal;
