@@ -229,36 +229,6 @@
                 return false;
             }
         }
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //protected override void OnRender(RenderContext renderContext)
-        //{       
-        //    /*
-        //    // --- set transform paramerers             
-        //    var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-        //    this.EffectTransforms.World.SetMatrix(ref worldMatrix);
-
-        //    // --- set effect per object const vars
-        //    this.vPointParams.Set(pointParams);
-
-        //    // --- set context
-        //    renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-        //    renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
-
-        //    // --- set rasterstate            
-        //    renderContext.DeviceContext.Rasterizer.State = this.RasterState;
-
-        //    // --- bind buffer                
-        //    renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0,
-        //        new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
-
-        //    // --- render the geometry
-        //    this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-
-        //    renderContext.DeviceContext.Draw(this.geometryInternal.Positions.Count, 0);
-        //    */
-        //}
 
         /// <summary>
         /// Creates a <see cref="T:PointsVertex[]"/>.

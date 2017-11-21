@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP.Utilities
         protected SDX11.Buffer buffer;
         public int StructureSize { get; private set; }
         public int Count { get; protected set; } = 0;
-        public int Offset { get; protected set; } = 0;
+        public int Offset { get; set; } = 0;
         public SDX11.Buffer Buffer { get { return buffer; } }
         public BindFlags BindFlags { private set; get; }
         
@@ -201,7 +201,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// Buffer offset
         /// </summary>
-        int Offset { get; }
+        int Offset { set; get; }
         /// <summary>
         /// Buffer binding flag
         /// </summary>

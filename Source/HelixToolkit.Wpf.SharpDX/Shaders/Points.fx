@@ -6,7 +6,7 @@
 #include "DataStructs.fx"
 
 float4 vPointParams = float4(4, 4, 0, 0);
-float4 vPointColor = float4(1, 0, 0, 0);
+float4 vPointColor = float4(1, 1, 1, 1);
 
 void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
 {
