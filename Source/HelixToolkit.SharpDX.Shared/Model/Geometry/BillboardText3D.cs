@@ -50,7 +50,7 @@ using Core;
 
             bmpFont = new BitmapFont();
             bmpFont.Load(texDescriptionStream);// BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
-
+            texDescriptionStream.Dispose();
             //Read the texture          
             var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
             var bitmapImage = new BitmapImage();
@@ -59,6 +59,7 @@ using Core;
             bitmapImage.EndInit();
             TextureStatic = bitmapImage;           
             TextureStatic.Freeze();
+            texImageStream.Dispose();
         }
 
         public override BillboardType Type
