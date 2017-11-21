@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -19,17 +20,6 @@ namespace HelixToolkit.UWP.Core
         private EffectVectorVariable lineParamsVar;
         private EffectVectorVariable lineColorVar;
 
-        public LineRenderCore()
-        {
-            OnRender = (context) =>
-            {
-                SetShaderVariables(context);
-                SetRasterState(context.DeviceContext);
-                EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
-                GeometryBuffer.AttachBuffersAndDraw(context.DeviceContext, this.VertexLayout, InstanceBuffer);
-            };
-        }
-
         protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
         {
             if(base.OnAttach(host, technique))
@@ -49,6 +39,15 @@ namespace HelixToolkit.UWP.Core
             base.SetShaderVariables(matrices);
             lineParamsVar.Set(ref LineParams);
             lineColorVar.Set(ref LineColor);
+        }
+
+        protected override void OnRender(IRenderMatrices context)
+        {
+            SetShaderVariables(context);
+            SetRasterState(context.DeviceContext);            
+            GeometryBuffer.AttachBuffers(context.DeviceContext, this.VertexLayout, InstanceBuffer);
+            EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
+            OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }
 }

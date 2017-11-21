@@ -23,8 +23,4 @@ namespace HelixToolkit.Wpf.SharpDX
         bool AttachMaterial(MeshGeometry3D model);
     }
 
-    public interface IBufferModel : IDisposable
-    {
-
-    }
 }

@@ -51,9 +51,9 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
         public static readonly DependencyProperty BufferModelProperty =
-            DependencyProperty.Register("BufferModel", typeof(GeometryBufferModel), typeof(GeometryModel3D), new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("BufferModel", typeof(IGeometryBufferModel), typeof(GeometryModel3D), new PropertyMetadata(null, (d,e)=> 
             {
-                (d as GeometryModel3D).BufferModelInternal = e.NewValue as GeometryBufferModel;
+                (d as GeometryModel3D).BufferModelInternal = e.NewValue as IGeometryBufferModel;
             }));
 
         public Geometry3D Geometry
@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// If two models are binding to same geometry model, sharing buffer model only creates one buffer for both models, reduces video card memory usage and buffer creation time
         /// </para>
         /// </summary>
-        public GeometryBufferModel BufferModel
+        public IGeometryBufferModel BufferModel
         {
             set
             {
@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (GeometryBufferModel)GetValue(BufferModelProperty);
+                return (IGeometryBufferModel)GetValue(BufferModelProperty);
             }
         }
         #endregion
@@ -193,11 +193,11 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Properties
-        private GeometryBufferModel bufferModelInternal;
+        private IGeometryBufferModel bufferModelInternal;
         /// <summary>
         /// Internal buffer model. Call OnCreateBufferModel to create default buffer model.
         /// </summary>
-        protected GeometryBufferModel BufferModelInternal
+        protected IGeometryBufferModel BufferModelInternal
         {
             private set
             {
@@ -393,7 +393,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.IsThrowingShadow = true;
         }
 
-        protected abstract GeometryBufferModel OnCreateBufferModel();
+        protected abstract IGeometryBufferModel OnCreateBufferModel();
 
         /// <summary>
         /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
@@ -502,7 +502,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            BufferModelInternal.DisposeAndClear();
+            BufferModelInternal.Dispose();
             DetachOnGeometryPropertyChanged();
             base.OnDetach();
         }

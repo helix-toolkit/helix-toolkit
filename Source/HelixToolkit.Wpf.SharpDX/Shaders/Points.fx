@@ -2,7 +2,6 @@
 #define POINTS_FX
 
 #include "Common.fx"
-#include "Material.fx"
 #include "DataStructs.fx"
 
 float4 vPointParams = float4(4, 4, 0, 0);
@@ -31,7 +30,7 @@ void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
 //--------------------------------------------------------------------------------------
 // POINTS SHADER
 //-------------------------------------------------------------------------------------
-GSInputPS VShaderPoints( GSInputPS input )
+GSInputPS VShaderPoints(VSInputPS input)
 {
     GSInputPS output = (GSInputPS)0;	
     output.p = input.p;
@@ -40,12 +39,12 @@ GSInputPS VShaderPoints( GSInputPS input )
     output.p = mul( output.p, mWorld );		
     output.p = mul( output.p, mView );    
     output.p = mul( output.p, mProjection );	
-    output.c = input.c;
+    output.c = input.c * vPointColor;
     return output;
 }
 
 [maxvertexcount(4)]
-void GShaderPoints(point GSInputPS input[1], inout TriangleStream<PSInputLS> outStream )
+void GShaderPoints(point GSInputPS input[1], inout TriangleStream<PSInputPS> outStream)
 {
     PSInputPS output = (PSInputPS)0;
         
@@ -99,6 +98,6 @@ float4 PShaderPoints( PSInputPS input ) : SV_Target
         if (alpha < 0.1) discard;
     }
 
-    return input.c * vPointColor;
+    return input.c;
 }
 #endif

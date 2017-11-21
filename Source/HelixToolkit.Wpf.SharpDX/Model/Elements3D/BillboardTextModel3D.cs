@@ -11,7 +11,7 @@ using HelixToolkit.Wpf.SharpDX.Core;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class BillboardTextModel3D : MaterialGeometryModel3D
+    public class BillboardTextModel3D : InstanceGeometryModel3D
     {
         #region Dependency Properties
         /// <summary>
@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new AffectsRenderPropertyMetadata(true,
                 (d, e) =>
                 {
-                    (d as BillboardTextModel3D).fixedSize = (bool)e.NewValue;
+                    ((d as BillboardTextModel3D).RenderCore as BillboardRenderCore).FixedSize = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -46,24 +46,20 @@ namespace HelixToolkit.Wpf.SharpDX
         #region Private Class Data Members
         [ThreadStatic]
         private static BillboardVertex[] vertexArrayBuffer;
-        private readonly ImmutableBufferProxy<BillboardVertex> vertexBuffer = new ImmutableBufferProxy<BillboardVertex>(BillboardVertex.SizeInBytes, BindFlags.VertexBuffer);
-        private EffectVectorVariable vViewport;
-        private EffectScalarVariable bHasBillboardTexture;
-        private ShaderResourceView billboardTextureView;
-        private ShaderResourceView billboardAlphaTextureView;
-        private EffectShaderResourceVariable billboardTextureVariable;
-        private EffectShaderResourceVariable billboardAlphaTextureVariable;
-        private EffectScalarVariable bHasBillboardAlphaTexture;
-        private BillboardType billboardType;
-        private EffectScalarVariable bFixedSizeVariable;
         #endregion
 
-        protected bool fixedSize = true;
-
         #region Overridable Methods
-        protected override GeometryBufferModel OnCreateBufferModel()
+
+        protected override IRenderCore OnCreateRenderCore()
         {
-            throw new NotImplementedException();
+            return new BillboardRenderCore() { FixedSize = FixedSize };
+        }
+
+        protected override IGeometryBufferModel OnCreateBufferModel()
+        {
+            var buffer = new BillboardBufferModel<BillboardVertex>(BillboardVertex.SizeInBytes);
+            buffer.OnBuildVertexArray = CreateBillboardVertexArray;
+            return buffer;
         }
 
         /// <summary>
@@ -260,171 +256,14 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        protected void OnCreateGeometryBuffers()
-        {
-            if(geometryInternal != null && geometryInternal.Positions != null)
-            {
-                vertexBuffer.CreateBufferFromDataArray(this.Device, CreateBillboardVertexArray(), geometryInternal.Positions.Count);
-            }
-            Disposer.RemoveAndDispose(ref billboardTextureView);
-            Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
-            var billboardGeometry = geometryInternal as IBillboardText;
-            if (billboardGeometry != null)
-            {
-                if (billboardGeometry.Texture != null)
-                {
-                    var textureBytes = billboardGeometry.Texture.ToByteArray();
-                    billboardTextureView = TextureLoader.FromMemoryAsShaderResourceView(Device, textureBytes);
-                }
-                if (billboardGeometry.AlphaTexture != null)
-                {
-                    billboardAlphaTextureView = global::SharpDX.Toolkit.Graphics.Texture.Load(Device, billboardGeometry.AlphaTexture);
-                }
-            }
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            // --- attach
-            if (!base.OnAttach(host))
-            {
-                return false;
-            }
-
-            // --- shader variables
-            vViewport = effect.GetVariableByName("vViewport").AsVector();
-            bFixedSizeVariable = effect.GetVariableByName("bBillboardFixedSize").AsScalar();
-            // --- get geometry
-            var geometry = geometryInternal as IBillboardText;
-            if (geometry == null)
-            {
-                throw new System.Exception("Geometry must implement IBillboardText");
-            }
-
-            // --- material 
-            // this.AttachMaterial();
-            this.bHasBillboardTexture = effect.GetVariableByName("bHasTexture").AsScalar();
-            this.billboardTextureVariable = effect.GetVariableByName("billboardTexture").AsShaderResource();
-            this.billboardAlphaTextureVariable = effect.GetVariableByName("billboardAlphaTexture").AsShaderResource();
-            this.bHasBillboardAlphaTexture = effect.GetVariableByName("bHasAlphaTexture").AsScalar();
-            OnCreateGeometryBuffers();
-            // --- set rasterstate
-            OnRasterStateChanged();
-
-            // --- flush
-            //Device.ImmediateContext.Flush();
-            return true;
-        }
-
-        protected override void OnDetach()
-        {
-            Disposer.RemoveAndDispose(ref vViewport);
-            Disposer.RemoveAndDispose(ref billboardTextureVariable);
-            Disposer.RemoveAndDispose(ref billboardTextureView);
-            Disposer.RemoveAndDispose(ref billboardAlphaTextureVariable);
-            Disposer.RemoveAndDispose(ref billboardAlphaTextureView);
-            Disposer.RemoveAndDispose(ref bHasBillboardAlphaTexture);
-            Disposer.RemoveAndDispose(ref bHasBillboardTexture);
-            Disposer.RemoveAndDispose(ref bFixedSizeVariable);
-            vertexBuffer.Dispose();
-            base.OnDetach();
-        }
-
-        protected override void OnRender(RenderContext renderContext)
-        {
-            /*
-            // --- check to render the model
-            var geometry = geometryInternal as IBillboardText;
-            if (geometry == null)
-            {
-                throw new System.Exception("Geometry must implement IBillboardText");
-            }
-
-            // --- set constant paramerers             
-            var worldMatrix = modelMatrix * renderContext.worldMatrix;
-            EffectTransforms.World.SetMatrix(ref worldMatrix);
-            bFixedSizeVariable?.Set(fixedSize);
-            // --- check shadowmaps
-            //this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
-            //this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
-
-            // --- set context
-            renderContext.DeviceContext.InputAssembler.InputLayout = vertexLayout;
-            switch (billboardType)
-            {
-                case BillboardType.MultipleText:
-                    renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-                    break;
-                default:
-                    renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-                    break;
-            }
-
-            // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = RasterState;
-
-            // --- bind buffer                
-            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, 0));
-            // --- render the geometry
-            this.bHasBillboardTexture.Set(geometry.Texture != null);
-            if (geometry.Texture != null)
-            {
-                billboardTextureVariable.SetResource(billboardTextureView);
-            }
-
-            this.bHasBillboardAlphaTexture.Set(geometry.AlphaTexture != null);
-            if (geometry.AlphaTexture != null)
-            {
-                billboardAlphaTextureVariable.SetResource(billboardAlphaTextureView);
-            }
-
-            var vertexCount = geometryInternal.Positions.Count;
-            switch (billboardType)
-            {
-                case BillboardType.MultipleText:
-                    // Use foreground shader to draw text
-                    effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-
-                    // --- draw text, foreground vertex is beginning from 0.
-                    renderContext.DeviceContext.Draw(vertexCount, 0);
-                    break;
-                case BillboardType.SingleText:
-                    if (vertexCount == 8)
-                    {
-                        var half = vertexCount / 2;
-                        // Use background shader to draw background first
-                        effectTechnique.GetPassByIndex(1).Apply(renderContext.DeviceContext);
-                        // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
-                        renderContext.DeviceContext.Draw(half, half);
-
-                        // Use foreground shader to draw text
-                        effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
-
-                        // --- draw text, foreground vertex is beginning from 0.
-                        renderContext.DeviceContext.Draw(half, 0);
-                    }
-                    break;
-                case BillboardType.SingleImage:
-                    // Use foreground shader to draw text
-                    effectTechnique.GetPassByIndex(2).Apply(renderContext.DeviceContext);
-
-                    // --- draw text, foreground vertex is beginning from 0.
-                    renderContext.DeviceContext.Draw(vertexCount, 0);
-                    break;
-            }
-            */
-        }
-
         #endregion
 
         #region Private Helper Methdos
 
-        private BillboardVertex[] CreateBillboardVertexArray()
+        private BillboardVertex[] CreateBillboardVertexArray(IBillboardText billboardGeometry)
         {
-            var billboardGeometry = geometryInternal as IBillboardText;
             // Gather all of the textInfo offsets.
             // These should be equal in number to the positions.
-            billboardType = billboardGeometry.Type;
             billboardGeometry.DrawTexture();
 
             var position = billboardGeometry.Positions;

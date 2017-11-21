@@ -215,11 +215,6 @@
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
-    <Compile Include="Model\Geometry\BillboardBase.cs" />
-    <Compile Include="Model\Geometry\BillboardSingleImage3D.cs" />
-    <Compile Include="Model\Geometry\BillboardSingleText3D.cs" />
-    <Compile Include="Model\Geometry\BillboardText3D.cs" />
-    <Compile Include="Model\Geometry\PointGeometry3D.cs" />
     <Compile Include="Model\Lights3D\Light3DSceneShared.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -271,7 +266,6 @@
     <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\UIElement3D.cs" />
-    <Compile Include="Model\Geometry\LineGeometry3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
     <Compile Include="Model\Materials\Material.cs" />

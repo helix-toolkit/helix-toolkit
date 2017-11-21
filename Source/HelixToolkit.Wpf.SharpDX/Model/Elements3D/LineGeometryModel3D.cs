@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [ThreadStatic]
         private static LinesVertex[] vertexArrayBuffer = null;
 
-        protected override GeometryBufferModel OnCreateBufferModel()
+        protected override IGeometryBufferModel OnCreateBufferModel()
         {
             var buffer = new LineGeometryBufferModel<LinesVertex>(LinesVertex.SizeInBytes);
             buffer.OnBuildVertexArray = CreateLinesVertexArray;

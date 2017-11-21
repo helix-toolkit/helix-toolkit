@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Media.Imaging;
-using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using System.IO;
 
+
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     public abstract class BillboardBase : MeshGeometry3D, IBillboardText
     {

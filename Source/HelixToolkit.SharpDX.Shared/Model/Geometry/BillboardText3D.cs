@@ -4,11 +4,17 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using Cyotek.Drawing.BitmapFont;
 using System;
-using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using System.Linq;
+
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
+using Core;
+
     public class TextInfo
     {
         public List<Vector2> Offsets { get; set; }

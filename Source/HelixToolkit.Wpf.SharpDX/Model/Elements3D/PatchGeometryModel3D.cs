@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
-        protected override GeometryBufferModel OnCreateBufferModel()
+        protected override IGeometryBufferModel OnCreateBufferModel()
         {
             throw new NotImplementedException();
         }

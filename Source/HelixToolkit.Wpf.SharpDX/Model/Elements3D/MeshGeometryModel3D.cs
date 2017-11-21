@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new MeshRenderCore() { InvertNormal = this.InvertNormal };
         }
 
-        protected override GeometryBufferModel OnCreateBufferModel()
+        protected override IGeometryBufferModel OnCreateBufferModel()
         {
             var buffer = new MeshGeometryBufferModel<DefaultVertex>(DefaultVertex.SizeInBytes);
             buffer.OnBuildVertexArray = CreateDefaultVertexArray;

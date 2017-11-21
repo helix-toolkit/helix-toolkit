@@ -103,7 +103,7 @@
             return (p - pb).Length();
         }
 
-        protected override GeometryBufferModel OnCreateBufferModel()
+        protected override IGeometryBufferModel OnCreateBufferModel()
         {
             var buffer = new PointGeometryBufferModel<PointsVertex>(PointsVertex.SizeInBytes);
             buffer.OnBuildVertexArray = CreateVertexArray;

@@ -16,11 +16,7 @@ namespace HelixToolkit.UWP.Core
         public Guid GUID { get; } = Guid.NewGuid();
 
         private EffectTransformVariables effectTransformVar;   
-        public delegate void OnRenderEvent(IRenderMatrices context);
-        /// <summary>
-        /// Render function delegate. Used to attach different render routine
-        /// </summary>
-        public OnRenderEvent OnRender;
+
         public event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
         /// Model matrix
@@ -80,9 +76,15 @@ namespace HelixToolkit.UWP.Core
         {
             if (CanRender())
             {
-                OnRender?.Invoke(context);
+                OnRender(context);
             }
-        }        
+        }
+
+        /// <summary>
+        /// Render function delegate. Used to attach different render routine
+        /// </summary>
+        protected abstract void OnRender(IRenderMatrices context);
+
         /// <summary>
         /// Check if can render
         /// </summary>

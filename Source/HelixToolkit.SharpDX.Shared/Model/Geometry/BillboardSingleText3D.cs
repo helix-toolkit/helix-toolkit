@@ -1,12 +1,17 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
+﻿using SharpDX;
 using System.Windows;
 using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX.Extensions;
 using Media = System.Windows.Media;
 
+
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
+using Core;
+
     public class BillboardSingleText3D : BillboardBase
     {
         private volatile bool isInitialized = false;

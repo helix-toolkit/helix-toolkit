@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
-    public abstract class GeometryBufferModel : DisposeObject, IGUID
+    public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
     {
         public Guid GUID { get; } = Guid.NewGuid();
 
@@ -24,8 +24,8 @@ namespace HelixToolkit.UWP.Core
         protected bool VertexChanged { private set; get; } = true;
         protected bool IndexChanged { private set; get; } = true;
 
-        protected IBufferProxy VertexBuffer { private set; get; }
-        protected IBufferProxy IndexBuffer { private set; get; }
+        public IBufferProxy VertexBuffer { private set; get; }
+        public IBufferProxy IndexBuffer { private set; get; }
         public PrimitiveTopology Topology { private set; get; }
 
         private Geometry3D geometry = null;
@@ -67,18 +67,8 @@ namespace HelixToolkit.UWP.Core
         protected abstract void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
         protected abstract void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
 
-        protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, InstanceBufferModel instanceModel)
+        protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, IInstanceBufferModel instanceModel)
         {
-            if (VertexChanged)
-            {
-                OnCreateVertexBuffer(context, VertexBuffer, Geometry);
-                VertexChanged = false;
-            }
-            if (IndexChanged)
-            {
-                OnCreateIndexBuffer(context, IndexBuffer, Geometry);
-                IndexChanged = false;
-            }
             context.InputAssembler.InputLayout = vertexLayout;
             context.InputAssembler.PrimitiveTopology = Topology;
             if (IndexBuffer != null)
@@ -103,32 +93,7 @@ namespace HelixToolkit.UWP.Core
             }
             return true;
         }
-        protected virtual void OnDraw(DeviceContext context, InstanceBufferModel instanceModel)
-        {
-            if (IndexBuffer != null)
-            {
-                if (instanceModel == null || !instanceModel.HasInstance)
-                {
-                    context.DrawIndexed(IndexBuffer.Count, IndexBuffer.Offset, 0);
-                }
-                else
-                {
-                    context.DrawIndexedInstanced(IndexBuffer.Count, instanceModel.InstanceBuffer.Count, IndexBuffer.Offset, 0, instanceModel.InstanceBuffer.Offset);
-                }
-            }
-            else if (VertexBuffer != null)
-            {
-                if (instanceModel == null || !instanceModel.HasInstance)
-                {
-                    context.Draw(VertexBuffer.Count, VertexBuffer.Offset);
-                }
-                else
-                {
-                    context.DrawInstanced(VertexBuffer.Count, instanceModel.InstanceBuffer.Count,
-                        VertexBuffer.Offset, instanceModel.InstanceBuffer.Offset);
-                }
-            }
-        }
+
 
         private void Geometry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -160,8 +125,18 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         /// <param name="instanceModel"></param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, InstanceBufferModel instanceModel)
+        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, IInstanceBufferModel instanceModel)
         {
+            if (VertexChanged)
+            {
+                OnCreateVertexBuffer(context, VertexBuffer, Geometry);
+                VertexChanged = false;
+            }
+            if (IndexChanged)
+            {
+                OnCreateIndexBuffer(context, IndexBuffer, Geometry);
+                IndexChanged = false;
+            }
             return OnAttachBuffer(context, vertexLayout, instanceModel);
         }
 
@@ -179,29 +154,6 @@ namespace HelixToolkit.UWP.Core
                     new VertexBufferBinding(instanceBuffer.Buffer, instanceBuffer.StructureSize, instanceBuffer.Offset * instanceBuffer.StructureSize)
                 };
             }
-        }
-        /// <summary>
-        /// Attach buffers and draw
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="instanceModel"></param>
-        /// <returns></returns>
-        public bool AttachBuffersAndDraw(DeviceContext context, InputLayout vertexLayout, InstanceBufferModel instanceModel)
-        {           
-            if(AttachBuffers(context, vertexLayout, instanceModel))
-            {
-                OnDraw(context, instanceModel);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void Draw(DeviceContext context, InstanceBufferModel instanceModel)
-        {
-            OnDraw(context, instanceModel);
         }
 
         /// <summary>
@@ -249,10 +201,4 @@ namespace HelixToolkit.UWP.Core
             return new BillboardBufferModel<VertexStruct>(structSize);
         }
     }
-
-
-
-
-
-
 }

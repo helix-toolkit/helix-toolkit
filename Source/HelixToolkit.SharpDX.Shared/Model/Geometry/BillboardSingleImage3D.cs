@@ -1,15 +1,19 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
-using System.Windows;
+﻿using SharpDX;
 using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX.Extensions;
 using Media = System.Windows.Media;
 using System;
 using System.IO;
 using SharpDX.Toolkit.Graphics;
 
+
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
+    using Core;
+
     public class BillboardSingleImage3D : BillboardBase
     {
         /// <summary>

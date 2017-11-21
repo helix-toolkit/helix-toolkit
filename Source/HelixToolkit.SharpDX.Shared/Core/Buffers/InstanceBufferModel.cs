@@ -13,12 +13,12 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// Used for managing instance buffer update
     /// </summary>
-    public class InstanceBufferModel : DisposeObject, IGUID
+    public class InstanceBufferModel : DisposeObject, IInstanceBufferModel
     {
         public Guid GUID { get; } = Guid.NewGuid();
         public bool Initialized { private set; get; }
-        public bool HasInstance { set; get; } = false;
-        public DynamicBufferProxy<Matrix> InstanceBuffer { private set; get; }
+        public bool HasInstance { private set; get; } = false;
+        public IBufferProxy<Matrix> InstanceBuffer { private set; get; }
 
         private EffectScalarVariable hasInstancesVar;
 

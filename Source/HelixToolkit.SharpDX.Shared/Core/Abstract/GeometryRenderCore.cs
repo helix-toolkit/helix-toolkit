@@ -13,9 +13,9 @@ namespace HelixToolkit.UWP.Core
         public InputLayout VertexLayout { private set; get; }
         public EffectTechnique EffectTechnique { private set; get; }
 
-        public InstanceBufferModel InstanceBuffer { set; get; }
+        public IInstanceBufferModel InstanceBuffer { set; get; }
 
-        public GeometryBufferModel GeometryBuffer{ set; get; }
+        public IGeometryBufferModel GeometryBuffer{ set; get; }
 
         private RasterizerStateDescription rasterDescription;
 
@@ -56,6 +56,33 @@ namespace HelixToolkit.UWP.Core
         protected override bool CanRender()
         {
             return base.CanRender() && GeometryBuffer != null;
+        }
+
+        protected virtual void OnDraw(DeviceContext context, IInstanceBufferModel instanceModel)
+        {
+            if (GeometryBuffer.IndexBuffer != null)
+            {
+                if (instanceModel == null || !instanceModel.HasInstance)
+                {
+                    context.DrawIndexed(GeometryBuffer.IndexBuffer.Count, GeometryBuffer.IndexBuffer.Offset, 0);
+                }
+                else
+                {
+                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.Count, instanceModel.InstanceBuffer.Count, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.InstanceBuffer.Offset);
+                }
+            }
+            else if (GeometryBuffer.VertexBuffer != null)
+            {
+                if (instanceModel == null || !instanceModel.HasInstance)
+                {
+                    context.Draw(GeometryBuffer.VertexBuffer.Count, GeometryBuffer.VertexBuffer.Offset);
+                }
+                else
+                {
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer.Count, instanceModel.InstanceBuffer.Count,
+                        GeometryBuffer.VertexBuffer.Offset, instanceModel.InstanceBuffer.Offset);
+                }
+            }
         }
     }
 }

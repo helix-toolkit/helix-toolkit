@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         #region Overridable Methods
-        protected override GeometryBufferModel OnCreateBufferModel()
+        protected override IGeometryBufferModel OnCreateBufferModel()
         {
             throw new NotImplementedException();
         }
