@@ -45,32 +45,20 @@ using Core;
         {
             var assembly = Assembly.GetExecutingAssembly();
 
-            var texDescriptionFilePath = Path.GetTempFileName();
-            var texImageFilePath = Path.GetTempFileName();
-
             //Read the texture description           
             var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
-            using (var fileStream = File.Create(texDescriptionFilePath))
-            {
-                texDescriptionStream.CopyTo(fileStream);
-            }
 
-            bmpFont = BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
+            bmpFont = new BitmapFont();
+            bmpFont.Load(texDescriptionStream);// BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
 
             //Read the texture          
             var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
-            using (var fileStream = File.Create(texImageFilePath))
-            {
-                texImageStream.CopyTo(fileStream);
-            }
-
-            TextureStatic = new BitmapImage(new Uri(texImageFilePath));
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = texImageStream;
+            bitmapImage.EndInit();
+            TextureStatic = bitmapImage;           
             TextureStatic.Freeze();
-            //Cleanup the temp files
-            if (File.Exists(texDescriptionFilePath))
-            {
-                File.Delete(texDescriptionFilePath);
-            }
         }
 
         public override BillboardType Type
