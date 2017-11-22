@@ -538,7 +538,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected ShaderResourceView textureView;
 
-        protected EffectTransformVariables effectTransforms;
+        //protected EffectTransformVariables effectTransforms;
 
         private BufferDescription bufferDesc = new BufferDescription()
         {
@@ -701,7 +701,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override bool OnAttach(IRenderHost host)
         {
             parameters.OnAttach(this.effect);
-            this.effectTransforms = new EffectTransformVariables(effect);
+      //      this.effectTransforms = new EffectTransformVariables(effect);
             effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
             bHasTextureVar = effect.GetVariableByName("bHasDiffuseMap").AsScalar();
             textureViewVar = effect.GetVariableByName("texDiffuseMap").AsShaderResource();
@@ -729,7 +729,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             System.Windows.Media.CompositionTarget.Rendering -= CompositionTarget_Rendering;
             parameters.OnDettach();
-            Disposer.RemoveAndDispose(ref effectTransforms);
+    //        Disposer.RemoveAndDispose(ref effectTransforms);
             Disposer.RemoveAndDispose(ref bHasTextureVar);
             Disposer.RemoveAndDispose(ref textureViewVar);
             Disposer.RemoveAndDispose(ref blendState);
@@ -758,7 +758,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(RenderContext context)
         {
             var worldMatrix = this.modelMatrix * context.worldMatrix;
-            this.effectTransforms.World.SetMatrix(ref worldMatrix);
+        //    this.effectTransforms.World.SetMatrix(ref worldMatrix);
 
             OnTextureChanged();
             OnBlendStateChanged();

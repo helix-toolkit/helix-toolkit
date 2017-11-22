@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(host, technique))
             {
-                bInvertNormalVar = Collect(Effect.GetVariableByName("bInvertNormal").AsScalar());
+                bInvertNormalVar = Collect(Effect.GetVariableByName(ShaderVariableNames.InvertNormal).AsScalar());
                 return true;
             }
             else

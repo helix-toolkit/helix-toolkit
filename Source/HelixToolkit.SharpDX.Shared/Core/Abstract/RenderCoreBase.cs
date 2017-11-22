@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Core
     {
         public Guid GUID { get; } = Guid.NewGuid();
 
-        private EffectTransformVariables effectTransformVar;   
+        private EffectMatrixVariable mWorldVar;
 
         public event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
@@ -39,6 +39,7 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
+            Effect = host.EffectsManager.GetEffect(technique);
             IsAttached = OnAttach(host, technique);
         }
         /// <summary>
@@ -48,9 +49,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="technique"></param>
         /// <returns></returns>
         protected virtual bool OnAttach(IRenderHost host, RenderTechnique technique)
-        {
-            Effect = host.EffectsManager.GetEffect(technique);
-            effectTransformVar = Collect(new EffectTransformVariables(Effect));
+        {            
+            mWorldVar = Collect(Effect.GetVariableByName(ShaderVariableNames.WorldMatrix).AsMatrix());
             return true;
         }
         /// <summary>
@@ -99,7 +99,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="matrix"></param>
         protected void SetModelWorldMatrix(Matrix matrix)
         {
-            effectTransformVar.World.SetMatrix(matrix);
+            mWorldVar.SetMatrix(matrix);
         }
         /// <summary>
         /// Set additional per model shader constant variables such as model->world matrix etc.
@@ -117,19 +117,6 @@ namespace HelixToolkit.UWP.Core
         public void ResetInvalidateHandler()
         {
             OnInvalidateRenderer = null;
-        }
-        /// <summary>
-        /// Used to handle world constant variable from shader
-        /// </summary>
-        public sealed class EffectTransformVariables : DisposeObject
-        {
-            public EffectTransformVariables(Effect effect)
-            {         
-                mWorld = Collect(effect.GetVariableByName("mWorld").AsMatrix());
-            }
-
-            private EffectMatrixVariable mWorld;
-            public EffectMatrixVariable World { get { return mWorld; } }
         }
     }
 }

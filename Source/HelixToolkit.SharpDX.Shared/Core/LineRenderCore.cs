@@ -24,8 +24,8 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(host, technique))
             {
-                lineParamsVar = Collect(Effect.GetVariableByName("vLineParams").AsVector());
-                lineColorVar = Collect(Effect.GetVariableByName("vLineColor").AsVector());
+                lineParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineParams).AsVector());
+                lineColorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineColor).AsVector());
                 return true;
             }
             else

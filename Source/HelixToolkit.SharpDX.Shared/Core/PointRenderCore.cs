@@ -23,8 +23,8 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(host, technique))
             {
-                pointParamsVar = Collect(Effect.GetVariableByName("vPointParams").AsVector());
-                colorParamsVar = Collect(Effect.GetVariableByName("vPointColor").AsVector());
+                pointParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointParams).AsVector());
+                colorParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointColor).AsVector());
                 return true;
             }
             else

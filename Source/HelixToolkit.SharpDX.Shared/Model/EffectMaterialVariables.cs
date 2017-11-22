@@ -53,22 +53,22 @@ namespace HelixToolkit.UWP.Model
         public EffectMaterialVariables(Effect effect)
         {
             this.effect = effect;
-            Collect(this.vMaterialAmbientVariable = effect.GetVariableByName("vMaterialAmbient").AsVector());
-            Collect(this.vMaterialDiffuseVariable = effect.GetVariableByName("vMaterialDiffuse").AsVector());
-            Collect(this.vMaterialEmissiveVariable = effect.GetVariableByName("vMaterialEmissive").AsVector());
-            Collect(this.vMaterialSpecularVariable = effect.GetVariableByName("vMaterialSpecular").AsVector());
-            Collect(this.vMaterialReflectVariable = effect.GetVariableByName("vMaterialReflect").AsVector());
-            Collect(this.sMaterialShininessVariable = effect.GetVariableByName("sMaterialShininess").AsScalar());
-            Collect(this.bHasDiffuseMapVariable = effect.GetVariableByName("bHasDiffuseMap").AsScalar());
-            Collect(this.bHasDiffuseAlphaMapVariable = effect.GetVariableByName("bHasAlphaMap").AsScalar());
-            Collect(this.bHasNormalMapVariable = effect.GetVariableByName("bHasNormalMap").AsScalar());
-            Collect(this.bHasDisplacementMapVariable = effect.GetVariableByName("bHasDisplacementMap").AsScalar());
-            Collect(this.bHasShadowMapVariable = effect.GetVariableByName("bHasShadowMap").AsScalar());
-            Collect(this.texDiffuseMapVariable = effect.GetVariableByName("texDiffuseMap").AsShaderResource());
-            Collect(this.texNormalMapVariable = effect.GetVariableByName("texNormalMap").AsShaderResource());
-            Collect(this.texDisplacementMapVariable = effect.GetVariableByName("texDisplacementMap").AsShaderResource());
-            Collect(this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource());
-            Collect(this.texDiffuseAlphaMapVariable = effect.GetVariableByName("texAlphaMap").AsShaderResource());
+            Collect(this.vMaterialAmbientVariable = effect.GetVariableByName(ShaderVariableNames.MaterialAmbientVariable).AsVector());
+            Collect(this.vMaterialDiffuseVariable = effect.GetVariableByName(ShaderVariableNames.MaterialDiffuseVariable).AsVector());
+            Collect(this.vMaterialEmissiveVariable = effect.GetVariableByName(ShaderVariableNames.MaterialEmissiveVariable).AsVector());
+            Collect(this.vMaterialSpecularVariable = effect.GetVariableByName(ShaderVariableNames.MaterialSpecularVariable).AsVector());
+            Collect(this.vMaterialReflectVariable = effect.GetVariableByName(ShaderVariableNames.MaterialReflectVariable).AsVector());
+            Collect(this.sMaterialShininessVariable = effect.GetVariableByName(ShaderVariableNames.MaterialShininessVariable).AsScalar());
+            Collect(this.bHasDiffuseMapVariable = effect.GetVariableByName(ShaderVariableNames.HasDiffuseMapVariable).AsScalar());
+            Collect(this.bHasDiffuseAlphaMapVariable = effect.GetVariableByName(ShaderVariableNames.HasDiffuseAlphaMapVariable).AsScalar());
+            Collect(this.bHasNormalMapVariable = effect.GetVariableByName(ShaderVariableNames.HasNormalMapVariable).AsScalar());
+            Collect(this.bHasDisplacementMapVariable = effect.GetVariableByName(ShaderVariableNames.HasDisplacementMapVariable).AsScalar());
+            Collect(this.bHasShadowMapVariable = effect.GetVariableByName(ShaderVariableNames.HasShadowMapVariable).AsScalar());
+            Collect(this.texDiffuseMapVariable = effect.GetVariableByName(ShaderVariableNames.TextureDiffuseMapVariable).AsShaderResource());
+            Collect(this.texNormalMapVariable = effect.GetVariableByName(ShaderVariableNames.TextureNormalMapVariable).AsShaderResource());
+            Collect(this.texDisplacementMapVariable = effect.GetVariableByName(ShaderVariableNames.TextureDisplacementMapVariable).AsShaderResource());
+            Collect(this.texShadowMapVariable = effect.GetVariableByName(ShaderVariableNames.TextureShadowMapVariable).AsShaderResource());
+            Collect(this.texDiffuseAlphaMapVariable = effect.GetVariableByName(ShaderVariableNames.TextureDiffuseAlphaMapVariable).AsShaderResource());
             CreateTextureViews();
         }
 

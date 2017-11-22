@@ -23,11 +23,11 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(host, technique))
             {
-                bHasTextureVar = Collect(Effect.GetVariableByName("bHasTexture").AsScalar());
-                textureVar = Collect(Effect.GetVariableByName("billboardTexture").AsShaderResource());
-                alphaTextureVar = Collect(Effect.GetVariableByName("billboardAlphaTexture").AsShaderResource());
-                bHasAlphaTextureVar = Collect(Effect.GetVariableByName("bHasAlphaTexture").AsScalar());
-                bFixedSizeVar = Collect(Effect.GetVariableByName("bBillboardFixedSize").AsScalar());
+                bHasTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasTextureVariable).AsScalar());
+                textureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.BillboardTextureVariable).AsShaderResource());
+                alphaTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.BillboardAlphaTextureVariable).AsShaderResource());
+                bHasAlphaTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasAlphaTextureVariable).AsScalar());
+                bFixedSizeVar = Collect(Effect.GetVariableByName(ShaderVariableNames.BillboardFixedSizeVariable).AsScalar());
                 return true;
             }
             else

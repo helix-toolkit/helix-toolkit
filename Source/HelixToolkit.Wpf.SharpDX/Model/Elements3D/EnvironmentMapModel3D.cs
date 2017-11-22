@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RasterizerState rasterState;
         private DepthStencilState depthStencilState;
 
-        private EffectTransformVariables effectTransforms;
+       // private EffectTransformVariables effectTransforms;
         private MeshGeometry3D geometry;
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- get variables               
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
-            this.effectTransforms = new EffectTransformVariables(this.effect);
+      //      this.effectTransforms = new EffectTransformVariables(this.effect);
 
             // -- attach cube map 
             if (this.Filename != null)
@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.bHasCubeMap);
             Disposer.RemoveAndDispose(ref this.rasterState);
             Disposer.RemoveAndDispose(ref this.depthStencilState);
-            Disposer.RemoveAndDispose(ref this.effectTransforms);
+      //      Disposer.RemoveAndDispose(ref this.effectTransforms);
 
             base.OnDetach();
         }
@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- set constant paramerers 
             var worldMatrix = Matrix.Translation(renderContext.Camera.Position.ToVector3());
-            this.effectTransforms.World.SetMatrix(ref worldMatrix);
+         //   this.effectTransforms.World.SetMatrix(ref worldMatrix);
 
             // --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
