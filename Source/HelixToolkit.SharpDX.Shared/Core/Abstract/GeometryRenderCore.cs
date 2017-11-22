@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP.Core
         public IGeometryBufferModel GeometryBuffer{ set; get; }
 
         private RasterizerStateDescription rasterDescription;
+        private EffectScalarVariable hasInstancesVar;
 
         public void CreateRasterState(RasterizerStateDescription description)
         {
@@ -47,6 +48,7 @@ namespace HelixToolkit.UWP.Core
             {
                 this.VertexLayout = host.EffectsManager.GetLayout(technique);
                 this.EffectTechnique = Effect.GetTechniqueByName(technique.Name);
+                hasInstancesVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasInstance).AsScalar());
                 CreateRasterState(rasterDescription);
                 return true;
             }
@@ -56,6 +58,12 @@ namespace HelixToolkit.UWP.Core
         protected override bool CanRender()
         {
             return base.CanRender() && GeometryBuffer != null;
+        }
+
+        protected override void PreRender(IRenderMatrices context)
+        {
+            base.PreRender(context);
+            hasInstancesVar.Set(false);//Reset variables to false
         }
 
         protected virtual void OnDraw(DeviceContext context, IInstanceBufferModel instanceModel)

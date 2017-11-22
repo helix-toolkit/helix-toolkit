@@ -15,7 +15,7 @@
     using System;
     using Core;
 
-    public class PointGeometryModel3D : GeometryModel3D
+    public class PointGeometryModel3D : InstanceGeometryModel3D
     {
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =

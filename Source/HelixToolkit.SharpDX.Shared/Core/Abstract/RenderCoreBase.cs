@@ -76,9 +76,16 @@ namespace HelixToolkit.UWP.Core
         {
             if (CanRender())
             {
+                PreRender(context);
                 OnRender(context);
             }
         }
+
+        /// <summary>
+        /// Before calling OnRender
+        /// </summary>
+        /// <param name="context"></param>
+        protected virtual void PreRender(IRenderMatrices context) { }
 
         /// <summary>
         /// Render function delegate. Used to attach different render routine

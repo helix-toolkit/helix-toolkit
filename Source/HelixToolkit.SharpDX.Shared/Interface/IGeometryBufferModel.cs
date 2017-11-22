@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
         void Attach();
         void Detach();
 
-        bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, IInstanceBufferModel instanceModel);
+        bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot);
     }
 
     public interface IBillboardBufferModel

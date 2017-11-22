@@ -9,7 +9,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using global::SharpDX.DXGI;
     using System;
-
+    using System.Linq;
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
@@ -53,6 +53,7 @@ namespace HelixToolkit.UWP.Core
                 return geometry;
             }
         }
+
         #region Constructors
         public GeometryBufferModel(PrimitiveTopology topology, IBufferProxy vertexBuffer, IBufferProxy indexBuffer)
         {
@@ -76,36 +77,6 @@ namespace HelixToolkit.UWP.Core
         public void Detach()
         {
             RemoveReference();
-        }
-
-        protected abstract void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
-        protected abstract void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
-
-        protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, IInstanceBufferModel instanceModel)
-        {
-            context.InputAssembler.InputLayout = vertexLayout;
-            context.InputAssembler.PrimitiveTopology = Topology;
-            if (IndexBuffer != null)
-            {
-                context.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset * IndexBuffer.StructureSize);
-            }
-            else
-            {
-                context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
-            }
-            if (VertexBuffer != null)
-            {
-                if (instanceModel == null || !instanceModel.HasInstance)
-                {
-                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings());
-                }
-                else
-                {
-                    instanceModel.Attach(context);
-                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings(instanceModel.InstanceBuffer));
-                }
-            }
-            return true;
         }
 
 
@@ -139,7 +110,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         /// <param name="instanceModel"></param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, IInstanceBufferModel instanceModel)
+        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
         {
             if (VertexChanged)
             {
@@ -151,23 +122,29 @@ namespace HelixToolkit.UWP.Core
                 OnCreateIndexBuffer(context, IndexBuffer, Geometry);
                 IndexChanged = false;
             }
-            return OnAttachBuffer(context, vertexLayout, instanceModel);
+            return OnAttachBuffer(context, vertexLayout, vertexBufferSlot);
         }
 
-        protected virtual VertexBufferBinding[] CreateBufferBindings(IBufferProxy instanceBuffer = null)
+        protected abstract void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
+        protected abstract void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
+
+        protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
         {
-            if (instanceBuffer == null)
+            context.InputAssembler.InputLayout = vertexLayout;
+            context.InputAssembler.PrimitiveTopology = Topology;
+            if (IndexBuffer != null)
             {
-                return new[] { new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset * VertexBuffer.StructureSize) };
+                context.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
             }
             else
             {
-                return new[]
-                {
-                    new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset*VertexBuffer.StructureSize),
-                    new VertexBufferBinding(instanceBuffer.Buffer, instanceBuffer.StructureSize, instanceBuffer.Offset * instanceBuffer.StructureSize)
-                };
+                context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
             }
+            if (VertexBuffer != null)
+            {
+                context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset));
+            }
+            return true;
         }
 
         /// <summary>

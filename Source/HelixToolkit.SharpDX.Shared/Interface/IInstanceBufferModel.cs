@@ -14,10 +14,17 @@ namespace HelixToolkit.UWP
     {
         bool HasInstance { get; }
         bool Initialized { get; }
-        IBufferProxy<Matrix> InstanceBuffer { get; }
-        IList<Matrix> Instances { get; set; }
 
-        void Attach(DeviceContext context);
+        bool InstanceChanged { get; }
+
+        IBufferProxy InstanceBuffer { get; }
+
+        void AttachBuffer(DeviceContext context, int vertexBufferSlot);
         void Initialize(Effect effect);
+    }
+
+    public interface IInstanceBufferModel<T> : IInstanceBufferModel
+    {
+        IList<T> Instances { get; set; }
     }
 }

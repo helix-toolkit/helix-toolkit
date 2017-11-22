@@ -45,7 +45,8 @@ namespace HelixToolkit.UWP.Core
         {
             SetShaderVariables(context);
             SetRasterState(context.DeviceContext);            
-            GeometryBuffer.AttachBuffers(context.DeviceContext, this.VertexLayout, InstanceBuffer);
+            GeometryBuffer.AttachBuffers(context.DeviceContext, this.VertexLayout, 0);
+            InstanceBuffer?.AttachBuffer(context.DeviceContext, 1);
             EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
             OnDraw(context.DeviceContext, InstanceBuffer);
         }

@@ -61,7 +61,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, IInstanceBufferModel instanceModel)
+        protected override bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
         {
             switch (Type)
             {
@@ -76,15 +76,7 @@ namespace HelixToolkit.UWP.Core
             context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
             if (VertexBuffer != null)
             {
-                if (instanceModel == null || !instanceModel.HasInstance)
-                {
-                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings());
-                }
-                else
-                {
-                    instanceModel.Attach(context);
-                    context.InputAssembler.SetVertexBuffers(0, CreateBufferBindings(instanceModel.InstanceBuffer));
-                }
+                context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset));
             }
             return true;
         }

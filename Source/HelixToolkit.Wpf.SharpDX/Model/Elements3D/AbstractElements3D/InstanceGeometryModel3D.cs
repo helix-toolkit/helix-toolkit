@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public bool HasInstances { get { return InstanceBuffer.HasInstance; } }
-        protected readonly InstanceBufferModel InstanceBuffer = new InstanceBufferModel();
+        protected readonly IInstanceBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
 
         protected BoundingBox instancesBound;
         public BoundingBox InstancesBound
@@ -141,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            InstanceBuffer.DisposeAndClear();
+            InstanceBuffer.Dispose();
             base.OnDetach();
         }
     }

@@ -35,6 +35,8 @@ namespace HelixToolkit.UWP
 
         //Mesh
         public static string InvertNormal = "bInvertNormal";
+        public static string HasInstance = "bHasInstances";
+        public static string HasInstanceParams = "bHasInstanceParams";
 
         //Point
         public static string PointParams = "vPointParams";
