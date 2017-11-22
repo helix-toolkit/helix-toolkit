@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
-    public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
+    public abstract class GeometryBufferModel : ResourceSharedObject, IGUID, IGeometryBufferModel
     {
         public Guid GUID { get; } = Guid.NewGuid();
 
@@ -63,6 +63,20 @@ namespace HelixToolkit.UWP.Core
         }
 
         #endregion
+
+        public void Attach()
+        {
+            if(AddReference() == 1)
+            {
+                VertexChanged = true;
+                IndexChanged = true;
+            }
+        }
+
+        public void Detach()
+        {
+            RemoveReference();
+        }
 
         protected abstract void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
         protected abstract void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);

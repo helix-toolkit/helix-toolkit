@@ -9,7 +9,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Utilities;
-    public interface IGeometryBufferModel : IGUID, IDisposable
+    public interface IGeometryBufferModel : IGUID
     {
         Geometry3D Geometry { get; set; }
         PrimitiveTopology Topology { get; }
@@ -17,6 +17,9 @@ namespace HelixToolkit.UWP
         event EventHandler<bool> InvalidateRenderer;
         IBufferProxy VertexBuffer { get; }
         IBufferProxy IndexBuffer { get; }
+
+        void Attach();
+        void Detach();
 
         bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, IInstanceBufferModel instanceModel);
     }

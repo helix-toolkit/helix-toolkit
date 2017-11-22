@@ -17,6 +17,28 @@ namespace HelixToolkit.Wpf.SharpDX
         Guid GUID { get; }
     }
 
+    public interface IResourceSharing : IDisposable
+    {
+        int ReferenceCount { get; }
+
+        /// <summary>
+        /// Add reference counter;
+        /// </summary>
+        /// <returns>Current count</returns>
+        int AddReference();
+
+        /// <summary>
+        /// Decrease reference counter. When counter reach 0, release all internal resources if release = true
+        /// </summary>
+        /// <returns>Current count</returns>
+        int RemoveReference(bool release);
+        /// <summary>
+        /// Decrease reference counter. When counter reach 0, release all internal resources automatically
+        /// </summary>
+        /// <returns>Current count</returns>
+        int RemoveReference();
+    }
+
     public interface IEffectMaterialVariables : IMaterialRenderCore, IDisposable
     {
         event System.EventHandler<bool> OnInvalidateRenderer;
