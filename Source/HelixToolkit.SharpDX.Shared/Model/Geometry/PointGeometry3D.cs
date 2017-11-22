@@ -8,7 +8,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
 
+#if !NETFX_CORE
     [Serializable]
+#endif
     public class PointGeometry3D : Geometry3D
     {
         public IEnumerable<Point> Points

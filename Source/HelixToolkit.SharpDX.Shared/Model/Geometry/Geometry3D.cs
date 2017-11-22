@@ -3,8 +3,6 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
-
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -12,20 +10,9 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using System;
-
     using global::SharpDX;
-
     using Core;
-
-    using System.Runtime.InteropServices;
-    using System.ComponentModel;
-    using HelixToolkit.SharpDX.Shared.Model;
-    using System.Diagnostics;
-
-#if NETFX_CORE
-#else
-
-#endif
+    using Model;
 
 #if !NETFX_CORE
     [Serializable]
