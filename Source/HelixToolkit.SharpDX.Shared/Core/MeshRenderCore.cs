@@ -32,12 +32,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         protected override void OnRender(IRenderMatrices context)
-        {
-            SetShaderVariables(context);
-            SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D);
-            SetRasterState(context.DeviceContext);          
-            GeometryBuffer.AttachBuffers(context.DeviceContext, this.VertexLayout, 0);
-            InstanceBuffer?.AttachBuffer(context.DeviceContext, 1);
+        {                      
             EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
             OnDraw(context.DeviceContext, InstanceBuffer);
         }

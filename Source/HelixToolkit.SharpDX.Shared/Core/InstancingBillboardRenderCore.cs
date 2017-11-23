@@ -5,7 +5,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public class InstancingMeshRenderCore : MeshRenderCore
+    public class InstancingBillboardRenderCore : BillboardRenderCore
     {
         public IInstanceBufferModel ParameterBuffer { set; get; }
         protected override bool CanRender()

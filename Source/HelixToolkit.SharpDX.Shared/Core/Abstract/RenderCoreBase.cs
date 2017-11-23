@@ -78,19 +78,30 @@ namespace HelixToolkit.UWP.Core
             {
                 PreRender(context);
                 OnRender(context);
+                PostRender(context);
             }
         }
 
         /// <summary>
-        /// Before calling OnRender
+        /// Before calling OnRender. Setup commonly used rendering states.
+        /// <para>Default to call SetShaderVariables</para>
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void PreRender(IRenderMatrices context) { }
+        protected virtual void PreRender(IRenderMatrices context)
+        {
+            SetShaderVariables(context);
+        }
 
         /// <summary>
-        /// Render function delegate. Used to attach different render routine
+        /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
         protected abstract void OnRender(IRenderMatrices context);
+
+        /// <summary>
+        /// After calling OnRender. Restore some variables, such as HasInstance etc.
+        /// </summary>
+        /// <param name="context"></param>
+        protected virtual void PostRender(IRenderMatrices context) { }
 
         /// <summary>
         /// Check if can render

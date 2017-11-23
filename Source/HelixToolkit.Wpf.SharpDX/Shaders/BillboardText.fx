@@ -81,9 +81,9 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
 			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
         };
-        input.p = mul(mInstance, input.p);
-		input.t.z *= input.mr0.x; // 2d scaling x
-		input.t.w *= input.mr1.y; // 2d scaling y
+        inputp = mul(mInstance, input.p);
+		inputt.z *= input.mr0.x; // 2d scaling x
+		inputt.w *= input.mr1.y; // 2d scaling y
 		if (bHasInstanceParams)
 		{
 			inputt.x *= input.tScale.x;
@@ -100,7 +100,7 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 	ndcPosition = mul(ndcPosition, mView);
 
 	if (!bBillboardFixedSize) {
-		ndcPosition.xy += input.t.zw;
+		ndcPosition.xy += inputt.zw;
 	}
 
 	ndcPosition = mul(ndcPosition, mProjection);
@@ -110,7 +110,7 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 	if (bBillboardFixedSize) {
 		// Translate offset into normalized device coordinates.
 
-		float2 offset = windowToNdc(input.t.zw);
+		float2 offset = windowToNdc(inputt.zw);
 		ndcTranslated.xy += offset;
 	}
 

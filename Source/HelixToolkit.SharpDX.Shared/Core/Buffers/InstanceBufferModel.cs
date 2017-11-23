@@ -73,6 +73,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        public void ResetHasInstanceVariable()
+        {
+            hasInstancesVar.Set(false);
+        }
+
         protected override void Dispose(bool disposeManagedResources)
         {
             Initialized = false;

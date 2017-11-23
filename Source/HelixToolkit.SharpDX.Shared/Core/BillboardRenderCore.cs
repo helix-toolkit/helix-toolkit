@@ -1,6 +1,4 @@
-﻿using System;
-using SharpDX;
-using SharpDX.Direct3D11;
+﻿using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -49,10 +47,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderMatrices context)
         {
-            SetShaderVariables(context);
-            SetRasterState(context.DeviceContext);
-            GeometryBuffer.AttachBuffers(context.DeviceContext, VertexLayout, 0);
-            InstanceBuffer?.AttachBuffer(context.DeviceContext, 1);
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
 

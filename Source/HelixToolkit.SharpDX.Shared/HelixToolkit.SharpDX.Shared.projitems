@@ -18,11 +18,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\BillboardBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\EmptyBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\GeometryBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\InstanceBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\LineBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\MeshBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\PointBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\EmptyRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingBillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\LineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshRenderCore.cs" />

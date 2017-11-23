@@ -62,6 +62,13 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
+
+        protected override void PreRender(IRenderMatrices context)
+        {
+            base.PreRender(context);
+            SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D);
+        }
+
         /// <summary>
         /// Create effect material varaible model
         /// </summary>

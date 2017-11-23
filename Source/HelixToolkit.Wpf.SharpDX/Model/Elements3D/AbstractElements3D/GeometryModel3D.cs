@@ -216,7 +216,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
                     bufferModelInternal.Attach();
                 }
-                (RenderCore as IGeometryRenderCore).GeometryBuffer = bufferModelInternal;
+                if(RenderCore is IGeometryRenderCore)
+                {
+                    (RenderCore as IGeometryRenderCore).GeometryBuffer = bufferModelInternal;
+                }
             }
             get
             {
@@ -395,7 +398,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.IsThrowingShadow = true;
         }
 
-        protected abstract IGeometryBufferModel OnCreateBufferModel();
+        protected virtual IGeometryBufferModel OnCreateBufferModel() { return new EmptyGeometryBufferModel(); }
 
         /// <summary>
         /// Make sure to check if <see cref="Element3D.IsAttached"/> == true

@@ -21,6 +21,8 @@ namespace HelixToolkit.UWP
 
         void AttachBuffer(DeviceContext context, int vertexBufferSlot);
         void Initialize(Effect effect);
+
+        void ResetHasInstanceVariable();
     }
 
     public interface IInstanceBufferModel<T> : IInstanceBufferModel

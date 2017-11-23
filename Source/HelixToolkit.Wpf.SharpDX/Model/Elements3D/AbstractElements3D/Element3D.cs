@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Media;
-
+    using Core;
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
@@ -138,10 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsAttached
         {
-            get
-            {
-                return RenderCore != null && RenderCore.IsAttached && renderHost != null;
-            }
+            private set;get;
         }
 
         public IRenderHost RenderHost
@@ -169,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
 
-        protected virtual IRenderCore OnCreateRenderCore() { return null; }
+        protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
@@ -189,7 +186,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             this.renderTechnique = SetRenderTechnique(host);           
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
-            if (OnAttach(host))
+            IsAttached = OnAttach(host);
+            if (IsAttached)
             {
                 OnAttached();
             }
@@ -211,6 +209,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>Return true if attached</returns>
         protected virtual bool OnAttach(IRenderHost host)
         {
+            if (host == null)
+            { return false; }
             RenderCore?.Attach(host, renderTechnique);
             return RenderCore == null ? false : RenderCore.IsAttached;
         }
@@ -219,6 +219,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void Detach()
         {
+            IsAttached = false;
             RenderCore?.Detach();
             OnDetach();
         }

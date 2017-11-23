@@ -18,7 +18,6 @@ namespace HelixToolkit.UWP.Core
         public IGeometryBufferModel GeometryBuffer{ set; get; }
 
         private RasterizerStateDescription rasterDescription;
-        private EffectScalarVariable hasInstancesVar;
 
         public void CreateRasterState(RasterizerStateDescription description)
         {
@@ -48,11 +47,18 @@ namespace HelixToolkit.UWP.Core
             {
                 this.VertexLayout = host.EffectsManager.GetLayout(technique);
                 this.EffectTechnique = Effect.GetTechniqueByName(technique.Name);
-                hasInstancesVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasInstance).AsScalar());
                 CreateRasterState(rasterDescription);
                 return true;
             }
             return false;
+        }
+
+        protected override void PreRender(IRenderMatrices context)
+        {
+            base.PreRender(context);
+            SetRasterState(context.DeviceContext);
+            GeometryBuffer.AttachBuffers(context.DeviceContext, this.VertexLayout, 0);
+            InstanceBuffer?.AttachBuffer(context.DeviceContext, 1);
         }
 
         protected override bool CanRender()
@@ -60,12 +66,16 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender() && GeometryBuffer != null;
         }
 
-        protected override void PreRender(IRenderMatrices context)
+        protected override void PostRender(IRenderMatrices context)
         {
-            base.PreRender(context);
-            hasInstancesVar.Set(false);//Reset variables to false
+            base.PostRender(context);
+            InstanceBuffer?.ResetHasInstanceVariable();
         }
-
+        /// <summary>
+        /// Draw call
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="instanceModel"></param>
         protected virtual void OnDraw(DeviceContext context, IInstanceBufferModel instanceModel)
         {
             if (GeometryBuffer.IndexBuffer != null)

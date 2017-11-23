@@ -238,10 +238,5 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return hit;
         }
-
-        protected override IGeometryBufferModel OnCreateBufferModel()
-        {
-            return null;
-        }
     }
 }
