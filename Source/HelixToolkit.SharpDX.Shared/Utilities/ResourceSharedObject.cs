@@ -1,10 +1,14 @@
-﻿#if !NETFX_CORE
+﻿#define DEBUG_REF
+
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 namespace HelixToolkit.UWP
 #endif
 {
-    using System;
+#if DEBUG_REF
+    using System.Diagnostics;
+#endif
     using System.Threading;
     public abstract class ResourceSharedObject : DisposeObject, IResourceSharing
     {
@@ -23,7 +27,13 @@ namespace HelixToolkit.UWP
         /// <returns>Current count</returns>
         public int AddReference()
         {
+#if DEBUG_REF
+            var r = Interlocked.Increment(ref referenceCount);
+            Debug.WriteLine("AddReference, Ref = " + r);
+            return r;
+#else
             return Interlocked.Increment(ref referenceCount);
+#endif
         }
 
         /// <summary>
@@ -33,6 +43,9 @@ namespace HelixToolkit.UWP
         public int RemoveReference(bool release)
         {
             int count = Interlocked.Decrement(ref referenceCount);
+#if DEBUG_REF
+            Debug.WriteLine("RemoveReference, Ref = " + count);
+#endif
             if (count <= 0 && release)
             {
                 DisposeAndClear();
