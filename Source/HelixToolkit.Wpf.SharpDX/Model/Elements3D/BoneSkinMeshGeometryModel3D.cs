@@ -86,13 +86,20 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn];
         }
 
-        protected override void OnAttached()
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.OnAttached();
-            OnBoneParameterChanged();
-            OnBoneMatricesChanged();
-            hasBonesVar = effect.GetVariableByName("bHasBones").AsScalar();
-            boneMatricesVar = effect.GetVariableByName("SkinMatrices").AsMatrix();
+            if (base.OnAttach(host))
+            {
+                OnBoneParameterChanged();
+                OnBoneMatricesChanged();
+                hasBonesVar = effect.GetVariableByName("bHasBones").AsScalar();
+                boneMatricesVar = effect.GetVariableByName("SkinMatrices").AsMatrix();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override void OnDetach()

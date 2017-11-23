@@ -266,12 +266,19 @@ namespace HelixToolkit.Wpf.SharpDX
             xOutlineFadingFactor.Set(outlineFadingFactor);
         }
 
-        protected override void OnAttached()
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.OnAttached();
-            xOutlineColorVar = effect.GetVariableByName("XRayObjectColor").AsVector();
-            xOutlineFadingFactor = effect.GetVariableByName("XRayBorderFadingFactor").AsScalar();
-            isBlendChanged = true;
+            if(base.OnAttach(host))
+            {
+                xOutlineColorVar = effect.GetVariableByName("XRayObjectColor").AsVector();
+                xOutlineFadingFactor = effect.GetVariableByName("XRayBorderFadingFactor").AsScalar();
+                isBlendChanged = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override void OnDetach()

@@ -187,21 +187,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderTechnique = SetRenderTechnique(host);           
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
             IsAttached = OnAttach(host);
-            if (IsAttached)
-            {
-                OnAttached();
-            }
-
             InvalidateRender();
         }       
 
-        /// <summary>
-        /// Called after <see cref="OnAttach(IRenderHost)"/>
-        /// </summary>
-        protected virtual void OnAttached()
-        {
-
-        }
         /// <summary>
         /// To override Attach routine, please override this.
         /// </summary>
