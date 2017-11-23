@@ -33,6 +33,18 @@ void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
 GSInputPS VShaderPoints(VSInputPS input)
 {
     GSInputPS output = (GSInputPS)0;	
+    if (bHasInstances)
+    {
+        matrix mInstance =
+        {
+            input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
+			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
+			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
+			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+        };
+        input.p = mul(mInstance, input.p);
+    }
+
     output.p = input.p;
 
     //set position into clip space	

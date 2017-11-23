@@ -28,6 +28,19 @@ float2 windowToNdc(in float2 pos)
 PSInputBT VShaderBillboardText( VSInputBT input )
 {
 	PSInputBT output = (PSInputBT)0;
+    if (bHasInstances)
+    {
+        matrix mInstance =
+        {
+            input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
+			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
+			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
+			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+        };
+        input.p = mul(mInstance, input.p);
+		input.t.z *= input.mr0.x; // 2d scaling x
+		input.t.w *= input.mr1.y; // 2d scaling y
+    }
 	float4 ndcPosition = float4( input.p.xyz, 1.0 );
 
 	// Translate position into clip space
@@ -61,7 +74,16 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 	float4 inputc = input.c;
 	if (bHasInstances)
 	{
-		inputp.xyz += input.mr3.xyz; //Translation
+        matrix mInstance =
+        {
+            input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
+			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
+			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
+			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+        };
+        input.p = mul(mInstance, input.p);
+		input.t.z *= input.mr0.x; // 2d scaling x
+		input.t.w *= input.mr1.y; // 2d scaling y
 		if (bHasInstanceParams)
 		{
 			inputt.x *= input.tScale.x;
@@ -72,8 +94,7 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
 	}
 
 	float4 ndcPosition = float4(inputp.xyz, 1.0);
-	input.t.z *= input.mr0.x; // 2d scaling x
-	input.t.w *= input.mr1.y; // 2d scaling y
+
 	// Translate position into clip space
 	ndcPosition = mul(ndcPosition, mWorld);
 	ndcPosition = mul(ndcPosition, mView);

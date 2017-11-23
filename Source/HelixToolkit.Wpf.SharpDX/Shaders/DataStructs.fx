@@ -127,6 +127,10 @@ struct VSInputBT
 	float4 p	: POSITION;
 	float4 c	: COLOR;
 	float4 t	: TEXCOORD0; // t.xy = texture coords, t.zw = offset in pixels.
+    float4 mr0 : TEXCOORD1;
+    float4 mr1 : TEXCOORD2;
+    float4 mr2 : TEXCOORD3;
+    float4 mr3 : TEXCOORD4;
 };
 
 struct VSInputBTInstancing
@@ -158,6 +162,10 @@ struct VSInputPS
 {
 	float4 p	: POSITION;
 	float4 c	: COLOR;
+    float4 mr0 : TEXCOORD1;
+    float4 mr1 : TEXCOORD2;
+    float4 mr2 : TEXCOORD3;
+    float4 mr3 : TEXCOORD4;
 };
 
 struct GSInputPS
