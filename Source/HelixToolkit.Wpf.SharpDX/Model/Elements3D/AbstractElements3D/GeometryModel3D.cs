@@ -407,8 +407,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected virtual void OnRasterStateChanged()
         {
-            if (!IsAttached) { return; }
-            (RenderCore as IGeometryRenderCore)?.CreateRasterState(CreateRasterState());
+            if (RenderCore is IGeometryRenderCore)
+            {
+                (RenderCore as IGeometryRenderCore).RasterDescription = CreateRasterState();
+            }
         }
 
         protected abstract RasterizerStateDescription CreateRasterState();

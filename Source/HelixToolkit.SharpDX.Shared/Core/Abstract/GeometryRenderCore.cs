@@ -17,12 +17,28 @@ namespace HelixToolkit.UWP.Core
 
         public IGeometryBufferModel GeometryBuffer{ set; get; }
 
-        private RasterizerStateDescription rasterDescription;
+        private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+        };
+        public RasterizerStateDescription RasterDescription
+        {
+            set
+            {
+                rasterDescription = value;
+                CreateRasterState(value, false);
+            }
+            get
+            {
+                return RasterDescription;
+            }
+        }
 
-        public void CreateRasterState(RasterizerStateDescription description)
+        private void CreateRasterState(RasterizerStateDescription description, bool force)
         {
             rasterDescription = description;
-            if (!IsAttached)
+            if (!IsAttached && !force)
             { return; }
             RemoveAndDispose(ref rasterState);
             rasterState = Collect(new RasterizerState(Device, description));
@@ -47,7 +63,7 @@ namespace HelixToolkit.UWP.Core
             {
                 this.VertexLayout = host.EffectsManager.GetLayout(technique);
                 this.EffectTechnique = Effect.GetTechniqueByName(technique.Name);
-                CreateRasterState(rasterDescription);
+                CreateRasterState(rasterDescription, true);
                 return true;
             }
             return false;
@@ -60,7 +76,6 @@ namespace HelixToolkit.UWP.Core
         {
             base.SetStatesAndVariables(context);
             SetRasterState(context.DeviceContext);
-            OnAttachBuffers(context.DeviceContext);
         }
         /// <summary>
         /// Attach vertex buffer routine
