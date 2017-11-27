@@ -27,13 +27,14 @@ struct VSBoneSkinInput
 	float3 t1			: TANGENT;
 	float3 t2			: BINORMAL;
 
-	int4 bones			: BONEIDS;
-	float4 boneWeights	: BONEWEIGHTS;
-
 	float4 mr0			: TEXCOORD1;
 	float4 mr1			: TEXCOORD2;
 	float4 mr2			: TEXCOORD3;
 	float4 mr3			: TEXCOORD4;
+
+	int4 bones			: BONEIDS;
+	float4 boneWeights	: BONEWEIGHTS;
+
 };
 
 //--------------------------------------------------------------------------------------

@@ -61,8 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            boneSkinRenderCore = new BoneSkinRenderCore() { InvertNormal = this.InvertNormal };
-            boneSkinRenderCore.VertexBoneIdBuffer = bonesBufferModel;
+            boneSkinRenderCore = new BoneSkinRenderCore();// { InvertNormal = this.InvertNormal };            
             return boneSkinRenderCore;
         }
 
@@ -71,6 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (base.OnAttach(host))
             {
                 bonesBufferModel.Initialize(effect);
+                boneSkinRenderCore.VertexBoneIdBuffer = bonesBufferModel;
                 return true;
             }
             else

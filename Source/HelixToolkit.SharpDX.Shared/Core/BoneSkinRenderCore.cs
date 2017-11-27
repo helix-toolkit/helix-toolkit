@@ -31,14 +31,13 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool CanRender()
         {
-            return base.CanRender() && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
+            return base.CanRender()&& VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
         }
 
         protected override void OnAttachBuffers(DeviceContext context)
         {
-            GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0);            
-            VertexBoneIdBuffer?.AttachBuffer(context, 1);
-            InstanceBuffer?.AttachBuffer(context, 2);
+            base.OnAttachBuffers(context);         
+            VertexBoneIdBuffer?.AttachBuffer(context, 2);
         }
 
         protected override void SetShaderVariables(IRenderMatrices context)
