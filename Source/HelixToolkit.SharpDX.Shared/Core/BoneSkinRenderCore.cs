@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(host, technique))
             {
-                boneMatricesVar = Effect.GetVariableByName("SkinMatrices").AsMatrix();
+                boneMatricesVar = Collect(Effect.GetVariableByName("SkinMatrices").AsMatrix());
                 return true;
             }
             else
