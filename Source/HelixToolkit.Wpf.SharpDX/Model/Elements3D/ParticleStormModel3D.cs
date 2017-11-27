@@ -707,22 +707,16 @@ namespace HelixToolkit.Wpf.SharpDX
             textureViewVar = effect.GetVariableByName("texDiffuseMap").AsShaderResource();
             isBlendChanged = true;
             System.Windows.Media.CompositionTarget.Rendering += CompositionTarget_Rendering;
+            if (isInitialParticleChanged)
+            {
+                OnInitialParticleChanged(ParticleCount);
+            }
             return true;
         }
 
         private void CompositionTarget_Rendering(object sender, System.EventArgs e)
         {
             InvalidateRender();
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-
-            if (isInitialParticleChanged)
-            {
-                OnInitialParticleChanged(ParticleCount);
-            }
         }
 
         protected override void OnDetach()

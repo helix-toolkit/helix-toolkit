@@ -317,15 +317,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The OnAttached
         /// </summary>
-        protected override void OnAttached()
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.OnAttached();
-            planeParamsVar = effect.GetVariableByName("CrossPlaneParams").AsMatrix();
-            planeEnabledVar = effect.GetVariableByName("EnableCrossPlane").AsVector();
-            crossSectionColorVar = effect.GetVariableByName("CrossSectionColor").AsVector();
-            sectionFillTextureVar = effect.GetVariableByName("SectionFillTexture").AsShaderResource();
+            if (base.OnAttach(host))
+            {
+                planeParamsVar = effect.GetVariableByName("CrossPlaneParams").AsMatrix();
+                planeEnabledVar = effect.GetVariableByName("EnableCrossPlane").AsVector();
+                crossSectionColorVar = effect.GetVariableByName("CrossSectionColor").AsVector();
+                sectionFillTextureVar = effect.GetVariableByName("SectionFillTexture").AsShaderResource();
 
-            CreateStates();
+                CreateStates();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
