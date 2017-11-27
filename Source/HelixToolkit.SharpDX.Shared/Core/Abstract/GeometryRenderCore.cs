@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Core
         public InputLayout VertexLayout { private set; get; }
         public EffectTechnique EffectTechnique { private set; get; }
 
-        public IInstanceBufferModel InstanceBuffer { set; get; }
+        public IElementsBufferModel InstanceBuffer { set; get; }
 
         public IGeometryBufferModel GeometryBuffer{ set; get; }
 
@@ -52,13 +52,24 @@ namespace HelixToolkit.UWP.Core
             }
             return false;
         }
-
-        protected override void PreRender(IRenderMatrices context)
+        /// <summary>
+        /// Set all necessary states and buffers
+        /// </summary>
+        /// <param name="context"></param>
+        protected override void SetStatesAndVariables(IRenderMatrices context)
         {
-            base.PreRender(context);
+            base.SetStatesAndVariables(context);
             SetRasterState(context.DeviceContext);
-            GeometryBuffer.AttachBuffers(context.DeviceContext, this.VertexLayout, 0);
-            InstanceBuffer?.AttachBuffer(context.DeviceContext, 1);
+            OnAttachBuffers(context.DeviceContext);
+        }
+        /// <summary>
+        /// Attach vertex buffer routine
+        /// </summary>
+        /// <param name="context"></param>
+        protected override void OnAttachBuffers(DeviceContext context)
+        {
+            GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0);
+            InstanceBuffer?.AttachBuffer(context, 1);
         }
 
         protected override bool CanRender()
@@ -69,36 +80,36 @@ namespace HelixToolkit.UWP.Core
         protected override void PostRender(IRenderMatrices context)
         {
             base.PostRender(context);
-            InstanceBuffer?.ResetHasInstanceVariable();
+            InstanceBuffer?.ResetHasElementsVariable();
         }
         /// <summary>
         /// Draw call
         /// </summary>
         /// <param name="context"></param>
         /// <param name="instanceModel"></param>
-        protected virtual void OnDraw(DeviceContext context, IInstanceBufferModel instanceModel)
+        protected virtual void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
         {
             if (GeometryBuffer.IndexBuffer != null)
             {
-                if (instanceModel == null || !instanceModel.HasInstance)
+                if (instanceModel == null || !instanceModel.HasElements)
                 {
                     context.DrawIndexed(GeometryBuffer.IndexBuffer.Count, GeometryBuffer.IndexBuffer.Offset, 0);
                 }
                 else
                 {
-                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.Count, instanceModel.InstanceBuffer.Count, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.InstanceBuffer.Offset);
+                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.Count, instanceModel.Buffer.Count, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.Buffer.Offset);
                 }
             }
             else if (GeometryBuffer.VertexBuffer != null)
             {
-                if (instanceModel == null || !instanceModel.HasInstance)
+                if (instanceModel == null || !instanceModel.HasElements)
                 {
                     context.Draw(GeometryBuffer.VertexBuffer.Count, GeometryBuffer.VertexBuffer.Offset);
                 }
                 else
                 {
-                    context.DrawInstanced(GeometryBuffer.VertexBuffer.Count, instanceModel.InstanceBuffer.Count,
-                        GeometryBuffer.VertexBuffer.Offset, instanceModel.InstanceBuffer.Offset);
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer.Count, instanceModel.Buffer.Count,
+                        GeometryBuffer.VertexBuffer.Offset, instanceModel.Buffer.Offset);
                 }
             }
         }

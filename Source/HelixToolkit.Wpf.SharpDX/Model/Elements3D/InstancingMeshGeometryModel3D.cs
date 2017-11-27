@@ -77,12 +77,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         #endregion
-        protected IInstanceBufferModel<InstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<InstanceParameter>(InstanceParameter.SizeInBytes);
+        protected IElementsBufferModel<InstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<InstanceParameter>(InstanceParameter.SizeInBytes);
 
         private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstancingMeshGeometryModel3D)d;
-            model.instanceParamBuffer.Instances = e.NewValue as IList<InstanceParameter>;
+            model.instanceParamBuffer.Elements = e.NewValue as IList<InstanceParameter>;
         }
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(RenderContext context)
         {
-            if (InstanceBuffer.InstanceChanged)
+            if (InstanceBuffer.Changed)
             {
                 BuildOctree();
             }
@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
-            if (isHitTestVisibleInternal && InstanceBuffer.HasInstance)
+            if (isHitTestVisibleInternal && InstanceBuffer.HasElements)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
@@ -159,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     foreach (var hit in boundHits)
                     {
                         int instanceIdx = (int)hit.Tag;
-                        instanceMatrix = InstanceBuffer.Instances[instanceIdx];
+                        instanceMatrix = InstanceBuffer.Elements[instanceIdx];
                         this.PushMatrix(instanceMatrix);
                         var h = OnHitTest(context, rayWS, ref hits);
                         isHit |= h;
@@ -168,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             var result = hits.Last();
                             object tag = null;
-                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Instances.Count)
+                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Elements.Count)
                             {
                                 tag = InstanceIdentifiers[instanceIdx];
                             }

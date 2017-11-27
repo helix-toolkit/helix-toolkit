@@ -31,13 +31,13 @@ namespace HelixToolkit.Wpf.SharpDX
         private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstanceGeometryModel3D)d;
-            model.InstanceBuffer.Instances = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
+            model.InstanceBuffer.Elements = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
             model.InstancesChanged();
             model.InvalidateRender();
         }
 
-        public bool HasInstances { get { return InstanceBuffer.HasInstance; } }
-        protected readonly IInstanceBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
+        public bool HasInstances { get { return InstanceBuffer.HasElements; } }
+        protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
 
         protected BoundingBox instancesBound;
         public BoundingBox InstancesBound
@@ -65,8 +65,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var bound = this.BoundsWithTransform.Transform(InstanceBuffer.Instances[0]);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceInternal[0])).ToArray());
-                foreach (var instance in InstanceBuffer.Instances)
+                var bound = this.BoundsWithTransform.Transform(InstanceBuffer.Elements[0]);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceInternal[0])).ToArray());
+                foreach (var instance in InstanceBuffer.Elements)
                 {
                     var b = this.BoundsWithTransform.Transform(instance);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
                     BoundingBox.Merge(ref bound, ref b, out bound);
@@ -86,11 +86,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (CanHitTest(context))
             {
-                if (this.InstanceBuffer.HasInstance)
+                if (this.InstanceBuffer.HasElements)
                 {
                     bool hit = false;
                     int idx = 0;
-                    foreach (var modelMatrix in InstanceBuffer.Instances)
+                    foreach (var modelMatrix in InstanceBuffer.Elements)
                     {
                         var b = this.Bounds;
                         this.PushMatrix(modelMatrix);

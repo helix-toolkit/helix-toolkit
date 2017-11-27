@@ -37,6 +37,8 @@ namespace HelixToolkit.UWP
         public static string InvertNormal = "bInvertNormal";
         public static string HasInstance = "bHasInstances";
         public static string HasInstanceParams = "bHasInstanceParams";
+        public static string HasBones = "bHasBones";
+        public static string SkinMatrics = "SkinMatrices";
 
         //Point
         public static string PointParams = "vPointParams";

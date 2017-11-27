@@ -7,21 +7,21 @@ namespace HelixToolkit.UWP.Core
 {
     public class InstancingMeshRenderCore : MeshRenderCore
     {
-        public IInstanceBufferModel ParameterBuffer { set; get; }
+        public IElementsBufferModel ParameterBuffer { set; get; }
         protected override bool CanRender()
         {
-            return base.CanRender() && InstanceBuffer != null && InstanceBuffer.HasInstance;
+            return base.CanRender() && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
-        protected override void PreRender(IRenderMatrices context)
+        protected override void OnAttachBuffers(DeviceContext context)
         {
-            base.PreRender(context);
-            ParameterBuffer?.AttachBuffer(context.DeviceContext, 2);
+            base.OnAttachBuffers(context);
+            ParameterBuffer?.AttachBuffer(context, 2);
         }
 
         protected override void PostRender(IRenderMatrices context)
         {
-            ParameterBuffer?.ResetHasInstanceVariable();
+            ParameterBuffer?.ResetHasElementsVariable();
             base.PostRender(context);
         }
     }

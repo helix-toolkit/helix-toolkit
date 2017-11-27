@@ -63,9 +63,9 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void PreRender(IRenderMatrices context)
+        protected override void SetStatesAndVariables(IRenderMatrices context)
         {
-            base.PreRender(context);
+            base.SetStatesAndVariables(context);
             SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D);
         }
 

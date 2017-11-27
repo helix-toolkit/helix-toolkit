@@ -33,10 +33,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstancingBillboardModel3D)d;
-            model.instanceParamBuffer.Instances = e.NewValue as IList<BillboardInstanceParameter>;
+            model.instanceParamBuffer.Elements = e.NewValue as IList<BillboardInstanceParameter>;
         }
 
-        protected IInstanceBufferModel<BillboardInstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<BillboardInstanceParameter>(BillboardInstanceParameter.SizeInBytes);
+        protected IElementsBufferModel<BillboardInstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<BillboardInstanceParameter>(BillboardInstanceParameter.SizeInBytes);
         #region Overridable Methods
 
         protected override IRenderCore OnCreateRenderCore()

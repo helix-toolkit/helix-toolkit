@@ -76,7 +76,8 @@ namespace HelixToolkit.UWP.Core
         {
             if (CanRender())
             {
-                PreRender(context);
+                SetStatesAndVariables(context);
+                OnAttachBuffers(context.DeviceContext);
                 OnRender(context);
                 PostRender(context);
             }
@@ -87,9 +88,17 @@ namespace HelixToolkit.UWP.Core
         /// <para>Default to call SetShaderVariables</para>
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void PreRender(IRenderMatrices context)
+        protected virtual void SetStatesAndVariables(IRenderMatrices context)
         {
             SetShaderVariables(context);
+        }
+
+        /// <summary>
+        /// Attach vertex buffer routine
+        /// </summary>
+        /// <param name="context"></param>
+        protected virtual void OnAttachBuffers(DeviceContext context)
+        {
         }
 
         /// <summary>
