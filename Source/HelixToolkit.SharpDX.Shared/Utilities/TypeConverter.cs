@@ -195,15 +195,23 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
                 if (source != null)
                 {
-                    var color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(source);
-                    return new Color(color.R, color.G, color.B, color.A);
-                    //var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
-                    //var result = new Color(
-                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    //    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
-                    //return result;
+                    try
+                    {
+                        var c = System.Windows.Media.ColorConverter.ConvertFromString(source);
+                        if (c != null)
+                        {
+                            var color = (System.Windows.Media.Color)c;
+                            return new Color(color.R, color.G, color.B, color.A);
+                        }
+                    }
+                    catch (Exception) { }
+                    var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
+                    var result = new Color(
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                    return result;
                 }
             }
             else if(value is System.Windows.Media.Color)
