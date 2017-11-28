@@ -10,7 +10,7 @@ namespace HelixToolkit.UWP.Core
 {
     public sealed class EmptyRenderCore : RenderCoreBase
     {
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderMatrices context, IRenderHost host)
         {
 
         }

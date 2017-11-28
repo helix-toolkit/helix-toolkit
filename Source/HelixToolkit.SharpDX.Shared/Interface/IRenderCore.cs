@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <param name="context"></param>
-        void Render(IRenderMatrices context);
+        void Render(IRenderMatrices context, IRenderHost host);
         /// <summary>
         /// Unsubscribe all OnInvalidateRenderer event handler;
         /// </summary>

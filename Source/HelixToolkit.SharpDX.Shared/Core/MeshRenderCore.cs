@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP.Core
             bInvertNormalVar.Set(InvertNormal);
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderMatrices context, IRenderHost host)
         {                      
             EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
             OnDraw(context.DeviceContext, InstanceBuffer);

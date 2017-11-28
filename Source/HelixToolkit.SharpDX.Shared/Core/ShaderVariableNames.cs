@@ -54,5 +54,11 @@ namespace HelixToolkit.UWP
         public static string BillboardAlphaTextureVariable = "billboardAlphaTexture";
         public static string HasAlphaTextureVariable = "bHasAlphaTexture";
         public static string BillboardFixedSizeVariable = "bBillboardFixedSize";
+
+        //CrossSection
+        public static string CrossPlaneParams = "CrossPlaneParams";
+        public static string EnableCrossPlane = "EnableCrossPlane";
+        public static string CrossSectionColor = "CrossSectionColor";
+        public static string SectionFillTexture = "SectionFillTexture";
     }
 }

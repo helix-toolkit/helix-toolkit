@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP.Core
             colorParamsVar.Set(ref PointColor);
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderMatrices context, IRenderHost host)
         {
             EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
             OnDraw(context.DeviceContext, InstanceBuffer);

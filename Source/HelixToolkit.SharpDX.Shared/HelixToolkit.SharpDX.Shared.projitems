@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\LineBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\MeshBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\PointBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\CrossSectionMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\EmptyRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingBillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingMeshRenderCore.cs" />

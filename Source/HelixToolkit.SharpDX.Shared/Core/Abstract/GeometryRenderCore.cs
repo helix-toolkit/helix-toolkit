@@ -35,13 +35,14 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private void CreateRasterState(RasterizerStateDescription description, bool force)
+        protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
             rasterDescription = description;
             if (!IsAttached && !force)
-            { return; }
+            { return false; }
             RemoveAndDispose(ref rasterState);
             rasterState = Collect(new RasterizerState(Device, description));
+            return true;
         }
 
         public bool SetRasterState(DeviceContext context)
@@ -92,9 +93,9 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender() && GeometryBuffer != null;
         }
 
-        protected override void PostRender(IRenderMatrices context)
+        protected override void PostRender(IRenderMatrices context, IRenderHost host)
         {
-            base.PostRender(context);
+            base.PostRender(context, host);
             InstanceBuffer?.ResetHasElementsVariable();
         }
         /// <summary>
