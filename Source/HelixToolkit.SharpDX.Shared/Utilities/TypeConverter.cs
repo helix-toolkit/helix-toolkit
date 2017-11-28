@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                             return new Color(color.R, color.G, color.B, color.A);
                         }
                     }
-                    catch (Exception) { }
+                    catch (FormatException) { }
                     var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                     var result = new Color(
                         Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),

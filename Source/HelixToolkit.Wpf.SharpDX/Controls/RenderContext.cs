@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
         internal Matrix viewMatrix;
         internal Matrix projectionMatrix;
         internal BoundingFrustum boundingFrustum;
-        private Camera camera; 
+        private ICamera camera; 
         private EffectVectorVariable vEyePos, vFrustum, vViewport;        
         private EffectMatrixVariable mView, mProjection;
         private bool matrixChanged = true;
@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public double ActualHeight { get; private set; }
 
-        public Camera Camera
+        public ICamera Camera
         {
             get { return this.camera; }
             set

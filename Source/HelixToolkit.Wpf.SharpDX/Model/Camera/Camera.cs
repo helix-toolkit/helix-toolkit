@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
     /// </summary>
-    public abstract class Camera : Animatable
+    public abstract class Camera : Animatable, ICamera
     {
         /// <summary>
         /// Gets or sets the position.

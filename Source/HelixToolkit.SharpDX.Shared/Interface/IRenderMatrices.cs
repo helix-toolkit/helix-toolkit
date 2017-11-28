@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public interface IRenderMatrices
     {
+        ICamera Camera { get; }
         Matrix ViewMatrix { get; }
 
         Matrix ProjectionMatrix { get; }
