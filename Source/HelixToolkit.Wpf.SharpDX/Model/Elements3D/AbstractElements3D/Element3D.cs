@@ -264,7 +264,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnRender(RenderContext context)
         {
-            RenderCore?.Render(context, RenderHost);
+            RenderCore?.Render(context);
         }
 
         /// <summary>

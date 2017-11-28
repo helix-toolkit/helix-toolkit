@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.Core
             bFixedSizeVar.Set(FixedSize);
         }
 
-        protected override void OnRender(IRenderMatrices context, IRenderHost host)
+        protected override void OnRender(IRenderMatrices context)
         {
             OnDraw(context.DeviceContext, InstanceBuffer);
         }

@@ -48,7 +48,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IElementsBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Interfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />

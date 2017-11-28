@@ -72,14 +72,14 @@ namespace HelixToolkit.UWP.Core
         /// Trigger OnRender function delegate if CanRender()==true
         /// </summary>
         /// <param name="context"></param>
-        public void Render(IRenderMatrices context, IRenderHost host)
+        public void Render(IRenderMatrices context)
         {
             if (CanRender())
             {
                 SetStatesAndVariables(context);
                 OnAttachBuffers(context.DeviceContext);
-                OnRender(context, host);
-                PostRender(context, host);
+                OnRender(context);
+                PostRender(context);
             }
         }
 
@@ -104,13 +104,13 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
-        protected abstract void OnRender(IRenderMatrices context, IRenderHost host);
+        protected abstract void OnRender(IRenderMatrices context);
 
         /// <summary>
         /// After calling OnRender. Restore some variables, such as HasInstance etc.
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void PostRender(IRenderMatrices context, IRenderHost host) { }
+        protected virtual void PostRender(IRenderMatrices context) { }
 
         /// <summary>
         /// Check if can render

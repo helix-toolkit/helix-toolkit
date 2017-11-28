@@ -162,16 +162,18 @@ namespace HelixToolkit.UWP.Core
             crossSectionColorVar.Set(SectionColor);
         }
 
-        protected override void OnRender(IRenderMatrices renderContext, IRenderHost host)
+        protected override void OnRender(IRenderMatrices renderContext)
         {
-            base.OnRender(renderContext, host);
+            base.OnRender(renderContext);
             //Draw backface into stencil buffer
             renderContext.DeviceContext.Rasterizer.State = fillStencilRasterState;
+            DepthStencilView dsView;
+            var renderTargets = renderContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
 
-            renderContext.DeviceContext.ClearDepthStencilView(host.DepthStencilBufferView, DepthStencilClearFlags.Stencil, 0, 0);
+            renderContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
             var pass = this.EffectTechnique.GetPassByIndex(1);
             pass.Apply(renderContext.DeviceContext);
-            renderContext.DeviceContext.OutputMerger.SetRenderTargets(host.DepthStencilBufferView, new RenderTargetView[0]);//Remove render target
+            renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, new RenderTargetView[0]);//Remove render target
             renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillStencilState, 1); //Draw backface onto stencil buffer, set value to 1
             OnDraw(renderContext.DeviceContext, InstanceBuffer);
 
@@ -181,9 +183,13 @@ namespace HelixToolkit.UWP.Core
 
             pass = this.EffectTechnique.GetPassByIndex(2);
             pass.Apply(renderContext.DeviceContext);
-            renderContext.DeviceContext.OutputMerger.SetRenderTargets(host.DepthStencilBufferView, host.ColorBufferView);//Rebind render target
+            renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets[0]);//Rebind render target
             renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillCrossSectionStencilState, 1); //Only pass stencil buffer test if value is 1
             renderContext.DeviceContext.Draw(4, 0);
+
+            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
+            dsView.Dispose();
+            renderTargets[0].Dispose();
         }
     }
 }

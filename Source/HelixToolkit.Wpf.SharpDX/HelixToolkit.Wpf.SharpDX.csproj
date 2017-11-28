@@ -146,6 +146,7 @@
     <Compile Include="Controls\DPFCanvasThreading.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChainThreading.cs" />
+    <Compile Include="Controls\IRenderHost.cs" />
     <Compile Include="Controls\MultiViewports\IModelContainer.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">

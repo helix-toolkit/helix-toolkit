@@ -4,6 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using SharpDX.Direct3D11;
 using System;
 
 #if NETFX_CORE
@@ -44,5 +45,4 @@ namespace HelixToolkit.Wpf.SharpDX
         event System.EventHandler<bool> OnInvalidateRenderer;
         bool AttachMaterial(MeshGeometry3D model);
     }
-
 }

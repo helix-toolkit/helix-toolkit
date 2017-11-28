@@ -46,10 +46,10 @@ namespace HelixToolkit.UWP.Core
             boneMatricesVar.SetMatrix(BoneMatrices.Bones);
         }
 
-        protected override void PostRender(IRenderMatrices context, IRenderHost host)
+        protected override void PostRender(IRenderMatrices context)
         {
             VertexBoneIdBuffer?.ResetHasElementsVariable();
-            base.PostRender(context, host);
+            base.PostRender(context);
         }
     }
 }

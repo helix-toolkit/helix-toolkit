@@ -19,10 +19,10 @@ namespace HelixToolkit.UWP.Core
             ParameterBuffer?.AttachBuffer(context, 2);
         }
 
-        protected override void PostRender(IRenderMatrices context, IRenderHost host)
+        protected override void PostRender(IRenderMatrices context)
         {
             ParameterBuffer?.ResetHasElementsVariable();
-            base.PostRender(context, host);
+            base.PostRender(context);
         }
     }
 }

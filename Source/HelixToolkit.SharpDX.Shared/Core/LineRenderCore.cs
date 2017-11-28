@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP.Core
             lineColorVar.Set(ref LineColor);
         }
 
-        protected override void OnRender(IRenderMatrices context, IRenderHost host)
+        protected override void OnRender(IRenderMatrices context)
         {
             EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
             OnDraw(context.DeviceContext, InstanceBuffer);

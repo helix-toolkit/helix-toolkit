@@ -93,9 +93,9 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender() && GeometryBuffer != null;
         }
 
-        protected override void PostRender(IRenderMatrices context, IRenderHost host)
+        protected override void PostRender(IRenderMatrices context)
         {
-            base.PostRender(context, host);
+            base.PostRender(context);
             InstanceBuffer?.ResetHasElementsVariable();
         }
         /// <summary>
