@@ -212,7 +212,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var effect = new Effect(device, shaderEffectBytecode, eFlags);
             foreach (var tech in techniques)
+            {
                 data[tech.Name] = effect;
+                tech.Effect = effect;
+                tech.EffectTechnique = effect.GetTechniqueByName(tech.Name);
+                tech.Device = device;
+            }
         }
 
         #endregion
@@ -514,6 +519,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RegisterLayout(RenderTechnique technique, InputLayout layout)
         {
             data[technique.Name + "Layout"] = layout;
+            technique.InputLayout = layout;
         }
 
         /// <summary>
@@ -524,7 +530,10 @@ namespace HelixToolkit.Wpf.SharpDX
         protected void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
         {
             foreach (var tech in techniques)
+            {
                 data[tech.Name + "Layout"] = layout;
+                tech.InputLayout = layout;
+            }
         }
 
         #endregion

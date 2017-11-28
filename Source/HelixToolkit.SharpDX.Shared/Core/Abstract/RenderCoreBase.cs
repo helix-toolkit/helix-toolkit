@@ -33,22 +33,23 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="host"></param>
         /// <param name="technique"></param>
-        public void Attach(IRenderHost host, RenderTechnique technique)
+        public void Attach(IRenderTechnique technique)
         {
             if (IsAttached)
             {
                 return;
             }
-            Effect = host.EffectsManager.GetEffect(technique);
-            IsAttached = OnAttach(host, technique);
+            Effect = technique.Effect;
+            IsAttached = OnAttach(technique);
         }
+
         /// <summary>
         /// During attatching render core. Create all local resources. Use Collect(resource) to let object be released automatically during Detach().
         /// </summary>
         /// <param name="host"></param>
         /// <param name="technique"></param>
         /// <returns></returns>
-        protected virtual bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected virtual bool OnAttach(IRenderTechnique technique)
         {            
             mWorldVar = Collect(Effect.GetVariableByName(ShaderVariableNames.WorldMatrix).AsMatrix());
             return true;

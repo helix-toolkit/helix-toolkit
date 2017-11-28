@@ -186,6 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             this.renderTechnique = SetRenderTechnique(host);           
             effect = renderHost.EffectsManager.GetEffect(renderTechnique);
+            this.renderTechnique = RenderHost.EffectsManager.RenderTechniquesManager.RenderTechniques[renderTechnique.Name];
             IsAttached = OnAttach(host);
             InvalidateRender();
         }       
@@ -199,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (host == null)
             { return false; }
-            RenderCore?.Attach(host, renderTechnique);
+            RenderCore?.Attach(renderTechnique);
             return RenderCore == null ? false : RenderCore.IsAttached;
         }
         /// <summary>

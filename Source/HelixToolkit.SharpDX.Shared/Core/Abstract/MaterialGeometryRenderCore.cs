@@ -43,9 +43,9 @@ namespace HelixToolkit.UWP.Core
         public bool RenderDisplacementMap { set; get; } = true;
         public bool HasShadowMap { set; get; } = false;
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(host, technique))
+            if(base.OnAttach(technique))
             {
                 if (materialVariables != null)
                 {

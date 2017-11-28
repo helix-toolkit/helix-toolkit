@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="host"></param>
         /// <param name="technique"></param>
-        void Attach(IRenderHost host, RenderTechnique technique);
+        void Attach(IRenderTechnique technique);
         /// <summary>
         /// 
         /// </summary>

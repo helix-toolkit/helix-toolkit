@@ -12,9 +12,9 @@ namespace HelixToolkit.UWP.Core
 
         private EffectScalarVariable bInvertNormalVar;
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(host, technique))
+            if(base.OnAttach(technique))
             {
                 bInvertNormalVar = Collect(Effect.GetVariableByName(ShaderVariableNames.InvertNormal).AsScalar());
                 return true;

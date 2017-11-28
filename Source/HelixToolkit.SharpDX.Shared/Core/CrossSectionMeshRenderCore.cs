@@ -61,9 +61,9 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Matrix PlaneParams = new Matrix();
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(host, technique))
+            if(base.OnAttach(technique))
             {
                 planeParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.CrossPlaneParams).AsMatrix());
                 planeEnabledVar = Collect(Effect.GetVariableByName(ShaderVariableNames.EnableCrossPlane).AsVector());
@@ -169,7 +169,10 @@ namespace HelixToolkit.UWP.Core
             renderContext.DeviceContext.Rasterizer.State = fillStencilRasterState;
             DepthStencilView dsView;
             var renderTargets = renderContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-
+            if (dsView == null)
+            {
+                return;
+            }
             renderContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
             var pass = this.EffectTechnique.GetPassByIndex(1);
             pass.Apply(renderContext.DeviceContext);

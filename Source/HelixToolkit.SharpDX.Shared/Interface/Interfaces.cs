@@ -45,4 +45,17 @@ namespace HelixToolkit.Wpf.SharpDX
         event System.EventHandler<bool> OnInvalidateRenderer;
         bool AttachMaterial(MeshGeometry3D model);
     }
+
+    public interface IRenderTechnique
+    {
+        string Name { get; }
+
+        Effect Effect { get; }
+
+        EffectTechnique EffectTechnique { get; }
+
+        Device Device { get; }
+
+        InputLayout InputLayout { get; }
+    }
 }

@@ -16,9 +16,9 @@ namespace HelixToolkit.UWP.Core
 
         private EffectMatrixVariable boneMatricesVar;
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(host, technique))
+            if(base.OnAttach(technique))
             {
                 boneMatricesVar = Collect(Effect.GetVariableByName("SkinMatrices").AsMatrix());
                 return true;

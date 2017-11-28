@@ -58,11 +58,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(host, technique))
+            if(base.OnAttach(technique))
             {
-                this.VertexLayout = host.EffectsManager.GetLayout(technique);
+                this.VertexLayout = technique.InputLayout;
                 this.EffectTechnique = Effect.GetTechniqueByName(technique.Name);
                 CreateRasterState(rasterDescription, true);
                 return true;

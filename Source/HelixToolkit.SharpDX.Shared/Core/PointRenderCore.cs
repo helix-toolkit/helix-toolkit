@@ -19,9 +19,9 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Color4 PointColor = Color.Black;
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if (base.OnAttach(host, technique))
+            if (base.OnAttach(technique))
             {
                 pointParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointParams).AsVector());
                 colorParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointColor).AsVector());

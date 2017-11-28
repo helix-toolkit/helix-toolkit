@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public sealed class RenderTechnique : IComparable
+    public sealed class RenderTechnique : IComparable, IRenderTechnique
     {
         static RenderTechnique()
         {
@@ -76,12 +76,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public string Name { get; private set; }
 
-        public Effect Effect { get; private set; }
+        public Effect Effect { get; set; }
 
-        public EffectTechnique EffectTechnique { get; private set; }
+        public EffectTechnique EffectTechnique { get; set; }
 
-        public Device Device { get; private set; }
+        public Device Device { get; set; }
 
-        public InputLayout InputLayout { get; private set; }
+        public InputLayout InputLayout { get; set; }
     }
 }

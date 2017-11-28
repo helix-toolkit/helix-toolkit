@@ -20,9 +20,9 @@ namespace HelixToolkit.UWP.Core
         private EffectVectorVariable lineParamsVar;
         private EffectVectorVariable lineColorVar;
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(host, technique))
+            if(base.OnAttach(technique))
             {
                 lineParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineParams).AsVector());
                 lineColorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineColor).AsVector());

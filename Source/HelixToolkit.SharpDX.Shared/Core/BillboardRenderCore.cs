@@ -17,9 +17,9 @@ namespace HelixToolkit.UWP.Core
         public bool FixedSize = true;
         
 
-        protected override bool OnAttach(IRenderHost host, RenderTechnique technique)
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(host, technique))
+            if(base.OnAttach(technique))
             {
                 bHasTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasTextureVariable).AsScalar());
                 textureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.BillboardTextureVariable).AsShaderResource());
