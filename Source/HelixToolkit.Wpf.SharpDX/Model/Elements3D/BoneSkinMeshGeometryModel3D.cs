@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            boneSkinRenderCore = new BoneSkinRenderCore();// { InvertNormal = this.InvertNormal };            
+            boneSkinRenderCore = new BoneSkinRenderCore() { InvertNormal = this.InvertNormal };            
             return boneSkinRenderCore;
         }
 
