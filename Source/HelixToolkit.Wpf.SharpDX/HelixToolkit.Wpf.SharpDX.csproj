@@ -158,7 +158,6 @@
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />
-    <Compile Include="Controls\IRenderHost.cs" />
     <Compile Include="Controls\Layouts.cs" />
     <Compile Include="Controls\RenderTechnique.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
@@ -215,7 +214,6 @@
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
-    <Compile Include="Model\Lights3D\Light3DSceneShared.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -23,13 +23,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.DXGI;
 
-    using HelixToolkit.Wpf.SharpDX.Utilities;
-    using HelixToolkit.Wpf.SharpDX.Extensions;
+    using Utilities;
+    using Extensions;
 
     using Device = global::SharpDX.Direct3D11.Device;
-    using Model.Lights3D;
     using Helpers;
     using Core2D;
+    using Model;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel

@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.Direct3D11;
-using System.ComponentModel;
 using System.Threading;
-using HelixToolkit.Wpf.SharpDX.Core2D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Utilities;
+    using Core2D;
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
     /// <para>Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</para>

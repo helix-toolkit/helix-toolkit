@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ShaderVariableNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IElementsBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Interfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\MeshGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\PointGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\IntCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Light3DSceneShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />

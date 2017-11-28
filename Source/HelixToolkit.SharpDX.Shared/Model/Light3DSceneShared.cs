@@ -1,6 +1,9 @@
 ﻿using SharpDX;
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model
+#else
+namespace HelixToolkit.Wpf.SharpDX.Model
+#endif
 {
     /// <summary>
     /// Used to hold shared variables for Lights per scene

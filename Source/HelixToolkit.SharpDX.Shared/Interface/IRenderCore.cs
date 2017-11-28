@@ -1,9 +1,6 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct3D11;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX

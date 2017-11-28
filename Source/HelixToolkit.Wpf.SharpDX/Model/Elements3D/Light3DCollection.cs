@@ -4,10 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
-
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
     public class Light3DCollection : GroupElement3D, ILight3D
     {
         public Light3DSceneShared Light3DSceneShared

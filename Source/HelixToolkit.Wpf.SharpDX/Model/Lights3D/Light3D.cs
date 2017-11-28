@@ -20,10 +20,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.Direct3D11;
 
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
 
     using Matrix = global::SharpDX.Matrix;
-    using Model.Lights3D;
+    using Model;
 
     public enum LightType : ushort
     {

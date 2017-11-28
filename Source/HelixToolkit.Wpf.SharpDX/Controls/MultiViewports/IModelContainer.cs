@@ -1,9 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
