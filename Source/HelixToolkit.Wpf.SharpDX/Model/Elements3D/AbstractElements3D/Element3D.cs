@@ -20,6 +20,14 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>    
     public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID
     {
+        public delegate RenderTechnique SetRenderTechniqueFunc(IRenderHost host);
+        /// <summary>
+        /// A delegate function to change render technique. 
+        /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
+        /// The other one is to override the <see cref="SetRenderTechnique"/> function.</para>
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="SetRenderTechnique"/> function will be called.</para>
+        /// </summary>
+        public SetRenderTechniqueFunc OnSetRenderTechnique;
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
@@ -158,6 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="SetRenderTechnique"/> function will be called.</para>
         /// </summary>
         /// <param name="host"></param>
         /// <returns>Return RenderTechnique</returns>
@@ -184,10 +193,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
             }
-            this.renderTechnique = SetRenderTechnique(host);           
-            effect = renderHost.EffectsManager.GetEffect(renderTechnique);
-            this.renderTechnique = RenderHost.EffectsManager.RenderTechniquesManager.RenderTechniques[renderTechnique.Name];
-            IsAttached = OnAttach(host);
+            this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : SetRenderTechnique(host);
+            if (renderTechnique != null)
+            {
+                renderTechnique = RenderHost.EffectsManager.RenderTechniquesManager.RenderTechniques[renderTechnique.Name];
+                effect = renderHost.EffectsManager.GetEffect(renderTechnique);
+                IsAttached = OnAttach(host);
+            }
             InvalidateRender();
         }       
 

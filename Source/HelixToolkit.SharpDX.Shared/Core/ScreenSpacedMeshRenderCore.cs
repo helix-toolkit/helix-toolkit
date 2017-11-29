@@ -1,18 +1,22 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public class ScreenSpacedMeshRenderCore : MeshRenderCore
+    /// <summary>
+    /// Used to change view matrix and projection matrix to screen spaced coordinate system.
+    /// <para>Usage: Call SetScreenSpacedCoordinates(RenderHost) to move coordinate system. Call other render functions for sub models. Finally call RestoreCoordinates(RenderHost) to restore original coordinate system.</para>
+    /// </summary>
+    public class ScreenSpacedMeshRenderCore : RenderCoreBase
     {
         private EffectMatrixVariable viewMatrixVar;
         private EffectMatrixVariable projectionMatrixVar;
         private Matrix projectionMatrix;
-        private DepthStencilState depthStencil;
         public float ScreenRatio = 1f;
         private float relativeScreenLocX = -0.8f;
         public float RelativeScreenLocationX
@@ -70,21 +74,14 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
-                viewMatrixVar = Effect.GetVariableByName(ShaderVariableNames.ViewMatrix).AsMatrix();
-                projectionMatrixVar = Effect.GetVariableByName(ShaderVariableNames.ProjectionMatrix).AsMatrix();
-                RemoveAndDispose(ref depthStencil);
-                depthStencil = Collect(CreateDepthStencilState(this.Device));
+                viewMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ViewMatrix).AsMatrix());
+                projectionMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ProjectionMatrix).AsMatrix());
                 return true;
             }
             else
             {
                 return false;
             }
-        }
-
-        protected virtual DepthStencilState CreateDepthStencilState(Device device)
-        {
-            return new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = true, IsStencilEnabled = false, DepthWriteMask = DepthWriteMask.All, DepthComparison = Comparison.LessEqual });
         }
 
         protected Matrix CreateViewMatrix(IRenderMatrices renderContext)
@@ -114,39 +111,40 @@ namespace HelixToolkit.UWP.Core
 
         protected override void SetShaderVariables(IRenderMatrices context)
         {
-            base.SetShaderVariables(context);
-            var worldMatrix = context.WorldMatrix;
-            worldMatrix.Row4 = new Vector4(0, 0, 0, 1);
-            SetModelWorldMatrix(worldMatrix);
+        }
+
+        protected override bool CanRender()
+        {
+            return false;
+        }
+
+        protected override void OnRender(IRenderMatrices renderContext)
+        {           
+        }
+
+        protected override void PostRender(IRenderMatrices context)
+        {
+        }
+
+        public virtual void SetScreenSpacedCoordinates(IRenderMatrices context, bool clearDepthBuffer = true)
+        {
+            DepthStencilView dsView;
+            context.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
+            if (dsView == null)
+            {
+                return;
+            }
+
+            context.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
+            dsView.Dispose();
+
             this.viewMatrixVar.SetMatrix(CreateViewMatrix(context));
             UpdateProjectionMatrix(context.ActualWidth, context.ActualHeight);
             projectionMatrixVar.SetMatrix(projectionMatrix);
         }
 
-        protected override void OnRender(IRenderMatrices renderContext)
-        {           
-            DepthStencilView dsView;
-            renderContext.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
-            if (dsView == null)
-            {
-                return;
-            }
-            int depthStateRef;
-            var depthStateBack = renderContext.DeviceContext.OutputMerger.GetDepthStencilState(out depthStateRef);
-            renderContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
-
-            var pass = EffectTechnique.GetPassByIndex(0);
-            pass.Apply(renderContext.DeviceContext);
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStencil);
-            OnDraw(renderContext.DeviceContext, null);
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStateBack);
-            depthStateBack.Dispose();
-            dsView.Dispose();
-        }
-
-        protected override void PostRender(IRenderMatrices context)
+        public virtual void RestoreCoordinates(IRenderMatrices context)
         {
-            base.PostRender(context);
             viewMatrixVar.SetMatrix(context.ViewMatrix);
             projectionMatrixVar.SetMatrix(context.ProjectionMatrix);
         }

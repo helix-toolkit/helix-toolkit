@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <para>To replace box texture (such as text, colors), bind to custom material with different diffuseMap. </para>
     /// <para>Create a image with 1 row and 6 evenly distributed columns. Each column occupies one box face. The face order is Front, Back, Down, Up, Left, Right</para>
     /// </summary>
-    public class ViewBoxModel3D : ScreenSpaceMeshGeometry3D
+    public class ViewBoxModel3D : ScreenSpacedElement3D
     {
         private static readonly MeshGeometry3D defaultBoxModel;
         static ViewBoxModel3D()
@@ -67,28 +67,25 @@ namespace HelixToolkit.Wpf.SharpDX
 
             defaultBoxModel = newMesh;
         }
+
+        private MeshGeometryModel3D ViewBoxMeshModel;
+
         public ViewBoxModel3D()
         {
-            Geometry = defaultBoxModel;
+            ViewBoxMeshModel = new MeshGeometryModel3D();
+            ViewBoxMeshModel.Geometry = defaultBoxModel;
             var map = new MemoryStream();
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.DefaultViewboxTexture.jpg");
             stream.CopyTo(map);
             stream.Dispose();
-            Material = new PhongMaterial()
+            ViewBoxMeshModel.Material = new PhongMaterial()
             {
                 DiffuseColor = Color.White,
                 DiffuseMap = map
             };
-            CullMode = CullMode.Back;
-        }
-
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse];
-        }
-        protected override DepthStencilState CreateDepthStencilState(global::SharpDX.Direct3D11.Device device)
-        {
-            return new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = false, IsStencilEnabled = false });
+            ViewBoxMeshModel.CullMode = CullMode.Back;
+            ViewBoxMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse]; };
+            this.Children.Add(ViewBoxMeshModel);
         }
 
         private static void CreateTextureCoordinates(MeshGeometry3D mesh)

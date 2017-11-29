@@ -4,17 +4,14 @@
 // </copyright>
 
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using SharpDX.DXGI;
-using System;
 using System.Linq;
 using System.Windows;
 using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class CoordinateSystemModel3D : ScreenSpaceMeshGeometry3D
+    public class CoordinateSystemModel3D : ScreenSpacedElement3D
     {
         /// <summary>
         /// <see cref="AxisXColor"/>
@@ -88,6 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
+        private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D();
 
         public CoordinateSystemModel3D()
         {
@@ -96,20 +94,28 @@ namespace HelixToolkit.Wpf.SharpDX
             builder.AddArrow(Vector3.Zero, new Vector3(0, 10, 0), 1, 2, 10);
             builder.AddArrow(Vector3.Zero, new Vector3(0, 0, 10), 1, 2, 10);
             var mesh = builder.ToMesh();
-            this.Material = PhongMaterials.White;
+            arrowMeshModel.Material = PhongMaterials.White;
+            arrowMeshModel.Geometry = mesh;
+            arrowMeshModel.CullMode = CullMode.Back;
+            arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors]; };
+            arrowMeshModel.IsHitTestVisible = false;
+
             axisBillboards[0] = new BillboardTextModel3D() { IsHitTestVisible = false };
             axisBillboards[1] = new BillboardTextModel3D() { IsHitTestVisible = false };
             axisBillboards[2] = new BillboardTextModel3D() { IsHitTestVisible = false };
             UpdateAxisColor(mesh, 0, AxisXColor.ToColor4());
             UpdateAxisColor(mesh, 1, AxisYColor.ToColor4());
             UpdateAxisColor(mesh, 2, AxisZColor.ToColor4());
-            Geometry = mesh;
-            CullMode = CullMode.Back;
+
+            Children.Add(arrowMeshModel);
+            Children.Add(axisBillboards[0]);
+            Children.Add(axisBillboards[1]);
+            Children.Add(axisBillboards[2]);
         }
 
         private void UpdateAxisColor(int which, Color4 color)
         {
-            UpdateAxisColor(geometryInternal, which, color);
+            UpdateAxisColor(arrowMeshModel.Geometry, which, color);
         }
 
         private void UpdateAxisColor(Geometry3D mesh, int which, Color4 color)
@@ -136,83 +142,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 colors[i] = color;
             }
             mesh.Colors = colors;
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
-            {
-                foreach (var billboard in axisBillboards)
-                {
-                    billboard.Attach(host);
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnDetach()
-        {
-            foreach (var billboard in axisBillboards)
-            {
-                billboard.Detach();
-            }
-            base.OnDetach();
-        }
-
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
-        }
-
-        protected override void OnRender(RenderContext renderContext)
-        {
-            /*
-            UpdateProjectionMatrix(renderContext.ActualWidth, renderContext.ActualHeight);
-            // --- set constant paramerers             
-            var worldMatrix = renderContext.worldMatrix;
-            worldMatrix.Row4 = new Vector4(0, 0, 0, 1);
-            this.EffectTransforms.World.SetMatrix(ref worldMatrix);
-            this.viewMatrixVar.SetMatrix(CreateViewMatrix(renderContext));
-            this.projectionMatrixVar.SetMatrix(projectionMatrix);
-            this.effectMaterial.bHasShadowMapVariable.Set(false);
-
-            // --- set material params      
-            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
-
-            this.bHasInstances.Set(false);
-            int depthStateRef;
-            var depthStateBack = renderContext.DeviceContext.OutputMerger.GetDepthStencilState(out depthStateRef);
-            renderContext.DeviceContext.ClearDepthStencilView(renderContext.Canvas.DepthStencilBufferView, DepthStencilClearFlags.Depth, 1f, 0);
-            // --- set context
-            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
-
-            // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
-
-            // --- bind buffer                
-            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
-
-            var pass = this.effectTechnique.GetPassByIndex(0);
-            pass.Apply(renderContext.DeviceContext);
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStencil);
-            // --- draw
-            renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
-
-            foreach (var billboard in axisBillboards)
-            {
-                billboard.Render(renderContext);
-            }
-
-            this.viewMatrixVar.SetMatrix(renderContext.ViewMatrix);
-            this.projectionMatrixVar.SetMatrix(renderContext.ProjectionMatrix);
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStateBack);
-            */
         }
     }
 }

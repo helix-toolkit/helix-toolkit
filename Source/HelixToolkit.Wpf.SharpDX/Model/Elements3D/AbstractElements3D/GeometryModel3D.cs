@@ -192,6 +192,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
+        public delegate RasterizerStateDescription CreateRasterStateFunc();
+
+        /// <summary>
+        /// Create raster state description delegate.
+        /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="CreateRasterState"/> will not be called.</para>
+        /// </summary>
+        public CreateRasterStateFunc OnCreateRasterState;
+
         #region Properties
         private IGeometryBufferModel bufferModelInternal;
         /// <summary>
@@ -409,10 +417,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (RenderCore is IGeometryRenderCore)
             {
-                (RenderCore as IGeometryRenderCore).RasterDescription = CreateRasterState();
+                (RenderCore as IGeometryRenderCore).RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
             }
         }
 
+        /// <summary>
+        /// Create raster state description.
+        /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="OnCreateRasterState"/> instead of <see cref="CreateRasterState"/> will be called.</para>
+        /// </summary>
+        /// <returns></returns>
         protected abstract RasterizerStateDescription CreateRasterState();
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
@@ -424,8 +437,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 Attach(host);
             }
         }
-
-        //protected abstract void OnCreateGeometryBuffers();
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {

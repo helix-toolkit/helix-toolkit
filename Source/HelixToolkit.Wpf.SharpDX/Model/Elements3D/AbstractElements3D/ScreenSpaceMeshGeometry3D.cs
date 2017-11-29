@@ -2,9 +2,6 @@
 //   Copyright (c) 2017 Helix Toolkit contributors
 //   Author: Lunci Hua
 // </copyright>
-
-using SharpDX;
-using SharpDX.Direct3D11;
 using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
@@ -13,34 +10,34 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Base class for screen space rendering, such as Coordinate System or ViewBox
     /// </summary>
-    public abstract class ScreenSpaceMeshGeometry3D : MeshGeometryModel3D
+    public abstract class ScreenSpacedElement3D : GroupModel3D
     {        
         /// <summary>
         /// <see cref="RelativeScreenLocationX"/>
         /// </summary>
-        public static readonly DependencyProperty RelativeScreenLocationXProperty = DependencyProperty.Register("RelativeScreenLocationX", typeof(double), typeof(ScreenSpaceMeshGeometry3D),
+        public static readonly DependencyProperty RelativeScreenLocationXProperty = DependencyProperty.Register("RelativeScreenLocationX", typeof(double), typeof(ScreenSpacedElement3D),
             new AffectsRenderPropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                    (d as ScreenSpaceMeshGeometry3D).screenSpaceCore.RelativeScreenLocationX = (float)(double)e.NewValue;
+                   ((d as ScreenSpacedElement3D).RenderCore as ScreenSpacedMeshRenderCore).RelativeScreenLocationX = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="RelativeScreenLocationY"/>
         /// </summary>
-        public static readonly DependencyProperty RelativeScreenLocationYProperty = DependencyProperty.Register("RelativeScreenLocationY", typeof(double), typeof(ScreenSpaceMeshGeometry3D),
+        public static readonly DependencyProperty RelativeScreenLocationYProperty = DependencyProperty.Register("RelativeScreenLocationY", typeof(double), typeof(ScreenSpacedElement3D),
             new AffectsRenderPropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                    (d as ScreenSpaceMeshGeometry3D).screenSpaceCore.RelativeScreenLocationY = (float)(double)e.NewValue;
+                    ((d as ScreenSpacedElement3D).RenderCore as ScreenSpacedMeshRenderCore).RelativeScreenLocationY = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="SizeScale"/>
         /// </summary>
-        public static readonly DependencyProperty SizeScaleProperty = DependencyProperty.Register("SizeScale", typeof(double), typeof(ScreenSpaceMeshGeometry3D),
+        public static readonly DependencyProperty SizeScaleProperty = DependencyProperty.Register("SizeScale", typeof(double), typeof(ScreenSpacedElement3D),
             new AffectsRenderPropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    (d as ScreenSpaceMeshGeometry3D).screenSpaceCore.SizeScale = (float)(double)e.NewValue;
+                    ((d as ScreenSpacedElement3D).RenderCore as ScreenSpacedMeshRenderCore).SizeScale = (float)(double)e.NewValue;
                 }));
 
         /// <summary>
@@ -88,13 +85,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
-        {
-            return false;
-        }
 
-
-        private ScreenSpacedMeshRenderCore screenSpaceCore;
+        protected ScreenSpacedMeshRenderCore screenSpaceCore;
 
         protected override IRenderCore OnCreateRenderCore()
         {
@@ -102,14 +94,23 @@ namespace HelixToolkit.Wpf.SharpDX
             return screenSpaceCore;
         }
 
-        protected virtual DepthStencilState CreateDepthStencilState(global::SharpDX.Direct3D11.Device device)
+        protected override bool OnAttach(IRenderHost host)
         {
-            return new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = true, IsStencilEnabled = false, DepthWriteMask = DepthWriteMask.All, DepthComparison = Comparison.LessEqual });
+            RenderCore.Attach(renderTechnique);
+            return base.OnAttach(host);
         }
 
-        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
+        protected override void OnDetach()
         {
-            return true;
+            RenderCore.Detach();
+            base.OnDetach();
+        }
+
+        protected override void OnRender(RenderContext renderContext)
+        {
+            screenSpaceCore.SetScreenSpacedCoordinates(renderContext);
+            base.OnRender(renderContext);
+            screenSpaceCore.RestoreCoordinates(renderContext);
         }
     }
 }
