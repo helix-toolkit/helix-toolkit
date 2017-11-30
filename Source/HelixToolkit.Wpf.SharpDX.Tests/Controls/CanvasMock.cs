@@ -6,7 +6,7 @@
 
 using System;
 using HelixToolkit.Wpf.SharpDX.Core2D;
-using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
+using HelixToolkit.Wpf.SharpDX.Model;
 using SharpDX;
 using SharpDX.Direct3D11;
 
