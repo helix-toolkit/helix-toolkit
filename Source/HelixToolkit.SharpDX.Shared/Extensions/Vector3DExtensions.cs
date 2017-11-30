@@ -58,6 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new Size3D(vector.X, vector.Y, vector.Z);
         }
+
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D ToMatrix3D(this Matrix m)

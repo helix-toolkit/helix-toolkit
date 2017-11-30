@@ -4,7 +4,6 @@ using System.Collections.Generic;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Media = Windows.UI.Xaml.Media;
-using UI = Windows.UI;
 using Windows.UI.Text;
 #else
 using System.Windows;
@@ -148,13 +147,13 @@ using Core;
 #if NETFX_CORE
 
 #else
-                    Texture = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black, 
+                    var bitmap = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black,
                         this.FontFamily, this.FontWeight, this.FontStyle, Padding);
-                    Texture.Freeze();
+                    Texture = bitmap.ToMemoryStream();
                     if (!predefinedSize)
                     {
-                        Width = (float)Texture.Width;
-                        Height = (float)Texture.Height;
+                        Width = (float)bitmap.Width;
+                        Height = (float)bitmap.Height;
                     }
 #endif
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, Width, Height, TextInfo);

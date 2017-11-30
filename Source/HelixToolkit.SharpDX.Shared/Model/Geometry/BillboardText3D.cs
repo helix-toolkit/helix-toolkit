@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System;
 using SharpDX;
-using System.Linq;
 
 #if NETFX_CORE
 
 #else
-using System.Windows.Media.Imaging;
+using System.IO;
+using System.Reflection;
+using System;
 using Media = System.Windows.Media;
 using Cyotek.Drawing.BitmapFont;
+using System.Linq;
 #endif
 
 #if NETFX_CORE
@@ -46,7 +45,7 @@ using Core;
     {
         private readonly static BitmapFont bmpFont;
 
-        public static BitmapSource TextureStatic { get; private set; }
+        public static Stream TextureStatic { get; private set; }
 
         static BillboardText3D()
         {
@@ -60,13 +59,7 @@ using Core;
             texDescriptionStream.Dispose();
             //Read the texture          
             var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = texImageStream;
-            bitmapImage.EndInit();
-            TextureStatic = bitmapImage;           
-            TextureStatic.Freeze();
-            texImageStream.Dispose();
+            TextureStatic = MemoryStream.Synchronized(texImageStream);
         }
 
         public override BillboardType Type
@@ -77,7 +70,7 @@ using Core;
             }
         }
 
-        public override BitmapSource Texture
+        public override Stream Texture
         {
             get
             {

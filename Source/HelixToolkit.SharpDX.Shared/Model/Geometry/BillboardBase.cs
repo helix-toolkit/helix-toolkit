@@ -2,7 +2,7 @@
 using SharpDX;
 using System.IO;
 #if NETFX_CORE
-using Windows.UI.Xaml.Media.Imaging;
+
 #else
 using System.Windows.Media.Imaging;
 #endif
@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
         }
 
-        public virtual BitmapSource Texture
+        public virtual Stream Texture
         {
             protected set;
             get;

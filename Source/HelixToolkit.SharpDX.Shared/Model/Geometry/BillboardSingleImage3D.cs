@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using SharpDX.Toolkit.Graphics;
 #if NETFX_CORE
-using Windows.UI.Xaml.Media.Imaging;
+
 #else
 using System.Windows.Media.Imaging;
 #endif
@@ -60,11 +60,11 @@ namespace HelixToolkit.Wpf.SharpDX
             TextureCoordinates = new Vector2Collection(6);
             MaskColor = Color.Transparent;
         }
-
+#if !NETFX_CORE
         public BillboardSingleImage3D(BitmapSource bitmapSource)
             : this()
         {
-            this.Texture = bitmapSource;
+            this.Texture = bitmapSource.ToMemoryStream();
             Width = bitmapSource.PixelWidth;
             Height = bitmapSource.PixelHeight;
         }
@@ -80,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             AlphaTexture.Position = 0;
         }
-
+#endif
         public BillboardSingleImage3D(Stream imageStream)
             : this()
         {
