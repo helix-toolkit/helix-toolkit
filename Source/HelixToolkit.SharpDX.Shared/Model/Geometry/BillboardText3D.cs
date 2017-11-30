@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Windows.Media.Imaging;
-using Cyotek.Drawing.BitmapFont;
 using System;
 using SharpDX;
 using System.Linq;
+
+#if NETFX_CORE
+
+#else
+using System.Windows.Media.Imaging;
+using Media = System.Windows.Media;
+using Cyotek.Drawing.BitmapFont;
+#endif
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -33,8 +39,9 @@ using Core;
             Origin = origin;
         }
     }
-
+#if !NETFX_CORE
     [Serializable]
+
     public class BillboardText3D : BillboardBase
     {
         private readonly static BitmapFont bmpFont;
@@ -82,8 +89,8 @@ using Core;
 
         public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
 
-        private System.Windows.Media.Color mFontColor = System.Windows.Media.Colors.Black;
-        public System.Windows.Media.Color FontColor
+        private Media.Color mFontColor = Media.Colors.Black;
+        public Media.Color FontColor
         {
             set { mFontColor = value; }
             get { return mFontColor; }
@@ -192,4 +199,5 @@ using Core;
             info.Offsets.Add(d);
         }
     }
+#endif
 }

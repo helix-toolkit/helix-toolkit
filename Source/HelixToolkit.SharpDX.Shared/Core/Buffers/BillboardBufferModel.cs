@@ -48,7 +48,11 @@ namespace HelixToolkit.UWP.Core
               
                 if (billboardGeometry.Texture != null)
                 {
+#if !NETFX_CORE
                     textureView = Collect(TextureLoader.FromMemoryAsShaderResourceView(context.Device, billboardGeometry.Texture.ToByteArray()));
+#else
+
+#endif
                 }
                 if (billboardGeometry.AlphaTexture != null)
                 {

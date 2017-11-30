@@ -1,7 +1,11 @@
 ﻿using SharpDX;
 using System.Runtime.InteropServices;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct DefaultVertex

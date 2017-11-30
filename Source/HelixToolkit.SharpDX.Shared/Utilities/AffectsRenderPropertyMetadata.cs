@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#if NETFX_CORE
+using Windows.UI.Xaml;
+namespace HelixToolkit.UWP
+#else
 using System.Windows;
 using System.Windows.Data;
-
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     public interface IAffectsRender
     {
@@ -14,9 +13,11 @@ namespace HelixToolkit.Wpf.SharpDX
     }
     public class AffectsRenderPropertyMetadata : PropertyMetadata, IAffectsRender
     {
+#if !NETFX_CORE
         public AffectsRenderPropertyMetadata()
         {
         }
+#endif
 
         public AffectsRenderPropertyMetadata(PropertyChangedCallback propertyChangedCallback) : base(propertyChangedCallback)
         {
@@ -29,14 +30,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public AffectsRenderPropertyMetadata(object defaultValue, PropertyChangedCallback propertyChangedCallback) : base(defaultValue, propertyChangedCallback)
         {
         }
-
+#if !NETFX_CORE
         public AffectsRenderPropertyMetadata(object defaultValue, PropertyChangedCallback propertyChangedCallback, CoerceValueCallback coerceValueCallback) : base(defaultValue, propertyChangedCallback, coerceValueCallback)
         {
         }
-
+#endif
         public bool AffectsRender { set; get; } = true;       
     }
-
+#if !NETFX_CORE
     public class AffectsRenderFrameworkPropertyMetadata : FrameworkPropertyMetadata, IAffectsRender
     {
         public AffectsRenderFrameworkPropertyMetadata()
@@ -88,4 +89,5 @@ namespace HelixToolkit.Wpf.SharpDX
         {
         }
     }
+#endif
 }

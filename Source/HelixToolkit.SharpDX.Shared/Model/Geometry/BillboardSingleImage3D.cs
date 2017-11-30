@@ -1,10 +1,13 @@
 ﻿using SharpDX;
 using System.Collections.Generic;
-using Media = System.Windows.Media;
 using System;
 using System.IO;
 using SharpDX.Toolkit.Graphics;
-
+#if NETFX_CORE
+using Windows.UI.Xaml.Media.Imaging;
+#else
+using System.Windows.Media.Imaging;
+#endif
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -58,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
             MaskColor = Color.Transparent;
         }
 
-        public BillboardSingleImage3D(Media.Imaging.BitmapSource bitmapSource)
+        public BillboardSingleImage3D(BitmapSource bitmapSource)
             : this()
         {
             this.Texture = bitmapSource;
@@ -66,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Height = bitmapSource.PixelHeight;
         }
 
-        public BillboardSingleImage3D(Media.Imaging.BitmapSource bitmapSource, Stream imageStream)
+        public BillboardSingleImage3D(BitmapSource bitmapSource, Stream imageStream)
             : this(bitmapSource)
         {
             this.AlphaTexture = imageStream;

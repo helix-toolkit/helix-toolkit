@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Includes Diffuse, Normal, Displacement, Specular, etc. maps
     /// </summary>
     [Serializable]
-    public partial class PhongMaterial : Material
+    public partial class PhongMaterial : Material, IPhongMaterial
     {
         /// <summary>
         /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.AmbientColor�dependency

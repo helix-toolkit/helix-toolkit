@@ -1,6 +1,6 @@
-﻿#if !NETFX_CORE
-using SharpDX.Direct3D11;
-
+﻿using SharpDX.Direct3D11;
+using System.ComponentModel;
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
 namespace HelixToolkit.UWP.Model
@@ -9,7 +9,7 @@ namespace HelixToolkit.UWP.Model
     public sealed class EffectMaterialVariables : DisposeObject, IEffectMaterialVariables
     {
         public event System.EventHandler<bool> OnInvalidateRenderer;
-        private PhongMaterial material;
+        private IPhongMaterial material;
         private readonly Effect effect;
         private ShaderResourceView texDiffuseAlphaMapView;
         private ShaderResourceView texDiffuseMapView;
@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP.Model
         public bool RenderDisplacementMap { set; get; } = true;
         public bool HasShadowMap { set; get; } = false;
 
-        public Material Material
+        public IPhongMaterial Material
         {
             set
             {
@@ -34,12 +34,12 @@ namespace HelixToolkit.UWP.Model
                 {
                     if (material != null)
                     {
-                        material.OnMaterialPropertyChanged -= Material_OnMaterialPropertyChanged;
+                        material.PropertyChanged -= Material_OnMaterialPropertyChanged;
                     }
-                    material = value as PhongMaterial;
+                    material = value as IPhongMaterial;
                     if (material != null)
                     {
-                        material.OnMaterialPropertyChanged += Material_OnMaterialPropertyChanged;
+                        material.PropertyChanged += Material_OnMaterialPropertyChanged;
                     }
                     CreateTextureViews();
                 }
@@ -72,23 +72,23 @@ namespace HelixToolkit.UWP.Model
             CreateTextureViews();
         }
 
-        private void Material_OnMaterialPropertyChanged(object sender, MaterialPropertyChanged e)
+        private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals(nameof(material.DiffuseMap)))
+            if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMap)))
             {
-                CreateTextureView(material.DiffuseMap, ref this.texDiffuseMapView);
+                CreateTextureView((sender as IPhongMaterial).DiffuseMap, ref this.texDiffuseMapView);
             }
-            else if (e.PropertyName.Equals(nameof(material.NormalMap)))
+            else if (e.PropertyName.Equals(nameof(IPhongMaterial.NormalMap)))
             {
-                CreateTextureView(material.NormalMap, ref this.texNormalMapView);
+                CreateTextureView((sender as IPhongMaterial).NormalMap, ref this.texNormalMapView);
             }
-            else if (e.PropertyName.Equals(nameof(material.DisplacementMap)))
+            else if (e.PropertyName.Equals(nameof(IPhongMaterial.DisplacementMap)))
             {
-                CreateTextureView(material.DisplacementMap, ref this.texDisplacementMapView);
+                CreateTextureView((sender as IPhongMaterial).DisplacementMap, ref this.texDisplacementMapView);
             }
-            else if (e.PropertyName.Equals(nameof(material.DiffuseAlphaMap)))
+            else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMap)))
             {
-                CreateTextureView(material.DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
+                CreateTextureView((sender as IPhongMaterial).DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
             }
             OnInvalidateRenderer?.Invoke(this, true);
         }
@@ -126,12 +126,12 @@ namespace HelixToolkit.UWP.Model
             {
                 return false;
             }
-            this.vMaterialDiffuseVariable.Set(material.DiffuseColorInternal);
-            this.vMaterialAmbientVariable.Set(material.AmbientColorInternal);
-            this.vMaterialEmissiveVariable.Set(material.EmissiveColorInternal);
-            this.vMaterialSpecularVariable.Set(material.SpecularColorInternal);
-            this.vMaterialReflectVariable.Set(material.ReflectiveColorInternal);
-            this.sMaterialShininessVariable.Set(material.SpecularShininessInternal);
+            this.vMaterialDiffuseVariable.Set(material.DiffuseColor);
+            this.vMaterialAmbientVariable.Set(material.AmbientColor);
+            this.vMaterialEmissiveVariable.Set(material.EmissiveColor);
+            this.vMaterialSpecularVariable.Set(material.SpecularColor);
+            this.vMaterialReflectVariable.Set(material.ReflectiveColor);
+            this.sMaterialShininessVariable.Set(material.SpecularShininess);
 
             // --- has samples              
             bool hasDiffuseMap = RenderDiffuseMap && this.texDiffuseMapView != null;

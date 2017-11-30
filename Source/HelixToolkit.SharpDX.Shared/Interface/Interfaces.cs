@@ -7,13 +7,22 @@
 using SharpDX.Direct3D11;
 using SharpDX;
 using System;
-
+using System.Collections.Generic;
 #if NETFX_CORE
+using Vector3D = SharpDX.Vector3;
+using Point3D = SharpDX.Vector3;
+using Media = Windows.UI.Xaml.Media;
 namespace HelixToolkit.UWP
 #else
+using System.Windows.Media.Media3D;
+using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Core;
+    using System.ComponentModel;
+    using System.IO;
+
     public interface IGUID
     {
         Guid GUID { get; }
@@ -68,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The position.
         /// </value>
-        System.Windows.Media.Media3D.Point3D Position { get; set; }
+        Point3D Position { get; set; }
 
         /// <summary>
         /// Gets or sets the look direction.
@@ -76,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The look direction.
         /// </value>
-        System.Windows.Media.Media3D.Vector3D LookDirection { get; set; }
+        Vector3D LookDirection { get; set; }
 
         /// <summary>
         /// Gets or sets up direction.
@@ -84,7 +93,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// Up direction.
         /// </value>
-        System.Windows.Media.Media3D.Vector3D UpDirection { get; set; }
+        Vector3D UpDirection { get; set; }
         /// <summary>
         /// Creates the view matrix.
         /// </summary>
@@ -97,5 +106,44 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>A <see cref="Matrix" />.</returns>
         Matrix CreateProjectionMatrix(double aspectRatio);
+    }
+
+    public interface IBillboardText
+    {
+        BillboardType Type { get; }
+        Media.Imaging.BitmapSource Texture { get; }
+
+        System.IO.Stream AlphaTexture { get; }
+        void DrawTexture();
+        Vector3Collection Positions { get; }
+        IList<Vector2> TextureOffsets { get; }
+        Vector2Collection TextureCoordinates { get; }
+        Color4Collection Colors { get; }
+        float Width { get; }
+        float Height { get; }
+    }
+
+    public enum BillboardType
+    {
+        SingleText, MultipleText, SingleImage
+    }
+
+    public interface IMaterial : INotifyPropertyChanged
+    {
+        string Name { set; get; }
+    }
+
+    public interface IPhongMaterial : IMaterial
+    {
+        Color4 AmbientColor { set; get; }
+        Color4 DiffuseColor { set; get; }
+        Color4 EmissiveColor { set; get; }
+        Color4 ReflectiveColor { set; get; }
+        Color4 SpecularColor { set; get; }
+        float SpecularShininess { set; get; }
+        Stream DiffuseMap { set; get; }
+        Stream DiffuseAlphaMap { set; get; }
+        Stream NormalMap { set; get; }
+        Stream DisplacementMap { set; get; }
     }
 }

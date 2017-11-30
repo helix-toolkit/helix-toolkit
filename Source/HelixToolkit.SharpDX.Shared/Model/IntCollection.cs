@@ -20,8 +20,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
 #if !NETFX_CORE
     [Serializable]
-#endif
     [TypeConverter(typeof(IntCollectionConverter))]
+#endif
     public sealed class IntCollection : ExposedArrayList<int>
     {
         public IntCollection()

@@ -155,11 +155,11 @@
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
+    <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\DataStreamExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />
-    <Compile Include="Controls\Layouts.cs" />
     <Compile Include="Controls\RenderTechnique.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
     <Compile Include="Controls\RenderTechniquesManager.cs" />
@@ -187,7 +187,6 @@
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Controls\ViewportCommands.cs" />
-    <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Model\Elements2D\Abstract\Clickable2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
@@ -215,13 +214,15 @@
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
+    <Compile Include="Model\Materials\Material.cs" />
+    <Compile Include="Model\Materials\PhongMaterial.cs" />
+    <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\AffectsRenderPropertyMetadata.cs" />
     <Compile Include="Utilities\IOctreeManager.cs" />
     <Compile Include="Utilities\IRandomVector.cs" />
     <Compile Include="Utilities\OctreeGeometryModel3D.cs" />
@@ -267,9 +268,6 @@
     <Compile Include="Model\Elements3D\AbstractElements3D\UIElement3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
-    <Compile Include="Model\Materials\Material.cs" />
-    <Compile Include="Model\Materials\PhongMaterial.cs" />
-    <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
     <Compile Include="Utilities\Exporter.cs" />
     <Compile Include="Utilities\IExporter.cs" />
     <Compile Include="Utilities\IModelReader.cs" />
@@ -277,6 +275,7 @@
     <Compile Include="Utilities\ObjExporter.cs" />
     <Compile Include="Utilities\ObjReader.cs" />
     <Compile Include="Utilities\RandomVectorGenerators.cs" />
+    <Compile Include="Utilities\TypeConverter.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

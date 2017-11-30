@@ -22,8 +22,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
 #if !NETFX_CORE
     [Serializable]
-#endif
     [TypeConverter(typeof(Vector2CollectionConverter))]
+#endif
     public sealed class Vector2Collection : ExposedArrayList<Vector2>
     {
         public Vector2Collection()

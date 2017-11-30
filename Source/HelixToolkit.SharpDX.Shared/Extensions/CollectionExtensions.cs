@@ -3,6 +3,10 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
+
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Extensions
 #else
@@ -10,14 +14,10 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 #endif
 {
 #if NETFX_CORE
-    using System.Collections.Generic;
-    using System.Reflection;
+
 #else
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
-    using System.Linq;
 #endif
 
     public static class CollectionExtensions
@@ -34,6 +34,24 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             return (T[])typeof(List<T>)
                 .GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance)
                 .GetValue(list);
+        }
+
+        public static T[] GetArrayByType<T>(this IList<T> list)
+        {
+            T[] array;
+            if (list is List<T>)
+            {
+                array = (list as List<T>).GetInternalArray();
+            }
+            else if (list is T[])
+            {
+                array = list as T[];
+            }
+            else
+            {
+                array = list.ToArray();
+            }
+            return array;
         }
 #else
         static class ArrayAccessor<T>

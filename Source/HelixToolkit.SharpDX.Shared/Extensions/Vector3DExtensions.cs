@@ -109,16 +109,17 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 ToVector3(this Vector3D vector)
-        {
-            return new global::SharpDX.Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 ToVector4(this Point3D point, float w = 1f)
         {
             return new global::SharpDX.Vector4((float)point.X, (float)point.Y, (float)point.Z, w);
         }
 #endif
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static global::SharpDX.Vector3 ToVector3(this Vector3D vector)
+        {
+            return new global::SharpDX.Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToVector3(this Vector4 vector)

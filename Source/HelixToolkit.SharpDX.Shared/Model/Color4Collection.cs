@@ -21,8 +21,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
 #if !NETFX_CORE
     [Serializable]
-#endif
     [TypeConverter(typeof(Color4CollectionConverter))]
+#endif
     public sealed class Color4Collection : ExposedArrayList<Color4>
     {
         public Color4Collection()

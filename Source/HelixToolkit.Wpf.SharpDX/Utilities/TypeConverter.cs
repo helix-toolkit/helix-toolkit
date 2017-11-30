@@ -4,11 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Utilities
-#else
+
 namespace HelixToolkit.Wpf.SharpDX.Utilities
-#endif
 {
     using System;
     using System.ComponentModel;

@@ -1,8 +1,15 @@
 ﻿using SharpDX;
-using System.Windows;
 using System.Collections.Generic;
-using Media = System.Windows.Media;
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Media = Windows.UI.Xaml.Media;
+using UI = Windows.UI;
+using Windows.UI.Text;
+#else
+using System.Windows;
+using Media = System.Windows.Media;
+#endif
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -86,8 +93,11 @@ using Core;
                 return mFontWeight;
             }
         }
-
+#if NETFX_CORE
+        private FontStyle mFontStyle = FontStyle.Normal;
+#else
         private FontStyle mFontStyle = FontStyles.Normal;
+#endif
         public FontStyle FontStyle
         {
             set
@@ -135,6 +145,9 @@ using Core;
             {
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
+#if NETFX_CORE
+
+#else
                     Texture = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black, 
                         this.FontFamily, this.FontWeight, this.FontStyle, Padding);
                     Texture.Freeze();
@@ -143,6 +156,7 @@ using Core;
                         Width = (float)Texture.Width;
                         Height = (float)Texture.Height;
                     }
+#endif
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, Width, Height, TextInfo);
                 }
                 else

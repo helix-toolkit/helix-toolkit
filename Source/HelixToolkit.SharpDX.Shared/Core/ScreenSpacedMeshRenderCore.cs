@@ -86,10 +86,14 @@ namespace HelixToolkit.UWP.Core
 
         protected Matrix CreateViewMatrix(IRenderMatrices renderContext)
         {
+#if !NETFX_CORE
             return Matrix.LookAtRH(
                 -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20,
                 Vector3.Zero,
                 renderContext.Camera.UpDirection.ToVector3());
+#else
+            return Matrix.LookAtRH(-renderContext.Camera.LookDirection.Normalized() * 20, Vector3.Zero, renderContext.Camera.UpDirection);
+#endif
         }
 
         protected virtual void OnCreateProjectionMatrix(float scale)

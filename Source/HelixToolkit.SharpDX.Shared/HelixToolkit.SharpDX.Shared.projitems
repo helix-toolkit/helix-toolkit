@@ -62,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\MeshGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\PointGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\IntCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Layouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Light3DSceneShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\AffectsRenderPropertyMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\BufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Disposer.cs" />
@@ -114,6 +116,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TypeConverter.cs" />
   </ItemGroup>
 </Project>

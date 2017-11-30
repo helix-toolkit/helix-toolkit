@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Media.Imaging;
 using SharpDX;
 using System.IO;
+#if NETFX_CORE
+using Windows.UI.Xaml.Media.Imaging;
+#else
+using System.Windows.Media.Imaging;
+#endif
 
 
 #if NETFX_CORE

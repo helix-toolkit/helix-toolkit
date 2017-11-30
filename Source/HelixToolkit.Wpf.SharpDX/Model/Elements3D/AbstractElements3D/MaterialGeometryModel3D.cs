@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty MaterialProperty =
-            DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
+            DependencyProperty.Register("Material", typeof(IPhongMaterial), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
 
 
         /// <summary>
@@ -125,9 +125,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public Material Material
+        public IPhongMaterial Material
         {
-            get { return (Material)this.GetValue(MaterialProperty); }
+            get { return (IPhongMaterial)this.GetValue(MaterialProperty); }
             set { this.SetValue(MaterialProperty, value); }
         }
         /// <summary>
@@ -147,10 +147,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected static void MaterialChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is PhongMaterial)
+            if (e.NewValue is IPhongMaterial)
             {
                 var model = ((MaterialGeometryModel3D)d);
-                (model.RenderCore as IMaterialRenderCore).Material = e.NewValue as PhongMaterial;
+                (model.RenderCore as IMaterialRenderCore).Material = e.NewValue as IPhongMaterial;
                 if (model.renderHost != null)
                 {
                     if (model.IsAttached)

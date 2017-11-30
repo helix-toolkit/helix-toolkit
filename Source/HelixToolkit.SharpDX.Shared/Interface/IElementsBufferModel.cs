@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
@@ -10,6 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
+    using Utilities;
     public interface IElementsBufferModel : IVertexExtraBufferModel
     {
         bool HasElements { get; }

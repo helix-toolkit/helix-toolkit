@@ -92,26 +92,6 @@ namespace HelixToolkit.Wpf.SharpDX
         event RoutedEventHandler MouseMove3D;
     }
 
-    public interface IBillboardText
-    {
-        BillboardType Type { get; }
-        BitmapSource Texture { get; }
-
-        Stream AlphaTexture { get; }
-        void DrawTexture();
-        Vector3Collection Positions { get; }
-        IList<Vector2> TextureOffsets { get; }
-        Vector2Collection TextureCoordinates { get; }
-        Color4Collection Colors { get; }
-        float Width { get; }
-        float Height { get; }
-    }
-
-    public enum BillboardType
-    {
-        SingleText, MultipleText, SingleImage
-    }
-
     public interface IParameterVariables
     {
         /// <summary>
