@@ -11,7 +11,6 @@ using System.Collections.Generic;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
-using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
@@ -48,8 +47,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IEffectMaterialVariables : IMaterialRenderCore, IDisposable
     {
-        event System.EventHandler<bool> OnInvalidateRenderer;
-        bool AttachMaterial(MeshGeometry3D model);
+        event EventHandler<bool> OnInvalidateRenderer;
+        /// <summary>
+        /// Attach material variables and textures
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        bool AttachMaterial(Geometry3D model);
     }
 
     public interface IRenderTechnique

@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP.Model
         public bool RenderDisplacementMap { set; get; } = true;
         public bool HasShadowMap { set; get; } = false;
 
-        public IPhongMaterial Material
+        public IMaterial Material
         {
             set
             {
@@ -120,12 +120,13 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public bool AttachMaterial(MeshGeometry3D model)
+        public bool AttachMaterial(Geometry3D model)
         {
-            if (material == null || model == null)
+            var mesh = model as MeshGeometry3D;
+            if (material == null || mesh == null)
             {
                 return false;
-            }
+            }          
             this.vMaterialDiffuseVariable.Set(material.DiffuseColor);
             this.vMaterialAmbientVariable.Set(material.AmbientColor);
             this.vMaterialEmissiveVariable.Set(material.EmissiveColor);
@@ -146,14 +147,14 @@ namespace HelixToolkit.UWP.Model
                 this.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
             }
 
-            bool hasNormalMap = RenderNormalMap && this.texNormalMapView != null && model.Tangents != null;
+            bool hasNormalMap = RenderNormalMap && this.texNormalMapView != null && mesh.Tangents != null;
             this.bHasNormalMapVariable.Set(hasNormalMap);
             if (hasNormalMap)
             {
                 this.texNormalMapVariable.SetResource(this.texNormalMapView);
             }
 
-            bool hasDisplacementMap = RenderDisplacementMap && this.texDisplacementMapView != null && model.BiTangents != null;
+            bool hasDisplacementMap = RenderDisplacementMap && this.texDisplacementMapView != null && mesh.BiTangents != null;
             this.bHasDisplacementMapVariable.Set(hasDisplacementMap);
             if (hasDisplacementMap)
             {

@@ -18,8 +18,8 @@ namespace HelixToolkit.UWP.Core
         /// Used to wrap all material resources
         /// </summary>
         public IEffectMaterialVariables MaterialVariables { get { return materialVariables; } }
-        private IPhongMaterial material = null;
-        public IPhongMaterial Material
+        private IMaterial material = null;
+        public IMaterial Material
         {
             set
             {

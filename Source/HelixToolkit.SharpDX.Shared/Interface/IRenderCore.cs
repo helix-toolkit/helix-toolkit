@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP
 
     public interface IMaterialRenderCore
     {
-        IPhongMaterial Material { set; get; }
+        IMaterial Material { set; get; }
         bool RenderDiffuseMap { set; get; }
         bool RenderDiffuseAlphaMap { set; get; }
         bool RenderNormalMap { set; get; }
