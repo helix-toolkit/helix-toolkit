@@ -81,6 +81,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _Tessellation {
+            get {
+                object obj = ResourceManager.GetObject("_Tessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #ifndef BILLBOARDTEXT_FX
         ///#define BILLBOARDTEXT_FX
         ///#include &quot;Common.fx&quot;

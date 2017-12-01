@@ -12,6 +12,8 @@ PSInput VShaderDefault(VSInput input)
 	PSInput output = (PSInput)0;
 	float4 inputp = input.p;
 	float3 inputn = input.n;
+    float3 inputt1 = input.t1;
+    float3 inputt2 = input.t2;
     if (bInvertNormal)
     {
         inputn = -inputn;
@@ -22,12 +24,17 @@ PSInput VShaderDefault(VSInput input)
         matrix mInstance =
         {
             input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
-		input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
-		input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
-		input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
+			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
+			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
         };
         inputp = mul(mInstance, input.p);
         inputn = mul((float3x3) mInstance, inputn);
+        if (bHasNormalMap)
+        {
+            inputt1 = mul((float3x3) mInstance, inputt1);
+			inputt2 = mul((float3x3) mInstance, inputt2);
+        }
     }
 
 	//set position into camera clip space	
@@ -58,8 +65,8 @@ PSInput VShaderDefault(VSInput input)
 	if (bHasNormalMap)
 	{
 		// transform the tangents by the world matrix and normalize
-		output.t1 = normalize(mul(input.t1, (float3x3)mWorld));
-		output.t2 = normalize(mul(input.t2, (float3x3)mWorld));
+		output.t1 = normalize(mul(inputt1, (float3x3)mWorld));
+		output.t2 = normalize(mul(inputt2, (float3x3)mWorld));
 	}
 	else
 	{
@@ -78,6 +85,8 @@ PSInput VInstancingShader(VSInstancingInput input)
 	PSInput output = (PSInput)0;
 	float4 inputp = input.p;
 	float3 inputn = input.n;
+    float3 inputt1 = input.t1;
+    float3 inputt2 = input.t2;
     if (bInvertNormal)
     {
         inputn = -inputn;
@@ -94,7 +103,12 @@ PSInput VInstancingShader(VSInstancingInput input)
 		};
 		inputp = mul(mInstance, input.p);
 		inputn = mul((float3x3)mInstance, inputn);
-	}
+        if (bHasNormalMap)
+        {
+            inputt1 = mul((float3x3) mInstance, inputt1);
+            inputt2 = mul((float3x3) mInstance, inputt2);
+        }
+    }
 
 	//set position into camera clip space	
 	output.p = mul(inputp, mWorld);
@@ -134,8 +148,8 @@ PSInput VInstancingShader(VSInstancingInput input)
 	if (bHasNormalMap)
 	{
 		// transform the tangents by the world matrix and normalize
-		output.t1 = normalize(mul(input.t1, (float3x3)mWorld));
-		output.t2 = normalize(mul(input.t2, (float3x3)mWorld));
+		output.t1 = normalize(mul(inputt1, (float3x3)mWorld));
+		output.t2 = normalize(mul(inputt2, (float3x3)mWorld));
 	}
 	else
 	{
@@ -205,7 +219,8 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 			output.n += mul(inputn, (float3x3)SkinMatrices[bones.w]) * input.boneWeights.w;
 		}
 	}
-
+    float3 inputt1 = input.t1;
+    float3 inputt2 = input.t2;
 	// compose instance matrix
 	if (bHasInstances)
 	{
@@ -218,7 +233,12 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 		};
 		output.p = mul(mInstance, output.p);
 		output.n = mul((float3x3)mInstance, output.n);
-	}
+        if (bHasNormalMap)
+        {
+            inputt1 = mul((float3x3) mInstance, inputt1);
+            inputt2 = mul((float3x3) mInstance, inputt2);
+        }
+    }
 		
 	//set position into camera clip space	
 	output.p = mul(output.p, mWorld);
@@ -248,8 +268,8 @@ PSInput VShaderBoneSkin(VSBoneSkinInput input)
 	if (bHasNormalMap)
 	{
 		// transform the tangents by the world matrix and normalize
-		output.t1 = normalize(mul(input.t1, (float3x3)mWorld));
-		output.t2 = normalize(mul(input.t2, (float3x3)mWorld));
+		output.t1 = normalize(mul(inputt1, (float3x3)mWorld));
+		output.t2 = normalize(mul(inputt2, (float3x3)mWorld));
 	}
 	else
 	{

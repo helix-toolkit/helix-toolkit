@@ -48,9 +48,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public static class ShaderResources
     {
+        public static string DefaultName { get; } = "Default";
         public static byte[] Default { get; } = Properties.Resources._default;
+        public static string DeferredName { get; } = "Deferred";
         public static byte[] Deferred { get; } = Properties.Resources._deferred;
-        public static string Tessellation { get; } = Properties.Resources.Tessellation;
+        public static string TessellationName { get; } = "Tessellation";
+        public static byte[] Tessellation { get; } = Properties.Resources._Tessellation;
     }
 
     public class DefaultRenderTechniquesManager: IRenderTechniquesManager
@@ -151,8 +154,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void InitializeTessellationTechniques()
         {
-            AddDefaultTechnique(TessellationRenderTechniqueNames.PNTriangles);
-            AddDefaultTechnique(TessellationRenderTechniqueNames.PNQuads);
+            AddTessellationTechnique(TessellationRenderTechniqueNames.PNTriangles);
+            AddTessellationTechnique(TessellationRenderTechniqueNames.PNQuads);
+        }
+
+        protected void AddTessellationTechnique(string techniqueName)
+        {
+            AddRenderTechnique(techniqueName, ShaderResources.Tessellation);
         }
     }
 }

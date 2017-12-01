@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.DefaultName, out defaultInputLayout, out cubeMapInputLayout);
         }
 
         /// <summary>
@@ -632,8 +632,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
-            RegisterDeferredLayoutsAndEffects(ShaderResources.Tessellation, defaultInputLayout, cubeMapInputLayout);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.TessellationName, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterDeferredLayoutsAndEffects(ShaderResources.TessellationName, defaultInputLayout, cubeMapInputLayout);
         }
 
         private void RegisterDeferredLayoutsAndEffects(string shaderEffectString, InputLayout defaultInputLayout, InputLayout cubeMapInputLayout)
@@ -665,8 +665,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             InputLayout defaultInputLayout;
             InputLayout cubeMapInputLayout;
-            RegisterDefaultLayoutsAndEffects(ShaderResources.Tessellation, out defaultInputLayout, out cubeMapInputLayout);
-            RegisterTessellationLayoutsAndEffects(ShaderResources.Tessellation);
+            RegisterDefaultLayoutsAndEffects(ShaderResources.TessellationName, out defaultInputLayout, out cubeMapInputLayout);
+            RegisterTessellationLayoutsAndEffects(ShaderResources.TessellationName);
         }
 
         private void RegisterTessellationLayoutsAndEffects(string shaderEffectString)
