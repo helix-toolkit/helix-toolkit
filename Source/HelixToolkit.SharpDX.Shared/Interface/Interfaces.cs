@@ -51,9 +51,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Attach material variables and textures
         /// </summary>
-        /// <param name="model"></param>
         /// <returns></returns>
-        bool AttachMaterial(Geometry3D model);
+        bool AttachMaterial();
     }
 
     public interface IRenderTechnique

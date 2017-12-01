@@ -6,6 +6,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    /// <summary>
+    /// Default PhongMaterial Variables
+    /// </summary>
     public sealed class EffectMaterialVariables : DisposeObject, IEffectMaterialVariables
     {
         public event System.EventHandler<bool> OnInvalidateRenderer;
@@ -120,10 +123,9 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public bool AttachMaterial(Geometry3D model)
+        public bool AttachMaterial()
         {
-            var mesh = model as MeshGeometry3D;
-            if (material == null || mesh == null)
+            if (material == null)
             {
                 return false;
             }          
@@ -147,14 +149,14 @@ namespace HelixToolkit.UWP.Model
                 this.texDiffuseAlphaMapVariable.SetResource(this.texDiffuseAlphaMapView);
             }
 
-            bool hasNormalMap = RenderNormalMap && this.texNormalMapView != null && mesh.Tangents != null;
+            bool hasNormalMap = RenderNormalMap && this.texNormalMapView != null;
             this.bHasNormalMapVariable.Set(hasNormalMap);
             if (hasNormalMap)
             {
                 this.texNormalMapVariable.SetResource(this.texNormalMapView);
             }
 
-            bool hasDisplacementMap = RenderDisplacementMap && this.texDisplacementMapView != null && mesh.BiTangents != null;
+            bool hasDisplacementMap = RenderDisplacementMap && this.texDisplacementMapView != null;
             this.bHasDisplacementMapVariable.Set(hasDisplacementMap);
             if (hasDisplacementMap)
             {

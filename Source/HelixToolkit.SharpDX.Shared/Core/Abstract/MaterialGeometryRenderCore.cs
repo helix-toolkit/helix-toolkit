@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP.Core
             materialVariables.RenderNormalMap = this.RenderNormalMap;
             materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
             materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
-            materialVariables.AttachMaterial(model);
+            materialVariables.AttachMaterial();
         }        
     }
 }
