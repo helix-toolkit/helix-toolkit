@@ -13,21 +13,26 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using global::SharpDX;
-    using System.Diagnostics;
     using Core;
+    using System.Runtime.Serialization;
 
 #if !NETFX_CORE
     [Serializable]
 #endif
+    [DataContract]
     public class MeshGeometry3D : Geometry3D
     {
         /// <summary>
         /// Does not raise property changed event
         /// </summary>
+        [DataMember]
         public Vector3Collection Normals { get; set; }
 
         private Vector2Collection textureCoordinates = null;
+        /// <summary>
+        /// Texture Coordinates
+        /// </summary>
+        [DataMember]
         public Vector2Collection TextureCoordinates
         {
             get
@@ -36,20 +41,22 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                Set<Vector2Collection>(ref textureCoordinates, value);
+                Set(ref textureCoordinates, value);
             }
         }
         /// <summary>
         /// Does not raise property changed event
         /// </summary>
+        [DataMember]
         public Vector3Collection Tangents { get; set; }
 
         /// <summary>
         /// Does not raise property changed event
         /// </summary>
+        [DataMember]
         public Vector3Collection BiTangents { get; set; }
 
-        public IEnumerable<Geometry3D.Triangle> Triangles
+        public IEnumerable<Triangle> Triangles
         {
             get
             {
@@ -60,12 +67,21 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        /// A proxy member for <see cref="Geometry3D.Indices"/>
+        /// </summary>
+        [IgnoreDataMember]
         public IntCollection TriangleIndices
         {
             get { return Indices; }
             set { Indices = new IntCollection(value); }
         }
 
+        /// <summary>
+        /// Merge meshes into one
+        /// </summary>
+        /// <param name="meshes"></param>
+        /// <returns></returns>
         public static MeshGeometry3D Merge(params MeshGeometry3D[] meshes)
         {
             var positions = new Vector3Collection();

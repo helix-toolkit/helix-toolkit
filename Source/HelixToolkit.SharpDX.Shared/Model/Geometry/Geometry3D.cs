@@ -13,19 +13,25 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using Core;
     using Model;
+    using System.Runtime.Serialization;
 
 #if !NETFX_CORE
     [Serializable]
 #endif
+    [DataContract]
     public abstract class Geometry3D : ObservableObject, IGUID
     {
         public const string VertexBuffer = "VertexBuffer";
         public const string TriangleBuffer = "TriangleBuffer";
-
-        private readonly Guid guid = Guid.NewGuid();
-        public Guid GUID { get { return guid; } }
-
+        [DataMember]
+        public Guid GUID { set; get; } = Guid.NewGuid();
+        
         private IntCollection indices = null;
+
+        /// <summary>
+        /// Indices, can be triangle list, line list, etc.
+        /// </summary>
+        [DataMember]
         public IntCollection Indices
         {
             get
@@ -42,6 +48,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private Vector3Collection position = null;
+
+        /// <summary>
+        /// Vertex Positions
+        /// </summary>
+        [DataMember]
         public Vector3Collection Positions
         {
             get
@@ -59,6 +70,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private BoundingBox bound;
+        /// <summary>
+        /// Geometry AABB
+        /// </summary>
+        [IgnoreDataMember]
         public BoundingBox Bound
         {
             set
@@ -72,6 +87,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private BoundingSphere boundingSphere;
+        /// <summary>
+        /// Geometry Bounding Sphere
+        /// </summary>
+        [IgnoreDataMember]
         public BoundingSphere BoundingSphere
         {
             set
@@ -85,6 +104,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private Color4Collection colors = null;
+        /// <summary>
+        /// Vertex Color
+        /// </summary>
+        [DataMember]
         public Color4Collection Colors
         {
             get
@@ -93,23 +116,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                Set<Color4Collection>(ref colors, value);
+                Set(ref colors, value);
             }
-        }
-
-        public struct Triangle
-        {
-            public Vector3 P0, P1, P2;
-        }
-
-        public struct Line
-        {
-            public Vector3 P0, P1;
-        }
-
-        public struct Point
-        {
-            public Vector3 P0;
         }
 
         /// <summary>
@@ -151,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Octree = null;
             }
         }
-
+        
         protected virtual bool CanCreateOctree()
         {
             return Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0;
@@ -175,7 +183,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Octree = null;
         }
-
+        /// <summary>
+        /// Manually call this function to update AABB and Bounding Sphere
+        /// </summary>
         public void UpdateBounds()
         {
             if (position == null || position.Count == 0)
@@ -192,6 +202,22 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new Exception("Position vertex contains invalid value(Example: Float.NaN).");
             }
+        }
+
+
+        public struct Triangle
+        {
+            public Vector3 P0, P1, P2;
+        }
+
+        public struct Line
+        {
+            public Vector3 P0, P1;
+        }
+
+        public struct Point
+        {
+            public Vector3 P0;
         }
     }
 }
