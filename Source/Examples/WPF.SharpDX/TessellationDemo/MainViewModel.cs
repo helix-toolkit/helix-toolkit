@@ -20,6 +20,7 @@ namespace TessellationDemo
     using System.Windows.Media.Imaging;
     using HelixToolkit.Wpf.SharpDX.Core;
     using System.IO;
+    using SharpDX.Direct3D11;
 
     public class MainViewModel : BaseViewModel
     {
@@ -39,11 +40,45 @@ namespace TessellationDemo
         public Color4 DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
 
+        private FillMode fillMode = FillMode.Solid;
+        public FillMode FillMode
+        {
+            set
+            {
+                SetValue(ref fillMode, value);
+            }
+            get
+            {
+                return fillMode;
+            }
+        }
+
+        private bool wireFrame = false;
+        public bool Wireframe
+        {
+            set
+            {
+                if(SetValue(ref wireFrame, value))
+                {
+                    if (value)
+                    {
+                        FillMode = FillMode.Wireframe;
+                    }
+                    else
+                    {
+                        FillMode = FillMode.Solid;
+                    }
+                }
+            }
+            get
+            {
+                return wireFrame;
+            }
+        }
+
         public string[] MeshTopologyList { get; set; }
 
         private string meshTopology = MeshFaces.Default.ToString();
-        private RenderTechnique pnQuads;
-        private RenderTechnique pnTriangles;
 
         public string MeshTopology
         {
@@ -52,19 +87,21 @@ namespace TessellationDemo
             {
                 /// if topology is changes, reload the model with proper type of faces
                 this.meshTopology = value;
-                this.RenderTechnique = this.meshTopology == "Quads" ?
-                    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads] :
-                    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
-                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Quads" ? MeshFaces.QuadPatches : MeshFaces.Default);
+                //this.RenderTechnique = this.meshTopology == "Quads" ?
+                //    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads] :
+                //    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
+                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Triangles" ?  MeshFaces.Default : MeshFaces.QuadPatches);
             }
         }
 
         public MainViewModel()
         {
             RenderTechniquesManager = new TessellationTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads];
+           // RenderTechnique = RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
             EffectsManager = new TessellationEffectsManager(RenderTechniquesManager);
-
+            //RenderTechniquesManager = new DefaultTechniquesManager();
+            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            //EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
             // ----------------------------------------------
             // titles
             this.Title = "Hardware Tessellation Demo";
@@ -121,8 +158,9 @@ namespace TessellationDemo
             // load model
             var reader = new ObjReader();
             var objModel = reader.Read(filename, new ModelInfo() { Faces = faces });
-            this.DefaultModel = objModel[0].Geometry as MeshGeometry3D;
-            this.DefaultModel.Colors = new Color4Collection(this.DefaultModel.Positions.Select(x => new Color4(1, 0, 0, 1)));
+            var model = objModel[0].Geometry as MeshGeometry3D;
+            model.Colors = new Color4Collection(model.Positions.Select(x => new Color4(1, 0, 0, 1)));
+            DefaultModel = model;
         }
 
     }

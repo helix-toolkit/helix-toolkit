@@ -35,6 +35,7 @@ namespace HelixToolkit.UWP.Core
             {
                 return PrimitiveTopology.Undefined;
             }
+            set { }
         }
 
         public IBufferProxy VertexBuffer

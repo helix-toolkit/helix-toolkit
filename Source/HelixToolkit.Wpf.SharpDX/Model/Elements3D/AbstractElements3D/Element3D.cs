@@ -116,6 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if(renderCore == null)
                 {
                     RenderCore = OnCreateRenderCore();
+                    AssignDefaultValuesToCore(RenderCore);
                 }
                 return renderCore;
             }
@@ -176,6 +177,8 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
+
+        protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>

@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP.Core
 
         public IBufferProxy VertexBuffer { private set; get; }
         public IBufferProxy IndexBuffer { private set; get; }
-        public PrimitiveTopology Topology { private set; get; }
+        public PrimitiveTopology Topology { set; get; }
 
         private Geometry3D geometry = null;
         public Geometry3D Geometry

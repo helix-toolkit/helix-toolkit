@@ -104,7 +104,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void AddDefaultTechnique(string techniqueName)
         {
-            AddRenderTechnique(techniqueName, ShaderResources.Default);
+            AddRenderTechnique(techniqueName, GetShaderByteCode());
+        }
+
+        protected virtual byte[] GetShaderByteCode()
+        {
+            return ShaderResources.Default;
         }
 
         #region IRenderTechniqueManager interface
@@ -143,6 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
             AddRenderTechnique(techniqueName, ShaderResources.Deferred);
         }
     }
+    public class DefaultTechniquesManager : DefaultRenderTechniquesManager { }
 
     public class TessellationTechniquesManager : DefaultRenderTechniquesManager
     {
@@ -154,13 +160,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void InitializeTessellationTechniques()
         {
-            AddTessellationTechnique(TessellationRenderTechniqueNames.PNTriangles);
-            AddTessellationTechnique(TessellationRenderTechniqueNames.PNQuads);
+            AddDefaultTechnique(TessellationRenderTechniqueNames.PNTriangles);
+            AddDefaultTechnique(TessellationRenderTechniqueNames.PNQuads);
         }
 
-        protected void AddTessellationTechnique(string techniqueName)
+        protected override byte[] GetShaderByteCode()
         {
-            AddRenderTechnique(techniqueName, ShaderResources.Tessellation);
+            return ShaderResources.Tessellation;
         }
     }
 }

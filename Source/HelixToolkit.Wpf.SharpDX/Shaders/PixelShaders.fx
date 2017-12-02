@@ -216,7 +216,8 @@ float4 PSShaderBlinnPhong(PSInput input) : SV_Target
     {
 	    I.a *= alpha;
     }
-
+	// multiply by vertex colors
+    I = I * input.c;
     // get reflection-color
     if (bHasCubeMap)
     {

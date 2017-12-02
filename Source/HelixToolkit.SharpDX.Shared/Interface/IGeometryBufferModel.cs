@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP
     public interface IGeometryBufferModel : IGUID
     {
         Geometry3D Geometry { get; set; }
-        PrimitiveTopology Topology { get; }
+        PrimitiveTopology Topology { set; get; }
 
         event EventHandler<bool> InvalidateRenderer;
         IBufferProxy VertexBuffer { get; }

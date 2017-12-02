@@ -20,8 +20,17 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public BuildVertexArrayHandler OnBuildVertexArray;
 
-        public MeshGeometryBufferModel(int structSize) : base(PrimitiveTopology.TriangleList,
-            new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer))
+        public MeshGeometryBufferModel(int structSize) 
+            : base(PrimitiveTopology.TriangleList, new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer))
+        {
+        }
+        public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology) 
+            : base(topology, new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer))
+        {
+        }
+
+        public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology, IBufferProxy vertexBuffer, IBufferProxy indexBuffer) 
+            : base(topology, vertexBuffer, indexBuffer)
         {
         }
 

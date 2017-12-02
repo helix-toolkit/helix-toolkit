@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\D2DControlWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PatchMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ShaderVariableNames.cs" />

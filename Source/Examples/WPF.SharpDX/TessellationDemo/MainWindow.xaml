@@ -13,7 +13,7 @@
     Height="500"
     mc:Ignorable="d">
     <Window.Resources>
-        <x:StaticExtension x:Key="Shading" Member="hx:TessellationTechniques.Shading" />
+        <x:StaticExtension x:Key="Shading" Member="hx:TessellationTechniques.Shadings" />
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
     </Window.Resources>
     <Grid>
@@ -40,7 +40,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
 
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection1}" Color="{Binding DirectionalLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection2}" Color="{Binding DirectionalLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection3}" Color="{Binding DirectionalLightColor}" />
@@ -49,13 +49,19 @@
                 x:Name="model1"
                 Geometry="{Binding DefaultModel}"
                 Material="{Binding DefaultMaterial}"
-                Transform="{Binding DefaultTransform}" />
+                Transform="{Binding DefaultTransform}" 
+                FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"/>
+            <!--<hx:MeshGeometryModel3D
+                x:Name="model1"
+                Geometry="{Binding DefaultModel}"
+                Material="{Binding DefaultMaterial}"
+                Transform="{Binding DefaultTransform}" 
+                FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"/>-->
             <hx:LineGeometryModel3D
                 x:Name="grid"
                 Geometry="{Binding Grid}"
-                IsRendering="False"
                 Transform="{Binding GridTransform}"
-                Color="{Binding GridColor}" />
+                Color="#000000" />
 
         </hx:Viewport3DX>
 
@@ -138,8 +144,8 @@
                         Grid.Row="7"
                         Grid.ColumnSpan="2"
                         Margin="3"
-                        IsChecked="{Binding IsRendering, ElementName=grid}">
-                        Render Grid
+                        IsChecked="{Binding Wireframe}">
+                        Render Wireframe
                     </CheckBox>
 
                     <TextBlock
