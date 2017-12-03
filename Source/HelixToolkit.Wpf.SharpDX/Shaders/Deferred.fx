@@ -6,9 +6,9 @@
 // code based on: http://hieroglyph3.codeplex.com/
 //--------------------------------------------------------------------------------------
 
-#include "./Shaders/Common.fx"
-#include "./Shaders/Material.fx"
-#include "./Shaders/DeferredLighting.fx"
+#include "Common.fx"
+#include "Material.fx"
+#include "DeferredLighting.fx"
 
 
 //--------------------------------------------------------------------------------------
@@ -155,11 +155,11 @@ technique11 RenderDeferred
 		SetDepthStencilState( DSSDepthLess, 0);
 		//SetBlendState( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
 
-        SetVertexShader		( CompileShader( vs_4_0, VShaderDeferred() ) );
+        SetVertexShader		( CompileShader( vs_5_0, VShaderDeferred() ) );
         SetHullShader		( NULL );
         SetDomainShader		( NULL );
         SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderDeferred() ) );        
+        SetPixelShader		( CompileShader( ps_5_0, PShaderDeferred() ) );        
     }    
 }
 
@@ -171,11 +171,11 @@ technique11 RenderGBuffer
 		SetDepthStencilState( DSSDepthLess, 0);
 		//SetBlendState( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
 
-        SetVertexShader		( CompileShader( vs_4_0, VShaderDeferred() ) );
+        SetVertexShader		( CompileShader( vs_5_0, VShaderDeferred() ) );
         SetHullShader		( NULL );
         SetDomainShader		( NULL );
         SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_4_0, PShaderDeferred() ) );        
+        SetPixelShader		( CompileShader( ps_5_0, PShaderDeferred() ) );        
     }    
 }
 

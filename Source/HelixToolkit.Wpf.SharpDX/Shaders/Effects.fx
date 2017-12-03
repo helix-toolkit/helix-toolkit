@@ -12,22 +12,22 @@ technique11 RenderPhong
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPhong()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPhong()));
 	}
     pass P2 //XRay
     {
@@ -35,11 +35,11 @@ technique11 RenderPhong
         //SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSXRayBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderXRay()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderXRay()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderXRay()));
+		SetPixelShader(CompileShader(ps_5_0, PSShaderXRay()));
     }
 }
 
@@ -51,11 +51,11 @@ technique11 RenderBlinn
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PSShaderBlinnPhong()));
 	}
 	pass P1
 	{
@@ -63,11 +63,11 @@ technique11 RenderBlinn
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PSShaderBlinnPhong()));
 	}
 
     pass P2 //XRay
@@ -75,11 +75,11 @@ technique11 RenderBlinn
     	//SetDepthStencilState(DSSDepthXRay, 0);
 		//SetBlendState(BSXRayBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderXRay()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderXRay()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderXRay()));
+		SetPixelShader(CompileShader(ps_5_0, PSShaderXRay()));
     }
 }
 
@@ -91,31 +91,31 @@ technique11 RenderCrossSectionBlinn
         SetDepthStencilState(DSSDepthLess, 0);
         SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-        SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+        SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
         SetHullShader(NULL);
         SetDomainShader(NULL);
         SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_4_0, PSCrossSectionShaderBlinnPhong()));
+        SetPixelShader(CompileShader(ps_5_0, PSCrossSectionShaderBlinnPhong()));
     }
     pass P1
     {
         //SetDepthStencilState(DSSDepthLess, 0);
         SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-        SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+        SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
         SetHullShader(NULL);
         SetDomainShader(NULL);
         SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_4_0, PSCrossSectionBackFaceShader()));
+        SetPixelShader(CompileShader(ps_5_0, PSCrossSectionBackFaceShader()));
     }
     pass P2
     {
         SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_4_0, CrossSectionVSMAIN()));
+        SetVertexShader(CompileShader(vs_5_0, CrossSectionVSMAIN()));
         SetHullShader(NULL);
         SetDomainShader(NULL);
         SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_4_0, CrossSectionPSMAIN()));
+        SetPixelShader(CompileShader(ps_5_0, CrossSectionPSMAIN()));
     }
 }
 
@@ -127,11 +127,11 @@ technique11 RenderBoneSkinBlinn
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderBoneSkin()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBoneSkin()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PSShaderBlinnPhong()));
 	}
 	pass P1
 	{
@@ -139,11 +139,11 @@ technique11 RenderBoneSkinBlinn
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderBoneSkin()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBoneSkin()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PSShaderBlinnPhong()));
 	}
 }
 
@@ -155,11 +155,11 @@ technique11 RenderInstancingBlinn
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VInstancingShader()));
+		SetVertexShader(CompileShader(vs_5_0, VInstancingShader()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSInstancingShaderBlinnPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PSInstancingShaderBlinnPhong()));
 	}
 	pass P1
 	{
@@ -167,11 +167,11 @@ technique11 RenderInstancingBlinn
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 
-		SetVertexShader(CompileShader(vs_4_0, VInstancingShader()));
+		SetVertexShader(CompileShader(vs_5_0, VInstancingShader()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSInstancingShaderBlinnPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PSInstancingShaderBlinnPhong()));
 	}
 }
 
@@ -182,22 +182,22 @@ technique11 RenderDiffuse
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderDiffuseMap()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderDiffuseMap()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderDiffuseMap()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderDiffuseMap()));
 	}
 }
 
@@ -208,22 +208,22 @@ technique11 RenderColors
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderColor()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderColor()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderColor()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderColor()));
 	}
 }
 
@@ -234,22 +234,22 @@ technique11 RenderPositions
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPositions()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPositions()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPositions()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPositions()));
 	}
 }
 
@@ -260,22 +260,22 @@ technique11 RenderNormals
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderNormals()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderNormals()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderNormals()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderNormals()));
 	}
 }
 
@@ -286,22 +286,22 @@ technique11 RenderPerturbedNormals
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPerturbedNormals()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPerturbedNormals()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPerturbedNormals()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPerturbedNormals()));
 	}
 }
 
@@ -312,22 +312,22 @@ technique11 RenderTangents
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTangents()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderTangents()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTangents()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderTangents()));
 	}
 }
 
@@ -338,22 +338,22 @@ technique11 RenderTexCoords
 		//SetRasterizerState	( RSSolid );
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTexCoords()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderTexCoords()));
 	}
 	pass P1
 	{
 		SetRasterizerState(RSWire);
 		SetDepthStencilState(DSSDepthLess, 0);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTexCoords()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderTexCoords()));
 	}
 }
 
@@ -365,11 +365,11 @@ technique11 RenderWires
 		SetDepthStencilState(DSSDepthLess, 0);
 		//SetBlendState( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPhong()));
 	}
 	pass P1
 	{
@@ -377,11 +377,11 @@ technique11 RenderWires
 		SetDepthStencilState(DSSDepthLess, 0);
 		//SetBlendState( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderDefault()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPhong()));
 	}
 }
 
@@ -394,11 +394,11 @@ technique11 RenderCubeMap
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		//SetBlendState( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0x00000000 );
 
-		SetVertexShader(CompileShader(vs_4_0, VShaderCubeMap()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderCubeMap()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderCubeMap()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderCubeMap()));
 	}
 }
 
@@ -416,11 +416,11 @@ technique11 RenderLines
 		//SetRasterizerState	( RSLines );
 		//SetRasterizerState( RSFillBiasBack );
 		SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		SetVertexShader(CompileShader(vs_4_0, VShaderLines()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderLines()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
-		SetGeometryShader(CompileShader(gs_4_0, GShaderLines()));
-		SetPixelShader(CompileShader(ps_4_0, PShaderLinesFade()));
+		SetGeometryShader(CompileShader(gs_5_0, GShaderLines()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderLinesFade()));
 	}
 }
 
@@ -432,11 +432,11 @@ technique11 RenderLinesHard
 		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderLines()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderLines()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
-		SetGeometryShader(CompileShader(gs_4_0, GShaderLines()));
-		SetPixelShader(CompileShader(ps_4_0, PShaderLines()));
+		SetGeometryShader(CompileShader(gs_5_0, GShaderLines()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderLines()));
 	}
 }
 
@@ -453,11 +453,11 @@ technique11 RenderBillboard
 		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardText()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardText()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderBillboardText()));
 	}
 	pass P1
 	{
@@ -465,11 +465,11 @@ technique11 RenderBillboard
 		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardText()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderBillboardBackground()));
 	}
 	pass P2
 	{
@@ -477,11 +477,11 @@ technique11 RenderBillboard
 		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardText()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardImage()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderBillboardImage()));
 	}
 }
 
@@ -493,11 +493,11 @@ technique11 RenderBillboardInstancing
 		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardInstancing()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardText()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderBillboardText()));
 	}
 	pass P1
 	{
@@ -505,11 +505,11 @@ technique11 RenderBillboardInstancing
 		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardInstancing()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderBillboardBackground()));
 	}
 	pass P2
 	{
@@ -517,11 +517,11 @@ technique11 RenderBillboardInstancing
 		SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardInstancing()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
 		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardImage()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderBillboardImage()));
 	}
 }
 //--------------------------------------------------------------------------------------
@@ -536,11 +536,11 @@ technique11 RenderPoints
 		//SetRasterizerState	( RSLines );
 		//SetRasterizerState( RSFillBiasBack );
 		//SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		SetVertexShader(CompileShader(vs_4_0, VShaderPoints()));
+		SetVertexShader(CompileShader(vs_5_0, VShaderPoints()));
 		SetHullShader(NULL);
 		SetDomainShader(NULL);
-		SetGeometryShader(CompileShader(gs_4_0, GShaderPoints()));
-		SetPixelShader(CompileShader(ps_4_0, PShaderPoints()));
+		SetGeometryShader(CompileShader(gs_5_0, GShaderPoints()));
+		SetPixelShader(CompileShader(ps_5_0, PShaderPoints()));
 	}
 }
 
@@ -569,12 +569,12 @@ technique11 ParticleStorm
 		//SetDepthStencilState(DSSDepthLessEqual, 0);
 		SetRasterizerState(RSSolid);
 		//SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_4_0, ParticleVSMAIN()));
+        SetVertexShader(CompileShader(vs_5_0, ParticleVSMAIN()));
         SetHullShader(NULL);
         SetDomainShader(NULL);       
 		//SetGeometryShader(NULL);
-        SetGeometryShader(CompileShader(gs_4_0, ParticleGSMAIN()));
-        SetPixelShader(CompileShader(ps_4_0, ParticlePSMAIN()));
+        SetGeometryShader(CompileShader(gs_5_0, ParticleGSMAIN()));
+        SetPixelShader(CompileShader(ps_5_0, ParticlePSMAIN()));
     }
 }
 #endif

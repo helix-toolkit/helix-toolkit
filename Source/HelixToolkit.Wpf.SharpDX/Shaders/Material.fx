@@ -9,14 +9,10 @@
 //--------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------
-// pre-processor defines
-//--------------------------------------------------------------------------------------
-#define LIGHTS 16
-//--------------------------------------------------------------------------------------
 // CONSTANT BUFF VARIABLES
 //--------------------------------------------------------------------------------------
-//cbuffer cbPerObject
-//{
+cbuffer cbMaterial
+{
 	float4 vMaterialAmbient		= 0.25f;  //Ka := surface material's ambient coefficient
 	float4 vMaterialDiffuse		= 0.5f;   //Kd := surface material's diffuse coefficient
 	float4 vMaterialEmissive	= 0.0f;   //Ke := surface material's emissive coefficient
@@ -31,16 +27,16 @@
 	bool   bHasCubeMap			= false;
 	bool   bHasInstances		= false;
 	bool   bHasShadowMap		= false;
-
+};
 	float2 vShadowMapSize		= float2(1024, 1024);
 	float4 vShadowMapInfo		= float4(0.005, 1.0, 0.5, 0.0);
-//};
+
 
 		
 //--------------------------------------------------------------------------------------
 // GLOBAL Variables (Varing)
 //--------------------------------------------------------------------------------------
-float4 vTessellation			= float4(2.0f, 0.0f, 0.0f, 0.0f); // the first value is the TS-factor, the other are free!
+
 
 //--------------------------------------------------------------------------------------
 // TEXTURES

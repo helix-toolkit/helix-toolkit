@@ -191,13 +191,13 @@ BlendState BSXRayBlending
 //--------------------------------------------------------------------------------------
 // GLOBAL VARIABLES
 //--------------------------------------------------------------------------------------
-//cbuffer cbTransforms
-//{
-	float4x4 mWorld;
-	float4x4 mView;
-	float4x4 mProjection;
-//}
+float4x4 mWorld;
 
+cbuffer cbTransforms
+{
+    float4x4 mView;
+    float4x4 mProjection;
+   
 	// camera frustum: 
 	// [fov,asepct-ratio,near,far]
 	float4 vFrustum;
@@ -208,7 +208,7 @@ BlendState BSXRayBlending
 		
 	// camera position
 	float3 vEyePos;
-
+};
 //--------------------------------------------------------------------------------------
 // GLOBAL FUNCTIONS
 //--------------------------------------------------------------------------------------

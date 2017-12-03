@@ -14,6 +14,7 @@
     mc:Ignorable="d">
     <Window.Resources>
         <x:StaticExtension x:Key="Shading" Member="hx:TessellationTechniques.Shadings" />
+        <x:StaticExtension x:Key="Topology" Member="hx:TessellationTechniques.MeshTopologies"/>
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
     </Window.Resources>
     <Grid>
@@ -49,7 +50,7 @@
                 x:Name="model1"
                 Geometry="{Binding DefaultModel}"
                 Material="{Binding DefaultMaterial}"
-                Transform="{Binding DefaultTransform}" 
+                Transform="{Binding DefaultTransform}" MeshTopology="{Binding MeshTopology}"
                 FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"/>
             <!--<hx:MeshGeometryModel3D
                 x:Name="model1"
@@ -106,8 +107,7 @@
                         Grid.Row="1"
                         Grid.ColumnSpan="2"
                         Margin="3"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding MeshTopologyList}"
+                        ItemsSource="{Binding Source={StaticResource Topology}}"
                         SelectedItem="{Binding MeshTopology}"
                         Text="" />
 

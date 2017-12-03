@@ -316,6 +316,7 @@
     <Content Include="Shaders\Lighting.fx" />
     <Content Include="Shaders\Particles.fx" />
     <Content Include="Shaders\PixelShaders.fx" />
+    <Content Include="Shaders\TessellationEffects.fx" />
     <Content Include="Shaders\VertexShaders.fx" />
     <Content Include="sharpdx_direct3d11_1_effects_arm.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

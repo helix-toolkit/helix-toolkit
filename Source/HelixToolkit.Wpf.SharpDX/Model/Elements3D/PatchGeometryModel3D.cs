@@ -30,7 +30,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Passes available for this Model3D
         /// </summary>
         public static IEnumerable<string> Shadings { get { return new string[] { Shading.Solid.ToString(), Shading.Positions.ToString(), Shading.Normals.ToString(), Shading.TexCoords.ToString(), Shading.Tangents.ToString(), Shading.Colors.ToString() }; } }
+        public enum MeshTopology
+        {
+            Triangle, Quads
+        }
 
+        public static IEnumerable<string> MeshTopologies { get { return new string[] { MeshTopology.Triangle.ToString(), MeshTopology.Quads.ToString() }; } }
 #endif
     }
 
@@ -56,6 +61,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 (((GeometryModel3D)d).RenderCore as PatchMeshRenderCore).TessellationFactor = (float)(double)e.NewValue;
             }));
 
+        public static readonly DependencyProperty MeshTopologyProperty =
+            DependencyProperty.Register("MeshTopology", typeof(TessellationTechniques.MeshTopology), typeof(PatchGeometryModel3D), new AffectsRenderPropertyMetadata(
+                TessellationTechniques.MeshTopology.Triangle, (d, e) => 
+                {
+                    var model = d as PatchGeometryModel3D;
+                    if (model.IsAttached)
+                    {
+                        var host = model.renderHost;
+                        model.Detach();
+                        model.Attach(host);
+                    }
+                }));
 
         /// <summary>
         /// 
@@ -73,8 +90,14 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)GetValue(TessellationFactorProperty); }
             set { SetValue(TessellationFactorProperty, value); }
         }
+
+        public TessellationTechniques.MeshTopology MeshTopology
+        {
+            set { SetValue(MeshTopologyProperty, value); }
+            get { return (TessellationTechniques.MeshTopology)GetValue(MeshTopologyProperty); }
+        }
         #endregion
-       
+
         protected override IRenderCore OnCreateRenderCore()
         {
             return new PatchMeshRenderCore();
@@ -89,7 +112,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override RenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
+            switch (MeshTopology)
+            {
+                case TessellationTechniques.MeshTopology.Triangle:
+                    return host.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
+                case TessellationTechniques.MeshTopology.Quads:
+                    return host.RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads];
+                default:
+                    return null;
+            }          
         }
 
         protected override bool CanHitTest(IRenderMatrices context)

@@ -1,9 +1,20 @@
+#ifndef TESSELLATION_FX
+#define TESSELATION_FX
 //--------------------------------------------------------------------------------------
 // File: Tessellation Functions for HelixToolkitDX
 // Author: Przemyslaw Musialski
 // Date: 03/21/13
 // References & Sources: Based on NVidia SDK 2011 
 //--------------------------------------------------------------------------------------
+
+
+
+//--------------------------------------------------------------------------------------
+// pre-processor includes
+//--------------------------------------------------------------------------------------
+#include "DataStructs.fx"
+#include "Common.fx"
+
 
 //--------------------------------------------------------------------------------------
 // Work-around for an optimization rule problem in the June 2010 HLSL Compiler
@@ -14,61 +25,7 @@
 #pragma ruledisable 0x0802405f
 #endif 
 
-//--------------------------------------------------------------------------------------
-// pre-processor includes
-//--------------------------------------------------------------------------------------
-#include "Default.fx"
-
-//--------------------------------------------------------------------------------------
-// SHADER STRUCTURES
-//--------------------------------------------------------------------------------------
-struct HSConstantDataOutput
-{
-    float Edges[3]  : SV_TessFactor;
-    float Inside    : SV_InsideTessFactor;
-	float Sign      : SIGN;
-   
-    float3 f3B210   : POSITION3;
-    float3 f3B120   : POSITION4;
-    float3 f3B021   : POSITION5;
-    float3 f3B012   : POSITION6;
-    float3 f3B102   : POSITION7;
-    float3 f3B201   : POSITION8;
-    float3 f3B111   : CENTER;   
-};
-
-//--------------------------------------------------------------------------------------
-struct HSConstantDataOutputQuads
-{
-    float  Edges[4]			: SV_TessFactor;
-    float  Inside[2]		: SV_InsideTessFactor;
-	float  Sign				: SIGN;
-	float3 vEdgePos[8]		: EDGEPOS;
-    float3 vInteriorPos[4]	: INTERIORPOS;
-};
-
-//--------------------------------------------------------------------------------------
-struct HSInput
-{
-    float3 p			: POSITION;
-    float2 t			: TEXCOORD0;
-    float3 n			: TEXCOORD1;
-    float3 t1		    : TEXCOORD2;
-	float3 t2	        : TEXCOORD3;
-	float4 c			: COLOR;
-};
-
-//--------------------------------------------------------------------------------------
-struct VSIn
-{
-	float4 p			: POSITION;
-	float4 c			: COLOR;
-	float2 t			: TEXCOORD; 
-	float3 n			: NORMAL;  
-	float3 t1			: TANGENT;
-    float3 t2			: BINORMAL;
-};
-
+float4 vTessellation = float4(2.0f, 0.0f, 0.0f, 0.0f); // the first value is the TS-factor, the other are free!
 
 //--------------------------------------------------------------------------------------
 // Bernstein-Polynomial Evaluation helper function
@@ -116,15 +73,15 @@ float3 EvaluateBezier( float3  p0, float3  p1, float3  p2, float3  p3,
 // VERTEX SHADER function
 // called per incoming vertex/control point
 //--------------------------------------------------------------------------------------
-HSInput VShaderTessellated( VSIn input )
+HSInput VShaderTessellated(VSInput input)
 {
     HSInput output;        
     output.p		= input.p.xyz;
     output.t		= input.t;       
-    if (bInvertNormal)
-    {
-        input.n = -input.n;
-    }
+    //if (bInvertNormal)
+    //{
+    //    input.n = -input.n;
+    //}
     output.n		= input.n; 
     output.t1		= input.t1;
 	output.t2		= input.t2;
@@ -132,31 +89,6 @@ HSInput VShaderTessellated( VSIn input )
     return output;
 }
 
-//--------------------------------------------------------------------------------------
-// HULL SHADER main function
-// called per output-control point
-//--------------------------------------------------------------------------------------
-[domain("tri")]
-[partitioning("integer")]
-[outputtopology("triangle_cw")]
-[outputcontrolpoints(3)]
-[patchconstantfunc("HShaderTriConstant")]
-[maxtessfactor(64.0)]
-HSInput HShaderTriMain( InputPatch<HSInput, 3> inputPatch, uint cpID : SV_OutputControlPointID, uint patchID : SV_PrimitiveID)
-{
-    return inputPatch[cpID];
-}
-
-[domain("quad")]
-[partitioning("integer")]
-[outputtopology("triangle_cw")]
-[outputcontrolpoints(4)]
-[patchconstantfunc("HShaderQuadConstant")]
-[maxtessfactor(64.0)]
-HSInput HShaderQuadMain( InputPatch<HSInput, 4> inputPatch, uint cpID : SV_OutputControlPointID, uint patchID : SV_PrimitiveID)
-{
-    return inputPatch[cpID];
-}
 
 //--------------------------------------------------------------------------------------
 // HULL SHADER constant function for triangular patches
@@ -164,7 +96,7 @@ HSInput HShaderQuadMain( InputPatch<HSInput, 4> inputPatch, uint cpID : SV_Outpu
 //--------------------------------------------------------------------------------------
 HSConstantDataOutput HShaderTriConstant( InputPatch<HSInput, 3> inputPatch)
 {    
-	HSConstantDataOutput output;
+    HSConstantDataOutput output = (HSConstantDataOutput)0;
 
 	// edge control points
     output.f3B210 = 1;
@@ -185,7 +117,7 @@ HSConstantDataOutput HShaderTriConstant( InputPatch<HSInput, 3> inputPatch)
 	}
 	output.Inside = (output.Edges[0] + output.Edges[1] + output.Edges[2]) / 3;
 
- 
+
 	// edge control points
     output.f3B210 = ( ( 2.0f * inputPatch[0].p ) + inputPatch[1].p - ( dot( ( inputPatch[1].p - inputPatch[0].p ), inputPatch[0].n ) * inputPatch[0].n ) ) / 3.0f;
     output.f3B120 = ( ( 2.0f * inputPatch[1].p ) + inputPatch[0].p - ( dot( ( inputPatch[0].p - inputPatch[1].p ), inputPatch[1].n ) * inputPatch[1].n ) ) / 3.0f;
@@ -266,6 +198,31 @@ HSConstantDataOutputQuads HShaderQuadConstant( InputPatch<HSInput, 4> inputPatch
 }
 
 
+//--------------------------------------------------------------------------------------
+// HULL SHADER main function
+// called per output-control point
+//--------------------------------------------------------------------------------------
+[domain("tri")]
+[partitioning("integer")]
+[outputtopology("triangle_cw")]
+[outputcontrolpoints(3)]
+[patchconstantfunc("HShaderTriConstant")]
+[maxtessfactor(64.0)]
+HSInput HShaderTriMain(InputPatch<HSInput, 3> inputPatch, uint cpID : SV_OutputControlPointID, uint patchID : SV_PrimitiveID)
+{
+    return inputPatch[cpID];
+}
+
+[domain("quad")]
+[partitioning("integer")]
+[outputtopology("triangle_cw")]
+[outputcontrolpoints(4)]
+[patchconstantfunc("HShaderQuadConstant")]
+[maxtessfactor(64.0)]
+HSInput HShaderQuadMain(InputPatch<HSInput, 4> inputPatch, uint cpID : SV_OutputControlPointID, uint patchID : SV_PrimitiveID)
+{
+    return inputPatch[cpID];
+}
 
 
 //--------------------------------------------------------------------------------------
@@ -317,16 +274,16 @@ PSInput DShaderTri(	HSConstantDataOutput input, float3 barycentricCoords : SV_Do
     
 	// --- Classical vertex-shader transforms: 
 	// --- output position in the clip-space	
-	output.p		= mul( float4(position, 1.0f),	mWorld );		
+    output.p = mul(float4(position, 1.0f), mWorld);
 	output.wp		= output.p;
 	output.p		= mul( output.p, mView );    
 	output.p		= mul( output.p, mProjection );	
 
 	// --- interpolated normals    
-    output.n		= normalize( mul(output.n,  (float3x3)mWorld) );
-    output.t1		= normalize( mul(output.t1, (float3x3)mWorld) );
-	output.t2		= normalize( mul(output.t2, (float3x3)mWorld) );
-    	
+    output.n = normalize( mul(output.n,  (float3x3)mWorld) );
+    output.t1 = normalize(mul(output.t1, (float3x3) mWorld));
+    output.t2 = normalize(mul(output.t2, (float3x3) mWorld));
+  	
     return output;
 }
 
@@ -426,741 +383,4 @@ float4 PSColor( PSInput input ) : SV_Target
 }
 
 
-//--------------------------------------------------------------------------------------
-// Techniques:
-//  "Solid",
-//  "Wires",
-//  "Positions",
-//  "Normals",
-//  "TexCoords",
-//  "Tangents",
-//  "Colors",
-//--------------------------------------------------------------------------------------
-technique11 RenderPNTriangs
-{
-    pass Solid
-    {
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState( DSSDepthLess, 0);
-		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );			
-		SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                		
-		SetHullShader		( CompileShader( hs_5_0, HShaderTriMain() ) );
-		SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
-		SetGeometryShader	( NULL );
-		SetPixelShader		( CompileShader( ps_5_0, PShaderPhong() ) ); 
-    } 
-	pass Positions
-    {
-	//	SetRasterizerState	( RSSolid );
-		SetDepthStencilState( DSSDepthLess, 0);
-		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
-        SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
-		SetHullShader		( CompileShader( hs_5_0, HShaderTriMain() ) );
-        SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
-        SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_5_0, PShaderPositions() ) ); 
-    }
-	pass Normals
-    {
-	//	SetRasterizerState	( RSSolid );
-		SetDepthStencilState( DSSDepthLess, 0);
-		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
-        SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
-		SetHullShader		( CompileShader( hs_5_0, HShaderTriMain() ) );
-        SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
-        SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_5_0, PShaderNormals() ) ); 
-    }		
-	pass TexCoords
-    {
-	//	SetRasterizerState	( RSSolid );
-		SetDepthStencilState( DSSDepthLess, 0);
-		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
-        SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
-		SetHullShader		( CompileShader( hs_5_0, HShaderTriMain() ) );
-        SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
-        SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_5_0, PShaderTexCoords() ) ); 
-    }
-	pass Tangents
-    {
-	//	SetRasterizerState	( RSSolid );
-		SetDepthStencilState( DSSDepthLess, 0);
-		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
-        SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
-		SetHullShader		( CompileShader( hs_5_0, HShaderTriMain() ) );
-        SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
-        SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_5_0, PShaderTangents() ) ); 
-    }		
-	pass Colors
-    {
-	//	SetRasterizerState	( RSSolid );
-		SetDepthStencilState( DSSDepthLess, 0);
-		SetBlendState		( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );		
-        SetVertexShader		( CompileShader( vs_5_0, VShaderTessellated() ) );                
-		SetHullShader		( CompileShader( hs_5_0, HShaderTriMain() ) );
-        SetDomainShader		( CompileShader( ds_5_0, DShaderTri() ) );
-        SetGeometryShader	( NULL );
-        SetPixelShader		( CompileShader( ps_5_0, PShaderColor() ) ); 
-    }
-}
-//--------------------------------------------------------------------------------------
-technique11 RenderPNQuads
-{
-    pass Solid
-    {
-		//SetRasterizerState	( RSSolid );
-        SetDepthStencilState(DSSDepthLess, 0);
-        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_5_0, VShaderTessellated()));
-        SetHullShader(CompileShader(hs_5_0, HShaderQuadMain()));
-        SetDomainShader(CompileShader(ds_5_0, DShaderQuad()));
-        SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PShaderPhong()));
-    }
-    pass Wires
-    {
-		//SetRasterizerState	( RSWire );
-        SetDepthStencilState(DSSDepthLess, 0);
-        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_5_0, VShaderTessellated()));
-        SetHullShader(CompileShader(hs_5_0, HShaderQuadMain()));
-        SetDomainShader(CompileShader(ds_5_0, DShaderQuad()));
-        SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PShaderColor()));
-    }
-		
-    pass Positions
-    {
-	//	SetRasterizerState	( RSSolid );
-        SetDepthStencilState(DSSDepthLess, 0);
-        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_5_0, VShaderTessellated()));
-        SetHullShader(CompileShader(hs_5_0, HShaderQuadMain()));
-        SetDomainShader(CompileShader(ds_5_0, DShaderQuad()));
-        SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PShaderPositions()));
-    }
-    pass Normals
-    {
-	//	SetRasterizerState	( RSSolid );
-        SetDepthStencilState(DSSDepthLess, 0);
-        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_5_0, VShaderTessellated()));
-        SetHullShader(CompileShader(hs_5_0, HShaderQuadMain()));
-        SetDomainShader(CompileShader(ds_5_0, DShaderQuad()));
-        SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PShaderNormals()));
-    }
-    pass TexCoords
-    {
-	//	SetRasterizerState	( RSSolid );
-        SetDepthStencilState(DSSDepthLess, 0);
-        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_5_0, VShaderTessellated()));
-        SetHullShader(CompileShader(hs_5_0, HShaderQuadMain()));
-        SetDomainShader(CompileShader(ds_5_0, DShaderQuad()));
-        SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PShaderTexCoords()));
-    }
-    pass Tangents
-    {
-	//	SetRasterizerState	( RSSolid );
-        SetDepthStencilState(DSSDepthLess, 0);
-        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_5_0, VShaderTessellated()));
-        SetHullShader(CompileShader(hs_5_0, HShaderQuadMain()));
-        SetDomainShader(CompileShader(ds_5_0, DShaderQuad()));
-        SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PShaderTangents()));
-    }
-    pass Colors
-    {
-	//	SetRasterizerState	( RSSolid );
-        SetDepthStencilState(DSSDepthLess, 0);
-        SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-        SetVertexShader(CompileShader(vs_5_0, VShaderTessellated()));
-        SetHullShader(CompileShader(hs_5_0, HShaderQuadMain()));
-        SetDomainShader(CompileShader(ds_5_0, DShaderQuad()));
-        SetGeometryShader(NULL);
-        SetPixelShader(CompileShader(ps_5_0, PShaderColor()));
-    }
-}
-
-
-//--------------------------------------------------------------------------------------
-// Techniques
-//--------------------------------------------------------------------------------------
-technique11 RenderPhong
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
-	}
-	pass P2 //XRay
-	{
-		SetDepthStencilState(DSSDepthXRay, 0);
-		//SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSXRayBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderXRay()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderXRay()));
-	}
-}
-
-technique11 RenderBlinn
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
-	}
-
-	pass P2 //XRay
-	{
-    	//SetDepthStencilState(DSSDepthXRay, 0);
-		//SetBlendState(BSXRayBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderXRay()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderXRay()));
-	}
-}
-
-technique11 RenderCrossSectionBlinn
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSCrossSectionShaderBlinnPhong()));
-	}
-	pass P1
-	{
-		//SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSNoBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSCrossSectionBackFaceShader()));
-	}
-	pass P2
-	{
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, CrossSectionVSMAIN()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, CrossSectionPSMAIN()));
-	}
-}
-
-technique11 RenderBoneSkinBlinn
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderBoneSkin()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderBoneSkin()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSShaderBlinnPhong()));
-	}
-}
-
-technique11 RenderInstancingBlinn
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VInstancingShader()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSInstancingShaderBlinnPhong()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VInstancingShader()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PSInstancingShaderBlinnPhong()));
-	}
-}
-
-technique11 RenderDiffuse
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderDiffuseMap()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderDiffuseMap()));
-	}
-}
-
-technique11 RenderColors
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderColor()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderColor()));
-	}
-}
-
-technique11 RenderPositions
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPositions()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPositions()));
-	}
-}
-
-technique11 RenderNormals
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderNormals()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderNormals()));
-	}
-}
-
-technique11 RenderPerturbedNormals
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPerturbedNormals()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPerturbedNormals()));
-	}
-}
-
-technique11 RenderTangents
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTangents()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTangents()));
-	}
-}
-
-technique11 RenderTexCoords
-{
-	pass P0
-	{
-		//SetRasterizerState	( RSSolid );
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTexCoords()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderTexCoords()));
-	}
-}
-
-technique11 RenderWires
-{
-	pass P0
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		//SetBlendState( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
-	}
-	pass P1
-	{
-		SetRasterizerState(RSWire);
-		SetDepthStencilState(DSSDepthLess, 0);
-		//SetBlendState( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderDefault()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderPhong()));
-	}
-}
-
-technique11 RenderCubeMap
-{
-	pass P0
-	{
-		SetRasterizerState(RSSolidCubeMap);
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		//SetBlendState( BSNoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0x00000000 );
-
-		SetVertexShader(CompileShader(vs_4_0, VShaderCubeMap()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderCubeMap()));
-	}
-}
-
-
-
-//--------------------------------------------------------------------------------------
-// Line Techniques
-//-------------------------------------------------------------------------------------
-technique11 RenderLines
-{
-	pass P0
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		//SetDepthStencilState( DSSDepthLessEqual, 0 );
-		//SetRasterizerState	( RSLines );
-		//SetRasterizerState( RSFillBiasBack );
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderLines()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(CompileShader(gs_4_0, GShaderLines()));
-		SetPixelShader(CompileShader(ps_4_0, PShaderLinesFade()));
-	}
-}
-
-technique11 RenderLinesHard
-{
-	pass P0
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderLines()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(CompileShader(gs_4_0, GShaderLines()));
-		SetPixelShader(CompileShader(ps_4_0, PShaderLines()));
-	}
-}
-
-
-//--------------------------------------------------------------------------------------
-// Billboard Techniques
-//-------------------------------------------------------------------------------------
-
-technique11 RenderBillboard
-{
-	pass P0
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardText()));
-	}
-	pass P1
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
-	}
-	pass P2
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardText()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardImage()));
-	}
-}
-
-technique11 RenderBillboardInstancing
-{
-	pass P0
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardText()));
-	}
-	pass P1
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardBackground()));
-	}
-	pass P2
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, VShaderBillboardInstancing()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PShaderBillboardImage()));
-	}
-}
-//--------------------------------------------------------------------------------------
-// Point Techniques
-//-------------------------------------------------------------------------------------
-technique11 RenderPoints
-{
-	pass P0
-	{
-		//SetDepthStencilState( DSSDepthLess, 0 );
-		//SetDepthStencilState( DSSDepthLessEqual, 0 );
-		//SetRasterizerState	( RSLines );
-		//SetRasterizerState( RSFillBiasBack );
-		//SetBlendState		( BSBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		SetVertexShader(CompileShader(vs_4_0, VShaderPoints()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetGeometryShader(CompileShader(gs_4_0, GShaderPoints()));
-		SetPixelShader(CompileShader(ps_4_0, PShaderPoints()));
-	}
-}
-
-technique11 ParticleStorm
-{
-	pass P0
-	{
-		SetVertexShader(NULL);
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetPixelShader(NULL);
-		SetComputeShader(CompileShader(cs_5_0, ParticleInsertCSMAIN()));
-	}
-	pass P1
-	{
-		SetVertexShader(NULL);
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		SetPixelShader(NULL);
-		SetComputeShader(CompileShader(cs_5_0, ParticleUpdateCSMAIN()));
-	}
-	pass P2
-	{
-		SetDepthStencilState(DSSDepthParticle, 0);
-		SetBlendState(BSParticleBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		//SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
-		//SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		SetVertexShader(CompileShader(vs_4_0, ParticleVSMAIN()));
-		SetHullShader(NULL);
-		SetDomainShader(NULL);
-		//SetGeometryShader(NULL);
-		SetGeometryShader(CompileShader(gs_4_0, ParticleGSMAIN()));
-		SetPixelShader(CompileShader(ps_4_0, ParticlePSMAIN()));
-	}
-}
+#endif

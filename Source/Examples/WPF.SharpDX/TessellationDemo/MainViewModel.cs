@@ -76,9 +76,7 @@ namespace TessellationDemo
             }
         }
 
-        public string[] MeshTopologyList { get; set; }
-
-        private string meshTopology = MeshFaces.Default.ToString();
+        private string meshTopology = TessellationTechniques.MeshTopology.Triangle.ToString();
 
         public string MeshTopology
         {
@@ -87,21 +85,16 @@ namespace TessellationDemo
             {
                 /// if topology is changes, reload the model with proper type of faces
                 this.meshTopology = value;
-                //this.RenderTechnique = this.meshTopology == "Quads" ?
-                //    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNQuads] :
-                //    RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
-                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == "Triangles" ?  MeshFaces.Default : MeshFaces.QuadPatches);
+                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == TessellationTechniques.MeshTopology.Triangle.ToString() ? 
+                    MeshFaces.Default : MeshFaces.QuadPatches);
             }
         }
 
         public MainViewModel()
         {
             RenderTechniquesManager = new TessellationTechniquesManager();
-           // RenderTechnique = RenderTechniquesManager.RenderTechniques[TessellationRenderTechniqueNames.PNTriangles];
-            EffectsManager = new TessellationEffectsManager(RenderTechniquesManager);
-            //RenderTechniquesManager = new DefaultTechniquesManager();
             RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            //EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new TessellationEffectsManager(RenderTechniquesManager);
             // ----------------------------------------------
             // titles
             this.Title = "Hardware Tessellation Demo";
@@ -138,12 +131,11 @@ namespace TessellationDemo
 
             // ---------------------------------------------
             // init model
-            this.MeshTopologyList = new[] { "Triangles", "Quads" };
-            this.MeshTopology = "Triangles";
-
+            this.MeshTopology = TessellationTechniques.MeshTopology.Quads.ToString();
+            
             // ---------------------------------------------
             // floor plane grid
-            this.Grid = LineBuilder.GenerateGrid();
+            this.Grid = LineBuilder.GenerateGrid(10);
             this.GridColor = SharpDX.Color.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
         }

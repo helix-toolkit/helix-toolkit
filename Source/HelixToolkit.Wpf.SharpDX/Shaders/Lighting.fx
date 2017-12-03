@@ -4,10 +4,15 @@
 #include "Common.fx"
 #include "Material.fx"
 #include "DataStructs.fx"
+
+//--------------------------------------------------------------------------------------
+// pre-processor defines
+//--------------------------------------------------------------------------------------
+#define LIGHTS 16
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------
-cbuffer cbPerFrame
+cbuffer cbLights
 {
 	int iLightType[LIGHTS];
 	// the light direction is here the vector which looks towards the light

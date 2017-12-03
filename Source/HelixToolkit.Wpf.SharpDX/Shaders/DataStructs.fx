@@ -182,4 +182,54 @@ struct PSInputPS
 		float3 t	: TEXCOORD;
 	float4 c	: COLOR;
 };
+
+//--------------------------------------------------------------------------------------
+// SHADER STRUCTURES
+//--------------------------------------------------------------------------------------
+struct HSConstantDataOutput
+{
+    float Edges[3] : SV_TessFactor;
+    float Inside : SV_InsideTessFactor;
+    float Sign : SIGN;
+   
+    float3 f3B210 : POSITION3;
+    float3 f3B120 : POSITION4;
+    float3 f3B021 : POSITION5;
+    float3 f3B012 : POSITION6;
+    float3 f3B102 : POSITION7;
+    float3 f3B201 : POSITION8;
+    float3 f3B111 : CENTER;
+};
+
+//--------------------------------------------------------------------------------------
+struct HSConstantDataOutputQuads
+{
+    float Edges[4] : SV_TessFactor;
+    float Inside[2] : SV_InsideTessFactor;
+    float Sign : SIGN;
+    float3 vEdgePos[8] : EDGEPOS;
+    float3 vInteriorPos[4] : INTERIORPOS;
+};
+
+//--------------------------------------------------------------------------------------
+struct HSInput
+{
+    float3 p : POSITION;
+    float2 t : TEXCOORD0;
+    float3 n : TEXCOORD1;
+    float3 t1 : TEXCOORD2;
+    float3 t2 : TEXCOORD3;
+    float4 c : COLOR;
+};
+
+//--------------------------------------------------------------------------------------
+struct VSIn
+{
+    float4 p : POSITION;
+    float4 c : COLOR;
+    float2 t : TEXCOORD;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+};
 #endif
