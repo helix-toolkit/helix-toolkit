@@ -11,33 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
     using Core;
-    using System.Collections.Generic;
     using global::SharpDX.Direct3D;
-
-    public static class TessellationTechniques
-    {
-#if TESSELLATION
-        public enum Shading
-        {
-            Solid,
-            Positions,
-            Normals,
-            TexCoords,
-            Tangents,
-            Colors
-        };
-        /// <summary>
-        /// Passes available for this Model3D
-        /// </summary>
-        public static IEnumerable<string> Shadings { get { return new string[] { Shading.Solid.ToString(), Shading.Positions.ToString(), Shading.Normals.ToString(), Shading.TexCoords.ToString(), Shading.Tangents.ToString(), Shading.Colors.ToString() }; } }
-        public enum MeshTopology
-        {
-            Triangle, Quads
-        }
-
-        public static IEnumerable<string> MeshTopologies { get { return new string[] { MeshTopology.Triangle.ToString(), MeshTopology.Quads.ToString() }; } }
-#endif
-    }
 
     public class PatchGeometryModel3D : MeshGeometryModel3D
     {
@@ -110,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.AssignDefaultValuesToCore(core);
         }
 
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
             switch (MeshTopology)
             {

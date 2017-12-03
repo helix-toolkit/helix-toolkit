@@ -48,9 +48,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ICamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IElementsBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Interfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderTechnique.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\EffectMaterialVariables.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\ComponentBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DDS.cs" />
@@ -118,5 +122,27 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\BillboardText.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Common.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Default.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Deferred.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\DeferredLighting.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Lines.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Material.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Tessellation.fx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\_compile_instructions.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\CrossSection.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\DataStructs.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\Effects.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\Lighting.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\Particles.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\PixelShaders.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\Points.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\TessellationEffects.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Shaders\VertexShaders.fx" />
   </ItemGroup>
 </Project>

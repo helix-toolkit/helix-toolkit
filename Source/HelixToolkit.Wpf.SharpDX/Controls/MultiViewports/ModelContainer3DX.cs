@@ -48,9 +48,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
         /// </value>
-        public RenderTechnique RenderTechnique
+        public IRenderTechnique RenderTechnique
         {
-            get { return (RenderTechnique)this.GetValue(RenderTechniqueProperty); }
+            get { return (IRenderTechnique)this.GetValue(RenderTechniqueProperty); }
             set { this.SetValue(RenderTechniqueProperty, value); }
         }
 

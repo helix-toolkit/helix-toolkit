@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>    
     public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID
     {
-        public delegate RenderTechnique SetRenderTechniqueFunc(IRenderHost host);
+        public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
         /// <summary>
         /// A delegate function to change render technique. 
         /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
@@ -124,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected global::SharpDX.Direct3D11.Effect effect;
 
-        protected RenderTechnique renderTechnique;
+        protected IRenderTechnique renderTechnique;
 
         protected IRenderHost renderHost;
 
@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="host"></param>
         /// <returns>Return RenderTechnique</returns>
-        protected virtual RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected virtual IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }

@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP
         /// by all Element3D if not specified otherwise in
         /// the elements itself
         /// </summary>
-        RenderTechnique RenderTechnique { get; }
+        IRenderTechnique RenderTechnique { get; }
 
         bool IsDeferredLighting { get; }
 

@@ -28,7 +28,7 @@ namespace DemoCore
 
         private Camera camera;
 
-        private RenderTechnique renderTechnique;
+        private IRenderTechnique renderTechnique;
 
         private string subTitle;
 
@@ -58,7 +58,7 @@ namespace DemoCore
             }
         }
 
-        public RenderTechnique RenderTechnique
+        public IRenderTechnique RenderTechnique
         {
             get
             {

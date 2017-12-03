@@ -153,6 +153,7 @@
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\RenderTechnique.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
@@ -161,7 +162,6 @@
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />
-    <Compile Include="Controls\RenderTechnique.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
     <Compile Include="Controls\RenderTechniquesManager.cs" />
     <Compile Include="Controls\Trackball.cs" />
@@ -304,20 +304,14 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Textures\arial.fnt" />
-    <None Include="Resources\_Tessellation.bfx" />
+    <None Include="Resources\_default.bfx" />
+    <None Include="Resources\_deferred.bfx" />
+    <None Include="Resources\_tessellation.bfx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Shaders\CrossSection.fx" />
-    <Content Include="Shaders\DataStructs.fx" />
-    <Content Include="Shaders\Effects.fx" />
-    <Content Include="Shaders\Lighting.fx" />
-    <Content Include="Shaders\Particles.fx" />
-    <Content Include="Shaders\PixelShaders.fx" />
-    <Content Include="Shaders\TessellationEffects.fx" />
-    <Content Include="Shaders\VertexShaders.fx" />
     <Content Include="sharpdx_direct3d11_1_effects_arm.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -334,15 +328,6 @@
     <Content Include="x86\d3dcompiler_47.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Shaders\Common.fx" />
-    <EmbeddedResource Include="Shaders\Deferred.fx" />
-    <EmbeddedResource Include="Shaders\DeferredLighting.fx" />
-    <EmbeddedResource Include="Shaders\Material.fx" />
-    <EmbeddedResource Include="Shaders\Tessellation.fx" />
-    <EmbeddedResource Include="Shaders\Lines.fx" />
-    <EmbeddedResource Include="Shaders\BillboardText.fx" />
-    <EmbeddedResource Include="Shaders\_compile_instructions.txt" />
-    <Content Include="Shaders\Points.fx" />
     <EmbeddedResource Include="Textures\arial.png" />
     <Content Include="Textures\random4x4_dot3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -350,9 +335,6 @@
     <Content Include="Textures\random_dot3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\_default.bfx" />
-    <None Include="Resources\_deferred.bfx" />
-    <EmbeddedResource Include="Shaders\Default.fx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf.csproj">

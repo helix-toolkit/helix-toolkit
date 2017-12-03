@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 obj.bHasCubeMap.Set((bool)e.NewValue);
         }
 
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
         }

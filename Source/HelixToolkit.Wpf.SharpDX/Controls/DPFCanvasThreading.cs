@@ -171,8 +171,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private int targetWidth, targetHeight;
         private bool pendingValidationCycles;
         private TimeSpan lastRenderingDuration;
-        private RenderTechnique deferred;
-        private RenderTechnique gbuffer;
+        private IRenderTechnique deferred;
+        private IRenderTechnique gbuffer;
         private IEffectsManager defaultEffectsManager = null;
         private bool loaded = false;
         public RenderTargetView ColorBufferView { get { return colorBufferView; } }
@@ -251,7 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public RenderTechnique RenderTechnique
+        public IRenderTechnique RenderTechnique
         {
             get { return renderTechnique; }
             private set
@@ -261,7 +261,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     || renderTechnique == RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer));
             }
         }
-        private RenderTechnique renderTechnique;
+        private IRenderTechnique renderTechnique;
 
         public bool IsDeferredLighting { private set; get; } = false;
 

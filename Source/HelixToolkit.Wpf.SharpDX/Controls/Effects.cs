@@ -22,15 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.SharpDX.Helpers;
     using System.ComponentModel;
     using System.Windows;
-
-    public interface IEffectsManager
-    {
-        IRenderTechniquesManager RenderTechniquesManager { get; }
-        InputLayout GetLayout(RenderTechnique technique);
-        Effect GetEffect(RenderTechnique technique);
-        global::SharpDX.Direct3D11.Device Device { get; }
-        int AdapterIndex { get; }
-    }
+    using System.Linq;
 
     /// <summary>
     /// An Effects manager which includes all standard effects, 
@@ -180,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private Dictionary<string, object> data = new Dictionary<string, object>();
 
-        protected readonly List<RenderTechnique> techniques = new List<RenderTechnique>();
+        protected readonly List<IRenderTechnique> techniques = new List<IRenderTechnique>();
 
         /// <summary>
         /// 
@@ -216,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="shaderEffectBytecode">A byte array representing the compiled shader.</param>
         /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="eFlags"></param>
-        protected void RegisterEffect(byte[] shaderEffectBytecode, IList<RenderTechnique> techniques, EffectFlags eFlags = EffectFlags.None)
+        protected void RegisterEffect(byte[] shaderEffectBytecode, IList<IRenderTechnique> techniques, EffectFlags eFlags = EffectFlags.None)
         {
             var effect = new Effect(device, shaderEffectBytecode, eFlags);
             foreach (var tech in techniques)
@@ -231,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region private methods
-        protected virtual void OnAddTechniques(List<RenderTechnique> techniqueList)
+        protected virtual void OnAddTechniques(List<IRenderTechnique> techniqueList)
         {
             techniqueList.AddRange(
             new[]
@@ -439,7 +431,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="techniques">A set of RenderTechnique objects for which to associate the Effect.</param>
         /// <param name="sFlags"></param>
         /// <param name="eFlags"></param>
-        protected void RegisterEffect(string shaderEffectString, IList<RenderTechnique> techniques, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
+        protected void RegisterEffect(string shaderEffectString, IList<IRenderTechnique> techniques, ShaderFlags sFlags = ShaderFlags.None, EffectFlags eFlags = EffectFlags.None)
         {
 #if PRECOMPILED_SHADERS
 
@@ -519,7 +511,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="technique">A RenderTechnique object.</param>
         /// <param name="layout">An InputLayout object.</param>
-        private void RegisterLayout(RenderTechnique technique, InputLayout layout)
+        private void RegisterLayout(IRenderTechnique technique, InputLayout layout)
         {
             data[technique.Name + "Layout"] = layout;
             technique.InputLayout = layout;
@@ -530,7 +522,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="techniques">An array of RenderTechnique objects.</param>
         /// <param name="layout">An InputLayout object.</param>
-        protected void RegisterLayout(RenderTechnique[] techniques, InputLayout layout)
+        protected void RegisterLayout(IRenderTechnique[] techniques, InputLayout layout)
         {
             foreach (var tech in techniques)
             {
@@ -548,7 +540,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="technique">A RenderTechnique object.</param>
         /// <returns></returns>
-        public Effect GetEffect(RenderTechnique technique)
+        public Effect GetEffect(IRenderTechnique technique)
         {
             return (Effect)data[technique.Name];
         }
@@ -558,7 +550,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="technique">A RenderTechnique object.</param>
         /// <returns></returns>
-        public InputLayout GetLayout(RenderTechnique technique)
+        public InputLayout GetLayout(IRenderTechnique technique)
         {
             return (InputLayout)data[technique.Name + "Layout"];
         }
@@ -636,7 +628,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return ShaderResources.Deferred;
         }
 
-        protected override void OnAddTechniques(List<RenderTechnique> techniqueList)
+        protected override void OnAddTechniques(List<IRenderTechnique> techniqueList)
         {
             base.OnAddTechniques(techniqueList);
             techniqueList.AddRange(new[] 
@@ -683,7 +675,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return ShaderResources.Tessellation;
         }
 
-        protected override void OnAddTechniques(List<RenderTechnique> techniqueList)
+        protected override void OnAddTechniques(List<IRenderTechnique> techniqueList)
         {
             base.OnAddTechniques(techniqueList);
             techniqueList.AddRange(

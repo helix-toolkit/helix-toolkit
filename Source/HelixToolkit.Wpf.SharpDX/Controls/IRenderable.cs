@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
         void RenderD2D(RenderContext context);
        
         bool IsShadowMappingEnabled { get; }
-        RenderTechnique RenderTechnique { get; }
+        IRenderTechnique RenderTechnique { get; }
         Camera Camera { get; }
         Color4 BackgroundColor { get; }
 

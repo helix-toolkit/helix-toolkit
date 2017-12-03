@@ -91,159 +91,12 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #ifndef BILLBOARDTEXT_FX
-        ///#define BILLBOARDTEXT_FX
-        ///#include &quot;Common.fx&quot;
-        ///#include &quot;DataStructs.fx&quot;
-        ///#include &quot;Material.fx&quot;
-        ///Texture2D billboardTexture; // billboard text image
-        ///Texture2D billboardAlphaTexture;
-        ///bool   bHasAlphaTexture = false;
-        ///bool   bHasTexture = false;
-        ///bool   bBillboardFixedSize = true;
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// GLOBAL FUNCTIONS
-        /////-------------------------------------------------------------------------------------- [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string BillboardText {
-            get {
-                return ResourceManager.GetString("BillboardText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef COMMON_FX
-        ///#define COMMON_FX
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// File: Header for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        /////--------------------------------------------------------------------------------------
-        ///
-        ///
-        /////--------------------------------------------------------------------------------------
-        /////  STATES DEFININITIONS 
-        /////------------------------------------------------------ [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Common {
-            get {
-                return ResourceManager.GetString("Common", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef DEFAULT_FX
-        ///#define DEFAULT_FX
-        /////--------------------------------------------------------------------------------------
-        ///// File: Default Effect for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        ///// light equations from OpenGL Spec: http://www.opengl.org/documentation/specs/version1.2/OpenGL_spec_1.2.1.pdf
-        ///// spotlight equation from DX9: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
-        ///// parts of the code based on: htt [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Default {
-            get {
-                return ResourceManager.GetString("Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap DefaultViewboxTexture {
             get {
                 object obj = ResourceManager.GetObject("DefaultViewboxTexture", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Deferred G-Buffer Rendering for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 03/03/13
-        ///// References &amp; Sources: 
-        ///// code based on: http://hieroglyph3.codeplex.com/
-        /////--------------------------------------------------------------------------------------
-        ///
-        ///#include &quot;./Shaders/Common.fx&quot;
-        ///#include &quot;./Shaders/Material.fx&quot;
-        ///#include &quot;./Shaders/DeferredLighting.fx&quot;
-        ///
-        ///
-        /////---------------------------- [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Deferred {
-            get {
-                return ResourceManager.GetString("Deferred", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef DEFERREDLIGHTING
-        ///#define DEFERREDLIGHTING
-        /////--------------------------------------------------------------------------------------
-        ///// File: Deferred Lighting for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Created:  03/03/13
-        ///// Modified: 06/18/13
-        ///// References &amp; Sources: 
-        ///// code based on the shader from: http://hieroglyph3.codeplex.com/
-        /////--------------------------------------------------------------------------------------
-        ///
-        /// 
-        /////---------------------------------------------------- [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string DeferredLighting {
-            get {
-                return ResourceManager.GetString("DeferredLighting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef LINES_FX
-        ///#define LINES_FX
-        /////--------------------------------------------------------------------------------------
-        ///// File: Line Effects for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        ///// http://cgg-journal.com/2008-2/06/index.html
-        ///// http://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf
-        /////-------------------------------------------------------------------------------------
-        ///
-        ///#include &quot;Common.fx&quot;
-        ///#i [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Lines {
-            get {
-                return ResourceManager.GetString("Lines", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef MATERIAL_FX
-        ///#define MATERIAL_FX
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// File: Materials header for HelixToolkit.Wpf.SharpDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        /////--------------------------------------------------------------------------------------
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// pre-processor defines
-        /////--------------------------------- [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Material {
-            get {
-                return ResourceManager.GetString("Material", resourceCulture);
             }
         }
         
@@ -264,24 +117,6 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
             get {
                 object obj = ResourceManager.GetObject("random4x4_dot3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Tessellation Functions for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 03/21/13
-        ///// References &amp; Sources: Based on NVidia SDK 2011 
-        /////--------------------------------------------------------------------------------------
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// Work-around for an optimization rule problem in the June 2010 HLSL Compiler
-        ///// ( [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Tessellation {
-            get {
-                return ResourceManager.GetString("Tessellation", resourceCulture);
             }
         }
     }
