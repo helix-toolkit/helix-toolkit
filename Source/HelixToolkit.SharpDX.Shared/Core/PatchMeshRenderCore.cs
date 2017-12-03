@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {            // --- init tessellation vars
-                vTessellationVariables = Collect(Effect.GetVariableByName("vTessellation").AsVector());
+                vTessellationVariables = Collect(Effect.GetVariableByName(ShaderVariableNames.TessellationFactorVariable).AsVector());
                 if (technique.Name.Equals(TessellationRenderTechniqueNames.PNTriangles))
                 {
                     this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith3ControlPoints;

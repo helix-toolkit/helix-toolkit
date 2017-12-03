@@ -60,5 +60,8 @@ namespace HelixToolkit.UWP
         public static string EnableCrossPlane = "EnableCrossPlane";
         public static string CrossSectionColor = "CrossSectionColor";
         public static string SectionFillTexture = "SectionFillTexture";
+
+        //Patch
+        public static string TessellationFactorVariable = "vTessellation";
     }
 }
