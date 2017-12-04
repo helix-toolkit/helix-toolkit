@@ -158,7 +158,6 @@
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
-    <Compile Include="Extensions\DataStreamExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />

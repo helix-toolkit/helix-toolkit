@@ -312,7 +312,7 @@ namespace HelixToolkit.UWP.Core
             particleCountGSIABuffer.CreateBuffer(this.Device);
             var args = new ParticleCountIndirectArgs();
             args.InstanceCount = 1;
-            Device.ImmediateContext.UpdateSubresource(ref args, particleCountGSIABuffer.Buffer);
+            particleCountGSIABuffer.UploadDataToBuffer(Device.ImmediateContext, ref args);
             frameConstBuffer.CreateBuffer(this.Device);
             particleInsertBuffer.CreateBuffer(this.Device);
         }
@@ -386,9 +386,9 @@ namespace HelixToolkit.UWP.Core
             else
             {
                 //upload framebuffer
-                context.DeviceContext.UpdateSubresource(ref FrameVariables, frameConstBuffer.Buffer);
+                frameConstBuffer.UploadDataToBuffer(context.DeviceContext, ref FrameVariables);
                 // Get consume buffer count
-                context.DeviceContext.CopyStructureCount(frameConstBuffer.Buffer, ParticlePerFrame.NumParticlesOffset, BufferProxies[0].UAV);
+                BufferProxies[0].CopyCount(context.DeviceContext, frameConstBuffer.Buffer, ParticlePerFrame.NumParticlesOffset);
                 // Calculate existing particles
                 pass = this.EffectTechnique.GetPassByIndex(1);
                 pass.Apply(context.DeviceContext);
@@ -397,7 +397,7 @@ namespace HelixToolkit.UWP.Core
                 context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
                 context.DeviceContext.Dispatch(System.Math.Max(1, particleCount / 512), 1, 1);
                 // Get append buffer count
-                context.DeviceContext.CopyStructureCount(particleCountGSIABuffer.Buffer, 0, BufferProxies[1].UAV);
+                BufferProxies[1].CopyCount(context.DeviceContext, particleCountGSIABuffer.Buffer, 0);
             }
 
             //#if DEBUG
@@ -407,7 +407,8 @@ namespace HelixToolkit.UWP.Core
 
             if (totalElapsed > InsertElapseThrottle)
             {
-                context.DeviceContext.UpdateSubresource(ref InsertVariables, particleInsertBuffer.Buffer);
+                particleInsertBuffer.UploadDataToBuffer(context.DeviceContext, ref InsertVariables);
+                //context.DeviceContext.UpdateSubresource(ref InsertVariables, particleInsertBuffer.Buffer);
                 // Add more particles 
                 pass = this.EffectTechnique.GetPassByIndex(0);
                 pass.Apply(context.DeviceContext);

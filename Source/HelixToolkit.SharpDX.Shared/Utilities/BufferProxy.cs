@@ -232,6 +232,11 @@ namespace HelixToolkit.UWP.Utilities
             uav = new UnorderedAccessView(device, buffer, uavDesc);
         }
 
+        public void CopyCount(DeviceContext device, SDX11.Buffer destBuffer, int offset)
+        {
+            device.CopyStructureCount(destBuffer, offset, UAV);
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
