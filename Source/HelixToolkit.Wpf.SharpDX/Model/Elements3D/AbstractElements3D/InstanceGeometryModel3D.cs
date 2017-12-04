@@ -33,7 +33,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var model = (InstanceGeometryModel3D)d;
             model.InstanceBuffer.Elements = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
             model.InstancesChanged();
-            model.InvalidateRender();
         }
 
         public bool HasInstances { get { return InstanceBuffer.HasElements; } }

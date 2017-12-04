@@ -4,11 +4,12 @@ using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SharpDX;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
+using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 
 namespace ParticleSystemDemo
@@ -250,14 +251,14 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Color blendColor = Colors.White;
-        public Color BlendColor
+        private Media.Color blendColor = Media.Colors.White;
+        public Media.Color BlendColor
         {
             set
             {
                 if(SetValue(ref blendColor, value))
                 {
-                    BlendColorBrush = new SolidColorBrush(value);
+                    BlendColorBrush = new Media.SolidColorBrush(value);
                 }
             }
             get
@@ -273,7 +274,7 @@ namespace ParticleSystemDemo
             {
                 if(SetValue(ref redValue, value))
                 {
-                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                    BlendColor = Media.Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
                 }
             }
             get
@@ -289,7 +290,7 @@ namespace ParticleSystemDemo
             {
                 if (SetValue(ref greenValue, value))
                 {
-                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                    BlendColor = Media.Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
                 }
             }
             get
@@ -305,7 +306,7 @@ namespace ParticleSystemDemo
             {
                 if (SetValue(ref blueValue, value))
                 {
-                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                    BlendColor = Media.Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
                 }
             }
             get
@@ -314,8 +315,8 @@ namespace ParticleSystemDemo
             }
         }
 
-        private SolidColorBrush blendColorBrush = new SolidColorBrush(Colors.White);
-        public SolidColorBrush BlendColorBrush
+        private Media.SolidColorBrush blendColorBrush = new Media.SolidColorBrush(Media.Colors.White);
+        public Media.SolidColorBrush BlendColorBrush
         {
             set
             {
@@ -424,6 +425,8 @@ namespace ParticleSystemDemo
             }
         }
 
+        public IList<Matrix> Instances { private set; get; }
+
         public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4), new Tuple<int, int>(6,5) };
         public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
         public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90};
@@ -439,6 +442,7 @@ namespace ParticleSystemDemo
             meshBuilder.AddSphere(new SharpDX.Vector3(0,0,0), 0.5, 16, 16);
             Model = meshBuilder.ToMesh();
             Camera = new PerspectiveCamera() { Position = new Media3D.Point3D(0, 0, 20), UpDirection = new Media3D.Vector3D(0, 1, 0), LookDirection = new Media3D.Vector3D(0, 0, -20) };
+            Instances = new Matrix[] { Matrix.Identity, Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10), Matrix.Translation(-10, 0, -10), };
         }
 
         private void LoadTexture(int index)

@@ -451,7 +451,7 @@ technique11 RenderBillboard
 	{
 		//SetDepthStencilState( DSSDepthLess, 0 );
 		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
+        SetRasterizerState(RSSolidNoMSAA);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardText()));
 		SetHullShader(NULL);
@@ -463,7 +463,7 @@ technique11 RenderBillboard
 	{
 		//SetDepthStencilState( DSSDepthLess, 0 );
 		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
+        SetRasterizerState(RSSolidNoMSAA);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardText()));
 		SetHullShader(NULL);
@@ -475,7 +475,7 @@ technique11 RenderBillboard
 	{
 		//SetDepthStencilState( DSSDepthLess, 0 );
 		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
+        SetRasterizerState(RSSolidNoMSAA);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardText()));
 		SetHullShader(NULL);
@@ -491,7 +491,7 @@ technique11 RenderBillboardInstancing
 	{
 		//SetDepthStencilState( DSSDepthLess, 0 );
 		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
+        SetRasterizerState(RSSolidNoMSAA);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardInstancing()));
 		SetHullShader(NULL);
@@ -503,7 +503,7 @@ technique11 RenderBillboardInstancing
 	{
 		//SetDepthStencilState( DSSDepthLess, 0 );
 		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
+        SetRasterizerState(RSSolidNoMSAA);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardInstancing()));
 		SetHullShader(NULL);
@@ -515,7 +515,7 @@ technique11 RenderBillboardInstancing
 	{
 		//SetDepthStencilState( DSSDepthLess, 0 );
 		SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
+        SetRasterizerState(RSSolidNoMSAA);
 		SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_5_0, VShaderBillboardInstancing()));
 		SetHullShader(NULL);
@@ -567,7 +567,7 @@ technique11 ParticleStorm
 		SetDepthStencilState(DSSDepthParticle, 0);
         SetBlendState(BSParticleBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		//SetDepthStencilState(DSSDepthLessEqual, 0);
-		SetRasterizerState(RSSolid);
+        SetRasterizerState(RSSolidNoMSAA);
 		//SetBlendState(BSBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
         SetVertexShader(CompileShader(vs_5_0, ParticleVSMAIN()));
         SetHullShader(NULL);

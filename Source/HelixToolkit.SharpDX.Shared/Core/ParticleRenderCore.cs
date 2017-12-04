@@ -142,6 +142,8 @@ namespace HelixToolkit.UWP.Core
         private ShaderResourceView textureView;
         #endregion
         #region Buffers
+        public IElementsBufferModel InstanceBuffer { set; get; }
+
         private BufferDescription bufferDesc = new BufferDescription()
         {
             BindFlags = BindFlags.UnorderedAccess | BindFlags.ShaderResource,
@@ -184,7 +186,7 @@ namespace HelixToolkit.UWP.Core
         };
 
         protected UAVBufferViewProxy[] BufferProxies { private set; get; } = new UAVBufferViewProxy[2];
-
+        private ParticleCountIndirectArgs drawArgument = new ParticleCountIndirectArgs();
         #endregion
         private bool isBlendChanged = true;
         private BlendState blendState;
@@ -201,12 +203,15 @@ namespace HelixToolkit.UWP.Core
             }
             get { return blendDesc; }
         }
+
+        public InputLayout VertexLayout { private set; get; }
         #endregion
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
             {
+                VertexLayout = technique.InputLayout;
                 bHasTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasDiffuseMapVariable).AsScalar());
                 textureViewVar = Collect(Effect.GetVariableByName(ShaderVariableNames.TextureDiffuseMapVariable).AsShaderResource());
                 currentSimulationStateVar = Collect(Effect.GetVariableByName(ShaderVariableNames.CurrentSimulationStateVariable).AsUnorderedAccessView());
@@ -310,9 +315,6 @@ namespace HelixToolkit.UWP.Core
             particleCountStaging = Collect(new Buffer(this.Device, stagingbufferDesc));
 #endif
             particleCountGSIABuffer.CreateBuffer(this.Device);
-            var args = new ParticleCountIndirectArgs();
-            args.InstanceCount = 1;
-            particleCountGSIABuffer.UploadDataToBuffer(Device.ImmediateContext, ref args);
             frameConstBuffer.CreateBuffer(this.Device);
             particleInsertBuffer.CreateBuffer(this.Device);
         }
@@ -328,6 +330,7 @@ namespace HelixToolkit.UWP.Core
             numTextureColumnVar.Set(NumTextureColumn);
             numTextureRowVar.Set(NumTextureRow);
             animateSpriteByEnergyVar.Set(AnimateSpriteByEnergy);
+            
         }
 
         private void OnTextureChanged()
@@ -368,6 +371,10 @@ namespace HelixToolkit.UWP.Core
             OnBlendStateChanged();
 
             UpdateTime(context, ref totalElapsed);
+            //Set correct instance count from instance buffer
+            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.Count;
+            //Upload the draw argument
+            particleCountGSIABuffer.UploadDataToBuffer(context.DeviceContext, ref drawArgument);
 
             EffectPass pass;
 
@@ -432,11 +439,12 @@ namespace HelixToolkit.UWP.Core
 
             // Render existing particles
             simulationStateVar.SetResource(BufferProxies[0].SRV);
-            context.DeviceContext.InputAssembler.InputLayout = null;
+            context.DeviceContext.InputAssembler.InputLayout = VertexLayout;
             context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
+            InstanceBuffer?.AttachBuffer(context.DeviceContext, 0);
             pass = this.EffectTechnique.GetPassByIndex(2);
             pass.Apply(context.DeviceContext);
-            context.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
+            context.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);          
             context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
         }
 

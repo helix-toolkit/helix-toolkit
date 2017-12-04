@@ -219,8 +219,11 @@ void ParticleUpdateCSMAIN(uint3 DispatchThreadID : SV_DispatchThreadID)
 // Inter-stage structures
 //--------------------------------------------------------------------------------
 struct ParticleVS_INPUT
-{
-    uint vertexid : SV_VertexID;
+{    
+    float4 mr0 : TEXCOORD1;
+    float4 mr1 : TEXCOORD2;
+    float4 mr2 : TEXCOORD3;
+    float4 mr3 : TEXCOORD4;
 };
 //--------------------------------------------------------------------------------
 struct ParticleGS_INPUT
@@ -245,11 +248,23 @@ struct ParticlePS_INPUT
 StructuredBuffer<Particle> SimulationState;
 
 //--------------------------------------------------------------------------------
-ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input)
+ParticleGS_INPUT ParticleVSMAIN(in ParticleVS_INPUT input, in uint vertexid : SV_VertexID)
 {
 	ParticleGS_INPUT output;
-	Particle p = SimulationState[input.vertexid];
-    output.position.xyz = p.position;
+	Particle p = SimulationState[vertexid];
+    float4 pos = float4(p.position, 1);
+    if (bHasInstances)
+    {
+        matrix mInstance =
+        {
+            input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
+			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
+			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
+			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+        };
+        pos = mul(mInstance, pos);
+    }
+    output.position = pos.xyz;
 	output.energy = p.energy;
 	output.color = p.color;
 	output.initEnergy = p.initEnergy;

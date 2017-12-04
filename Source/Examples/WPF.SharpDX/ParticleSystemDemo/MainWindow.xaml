@@ -101,7 +101,8 @@
                                      DestBlend="{Binding DestBlendOption}"
                                      DestAlphaBlend="{Binding DestAlphaBlendOption}"
                                      ConsumerRadius="{Binding ConsumerRadius}"
-                                     EmitterRadius="{Binding EmitterRadius}"/>
+                                     EmitterRadius="{Binding EmitterRadius}"
+                                     Instances="{Binding Instances}"/>
         </hx:Viewport3DX>
         <ScrollViewer Grid.Column="1">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="320">

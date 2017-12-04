@@ -45,7 +45,7 @@ SamplerComparisonState CmpSampler
 //--------------------------------------------------------------------------------------
 RasterizerState RSWire
 {
-	FillMode					= 2;
+    FillMode = WIREFRAME;
 	CullMode					= BACK;
 	DepthBias					= false;
 	FrontCounterClockwise		= true;
@@ -54,7 +54,7 @@ RasterizerState RSWire
 };
 RasterizerState RSWireNone
 {
-	FillMode					= 2;
+    FillMode = WIREFRAME;
 	CullMode					= NONE;
 	DepthBias					= false;
 	FrontCounterClockwise		= true;
@@ -63,7 +63,7 @@ RasterizerState RSWireNone
 };
 RasterizerState RSSolid
 {
-	FillMode					= 3;
+	FillMode					= SOLID;
 	CullMode					= BACK;	
 	DepthBias					= -5;
     DepthBiasClamp				= -10;
@@ -72,9 +72,22 @@ RasterizerState RSSolid
 	MultisampleEnable			= true;
 	AntialiasedLineEnable		= true;	
 };
+
+RasterizerState RSSolidNoMSAA
+{
+    FillMode = SOLID;
+    CullMode = BACK;
+    DepthBias = -5;
+    DepthBiasClamp = -10;
+    SlopeScaledDepthBias = +0;
+    FrontCounterClockwise = true;
+    MultisampleEnable = false;
+    AntialiasedLineEnable = false;
+};
+
 RasterizerState RSSolidNone
 {
-	FillMode					= 3;
+    FillMode = SOLID;
 	CullMode					= NONE;	
 	DepthBias					= -5;
     DepthBiasClamp				= -10;

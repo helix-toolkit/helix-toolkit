@@ -515,7 +515,34 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (BlendOption)GetValue(DestAlphaBlendProperty);
             }
         }
+
+        /// <summary>
+        /// List of instance matrix. 
+        /// </summary>
+        public IList<Matrix> Instances
+        {
+            get { return (IList<Matrix>)this.GetValue(InstancesProperty); }
+            set { this.SetValue(InstancesProperty, value); }
+        }
+
+        /// <summary>
+        /// List of instance matrix.
+        /// </summary>
+        public static readonly DependencyProperty InstancesProperty =
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var model = (ParticleStormModel3D)d;
+            model.InstanceBuffer.Elements = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
+        }
         #endregion
+
+        public bool HasInstances { get { return InstanceBuffer.HasElements; } }
+        protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
 
         private ParticleRenderCore particleCore = new ParticleRenderCore();
         private bool blendChanged = true;
@@ -538,6 +565,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override bool OnAttach(IRenderHost host)
         {
             base.OnAttach(host);
+            InstanceBuffer.Initialize(effect);
+            particleCore.InstanceBuffer = InstanceBuffer;
             System.Windows.Media.CompositionTarget.Rendering += CompositionTarget_Rendering;
             return true;
         }
@@ -572,6 +601,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             System.Windows.Media.CompositionTarget.Rendering -= CompositionTarget_Rendering;
+            InstanceBuffer.Dispose();
             base.OnDetach();
         }
     }

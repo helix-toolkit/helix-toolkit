@@ -373,6 +373,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     new InputElement("TEXCOORD", 6, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
                 });
 
+                var particle = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm];
+                var particleInputLayout = new InputLayout(device, GetEffect(particle)
+                    .GetTechniqueByName(DefaultRenderTechniqueNames.ParticleStorm).GetPassByName("P2").Description.Signature, new[]
+                {          
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
+                });
+
                 RegisterLayout(new[] { cubeMap }, cubeMapInputLayout);
 
                 RegisterLayout(new[]
@@ -415,7 +426,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 RegisterLayout(new[] { billboardinstancing }, billboardInstancingInputLayout);
 
-                //   RegisterLayout(new[] { particle }, particleLayout);
+                RegisterLayout(new[] { particle }, particleInputLayout);
             }
             catch (Exception ex)
             {
