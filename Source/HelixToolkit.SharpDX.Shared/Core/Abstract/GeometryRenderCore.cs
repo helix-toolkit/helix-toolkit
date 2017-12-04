@@ -44,19 +44,6 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        public bool SetRasterState(DeviceContext context)
-        {
-            if (rasterState != null)
-            {
-                context.Rasterizer.State = rasterState;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
@@ -71,10 +58,9 @@ namespace HelixToolkit.UWP.Core
         /// Set all necessary states and buffers
         /// </summary>
         /// <param name="context"></param>
-        protected override void SetStatesAndVariables(IRenderMatrices context)
+        protected override void SetRasterStates(IRenderMatrices context)
         {
-            base.SetStatesAndVariables(context);
-            SetRasterState(context.DeviceContext);
+            context.DeviceContext.Rasterizer.State = rasterState;
         }
         /// <summary>
         /// Attach vertex buffer routine

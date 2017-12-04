@@ -544,7 +544,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool HasInstances { get { return InstanceBuffer.HasElements; } }
         protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
 
-        private ParticleRenderCore particleCore = new ParticleRenderCore();
+        private ParticleRenderCore particleCore
+        {
+            get
+            {
+                return (ParticleRenderCore)RenderCore;
+            }
+        }
         private bool blendChanged = true;
 
         private void OnBlendStateChanged()
@@ -554,7 +560,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            return particleCore;
+            return new ParticleRenderCore();
         }
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)

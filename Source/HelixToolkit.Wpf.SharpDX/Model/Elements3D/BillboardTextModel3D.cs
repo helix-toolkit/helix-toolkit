@@ -52,7 +52,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            return new BillboardRenderCore() { FixedSize = FixedSize };
+            return new BillboardRenderCore();
+        }
+
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        {
+            base.AssignDefaultValuesToCore(core);
+            (core as BillboardRenderCore).FixedSize = FixedSize;
         }
 
         protected override IGeometryBufferModel OnCreateBufferModel()

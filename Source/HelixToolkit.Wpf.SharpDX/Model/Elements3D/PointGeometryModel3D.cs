@@ -22,7 +22,7 @@
             DependencyProperty.Register("Color", typeof(Color), typeof(PointGeometryModel3D),
                 new AffectsRenderPropertyMetadata(Color.Black, (d, e) =>
                 {
-                    ((d as GeometryModel3D).RenderCore as PointRenderCore).PointColor = (Color)e.NewValue;
+                    (d as PointGeometryModel3D).pointRenderCore.PointColor = (Color)e.NewValue;
                 }));
 
         public static readonly DependencyProperty SizeProperty =
@@ -30,9 +30,8 @@
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
-                    var model = (d as GeometryModel3D);
-                    (model.RenderCore as PointRenderCore).PointParams.X = (float)size.Width;
-                    (model.RenderCore as PointRenderCore).PointParams.Y = (float)size.Height;
+                    (d as PointGeometryModel3D).pointRenderCore.PointParams.X = (float)size.Width;
+                    (d as PointGeometryModel3D).pointRenderCore.PointParams.Y = (float)size.Height;
                 }));
 
         public static readonly DependencyProperty FigureProperty =
@@ -40,8 +39,7 @@
                 (d, e)=> 
                 {
                     var figure = (PointFigure)e.NewValue;
-                    var model = (d as GeometryModel3D);
-                    (model.RenderCore as PointRenderCore).PointParams.Z = (float)figure;
+                    (d as PointGeometryModel3D).pointRenderCore.PointParams.Z = (float)figure;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
@@ -49,8 +47,7 @@
                 (d, e)=> 
                 {
                     var ratio = (double)e.NewValue;
-                    var model = (d as GeometryModel3D);
-                    (model.RenderCore as PointRenderCore).PointParams.W = (float)ratio;
+                    (d as PointGeometryModel3D).pointRenderCore.PointParams.W = (float)ratio;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
@@ -90,6 +87,14 @@
         [ThreadStatic]
         private static PointsVertex[] vertexArrayBuffer;
 
+        private PointRenderCore pointRenderCore
+        {
+            get
+            {
+                return (PointRenderCore)RenderCore;
+            }
+        }
+
         public static double DistanceRayToPoint(Ray r, Vector3 p)
         {
             Vector3 v = r.Direction;
@@ -112,13 +117,17 @@
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            var core = new PointRenderCore();
-            core.PointParams.X = (float)Size.Width;
-            core.PointParams.Y = (float)Size.Height;
-            core.PointParams.Z = (float)Figure;
-            core.PointParams.W = (float)FigureRatio;
-            core.PointColor = Color;
-            return core;
+            return new PointRenderCore();
+        }
+
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        {
+            base.AssignDefaultValuesToCore(core);
+            pointRenderCore.PointParams.X = (float)Size.Width;
+            pointRenderCore.PointParams.Y = (float)Size.Height;
+            pointRenderCore.PointParams.Z = (float)Figure;
+            pointRenderCore.PointParams.W = (float)FigureRatio;
+            pointRenderCore.PointColor = Color;
         }
 
         protected override bool CanHitTest(IRenderMatrices context)

@@ -46,7 +46,6 @@ namespace HelixToolkit.UWP
         IElementsBufferModel InstanceBuffer { set; get; }
         IGeometryBufferModel GeometryBuffer { set; get; }
         RasterizerStateDescription RasterDescription { set; get; }
-        bool SetRasterState(DeviceContext context);
     }
 
     public interface IMaterialRenderCore

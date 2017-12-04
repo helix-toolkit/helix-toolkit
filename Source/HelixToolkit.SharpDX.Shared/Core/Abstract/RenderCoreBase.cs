@@ -88,11 +88,12 @@ namespace HelixToolkit.UWP.Core
 
         /// <summary>
         /// Before calling OnRender. Setup commonly used rendering states.
-        /// <para>Default to call SetShaderVariables</para>
+        /// <para>Default to call <see cref="SetShaderVariables"/> and <see cref="SetRasterStates"/></para>
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void SetStatesAndVariables(IRenderMatrices context)
+        protected void SetStatesAndVariables(IRenderMatrices context)
         {
+            SetRasterStates(context);
             SetShaderVariables(context);
         }
 
@@ -138,6 +139,8 @@ namespace HelixToolkit.UWP.Core
         {
             SetModelWorldMatrix(ModelMatrix * matrices.WorldMatrix);
         }
+
+        protected virtual void SetRasterStates(IRenderMatrices matrices) { }
 
         protected void InvalidateRenderer(object sender, bool e)
         {

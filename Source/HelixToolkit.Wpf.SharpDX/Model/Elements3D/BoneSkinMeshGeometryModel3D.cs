@@ -52,7 +52,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected readonly IElementsBufferModel<BoneIds> bonesBufferModel = new VertexBoneIdBufferModel<BoneIds>(BoneIds.SizeInBytes);
-        private BoneSkinRenderCore boneSkinRenderCore;
+        private BoneSkinRenderCore boneSkinRenderCore
+        {
+            get { return (BoneSkinRenderCore)RenderCore; }
+        }
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
@@ -60,9 +63,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected override IRenderCore OnCreateRenderCore()
+        {         
+            return new BoneSkinRenderCore();
+        }
+
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
-            boneSkinRenderCore = new BoneSkinRenderCore() { InvertNormal = this.InvertNormal };            
-            return boneSkinRenderCore;
+            base.AssignDefaultValuesToCore(core);
+            boneSkinRenderCore.BoneMatrices = BoneMatrices;
         }
 
         protected override bool OnAttach(IRenderHost host)

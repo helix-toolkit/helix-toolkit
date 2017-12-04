@@ -252,7 +252,8 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Private Variables
-        private CrossSectionMeshRenderCore crossSectionCore;
+        private CrossSectionMeshRenderCore crossSectionCore
+        { get { return (CrossSectionMeshRenderCore)RenderCore; } }
 
         #endregion
         /// <summary>
@@ -267,8 +268,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            crossSectionCore = new CrossSectionMeshRenderCore() { InvertNormal = InvertNormal };
-            return crossSectionCore;
+            return new CrossSectionMeshRenderCore();
         }
     }
 }
