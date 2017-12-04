@@ -1,11 +1,10 @@
 ﻿using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HelixToolkit.Wpf.SharpDX.Randoms
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Utility
+#else
+namespace HelixToolkit.Wpf.SharpDX.Utility
+#endif
 {
     public interface IRandomSeed
     {

@@ -63,5 +63,16 @@ namespace HelixToolkit.UWP
 
         //Patch
         public static string TessellationFactorVariable = "vTessellation";
+
+        //Particle System
+        public static string CurrentSimulationStateVariable = "CurrentSimulationState";
+        public static string NewSimulationStateVariable = "NewSimulationState";
+        public static string SimulationStateVariable = "SimulationState";
+        public static string ParticleSizeVariable = "ParticleSize";
+        public static string RandomVectorVariable = "RandomVector";
+        public static string RandomSeedVariable = "RandomSeed";
+        public static string NumTextureColumnVariable = "NumTexCol";
+        public static string NumTextureRowVariable = "NumTexRow";
+        public static string AnimateByEnergyLevelVariable = "AnimateByEnergyLevel";
     }
 }

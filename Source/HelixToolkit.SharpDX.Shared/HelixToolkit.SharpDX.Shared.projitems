@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\D2DControlWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PatchMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Interfaces.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderTechnique.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Disposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />

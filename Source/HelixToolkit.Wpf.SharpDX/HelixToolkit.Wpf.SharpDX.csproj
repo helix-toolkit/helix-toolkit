@@ -225,7 +225,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\IOctreeManager.cs" />
-    <Compile Include="Utilities\IRandomVector.cs" />
     <Compile Include="Utilities\OctreeGeometryModel3D.cs" />
     <Compile Include="Utilities\OctreeHelper.cs" />
     <Compile Include="Utilities\OctreeManager.cs" />
@@ -275,7 +274,6 @@
     <Compile Include="Utilities\LineBuilder.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
     <Compile Include="Utilities\ObjReader.cs" />
-    <Compile Include="Utilities\RandomVectorGenerators.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

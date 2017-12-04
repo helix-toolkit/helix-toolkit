@@ -22,7 +22,8 @@ namespace HelixToolkit.UWP.Core
         /// Model matrix
         /// </summary>
         public Matrix ModelMatrix { set; get; } = Matrix.Identity;      
-        public Effect Effect { private set; get; }  
+        public Effect Effect { private set; get; }
+        public EffectTechnique EffectTechnique { private set; get; }
         public Device Device { get { return Effect == null ? null : Effect.Device; } }
         /// <summary>
         /// Is render core has been attached
@@ -40,6 +41,7 @@ namespace HelixToolkit.UWP.Core
                 return;
             }
             Effect = technique.Effect;
+            EffectTechnique = Effect == null ? null : Effect.GetTechniqueByName(technique.Name);
             IsAttached = OnAttach(technique);
         }
 

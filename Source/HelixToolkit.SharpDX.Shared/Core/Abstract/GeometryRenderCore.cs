@@ -11,7 +11,6 @@ namespace HelixToolkit.UWP.Core
         private RasterizerState rasterState = null;
         public RasterizerState RasterState { get { return rasterState; } }
         public InputLayout VertexLayout { private set; get; }
-        public EffectTechnique EffectTechnique { private set; get; }
 
         public IElementsBufferModel InstanceBuffer { set; get; }
 
@@ -63,7 +62,6 @@ namespace HelixToolkit.UWP.Core
             if(base.OnAttach(technique))
             {
                 this.VertexLayout = technique.InputLayout;
-                this.EffectTechnique = Effect.GetTechniqueByName(technique.Name);
                 CreateRasterState(rasterDescription, true);
                 return true;
             }

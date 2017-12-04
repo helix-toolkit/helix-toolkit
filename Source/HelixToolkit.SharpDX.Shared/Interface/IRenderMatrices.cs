@@ -29,5 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
         double ActualHeight { get; }
 
         DeviceContext DeviceContext { get; }
+
+        TimeSpan TimeStamp { get; }
     }
 }

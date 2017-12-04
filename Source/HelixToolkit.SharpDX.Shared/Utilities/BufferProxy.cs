@@ -10,6 +10,40 @@ namespace HelixToolkit.UWP.Utilities
 #endif
 {
     using Extensions;
+
+    public interface IBufferProxy<T> : IBufferProxy where T : struct
+    {
+        void UploadDataToBuffer(DeviceContext context, ref T data);
+        void UploadDataToBuffer(DeviceContext context, IList<T> data);
+        void CreateBuffer(Device device);
+        void CreateBufferFromDataArray(Device context, IList<T> data);
+        void CreateBufferFromDataArray(Device context, IList<T> data, int count);
+    }
+
+    public interface IBufferProxy : IDisposable
+    {
+        /// <summary>
+        /// Raw Buffer
+        /// </summary>
+        SDX11.Buffer Buffer { get; }
+        /// <summary>
+        /// Element Size
+        /// </summary>
+        int StructureSize { get; }
+        /// <summary>
+        /// Element count
+        /// </summary>
+        int Count { get; }
+        /// <summary>
+        /// Buffer offset
+        /// </summary>
+        int Offset { set; get; }
+        /// <summary>
+        /// Buffer binding flag
+        /// </summary>
+        BindFlags BindFlags { get; }
+    }
+
     public class ImmutableBufferProxy<T> : DynamicBufferProxy<T> where T : struct
     {
         public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None) 
@@ -175,36 +209,64 @@ namespace HelixToolkit.UWP.Utilities
         }
     }
 
-    public interface IBufferProxy<T> : IBufferProxy where T : struct
+    public sealed class UAVBufferViewProxy : IDisposable
     {
-        void UploadDataToBuffer(DeviceContext context, ref T data);
-        void UploadDataToBuffer(DeviceContext context, IList<T> data);
-        void CreateBuffer(Device device);
-        void CreateBufferFromDataArray(Device context, IList<T> data);
-        void CreateBufferFromDataArray(Device context, IList<T> data, int count);
-    }
+        private SDX11.Buffer buffer;
+        public UnorderedAccessView uav;
+        public ShaderResourceView srv;
 
-    public interface IBufferProxy : IDisposable
-    {
         /// <summary>
-        /// Raw Buffer
+        /// Get UnorderedAccessView
         /// </summary>
-        SDX11.Buffer Buffer { get; }
+        public UnorderedAccessView UAV { get { return uav; } }
+
         /// <summary>
-        /// Element Size
+        /// Get ShaderResourceView
         /// </summary>
-        int StructureSize { get; }
-        /// <summary>
-        /// Element count
-        /// </summary>
-        int Count { get; }
-        /// <summary>
-        /// Buffer offset
-        /// </summary>
-        int Offset { set; get; }
-        /// <summary>
-        /// Buffer binding flag
-        /// </summary>
-        BindFlags BindFlags { get; }
+        public ShaderResourceView SRV { get { return srv; } }
+
+        public UAVBufferViewProxy(Device device, ref BufferDescription bufferDesc, ref UnorderedAccessViewDescription uavDesc, ref ShaderResourceViewDescription srvDesc)
+        {
+            buffer = new SDX11.Buffer(device, bufferDesc);
+            srv = new ShaderResourceView(device, buffer);
+            uav = new UnorderedAccessView(device, buffer, uavDesc);
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Disposer.RemoveAndDispose(ref uav);
+                    Disposer.RemoveAndDispose(ref srv);
+                    Disposer.RemoveAndDispose(ref buffer);
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~BufferViewProxy() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
