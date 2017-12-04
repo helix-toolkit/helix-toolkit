@@ -25,11 +25,12 @@ cbuffer cbMaterial
 	bool   bHasNormalMap		= false;
 	bool   bHasDisplacementMap  = false;	
 	bool   bHasCubeMap			= false;
-	bool   bHasInstances		= false;
-	bool   bHasShadowMap		= false;
 };
-	float2 vShadowMapSize		= float2(1024, 1024);
-	float4 vShadowMapInfo		= float4(0.005, 1.0, 0.5, 0.0);
+
+bool bHasInstances = false;
+bool bHasShadowMap = false;
+float2 vShadowMapSize		= float2(1024, 1024);
+float4 vShadowMapInfo		= float4(0.005, 1.0, 0.5, 0.0);
 
 
 		

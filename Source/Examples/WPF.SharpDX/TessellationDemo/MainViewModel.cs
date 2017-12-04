@@ -21,6 +21,8 @@ namespace TessellationDemo
     using HelixToolkit.Wpf.SharpDX.Core;
     using System.IO;
     using SharpDX.Direct3D11;
+    using System.Collections;
+    using System.Collections.Generic;
 
     public class MainViewModel : BaseViewModel
     {
@@ -90,6 +92,8 @@ namespace TessellationDemo
             }
         }
 
+        public IList<Matrix> Instances { private set; get; }
+
         public MainViewModel()
         {
             RenderTechniquesManager = new TessellationTechniquesManager();
@@ -131,13 +135,15 @@ namespace TessellationDemo
 
             // ---------------------------------------------
             // init model
-            this.MeshTopology = TessellationTechniques.MeshTopology.Quads.ToString();
-            
+            this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == TessellationTechniques.MeshTopology.Triangle.ToString() ?
+             MeshFaces.Default : MeshFaces.QuadPatches);
             // ---------------------------------------------
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid(10);
             this.GridColor = SharpDX.Color.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
+
+            Instances = new Matrix[] { Matrix.Identity, Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10), Matrix.Translation(-10, 0, -10), };
         }
 
         /// <summary>

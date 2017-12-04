@@ -51,7 +51,7 @@
                 Geometry="{Binding DefaultModel}"
                 Material="{Binding DefaultMaterial}"
                 Transform="{Binding DefaultTransform}" MeshTopology="{Binding MeshTopology}"
-                FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"/>
+                FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True" Instances="{Binding Instances}"/>
             <!--<hx:MeshGeometryModel3D
                 x:Name="model1"
                 Geometry="{Binding DefaultModel}"

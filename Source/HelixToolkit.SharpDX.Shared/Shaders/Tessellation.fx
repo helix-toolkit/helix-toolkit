@@ -13,6 +13,7 @@
 // pre-processor includes
 //--------------------------------------------------------------------------------------
 #include "DataStructs.fx"
+#include "Material.fx"
 #include "Common.fx"
 
 
@@ -75,16 +76,37 @@ float3 EvaluateBezier( float3  p0, float3  p1, float3  p2, float3  p3,
 //--------------------------------------------------------------------------------------
 HSInput VShaderTessellated(VSInput input)
 {
-    HSInput output;        
-    output.p		= input.p.xyz;
-    output.t		= input.t;       
-    //if (bInvertNormal)
-    //{
-    //    input.n = -input.n;
-    //}
-    output.n		= input.n; 
-    output.t1		= input.t1;
-	output.t2		= input.t2;
+    HSInput output = (HSInput)0;
+    float4 inputp = input.p;
+    float3 inputn = input.n;
+    float3 inputt1 = input.t1;
+    float3 inputt2 = input.t2;
+    if (bInvertNormal)
+    {
+        inputn = -inputn;
+    }
+    if (bHasInstances)
+    {
+        matrix mInstance =
+        {
+            input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
+			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
+			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
+			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+        };
+        inputp = mul(mInstance, input.p);
+        inputn = mul((float3x3) mInstance, inputn);
+        if (bHasNormalMap)
+        {
+            inputt1 = mul((float3x3) mInstance, inputt1);
+            inputt2 = mul((float3x3) mInstance, inputt2);
+        }
+    }
+    output.p = inputp.xyz;
+    output.t = input.t;
+    output.n		= inputn; 
+    output.t1		= inputt1;
+	output.t2		= inputt2;
 	output.c		= input.c;
     return output;
 }
@@ -248,15 +270,15 @@ PSInput DShaderTri(	HSConstantDataOutput input, float3 barycentricCoords : SV_Do
     float fWW3 = fWW * 3.0f;
 
 	// --- Compute position from cubic control points and barycentric coords
-    float3 position =	inputPatch[0].p * fWW * fW + 
+    float3 position = inputPatch[0].p * fWW * fW +
 						inputPatch[1].p * fUU * fU +
 						inputPatch[2].p * fVV * fV +
-						input.f3B210 * fWW3 * fU + 
-						input.f3B120 * fW * fUU3 + 
-						input.f3B201 * fWW3 * fV + 
+						input.f3B210 * fWW3 * fU +
+						input.f3B120 * fW * fUU3 +
+						input.f3B201 * fWW3 * fV +
 						input.f3B021 * fUU3 * fV +
-						input.f3B102 * fW * fVV3 + 
-						input.f3B012 * fU * fVV3 + 
+						input.f3B102 * fW * fVV3 +
+						input.f3B012 * fU * fVV3 +
 						input.f3B111 * 6.0f * fW * fU * fV;
 
 	// Compute normal from barycentric coords

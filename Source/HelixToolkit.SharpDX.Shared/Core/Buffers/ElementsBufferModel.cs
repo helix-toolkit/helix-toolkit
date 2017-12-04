@@ -57,6 +57,7 @@ namespace HelixToolkit.UWP.Core
             hasElementsVar = Collect(effect.GetVariableByName(HasElementsVariableName).AsScalar());
             elementBuffer = Collect(new DynamicBufferProxy<T>(StructSize, BindFlags.VertexBuffer));
             Initialized = true;
+            instanceChanged = true;
         }
 
         public virtual void AttachBuffer(DeviceContext context, int vertexBufferSlot)
