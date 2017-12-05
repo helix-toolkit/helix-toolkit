@@ -45,8 +45,8 @@ Texture2D texDiffuseMap : register(t0);
 Texture2D texAlphaMap : register(t1);
 Texture2D texNormalMap : register(t2);
 Texture2D texDisplacementMap : register(t3);
-Texture2D texCubeMap : register(t4);
-TextureCube texShadowMap : register(t5);
+TextureCube texCubeMap : register(t4);
+Texture2D texShadowMap : register(t5);
 //--------------------------------------------------------------------------------------
 //  STATES DEFININITIONS 
 //--------------------------------------------------------------------------------------

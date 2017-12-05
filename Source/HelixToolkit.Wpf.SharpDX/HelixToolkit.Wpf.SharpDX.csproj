@@ -301,6 +301,8 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Textures\arial.fnt" />
+    <None Include="Resources\psMeshBlinnPhong.cso" />
+    <None Include="Resources\vsMeshDefault.cso" />
     <None Include="Resources\_default.bfx" />
     <None Include="Resources\_deferred.bfx" />
     <None Include="Resources\_tessellation.bfx" />

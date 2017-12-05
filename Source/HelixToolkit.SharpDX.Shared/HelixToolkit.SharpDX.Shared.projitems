@@ -78,6 +78,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\PixelShader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\VertexShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\ComponentBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DDS.cs" />
@@ -123,6 +126,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Disposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />

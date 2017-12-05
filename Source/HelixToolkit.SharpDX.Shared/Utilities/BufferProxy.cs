@@ -94,10 +94,12 @@ namespace HelixToolkit.UWP.Utilities
             {
                 DataStream stream;
                 context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
-                stream.Position = 0;
-                stream.WriteRange(data.GetArrayByType(), 0, length);
-                context.UnmapSubresource(this.buffer, 0);
-                stream.Dispose();
+                using (stream)
+                {
+                    stream.Position = 0;
+                    stream.WriteRange(data.GetArrayByType(), 0, length);
+                    context.UnmapSubresource(this.buffer, 0);
+                }
             }
         }
 
@@ -141,9 +143,13 @@ namespace HelixToolkit.UWP.Utilities
     {
         private readonly BufferDescription bufferDesc;
         public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer, 
-            CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Default)
+            CpuAccessFlags cpuAccessFlags = CpuAccessFlags.Write, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Dynamic)
             :base(structSize, bindFlags)
         {
+            if (structSize % 16 != 0)
+            {
+                throw new ArgumentException("Constant buffer struct size must be multiple of 16 bytes");
+            }
             bufferDesc = new BufferDescription()
             {
                 SizeInBytes = structSize,
@@ -157,7 +163,21 @@ namespace HelixToolkit.UWP.Utilities
 
         public override void UploadDataToBuffer(DeviceContext context, ref T data)
         {
-            context.UpdateSubresource(ref data, buffer);
+            if (buffer.Description.Usage == ResourceUsage.Dynamic && buffer.Description.CpuAccessFlags == CpuAccessFlags.Write)
+            {
+                DataStream stream;
+                context.MapSubresource(buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
+                using (stream)
+                {
+                    stream.Position = 0;
+                    stream.Write<T>(data);
+                    context.UnmapSubresource(buffer, 0);
+                }
+            }
+            else
+            {
+                context.UpdateSubresource(ref data, buffer);
+            }
         }
 
         public override void CreateBuffer(Device device)
@@ -187,7 +207,7 @@ namespace HelixToolkit.UWP.Utilities
         public int Offset { get; set; } = 0;
         public SDX11.Buffer Buffer { get { return buffer; } }
         public BindFlags BindFlags { private set; get; }
-        
+        public Type DataType { get { return typeof(T); } }        
 
         public BufferProxyBase(int structureSize, BindFlags bindFlags)
         {
@@ -203,6 +223,7 @@ namespace HelixToolkit.UWP.Utilities
 
         public abstract void CreateBufferFromDataArray(Device context, IList<T> data);
         public abstract void CreateBufferFromDataArray(Device context, IList<T> data, int count);
+
         public void Dispose()
         {
             Disposer.RemoveAndDispose(ref buffer);

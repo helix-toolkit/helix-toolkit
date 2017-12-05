@@ -1,0 +1,5 @@
+xcopy bin\Debug\VS\*.cso "..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy bin\Debug\PS\*.cso "..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy bin\Debug\GS\*.cso "..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy bin\Debug\DS\*.cso "..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy bin\Debug\HS\*.cso "..\HelixToolkit.Wpf.SharpDX\Resources"
