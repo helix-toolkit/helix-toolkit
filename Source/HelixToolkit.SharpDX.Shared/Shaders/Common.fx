@@ -204,9 +204,13 @@ BlendState BSXRayBlending
 //--------------------------------------------------------------------------------------
 // GLOBAL VARIABLES
 //--------------------------------------------------------------------------------------
-float4x4 mWorld;
+cbuffer cbModel : register(b1)
+{
+    float4x4 mWorld;
+	bool bInvertNormal = false;
+};
 
-cbuffer cbTransforms
+cbuffer cbTransforms : register(b0)
 {
     float4x4 mView;
     float4x4 mProjection;
@@ -222,6 +226,33 @@ cbuffer cbTransforms
 	// camera position
 	float3 vEyePos;
 };
+
+cbuffer cbInstancing : register(b3)
+{
+    bool bHasInstances = false;
+	bool bHasInstanceParams = false;
+};
+
+cbuffer cbBoneSkin : register(b4)
+{
+    bool bHasBones = false;
+};
+
+
+#define MaxBones 128
+
+tbuffer BoneSkinning : register(t10)
+{
+    matrix SkinMatrices[MaxBones];
+};
+
+cbuffer cbXRay : register(b5)
+{
+	float4 XRayObjectColor = float4(1, 1, 1, 1);
+	float XRayBorderFadingFactor = 1.5f;
+}
+
+
 //--------------------------------------------------------------------------------------
 // GLOBAL FUNCTIONS
 //--------------------------------------------------------------------------------------

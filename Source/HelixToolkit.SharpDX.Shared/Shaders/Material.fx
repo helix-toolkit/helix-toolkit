@@ -11,7 +11,7 @@
 //--------------------------------------------------------------------------------------
 // CONSTANT BUFF VARIABLES
 //--------------------------------------------------------------------------------------
-cbuffer cbMaterial
+cbuffer cbMaterial : register(b2)
 {
 	float4 vMaterialAmbient		= 0.25f;  //Ka := surface material's ambient coefficient
 	float4 vMaterialDiffuse		= 0.5f;   //Kd := surface material's diffuse coefficient
@@ -20,15 +20,16 @@ cbuffer cbMaterial
 	float4 vMaterialReflect 	= 0.0f;   //Kr := surface material's reflectivity coefficient
 	float  sMaterialShininess	= 1.0f;	  //Ps := surface material's shininess
 	
-	bool   bHasAlphaMap			= false;
-	bool   bHasDiffuseMap		= false;
+    bool   bHasDiffuseMap       = false;
+	bool   bHasAlphaMap			= false;	
 	bool   bHasNormalMap		= false;
 	bool   bHasDisplacementMap  = false;	
-	bool   bHasCubeMap			= false;
+    bool bHasShadowMap = false;
+    float2 padding;
 };
 
-bool bHasInstances = false;
-bool bHasShadowMap = false;
+bool bHasCubeMap = false;
+
 float2 vShadowMapSize		= float2(1024, 1024);
 float4 vShadowMapInfo		= float4(0.005, 1.0, 0.5, 0.0);
 
@@ -42,27 +43,12 @@ float4 vShadowMapInfo		= float4(0.005, 1.0, 0.5, 0.0);
 //--------------------------------------------------------------------------------------
 // TEXTURES
 //--------------------------------------------------------------------------------------
-Texture2D   texAlphaMap;
-Texture2D	texDiffuseMap;
-Texture2D	texNormalMap;
-Texture2D	texDisplacementMap;
-Texture2D	texSpecularMap;
-Texture2D	texShadowMap;
-TextureCube texCubeMap;
 
-bool bHasInstanceParams = false;
+Texture2D texDiffuseMap : register(t0);
+Texture2D texAlphaMap : register(t1);
+Texture2D texNormalMap : register(t2);
+Texture2D texDisplacementMap : register(t3);
+Texture2D texShadowMap : register(t4);
+TextureCube texCubeMap : register(t5);
 
-bool bHasBones = false;
-
-#define MaxBones 128
-
-tbuffer BoneSkinning
-{
-	matrix SkinMatrices[MaxBones];
-};
-
-float4 XRayObjectColor = float4(1,1,1,1);
-float XRayBorderFadingFactor = 1.5f;
-
-bool bInvertNormal = false;
 #endif

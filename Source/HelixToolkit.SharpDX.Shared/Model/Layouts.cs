@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using System;
 using System.Runtime.InteropServices;
 
 #if NETFX_CORE
@@ -158,5 +159,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public uint StartVertexLocation;
         public uint StartInstanceLocation;
         public const int SizeInBytes = 4 * 4;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct MaterialStruct
+    {
+        public Color4 Ambient;
+        public Color4 Diffuse;
+        public Color4 Emissive;
+        public Color4 Specular;
+        public Color4 Reflect;
+        public float Shininess;       
+        public uint HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasShadowMap;
+        public Vector2 Padding;
+        public const int SizeInBytes = 4 * (4 * 5 + 1 + 5 + 2);
     }
 }

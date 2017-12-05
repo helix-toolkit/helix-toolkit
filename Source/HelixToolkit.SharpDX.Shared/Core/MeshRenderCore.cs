@@ -34,6 +34,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderMatrices context)
         {                      
             EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
+            SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D, context);
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }

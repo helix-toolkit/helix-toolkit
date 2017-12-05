@@ -66,7 +66,7 @@ namespace HelixToolkit.UWP.Core
         protected override void SetShaderVariables(IRenderMatrices context)
         {
             base.SetShaderVariables(context);
-            SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D);
+            //SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D, context);
         }
 
         /// <summary>
@@ -76,13 +76,13 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(Effect effect)
         {
-            return new EffectMaterialVariables(Effect);
+            return new EffectMaterialVariables(Effect.Device);
         }
         /// <summary>
         /// Upload material into shader variables
         /// </summary>
         /// <param name="model"></param>
-        protected void SetMaterialVariables(MeshGeometry3D model)
+        protected void SetMaterialVariables(MeshGeometry3D model, IRenderMatrices context)
         {
             if (!IsAttached || model == null) { return; }
             materialVariables.HasShadowMap = this.HasShadowMap;
@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP.Core
             materialVariables.RenderNormalMap = this.RenderNormalMap;
             materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
             materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
-            materialVariables.AttachMaterial();
+            materialVariables.AttachMaterial(context.DeviceContext);
         }        
     }
 }

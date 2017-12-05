@@ -44,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DeviceContextExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PointerSizeHelpers.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\EffectMaterialVariables.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ExposedArrayList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Flags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleImage3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleText3D.cs" />

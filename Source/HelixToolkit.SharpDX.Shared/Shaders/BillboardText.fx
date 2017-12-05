@@ -84,7 +84,7 @@ PSInputBT VShaderBillboardInstancing(VSInputBTInstancing input)
         inputp = mul(mInstance, input.p);
 		inputt.z *= input.mr0.x; // 2d scaling x
 		inputt.w *= input.mr1.y; // 2d scaling y
-		if (bHasInstanceParams)
+        if (bHasInstanceParams)
 		{
 			inputt.x *= input.tScale.x;
 			inputt.y *= input.tScale.y;

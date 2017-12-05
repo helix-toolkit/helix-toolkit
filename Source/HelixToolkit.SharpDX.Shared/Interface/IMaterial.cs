@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -34,6 +35,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Attach material variables and textures
         /// </summary>
         /// <returns></returns>
-        bool AttachMaterial();
+        bool AttachMaterial(DeviceContext context);
     }
 }
