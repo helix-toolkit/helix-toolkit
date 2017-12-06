@@ -8,7 +8,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    using ShaderManager;
+    using Shaders;
     using Utilities;
+
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>
@@ -109,7 +112,7 @@ namespace HelixToolkit.UWP.Model
 
         private bool needUpdate = true;
         private MaterialStruct materialStruct;
-        private ConstantBufferProxy<MaterialStruct> materialBuffer = new ConstantBufferProxy<MaterialStruct>(MaterialStruct.SizeInBytes);
+        private readonly IBufferProxy<MaterialStruct> materialBuffer;
 
         public IMaterial Material
         {
@@ -135,11 +138,9 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public EffectMaterialVariables(Device device)
+        public EffectMaterialVariables(IConstantBufferPool cbPool)
         {
-            Device = device;
-            materialBuffer.CreateBuffer(Device);
-            Collect(materialBuffer);
+            materialBuffer = cbPool.Get(DefaultConstantBufferDescriptions.MaterialCB) as IBufferProxy<MaterialStruct>;
             CreateTextureViews();
         }        
 
@@ -220,18 +221,17 @@ namespace HelixToolkit.UWP.Model
             }
             if (needUpdate)
             {
-                AssignVariables();
-                materialBuffer.UploadDataToBuffer(context, ref materialStruct);
+                AssignVariables();                
                 needUpdate = false;
             }
-            OnAttachMaterial(context);
+            materialBuffer.UploadDataToBuffer(context, ref materialStruct);
             return true;
         }
 
         protected virtual void OnAttachMaterial(DeviceContext context)
         {
-            context.AttachConstantBuffer(ShaderStage.Vertex, MaterialIndex, materialBuffer.Buffer);
-            context.AttachConstantBuffer(ShaderStage.Pixel, MaterialIndex, materialBuffer.Buffer);
+            //context.AttachConstantBuffer(ShaderStage.Vertex, MaterialIndex, materialBuffer.Buffer);
+            //context.AttachConstantBuffer(ShaderStage.Pixel, MaterialIndex, materialBuffer.Buffer);
             context.AttachShaderResources(ShaderStage.Pixel, DiffuseMapIndex, texDiffuseMapView);
             context.AttachShaderResources(ShaderStage.Pixel, DiffuseAlphaMapIndex, texDiffuseAlphaMapView);
             context.AttachShaderResources(ShaderStage.Pixel, NormalMapIndex, texNormalMapView);

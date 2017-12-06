@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             if(ByteCode == null)
             {
-                return new NullShader(Name, ShaderType);
+                return new NullShader(ShaderType);
             }
             ShaderBase shader = null;
             switch (ShaderType)

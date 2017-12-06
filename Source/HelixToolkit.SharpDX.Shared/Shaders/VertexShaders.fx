@@ -122,9 +122,9 @@ PSInput VInstancingShader(VSInstancingInput input)
 		//for (int i = 0; i < 1; i++)
 		{
 			output.sp = mul(inputp, mWorld);
-			output.sp = mul(output.sp, mLightView[0]);
-			output.sp = mul(output.sp, mLightProj[0]);
-		}
+            output.sp = mul(output.sp, Lights[0].mLightView);
+            output.sp = mul(output.sp, Lights[0].mLightProj);
+        }
 	}
 
 	if (!bHasInstanceParams)

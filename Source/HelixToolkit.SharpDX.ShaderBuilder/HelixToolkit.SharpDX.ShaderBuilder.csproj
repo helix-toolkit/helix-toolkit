@@ -57,6 +57,7 @@
     <Content Include="Common\DataStructs.hlsl" />
     <Content Include="Common\Material.hlsl" />
     <Content Include="PS\psCommon.hlsl" />
+    <VertexShader Include="VS\vsMeshInstancing.hlsl" />
     <PixelShader Include="PS\psMeshBlinnPhong.hlsl" />
     <VertexShader Include="VS\vsMeshDefault.hlsl" />
   </ItemGroup>
@@ -69,8 +70,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /y $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

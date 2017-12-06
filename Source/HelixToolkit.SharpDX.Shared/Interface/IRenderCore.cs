@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP
         event EventHandler<bool> OnInvalidateRenderer;
 
         Matrix ModelMatrix { set; get; }
-        Effect Effect { get; }
+        IRenderTechnique EffectTechnique { get; }
         Device Device { get; }
         /// <summary>
         /// If render core is attached or not

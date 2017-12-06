@@ -11,8 +11,9 @@ namespace HelixToolkit.UWP.Core
     using System.Diagnostics;
     using System.IO;
     using Utilities;
+    using Shaders;
 
-    public class ParticleRenderCore : RenderCoreBase
+    public class ParticleRenderCore : RenderCoreBase<ModelStruct>
     {
         public static readonly int DefaultParticleCount = 512;
         public static readonly float DefaultInitialVelocity = 1f;
@@ -123,21 +124,21 @@ namespace HelixToolkit.UWP.Core
         public ParticleInsertParameters InsertVariables = new ParticleInsertParameters() { EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
         #region ShaderVariables
-        private EffectScalarVariable bHasTextureVar;
-        private EffectShaderResourceVariable textureViewVar;
+        //private EffectScalarVariable bHasTextureVar;
+        //private EffectShaderResourceVariable textureViewVar;
 
-        private EffectVectorVariable particleSizeVar;
-        private EffectVectorVariable randomVectorVar;
+        //private EffectVectorVariable particleSizeVar;
+        //private EffectVectorVariable randomVectorVar;
 
-        private EffectScalarVariable randomSeedVar;
-        private EffectScalarVariable numTextureColumnVar;
-        private EffectScalarVariable numTextureRowVar;
+        //private EffectScalarVariable randomSeedVar;
+        //private EffectScalarVariable numTextureColumnVar;
+        //private EffectScalarVariable numTextureRowVar;
 
-        private EffectUnorderedAccessViewVariable currentSimulationStateVar;
-        private EffectUnorderedAccessViewVariable newSimulationStateVar;
+        //private EffectUnorderedAccessViewVariable currentSimulationStateVar;
+        //private EffectUnorderedAccessViewVariable newSimulationStateVar;
 
-        private EffectShaderResourceVariable simulationStateVar;
-        private EffectScalarVariable animateSpriteByEnergyVar;
+        //private EffectShaderResourceVariable simulationStateVar;
+        //private EffectScalarVariable animateSpriteByEnergyVar;
 
         private ShaderResourceView textureView;
         #endregion
@@ -207,22 +208,32 @@ namespace HelixToolkit.UWP.Core
         public InputLayout VertexLayout { private set; get; }
         #endregion
 
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return DefaultConstantBufferDescriptions.ModelCB;
+        }
+
+        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        {
+            
+        }
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
             {
-                VertexLayout = technique.InputLayout;
-                bHasTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasDiffuseMapVariable).AsScalar());
-                textureViewVar = Collect(Effect.GetVariableByName(ShaderVariableNames.TextureDiffuseMapVariable).AsShaderResource());
-                currentSimulationStateVar = Collect(Effect.GetVariableByName(ShaderVariableNames.CurrentSimulationStateVariable).AsUnorderedAccessView());
-                newSimulationStateVar = Collect(Effect.GetVariableByName(ShaderVariableNames.NewSimulationStateVariable).AsUnorderedAccessView());
-                simulationStateVar = Collect(Effect.GetVariableByName(ShaderVariableNames.SimulationStateVariable).AsShaderResource());
-                particleSizeVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ParticleSizeVariable).AsVector());
-                randomVectorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.RandomVectorVariable).AsVector());
-                randomSeedVar = Collect(Effect.GetVariableByName(ShaderVariableNames.RandomSeedVariable).AsScalar());
-                numTextureColumnVar = Collect(Effect.GetVariableByName(ShaderVariableNames.NumTextureColumnVariable).AsScalar());
-                numTextureRowVar = Collect(Effect.GetVariableByName(ShaderVariableNames.NumTextureRowVariable).AsScalar());
-                animateSpriteByEnergyVar = Collect(Effect.GetVariableByName(ShaderVariableNames.AnimateByEnergyLevelVariable).AsScalar());
+                VertexLayout = technique.Layout;
+                //bHasTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.HasDiffuseMapVariable).AsScalar());
+                //textureViewVar = Collect(Effect.GetVariableByName(ShaderVariableNames.TextureDiffuseMapVariable).AsShaderResource());
+                //currentSimulationStateVar = Collect(Effect.GetVariableByName(ShaderVariableNames.CurrentSimulationStateVariable).AsUnorderedAccessView());
+                //newSimulationStateVar = Collect(Effect.GetVariableByName(ShaderVariableNames.NewSimulationStateVariable).AsUnorderedAccessView());
+                //simulationStateVar = Collect(Effect.GetVariableByName(ShaderVariableNames.SimulationStateVariable).AsShaderResource());
+                //particleSizeVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ParticleSizeVariable).AsVector());
+                //randomVectorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.RandomVectorVariable).AsVector());
+                //randomSeedVar = Collect(Effect.GetVariableByName(ShaderVariableNames.RandomSeedVariable).AsScalar());
+                //numTextureColumnVar = Collect(Effect.GetVariableByName(ShaderVariableNames.NumTextureColumnVariable).AsScalar());
+                //numTextureRowVar = Collect(Effect.GetVariableByName(ShaderVariableNames.NumTextureRowVariable).AsScalar());
+                //animateSpriteByEnergyVar = Collect(Effect.GetVariableByName(ShaderVariableNames.AnimateByEnergyLevelVariable).AsScalar());
                 isBlendChanged = true;
                 if (isInitialParticleChanged)
                 {
@@ -319,19 +330,19 @@ namespace HelixToolkit.UWP.Core
             particleInsertBuffer.CreateBuffer(this.Device);
         }
 
-        protected override void SetShaderVariables(IRenderMatrices matrices)
-        {
-            base.SetShaderVariables(matrices);
-            bHasTextureVar.Set(HasTexture);
-            textureViewVar.SetResource(HasTexture ? textureView : null);
-            particleSizeVar.Set(ParticleSize);
-            randomVectorVar.Set(VectorGenerator.RandomVector3);
-            randomSeedVar.Set(VectorGenerator.Seed);
-            numTextureColumnVar.Set(NumTextureColumn);
-            numTextureRowVar.Set(NumTextureRow);
-            animateSpriteByEnergyVar.Set(AnimateSpriteByEnergy);
+        //protected override void SetShaderVariables(IRenderMatrices matrices)
+        //{
+        //    base.SetShaderVariables(matrices);
+        //    bHasTextureVar.Set(HasTexture);
+        //    textureViewVar.SetResource(HasTexture ? textureView : null);
+        //    particleSizeVar.Set(ParticleSize);
+        //    randomVectorVar.Set(VectorGenerator.RandomVector3);
+        //    randomSeedVar.Set(VectorGenerator.Seed);
+        //    numTextureColumnVar.Set(NumTextureColumn);
+        //    numTextureRowVar.Set(NumTextureRow);
+        //    animateSpriteByEnergyVar.Set(AnimateSpriteByEnergy);
             
-        }
+        //}
 
         private void OnTextureChanged()
         {
@@ -367,85 +378,85 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderMatrices context)
         {
-            OnTextureChanged();
-            OnBlendStateChanged();
+//            OnTextureChanged();
+//            OnBlendStateChanged();
 
-            UpdateTime(context, ref totalElapsed);
-            //Set correct instance count from instance buffer
-            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.Count;
-            //Upload the draw argument
-            particleCountGSIABuffer.UploadDataToBuffer(context.DeviceContext, ref drawArgument);
+//            UpdateTime(context, ref totalElapsed);
+//            //Set correct instance count from instance buffer
+//            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.Count;
+//            //Upload the draw argument
+//            particleCountGSIABuffer.UploadDataToBuffer(context.DeviceContext, ref drawArgument);
 
-            EffectPass pass;
+//            EffectPass pass;
 
-            if (isRestart)
-            {
-                pass = this.EffectTechnique.GetPassByIndex(1);
-                pass.Apply(context.DeviceContext);
-                // Reset Both UAV buffers
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[0].UAV, 0);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV, 0);
-                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
-                // Call ComputeShader to add initial particles
-                context.DeviceContext.Dispatch(1, 1, 1);
-                isRestart = false;
-            }
-            else
-            {
-                //upload framebuffer
-                frameConstBuffer.UploadDataToBuffer(context.DeviceContext, ref FrameVariables);
-                // Get consume buffer count
-                BufferProxies[0].CopyCount(context.DeviceContext, frameConstBuffer.Buffer, ParticlePerFrame.NumParticlesOffset);
-                // Calculate existing particles
-                pass = this.EffectTechnique.GetPassByIndex(1);
-                pass.Apply(context.DeviceContext);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[0].UAV);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV, 0);
-                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
-                context.DeviceContext.Dispatch(System.Math.Max(1, particleCount / 512), 1, 1);
-                // Get append buffer count
-                BufferProxies[1].CopyCount(context.DeviceContext, particleCountGSIABuffer.Buffer, 0);
-            }
+//            if (isRestart)
+//            {
+//                pass = this.EffectTechnique.GetPassByIndex(1);
+//                pass.Apply(context.DeviceContext);
+//                // Reset Both UAV buffers
+//                context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[0].UAV, 0);
+//                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV, 0);
+//                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
+//                // Call ComputeShader to add initial particles
+//                context.DeviceContext.Dispatch(1, 1, 1);
+//                isRestart = false;
+//            }
+//            else
+//            {
+//                //upload framebuffer
+//                frameConstBuffer.UploadDataToBuffer(context.DeviceContext, ref FrameVariables);
+//                // Get consume buffer count
+//                BufferProxies[0].CopyCount(context.DeviceContext, frameConstBuffer.Buffer, ParticlePerFrame.NumParticlesOffset);
+//                // Calculate existing particles
+//                pass = this.EffectTechnique.GetPassByIndex(1);
+//                pass.Apply(context.DeviceContext);
+//                context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, BufferProxies[0].UAV);
+//                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV, 0);
+//                context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
+//                context.DeviceContext.Dispatch(System.Math.Max(1, particleCount / 512), 1, 1);
+//                // Get append buffer count
+//                BufferProxies[1].CopyCount(context.DeviceContext, particleCountGSIABuffer.Buffer, 0);
+//            }
 
-            //#if DEBUG
-            //            DebugCount("UAV 0", context.DeviceContext, BufferProxies[0].UAV);
-            //#endif
+//            //#if DEBUG
+//            //            DebugCount("UAV 0", context.DeviceContext, BufferProxies[0].UAV);
+//            //#endif
 
 
-            if (totalElapsed > InsertElapseThrottle)
-            {
-                particleInsertBuffer.UploadDataToBuffer(context.DeviceContext, ref InsertVariables);
-                //context.DeviceContext.UpdateSubresource(ref InsertVariables, particleInsertBuffer.Buffer);
-                // Add more particles 
-                pass = this.EffectTechnique.GetPassByIndex(0);
-                pass.Apply(context.DeviceContext);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV);
-                context.DeviceContext.ComputeShader.SetConstantBuffer(1, particleInsertBuffer.Buffer);
-                context.DeviceContext.Dispatch(1, 1, 1);
-                totalElapsed = 0;
-#if DEBUG
-               // DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
-#endif
-            }
+//            if (totalElapsed > InsertElapseThrottle)
+//            {
+//                particleInsertBuffer.UploadDataToBuffer(context.DeviceContext, ref InsertVariables);
+//                //context.DeviceContext.UpdateSubresource(ref InsertVariables, particleInsertBuffer.Buffer);
+//                // Add more particles 
+//                pass = this.EffectTechnique.GetPassByIndex(0);
+//                pass.Apply(context.DeviceContext);
+//                context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, BufferProxies[1].UAV);
+//                context.DeviceContext.ComputeShader.SetConstantBuffer(1, particleInsertBuffer.Buffer);
+//                context.DeviceContext.Dispatch(1, 1, 1);
+//                totalElapsed = 0;
+//#if DEBUG
+//               // DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
+//#endif
+//            }
 
-            // Clear
-            context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, null);
-            context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, null);
+//            // Clear
+//            context.DeviceContext.ComputeShader.SetUnorderedAccessView(0, null);
+//            context.DeviceContext.ComputeShader.SetUnorderedAccessView(1, null);
 
-            // Swap UAV buffers for next frame
-            var bproxy = BufferProxies[0];
-            BufferProxies[0] = BufferProxies[1];
-            BufferProxies[1] = bproxy;
+//            // Swap UAV buffers for next frame
+//            var bproxy = BufferProxies[0];
+//            BufferProxies[0] = BufferProxies[1];
+//            BufferProxies[1] = bproxy;
 
-            // Render existing particles
-            simulationStateVar.SetResource(BufferProxies[0].SRV);
-            context.DeviceContext.InputAssembler.InputLayout = VertexLayout;
-            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
-            InstanceBuffer?.AttachBuffer(context.DeviceContext, 0);
-            pass = this.EffectTechnique.GetPassByIndex(2);
-            pass.Apply(context.DeviceContext);
-            context.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);          
-            context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
+//            // Render existing particles
+//            simulationStateVar.SetResource(BufferProxies[0].SRV);
+//            context.DeviceContext.InputAssembler.InputLayout = VertexLayout;
+//            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
+//            InstanceBuffer?.AttachBuffer(context.DeviceContext, 0);
+//            pass = this.EffectTechnique.GetPassByIndex(2);
+//            pass.Apply(context.DeviceContext);
+//            context.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);          
+//            context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
         }
 
 #if DEBUG

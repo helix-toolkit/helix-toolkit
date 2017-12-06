@@ -97,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
             arrowMeshModel.Material = PhongMaterials.White;
             arrowMeshModel.Geometry = mesh;
             arrowMeshModel.CullMode = CullMode.Back;
-            arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors]; };
+            arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.Colors]; };
             arrowMeshModel.IsHitTestVisible = false;
 
             axisBillboards[0] = new BillboardTextModel3D() { IsHitTestVisible = false };

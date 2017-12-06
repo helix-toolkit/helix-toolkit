@@ -22,8 +22,6 @@ namespace HelixToolkit.UWP.Core
         public IBufferProxy Buffer { get { return elementBuffer; } }
         private IBufferProxy<T> elementBuffer;
 
-        private EffectScalarVariable hasElementsVar;
-
         public bool Changed { get { return instanceChanged; } }
         private bool instanceChanged = true;
 
@@ -52,9 +50,8 @@ namespace HelixToolkit.UWP.Core
             HasElementsVariableName = hasElementsVarName;
         }
 
-        public void Initialize(Effect effect)
+        public void Initialize()
         {
-            hasElementsVar = Collect(effect.GetVariableByName(HasElementsVariableName).AsScalar());
             elementBuffer = Collect(new DynamicBufferProxy<T>(StructSize, BindFlags.VertexBuffer));
             Initialized = true;
             instanceChanged = true;
@@ -62,7 +59,6 @@ namespace HelixToolkit.UWP.Core
 
         public virtual void AttachBuffer(DeviceContext context, int vertexBufferSlot)
         {
-            hasElementsVar.Set(HasElements);
             if (HasElements)
             {
                 if (instanceChanged)
@@ -72,11 +68,6 @@ namespace HelixToolkit.UWP.Core
                 }
                 context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset));
             }
-        }
-
-        public void ResetHasElementsVariable()
-        {
-            hasElementsVar.Set(false);
         }
 
         protected override void Dispose(bool disposeManagedResources)

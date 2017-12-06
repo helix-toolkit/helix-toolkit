@@ -11,7 +11,8 @@ namespace HelixToolkit.UWP.Shaders
 {
     public sealed class NullShader : ShaderBase
     {
-        public NullShader(string name, ShaderStage type) : base(name, type)
+        public const string NULL = "NULL";
+        public NullShader(ShaderStage type) : base(NULL, type)
         {
         }
 

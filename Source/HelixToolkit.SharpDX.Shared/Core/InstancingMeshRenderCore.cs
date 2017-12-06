@@ -18,11 +18,5 @@ namespace HelixToolkit.UWP.Core
             base.OnAttachBuffers(context);
             ParameterBuffer?.AttachBuffer(context, 2);
         }
-
-        protected override void PostRender(IRenderMatrices context)
-        {
-            ParameterBuffer?.ResetHasElementsVariable();
-            base.PostRender(context);
-        }
     }
 }

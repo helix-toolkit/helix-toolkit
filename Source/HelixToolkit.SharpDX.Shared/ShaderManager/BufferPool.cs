@@ -33,5 +33,10 @@ namespace HelixToolkit.UWP.ShaderManager
 
         protected abstract TKEY GetKey(TBUFFERDESC description);
         protected abstract IBufferProxy CreateBuffer(TBUFFERDESC description);
+
+        public IBufferProxy Get(TBUFFERDESC description)
+        {
+            return pool[GetKey(description)];
+        }
     }
 }

@@ -20,8 +20,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Direct3D = global::SharpDX.Direct3D;
     using Matrix = global::SharpDX.Matrix;
     using Texture2D = global::SharpDX.Direct3D11.Texture2D;
-    using static Core.RenderCoreBase;
-
+ //   using static Core.RenderCoreBase;
+/*
     public sealed class EnvironmentMap3D : Model3D
     {
         // members to dispose          
@@ -189,4 +189,5 @@ namespace HelixToolkit.Wpf.SharpDX
             renderContext.DeviceContext.DrawIndexed(this.geometry.Indices.Count, 0, 0);
         }
     }
+    */
 }

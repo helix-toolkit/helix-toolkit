@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct3D11;
+﻿using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
 using System.Collections.Generic;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -6,17 +7,23 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using ShaderManager;
+    using Shaders;
     public interface IRenderTechnique
     {
         string Name { get; }
 
-        Effect Effect { set; get; }
+        Device Device { get; }
 
-        EffectTechnique EffectTechnique { set; get; }
+        InputLayout Layout { get; }
 
-        Device Device { set; get; }
+        IEnumerable<ShaderBase> Shaders { get; }
 
-        InputLayout InputLayout { set; get; }
+        void BindShader(DeviceContext context);
+
+        ShaderBase GetShader(ShaderStage type);
+
+        IConstantBufferPool ConstantBufferPool { get; }
     }
 
     public interface IRenderTechniquesManager
@@ -27,10 +34,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IEffectsManager
     {
-        IRenderTechniquesManager RenderTechniquesManager { get; }
-        InputLayout GetLayout(IRenderTechnique technique);
-        Effect GetEffect(IRenderTechnique technique);
-        global::SharpDX.Direct3D11.Device Device { get; }
+        //IRenderTechniquesManager RenderTechniquesManager { get; }
+        //InputLayout GetLayout(IRenderTechnique technique);
+        //Effect GetEffect(IRenderTechnique technique);
+        //global::SharpDX.Direct3D11.Device Device { get; }
         int AdapterIndex { get; }
+        IConstantBufferPool ConstantBufferPool { get; }
+        Device Device { get; }
+        DriverType DriverType { get; }
+        IDictionary<string, Technique> Techniques { get; }
+
+        void Initialize();
     }
 }

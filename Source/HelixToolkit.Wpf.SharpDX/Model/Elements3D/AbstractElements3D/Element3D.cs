@@ -122,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected global::SharpDX.Direct3D11.Effect effect;
+       // protected global::SharpDX.Direct3D11.Effect effect;
 
         protected IRenderTechnique renderTechnique;
 
@@ -199,8 +199,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : SetRenderTechnique(host);
             if (renderTechnique != null)
             {
-                renderTechnique = RenderHost.EffectsManager.RenderTechniquesManager.RenderTechniques[renderTechnique.Name];
-                effect = renderHost.EffectsManager.GetEffect(renderTechnique);
+                renderTechnique = RenderHost.EffectsManager.Techniques[renderTechnique.Name];
+                //effect = renderHost.EffectsManager.GetEffect(renderTechnique);
                 IsAttached = OnAttach(host);
             }
             InvalidateRender();
@@ -233,7 +233,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void OnDetach()
         {
             renderTechnique = null;            
-            effect = null;
+            //effect = null;
             renderHost = null;           
         }
 

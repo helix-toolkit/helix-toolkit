@@ -2,6 +2,8 @@
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
+using HelixToolkit.Wpf.SharpDX.Shaders;
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -12,10 +14,10 @@ namespace HelixToolkit.UWP.Core
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
     /// <para>Usage: Call SetScreenSpacedCoordinates(RenderHost) to move coordinate system. Call other render functions for sub models. Finally call RestoreCoordinates(RenderHost) to restore original coordinate system.</para>
     /// </summary>
-    public class ScreenSpacedMeshRenderCore : RenderCoreBase
+    public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>
     {
-        private EffectMatrixVariable viewMatrixVar;
-        private EffectMatrixVariable projectionMatrixVar;
+        //private EffectMatrixVariable viewMatrixVar;
+        //private EffectMatrixVariable projectionMatrixVar;
         private Matrix projectionMatrix;
         public float ScreenRatio = 1f;
         private float relativeScreenLocX = -0.8f;
@@ -70,12 +72,17 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return DefaultConstantBufferDescriptions.ModelCB;
+        }
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
             {
-                viewMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ViewMatrix).AsMatrix());
-                projectionMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ProjectionMatrix).AsMatrix());
+                //viewMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ViewMatrix).AsMatrix());
+                //projectionMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ProjectionMatrix).AsMatrix());
                 return true;
             }
             else
@@ -113,8 +120,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void SetShaderVariables(IRenderMatrices context)
+        //protected override void SetShaderVariables(IRenderMatrices context)
+        //{
+        //}
+        protected override void OnUpdateModelStruct(IRenderMatrices context)
         {
+            
         }
 
         protected override bool CanRender()
@@ -142,15 +153,15 @@ namespace HelixToolkit.UWP.Core
             context.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
             dsView.Dispose();
 
-            this.viewMatrixVar.SetMatrix(CreateViewMatrix(context));
+         //   this.viewMatrixVar.SetMatrix(CreateViewMatrix(context));
             UpdateProjectionMatrix(context.ActualWidth, context.ActualHeight);
-            projectionMatrixVar.SetMatrix(projectionMatrix);
+         //   projectionMatrixVar.SetMatrix(projectionMatrix);
         }
 
         public virtual void RestoreCoordinates(IRenderMatrices context)
         {
-            viewMatrixVar.SetMatrix(context.ViewMatrix);
-            projectionMatrixVar.SetMatrix(context.ProjectionMatrix);
+          //  viewMatrixVar.SetMatrix(context.ViewMatrix);
+          //  projectionMatrixVar.SetMatrix(context.ProjectionMatrix);
         }
     }
 }

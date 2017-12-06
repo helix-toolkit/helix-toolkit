@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Model;
     public interface IRenderMatrices
     {
         ICamera Camera { get; }
@@ -31,5 +32,6 @@ namespace HelixToolkit.Wpf.SharpDX
         DeviceContext DeviceContext { get; }
 
         TimeSpan TimeStamp { get; }
+        Light3DSceneShared LightScene { get; }
     }
 }

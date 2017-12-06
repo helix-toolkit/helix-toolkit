@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.ShaderManager
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.ShaderManager
+namespace HelixToolkit.UWP
 #endif
 {
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
     using global::SharpDX.DXGI;
     using Shaders;
-
+    using ShaderManager;
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
-    public abstract class ShaderTechniqueManager : DisposeObject
+    public abstract class ShaderTechniqueManager : DisposeObject, IEffectsManager
     {       
         /// <summary>
         /// The minimum supported feature level.
@@ -24,11 +24,13 @@ namespace HelixToolkit.UWP.ShaderManager
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
         public IConstantBufferPool ConstantBufferPool { private set; get; }
 
-        public Dictionary<string, Technique> Techniques { get; } = new Dictionary<string, Technique>();
+        public IDictionary<string, Technique> Techniques { get; } = new Dictionary<string, Technique>();
 
         public global::SharpDX.Direct3D11.Device Device { private set; get; }
 
         public DriverType DriverType { private set; get; }
+
+        public int AdapterIndex { private set; get; }
 
         public ShaderTechniqueManager()
         {
@@ -60,6 +62,7 @@ namespace HelixToolkit.UWP.ShaderManager
 #else
             Device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
+            AdapterIndex = adapterIndex;
             var techniques = LoadTechniques(Device, ConstantBufferPool);
             foreach(var tech in techniques)
             {
@@ -134,10 +137,17 @@ namespace HelixToolkit.UWP.ShaderManager
     {
         protected override IList<Technique> LoadTechniques(global::SharpDX.Direct3D11.Device device, IConstantBufferPool bufferPool)
         {
-            var renderBlinn = new Technique("RenderBlinn", device, DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput,
+            var renderBlinn = new Technique(DefaultRenderTechniqueNames.Blinn, device, DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput,
                 new[]
                 {
                     DefaultVSShaderDescriptions.VSMeshDefault,
+                    DefaultPSShaderDescriptions.PSMeshBlinnPhong
+                }, bufferPool);
+
+            var renderBlinnInstancing = new Technique(DefaultRenderTechniqueNames.InstancingBlinn, device, DefaultVSShaderByteCodes.VSMeshInstancing, DefaultInputLayout.VSInputInstancing,
+                new[]
+                {
+                    DefaultVSShaderDescriptions.VSMeshInstancing,
                     DefaultPSShaderDescriptions.PSMeshBlinnPhong
                 }, bufferPool);
 

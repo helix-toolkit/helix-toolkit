@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public sealed class AmbientLight3D : Light3D
     {
-        private EffectVectorVariable vLightAmbient;
+    //    private EffectVectorVariable vLightAmbient;
 
         public AmbientLight3D()
         {
@@ -25,9 +25,10 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- attach
             if (base.OnAttach(host))
             {
+                host.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
                 // --- light constant params              
-                this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
-                this.vLightAmbient.Set(this.ColorInternal);
+                //this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
+                //this.vLightAmbient.Set(this.ColorInternal);
 
                 // --- flush
                 //this.Device.ImmediateContext.Flush();     
@@ -41,12 +42,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            if (this.vLightAmbient != null)
-            {
-                if(!this.effect.IsDisposed)
-                    this.vLightAmbient.Set(new global::SharpDX.Color4(0, 0, 0, 0));
-                Disposer.RemoveAndDispose(ref this.vLightAmbient);
-            }
+            //if (this.vLightAmbient != null)
+            //{
+            //    if(!this.effect.IsDisposed)
+            //        this.vLightAmbient.Set(new global::SharpDX.Color4(0, 0, 0, 0));
+            //    Disposer.RemoveAndDispose(ref this.vLightAmbient);
+            //}
             base.OnDetach();
         }
 
@@ -54,7 +55,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (IsAttached)
             {
-                this.vLightAmbient.Set(this.ColorInternal);
+                renderHost.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
+                //  this.vLightAmbient.Set(this.ColorInternal);
             }
         }
     }

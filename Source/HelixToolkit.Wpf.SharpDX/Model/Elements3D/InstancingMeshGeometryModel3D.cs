@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn];
+            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.InstancingBlinn];
         }
 
         protected override IRenderCore OnCreateRenderCore()
@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (base.OnAttach(host))
             {
-                instanceParamBuffer.Initialize(effect);
+                instanceParamBuffer.Initialize();
                 return true;
             }
             else

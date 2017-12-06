@@ -565,13 +565,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.ParticleStorm];
+            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.ParticleStorm];
         }
 
         protected override bool OnAttach(IRenderHost host)
         {
             base.OnAttach(host);
-            InstanceBuffer.Initialize(effect);
+            InstanceBuffer.Initialize();
             particleCore.InstanceBuffer = InstanceBuffer;
             System.Windows.Media.CompositionTarget.Rendering += CompositionTarget_Rendering;
             return true;

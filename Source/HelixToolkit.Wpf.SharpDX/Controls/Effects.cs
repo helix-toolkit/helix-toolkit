@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// tessellation, and deferred effects.
     /// <para>Make sure to dispose this if not being used. Otherwise may cause memory leak.</para>
     /// </summary>
-    public class DefaultEffectsManager : IEffectsManager, IDisposable
+    public class DefaultEffectsManager : IDisposable
     {        
         /// <summary>
         /// Gets a value indicating whether the control is in design mode

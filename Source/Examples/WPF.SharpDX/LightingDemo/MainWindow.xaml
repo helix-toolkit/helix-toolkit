@@ -34,6 +34,7 @@
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False"
+            EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -48,13 +49,13 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <!--<hx:ShadowMap3D />-->
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
                 DirectionTransform="{Binding Light1DirectionTransform}"
                 IsRendering="{Binding RenderLight1}"
                 Color="{Binding Light1Color}" />
-            <hx:PointLight3D
+            <!--<hx:PointLight3D
                 Attenuation="{Binding Light2Attenuation}"
                 IsRendering="{Binding RenderLight2}"
                 Transform="{Binding Light2Transform}"
@@ -70,7 +71,7 @@
                 DirectionTransform="{Binding Light4DirectionTransform}"
                 IsRendering="{Binding RenderLight4}"
                 Transform="{Binding Light4Transform}"
-                Color="{Binding Light4Color}" />
+                Color="{Binding Light4Color}" />-->
 
             <hx:MeshGeometryModel3D
                 Geometry="{Binding Sphere}"

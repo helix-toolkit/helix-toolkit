@@ -9,8 +9,8 @@ namespace HelixToolkit.UWP.Core
 {
     public class PointRenderCore : GeometryRenderCore
     {
-        private EffectVectorVariable pointParamsVar;
-        private EffectVectorVariable colorParamsVar;
+        //private EffectVectorVariable pointParamsVar;
+        //private EffectVectorVariable colorParamsVar;
 
 
         public Vector4 PointParams = new Vector4();
@@ -23,8 +23,8 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
-                pointParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointParams).AsVector());
-                colorParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointColor).AsVector());
+                //pointParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointParams).AsVector());
+                //colorParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.PointColor).AsVector());
                 return true;
             }
             else
@@ -33,17 +33,17 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void SetShaderVariables(IRenderMatrices matrices)
-        {
-            base.SetShaderVariables(matrices);
-            pointParamsVar.Set(ref PointParams);
-            colorParamsVar.Set(ref PointColor);
-        }
+        //protected override void SetShaderVariables(IRenderMatrices matrices)
+        //{
+        //    base.SetShaderVariables(matrices);
+        //    pointParamsVar.Set(ref PointParams);
+        //    colorParamsVar.Set(ref PointColor);
+        //}
 
         protected override void OnRender(IRenderMatrices context)
         {
-            EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            //EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
+            //OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }
 }

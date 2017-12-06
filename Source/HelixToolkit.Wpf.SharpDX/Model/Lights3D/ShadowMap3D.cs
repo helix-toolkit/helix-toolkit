@@ -27,9 +27,9 @@ namespace HelixToolkit.Wpf.SharpDX
        // private RenderTargetView renderTargetSM;
         private ShaderResourceView texShadowMapView;
        // private ShaderResourceView texColorMapView;
-        private EffectShaderResourceVariable texShadowMapVariable;
-        private EffectVectorVariable vShadowMapInfoVariable;
-        private EffectVectorVariable vShadowMapSizeVariable;
+        //private EffectShaderResourceVariable texShadowMapVariable;
+        //private EffectVectorVariable vShadowMapInfoVariable;
+        //private EffectVectorVariable vShadowMapSizeVariable;
         private RenderContext shadowPassContext;
         //private int faktor = 1;
         //private int oneK = 1024;
@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
+            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.Colors];
         }
 
         protected override bool OnAttach(IRenderHost host)
@@ -164,10 +164,10 @@ namespace HelixToolkit.Wpf.SharpDX
             //    }
             //});
 
-            this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
-            this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
-            this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
-            this.shadowPassContext = new RenderContext(host, this.effect, Device.ImmediateContext);
+            //this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
+            //this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
+            //this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
+            this.shadowPassContext = new RenderContext(host, Device.ImmediateContext, host.EffectsManager.ConstantBufferPool);
             return true;
         }
 
@@ -180,9 +180,9 @@ namespace HelixToolkit.Wpf.SharpDX
             //Disposer.RemoveAndDispose(ref this.texColorMapView);
             Disposer.RemoveAndDispose(ref this.texShadowMapView);  
 
-            Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
-            Disposer.RemoveAndDispose(ref this.vShadowMapInfoVariable);
-            Disposer.RemoveAndDispose(ref this.vShadowMapSizeVariable);
+            //Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
+            //Disposer.RemoveAndDispose(ref this.vShadowMapInfoVariable);
+            //Disposer.RemoveAndDispose(ref this.vShadowMapSizeVariable);
 
             Disposer.RemoveAndDispose(ref this.shadowPassContext);
             //this.renderHost.IsShadowMapEnabled = false;            
@@ -278,10 +278,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
-            this.texShadowMapVariable.SetResource(this.texShadowMapView);            
-            //this.texShadowMapVariable.SetResource(this.texColorMapView);            
-            this.vShadowMapInfoVariable.Set(new Vector4((float)this.Intensity, (float)this.FactorPCF, (float)this.Bias, 0));
-            this.vShadowMapSizeVariable.Set(new Vector2(width, height));
+            //this.texShadowMapVariable.SetResource(this.texShadowMapView);            
+            ////this.texShadowMapVariable.SetResource(this.texColorMapView);            
+            //this.vShadowMapInfoVariable.Set(new Vector4((float)this.Intensity, (float)this.FactorPCF, (float)this.Bias, 0));
+            //this.vShadowMapSizeVariable.Set(new Vector2(width, height));
 
             //System.Console.WriteLine("ShadowMap rendered!");
             context.Canvas.SetDefaultRenderTargets(false);

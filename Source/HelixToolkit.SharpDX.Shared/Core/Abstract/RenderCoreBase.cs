@@ -1,4 +1,6 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Wpf.SharpDX.Shaders;
+using HelixToolkit.Wpf.SharpDX.Utilities;
+using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 
@@ -11,20 +13,21 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// Base class for all render core classes
     /// </summary>
-    public abstract class RenderCoreBase : DisposeObject, IRenderCore
+    public abstract class RenderCoreBase<TModelStruct> : DisposeObject, IRenderCore where TModelStruct : struct
     {
         public Guid GUID { get; } = Guid.NewGuid();
 
-        private EffectMatrixVariable mWorldVar;
-
+        //private EffectMatrixVariable mWorldVar;
+        protected TModelStruct modelStruct;
+        protected IBufferProxy<TModelStruct> modelCB { private set; get; }
         public event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
         /// Model matrix
         /// </summary>
         public Matrix ModelMatrix { set; get; } = Matrix.Identity;      
-        public Effect Effect { private set; get; }
-        public EffectTechnique EffectTechnique { private set; get; }
-        public Device Device { get { return Effect == null ? null : Effect.Device; } }
+        //public Effect Effect { private set; get; }
+        public IRenderTechnique EffectTechnique { private set; get; }
+        public Device Device { get { return EffectTechnique == null ? null : EffectTechnique.Device; } }
         /// <summary>
         /// Is render core has been attached
         /// </summary>
@@ -40,8 +43,7 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            Effect = technique.Effect;
-            EffectTechnique = Effect == null ? null : Effect.GetTechniqueByName(technique.Name);
+            EffectTechnique = technique;
             IsAttached = OnAttach(technique);
         }
 
@@ -52,10 +54,13 @@ namespace HelixToolkit.UWP.Core
         /// <param name="technique"></param>
         /// <returns></returns>
         protected virtual bool OnAttach(IRenderTechnique technique)
-        {            
-            mWorldVar = Collect(Effect.GetVariableByName(ShaderVariableNames.WorldMatrix).AsMatrix());
+        {
+            //mWorldVar = Collect(Effect.GetVariableByName(ShaderVariableNames.WorldMatrix).AsMatrix());
+            modelCB = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription(), technique.Device) as IBufferProxy<TModelStruct>;
             return true;
         }
+
+        protected abstract ConstantBufferDescription GetModelConstantBufferDescription();
         /// <summary>
         /// Detach render core. Release all resources
         /// </summary>
@@ -79,8 +84,9 @@ namespace HelixToolkit.UWP.Core
         {
             if (CanRender())
             {
-                SetStatesAndVariables(context);
+                SetStates(context);
                 OnAttachBuffers(context.DeviceContext);
+                OnUpdateModelStruct(context);
                 OnRender(context);
                 PostRender(context);
             }
@@ -91,10 +97,9 @@ namespace HelixToolkit.UWP.Core
         /// <para>Default to call <see cref="SetShaderVariables"/> and <see cref="SetRasterStates"/></para>
         /// </summary>
         /// <param name="context"></param>
-        protected void SetStatesAndVariables(IRenderMatrices context)
+        protected void SetStates(IRenderMatrices context)
         {
             SetRasterStates(context);
-            SetShaderVariables(context);
         }
 
         /// <summary>
@@ -110,6 +115,13 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         protected abstract void OnRender(IRenderMatrices context);
 
+        protected abstract void OnUpdateModelStruct(IRenderMatrices context);
+
+        protected void SetModelConstantBuffer(DeviceContext context)
+        {
+            modelCB.UploadDataToBuffer(context, ref modelStruct);
+        }
+
         /// <summary>
         /// After calling OnRender. Restore some variables, such as HasInstance etc.
         /// </summary>
@@ -123,21 +135,6 @@ namespace HelixToolkit.UWP.Core
         protected virtual bool CanRender()
         {
             return IsAttached;
-        }
-        /// <summary>
-        /// Set Model World transformation matrix
-        /// </summary>
-        /// <param name="matrix"></param>
-        protected void SetModelWorldMatrix(Matrix matrix)
-        {
-            mWorldVar.SetMatrix(matrix);
-        }
-        /// <summary>
-        /// Set additional per model shader constant variables such as model->world matrix etc.
-        /// </summary>
-        protected virtual void SetShaderVariables(IRenderMatrices matrices)
-        {
-            SetModelWorldMatrix(ModelMatrix * matrices.WorldMatrix);
         }
 
         protected virtual void SetRasterStates(IRenderMatrices matrices) { }

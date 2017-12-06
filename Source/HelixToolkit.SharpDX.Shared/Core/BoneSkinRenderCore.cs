@@ -14,13 +14,13 @@ namespace HelixToolkit.UWP.Core
             set;get;
         }
 
-        private EffectMatrixVariable boneMatricesVar;
+     //   private EffectMatrixVariable boneMatricesVar;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
             {
-                boneMatricesVar = Collect(Effect.GetVariableByName("SkinMatrices").AsMatrix());
+             //   boneMatricesVar = Collect(Effect.GetVariableByName("SkinMatrices").AsMatrix());
                 return true;
             }
             else
@@ -40,16 +40,10 @@ namespace HelixToolkit.UWP.Core
             VertexBoneIdBuffer?.AttachBuffer(context, 2);
         }
 
-        protected override void SetShaderVariables(IRenderMatrices context)
-        {
-            base.SetShaderVariables(context);
-            boneMatricesVar.SetMatrix(BoneMatrices.Bones);
-        }
-
-        protected override void PostRender(IRenderMatrices context)
-        {
-            VertexBoneIdBuffer?.ResetHasElementsVariable();
-            base.PostRender(context);
-        }
+        //protected override void SetShaderVariables(IRenderMatrices context)
+        //{
+        //    base.SetShaderVariables(context);
+        //    boneMatricesVar.SetMatrix(BoneMatrices.Bones);
+        //}
     }
 }

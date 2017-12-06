@@ -81,6 +81,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderTechniqueManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\BlendStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ConstantBufferDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultShaderParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\NullShader.cs" />
@@ -163,8 +164,5 @@
     <Content Include="$(MSBuildThisFileDirectory)Shaders\Points.fx" />
     <Content Include="$(MSBuildThisFileDirectory)Shaders\TessellationEffects.fx" />
     <Content Include="$(MSBuildThisFileDirectory)Shaders\VertexShaders.fx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Helpers\" />
   </ItemGroup>
 </Project>

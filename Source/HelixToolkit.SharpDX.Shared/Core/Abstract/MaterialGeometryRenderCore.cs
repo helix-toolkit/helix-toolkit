@@ -8,6 +8,8 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
+    using ShaderManager;
+
     /// <summary>
     /// 
     /// </summary>
@@ -52,7 +54,7 @@ namespace HelixToolkit.UWP.Core
                     materialVariables.OnInvalidateRenderer -= InvalidateRenderer;
                     RemoveAndDispose(ref materialVariables);
                 }
-                materialVariables = Collect(CreateEffectMaterialVariables(Effect));
+                materialVariables = Collect(CreateEffectMaterialVariables(technique.ConstantBufferPool));
                 materialVariables.Material = Material;
                 materialVariables.OnInvalidateRenderer += InvalidateRenderer;
                 return true;
@@ -63,20 +65,14 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void SetShaderVariables(IRenderMatrices context)
-        {
-            base.SetShaderVariables(context);
-            //SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D, context);
-        }
-
         /// <summary>
         /// Create effect material varaible model
         /// </summary>
         /// <param name="effect"></param>
         /// <returns></returns>
-        protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(Effect effect)
+        protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(IConstantBufferPool cbPool)
         {
-            return new EffectMaterialVariables(Effect.Device);
+            return new EffectMaterialVariables(cbPool);
         }
         /// <summary>
         /// Upload material into shader variables

@@ -13,8 +13,6 @@ namespace HelixToolkit.UWP
     public interface IElementsBufferModel : IVertexExtraBufferModel
     {
         bool HasElements { get; }
-
-        void ResetHasElementsVariable();
     }
 
     public interface IElementsBufferModel<T> : IElementsBufferModel

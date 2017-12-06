@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BoneSkinBlinn];
+            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.BoneSkinBlinn];
         }
 
         protected override IRenderCore OnCreateRenderCore()
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (base.OnAttach(host))
             {
-                bonesBufferModel.Initialize(effect);
+                bonesBufferModel.Initialize();
                 boneSkinRenderCore.VertexBoneIdBuffer = bonesBufferModel;
                 return true;
             }

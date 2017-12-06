@@ -142,7 +142,6 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\CameraController.cs" />
-    <Compile Include="Controls\DeferredRenderer.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
     <Compile Include="Controls\DPFCanvasThreading.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
@@ -153,7 +152,6 @@
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\RenderTechnique.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
@@ -162,7 +160,6 @@
     <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\IRenderable.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
-    <Compile Include="Controls\RenderTechniquesManager.cs" />
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Core\Box3D.cs" />
@@ -170,7 +167,6 @@
     <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\DX11ImageSource.cs" />
-    <Compile Include="Controls\Effects.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
@@ -303,6 +299,7 @@
     <EmbeddedResource Include="Textures\arial.fnt" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
     <None Include="Resources\vsMeshDefault.cso" />
+    <None Include="Resources\vsMeshInstancing.cso" />
     <None Include="Resources\_default.bfx" />
     <None Include="Resources\_deferred.bfx" />
     <None Include="Resources\_tessellation.bfx" />

@@ -23,12 +23,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
 
                 // --- light constant params            
-                this.vLightDir = this.effect.GetVariableByName("vLightDir").AsVector();
-                this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
-                this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
+                //this.vLightDir = this.effect.GetVariableByName("vLightDir").AsVector();
+                //this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
+                //this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
 
                 // --- Set light type
-                Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
+                Light3DSceneShared.LightModels.Lights[lightIndex].LightType = (int)this.LightType;
 
                 // --- flush
                 //this.Device.ImmediateContext.Flush();
@@ -42,9 +42,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref this.vLightDir);
-            Disposer.RemoveAndDispose(ref this.vLightColor);
-            Disposer.RemoveAndDispose(ref this.iLightType);
+            //Disposer.RemoveAndDispose(ref this.vLightDir);
+            //Disposer.RemoveAndDispose(ref this.vLightColor);
+            //Disposer.RemoveAndDispose(ref this.iLightType);
             base.OnDetach();
         }
 
@@ -58,22 +58,22 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         protected override void OnRender(RenderContext context)
         {
-            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;
             // --- set lighting parameters
-            Light3DSceneShared.LightDirections[lightIndex] = -this.DirectionInternal.ToVector4();
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -this.DirectionInternal.ToVector4();
 
             // --- update lighting variables               
-            this.vLightDir.Set(Light3DSceneShared.LightDirections);
-            this.vLightColor.Set(Light3DSceneShared.LightColors);
-            this.iLightType.Set(Light3DSceneShared.LightTypes);
+            //this.vLightDir.Set(Light3DSceneShared.LightDirections);
+            //this.vLightColor.Set(Light3DSceneShared.LightColors);
+            //this.iLightType.Set(Light3DSceneShared.LightTypes);
 
 
             // --- if shadow-map enabled
             if (this.renderHost.IsShadowMapEnabled)
             {
                 // update shader
-                this.mLightView.SetMatrix(Light3DSceneShared.LightViewMatrices);
-                this.mLightProj.SetMatrix(Light3DSceneShared.LightProjMatrices);
+                //this.mLightView.SetMatrix(Light3DSceneShared.LightViewMatrices);
+                //this.mLightProj.SetMatrix(Light3DSceneShared.LightProjMatrices);
             }
         }
     }

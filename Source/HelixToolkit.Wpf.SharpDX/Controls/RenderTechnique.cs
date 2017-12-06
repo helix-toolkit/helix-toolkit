@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public sealed class RenderTechnique : IComparable, IRenderTechnique
+    public sealed class RenderTechnique : IComparable
     {
         static RenderTechnique()
         {

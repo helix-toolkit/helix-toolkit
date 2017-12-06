@@ -12,13 +12,13 @@ namespace HelixToolkit.UWP.Core
     public class PatchMeshRenderCore : MeshRenderCore
     {
         public float TessellationFactor = 1.0f;
-        private EffectVectorVariable vTessellationVariables;
+       // private EffectVectorVariable vTessellationVariables;
         public string TessellationTechniqueName;
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
             {            // --- init tessellation vars
-                vTessellationVariables = Collect(Effect.GetVariableByName(ShaderVariableNames.TessellationFactorVariable).AsVector());
+             //   vTessellationVariables = Collect(Effect.GetVariableByName(ShaderVariableNames.TessellationFactorVariable).AsVector());
                 if (technique.Name.Equals(TessellationRenderTechniqueNames.PNTriangles))
                 {
                     this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith3ControlPoints;
@@ -35,11 +35,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void SetShaderVariables(IRenderMatrices context)
-        {
-            base.SetShaderVariables(context);
-            vTessellationVariables.Set(new Vector4(TessellationFactor, 0, 0, 0));
-        }
+        //protected override void SetShaderVariables(IRenderMatrices context)
+        //{
+        //    base.SetShaderVariables(context);
+        //    vTessellationVariables.Set(new Vector4(TessellationFactor, 0, 0, 0));
+        //}
 
         protected override bool CanRender()
         {
@@ -48,7 +48,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderMatrices context)
         {
-            EffectTechnique.GetPassByName(TessellationTechniqueName).Apply(context.DeviceContext);
+            //EffectTechnique.GetPassByName(TessellationTechniqueName).Apply(context.DeviceContext);
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }

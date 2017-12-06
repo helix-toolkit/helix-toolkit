@@ -17,15 +17,15 @@ namespace HelixToolkit.UWP.Core
         /// Final Line Color = LineColor * PerVertexLineColor
         /// </summary>
         public Color4 LineColor = Color.Black;
-        private EffectVectorVariable lineParamsVar;
-        private EffectVectorVariable lineColorVar;
+        //private EffectVectorVariable lineParamsVar;
+        //private EffectVectorVariable lineColorVar;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
             {
-                lineParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineParams).AsVector());
-                lineColorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineColor).AsVector());
+                //lineParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineParams).AsVector());
+                //lineColorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineColor).AsVector());
                 return true;
             }
             else
@@ -34,17 +34,10 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void SetShaderVariables(IRenderMatrices matrices)
-        {
-            base.SetShaderVariables(matrices);
-            lineParamsVar.Set(ref LineParams);
-            lineColorVar.Set(ref LineColor);
-        }
-
         protected override void OnRender(IRenderMatrices context)
         {
-            EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            //EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
+            //OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }
 }

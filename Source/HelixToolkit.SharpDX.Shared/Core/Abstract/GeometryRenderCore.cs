@@ -1,4 +1,6 @@
-﻿using SharpDX;
+﻿using System;
+using HelixToolkit.Wpf.SharpDX.Shaders;
+using SharpDX;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -6,7 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public abstract class GeometryRenderCore : RenderCoreBase, IGeometryRenderCore
+    public abstract class GeometryRenderCore : RenderCoreBase<ModelStruct>, IGeometryRenderCore
     {
         private RasterizerState rasterState = null;
         public RasterizerState RasterState { get { return rasterState; } }
@@ -48,7 +50,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
-                this.VertexLayout = technique.InputLayout;
+                this.VertexLayout = technique.Layout;
                 CreateRasterState(rasterDescription, true);
                 return true;
             }
@@ -69,7 +71,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnAttachBuffers(DeviceContext context)
         {
             GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0);
-            InstanceBuffer?.AttachBuffer(context, 1);
+            InstanceBuffer?.AttachBuffer(context, 1);           
         }
 
         protected override bool CanRender()
@@ -77,11 +79,17 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender() && GeometryBuffer != null;
         }
 
-        protected override void PostRender(IRenderMatrices context)
+        protected override void OnUpdateModelStruct(IRenderMatrices context)
         {
-            base.PostRender(context);
-            InstanceBuffer?.ResetHasElementsVariable();
+            modelStruct.World = ModelMatrix * context.WorldMatrix;
+            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1u : 0;
         }
+
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return DefaultConstantBufferDescriptions.ModelCB;
+        }
+
         /// <summary>
         /// Draw call
         /// </summary>

@@ -236,7 +236,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
+            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.BillboardText];
         }
 
         protected override bool CheckGeometry()

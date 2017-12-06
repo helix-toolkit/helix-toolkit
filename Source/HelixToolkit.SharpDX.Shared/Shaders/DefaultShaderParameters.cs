@@ -24,6 +24,18 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        public static byte[] VSMeshInstancing
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshInstancing;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
 
     public static class DefaultPSShaderByteCodes
@@ -59,6 +71,26 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1)
         };
+
+        public static InputElement[] VSInputInstancing { get; } = new InputElement[]
+        {
+                    new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                    new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+                    new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                    new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
+           
+                    //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+                    new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("COLOR", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+                    new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+        };
     }
 
     public static class DefaultVSShaderDescriptions
@@ -72,6 +104,17 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultConstantBufferDescriptions.LightCB,
                 DefaultConstantBufferDescriptions.MaterialCB
             }, 
+            null);
+
+        public static ShaderDescription VSMeshInstancing = new ShaderDescription("VSMeshInstancing", ShaderStage.Vertex, FeatureLevel.Level_11_0,
+            DefaultVSShaderByteCodes.VSMeshInstancing,
+            new ConstantBufferDescription[]
+            {
+                        DefaultConstantBufferDescriptions.GlobalTransformCB,
+                        DefaultConstantBufferDescriptions.ModelCB,
+                        DefaultConstantBufferDescriptions.LightCB,
+                        DefaultConstantBufferDescriptions.MaterialCB
+            },
             null);
     }
 
@@ -97,10 +140,14 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultConstantBufferDescriptions
     {
-        public static ConstantBufferDescription GlobalTransformCB = new ConstantBufferDescription("cbTransforms", GlobalTransformStruct.SizeInBytes, typeof(GlobalTransformStruct), 0);
-        public static ConstantBufferDescription ModelCB = new ConstantBufferDescription("cbModel", ModelStruct.SizeInBytes, typeof(ModelStruct), 1);
-        public static ConstantBufferDescription LightCB = new ConstantBufferDescription("cbLights", LightsStruct.SizeInBytes, typeof(LightsStruct), 2);
-        public static ConstantBufferDescription MaterialCB = new ConstantBufferDescription("cbMaterial", MaterialStruct.SizeInBytes, typeof(MaterialStruct), 3);
+        public static string GlobalTransformCBName = "cbTransform";
+        public static string ModelCBName = "cbModel";
+        public static string LightsCBName = "cbLights";
+        public static string MaterialCBName = "cbMaterial";
+        public static ConstantBufferDescription GlobalTransformCB = new ConstantBufferDescription(GlobalTransformCBName, GlobalTransformStruct.SizeInBytes, typeof(GlobalTransformStruct), 0);
+        public static ConstantBufferDescription ModelCB = new ConstantBufferDescription(ModelCBName, ModelStruct.SizeInBytes, typeof(ModelStruct), 1);
+        public static ConstantBufferDescription LightCB = new ConstantBufferDescription(LightsCBName, LightsStruct.SizeInBytes, typeof(LightsStruct), 2);
+        public static ConstantBufferDescription MaterialCB = new ConstantBufferDescription(MaterialCBName, MaterialStruct.SizeInBytes, typeof(MaterialStruct), 3);
     }
 
     public static class DefaultTextureBufferDescriptions

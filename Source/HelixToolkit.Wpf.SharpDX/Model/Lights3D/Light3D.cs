@@ -134,14 +134,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Matrix LightViewMatrix
         {
-            get { return Light3DSceneShared.LightViewMatrices[this.lightIndex]; }
-            internal set { Light3DSceneShared.LightViewMatrices[this.lightIndex] = value; }
+            get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightView; }
+            internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightView = value; }
         }
 
         public Matrix LightProjectionMatrix
         {
-            get { return Light3DSceneShared.LightProjMatrices[this.lightIndex]; }
-            internal set { Light3DSceneShared.LightProjMatrices[this.lightIndex] = value; }
+            get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightProj; }
+            internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightProj = value; }
         }
 
         protected override bool OnAttach(IRenderHost host)
@@ -154,8 +154,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (host.IsShadowMapEnabled)
                 {
-                    this.mLightView = this.effect.GetVariableByName("mLightView").AsMatrix();
-                    this.mLightProj = this.effect.GetVariableByName("mLightProj").AsMatrix();
+                    //this.mLightView = this.effect.GetVariableByName("mLightView").AsMatrix();
+                    //this.mLightProj = this.effect.GetVariableByName("mLightProj").AsMatrix();
                 }
             }
             return true;
@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
             {
                 // "turn-off" the light
-                Light3DSceneShared.LightColors[lightIndex] = NoLight;
+                Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = NoLight;
             }
             base.OnDetach();
         }
@@ -183,8 +183,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (IsAttached)
                 {
-                    Light3DSceneShared.LightColors[lightIndex] = NoLight;
-                    this.vLightColor.Set(Light3DSceneShared.LightColors);
+                    Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = NoLight;
+                   // this.vLightColor.Set(Light3DSceneShared.LightColors);
                 }
                 return false;
             }
@@ -199,14 +199,14 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Detach();
         }
 
-        protected EffectVectorVariable vLightDir;
-        protected EffectVectorVariable vLightPos;
-        protected EffectVectorVariable vLightColor;
-        protected EffectVectorVariable vLightAtt;
-        protected EffectVectorVariable vLightSpot;
-        protected EffectMatrixVariable mLightView;
-        protected EffectMatrixVariable mLightProj;
-        protected EffectScalarVariable iLightType;
+        //protected EffectVectorVariable vLightDir;
+        //protected EffectVectorVariable vLightPos;
+        //protected EffectVectorVariable vLightColor;
+        //protected EffectVectorVariable vLightAtt;
+        //protected EffectVectorVariable vLightSpot;
+        //protected EffectMatrixVariable mLightView;
+        //protected EffectMatrixVariable mLightProj;
+        //protected EffectScalarVariable iLightType;
         protected int lightIndex = 0;
     }
 

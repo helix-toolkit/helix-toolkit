@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP.ShaderManager
     public interface IConstantBufferPool
     {
         IBufferProxy Register(ConstantBufferDescription description, Device device);
+        IBufferProxy Get(ConstantBufferDescription description);
     }
 
     public class ConstantBufferPool : BufferPool<string, ConstantBufferDescription>, IConstantBufferPool

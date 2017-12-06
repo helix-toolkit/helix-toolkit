@@ -215,8 +215,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Deferred Render accessor
         /// </summary>
-        public static readonly DependencyProperty DeferredRendererProperty = DependencyProperty.Register(
-            "DeferredRenderer", typeof(DeferredRenderer), typeof(Viewport3DX), new PropertyMetadata(null));
+        //public static readonly DependencyProperty DeferredRendererProperty = DependencyProperty.Register(
+        //    "DeferredRenderer", typeof(DeferredRenderer), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
         /// The default camera property.
@@ -1217,11 +1217,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Read-Only DP for the deferred renderes (little bit hacky...)
         /// </summary>
-        public DeferredRenderer DeferredRenderer
-        {
-            get { return (DeferredRenderer)this.GetValue(DeferredRendererProperty); }
-            set { this.SetValue(DeferredRendererProperty, value); }
-        }
+        //public DeferredRenderer DeferredRenderer
+        //{
+        //    get { return (DeferredRenderer)this.GetValue(DeferredRendererProperty); }
+        //    set { this.SetValue(DeferredRendererProperty, value); }
+        //}
 
 
         /// <summary>

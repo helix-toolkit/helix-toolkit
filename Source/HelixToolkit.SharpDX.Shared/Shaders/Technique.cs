@@ -10,7 +10,7 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using ShaderManager;
-    public class Technique : DisposeObject
+    public class Technique :  DisposeObject, IRenderTechnique
     {
         public InputLayout Layout { private set; get; }
         public Device Device { private set; get; }
@@ -20,9 +20,20 @@ namespace HelixToolkit.UWP.Shaders
 
         public BlendState BlendState { private set; get; }
 
+        public IConstantBufferPool ConstantBufferPool { private set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">Technique Name</param>
+        /// <param name="device"></param>
+        /// <param name="byteCode">Vertex shader byte code</param>
+        /// <param name="inputElements">Vertex shader input layout elements</param>
+        /// <param name="shaderList"></param>
+        /// <param name="cbPool">Constant Buffer Pool</param>
         public Technique(string name, Device device, byte[] byteCode, InputElement[] inputElements, IList<ShaderDescription> shaderList, IConstantBufferPool cbPool)
         {
             Name = name;
+            Device = device;
             Layout = Collect(new InputLayout(device, byteCode, inputElements));
             if (shaderList != null)
             {
@@ -31,6 +42,7 @@ namespace HelixToolkit.UWP.Shaders
                     shaders.Add(shader.ShaderType, Collect(shader.CreateShader(device, cbPool)));
                 }
             }
+            ConstantBufferPool = cbPool;
         }
         /// <summary>
         /// Bind shaders and its constant buffer for this technique
@@ -42,6 +54,18 @@ namespace HelixToolkit.UWP.Shaders
             {
                 shader.Bind(context);
                 shader.BindConstantBuffers(context);
+            }
+        }
+
+        public ShaderBase GetShader(ShaderStage type)
+        {
+            if (shaders.ContainsKey(type))
+            {
+                return shaders[type];
+            }
+            else
+            {
+                return new NullShader(type);
             }
         }
 

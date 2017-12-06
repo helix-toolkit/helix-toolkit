@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         Camera Camera { get; }
         Color4 BackgroundColor { get; }
 
-        DeferredRenderer DeferredRenderer { get; set; }
+        //DeferredRenderer DeferredRenderer { get; set; }
 
         IEnumerable<IRenderable> Renderables { get; }
 

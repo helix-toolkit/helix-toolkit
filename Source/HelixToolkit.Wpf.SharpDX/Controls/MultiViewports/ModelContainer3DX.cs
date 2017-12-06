@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(RenderTechnique), typeof(ModelContainer3DX), new PropertyMetadata(null,
+            "RenderTechnique", typeof(IRenderTechnique), typeof(ModelContainer3DX), new PropertyMetadata(null,
                 (s, e) => ((ModelContainer3DX)s).RenderTechniquePropertyChanged()));
 
 
@@ -81,8 +81,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 return currentRenderHost;
             }
         }
-
-        public IRenderTechniquesManager RenderTechniquesManager { get { return EffectsManager != null ? EffectsManager.RenderTechniquesManager : null; } }
 
         public ModelContainer3DX()
         {
