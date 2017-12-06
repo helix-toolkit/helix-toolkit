@@ -1,5 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Utilities;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -9,6 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    using Utilities;
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>

@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP.ShaderManager
                 }
             }
 #else
-            this.device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
+            Device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
             var techniques = LoadTechniques(Device, ConstantBufferPool);
             foreach(var tech in techniques)

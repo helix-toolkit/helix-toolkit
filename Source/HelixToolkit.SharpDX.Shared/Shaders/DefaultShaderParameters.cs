@@ -13,12 +13,33 @@ namespace HelixToolkit.UWP.Shaders
 {
     public static class DefaultVSShaderByteCodes
     {
-        public static byte[] VSMeshDefault { get { return Properties.Resources.vsMeshDefault; } }
+        public static byte[] VSMeshDefault
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshDefault;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
 
     public static class DefaultPSShaderByteCodes
     {
-        public static byte[] PSMeshBinnPhong { get { return Properties.Resources.psMeshBlinnPhong; } }
+        public static byte[] PSMeshBinnPhong
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psMeshBlinnPhong;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
     }
 
     public static class DefaultInputLayout
