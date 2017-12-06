@@ -21,17 +21,14 @@ namespace HelixToolkit.UWP.Shaders
         public int ConstantBufferCount { get { return cbufferMapping.Count; } }
         public int TextureMappingCount { get { return texturesMapping.Count; } }       
 
+        public ShaderStage ShaderType { private set; get; }
+
         public string Name { private set; get; }
 
-        public InputLayout Layout { private set; get; } = null;
-
-        public ShaderBase(Device device, string name = "", byte[] bytecode = null, InputElement[] inputElements = null)
+        public ShaderBase(string name, ShaderStage type)
         {
+            ShaderType = type;
             Name = name;
-            if(bytecode != null && inputElements != null)
-            {
-                Layout = new InputLayout(device, bytecode, inputElements);
-            }
         }
         /// <summary>
         /// Add shader constant buffer
@@ -93,6 +90,11 @@ namespace HelixToolkit.UWP.Shaders
             texturesMapping.Clear();
         }
         /// <summary>
+        /// Bind this shader to pipeline
+        /// </summary>
+        /// <param name="context"></param>
+        public abstract void Bind(DeviceContext context);
+        /// <summary>
         /// Bind all constant buffers in this shader
         /// </summary>
         /// <param name="context"></param>
@@ -103,22 +105,19 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="texture"></param>
-        public virtual void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
-        { throw new NotImplementedException(); }
+        public abstract void BindTexture(DeviceContext context, string name, ShaderResourceView texture);
         /// <summary>
         ///  Bind specified texture resources.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="index"></param>
         /// <param name="texture"></param>
-        public virtual void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
-        { throw new NotImplementedException(); }
+        public abstract void BindTexture(DeviceContext context, int index, ShaderResourceView texture);
         /// <summary>
         /// Bind a list of textures
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>
-        public virtual void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures)
-        { throw new NotImplementedException(); }
+        public abstract void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures);
     }
 }

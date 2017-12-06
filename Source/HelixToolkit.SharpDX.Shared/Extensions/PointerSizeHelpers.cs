@@ -7,7 +7,11 @@
 using System;
 using SharpDX;
 
-namespace HelixToolkit.SharpDX.Helpers
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     /// <summary>
     /// Helpers methods for <see cref="PointerSize"/>.

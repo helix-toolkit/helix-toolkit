@@ -8,17 +8,33 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    /// <summary>
+    /// Vertex Shader
+    /// </summary>
     public class VertexShader : ShaderBase
     {
         private readonly global::SharpDX.Direct3D11.VertexShader shader;
         
-
-        public VertexShader(Device device, string name, byte[] byteCode, InputElement[] inputElements)
-            :base(device, name, byteCode, inputElements)
+        /// <summary>
+        /// Vertex Shader
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="name"></param>
+        /// <param name="byteCode"></param>
+        public VertexShader(Device device, string name, byte[] byteCode)
+            :base(name, ShaderStage.Vertex)
         {
             shader = Collect(new global::SharpDX.Direct3D11.VertexShader(device, byteCode));
         }
 
+        /// <summary>
+        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        public override void Bind(DeviceContext context)
+        {
+            context.VertexShader.Set(shader);
+        }
         /// <summary>
         /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
         /// </summary>

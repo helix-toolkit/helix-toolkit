@@ -19,7 +19,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.D3DCompiler;
     using global::SharpDX.Direct3D;
     using System.IO;
-    using HelixToolkit.SharpDX.Helpers;
     using System.ComponentModel;
     using System.Windows;
     using System.Linq;

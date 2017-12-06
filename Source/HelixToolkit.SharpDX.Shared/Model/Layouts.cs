@@ -171,7 +171,61 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Reflect;
         public float Shininess;       
         public uint HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasShadowMap;
-        public Vector2 Padding;
+        Vector2 Padding;
         public const int SizeInBytes = 4 * (4 * 5 + 1 + 5 + 2);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct GlobalTransformStruct
+    {
+        public Matrix View;
+        public Matrix Projection;
+        public Matrix ViewProjection;
+        // camera frustum: 
+        // [fov,asepct-ratio,near,far]
+        public Vector4 Frustum;
+        // viewport:
+        // [w,h,0,0]
+        public Vector4 Viewport;
+        // camera position
+        public Vector3 EyePos;
+        float padding0;
+        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 3);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ModelStruct
+    {
+        public Matrix World;
+        public uint InvertNormal;
+        public uint HasInstances;
+        public uint HasInstanceParams;
+        float padding0;
+        public const int SizeInBytes = 4 * (4 * 4 + 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct LightStruct
+    {
+        public int LightType;
+        Vector3 padding2;
+        public Vector4 LightDir;
+        public Vector4 LightPos;
+        public Vector4 LightAtt;
+        public Vector4 LightSpot; //(outer angle , inner angle, falloff, free)
+        public Vector4 LightColor;
+        public Matrix LightView;
+        public Matrix LightProj;
+        public const int SizeInBytes = 4 * (4 * 6 + 4 * 4 * 2);
+    }   
+
+    public struct LightsStruct
+    {
+        public const int MaxLights = 16;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxLights)]
+        public LightStruct[] Lights;
+        public Color4 AmbientLight;
+
+        public const int SizeInBytes = LightStruct.SizeInBytes * MaxLights + 4 * 4;
     }
 }

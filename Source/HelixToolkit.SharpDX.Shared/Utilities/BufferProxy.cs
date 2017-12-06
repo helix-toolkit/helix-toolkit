@@ -10,12 +10,12 @@ namespace HelixToolkit.UWP.Utilities
 #endif
 {
     using Extensions;
+    using Shaders;
 
     public interface IBufferProxy<T> : IBufferProxy where T : struct
     {
         void UploadDataToBuffer(DeviceContext context, ref T data);
         void UploadDataToBuffer(DeviceContext context, IList<T> data);
-        void CreateBuffer(Device device);
         void CreateBufferFromDataArray(Device context, IList<T> data);
         void CreateBufferFromDataArray(Device context, IList<T> data, int count);
     }
@@ -42,6 +42,11 @@ namespace HelixToolkit.UWP.Utilities
         /// Buffer binding flag
         /// </summary>
         BindFlags BindFlags { get; }
+
+        Type DataType { get; }
+
+        void UploadDataToBuffer(DeviceContext context, ref object obj);
+        void CreateBuffer(Device device);
     }
 
     public class ImmutableBufferProxy<T> : DynamicBufferProxy<T> where T : struct
@@ -161,23 +166,27 @@ namespace HelixToolkit.UWP.Utilities
             };
         }
 
+        public ConstantBufferProxy(ConstantBufferDescription description)
+            :base(description.StructSize, description.BindFlags)
+        {
+            if (description.StructSize % 16 != 0)
+            {
+                throw new ArgumentException("Constant buffer struct size must be multiple of 16 bytes");
+            }
+            bufferDesc = new BufferDescription()
+            {
+                SizeInBytes = description.StructSize,
+                BindFlags = description.BindFlags,
+                CpuAccessFlags = description.CpuAccessFlags, 
+                OptionFlags = description.OptionFlags,
+                Usage = description.Usage,
+                StructureByteStride = 0
+            };
+        }
+
         public override void UploadDataToBuffer(DeviceContext context, ref T data)
         {
-            if (buffer.Description.Usage == ResourceUsage.Dynamic && buffer.Description.CpuAccessFlags == CpuAccessFlags.Write)
-            {
-                DataStream stream;
-                context.MapSubresource(buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
-                using (stream)
-                {
-                    stream.Position = 0;
-                    stream.Write<T>(data);
-                    context.UnmapSubresource(buffer, 0);
-                }
-            }
-            else
-            {
-                context.UpdateSubresource(ref data, buffer);
-            }
+            context.UpdateSubresource(ref data, buffer);
         }
 
         public override void CreateBuffer(Device device)
@@ -223,6 +232,12 @@ namespace HelixToolkit.UWP.Utilities
 
         public abstract void CreateBufferFromDataArray(Device context, IList<T> data);
         public abstract void CreateBufferFromDataArray(Device context, IList<T> data, int count);
+
+        public void UploadDataToBuffer(DeviceContext context, ref object obj)
+        {
+            var t = (T)obj;
+            UploadDataToBuffer(context, ref t);
+        }
 
         public void Dispose()
         {

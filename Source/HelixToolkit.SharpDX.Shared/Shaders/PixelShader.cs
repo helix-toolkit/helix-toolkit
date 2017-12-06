@@ -8,17 +8,32 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    /// <summary>
+    /// Pixel Shader
+    /// </summary>
     public class PixelShader : ShaderBase
     {
         private readonly global::SharpDX.Direct3D11.PixelShader shader;
 
-
-        public PixelShader(Device device, string name, byte[] byteCode, InputElement[] inputElements)
-            :base(device, name, byteCode, inputElements)
+        /// <summary>
+        /// Pixel Shader
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="name"></param>
+        /// <param name="byteCode"></param>
+        public PixelShader(Device device, string name, byte[] byteCode)
+            :base(name, ShaderStage.Pixel)
         {
             shader = Collect(new global::SharpDX.Direct3D11.PixelShader(device, byteCode));
         }
-
+        /// <summary>
+        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        public override void Bind(DeviceContext context)
+        {
+            context.PixelShader.Set(shader);
+        }
         /// <summary>
         /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
         /// </summary>
