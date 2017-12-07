@@ -1,5 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Model;
-using SharpDX.Direct3D;
+﻿using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
@@ -12,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Model;
     public static class DefaultVSShaderByteCodes
     {
         public static byte[] VSMeshDefault
