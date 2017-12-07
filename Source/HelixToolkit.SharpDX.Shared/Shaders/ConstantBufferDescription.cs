@@ -20,6 +20,8 @@ namespace HelixToolkit.UWP.Shaders
         [DataMember]
         public int StructSize { set; get; }
         [DataMember]
+        public int StrideSize { set; get; }
+        [DataMember]
         public BindFlags BindFlags { set; get; } = BindFlags.ConstantBuffer;
         [DataMember]
         public CpuAccessFlags CpuAccessFlags { set; get; } = CpuAccessFlags.Write;
@@ -32,12 +34,13 @@ namespace HelixToolkit.UWP.Shaders
 
         public ConstantBufferDescription() { }
 
-        public ConstantBufferDescription(string name, int structSize, Type structType, int slot)
+        public ConstantBufferDescription(string name, int structSize, Type structType, int slot, int strideSize=0)
         {
             Name = name;
             StructSize = structSize;
             StructType = structType;
             Slot = slot;
+            StrideSize = strideSize;
         }
 
         public IBufferProxy CreateBuffer()

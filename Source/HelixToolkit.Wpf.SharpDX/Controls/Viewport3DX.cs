@@ -927,7 +927,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.FpsCounter.AddFrame(context.TimeStamp);
             context.Camera = this.Camera;
             context.worldMatrix = this.worldMatrixInternal;   
-            foreach(IRenderable e in this.Renderables.Where(x=>x is ILight3D))
+            foreach(IRenderable e in this.Renderables.Where(x=>x is ILight3D).Take(LightsStruct.MaxLights))
             {
                 e.Render(context);
             }

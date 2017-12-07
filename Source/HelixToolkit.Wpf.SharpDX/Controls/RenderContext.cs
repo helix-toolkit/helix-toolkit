@@ -27,8 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX
     public class RenderContext : IRenderMatrices, IDisposable
     {       
         internal Matrix worldMatrix = Matrix.Identity;
-        //internal Matrix viewMatrix;
-        //internal Matrix projectionMatrix;
+        internal Matrix viewMatrix;
+        internal Matrix projectionMatrix;
         internal BoundingFrustum boundingFrustum;
         private ICamera camera; 
         //private EffectVectorVariable vEyePos, vFrustum, vViewport;        
@@ -37,25 +37,25 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Matrix ViewMatrix
         {
-            get { return globalTransform.View; }
+            get { return viewMatrix; }
             private set
             {
-                if (globalTransform.View == value) { return; }
-                globalTransform.View = value;
+                if (viewMatrix == value) { return; }
+                viewMatrix = value;
                 matrixChanged = true;
             }
         }
 
         public Matrix ProjectionMatrix
         {
-            get { return globalTransform.Projection; }
+            get { return projectionMatrix; }
             set
             {
-                if (globalTransform.Projection == value)
+                if (projectionMatrix == value)
                 {
                     return;
                 }
-                globalTransform.Projection = value;
+                projectionMatrix = value;
                 matrixChanged = true;
             }
         }
@@ -161,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Canvas = canvas;
             this.IsShadowPass = false;
             this.IsDeferredPass = false;
-            cbuffer = pool.Register(DefaultConstantBufferDescriptions.GlobalTransformCB, renderContext.Device) as IBufferProxy<GlobalTransformStruct>;
+            cbuffer = pool.Register(DefaultConstantBufferDescriptions.GlobalTransformCB) as IBufferProxy<GlobalTransformStruct>;
             //this.mView = effect.GetVariableByName("mView").AsMatrix();
             //this.mProjection = effect.GetVariableByName("mProjection").AsMatrix();
             //this.vViewport = effect.GetVariableByName("vViewport").AsVector();
@@ -179,12 +179,14 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UploadToBuffer()
         {
             if (matrixChanged)
-            {                
+            {
+                globalTransform.View = ViewMatrix;
+                globalTransform.Projection = ProjectionMatrix;
                 globalTransform.ViewProjection = globalTransform.View * globalTransform.Projection;
-                screenViewProjectionMatrix = globalTransform.ViewProjection * ViewportMatrix;
-                cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
+                screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;                        
                 matrixChanged = false;
             }
+            cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);             
         }
 
         ~RenderContext()

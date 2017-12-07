@@ -145,4 +145,13 @@
   <data name="vsMeshInstancing" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshinstancing.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psColor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pscolor.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psNormals" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psnormals.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psPositions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pspositions.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

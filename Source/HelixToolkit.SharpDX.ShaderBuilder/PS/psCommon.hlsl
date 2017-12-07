@@ -1,3 +1,5 @@
+#ifndef PSCOMMON_HLSL
+#define PSCOMMON_HLSL
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Material.hlsl"
@@ -122,3 +124,4 @@ float shadowStrength(float4 sp)
     return (fixTeil + nonTeil);
 }
 
+#endif

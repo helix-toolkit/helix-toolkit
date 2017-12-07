@@ -256,8 +256,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         var sceneCamera = context.Camera;
                         
-                        light.LightViewMatrix = CameraExtensions.GetViewMatrix(lightCamera);
-                        light.LightProjectionMatrix = CameraExtensions.GetProjectionMatrix(lightCamera, context.Canvas.ActualWidth / context.Canvas.ActualHeight);
+                    //    light.LightViewMatrix = CameraExtensions.GetViewMatrix(lightCamera);
+                    //    light.LightProjectionMatrix = CameraExtensions.GetProjectionMatrix(lightCamera, context.Canvas.ActualWidth / context.Canvas.ActualHeight);
 
                         this.shadowPassContext.IsShadowPass = true;
                         this.shadowPassContext.Camera = lightCamera;

@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+using SharpDX;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using HelixToolkit.Wpf.SharpDX.Extensions;
@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public DirectionalLight3D()
         {
-            this.Color = global::SharpDX.Color.White;
+            this.Color = global::SharpDX.Color.Blue;
             this.LightType = LightType.Directional;
         }
 
@@ -60,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;
             // --- set lighting parameters
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -this.DirectionInternal.ToVector4();
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -this.DirectionInternal.Normalized().ToVector4();
 
             // --- update lighting variables               
             //this.vLightDir.Set(Light3DSceneShared.LightDirections);

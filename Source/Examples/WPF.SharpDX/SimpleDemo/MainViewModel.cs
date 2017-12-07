@@ -20,6 +20,7 @@ namespace SimpleDemo
     using HelixToolkit.Wpf;
     using System.Windows.Media.Imaging;
     using System.IO;
+    using HelixToolkit.Wpf.SharpDX.ShaderManager;
 
     public class MainViewModel : BaseViewModel
     {
@@ -50,6 +51,8 @@ namespace SimpleDemo
 
         public MainViewModel()
         {
+            ShaderTechniqueManager manager = new DefaultShaderTechniqueManager();
+            manager.Initialize();
             // titles
             Title = "Simple Demo";
             SubTitle = "WPF & SharpDX";
@@ -63,9 +66,10 @@ namespace SimpleDemo
             };
 
             // default render technique
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            
+            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager.Initialize();
+            RenderTechnique = EffectsManager.Techniques[DefaultRenderTechniqueNames.Blinn];
 
             // setup lighting            
             AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);

@@ -140,7 +140,7 @@ namespace HelixToolkit.UWP.Model
 
         public EffectMaterialVariables(IConstantBufferPool cbPool)
         {
-            materialBuffer = cbPool.Get(DefaultConstantBufferDescriptions.MaterialCB) as IBufferProxy<MaterialStruct>;
+            materialBuffer = cbPool.Register(DefaultConstantBufferDescriptions.MaterialCB) as IBufferProxy<MaterialStruct>;
             CreateTextureViews();
         }        
 

@@ -14,8 +14,14 @@ namespace HelixToolkit.UWP.ShaderManager
     {
         private Dictionary<TKEY, IBufferProxy> pool = new Dictionary<TKEY, IBufferProxy>();
 
+        private readonly Device device;
 
-        public IBufferProxy Register(TBUFFERDESC description, Device device)
+        public BufferPool(Device device)
+        {
+            this.device = device;
+        }
+
+        public IBufferProxy Register(TBUFFERDESC description)
         {
             var key = GetKey(description);
             if (pool.ContainsKey(key))
@@ -33,10 +39,5 @@ namespace HelixToolkit.UWP.ShaderManager
 
         protected abstract TKEY GetKey(TBUFFERDESC description);
         protected abstract IBufferProxy CreateBuffer(TBUFFERDESC description);
-
-        public IBufferProxy Get(TBUFFERDESC description)
-        {
-            return pool[GetKey(description)];
-        }
     }
 }

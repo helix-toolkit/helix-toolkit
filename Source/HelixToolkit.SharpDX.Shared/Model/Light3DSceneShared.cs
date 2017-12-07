@@ -15,7 +15,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// </summary>
     public sealed class Light3DSceneShared : IDisposable
     {
-        public const int MaxLights = 16;
         public LightsStruct LightModels;
         //public Vector4[] LightDirections { private set; get; }
         //public Vector4[] LightPositions { private set; get; }
@@ -42,9 +41,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         /// </summary>
         public Light3DSceneShared(IConstantBufferPool pool)
         {
-            LightModels.Lights = new LightStruct[MaxLights];
-            var cb = pool.Get(DefaultConstantBufferDescriptions.LightCB);          
+            LightModels.Lights = new LightStruct[LightsStruct.MaxLights];
+            var cb = pool.Register(DefaultConstantBufferDescriptions.LightCB);          
             buffer = cb as IBufferProxy<LightsStruct>;
+            for(int i=0; i < LightsStruct.MaxLights; ++i)
+            {
+                LightModels.Lights[i].LightColor = new Color4(0, 1, 0, 1);
+                LightModels.Lights[i].LightType = 1;
+                LightModels.Lights[i].LightDir = new Vector4(0, 1, 1, 1);
+            }
             //LightDirections = new Vector4[MaxLights];
             //LightPositions = new Vector4[MaxLights];
             //LightAtt = new Vector4[MaxLights];
@@ -58,25 +63,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         public void UploadToBuffer(DeviceContext context)
         {
             if (buffer.Buffer != null && !buffer.Buffer.IsDisposed)
-            { buffer.UploadDataToBuffer(context, ref LightModels); }
-        }
-        /// <summary>
-        /// Reset
-        /// </summary>
-        public void Reset()
-        {
-            LightCount = 0;
-            LightModels.Lights = new LightStruct[MaxLights];
-            LightModels.AmbientLight = new Color4();
-
-                //LightDirections[i] = new Vector4();
-                //LightPositions[i] = new Vector4();
-                //LightAtt[i] = new Vector4();
-                //LightSpots[i] = new Vector4();
-                //LightColors[i] = new Color4();
-                //LightTypes[i] = 0;
-                //LightViewMatrices[i] = new Matrix();
-                //LightProjMatrices[i] = new Matrix();
+            {
+                buffer.UploadDataToBuffer(context, ref LightModels);
+            }
         }
 
         #region IDisposable Support

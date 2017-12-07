@@ -41,6 +41,23 @@ namespace HelixToolkit.UWP.Shaders
                 {
                     shaders.Add(shader.ShaderType, Collect(shader.CreateShader(device, cbPool)));
                 }
+
+            }
+            if (!shaders.ContainsKey(ShaderStage.Domain))
+            {
+                shaders.Add(ShaderStage.Domain, new NullShader(ShaderStage.Domain));
+            }
+            if (!shaders.ContainsKey(ShaderStage.Hull))
+            {
+                shaders.Add(ShaderStage.Hull, new NullShader(ShaderStage.Hull));
+            }
+            if (!shaders.ContainsKey(ShaderStage.Geometry))
+            {
+                shaders.Add(ShaderStage.Geometry, new NullShader(ShaderStage.Geometry));
+            }
+            if (!shaders.ContainsKey(ShaderStage.Compute))
+            {
+                shaders.Add(ShaderStage.Compute, new NullShader(ShaderStage.Compute));
             }
             ConstantBufferPool = cbPool;
         }
@@ -51,9 +68,9 @@ namespace HelixToolkit.UWP.Shaders
         public void BindShader(DeviceContext context)
         {
             foreach(var shader in Shaders)
-            {
+            {                
                 shader.Bind(context);
-                shader.BindConstantBuffers(context);
+                shader.BindConstantBuffers(context);            
             }
         }
 

@@ -1,5 +1,6 @@
 #ifndef DATASTRUCTS_FX
 #define DATASTRUCTS_FX
+#pragma pack_matrix( row_major )
 //--------------------------------------------------------------------------------------
 // VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------

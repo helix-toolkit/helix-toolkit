@@ -44,7 +44,7 @@
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False">
+            UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -57,8 +57,8 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
+            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
+            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" />
             <hx:MeshGeometryModel3D
                 x:Name="model1"
                 Geometry="{Binding Model}"
@@ -74,7 +74,7 @@
                 Geometry="{Binding Model}"
                 Material="{Binding BlueMaterial}"
                 Transform="{Binding Model3Transform}" />
-            <hx:LineGeometryModel3D
+            <!--<hx:LineGeometryModel3D
                 x:Name="lines"
                 Geometry="{Binding Lines}"
                 Thickness="1.5"
@@ -83,7 +83,7 @@
             <hx:BillboardTextModel3D Geometry="{Binding Billboard1Model}" FixedSize="True"/>
             <hx:BillboardTextModel3D Geometry="{Binding Billboard2Model}" FixedSize="True"/>
             <hx:BillboardTextModel3D Geometry="{Binding Billboard3Model}" FixedSize="False"/>
-            <hx:BillboardTextModel3D Geometry="{Binding BillboardImageModel}" FixedSize="False"/>
+            <hx:BillboardTextModel3D Geometry="{Binding BillboardImageModel}" FixedSize="False"/>-->
             <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
             <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Color="{x:Static sdxm:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
             <!--<hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>-->

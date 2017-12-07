@@ -1,6 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Shaders;
-using HelixToolkit.Wpf.SharpDX.Utilities;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 
@@ -10,6 +8,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
+    using Utilities;
     /// <summary>
     /// Base class for all render core classes
     /// </summary>
@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP.Core
         protected virtual bool OnAttach(IRenderTechnique technique)
         {
             //mWorldVar = Collect(Effect.GetVariableByName(ShaderVariableNames.WorldMatrix).AsMatrix());
-            modelCB = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription(), technique.Device) as IBufferProxy<TModelStruct>;
+            modelCB = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription()) as IBufferProxy<TModelStruct>;
             return true;
         }
 
@@ -97,7 +97,7 @@ namespace HelixToolkit.UWP.Core
         /// <para>Default to call <see cref="SetShaderVariables"/> and <see cref="SetRasterStates"/></para>
         /// </summary>
         /// <param name="context"></param>
-        protected void SetStates(IRenderMatrices context)
+        protected virtual void SetStates(IRenderMatrices context)
         {
             SetRasterStates(context);
         }
@@ -117,7 +117,7 @@ namespace HelixToolkit.UWP.Core
 
         protected abstract void OnUpdateModelStruct(IRenderMatrices context);
 
-        protected void SetModelConstantBuffer(DeviceContext context)
+        protected void UpdateModelConstantBuffer(DeviceContext context)
         {
             modelCB.UploadDataToBuffer(context, ref modelStruct);
         }

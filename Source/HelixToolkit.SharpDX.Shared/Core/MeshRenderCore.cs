@@ -1,5 +1,6 @@
 ﻿using System;
 using SharpDX.Direct3D11;
+using SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -46,7 +47,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdateModelStruct(IRenderMatrices context)
         {
             base.OnUpdateModelStruct(context);
-            modelStruct.InvertNormal = InvertNormal ? 1u : 0;
+            modelStruct.InvertNormal = InvertNormal ? 1 : 0;
         }
 
         protected override void OnRender(IRenderMatrices context)
@@ -55,7 +56,7 @@ namespace HelixToolkit.UWP.Core
             context.DeviceContext.OutputMerger.SetBlendState(blendState);
             context.DeviceContext.OutputMerger.SetDepthStencilState(depthState);                      
             SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D, context);
-            SetModelConstantBuffer(context.DeviceContext);
+            UpdateModelConstantBuffer(context.DeviceContext);
             EffectTechnique.BindShader(context.DeviceContext);
             OnDraw(context.DeviceContext, InstanceBuffer);
         }

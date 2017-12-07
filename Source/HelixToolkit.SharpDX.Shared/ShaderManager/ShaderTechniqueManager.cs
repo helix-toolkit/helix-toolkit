@@ -22,7 +22,8 @@ namespace HelixToolkit.UWP
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
-        public IConstantBufferPool ConstantBufferPool { private set; get; }
+        public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
+        private IConstantBufferPool constantBufferPool;
 
         public IDictionary<string, Technique> Techniques { get; } = new Dictionary<string, Technique>();
 
@@ -32,13 +33,16 @@ namespace HelixToolkit.UWP
 
         public int AdapterIndex { private set; get; }
 
+        public bool Initialized { private set; get; } = false;
+
         public ShaderTechniqueManager()
         {
-            ConstantBufferPool = Collect(new ConstantBufferPool());
         }
 
         public void Initialize()
         {
+            if (Initialized)
+            { return; }
             int adapterIndex;
 #if DX11
             var adapter = GetBestAdapter(out adapterIndex);
@@ -62,12 +66,15 @@ namespace HelixToolkit.UWP
 #else
             Device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
+            RemoveAndDispose(ref constantBufferPool);
+            constantBufferPool = Collect(new ConstantBufferPool(Device));
             AdapterIndex = adapterIndex;
-            var techniques = LoadTechniques(Device, ConstantBufferPool);
+            var techniques = LoadTechniques(Device, constantBufferPool);
             foreach(var tech in techniques)
             {
                 Techniques.Add(tech.Name, Collect(tech));
             }
+            Initialized = true;
         }
 
         protected abstract IList<Technique> LoadTechniques(global::SharpDX.Direct3D11.Device device, IConstantBufferPool bufferPool);
@@ -130,6 +137,7 @@ namespace HelixToolkit.UWP
         {
             Techniques.Clear();
             base.Dispose(disposeManagedResources);
+            Initialized = false;
         }
     }
 
@@ -151,7 +159,7 @@ namespace HelixToolkit.UWP
                     DefaultPSShaderDescriptions.PSMeshBlinnPhong
                 }, bufferPool);
 
-            return new[] { renderBlinn };
+            return new[] { renderBlinn, renderBlinnInstancing };
         }
     }
 }

@@ -1,6 +1,6 @@
 #ifndef MATERIAL_FX
 #define MATERIAL_FX
-
+#pragma pack_matrix( row_major )
 //--------------------------------------------------------------------------------------
 // File: Materials header for HelixToolkit.Wpf.SharpDX
 // Author: Przemyslaw Musialski

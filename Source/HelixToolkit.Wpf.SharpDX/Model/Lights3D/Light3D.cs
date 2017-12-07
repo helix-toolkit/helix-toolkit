@@ -132,17 +132,17 @@ namespace HelixToolkit.Wpf.SharpDX
         //    public static readonly RenderTechnique RenderColors = Techniques.RenderColors;
         //}
 
-        public Matrix LightViewMatrix
-        {
-            get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightView; }
-            internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightView = value; }
-        }
+        //public Matrix LightViewMatrix
+        //{
+        //    get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightView; }
+        //    internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightView = value; }
+        //}
 
-        public Matrix LightProjectionMatrix
-        {
-            get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightProj; }
-            internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightProj = value; }
-        }
+        //public Matrix LightProjectionMatrix
+        //{
+        //    get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightProj; }
+        //    internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightProj = value; }
+        //}
 
         protected override bool OnAttach(IRenderHost host)
         {
@@ -150,8 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.LightType != LightType.Ambient)
             {
                 this.lightIndex = host.Light3DSceneShared.LightCount++;
-                host.Light3DSceneShared.LightCount = host.Light3DSceneShared.LightCount % Light3DSceneShared.MaxLights;
-
+                host.Light3DSceneShared.LightCount = host.Light3DSceneShared.LightCount % LightsStruct.MaxLights;
                 if (host.IsShadowMapEnabled)
                 {
                     //this.mLightView = this.effect.GetVariableByName("mLightView").AsMatrix();

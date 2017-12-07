@@ -2,7 +2,6 @@
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX.Shaders;
 using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -10,6 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
     /// <summary>
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
     /// <para>Usage: Call SetScreenSpacedCoordinates(RenderHost) to move coordinate system. Call other render functions for sub models. Finally call RestoreCoordinates(RenderHost) to restore original coordinate system.</para>

@@ -57,6 +57,9 @@
     <Content Include="Common\DataStructs.hlsl" />
     <Content Include="Common\Material.hlsl" />
     <Content Include="PS\psCommon.hlsl" />
+    <PixelShader Include="PS\psColor.hlsl" />
+    <PixelShader Include="PS\psNormals.hlsl" />
+    <PixelShader Include="PS\psPositions.hlsl" />
     <VertexShader Include="VS\vsMeshInstancing.hlsl" />
     <PixelShader Include="PS\psMeshBlinnPhong.hlsl" />
     <VertexShader Include="VS\vsMeshDefault.hlsl" />
@@ -70,11 +73,8 @@
     <Error Condition="!Exists('..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y /f $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

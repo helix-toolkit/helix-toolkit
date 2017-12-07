@@ -52,6 +52,45 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
+
+        public static byte[] PSMeshVertColor
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psColor;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
+        public static byte[] PSMeshVertPosition
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psPositions;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
+        public static byte[] PSMeshNormal
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psNormals;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
     }
 
     public static class DefaultInputLayout
@@ -110,10 +149,10 @@ namespace HelixToolkit.UWP.Shaders
             DefaultVSShaderByteCodes.VSMeshInstancing,
             new ConstantBufferDescription[]
             {
-                        DefaultConstantBufferDescriptions.GlobalTransformCB,
-                        DefaultConstantBufferDescriptions.ModelCB,
-                        DefaultConstantBufferDescriptions.LightCB,
-                        DefaultConstantBufferDescriptions.MaterialCB
+                DefaultConstantBufferDescriptions.GlobalTransformCB,
+                DefaultConstantBufferDescriptions.ModelCB,
+                DefaultConstantBufferDescriptions.LightCB,
+                DefaultConstantBufferDescriptions.MaterialCB
             },
             null);
     }
@@ -125,6 +164,7 @@ namespace HelixToolkit.UWP.Shaders
             new ConstantBufferDescription[]
             {
                 DefaultConstantBufferDescriptions.GlobalTransformCB,
+                DefaultConstantBufferDescriptions.ModelCB,
                 DefaultConstantBufferDescriptions.LightCB,
                 DefaultConstantBufferDescriptions.MaterialCB
             },
@@ -136,6 +176,13 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultTextureBufferDescriptions.DisplacementMapTB,              
                 DefaultTextureBufferDescriptions.ShadowMapTB
             });
+
+        public static ShaderDescription PSMeshVertColor = new ShaderDescription("PSColor", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+            DefaultPSShaderByteCodes.PSMeshBinnPhong);
+        public static ShaderDescription PSMeshVertNormal = new ShaderDescription("PSNormal", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+            DefaultPSShaderByteCodes.PSMeshNormal);
+        public static ShaderDescription PSMeshVertPosition = new ShaderDescription("PSPosition", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+            DefaultPSShaderByteCodes.PSMeshVertPosition);
     }
 
     public static class DefaultConstantBufferDescriptions
@@ -146,7 +193,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string MaterialCBName = "cbMaterial";
         public static ConstantBufferDescription GlobalTransformCB = new ConstantBufferDescription(GlobalTransformCBName, GlobalTransformStruct.SizeInBytes, typeof(GlobalTransformStruct), 0);
         public static ConstantBufferDescription ModelCB = new ConstantBufferDescription(ModelCBName, ModelStruct.SizeInBytes, typeof(ModelStruct), 1);
-        public static ConstantBufferDescription LightCB = new ConstantBufferDescription(LightsCBName, LightsStruct.SizeInBytes, typeof(LightsStruct), 2);
+        public static ConstantBufferDescription LightCB = new ConstantBufferDescription(LightsCBName, LightsStruct.SizeInBytes, typeof(LightsStruct), 2, LightStruct.SizeInBytes);
         public static ConstantBufferDescription MaterialCB = new ConstantBufferDescription(MaterialCBName, MaterialStruct.SizeInBytes, typeof(MaterialStruct), 3);
     }
 

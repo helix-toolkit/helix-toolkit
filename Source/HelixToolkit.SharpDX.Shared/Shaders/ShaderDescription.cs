@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach(var bufDesc in ConstantBufferDescriptions)
                 {
-                    shader.AddConstantBuffer(bufDesc.Name, bufDesc.Slot, pool.Register(bufDesc, device));
+                    shader.AddConstantBuffer(bufDesc.Name, bufDesc.Slot, pool.Register(bufDesc));
                 }
             }
             if(TextureDescriptions != null)

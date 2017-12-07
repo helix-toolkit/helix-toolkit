@@ -44,8 +44,8 @@ PSInput main(VSInput input)
 		//for (int i = 0; i < 1; i++)
 		{
             output.sp = mul(inputp, mWorld);
-            output.sp = mul(output.sp, Lights[0].mLightView);
-            output.sp = mul(output.sp, Lights[0].mLightProj);
+            //output.sp = mul(output.sp, Lights[0].mLightView);
+            //output.sp = mul(output.sp, Lights[0].mLightProj);
         }
     }
 

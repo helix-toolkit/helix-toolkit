@@ -197,9 +197,9 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct ModelStruct
     {
         public Matrix World;
-        public uint InvertNormal;
-        public uint HasInstances;
-        public uint HasInstanceParams;
+        public int InvertNormal;
+        public int HasInstances;
+        public int HasInstanceParams;
         float padding0;
         public const int SizeInBytes = 4 * (4 * 4 + 4);
     }
@@ -208,24 +208,27 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct LightStruct
     {
         public int LightType;
-        Vector3 padding2;
+        Vector3 padding;
         public Vector4 LightDir;
         public Vector4 LightPos;
         public Vector4 LightAtt;
         public Vector4 LightSpot; //(outer angle , inner angle, falloff, free)
-        public Vector4 LightColor;
+        public Color4 LightColor;
         public Matrix LightView;
         public Matrix LightProj;
-        public const int SizeInBytes = 4 * (4 * 6 + 4 * 4 * 2);
-    }   
+        Vector4 padding1;
+        Vector4 padding2;
+        public const int SizeInBytes = 4 * (4 * 8 + 4 * 4 * 2);
+    }
 
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct LightsStruct
     {
-        public const int MaxLights = 16;
+        public const int MaxLights = 8;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxLights)]
         public LightStruct[] Lights;
-        public Color4 AmbientLight;
+        //public Color4 AmbientLight;
 
-        public const int SizeInBytes = LightStruct.SizeInBytes * MaxLights + 4 * 4;
+        public const int SizeInBytes = LightStruct.SizeInBytes * MaxLights;
     }
 }

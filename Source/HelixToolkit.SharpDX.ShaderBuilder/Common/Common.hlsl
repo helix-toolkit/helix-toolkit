@@ -1,6 +1,6 @@
 #ifndef COMMON_HLSL
 #define COMMON_HLSL
-
+#pragma pack_matrix( row_major )
 //--------------------------------------------------------------------------------------
 // Perframe Buffers
 //--------------------------------------------------------------------------------------
@@ -33,29 +33,32 @@ cbuffer cbModel : register(b1)
 //--------------------------------------------------------------------------------------
 // pre-processor defines
 //--------------------------------------------------------------------------------------
-#define LIGHTS 16
+#define LIGHTS 8
 //--------------------------------------------------------------------------------------
 // Light Buffer
 //--------------------------------------------------------------------------------------
-struct Light
+struct LightStruct
 {
-    int iLightType;
-    int3 padding2;
-    float4 vLightDir;
-    float4 vLightPos;
-    float4 vLightAtt;
-    float4 vLightSpot; //(outer angle , inner angle, falloff, free)
-    float4 vLightColor;
-    matrix mLightView;
-    matrix mLightProj;
+    int iLightType; //4
+    float3 paddingL;
+	// the light direction is here the vector which looks towards the light
+    float4 vLightDir;//8
+    float4 vLightPos;//12
+    float4 vLightAtt;//16
+    float4 vLightSpot; //(outer angle , inner angle, falloff, free), 20
+    float4 vLightColor;//24
+    matrix mLightView;//40
+    matrix mLightProj;//56
+    float4 padding3;//60
+    float4 padding4;//64
 };
 
 cbuffer cbLights : register(b2)
 {
-    Light Lights[LIGHTS];
-    float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
+    LightStruct Lights[LIGHTS];
+    //
 };
-
+float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
 
 //--------------------------------------------------------------------------------------
 // GLOBAL FUNCTIONS

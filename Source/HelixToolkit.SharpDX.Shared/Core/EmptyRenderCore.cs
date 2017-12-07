@@ -1,7 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
 using System;
-using HelixToolkit.Wpf.SharpDX.Shaders;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -9,6 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
     public sealed class EmptyRenderCore : RenderCoreBase<ModelStruct>
     {
         protected override ConstantBufferDescription GetModelConstantBufferDescription()

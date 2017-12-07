@@ -1,5 +1,4 @@
 ﻿using System;
-using HelixToolkit.Wpf.SharpDX.Shaders;
 using SharpDX;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
@@ -8,6 +7,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
     public abstract class GeometryRenderCore : RenderCoreBase<ModelStruct>, IGeometryRenderCore
     {
         private RasterizerState rasterState = null;
@@ -82,7 +82,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdateModelStruct(IRenderMatrices context)
         {
             modelStruct.World = ModelMatrix * context.WorldMatrix;
-            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1u : 0;
+            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
         }
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
