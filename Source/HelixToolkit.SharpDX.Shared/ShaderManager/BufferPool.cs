@@ -10,19 +10,13 @@ namespace HelixToolkit.UWP.ShaderManager
 {
     using global::SharpDX.Direct3D11;
     using Utilities;
-    public abstract class BufferPool<TKEY, TBUFFERDESC> : DisposeObject
+    public abstract class BufferPool<TKEY, TBUFFERDESC> : GeneralPool<TKEY, IBufferProxy, TBUFFERDESC>
     {
-        private Dictionary<TKEY, IBufferProxy> pool = new Dictionary<TKEY, IBufferProxy>();
-
-        private readonly Device device;
-        public Device Device { get { return device; } }
-
-        public BufferPool(Device device)
+        public BufferPool(Device device) : base(device)
         {
-            this.device = device;
         }
 
-        public IBufferProxy Register(TBUFFERDESC description)
+        public override IBufferProxy Register(TBUFFERDESC description)
         {
             var key = GetKey(description);
             if (pool.ContainsKey(key))
@@ -32,7 +26,7 @@ namespace HelixToolkit.UWP.ShaderManager
             else
             {
                 var buffer = Collect(CreateBuffer(description));
-                buffer.CreateBuffer(device);
+                buffer.CreateBuffer(Device);
                 pool.Add(key, buffer);
                 return buffer;
             }

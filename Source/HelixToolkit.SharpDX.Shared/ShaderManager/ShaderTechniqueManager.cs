@@ -25,6 +25,12 @@ namespace HelixToolkit.UWP
         public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
         private IConstantBufferPool constantBufferPool;
 
+        private IShaderPoolManager shaderPoolManager;
+        public IShaderPoolManager ShaderManager { get { return shaderPoolManager; } }
+
+        private IStatePoolManager statePoolManager;
+        public IStatePoolManager StateManager { get { return statePoolManager; } }
+
         public IDictionary<string, Technique> Techniques { get; } = new Dictionary<string, Technique>();
 
         public global::SharpDX.Direct3D11.Device Device { private set; get; }
@@ -66,18 +72,46 @@ namespace HelixToolkit.UWP
 #else
             Device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
+            AdapterIndex = adapterIndex;
+            #region Initial Internal Pools
             RemoveAndDispose(ref constantBufferPool);
             constantBufferPool = Collect(new ConstantBufferPool(Device));
-            AdapterIndex = adapterIndex;
-            var techniques = LoadTechniques(Device, constantBufferPool);
+
+            RemoveAndDispose(ref shaderPoolManager);
+            shaderPoolManager = Collect(new ShaderPoolManager(Device, constantBufferPool));
+
+            RemoveAndDispose(ref statePoolManager);
+            statePoolManager = Collect(new StatePoolManager(Device));
+            #endregion
+            #region Initial Techniques
+            var techniques = LoadTechniques(Device);
             foreach(var tech in techniques)
             {
                 Techniques.Add(tech.Name, Collect(tech));
             }
+            #endregion
             Initialized = true;
         }
 
-        protected abstract IList<Technique> LoadTechniques(global::SharpDX.Direct3D11.Device device, IConstantBufferPool bufferPool);
+        protected IList<Technique> LoadTechniques(global::SharpDX.Direct3D11.Device device)
+        {
+            var techniqueDescs = LoadTechniqueDescriptions();
+            if(techniqueDescs == null)
+            {
+                return new Technique[0];
+            }
+            else
+            {
+                var list = new List<Technique>(techniqueDescs.Count);
+                foreach(var desc in techniqueDescs)
+                {
+                    list.Add(new Technique(desc, device, this));
+                }
+                return list;
+            }
+        }
+
+        protected abstract IList<TechniqueDescription> LoadTechniqueDescriptions();
 
         /// <summary>
         /// 
@@ -143,21 +177,29 @@ namespace HelixToolkit.UWP
 
     public class DefaultShaderTechniqueManager : ShaderTechniqueManager
     {
-        protected override IList<Technique> LoadTechniques(global::SharpDX.Direct3D11.Device device, IConstantBufferPool bufferPool)
+        protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
         {
-            var renderBlinn = new Technique(DefaultRenderTechniqueNames.Blinn, device, DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput,
-                new[]
+            var renderBlinn = new TechniqueDescription()
+            {
+                Name = DefaultRenderTechniqueNames.Blinn,
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                ShaderList = new[]
                 {
                     DefaultVSShaderDescriptions.VSMeshDefault,
                     DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                }, bufferPool);
+                }
+            };
 
-            var renderBlinnInstancing = new Technique(DefaultRenderTechniqueNames.InstancingBlinn, device, DefaultVSShaderByteCodes.VSMeshInstancing, DefaultInputLayout.VSInputInstancing,
-                new[]
+            var renderBlinnInstancing = new TechniqueDescription()
+            {
+                Name = DefaultRenderTechniqueNames.InstancingBlinn,
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshInstancing, DefaultInputLayout.VSInputInstancing),
+                ShaderList = new[]
                 {
                     DefaultVSShaderDescriptions.VSMeshInstancing,
                     DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                }, bufferPool);
+                }
+            };
 
             return new[] { renderBlinn, renderBlinnInstancing };
         }

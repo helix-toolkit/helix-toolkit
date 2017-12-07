@@ -18,7 +18,11 @@ namespace HelixToolkit.UWP.Shaders
         private readonly Dictionary<ShaderStage, ShaderBase> shaders = new Dictionary<ShaderStage, ShaderBase>();
         public IEnumerable<ShaderBase> Shaders { get { return shaders.Values; } }
 
-        public BlendState BlendState { private set; get; }
+        public BlendState BlendState { private set; get; } = null;
+
+        public DepthStencilState DepthStencilState { private set; get; } = null;
+
+        public RasterizerState RasterState { private set; get; } = null;
 
         public IConstantBufferPool ConstantBufferPool { private set; get; }
         /// <summary>
@@ -30,19 +34,19 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="inputElements">Vertex shader input layout elements</param>
         /// <param name="shaderList"></param>
         /// <param name="cbPool">Constant Buffer Pool</param>
-        public Technique(string name, Device device, byte[] byteCode, InputElement[] inputElements, IList<ShaderDescription> shaderList, IConstantBufferPool cbPool)
+        public Technique(TechniqueDescription description, Device device, IEffectsManager manager)
         {
-            Name = name;
+            Name = description.Name;
             Device = device;
-            Layout = Collect(new InputLayout(device, byteCode, inputElements));
-            if (shaderList != null)
+            Layout = manager.ShaderManager.RegisterInputLayout(description.InputLayoutDescription);
+            if (description.ShaderList != null)
             {
-                foreach(var shader in shaderList)
+                foreach(var shader in description.ShaderList)
                 {
-                    shaders.Add(shader.ShaderType, Collect(shader.CreateShader(device, cbPool)));
+                    shaders.Add(shader.ShaderType, manager.ShaderManager.RegisterShader(shader));
                 }
-
             }
+
             if (!shaders.ContainsKey(ShaderStage.Domain))
             {
                 shaders.Add(ShaderStage.Domain, new NullShader(ShaderStage.Domain));
@@ -59,8 +63,15 @@ namespace HelixToolkit.UWP.Shaders
             {
                 shaders.Add(ShaderStage.Compute, new NullShader(ShaderStage.Compute));
             }
-            ConstantBufferPool = cbPool;
+            ConstantBufferPool = manager.ConstantBufferPool;
+
+            BlendState = description.BlendStateDescription != null ? manager.StateManager.Register((BlendStateDescription)description.BlendStateDescription) : null;
+
+            DepthStencilState = description.DepthStencilStateDescription != null ? manager.StateManager.Register((DepthStencilStateDescription)description.DepthStencilStateDescription) : null;
+
+            RasterState = description.RasterStateDescription != null ? manager.StateManager.Register((RasterizerStateDescription)description.RasterStateDescription) : null;
         }
+        
         /// <summary>
         /// Bind shaders and its constant buffer for this technique
         /// </summary>

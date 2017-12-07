@@ -43,7 +43,24 @@ namespace HelixToolkit.Wpf.SharpDX
         Device Device { get; }
         DriverType DriverType { get; }
         IDictionary<string, Technique> Techniques { get; }
-
+        IShaderPoolManager ShaderManager { get; }
+        IStatePoolManager StateManager { get; }
         void Initialize();
+    }
+
+    public interface IShaderPoolManager
+    {
+        ShaderBase RegisterShader(ShaderDescription description);
+
+        InputLayout RegisterInputLayout(InputLayoutDescription description);
+    }
+
+    public interface IStatePoolManager
+    {
+        BlendState Register(BlendStateDescription desc);
+
+        RasterizerState Register(RasterizerStateDescription desc);
+
+        DepthStencilState Register(DepthStencilStateDescription desc);
     }
 }
