@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP.ShaderManager
         private Dictionary<TKEY, IBufferProxy> pool = new Dictionary<TKEY, IBufferProxy>();
 
         private readonly Device device;
+        public Device Device { get { return device; } }
 
         public BufferPool(Device device)
         {

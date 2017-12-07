@@ -49,8 +49,6 @@ struct LightStruct
     float4 vLightColor;//24
     matrix mLightView;//40
     matrix mLightProj;//56
-    float4 padding3;//60
-    float4 padding4;//64
 };
 
 cbuffer cbLights : register(b2)

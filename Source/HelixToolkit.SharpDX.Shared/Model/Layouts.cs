@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Specular;
         public Color4 Reflect;
         public float Shininess;       
-        public uint HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasShadowMap;
+        public int HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasShadowMap;
         Vector2 Padding;
         public const int SizeInBytes = 4 * (4 * 5 + 1 + 5 + 2);
     }
@@ -216,9 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 LightColor;
         public Matrix LightView;
         public Matrix LightProj;
-        Vector4 padding1;
-        Vector4 padding2;
-        public const int SizeInBytes = 4 * (4 * 8 + 4 * 4 * 2);
+        public const int SizeInBytes = 4 * (4 * 6 + 4 * 4 * 2);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

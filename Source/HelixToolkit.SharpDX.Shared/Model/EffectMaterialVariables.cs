@@ -18,7 +18,6 @@ namespace HelixToolkit.UWP.Model
     public class EffectMaterialVariables : DisposeObject, IEffectMaterialVariables
     {
         public event System.EventHandler<bool> OnInvalidateRenderer;
-        public int MaterialIndex = 2;
         public int DiffuseMapIndex = 0;
         public int DiffuseAlphaMapIndex = 1;
         public int NormalMapIndex = 2;
@@ -26,7 +25,6 @@ namespace HelixToolkit.UWP.Model
 
         private IPhongMaterial material;
         public Device Device { private set; get; }
-        //private readonly Effect effect;
         private ShaderResourceView texDiffuseAlphaMapView;
         private ShaderResourceView texDiffuseMapView;
         private ShaderResourceView texNormalMapView;
@@ -141,6 +139,7 @@ namespace HelixToolkit.UWP.Model
         public EffectMaterialVariables(IConstantBufferPool cbPool)
         {
             materialBuffer = cbPool.Register(DefaultConstantBufferDescriptions.MaterialCB) as IBufferProxy<MaterialStruct>;
+            Device = cbPool.Device;
             CreateTextureViews();
         }        
 
@@ -205,11 +204,11 @@ namespace HelixToolkit.UWP.Model
                 Reflect = material.ReflectiveColor,
                 Specular = material.SpecularColor,
                 Shininess = material.SpecularShininess,
-                HasDiffuseMap = RenderDiffuseMap && texDiffuseMapView != null ? 1u : 0,
-                HasDiffuseAlphaMap = RenderDiffuseAlphaMap && texDiffuseAlphaMapView != null ? 1u : 0,
-                HasNormalMap = RenderNormalMap && texNormalMapView != null ? 1u : 0,
-                HasDisplacementMap = RenderDisplacementMap && texDisplacementMapView != null ? 1u : 0,
-                HasShadowMap = HasShadowMap ? 1u : 0
+                HasDiffuseMap = RenderDiffuseMap && texDiffuseMapView != null ? 1 : 0,
+                HasDiffuseAlphaMap = RenderDiffuseAlphaMap && texDiffuseAlphaMapView != null ? 1 : 0,
+                HasNormalMap = RenderNormalMap && texNormalMapView != null ? 1 : 0,
+                HasDisplacementMap = RenderDisplacementMap && texDisplacementMapView != null ? 1 : 0,
+                HasShadowMap = HasShadowMap ? 1 : 0
             };
         }
 
@@ -225,13 +224,12 @@ namespace HelixToolkit.UWP.Model
                 needUpdate = false;
             }
             materialBuffer.UploadDataToBuffer(context, ref materialStruct);
+            OnAttachMaterial(context);
             return true;
         }
 
         protected virtual void OnAttachMaterial(DeviceContext context)
         {
-            //context.AttachConstantBuffer(ShaderStage.Vertex, MaterialIndex, materialBuffer.Buffer);
-            //context.AttachConstantBuffer(ShaderStage.Pixel, MaterialIndex, materialBuffer.Buffer);
             context.AttachShaderResources(ShaderStage.Pixel, DiffuseMapIndex, texDiffuseMapView);
             context.AttachShaderResources(ShaderStage.Pixel, DiffuseAlphaMapIndex, texDiffuseAlphaMapView);
             context.AttachShaderResources(ShaderStage.Pixel, NormalMapIndex, texNormalMapView);
