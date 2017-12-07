@@ -6,58 +6,17 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Windows;
-
-    using global::SharpDX.Direct3D11;
-
     public sealed class AmbientLight3D : Light3D
     {
-    //    private EffectVectorVariable vLightAmbient;
-
         public AmbientLight3D()
         {
             this.Color = new global::SharpDX.Color4(0.2f, 0.2f, 0.2f, 1f);
             this.LightType = LightType.Ambient;
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override void OnRender(RenderContext context)
         {
-            // --- attach
-            if (base.OnAttach(host))
-            {
-                host.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
-                // --- light constant params              
-                //this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
-                //this.vLightAmbient.Set(this.ColorInternal);
-
-                // --- flush
-                //this.Device.ImmediateContext.Flush();     
-                return true;
-            }
-            else
-            {
-                return false;
-            }      
-        }
-
-        protected override void OnDetach()
-        {
-            //if (this.vLightAmbient != null)
-            //{
-            //    if(!this.effect.IsDisposed)
-            //        this.vLightAmbient.Set(new global::SharpDX.Color4(0, 0, 0, 0));
-            //    Disposer.RemoveAndDispose(ref this.vLightAmbient);
-            //}
-            base.OnDetach();
-        }
-
-        protected override void OnColorChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (IsAttached)
-            {
-                renderHost.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
-                //  this.vLightAmbient.Set(this.ColorInternal);
-            }
+            Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
         }
     }
 }

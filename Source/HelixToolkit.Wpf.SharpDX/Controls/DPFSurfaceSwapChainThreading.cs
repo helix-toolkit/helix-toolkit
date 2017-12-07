@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Light3D shared data per each secne
         /// </summary>
-        public Light3DSceneShared Light3DSceneShared { private set; get; }
+        public Light3DSceneShared Light3DSceneShared { get { return renderContext.LightScene; } }
 
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -759,10 +759,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
                         renderContext?.Dispose();
-                        Light3DSceneShared?.Dispose();
                         renderContext = new RenderContext(this, deferredContext, EffectsManager.ConstantBufferPool);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                        Light3DSceneShared = new Light3DSceneShared(EffectsManager.ConstantBufferPool);
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {
                             SharedModelContainer.CurrentRenderHost = this;

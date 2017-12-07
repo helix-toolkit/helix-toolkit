@@ -54,16 +54,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public LightType LightType { get; protected set; }
 
 
-        public Light3D()
-        {
-        }
-
-        ~Light3D()
-        {
-
-        }
-
-
         private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Light3D)d).ColorInternal = (Color4)e.NewValue;
@@ -120,29 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// The lighting model.
-        /// </summary>
-        //public static class Model
-        //{
-        //    //PhongPerVertex,
-        //    //BlinnPhongPerVertex,
-        //    public static readonly RenderTechnique RenderPhong = Techniques.RenderPhong;
-        //    public static readonly RenderTechnique RenderBlinnPhong = Techniques.RenderBlinn;
-        //    public static readonly RenderTechnique RenderColors = Techniques.RenderColors;
-        //}
-
-        //public Matrix LightViewMatrix
-        //{
-        //    get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightView; }
-        //    internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightView = value; }
-        //}
-
-        //public Matrix LightProjectionMatrix
-        //{
-        //    get { return Light3DSceneShared.LightModels.Lights[lightIndex].LightProj; }
-        //    internal set { Light3DSceneShared.LightModels.Lights[lightIndex].LightProj = value; }
-        //}
+        protected int lightIndex { private set; get; }
 
         protected override bool OnAttach(IRenderHost host)
         {
@@ -165,48 +133,17 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
             {
                 // "turn-off" the light
-                Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = NoLight;
+                Light3DSceneShared.LightModels.Lights[lightIndex].LightEnabled = 0;
             }
             base.OnDetach();
         }
 
-        protected override void OnRender(RenderContext context)
-        {
-            
-        }
-
-        protected static readonly Color4 NoLight = new Color4(0,0,0,0);
         protected override bool CanRender(RenderContext context)
         {
-            if (!base.CanRender(context))
-            {
-                if (IsAttached)
-                {
-                    Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = NoLight;
-                   // this.vLightColor.Set(Light3DSceneShared.LightColors);
-                }
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            var render = base.CanRender(context) && !renderHost.IsDeferredLighting;
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightEnabled = render ? 1 : 0;
+            return render;
         }
-
-        public override void Dispose()
-        {
-            this.Detach();
-        }
-
-        //protected EffectVectorVariable vLightDir;
-        //protected EffectVectorVariable vLightPos;
-        //protected EffectVectorVariable vLightColor;
-        //protected EffectVectorVariable vLightAtt;
-        //protected EffectVectorVariable vLightSpot;
-        //protected EffectMatrixVariable mLightView;
-        //protected EffectMatrixVariable mLightProj;
-        //protected EffectScalarVariable iLightType;
-        protected int lightIndex = 0;
     }
 
     public abstract class PointLightBase3D : Light3D

@@ -40,7 +40,8 @@ cbuffer cbModel : register(b1)
 struct LightStruct
 {
     int iLightType; //4
-    float3 paddingL;
+    bool bLightEnable;
+    float2 paddingL;
 	// the light direction is here the vector which looks towards the light
     float4 vLightDir;//8
     float4 vLightPos;//12

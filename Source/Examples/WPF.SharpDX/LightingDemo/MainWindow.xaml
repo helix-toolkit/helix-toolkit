@@ -35,7 +35,7 @@
             TextBrush="Black"
             UseDefaultGestures="False"
             EffectsManager="{Binding EffectsManager}"
-            RenderTechnique="{Binding RenderTechnique}">
+            RenderTechnique="{Binding RenderTechnique}" EnableSwapChainRendering="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />

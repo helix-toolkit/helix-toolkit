@@ -927,13 +927,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.FpsCounter.AddFrame(context.TimeStamp);
             context.Camera = this.Camera;
-            context.worldMatrix = this.worldMatrixInternal;   
-            foreach(IRenderable e in this.Renderables.Where(x=>x is ILight3D).Take(LightsBufferModel.MaxLights))
+            context.worldMatrix = this.worldMatrixInternal;
+            int counter = 0; 
+            foreach(IRenderable e in this.Renderables.Take(LightsBufferModel.MaxLights).Where(x=>x is ILight3D))
             {
                 e.Render(context);
+                ++counter;
             }
-            context.LightScene.UploadToBuffer(context.DeviceContext);
-            foreach (IRenderable e in this.Renderables)
+            context.UpdatePerFrameData();
+            foreach (IRenderable e in this.Renderables.Skip(counter))
             {
                 e.Render(context);
             }

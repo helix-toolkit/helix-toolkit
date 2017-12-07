@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Light3D shared data per each secne
         /// </summary>
-        public Light3DSceneShared Light3DSceneShared { private set; get; }
+        public Light3DSceneShared Light3DSceneShared { get { return renderContext.LightScene; } }
 #if MSAA
         private Texture2D renderTargetNMS;
 #endif
@@ -696,8 +696,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?.Techniques[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
 
                         renderContext?.Dispose();
-                        Light3DSceneShared?.Dispose();
-                        Light3DSceneShared = new Light3DSceneShared(EffectsManager.ConstantBufferPool);
                         renderContext = new RenderContext(this, deferredContext, EffectsManager.ConstantBufferPool);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         if (EnableSharingModelMode && SharedModelContainer != null)

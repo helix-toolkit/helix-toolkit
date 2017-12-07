@@ -130,13 +130,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     if(EnableBoundingFrustum)
                         boundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
                     globalTransform.EyePos = this.camera.Position.ToVector3();
-                    //this.vViewport.Set(ref viewport);
-                    //this.vFrustum.Set(ref frustum);
-
-                    //this.vEyePos.Set(this.camera.Position.ToVector3());
-                    //this.mView.SetMatrix(ref viewMatrix);
-                    //this.mProjection.SetMatrix(ref projectionMatrix);
-                    UploadToBuffer();
                 }
             }
         }
@@ -175,8 +168,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return screenViewProjectionMatrix;
         }
-
-        private void UploadToBuffer()
+        /// <summary>
+        /// Call to update constant buffer for per frame
+        /// </summary>
+        public void UpdatePerFrameData()
         {
             if (matrixChanged)
             {
@@ -186,7 +181,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;                        
                 matrixChanged = false;
             }
-            cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);             
+            cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
+            LightScene.UploadToBuffer(DeviceContext);         
         }
 
         ~RenderContext()
