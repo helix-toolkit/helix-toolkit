@@ -45,10 +45,7 @@ namespace HelixToolkit.UWP.Shaders
 
         public IBufferProxy CreateBuffer()
         {
-            Type genericClass = typeof(ConstantBufferProxy<>);
-            Type constructed = genericClass.MakeGenericType(StructType);
-            var obj = Activator.CreateInstance(constructed, this);
-            return (IBufferProxy)obj;
+            return new ConstantBufferProxy(this);
         }
     }
 }

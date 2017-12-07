@@ -10,20 +10,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     using Shaders;
     using System;
     using Utilities;
+
     /// <summary>
     /// Used to hold shared variables for Lights per scene
     /// </summary>
     public sealed class Light3DSceneShared : IDisposable
     {
-        public LightsStruct LightModels;
-        //public Vector4[] LightDirections { private set; get; }
-        //public Vector4[] LightPositions { private set; get; }
-        //public Vector4[] LightAtt { private set; get; }
-        //public Vector4[] LightSpots { private set; get; }
-        //public Color4[] LightColors { private set; get; }
-        //public int[] LightTypes { private set; get; }
-        //public Matrix[] LightViewMatrices { private set; get; }
-        //public Matrix[] LightProjMatrices { private set; get; }
+        public readonly ILightsBufferProxy<LightStruct> LightModels = new LightsBufferModel();
 
         private int lightCount = 0;
         public int LightCount
@@ -35,37 +28,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             }
         }
 
-        private IBufferProxy<LightStruct> buffer;
+        private IBufferProxy buffer;
         /// <summary>
         /// 
         /// </summary>
         public Light3DSceneShared(IConstantBufferPool pool)
         {
-            LightModels.Lights = new LightStruct[LightsStruct.MaxLights];
-            var cb = pool.Register(DefaultConstantBufferDescriptions.LightCB);          
-            buffer = cb as IBufferProxy<LightStruct>;
-            //for(int i=0; i < LightsStruct.MaxLights; ++i)
-            //{
-            //    LightModels.Lights[i].LightColor = new Color4(0, 1, 0, 1);
-            //    LightModels.Lights[i].LightType = 1;
-            //    LightModels.Lights[i].LightDir = new Vector4(0, 1, 1, 1);
-            //}
-            //LightDirections = new Vector4[MaxLights];
-            //LightPositions = new Vector4[MaxLights];
-            //LightAtt = new Vector4[MaxLights];
-            //LightSpots = new Vector4[MaxLights];
-            //LightColors = new Color4[MaxLights];
-            //LightTypes = new int[MaxLights];
-            //LightViewMatrices = new Matrix[MaxLights];
-            //LightProjMatrices = new Matrix[MaxLights];
+            buffer = pool.Register(DefaultConstantBufferDescriptions.LightCB);    
         }
 
         public void UploadToBuffer(DeviceContext context)
         {
-            if (buffer.Buffer != null && !buffer.Buffer.IsDisposed)
-            {
-                buffer.UploadDataToBuffer(context, LightModels.Lights);
-            }
+            LightModels.UploadToBuffer(buffer, context);
         }
 
         #region IDisposable Support

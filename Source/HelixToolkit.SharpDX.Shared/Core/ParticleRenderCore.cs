@@ -155,12 +155,12 @@ namespace HelixToolkit.UWP.Core
         };
 
         //Buffer indirectArgsBuffer;
-        private readonly ConstantBufferProxy<ParticleCountIndirectArgs> particleCountGSIABuffer 
-            = new ConstantBufferProxy<ParticleCountIndirectArgs>(ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, ResourceOptionFlags.DrawIndirectArguments);
-        private readonly ConstantBufferProxy<ParticlePerFrame> frameConstBuffer
-            = new ConstantBufferProxy<ParticlePerFrame>(ParticlePerFrame.SizeInBytes);
-        private readonly ConstantBufferProxy<ParticleInsertParameters> particleInsertBuffer
-            = new ConstantBufferProxy<ParticleInsertParameters>(ParticleInsertParameters.SizeInBytes);
+        private readonly ConstantBufferProxy particleCountGSIABuffer 
+            = new ConstantBufferProxy(ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, ResourceOptionFlags.DrawIndirectArguments);
+        private readonly ConstantBufferProxy frameConstBuffer
+            = new ConstantBufferProxy(ParticlePerFrame.SizeInBytes);
+        private readonly ConstantBufferProxy particleInsertBuffer
+            = new ConstantBufferProxy(ParticleInsertParameters.SizeInBytes);
 #if DEBUG
         private Buffer particleCountStaging;
 #endif

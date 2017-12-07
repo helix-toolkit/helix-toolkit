@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Core
         public bool Initialized { private set; get; }
         public bool HasElements { private set; get; } = false;
         public IBufferProxy Buffer { get { return elementBuffer; } }
-        private IBufferProxy<T> elementBuffer;
+        private IBufferProxy elementBuffer;
 
         public bool Changed { get { return instanceChanged; } }
         private bool instanceChanged = true;
@@ -52,7 +52,7 @@ namespace HelixToolkit.UWP.Core
 
         public void Initialize()
         {
-            elementBuffer = Collect(new DynamicBufferProxy<T>(StructSize, BindFlags.VertexBuffer));
+            elementBuffer = Collect(new DynamicBufferProxy(StructSize, BindFlags.VertexBuffer));
             Initialized = true;
             instanceChanged = true;
         }
@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP.Core
             {
                 if (instanceChanged)
                 {
-                    elementBuffer.UploadDataToBuffer(context, elements);
+                    elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
                     instanceChanged = false;
                 }
                 context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset));

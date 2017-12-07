@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
         public BillboardType Type { private set; get; }
 
         public BillboardBufferModel(int structSize)
-            : base(PrimitiveTopology.TriangleStrip, new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), null)
+            : base(PrimitiveTopology.TriangleStrip, new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
         {
         }
 
@@ -44,7 +44,7 @@ namespace HelixToolkit.UWP.Core
             {
                 Type = billboardGeometry.Type;              
                 var data = OnBuildVertexArray(billboardGeometry);
-                (buffer as IBufferProxy<VertexStruct>).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                buffer.CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
               
                 if (billboardGeometry.Texture != null)
                 {

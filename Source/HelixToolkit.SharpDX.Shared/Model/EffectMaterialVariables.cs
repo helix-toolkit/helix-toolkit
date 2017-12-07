@@ -110,7 +110,7 @@ namespace HelixToolkit.UWP.Model
 
         private bool needUpdate = true;
         private MaterialStruct materialStruct;
-        private readonly IBufferProxy<MaterialStruct> materialBuffer;
+        private readonly IBufferProxy materialBuffer;
 
         public IMaterial Material
         {
@@ -138,7 +138,7 @@ namespace HelixToolkit.UWP.Model
 
         public EffectMaterialVariables(IConstantBufferPool cbPool)
         {
-            materialBuffer = cbPool.Register(DefaultConstantBufferDescriptions.MaterialCB) as IBufferProxy<MaterialStruct>;
+            materialBuffer = cbPool.Register(DefaultConstantBufferDescriptions.MaterialCB);
             Device = cbPool.Device;
             CreateTextureViews();
         }        

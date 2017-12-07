@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections.Generic;
     using Controls;
     using Elements2D;
+    using Model;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -927,7 +928,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.FpsCounter.AddFrame(context.TimeStamp);
             context.Camera = this.Camera;
             context.worldMatrix = this.worldMatrixInternal;   
-            foreach(IRenderable e in this.Renderables.Where(x=>x is ILight3D).Take(LightsStruct.MaxLights))
+            foreach(IRenderable e in this.Renderables.Where(x=>x is ILight3D).Take(LightsBufferModel.MaxLights))
             {
                 e.Render(context);
             }

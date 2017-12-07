@@ -49,7 +49,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <!--<hx:ShadowMap3D />-->
-            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
                 DirectionTransform="{Binding Light1DirectionTransform}"

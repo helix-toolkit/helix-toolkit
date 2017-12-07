@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- attach
             if (base.OnAttach(host))
             {
-                //host.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
+                host.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
                 // --- light constant params              
                 //this.vLightAmbient = this.effect.GetVariableByName("vLightAmbient").AsVector();
                 //this.vLightAmbient.Set(this.ColorInternal);
@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (IsAttached)
             {
-                //renderHost.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
+                renderHost.Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
                 //  this.vLightAmbient.Set(this.ColorInternal);
             }
         }

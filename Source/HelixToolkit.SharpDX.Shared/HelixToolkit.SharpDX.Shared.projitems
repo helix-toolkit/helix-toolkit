@@ -74,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\IntCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Layouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Light3DSceneShared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LightsBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />

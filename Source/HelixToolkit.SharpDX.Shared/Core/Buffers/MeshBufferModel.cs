@@ -21,11 +21,11 @@ namespace HelixToolkit.UWP.Core
         public BuildVertexArrayHandler OnBuildVertexArray;
 
         public MeshGeometryBufferModel(int structSize) 
-            : base(PrimitiveTopology.TriangleList, new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer))
+            : base(PrimitiveTopology.TriangleList, new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy(sizeof(int), BindFlags.VertexBuffer))
         {
         }
         public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology) 
-            : base(topology, new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer))
+            : base(topology, new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy(sizeof(int), BindFlags.VertexBuffer))
         {
         }
 
@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP.Core
                 // --- get geometry
                 var mesh = geometry as MeshGeometry3D;
                 var data = OnBuildVertexArray(mesh);
-                (buffer as IBufferProxy<VertexStruct>).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                (buffer as IBufferProxy).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
             }
             else
             {
@@ -59,7 +59,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (geometry.Indices != null)
             {
-                (buffer as IBufferProxy<int>).CreateBufferFromDataArray(context.Device, geometry.Indices);
+                buffer.CreateBufferFromDataArray(context.Device, geometry.Indices, geometry.Indices.Count);
             }
             else
             {

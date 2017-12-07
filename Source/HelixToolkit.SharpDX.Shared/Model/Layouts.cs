@@ -1,5 +1,4 @@
 ﻿using SharpDX;
-using System;
 using System.Runtime.InteropServices;
 
 #if NETFX_CORE
@@ -217,16 +216,5 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix LightView;
         public Matrix LightProj;
         public const int SizeInBytes = 4 * (4 * 6 + 4 * 4 * 2);
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct LightsStruct
-    {
-        public const int MaxLights = 8;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = MaxLights)]
-        public LightStruct[] Lights;
-        //public Color4 AmbientLight;
-
-        public const int SizeInBytes = LightStruct.SizeInBytes * MaxLights;
     }
 }

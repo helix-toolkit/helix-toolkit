@@ -12,14 +12,6 @@ namespace HelixToolkit.UWP.Utilities
     using Extensions;
     using Shaders;
 
-    public interface IBufferProxy<T> : IBufferProxy where T : struct
-    {
-        void UploadDataToBuffer(DeviceContext context, ref T data);
-        void UploadDataToBuffer(DeviceContext context, IList<T> data);
-        void CreateBufferFromDataArray(Device context, IList<T> data);
-        void CreateBufferFromDataArray(Device context, IList<T> data, int count);
-    }
-
     public interface IBufferProxy : IDisposable
     {
         /// <summary>
@@ -43,25 +35,73 @@ namespace HelixToolkit.UWP.Utilities
         /// </summary>
         BindFlags BindFlags { get; }
 
-        Type DataType { get; }
-
-        //void UploadDataToBuffer(DeviceContext context, ref object obj);
         void CreateBuffer(Device device);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        /// <param name="offset"></param>
+        void UploadDataToBuffer<T>(DeviceContext context, ref T data, int offset) where T : struct;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        void UploadDataToBuffer<T>(DeviceContext context, ref T data) where T : struct;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        void UploadDataToBuffer<T>(DeviceContext context, IList<T> data) where T : struct;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count) where T : struct;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset) where T : struct;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        void CreateBufferFromDataArray<T>(Device context, IList<T> data) where T : struct;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        void CreateBufferFromDataArray<T>(Device context, IList<T> data, int count) where T : struct;
     }
 
-    public class ImmutableBufferProxy<T> : DynamicBufferProxy<T> where T : struct
+    public class ImmutableBufferProxy : DynamicBufferProxy
     {
         public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None) 
             : base(structureSize, bindFlags, optionFlags)
         {
         }
 
-        public override void UploadDataToBuffer(DeviceContext context, IList<T> data, int length)
+        public override void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset)
         {
-            CreateBufferFromDataArray(context.Device, data, length);
+            CreateBufferFromDataArray(context.Device, data, count);
         }
 
-        public override void CreateBufferFromDataArray(Device device, IList<T> data, int length)
+        public override void CreateBufferFromDataArray<T>(Device device, IList<T> data, int length)
         {
             Disposer.RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
@@ -78,7 +118,7 @@ namespace HelixToolkit.UWP.Utilities
         }
     }
 
-    public class DynamicBufferProxy<T> : BufferProxyBase<T> where T : struct
+    public class DynamicBufferProxy : BufferProxyBase
     {
         public ResourceOptionFlags OptionFlags { private set; get; }
 
@@ -88,12 +128,12 @@ namespace HelixToolkit.UWP.Utilities
             this.OptionFlags = optionFlags;
         }
 
-        public virtual void UploadDataToBuffer(DeviceContext context, IList<T> data, int length)
+        public override void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset)
         {
-            Count = length;
-            if (buffer == null || buffer.Description.SizeInBytes < StructureSize * length)
+            Count = count;
+            if (buffer == null || buffer.Description.SizeInBytes < StructureSize * count)
             {
-                CreateBufferFromDataArray(context.Device, data, length);
+                CreateBufferFromDataArray(context.Device, data, count);
             }
             else
             {
@@ -101,13 +141,13 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
                 using (stream)
                 {
-                    stream.WriteRange(data.GetArrayByType(), 0, length);
+                    stream.WriteRange(data.GetArrayByType(), offset, count);
                     context.UnmapSubresource(this.buffer, 0);
                 }
             }
         }
 
-        public override void CreateBufferFromDataArray(Device device, IList<T> data, int length)
+        public override void CreateBufferFromDataArray<T>(Device device, IList<T> data, int count)
         {
             Disposer.RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
@@ -115,26 +155,17 @@ namespace HelixToolkit.UWP.Utilities
                 BindFlags = this.BindFlags,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = this.OptionFlags,
-                SizeInBytes = StructureSize * length,
+                SizeInBytes = StructureSize * count,
                 StructureByteStride = StructureSize,
                 Usage = ResourceUsage.Dynamic
             };           
             buffer = SDX11.Buffer.Create(device, data.GetArrayByType(), buffdesc);
-            Count = length;
+            Count = count;
         }
 
-        public override void CreateBufferFromDataArray(Device context, IList<T> data)
+        public override void UploadDataToBuffer<T>(DeviceContext context, ref T data, int offset)
         {
-            CreateBufferFromDataArray(context, data, data.Count);
-        }
-        public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
-        {
-            UploadDataToBuffer(context, data, data.Count);
-        }
-
-        public override void UploadDataToBuffer(DeviceContext context, ref T data)
-        {
-            UploadDataToBuffer(context, new[] { data }, 1);
+            UploadDataToBuffer(context, new[] { data }, 1, offset);
         }
 
         public override void CreateBuffer(Device device)
@@ -143,7 +174,7 @@ namespace HelixToolkit.UWP.Utilities
         }
     }
 
-    public class ConstantBufferProxy<T> : BufferProxyBase<T> where T : struct
+    public class ConstantBufferProxy : BufferProxyBase
     {
         private readonly BufferDescription bufferDesc;
         public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer, 
@@ -183,7 +214,7 @@ namespace HelixToolkit.UWP.Utilities
             };
         }
 
-        public override void UploadDataToBuffer(DeviceContext context, ref T data)
+        public override void UploadDataToBuffer<T>(DeviceContext context, ref T data, int offset)
         {
             if (buffer.Description.Usage == ResourceUsage.Dynamic)
             {
@@ -191,6 +222,7 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
                 using (stream)
                 {
+                    stream.Seek(offset, System.IO.SeekOrigin.Begin);
                     stream.Write(data);
                     context.UnmapSubresource(buffer, 0);
                 }
@@ -206,15 +238,7 @@ namespace HelixToolkit.UWP.Utilities
             buffer = new SDX11.Buffer(device, bufferDesc);
         }
 
-        public override void CreateBufferFromDataArray(Device context, IList<T> data)
-        {
-            throw new ArgumentException("Constant Buffer does not support data array.");
-        }
-        public override void CreateBufferFromDataArray(Device context, IList<T> data, int count)
-        {
-            throw new ArgumentException("Constant Buffer does not support data array.");
-        }
-        public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
+        public override void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset)
         {
             if (buffer.Description.Usage == ResourceUsage.Dynamic)
             {
@@ -222,7 +246,7 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
                 using (stream)
                 {
-                    stream.WriteRange(data.GetArrayByType(), 0, data.Count);
+                    stream.WriteRange(data.GetArrayByType(), offset, count);
                     context.UnmapSubresource(buffer, 0);
                 }
             }
@@ -231,39 +255,104 @@ namespace HelixToolkit.UWP.Utilities
                 context.UpdateSubresource(data.GetArrayByType(), buffer);
             }
         }
+
+        public override void CreateBufferFromDataArray<T>(Device context, IList<T> data, int count)
+        {
+            throw new ArgumentException("Constant Buffer does not support this function.");
+        }
     }
 
-    public abstract class BufferProxyBase<T> : IBufferProxy<T> where T : struct  
+    public abstract class BufferProxyBase : IBufferProxy
     {
         protected SDX11.Buffer buffer;
         public int StructureSize { get; private set; }
         public int Count { get; protected set; } = 0;
         public int Offset { get; set; } = 0;
         public SDX11.Buffer Buffer { get { return buffer; } }
-        public BindFlags BindFlags { private set; get; }
-        public Type DataType { get { return typeof(T); } }        
+        public BindFlags BindFlags { private set; get; }       
 
         public BufferProxyBase(int structureSize, BindFlags bindFlags)
         {
             StructureSize = structureSize;
             BindFlags = bindFlags;
         }
-
-        public abstract void UploadDataToBuffer(DeviceContext context, ref T data);
-
-        public abstract void UploadDataToBuffer(DeviceContext context, IList<T> data);
-
+        /// <summary>
+        /// <see cref="IBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T, int)"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        /// <param name="offset"></param>
+        public abstract void UploadDataToBuffer<T>(DeviceContext context, ref T data, int offset) where T : struct;
+        /// <summary>
+        /// <see cref="IBufferProxy.UploadDataToBuffer{T}(DeviceContext, IList{T}, int, int)"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        /// <param name="count"></param>
+        /// <param name="offset"></param>
+        public abstract void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset) where T : struct;
+        /// <summary>
+        /// <see cref="IBufferProxy.CreateBuffer(Device)"/>
+        /// </summary>
+        /// <param name="device"></param>
         public abstract void CreateBuffer(Device device);
+        /// <summary>
+        /// <see cref="IBufferProxy.CreateBufferFromDataArray{T}(Device, IList{T}, int)"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        /// <param name="count"></param>
+        public abstract void CreateBufferFromDataArray<T>(Device context, IList<T> data, int count) where T : struct;
+        /// <summary>
+        /// <see cref="IBufferProxy.UploadDataToBuffer{T}(DeviceContext, IList{T})"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        public void UploadDataToBuffer<T>(DeviceContext context, IList<T> data) where T : struct
+        {
+            UploadDataToBuffer<T>(context, data, data.Count);
+        }
 
-        public abstract void CreateBufferFromDataArray(Device context, IList<T> data);
-        public abstract void CreateBufferFromDataArray(Device context, IList<T> data, int count);
+        /// <summary>
+        /// <see cref="IBufferProxy.UploadDataToBuffer{T}(DeviceContext, IList{T}, int)"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        /// <param name="count"></param>
+        public void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count) where T : struct
+        {
+            UploadDataToBuffer<T>(context, data, count, 0);
+        }
 
-        //public void UploadDataToBuffer(DeviceContext context, ref object obj)
-        //{
-        //    var t = (T)obj;
-        //    UploadDataToBuffer(context, ref t);
-        //}
+        /// <summary>
+        /// <see cref="IBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T)"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        public void UploadDataToBuffer<T>(DeviceContext context, ref T data) where T : struct
+        {
+            UploadDataToBuffer<T>(context, ref data, 0);
+        }
 
+        /// <summary>
+        /// <see cref="IBufferProxy.CreateBufferFromDataArray{T}(Device, IList{T})"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="data"></param>
+        public void CreateBufferFromDataArray<T>(Device context, IList<T> data) where T : struct
+        {
+            CreateBufferFromDataArray<T>(context, data, data.Count);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             Disposer.RemoveAndDispose(ref buffer);

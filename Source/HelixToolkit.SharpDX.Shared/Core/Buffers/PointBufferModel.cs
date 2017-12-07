@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Core
         public BuildVertexArrayHandler OnBuildVertexArray;
 
         public PointGeometryBufferModel(int structSize) : base(PrimitiveTopology.PointList,
-            new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), null)
+            new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
         {
         }
 
@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP.Core
                 // --- get geometry
                 var mesh = geometry as PointGeometry3D;
                 var data = OnBuildVertexArray(mesh);
-                (buffer as IBufferProxy<VertexStruct>).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                buffer.CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
             }
             else
             {

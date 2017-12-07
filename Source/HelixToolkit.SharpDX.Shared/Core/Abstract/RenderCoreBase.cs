@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
 
         //private EffectMatrixVariable mWorldVar;
         protected TModelStruct modelStruct;
-        protected IBufferProxy<TModelStruct> modelCB { private set; get; }
+        protected IBufferProxy modelCB { private set; get; }
         public event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
         /// Model matrix
@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP.Core
         protected virtual bool OnAttach(IRenderTechnique technique)
         {
             //mWorldVar = Collect(Effect.GetVariableByName(ShaderVariableNames.WorldMatrix).AsMatrix());
-            modelCB = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription()) as IBufferProxy<TModelStruct>;
+            modelCB = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription());
             return true;
         }
 

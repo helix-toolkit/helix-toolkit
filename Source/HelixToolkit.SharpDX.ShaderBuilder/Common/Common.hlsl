@@ -54,9 +54,8 @@ struct LightStruct
 cbuffer cbLights : register(b2)
 {
     LightStruct Lights[LIGHTS];
-    //
+    float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
 };
-float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
 
 //--------------------------------------------------------------------------------------
 // GLOBAL FUNCTIONS

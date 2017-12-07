@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Core
         public BuildVertexArrayHandler OnBuildVertexArray;
 
         public LineGeometryBufferModel(int structSize) : base(PrimitiveTopology.LineList,
-            new ImmutableBufferProxy<VertexStruct>(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy<int>(sizeof(int), BindFlags.VertexBuffer))
+            new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy(sizeof(int), BindFlags.VertexBuffer))
         {
         }
 
@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP.Core
                 // --- get geometry
                 var mesh = geometry as LineGeometry3D;
                 var data = OnBuildVertexArray(mesh);
-                (buffer as IBufferProxy<VertexStruct>).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                buffer.CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
             }
             else
             {
@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (geometry.Indices != null)
             {
-                (buffer as IBufferProxy<int>).CreateBufferFromDataArray(context.Device, geometry.Indices);
+                buffer.CreateBufferFromDataArray(context.Device, geometry.Indices);
             }
             else
             {

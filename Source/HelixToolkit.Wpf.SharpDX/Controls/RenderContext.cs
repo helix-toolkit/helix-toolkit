@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Light3DSceneShared LightScene { private set; get; }
 
-        private IBufferProxy<GlobalTransformStruct> cbuffer;
+        private IBufferProxy cbuffer;
 
         private GlobalTransformStruct globalTransform;
         
@@ -161,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Canvas = canvas;
             this.IsShadowPass = false;
             this.IsDeferredPass = false;
-            cbuffer = pool.Register(DefaultConstantBufferDescriptions.GlobalTransformCB) as IBufferProxy<GlobalTransformStruct>;
+            cbuffer = pool.Register(DefaultConstantBufferDescriptions.GlobalTransformCB);
             //this.mView = effect.GetVariableByName("mView").AsMatrix();
             //this.mProjection = effect.GetVariableByName("mProjection").AsMatrix();
             //this.vViewport = effect.GetVariableByName("vViewport").AsVector();

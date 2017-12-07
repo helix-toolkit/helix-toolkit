@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.LightType != LightType.Ambient)
             {
                 this.lightIndex = host.Light3DSceneShared.LightCount++;
-                host.Light3DSceneShared.LightCount = host.Light3DSceneShared.LightCount % LightsStruct.MaxLights;
+                host.Light3DSceneShared.LightCount = host.Light3DSceneShared.LightCount % LightsBufferModel.MaxLights;
                 if (host.IsShadowMapEnabled)
                 {
                     //this.mLightView = this.effect.GetVariableByName("mLightView").AsMatrix();
