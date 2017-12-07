@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             }
         }
 
-        private IBufferProxy<LightsStruct> buffer;
+        private IBufferProxy<LightStruct> buffer;
         /// <summary>
         /// 
         /// </summary>
@@ -43,13 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         {
             LightModels.Lights = new LightStruct[LightsStruct.MaxLights];
             var cb = pool.Register(DefaultConstantBufferDescriptions.LightCB);          
-            buffer = cb as IBufferProxy<LightsStruct>;
-            for(int i=0; i < LightsStruct.MaxLights; ++i)
-            {
-                LightModels.Lights[i].LightColor = new Color4(0, 1, 0, 1);
-                LightModels.Lights[i].LightType = 1;
-                LightModels.Lights[i].LightDir = new Vector4(0, 1, 1, 1);
-            }
+            buffer = cb as IBufferProxy<LightStruct>;
+            //for(int i=0; i < LightsStruct.MaxLights; ++i)
+            //{
+            //    LightModels.Lights[i].LightColor = new Color4(0, 1, 0, 1);
+            //    LightModels.Lights[i].LightType = 1;
+            //    LightModels.Lights[i].LightDir = new Vector4(0, 1, 1, 1);
+            //}
             //LightDirections = new Vector4[MaxLights];
             //LightPositions = new Vector4[MaxLights];
             //LightAtt = new Vector4[MaxLights];
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         {
             if (buffer.Buffer != null && !buffer.Buffer.IsDisposed)
             {
-                buffer.UploadDataToBuffer(context, ref LightModels);
+                buffer.UploadDataToBuffer(context, LightModels.Lights);
             }
         }
 

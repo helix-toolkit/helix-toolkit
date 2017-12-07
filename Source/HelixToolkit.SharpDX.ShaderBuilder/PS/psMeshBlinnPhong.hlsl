@@ -8,8 +8,6 @@
 //--------------------------------------------------------------------------------------
 float4 main(PSInput input) : SV_Target
 {    
-	return float4(abs(Lights[1].iLightType), 0, 0, 1);
-	
 	// renormalize interpolated vectors
     input.n = calcNormal(input);
 

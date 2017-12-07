@@ -193,7 +193,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string MaterialCBName = "cbMaterial";
         public static ConstantBufferDescription GlobalTransformCB = new ConstantBufferDescription(GlobalTransformCBName, GlobalTransformStruct.SizeInBytes, typeof(GlobalTransformStruct), 0);
         public static ConstantBufferDescription ModelCB = new ConstantBufferDescription(ModelCBName, ModelStruct.SizeInBytes, typeof(ModelStruct), 1);
-        public static ConstantBufferDescription LightCB = new ConstantBufferDescription(LightsCBName, LightsStruct.SizeInBytes, typeof(LightsStruct), 2, LightStruct.SizeInBytes);
+        public static ConstantBufferDescription LightCB = new ConstantBufferDescription(LightsCBName, LightsStruct.SizeInBytes, typeof(LightStruct), 2, LightStruct.SizeInBytes);
         public static ConstantBufferDescription MaterialCB = new ConstantBufferDescription(MaterialCBName, MaterialStruct.SizeInBytes, typeof(MaterialStruct), 3);
     }
 

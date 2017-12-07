@@ -101,7 +101,6 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
                 using (stream)
                 {
-                    stream.Position = 0;
                     stream.WriteRange(data.GetArrayByType(), 0, length);
                     context.UnmapSubresource(this.buffer, 0);
                 }
@@ -190,9 +189,11 @@ namespace HelixToolkit.UWP.Utilities
             {
                 DataStream stream;
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
-                stream.Write(data);
-                context.UnmapSubresource(buffer, 0);
-                stream.Dispose();
+                using (stream)
+                {
+                    stream.Write(data);
+                    context.UnmapSubresource(buffer, 0);
+                }
             }
             else
             {
@@ -215,7 +216,20 @@ namespace HelixToolkit.UWP.Utilities
         }
         public override void UploadDataToBuffer(DeviceContext context, IList<T> data)
         {
-            throw new ArgumentException("Constant Buffer does not support data array.");
+            if (buffer.Description.Usage == ResourceUsage.Dynamic)
+            {
+                DataStream stream;
+                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
+                using (stream)
+                {
+                    stream.WriteRange(data.GetArrayByType(), 0, data.Count);
+                    context.UnmapSubresource(buffer, 0);
+                }
+            }
+            else
+            {
+                context.UpdateSubresource(data.GetArrayByType(), buffer);
+            }
         }
     }
 

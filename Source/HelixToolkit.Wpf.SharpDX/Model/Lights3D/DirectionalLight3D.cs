@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public DirectionalLight3D()
         {
-            this.Color = global::SharpDX.Color.Blue;
+            this.Color = global::SharpDX.Color.White;
             this.LightType = LightType.Directional;
         }
 
