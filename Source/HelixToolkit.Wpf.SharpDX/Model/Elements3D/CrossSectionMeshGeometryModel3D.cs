@@ -263,7 +263,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The <see cref="RenderTechnique"/></returns>
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.CrossSection];
+            return host.EffectsManager[DefaultRenderTechniqueNames.CrossSection];
         }
 
         protected override IRenderCore OnCreateRenderCore()

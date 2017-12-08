@@ -89,9 +89,9 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (MeshTopology)
             {
                 case TessellationTechniques.MeshTopology.Triangle:
-                    return host.EffectsManager.Techniques[TessellationRenderTechniqueNames.PNTriangles];
+                    return host.EffectsManager[TessellationRenderTechniqueNames.PNTriangles];
                 case TessellationTechniques.MeshTopology.Quads:
-                    return host.EffectsManager.Techniques[TessellationRenderTechniqueNames.PNQuads];
+                    return host.EffectsManager[TessellationRenderTechniqueNames.PNQuads];
                 default:
                     return null;
             }          

@@ -17,4 +17,13 @@ namespace HelixToolkit.Wpf.SharpDX
         Pixel = 16,
         Compute = 32
     }
+
+    [Flags]
+    public enum StateType
+    {
+        None = 0,
+        RasterState = 1,
+        DepthStencilState = 2,
+        BlendState = 4
+    }
 }

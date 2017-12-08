@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.Colors];
+            return host.EffectsManager[DefaultRenderTechniqueNames.Colors];
         }
 
         protected override bool OnAttach(IRenderHost host)

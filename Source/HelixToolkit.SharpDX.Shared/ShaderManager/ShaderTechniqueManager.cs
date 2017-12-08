@@ -22,6 +22,8 @@ namespace HelixToolkit.UWP
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
+        private IDictionary<string, Lazy<Technique>> techniqueDict { get; } = new Dictionary<string, Lazy<Technique>>();
+
         public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
         private IConstantBufferPool constantBufferPool;
 
@@ -30,8 +32,6 @@ namespace HelixToolkit.UWP
 
         private IStatePoolManager statePoolManager;
         public IStatePoolManager StateManager { get { return statePoolManager; } }
-
-        public IDictionary<string, Technique> Techniques { get; } = new Dictionary<string, Technique>();
 
         public global::SharpDX.Direct3D11.Device Device { private set; get; }
 
@@ -87,25 +87,29 @@ namespace HelixToolkit.UWP
             var techniques = LoadTechniques(Device);
             foreach(var tech in techniques)
             {
-                Techniques.Add(tech.Name, Collect(tech));
+                techniqueDict.Add(tech.Item1, tech.Item2);
             }
             #endregion
             Initialized = true;
         }
 
-        protected IList<Technique> LoadTechniques(global::SharpDX.Direct3D11.Device device)
+        protected IList<Tuple<string, Lazy<Technique>>> LoadTechniques(global::SharpDX.Direct3D11.Device device)
         {
             var techniqueDescs = LoadTechniqueDescriptions();
             if(techniqueDescs == null)
             {
-                return new Technique[0];
+                return new Tuple<string, Lazy<Technique>>[0];
             }
             else
             {
-                var list = new List<Technique>(techniqueDescs.Count);
+                var list = new List<Tuple<string, Lazy<Technique>>>(techniqueDescs.Count);
                 foreach(var desc in techniqueDescs)
                 {
-                    list.Add(new Technique(desc, device, this));
+                    list.Add(Tuple.Create(desc.Name, new Lazy<Technique>(()=> 
+                    {
+                        return Initialized ? Collect(new Technique(desc, device, this)) : null;
+                    }, 
+                    true)));
                 }
                 return list;
             }
@@ -163,13 +167,27 @@ namespace HelixToolkit.UWP
                 return bestAdapter;
             }
         }
+
+        public Technique GetTechnique(string name)
+        {
+            return techniqueDict[name].Value;
+        }
+
+        public Technique this[string name]
+        {
+            get
+            {
+                return GetTechnique(name);
+            }           
+        }
+
         /// <summary>
         /// <see cref="DisposeObject.Dispose(bool)"/>
         /// </summary>
         /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            Techniques.Clear();
+            techniqueDict.Clear();
             base.Dispose(disposeManagedResources);
             Initialized = false;
         }
@@ -187,7 +205,9 @@ namespace HelixToolkit.UWP
                 {
                     DefaultVSShaderDescriptions.VSMeshDefault,
                     DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                }
+                },
+                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
             };
 
             var renderBlinnInstancing = new TechniqueDescription()
@@ -198,7 +218,9 @@ namespace HelixToolkit.UWP
                 {
                     DefaultVSShaderDescriptions.VSMeshInstancing,
                     DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                }
+                },
+                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
             };
 
             return new[] { renderBlinn, renderBlinnInstancing };

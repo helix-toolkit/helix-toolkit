@@ -97,6 +97,26 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+        public void BindStates(DeviceContext context, StateType type)
+        {
+            if(type == StateType.None)
+            {
+                return;
+            }
+            if(type.HasFlag(StateType.BlendState))
+            {
+                context.OutputMerger.BlendState = BlendState;             
+            }
+            if(type.HasFlag(StateType.DepthStencilState))
+            {
+                context.OutputMerger.DepthStencilState = DepthStencilState;
+            }
+            if(type.HasFlag(StateType.RasterState))
+            {
+                context.Rasterizer.State = RasterState;
+            }
+        }
+
         protected override void Dispose(bool disposeManagedResources)
         {
             shaders.Clear();

@@ -565,7 +565,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.ParticleStorm];
+            return host.EffectsManager[DefaultRenderTechniqueNames.ParticleStorm];
         }
 
         protected override bool OnAttach(IRenderHost host)

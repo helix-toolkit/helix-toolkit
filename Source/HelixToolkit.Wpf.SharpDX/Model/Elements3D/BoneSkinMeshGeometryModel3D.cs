@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.BoneSkinBlinn];
+            return host.EffectsManager[DefaultRenderTechniqueNames.BoneSkinBlinn];
         }
 
         protected override IRenderCore OnCreateRenderCore()

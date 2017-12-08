@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = map
             };
             ViewBoxMeshModel.CullMode = CullMode.Back;
-            ViewBoxMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.Diffuse]; };
+            ViewBoxMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             this.Children.Add(ViewBoxMeshModel);
         }
 

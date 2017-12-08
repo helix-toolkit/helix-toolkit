@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.BillboardInstancing];
+            return host.EffectsManager[DefaultRenderTechniqueNames.BillboardInstancing];
         }
 
         protected override bool OnAttach(IRenderHost host)

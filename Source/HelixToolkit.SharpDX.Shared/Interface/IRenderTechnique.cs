@@ -19,11 +19,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         IEnumerable<ShaderBase> Shaders { get; }
 
+        IConstantBufferPool ConstantBufferPool { get; }
+
+        void BindStates(DeviceContext context, StateType type);
+
         void BindShader(DeviceContext context);
 
         ShaderBase GetShader(ShaderStage type);
-
-        IConstantBufferPool ConstantBufferPool { get; }
     }
 
     public interface IRenderTechniquesManager
@@ -42,9 +44,10 @@ namespace HelixToolkit.Wpf.SharpDX
         IConstantBufferPool ConstantBufferPool { get; }
         Device Device { get; }
         DriverType DriverType { get; }
-        IDictionary<string, Technique> Techniques { get; }
         IShaderPoolManager ShaderManager { get; }
         IStatePoolManager StateManager { get; }
+        Technique GetTechnique(string name);
+        Technique this[string name] { get; }
         void Initialize();
     }
 

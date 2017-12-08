@@ -693,7 +693,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         ClearColor = renderRenderable.BackgroundColor;
                         IsShadowMapEnabled = renderRenderable.IsShadowMappingEnabled;
 
-                        RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?.Techniques[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
+                        RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
 
                         renderContext?.Dispose();
                         renderContext = new RenderContext(this, deferredContext, EffectsManager.ConstantBufferPool);

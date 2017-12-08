@@ -167,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.Lines];
+            return host.EffectsManager[DefaultRenderTechniqueNames.Lines];
         }
 
         protected override bool OnAttach(IRenderHost host)

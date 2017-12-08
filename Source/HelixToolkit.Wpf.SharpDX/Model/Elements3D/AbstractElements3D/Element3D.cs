@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : SetRenderTechnique(host);
             if (renderTechnique != null)
             {
-                renderTechnique = RenderHost.EffectsManager.Techniques[renderTechnique.Name];
+                renderTechnique = RenderHost.EffectsManager[renderTechnique.Name];
                 //effect = renderHost.EffectsManager.GetEffect(renderTechnique);
                 IsAttached = OnAttach(host);
             }

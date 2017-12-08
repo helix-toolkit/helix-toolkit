@@ -218,7 +218,7 @@
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager.Techniques[DefaultRenderTechniqueNames.Points];
+            return host.EffectsManager[DefaultRenderTechniqueNames.Points];
         }
 
         protected override bool CheckGeometry()

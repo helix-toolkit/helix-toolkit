@@ -157,8 +157,8 @@ namespace HelixToolkit.Wpf.SharpDX
             private set
             {
                 renderTechnique = value;
-                IsDeferredLighting = EffectsManager != null && ( renderTechnique == EffectsManager.Techniques.Get(DeferredRenderTechniqueNames.Deferred)
-                    || renderTechnique == EffectsManager.Techniques.Get(DeferredRenderTechniqueNames.GBuffer));
+                IsDeferredLighting = EffectsManager != null && ( renderTechnique == EffectsManager[DeferredRenderTechniqueNames.Deferred]
+                    || renderTechnique == EffectsManager[DeferredRenderTechniqueNames.GBuffer]);
             }
         }
         private IRenderTechnique renderTechnique;
@@ -602,7 +602,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         ClearColor = renderRenderable.BackgroundColor;
                         IsShadowMapEnabled = renderRenderable.IsShadowMappingEnabled;
 
-                        RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?.Techniques[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
+                        RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
 
 
                         renderContext?.Dispose();
@@ -833,8 +833,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (EffectsManager != null)
                 {
-                    IsDeferredLighting = (renderTechnique == EffectsManager.Techniques.Get(DeferredRenderTechniqueNames.Deferred)
-                        || renderTechnique == EffectsManager.Techniques.Get(DeferredRenderTechniqueNames.GBuffer));
+                    IsDeferredLighting = (renderTechnique == EffectsManager[DeferredRenderTechniqueNames.Deferred]
+                        || renderTechnique == EffectsManager[DeferredRenderTechniqueNames.GBuffer]);
                 }
                 if (StartD3D())
                 { StartRendering(); }
