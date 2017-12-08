@@ -103,6 +103,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] gsPoint {
+            get {
+                object obj = ResourceManager.GetObject("gsPoint", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psColor {
             get {
                 object obj = ResourceManager.GetObject("psColor", resourceCulture);
@@ -136,6 +146,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] psNormals {
             get {
                 object obj = ResourceManager.GetObject("psNormals", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psPoint {
+            get {
+                object obj = ResourceManager.GetObject("psPoint", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -216,6 +236,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsMeshXRay {
             get {
                 object obj = ResourceManager.GetObject("vsMeshXRay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsPoint {
+            get {
+                object obj = ResourceManager.GetObject("vsPoint", resourceCulture);
                 return ((byte[])(obj));
             }
         }

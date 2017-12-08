@@ -28,7 +28,7 @@
             ShowCoordinateSystem="False"
             ShowFrameRate="True"
             TextBrush="Black"
-            UseDefaultGestures="False">
+            UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -99,13 +99,13 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>-->
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" ReuseVertexArrayBuffer="True"/>
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" ReuseVertexArrayBuffer="True"/>
+            <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" ReuseVertexArrayBuffer="True"/>
+            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" ReuseVertexArrayBuffer="True"/>-->
             <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
-            <hx:OctreeLineGeometryModel3D
+            <!--<hx:OctreeLineGeometryModel3D
                 IsRendering="{Binding OctreeFrameVisible}"
                 LineColor="{Binding LineColor}"
-                Octree="{Binding DefaultModel.Octree}" ReuseVertexArrayBuffer="True"/>
+                Octree="{Binding DefaultModel.Octree}" ReuseVertexArrayBuffer="True"/>-->
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"

@@ -200,7 +200,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasInstances;
         public int HasInstanceParams;
         public int HasBones;
-        public const int SizeInBytes = 4 * (4 * 4 + 4);
+        public Vector4 PointParams;
+        public Vector4 PointColor;
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 3);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

@@ -1,6 +1,8 @@
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Material.hlsl"
+#include"..\Common\Lighting.hlsl"
+#pragma pack_matrix( row_major )
 
 PSInput main(VSInput input)
 {
@@ -13,6 +15,7 @@ PSInput main(VSInput input)
 	{
 		inputn = -inputn;
 	}
+
 	// compose instance matrix
 	if (bHasInstances)
 	{
@@ -35,8 +38,7 @@ PSInput main(VSInput input)
 	//set position into camera clip space	
 	output.p = mul(inputp, mWorld);
 	output.wp = output.p;
-	output.p = mul(output.p, mView);
-	output.p = mul(output.p, mProjection);
+    output.p = mul(output.p, mViewProjection);
 
 	//set position into light-clip space
 	if (bHasShadowMap)
@@ -53,6 +55,7 @@ PSInput main(VSInput input)
 	output.t = input.t;
 	output.c = input.c;
 	output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+
 	//set normal for interpolation	
 	output.n = normalize(mul(inputn, (float3x3) mWorld));
 

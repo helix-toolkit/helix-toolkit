@@ -68,6 +68,7 @@ namespace HelixToolkit.UWP.Shaders
                 case ShaderStage.Hull:
                     break;
                 case ShaderStage.Geometry:
+                    shader = new GeometryShader(device, Name, ByteCode);
                     break;
                 default:
                     throw new ArgumentException("Shader Type does not supported.");

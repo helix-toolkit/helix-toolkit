@@ -297,16 +297,19 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Textures\arial.fnt" />
+    <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\psColor.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
+    <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
     <None Include="Resources\vsBoneSkinning.cso" />
     <None Include="Resources\vsCubeMap.cso" />
     <None Include="Resources\vsMeshDefault.cso" />
     <None Include="Resources\vsMeshInstancing.cso" />
     <None Include="Resources\vsMeshXRay.cso" />
+    <None Include="Resources\vsPoint.cso" />
     <None Include="Resources\_default.bfx" />
     <None Include="Resources\_deferred.bfx" />
     <None Include="Resources\_tessellation.bfx" />

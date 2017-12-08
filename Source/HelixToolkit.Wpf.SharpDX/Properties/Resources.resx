@@ -166,4 +166,13 @@
   <data name="vsMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="gsPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gspoint.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pspoint.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vspoint.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

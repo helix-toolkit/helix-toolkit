@@ -88,6 +88,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\BlendStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ConstantBufferDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultShaderParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\GeometryShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\NullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\PixelShader.cs" />

@@ -1,6 +1,7 @@
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Material.hlsl"
+#include"..\Common\Lighting.hlsl"
 #include"psCommon.hlsl"
 
 //--------------------------------------------------------------------------------------

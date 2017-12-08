@@ -28,9 +28,7 @@ PSInputXRay main(VSInput input)
 	//set position into camera clip space	
     output.p = mul(inputp, mWorld);
     output.vEye = float4(normalize(vEyePos - output.p.xyz), 1); //Use wp for camera->vertex direction
-    output.p = mul(output.p, mView);
-
-    output.p = mul(output.p, mProjection);
+    output.p = mul(output.p, mViewProjection);
 
     	//set normal for interpolation	
     output.n = normalize(mul(inputn, (float3x3) mWorld));

@@ -205,13 +205,13 @@
             return new RasterizerStateDescription()
             {
                 FillMode = FillMode.Solid,
-                CullMode = CullMode.None,
+                CullMode = CullMode.Back,
                 DepthBias = DepthBias,
                 DepthBiasClamp = -1000,
                 SlopeScaledDepthBias = -2,
                 IsDepthClipEnabled = true,
                 IsFrontCounterClockwise = false,
-                IsMultisampleEnabled = true,
+                IsMultisampleEnabled = false,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
         }

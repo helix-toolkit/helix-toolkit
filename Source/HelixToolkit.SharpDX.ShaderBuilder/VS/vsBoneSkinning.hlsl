@@ -1,6 +1,7 @@
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #include"..\Common\Material.hlsl"
+#include"..\Common\Lighting.hlsl"
 
 #pragma pack_matrix( row_major )
 #define MaxBones 128
@@ -73,8 +74,7 @@ PSInput main(VSBoneSkinInput input)
 	//set position into camera clip space	
     output.p = mul(output.p, mWorld);
     output.wp = output.p;
-    output.p = mul(output.p, mView);
-    output.p = mul(output.p, mProjection);
+    output.p = mul(output.p, mViewProjection);
 
 	//set position into light-clip space
     if (bHasShadowMap)

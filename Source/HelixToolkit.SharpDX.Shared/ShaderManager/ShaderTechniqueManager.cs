@@ -170,6 +170,10 @@ namespace HelixToolkit.UWP
 
         public Technique GetTechnique(string name)
         {
+            if (!Initialized)
+            {
+                throw new Exception("Manager has not been initialized.");
+            }
             return techniqueDict[name].Value;
         }
 
@@ -236,7 +240,21 @@ namespace HelixToolkit.UWP
                 DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
             };
 
-            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning };
+            var renderPoint = new TechniqueDescription()
+            {
+                Name = DefaultRenderTechniqueNames.Points,
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSPoint, DefaultInputLayout.VSInputPoint),
+                ShaderList = new[]
+                {
+                    DefaultVSShaderDescriptions.VSPoint,
+                    DefaultGSShaderDescriptions.GSPoint,
+                    DefaultPSShaderDescriptions.PSPoint
+                },
+                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+            };
+
+            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint };
         }
     }
 }

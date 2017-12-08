@@ -47,6 +47,18 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        public static byte[] VSPoint
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsPoint;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
 
     public static class DefaultPSShaderByteCodes
@@ -96,6 +108,35 @@ namespace HelixToolkit.UWP.Shaders
             {
 #if !NETFX_CORE
                 return Properties.Resources.psNormals;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
+        public static byte[] PSPoint
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psPoint;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+    }
+
+    public static class DefaultGSShaderByteCodes
+    {
+        public static byte[] GSPoint
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.gsPoint;
 #else
                 throw new NotImplementedException();
 #endif
@@ -158,6 +199,17 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("BONEIDS", 0, Format.R32G32B32A32_SInt, InputElement.AppendAligned, 2),
             new InputElement("BONEWEIGHTS", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),
         };
+
+        public static InputElement[] VSInputPoint { get; } = new InputElement[]
+        {
+            new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+            //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+        };
     }
 
     public static class DefaultVSShaderDescriptions
@@ -195,8 +247,20 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultConstantBufferDescriptions.BoneCB
             }, 
             null);
+
+        public static ShaderDescription VSPoint = new ShaderDescription("VSPoint", ShaderStage.Vertex, FeatureLevel.Level_11_0,
+            DefaultVSShaderByteCodes.VSPoint,
+            new ConstantBufferDescription[]
+            {
+                DefaultConstantBufferDescriptions.GlobalTransformCB,
+                DefaultConstantBufferDescriptions.ModelCB,
+            },
+            null);
     }
 
+    /// <summary>
+    /// Default Pixel Shaders
+    /// </summary>
     public static class DefaultPSShaderDescriptions
     {
         public static ShaderDescription PSMeshBlinnPhong = new ShaderDescription("PSBlinnPhong", ShaderStage.Pixel, FeatureLevel.Level_11_0,
@@ -223,6 +287,27 @@ namespace HelixToolkit.UWP.Shaders
             DefaultPSShaderByteCodes.PSMeshNormal);
         public static ShaderDescription PSMeshVertPosition = new ShaderDescription("PSPosition", ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSMeshVertPosition);
+
+        public static ShaderDescription PSPoint = new ShaderDescription("PSPoint", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+            DefaultPSShaderByteCodes.PSPoint,
+            new ConstantBufferDescription[] 
+            {
+                DefaultConstantBufferDescriptions.ModelCB
+            });
+    }
+
+    /// <summary>
+    /// Default Geometry Shaders
+    /// </summary>
+    public static class DefaultGSShaderDescriptions
+    {
+        public static ShaderDescription GSPoint = new ShaderDescription("GSPoint", ShaderStage.Geometry, FeatureLevel.Level_11_0,
+            DefaultGSShaderByteCodes.GSPoint,
+            new ConstantBufferDescription[]
+            {
+                DefaultConstantBufferDescriptions.GlobalTransformCB,
+                DefaultConstantBufferDescriptions.ModelCB
+            });
     }
 
     public static class DefaultBlendStateDescriptions
@@ -283,6 +368,11 @@ namespace HelixToolkit.UWP.Shaders
             DepthComparison = Comparison.Less,
             IsStencilEnabled = false
         };
+    }
+
+    public static class DefaultRasterDescriptions
+    {
+
     }
 
     public static class DefaultConstantBufferDescriptions

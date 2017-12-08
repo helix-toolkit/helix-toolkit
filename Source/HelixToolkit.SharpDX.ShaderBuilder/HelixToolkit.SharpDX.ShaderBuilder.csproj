@@ -45,8 +45,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CS\" />
     <Folder Include="DS\" />
-    <Folder Include="GS\" />
     <Folder Include="HS\" />
   </ItemGroup>
   <ItemGroup>
@@ -55,7 +55,11 @@
   <ItemGroup>
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <Content Include="Common\Lighting.hlsl" />
     <Content Include="Common\Material.hlsl" />
+    <PixelShader Include="PS\psPoint.hlsl" />
+    <VertexShader Include="VS\vsPoint.hlsl" />
+    <GeometryShader Include="GS\gsPoint.hlsl" />
     <Content Include="PS\psCommon.hlsl" />
     <PixelShader Include="PS\psMeshXRay.hlsl" />
     <VertexShader Include="VS\vsMeshXRay.hlsl" />
@@ -78,7 +82,12 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>xcopy /y /f $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /f $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
+
+xcopy /y /f $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
