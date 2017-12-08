@@ -296,7 +296,7 @@ namespace HelixToolkit.UWP.Shaders
         public static ConstantBufferDescription ModelCB = new ConstantBufferDescription(ModelCBName, ModelStruct.SizeInBytes, 1);
         public static ConstantBufferDescription LightCB = new ConstantBufferDescription(LightsCBName, LightsBufferModel.SizeInBytes, 2);
         public static ConstantBufferDescription MaterialCB = new ConstantBufferDescription(MaterialCBName, MaterialStruct.SizeInBytes, 3);
-        public static ConstantBufferDescription BoneCB = new ConstantBufferDescription(BoneCBName, BoneMatricesStruct.SizeInBytes, 5);
+        public static ConstantBufferDescription BoneCB = new ConstantBufferDescription(BoneCBName, BoneMatricesStruct.SizeInBytes, 4);
     }
 
     public static class DefaultTextureBufferDescriptions

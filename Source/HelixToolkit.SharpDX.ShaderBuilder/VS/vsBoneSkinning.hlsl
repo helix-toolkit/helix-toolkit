@@ -5,10 +5,10 @@
 #pragma pack_matrix( row_major )
 #define MaxBones 128
 
-const int4 minBoneV = { 0, 0, 0, 0 };
-const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
+static const int4 minBoneV = { 0, 0, 0, 0 };
+static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
 
-cbuffer BoneSkinning : register(b5)
+cbuffer BoneSkinning : register(b4)
 {
     matrix cbSkinMatrices[MaxBones];
 };
@@ -28,22 +28,22 @@ PSInput main(VSBoneSkinInput input)
     if (bHasBones)
     {
         int4 bones = clamp(input.bones, minBoneV, maxBoneV);
-        if (input.boneWeights.x != 0)
+        //if (input.boneWeights.x != 0)
         {
             output.p = mul(inputp, cbSkinMatrices[bones.x]) * input.boneWeights.x;
             output.n = mul(inputn, (float3x3) cbSkinMatrices[bones.x]) * input.boneWeights.x;
         }
-        if (input.boneWeights.y != 0)
+        //if (input.boneWeights.y != 0)
         {
             output.p += mul(inputp, cbSkinMatrices[bones.y]) * input.boneWeights.y;
             output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.y]) * input.boneWeights.y;
         }
-        if (input.boneWeights.z != 0)
+        //if (input.boneWeights.z != 0)
         {
             output.p += mul(inputp, cbSkinMatrices[bones.z]) * input.boneWeights.z;
             output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.z]) * input.boneWeights.z;
         }
-        if (input.boneWeights.w != 0)
+        //if (input.boneWeights.w != 0)
         {
             output.p += mul(inputp, cbSkinMatrices[bones.w]) * input.boneWeights.w;
             output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.w]) * input.boneWeights.w;
