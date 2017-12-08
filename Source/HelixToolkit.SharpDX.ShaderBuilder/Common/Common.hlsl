@@ -27,7 +27,7 @@ cbuffer cbModel : register(b1)
     bool bInvertNormal = false;
     bool bHasInstances = false;
     bool bHasInstanceParams = false;   
-    bool padding1;
+    bool bHasBones = false;
 };
 
 //--------------------------------------------------------------------------------------

@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public int InvertNormal;
         public int HasInstances;
         public int HasInstanceParams;
-        float padding0;
+        public int HasBones;
         public const int SizeInBytes = 4 * (4 * 4 + 4);
     }
 

@@ -29,16 +29,15 @@ namespace HelixToolkit.UWP.Shaders
         public ResourceOptionFlags OptionFlags { set; get; } = ResourceOptionFlags.None;
         [DataMember]
         public ResourceUsage Usage { set; get; } = ResourceUsage.Dynamic;
-        [DataMember]
-        public Type StructType { set; get; }
+        //[DataMember]
+        //public Type StructType { set; get; }
 
         public ConstantBufferDescription() { }
 
-        public ConstantBufferDescription(string name, int structSize, Type structType, int slot, int strideSize=0)
+        public ConstantBufferDescription(string name, int structSize, int slot, int strideSize=0)
         {
             Name = name;
             StructSize = structSize;
-            StructType = structType;
             Slot = slot;
             StrideSize = strideSize;
         }

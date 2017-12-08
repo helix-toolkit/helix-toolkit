@@ -1,10 +1,13 @@
-﻿using SharpDX.Direct3D11;
+﻿using SharpDX;
+using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
+    using Utilities;
     public class BoneSkinRenderCore : MeshRenderCore
     {
         public IElementsBufferModel VertexBoneIdBuffer { set; get; }
@@ -14,13 +17,13 @@ namespace HelixToolkit.UWP.Core
             set;get;
         }
 
-     //   private EffectMatrixVariable boneMatricesVar;
+        private IBufferProxy boneCB;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
             {
-             //   boneMatricesVar = Collect(Effect.GetVariableByName("SkinMatrices").AsMatrix());
+                boneCB = technique.ConstantBufferPool.Register(DefaultConstantBufferDescriptions.BoneCB);
                 return true;
             }
             else
@@ -40,10 +43,19 @@ namespace HelixToolkit.UWP.Core
             VertexBoneIdBuffer?.AttachBuffer(context, 2);
         }
 
-        //protected override void SetShaderVariables(IRenderMatrices context)
-        //{
-        //    base.SetShaderVariables(context);
-        //    boneMatricesVar.SetMatrix(BoneMatrices.Bones);
-        //}
+        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        {
+            modelStruct.HasBones = BoneMatrices.Bones != null ? 1 : 0;
+            base.OnUpdateModelStruct(context);           
+        }
+
+        protected override void OnRender(IRenderMatrices context)
+        {
+            if (BoneMatrices.Bones != null)
+            {
+                boneCB.UploadDataToBuffer(context.DeviceContext, BoneMatrices.Bones);
+            }
+            base.OnRender(context);
+        }
     }
 }

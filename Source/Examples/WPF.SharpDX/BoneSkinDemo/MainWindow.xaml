@@ -17,7 +17,7 @@
             ShowCoordinateSystem="False"
             ShowFrameRate="True"
             TextBrush="Black"
-            UseDefaultGestures="False">
+            UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />

@@ -154,4 +154,16 @@
   <data name="psPositions" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pspositions.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsBoneSkinning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsboneskinning.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsCubeMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vscubemap.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -157,8 +157,8 @@ namespace HelixToolkit.Wpf.SharpDX
             private set
             {
                 renderTechnique = value;
-                IsDeferredLighting = EffectsManager != null && ( renderTechnique == EffectsManager[DeferredRenderTechniqueNames.Deferred]
-                    || renderTechnique == EffectsManager[DeferredRenderTechniqueNames.GBuffer]);
+                //IsDeferredLighting = EffectsManager != null && ( renderTechnique == EffectsManager[DeferredRenderTechniqueNames.Deferred]
+                //    || renderTechnique == EffectsManager[DeferredRenderTechniqueNames.GBuffer]);
             }
         }
         private IRenderTechnique renderTechnique;

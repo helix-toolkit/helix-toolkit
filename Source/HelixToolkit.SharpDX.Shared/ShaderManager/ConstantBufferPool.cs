@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.ShaderManager
 
         protected override string GetKey(ConstantBufferDescription description)
         {
-            return description.StructType.Name + description.StructSize;
+            return description.Name + description.StructSize;
         }
     }
 }

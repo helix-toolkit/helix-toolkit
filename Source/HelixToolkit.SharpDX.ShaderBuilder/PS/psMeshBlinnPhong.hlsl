@@ -15,7 +15,7 @@ float4 main(PSInput input) : SV_Target
     float3 eye = normalize(vEyePos - input.wp.xyz);
 
     // light emissive intensity and add ambient light
-    float4 I = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+    float4 I = input.c2;
 
     // get shadow color
     float s = 1;

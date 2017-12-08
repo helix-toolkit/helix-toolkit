@@ -57,6 +57,10 @@
     <Content Include="Common\DataStructs.hlsl" />
     <Content Include="Common\Material.hlsl" />
     <Content Include="PS\psCommon.hlsl" />
+    <PixelShader Include="PS\psMeshXRay.hlsl" />
+    <VertexShader Include="VS\vsMeshXRay.hlsl" />
+    <VertexShader Include="VS\vsBoneSkinning.hlsl" />
+    <VertexShader Include="VS\vsCubeMap.hlsl" />
     <PixelShader Include="PS\psColor.hlsl" />
     <PixelShader Include="PS\psNormals.hlsl" />
     <PixelShader Include="PS\psPositions.hlsl" />
