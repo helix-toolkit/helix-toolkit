@@ -154,7 +154,7 @@ namespace LightingDemo
             //    RenderTechniquesManager = new DefaultRenderTechniquesManager();           
             EffectsManager = new DefaultShaderTechniqueManager();
             EffectsManager.Initialize();
-            RenderTechnique = EffectsManager.Techniques[DefaultRenderTechniqueNames.Blinn];
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "Lighting Demo";
