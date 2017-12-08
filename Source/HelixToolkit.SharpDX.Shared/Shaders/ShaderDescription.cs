@@ -24,22 +24,22 @@ namespace HelixToolkit.UWP.Shaders
         [DataMember]
         public byte[] ByteCode { set; get; }
         [DataMember]
-        public ConstantBufferDescription[] ConstantBufferDescriptions { set; get; }
+        public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
         [DataMember]
-        public TextureDescription[] TextureDescriptions { set; get; }
+        public TextureMapping[] TextureMappings { set; get; }
         public ShaderDescription()
         {
 
         }
         public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[] byteCode, 
-            ConstantBufferDescription[] constantBuffers = null, TextureDescription[] textures = null)
+            ConstantBufferMapping[] constantBuffers = null, TextureMapping[] textures = null)
         {
             Name = name;
             ShaderType = type;
             Level = featureLevel;
             ByteCode = byteCode;
-            ConstantBufferDescriptions = constantBuffers;
-            TextureDescriptions = textures;
+            ConstantBufferMappings = constantBuffers;
+            TextureMappings = textures;
         }
         /// <summary>
         /// Create Shader.
@@ -73,18 +73,18 @@ namespace HelixToolkit.UWP.Shaders
                 default:
                     throw new ArgumentException("Shader Type does not supported.");
             }
-            if (ConstantBufferDescriptions != null)
+            if (ConstantBufferMappings != null)
             {
-                foreach(var bufDesc in ConstantBufferDescriptions)
+                foreach(var mapping in ConstantBufferMappings)
                 {
-                    shader.AddConstantBuffer(bufDesc.Name, bufDesc.Slot, pool.Register(bufDesc));
+                    shader.AddConstantBuffer(mapping.Description.Name, mapping.Slot, pool.Register(mapping.Description));
                 }
             }
-            if(TextureDescriptions != null)
+            if(TextureMappings != null)
             {
-                foreach(var texDesc in TextureDescriptions)
+                foreach(var mapping in TextureMappings)
                 {
-                    shader.AddTextureMapping(texDesc.Name, texDesc.Slot);
+                    shader.AddTextureMapping(mapping.Description.Name, mapping.Slot);
                 }
             }
             return shader;

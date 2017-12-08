@@ -9,8 +9,7 @@ namespace HelixToolkit.UWP.Shaders
     [DataContract]
     public class TextureDescription
     {
-        [DataMember]
-        public int Slot { set; get; }
+
         [DataMember]
         public string Name { set; get; }
         [DataMember]
@@ -18,11 +17,30 @@ namespace HelixToolkit.UWP.Shaders
 
         public TextureDescription() { }
 
-        public TextureDescription(int slot, string name, ShaderStage shaderType)
+        public TextureDescription(string name, ShaderStage shaderType)
         {
-            Slot = slot;
             Name = name;
             ShaderType = shaderType;
+        }
+
+        public TextureMapping CreateMapping(int slot)
+        {
+            return new TextureMapping(slot, this);
+        }
+    }
+
+    [DataContract]
+    public class TextureMapping
+    {
+        [DataMember]
+        public int Slot { set; get; }
+        [DataMember]
+        public TextureDescription Description { set; get; }
+
+        public TextureMapping(int slot, TextureDescription description)
+        {
+            Slot = slot;
+            Description = description;
         }
     }
 }

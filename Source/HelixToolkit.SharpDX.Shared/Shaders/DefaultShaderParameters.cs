@@ -216,44 +216,44 @@ namespace HelixToolkit.UWP.Shaders
     {
         public static ShaderDescription VSMeshDefault = new ShaderDescription("VSMeshDefault", ShaderStage.Vertex, FeatureLevel.Level_11_0, 
             DefaultVSShaderByteCodes.VSMeshDefault, 
-            new ConstantBufferDescription[]
+            new ConstantBufferMapping[]
             {
-                DefaultConstantBufferDescriptions.GlobalTransformCB,
-                DefaultConstantBufferDescriptions.ModelCB,
-                DefaultConstantBufferDescriptions.LightCB,
-                DefaultConstantBufferDescriptions.MaterialCB
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
+                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
             }, 
             null);
 
         public static ShaderDescription VSMeshInstancing = new ShaderDescription("VSMeshInstancing", ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSMeshInstancing,
-            new ConstantBufferDescription[]
+            new ConstantBufferMapping[]
             {
-                DefaultConstantBufferDescriptions.GlobalTransformCB,
-                DefaultConstantBufferDescriptions.ModelCB,
-                DefaultConstantBufferDescriptions.LightCB,
-                DefaultConstantBufferDescriptions.MaterialCB
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
+                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
             },
             null);
 
         public static ShaderDescription VSMeshBoneSkinning = new ShaderDescription("VSMeshBoneSkinning", ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSMeshBoneSkinning,
-            new ConstantBufferDescription[]
+            new ConstantBufferMapping[]
             {
-                DefaultConstantBufferDescriptions.GlobalTransformCB,
-                DefaultConstantBufferDescriptions.ModelCB,
-                DefaultConstantBufferDescriptions.LightCB,
-                DefaultConstantBufferDescriptions.MaterialCB,
-                DefaultConstantBufferDescriptions.BoneCB
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
+                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3),
+                DefaultConstantBufferDescriptions.BoneCB.CreateMapping(4)
             }, 
             null);
 
         public static ShaderDescription VSPoint = new ShaderDescription("VSPoint", ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSPoint,
-            new ConstantBufferDescription[]
+            new ConstantBufferMapping[]
             {
-                DefaultConstantBufferDescriptions.GlobalTransformCB,
-                DefaultConstantBufferDescriptions.ModelCB,
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
             },
             null);
     }
@@ -265,20 +265,20 @@ namespace HelixToolkit.UWP.Shaders
     {
         public static ShaderDescription PSMeshBlinnPhong = new ShaderDescription("PSBlinnPhong", ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSMeshBinnPhong,
-            new ConstantBufferDescription[]
+            new ConstantBufferMapping[]
             {
-                DefaultConstantBufferDescriptions.GlobalTransformCB,
-                DefaultConstantBufferDescriptions.ModelCB,
-                DefaultConstantBufferDescriptions.LightCB,
-                DefaultConstantBufferDescriptions.MaterialCB
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
+                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
             },
-            new TextureDescription[] 
+            new TextureMapping[] 
             {
-                DefaultTextureBufferDescriptions.DiffuseMapTB,
-                DefaultTextureBufferDescriptions.AlphaMapTB,
-                DefaultTextureBufferDescriptions.NormalMapTB,
-                DefaultTextureBufferDescriptions.DisplacementMapTB,              
-                DefaultTextureBufferDescriptions.ShadowMapTB
+                DefaultTextureBufferDescriptions.DiffuseMapTB.CreateMapping(0),
+                DefaultTextureBufferDescriptions.AlphaMapTB.CreateMapping(1),
+                DefaultTextureBufferDescriptions.NormalMapTB.CreateMapping(2),
+                DefaultTextureBufferDescriptions.DisplacementMapTB.CreateMapping(3),              
+                DefaultTextureBufferDescriptions.ShadowMapTB.CreateMapping(5)
             });
 
         public static ShaderDescription PSMeshVertColor = new ShaderDescription("PSColor", ShaderStage.Pixel, FeatureLevel.Level_11_0,
@@ -290,9 +290,9 @@ namespace HelixToolkit.UWP.Shaders
 
         public static ShaderDescription PSPoint = new ShaderDescription("PSPoint", ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSPoint,
-            new ConstantBufferDescription[] 
+            new ConstantBufferMapping[] 
             {
-                DefaultConstantBufferDescriptions.ModelCB
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
             });
     }
 
@@ -303,10 +303,10 @@ namespace HelixToolkit.UWP.Shaders
     {
         public static ShaderDescription GSPoint = new ShaderDescription("GSPoint", ShaderStage.Geometry, FeatureLevel.Level_11_0,
             DefaultGSShaderByteCodes.GSPoint,
-            new ConstantBufferDescription[]
+            new ConstantBufferMapping[]
             {
-                DefaultConstantBufferDescriptions.GlobalTransformCB,
-                DefaultConstantBufferDescriptions.ModelCB
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
             });
     }
 
@@ -391,11 +391,11 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultTextureBufferDescriptions
     {
-        public static TextureDescription DiffuseMapTB = new TextureDescription(0, "texDiffuseMap", ShaderStage.Pixel);
-        public static TextureDescription AlphaMapTB = new TextureDescription(1, "texAlphaMap", ShaderStage.Pixel);
-        public static TextureDescription NormalMapTB = new TextureDescription(2, "texNormalMap", ShaderStage.Pixel);
-        public static TextureDescription DisplacementMapTB = new TextureDescription(3, "texDisplacementMap", ShaderStage.Pixel);
-        public static TextureDescription CubeMapTB = new TextureDescription(4, "texCubeMap", ShaderStage.Pixel);
-        public static TextureDescription ShadowMapTB = new TextureDescription(5, "texShadowMap", ShaderStage.Pixel);
+        public static TextureDescription DiffuseMapTB = new TextureDescription("texDiffuseMap", ShaderStage.Pixel);
+        public static TextureDescription AlphaMapTB = new TextureDescription("texAlphaMap", ShaderStage.Pixel);
+        public static TextureDescription NormalMapTB = new TextureDescription("texNormalMap", ShaderStage.Pixel);
+        public static TextureDescription DisplacementMapTB = new TextureDescription("texDisplacementMap", ShaderStage.Pixel);
+        public static TextureDescription CubeMapTB = new TextureDescription("texCubeMap", ShaderStage.Pixel);
+        public static TextureDescription ShadowMapTB = new TextureDescription("texShadowMap", ShaderStage.Pixel);
     }
 }

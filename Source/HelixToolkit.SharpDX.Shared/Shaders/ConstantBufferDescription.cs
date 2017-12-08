@@ -14,8 +14,6 @@ namespace HelixToolkit.UWP.Shaders
     public class ConstantBufferDescription
     {
         [DataMember]
-        public int Slot { set; get; }
-        [DataMember]
         public string Name { set; get; }
         [DataMember]
         public int StructSize { set; get; }
@@ -34,17 +32,41 @@ namespace HelixToolkit.UWP.Shaders
 
         public ConstantBufferDescription() { }
 
-        public ConstantBufferDescription(string name, int structSize, int slot, int strideSize=0)
+        public ConstantBufferDescription(string name, int structSize, int strideSize=0)
         {
             Name = name;
             StructSize = structSize;
-            Slot = slot;
             StrideSize = strideSize;
         }
 
         public IBufferProxy CreateBuffer()
         {
             return new ConstantBufferProxy(this);
+        }
+
+        public ConstantBufferMapping CreateMapping(int slot)
+        {
+            return new ConstantBufferMapping(slot, this);
+        }
+    }
+
+    [DataContract]
+    public class ConstantBufferMapping
+    {
+        [DataMember]
+        public int Slot { set; get; }
+        [DataMember]
+        public ConstantBufferDescription Description { set; get; }
+
+        public ConstantBufferMapping(int slot, ConstantBufferDescription description)
+        {
+            Slot = slot;
+            Description = description;
+        }
+
+        public static ConstantBufferMapping Create(int slot, ConstantBufferDescription description)
+        {
+            return new ConstantBufferMapping(slot, description);
         }
     }
 }
