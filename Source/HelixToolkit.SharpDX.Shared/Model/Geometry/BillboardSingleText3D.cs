@@ -44,8 +44,6 @@ using Core;
             }
         }
 
-        //public override IList<Vector2> TextureOffsets { get { return TextInfo.Offsets; } }
-
         private Color4 mFontColor = Color.Black;
         public Color4 FontColor
         {
@@ -123,16 +121,9 @@ using Core;
 
         public BillboardSingleText3D()
         {
-            Positions = new Vector3Collection(12);
-            Colors = new Color4Collection(12);
-            TextureCoordinates = new Vector2Collection(12);
-            TextInfo = new TextInfo();
         }
         public BillboardSingleText3D(float width, float height)
         {
-            Positions = new Vector3Collection(12);
-            Colors = new Color4Collection(12);
-            TextureCoordinates = new Vector2Collection(12);
             TextInfo = new TextInfo();
             Width = width;
             Height = height;
@@ -142,6 +133,7 @@ using Core;
         {
             if (!isInitialized)
             {
+                BillboardVertices.Clear();
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
 #if NETFX_CORE
@@ -166,10 +158,6 @@ using Core;
                         Width = 0;
                         Height = 0;
                     }
-                    Positions.Clear();
-                    Colors.Clear();
-                    TextureCoordinates.Clear();
-                    TextInfo.Offsets.Clear();
                 }
                 isInitialized = true;
                 UpdateBounds();
@@ -178,62 +166,31 @@ using Core;
 
         private void DrawCharacter(string text, Vector3 origin, float w, float h, TextInfo info)
         {
-            Positions.Clear();
-            Colors.Clear();
-            TextureCoordinates.Clear();
-            info.Offsets.Clear();
-            // CCW from top left 
-            var a = new Vector2(-w / 2, -h / 2);
-            var b = new Vector2(-w / 2, h / 2);
-            var c = new Vector2(w / 2, -h / 2);
-            var d = new Vector2(w / 2, h / 2);
+            // CCW from bottom left 
+            var bl = new Vector2(-w / 2, -h / 2);
+            var tl = new Vector2(-w / 2, h / 2);
+            var br = new Vector2(w / 2, -h / 2);
+            var tr = new Vector2(w / 2, h / 2);
 
-            var uv_a = new Vector2(0, 0);
-            var uv_b = new Vector2(0, 1);
-            var uv_c = new Vector2(1, 0);
-            var uv_d = new Vector2(1, 1);
+            var uv_tl = new Vector2(0, 0);
+            var uv_tr = new Vector2(0, 1);
+            var uv_bl = new Vector2(1, 0);
+            var uv_br = new Vector2(1, 1);
 
-            // Create foreground data
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-
-            //Colors.Add(FontColor);
-            //Colors.Add(FontColor);
-            //Colors.Add(FontColor);
-            //Colors.Add(FontColor);
-
-            TextureCoordinates.Add(uv_b);
-            TextureCoordinates.Add(uv_d);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_c);
-
-            info.Offsets.Add(a);
-            info.Offsets.Add(c);
-            info.Offsets.Add(b);
-            info.Offsets.Add(d);
-
-            // Create background data
-            //Positions.Add(info.Origin);
-            //Positions.Add(info.Origin);
-            //Positions.Add(info.Origin);
-            //Positions.Add(info.Origin);
-
-            //Colors.Add(BackgroundColor);
-            //Colors.Add(BackgroundColor);
-            //Colors.Add(BackgroundColor);
-            //Colors.Add(BackgroundColor);
-
-            //TextureCoordinates.Add(uv_a);
-            //TextureCoordinates.Add(uv_a);
-            //TextureCoordinates.Add(uv_a);
-            //TextureCoordinates.Add(uv_a);
-
-            //info.Offsets.Add(a);
-            //info.Offsets.Add(c);
-            //info.Offsets.Add(b);
-            //info.Offsets.Add(d);
+            BillboardVertices.Add(new BillboardVertex()
+            {
+                Position = info.Origin.ToVector4(),
+                Foreground = info.Foreground,
+                Background = info.Background,
+                TexTL = uv_tl,
+                TexTR = uv_tr,
+                TexBL = uv_bl,
+                TexBR = uv_br,
+                OffP0 = tl,
+                OffP1 = bl,
+                OffP2 = tr,
+                OffP3 = br
+            });
         }
     }
 }

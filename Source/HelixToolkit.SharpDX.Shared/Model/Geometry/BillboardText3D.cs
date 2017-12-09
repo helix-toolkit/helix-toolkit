@@ -22,22 +22,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class TextInfo
     {
-        public List<Vector2> Offsets { get; set; }
         public string Text { get; set; }
         public Vector3 Origin { get; set; }
 
         public Color4 Foreground { set; get; } = Color.Black;
 
-        public Color4 Background { set; get; } = Color.Red;
+        public Color4 Background { set; get; } = Color.Transparent;
 
         public TextInfo()
         {
-            Offsets = new List<Vector2>();
         }
 
         public TextInfo(string text, Vector3 origin)
         {
-            Offsets = new List<Vector2>();
             Text = text;
             Origin = origin;
         }
@@ -92,7 +89,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             foreach (var textInfo in TextInfo)
             {
-                textInfo.Offsets.Clear();
                 int x = 0;
                 int y = 0;
                 var w = bmpFont.TextureSize.Width;

@@ -26,7 +26,6 @@ namespace HelixToolkit.UWP.Core
             context.DeviceContext.Rasterizer.State = RasterState;
             var buffer = GeometryBuffer as IBillboardBufferModel;
             context.DeviceContext.PixelShader.SetShaderResource(0, buffer.TextureView);
-            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
 
@@ -34,76 +33,13 @@ namespace HelixToolkit.UWP.Core
         {
             var billboardGeometry = GeometryBuffer.Geometry as IBillboardText;
             var vertexCount = billboardGeometry.BillboardVertices.Count;
-            var type = (GeometryBuffer as IBillboardBufferModel).Type;
             if (instanceModel == null || !instanceModel.HasElements)
             {
-                switch (type)
-                {
-                    case BillboardType.MultipleText:
-                        // Use foreground shader to draw text
-                        // EffectTechnique.GetPassByIndex(0).Apply(context);
-
-                        // --- draw text, foreground vertex is beginning from 0.
-                        context.Draw(vertexCount, 0);
-                        break;
-                    case BillboardType.SingleText:
-                        //if (vertexCount == 8)
-                        //{
-                        //    var half = vertexCount / 2;
-                        //    // Use background shader to draw background first
-                        //    EffectTechnique.GetPassByIndex(1).Apply(context);
-                        //    // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
-                        //    context.Draw(half, half);
-
-                        //    // Use foreground shader to draw text
-                        //    EffectTechnique.GetPassByIndex(0).Apply(context);
-
-                        //    // --- draw text, foreground vertex is beginning from 0.
-                        //    context.Draw(half, 0);
-                        //}
-                        break;
-                    case BillboardType.SingleImage:
-                        //// Use foreground shader to draw text
-                        //EffectTechnique.GetPassByIndex(2).Apply(context);
-                        //// --- draw text, foreground vertex is beginning from 0.
-                        //context.Draw(vertexCount, 0);
-                        break;
-                }
+                context.Draw(vertexCount, 0);
             }
             else
             {
-                switch (type)
-                {
-                    case BillboardType.MultipleText:
-                        //// Use foreground shader to draw text
-                        //EffectTechnique.GetPassByIndex(0).Apply(context);
-
-                        //// --- draw text, foreground vertex is beginning from 0.
-                        //context.DrawInstanced(vertexCount, instanceModel.Buffer.Count, 0, 0);
-                        break;
-                    case BillboardType.SingleText:
-                        //if (vertexCount == 8)
-                        //{
-                        //    var half = vertexCount / 2;
-                        //    // Use background shader to draw background first
-                        //    EffectTechnique.GetPassByIndex(1).Apply(context);
-                        //    // --- draw background, background vertex is beginning from middle. <see cref="BillboardSingleText3D"/>
-                        //    context.DrawInstanced(half, instanceModel.Buffer.Count, half, 0);
-
-                        //    // Use foreground shader to draw text
-                        //    EffectTechnique.GetPassByIndex(0).Apply(context);
-
-                        //    // --- draw text, foreground vertex is beginning from 0.
-                        //    context.DrawInstanced(half, instanceModel.Buffer.Count, 0, 0);
-                        //}
-                        break;
-                    case BillboardType.SingleImage:
-                        //// Use foreground shader to draw text
-                        //EffectTechnique.GetPassByIndex(2).Apply(context);
-                        //// --- draw text, foreground vertex is beginning from 0.
-                        //context.DrawInstanced(vertexCount, instanceModel.Buffer.Count, 0, 0);
-                        break;
-                }
+                context.DrawInstanced(vertexCount, instanceModel.Buffer.Count, 0, 0);
             }
         }
     }

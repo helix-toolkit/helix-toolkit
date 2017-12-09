@@ -186,7 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere
         /// </summary>
-        public void UpdateBounds()
+        public virtual void UpdateBounds()
         {
             if (position == null || position.Count == 0)
             {

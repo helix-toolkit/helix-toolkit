@@ -30,11 +30,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private IList<Vector2> mTextInfoOffsets = null;
-        //public override IList<Vector2> TextureOffsets
-        //{
-        //    get { return mTextInfoOffsets; }
-        //}
         /// <summary>
         /// Billboard center location
         /// </summary>
@@ -104,43 +99,33 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override void DrawTexture()
         {
-            Positions.Clear();
-            Colors.Clear();
-            TextureCoordinates.Clear();
-            mTextInfoOffsets = new List<Vector2>(4);
             var w = Width;
             var h = Height;
-            // CCW from top left 
-            var a = new Vector2(-w / 2, -h / 2);
-            var b = new Vector2(-w / 2, h / 2);
-            var c = new Vector2(w / 2, -h / 2);
-            var d = new Vector2(w / 2, h / 2);
+            // CCW from bottom left 
+            var bl = new Vector2(-w / 2, -h / 2);
+            var tl = new Vector2(-w / 2, h / 2);
+            var br = new Vector2(w / 2, -h / 2);
+            var tr = new Vector2(w / 2, h / 2);
 
-            var uv_a = new Vector2(0, 0);
-            var uv_b = new Vector2(0, 1);
-            var uv_c = new Vector2(1, 0);
-            var uv_d = new Vector2(1, 1);
+            var uv_tl = new Vector2(0, 0);
+            var uv_tr = new Vector2(0, 1);
+            var uv_bl = new Vector2(1, 0);
+            var uv_br = new Vector2(1, 1);
 
-            // Create foreground data
-            Positions.Add(Center);
-            Positions.Add(Center);
-            Positions.Add(Center);
-            Positions.Add(Center);
-
-            Colors.Add(MaskColor);
-            Colors.Add(MaskColor);
-            Colors.Add(MaskColor);
-            Colors.Add(MaskColor);
-
-            TextureCoordinates.Add(uv_b);
-            TextureCoordinates.Add(uv_d);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_c);
-
-            mTextInfoOffsets.Add(a);
-            mTextInfoOffsets.Add(c);
-            mTextInfoOffsets.Add(b);
-            mTextInfoOffsets.Add(d);
+            BillboardVertices.Add(new BillboardVertex()
+            {
+                Position = Center.ToVector4(),
+                Foreground = Color.White,
+                Background = Color.White,
+                TexTL = uv_tl,
+                TexTR = uv_tr,
+                TexBL = uv_bl,
+                TexBR = uv_br,
+                OffP0 = tl,
+                OffP1 = bl,
+                OffP2 = tr,
+                OffP3 = br
+            });
             UpdateBounds();
         }
     }

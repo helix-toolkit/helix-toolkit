@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
         public BillboardType Type { private set; get; }
 
         public BillboardBufferModel(int structSize)
-            : base(PrimitiveTopology.TriangleStrip, new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
+            : base(PrimitiveTopology.PointList, new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
         {
         }
 
@@ -67,20 +67,15 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
         {
-            switch (Type)
-            {
-                case BillboardType.MultipleText:
-                    context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-                    break;
-                default:
-                    context.InputAssembler.PrimitiveTopology = Topology;
-                    break;
-            }
+            context.InputAssembler.PrimitiveTopology = Topology;
             context.InputAssembler.InputLayout = vertexLayout;
-            context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
             if (VertexBuffer != null)
             {
                 context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset));
+            }
+            else
+            {
+                context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
             }
             return true;
         }
