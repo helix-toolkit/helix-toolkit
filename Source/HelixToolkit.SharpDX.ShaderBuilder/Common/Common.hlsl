@@ -28,8 +28,8 @@ cbuffer cbModel : register(b1)
     bool bHasInstances = false;
     bool bHasInstanceParams = false;   
     bool bHasBones = false;	
-    float4 vPointParams = float4(4, 4, 0, 0);
-    float4 vPointColor = float4(1, 1, 1, 1);
+    float4 vParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
+    float4 vColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
 };
 
 //--------------------------------------------------------------------------------------
@@ -53,6 +53,14 @@ float4 windowToProj(in float2 pos, in float z, in float w)
     return float4(((pos.x * 2.0 / vViewport.x) - 1.0) * w,
                   ((pos.y * 2.0 / vViewport.y) - 1.0) * -w,
                   z, w);
+}
+
+//--------------------------------------------------------------------------------------
+// From window pixel pos to normalized device coordinates.
+//--------------------------------------------------------------------------------------
+float2 windowToNdc(in float2 pos)
+{
+    return float2((pos.x / vViewport.x) * 2.0, (pos.y / vViewport.y) * 2.0);
 }
 
 int whengt(float l, float cmp)

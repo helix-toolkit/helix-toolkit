@@ -22,6 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
         IList<Vector2> TextureOffsets { get; }
         Vector2Collection TextureCoordinates { get; }
         Color4Collection Colors { get; }
+        Color4Collection BackgroundColors { get; }
         float Width { get; }
         float Height { get; }
     }

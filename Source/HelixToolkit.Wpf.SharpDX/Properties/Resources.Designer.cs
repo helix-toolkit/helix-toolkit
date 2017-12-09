@@ -123,6 +123,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psBillboardText {
+            get {
+                object obj = ResourceManager.GetObject("psBillboardText", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psColor {
             get {
                 object obj = ResourceManager.GetObject("psColor", resourceCulture);
@@ -207,6 +217,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
             get {
                 object obj = ResourceManager.GetObject("random4x4_dot3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsBillboard {
+            get {
+                object obj = ResourceManager.GetObject("vsBillboard", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

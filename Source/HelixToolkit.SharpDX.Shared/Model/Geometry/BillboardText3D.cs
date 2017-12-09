@@ -18,13 +18,17 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-using Core;
+    using Core;
 
     public class TextInfo
     {
         public List<Vector2> Offsets { get; set; }
         public string Text { get; set; }
         public Vector3 Origin { get; set; }
+
+        public Color4 Foreground { set; get; } = Color.Black;
+
+        public Color4 Background { set; get; } = Color.Red;
 
         public TextInfo()
         {
@@ -82,29 +86,21 @@ using Core;
 
         public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
 
-        private Media.Color mFontColor = Media.Colors.Black;
-        public Media.Color FontColor
-        {
-            set { mFontColor = value; }
-            get { return mFontColor; }
-        }
-
         public BillboardText3D()
         {
             Positions = new Vector3Collection();
             Colors = new Color4Collection();
+            BackgroundColors = new Color4Collection();
             TextureCoordinates = new Vector2Collection();
             TextInfo = new List<TextInfo>();
         }
-
-
 
         public override void DrawTexture()
         {
             Positions.Clear();
             Colors.Clear();
             TextureCoordinates.Clear();
-
+            BackgroundColors.Clear();
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             foreach (var textInfo in TextInfo)
             {
@@ -166,29 +162,35 @@ using Core;
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
+            //Positions.Add(info.Origin);
+            //Positions.Add(info.Origin);
 
-            var color = FontColor.ToColor4();
-            Colors.Add(color);
-            Colors.Add(color);
-            Colors.Add(color);
-            Colors.Add(color);
-            Colors.Add(color);
-            Colors.Add(color);
+            Colors.Add(info.Foreground);
+            Colors.Add(info.Foreground);
+            Colors.Add(info.Foreground);
+            Colors.Add(info.Foreground);
+            //Colors.Add(info.Foreground);
+            //Colors.Add(info.Foreground);
+
+            BackgroundColors.Add(info.Background);
+            BackgroundColors.Add(info.Background);
+            BackgroundColors.Add(info.Background);
+            BackgroundColors.Add(info.Background);
+            //BackgroundColors.Add(info.Background);
+            //BackgroundColors.Add(info.Background);
 
             TextureCoordinates.Add(uv_b);
             TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_d);
+            //TextureCoordinates.Add(uv_a);
+            //TextureCoordinates.Add(uv_d);
             TextureCoordinates.Add(uv_c);
 
             info.Offsets.Add(a);
             info.Offsets.Add(c);
             info.Offsets.Add(b);
-            info.Offsets.Add(b);
-            info.Offsets.Add(c);
+            //info.Offsets.Add(b);
+            //info.Offsets.Add(c);
             info.Offsets.Add(d);
         }
     }

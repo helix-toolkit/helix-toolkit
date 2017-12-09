@@ -1,7 +1,4 @@
-﻿using System;
-using SharpDX.Direct3D11;
-using SharpDX;
-#if !NETFX_CORE
+﻿#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core

@@ -69,7 +69,7 @@ namespace SimpleDemo
             
             EffectsManager = new DefaultShaderTechniqueManager();
             EffectsManager.Initialize();
-            RenderTechnique = EffectsManager.Techniques[DefaultRenderTechniqueNames.Blinn];
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
 
             // setup lighting            
             AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);

@@ -21,8 +21,8 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdateModelStruct(IRenderMatrices context)
         {
             base.OnUpdateModelStruct(context);
-            modelStruct.PointColor = LineColor;
-            modelStruct.PointParams = LineParams;
+            modelStruct.Color = LineColor;
+            modelStruct.Params = LineParams;
         }
 
         protected override void OnRender(IRenderMatrices context)

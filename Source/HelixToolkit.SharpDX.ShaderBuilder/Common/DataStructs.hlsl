@@ -98,7 +98,8 @@ struct PSInputCube
 struct VSInputBT
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
+    float4 foreground : COLOR;
+    float4 background : COLOR1;
 	float4 t : TEXCOORD0; // t.xy = texture coords, t.zw = offset in pixels.
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
@@ -109,7 +110,8 @@ struct VSInputBT
 struct VSInputBTInstancing
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
+    float4 foreground : COLOR;
+    float4 background : COLOR1;
 	float4 t : TEXCOORD0; // t.xy = texture coords, t.zw = offset in pixels.
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
@@ -124,7 +126,8 @@ struct VSInputBTInstancing
 struct PSInputBT
 {
 	float4 p : SV_POSITION;
-	float4 c : COLOR;
+	float4 foreground : COLOR;
+    float4 background : COLOR1;
 	float2 t : TEXCOORD;
 };
 

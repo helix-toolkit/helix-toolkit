@@ -18,8 +18,8 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdateModelStruct(IRenderMatrices context)
         {
             base.OnUpdateModelStruct(context);
-            modelStruct.PointColor = PointColor;
-            modelStruct.PointParams = PointParams;
+            modelStruct.Color = PointColor;
+            modelStruct.Params = PointParams;
         }
 
         protected override void OnRender(IRenderMatrices context)

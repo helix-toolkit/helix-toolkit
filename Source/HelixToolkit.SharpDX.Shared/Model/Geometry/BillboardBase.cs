@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Core;
     public abstract class BillboardBase : MeshGeometry3D, IBillboardText
     {
         public float Height
@@ -49,6 +50,8 @@ namespace HelixToolkit.Wpf.SharpDX
             protected set;
             get;
         }
+
+        public Color4Collection BackgroundColors { set; get; }
 
         public BillboardBase()
         {

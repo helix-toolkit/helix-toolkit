@@ -57,11 +57,13 @@
     <Content Include="Common\DataStructs.hlsl" />
     <Content Include="Common\Lighting.hlsl" />
     <Content Include="Common\Material.hlsl" />
+    <VertexShader Include="VS\vsBillboard.hlsl" />
     <GeometryShader Include="GS\gsLine.hlsl" />
     <PixelShader Include="PS\psLine.hlsl" />
     <PixelShader Include="PS\psPoint.hlsl" />
     <VertexShader Include="VS\vsPoint.hlsl" />
     <GeometryShader Include="GS\gsPoint.hlsl" />
+    <PixelShader Include="PS\psBillboardText.hlsl" />
     <Content Include="PS\psCommon.hlsl" />
     <PixelShader Include="PS\psMeshXRay.hlsl" />
     <VertexShader Include="VS\vsMeshXRay.hlsl" />

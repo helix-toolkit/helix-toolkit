@@ -156,7 +156,6 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Default.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Deferred.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\DeferredLighting.fx" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Lines.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Material.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Tessellation.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\_compile_instructions.txt" />
@@ -168,7 +167,6 @@
     <Content Include="$(MSBuildThisFileDirectory)Shaders\Lighting.fx" />
     <Content Include="$(MSBuildThisFileDirectory)Shaders\Particles.fx" />
     <Content Include="$(MSBuildThisFileDirectory)Shaders\PixelShaders.fx" />
-    <Content Include="$(MSBuildThisFileDirectory)Shaders\Points.fx" />
     <Content Include="$(MSBuildThisFileDirectory)Shaders\TessellationEffects.fx" />
     <Content Include="$(MSBuildThisFileDirectory)Shaders\VertexShaders.fx" />
   </ItemGroup>

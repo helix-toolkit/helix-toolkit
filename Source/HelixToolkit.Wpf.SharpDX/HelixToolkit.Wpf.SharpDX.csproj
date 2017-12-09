@@ -299,6 +299,7 @@
     <EmbeddedResource Include="Textures\arial.fnt" />
     <None Include="Resources\gsLine.cso" />
     <None Include="Resources\gsPoint.cso" />
+    <None Include="Resources\psBillboardText.cso" />
     <None Include="Resources\psColor.cso" />
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
@@ -306,6 +307,7 @@
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
+    <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBoneSkinning.cso" />
     <None Include="Resources\vsCubeMap.cso" />
     <None Include="Resources\vsMeshDefault.cso" />

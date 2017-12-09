@@ -199,10 +199,10 @@ using Core;
             Positions.Add(info.Origin);
             Positions.Add(info.Origin);
 
-            Colors.Add(FontColor);
-            Colors.Add(FontColor);
-            Colors.Add(FontColor);
-            Colors.Add(FontColor);
+            //Colors.Add(FontColor);
+            //Colors.Add(FontColor);
+            //Colors.Add(FontColor);
+            //Colors.Add(FontColor);
 
             TextureCoordinates.Add(uv_b);
             TextureCoordinates.Add(uv_d);
@@ -215,25 +215,25 @@ using Core;
             info.Offsets.Add(d);
 
             // Create background data
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
+            //Positions.Add(info.Origin);
+            //Positions.Add(info.Origin);
+            //Positions.Add(info.Origin);
+            //Positions.Add(info.Origin);
 
-            Colors.Add(BackgroundColor);
-            Colors.Add(BackgroundColor);
-            Colors.Add(BackgroundColor);
-            Colors.Add(BackgroundColor);
+            //Colors.Add(BackgroundColor);
+            //Colors.Add(BackgroundColor);
+            //Colors.Add(BackgroundColor);
+            //Colors.Add(BackgroundColor);
 
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
-            TextureCoordinates.Add(uv_a);
+            //TextureCoordinates.Add(uv_a);
+            //TextureCoordinates.Add(uv_a);
+            //TextureCoordinates.Add(uv_a);
+            //TextureCoordinates.Add(uv_a);
 
-            info.Offsets.Add(a);
-            info.Offsets.Add(c);
-            info.Offsets.Add(b);
-            info.Offsets.Add(d);
+            //info.Offsets.Add(a);
+            //info.Offsets.Add(c);
+            //info.Offsets.Add(b);
+            //info.Offsets.Add(d);
         }
     }
 }

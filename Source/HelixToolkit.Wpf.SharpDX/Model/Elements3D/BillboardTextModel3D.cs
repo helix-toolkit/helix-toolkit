@@ -285,7 +285,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var tc = billboardGeometry.TextureCoordinates[i];
                 array[i].Position = new Vector4(position[i], 1.0f);
-                array[i].Color = billboardGeometry.Colors[i];
+                array[i].Foreground = billboardGeometry.Colors[i];
+                array[i].Background = billboardGeometry.BackgroundColors[i];
                 array[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
             }
 

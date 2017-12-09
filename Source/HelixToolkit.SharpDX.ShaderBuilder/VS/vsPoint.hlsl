@@ -21,6 +21,6 @@ GSInputPS main(VSInputPS input)
 	//set position into clip space	
 	output.p = mul(output.p, mWorld);
 	output.p = mul(output.p, mViewProjection);
-	output.c = input.c * vPointColor;
+	output.c = input.c * vColor;
 	return output;
 }
