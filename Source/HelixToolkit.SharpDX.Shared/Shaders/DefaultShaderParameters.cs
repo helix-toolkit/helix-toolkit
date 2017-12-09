@@ -234,6 +234,19 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
+
+        public static byte[] GSBillboard
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.gsBillboard;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
     }
 
     /// <summary>
@@ -322,12 +335,19 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("POSITION", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
             new InputElement("COLOR",    0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
             new InputElement("COLOR",    1, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
-            new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 1, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 2, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 3, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 4, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 5, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 6, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 7, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 8, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 9, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 10, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 11, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
         };
     }
     /// <summary>
@@ -487,6 +507,14 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription GSLine = new ShaderDescription(nameof(GSLine), ShaderStage.Geometry, FeatureLevel.Level_11_0,
             DefaultGSShaderByteCodes.GSLine,
+            new ConstantBufferMapping[]
+            {
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
+            });
+
+        public static ShaderDescription GSBillboard = new ShaderDescription(nameof(GSBillboard), ShaderStage.Geometry, FeatureLevel.Level_11_0,
+            DefaultGSShaderByteCodes.GSBillboard,
             new ConstantBufferMapping[]
             {
                 DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),

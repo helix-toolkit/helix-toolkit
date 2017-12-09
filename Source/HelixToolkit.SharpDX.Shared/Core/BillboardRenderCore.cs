@@ -26,13 +26,14 @@ namespace HelixToolkit.UWP.Core
             context.DeviceContext.Rasterizer.State = RasterState;
             var buffer = GeometryBuffer as IBillboardBufferModel;
             context.DeviceContext.PixelShader.SetShaderResource(0, buffer.TextureView);
-            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
         {
-            var vertexCount = GeometryBuffer.Geometry.Positions.Count;
+            var billboardGeometry = GeometryBuffer.Geometry as IBillboardText;
+            var vertexCount = billboardGeometry.BillboardVertices.Count;
             var type = (GeometryBuffer as IBillboardBufferModel).Type;
             if (instanceModel == null || !instanceModel.HasElements)
             {

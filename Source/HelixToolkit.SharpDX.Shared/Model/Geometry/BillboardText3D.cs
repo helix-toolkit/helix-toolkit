@@ -82,25 +82,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public List<TextInfo> TextInfo { get; private set; }
+        public List<TextInfo> TextInfo { get; } = new List<TextInfo>();
 
-        public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
-
-        public BillboardText3D()
-        {
-            Positions = new Vector3Collection();
-            Colors = new Color4Collection();
-            BackgroundColors = new Color4Collection();
-            TextureCoordinates = new Vector2Collection();
-            TextInfo = new List<TextInfo>();
-        }
+        //public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
 
         public override void DrawTexture()
         {
-            Positions.Clear();
-            Colors.Clear();
-            TextureCoordinates.Clear();
-            BackgroundColors.Clear();
+            BillboardVertices.Clear();
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             foreach (var textInfo in TextInfo)
             {
@@ -147,51 +135,31 @@ namespace HelixToolkit.Wpf.SharpDX
             var cu = character.Bounds.Left;
             var cv = character.Bounds.Top;
 
-            // CCW from top left 
-            var a = new Vector2(origin.X + kerning, origin.Y);
-            var b = new Vector2(origin.X + kerning, origin.Y + ch);
-            var c = new Vector2(origin.X + cw + kerning, origin.Y);
-            var d = new Vector2(origin.X + cw + kerning, origin.Y + ch);
 
-            var uv_a = new Vector2(cu / w, cv / h);
-            var uv_b = new Vector2(cu / w, (cv + ch) / h);
-            var uv_c = new Vector2((cu + cw) / w, cv / h);
-            var uv_d = new Vector2((cu + cw) / w, (cv + ch) / h);
+            var bl = new Vector2(origin.X + kerning, origin.Y);
+            var tl = new Vector2(origin.X + kerning, origin.Y + ch);
+            var br = new Vector2(origin.X + cw + kerning, origin.Y);
+            var tr = new Vector2(origin.X + cw + kerning, origin.Y + ch);
 
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            Positions.Add(info.Origin);
-            //Positions.Add(info.Origin);
-            //Positions.Add(info.Origin);
+            var uv_tl = new Vector2(cu / w, cv / h);
+            var uv_tr = new Vector2(cu / w, (cv + ch) / h);
+            var uv_bl = new Vector2((cu + cw) / w, cv / h);
+            var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
 
-            Colors.Add(info.Foreground);
-            Colors.Add(info.Foreground);
-            Colors.Add(info.Foreground);
-            Colors.Add(info.Foreground);
-            //Colors.Add(info.Foreground);
-            //Colors.Add(info.Foreground);
-
-            BackgroundColors.Add(info.Background);
-            BackgroundColors.Add(info.Background);
-            BackgroundColors.Add(info.Background);
-            BackgroundColors.Add(info.Background);
-            //BackgroundColors.Add(info.Background);
-            //BackgroundColors.Add(info.Background);
-
-            TextureCoordinates.Add(uv_b);
-            TextureCoordinates.Add(uv_d);
-            TextureCoordinates.Add(uv_a);
-            //TextureCoordinates.Add(uv_a);
-            //TextureCoordinates.Add(uv_d);
-            TextureCoordinates.Add(uv_c);
-
-            info.Offsets.Add(a);
-            info.Offsets.Add(c);
-            info.Offsets.Add(b);
-            //info.Offsets.Add(b);
-            //info.Offsets.Add(c);
-            info.Offsets.Add(d);
+            BillboardVertices.Add(new BillboardVertex()
+            {
+                Position = info.Origin.ToVector4(),
+                Foreground = info.Foreground,
+                Background = info.Background,
+                TexTL = uv_tl,
+                TexTR = uv_tr,
+                TexBL = uv_bl,
+                TexBR = uv_br,
+                OffP0 = tl,
+                OffP1 = bl,
+                OffP2 = tr,
+                OffP3 = br
+            });
         }
     }
 #endif

@@ -28,11 +28,6 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
         }
 
-        public abstract IList<Vector2> TextureOffsets
-        {
-            get;
-        }
-
         public virtual Stream Texture
         {
             protected set;
@@ -51,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
         }
 
-        public Color4Collection BackgroundColors { set; get; }
+        public IList<BillboardVertex> BillboardVertices { set; get; } = new List<BillboardVertex>();
 
         public BillboardBase()
         {

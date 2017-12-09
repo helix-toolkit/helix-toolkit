@@ -31,10 +31,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private IList<Vector2> mTextInfoOffsets = null;
-        public override IList<Vector2> TextureOffsets
-        {
-            get { return mTextInfoOffsets; }
-        }
+        //public override IList<Vector2> TextureOffsets
+        //{
+        //    get { return mTextInfoOffsets; }
+        //}
         /// <summary>
         /// Billboard center location
         /// </summary>

@@ -18,11 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         Stream AlphaTexture { get; }
         void DrawTexture();
-        Vector3Collection Positions { get; }
-        IList<Vector2> TextureOffsets { get; }
-        Vector2Collection TextureCoordinates { get; }
-        Color4Collection Colors { get; }
-        Color4Collection BackgroundColors { get; }
+        IList<BillboardVertex> BillboardVertices { get; }
         float Width { get; }
         float Height { get; }
     }

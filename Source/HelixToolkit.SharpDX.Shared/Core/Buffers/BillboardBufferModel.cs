@@ -40,11 +40,11 @@ namespace HelixToolkit.UWP.Core
             RemoveAndDispose(ref alphaTextureView);
             var billboardGeometry = geometry as IBillboardText;
             
-            if (billboardGeometry != null && billboardGeometry.Positions != null)
+            if (billboardGeometry != null && billboardGeometry.BillboardVertices != null)
             {
                 Type = billboardGeometry.Type;              
                 var data = OnBuildVertexArray(billboardGeometry);
-                buffer.CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                buffer.CreateBufferFromDataArray(context.Device, data, billboardGeometry.BillboardVertices.Count);
               
                 if (billboardGeometry.Texture != null)
                 {

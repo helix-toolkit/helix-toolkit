@@ -44,7 +44,7 @@ using Core;
             }
         }
 
-        public override IList<Vector2> TextureOffsets { get { return TextInfo.Offsets; } }
+        //public override IList<Vector2> TextureOffsets { get { return TextInfo.Offsets; } }
 
         private Color4 mFontColor = Color.Black;
         public Color4 FontColor

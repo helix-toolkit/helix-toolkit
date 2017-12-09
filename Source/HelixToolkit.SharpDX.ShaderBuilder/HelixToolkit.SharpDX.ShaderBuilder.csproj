@@ -64,6 +64,7 @@
     <VertexShader Include="VS\vsPoint.hlsl" />
     <GeometryShader Include="GS\gsPoint.hlsl" />
     <PixelShader Include="PS\psBillboardText.hlsl" />
+    <GeometryShader Include="GS\gsBillboard.hlsl" />
     <Content Include="PS\psCommon.hlsl" />
     <PixelShader Include="PS\psMeshXRay.hlsl" />
     <VertexShader Include="VS\vsMeshXRay.hlsl" />

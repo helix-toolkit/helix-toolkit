@@ -275,6 +275,7 @@ namespace HelixToolkit.UWP
                 ShaderList = new[]
                 {
                     DefaultVSShaderDescriptions.VSBillboardText,
+                    DefaultGSShaderDescriptions.GSBillboard,
                     DefaultPSShaderDescriptions.PSBillboardText
                 },
                 BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,

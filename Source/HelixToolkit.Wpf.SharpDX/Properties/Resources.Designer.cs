@@ -103,6 +103,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] gsBillboard {
+            get {
+                object obj = ResourceManager.GetObject("gsBillboard", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] gsLine {
             get {
                 object obj = ResourceManager.GetObject("gsLine", resourceCulture);

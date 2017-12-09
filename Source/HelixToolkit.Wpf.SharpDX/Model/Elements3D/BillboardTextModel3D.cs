@@ -100,7 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var viewMatrix = context.ViewMatrix;
                     var visualToScreen = viewMatrix * projectionMatrix * viewportMatrix;
 
-                    var center = new Vector4(g.Positions[0], 1);
+                    var center = g.BillboardVertices[0].Position;
                     var screenPoint = Vector4.Transform(center, visualToScreen);
                     var spw = screenPoint.W;
                     var spx = screenPoint.X;
@@ -186,7 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    var center = new Vector4(g.Positions[0], 1);
+                    var center = g.BillboardVertices[0].Position;
                     var viewMatrix = context.ViewMatrix;
 
                     var vcenter = Vector4.Transform(center, viewMatrix);
@@ -272,22 +272,22 @@ namespace HelixToolkit.Wpf.SharpDX
             // These should be equal in number to the positions.
             billboardGeometry.DrawTexture();
 
-            var position = billboardGeometry.Positions;
-            var vertexCount = billboardGeometry.Positions.Count;
+            //var position = billboardGeometry.Positions;
+            var vertexCount = billboardGeometry.BillboardVertices.Count;
             var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];
             if (ReuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }
-            var allOffsets = billboardGeometry.TextureOffsets;
 
             for (var i = 0; i < vertexCount; i++)
             {
-                var tc = billboardGeometry.TextureCoordinates[i];
-                array[i].Position = new Vector4(position[i], 1.0f);
-                array[i].Foreground = billboardGeometry.Colors[i];
-                array[i].Background = billboardGeometry.BackgroundColors[i];
-                array[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
+                array[i] = billboardGeometry.BillboardVertices[i];
+                //var tc = billboardGeometry.TextureCoordinates[i];
+                //array[i].Position = new Vector4(position[i], 1.0f);
+                //array[i].Foreground = billboardGeometry.Colors[i];
+                //array[i].Background = billboardGeometry.BackgroundColors[i];
+                //array[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
             }
 
             return array;

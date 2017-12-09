@@ -297,6 +297,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Textures\arial.fnt" />
+    <None Include="Resources\gsBillboard.cso" />
     <None Include="Resources\gsLine.cso" />
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\psBillboardText.cso" />
