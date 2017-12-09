@@ -127,6 +127,19 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
+
+        public static byte[] PSLine
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psLine;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
     }
 
     public static class DefaultGSShaderByteCodes
@@ -137,6 +150,19 @@ namespace HelixToolkit.UWP.Shaders
             {
 #if !NETFX_CORE
                 return Properties.Resources.gsPoint;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
+        public static byte[] GSLine
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.gsLine;
 #else
                 throw new NotImplementedException();
 #endif
@@ -214,7 +240,7 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultVSShaderDescriptions
     {
-        public static ShaderDescription VSMeshDefault = new ShaderDescription("VSMeshDefault", ShaderStage.Vertex, FeatureLevel.Level_11_0, 
+        public static ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, FeatureLevel.Level_11_0, 
             DefaultVSShaderByteCodes.VSMeshDefault, 
             new ConstantBufferMapping[]
             {
@@ -225,7 +251,7 @@ namespace HelixToolkit.UWP.Shaders
             }, 
             null);
 
-        public static ShaderDescription VSMeshInstancing = new ShaderDescription("VSMeshInstancing", ShaderStage.Vertex, FeatureLevel.Level_11_0,
+        public static ShaderDescription VSMeshInstancing = new ShaderDescription(nameof(VSMeshInstancing), ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSMeshInstancing,
             new ConstantBufferMapping[]
             {
@@ -236,7 +262,7 @@ namespace HelixToolkit.UWP.Shaders
             },
             null);
 
-        public static ShaderDescription VSMeshBoneSkinning = new ShaderDescription("VSMeshBoneSkinning", ShaderStage.Vertex, FeatureLevel.Level_11_0,
+        public static ShaderDescription VSMeshBoneSkinning = new ShaderDescription(nameof(VSMeshBoneSkinning), ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSMeshBoneSkinning,
             new ConstantBufferMapping[]
             {
@@ -248,7 +274,7 @@ namespace HelixToolkit.UWP.Shaders
             }, 
             null);
 
-        public static ShaderDescription VSPoint = new ShaderDescription("VSPoint", ShaderStage.Vertex, FeatureLevel.Level_11_0,
+        public static ShaderDescription VSPoint = new ShaderDescription(nameof(VSPoint), ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSPoint,
             new ConstantBufferMapping[]
             {
@@ -263,7 +289,7 @@ namespace HelixToolkit.UWP.Shaders
     /// </summary>
     public static class DefaultPSShaderDescriptions
     {
-        public static ShaderDescription PSMeshBlinnPhong = new ShaderDescription("PSBlinnPhong", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+        public static ShaderDescription PSMeshBlinnPhong = new ShaderDescription(nameof(PSMeshBlinnPhong), ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSMeshBinnPhong,
             new ConstantBufferMapping[]
             {
@@ -281,15 +307,24 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultTextureBufferDescriptions.ShadowMapTB.CreateMapping(5)
             });
 
-        public static ShaderDescription PSMeshVertColor = new ShaderDescription("PSColor", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+        public static ShaderDescription PSMeshVertColor = new ShaderDescription(nameof(PSMeshVertColor), ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSMeshBinnPhong);
-        public static ShaderDescription PSMeshVertNormal = new ShaderDescription("PSNormal", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+
+        public static ShaderDescription PSMeshVertNormal = new ShaderDescription(nameof(PSMeshVertNormal), ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSMeshNormal);
-        public static ShaderDescription PSMeshVertPosition = new ShaderDescription("PSPosition", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+
+        public static ShaderDescription PSMeshVertPosition = new ShaderDescription(nameof(PSMeshVertPosition), ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSMeshVertPosition);
 
-        public static ShaderDescription PSPoint = new ShaderDescription("PSPoint", ShaderStage.Pixel, FeatureLevel.Level_11_0,
+        public static ShaderDescription PSPoint = new ShaderDescription(nameof(PSPoint), ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSPoint,
+            new ConstantBufferMapping[] 
+            {
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
+            });
+
+        public static ShaderDescription PSLine = new ShaderDescription(nameof(PSLine), ShaderStage.Pixel, FeatureLevel.Level_11_0,
+            DefaultPSShaderByteCodes.PSLine, 
             new ConstantBufferMapping[] 
             {
                 DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
@@ -301,8 +336,16 @@ namespace HelixToolkit.UWP.Shaders
     /// </summary>
     public static class DefaultGSShaderDescriptions
     {
-        public static ShaderDescription GSPoint = new ShaderDescription("GSPoint", ShaderStage.Geometry, FeatureLevel.Level_11_0,
+        public static ShaderDescription GSPoint = new ShaderDescription(nameof(GSPoint), ShaderStage.Geometry, FeatureLevel.Level_11_0,
             DefaultGSShaderByteCodes.GSPoint,
+            new ConstantBufferMapping[]
+            {
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
+            });
+
+        public static ShaderDescription GSLine = new ShaderDescription(nameof(GSLine), ShaderStage.Geometry, FeatureLevel.Level_11_0,
+            DefaultGSShaderByteCodes.GSLine,
             new ConstantBufferMapping[]
             {
                 DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),

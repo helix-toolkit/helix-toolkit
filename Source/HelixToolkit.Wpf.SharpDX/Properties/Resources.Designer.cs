@@ -103,6 +103,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] gsLine {
+            get {
+                object obj = ResourceManager.GetObject("gsLine", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] gsPoint {
             get {
                 object obj = ResourceManager.GetObject("gsPoint", resourceCulture);
@@ -116,6 +126,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] psColor {
             get {
                 object obj = ResourceManager.GetObject("psColor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psLine {
+            get {
+                object obj = ResourceManager.GetObject("psLine", resourceCulture);
                 return ((byte[])(obj));
             }
         }

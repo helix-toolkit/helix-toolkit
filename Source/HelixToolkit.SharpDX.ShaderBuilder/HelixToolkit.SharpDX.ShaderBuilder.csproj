@@ -57,6 +57,8 @@
     <Content Include="Common\DataStructs.hlsl" />
     <Content Include="Common\Lighting.hlsl" />
     <Content Include="Common\Material.hlsl" />
+    <GeometryShader Include="GS\gsLine.hlsl" />
+    <PixelShader Include="PS\psLine.hlsl" />
     <PixelShader Include="PS\psPoint.hlsl" />
     <VertexShader Include="VS\vsPoint.hlsl" />
     <GeometryShader Include="GS\gsPoint.hlsl" />

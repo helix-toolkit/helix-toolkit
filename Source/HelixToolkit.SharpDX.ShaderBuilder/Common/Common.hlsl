@@ -27,7 +27,7 @@ cbuffer cbModel : register(b1)
     bool bInvertNormal = false;
     bool bHasInstances = false;
     bool bHasInstanceParams = false;   
-    bool bHasBones = false;
+    bool bHasBones = false;	
     float4 vPointParams = float4(4, 4, 0, 0);
     float4 vPointColor = float4(1, 1, 1, 1);
 };

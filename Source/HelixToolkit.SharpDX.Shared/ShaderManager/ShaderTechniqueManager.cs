@@ -254,7 +254,20 @@ namespace HelixToolkit.UWP
                 DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
             };
 
-            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint };
+            var renderLine = new TechniqueDescription()
+            {
+                Name = DefaultRenderTechniqueNames.Lines,
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSPoint, DefaultInputLayout.VSInputPoint),
+                ShaderList = new[]
+                {
+                    DefaultVSShaderDescriptions.VSPoint,
+                    DefaultGSShaderDescriptions.GSLine,
+                    DefaultPSShaderDescriptions.PSLine
+                },
+                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+            };
+            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint, renderLine };
         }
     }
 }

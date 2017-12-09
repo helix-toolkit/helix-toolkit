@@ -17,27 +17,21 @@ namespace HelixToolkit.UWP.Core
         /// Final Line Color = LineColor * PerVertexLineColor
         /// </summary>
         public Color4 LineColor = Color.Black;
-        //private EffectVectorVariable lineParamsVar;
-        //private EffectVectorVariable lineColorVar;
 
-        protected override bool OnAttach(IRenderTechnique technique)
+        protected override void OnUpdateModelStruct(IRenderMatrices context)
         {
-            if(base.OnAttach(technique))
-            {
-                //lineParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineParams).AsVector());
-                //lineColorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.LineColor).AsVector());
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            base.OnUpdateModelStruct(context);
+            modelStruct.PointColor = LineColor;
+            modelStruct.PointParams = LineParams;
         }
 
         protected override void OnRender(IRenderMatrices context)
         {
-            //EffectTechnique.GetPassByIndex(0).Apply(context.DeviceContext);
-            //OnDraw(context.DeviceContext, InstanceBuffer);
+            UpdateModelConstantBuffer(context.DeviceContext);
+            EffectTechnique.BindShader(context.DeviceContext);
+            EffectTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+            context.DeviceContext.Rasterizer.State = RasterState;
+            OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }
 }

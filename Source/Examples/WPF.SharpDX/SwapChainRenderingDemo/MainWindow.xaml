@@ -25,6 +25,7 @@
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False"
+                        EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -91,9 +92,9 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
-            <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="0,1,1,1"/>
-            <hx:CoordinateSystemModel3D/>
-            <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>
+            <!--<hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="0,1,1,1"/>-->
+            <!--<hx:CoordinateSystemModel3D/>
+            <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>-->
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" TextBlock.Foreground="White">
             <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}" Foreground="White">Show Wireframe</CheckBox>

@@ -297,8 +297,10 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Textures\arial.fnt" />
+    <None Include="Resources\gsLine.cso" />
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\psColor.cso" />
+    <None Include="Resources\psLine.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />

@@ -92,35 +92,6 @@ struct PSInputCube
 	float4 c : COLOR;
 };
 
-
-//--------------------------------------------------------------------------------------
-// Line VERTEX AND PIXEL SHADER INPUTS
-//--------------------------------------------------------------------------------------
-struct VSInputLS
-{
-	float4 p : POSITION;
-	float4 c : COLOR;
-
-	float4 mr0 : TEXCOORD1;
-	float4 mr1 : TEXCOORD2;
-	float4 mr2 : TEXCOORD3;
-	float4 mr3 : TEXCOORD4;
-};
-
-struct GSInputLS
-{
-	float4 p : POSITION;
-	float4 c : COLOR;
-};
-
-struct PSInputLS
-{
-	float4 p : SV_POSITION;
-	noperspective
-		float3 t : TEXCOORD;
-	float4 c : COLOR;
-};
-
 //--------------------------------------------------------------------------------------
 // Billboard VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------
@@ -158,7 +129,7 @@ struct PSInputBT
 };
 
 //--------------------------------------------------------------------------------------
-// Point VERTEX AND PIXEL SHADER INPUTS
+// Point Or Line VERTEX AND PIXEL SHADER INPUTS
 //--------------------------------------------------------------------------------------
 struct VSInputPS
 {
