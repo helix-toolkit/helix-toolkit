@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -7,7 +8,7 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     [DataContract]
-    public class TextureDescription
+    public class TextureDescription : ICloneable
     {
 
         [DataMember]
@@ -27,10 +28,15 @@ namespace HelixToolkit.UWP.Shaders
         {
             return new TextureMapping(slot, this);
         }
+
+        public object Clone()
+        {
+            return new TextureDescription(this.Name, this.ShaderType);
+        }
     }
 
     [DataContract]
-    public class TextureMapping
+    public class TextureMapping : ICloneable
     {
         [DataMember]
         public int Slot { set; get; }
@@ -41,6 +47,11 @@ namespace HelixToolkit.UWP.Shaders
         {
             Slot = slot;
             Description = description;
+        }
+
+        public object Clone()
+        {
+            return new TextureMapping(this.Slot, (TextureDescription)this.Description.Clone());
         }
     }
 }

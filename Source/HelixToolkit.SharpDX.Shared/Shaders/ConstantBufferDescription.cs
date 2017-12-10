@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.Shaders
     using Utilities;
 
     [DataContract]
-    public class ConstantBufferDescription
+    public class ConstantBufferDescription : ICloneable
     {
         [DataMember]
         public string Name { set; get; }
@@ -27,8 +27,6 @@ namespace HelixToolkit.UWP.Shaders
         public ResourceOptionFlags OptionFlags { set; get; } = ResourceOptionFlags.None;
         [DataMember]
         public ResourceUsage Usage { set; get; } = ResourceUsage.Dynamic;
-        //[DataMember]
-        //public Type StructType { set; get; }
 
         public ConstantBufferDescription() { }
 
@@ -48,10 +46,21 @@ namespace HelixToolkit.UWP.Shaders
         {
             return new ConstantBufferMapping(slot, this);
         }
+
+        public object Clone()
+        {
+            return new ConstantBufferDescription(Name, StructSize, StrideSize)
+            {
+                BindFlags = this.BindFlags,
+                CpuAccessFlags = this.CpuAccessFlags,
+                OptionFlags = this.OptionFlags,
+                Usage = this.Usage
+            };
+        }
     }
 
     [DataContract]
-    public class ConstantBufferMapping
+    public class ConstantBufferMapping : ICloneable
     {
         [DataMember]
         public int Slot { set; get; }
@@ -67,6 +76,11 @@ namespace HelixToolkit.UWP.Shaders
         public static ConstantBufferMapping Create(int slot, ConstantBufferDescription description)
         {
             return new ConstantBufferMapping(slot, description);
+        }
+
+        public object Clone()
+        {
+            return new ConstantBufferMapping(this.Slot, (ConstantBufferDescription)this.Description.Clone());
         }
     }
 }

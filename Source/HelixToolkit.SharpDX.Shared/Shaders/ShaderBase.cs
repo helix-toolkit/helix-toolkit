@@ -11,20 +11,40 @@ namespace HelixToolkit.UWP.Shaders
 {
     using global::SharpDX.Direct3D11;
     using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class ShaderBase : DisposeObject
     {
         private readonly MappingCollection<int, string, IBufferProxy> cbufferMapping = new MappingCollection<int, string, IBufferProxy>();
-        private readonly MappingCollection<int, string, int> texturesMapping = new MappingCollection<int, string, int>();
-
+        private readonly MappingCollection<int, string, TextureMapping> texturesMapping = new MappingCollection<int, string, TextureMapping>();
+        /// <summary>
+        /// Constant buffer mapping
+        /// </summary>
         public IEnumerable<Tuple<int, IBufferProxy>> CBufferMapping { get { return cbufferMapping.DataMapping; } }
 
+        public IEnumerable<Tuple<int, TextureMapping>> TextureMapping { get { return texturesMapping.DataMapping; } }
+        /// <summary>
+        /// 
+        /// </summary>
         public int ConstantBufferCount { get { return cbufferMapping.Count; } }
+        /// <summary>
+        /// 
+        /// </summary>
         public int TextureMappingCount { get { return texturesMapping.Count; } }       
-
+        /// <summary>
+        /// Bind Stage
+        /// </summary>
         public ShaderStage ShaderType { private set; get; }
-
+        /// <summary>
+        /// Shader Name
+        /// </summary>
         public string Name { private set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
         public ShaderBase(string name, ShaderStage type)
         {
             ShaderType = type;
@@ -45,9 +65,9 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="name"></param>
         /// <param name="index">Texture register index(tx) in Shader Code.</param>
-        public void AddTextureMapping(string name, int index)
+        public void AddTextureMapping(string name, int index, TextureMapping mapping)
         {
-            texturesMapping.Add(index, name, index);
+            texturesMapping.Add(index, name, mapping);
         }
 
         public bool RemoveConstantBuffer(string name)
@@ -69,15 +89,41 @@ namespace HelixToolkit.UWP.Shaders
         {
             return texturesMapping.Remove(index);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public int GetTextureIndex(string name)
         {
-            return texturesMapping[name].Item2;
+            return texturesMapping[name].Item2.Slot;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public string GetTextureName(int index)
         {
             return texturesMapping[index].Item1;
+        }
+        /// <summary>
+        /// Return a cloned texture mapping
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public TextureMapping GetTextureMapping(string name)
+        {
+            return (TextureMapping)texturesMapping[name].Item2.Clone();
+        }
+        /// <summary>
+        /// Return a cloned texture mapping
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public TextureMapping GetTextureMapping(int slot)
+        {
+            return (TextureMapping)texturesMapping[slot].Item2.Clone();
         }
 
         public void ClearConstantBuffer()

@@ -1,9 +1,8 @@
 ﻿using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
+using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -13,7 +12,7 @@ namespace HelixToolkit.UWP.Shaders
 {
     using ShaderManager;
     [DataContract]
-    public class ShaderDescription
+    public class ShaderDescription : ICloneable
     {
         [DataMember]
         public string Name { set; get; }
@@ -31,7 +30,7 @@ namespace HelixToolkit.UWP.Shaders
         {
 
         }
-        public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[] byteCode, 
+        public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[] byteCode,
             ConstantBufferMapping[] constantBuffers = null, TextureMapping[] textures = null)
         {
             Name = name;
@@ -48,7 +47,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public ShaderBase CreateShader(Device device, IConstantBufferPool pool)
         {
-            if(ByteCode == null)
+            if (ByteCode == null)
             {
                 return new NullShader(ShaderType);
             }
@@ -75,19 +74,26 @@ namespace HelixToolkit.UWP.Shaders
             }
             if (ConstantBufferMappings != null)
             {
-                foreach(var mapping in ConstantBufferMappings)
+                foreach (var mapping in ConstantBufferMappings)
                 {
                     shader.AddConstantBuffer(mapping.Description.Name, mapping.Slot, pool.Register(mapping.Description));
                 }
             }
-            if(TextureMappings != null)
+            if (TextureMappings != null)
             {
-                foreach(var mapping in TextureMappings)
+                foreach (var mapping in TextureMappings)
                 {
-                    shader.AddTextureMapping(mapping.Description.Name, mapping.Slot);
+                    shader.AddTextureMapping(mapping.Description.Name, mapping.Slot, mapping);
                 }
             }
             return shader;
+        }
+
+        public object Clone()
+        {
+            return new ShaderDescription(this.Name, this.ShaderType, this.Level, this.ByteCode,
+                this.ConstantBufferMappings.Select(x => (ConstantBufferMapping)x.Clone()).ToArray(),
+                this.TextureMappings.Select(x => (TextureMapping)x.Clone()).ToArray());
         }
     }
 }
