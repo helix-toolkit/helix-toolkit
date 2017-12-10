@@ -9,6 +9,9 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Shaders;
+    using System.Collections.Generic;
+
     public interface IMaterial : INotifyPropertyChanged
     {
         string Name { set; get; }
@@ -28,13 +31,31 @@ namespace HelixToolkit.Wpf.SharpDX
         Stream DisplacementMap { set; get; }
     }
 
+    /// <summary>
+    /// A material proxy variable interface to manage all the material related resources
+    /// </summary>
     public interface IEffectMaterialVariables : IMaterialRenderCore, IDisposable
     {
         event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
-        /// Attach material variables and textures
+        /// Update material constant buffer, including all the colors and rendering setting
         /// </summary>
+        /// <param name="context"></param>
         /// <returns></returns>
-        bool AttachMaterial(DeviceContext context);
+        bool UpdateMaterialConstantBuffer(DeviceContext context);
+        /// <summary>
+        /// Bind the material texture maps to registers defined inside shader
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="shader"></param>
+        /// <returns></returns>
+        bool BindMaterialTextures(DeviceContext context, IShader shader);
+        /// <summary>
+        /// Bind material texture maps to multiple shaders
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="shader"></param>
+        /// <returns></returns>
+        bool BindMaterialTextures(DeviceContext context, IEnumerable<IShader> shader);
     }
 }

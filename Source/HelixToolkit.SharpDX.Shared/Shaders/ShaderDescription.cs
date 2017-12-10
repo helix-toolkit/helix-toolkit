@@ -11,6 +11,9 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using ShaderManager;
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
     public class ShaderDescription : ICloneable
     {
@@ -26,10 +29,22 @@ namespace HelixToolkit.UWP.Shaders
         public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
         [DataMember]
         public TextureMapping[] TextureMappings { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
         public ShaderDescription()
         {
 
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <param name="featureLevel"></param>
+        /// <param name="byteCode"></param>
+        /// <param name="constantBuffers"></param>
+        /// <param name="textures"></param>
         public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[] byteCode,
             ConstantBufferMapping[] constantBuffers = null, TextureMapping[] textures = null)
         {
@@ -45,13 +60,13 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public ShaderBase CreateShader(Device device, IConstantBufferPool pool)
+        public IShader CreateShader(Device device, IConstantBufferPool pool)
         {
             if (ByteCode == null)
             {
                 return new NullShader(ShaderType);
             }
-            ShaderBase shader = null;
+            IShader shader = null;
             switch (ShaderType)
             {
                 case ShaderStage.Vertex:

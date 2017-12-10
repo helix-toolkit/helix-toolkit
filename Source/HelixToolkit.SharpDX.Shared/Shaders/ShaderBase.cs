@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -14,7 +12,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ShaderBase : DisposeObject
+    public abstract class ShaderBase : DisposeObject, IShader
     {
         private readonly MappingCollection<int, string, IBufferProxy> cbufferMapping = new MappingCollection<int, string, IBufferProxy>();
         private readonly MappingCollection<int, string, TextureMapping> texturesMapping = new MappingCollection<int, string, TextureMapping>();
@@ -69,43 +67,61 @@ namespace HelixToolkit.UWP.Shaders
         {
             texturesMapping.Add(index, name, mapping);
         }
-
-        public bool RemoveConstantBuffer(string name)
-        {
-            return cbufferMapping.Remove(name);
-        }
-
-        public bool RemoveConstantBuffer(int index)
-        {
-            return cbufferMapping.Remove(index);
-        }
-
-        public bool RemoveTextureMapping(string name)
-        {
-            return texturesMapping.Remove(name);
-        }
-
-        public bool RemoveTextureMapping(int index)
-        {
-            return texturesMapping.Remove(index);
-        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public int GetTextureIndex(string name)
+        public bool RemoveConstantBuffer(string name)
         {
-            return texturesMapping[name].Item2.Slot;
+            return cbufferMapping.Remove(name);
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string GetTextureName(int index)
+        public bool RemoveConstantBuffer(int index)
         {
-            return texturesMapping[index].Item1;
+            return cbufferMapping.Remove(index);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool RemoveTextureMapping(string name)
+        {
+            return texturesMapping.Remove(name);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public bool RemoveTextureMapping(int index)
+        {
+            return texturesMapping.Remove(index);
+        }
+        /// <summary>
+        /// Try to get texture register index in shader by its name, if failed, return -1;
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int TryGetTextureIndex(string name)
+        {
+            int item;
+            return texturesMapping.TryGetItem(name, out item) ? item : -1;
+        }
+        /// <summary>
+        /// Try to get texture name by register index. If failed, return empty string;
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string TryGetTextureName(int index)
+        {
+            Tuple<string, TextureMapping> item;
+            return texturesMapping.TryGetItem(index, out item) ? item.Item1 : "";
         }
         /// <summary>
         /// Return a cloned texture mapping
@@ -114,7 +130,14 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public TextureMapping GetTextureMapping(string name)
         {
-            return (TextureMapping)texturesMapping[name].Item2.Clone();
+            if (texturesMapping.HasItem(name))
+            {
+                return (TextureMapping)texturesMapping[name].Item2.Clone();                
+            }
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// Return a cloned texture mapping
@@ -123,14 +146,25 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public TextureMapping GetTextureMapping(int slot)
         {
-            return (TextureMapping)texturesMapping[slot].Item2.Clone();
+            if (texturesMapping.HasItem(slot))
+            {
+                return (TextureMapping)texturesMapping[slot].Item2.Clone();
+            }
+            else
+            {
+                return null;
+            }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void ClearConstantBuffer()
         {
             cbufferMapping.Clear();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void ClearTextureMappings()
         {
             texturesMapping.Clear();

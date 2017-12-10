@@ -10,6 +10,7 @@ namespace HelixToolkit.UWP.Model
 {
     using ShaderManager;
     using Shaders;
+    using System.Collections.Generic;
     using Utilities;
 
     /// <summary>
@@ -18,17 +19,21 @@ namespace HelixToolkit.UWP.Model
     public class EffectMaterialVariables : DisposeObject, IEffectMaterialVariables
     {
         public event System.EventHandler<bool> OnInvalidateRenderer;
-        public int DiffuseMapIndex = 0;
-        public int DiffuseAlphaMapIndex = 1;
-        public int NormalMapIndex = 2;
-        public int DisplacementMapIndex = 3;
-
         private IPhongMaterial material;
         public Device Device { private set; get; }
-        private ShaderResourceView texDiffuseAlphaMapView;
+
+        public ShaderResourceView TextureAlphaView { get { return texAlphaMapView; } }
+        private ShaderResourceView texAlphaMapView;
+        public virtual string TextureAlphaName { get { return DefaultTextureBufferDescriptions.AlphaMapTB.Name; } }
+        public ShaderResourceView TextureDiffuseView { get { return texDiffuseMapView; } }
         private ShaderResourceView texDiffuseMapView;
+        public virtual string TextureDiffuseName { get { return DefaultTextureBufferDescriptions.DiffuseMapTB.Name; } }
+        public ShaderResourceView TextureNormalView { get { return texNormalMapView; } }
         private ShaderResourceView texNormalMapView;
+        public virtual string TextureNormalName { get { return DefaultTextureBufferDescriptions.NormalMapTB.Name; } }
+        public ShaderResourceView TextureDisplacementView { get { return texDisplacementMapView; } }
         private ShaderResourceView texDisplacementMapView;
+        public virtual string TextureDisplacementName { get { return DefaultTextureBufferDescriptions.DisplacementMapTB.Name; } }
 
         private bool renderDiffuseMap = true;
         public bool RenderDiffuseMap
@@ -136,10 +141,10 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public EffectMaterialVariables(IConstantBufferPool cbPool)
+        public EffectMaterialVariables(IConstantBufferPool cbpool)
         {
-            materialBuffer = cbPool.Register(DefaultConstantBufferDescriptions.MaterialCB);
-            Device = cbPool.Device;
+            materialBuffer = cbpool.Register(DefaultConstantBufferDescriptions.MaterialCB);
+            Device = cbpool.Device;
             CreateTextureViews();
         }        
 
@@ -162,7 +167,7 @@ namespace HelixToolkit.UWP.Model
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
+                CreateTextureView((sender as IPhongMaterial).DiffuseAlphaMap, ref this.texAlphaMapView);
             }           
             OnInvalidateRenderer?.Invoke(this, true);
         }
@@ -183,14 +188,14 @@ namespace HelixToolkit.UWP.Model
                 CreateTextureView(material.DiffuseMap, ref this.texDiffuseMapView);
                 CreateTextureView(material.NormalMap, ref this.texNormalMapView);
                 CreateTextureView(material.DisplacementMap, ref this.texDisplacementMapView);
-                CreateTextureView(material.DiffuseAlphaMap, ref this.texDiffuseAlphaMapView);
+                CreateTextureView(material.DiffuseAlphaMap, ref this.texAlphaMapView);
             }
             else
             {
                 RemoveAndDispose(ref this.texDiffuseMapView);
                 RemoveAndDispose(ref this.texNormalMapView);
                 RemoveAndDispose(ref this.texDisplacementMapView);
-                RemoveAndDispose(ref this.texDiffuseAlphaMapView);
+                RemoveAndDispose(ref this.texAlphaMapView);
             }
         }
 
@@ -205,37 +210,88 @@ namespace HelixToolkit.UWP.Model
                 Specular = material.SpecularColor,
                 Shininess = material.SpecularShininess,
                 HasDiffuseMap = RenderDiffuseMap && texDiffuseMapView != null ? 1 : 0,
-                HasDiffuseAlphaMap = RenderDiffuseAlphaMap && texDiffuseAlphaMapView != null ? 1 : 0,
+                HasDiffuseAlphaMap = RenderDiffuseAlphaMap && texAlphaMapView != null ? 1 : 0,
                 HasNormalMap = RenderNormalMap && texNormalMapView != null ? 1 : 0,
                 HasDisplacementMap = RenderDisplacementMap && texDisplacementMapView != null ? 1 : 0,
                 HasShadowMap = HasShadowMap ? 1 : 0
             };
         }
-
-        public bool AttachMaterial(DeviceContext context)
+        /// <summary>
+        /// <see cref="IEffectMaterialVariables.UpdateMaterialConstantBuffer(DeviceContext)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public bool UpdateMaterialConstantBuffer(DeviceContext context)
         {
             if (material == null)
             {
                 return false;
             }
+            OnUpdateMaterialConstantBuffer(context);
+            return true;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        protected virtual void OnUpdateMaterialConstantBuffer(DeviceContext context)
+        {
             if (needUpdate)
             {
                 AssignVariables();                
                 needUpdate = false;
             }
             materialBuffer.UploadDataToBuffer(context, ref materialStruct);
-            OnAttachMaterial(context);
+        }
+        /// <summary>
+        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IShader)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="shader"></param>
+        /// <returns></returns>
+        public bool BindMaterialTextures(DeviceContext context, IShader shader)
+        {
+            if (material == null)
+            {
+                return false;
+            }
+            OnBindMaterialTextures(context, shader);
             return true;
         }
-
-        protected virtual void OnAttachMaterial(DeviceContext context)
+        /// <summary>
+        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IEnumerable{IShader})"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="shader"></param>
+        /// <returns></returns>
+        public bool BindMaterialTextures(DeviceContext context, IEnumerable<IShader> shader)
         {
-            context.AttachShaderResources(ShaderStage.Pixel, DiffuseMapIndex, texDiffuseMapView);
-            context.AttachShaderResources(ShaderStage.Pixel, DiffuseAlphaMapIndex, texDiffuseAlphaMapView);
-            context.AttachShaderResources(ShaderStage.Pixel, NormalMapIndex, texNormalMapView);
-            context.AttachShaderResources(ShaderStage.Pixel, DisplacementMapIndex, texDisplacementMapView);
+            if (material == null)
+            {
+                return false;
+            }
+            foreach (var s in shader)
+            {
+                OnBindMaterialTextures(context, s);
+            }
+            return true;
         }
-
+        /// <summary>
+        /// Actual bindings
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="shader"></param>
+        protected virtual void OnBindMaterialTextures(DeviceContext context, IShader shader)
+        {
+            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureDiffuseName), texDiffuseMapView);
+            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureAlphaName), texAlphaMapView);
+            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureNormalName), texNormalMapView);
+            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureDisplacementName), texDisplacementMapView);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
             this.material = null;

@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.ShaderManager
     using global::SharpDX.Direct3D11;
     using Shaders;
 
-    public class ShaderPool : GeneralPool<byte[], ShaderBase, ShaderDescription>
+    public class ShaderPool : GeneralPool<byte[], IShader, ShaderDescription>
     {
         public IConstantBufferPool ConstantBufferPool { private set; get; }
         public ShaderPool(Device device, IConstantBufferPool cbPool)
@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.ShaderManager
             ConstantBufferPool = cbPool;
         }
 
-        public override ShaderBase Register(ShaderDescription description)
+        public override IShader Register(ShaderDescription description)
         {
             if (description.ByteCode == null)
             {
@@ -80,7 +80,7 @@ namespace HelixToolkit.UWP.ShaderManager
             layoutPool = Collect(new LayoutPool(device));
         }
 
-        public ShaderBase RegisterShader(ShaderDescription description)
+        public IShader RegisterShader(ShaderDescription description)
         {
             return shaderPools[description.ShaderType].Register(description);
         }

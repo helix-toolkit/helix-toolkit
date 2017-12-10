@@ -15,8 +15,8 @@ namespace HelixToolkit.UWP.Shaders
         public InputLayout Layout { private set; get; }
         public Device Device { private set; get; }
         public string Name { private set; get; }
-        private readonly Dictionary<ShaderStage, ShaderBase> shaders = new Dictionary<ShaderStage, ShaderBase>();
-        public IEnumerable<ShaderBase> Shaders { get { return shaders.Values; } }
+        private readonly Dictionary<ShaderStage, IShader> shaders = new Dictionary<ShaderStage, IShader>();
+        public IEnumerable<IShader> Shaders { get { return shaders.Values; } }
 
         public BlendState BlendState { private set; get; } = null;
 
@@ -85,7 +85,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
-        public ShaderBase GetShader(ShaderStage type)
+        public IShader GetShader(ShaderStage type)
         {
             if (shaders.ContainsKey(type))
             {

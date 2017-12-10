@@ -605,11 +605,11 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultTextureBufferDescriptions
     {
-        public static TextureDescription DiffuseMapTB = new TextureDescription("texDiffuseMap", ShaderStage.Pixel);
-        public static TextureDescription AlphaMapTB = new TextureDescription("texAlphaMap", ShaderStage.Pixel);
-        public static TextureDescription NormalMapTB = new TextureDescription("texNormalMap", ShaderStage.Pixel);
-        public static TextureDescription DisplacementMapTB = new TextureDescription("texDisplacementMap", ShaderStage.Pixel);
-        public static TextureDescription CubeMapTB = new TextureDescription("texCubeMap", ShaderStage.Pixel);
-        public static TextureDescription ShadowMapTB = new TextureDescription("texShadowMap", ShaderStage.Pixel);
+        public static TextureDescription DiffuseMapTB = new TextureDescription(nameof(DiffuseMapTB), ShaderStage.Pixel);
+        public static TextureDescription AlphaMapTB = new TextureDescription(nameof(AlphaMapTB), ShaderStage.Pixel);
+        public static TextureDescription NormalMapTB = new TextureDescription(nameof(NormalMapTB), ShaderStage.Pixel);
+        public static TextureDescription DisplacementMapTB = new TextureDescription(nameof(DisplacementMapTB), ShaderStage.Pixel);
+        public static TextureDescription CubeMapTB = new TextureDescription(nameof(CubeMapTB), ShaderStage.Pixel);
+        public static TextureDescription ShadowMapTB = new TextureDescription(nameof(ShadowMapTB), ShaderStage.Pixel);
     }
 }

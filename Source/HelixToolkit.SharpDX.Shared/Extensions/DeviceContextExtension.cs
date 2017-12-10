@@ -11,6 +11,10 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public static void AttachConstantBuffer(this DeviceContext context, ShaderStage stage, int slot, Buffer buffer)
         {
+            if (slot < 0)
+            {
+                return;
+            }
             switch (stage)
             {
                 case ShaderStage.None:
@@ -40,6 +44,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static void AttachConstantBuffer(this DeviceContext context, ShaderStage stage, int slot, params Buffer[] buffer)
         {
+            if (slot < 0)
+            {
+                return;
+            }
             switch (stage)
             {
                 case ShaderStage.None:
@@ -69,6 +77,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static void AttachShaderResources(this DeviceContext context, ShaderStage stage, int slot, ShaderResourceView SRV)
         {
+            if (slot < 0)
+            { return; }
             switch (stage)
             {
                 case ShaderStage.None:
@@ -98,6 +108,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static void AttachShaderResources(this DeviceContext context, ShaderStage stage, int slot, params ShaderResourceView[] SRV)
         {
+            if (slot < 0)
+            {
+                return;
+            }
             switch (stage)
             {
                 case ShaderStage.None:

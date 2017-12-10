@@ -9,6 +9,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Model;
     using ShaderManager;
+    using Shaders;
 
     /// <summary>
     /// 
@@ -75,18 +76,29 @@ namespace HelixToolkit.UWP.Core
             return new EffectMaterialVariables(cbPool);
         }
         /// <summary>
-        /// Upload material into shader variables
+        /// Set control variables into material variables object
         /// </summary>
         /// <param name="model"></param>
-        protected void SetMaterialVariables(MeshGeometry3D model, IRenderMatrices context)
+        protected virtual void SetMaterialVariables()
         {
-            if (!IsAttached || model == null) { return; }
+            if (!IsAttached)
+            { return; }
             materialVariables.HasShadowMap = this.HasShadowMap;
             materialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
             materialVariables.RenderNormalMap = this.RenderNormalMap;
             materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
             materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
-            materialVariables.AttachMaterial(context.DeviceContext);
-        }        
+        }
+        
+        protected bool UpdateMaterialConstantBuffer(DeviceContext context)
+        {
+            SetMaterialVariables();
+            return MaterialVariables.UpdateMaterialConstantBuffer(context);
+        }       
+        
+        protected bool BindMaterialTextures(DeviceContext context, IShader shader)
+        {
+            return MaterialVariables.BindMaterialTextures(context, shader);
+        } 
     }
 }

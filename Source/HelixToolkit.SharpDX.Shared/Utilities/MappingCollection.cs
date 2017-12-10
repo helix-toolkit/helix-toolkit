@@ -69,9 +69,19 @@ namespace HelixToolkit.UWP.Utilities
             return indexMapping.ContainsKey(id);
         }
 
+        public bool TryGetItem(INDEXTYPE id, out Tuple<NAMETYPE, DATATYPE> data)
+        {
+            return indexMapping.TryGetValue(id, out data);
+        }
+
         public bool HasItem(NAMETYPE name)
         {
             return nameMapping.ContainsKey(name);
+        }
+
+        public bool TryGetItem(NAMETYPE name, out INDEXTYPE type)
+        {
+            return nameMapping.TryGetValue(name, out type);
         }
 
         public void Clear()

@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         InputLayout Layout { get; }
 
-        IEnumerable<ShaderBase> Shaders { get; }
+        IEnumerable<IShader> Shaders { get; }
 
         IConstantBufferPool ConstantBufferPool { get; }
 
@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         void BindShader(DeviceContext context);
 
-        ShaderBase GetShader(ShaderStage type);
+        IShader GetShader(ShaderStage type);
     }
 
     public interface IRenderTechniquesManager
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IShaderPoolManager
     {
-        ShaderBase RegisterShader(ShaderDescription description);
+        IShader RegisterShader(ShaderDescription description);
 
         InputLayout RegisterInputLayout(InputLayoutDescription description);
     }

@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Shaders
             shader = Collect(new global::SharpDX.Direct3D11.PixelShader(device, byteCode));
         }
         /// <summary>
-        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
+        /// <see cref="IShader.Bind(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
         public override void Bind(DeviceContext context)
@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP.Shaders
             context.PixelShader.Set(shader);
         }
         /// <summary>
-        /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
+        /// <see cref="IShader.BindConstantBuffers(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
         public override void BindConstantBuffers(DeviceContext context)
@@ -47,17 +47,17 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, string, ShaderResourceView)"/>
+        /// <see cref="IShader.BindTexture(DeviceContext, string, ShaderResourceView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
         {
-            context.VertexShader.SetShaderResource(GetTextureIndex(name), texture);
+            context.VertexShader.SetShaderResource(TryGetTextureIndex(name), texture);
         }
         /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, int, ShaderResourceView)"/>
+        /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="index"></param>
@@ -67,7 +67,7 @@ namespace HelixToolkit.UWP.Shaders
             context.VertexShader.SetShaderResource(index, texture);
         }
         /// <summary>
-        /// <see cref="ShaderBase.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
+        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>

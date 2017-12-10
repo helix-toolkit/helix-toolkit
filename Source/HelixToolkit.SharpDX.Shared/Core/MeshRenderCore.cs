@@ -16,10 +16,17 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderMatrices context)
         {                  
-            SetMaterialVariables(GeometryBuffer.Geometry as MeshGeometry3D, context);
             UpdateModelConstantBuffer(context.DeviceContext);
+            if (!UpdateMaterialConstantBuffer(context.DeviceContext))
+            {
+                return;
+            }
             EffectTechnique.BindShader(context.DeviceContext);
             EffectTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+            if(!BindMaterialTextures(context.DeviceContext, EffectTechnique.GetShader(ShaderStage.Pixel)))
+            {
+                return;
+            }
             context.DeviceContext.Rasterizer.State = RasterState;
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
