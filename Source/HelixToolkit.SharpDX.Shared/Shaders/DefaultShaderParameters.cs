@@ -484,7 +484,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSBillboardText = new ShaderDescription(nameof(PSBillboardText), ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSBillboardText,
-            null, new TextureMapping[] { DefaultTextureBufferDescriptions.DiffuseMapTB.CreateMapping(0) });
+            null, new TextureMapping[] { DefaultTextureBufferDescriptions.BillboardTB.CreateMapping(0) });
     }
 
     /// <summary>
@@ -611,5 +611,6 @@ namespace HelixToolkit.UWP.Shaders
         public static TextureDescription DisplacementMapTB = new TextureDescription(nameof(DisplacementMapTB), ShaderStage.Pixel);
         public static TextureDescription CubeMapTB = new TextureDescription(nameof(CubeMapTB), ShaderStage.Pixel);
         public static TextureDescription ShadowMapTB = new TextureDescription(nameof(ShadowMapTB), ShaderStage.Pixel);
+        public static TextureDescription BillboardTB = new TextureDescription(nameof(BillboardTB), ShaderStage.Pixel);
     }
 }

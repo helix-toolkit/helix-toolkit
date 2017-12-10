@@ -7,6 +7,7 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
     using global::SharpDX.DXGI;
+    using Shaders;
     using System;
     using Utilities;
     public class BillboardBufferModel<VertexStruct> : GeometryBufferModel, IBillboardBufferModel where VertexStruct : struct
@@ -19,6 +20,7 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceView textureView;
         public ShaderResourceView TextureView { get { return textureView; } }
+        public virtual string TextureName { get { return DefaultTextureBufferDescriptions.BillboardTB.Name; } }
 
         public BillboardType Type { private set; get; }
 

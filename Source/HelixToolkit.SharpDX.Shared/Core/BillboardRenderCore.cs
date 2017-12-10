@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct3D;
+﻿using HelixToolkit.Wpf.SharpDX.Shaders;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -24,9 +25,15 @@ namespace HelixToolkit.UWP.Core
             EffectTechnique.BindShader(context.DeviceContext);
             EffectTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
             context.DeviceContext.Rasterizer.State = RasterState;
-            var buffer = GeometryBuffer as IBillboardBufferModel;
-            context.DeviceContext.PixelShader.SetShaderResource(0, buffer.TextureView);
+            BindBillboardTexture(context.DeviceContext, EffectTechnique.GetShader(ShaderStage.Pixel));
             OnDraw(context.DeviceContext, InstanceBuffer);
+        }
+
+        protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)
+        {
+            var buffer = GeometryBuffer as IBillboardBufferModel;
+            int slot = shader.TryGetTextureIndex(buffer.TextureName);
+            context.AttachShaderResources(shader.ShaderType, slot, buffer.TextureView);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
