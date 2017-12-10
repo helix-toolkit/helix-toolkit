@@ -180,8 +180,8 @@ using Core;
             BillboardVertices.Add(new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
-                Foreground = info.Foreground,
-                Background = info.Background,
+                Foreground = FontColor,
+                Background = BackgroundColor,
                 TexTL = uv_tl,
                 TexTR = uv_tr,
                 TexBL = uv_bl,

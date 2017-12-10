@@ -34,12 +34,6 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
         }
 
-        public virtual Stream AlphaTexture
-        {
-            protected set;
-            get;
-        }
-
         public float Width
         {
             protected set;

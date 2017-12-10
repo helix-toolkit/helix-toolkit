@@ -67,34 +67,34 @@ namespace HelixToolkit.Wpf.SharpDX
         public BillboardSingleImage3D(BitmapSource bitmapSource, Stream imageStream)
             : this(bitmapSource)
         {
-            this.AlphaTexture = imageStream;
+            this.Texture = imageStream;
             using (Image image = Image.Load(imageStream))
             {
                 Width = Math.Max(this.Width, image.Description.Width);
                 Height = Math.Max(this.Height, image.Description.Height);
             }
-            AlphaTexture.Position = 0;
+            Texture.Position = 0;
         }
 #endif
         public BillboardSingleImage3D(Stream imageStream)
             : this()
         {
-            this.AlphaTexture = imageStream;
+            this.Texture = imageStream;
             using (Image image = Image.Load(imageStream))
             {
                 Width = image.Description.Width;
                 Height = image.Description.Height;
             }
-            AlphaTexture.Position = 0;
+            Texture.Position = 0;
         }
 
         public BillboardSingleImage3D(Stream imageStream, float width, float height)
             : this()
         {
-            this.AlphaTexture = imageStream;
+            this.Texture = imageStream;
             Width = width;
             Height = height;
-            AlphaTexture.Position = 0;
+            Texture.Position = 0;
         }
 
         public override void DrawTexture()

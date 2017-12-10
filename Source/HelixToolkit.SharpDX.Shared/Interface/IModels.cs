@@ -9,23 +9,22 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
     using global::SharpDX.Direct3D11;
+    using System;
     using Utilities;
 
     public interface IBillboardText
     {
         BillboardType Type { get; }
         Stream Texture { get; }
-
-        Stream AlphaTexture { get; }
         void DrawTexture();
         IList<BillboardVertex> BillboardVertices { get; }
         float Width { get; }
         float Height { get; }
     }
-
+    [Flags]
     public enum BillboardType
     {
-        SingleText, MultipleText, SingleImage
+        SingleText = 1, MultipleText = 2, SingleImage = 4
     }
 
     public interface ILightsBufferProxy<T> where T : struct

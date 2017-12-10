@@ -18,9 +18,7 @@ namespace HelixToolkit.UWP.Core
         public BuildVertexArrayHandler OnBuildVertexArray;
 
         private ShaderResourceView textureView;
-        private ShaderResourceView alphaTextureView;
         public ShaderResourceView TextureView { get { return textureView; } }
-        public ShaderResourceView AlphaTextureView { get { return alphaTextureView; } }
 
         public BillboardType Type { private set; get; }
 
@@ -37,7 +35,6 @@ namespace HelixToolkit.UWP.Core
         protected override void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry)
         {
             RemoveAndDispose(ref textureView);
-            RemoveAndDispose(ref alphaTextureView);
             var billboardGeometry = geometry as IBillboardText;
             
             if (billboardGeometry != null && billboardGeometry.BillboardVertices != null)
@@ -53,10 +50,6 @@ namespace HelixToolkit.UWP.Core
 #else
 
 #endif
-                }
-                if (billboardGeometry.AlphaTexture != null)
-                {
-                    alphaTextureView = Collect(global::SharpDX.Toolkit.Graphics.Texture.Load(context.Device, billboardGeometry.AlphaTexture));
                 }
             }
             else

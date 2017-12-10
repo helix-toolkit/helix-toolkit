@@ -27,7 +27,6 @@ namespace HelixToolkit.UWP
     public interface IBillboardBufferModel
     {
         ShaderResourceView TextureView { get; }
-        ShaderResourceView AlphaTextureView { get; }
 
         BillboardType Type { get; }
     }
