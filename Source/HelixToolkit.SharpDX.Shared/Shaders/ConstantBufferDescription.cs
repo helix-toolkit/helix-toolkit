@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.Shaders
     using Utilities;
 
     [DataContract]
-    public class ConstantBufferDescription : ICloneable
+    public class ConstantBufferDescription
     {
         [DataMember]
         public string Name { set; get; }
@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP.Shaders
             return new ConstantBufferMapping(slot, this);
         }
 
-        public object Clone()
+        public ConstantBufferDescription Clone()
         {
             return new ConstantBufferDescription(Name, StructSize, StrideSize)
             {
@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP.Shaders
     }
 
     [DataContract]
-    public class ConstantBufferMapping : ICloneable
+    public class ConstantBufferMapping
     {
         [DataMember]
         public int Slot { set; get; }
@@ -78,9 +78,9 @@ namespace HelixToolkit.UWP.Shaders
             return new ConstantBufferMapping(slot, description);
         }
 
-        public object Clone()
+        public ConstantBufferMapping Clone()
         {
-            return new ConstantBufferMapping(this.Slot, (ConstantBufferDescription)this.Description.Clone());
+            return new ConstantBufferMapping(this.Slot, this.Description.Clone());
         }
     }
 }

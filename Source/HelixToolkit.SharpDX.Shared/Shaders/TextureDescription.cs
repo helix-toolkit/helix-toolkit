@@ -8,7 +8,7 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     [DataContract]
-    public class TextureDescription : ICloneable
+    public class TextureDescription
     {
 
         [DataMember]
@@ -29,14 +29,14 @@ namespace HelixToolkit.UWP.Shaders
             return new TextureMapping(slot, this);
         }
 
-        public object Clone()
+        public TextureDescription Clone()
         {
             return new TextureDescription(this.Name, this.ShaderType);
         }
     }
 
     [DataContract]
-    public class TextureMapping : ICloneable
+    public class TextureMapping 
     {
         [DataMember]
         public int Slot { set; get; }
@@ -49,9 +49,9 @@ namespace HelixToolkit.UWP.Shaders
             Description = description;
         }
 
-        public object Clone()
+        public TextureMapping Clone()
         {
-            return new TextureMapping(this.Slot, (TextureDescription)this.Description.Clone());
+            return new TextureMapping(this.Slot, this.Description.Clone());
         }
     }
 }

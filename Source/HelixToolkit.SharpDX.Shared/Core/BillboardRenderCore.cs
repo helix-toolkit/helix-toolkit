@@ -1,12 +1,11 @@
-﻿using HelixToolkit.Wpf.SharpDX.Shaders;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
+﻿using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
     public class BillboardRenderCore : GeometryRenderCore
     {
         public bool FixedSize = true;

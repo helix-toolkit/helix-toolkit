@@ -10,6 +10,8 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using Model;
+    using System;
+
     /// <summary>
     /// 
     /// </summary>

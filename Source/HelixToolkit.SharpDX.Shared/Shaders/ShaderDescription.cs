@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Shaders
     /// 
     /// </summary>
     [DataContract]
-    public class ShaderDescription : ICloneable
+    public class ShaderDescription
     {
         [DataMember]
         public string Name { set; get; }
@@ -104,11 +104,11 @@ namespace HelixToolkit.UWP.Shaders
             return shader;
         }
 
-        public object Clone()
+        public ShaderDescription Clone()
         {
             return new ShaderDescription(this.Name, this.ShaderType, this.Level, this.ByteCode,
-                this.ConstantBufferMappings.Select(x => (ConstantBufferMapping)x.Clone()).ToArray(),
-                this.TextureMappings.Select(x => (TextureMapping)x.Clone()).ToArray());
+                this.ConstantBufferMappings.Select(x => x.Clone()).ToArray(),
+                this.TextureMappings.Select(x => x.Clone()).ToArray());
         }
     }
 }

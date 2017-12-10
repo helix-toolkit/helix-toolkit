@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX.Direct3D11;
 
 
@@ -10,6 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Utilities;
     public interface IShader : IDisposable
     {
         IEnumerable<Tuple<int, IBufferProxy>> CBufferMapping { get; }
