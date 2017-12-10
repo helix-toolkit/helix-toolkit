@@ -1,3 +1,6 @@
+#ifndef PSPOINT_HLSL
+#define PSPOINT_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
@@ -21,3 +24,5 @@ float4 main(PSInputPS input) : SV_Target
 
     return input.c;
 }
+
+#endif

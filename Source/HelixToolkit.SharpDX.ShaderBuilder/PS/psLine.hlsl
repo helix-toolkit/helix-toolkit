@@ -1,3 +1,6 @@
+#ifndef PSLINE_HLSL
+#define PSLINE_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
@@ -28,3 +31,5 @@ float4 main(PSInputPS input) : SV_Target
 	
     return color;
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef PSCOLOR_HLSL
+#define PSCOLOR_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 
 //--------------------------------------------------------------------------------------
@@ -7,3 +10,5 @@ float4 main(PSInput input) : SV_Target
 {
     return input.c;
 }
+
+#endif

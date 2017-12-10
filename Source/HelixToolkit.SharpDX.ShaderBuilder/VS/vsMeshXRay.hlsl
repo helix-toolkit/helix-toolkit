@@ -1,6 +1,8 @@
+#ifndef VSMESHXRAY_HLSL
+#define VSMESHXRAY_HLSL
+#define MATERIAL
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
-#include"..\Common\Material.hlsl"
 
 PSInputXRay main(VSInput input)
 {
@@ -34,3 +36,5 @@ PSInputXRay main(VSInput input)
     output.n = normalize(mul(inputn, (float3x3) mWorld));
     return output;
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef VSPOINT_HLSL
+#define VSPOINT_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
@@ -24,3 +27,5 @@ GSInputPS main(VSInputPS input)
 	output.c = input.c * vColor;
 	return output;
 }
+
+#endif

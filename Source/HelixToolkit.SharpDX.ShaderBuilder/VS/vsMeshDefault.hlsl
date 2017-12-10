@@ -1,7 +1,8 @@
+#ifndef VSMESHDEFAULT_HLSL
+#define VSMESHDEFAULT_HLSL
+#define MATERIAL
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
-#include"..\Common\Material.hlsl"
-#include"..\Common\Lighting.hlsl"
 #pragma pack_matrix( row_major )
 
 PSInput main(VSInput input)
@@ -74,3 +75,5 @@ PSInput main(VSInput input)
 
 	return output;
 }
+
+#endif

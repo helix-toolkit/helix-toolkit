@@ -1,8 +1,10 @@
 #ifndef PSCOMMON_HLSL
 #define PSCOMMON_HLSL
+#define MATERIAL
+
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
-#include"..\Common\Material.hlsl"
+
 //--------------------------------------------------------------------------------------
 // normal mapping
 //--------------------------------------------------------------------------------------

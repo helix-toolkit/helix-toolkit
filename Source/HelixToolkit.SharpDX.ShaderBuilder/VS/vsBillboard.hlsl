@@ -1,3 +1,6 @@
+#ifndef VSBILLBOARD_HLSL
+#define VSBILLBOARD_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
@@ -31,3 +34,5 @@ VSInputBT main(VSInputBT input)
     input.p = mul(ndcPosition, mView);
 	return input;
 }
+
+#endif

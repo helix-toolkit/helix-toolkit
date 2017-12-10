@@ -226,4 +226,11 @@ struct VSIn
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
 };
+
+//
+struct PSInputScreenQuad
+{
+    float4 p : POSITION;
+    float4 c : COLOR;
+};
 #endif

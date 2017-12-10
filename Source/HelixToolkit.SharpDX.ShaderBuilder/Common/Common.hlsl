@@ -1,36 +1,9 @@
 #ifndef COMMON_HLSL
 #define COMMON_HLSL
+#include"CommonBuffers.hlsl"
+#include"CommonSamplers.hlsl"
 #pragma pack_matrix( row_major )
-//--------------------------------------------------------------------------------------
-// Perframe Buffers
-//--------------------------------------------------------------------------------------
-cbuffer cbTransforms : register(b0)
-{
-    float4x4 mView;
-    float4x4 mProjection;
-    float4x4 mViewProjection;
-	// camera frustum: 
-	// [fov,asepct-ratio,near,far]
-    float4 vFrustum;
-	// viewport:
-	// [w,h,0,0]
-    float4 vViewport;		
-	// camera position
-    float3 vEyePos;
-    float padding0;
-};
 
-//Per model
-cbuffer cbModel : register(b1)
-{
-    float4x4 mWorld;
-    bool bInvertNormal = false;
-    bool bHasInstances = false;
-    bool bHasInstanceParams = false;   
-    bool bHasBones = false;	
-    float4 vParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
-    float4 vColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
-};
 
 //--------------------------------------------------------------------------------------
 // GLOBAL FUNCTIONS

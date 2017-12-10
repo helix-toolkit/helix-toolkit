@@ -1,3 +1,6 @@
+#ifndef PSMESHXRAY_HLSL
+#define PSMESHXRAY_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 
 cbuffer cbXRay : register(b0)
@@ -11,3 +14,5 @@ float4 main(PSInputXRay input) : SV_Target
     float ndotv = 1 - dot(normalize(input.n), normalize(input.vEye.xyz)) * XRayBorderFadingFactor;
     return float4(XRayObjectColor.xyz * ndotv, 0);
 }
+
+#endif

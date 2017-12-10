@@ -1,7 +1,10 @@
+#ifndef PSMESHBLINNPHONG_HLSL
+#define PSMESHBLINNPHONG_HLSL
+#define MATERIAL
+#define CLIPPLANE
+
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
-#include"..\Common\Material.hlsl"
-#include"..\Common\Lighting.hlsl"
 #include"psCommon.hlsl"
 
 //--------------------------------------------------------------------------------------
@@ -110,3 +113,4 @@ float4 main(PSInput input) : SV_Target
     return I;
 }
 
+#endif

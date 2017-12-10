@@ -152,7 +152,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\BillboardText.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Common.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Default.fx" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Shaders\Deferred.fx" />

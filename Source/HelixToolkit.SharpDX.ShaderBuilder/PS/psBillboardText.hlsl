@@ -1,11 +1,8 @@
+#ifndef PSBILLBOARDTEXT_HLSL
+#define PSBILLBOARDTEXT_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
-SamplerState NormalSampler
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
-};
 
 Texture2D billboardTexture : register(t0); // billboard text image
 
@@ -20,3 +17,5 @@ float4 main(PSInputBT input) : SV_Target
     float4 blend = input.foreground * pixelColor.x + input.background * (1 - pixelColor.x);
     return blend * whengt(((BillboardMultiText & (uint) vParams.y) | (BillboardSingleText & (uint) vParams.y)), 0) + pixelColor * whengt((BillboardImage & (uint) vParams.y), 0);
 }
+
+#endif

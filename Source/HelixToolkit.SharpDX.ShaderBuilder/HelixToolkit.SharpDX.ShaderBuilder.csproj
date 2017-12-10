@@ -53,10 +53,22 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
+    <Content Include="Common\CommonSamplers.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
-    <Content Include="Common\Lighting.hlsl" />
-    <Content Include="Common\Material.hlsl" />
+    <PixelShader Include="PS\psMeshClipPlaneQuad.hlsl">
+      <EntryPointName>psScreenQuad</EntryPointName>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshClipPlaneQuad.hlsl">
+      <EntryPointName>main</EntryPointName>
+    </VertexShader>
+    <PixelShader Include="PS\psMeshClipPlaneBackface.hlsl">
+      <EntryPointName>psClipPlaneBackFace</EntryPointName>
+    </PixelShader>
+    <PixelShader Include="PS\psMeshClipPlane.hlsl">
+      <EntryPointName>psClipPlaneMesh</EntryPointName>
+    </PixelShader>
     <VertexShader Include="VS\vsBillboard.hlsl" />
     <GeometryShader Include="GS\gsLine.hlsl" />
     <PixelShader Include="PS\psLine.hlsl" />

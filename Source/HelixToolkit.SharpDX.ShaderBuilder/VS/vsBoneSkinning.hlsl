@@ -1,7 +1,8 @@
+#ifndef VSBONESKINNING_HLSL
+#define VSBONESKINNING_HLSL
+#define MATERIAL
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
-#include"..\Common\Material.hlsl"
-#include"..\Common\Lighting.hlsl"
 
 #pragma pack_matrix( row_major )
 #define MaxBones 128
@@ -109,3 +110,5 @@ PSInput main(VSBoneSkinInput input)
 
     return output;
 }
+
+#endif

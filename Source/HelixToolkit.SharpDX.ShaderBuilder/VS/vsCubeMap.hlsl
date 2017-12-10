@@ -1,3 +1,6 @@
+#ifndef VSCUBMAP_HLSL
+#define VSCUBMAP_HLSL
+
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
@@ -19,3 +22,5 @@ PSInputCube main(float4 p : POSITION)
 
 	return output;
 }
+
+#endif
