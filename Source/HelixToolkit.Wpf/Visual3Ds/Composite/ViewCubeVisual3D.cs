@@ -422,6 +422,18 @@ namespace HelixToolkit.Wpf
             AddCorners();
             AddEdges();
             EnableDisableEdgeClicks();
+            
+            var parent = VisualTreeHelper.GetParent(this);
+
+            if (parent != null)
+            {
+                Viewport3DVisual parentViewport = parent as Viewport3DVisual;
+                if (parentViewport != null)
+                {
+                    parentViewport.Children.Remove(this);
+                    parentViewport.Children.Add(this);
+                }
+            }
         }
 
         private Brush GetCubefaceColor(int index)
