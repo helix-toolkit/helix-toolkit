@@ -645,6 +645,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds a cube face.
         /// </summary>
+        /// <param name="element">
+        /// </param>
         /// <param name="normal">
         /// The normal.
         /// </param>
