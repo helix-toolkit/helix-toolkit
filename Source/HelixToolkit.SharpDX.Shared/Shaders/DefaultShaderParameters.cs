@@ -569,7 +569,7 @@ namespace HelixToolkit.UWP.Shaders
     {
         public readonly static BlendStateDescription BSNormal = new BlendStateDescription();
         public readonly static BlendStateDescription NoBlend = new BlendStateDescription();
-        public readonly static BlendStateDescription BSXRayBlending = new BlendStateDescription();
+        public readonly static BlendStateDescription BSOverlayBlending = new BlendStateDescription();
         static DefaultBlendStateDescriptions()
         {
             BSNormal.RenderTarget[0]=new RenderTargetBlendDescription()
@@ -585,13 +585,14 @@ namespace HelixToolkit.UWP.Shaders
             };
 
             NoBlend.RenderTarget[0] = new RenderTargetBlendDescription() { IsBlendEnabled = false };
-            BSXRayBlending.RenderTarget[0] = new RenderTargetBlendDescription()
+            BSOverlayBlending.RenderTarget[0] = new RenderTargetBlendDescription()
             {
+                IsBlendEnabled = true,
                 SourceBlend = BlendOption.One,
                 DestinationBlend = BlendOption.One,
                 BlendOperation = BlendOperation.Add,
-                SourceAlphaBlend = BlendOption.One,
-                DestinationAlphaBlend = BlendOption.Zero,
+                SourceAlphaBlend = BlendOption.Zero,
+                DestinationAlphaBlend = BlendOption.One,
                 AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
             };
@@ -621,6 +622,14 @@ namespace HelixToolkit.UWP.Shaders
             IsDepthEnabled = true,
             DepthWriteMask = DepthWriteMask.Zero,
             DepthComparison = Comparison.Less,
+            IsStencilEnabled = false
+        };
+
+        public readonly static DepthStencilStateDescription DSSLessEqualNoWrite = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.LessEqual,
             IsStencilEnabled = false
         };
 

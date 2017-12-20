@@ -36,13 +36,13 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            xRayTechnique = technique.GetPass(DefaultRenderTechniqueNames.MeshXRay);
+            xRayTechnique = technique.GetPass(GetPassName());
             return base.OnAttach(technique);
         }
 
-        protected virtual IRenderTechnique GetOutlineTechnique(IEffectsManager manager)
+        protected virtual string GetPassName()
         {
-            return manager[DefaultRenderTechniqueNames.MeshXRay];
+            return DefaultRenderTechniqueNames.MeshOutline;
         }
 
         protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
@@ -82,6 +82,19 @@ namespace HelixToolkit.UWP.Core
                 xRayTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
                 OnDraw(context.DeviceContext, InstanceBuffer);
             }
+        }
+    }
+
+    public class MeshXRayRenderCore : MeshOutlineRenderCore
+    {
+        public MeshXRayRenderCore()
+        {
+            DrawOutlineBeforeMesh = true;
+        }
+
+        protected override string GetPassName()
+        {
+            return DefaultRenderTechniqueNames.MeshXRay;
         }
     }
 }
