@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>
-    public class EffectMaterialVariables : DisposeObject, IEffectMaterialVariables
+    public class PhongMaterialVariables : DisposeObject, IEffectMaterialVariables
     {
         public event System.EventHandler<bool> OnInvalidateRenderer;
         private IPhongMaterial material;
@@ -141,7 +141,7 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public EffectMaterialVariables(IConstantBufferPool cbpool)
+        public PhongMaterialVariables(IConstantBufferPool cbpool)
         {
             materialBuffer = cbpool.Register(DefaultConstantBufferDescriptions.MaterialCB);
             Device = cbpool.Device;

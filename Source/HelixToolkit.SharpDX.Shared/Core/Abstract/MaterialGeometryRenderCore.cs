@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(IConstantBufferPool cbPool)
         {
-            return new EffectMaterialVariables(cbPool);
+            return new PhongMaterialVariables(cbPool);
         }
         /// <summary>
         /// Set control variables into material variables object

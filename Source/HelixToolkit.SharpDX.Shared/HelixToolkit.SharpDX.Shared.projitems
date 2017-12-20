@@ -62,7 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\EffectMaterialVariables.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\PhongMaterialVariables.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Flags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardBase.cs" />
