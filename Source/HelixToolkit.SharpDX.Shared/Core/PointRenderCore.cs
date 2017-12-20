@@ -15,9 +15,9 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Color4 PointColor = Color.Black;
 
-        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(context);
+            base.OnUpdateModelStruct(ref model, context);
             modelStruct.Color = PointColor;
             modelStruct.Params = PointParams;
         }

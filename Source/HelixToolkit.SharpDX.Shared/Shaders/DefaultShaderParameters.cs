@@ -87,6 +87,21 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshXRay
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshXRay;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
     /// <summary>
     /// 
@@ -197,6 +212,18 @@ namespace HelixToolkit.UWP.Shaders
                 throw new NotImplementedException();
 #endif
 
+            }
+        }
+
+        public static byte[] PSMeshXRay
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psMeshXRay;
+#else
+                throw new NotImplementedException();
+#endif
             }
         }
     }
@@ -420,6 +447,14 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
             },
             null);
+
+        public static ShaderDescription VSMeshXRay = new ShaderDescription(nameof(VSMeshXRay), ShaderStage.Vertex, FeatureLevel.Level_11_0,
+            DefaultVSShaderByteCodes.VSMeshXRay,
+            new ConstantBufferMapping[]
+            {
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+            });
     }
 
     /// <summary>
@@ -487,6 +522,10 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription PSBillboardText = new ShaderDescription(nameof(PSBillboardText), ShaderStage.Pixel, FeatureLevel.Level_11_0,
             DefaultPSShaderByteCodes.PSBillboardText,
             null, new TextureMapping[] { DefaultTextureBufferDescriptions.BillboardTB.CreateMapping(0) });
+
+        public static ShaderDescription PSMeshXRay = new ShaderDescription(nameof(PSMeshXRay), ShaderStage.Pixel, FeatureLevel.Level_11_0,
+            DefaultPSShaderByteCodes.PSMeshXRay,
+            new ConstantBufferMapping[] { DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1) });
     }
 
     /// <summary>
@@ -583,6 +622,13 @@ namespace HelixToolkit.UWP.Shaders
             DepthWriteMask = DepthWriteMask.Zero,
             DepthComparison = Comparison.Less,
             IsStencilEnabled = false
+        };
+
+        public readonly static DepthStencilStateDescription DSSGreaterNoWrite = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Greater
         };
     }
 

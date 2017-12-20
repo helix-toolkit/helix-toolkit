@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP.Core
         //protected override void SetShaderVariables(IRenderMatrices context)
         //{
         //}
-        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
             
         }

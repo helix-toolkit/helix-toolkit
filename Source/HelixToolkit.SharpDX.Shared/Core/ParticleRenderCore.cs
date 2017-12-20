@@ -213,7 +213,7 @@ namespace HelixToolkit.UWP.Core
             return DefaultConstantBufferDescriptions.ModelCB;
         }
 
-        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
             
         }

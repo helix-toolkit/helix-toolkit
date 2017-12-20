@@ -18,7 +18,7 @@
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False"
+            UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}" Background="Black" BackgroundColor="0,0,0,0">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />

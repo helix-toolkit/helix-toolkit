@@ -17,7 +17,6 @@ namespace HelixToolkit.UWP.Core
     {
         public Guid GUID { get; } = Guid.NewGuid();
 
-        //private EffectMatrixVariable mWorldVar;
         protected TModelStruct modelStruct;
         protected IBufferProxy modelCB { private set; get; }
         public event EventHandler<bool> OnInvalidateRenderer;
@@ -55,7 +54,6 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual bool OnAttach(IRenderTechnique technique)
         {
-            //mWorldVar = Collect(Effect.GetVariableByName(ShaderVariableNames.WorldMatrix).AsMatrix());
             modelCB = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription());
             return true;
         }
@@ -86,7 +84,7 @@ namespace HelixToolkit.UWP.Core
             {
                 SetStates(context);
                 OnAttachBuffers(context.DeviceContext);
-                OnUpdateModelStruct(context);
+                OnUpdateModelStruct(ref modelStruct, context);
                 OnRender(context);
                 PostRender(context);
             }
@@ -115,7 +113,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         protected abstract void OnRender(IRenderMatrices context);
 
-        protected abstract void OnUpdateModelStruct(IRenderMatrices context);
+        protected abstract void OnUpdateModelStruct(ref TModelStruct model, IRenderMatrices context);
 
         protected void UpdateModelConstantBuffer(DeviceContext context)
         {

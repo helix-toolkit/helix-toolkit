@@ -79,10 +79,10 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender() && GeometryBuffer != null;
         }
 
-        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            modelStruct.World = ModelMatrix * context.WorldMatrix;
-            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
         }
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()

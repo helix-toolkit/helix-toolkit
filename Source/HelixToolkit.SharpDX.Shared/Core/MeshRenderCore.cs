@@ -8,10 +8,10 @@ namespace HelixToolkit.UWP.Core
     {
         public bool InvertNormal { set; get; } = false;
 
-        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(context);
-            modelStruct.InvertNormal = InvertNormal ? 1 : 0;
+            base.OnUpdateModelStruct(ref model, context);
+            model.InvertNormal = InvertNormal ? 1 : 0;
         }
 
         protected override void OnRender(IRenderMatrices context)

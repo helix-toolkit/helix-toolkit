@@ -76,10 +76,11 @@ namespace XRayDemo
 
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-
+            //RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            //RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager.Initialize();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "Lighting Demo";

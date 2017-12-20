@@ -26,6 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
         void BindShader(DeviceContext context);
 
         IShader GetShader(ShaderStage type);
+
+        IEffectsManager EffectsManager { get; }
     }
 
     public interface IRenderTechniquesManager
@@ -36,18 +38,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IEffectsManager
     {
-        //IRenderTechniquesManager RenderTechniquesManager { get; }
-        //InputLayout GetLayout(IRenderTechnique technique);
-        //Effect GetEffect(IRenderTechnique technique);
-        //global::SharpDX.Direct3D11.Device Device { get; }
         int AdapterIndex { get; }
         IConstantBufferPool ConstantBufferPool { get; }
         Device Device { get; }
         DriverType DriverType { get; }
         IShaderPoolManager ShaderManager { get; }
         IStatePoolManager StateManager { get; }
-        Technique GetTechnique(string name);
-        Technique this[string name] { get; }
+        IRenderTechnique GetTechnique(string name);
+        IRenderTechnique this[string name] { get; }
         void Initialize();
     }
 

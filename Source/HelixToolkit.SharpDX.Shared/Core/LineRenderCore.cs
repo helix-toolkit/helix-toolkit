@@ -18,11 +18,11 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Color4 LineColor = Color.Black;
 
-        protected override void OnUpdateModelStruct(IRenderMatrices context)
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(context);
-            modelStruct.Color = LineColor;
-            modelStruct.Params = LineParams;
+            base.OnUpdateModelStruct(ref model, context);
+            model.Color = LineColor;
+            model.Params = LineParams;
         }
 
         protected override void OnRender(IRenderMatrices context)

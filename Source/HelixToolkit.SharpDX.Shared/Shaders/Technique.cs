@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Shaders
     public class Technique :  DisposeObject, IRenderTechnique
     {
         public InputLayout Layout { private set; get; }
-        public Device Device { private set; get; }
+        public Device Device { get { return EffectsManager.Device; } }
         public string Name { private set; get; }
         private readonly Dictionary<ShaderStage, IShader> shaders = new Dictionary<ShaderStage, IShader>();
         public IEnumerable<IShader> Shaders { get { return shaders.Values; } }
@@ -24,7 +24,9 @@ namespace HelixToolkit.UWP.Shaders
 
         public RasterizerState RasterState { private set; get; } = null;
 
-        public IConstantBufferPool ConstantBufferPool { private set; get; }
+        public IConstantBufferPool ConstantBufferPool { get { return EffectsManager.ConstantBufferPool; } }
+
+        public IEffectsManager EffectsManager { private set; get; }
         /// <summary>
         /// 
         /// </summary>
@@ -37,7 +39,7 @@ namespace HelixToolkit.UWP.Shaders
         public Technique(TechniqueDescription description, Device device, IEffectsManager manager)
         {
             Name = description.Name;
-            Device = device;
+            EffectsManager = manager;
             Layout = manager.ShaderManager.RegisterInputLayout(description.InputLayoutDescription);
             if (description.ShaderList != null)
             {
@@ -63,8 +65,6 @@ namespace HelixToolkit.UWP.Shaders
             {
                 shaders.Add(ShaderStage.Compute, new NullShader(ShaderStage.Compute));
             }
-            ConstantBufferPool = manager.ConstantBufferPool;
-
             BlendState = description.BlendStateDescription != null ? manager.StateManager.Register((BlendStateDescription)description.BlendStateDescription) : null;
 
             DepthStencilState = description.DepthStencilStateDescription != null ? manager.StateManager.Register((DepthStencilStateDescription)description.DepthStencilStateDescription) : null;
@@ -120,7 +120,7 @@ namespace HelixToolkit.UWP.Shaders
         protected override void Dispose(bool disposeManagedResources)
         {
             shaders.Clear();
-            Device = null;
+            EffectsManager = null;
             Layout = null;
             base.Dispose(disposeManagedResources);
         }

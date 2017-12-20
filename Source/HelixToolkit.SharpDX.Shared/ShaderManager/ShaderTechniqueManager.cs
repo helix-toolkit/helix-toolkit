@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
-        private IDictionary<string, Lazy<Technique>> techniqueDict { get; } = new Dictionary<string, Lazy<Technique>>();
+        private IDictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
 
         public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
         private IConstantBufferPool constantBufferPool;
@@ -93,19 +93,19 @@ namespace HelixToolkit.UWP
             Initialized = true;
         }
 
-        protected IList<Tuple<string, Lazy<Technique>>> LoadTechniques(global::SharpDX.Direct3D11.Device device)
+        protected IList<Tuple<string, Lazy<IRenderTechnique>>> LoadTechniques(global::SharpDX.Direct3D11.Device device)
         {
             var techniqueDescs = LoadTechniqueDescriptions();
             if(techniqueDescs == null)
             {
-                return new Tuple<string, Lazy<Technique>>[0];
+                return new Tuple<string, Lazy<IRenderTechnique>>[0];
             }
             else
             {
-                var list = new List<Tuple<string, Lazy<Technique>>>(techniqueDescs.Count);
+                var list = new List<Tuple<string, Lazy<IRenderTechnique>>>(techniqueDescs.Count);
                 foreach(var desc in techniqueDescs)
                 {
-                    list.Add(Tuple.Create(desc.Name, new Lazy<Technique>(()=> 
+                    list.Add(Tuple.Create(desc.Name, new Lazy<IRenderTechnique>(()=> 
                     {
                         return Initialized ? Collect(new Technique(desc, device, this)) : null;
                     }, 
@@ -168,7 +168,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public Technique GetTechnique(string name)
+        public IRenderTechnique GetTechnique(string name)
         {
             if (!Initialized)
             {
@@ -177,7 +177,7 @@ namespace HelixToolkit.UWP
             return techniqueDict[name].Value;
         }
 
-        public Technique this[string name]
+        public IRenderTechnique this[string name]
         {
             get
             {
@@ -281,7 +281,21 @@ namespace HelixToolkit.UWP
                 BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                 DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
             };
-            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint, renderLine, renderBillboardText };
+
+            var renderMeshXRay = new TechniqueDescription()
+            {
+                Name = DefaultRenderTechniqueNames.MeshXRay,
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshXRay, DefaultInputLayout.VSInput),
+                ShaderList = new[]
+                {
+                    DefaultVSShaderDescriptions.VSMeshXRay,
+                    DefaultPSShaderDescriptions.PSMeshXRay
+                },
+                BlendStateDescription = DefaultBlendStateDescriptions.BSXRayBlending,
+                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
+            };
+
+            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint, renderLine, renderBillboardText, renderMeshXRay };
         }
     }
 }

@@ -10,28 +10,28 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class XRayMeshGeometryModel3D : OutLineMeshGeometryModel3D
     {
-        public XRayMeshGeometryModel3D()
-        {
-            IsDrawBeforeGeometry = true;
-            var blendDesc = new BlendStateDescription();
-            blendDesc.RenderTarget[0] = new RenderTargetBlendDescription
-            {
-                IsBlendEnabled = true,
-                BlendOperation = BlendOperation.Add,
-                AlphaBlendOperation = BlendOperation.Add,
-                SourceBlend = BlendOption.One,
-                DestinationBlend = BlendOption.One,
-                SourceAlphaBlend = BlendOption.Zero,
-                DestinationAlphaBlend = BlendOption.One,
-                RenderTargetWriteMask = ColorWriteMaskFlags.All
-            };
-            this.BlendStateDescription = blendDesc;
+        //public XRayMeshGeometryModel3D()
+        //{
+        //    IsDrawBeforeGeometry = true;
+        //    var blendDesc = new BlendStateDescription();
+        //    blendDesc.RenderTarget[0] = new RenderTargetBlendDescription
+        //    {
+        //        IsBlendEnabled = true,
+        //        BlendOperation = BlendOperation.Add,
+        //        AlphaBlendOperation = BlendOperation.Add,
+        //        SourceBlend = BlendOption.One,
+        //        DestinationBlend = BlendOption.One,
+        //        SourceAlphaBlend = BlendOption.Zero,
+        //        DestinationAlphaBlend = BlendOption.One,
+        //        RenderTargetWriteMask = ColorWriteMaskFlags.All
+        //    };
+        //    this.BlendStateDescription = blendDesc;
 
-            var depthStencilDesc = new DepthStencilStateDescription()
-            {
-                 IsDepthEnabled=true, DepthComparison = Comparison.Greater, DepthWriteMask = DepthWriteMask.Zero
-            };
-            DepthStencilStateDescription = depthStencilDesc;
-        }
+        //    var depthStencilDesc = new DepthStencilStateDescription()
+        //    {
+        //         IsDepthEnabled=true, DepthComparison = Comparison.Greater, DepthWriteMask = DepthWriteMask.Zero
+        //    };
+        //    DepthStencilStateDescription = depthStencilDesc;
+        //}
     }
 }
