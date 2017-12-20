@@ -98,8 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
             (core as MeshRenderCore).InvertNormal = this.InvertNormal;
-            base.AssignDefaultValuesToCore(core);
-            
+            base.AssignDefaultValuesToCore(core);            
         }
 
         protected override IGeometryBufferModel OnCreateBufferModel()

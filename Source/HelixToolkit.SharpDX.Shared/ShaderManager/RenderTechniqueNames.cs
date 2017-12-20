@@ -8,7 +8,6 @@ namespace HelixToolkit.UWP
     public struct DefaultRenderTechniqueNames
     {
         public const string Blinn = "RenderBlinn";
-        public const string Phong = "RenderPhong";
         public const string Diffuse = "RenderDiffuse";
         public const string Colors = "RenderColors";
         public const string Positions = "RenderPositions";
@@ -16,7 +15,6 @@ namespace HelixToolkit.UWP
         public const string PerturbedNormals = "RenderPerturbedNormals";
         public const string Tangents = "RenderTangents";
         public const string TexCoords = "RenderTexCoords";
-        public const string Wires = "RenderWires";
         public const string Lines = "RenderLines";
         public const string Points = "RenderPoints";
         public const string CubeMap = "RenderCubeMap";
@@ -26,8 +24,14 @@ namespace HelixToolkit.UWP
         public const string BoneSkinBlinn = "RenderBoneSkinBlinn";
         public const string ParticleStorm = "ParticleStorm";
         public const string CrossSection = "RenderCrossSectionBlinn";
+    }
+
+    public struct DefaultPassNames
+    {
+        public const string Default = "Default";
         public const string MeshOutline = "RenderMeshOutline";
-        public const string MeshXRay = "RenderMeshXRay";
+        public const string MeshXRay = "RenderMeshXRay"; 
+               
     }
 
     public struct TessellationRenderTechniqueNames

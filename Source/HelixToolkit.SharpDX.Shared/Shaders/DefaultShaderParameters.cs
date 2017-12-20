@@ -486,7 +486,7 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public static ShaderDescription PSMeshVertColor = new ShaderDescription(nameof(PSMeshVertColor), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSMeshBinnPhong);
+            DefaultPSShaderByteCodes.PSMeshVertColor);
         /// <summary>
         /// 
         /// </summary>

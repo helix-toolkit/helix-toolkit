@@ -6,7 +6,7 @@ namespace HelixToolkit.UWP.Core
 {
     public class MeshRenderCore : MaterialGeometryRenderCore
     {
-        public bool InvertNormal { set; get; } = false;
+        public bool InvertNormal { set; get; } = false;       
 
         protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
@@ -21,9 +21,10 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            EffectTechnique[0].BindShader(context.DeviceContext);
-            EffectTechnique[0].BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            if(!BindMaterialTextures(context.DeviceContext, EffectTechnique[0].GetShader(ShaderStage.Pixel)))
+
+            DefaultShaderPass.BindShader(context.DeviceContext);
+            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+            if(!BindMaterialTextures(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel)))
             {
                 return;
             }

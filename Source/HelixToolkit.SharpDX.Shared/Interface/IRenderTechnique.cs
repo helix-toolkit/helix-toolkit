@@ -85,11 +85,39 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         int AdapterIndex { get; }
         IConstantBufferPool ConstantBufferPool { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         Device Device { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         DriverType DriverType { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         IShaderPoolManager ShaderManager { get; }
+        /// <summary>
+        /// Get list of existing technique names
+        /// </summary>
+        IEnumerable<string> RenderTechniques { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         IStatePoolManager StateManager { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         IRenderTechnique GetTechnique(string name);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         IRenderTechnique this[string name] { get; }
         void Initialize();
     }

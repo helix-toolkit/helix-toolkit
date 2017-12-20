@@ -23,22 +23,44 @@ namespace HelixToolkit.UWP
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
         private IDictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
+        /// <summary>
+        /// <see cref="IEffectsManager.RenderTechniques"/>
+        /// </summary>
+        public IEnumerable<string> RenderTechniques { get { return techniqueDict.Keys; } }
 
+        /// <summary>
+        /// <see cref="IEffectsManager.ConstantBufferPool"/>
+        /// </summary>
         public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
         private IConstantBufferPool constantBufferPool;
 
         private IShaderPoolManager shaderPoolManager;
+        /// <summary>
+        /// <see cref="IEffectsManager.ShaderManager"/>
+        /// </summary>
         public IShaderPoolManager ShaderManager { get { return shaderPoolManager; } }
 
         private IStatePoolManager statePoolManager;
+
+        /// <summary>
+        /// <see cref="IEffectsManager.StateManager"/> 
+        /// </summary>
         public IStatePoolManager StateManager { get { return statePoolManager; } }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public global::SharpDX.Direct3D11.Device Device { private set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public DriverType DriverType { private set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int AdapterIndex { private set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool Initialized { private set; get; } = false;
 
         public ShaderTechniqueManager()
@@ -206,7 +228,7 @@ namespace HelixToolkit.UWP
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.Blinn)
+                    new ShaderPassDescription(DefaultPassNames.Default)
                     {
                         ShaderList = new[]
                         {
@@ -216,7 +238,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.MeshOutline)
+                    new ShaderPassDescription(DefaultPassNames.MeshOutline)
                     {
                         ShaderList = new[]
                         {
@@ -226,7 +248,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite
                     },
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.MeshXRay)
+                    new ShaderPassDescription(DefaultPassNames.MeshXRay)
                     {
                         ShaderList = new[]
                         {
@@ -239,12 +261,67 @@ namespace HelixToolkit.UWP
                 }
             };
 
+            var renderColors = new TechniqueDescription(DefaultRenderTechniqueNames.Colors)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshVertColor
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
+            };
+
+            var renderNormals = new TechniqueDescription(DefaultRenderTechniqueNames.Normals)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshVertNormal
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
+            };
+
+            var renderPositions = new TechniqueDescription(DefaultRenderTechniqueNames.Positions)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshVertPosition
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
+            };
+
+
             var renderBlinnInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.InstancingBlinn)
             {
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshInstancing, DefaultInputLayout.VSInputInstancing),
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.InstancingBlinn)
+                    new ShaderPassDescription(DefaultPassNames.Default)
                     {
                         ShaderList = new[]
                         {
@@ -262,7 +339,7 @@ namespace HelixToolkit.UWP
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshBoneSkinning, DefaultInputLayout.VSInputBoneSkinning),
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.BoneSkinBlinn)
+                    new ShaderPassDescription(DefaultPassNames.Default)
                     {
                         ShaderList = new[]
                         {
@@ -280,7 +357,7 @@ namespace HelixToolkit.UWP
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSPoint, DefaultInputLayout.VSInputPoint),
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.Points)
+                    new ShaderPassDescription(DefaultPassNames.Default)
                     {
                         ShaderList = new[]
                         {
@@ -299,7 +376,7 @@ namespace HelixToolkit.UWP
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSPoint, DefaultInputLayout.VSInputPoint),
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.Lines)
+                    new ShaderPassDescription(DefaultPassNames.Default)
                     {
                         ShaderList = new[]
                         {
@@ -318,7 +395,7 @@ namespace HelixToolkit.UWP
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSBillboard, DefaultInputLayout.VSInputBillboard),
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(DefaultRenderTechniqueNames.BillboardText)
+                    new ShaderPassDescription(DefaultPassNames.Default)
                     {
                         ShaderList = new[]
                         {
@@ -332,7 +409,18 @@ namespace HelixToolkit.UWP
                 }
             };
 
-            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint, renderLine, renderBillboardText };
+            return new List<TechniqueDescription>
+            {
+                renderBlinn,
+                renderBlinnInstancing,
+                renderBoneSkinning,
+                renderPoint,
+                renderLine,
+                renderBillboardText,
+                renderNormals,
+                renderColors,
+                renderPositions
+            };
         }
     }
 }

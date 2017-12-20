@@ -1,6 +1,6 @@
-﻿#if !NETFX_CORE
-using SharpDX;
+﻿using SharpDX;
 
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
@@ -32,17 +32,31 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public float OutlineFadingFactor { set; get; } = 1.5f;
 
-        private IShaderPass xRayTechnique;
+        private string outlinePassName = DefaultPassNames.MeshOutline;
+        public string OutlinePassName
+        {
+            set
+            {
+                if (outlinePassName == value)
+                { return; }
+                outlinePassName = value;
+                if (IsAttached)
+                {
+                    outlineShaderPass = EffectTechnique[value];
+                }
+            }
+            get
+            {
+                return outlinePassName;
+            }
+        }
+
+        protected IShaderPass outlineShaderPass { private set; get; }
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            xRayTechnique = technique.GetPass(GetPassName());
+            outlineShaderPass = technique[OutlinePassName];
             return base.OnAttach(technique);
-        }
-
-        protected virtual string GetPassName()
-        {
-            return DefaultRenderTechniqueNames.MeshOutline;
         }
 
         protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
@@ -58,8 +72,8 @@ namespace HelixToolkit.UWP.Core
             context.DeviceContext.Rasterizer.State = RasterState;
             if (DrawOutlineBeforeMesh)
             {
-                xRayTechnique.BindShader(context.DeviceContext);
-                xRayTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+                outlineShaderPass.BindShader(context.DeviceContext);
+                outlineShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
                 OnDraw(context.DeviceContext, InstanceBuffer);
             }
             if (DrawMesh)
@@ -68,9 +82,9 @@ namespace HelixToolkit.UWP.Core
                 {
                     return;
                 }
-                EffectTechnique[0].BindShader(context.DeviceContext);
-                EffectTechnique[0].BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-                if (!BindMaterialTextures(context.DeviceContext, EffectTechnique[0].GetShader(ShaderStage.Pixel)))
+                DefaultShaderPass.BindShader(context.DeviceContext);
+                DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+                if (!BindMaterialTextures(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel)))
                 {
                     return;
                 }             
@@ -78,8 +92,8 @@ namespace HelixToolkit.UWP.Core
             }
             if (!DrawOutlineBeforeMesh)
             {
-                xRayTechnique.BindShader(context.DeviceContext);
-                xRayTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+                outlineShaderPass.BindShader(context.DeviceContext);
+                outlineShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
                 OnDraw(context.DeviceContext, InstanceBuffer);
             }
         }
@@ -90,11 +104,7 @@ namespace HelixToolkit.UWP.Core
         public MeshXRayRenderCore()
         {
             DrawOutlineBeforeMesh = true;
-        }
-
-        protected override string GetPassName()
-        {
-            return DefaultRenderTechniqueNames.MeshXRay;
+            OutlinePassName = DefaultPassNames.MeshXRay;
         }
     }
 }

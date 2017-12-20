@@ -21,10 +21,10 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderMatrices context)
         {
             UpdateModelConstantBuffer(context.DeviceContext);
-            EffectTechnique[0].BindShader(context.DeviceContext);
-            EffectTechnique[0].BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+            DefaultShaderPass.BindShader(context.DeviceContext);
+            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
             context.DeviceContext.Rasterizer.State = RasterState;
-            BindBillboardTexture(context.DeviceContext, EffectTechnique[0].GetShader(ShaderStage.Pixel));
+            BindBillboardTexture(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
 

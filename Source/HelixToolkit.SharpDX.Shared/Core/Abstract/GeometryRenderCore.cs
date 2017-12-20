@@ -36,6 +36,31 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private string defaultPassName = DefaultPassNames.Default;
+        /// <summary>
+        /// Name of the default pass inside a technique.
+        /// <para>Default: <see cref="DefaultPassNames.Default"/></para>
+        /// </summary>
+        public string DefaultShaderPassName
+        {
+            set
+            {
+                if (defaultPassName == value)
+                { return; }
+                defaultPassName = value;
+                if (IsAttached)
+                {
+                    DefaultShaderPass = EffectTechnique[value];
+                }
+            }
+            get
+            {
+                return defaultPassName;
+            }
+        }
+
+        protected IShaderPass DefaultShaderPass { private set; get; }
+
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
             rasterDescription = description;
@@ -50,6 +75,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
+                DefaultShaderPass = technique[DefaultShaderPassName];
                 this.VertexLayout = technique.Layout;
                 CreateRasterState(rasterDescription, true);
                 return true;

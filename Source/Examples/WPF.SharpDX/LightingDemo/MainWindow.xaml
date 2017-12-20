@@ -126,11 +126,8 @@
                     <!--<ComboBox  Grid.Row="3" Text="- Select Model -" ItemsSource="{Binding ShadingModelCollection}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3"/>-->
                     <ComboBox
                         Margin="3"
-                        DisplayMemberPath="Key"
-                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValuePath="Value" />
+                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
+                        SelectedItem="{Binding RenderTechniqueName}"/>
                     <TextBlock>MSAA</TextBlock>
                     <ComboBox Margin="3" SelectedItem="{Binding MSAA}" ItemsSource="{Binding MSAAs}"/>
                 </StackPanel>
