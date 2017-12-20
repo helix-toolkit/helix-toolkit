@@ -9,25 +9,70 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using ShaderManager;
     using Shaders;
-    public interface IRenderTechnique
+    public interface IShaderPass
     {
         string Name { get; }
-
-        Device Device { get; }
-
-        InputLayout Layout { get; }
-
         IEnumerable<IShader> Shaders { get; }
-
-        IConstantBufferPool ConstantBufferPool { get; }
-
-        void BindStates(DeviceContext context, StateType type);
+        BlendState BlendState { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        DepthStencilState DepthStencilState { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        RasterizerState RasterState { get; }
 
         void BindShader(DeviceContext context);
 
         IShader GetShader(ShaderStage type);
 
+        void BindStates(DeviceContext context, StateType type);
+    }
+    public interface IRenderTechnique
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        string Name { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        Device Device { get; }
+        /// <summary>
+        /// Input layout for all passes
+        /// </summary>
+        InputLayout Layout { get; }
+
+        IEnumerable<IShaderPass> Passes { get; }
+
+        IConstantBufferPool ConstantBufferPool { get; }
+        /// <summary>
+        /// Get pass by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IShaderPass GetPass(string name);
+        /// <summary>
+        /// Get pass by index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        IShaderPass GetPass(int index);
+
         IEffectsManager EffectsManager { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        IShaderPass this[int index] { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IShaderPass this[string name] { get; }
     }
 
     public interface IRenderTechniquesManager

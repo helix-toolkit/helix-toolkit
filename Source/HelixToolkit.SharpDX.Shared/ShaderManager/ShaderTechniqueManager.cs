@@ -201,101 +201,128 @@ namespace HelixToolkit.UWP
     {
         protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
         {
-            var renderBlinn = new TechniqueDescription()
+            var renderBlinn = new TechniqueDescription(DefaultRenderTechniqueNames.Blinn)
             {
-                Name = DefaultRenderTechniqueNames.Blinn,
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
-                ShaderList = new[]
+                PassDescriptions = new[]
                 {
-                    DefaultVSShaderDescriptions.VSMeshDefault,
-                    DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                },
-                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    new ShaderPassDescription(DefaultRenderTechniqueNames.Blinn)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshBlinnPhong
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultRenderTechniqueNames.MeshXRay)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshXRay,
+                            DefaultPSShaderDescriptions.PSMeshXRay
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSXRayBlending,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
+                    }
+                }
             };
 
-            var renderBlinnInstancing = new TechniqueDescription()
+            var renderBlinnInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.InstancingBlinn)
             {
-                Name = DefaultRenderTechniqueNames.InstancingBlinn,
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshInstancing, DefaultInputLayout.VSInputInstancing),
-                ShaderList = new[]
+                PassDescriptions = new[]
                 {
-                    DefaultVSShaderDescriptions.VSMeshInstancing,
-                    DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                },
-                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    new ShaderPassDescription(DefaultRenderTechniqueNames.InstancingBlinn)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshInstancing,
+                            DefaultPSShaderDescriptions.PSMeshBlinnPhong
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
             };
 
-            var renderBoneSkinning = new TechniqueDescription()
+            var renderBoneSkinning = new TechniqueDescription(DefaultRenderTechniqueNames.BoneSkinBlinn)
             {
-                Name = DefaultRenderTechniqueNames.BoneSkinBlinn,
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshBoneSkinning, DefaultInputLayout.VSInputBoneSkinning),
-                ShaderList = new[]
+                PassDescriptions = new[]
                 {
-                    DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                    DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                },
-                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    new ShaderPassDescription(DefaultRenderTechniqueNames.BoneSkinBlinn)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
+                            DefaultPSShaderDescriptions.PSMeshBlinnPhong
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
             };
 
-            var renderPoint = new TechniqueDescription()
+            var renderPoint = new TechniqueDescription(DefaultRenderTechniqueNames.Points)
             {
-                Name = DefaultRenderTechniqueNames.Points,
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSPoint, DefaultInputLayout.VSInputPoint),
-                ShaderList = new[]
+                PassDescriptions = new[]
                 {
-                    DefaultVSShaderDescriptions.VSPoint,
-                    DefaultGSShaderDescriptions.GSPoint,
-                    DefaultPSShaderDescriptions.PSPoint
-                },
-                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    new ShaderPassDescription(DefaultRenderTechniqueNames.Points)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSPoint,
+                            DefaultGSShaderDescriptions.GSPoint,
+                            DefaultPSShaderDescriptions.PSPoint
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
             };
 
-            var renderLine = new TechniqueDescription()
+            var renderLine = new TechniqueDescription(DefaultRenderTechniqueNames.Lines)
             {
-                Name = DefaultRenderTechniqueNames.Lines,
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSPoint, DefaultInputLayout.VSInputPoint),
-                ShaderList = new[]
+                PassDescriptions = new[]
                 {
-                    DefaultVSShaderDescriptions.VSPoint,
-                    DefaultGSShaderDescriptions.GSLine,
-                    DefaultPSShaderDescriptions.PSLine
-                },
-                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    new ShaderPassDescription(DefaultRenderTechniqueNames.Lines)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSPoint,
+                            DefaultGSShaderDescriptions.GSLine,
+                            DefaultPSShaderDescriptions.PSLine
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
             };
 
-            var renderBillboardText = new TechniqueDescription()
+            var renderBillboardText = new TechniqueDescription(DefaultRenderTechniqueNames.BillboardText)
             {
-                Name = DefaultRenderTechniqueNames.BillboardText,
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSBillboard, DefaultInputLayout.VSInputBillboard),
-                ShaderList = new[]
+                PassDescriptions = new[]
                 {
-                    DefaultVSShaderDescriptions.VSBillboardText,
-                    DefaultGSShaderDescriptions.GSBillboard,
-                    DefaultPSShaderDescriptions.PSBillboardText
-                },
-                BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    new ShaderPassDescription(DefaultRenderTechniqueNames.BillboardText)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSBillboardText,
+                            DefaultGSShaderDescriptions.GSBillboard,
+                            DefaultPSShaderDescriptions.PSBillboardText
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
             };
 
-            var renderMeshXRay = new TechniqueDescription()
-            {
-                Name = DefaultRenderTechniqueNames.MeshXRay,
-                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshXRay, DefaultInputLayout.VSInput),
-                ShaderList = new[]
-                {
-                    DefaultVSShaderDescriptions.VSMeshXRay,
-                    DefaultPSShaderDescriptions.PSMeshXRay
-                },
-                BlendStateDescription = DefaultBlendStateDescriptions.BSXRayBlending,
-                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
-            };
-
-            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint, renderLine, renderBillboardText, renderMeshXRay };
+            return new List<TechniqueDescription>{ renderBlinn, renderBlinnInstancing, renderBoneSkinning, renderPoint, renderLine, renderBillboardText };
         }
     }
 }

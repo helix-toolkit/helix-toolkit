@@ -32,11 +32,11 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public float OutlineFadingFactor { set; get; } = 1.5f;
 
-        private IRenderTechnique xRayTechnique;
+        private IShaderPass xRayTechnique;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            xRayTechnique = GetOutlineTechnique(technique.EffectsManager);
+            xRayTechnique = technique.GetPass(DefaultRenderTechniqueNames.MeshXRay);
             return base.OnAttach(technique);
         }
 
@@ -68,9 +68,9 @@ namespace HelixToolkit.UWP.Core
                 {
                     return;
                 }
-                EffectTechnique.BindShader(context.DeviceContext);
-                EffectTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-                if (!BindMaterialTextures(context.DeviceContext, EffectTechnique.GetShader(ShaderStage.Pixel)))
+                EffectTechnique[0].BindShader(context.DeviceContext);
+                EffectTechnique[0].BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+                if (!BindMaterialTextures(context.DeviceContext, EffectTechnique[0].GetShader(ShaderStage.Pixel)))
                 {
                     return;
                 }             

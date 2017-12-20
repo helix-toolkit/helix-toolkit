@@ -21,9 +21,9 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            EffectTechnique.BindShader(context.DeviceContext);
-            EffectTechnique.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            if(!BindMaterialTextures(context.DeviceContext, EffectTechnique.GetShader(ShaderStage.Pixel)))
+            EffectTechnique[0].BindShader(context.DeviceContext);
+            EffectTechnique[0].BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+            if(!BindMaterialTextures(context.DeviceContext, EffectTechnique[0].GetShader(ShaderStage.Pixel)))
             {
                 return;
             }

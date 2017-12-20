@@ -12,114 +12,97 @@ namespace HelixToolkit.UWP.Shaders
     using ShaderManager;
     public class Technique :  DisposeObject, IRenderTechnique
     {
+        /// <summary>
+        /// <see cref="IRenderTechnique.Layout"/>
+        /// </summary>
         public InputLayout Layout { private set; get; }
-        public Device Device { get { return EffectsManager.Device; } }
-        public string Name { private set; get; }
-        private readonly Dictionary<ShaderStage, IShader> shaders = new Dictionary<ShaderStage, IShader>();
-        public IEnumerable<IShader> Shaders { get { return shaders.Values; } }
-
-        public BlendState BlendState { private set; get; } = null;
-
-        public DepthStencilState DepthStencilState { private set; get; } = null;
-
-        public RasterizerState RasterState { private set; get; } = null;
-
-        public IConstantBufferPool ConstantBufferPool { get { return EffectsManager.ConstantBufferPool; } }
-
-        public IEffectsManager EffectsManager { private set; get; }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name">Technique Name</param>
+        public Device Device { get { return EffectsManager.Device; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { private set; get; }
+        private readonly Dictionary<string, IShaderPass> passDict = new Dictionary<string, IShaderPass>();
+        private readonly IList<IShaderPass> passList = new List<IShaderPass>();
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<IShaderPass> Passes { get { return passList; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IConstantBufferPool ConstantBufferPool { get { return EffectsManager.ConstantBufferPool; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEffectsManager EffectsManager { private set; get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="description"></param>
         /// <param name="device"></param>
-        /// <param name="byteCode">Vertex shader byte code</param>
-        /// <param name="inputElements">Vertex shader input layout elements</param>
-        /// <param name="shaderList"></param>
-        /// <param name="cbPool">Constant Buffer Pool</param>
+        /// <param name="manager"></param>
         public Technique(TechniqueDescription description, Device device, IEffectsManager manager)
         {
             Name = description.Name;
             EffectsManager = manager;
             Layout = manager.ShaderManager.RegisterInputLayout(description.InputLayoutDescription);
-            if (description.ShaderList != null)
+            if (description.PassDescriptions != null)
             {
-                foreach(var shader in description.ShaderList)
+                foreach(var desc in description.PassDescriptions)
                 {
-                    shaders.Add(shader.ShaderType, manager.ShaderManager.RegisterShader(shader));
+                    var pass = new ShaderPass(desc, manager);
+                    passDict.Add(pass.Name, pass);
+                    passList.Add(pass);
                 }
             }
-
-            if (!shaders.ContainsKey(ShaderStage.Domain))
-            {
-                shaders.Add(ShaderStage.Domain, new NullShader(ShaderStage.Domain));
-            }
-            if (!shaders.ContainsKey(ShaderStage.Hull))
-            {
-                shaders.Add(ShaderStage.Hull, new NullShader(ShaderStage.Hull));
-            }
-            if (!shaders.ContainsKey(ShaderStage.Geometry))
-            {
-                shaders.Add(ShaderStage.Geometry, new NullShader(ShaderStage.Geometry));
-            }
-            if (!shaders.ContainsKey(ShaderStage.Compute))
-            {
-                shaders.Add(ShaderStage.Compute, new NullShader(ShaderStage.Compute));
-            }
-            BlendState = description.BlendStateDescription != null ? manager.StateManager.Register((BlendStateDescription)description.BlendStateDescription) : null;
-
-            DepthStencilState = description.DepthStencilStateDescription != null ? manager.StateManager.Register((DepthStencilStateDescription)description.DepthStencilStateDescription) : null;
-
-            RasterState = description.RasterStateDescription != null ? manager.StateManager.Register((RasterizerStateDescription)description.RasterStateDescription) : null;
         }
-        
+
         /// <summary>
-        /// Bind shaders and its constant buffer for this technique
+        /// <see cref="IRenderTechnique.GetPass(string)"/>
         /// </summary>
-        /// <param name="context"></param>
-        public void BindShader(DeviceContext context)
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IShaderPass GetPass(string name)
         {
-            foreach(var shader in Shaders)
-            {                
-                shader.Bind(context);
-                shader.BindConstantBuffers(context);            
-            }
+            return passDict.ContainsKey(name) ? passDict[name] : new NullShaderPass();
         }
 
-        public IShader GetShader(ShaderStage type)
+        /// <summary>
+        /// <see cref="IRenderTechnique.GetPass(int)"/>
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public IShaderPass GetPass(int index)
         {
-            if (shaders.ContainsKey(type))
-            {
-                return shaders[type];
-            }
-            else
-            {
-                return new NullShader(type);
-            }
+            return passList.Count > index ? passList[index] : new NullShaderPass();
         }
 
-        public void BindStates(DeviceContext context, StateType type)
-        {
-            if(type == StateType.None)
-            {
-                return;
-            }
-            if(type.HasFlag(StateType.BlendState))
-            {
-                context.OutputMerger.BlendState = BlendState;             
-            }
-            if(type.HasFlag(StateType.DepthStencilState))
-            {
-                context.OutputMerger.DepthStencilState = DepthStencilState;
-            }
-            if(type.HasFlag(StateType.RasterState))
-            {
-                context.Rasterizer.State = RasterState;
-            }
-        }
+        /// <summary>
+        /// <see cref="IRenderTechnique.GetPass(int)"/>
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public IShaderPass this[int index] { get { return GetPass(index); } }
 
+        /// <summary>
+        /// <see cref="IRenderTechnique.GetPass(string)"/>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IShaderPass this[string name] { get { return GetPass(name); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            shaders.Clear();
+            passDict.Clear();
+            passList.Clear();
             EffectsManager = null;
             Layout = null;
             base.Dispose(disposeManagedResources);
