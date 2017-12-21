@@ -1,6 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Shaders;
-using HelixToolkit.Wpf.SharpDX.Utilities;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
@@ -9,6 +7,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
+    using Utilities;
+
     public class CrossSectionMeshRenderCore : MeshRenderCore
     {
         #region Shader Variables
