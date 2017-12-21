@@ -12,12 +12,21 @@ namespace HelixToolkit.UWP
 {
     public enum MeshTopologyEnum
     {
+        None,
         PNTriangles,
-        PNQuads
+        PNQuads        
     }
     public static class MeshTopologies
     {
-        public static IEnumerable<MeshTopologyEnum> Topologies { get { yield return MeshTopologyEnum.PNTriangles; yield return MeshTopologyEnum.PNQuads; } }
+        public static IEnumerable<MeshTopologyEnum> Topologies
+        {
+            get
+            {
+                yield return MeshTopologyEnum.None;
+                yield return MeshTopologyEnum.PNTriangles;
+                yield return MeshTopologyEnum.PNQuads;
+            }
+        }
     }
 }
 
@@ -31,7 +40,7 @@ namespace HelixToolkit.UWP.Core
     {
         public float TessellationFactor = 1.0f;
 
-        private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
+        private MeshTopologyEnum meshType = MeshTopologyEnum.None;
         public MeshTopologyEnum MeshType
         {
             set
@@ -45,12 +54,20 @@ namespace HelixToolkit.UWP.Core
                     case MeshTopologyEnum.PNQuads:
                         DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
                         break;
+                    default:
+                        DefaultShaderPassName = DefaultPassNames.Default;
+                        break;
                 }
             }
             get
             {
                 return meshType;
             }
+        }
+
+        public PatchMeshRenderCore()
+        {
+            DefaultShaderPassName = DefaultPassNames.Default;
         }
 
         protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
@@ -64,10 +81,10 @@ namespace HelixToolkit.UWP.Core
             switch (meshType)
             {
                 case MeshTopologyEnum.PNTriangles:
-                    this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith3ControlPoints;
+                    context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
                     break;
                 case MeshTopologyEnum.PNQuads:
-                    this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith4ControlPoints;
+                    context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
                     break;
             }
             base.OnRender(context);
