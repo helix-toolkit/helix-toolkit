@@ -46,8 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CS\" />
-    <Folder Include="DS\" />
-    <Folder Include="HS\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -57,6 +55,7 @@
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\CommonSamplers.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <VertexShader Include="VS\vsMeshTessellation.hlsl" />
     <PixelShader Include="PS\psMeshClipPlaneQuad.hlsl">
       <EntryPointName>main</EntryPointName>
     </PixelShader>
@@ -77,6 +76,8 @@
     <GeometryShader Include="GS\gsPoint.hlsl" />
     <PixelShader Include="PS\psBillboardText.hlsl" />
     <GeometryShader Include="GS\gsBillboard.hlsl" />
+    <HullShader Include="HS\hsMeshTriTessellation.hlsl" />
+    <DomainShader Include="DS\dsMeshTriTessellation.hlsl" />
     <Content Include="PS\psCommon.hlsl" />
     <PixelShader Include="PS\psMeshXRay.hlsl" />
     <VertexShader Include="VS\vsMeshXRay.hlsl" />

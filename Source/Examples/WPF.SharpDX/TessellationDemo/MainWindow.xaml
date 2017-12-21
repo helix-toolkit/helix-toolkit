@@ -13,8 +13,7 @@
     Height="500"
     mc:Ignorable="d">
     <Window.Resources>
-        <x:StaticExtension x:Key="Shading" Member="hx:TessellationTechniques.Shadings" />
-        <x:StaticExtension x:Key="Topology" Member="hx:TessellationTechniques.MeshTopologies"/>
+        <x:StaticExtension x:Key="Topology" Member="hx:MeshTopologies.Topologies"/>
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
     </Window.Resources>
     <Grid>
@@ -119,13 +118,9 @@
                     </TextBlock>
                     <!--<ComboBox  Grid.Row="3"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" />-->
                     <ComboBox
-                        Grid.Row="4"
-                        Grid.ColumnSpan="2"
                         Margin="3"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding Source={StaticResource Shading}}"
-                        SelectedItem="{Binding Shading, ElementName=model1}"
-                        Text="" />
+                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
+                        SelectedItem="{Binding RenderTechniqueName}"/>
                     <CheckBox
                         Grid.Row="5"
                         Grid.ColumnSpan="2"

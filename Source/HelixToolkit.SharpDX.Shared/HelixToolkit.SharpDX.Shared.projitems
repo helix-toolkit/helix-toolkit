@@ -90,11 +90,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\BlendStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ConstantBufferDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultBuffers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultDomainShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultGeometryShaders.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultHullShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultPixelShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultVertexShaders.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\DomainShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\GeometryShader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\HullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\NullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\PixelShader.cs" />

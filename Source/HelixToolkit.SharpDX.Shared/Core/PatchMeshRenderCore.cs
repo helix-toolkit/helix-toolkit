@@ -3,6 +3,24 @@ using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D;
+
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
+#else
+namespace HelixToolkit.UWP
+#endif
+{
+    public enum MeshTopologyEnum
+    {
+        PNTriangles,
+        PNQuads
+    }
+    public static class MeshTopologies
+    {
+        public static IEnumerable<MeshTopologyEnum> Topologies { get { yield return MeshTopologyEnum.PNTriangles; yield return MeshTopologyEnum.PNQuads; } }
+    }
+}
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -12,44 +30,47 @@ namespace HelixToolkit.UWP.Core
     public class PatchMeshRenderCore : MeshRenderCore
     {
         public float TessellationFactor = 1.0f;
-       // private EffectVectorVariable vTessellationVariables;
-        public string TessellationTechniqueName;
-        protected override bool OnAttach(IRenderTechnique technique)
+
+        private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
+        public MeshTopologyEnum MeshType
         {
-            if (base.OnAttach(technique))
-            {            // --- init tessellation vars
-             //   vTessellationVariables = Collect(Effect.GetVariableByName(ShaderVariableNames.TessellationFactorVariable).AsVector());
-                if (technique.Name.Equals(TessellationRenderTechniqueNames.PNTriangles))
-                {
-                    this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith3ControlPoints;
-                }
-                else if(technique.Name.Equals(TessellationRenderTechniqueNames.PNQuads))
-                {
-                    this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith4ControlPoints;
-                }
-                return true;
-            }
-            else
+            set
             {
-                return false;
+                meshType = value;
+                switch (meshType)
+                {
+                    case MeshTopologyEnum.PNTriangles:
+                        DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
+                        break;
+                    case MeshTopologyEnum.PNQuads:
+                        DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
+                        break;
+                }
+            }
+            get
+            {
+                return meshType;
             }
         }
 
-        //protected override void SetShaderVariables(IRenderMatrices context)
-        //{
-        //    base.SetShaderVariables(context);
-        //    vTessellationVariables.Set(new Vector4(TessellationFactor, 0, 0, 0));
-        //}
-
-        protected override bool CanRender()
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            return base.CanRender() && !string.IsNullOrEmpty(TessellationTechniqueName);
+            base.OnUpdateModelStruct(ref model, context);
+            model.Params.X = TessellationFactor;
         }
 
         protected override void OnRender(IRenderMatrices context)
         {
-            //EffectTechnique.GetPassByName(TessellationTechniqueName).Apply(context.DeviceContext);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            switch (meshType)
+            {
+                case MeshTopologyEnum.PNTriangles:
+                    this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith3ControlPoints;
+                    break;
+                case MeshTopologyEnum.PNQuads:
+                    this.GeometryBuffer.Topology = PrimitiveTopology.PatchListWith4ControlPoints;
+                    break;
+            }
+            base.OnRender(context);
         }
     }
 }

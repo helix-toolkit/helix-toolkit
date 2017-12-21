@@ -78,8 +78,10 @@ namespace HelixToolkit.UWP.Shaders
                 case ShaderStage.Compute:
                     break;
                 case ShaderStage.Domain:
+                    shader = new DomainShader(device, Name, ByteCode);
                     break;
                 case ShaderStage.Hull:
+                    shader = new HullShader(device, Name, ByteCode);
                     break;
                 case ShaderStage.Geometry:
                     shader = new GeometryShader(device, Name, ByteCode);

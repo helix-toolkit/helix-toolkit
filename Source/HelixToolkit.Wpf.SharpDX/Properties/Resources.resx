@@ -202,4 +202,13 @@
   <data name="vsMeshClipPlaneQuad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshclipplanequad.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="dsMeshTriTessellation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\dsmeshtritessellation.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="hsMeshTriTessellation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\hsmeshtritessellation.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshTessellation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshtessellation.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

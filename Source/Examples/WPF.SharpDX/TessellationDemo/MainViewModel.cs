@@ -23,6 +23,7 @@ namespace TessellationDemo
     using SharpDX.Direct3D11;
     using System.Collections;
     using System.Collections.Generic;
+    using static HelixToolkit.Wpf.SharpDX.Core.PatchMeshRenderCore;
 
     public class MainViewModel : BaseViewModel
     {
@@ -78,17 +79,31 @@ namespace TessellationDemo
             }
         }
 
-        private string meshTopology = TessellationTechniques.MeshTopology.Triangle.ToString();
+        private MeshTopologyEnum meshTopology = MeshTopologyEnum.PNTriangles;
 
-        public string MeshTopology
+        public MeshTopologyEnum MeshTopology
         {
             get { return this.meshTopology; }
             set
             {
                 /// if topology is changes, reload the model with proper type of faces
                 this.meshTopology = value;
-                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == TessellationTechniques.MeshTopology.Triangle.ToString() ? 
+                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == MeshTopologyEnum.PNTriangles ? 
                     MeshFaces.Default : MeshFaces.QuadPatches);
+            }
+        }
+
+        private string renderTechniqueName = DefaultRenderTechniqueNames.Blinn;
+        public string RenderTechniqueName
+        {
+            set
+            {
+                renderTechniqueName = value;
+                RenderTechnique = EffectsManager[value];
+            }
+            get
+            {
+                return renderTechniqueName;
             }
         }
 
@@ -96,9 +111,9 @@ namespace TessellationDemo
 
         public MainViewModel()
         {
-            RenderTechniquesManager = new TessellationTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new TessellationEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager.Initialize();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "Hardware Tessellation Demo";
@@ -135,7 +150,7 @@ namespace TessellationDemo
 
             // ---------------------------------------------
             // init model
-            this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == TessellationTechniques.MeshTopology.Triangle.ToString() ?
+            this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == MeshTopologyEnum.PNTriangles ?
              MeshFaces.Default : MeshFaces.QuadPatches);
             // ---------------------------------------------
             // floor plane grid

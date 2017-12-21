@@ -103,6 +103,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] dsMeshTriTessellation {
+            get {
+                object obj = ResourceManager.GetObject("dsMeshTriTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] gsBillboard {
             get {
                 object obj = ResourceManager.GetObject("gsBillboard", resourceCulture);
@@ -126,6 +136,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] gsPoint {
             get {
                 object obj = ResourceManager.GetObject("gsPoint", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] hsMeshTriTessellation {
+            get {
+                object obj = ResourceManager.GetObject("hsMeshTriTessellation", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -316,6 +336,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsMeshInstancing {
             get {
                 object obj = ResourceManager.GetObject("vsMeshInstancing", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshTessellation {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshTessellation", resourceCulture);
                 return ((byte[])(obj));
             }
         }

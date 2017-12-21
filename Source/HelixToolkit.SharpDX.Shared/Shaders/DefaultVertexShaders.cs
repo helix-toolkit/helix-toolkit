@@ -28,6 +28,18 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        public static byte[] VSMeshTessellation
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshTessellation;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -226,6 +238,17 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSMeshDefault,
+            new ConstantBufferMapping[]
+            {
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
+                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
+            },
+            null);
+
+        public static ShaderDescription VSMeshTessellation = new ShaderDescription(nameof(VSMeshTessellation), ShaderStage.Vertex, FeatureLevel.Level_11_0,
+            DefaultVSShaderByteCodes.VSMeshTessellation,
             new ConstantBufferMapping[]
             {
                 DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),

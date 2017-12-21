@@ -29,17 +29,19 @@ namespace HelixToolkit.UWP
     public struct DefaultPassNames
     {
         public const string Default = "Default";
+        public const string MeshTriTessellation = "MeshTriTessellation";
+        public const string MeshQuadTessellation = "MeshQuadTessellation";
         public const string MeshOutline = "RenderMeshOutline";
         public const string MeshXRay = "RenderMeshXRay";
         public const string Backface = "RenderBackface";
         public const string ScreenQuad = "ScreenQuad";
     }
 
-    public struct TessellationRenderTechniqueNames
-    {
-        public const string PNTriangles = "RenderPNTriangs";
-        public const string PNQuads = "RenderPNQuads";
-    }
+    //public struct TessellationRenderTechniqueNames
+    //{
+    //    public const string PNTriangles = "RenderPNTriangs";
+    //    public const string PNQuads = "RenderPNQuads";
+    //}
 
     public struct DeferredRenderTechniqueNames
     {
@@ -47,28 +49,5 @@ namespace HelixToolkit.UWP
         public const string GBuffer = "RenderGBuffer";
         public const string DeferredLighting = "RenderDeferredLighting";
         public const string ScreenSpace = "RenderScreenSpace";
-    }
-
-    public static class TessellationTechniques
-    {
-        public enum Shading
-        {
-            Solid,
-            Positions,
-            Normals,
-            TexCoords,
-            Tangents,
-            Colors
-        };
-        /// <summary>
-        /// Passes available for this Model3D
-        /// </summary>
-        public static IEnumerable<string> Shadings { get { return new string[] { Shading.Solid.ToString(), Shading.Positions.ToString(), Shading.Normals.ToString(), Shading.TexCoords.ToString(), Shading.Tangents.ToString(), Shading.Colors.ToString() }; } }
-        public enum MeshTopology
-        {
-            Triangle, Quads
-        }
-
-        public static IEnumerable<string> MeshTopologies { get { return new string[] { MeshTopology.Triangle.ToString(), MeshTopology.Quads.ToString() }; } }
     }
 }
