@@ -81,18 +81,22 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(ref model, context);
+            base.OnUpdatePerModelStruct(ref model, context);
             clipParameter.CrossSectionColors = SectionColor;
             clipParameter.EnableCrossPlane = PlaneEnabled;
             clipParameter.CrossPlaneParams = PlaneParams;
         }
 
+        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        {
+            base.OnUploadPerModelConstantBuffers(context);
+            clipParamCB.UploadDataToBuffer(context, ref clipParameter);
+        }
 
         protected override void OnRender(IRenderMatrices renderContext)
         {
-            clipParamCB.UploadDataToBuffer(renderContext.DeviceContext, ref clipParameter);
             base.OnRender(renderContext);
             // Draw backface into stencil buffer
             DepthStencilView dsView;

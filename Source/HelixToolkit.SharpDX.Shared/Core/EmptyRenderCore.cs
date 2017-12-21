@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Core
 
         }
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
            
         }

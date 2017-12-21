@@ -82,22 +82,13 @@ namespace HelixToolkit.UWP.Core
         {
             if (CanRender())
             {
-                SetStates(context);
+                OnUpdatePerModelStruct(ref modelStruct, context);
                 OnAttachBuffers(context.DeviceContext);
-                OnUpdateModelStruct(ref modelStruct, context);
+                OnUploadPerModelConstantBuffers(context.DeviceContext);
+                OnBindRasterState(context.DeviceContext);
                 OnRender(context);
                 PostRender(context);
             }
-        }
-
-        /// <summary>
-        /// Before calling OnRender. Setup commonly used rendering states.
-        /// <para>Default to call <see cref="SetShaderVariables"/> and <see cref="SetRasterStates"/></para>
-        /// </summary>
-        /// <param name="context"></param>
-        protected virtual void SetStates(IRenderMatrices context)
-        {
-            SetRasterStates(context);
         }
 
         /// <summary>
@@ -106,17 +97,23 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         protected virtual void OnAttachBuffers(DeviceContext context)
         {
-            UpdateModelConstantBuffer(context);
+            
         }
+
+        /// <summary>
+        /// Set model default raster state
+        /// </summary>
+        /// <param name="context"></param>
+        protected virtual void OnBindRasterState(DeviceContext context) { }
 
         /// <summary>
         /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
         protected abstract void OnRender(IRenderMatrices context);
 
-        protected abstract void OnUpdateModelStruct(ref TModelStruct model, IRenderMatrices context);
+        protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, IRenderMatrices context);
 
-        protected void UpdateModelConstantBuffer(DeviceContext context)
+        protected virtual void OnUploadPerModelConstantBuffers(DeviceContext context)
         {
             modelCB.UploadDataToBuffer(context, ref modelStruct);
         }
@@ -135,8 +132,6 @@ namespace HelixToolkit.UWP.Core
         {
             return IsAttached;
         }
-
-        protected virtual void SetRasterStates(IRenderMatrices matrices) { }
 
         protected void InvalidateRenderer(object sender, bool e)
         {

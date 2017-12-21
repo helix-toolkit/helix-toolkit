@@ -86,9 +86,9 @@ namespace HelixToolkit.UWP.Core
         /// Set all necessary states and buffers
         /// </summary>
         /// <param name="context"></param>
-        protected override void SetRasterStates(IRenderMatrices context)
+        protected override void OnBindRasterState(DeviceContext context)
         {
-            context.DeviceContext.Rasterizer.State = rasterState;
+            context.Rasterizer.State = rasterState;
         }
         /// <summary>
         /// Attach vertex buffer routine
@@ -106,7 +106,7 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender() && GeometryBuffer != null;
         }
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;

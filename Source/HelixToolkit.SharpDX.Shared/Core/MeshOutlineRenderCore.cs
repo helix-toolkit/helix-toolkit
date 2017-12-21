@@ -60,16 +60,15 @@ namespace HelixToolkit.UWP.Core
             return base.OnAttach(technique);
         }
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {            
-            base.OnUpdateModelStruct(ref model, context);
+            base.OnUpdatePerModelStruct(ref model, context);
             model.Color = Color;
             model.Params.Y = OutlineFadingFactor;
         }
 
         protected override void OnRender(IRenderMatrices context)
         {
-            context.DeviceContext.Rasterizer.State = RasterState;
             if (DrawOutlineBeforeMesh)
             {
                 outlineShaderPass.BindShader(context.DeviceContext);

@@ -89,9 +89,9 @@ namespace HelixToolkit.UWP.Core
             DefaultShaderPassName = DefaultPassNames.Default;
         }
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(ref model, context);
+            base.OnUpdatePerModelStruct(ref model, context);
             model.Params.X = TessellationFactor;
         }
 

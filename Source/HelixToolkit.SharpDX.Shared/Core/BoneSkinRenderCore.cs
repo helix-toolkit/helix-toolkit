@@ -41,16 +41,21 @@ namespace HelixToolkit.UWP.Core
         {
             base.OnAttachBuffers(context);         
             VertexBoneIdBuffer?.AttachBuffer(context, 2);
+        }
+
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        {
+            base.OnUpdatePerModelStruct(ref model, context);     
+            model.HasBones = BoneMatrices.Bones != null ? 1 : 0;                 
+        }
+
+        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        {
+            base.OnUploadPerModelConstantBuffers(context);
             if (BoneMatrices.Bones != null)
             {
                 boneCB.UploadDataToBuffer(context, BoneMatrices.Bones);
             }
-        }
-
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
-        {
-            model.HasBones = BoneMatrices.Bones != null ? 1 : 0;
-            base.OnUpdateModelStruct(ref model, context);           
         }
     }
 }

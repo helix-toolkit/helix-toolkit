@@ -8,9 +8,9 @@ namespace HelixToolkit.UWP.Core
     {
         public bool InvertNormal { set; get; } = false;       
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(ref model, context);
+            base.OnUpdatePerModelStruct(ref model, context);
             model.InvertNormal = InvertNormal ? 1 : 0;
         }
 
@@ -22,7 +22,6 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            context.DeviceContext.Rasterizer.State = RasterState;
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }

@@ -10,9 +10,9 @@ namespace HelixToolkit.UWP.Core
     {
         public bool FixedSize = true;
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(ref model, context);
+            base.OnUpdatePerModelStruct(ref model, context);
             model.Params.X = FixedSize ? 1 : 0;
             var type = (GeometryBuffer as IBillboardBufferModel).Type;
             model.Params.Y = (int)type;

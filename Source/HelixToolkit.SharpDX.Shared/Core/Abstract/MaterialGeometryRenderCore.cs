@@ -90,17 +90,17 @@ namespace HelixToolkit.UWP.Core
             materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnAttachBuffers(context);
-            UpdateMaterialConstantBuffer(context);
+            base.OnUpdatePerModelStruct(ref model, context);
+            SetMaterialVariables();
         }
 
-        protected bool UpdateMaterialConstantBuffer(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
         {
-            SetMaterialVariables();
-            return MaterialVariables.UpdateMaterialConstantBuffer(context);
-        }       
+            base.OnUploadPerModelConstantBuffers(context);
+            MaterialVariables.UpdateMaterialConstantBuffer(context);
+        }
         
         protected bool BindMaterialTextures(DeviceContext context, IShader shader)
         {

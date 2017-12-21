@@ -17,16 +17,15 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Color4 LineColor = Color.Black;
 
-        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            base.OnUpdateModelStruct(ref model, context);
+            base.OnUpdatePerModelStruct(ref model, context);
             model.Color = LineColor;
             model.Params = LineParams;
         }
 
         protected override void OnRender(IRenderMatrices context)
         {
-            UpdateModelConstantBuffer(context.DeviceContext);
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
             context.DeviceContext.Rasterizer.State = RasterState;
