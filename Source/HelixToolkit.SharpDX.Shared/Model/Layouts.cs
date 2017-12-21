@@ -227,4 +227,18 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix LightProj;
         public const int SizeInBytes = 4 * (4 * 6 + 4 * 4 * 2);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ClipPlaneStruct
+    {
+        public Bool4 EnableCrossPlane;
+        public Vector4 CrossSectionColors;
+        // Format:
+        // M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
+        // M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
+        // M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin
+        // M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
+        public Matrix CrossPlaneParams;
+        public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
+    }
 }

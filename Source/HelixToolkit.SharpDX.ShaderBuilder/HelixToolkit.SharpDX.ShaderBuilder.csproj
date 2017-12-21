@@ -58,7 +58,7 @@
     <Content Include="Common\CommonSamplers.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
     <PixelShader Include="PS\psMeshClipPlaneQuad.hlsl">
-      <EntryPointName>psScreenQuad</EntryPointName>
+      <EntryPointName>main</EntryPointName>
     </PixelShader>
     <VertexShader Include="VS\vsMeshClipPlaneQuad.hlsl">
       <EntryPointName>main</EntryPointName>

@@ -409,6 +409,44 @@ namespace HelixToolkit.UWP
                 }
             };
 
+            var renderMeshBlinnClipPlane = new TechniqueDescription(DefaultRenderTechniqueNames.CrossSection)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new []
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshClipPlane
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultPassNames.Backface)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshClipBackface
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSClipPlaneBackface
+                    },
+                    new ShaderPassDescription(DefaultPassNames.ScreenQuad)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSScreenQuad,
+                            DefaultPSShaderDescriptions.PSMeshClipScreenQuad
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSClipPlaneFillQuad
+                    },
+                }
+            };
+
             return new List<TechniqueDescription>
             {
                 renderBlinn,
@@ -419,7 +457,8 @@ namespace HelixToolkit.UWP
                 renderBillboardText,
                 renderNormals,
                 renderColors,
-                renderPositions
+                renderPositions,
+                renderMeshBlinnClipPlane,
             };
         }
     }

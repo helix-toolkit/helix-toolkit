@@ -30,8 +30,9 @@ namespace HelixToolkit.UWP
     {
         public const string Default = "Default";
         public const string MeshOutline = "RenderMeshOutline";
-        public const string MeshXRay = "RenderMeshXRay"; 
-               
+        public const string MeshXRay = "RenderMeshXRay";
+        public const string Backface = "RenderBackface";
+        public const string ScreenQuad = "ScreenQuad";
     }
 
     public struct TessellationRenderTechniqueNames

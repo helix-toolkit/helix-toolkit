@@ -1,4 +1,6 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Wpf.SharpDX.Shaders;
+using HelixToolkit.Wpf.SharpDX.Utilities;
+using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
@@ -10,40 +12,12 @@ namespace HelixToolkit.UWP.Core
     public class CrossSectionMeshRenderCore : MeshRenderCore
     {
         #region Shader Variables
-        ///// <summary>
-        ///// Defines the planeParamsVar
-        ///// </summary>
-        //private EffectMatrixVariable planeParamsVar;
-
-        ///// <summary>
-        ///// Defines the planeEnabledVar
-        ///// </summary>
-        //private EffectVectorVariable planeEnabledVar;
-
-        ///// <summary>
-        ///// Defines the crossSectionColorVar
-        ///// </summary>
-        //private EffectVectorVariable crossSectionColorVar;
-
-        ///// <summary>
-        ///// Defines the sectionFillTextureVar
-        ///// </summary>
-        //private EffectShaderResourceVariable sectionFillTextureVar;
 
         /// <summary>
         /// Used to draw back faced triangles onto stencil buffer
         /// </summary>
-        private RasterizerState fillStencilRasterState;
+        private RasterizerState backfaceRasterState;
 
-        /// <summary>
-        /// Used to set stencil buffer to 1 on back faces
-        /// </summary>
-        private DepthStencilState fillCrossSectionStencilState;
-
-        /// <summary>
-        /// Pass fragment on area only the stencil buffer = 1
-        /// </summary>
-        private DepthStencilState fillStencilState;
         #endregion
 
         /// <summary>
@@ -61,20 +35,24 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Matrix PlaneParams = new Matrix();
 
+        private ClipPlaneStruct clipParameter;
+
+        private IBufferProxy clipParamCB;
+
+        private IShaderPass drawBackfacePass;
+        private IShaderPass drawScreenQuadPass;
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(technique))
-            {
-                //planeParamsVar = Collect(Effect.GetVariableByName(ShaderVariableNames.CrossPlaneParams).AsMatrix());
-                //planeEnabledVar = Collect(Effect.GetVariableByName(ShaderVariableNames.EnableCrossPlane).AsVector());
-                //crossSectionColorVar = Collect(Effect.GetVariableByName(ShaderVariableNames.CrossSectionColor).AsVector());
-                //sectionFillTextureVar = Collect(Effect.GetVariableByName(ShaderVariableNames.SectionFillTexture).AsShaderResource());
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            clipParamCB = technique.ConstantBufferPool.Register(GetClipParamsCBDescription());
+            drawBackfacePass = technique[DefaultPassNames.Backface];
+            drawScreenQuadPass = technique[DefaultPassNames.ScreenQuad];
+            return base.OnAttach(technique);
+        }
+
+        protected virtual ConstantBufferDescription GetClipParamsCBDescription()
+        {
+            return DefaultConstantBufferDescriptions.ClipParamsCB;
         }
 
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
@@ -84,10 +62,8 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
             #region Create states
-            RemoveAndDispose(ref fillStencilRasterState);
-            RemoveAndDispose(ref fillStencilState);
-            RemoveAndDispose(ref fillCrossSectionStencilState);
-            this.fillStencilRasterState = Collect(new RasterizerState(this.Device,
+            RemoveAndDispose(ref backfaceRasterState);
+            this.backfaceRasterState = Collect(new RasterizerState(this.Device,
                 new RasterizerStateDescription()
                 {
                     FillMode = FillMode.Solid,
@@ -100,91 +76,50 @@ namespace HelixToolkit.UWP.Core
                     IsMultisampleEnabled = false,
                     IsScissorEnabled = false
                 }));
-
-            fillStencilState = Collect(new DepthStencilState(this.Device,
-                new DepthStencilStateDescription()
-                {
-                    IsDepthEnabled = true,
-                    IsStencilEnabled = true,
-                    DepthWriteMask = DepthWriteMask.Zero,
-                    DepthComparison = Comparison.Less,
-                    StencilWriteMask = 0xFF,
-                    StencilReadMask = 0,
-                    BackFace = new DepthStencilOperationDescription()
-                    {
-                        PassOperation = StencilOperation.Replace,
-                        Comparison = Comparison.Always,
-                        DepthFailOperation = StencilOperation.Keep,
-                        FailOperation = StencilOperation.Keep
-                    },
-                    FrontFace = new DepthStencilOperationDescription()
-                    {
-                        PassOperation = StencilOperation.Keep,
-                        Comparison = Comparison.Never,
-                        DepthFailOperation = StencilOperation.Keep,
-                        FailOperation = StencilOperation.Keep
-                    }
-                }));
-
-            fillCrossSectionStencilState = Collect(new DepthStencilState(this.Device,
-                new DepthStencilStateDescription()
-                {
-                    IsDepthEnabled = false,
-                    IsStencilEnabled = true,
-                    DepthWriteMask = DepthWriteMask.Zero,
-                    DepthComparison = Comparison.Less,
-                    FrontFace = new DepthStencilOperationDescription()
-                    {
-                        FailOperation = StencilOperation.Keep,
-                        DepthFailOperation = StencilOperation.Keep,
-                        PassOperation = StencilOperation.Keep,
-                        Comparison = Comparison.Equal
-                    },
-                    BackFace = new DepthStencilOperationDescription()
-                    {
-                        Comparison = Comparison.Never,
-                        FailOperation = StencilOperation.Keep,
-                        DepthFailOperation = StencilOperation.Keep,
-                        PassOperation = StencilOperation.Keep
-                    },
-                    StencilReadMask = 0xFF,
-                    StencilWriteMask = 0
-                }));
             #endregion
             return true;
         }
 
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        {
+            base.OnUpdateModelStruct(ref model, context);
+            clipParameter.CrossSectionColors = SectionColor;
+            clipParameter.EnableCrossPlane = PlaneEnabled;
+            clipParameter.CrossPlaneParams = PlaneParams;
+        }
+
+
         protected override void OnRender(IRenderMatrices renderContext)
         {
-            //base.OnRender(renderContext);
-            ////Draw backface into stencil buffer
-            //renderContext.DeviceContext.Rasterizer.State = fillStencilRasterState;
-            //DepthStencilView dsView;
-            //var renderTargets = renderContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-            //if (dsView == null)
-            //{
-            //    return;
-            //}
-            //renderContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
-            //var pass = this.EffectTechnique.GetPassByIndex(1);
-            //pass.Apply(renderContext.DeviceContext);
-            //renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, new RenderTargetView[0]);//Remove render target
-            //renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillStencilState, 1); //Draw backface onto stencil buffer, set value to 1
-            //OnDraw(renderContext.DeviceContext, InstanceBuffer);
+            clipParamCB.UploadDataToBuffer(renderContext.DeviceContext, ref clipParameter);
+            base.OnRender(renderContext);
+            // Draw backface into stencil buffer
+            DepthStencilView dsView;
+            var renderTargets = renderContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
+            if (dsView == null)
+            {
+                return;
+            }
+            renderContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
+            renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, new RenderTargetView[0]);//Remove render target
+            renderContext.DeviceContext.Rasterizer.State = backfaceRasterState;
+            drawBackfacePass.BindShader(renderContext.DeviceContext);
+            drawBackfacePass.BindStates(renderContext.DeviceContext, StateType.BlendState);
+            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(drawBackfacePass.DepthStencilState, 1); //Draw backface onto stencil buffer, set value to 1
+            OnDraw(renderContext.DeviceContext, InstanceBuffer);
 
-            ////Draw full screen quad to fill cross section            
-            //renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            //renderContext.DeviceContext.Rasterizer.State = RasterState;
+            //Draw full screen quad to fill cross section            
+            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            renderContext.DeviceContext.Rasterizer.State = RasterState;
+            drawScreenQuadPass.BindShader(renderContext.DeviceContext);
+            drawScreenQuadPass.BindStates(renderContext.DeviceContext, StateType.BlendState);
+            renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets[0]);//Rebind render target
+            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
+            renderContext.DeviceContext.Draw(4, 0);
 
-            //pass = this.EffectTechnique.GetPassByIndex(2);
-            //pass.Apply(renderContext.DeviceContext);
-            //renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets[0]);//Rebind render target
-            //renderContext.DeviceContext.OutputMerger.SetDepthStencilState(fillCrossSectionStencilState, 1); //Only pass stencil buffer test if value is 1
-            //renderContext.DeviceContext.Draw(4, 0);
-
-            ////Decrement ref count. See OutputMerger.GetRenderTargets remarks
-            //dsView.Dispose();
-            //renderTargets[0].Dispose();
+            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
+            dsView.Dispose();
+            renderTargets[0].Dispose();
         }
     }
 }
