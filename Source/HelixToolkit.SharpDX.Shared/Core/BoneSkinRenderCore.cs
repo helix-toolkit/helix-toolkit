@@ -8,7 +8,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Utilities;
-    public class BoneSkinRenderCore : MeshRenderCore
+    public class BoneSkinRenderCore : PatchMeshRenderCore
     {
         public IElementsBufferModel VertexBoneIdBuffer { set; get; }
 
@@ -41,21 +41,16 @@ namespace HelixToolkit.UWP.Core
         {
             base.OnAttachBuffers(context);         
             VertexBoneIdBuffer?.AttachBuffer(context, 2);
+            if (BoneMatrices.Bones != null)
+            {
+                boneCB.UploadDataToBuffer(context, BoneMatrices.Bones);
+            }
         }
 
         protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
             model.HasBones = BoneMatrices.Bones != null ? 1 : 0;
             base.OnUpdateModelStruct(ref model, context);           
-        }
-
-        protected override void OnRender(IRenderMatrices context)
-        {
-            if (BoneMatrices.Bones != null)
-            {
-                boneCB.UploadDataToBuffer(context.DeviceContext, BoneMatrices.Bones);
-            }
-            base.OnRender(context);
         }
     }
 }

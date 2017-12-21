@@ -95,7 +95,8 @@ PSInput main(VSBoneSkinInput input)
 	//set normal for interpolation	
     output.n = normalize(mul(output.n.xyz, (float3x3) mWorld));
 
-
+    output.cDiffuse = vMaterialDiffuse;
+    output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
     if (bHasNormalMap)
     {
 		// transform the tangents by the world matrix and normalize

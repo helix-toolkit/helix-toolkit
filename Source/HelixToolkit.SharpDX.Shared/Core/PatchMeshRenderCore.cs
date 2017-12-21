@@ -95,11 +95,6 @@ namespace HelixToolkit.UWP.Core
             model.Params.X = TessellationFactor;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context)
-        {
-            base.OnAttachBuffers(context);
-        }
-
         protected override void OnRender(IRenderMatrices context)
         {
             if (EnableTessellation)
