@@ -30,8 +30,8 @@
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
             EnableDeferredRendering="False"
-            EnableSwapChainRendering="False"
-            MSAA="Four"
+            EnableSwapChainRendering="True"
+            MSAA="Two"
             RenderTechnique="{Binding RenderTechnique}"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -89,6 +89,7 @@
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light4Transform}" />
             <hx:MeshGeometryModel3D
+                x:Name="carModel"
                 CullMode="Back"
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding Model}"
