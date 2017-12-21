@@ -44,8 +44,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         InputLayout Layout { get; }
 
-        IEnumerable<IShaderPass> Passes { get; }
-
         IConstantBufferPool ConstantBufferPool { get; }
         /// <summary>
         /// Get pass by name

@@ -24,12 +24,9 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public string Name { private set; get; }
-        private readonly Dictionary<string, IShaderPass> passDict = new Dictionary<string, IShaderPass>();
-        private readonly IList<IShaderPass> passList = new List<IShaderPass>();
-        /// <summary>
-        /// 
-        /// </summary>
-        public IEnumerable<IShaderPass> Passes { get { return passList; } }
+        private readonly Dictionary<string, Lazy<IShaderPass>> passDict = new Dictionary<string, Lazy<IShaderPass>>();
+        private readonly IList<Lazy<IShaderPass>> passList = new List<Lazy<IShaderPass>>();
+
         /// <summary>
         /// 
         /// </summary>
@@ -54,8 +51,8 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach(var desc in description.PassDescriptions)
                 {
-                    var pass = new ShaderPass(desc, manager);
-                    passDict.Add(pass.Name, pass);
+                    var pass = new Lazy<IShaderPass>(()=> { return new ShaderPass(desc, manager); }, true);
+                    passDict.Add(desc.Name, pass);
                     passList.Add(pass);
                 }
             }
@@ -68,7 +65,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public IShaderPass GetPass(string name)
         {
-            return passDict.ContainsKey(name) ? passDict[name] : new NullShaderPass();
+            return passDict.ContainsKey(name) ? passDict[name].Value : new NullShaderPass();
         }
 
         /// <summary>
@@ -78,7 +75,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public IShaderPass GetPass(int index)
         {
-            return passList.Count > index ? passList[index] : new NullShaderPass();
+            return passList.Count > index ? passList[index].Value : new NullShaderPass();
         }
 
         /// <summary>
