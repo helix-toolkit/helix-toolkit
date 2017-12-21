@@ -67,7 +67,7 @@
                 Geometry="{Binding Lines}"
                 Instances="{Binding SelectedLineInstances}"
                 Color="{x:Static dx:Color.Orange}"/>
-            <!--<hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>-->
+            <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
         </hx:Viewport3DX>
 
         <StackPanel Grid.Column="1" Grid.Row="0">

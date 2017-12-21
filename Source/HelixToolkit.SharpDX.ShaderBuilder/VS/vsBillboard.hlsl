@@ -17,18 +17,11 @@ VSInputBT main(VSInputBT input)
 			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
 		};
 		input.p = mul(mInstance, input.p);
-		input.p0.x *= input.mr0.x; // 2d scaling x
-		input.p0.y *= input.mr1.y; // 2d scaling y
-
-        input.p1.x *= input.mr0.x; // 2d scaling x
-        input.p1.y *= input.mr1.y; // 2d scaling y
-
-        input.p2.x *= input.mr0.x; // 2d scaling x
-        input.p2.y *= input.mr1.y; // 2d scaling y
-
-        input.p3.x *= input.mr0.x; // 2d scaling x
-        input.p3.y *= input.mr1.y; // 2d scaling y
-	}
+        input.p0 = input.p0 * mInstance._m00_m11; // 2d scaling x
+        input.p1 = input.p1 * mInstance._m00_m11; // 2d scaling x
+        input.p2 = input.p2 * mInstance._m00_m11; // 2d scaling x
+        input.p3 = input.p3 * mInstance._m00_m11; // 2d scaling x
+    }
 	// Translate position into clip space
     float4 ndcPosition = mul(input.p, mWorld);
     input.p = mul(ndcPosition, mView);

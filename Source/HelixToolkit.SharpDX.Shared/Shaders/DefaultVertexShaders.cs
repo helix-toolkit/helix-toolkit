@@ -116,6 +116,21 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
+        public static byte[] VSBillboardInstancing
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsBillboardInstancing;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] VSMeshXRay
         {
             get
@@ -242,6 +257,29 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 10, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 11, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
         };
+
+        public static InputElement[] VSInputBillboardInstancing { get; } = new InputElement[]
+{
+            new InputElement("POSITION", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    1, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 1, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 2, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 3, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 4, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 5, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 6, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 7, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
+            new InputElement("TEXCOORD", 8, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 9, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 10, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 11, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 12, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 13, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+        };
     }
 
     /// <summary>
@@ -315,6 +353,7 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultConstantBufferDescriptions.BoneCB.CreateMapping(4)
             },
             null);
+
         /// <summary>
         /// 
         /// </summary>
@@ -339,6 +378,21 @@ namespace HelixToolkit.UWP.Shaders
             },
             null);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSBillboardInstancing = new ShaderDescription(nameof(VSBillboardInstancing), ShaderStage.Vertex, FeatureLevel.Level_11_0,
+            DefaultVSShaderByteCodes.VSBillboardInstancing,
+            new ConstantBufferMapping[]
+            {
+                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+            },
+            null);
+
+        /// <summary>
+        /// 
+        /// </summary>
         public static ShaderDescription VSMeshXRay = new ShaderDescription(nameof(VSMeshXRay), ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSMeshXRay,
             new ConstantBufferMapping[]
@@ -347,6 +401,9 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
             });
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex, FeatureLevel.Level_11_0,
             DefaultVSShaderByteCodes.VSMeshClipPlaneQuad);
     }

@@ -259,6 +259,24 @@ namespace HelixToolkit.UWP
                     }
                 }
             };
+            var renderBillboardInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.BillboardInstancing)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSBillboardInstancing, DefaultInputLayout.VSInputBillboardInstancing),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSBillboardInstancing,
+                            DefaultGSShaderDescriptions.GSBillboard,
+                            DefaultPSShaderDescriptions.PSBillboardText
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
+            };
 
             var renderMeshBlinnClipPlane = new TechniqueDescription(DefaultRenderTechniqueNames.CrossSection)
             {
@@ -306,6 +324,7 @@ namespace HelixToolkit.UWP
                 renderPoint,
                 renderLine,
                 renderBillboardText,
+                renderBillboardInstancing,
                 renderNormals,
                 renderColors,
                 renderPositions,

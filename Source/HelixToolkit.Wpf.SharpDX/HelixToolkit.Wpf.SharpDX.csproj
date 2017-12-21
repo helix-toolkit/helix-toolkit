@@ -314,6 +314,7 @@
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
     <None Include="Resources\vsBillboard.cso" />
+    <None Include="Resources\vsBillboardInstancing.cso" />
     <None Include="Resources\vsBoneSkinning.cso" />
     <None Include="Resources\vsCubeMap.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />

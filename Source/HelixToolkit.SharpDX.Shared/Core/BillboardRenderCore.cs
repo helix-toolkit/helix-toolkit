@@ -20,7 +20,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderMatrices context)
         {
-            UpdateModelConstantBuffer(context.DeviceContext);
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
             context.DeviceContext.Rasterizer.State = RasterState;

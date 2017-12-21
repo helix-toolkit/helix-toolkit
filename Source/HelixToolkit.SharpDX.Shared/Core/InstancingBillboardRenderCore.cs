@@ -13,6 +13,12 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender() && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
+        protected override void OnUpdateModelStruct(ref ModelStruct model, IRenderMatrices context)
+        {
+            base.OnUpdateModelStruct(ref model, context);
+            model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
+        }
+
         protected override void OnAttachBuffers(DeviceContext context)
         {
             base.OnAttachBuffers(context);
