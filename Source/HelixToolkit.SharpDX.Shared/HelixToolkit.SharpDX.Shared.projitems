@@ -82,6 +82,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultShaderTechniqueManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\Pools.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderPool.cs" />
