@@ -44,6 +44,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         InputLayout Layout { get; }
 
+        /// <summary>
+        /// All shader pass names
+        /// </summary>
+        IEnumerable<string> ShaderPassNames { get; }
+
         IConstantBufferPool ConstantBufferPool { get; }
         /// <summary>
         /// Get pass by name

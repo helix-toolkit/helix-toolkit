@@ -12,27 +12,32 @@ namespace HelixToolkit.UWP.Shaders
     using ShaderManager;
     public class Technique :  DisposeObject, IRenderTechnique
     {
+        private readonly Dictionary<string, Lazy<IShaderPass>> passDict = new Dictionary<string, Lazy<IShaderPass>>();
+        private readonly IList<Lazy<IShaderPass>> passList = new List<Lazy<IShaderPass>>();
+
         /// <summary>
         /// <see cref="IRenderTechnique.Layout"/>
         /// </summary>
         public InputLayout Layout { private set; get; }
         /// <summary>
-        /// 
+        /// <see cref="IRenderTechnique.Device"/>
         /// </summary>
         public Device Device { get { return EffectsManager.Device; } }
         /// <summary>
-        /// 
+        /// <see cref="IRenderTechnique.Name"/>
         /// </summary>
         public string Name { private set; get; }
-        private readonly Dictionary<string, Lazy<IShaderPass>> passDict = new Dictionary<string, Lazy<IShaderPass>>();
-        private readonly IList<Lazy<IShaderPass>> passList = new List<Lazy<IShaderPass>>();
 
         /// <summary>
-        /// 
+        /// <see cref="IRenderTechnique.ShaderPassNames"/>
+        /// </summary>
+        public IEnumerable<string> ShaderPassNames { get { return passDict.Keys; } }
+        /// <summary>
+        /// <see cref="IRenderTechnique.ConstantBufferPool"/>
         /// </summary>
         public IConstantBufferPool ConstantBufferPool { get { return EffectsManager.ConstantBufferPool; } }
         /// <summary>
-        /// 
+        /// <see cref="IRenderTechnique.EffectsManager"/>
         /// </summary>
         public IEffectsManager EffectsManager { private set; get; }
 
