@@ -94,14 +94,14 @@
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light4Transform}" />
             <hx:MeshGeometryModel3D
-                x:Name="model"
+                x:Name="model" EnableTessellation="True"
                 RenderDiffuseMap="{Binding RenderDiffuseMap}"
                 RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
             <hx:MeshGeometryModel3D
-                x:Name="floor"
+                x:Name="floor" EnableTessellation="True" TessellationFactor="{Binding ElementName=model, Path=TessellationFactor}"
                 RenderDiffuseMap="{Binding RenderDiffuseMap}"
                 RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Floor}"
@@ -130,6 +130,15 @@
                         SelectedItem="{Binding RenderTechniqueName}"/>
                     <TextBlock>MSAA</TextBlock>
                     <ComboBox Margin="3" SelectedItem="{Binding MSAA}" ItemsSource="{Binding MSAAs}"/>
+                    <Slider
+                        Grid.Row="9"
+                        Grid.ColumnSpan="2"
+                        Margin="3"
+                        IsSnapToTickEnabled="True"
+                        Maximum="24"
+                        Minimum="1"
+                        TickFrequency="1"
+                        Value="{Binding TessellationFactor, ElementName=model}" />
                 </StackPanel>
             </Expander>
             <Expander

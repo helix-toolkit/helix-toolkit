@@ -96,6 +96,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         protected override void OnAttachBuffers(DeviceContext context)
         {
+            base.OnAttachBuffers(context);
             GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0);
             InstanceBuffer?.AttachBuffer(context, 1);           
         }

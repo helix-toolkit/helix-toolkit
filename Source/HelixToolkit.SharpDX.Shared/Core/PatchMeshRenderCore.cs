@@ -12,7 +12,6 @@ namespace HelixToolkit.UWP
 {
     public enum MeshTopologyEnum
     {
-        None,
         PNTriangles,
         PNQuads        
     }
@@ -22,7 +21,6 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                yield return MeshTopologyEnum.None;
                 yield return MeshTopologyEnum.PNTriangles;
                 yield return MeshTopologyEnum.PNQuads;
             }
@@ -38,30 +36,51 @@ namespace HelixToolkit.UWP.Core
 {
     public class PatchMeshRenderCore : MeshRenderCore
     {
-        public float TessellationFactor = 1.0f;
+        public float TessellationFactor { set; get; } = 1.0f;
 
-        private MeshTopologyEnum meshType = MeshTopologyEnum.None;
+        private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
         public MeshTopologyEnum MeshType
         {
             set
             {
                 meshType = value;
-                switch (meshType)
-                {
-                    case MeshTopologyEnum.PNTriangles:
-                        DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
-                        break;
-                    case MeshTopologyEnum.PNQuads:
-                        DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
-                        break;
-                    default:
-                        DefaultShaderPassName = DefaultPassNames.Default;
-                        break;
-                }
             }
             get
             {
                 return meshType;
+            }
+        }
+
+        private bool enableTessellation = false;
+        public bool EnableTessellation
+        {
+            set
+            {
+                if(enableTessellation == value)
+                {
+                    return;
+                }
+                enableTessellation = value;
+                if (enableTessellation)
+                {
+                    switch (meshType)
+                    {
+                        case MeshTopologyEnum.PNTriangles:
+                            DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
+                            break;
+                        case MeshTopologyEnum.PNQuads:
+                            DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
+                            break;
+                    }
+                }
+                else
+                {
+                    DefaultShaderPassName = DefaultPassNames.Default;
+                }
+            }
+            get
+            {
+                return enableTessellation;
             }
         }
 
@@ -76,7 +95,24 @@ namespace HelixToolkit.UWP.Core
             model.Params.X = TessellationFactor;
         }
 
+        protected override void OnAttachBuffers(DeviceContext context)
+        {
+            base.OnAttachBuffers(context);
+        }
+
         protected override void OnRender(IRenderMatrices context)
+        {
+            if (EnableTessellation)
+            {
+                OnRenderTessellation(context);
+            }
+            else
+            {
+                base.OnRender(context);
+            }
+        }
+
+        protected virtual void OnRenderTessellation(IRenderMatrices context)
         {
             switch (meshType)
             {
@@ -88,6 +124,7 @@ namespace HelixToolkit.UWP.Core
                     break;
             }
             base.OnRender(context);
+            context.DeviceContext.InputAssembler.PrimitiveTopology = GeometryBuffer.Topology;
         }
     }
 }

@@ -72,7 +72,8 @@ struct PSInput
 	float3 t1 : TANGENT; // tangent
 	float3 t2 : BINORMAL; // bi-tangent	
 	float4 c : COLOR; // solid color (for debug)
-	float4 c2 : COLOR1;
+    float4 c2 : COLOR1; //vMaterialEmissive + vMaterialAmbient * vLightAmbient
+    float4 cDiffuse : COLOR2; //vMaterialDiffuse
 };
 
 struct PSInputXRay
@@ -214,6 +215,7 @@ struct HSInput
 	float3 t1 : TEXCOORD2;
 	float3 t2 : TEXCOORD3;
 	float4 c : COLOR;
+    float4 c2 : COLOR1;
 };
 
 //--------------------------------------------------------------------------------------

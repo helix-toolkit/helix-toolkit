@@ -88,7 +88,7 @@ namespace TessellationDemo
             {
                 /// if topology is changes, reload the model with proper type of faces
                 this.meshTopology = value;
-                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == MeshTopologyEnum.PNTriangles || this.meshTopology == MeshTopologyEnum.None ? 
+                this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == MeshTopologyEnum.PNTriangles ? 
                     MeshFaces.Default : MeshFaces.QuadPatches);
             }
         }

@@ -54,6 +54,22 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshInstancingTessellation
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshInstancingTessellation;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -270,6 +286,21 @@ namespace HelixToolkit.UWP.Shaders
                 DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
             },
             null);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshInstancingTessellation = new ShaderDescription(nameof(VSMeshInstancingTessellation), ShaderStage.Vertex, FeatureLevel.Level_11_0,
+            DefaultVSShaderByteCodes.VSMeshInstancingTessellation,
+            new ConstantBufferMapping[]
+            {
+                        DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
+                        DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
+                        DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
+                        DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
+            },
+            null);
+
         /// <summary>
         /// 
         /// </summary>

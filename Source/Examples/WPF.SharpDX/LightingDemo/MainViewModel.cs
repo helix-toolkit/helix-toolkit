@@ -223,11 +223,11 @@ namespace LightingDemo
             // ----------------------------------------------
             // scene model3d
             var b1 = new MeshBuilder(true, true, true);
-            b1.AddSphere(new Vector3(0.25f, 0.25f, 0.25f), 0.75, 64, 64);
+            b1.AddSphere(new Vector3(0.25f, 0.25f, 0.25f), 0.75, 16, 16);
             b1.AddBox(-new Vector3(0.25f, 0.25f, 0.25f), 1, 1, 1, BoxFaces.All);
             b1.AddBox(-new Vector3(5.0f, 0.0f, 0.0f), 1, 1, 1, BoxFaces.All);
-            b1.AddSphere(new Vector3(5f, 0f, 0f), 0.75, 64, 64);
-            b1.AddCylinder(new Vector3(0f, -3f, -5f), new Vector3(0f, 3f, -5f), 1.2, 64);
+            b1.AddSphere(new Vector3(5f, 0f, 0f), 0.75, 16, 16);
+            b1.AddCylinder(new Vector3(0f, -3f, -5f), new Vector3(0f, 3f, -5f), 1.2, 16);
 
             this.Model = b1.ToMeshGeometry3D();
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
@@ -239,8 +239,8 @@ namespace LightingDemo
             // floor model3d
             var b2 = new MeshBuilder(true, true, true);
             b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f), 15, 0.1, 15, BoxFaces.All);
-            b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 64, 64);
-            b2.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 64);
+            b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 16, 16);
+            b2.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 16);
             this.Floor = b2.ToMeshGeometry3D();
             this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.FloorMaterial = new PhongMaterial

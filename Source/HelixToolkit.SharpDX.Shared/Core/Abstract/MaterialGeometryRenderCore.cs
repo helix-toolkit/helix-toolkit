@@ -89,7 +89,13 @@ namespace HelixToolkit.UWP.Core
             materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
             materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
         }
-        
+
+        protected override void OnAttachBuffers(DeviceContext context)
+        {
+            base.OnAttachBuffers(context);
+            UpdateMaterialConstantBuffer(context);
+        }
+
         protected bool UpdateMaterialConstantBuffer(DeviceContext context)
         {
             SetMaterialVariables();

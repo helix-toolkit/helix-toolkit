@@ -343,6 +343,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] vsMeshInstancingTessellation {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshInstancingTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] vsMeshTessellation {
             get {
                 object obj = ResourceManager.GetObject("vsMeshTessellation", resourceCulture);

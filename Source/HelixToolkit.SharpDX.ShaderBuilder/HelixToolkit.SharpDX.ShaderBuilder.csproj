@@ -55,6 +55,7 @@
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\CommonSamplers.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <VertexShader Include="VS\vsMeshInstancingTessellation.hlsl" />
     <VertexShader Include="VS\vsMeshTessellation.hlsl" />
     <PixelShader Include="PS\psMeshClipPlaneQuad.hlsl">
       <EntryPointName>main</EntryPointName>

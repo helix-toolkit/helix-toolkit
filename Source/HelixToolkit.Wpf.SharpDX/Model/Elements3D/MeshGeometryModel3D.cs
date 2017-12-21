@@ -33,7 +33,23 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D),
             new AffectsRenderPropertyMetadata(true, RasterStateChanged));
         public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(false, (d,e)=> { ((d as MeshGeometryModel3D).RenderCore as MeshRenderCore).InvertNormal = (bool)e.NewValue; }));
+            new AffectsRenderPropertyMetadata(false, (d,e)=> { ((d as GeometryModel3D).RenderCore as MeshRenderCore).InvertNormal = (bool)e.NewValue; }));
+
+        public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(MeshGeometryModel3D),
+            new AffectsRenderPropertyMetadata(false, (d, e) => { ((d as GeometryModel3D).RenderCore as PatchMeshRenderCore).EnableTessellation = (bool)e.NewValue; }));
+
+        public static readonly DependencyProperty TessellationFactorProperty =
+            DependencyProperty.Register("TessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
+            {
+                (((GeometryModel3D)d).RenderCore as PatchMeshRenderCore).TessellationFactor = (float)(double)e.NewValue;
+            }));
+
+        public static readonly DependencyProperty MeshTopologyProperty =
+            DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(
+                MeshTopologyEnum.PNTriangles, (d, e) =>
+                {
+                    (((GeometryModel3D)d).RenderCore as PatchMeshRenderCore).MeshType = (MeshTopologyEnum)e.NewValue;
+                }));
 
         public bool FrontCounterClockwise
         {
@@ -86,18 +102,46 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(InvertNormalProperty);
             }
         }
+
+        public bool EnableTessellation
+        {
+            set
+            {
+                SetValue(EnableTessellationProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableTessellationProperty);
+            }
+        }
+
+        public double TessellationFactor
+        {
+            get { return (double)GetValue(TessellationFactorProperty); }
+            set { SetValue(TessellationFactorProperty, value); }
+        }
+
+        public MeshTopologyEnum MeshTopology
+        {
+            set { SetValue(MeshTopologyProperty, value); }
+            get { return (MeshTopologyEnum)GetValue(MeshTopologyProperty); }
+        }
         #endregion
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            return new MeshRenderCore();
+            return new PatchMeshRenderCore();
         }
 
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
-            (core as MeshRenderCore).InvertNormal = this.InvertNormal;
+            var c = core as PatchMeshRenderCore;
+            c.InvertNormal = this.InvertNormal;
+            c.TessellationFactor = (float)this.TessellationFactor;
+            c.MeshType = this.MeshTopology;
+            c.EnableTessellation = this.EnableTessellation;
             base.AssignDefaultValuesToCore(core);            
         }
 
@@ -129,6 +173,15 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override bool CheckGeometry()
         {
             return base.CheckGeometry() && geometryInternal is MeshGeometry3D;
+        }
+
+        protected override bool CanHitTest(IRenderMatrices context)
+        {
+            if (MeshTopology != MeshTopologyEnum.PNTriangles)
+            {
+                return false;
+            }
+            return base.CanHitTest(context);
         }
 
         protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)

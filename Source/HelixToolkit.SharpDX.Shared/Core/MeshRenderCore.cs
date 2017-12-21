@@ -16,12 +16,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderMatrices context)
         {                  
-            UpdateModelConstantBuffer(context.DeviceContext);
-            if (!UpdateMaterialConstantBuffer(context.DeviceContext))
-            {
-                return;
-            }
-
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
             if(!BindMaterialTextures(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel)))

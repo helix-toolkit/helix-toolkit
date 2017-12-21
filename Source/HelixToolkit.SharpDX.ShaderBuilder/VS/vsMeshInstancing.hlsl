@@ -53,18 +53,18 @@ PSInput main(VSInstancingInput input)
             output.sp = mul(output.sp, Lights[0].mLightProj);
         }
     }
-
+    output.c = input.c;
     if (!bHasInstanceParams)
     {
         output.t = input.t;
-        output.c = vMaterialDiffuse;
+        output.cDiffuse = vMaterialDiffuse;
         output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
     }
     else
     {
 		//set texture coords and color
         output.t = input.t + input.tOffset;
-        output.c = input.diffuseC;
+        output.cDiffuse = input.diffuseC;
         output.c2 = input.emissiveC + input.ambientC * vLightAmbient;
     }
 

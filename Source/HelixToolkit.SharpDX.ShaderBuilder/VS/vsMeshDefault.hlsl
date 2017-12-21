@@ -55,6 +55,7 @@ PSInput main(VSInput input)
 	//set texture coords and color
 	output.t = input.t;
 	output.c = input.c;
+    output.cDiffuse = vMaterialDiffuse;
 	output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
 
 	//set normal for interpolation	

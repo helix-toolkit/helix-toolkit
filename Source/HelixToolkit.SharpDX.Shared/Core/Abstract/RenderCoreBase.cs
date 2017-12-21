@@ -106,6 +106,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         protected virtual void OnAttachBuffers(DeviceContext context)
         {
+            UpdateModelConstantBuffer(context);
         }
 
         /// <summary>

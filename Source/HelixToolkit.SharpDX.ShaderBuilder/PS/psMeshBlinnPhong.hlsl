@@ -63,7 +63,7 @@ float4 main(PSInput input) : SV_Target
         {
             float3 d = normalize((float3) Lights[i].vLightDir); // light dir	
             float3 h = normalize(eye + d);
-            I += s * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, vMaterialDiffuse, d, h);
+            I += s * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
         else if (Lights[i].iLightType == 2)  // point
         {
@@ -72,7 +72,7 @@ float4 main(PSInput input) : SV_Target
             d = d / dl; // normalized light dir						
             float3 h = normalize(eye + d); // half direction for specular
             float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            I += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, vMaterialDiffuse, d, h);
+            I += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
         else if (Lights[i].iLightType == 3)  // spot
         {
@@ -94,10 +94,10 @@ float4 main(PSInput input) : SV_Target
             float rho = dot(-d, sd);
             float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
             float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            I += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, vMaterialDiffuse, d, h);
+            I += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
     }
-    I.a = vMaterialDiffuse.a;
+    I.a = input.cDiffuse.a;
     if (bHasAlphaMap)
     {
         I.a *= alpha;

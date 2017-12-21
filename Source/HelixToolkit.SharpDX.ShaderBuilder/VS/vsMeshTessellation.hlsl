@@ -43,6 +43,7 @@ HSInput main(VSInput input)
     output.t1 = inputt1;
     output.t2 = inputt2;
     output.c = input.c;
+    output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
     return output;
 }
 #endif

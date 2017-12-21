@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Direct3D;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -6,7 +7,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public class MeshOutlineRenderCore : MeshRenderCore
+    public class MeshOutlineRenderCore : PatchMeshRenderCore
     {
         /// <summary>
         /// Outline color
@@ -63,12 +64,11 @@ namespace HelixToolkit.UWP.Core
         {            
             base.OnUpdateModelStruct(ref model, context);
             model.Color = Color;
-            model.Params.X = OutlineFadingFactor;
+            model.Params.Y = OutlineFadingFactor;
         }
 
         protected override void OnRender(IRenderMatrices context)
         {
-            UpdateModelConstantBuffer(context.DeviceContext);
             context.DeviceContext.Rasterizer.State = RasterState;
             if (DrawOutlineBeforeMesh)
             {
@@ -78,17 +78,7 @@ namespace HelixToolkit.UWP.Core
             }
             if (DrawMesh)
             {
-                if (!UpdateMaterialConstantBuffer(context.DeviceContext))
-                {
-                    return;
-                }
-                DefaultShaderPass.BindShader(context.DeviceContext);
-                DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-                if (!BindMaterialTextures(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel)))
-                {
-                    return;
-                }             
-                OnDraw(context.DeviceContext, InstanceBuffer);
+                base.OnRender(context);
             }
             if (!DrawOutlineBeforeMesh)
             {

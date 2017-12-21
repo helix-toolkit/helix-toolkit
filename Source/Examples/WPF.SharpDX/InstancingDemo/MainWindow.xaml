@@ -32,7 +32,7 @@
             EnableRenderFrustum="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
-            SubTitle="{Binding SubTitle}"
+            SubTitle="{Binding SubTitle}" EffectsManager="{Binding EffectsManager}"
             TextBrush="Black"
             UseDefaultGestures="True">
             <i:Interaction.Triggers>
@@ -44,7 +44,7 @@
 
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
 
-            <hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds" />
+            <!--<hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds" />-->
 
             <hx:InstancingMeshGeometryModel3D
                 x:Name="mesh" CullMode="Back"
@@ -67,7 +67,7 @@
                 Geometry="{Binding Lines}"
                 Instances="{Binding SelectedLineInstances}"
                 Color="{x:Static dx:Color.Orange}"/>
-            <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
+            <!--<hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>-->
         </hx:Viewport3DX>
 
         <StackPanel Grid.Column="1" Grid.Row="0">

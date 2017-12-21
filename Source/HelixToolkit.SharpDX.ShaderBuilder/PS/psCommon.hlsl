@@ -32,27 +32,13 @@ float3 calcNormal(PSInput input)
     return normalize(input.n);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Phong Lighting Reflection Model
-//--------------------------------------------------------------------------------------
-// Returns the sum of the diffuse and specular terms in the Phong reflection model
-// The specular and diffuse reflection constants for the currently loaded material (k_d and k_s) as well
-// as other material properties are defined in Material.fx.
-float4 calcPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float3 L, float3 V, float3 R)
-{
-    float4 Id = vMaterialTexture * vMaterialDiffuse * saturate(dot(N, L));
-    float4 Is = vMaterialSpecular * pow(saturate(dot(R, V)), sMaterialShininess);
-    return (Id + Is) * LColor;
-}
-
 //--------------------------------------------------------------------------------------
 // Blinn-Phong Lighting Reflection Model
 //--------------------------------------------------------------------------------------
 // Returns the sum of the diffuse and specular terms in the Blinn-Phong reflection model.
-float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float4 vMaterialDiffuse, float3 L, float3 H)
+float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float4 diffuse, float3 L, float3 H)
 {
-    float4 Id = vMaterialTexture * vMaterialDiffuse * saturate(dot(N, L));
+    float4 Id = vMaterialTexture * diffuse * saturate(dot(N, L));
     float4 Is = vMaterialSpecular * pow(saturate(dot(N, H)), sMaterialShininess);
     return (Id + Is) * LColor;
 }
