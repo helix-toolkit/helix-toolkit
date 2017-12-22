@@ -1,4 +1,8 @@
-﻿using D2D = SharpDX.Direct2D1;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using HelixToolkit.Wpf.SharpDX;
 

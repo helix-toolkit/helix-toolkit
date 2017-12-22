@@ -1,4 +1,8 @@
-﻿using SharpDX;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using SharpDX;
 using System.Collections.Generic;
 using System.IO;
 #if NETFX_CORE

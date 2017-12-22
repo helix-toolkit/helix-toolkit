@@ -1,12 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Octree.cs" company="Helix Toolkit">
-//   Copyright (c) 2017 Helix Toolkit contributors
-// </copyright>
-// <summary>
-// An octree implementation reference from https://www.gamedev.net/resources/_/technical/game-programming/introduction-to-octrees-r3529
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 using SharpDX;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,8 @@
-﻿using HelixToolkit.Wpf.SharpDX;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using D2D = global::SharpDX.Direct2D1;
 

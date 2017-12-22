@@ -1,4 +1,8 @@
-﻿#if NETFX_CORE
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+#if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else

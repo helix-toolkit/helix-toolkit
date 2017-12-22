@@ -81,6 +81,7 @@
     <GeometryShader Include="GS\gsBillboard.hlsl" />
     <HullShader Include="HS\hsMeshTriTessellation.hlsl" />
     <DomainShader Include="DS\dsMeshTriTessellation.hlsl" />
+    <Content Include="License.txt" />
     <Content Include="PS\psCommon.hlsl" />
     <PixelShader Include="PS\psMeshXRay.hlsl" />
     <VertexShader Include="VS\vsMeshXRay.hlsl" />

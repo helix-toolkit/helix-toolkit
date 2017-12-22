@@ -1,4 +1,8 @@
-﻿using global::SharpDX;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using global::SharpDX;
 using System;
 using System.Collections.Generic;
 

@@ -1,4 +1,8 @@
-﻿using SharpDX.Direct3D;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using SharpDX.Direct3D;
 using System;
 
 #if !NETFX_CORE

@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using System;
 using System.Runtime.Serialization;
 
 #if !NETFX_CORE

@@ -1,4 +1,8 @@
-﻿using SDX11 = SharpDX.Direct3D11;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using SDX11 = SharpDX.Direct3D11;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
