@@ -10,7 +10,7 @@ namespace HelixToolkit.UWP.ShaderManager
 {
     using global::SharpDX.Direct3D11;
     using Utilities;
-    public abstract class BufferPool<TKEY, TBUFFERDESC> : GeneralPool<TKEY, IBufferProxy, TBUFFERDESC>
+    public abstract class BufferPool<TKEY, TBUFFERDESC> : ResourcePoolBase<TKEY, IBufferProxy, TBUFFERDESC>
     {
         public BufferPool(Device device) : base(device)
         {

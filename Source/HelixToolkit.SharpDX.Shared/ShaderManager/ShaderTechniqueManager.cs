@@ -62,10 +62,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool Initialized { private set; get; } = false;
 
-        public ShaderTechniqueManager()
-        {
-        }
-
         public void Initialize()
         {
             if (Initialized)
@@ -105,35 +101,41 @@ namespace HelixToolkit.UWP
             statePoolManager = Collect(new StatePoolManager(Device));
             #endregion
             #region Initial Techniques
-            var techniques = LoadTechniques(Device);
-            foreach(var tech in techniques)
+            var techniqueDescs = LoadTechniqueDescriptions();
+            foreach(var tech in techniqueDescs)
             {
-                techniqueDict.Add(tech.Item1, tech.Item2);
+                AddTechnique(tech);
             }
             #endregion
             Initialized = true;
         }
-
-        protected IList<Tuple<string, Lazy<IRenderTechnique>>> LoadTechniques(global::SharpDX.Direct3D11.Device device)
+        /// <summary>
+        /// <see cref="IEffectsManager.AddTechnique(TechniqueDescription)"/>
+        /// </summary>
+        /// <param name="description"></param>
+        public void AddTechnique(TechniqueDescription description)
         {
-            var techniqueDescs = LoadTechniqueDescriptions();
-            if(techniqueDescs == null)
+            if (techniqueDict.ContainsKey(description.Name))
             {
-                return new Tuple<string, Lazy<IRenderTechnique>>[0];
+                throw new ArgumentException($"Technique { description.Name } already exists.");
             }
-            else
+            techniqueDict.Add(description.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(description, Device, this)) : null; }, true));
+        }
+        /// <summary>
+        /// <see cref="IEffectsManager.RemoveTechnique(string)"/>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool RemoveTechnique(string name)
+        {
+            Lazy<IRenderTechnique> t;
+            techniqueDict.TryGetValue(name, out t);
+            if (t != null && t.IsValueCreated)
             {
-                var list = new List<Tuple<string, Lazy<IRenderTechnique>>>(techniqueDescs.Count);
-                foreach(var desc in techniqueDescs)
-                {
-                    list.Add(Tuple.Create(desc.Name, new Lazy<IRenderTechnique>(()=> 
-                    {
-                        return Initialized ? Collect(new Technique(desc, device, this)) : null;
-                    }, 
-                    true)));
-                }
-                return list;
+                var v = t.Value;
+                RemoveAndDispose(ref v);
             }
+            return techniqueDict.Remove(name);
         }
 
         protected abstract IList<TechniqueDescription> LoadTechniqueDescriptions();
@@ -195,7 +197,13 @@ namespace HelixToolkit.UWP
             {
                 throw new Exception("Manager has not been initialized.");
             }
-            return techniqueDict[name].Value;
+            Lazy<IRenderTechnique> t;
+            techniqueDict.TryGetValue(name, out t);
+            if (t == null)
+            {
+                throw new ArgumentException($"Technique {name} does not exist.");
+            }
+            return t.Value;
         }
 
         public IRenderTechnique this[string name]
@@ -215,6 +223,7 @@ namespace HelixToolkit.UWP
             techniqueDict.Clear();
             base.Dispose(disposeManagedResources);
             Initialized = false;
+            Device?.Dispose();
         }
     }
 }

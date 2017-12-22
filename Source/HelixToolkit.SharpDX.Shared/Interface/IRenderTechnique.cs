@@ -122,7 +122,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         IRenderTechnique this[string name] { get; }
+        /// <summary>
+        /// Initialize the manager.
+        /// </summary>
         void Initialize();
+        /// <summary>
+        /// Add a technique by description
+        /// </summary>
+        /// <param name="description"></param>
+        void AddTechnique(TechniqueDescription description);
+        /// <summary>
+        /// Remove a technique by its name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        bool RemoveTechnique(string name);
     }
 
     public interface IShaderPoolManager

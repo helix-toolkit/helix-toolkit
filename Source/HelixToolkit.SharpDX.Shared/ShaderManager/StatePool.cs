@@ -9,7 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
-    public class BlendStatePool : GeneralPool<BlendStateDescription, BlendState, BlendStateDescription>
+    public class BlendStatePool : ResourcePoolBase<BlendStateDescription, BlendState, BlendStateDescription>
     {
         public BlendStatePool(Device device) : base(device) { }
 
@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
-    public class DepthStencilStatePool : GeneralPool<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
+    public class DepthStencilStatePool : ResourcePoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
     {
         public DepthStencilStatePool(Device device) : base(device) { }
 
@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
-    public class RasterStatePool : GeneralPool<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
+    public class RasterStatePool : ResourcePoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
     {
         public RasterStatePool(Device device) : base(device) { }
 

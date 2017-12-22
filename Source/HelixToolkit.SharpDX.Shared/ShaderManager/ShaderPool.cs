@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.ShaderManager
     using global::SharpDX.Direct3D11;
     using Shaders;
 
-    public class ShaderPool : GeneralPool<byte[], IShader, ShaderDescription>
+    public class ShaderPool : ResourcePoolBase<byte[], IShader, ShaderDescription>
     {
         public IConstantBufferPool ConstantBufferPool { private set; get; }
         public ShaderPool(Device device, IConstantBufferPool cbPool)
@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
-    public class LayoutPool : GeneralPool<byte[], InputLayout, Tuple<byte[], InputElement[]>>
+    public class LayoutPool : ResourcePoolBase<byte[], InputLayout, Tuple<byte[], InputElement[]>>
     {
         public LayoutPool(Device device)
             :base(device)
