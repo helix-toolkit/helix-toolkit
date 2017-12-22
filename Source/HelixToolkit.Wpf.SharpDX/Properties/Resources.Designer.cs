@@ -313,6 +313,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] vsBoneSkinningTessellation {
+            get {
+                object obj = ResourceManager.GetObject("vsBoneSkinningTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] vsCubeMap {
             get {
                 object obj = ResourceManager.GetObject("vsCubeMap", resourceCulture);

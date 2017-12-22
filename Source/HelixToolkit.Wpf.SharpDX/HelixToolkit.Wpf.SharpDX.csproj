@@ -316,6 +316,7 @@
     <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBillboardInstancing.cso" />
     <None Include="Resources\vsBoneSkinning.cso" />
+    <None Include="Resources\vsBoneSkinningTessellation.cso" />
     <None Include="Resources\vsCubeMap.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
     <None Include="Resources\vsMeshDefault.cso" />

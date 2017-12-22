@@ -199,6 +199,18 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshTriTessellation)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBoneSkinningTessellation,
+                            DefaultHullShaderDescriptions.HSMeshTessellation,
+                            DefaultDomainShaderDescriptions.DSMeshTessellation,
+                            DefaultPSShaderDescriptions.PSMeshBlinnPhong
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     }
                 }
             };
