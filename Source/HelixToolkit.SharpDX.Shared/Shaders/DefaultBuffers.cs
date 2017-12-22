@@ -8,6 +8,10 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    /// <summary>
+    /// Default buffer names from shader code. Name must match shader code to bind proper buffer
+    /// <para>Note: Constant buffer must match both name and struct size</para>
+    /// </summary>
     public static class DefaultBufferNames
     {
         public static string GlobalTransformCB = "cbTransforms";
@@ -25,25 +29,4 @@ namespace HelixToolkit.UWP.Shaders
         public static string BillboardTB = "billboardTexture";
 
     }
-
-    //public static class DefaultConstantBufferDescriptions
-    //{
-    //    public static ConstantBufferDescription GlobalTransformCB = new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
-    //    public static ConstantBufferDescription ModelCB = new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
-    //    public static ConstantBufferDescription LightCB = new ConstantBufferDescription(DefaultBufferNames.LightCB, Model.LightsBufferModel.SizeInBytes);
-    //    public static ConstantBufferDescription MaterialCB = new ConstantBufferDescription(DefaultBufferNames.MaterialCB, MaterialStruct.SizeInBytes);
-    //    public static ConstantBufferDescription BoneCB = new ConstantBufferDescription(DefaultBufferNames.BoneCB, BoneMatricesStruct.SizeInBytes);
-    //    public static ConstantBufferDescription ClipParamsCB = new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes);
-    //}
-
-    //public static class DefaultTextureBufferDescriptions
-    //{
-    //    public static TextureDescription DiffuseMapTB = new TextureDescription(nameof(DiffuseMapTB), ShaderStage.Pixel);
-    //    public static TextureDescription AlphaMapTB = new TextureDescription(nameof(AlphaMapTB), ShaderStage.Pixel);
-    //    public static TextureDescription NormalMapTB = new TextureDescription(nameof(NormalMapTB), ShaderStage.Pixel);
-    //    public static TextureDescription DisplacementMapTB = new TextureDescription(nameof(DisplacementMapTB), ShaderStage.Pixel);
-    //    public static TextureDescription CubeMapTB = new TextureDescription(nameof(CubeMapTB), ShaderStage.Pixel);
-    //    public static TextureDescription ShadowMapTB = new TextureDescription(nameof(ShadowMapTB), ShaderStage.Pixel);
-    //    public static TextureDescription BillboardTB = new TextureDescription(nameof(BillboardTB), ShaderStage.Pixel);
-    //}
 }
