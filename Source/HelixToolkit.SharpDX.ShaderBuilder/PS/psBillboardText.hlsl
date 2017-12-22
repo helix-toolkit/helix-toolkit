@@ -4,7 +4,7 @@
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
-Texture2D billboardTexture : register(t0); // billboard text image
+Texture2D billboardTexture; // billboard text image
 
 static const uint BillboardSingleText = 1;
 static const uint BillboardMultiText = 2;

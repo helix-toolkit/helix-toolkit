@@ -6,7 +6,7 @@
 //--------------------------------------------------------------------------------------
 // Perframe Buffers
 //--------------------------------------------------------------------------------------
-cbuffer cbTransforms : register(b0)
+cbuffer cbTransforms
 {
     float4x4 mView;
     float4x4 mProjection;
@@ -23,7 +23,7 @@ cbuffer cbTransforms : register(b0)
 };
 
 //Per model
-cbuffer cbModel : register(b1)
+cbuffer cbModel
 {
     float4x4 mWorld;
     bool bInvertNormal = false;
@@ -56,7 +56,7 @@ struct LightStruct
     matrix mLightProj; //56
 };
 
-cbuffer cbLights : register(b2)
+cbuffer cbLights
 {
     LightStruct Lights[LIGHTS];
     float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
@@ -69,7 +69,7 @@ cbuffer cbLights : register(b2)
 //--------------------------------------------------------------------------------------
 // CONSTANT BUFF FOR MATERIAL
 //--------------------------------------------------------------------------------------
-cbuffer cbMaterial : register(b3)
+cbuffer cbMaterial
 {
     float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient
     float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
@@ -87,14 +87,14 @@ cbuffer cbMaterial : register(b3)
     float paddingMaterial0;
 };
 
-Texture2D texDiffuseMap : register(t0);
-Texture2D texAlphaMap : register(t1);
-Texture2D texNormalMap : register(t2);
-Texture2D texDisplacementMap : register(t3);
-TextureCube texCubeMap : register(t4);
-Texture2D texShadowMap : register(t5);
+Texture2D texDiffuseMap;
+Texture2D texAlphaMap;
+Texture2D texNormalMap;
+Texture2D texDisplacementMap);
+TextureCube texCubeMap;
+Texture2D texShadowMap;
 
-cbuffer cbShadow : register(b4)
+cbuffer cbShadow
 {
     float2 vShadowMapSize = float2(1024, 1024);
     float2 paddingShadow0;
@@ -103,7 +103,7 @@ cbuffer cbShadow : register(b4)
 #endif
 
 #ifdef CLIPPLANE
-cbuffer cbClipping : register(b5)
+cbuffer cbClipping
 {
 	bool4 EnableCrossPlane;
     float4 CrossSectionColors;

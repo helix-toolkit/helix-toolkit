@@ -48,7 +48,7 @@
             <hx:PatchGeometryModel3D
                 x:Name="model1"
                 Geometry="{Binding DefaultModel}"
-                Material="{Binding DefaultMaterial}"
+                Material="{Binding DefaultMaterial}" EnableTessellation="True"
                 Transform="{Binding DefaultTransform}" MeshTopology="{Binding MeshTopology}"
                 FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True" Instances="{Binding Instances}"/>
             <!--<hx:MeshGeometryModel3D
