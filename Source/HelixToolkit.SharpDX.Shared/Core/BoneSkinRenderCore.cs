@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
-                boneCB = technique.ConstantBufferPool.Register(DefaultConstantBufferDescriptions.BoneCB);
+                boneCB = technique.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.BoneCB, BoneMatricesStruct.SizeInBytes));
                 return true;
             }
             else

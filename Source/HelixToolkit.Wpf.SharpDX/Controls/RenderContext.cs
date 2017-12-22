@@ -154,12 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Canvas = canvas;
             this.IsShadowPass = false;
             this.IsDeferredPass = false;
-            cbuffer = pool.Register(DefaultConstantBufferDescriptions.GlobalTransformCB);
-            //this.mView = effect.GetVariableByName("mView").AsMatrix();
-            //this.mProjection = effect.GetVariableByName("mProjection").AsMatrix();
-            //this.vViewport = effect.GetVariableByName("vViewport").AsVector();
-            //this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
-            //this.vEyePos = effect.GetVariableByName("vEyePos").AsVector();
+            cbuffer = pool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
             DeviceContext = renderContext;
             LightScene = new Light3DSceneShared(pool);
         }

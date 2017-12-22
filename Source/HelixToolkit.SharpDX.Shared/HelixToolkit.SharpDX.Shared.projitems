@@ -60,6 +60,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderTechnique.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderReflector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PhongMaterialVariables.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderPass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderReflector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\Technique.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\TechniqueDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\TextureDescription.cs" />

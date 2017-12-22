@@ -31,14 +31,7 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultDomainShaderDescriptions
     {
-        public static ShaderDescription DSMeshTessellation = new ShaderDescription(nameof(DSMeshTessellation), ShaderStage.Domain, FeatureLevel.Level_11_0,
-            DefaultDomainShaders.DSMeshTessellation,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
-            },
-            null);
+        public static ShaderDescription DSMeshTessellation = new ShaderDescription(nameof(DSMeshTessellation), ShaderStage.Domain, new ShaderReflector(),
+            DefaultDomainShaders.DSMeshTessellation);
     }
 }

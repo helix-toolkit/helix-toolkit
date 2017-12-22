@@ -28,16 +28,16 @@ namespace HelixToolkit.UWP.Model
 
         public ShaderResourceView TextureAlphaView { get { return texAlphaMapView; } }
         private ShaderResourceView texAlphaMapView;
-        public virtual string TextureAlphaName { get { return DefaultTextureBufferDescriptions.AlphaMapTB.Name; } }
+        public virtual string TextureAlphaName { get { return DefaultBufferNames.AlphaMapTB; } }
         public ShaderResourceView TextureDiffuseView { get { return texDiffuseMapView; } }
         private ShaderResourceView texDiffuseMapView;
-        public virtual string TextureDiffuseName { get { return DefaultTextureBufferDescriptions.DiffuseMapTB.Name; } }
+        public virtual string TextureDiffuseName { get { return DefaultBufferNames.DiffuseMapTB; } }
         public ShaderResourceView TextureNormalView { get { return texNormalMapView; } }
         private ShaderResourceView texNormalMapView;
-        public virtual string TextureNormalName { get { return DefaultTextureBufferDescriptions.NormalMapTB.Name; } }
+        public virtual string TextureNormalName { get { return DefaultBufferNames.NormalMapTB; } }
         public ShaderResourceView TextureDisplacementView { get { return texDisplacementMapView; } }
         private ShaderResourceView texDisplacementMapView;
-        public virtual string TextureDisplacementName { get { return DefaultTextureBufferDescriptions.DisplacementMapTB.Name; } }
+        public virtual string TextureDisplacementName { get { return DefaultBufferNames.DisplacementMapTB; } }
 
         private bool renderDiffuseMap = true;
         public bool RenderDiffuseMap
@@ -147,7 +147,7 @@ namespace HelixToolkit.UWP.Model
 
         public PhongMaterialVariables(IConstantBufferPool cbpool)
         {
-            materialBuffer = cbpool.Register(DefaultConstantBufferDescriptions.MaterialCB);
+            materialBuffer = cbpool.Register(new ConstantBufferDescription(DefaultBufferNames.MaterialCB, MaterialStruct.SizeInBytes));
             Device = cbpool.Device;
             CreateTextureViews();
         }        

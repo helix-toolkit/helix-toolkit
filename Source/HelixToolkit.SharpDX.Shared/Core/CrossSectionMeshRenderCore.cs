@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP.Core
 
         protected virtual ConstantBufferDescription GetClipParamsCBDescription()
         {
-            return DefaultConstantBufferDescriptions.ClipParamsCB;
+            return new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes);
         }
 
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)

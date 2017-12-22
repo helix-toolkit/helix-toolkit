@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.ShaderManager
     {
         Device Device { get; }
         IBufferProxy Register(ConstantBufferDescription description);
+        IBufferProxy Register(string name, int structSize);
     }
 
     public class ConstantBufferPool : BufferPool<string, ConstantBufferDescription>, IConstantBufferPool
@@ -34,6 +35,11 @@ namespace HelixToolkit.UWP.ShaderManager
         protected override string GetKey(ConstantBufferDescription description)
         {
             return description.Name + description.StructSize;
+        }
+
+        public IBufferProxy Register(string name, int structSize)
+        {
+            return Register(new ConstantBufferDescription(name, structSize));
         }
     }
 }

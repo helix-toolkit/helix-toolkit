@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP.Shaders
         public VertexShader(Device device, string name, byte[] byteCode)
             :base(name, ShaderStage.Vertex)
         {
-            shader = Collect(new global::SharpDX.Direct3D11.VertexShader(device, byteCode));
+            shader = Collect(new global::SharpDX.Direct3D11.VertexShader(device, byteCode));        
         }
 
         /// <summary>

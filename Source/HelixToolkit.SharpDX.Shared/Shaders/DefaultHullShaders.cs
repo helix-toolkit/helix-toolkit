@@ -31,12 +31,7 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultHullShaderDescriptions
     {
-        public static ShaderDescription HSMeshTessellation = new ShaderDescription(nameof(HSMeshTessellation), ShaderStage.Hull, FeatureLevel.Level_11_0,
-            DefaultHullShaders.HSMeshTessellation,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-            },
-            null);
+        public static ShaderDescription HSMeshTessellation = new ShaderDescription(nameof(HSMeshTessellation), ShaderStage.Hull, new ShaderReflector(),
+            DefaultHullShaders.HSMeshTessellation);
     }
 }

@@ -15,6 +15,8 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using ShaderManager;
+    using System.Collections.Generic;
+
     /// <summary>
     /// 
     /// </summary>
@@ -45,20 +47,47 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
+        /// <param name="byteCode"></param>
+        protected ShaderDescription(string name, ShaderStage type, byte[] byteCode)
+        {
+            Name = name;
+            ShaderType = type;
+            ByteCode = byteCode;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
         /// <param name="featureLevel"></param>
         /// <param name="byteCode"></param>
         /// <param name="constantBuffers"></param>
         /// <param name="textures"></param>
         public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[] byteCode,
             ConstantBufferMapping[] constantBuffers = null, TextureMapping[] textures = null)
+            : this(name, type, byteCode)
         {
-            Name = name;
-            ShaderType = type;
             Level = featureLevel;
-            ByteCode = byteCode;
             ConstantBufferMappings = constantBuffers;
             TextureMappings = textures;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <param name="reflector"></param>
+        /// <param name="byteCode"></param>
+        public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, byte[] byteCode)
+            : this(name, type, byteCode)
+        {
+            reflector.Parse(byteCode, type);
+            Level = reflector.FeatureLevel;
+            this.ConstantBufferMappings = reflector.ConstantBufferMappings.Values.ToArray();
+            this.TextureMappings = reflector.TextureMappings.Values.ToArray();
+        }
+
         /// <summary>
         /// Create Shader.
         /// </summary>

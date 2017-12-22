@@ -311,134 +311,72 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSMeshDefault,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
-            },
-            null);
+        public static ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, 
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshDefault);
 
-        public static ShaderDescription VSMeshTessellation = new ShaderDescription(nameof(VSMeshTessellation), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSMeshTessellation,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
-            },
-            null);
+        public static ShaderDescription VSMeshTessellation = new ShaderDescription(nameof(VSMeshTessellation), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshTessellation);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSMeshInstancing = new ShaderDescription(nameof(VSMeshInstancing), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSMeshInstancing,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
-            },
-            null);
+        public static ShaderDescription VSMeshInstancing = new ShaderDescription(nameof(VSMeshInstancing), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshInstancing);
 
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSMeshInstancingTessellation = new ShaderDescription(nameof(VSMeshInstancingTessellation), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSMeshInstancingTessellation,
-            new ConstantBufferMapping[]
-            {
-                        DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                        DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                        DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                        DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
-            },
-            null);
+        public static ShaderDescription VSMeshInstancingTessellation = new ShaderDescription(nameof(VSMeshInstancingTessellation), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshInstancingTessellation);
 
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSMeshBoneSkinning = new ShaderDescription(nameof(VSMeshBoneSkinning), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSMeshBoneSkinning,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3),
-                DefaultConstantBufferDescriptions.BoneCB.CreateMapping(4)
-            },
-            null);
+        public static ShaderDescription VSMeshBoneSkinning = new ShaderDescription(nameof(VSMeshBoneSkinning), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBoneSkinning);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSMeshBoneSkinningTessellation = new ShaderDescription(nameof(VSMeshBoneSkinningTessellation), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSMeshBoneSkinningTessellation,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3),
-                DefaultConstantBufferDescriptions.BoneCB.CreateMapping(4)
-            },
-            null);
+        public static ShaderDescription VSMeshBoneSkinningTessellation = new ShaderDescription(nameof(VSMeshBoneSkinningTessellation), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBoneSkinningTessellation);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSPoint = new ShaderDescription(nameof(VSPoint), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSPoint,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-            },
-            null);
+        public static ShaderDescription VSPoint = new ShaderDescription(nameof(VSPoint), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSPoint);
 
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSBillboardText = new ShaderDescription(nameof(VSBillboardText), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSBillboard,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-            },
-            null);
+        public static ShaderDescription VSBillboardText = new ShaderDescription(nameof(VSBillboardText), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSBillboard);
 
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSBillboardInstancing = new ShaderDescription(nameof(VSBillboardInstancing), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSBillboardInstancing,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-            },
-            null);
+        public static ShaderDescription VSBillboardInstancing = new ShaderDescription(nameof(VSBillboardInstancing), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSBillboardInstancing);
 
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSMeshXRay = new ShaderDescription(nameof(VSMeshXRay), ShaderStage.Vertex, FeatureLevel.Level_11_0,
-            DefaultVSShaderByteCodes.VSMeshXRay,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-            });
+        public static ShaderDescription VSMeshXRay = new ShaderDescription(nameof(VSMeshXRay), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshXRay);
 
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex, FeatureLevel.Level_11_0,
+        public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex,
+            new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshClipPlaneQuad);
     }
 }

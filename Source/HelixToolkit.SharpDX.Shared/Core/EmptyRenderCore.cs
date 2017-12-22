@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     {
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            return DefaultConstantBufferDescriptions.ModelCB;
+            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
         }
 
         protected override void OnRender(IRenderMatrices context)

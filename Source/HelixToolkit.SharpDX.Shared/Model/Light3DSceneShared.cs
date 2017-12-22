@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         /// </summary>
         public Light3DSceneShared(IConstantBufferPool pool)
         {
-            buffer = pool.Register(DefaultConstantBufferDescriptions.LightCB);    
+            buffer = pool.Register(DefaultBufferNames.LightCB, LightsBufferModel.SizeInBytes);    
         }
 
         public void UploadToBuffer(DeviceContext context)

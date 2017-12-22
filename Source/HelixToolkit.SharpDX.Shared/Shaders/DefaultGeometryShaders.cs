@@ -70,30 +70,17 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription GSPoint = new ShaderDescription(nameof(GSPoint), ShaderStage.Geometry, FeatureLevel.Level_11_0,
-            DefaultGSShaderByteCodes.GSPoint,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
-            });
+        public static ShaderDescription GSPoint = new ShaderDescription(nameof(GSPoint), ShaderStage.Geometry, new ShaderReflector(),
+            DefaultGSShaderByteCodes.GSPoint);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription GSLine = new ShaderDescription(nameof(GSLine), ShaderStage.Geometry, FeatureLevel.Level_11_0,
-            DefaultGSShaderByteCodes.GSLine,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
-            });
-
-        public static ShaderDescription GSBillboard = new ShaderDescription(nameof(GSBillboard), ShaderStage.Geometry, FeatureLevel.Level_11_0,
-            DefaultGSShaderByteCodes.GSBillboard,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
-            });
+        public static ShaderDescription GSLine = new ShaderDescription(nameof(GSLine), ShaderStage.Geometry, new ShaderReflector(),
+            DefaultGSShaderByteCodes.GSLine);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription GSBillboard = new ShaderDescription(nameof(GSBillboard), ShaderStage.Geometry, new ShaderReflector(),
+            DefaultGSShaderByteCodes.GSBillboard);
     }
 }

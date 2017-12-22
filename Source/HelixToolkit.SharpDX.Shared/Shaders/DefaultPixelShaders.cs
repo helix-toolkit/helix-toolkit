@@ -181,101 +181,52 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription PSMeshBlinnPhong = new ShaderDescription(nameof(PSMeshBlinnPhong), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSMeshBinnPhong,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3)
-            },
-            new TextureMapping[]
-            {
-                DefaultTextureBufferDescriptions.DiffuseMapTB.CreateMapping(0),
-                DefaultTextureBufferDescriptions.AlphaMapTB.CreateMapping(1),
-                DefaultTextureBufferDescriptions.NormalMapTB.CreateMapping(2),
-                DefaultTextureBufferDescriptions.DisplacementMapTB.CreateMapping(3),
-                DefaultTextureBufferDescriptions.ShadowMapTB.CreateMapping(5)
-            });
+        public static ShaderDescription PSMeshBlinnPhong = new ShaderDescription(nameof(PSMeshBlinnPhong), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshBinnPhong);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription PSMeshVertColor = new ShaderDescription(nameof(PSMeshVertColor), ShaderStage.Pixel, FeatureLevel.Level_11_0,
+        public static ShaderDescription PSMeshVertColor = new ShaderDescription(nameof(PSMeshVertColor), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshVertColor);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription PSMeshVertNormal = new ShaderDescription(nameof(PSMeshVertNormal), ShaderStage.Pixel, FeatureLevel.Level_11_0,
+        public static ShaderDescription PSMeshVertNormal = new ShaderDescription(nameof(PSMeshVertNormal), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshNormal);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription PSMeshVertPosition = new ShaderDescription(nameof(PSMeshVertPosition), ShaderStage.Pixel, FeatureLevel.Level_11_0,
+        public static ShaderDescription PSMeshVertPosition = new ShaderDescription(nameof(PSMeshVertPosition), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshVertPosition);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription PSPoint = new ShaderDescription(nameof(PSPoint), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSPoint,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
-            });
+        public static ShaderDescription PSPoint = new ShaderDescription(nameof(PSPoint), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSPoint);
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription PSLine = new ShaderDescription(nameof(PSLine), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSLine,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1)
-            });
+        public static ShaderDescription PSLine = new ShaderDescription(nameof(PSLine), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSLine);
 
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription PSBillboardText = new ShaderDescription(nameof(PSBillboardText), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSBillboardText,
-            null, new TextureMapping[] { DefaultTextureBufferDescriptions.BillboardTB.CreateMapping(0) });
+        public static ShaderDescription PSBillboardText = new ShaderDescription(nameof(PSBillboardText), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSBillboardText);
 
-        public static ShaderDescription PSMeshXRay = new ShaderDescription(nameof(PSMeshXRay), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSMeshXRay,
-            new ConstantBufferMapping[] { DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1) });
+        public static ShaderDescription PSMeshXRay = new ShaderDescription(nameof(PSMeshXRay), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshXRay);
 
         #region Mesh Clipping
-        public static ShaderDescription PSMeshClipPlane = new ShaderDescription(nameof(PSMeshClipPlane), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSMeshClipPlane,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.GlobalTransformCB.CreateMapping(0),
-                DefaultConstantBufferDescriptions.ModelCB.CreateMapping(1),
-                DefaultConstantBufferDescriptions.LightCB.CreateMapping(2),
-                DefaultConstantBufferDescriptions.MaterialCB.CreateMapping(3),
-                DefaultConstantBufferDescriptions.ClipParamsCB.CreateMapping(5)
+        public static ShaderDescription PSMeshClipPlane = new ShaderDescription(nameof(PSMeshClipPlane), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshClipPlane);
 
-            },
-            new TextureMapping[]
-            {
-                DefaultTextureBufferDescriptions.DiffuseMapTB.CreateMapping(0),
-                DefaultTextureBufferDescriptions.AlphaMapTB.CreateMapping(1),
-                DefaultTextureBufferDescriptions.NormalMapTB.CreateMapping(2),
-                DefaultTextureBufferDescriptions.DisplacementMapTB.CreateMapping(3),
-                DefaultTextureBufferDescriptions.ShadowMapTB.CreateMapping(5)
-            });
+        public static ShaderDescription PSMeshClipBackface = new ShaderDescription(nameof(PSMeshClipBackface), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshClipPlaneBackface);
 
-        public static ShaderDescription PSMeshClipBackface = new ShaderDescription(nameof(PSMeshClipBackface), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSMeshClipPlaneBackface, new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.ClipParamsCB.CreateMapping(5)
-            });
-
-        public static ShaderDescription PSMeshClipScreenQuad = new ShaderDescription(nameof(PSMeshClipScreenQuad), ShaderStage.Pixel, FeatureLevel.Level_11_0,
-            DefaultPSShaderByteCodes.PSMeshClipPlaneQuad,
-            new ConstantBufferMapping[]
-            {
-                DefaultConstantBufferDescriptions.ClipParamsCB.CreateMapping(5)
-            });
+        public static ShaderDescription PSMeshClipScreenQuad = new ShaderDescription(nameof(PSMeshClipScreenQuad), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshClipPlaneQuad);
         #endregion
     }
 }
