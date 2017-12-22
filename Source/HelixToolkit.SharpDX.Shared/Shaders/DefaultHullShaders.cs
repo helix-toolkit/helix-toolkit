@@ -1,4 +1,5 @@
 ﻿using SharpDX.Direct3D;
+using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
