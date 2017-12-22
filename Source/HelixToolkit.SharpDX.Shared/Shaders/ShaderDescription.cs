@@ -35,8 +35,10 @@ namespace HelixToolkit.UWP.Shaders
         public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
         [DataMember]
         public TextureMapping[] TextureMappings { set; get; }
+
+        protected IShaderReflector shaderReflector { private set; get; }
         /// <summary>
-        /// 
+        /// Create a empty description
         /// </summary>
         public ShaderDescription()
         {
@@ -55,7 +57,7 @@ namespace HelixToolkit.UWP.Shaders
             ByteCode = byteCode;
         }
         /// <summary>
-        /// 
+        /// Manually specifiy buffer mappings.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
@@ -73,7 +75,8 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// 
+        /// Create shader using reflector to get buffer mapping directly from shader codes.
+        /// <para>Actual creation happened when calling <see cref="CreateShader(Device, IConstantBufferPool)"/></para>
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
@@ -82,10 +85,7 @@ namespace HelixToolkit.UWP.Shaders
         public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, byte[] byteCode)
             : this(name, type, byteCode)
         {
-            reflector.Parse(byteCode, type);
-            Level = reflector.FeatureLevel;
-            this.ConstantBufferMappings = reflector.ConstantBufferMappings.Values.ToArray();
-            this.TextureMappings = reflector.TextureMappings.Values.ToArray();
+            shaderReflector = reflector;
         }
 
         /// <summary>
@@ -98,6 +98,13 @@ namespace HelixToolkit.UWP.Shaders
             if (ByteCode == null)
             {
                 return new NullShader(ShaderType);
+            }
+            if(shaderReflector != null)
+            {
+                shaderReflector.Parse(ByteCode, ShaderType);
+                Level = shaderReflector.FeatureLevel;
+                this.ConstantBufferMappings = shaderReflector.ConstantBufferMappings.Values.ToArray();
+                this.TextureMappings = shaderReflector.TextureMappings.Values.ToArray();
             }
             IShader shader = null;
             switch (ShaderType)
