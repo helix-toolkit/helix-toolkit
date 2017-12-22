@@ -91,18 +91,4 @@ namespace HelixToolkit.Wpf.SharpDX
         event RoutedEventHandler MouseUp3D;
         event RoutedEventHandler MouseMove3D;
     }
-
-    public interface IParameterVariables
-    {
-        /// <summary>
-        /// Create variables
-        /// </summary>
-        /// <param name="effect"></param>
-        void OnAttach(global::SharpDX.Direct3D11.Effect effect);
-
-        /// <summary>
-        /// Release variables
-        /// </summary>
-        void OnDettach();
-    }
 }
