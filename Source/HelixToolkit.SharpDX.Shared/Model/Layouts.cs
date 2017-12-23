@@ -213,7 +213,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasBones;
         public Vector4 Params;
         public Vector4 Color;
-        public const int SizeInBytes = 4 * (4 * 4 + 4 * 3);
+        public Bool4 BoolParams;
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

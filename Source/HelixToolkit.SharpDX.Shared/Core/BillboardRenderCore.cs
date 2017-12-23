@@ -17,9 +17,9 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
-            model.Params.X = FixedSize ? 1 : 0;
+            model.BoolParams.X = FixedSize;
             var type = (GeometryBuffer as IBillboardBufferModel).Type;
-            model.Params.Y = (int)type;
+            model.Params.X = (int)type;
         }
 
         protected override void OnRender(IRenderMatrices context)

@@ -32,8 +32,8 @@ cbuffer cbModel
     bool bHasBones = false;
     float4 vParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
     float4 vColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
+    bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
 };
-
 
 
 #ifdef MATERIAL
@@ -90,7 +90,7 @@ cbuffer cbMaterial
 Texture2D texDiffuseMap;
 Texture2D texAlphaMap;
 Texture2D texNormalMap;
-Texture2D texDisplacementMap);
+Texture2D texDisplacementMap;
 TextureCube texCubeMap;
 Texture2D texShadowMap;
 
@@ -114,6 +114,54 @@ cbuffer cbClipping
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
 	float4x4 CrossPlaneParams;
 }
+#endif
+
+
+#ifdef PARTICLE
+cbuffer ParticleRandoms
+{
+	uint RandomSeed;
+	float3 RandomVector;
+	float2 ParticleSize;
+	uint NumTexCol;
+	uint NumTexRow;
+	bool AnimateByEnergyLevel;
+};
+
+cbuffer ParticleFrame
+{
+	uint NumParticles;
+	float3 ExtraAccelation;
+
+    float TimeFactors; 
+	float3 DomainBoundsMax;
+
+	float3 DomainBoundsMin;         
+	uint CumulateAtBound;
+
+	float3 ConsumerLocation;
+	float ConsumerGravity;
+
+	float ConsumerRadius;
+	float3 Pad;
+};
+
+cbuffer ParticleCreateParameters
+{
+	float3 EmitterLocation;
+	float InitialEnergy;
+
+	float EmitterRadius;
+	float2 Pad1;
+	float InitialVelocity;
+
+	float4 ParticleBlendColor;
+
+	float EnergyDissipationRate; //Energy dissipation rate per second
+	float3 InitialAcceleration;
+};
+
+Texture2D texDiffuseMap;
 #endif
 
 #endif

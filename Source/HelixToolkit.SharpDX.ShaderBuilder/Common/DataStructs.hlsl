@@ -242,4 +242,47 @@ struct PSInputScreenQuad
     float4 p : POSITION;
     float4 c : COLOR;
 };
+
+//----------------Particle---------------------
+struct Particle
+{
+    float3 position;
+    float initEnergy;
+    float3 velocity;
+    float energy;
+    float4 color;
+    float3 initAccelleration;
+    float dissipRate;
+    uint2 TexColRow;
+};
+
+//--------------------------------------------------------------------------------
+// Inter-stage structures
+//--------------------------------------------------------------------------------
+struct ParticleVS_INPUT
+{
+    float4 mr0 : TEXCOORD1;
+    float4 mr1 : TEXCOORD2;
+    float4 mr2 : TEXCOORD3;
+    float4 mr3 : TEXCOORD4;
+};
+//--------------------------------------------------------------------------------
+struct ParticleGS_INPUT
+{
+    float3 position : Position;
+    float energy : Energy;
+    float4 color : COLOR0;
+    float initEnergy : Energy1;
+    uint2 texColRow : TexOff;
+};
+//--------------------------------------------------------------------------------
+struct ParticlePS_INPUT
+{
+    float4 position : SV_Position;
+    noperspective
+	float4 color : COLOR0;
+    float2 texcoords : TEXCOORD0;
+    float opacity : OPACITY0;
+    float pad0 : PAD;
+};
 #endif

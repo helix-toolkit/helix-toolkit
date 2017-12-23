@@ -44,9 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CS\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
@@ -55,6 +53,9 @@
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\CommonSamplers.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <GeometryShader Include="GS\gsParticle.hlsl" />
+    <PixelShader Include="PS\psParticle.hlsl" />
+    <Content Include="VS\vsParticle.hlsl" />
     <VertexShader Include="VS\vsBoneSkinningTessellation.hlsl" />
     <VertexShader Include="VS\vsBillboardInstancing.hlsl" />
     <VertexShader Include="VS\vsMeshInstancingTessellation.hlsl" />
@@ -81,6 +82,8 @@
     <GeometryShader Include="GS\gsBillboard.hlsl" />
     <HullShader Include="HS\hsMeshTriTessellation.hlsl" />
     <DomainShader Include="DS\dsMeshTriTessellation.hlsl" />
+    <ComputeShader Include="CS\csParticleInsert.hlsl" />
+    <ComputeShader Include="CS\csParticleUpdate.hlsl" />
     <Content Include="License.txt" />
     <Content Include="PS\psCommon.hlsl" />
     <PixelShader Include="PS\psMeshXRay.hlsl" />
