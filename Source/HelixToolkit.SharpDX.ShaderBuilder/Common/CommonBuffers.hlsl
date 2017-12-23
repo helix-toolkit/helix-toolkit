@@ -126,6 +126,7 @@ cbuffer cbParticleRandoms
 	uint NumTexCol;
 	uint NumTexRow;
 	bool AnimateByEnergyLevel;
+	float3 pad0;
 };
 
 cbuffer cbParticleFrame
@@ -143,7 +144,7 @@ cbuffer cbParticleFrame
 	float ConsumerGravity;
 
 	float ConsumerRadius;
-	float3 Pad;
+	float3 pad1;
 };
 
 cbuffer cbParticleCreateParameters
@@ -152,7 +153,7 @@ cbuffer cbParticleCreateParameters
 	float InitialEnergy;
 
 	float EmitterRadius;
-	float2 Pad1;
+	float2 pad2;
 	float InitialVelocity;
 
 	float4 ParticleBlendColor;

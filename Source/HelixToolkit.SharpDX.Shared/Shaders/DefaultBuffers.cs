@@ -32,5 +32,8 @@ namespace HelixToolkit.UWP.Shaders
         public static string ParticleFrameCB = "cbParticleFrame";
         public static string ParticleCreateParameters = "cbParticleCreateParameters";
         public static string ParticleMapTB = "texDiffuseMap";
+        public static string CurrentSimulationStateUB = "CurrentSimulationState";
+        public static string NewSimulationStateUB = "NewSimulationState";
+        public static string SimulationStateTB = "SimulationState";
     }
 }

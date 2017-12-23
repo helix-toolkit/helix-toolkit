@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP
         public const string ScreenQuad = "ScreenQuad";
     }
 
-    public struct ParticlePassNames
+    public struct DefaultParticlePassNames
     {
         public const string Insert = "InsertParticle";//For compute shader
         public const string Update = "UpdateParticle";//For compute shader

@@ -131,6 +131,14 @@ namespace HelixToolkit.UWP.Shaders
             {
                 shaders.Add(ShaderStage.Compute, new NullShader(ShaderStage.Compute));
             }
+            if (!shaders.ContainsKey(ShaderStage.Vertex))
+            {
+                shaders.Add(ShaderStage.Vertex, new NullShader(ShaderStage.Vertex));
+            }
+            if (!shaders.ContainsKey(ShaderStage.Pixel))
+            {
+                shaders.Add(ShaderStage.Pixel, new NullShader(ShaderStage.Pixel));
+            }
             BlendState = passDescription.BlendStateDescription != null ? manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription) : null;
 
             DepthStencilState = passDescription.DepthStencilStateDescription != null ? manager.StateManager.Register((DepthStencilStateDescription)passDescription.DepthStencilStateDescription) : null;

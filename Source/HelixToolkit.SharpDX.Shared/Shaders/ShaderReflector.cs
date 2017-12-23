@@ -20,6 +20,8 @@ namespace HelixToolkit.UWP.Shaders
 
         public IDictionary<string, TextureMapping> TextureMappings { get; } = new Dictionary<string, TextureMapping>();
 
+        public IDictionary<string, UAVMapping> UAVMappings { get; } = new Dictionary<string, UAVMapping>();
+
         public ShaderReflector()
         {
 
@@ -34,7 +36,7 @@ namespace HelixToolkit.UWP.Shaders
                 FeatureLevel = reflection.MinFeatureLevel;
                 for (int i = 0; i < reflection.Description.BoundResources; ++i)
                 {
-                    var res = reflection.GetResourceBindingDescription(i);
+                    var res = reflection.GetResourceBindingDescription(i);                   
                     switch (res.Type)
                     {
                         case ShaderInputType.ConstantBuffer:
@@ -43,8 +45,18 @@ namespace HelixToolkit.UWP.Shaders
                             ConstantBufferMappings.Add(res.Name, cbDesc.CreateMapping(res.BindPoint));
                             break;
                         case ShaderInputType.Texture:
+                        case ShaderInputType.Structured:
+                        case ShaderInputType.TextureBuffer:
                             var tDesc = new TextureDescription(res.Name, stage);
                             TextureMappings.Add(res.Name, tDesc.CreateMapping(res.BindPoint));
+                            break;
+                        case ShaderInputType.UnorderedAccessViewAppendStructured:
+                        case ShaderInputType.UnorderedAccessViewConsumeStructured:
+                        case ShaderInputType.UnorderedAccessViewRWByteAddress:
+                        case ShaderInputType.UnorderedAccessViewRWStructuredWithCounter:
+                        case ShaderInputType.UnorderedAccessViewRWTyped:
+                            var uDesc = new UAVDescription(res.Name, stage);
+                            UAVMappings.Add(res.Name, uDesc.CreateMapping(res.BindPoint));
                             break;
                     }
                 }

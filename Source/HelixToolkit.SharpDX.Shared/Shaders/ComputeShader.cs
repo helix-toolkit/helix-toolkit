@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="name"></param>
         /// <param name="byteCode"></param>
         public ComputeShader(Device device, string name, byte[] byteCode)
-            :base(name, ShaderStage.Hull)
+            :base(name, ShaderStage.Compute)
         {
             shader = Collect(new global::SharpDX.Direct3D11.ComputeShader(device, byteCode));
         }
@@ -77,6 +77,38 @@ namespace HelixToolkit.UWP.Shaders
             foreach (var texture in textures)
             {
                 context.ComputeShader.SetShaderResource(texture.Item1, texture.Item2);
+            }
+        }
+        /// <summary>
+        /// <see cref="IShader.BindUAV(DeviceContext, int, UnorderedAccessView)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="slot"></param>
+        /// <param name="uav"></param>
+        public override void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav)
+        {
+            context.ComputeShader.SetUnorderedAccessView(slot, uav);
+        }
+        /// <summary>
+        /// <see cref="IShader.BindUAV(DeviceContext, string, UnorderedAccessView)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="name"></param>
+        /// <param name="uav"></param>
+        public override void BindUAV(DeviceContext context, string name, UnorderedAccessView uav)
+        {
+            context.ComputeShader.SetUnorderedAccessView(TryGetTextureIndex(name), uav);
+        }
+        /// <summary>
+        /// <see cref="IShader.BindUAVs(DeviceContext, IEnumerable{Tuple{int, UnorderedAccessView}})"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="uavs"></param>
+        public override void BindUAVs(DeviceContext context, IEnumerable<Tuple<int, UnorderedAccessView>> uavs)
+        {
+            foreach(var uav in uavs)
+            {
+                context.ComputeShader.SetUnorderedAccessView(uav.Item1, uav.Item2);
             }
         }
     }

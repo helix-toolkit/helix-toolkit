@@ -35,6 +35,8 @@ namespace HelixToolkit.UWP.Shaders
         public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
         [DataMember]
         public TextureMapping[] TextureMappings { set; get; }
+        [DataMember]
+        public UAVMapping[] UAVMappings { get; set; }
 
         protected IShaderReflector shaderReflector { private set; get; }
         /// <summary>
@@ -105,6 +107,7 @@ namespace HelixToolkit.UWP.Shaders
                 Level = shaderReflector.FeatureLevel;
                 this.ConstantBufferMappings = shaderReflector.ConstantBufferMappings.Values.ToArray();
                 this.TextureMappings = shaderReflector.TextureMappings.Values.ToArray();
+                this.UAVMappings = shaderReflector.UAVMappings.Values.ToArray();
             }
             IShader shader = null;
             switch (ShaderType)
@@ -116,6 +119,7 @@ namespace HelixToolkit.UWP.Shaders
                     shader = new PixelShader(device, Name, ByteCode);
                     break;
                 case ShaderStage.Compute:
+                    shader = new ComputeShader(device, Name, ByteCode);
                     break;
                 case ShaderStage.Domain:
                     shader = new DomainShader(device, Name, ByteCode);
@@ -141,6 +145,13 @@ namespace HelixToolkit.UWP.Shaders
                 foreach (var mapping in TextureMappings)
                 {
                     shader.AddTextureMapping(mapping.Description.Name, mapping.Slot, mapping);
+                }
+            }
+            if (UAVMappings != null)
+            {
+                foreach(var mapping in UAVMappings)
+                {
+                    shader.AddUAVMapping(mapping.Description.Name, mapping.Slot, mapping);
                 }
             }
             return shader;

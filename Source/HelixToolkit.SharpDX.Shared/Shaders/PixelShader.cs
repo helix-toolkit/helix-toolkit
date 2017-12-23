@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
         {
-            context.VertexShader.SetShaderResource(TryGetTextureIndex(name), texture);
+            context.PixelShader.SetShaderResource(TryGetTextureIndex(name), texture);
         }
         /// <summary>
         /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
         {
-            context.VertexShader.SetShaderResource(index, texture);
+            context.PixelShader.SetShaderResource(index, texture);
         }
         /// <summary>
         /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
@@ -79,7 +79,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             foreach (var texture in textures)
             {
-                context.VertexShader.SetShaderResource(texture.Item1, texture.Item2);
+                context.PixelShader.SetShaderResource(texture.Item1, texture.Item2);
             }
         }
     }

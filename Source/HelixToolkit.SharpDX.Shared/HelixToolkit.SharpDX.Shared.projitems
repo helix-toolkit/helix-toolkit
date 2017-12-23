@@ -113,6 +113,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\Technique.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\TechniqueDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\TextureDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\UAVDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\VertexShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Component.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\ComponentBase.cs" />

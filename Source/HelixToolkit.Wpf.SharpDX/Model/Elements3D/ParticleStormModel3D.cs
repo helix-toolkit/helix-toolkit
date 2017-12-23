@@ -393,7 +393,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    (d as ParticleStormModel3D).particleCore.AnimateSpriteByEnergy = (bool)e.NewValue ? 1u : 0;
+                    (d as ParticleStormModel3D).particleCore.AnimateSpriteByEnergy = (bool)e.NewValue;
                 }));
 
         public bool AnimateSpriteByEnergy

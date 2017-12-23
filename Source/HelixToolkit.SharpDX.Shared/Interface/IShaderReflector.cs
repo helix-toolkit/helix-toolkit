@@ -8,31 +8,30 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
 namespace HelixToolkit.UWP.Shaders
 #endif
-{
-    public sealed class BufferMappingDesc
-    {
-        public string Name { private set; get; }
-        public int Slot { private set; get; }
-        public int Size { private set; get; } = 0;
-        public BufferMappingDesc(string name, int slot, int size = 0)
-        {
-            Name = name;
-            Slot = slot;
-            Size = size;
-        }
-    }
+{ 
     public interface IShaderReflector
     {
+        /// <summary>
+        /// 
+        /// </summary>
         FeatureLevel FeatureLevel { get; }
-
+        /// <summary>
+        /// Pass the byte code, reflect all shader buffer bindings
+        /// </summary>
+        /// <param name="byteCode"></param>
+        /// <param name="stage"></param>
         void Parse(byte[] byteCode, ShaderStage stage);
         /// <summary>
-        /// Get constant buffer mapping. <para>Key: Name; Item1: Slot; Item2: Size</para>
+        /// Get constant buffer mapping.
         /// </summary>
         IDictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; }
         /// <summary>
-        /// Get constant buffer mapping. <para>Key: Name; Value: Slot;</para>
+        /// Get texture buffer mapping.
         /// </summary>
-        IDictionary<string, TextureMapping> TextureMappings { get; }      
+        IDictionary<string, TextureMapping> TextureMappings { get; }
+        /// <summary>
+        /// Get Unordered Access View buffer mapping.
+        /// </summary>
+        IDictionary<string, UAVMapping> UAVMappings { get; }
     }
 }

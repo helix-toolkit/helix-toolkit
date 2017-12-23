@@ -337,28 +337,30 @@ namespace HelixToolkit.UWP
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSParticle, DefaultInputLayout.VSInputParticle),
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(ParticlePassNames.Insert)
+                    new ShaderPassDescription(DefaultParticlePassNames.Insert)
                     {
                         ShaderList = new[]
                         {
                             DefaultComputeShaderDescriptions.CSParticleInsert
                         }
                     },
-                    new ShaderPassDescription(ParticlePassNames.Update)
+                    new ShaderPassDescription(DefaultParticlePassNames.Update)
                     {
                         ShaderList = new[]
                         {
                             DefaultComputeShaderDescriptions.CSParticleUpdate
                         }
                     },
-                    new ShaderPassDescription(ParticlePassNames.Default)
+                    new ShaderPassDescription(DefaultParticlePassNames.Default)
                     {
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSParticle,
                             DefaultGSShaderDescriptions.GSParticle,
                             DefaultPSShaderDescriptions.PSParticle
-                        }
+                        },
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
+                        RasterStateDescription = DefaultRasterDescriptions.RSSolidNoMSAA
                     }
                 }
             };

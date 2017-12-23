@@ -21,24 +21,35 @@ namespace HelixToolkit.UWP.Shaders
         string Name { get; }
         ShaderStage ShaderType { get; }
         IEnumerable<Tuple<int, TextureMapping>> TextureMapping { get; }
+        IEnumerable<Tuple<int, UAVMapping>> UAVMapping { get; }
         int TextureMappingCount { get; }
-
-        void AddConstantBuffer(string name, int index, IBufferProxy buffer);
-        void AddTextureMapping(string name, int index, TextureMapping mapping);
+        int UAVMappingCount { get; }
+        void AddConstantBuffer(string name, int slot, IBufferProxy buffer);
+        void AddTextureMapping(string name, int slot, TextureMapping mapping);
+        void AddUAVMapping(string name, int slot, UAVMapping mapping);
         void Bind(DeviceContext context);
         void BindConstantBuffers(DeviceContext context);
         void BindTexture(DeviceContext context, string name, ShaderResourceView texture);
-        void BindTexture(DeviceContext context, int index, ShaderResourceView texture);
+        void BindTexture(DeviceContext context, int slot, ShaderResourceView texture);
         void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures);
+        void BindUAV(DeviceContext context, string name, UnorderedAccessView uav);
+        void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav);
+        void BindUAVs(DeviceContext context, IEnumerable<Tuple<int, UnorderedAccessView>> uavs);
         void ClearConstantBuffer();
         void ClearTextureMappings();
+        void ClearUAVMappings();
         int TryGetTextureIndex(string name);
         TextureMapping GetTextureMapping(string name);
         TextureMapping GetTextureMapping(int slot);
-        string TryGetTextureName(int index);
+        UAVMapping GetUAVMapping(string name);
+        UAVMapping GetUAVMapping(int slot);
+        string TryGetTextureName(int slot);
+        string TryGetUAVName(int slot);
         bool RemoveConstantBuffer(string name);
-        bool RemoveConstantBuffer(int index);
+        bool RemoveConstantBuffer(int slot);
         bool RemoveTextureMapping(string name);
-        bool RemoveTextureMapping(int index);
+        bool RemoveTextureMapping(int slot);
+        bool RemoveUAVMapping(int slot);
+        bool RemoveUAVMapping(string name);
     }
 }

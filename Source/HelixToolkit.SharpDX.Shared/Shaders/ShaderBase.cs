@@ -20,20 +20,31 @@ namespace HelixToolkit.UWP.Shaders
     {
         private readonly MappingCollection<int, string, IBufferProxy> cbufferMapping = new MappingCollection<int, string, IBufferProxy>();
         private readonly MappingCollection<int, string, TextureMapping> texturesMapping = new MappingCollection<int, string, TextureMapping>();
+        private readonly MappingCollection<int, string, UAVMapping> uavMapping = new MappingCollection<int, string, UAVMapping>();
         /// <summary>
-        /// Constant buffer mapping
+        /// <see cref="IShader.CBufferMapping"/>
         /// </summary>
         public IEnumerable<Tuple<int, IBufferProxy>> CBufferMapping { get { return cbufferMapping.DataMapping; } }
-
+        /// <summary>
+        /// <see cref="IShader.TextureMapping"/>
+        /// </summary>
         public IEnumerable<Tuple<int, TextureMapping>> TextureMapping { get { return texturesMapping.DataMapping; } }
         /// <summary>
-        /// 
+        /// <see cref="IShader.UAVMapping"/>
+        /// </summary>
+        public IEnumerable<Tuple<int, UAVMapping>> UAVMapping { get { return uavMapping.DataMapping; } }
+        /// <summary>
+        /// <see cref="IShader.ConstantBufferCount"/>
         /// </summary>
         public int ConstantBufferCount { get { return cbufferMapping.Count; } }
         /// <summary>
-        /// 
+        /// <see cref="IShader.TextureMappingCount"/>
         /// </summary>
-        public int TextureMappingCount { get { return texturesMapping.Count; } }       
+        public int TextureMappingCount { get { return texturesMapping.Count; } } 
+        /// <summary>
+        /// <see cref="IShader.UAVMappingCount"/>
+        /// </summary>
+        public int UAVMappingCount { get { return uavMapping.Count; } }      
         /// <summary>
         /// Bind Stage
         /// </summary>
@@ -56,20 +67,30 @@ namespace HelixToolkit.UWP.Shaders
         /// Add shader constant buffer
         /// </summary>
         /// <param name="name">Buffer Name in Shader Code</param>
-        /// <param name="index">Buffer Register Index(bx) in Shader Code</param>
+        /// <param name="slot">Buffer Register Index(bx) in Shader Code</param>
         /// <param name="buffer"></param>
-        public void AddConstantBuffer(string name, int index, IBufferProxy buffer)
+        public void AddConstantBuffer(string name, int slot, IBufferProxy buffer)
         {
-            cbufferMapping.Add(index, name, buffer);
+            cbufferMapping.Add(slot, name, buffer);
         }
         /// <summary>
         /// Add texture mapping. Only use to store the texture register information from shader code
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="index">Texture register index(tx) in Shader Code.</param>
-        public void AddTextureMapping(string name, int index, TextureMapping mapping)
+        /// <param name="slot">Texture register slot(tx) in Shader Code.</param>
+        public void AddTextureMapping(string name, int slot, TextureMapping mapping)
         {
-            texturesMapping.Add(index, name, mapping);
+            texturesMapping.Add(slot, name, mapping);
+        }
+        /// <summary>
+        /// <see cref="IShader.AddUAVMapping(string, int, Shaders.UAVMapping)"/>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="slot"></param>
+        /// <param name="mapping"></param>
+        public void AddUAVMapping(string name, int slot, UAVMapping mapping)
+        {
+            uavMapping.Add(slot, name, mapping);
         }
         /// <summary>
         /// 
@@ -83,11 +104,11 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="slot"></param>
         /// <returns></returns>
-        public bool RemoveConstantBuffer(int index)
+        public bool RemoveConstantBuffer(int slot)
         {
-            return cbufferMapping.Remove(index);
+            return cbufferMapping.Remove(slot);
         }
         /// <summary>
         /// 
@@ -101,14 +122,33 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="slot"></param>
         /// <returns></returns>
-        public bool RemoveTextureMapping(int index)
+        public bool RemoveTextureMapping(int slot)
         {
-            return texturesMapping.Remove(index);
+            return texturesMapping.Remove(slot);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool RemoveUAVMapping(string name)
+        {
+            return uavMapping.Remove(name);
         }
         /// <summary>
-        /// Try to get texture register index in shader by its name, if failed, return -1;
+        /// 
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public bool RemoveUAVMapping(int slot)
+        {
+            return uavMapping.Remove(slot);
+        }
+        /// <summary>
+        /// Try to get texture register slot in shader by its name, if failed, return -1;
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -118,15 +158,37 @@ namespace HelixToolkit.UWP.Shaders
             return texturesMapping.TryGetItem(name, out item) ? item : -1;
         }
         /// <summary>
-        /// Try to get texture name by register index. If failed, return empty string;
+        /// Try to get texture name by register slot. If failed, return empty string;
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="slot"></param>
         /// <returns></returns>
-        public string TryGetTextureName(int index)
+        public string TryGetTextureName(int slot)
         {
             Tuple<string, TextureMapping> item;
-            return texturesMapping.TryGetItem(index, out item) ? item.Item1 : "";
+            return texturesMapping.TryGetItem(slot, out item) ? item.Item1 : "";
         }
+
+        /// <summary>
+        /// Try to get uav register slot in shader by its name, if failed, return -1;
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int TryGetUAVIndex(string name)
+        {
+            int item;
+            return uavMapping.TryGetItem(name, out item) ? item : -1;
+        }
+        /// <summary>
+        /// Try to get uav name by register slot. If failed, return empty string;
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public string TryGetUAVName(int slot)
+        {
+            Tuple<string, UAVMapping> item;
+            return uavMapping.TryGetItem(slot, out item) ? item.Item1 : "";
+        }
+
         /// <summary>
         /// Return a cloned texture mapping
         /// </summary>
@@ -136,7 +198,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             if (texturesMapping.HasItem(name))
             {
-                return (TextureMapping)texturesMapping[name].Item2.Clone();                
+                return texturesMapping[name].Item2.Clone();                
             }
             else
             {
@@ -152,7 +214,40 @@ namespace HelixToolkit.UWP.Shaders
         {
             if (texturesMapping.HasItem(slot))
             {
-                return (TextureMapping)texturesMapping[slot].Item2.Clone();
+                return texturesMapping[slot].Item2.Clone();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Return a cloned uav mapping
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public UAVMapping GetUAVMapping(string name)
+        {
+            if (uavMapping.HasItem(name))
+            {
+                return uavMapping[name].Item2.Clone();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// Return a cloned uav mapping
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public UAVMapping GetUAVMapping(int slot)
+        {
+            if (uavMapping.HasItem(slot))
+            {
+                return uavMapping[slot].Item2.Clone();
             }
             else
             {
@@ -174,6 +269,14 @@ namespace HelixToolkit.UWP.Shaders
             texturesMapping.Clear();
         }
         /// <summary>
+        /// 
+        /// </summary>
+        public void ClearUAVMappings()
+        {
+            uavMapping.Clear();
+        }
+
+        /// <summary>
         /// Bind this shader to pipeline
         /// </summary>
         /// <param name="context"></param>
@@ -194,14 +297,35 @@ namespace HelixToolkit.UWP.Shaders
         ///  Bind specified texture resources.
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="index"></param>
+        /// <param name="slot"></param>
         /// <param name="texture"></param>
-        public abstract void BindTexture(DeviceContext context, int index, ShaderResourceView texture);
+        public abstract void BindTexture(DeviceContext context, int slot, ShaderResourceView texture);
         /// <summary>
         /// Bind a list of textures
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>
         public abstract void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures);
+
+        /// <summary>
+        /// Bind specified uav resources.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="name"></param>
+        /// <param name="texture"></param>
+        public virtual void BindUAV(DeviceContext context, string name, UnorderedAccessView uav) { }
+        /// <summary>
+        ///  Bind specified uav resources.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="slot"></param>
+        /// <param name="texture"></param>
+        public virtual void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav) { }
+        /// <summary>
+        /// Bind a list of uav
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="textures"></param>
+        public virtual void BindUAVs(DeviceContext context, IEnumerable<Tuple<int, UnorderedAccessView>> uavs) { }
     }
 }

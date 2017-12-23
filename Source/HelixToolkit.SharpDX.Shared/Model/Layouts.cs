@@ -172,6 +172,19 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ParticleRandom
+    {
+        public uint RandomSeed;
+        public Vector3 RandomVector;
+        public Vector2 ParticleSize;
+        public uint NumTexCol;
+        public uint NumTexRow;
+        public int AnimateByEnergyLevel;
+        Vector3 padding;
+        public const int SizeInBytes = 4 * (4 + 4 + 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct MaterialStruct
     {
         public Color4 Ambient;

@@ -142,6 +142,16 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultRasterDescriptions
     {
-
+        public readonly static RasterizerStateDescription RSSolidNoMSAA = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.Back,
+            DepthBias = -5,
+            DepthBiasClamp = -10,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
     }
 }
