@@ -259,4 +259,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct TessellationStruct
+    {
+        public float MinTessDistance; // Minimum distance to do tessellation
+        public float MaxTessDistance; // Maximum distance to do tessellation
+        public float MinTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
+        public float MaxTessFactor; // Tessellation factor when at maximum distance
+        public const int SizeInBytes = 4 * 4;
+    }
 }

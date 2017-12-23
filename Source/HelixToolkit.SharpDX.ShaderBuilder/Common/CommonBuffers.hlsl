@@ -35,6 +35,15 @@ cbuffer cbModel
     bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
 };
 
+#ifdef TESSELLATION
+cbuffer cbTessellation
+{
+	float minTessDistance = 1;
+	float maxTessDistance = 100;
+	float minTessFactor = 4;
+	float maxTessFactor = 1;
+};
+#endif
 
 #ifdef MATERIAL
 #define LIGHTS 8

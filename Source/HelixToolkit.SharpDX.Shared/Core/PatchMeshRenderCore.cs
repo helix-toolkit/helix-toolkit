@@ -38,9 +38,61 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Utilities;
+    using Shaders;
     public class PatchMeshRenderCore : MeshRenderCore
     {
-        public float TessellationFactor { set; get; } = 1.0f;
+        public float MinTessellationDistance
+        {
+            set
+            {
+                TessellationParameters.MinTessDistance = value;
+                tessParamUpdated = true;
+            }
+            get
+            {
+                return TessellationParameters.MinTessDistance;
+            }
+        }
+
+        public float MaxTessellationDistance
+        {
+            set
+            {
+                TessellationParameters.MaxTessDistance = value;
+                tessParamUpdated = true;
+            }
+            get
+            {
+                return TessellationParameters.MaxTessDistance;
+            }
+        }
+
+        public float MinTessellationFactor
+        {
+            set
+            {
+                TessellationParameters.MinTessFactor = value;
+                tessParamUpdated = true;
+            }
+            get
+            {
+                return TessellationParameters.MinTessFactor;
+            }
+        }
+
+        public float MaxTessellationFactor
+        {
+            set
+            {
+                TessellationParameters.MaxTessFactor = value;
+                tessParamUpdated = true;
+            }
+            get
+            {
+                return TessellationParameters.MaxTessFactor;
+            }
+        }
 
         private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
         public MeshTopologyEnum MeshType
@@ -88,15 +140,41 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+
+        private bool tessParamUpdated = true;
+        private TessellationStruct TessellationParameters = new TessellationStruct()
+        { MaxTessDistance = 50, MinTessDistance = 1, MaxTessFactor = 1, MinTessFactor = 4 };
+
+        private IBufferProxy tessParamBuffer;
+
         public PatchMeshRenderCore()
         {
             DefaultShaderPassName = DefaultPassNames.Default;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.Params.X = TessellationFactor;
+            if (base.OnAttach(technique))
+            {
+                tessParamBuffer = technique.ConstantBufferPool.Register(DefaultBufferNames.TessellationParamsCB, TessellationStruct.SizeInBytes);
+                tessParamUpdated = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        {
+            base.OnUploadPerModelConstantBuffers(context);
+            if (tessParamUpdated)
+            {
+                tessParamBuffer.UploadDataToBuffer(context, ref TessellationParameters);
+                tessParamUpdated = false;
+            }
         }
 
         protected override void OnRender(IRenderMatrices context)

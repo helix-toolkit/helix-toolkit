@@ -153,7 +153,7 @@
                         Grid.Row="8"
                         Grid.Column="1"
                         Margin="3"
-                        Text="{Binding TessellationFactor, ElementName=model1}" />
+                        Text="{Binding MinTessellationFactor, ElementName=model1}" />
                     <Slider
                         Grid.Row="9"
                         Grid.ColumnSpan="2"
@@ -162,7 +162,7 @@
                         Maximum="24"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding TessellationFactor, ElementName=model1}" />
+                        Value="{Binding MinTessellationFactor, ElementName=model1}" />
 
                 </Grid>
             </Expander>

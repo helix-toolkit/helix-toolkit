@@ -59,7 +59,7 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
     output.cDiffuse = vMaterialDiffuse;
 	// --- Classical vertex-shader transforms: 
 	// --- output position in the clip-space	
-    output.p = mul(float4(position, 1.0f), mWorld);
+    output.p = float4(position, 1); //mul(float4(position, 1.0f), mWorld);
     output.wp = output.p;
     output.p = mul(output.p, mView);
     output.p = mul(output.p, mProjection);

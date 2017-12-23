@@ -1,6 +1,7 @@
 #ifndef VSMESHTESSELLATION_HLSL
 #define VSMESHTESSELLATION_HLSL
 #define MATERIAL
+#define TESSELLATION
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
@@ -37,13 +38,15 @@ HSInput main(VSInput input)
             inputt2 = mul(inputt2, (float3x3) mInstance);
         }
     }
-    output.p = inputp.xyz;
+    output.p = mul(inputp, mWorld).xyz;
     output.t = input.t;
     output.n = inputn;
     output.t1 = inputt1;
     output.t2 = inputt2;
     output.c = input.c;
     output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+    float tess = saturate((minTessDistance - distance(output.p, vEyePos)) / (minTessDistance - maxTessDistance));
+    output.tessF = minTessFactor + tess * (maxTessFactor - minTessFactor);
     return output;
 }
 #endif

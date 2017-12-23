@@ -223,6 +223,7 @@ struct HSInput
 	float3 t2 : TEXCOORD3;
 	float4 c : COLOR;
     float4 c2 : COLOR1;
+    float tessF : TESS;
 };
 
 //--------------------------------------------------------------------------------------
