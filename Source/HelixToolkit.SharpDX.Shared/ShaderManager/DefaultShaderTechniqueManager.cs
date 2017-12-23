@@ -332,6 +332,37 @@ namespace HelixToolkit.UWP
                 }
             };
 
+            var renderParticle = new TechniqueDescription(DefaultRenderTechniqueNames.ParticleStorm)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSParticle, DefaultInputLayout.VSInputParticle),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(ParticlePassNames.Insert)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultComputeShaderDescriptions.CSParticleInsert
+                        }
+                    },
+                    new ShaderPassDescription(ParticlePassNames.Update)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultComputeShaderDescriptions.CSParticleUpdate
+                        }
+                    },
+                    new ShaderPassDescription(ParticlePassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSParticle,
+                            DefaultGSShaderDescriptions.GSParticle,
+                            DefaultPSShaderDescriptions.PSParticle
+                        }
+                    }
+                }
+            };
+
             return new List<TechniqueDescription>
             {
                 renderBlinn,
@@ -345,6 +376,7 @@ namespace HelixToolkit.UWP
                 renderColors,
                 renderPositions,
                 renderMeshBlinnClipPlane,
+                renderParticle,
             };
         }
     }

@@ -118,7 +118,7 @@ cbuffer cbClipping
 
 
 #ifdef PARTICLE
-cbuffer ParticleRandoms
+cbuffer cbParticleRandoms
 {
 	uint RandomSeed;
 	float3 RandomVector;
@@ -128,7 +128,7 @@ cbuffer ParticleRandoms
 	bool AnimateByEnergyLevel;
 };
 
-cbuffer ParticleFrame
+cbuffer cbParticleFrame
 {
 	uint NumParticles;
 	float3 ExtraAccelation;
@@ -146,7 +146,7 @@ cbuffer ParticleFrame
 	float3 Pad;
 };
 
-cbuffer ParticleCreateParameters
+cbuffer cbParticleCreateParameters
 {
 	float3 EmitterLocation;
 	float InitialEnergy;

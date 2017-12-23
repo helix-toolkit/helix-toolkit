@@ -90,8 +90,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderTechniqueManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\StatePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\BlendStates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\ComputeShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ConstantBufferDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultBuffers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultComputeShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultDomainShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultGeometryShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DefaultHullShaders.cs" />

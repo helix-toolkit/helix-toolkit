@@ -46,13 +46,31 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] GSBillboard
         {
             get
             {
 #if !NETFX_CORE
                 return Properties.Resources.gsBillboard;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] GSParticle
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.gsParticle;
 #else
                 throw new NotImplementedException();
 #endif
@@ -82,5 +100,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription GSBillboard = new ShaderDescription(nameof(GSBillboard), ShaderStage.Geometry, new ShaderReflector(),
             DefaultGSShaderByteCodes.GSBillboard);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription GSParticle = new ShaderDescription(nameof(GSParticle), ShaderStage.Geometry, new ShaderReflector(),
+            DefaultGSShaderByteCodes.GSParticle);
     }
 }

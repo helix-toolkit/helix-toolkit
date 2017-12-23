@@ -91,6 +91,26 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] csParticleInsert {
+            get {
+                object obj = ResourceManager.GetObject("csParticleInsert", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] csParticleUpdate {
+            get {
+                object obj = ResourceManager.GetObject("csParticleUpdate", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap DefaultViewboxTexture {
@@ -126,6 +146,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] gsLine {
             get {
                 object obj = ResourceManager.GetObject("gsLine", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] gsParticle {
+            get {
+                object obj = ResourceManager.GetObject("gsParticle", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -236,6 +266,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] psNormals {
             get {
                 object obj = ResourceManager.GetObject("psNormals", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psParticle {
+            get {
+                object obj = ResourceManager.GetObject("psParticle", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -386,6 +426,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsMeshXRay {
             get {
                 object obj = ResourceManager.GetObject("vsMeshXRay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsParticle {
+            get {
+                object obj = ResourceManager.GetObject("vsParticle", resourceCulture);
                 return ((byte[])(obj));
             }
         }

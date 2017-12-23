@@ -55,7 +55,7 @@
     <Content Include="Common\DataStructs.hlsl" />
     <GeometryShader Include="GS\gsParticle.hlsl" />
     <PixelShader Include="PS\psParticle.hlsl" />
-    <Content Include="VS\vsParticle.hlsl" />
+    <VertexShader Include="VS\vsParticle.hlsl" />
     <VertexShader Include="VS\vsBoneSkinningTessellation.hlsl" />
     <VertexShader Include="VS\vsBillboardInstancing.hlsl" />
     <VertexShader Include="VS\vsMeshInstancingTessellation.hlsl" />

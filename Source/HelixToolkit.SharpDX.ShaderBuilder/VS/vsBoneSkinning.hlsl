@@ -10,7 +10,7 @@
 static const int4 minBoneV = { 0, 0, 0, 0 };
 static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
 
-cbuffer BoneSkinning : register(b4)
+cbuffer cbBoneSkinning
 {
     matrix cbSkinMatrices[MaxBones];
 };

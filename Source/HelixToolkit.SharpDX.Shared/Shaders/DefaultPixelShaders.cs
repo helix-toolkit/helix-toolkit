@@ -122,7 +122,9 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] PSMeshXRay
         {
             get
@@ -134,7 +136,9 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] PSMeshClipPlane
         {
             get
@@ -146,7 +150,9 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] PSMeshClipPlaneBackface
         {
             get
@@ -158,13 +164,29 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] PSMeshClipPlaneQuad
         {
             get
             {
 #if !NETFX_CORE
                 return Properties.Resources.psMeshClipPlaneQuad;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] PSParticle
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psParticle;
 #else
                 throw new NotImplementedException();
 #endif
@@ -214,19 +236,33 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSBillboardText = new ShaderDescription(nameof(PSBillboardText), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSBillboardText);
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static ShaderDescription PSMeshXRay = new ShaderDescription(nameof(PSMeshXRay), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshXRay);
 
         #region Mesh Clipping
+        /// <summary>
+        /// 
+        /// </summary>
         public static ShaderDescription PSMeshClipPlane = new ShaderDescription(nameof(PSMeshClipPlane), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshClipPlane);
-
+        /// <summary>
+        /// /
+        /// </summary>
         public static ShaderDescription PSMeshClipBackface = new ShaderDescription(nameof(PSMeshClipBackface), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshClipPlaneBackface);
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static ShaderDescription PSMeshClipScreenQuad = new ShaderDescription(nameof(PSMeshClipScreenQuad), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshClipPlaneQuad);
         #endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSParticle = new ShaderDescription(nameof(PSParticle), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSParticle);
     }
 }

@@ -293,9 +293,12 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Textures\arial.fnt" />
+    <None Include="Resources\csParticleInsert.cso" />
+    <None Include="Resources\csParticleUpdate.cso" />
     <None Include="Resources\dsMeshTriTessellation.cso" />
     <None Include="Resources\gsBillboard.cso" />
     <None Include="Resources\gsLine.cso" />
+    <None Include="Resources\gsParticle.cso" />
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\hsMeshTriTessellation.cso" />
     <None Include="Resources\psBillboardText.cso" />
@@ -307,6 +310,7 @@
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
+    <None Include="Resources\psParticle.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
     <None Include="Resources\vsBillboard.cso" />
@@ -320,6 +324,7 @@
     <None Include="Resources\vsMeshInstancingTessellation.cso" />
     <None Include="Resources\vsMeshTessellation.cso" />
     <None Include="Resources\vsMeshXRay.cso" />
+    <None Include="Resources\vsParticle.cso" />
     <None Include="Resources\vsPoint.cso" />
   </ItemGroup>
   <ItemGroup>

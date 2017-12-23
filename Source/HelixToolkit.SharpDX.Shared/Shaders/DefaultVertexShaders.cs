@@ -164,12 +164,30 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] VSMeshClipPlaneQuad
         {
             get
             {
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshClipPlaneQuad;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSParticle
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsParticle;
 #else
                 throw new NotImplementedException();
 #endif
@@ -280,7 +298,7 @@ namespace HelixToolkit.UWP.Shaders
         };
 
         public static InputElement[] VSInputBillboardInstancing { get; } = new InputElement[]
-{
+        {
             new InputElement("POSITION", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
             new InputElement("COLOR",    0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
             new InputElement("COLOR",    1, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
@@ -300,6 +318,14 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 12, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 13, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+        };
+
+        public static InputElement[] VSInputParticle { get; } = new InputElement[]
+        {
+            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
         };
     }
 
@@ -378,5 +404,12 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshClipPlaneQuad);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSParticle = new ShaderDescription(nameof(VSParticle), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSParticle);
     }
 }

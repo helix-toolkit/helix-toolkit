@@ -41,6 +41,13 @@ namespace HelixToolkit.UWP
         public const string ScreenQuad = "ScreenQuad";
     }
 
+    public struct ParticlePassNames
+    {
+        public const string Insert = "InsertParticle";//For compute shader
+        public const string Update = "UpdateParticle";//For compute shader
+        public const string Default = "Default";//For rendering
+    }
+
     //public struct TessellationRenderTechniqueNames
     //{
     //    public const string PNTriangles = "RenderPNTriangs";

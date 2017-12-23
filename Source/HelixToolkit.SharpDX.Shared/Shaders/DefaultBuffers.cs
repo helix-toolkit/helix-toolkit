@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string ModelCB = "cbModel";
         public static string LightCB = "cbLights";
         public static string MaterialCB = "cbMaterial";
-        public static string BoneCB = "BoneSkinning";
+        public static string BoneCB = "cbBoneSkinning";
         public static string ClipParamsCB = "cbClipping";
         public static string DiffuseMapTB = "texDiffuseMap";
         public static string AlphaMapTB = "texAlphaMap";
@@ -27,6 +27,10 @@ namespace HelixToolkit.UWP.Shaders
         public static string CubeMapTB = "texCubeMap";
         public static string ShadowMapTB = "texShadowMap";
         public static string BillboardTB = "billboardTexture";
-
+        //----------Particle--------------
+        public static string ParticleRandomsCB = "cbParticleRandoms";
+        public static string ParticleFrameCB = "cbParticleFrame";
+        public static string ParticleCreateParameters = "cbParticleCreateParameters";
+        public static string ParticleMapTB = "texDiffuseMap";
     }
 }
