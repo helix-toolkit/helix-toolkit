@@ -64,7 +64,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             IsShadowMappingEnabled="False"
-            ShowCoordinateSystem="False"
+            ShowCoordinateSystem="False" EffectsManager="{Binding EffectsManager}"
             SubTitle="{Binding SubTitle}" BackgroundColor="{x:Static sdx:Color4.Black}"
             TextBrush="Black" ShowFrameRate="True"
             UseDefaultGestures="False">

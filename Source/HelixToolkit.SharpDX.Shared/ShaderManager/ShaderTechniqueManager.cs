@@ -66,7 +66,12 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool Initialized { private set; get; } = false;
 
-        public void Initialize()
+        public ShaderTechniqueManager()
+        {
+            Initialize();
+        }
+
+        protected virtual void Initialize()
         {
             if (Initialized)
             { return; }

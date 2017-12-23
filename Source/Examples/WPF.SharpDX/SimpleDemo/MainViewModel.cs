@@ -51,8 +51,8 @@ namespace SimpleDemo
 
         public MainViewModel()
         {
-            ShaderTechniqueManager manager = new DefaultShaderTechniqueManager();
-            manager.Initialize();
+            EffectsManager = new DefaultShaderTechniqueManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // titles
             Title = "Simple Demo";
             SubTitle = "WPF & SharpDX";
@@ -64,13 +64,7 @@ namespace SimpleDemo
                 UpDirection = new Vector3D(0, 1, 0),
                 FarPlaneDistance = 5000000
             };
-
-            // default render technique
             
-            EffectsManager = new DefaultShaderTechniqueManager();
-            EffectsManager.Initialize();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
-
             // setup lighting            
             AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
             DirectionalLightColor = Color.White;

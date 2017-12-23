@@ -143,7 +143,6 @@
         public MainViewModel()
         {
             EffectsManager = new DefaultShaderTechniqueManager();
-            EffectsManager.Initialize();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             
 

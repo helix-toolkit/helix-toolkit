@@ -126,10 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         IRenderTechnique this[string name] { get; }
-        /// <summary>
-        /// Initialize the manager.
-        /// </summary>
-        void Initialize();
+
         /// <summary>
         /// Add a technique by description
         /// </summary>
