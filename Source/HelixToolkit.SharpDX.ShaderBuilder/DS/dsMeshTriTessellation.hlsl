@@ -3,6 +3,7 @@
 #define MATERIAL
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
+#include"..\Common\CommonSamplers.hlsl"
 #pragma pack_matrix( row_major )
 
 //--------------------------------------------------------------------------------------
@@ -60,7 +61,17 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
 	// --- Classical vertex-shader transforms: 
 	// --- output position in the clip-space	
     output.p = float4(position, 1); //mul(float4(position, 1.0f), mWorld);
+
+    if (bHasDisplacementMap)
+    {
+        const float mipInterval = 20;
+        float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
+        float4 h = texDisplacementMap.SampleLevel(LinearSampler, output.t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+    }
+
     output.wp = output.p;
+
     output.p = mul(output.p, mView);
     output.p = mul(output.p, mProjection);
 
@@ -81,6 +92,7 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
         output.t1 = 0.0f;
         output.t2 = 0.0f;
     }
+
     return output;
 }
 #endif

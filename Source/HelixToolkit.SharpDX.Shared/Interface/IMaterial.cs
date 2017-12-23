@@ -33,6 +33,10 @@ namespace HelixToolkit.Wpf.SharpDX
         Stream DiffuseAlphaMap { set; get; }
         Stream NormalMap { set; get; }
         Stream DisplacementMap { set; get; }
+        /// <summary>
+        /// Use to select which channel will be used as displacement value. Also scale the selected channel.
+        /// </summary>
+        Vector4 DisplacementMapScaleMask { set; get; }
     }
 
     /// <summary>

@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP.Core
     using Model;
     using ShaderManager;
     using Shaders;
+    using System.Collections.Generic;
 
     /// <summary>
     /// 
@@ -109,6 +110,11 @@ namespace HelixToolkit.UWP.Core
         protected bool BindMaterialTextures(DeviceContext context, IShader shader)
         {
             return MaterialVariables.BindMaterialTextures(context, shader);
-        } 
+        }
+
+        protected bool BindMaterialTextures(DeviceContext context, IEnumerable<IShader> shader)
+        {
+            return MaterialVariables.BindMaterialTextures(context, shader);
+        }
     }
 }

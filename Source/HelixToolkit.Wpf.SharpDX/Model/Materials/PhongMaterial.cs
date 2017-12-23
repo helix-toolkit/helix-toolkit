@@ -116,7 +116,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty DisplacementMapProperty =
             DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty DisplacementMapScaleMaskProperty =
+            DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
         /// <summary>
         /// Constructs a Shading Material which correspnds with 
         /// the Phong and BlinnPhong lighting models.
@@ -228,6 +232,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DisplacementMapProperty, value); }
         }
 
+        public Vector4 DisplacementMapScaleMask
+        {
+            set { SetValue(DisplacementMapScaleMaskProperty, value); }
+            get { return (Vector4)GetValue(DisplacementMapScaleMaskProperty); }
+        }
+
         public PhongMaterial Clone()
         {
             return new PhongMaterial()
@@ -242,7 +252,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 SpecularColor = this.SpecularColor,
                 SpecularShininess = this.SpecularShininess,
                 DiffuseMap = this.DiffuseMap,
-                DiffuseAlphaMap = this.DiffuseAlphaMap
+                DiffuseAlphaMap = this.DiffuseAlphaMap,
+                DisplacementMapScaleMask = this.DisplacementMapScaleMask
             };
         }
     }

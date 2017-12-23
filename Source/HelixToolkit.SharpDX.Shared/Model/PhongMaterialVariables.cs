@@ -217,7 +217,9 @@ namespace HelixToolkit.UWP.Model
                 HasDiffuseAlphaMap = RenderDiffuseAlphaMap && texAlphaMapView != null ? 1 : 0,
                 HasNormalMap = RenderNormalMap && texNormalMapView != null ? 1 : 0,
                 HasDisplacementMap = RenderDisplacementMap && texDisplacementMapView != null ? 1 : 0,
-                HasShadowMap = HasShadowMap ? 1 : 0
+                HasShadowMap = HasShadowMap ? 1 : 0,
+                DisplacementMapScaleMask = material.DisplacementMapScaleMask,
+                HasCubeMap = 0               
             };
         }
         /// <summary>

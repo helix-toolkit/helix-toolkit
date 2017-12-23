@@ -94,6 +94,7 @@ cbuffer cbMaterial
     bool bHasShadowMap = false;
     bool bHasCubeMap = false;
     float paddingMaterial0;
+	float4 displacementMapScaleMask = float4(0,0,0,1);
 };
 
 Texture2D texDiffuseMap;

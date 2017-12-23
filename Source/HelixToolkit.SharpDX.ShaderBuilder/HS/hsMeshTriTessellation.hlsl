@@ -38,7 +38,8 @@ HSConstantDataOutput HShaderTriConstant(InputPatch<HSInput, 3> inputPatch)
     output.Edges[1] = 0.5 * (inputPatch[2].tessF + inputPatch[0].tessF);
     output.Edges[2] = 0.5 * (inputPatch[0].tessF + inputPatch[1].tessF);
     
-    output.Inside = (output.Edges[0] + output.Edges[1] + output.Edges[2]) / 3;
+    output.Inside = output.Edges[0];
+  //  (output.Edges[0] + output.Edges[1] + output.Edges[2]) / 3;
 
 
 	// edge control points

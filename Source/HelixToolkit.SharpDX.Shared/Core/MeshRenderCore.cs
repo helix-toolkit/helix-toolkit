@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP.Core
         {                  
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            if(!BindMaterialTextures(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel)))
+            if(!BindMaterialTextures(context.DeviceContext, DefaultShaderPass.Shaders))
             {
                 return;
             }
