@@ -2,6 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if DEBUG
+//#define OUTPUTDEBUGGING
+#endif
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -127,14 +130,12 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public ParticleInsertParameters InsertVariables = new ParticleInsertParameters() { EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
-        public ParticleRandom RandomVariables = new ParticleRandom();
         #region ShaderVariables
         private IShaderPass updatePass;
         private IShaderPass insertPass;
         private IShaderPass renderPass;
 
         private IBufferProxy perFrameCB;
-        private IBufferProxy randomCB;
         private IBufferProxy insertCB;
 
         private ShaderResourceView textureView;
@@ -155,7 +156,7 @@ namespace HelixToolkit.UWP.Core
         private readonly ConstantBufferProxy particleCountGSIABuffer 
             = new ConstantBufferProxy(ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, ResourceOptionFlags.DrawIndirectArguments);
 
-#if DEBUG
+#if OUTPUTDEBUGGING
         private Buffer particleCountStaging;
 #endif
         private UnorderedAccessViewDescription UAVBufferViewDesc = new UnorderedAccessViewDescription()
@@ -214,19 +215,18 @@ namespace HelixToolkit.UWP.Core
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.BoolParams.X = HasTexture;
-            RandomVariables.ParticleSize = ParticleSize;
-            RandomVariables.RandomVector = VectorGenerator.RandomVector3;
-            RandomVariables.RandomSeed = VectorGenerator.Seed;
-            RandomVariables.NumTexCol = NumTextureColumn;
-            RandomVariables.NumTexRow = NumTextureRow;
-            RandomVariables.AnimateByEnergyLevel = AnimateSpriteByEnergy ? 1 : 0;
+            FrameVariables.ParticleSize = ParticleSize;
+            FrameVariables.RandomVector = VectorGenerator.RandomVector3;
+            FrameVariables.RandomSeed = VectorGenerator.Seed;
+            FrameVariables.NumTexCol = NumTextureColumn;
+            FrameVariables.NumTexRow = NumTextureRow;
+            FrameVariables.AnimateByEnergyLevel = AnimateSpriteByEnergy ? 1 : 0;
         }
 
         protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
         {
             base.OnUploadPerModelConstantBuffers(context);
             perFrameCB.UploadDataToBuffer(context, ref FrameVariables);
-            randomCB.UploadDataToBuffer(context, ref RandomVariables);
         }
 
         public string CurrentSimStateUAVBufferName
@@ -260,7 +260,6 @@ namespace HelixToolkit.UWP.Core
 
                 perFrameCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleFrameCB, ParticlePerFrame.SizeInBytes);
                 insertCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleCreateParameters, ParticleInsertParameters.SizeInBytes);
-                randomCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleRandomsCB, ParticleRandom.SizeInBytes);
 
                 isBlendChanged = true;
                 if (isInitialParticleChanged)
@@ -311,7 +310,7 @@ namespace HelixToolkit.UWP.Core
         private void DisposeBuffers()
         {
             particleCountGSIABuffer.Dispose();
-#if DEBUG
+#if OUTPUTDEBUGGING
             RemoveAndDispose(ref particleCountStaging);
 #endif
             if (BufferProxies != null)
@@ -340,7 +339,7 @@ namespace HelixToolkit.UWP.Core
                 BufferProxies[i] = new UAVBufferViewProxy(Device, ref bufferDesc, ref UAVBufferViewDesc, ref SRVBufferViewDesc);
             }
 
-#if DEBUG
+#if OUTPUTDEBUGGING
             var stagingbufferDesc = new BufferDescription()
             {
                 BindFlags = BindFlags.None,
@@ -353,20 +352,6 @@ namespace HelixToolkit.UWP.Core
 #endif
             particleCountGSIABuffer.CreateBuffer(this.Device);
         }
-
-        //protected override void SetShaderVariables(IRenderMatrices matrices)
-        //{
-        //    base.SetShaderVariables(matrices);
-        //    bHasTextureVar.Set(HasTexture);
-        //    textureViewVar.SetResource(HasTexture ? textureView : null);
-        //    particleSizeVar.Set(ParticleSize);
-        //    randomVectorVar.Set(VectorGenerator.RandomVector3);
-        //    randomSeedVar.Set(VectorGenerator.Seed);
-        //    numTextureColumnVar.Set(NumTextureColumn);
-        //    numTextureRowVar.Set(NumTextureRow);
-        //    animateSpriteByEnergyVar.Set(AnimateSpriteByEnergy);
-            
-        //}
 
         private void OnTextureChanged()
         {
@@ -432,7 +417,7 @@ namespace HelixToolkit.UWP.Core
                 BufferProxies[1].CopyCount(context.DeviceContext, particleCountGSIABuffer.Buffer, 0);
             }
 
-#if DEBUG
+#if OUTPUTDEBUGGING
             DebugCount("UAV 0", context.DeviceContext, BufferProxies[0].UAV);
 #endif
 
@@ -446,8 +431,8 @@ namespace HelixToolkit.UWP.Core
                     updatePass.GetShader(ShaderStage.Compute).TryGetUAVIndex(NewSimStateUAVBufferName), BufferProxies[1].UAV);
                 context.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
-#if DEBUG
-            DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
+#if OUTPUTDEBUGGING
+                DebugCount("UAV 1", context.DeviceContext, BufferProxies[1].UAV);
 #endif
             }
 
@@ -472,7 +457,7 @@ namespace HelixToolkit.UWP.Core
             context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
         }
 
-#if DEBUG
+#if OUTPUTDEBUGGING
         private void DebugCount(string src, DeviceContext context, UnorderedAccessView uav)
         {
             context.CopyStructureCount(particleCountStaging, 0, uav);

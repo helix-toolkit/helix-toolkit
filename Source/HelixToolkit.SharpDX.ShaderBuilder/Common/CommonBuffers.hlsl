@@ -130,13 +130,7 @@ cbuffer cbClipping
 #ifdef PARTICLE
 cbuffer cbParticleRandoms
 {
-	uint RandomSeed;
-	float3 RandomVector;
-	float2 ParticleSize;
-	uint NumTexCol;
-	uint NumTexRow;
-	bool AnimateByEnergyLevel;
-	float3 pad0;
+
 };
 
 cbuffer cbParticleFrame
@@ -154,7 +148,14 @@ cbuffer cbParticleFrame
 	float ConsumerGravity;
 
 	float ConsumerRadius;
-	float3 pad1;
+	float3 RandomVector;
+
+	uint RandomSeed;
+	uint NumTexCol;
+	uint NumTexRow;
+	bool AnimateByEnergyLevel;
+	float2 ParticleSize;
+	float2 pad0;
 };
 
 cbuffer cbParticleCreateParameters

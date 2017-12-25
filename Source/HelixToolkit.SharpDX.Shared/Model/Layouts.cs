@@ -136,9 +136,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public float ConsumerGravity;
 
         public float ConsumerRadius;
-        private Vector3 Pad;
+        public Vector3 RandomVector;
 
-        public const int SizeInBytes = 4 * (4 * 5);
+        public uint RandomSeed;
+        public uint NumTexCol;
+        public uint NumTexRow;
+        public int AnimateByEnergyLevel;
+
+        public Vector2 ParticleSize;
+        Vector2 padding;
+
+        public const int SizeInBytes = 4 * (4 * 7);
         public const int NumParticlesOffset = 0;
     }
 
@@ -171,18 +179,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public const int SizeInBytes = 4 * 4;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct ParticleRandom
-    {
-        public uint RandomSeed;
-        public Vector3 RandomVector;
-        public Vector2 ParticleSize;
-        public uint NumTexCol;
-        public uint NumTexRow;
-        public int AnimateByEnergyLevel;
-        Vector3 padding;
-        public const int SizeInBytes = 4 * (4 + 4 + 4);
-    }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct MaterialStruct

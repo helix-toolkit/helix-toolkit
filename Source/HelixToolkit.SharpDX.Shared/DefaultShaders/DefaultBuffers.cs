@@ -31,7 +31,6 @@ namespace HelixToolkit.UWP.Shaders
         public static string ShadowMapTB = "texShadowMap";
         public static string BillboardTB = "billboardTexture";
         //----------Particle--------------
-        public static string ParticleRandomsCB = "cbParticleRandoms";
         public static string ParticleFrameCB = "cbParticleFrame";
         public static string ParticleCreateParameters = "cbParticleCreateParameters";
         public static string ParticleMapTB = "texDiffuseMap";
