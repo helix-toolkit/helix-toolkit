@@ -190,7 +190,7 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// Return a cloned texture mapping
+        /// Return texture mapping by name
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -198,7 +198,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             if (texturesMapping.HasItem(name))
             {
-                return texturesMapping[name].Item2.Clone();                
+                return texturesMapping[name].Item2;                
             }
             else
             {
@@ -206,7 +206,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// Return a cloned texture mapping
+        /// Return texture mapping by slot
         /// </summary>
         /// <param name="slot"></param>
         /// <returns></returns>
@@ -214,7 +214,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             if (texturesMapping.HasItem(slot))
             {
-                return texturesMapping[slot].Item2.Clone();
+                return texturesMapping[slot].Item2;
             }
             else
             {
@@ -223,7 +223,7 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// Return a cloned uav mapping
+        /// Return uav mapping by name
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -231,7 +231,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             if (uavMapping.HasItem(name))
             {
-                return uavMapping[name].Item2.Clone();
+                return uavMapping[name].Item2;
             }
             else
             {
@@ -239,7 +239,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// Return a cloned uav mapping
+        /// Return uav mapping by slot
         /// </summary>
         /// <param name="slot"></param>
         /// <returns></returns>
@@ -247,7 +247,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             if (uavMapping.HasItem(slot))
             {
-                return uavMapping[slot].Item2.Clone();
+                return uavMapping[slot].Item2;
             }
             else
             {
