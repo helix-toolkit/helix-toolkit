@@ -38,22 +38,10 @@ PSInput main(VSInstancingInput input)
         }
     }
 
-	//set position into camera clip space	
+	//set position into world space	
     output.p = mul(inputp, mWorld);
-    output.wp = output.p;
-    output.p = mul(output.p, mViewProjection);
-
-	//set position into light-clip space
-    if (bHasShadowMap)
-    {
-		//for (int i = 0; i < 1; i++)
-		{
-            output.sp = mul(inputp, mWorld);
-            output.sp = mul(output.sp, Lights[0].mLightView);
-            output.sp = mul(output.sp, Lights[0].mLightProj);
-        }
-    }
-    output.c = input.c;
+		//set normal for interpolation	
+    output.n = normalize(mul(inputn, (float3x3) mWorld));
     if (!bHasInstanceParams)
     {
         output.t = input.t;
@@ -68,9 +56,28 @@ PSInput main(VSInstancingInput input)
         output.c2 = input.emissiveC + input.ambientC * vLightAmbient;
     }
 
-	//set normal for interpolation	
-    output.n = normalize(mul(inputn, (float3x3) mWorld));
+    if (bHasDisplacementMap)
+    {
+        const float mipInterval = 20;
+        float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
+        float4 h = texDisplacementMap.SampleLevel(LinearSampler, output.t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+    }
+    output.wp = output.p;
+	//set position into clip space	
+    output.p = mul(output.p, mViewProjection);
 
+	//set position into light-clip space
+    if (bHasShadowMap)
+    {
+		//for (int i = 0; i < 1; i++)
+		{
+            output.sp = mul(inputp, mWorld);
+            output.sp = mul(output.sp, Lights[0].mLightView);
+            output.sp = mul(output.sp, Lights[0].mLightProj);
+        }
+    }
+    output.c = input.c;
 
     if (bHasNormalMap)
     {

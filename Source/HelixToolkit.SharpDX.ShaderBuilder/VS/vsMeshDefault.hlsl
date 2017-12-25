@@ -36,9 +36,21 @@ PSInput main(VSInput input)
 		}
 	}
 
-	//set position into camera clip space	
+	//set position into world space	
 	output.p = mul(inputp, mWorld);
+	
+	//set normal for interpolation	
+    output.n = normalize(mul(inputn, (float3x3) mWorld));
+
+    if (bHasDisplacementMap)
+    {
+        const float mipInterval = 20;
+        float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
+        float4 h = texDisplacementMap.SampleLevel(LinearSampler, input.t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+    }
 	output.wp = output.p;
+	//set position into clip space	
     output.p = mul(output.p, mViewProjection);
 
 	//set position into light-clip space
@@ -57,9 +69,6 @@ PSInput main(VSInput input)
 	output.c = input.c;
     output.cDiffuse = vMaterialDiffuse;
 	output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
-
-	//set normal for interpolation	
-	output.n = normalize(mul(inputn, (float3x3) mWorld));
 
 
 	if (bHasNormalMap)

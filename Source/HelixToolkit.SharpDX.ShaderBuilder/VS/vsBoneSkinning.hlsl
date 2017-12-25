@@ -30,27 +30,20 @@ PSInput main(VSBoneSkinInput input)
     if (bHasBones)
     {
         int4 bones = clamp(input.bones, minBoneV, maxBoneV);
-        //if (input.boneWeights.x != 0)
-        {
-            output.p = mul(inputp, cbSkinMatrices[bones.x]) * input.boneWeights.x;
-            output.n = mul(inputn, (float3x3) cbSkinMatrices[bones.x]) * input.boneWeights.x;
-        }
-        //if (input.boneWeights.y != 0)
-        {
-            output.p += mul(inputp, cbSkinMatrices[bones.y]) * input.boneWeights.y;
-            output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.y]) * input.boneWeights.y;
-        }
-        //if (input.boneWeights.z != 0)
-        {
-            output.p += mul(inputp, cbSkinMatrices[bones.z]) * input.boneWeights.z;
-            output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.z]) * input.boneWeights.z;
-        }
-        //if (input.boneWeights.w != 0)
-        {
-            output.p += mul(inputp, cbSkinMatrices[bones.w]) * input.boneWeights.w;
-            output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.w]) * input.boneWeights.w;
-        }
+
+        output.p = mul(inputp, cbSkinMatrices[bones.x]) * input.boneWeights.x;
+        output.n = mul(inputn, (float3x3) cbSkinMatrices[bones.x]) * input.boneWeights.x;
+
+        output.p += mul(inputp, cbSkinMatrices[bones.y]) * input.boneWeights.y;
+        output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.y]) * input.boneWeights.y;
+
+        output.p += mul(inputp, cbSkinMatrices[bones.z]) * input.boneWeights.z;
+        output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.z]) * input.boneWeights.z;
+
+        output.p += mul(inputp, cbSkinMatrices[bones.w]) * input.boneWeights.w;
+        output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.w]) * input.boneWeights.w;
     }
+
     float3 inputt1 = input.t1;
     float3 inputt2 = input.t2;
 	// compose instance matrix
@@ -72,9 +65,19 @@ PSInput main(VSBoneSkinInput input)
         }
     }
 		
-	//set position into camera clip space	
+	//set position into world space	
     output.p = mul(output.p, mWorld);
+	//set normal for interpolation	
+    output.n = normalize(mul(output.n.xyz, (float3x3) mWorld));
+    if (bHasDisplacementMap)
+    {
+        const float mipInterval = 20;
+        float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
+        float4 h = texDisplacementMap.SampleLevel(LinearSampler, input.t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+    }
     output.wp = output.p;
+	//set position into clip space	
     output.p = mul(output.p, mViewProjection);
 
 	//set position into light-clip space
@@ -91,9 +94,6 @@ PSInput main(VSBoneSkinInput input)
 	//set texture coords and color
     output.t = input.t;
     output.c = input.c;
-
-	//set normal for interpolation	
-    output.n = normalize(mul(output.n.xyz, (float3x3) mWorld));
 
     output.cDiffuse = vMaterialDiffuse;
     output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
