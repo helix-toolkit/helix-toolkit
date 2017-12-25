@@ -15,6 +15,8 @@ namespace HelixToolkit.UWP.Shaders
 {
     public sealed class NullShaderPass : IShaderPass
     {
+        public static readonly NullShaderPass NullPass = new NullShaderPass();
+
         public BlendState BlendState
         {
             get
@@ -67,7 +69,23 @@ namespace HelixToolkit.UWP.Shaders
 
         public IShader GetShader(ShaderStage type)
         {
-            return new NullShader(type);
+            switch (type)
+            {
+                case ShaderStage.Pixel:
+                    return NullShader.PixelNull;
+                case ShaderStage.Vertex:
+                    return NullShader.VertexNull;
+                case ShaderStage.Geometry:
+                    return NullShader.GeometryNull;
+                case ShaderStage.Compute:
+                    return NullShader.ComputeNull;
+                case ShaderStage.Domain:
+                    return NullShader.DomainNull;
+                case ShaderStage.Hull:
+                    return NullShader.HullNull;
+                default:
+                    return new NullShader(type);
+            }            
         }
     }
 
@@ -117,27 +135,27 @@ namespace HelixToolkit.UWP.Shaders
 
             if (!shaders.ContainsKey(ShaderStage.Domain))
             {
-                shaders.Add(ShaderStage.Domain, new NullShader(ShaderStage.Domain));
+                shaders.Add(ShaderStage.Domain, NullShader.DomainNull);
             }
             if (!shaders.ContainsKey(ShaderStage.Hull))
             {
-                shaders.Add(ShaderStage.Hull, new NullShader(ShaderStage.Hull));
+                shaders.Add(ShaderStage.Hull, NullShader.HullNull);
             }
             if (!shaders.ContainsKey(ShaderStage.Geometry))
             {
-                shaders.Add(ShaderStage.Geometry, new NullShader(ShaderStage.Geometry));
+                shaders.Add(ShaderStage.Geometry, NullShader.GeometryNull);
             }
             if (!shaders.ContainsKey(ShaderStage.Compute))
             {
-                shaders.Add(ShaderStage.Compute, new NullShader(ShaderStage.Compute));
+                shaders.Add(ShaderStage.Compute, NullShader.ComputeNull);
             }
             if (!shaders.ContainsKey(ShaderStage.Vertex))
             {
-                shaders.Add(ShaderStage.Vertex, new NullShader(ShaderStage.Vertex));
+                shaders.Add(ShaderStage.Vertex, NullShader.VertexNull);
             }
             if (!shaders.ContainsKey(ShaderStage.Pixel))
             {
-                shaders.Add(ShaderStage.Pixel, new NullShader(ShaderStage.Pixel));
+                shaders.Add(ShaderStage.Pixel, NullShader.PixelNull);
             }
             BlendState = passDescription.BlendStateDescription != null ? manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription) : null;
 
