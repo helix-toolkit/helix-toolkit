@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         public override void BindConstantBuffers(DeviceContext context)
         {
-            foreach (var buff in this.CBufferMapping)
+            foreach (var buff in this.ConstantBufferMapping.Mappings)
             {
                 context.ComputeShader.SetConstantBuffer(buff.Item1, buff.Item2.Buffer);
             }
@@ -55,7 +55,10 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
         {
-            context.ComputeShader.SetShaderResource(TryGetTextureIndex(name), texture);
+            int slot = ShaderResourceViewMapping.TryGetBindSlot(name);
+            if (slot < 0)
+            { return; }
+            context.ComputeShader.SetShaderResource(slot, texture);
         }
         /// <summary>
         /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
@@ -97,7 +100,10 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="uav"></param>
         public override void BindUAV(DeviceContext context, string name, UnorderedAccessView uav)
         {
-            context.ComputeShader.SetUnorderedAccessView(TryGetTextureIndex(name), uav);
+            int slot = UnorderedAccessViewMapping.TryGetBindSlot(name);
+            if (slot < 0)
+            { return; }
+            context.ComputeShader.SetUnorderedAccessView(slot, uav);
         }
         /// <summary>
         /// <see cref="IShader.BindUAVs(DeviceContext, IEnumerable{Tuple{int, UnorderedAccessView}})"/>
@@ -109,6 +115,43 @@ namespace HelixToolkit.UWP.Shaders
             foreach(var uav in uavs)
             {
                 context.ComputeShader.SetUnorderedAccessView(uav.Item1, uav.Item2);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IShader.BindSampler(DeviceContext, int, SamplerState)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="slot"></param>
+        /// <param name="sampler"></param>
+        public override void BindSampler(DeviceContext context, int slot, SamplerState sampler)
+        {
+            context.ComputeShader.SetSampler(slot, sampler);
+        }
+        /// <summary>
+        /// <see cref="IShader.BindSampler(DeviceContext, string, SamplerState)"/> 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="name"></param>
+        /// <param name="sampler"></param>
+        public override void BindSampler(DeviceContext context, string name, SamplerState sampler)
+        {
+            int slot = SamplerMapping.TryGetBindSlot(name);
+            if (slot < 0)
+            { return; }
+            context.ComputeShader.SetSampler(slot, sampler);
+        }
+
+        /// <summary>
+        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{Tuple{int, SamplerState}})"/> 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="samplers"></param>
+        public override void BindSamplers(DeviceContext context, IEnumerable<Tuple<int, SamplerState>> samplers)
+        {
+            foreach (var sampler in samplers)
+            {
+                context.ComputeShader.SetSampler(sampler.Item1, sampler.Item2);
             }
         }
     }

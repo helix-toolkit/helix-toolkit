@@ -44,7 +44,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         public override void BindConstantBuffers(DeviceContext context)
         {
-            foreach (var buff in this.CBufferMapping)
+            foreach (var buff in this.ConstantBufferMapping.Mappings)
             {
                 context.PixelShader.SetConstantBuffer(buff.Item1, buff.Item2.Buffer);
             }
@@ -58,7 +58,10 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
         {
-            context.PixelShader.SetShaderResource(TryGetTextureIndex(name), texture);
+            int slot = ShaderResourceViewMapping.TryGetBindSlot(name);
+            if (slot < 0)
+            { return; }
+            context.PixelShader.SetShaderResource(slot, texture);
         }
         /// <summary>
         /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
@@ -80,6 +83,40 @@ namespace HelixToolkit.UWP.Shaders
             foreach (var texture in textures)
             {
                 context.PixelShader.SetShaderResource(texture.Item1, texture.Item2);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IShader.BindSampler(DeviceContext, int, SamplerState)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="slot"></param>
+        /// <param name="sampler"></param>
+        public override void BindSampler(DeviceContext context, int slot, SamplerState sampler)
+        {
+            context.PixelShader.SetSampler(slot, sampler);
+        }
+        /// <summary>
+        /// <see cref="IShader.BindSampler(DeviceContext, string, SamplerState)"/> 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="name"></param>
+        /// <param name="sampler"></param>
+        public override void BindSampler(DeviceContext context, string name, SamplerState sampler)
+        {
+            context.PixelShader.SetSampler(SamplerMapping.TryGetBindSlot(name), sampler);
+        }
+
+        /// <summary>
+        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{Tuple{int, SamplerState}})"/> 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="samplers"></param>
+        public override void BindSamplers(DeviceContext context, IEnumerable<Tuple<int, SamplerState>> samplers)
+        {
+            foreach (var sampler in samplers)
+            {
+                context.PixelShader.SetSampler(sampler.Item1, sampler.Item2);
             }
         }
     }

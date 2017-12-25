@@ -37,6 +37,8 @@ namespace HelixToolkit.UWP.Shaders
         public TextureMapping[] TextureMappings { set; get; }
         [DataMember]
         public UAVMapping[] UAVMappings { get; set; }
+        [DataMember]
+        public SamplerMapping[] SamplerMappings { set; get; }
 
         protected IShaderReflector shaderReflector { private set; get; }
         /// <summary>
@@ -68,12 +70,13 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="constantBuffers"></param>
         /// <param name="textures"></param>
         public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[] byteCode,
-            ConstantBufferMapping[] constantBuffers = null, TextureMapping[] textures = null)
+            ConstantBufferMapping[] constantBuffers = null, TextureMapping[] textures = null, SamplerMapping[] samplers = null)
             : this(name, type, byteCode)
         {
             Level = featureLevel;
             ConstantBufferMappings = constantBuffers;
             TextureMappings = textures;
+            SamplerMappings = samplers;
         }
 
         /// <summary>
@@ -108,6 +111,7 @@ namespace HelixToolkit.UWP.Shaders
                 this.ConstantBufferMappings = shaderReflector.ConstantBufferMappings.Values.ToArray();
                 this.TextureMappings = shaderReflector.TextureMappings.Values.ToArray();
                 this.UAVMappings = shaderReflector.UAVMappings.Values.ToArray();
+                this.SamplerMappings = shaderReflector.SamplerMappings.Values.ToArray();
             }
             IShader shader = null;
             switch (ShaderType)
@@ -137,21 +141,28 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach (var mapping in ConstantBufferMappings)
                 {
-                    shader.AddConstantBuffer(mapping.Description.Name, mapping.Slot, pool.Register(mapping.Description));
+                    shader.ConstantBufferMapping.AddMapping(mapping.Description.Name, mapping.Slot, pool.Register(mapping.Description));
                 }
             }
             if (TextureMappings != null)
             {
                 foreach (var mapping in TextureMappings)
                 {
-                    shader.AddTextureMapping(mapping.Description.Name, mapping.Slot, mapping);
+                    shader.ShaderResourceViewMapping.AddMapping(mapping.Description.Name, mapping.Slot, mapping);
                 }
             }
             if (UAVMappings != null)
             {
                 foreach(var mapping in UAVMappings)
                 {
-                    shader.AddUAVMapping(mapping.Description.Name, mapping.Slot, mapping);
+                    shader.UnorderedAccessViewMapping.AddMapping(mapping.Description.Name, mapping.Slot, mapping);
+                }
+            }
+            if (SamplerMappings != null)
+            {
+                foreach(var mapping in SamplerMappings)
+                {
+                    shader.SamplerMapping.AddMapping(mapping.Description.Name, mapping.Slot, mapping);
                 }
             }
             return shader;

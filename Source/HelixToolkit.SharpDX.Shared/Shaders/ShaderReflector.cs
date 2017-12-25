@@ -22,6 +22,8 @@ namespace HelixToolkit.UWP.Shaders
 
         public IDictionary<string, UAVMapping> UAVMappings { get; } = new Dictionary<string, UAVMapping>();
 
+        public IDictionary<string, SamplerMapping> SamplerMappings { get; } = new Dictionary<string, SamplerMapping>();
+        
         public ShaderReflector()
         {
 
@@ -57,6 +59,10 @@ namespace HelixToolkit.UWP.Shaders
                         case ShaderInputType.UnorderedAccessViewRWTyped:
                             var uDesc = new UAVDescription(res.Name, stage);
                             UAVMappings.Add(res.Name, uDesc.CreateMapping(res.BindPoint));
+                            break;
+                        case ShaderInputType.Sampler:
+                            var sDesc = new SamplerDescription(res.Name, stage);
+                            SamplerMappings.Add(res.Name, sDesc.CreateMapping(res.BindPoint));
                             break;
                     }
                 }

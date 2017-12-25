@@ -397,10 +397,8 @@ namespace HelixToolkit.UWP.Core
             particleCountGSIABuffer.UploadDataToBuffer(context.DeviceContext, ref drawArgument);
 
             updatePass.BindShader(context.DeviceContext);
-            int currStateSlot = updatePass.GetShader(ShaderStage.Compute).TryGetUAVIndex(CurrentSimStateUAVBufferName);
-            int newStateSlot = updatePass.GetShader(ShaderStage.Compute).TryGetUAVIndex(NewSimStateUAVBufferName);
-            context.DeviceContext.AttachUnorderedAccessViews(ShaderStage.Compute, currStateSlot, BufferProxies[0].UAV);
-            context.DeviceContext.AttachUnorderedAccessViews(ShaderStage.Compute, newStateSlot, BufferProxies[1].UAV);
+            updatePass.GetShader(ShaderStage.Compute).BindUAV(context.DeviceContext, CurrentSimStateUAVBufferName, BufferProxies[0].UAV);
+            updatePass.GetShader(ShaderStage.Compute).BindUAV(context.DeviceContext, NewSimStateUAVBufferName, BufferProxies[1].UAV);
 
             if (isRestart)
             {
@@ -427,8 +425,7 @@ namespace HelixToolkit.UWP.Core
                 insertCB.UploadDataToBuffer(context.DeviceContext, ref InsertVariables);
                 // Add more particles 
                 insertPass.BindShader(context.DeviceContext);
-                context.DeviceContext.AttachUnorderedAccessViews(ShaderStage.Compute,
-                    updatePass.GetShader(ShaderStage.Compute).TryGetUAVIndex(NewSimStateUAVBufferName), BufferProxies[1].UAV);
+                updatePass.GetShader(ShaderStage.Compute).BindUAV(context.DeviceContext, NewSimStateUAVBufferName, BufferProxies[1].UAV);
                 context.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
 #if OUTPUTDEBUGGING
@@ -437,8 +434,8 @@ namespace HelixToolkit.UWP.Core
             }
 
             // Clear
-            context.DeviceContext.ComputeShader.SetUnorderedAccessView(currStateSlot, null);
-            context.DeviceContext.ComputeShader.SetUnorderedAccessView(newStateSlot, null);
+            updatePass.GetShader(ShaderStage.Compute).BindUAV(context.DeviceContext, CurrentSimStateUAVBufferName, null);
+            updatePass.GetShader(ShaderStage.Compute).BindUAV(context.DeviceContext, NewSimStateUAVBufferName, null);
 
             // Swap UAV buffers for next frame
             var bproxy = BufferProxies[0];
@@ -448,8 +445,10 @@ namespace HelixToolkit.UWP.Core
             // Render existing particles
             renderPass.BindShader(context.DeviceContext);
             renderPass.BindStates(context.DeviceContext, StateType.RasterState | StateType.DepthStencilState);
-            context.DeviceContext.AttachShaderResources(ShaderStage.Vertex, renderPass.GetShader(ShaderStage.Vertex).TryGetTextureIndex(SimStateBufferName), BufferProxies[0].SRV);
-            context.DeviceContext.AttachShaderResources(ShaderStage.Pixel, renderPass.GetShader(ShaderStage.Pixel).TryGetTextureIndex(TextureBufferName), textureView);
+
+            renderPass.GetShader(ShaderStage.Vertex).BindTexture(context.DeviceContext, SimStateBufferName, BufferProxies[0].SRV);
+            renderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, TextureBufferName, textureView);
+
             context.DeviceContext.InputAssembler.InputLayout = VertexLayout;
             context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             InstanceBuffer?.AttachBuffer(context.DeviceContext, 0);

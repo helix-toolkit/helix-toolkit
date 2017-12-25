@@ -6,6 +6,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -276,7 +277,8 @@ namespace HelixToolkit.UWP.Model
             {
                 return false;
             }
-            foreach (var s in shader)
+            var flag = ShaderStage.Vertex | ShaderStage.Pixel | ShaderStage.Domain;
+            foreach (var s in shader.Where(x=> flag.HasFlag(x.ShaderType)))
             {
                 OnBindMaterialTextures(context, s);
             }
@@ -289,10 +291,10 @@ namespace HelixToolkit.UWP.Model
         /// <param name="shader"></param>
         protected virtual void OnBindMaterialTextures(DeviceContext context, IShader shader)
         {
-            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureDiffuseName), texDiffuseMapView);
-            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureAlphaName), texAlphaMapView);
-            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureNormalName), texNormalMapView);
-            context.AttachShaderResources(shader.ShaderType, shader.TryGetTextureIndex(TextureDisplacementName), texDisplacementMapView);
+            shader.BindTexture(context, TextureDiffuseName, texDiffuseMapView);
+            shader.BindTexture(context, TextureAlphaName, texAlphaMapView);
+            shader.BindTexture(context, TextureNormalName, texNormalMapView);
+            shader.BindTexture(context, TextureDisplacementName, texDisplacementMapView);
         }
         /// <summary>
         /// 

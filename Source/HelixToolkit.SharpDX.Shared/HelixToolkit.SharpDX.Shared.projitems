@@ -104,8 +104,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\GeometryShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\HullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\MappingProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\NullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\PixelShader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\SamplerDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderPass.cs" />

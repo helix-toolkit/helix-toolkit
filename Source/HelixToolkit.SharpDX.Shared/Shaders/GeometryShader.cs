@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Shaders
 
         public override void BindConstantBuffers(DeviceContext context)
         {
-            foreach (var buff in this.CBufferMapping)
+            foreach (var buff in this.ConstantBufferMapping.Mappings)
             {
                 context.GeometryShader.SetConstantBuffer(buff.Item1, buff.Item2.Buffer);
             }

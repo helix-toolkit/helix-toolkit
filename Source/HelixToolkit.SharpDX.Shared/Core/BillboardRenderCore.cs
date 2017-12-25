@@ -34,8 +34,7 @@ namespace HelixToolkit.UWP.Core
         protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)
         {
             var buffer = GeometryBuffer as IBillboardBufferModel;
-            int slot = shader.TryGetTextureIndex(buffer.TextureName);
-            context.AttachShaderResources(shader.ShaderType, slot, buffer.TextureView);
+            shader.BindTexture(context, buffer.TextureName, buffer.TextureView);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)

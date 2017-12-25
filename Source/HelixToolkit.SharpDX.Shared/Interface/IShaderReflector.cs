@@ -33,5 +33,9 @@ namespace HelixToolkit.UWP.Shaders
         /// Get Unordered Access View buffer mapping.
         /// </summary>
         IDictionary<string, UAVMapping> UAVMappings { get; }
+        /// <summary>
+        /// Get Sampler mapping
+        /// </summary>
+        IDictionary<string, SamplerMapping> SamplerMappings { get; }
     }
 }

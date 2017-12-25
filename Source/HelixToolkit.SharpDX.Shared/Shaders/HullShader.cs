@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         public override void BindConstantBuffers(DeviceContext context)
         {
-            foreach (var buff in this.CBufferMapping)
+            foreach (var buff in this.ConstantBufferMapping.Mappings)
             {
                 context.HullShader.SetConstantBuffer(buff.Item1, buff.Item2.Buffer);
             }
@@ -55,7 +55,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
         {
-            context.HullShader.SetShaderResource(TryGetTextureIndex(name), texture);
+            throw new NotImplementedException();
         }
         /// <summary>
         /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
         {
-            context.HullShader.SetShaderResource(index, texture);
+            throw new NotImplementedException();
         }
         /// <summary>
         /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
@@ -74,10 +74,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="textures"></param>
         public override void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures)
         {
-            foreach (var texture in textures)
-            {
-                context.HullShader.SetShaderResource(texture.Item1, texture.Item2);
-            }
+            throw new NotImplementedException();
         }
     }
 }
