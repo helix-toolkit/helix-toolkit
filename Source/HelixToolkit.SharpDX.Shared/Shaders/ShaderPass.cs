@@ -98,11 +98,12 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="IShaderPass.Name"/>
         /// </summary>
         public string Name { private set; get; }
-        private readonly Dictionary<ShaderStage, IShader> shaders = new Dictionary<ShaderStage, IShader>();
+        public const int VertexIdx = 0, HullIdx = 1, DomainIdx = 2, GeometryIdx = 3, PixelIdx = 4, ComputeIdx = 5;
+        private readonly IShader[] shaders = new IShader[6];
         /// <summary>
         /// <see cref="IShaderPass.Shaders"/>
         /// </summary>
-        public IEnumerable<IShader> Shaders { get { return shaders.Values; } }
+        public IEnumerable<IShader> Shaders { get { return shaders; } }
         /// <summary>
         /// <see cref="IShaderPass.BlendState"/>
         /// </summary>
@@ -129,39 +130,90 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach (var shader in passDescription.ShaderList)
                 {
-                    shaders.Add(shader.ShaderType, manager.ShaderManager.RegisterShader(shader));
+                    shaders[GetShaderArrayIndex(shader.ShaderType)] = manager.ShaderManager.RegisterShader(shader);
+                }
+            }
+            for(int i=0; i<shaders.Length; ++i)
+            {
+                if (shaders[i] == null)
+                {
+                    var type = GetShaderStageByArrayIndex(i);
+                    switch (type)
+                    {
+                        case ShaderStage.Vertex:
+                            shaders[i] = NullShader.VertexNull;
+                            break;
+                        case ShaderStage.Hull:
+                            shaders[i] = NullShader.HullNull;
+                            break;
+                        case ShaderStage.Domain:
+                            shaders[i] = NullShader.DomainNull;
+                            break;
+                        case ShaderStage.Geometry:
+                            shaders[i] = NullShader.GeometryNull;
+                            break;
+                        case ShaderStage.Pixel:
+                            shaders[i] = NullShader.PixelNull;
+                            break;
+                        case ShaderStage.Compute:
+                            shaders[i] = NullShader.ComputeNull;
+                            break;
+                    }
                 }
             }
 
-            if (!shaders.ContainsKey(ShaderStage.Domain))
-            {
-                shaders.Add(ShaderStage.Domain, NullShader.DomainNull);
-            }
-            if (!shaders.ContainsKey(ShaderStage.Hull))
-            {
-                shaders.Add(ShaderStage.Hull, NullShader.HullNull);
-            }
-            if (!shaders.ContainsKey(ShaderStage.Geometry))
-            {
-                shaders.Add(ShaderStage.Geometry, NullShader.GeometryNull);
-            }
-            if (!shaders.ContainsKey(ShaderStage.Compute))
-            {
-                shaders.Add(ShaderStage.Compute, NullShader.ComputeNull);
-            }
-            if (!shaders.ContainsKey(ShaderStage.Vertex))
-            {
-                shaders.Add(ShaderStage.Vertex, NullShader.VertexNull);
-            }
-            if (!shaders.ContainsKey(ShaderStage.Pixel))
-            {
-                shaders.Add(ShaderStage.Pixel, NullShader.PixelNull);
-            }
             BlendState = passDescription.BlendStateDescription != null ? manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription) : null;
 
             DepthStencilState = passDescription.DepthStencilStateDescription != null ? manager.StateManager.Register((DepthStencilStateDescription)passDescription.DepthStencilStateDescription) : null;
 
             RasterState = passDescription.RasterStateDescription != null ? manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription) : null;
+        }
+
+        /// <summary>
+        /// Convert shader stage to internal array index
+        /// </summary>
+        /// <param name="stage"></param>
+        /// <returns></returns>
+        public static int GetShaderArrayIndex(ShaderStage stage)
+        {
+            switch (stage)
+            {
+                case ShaderStage.Vertex:
+                    return VertexIdx;
+                case ShaderStage.Domain:
+                    return DomainIdx;
+                case ShaderStage.Hull:
+                    return HullIdx;
+                case ShaderStage.Geometry:
+                    return GeometryIdx;
+                case ShaderStage.Pixel:
+                    return PixelIdx;
+                case ShaderStage.Compute:
+                    return ComputeIdx;
+                default:
+                    return -1;
+            }
+        }
+
+        public static ShaderStage GetShaderStageByArrayIndex(int arrayIndex)
+        {
+            switch (arrayIndex)
+            {
+                case VertexIdx:
+                    return ShaderStage.Vertex;
+                case DomainIdx:
+                    return ShaderStage.Domain;
+                case HullIdx:
+                    return ShaderStage.Hull;
+                case GeometryIdx:
+                    return ShaderStage.Geometry;
+                case PixelIdx:
+                    return ShaderStage.Pixel;
+                case ComputeIdx:
+                    return ShaderStage.Compute;
+                default:
+                    return ShaderStage.None;
+            }
         }
 
         /// <summary>
@@ -183,14 +235,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public IShader GetShader(ShaderStage type)
         {
-            if (shaders.ContainsKey(type))
-            {
-                return shaders[type];
-            }
-            else
-            {
-                return new NullShader(type);
-            }
+            return shaders[GetShaderArrayIndex(type)];
         }
 
         /// <summary>

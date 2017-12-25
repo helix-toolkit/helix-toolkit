@@ -133,11 +133,6 @@ namespace HelixToolkit.UWP.Core
         private IShaderPass insertPass;
         private IShaderPass renderPass;
 
-        private int currentStateBufferSlot;
-        private int newStateBufferSlot;
-        private int simStateBufferSlot;
-        private int textureBufferSlot;
-
         private IBufferProxy perFrameCB;
         private IBufferProxy randomCB;
         private IBufferProxy insertCB;
@@ -234,6 +229,26 @@ namespace HelixToolkit.UWP.Core
             randomCB.UploadDataToBuffer(context, ref RandomVariables);
         }
 
+        public string CurrentSimStateUAVBufferName
+        {
+            set; get;
+        } = DefaultBufferNames.CurrentSimulationStateUB;
+
+        public string NewSimStateUAVBufferName
+        {
+            set; get;
+        } = DefaultBufferNames.NewSimulationStateUB;
+
+        public string SimStateBufferName
+        {
+            set; get;
+        } = DefaultBufferNames.SimulationStateTB;
+
+        public string TextureBufferName
+        {
+            set; get;
+        } = DefaultBufferNames.ParticleMapTB;
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
@@ -242,10 +257,6 @@ namespace HelixToolkit.UWP.Core
                 updatePass = technique[DefaultParticlePassNames.Update];
                 insertPass = technique[DefaultParticlePassNames.Insert];
                 renderPass = technique[DefaultParticlePassNames.Default];
-                currentStateBufferSlot = updatePass.GetShader(ShaderStage.Compute).GetUAVMapping(DefaultBufferNames.CurrentSimulationStateUB).Slot;
-                newStateBufferSlot = updatePass.GetShader(ShaderStage.Compute).GetUAVMapping(DefaultBufferNames.NewSimulationStateUB).Slot;
-                simStateBufferSlot = renderPass.GetShader(ShaderStage.Vertex).GetTextureMapping(DefaultBufferNames.SimulationStateTB).Slot;
-                textureBufferSlot = renderPass.GetShader(ShaderStage.Pixel).GetTextureMapping(DefaultBufferNames.ParticleMapTB).Slot;
 
                 perFrameCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleFrameCB, ParticlePerFrame.SizeInBytes);
                 insertCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleCreateParameters, ParticleInsertParameters.SizeInBytes);
@@ -400,13 +411,14 @@ namespace HelixToolkit.UWP.Core
             //Upload the draw argument
             particleCountGSIABuffer.UploadDataToBuffer(context.DeviceContext, ref drawArgument);
 
+            updatePass.BindShader(context.DeviceContext);
+            int currStateSlot = updatePass.GetShader(ShaderStage.Compute).TryGetUAVIndex(CurrentSimStateUAVBufferName);
+            int newStateSlot = updatePass.GetShader(ShaderStage.Compute).TryGetUAVIndex(NewSimStateUAVBufferName);
+            context.DeviceContext.AttachUnorderedAccessViews(ShaderStage.Compute, currStateSlot, BufferProxies[0].UAV);
+            context.DeviceContext.AttachUnorderedAccessViews(ShaderStage.Compute, newStateSlot, BufferProxies[1].UAV);
+
             if (isRestart)
             {
-                // Reset Both UAV buffers
-                updatePass.BindShader(context.DeviceContext);               
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(currentStateBufferSlot, BufferProxies[0].UAV, 0);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(newStateBufferSlot, BufferProxies[1].UAV, 0);
-               // context.DeviceContext.ComputeShader.SetConstantBuffer(1, frameConstBuffer.Buffer);
                 // Call ComputeShader to add initial particles
                 context.DeviceContext.Dispatch(1, 1, 1);
                 isRestart = false;
@@ -415,10 +427,6 @@ namespace HelixToolkit.UWP.Core
             {
                 // Get consume buffer count
                 BufferProxies[0].CopyCount(context.DeviceContext, perFrameCB.Buffer, ParticlePerFrame.NumParticlesOffset);
-                // Calculate existing particles
-                updatePass.BindShader(context.DeviceContext);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(currentStateBufferSlot, BufferProxies[0].UAV);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(newStateBufferSlot, BufferProxies[1].UAV, 0);
                 context.DeviceContext.Dispatch(System.Math.Max(1, particleCount / 512), 1, 1);
                 // Get append buffer count
                 BufferProxies[1].CopyCount(context.DeviceContext, particleCountGSIABuffer.Buffer, 0);
@@ -434,7 +442,8 @@ namespace HelixToolkit.UWP.Core
                 insertCB.UploadDataToBuffer(context.DeviceContext, ref InsertVariables);
                 // Add more particles 
                 insertPass.BindShader(context.DeviceContext);
-                context.DeviceContext.ComputeShader.SetUnorderedAccessView(newStateBufferSlot, BufferProxies[1].UAV);
+                context.DeviceContext.AttachUnorderedAccessViews(ShaderStage.Compute,
+                    updatePass.GetShader(ShaderStage.Compute).TryGetUAVIndex(NewSimStateUAVBufferName), BufferProxies[1].UAV);
                 context.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
 #if DEBUG
@@ -443,8 +452,8 @@ namespace HelixToolkit.UWP.Core
             }
 
             // Clear
-            context.DeviceContext.ComputeShader.SetUnorderedAccessView(currentStateBufferSlot, null);
-            context.DeviceContext.ComputeShader.SetUnorderedAccessView(newStateBufferSlot, null);
+            context.DeviceContext.ComputeShader.SetUnorderedAccessView(currStateSlot, null);
+            context.DeviceContext.ComputeShader.SetUnorderedAccessView(newStateSlot, null);
 
             // Swap UAV buffers for next frame
             var bproxy = BufferProxies[0];
@@ -454,8 +463,8 @@ namespace HelixToolkit.UWP.Core
             // Render existing particles
             renderPass.BindShader(context.DeviceContext);
             renderPass.BindStates(context.DeviceContext, StateType.RasterState | StateType.DepthStencilState);
-            context.DeviceContext.VertexShader.SetShaderResource(simStateBufferSlot, BufferProxies[0].SRV);
-            context.DeviceContext.PixelShader.SetShaderResource(textureBufferSlot, textureView);
+            context.DeviceContext.AttachShaderResources(ShaderStage.Vertex, renderPass.GetShader(ShaderStage.Vertex).TryGetTextureIndex(SimStateBufferName), BufferProxies[0].SRV);
+            context.DeviceContext.AttachShaderResources(ShaderStage.Pixel, renderPass.GetShader(ShaderStage.Pixel).TryGetTextureIndex(TextureBufferName), textureView);
             context.DeviceContext.InputAssembler.InputLayout = VertexLayout;
             context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             InstanceBuffer?.AttachBuffer(context.DeviceContext, 0);

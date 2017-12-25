@@ -142,5 +142,31 @@ namespace HelixToolkit.Wpf.SharpDX
                     break;
             }
         }
+
+        public static void AttachUnorderedAccessViews(this DeviceContext context, ShaderStage stage, int slot, UnorderedAccessView UAV)
+        {
+            if (slot < 0) { return; }
+            switch (stage)
+            {
+                case ShaderStage.Compute:
+                    context.ComputeShader.SetUnorderedAccessView(slot, UAV);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public static void AttachUnorderedAccessViews(this DeviceContext context, ShaderStage stage, int slot, params UnorderedAccessView[] UAVs)
+        {
+            if (slot < 0) { return; }
+            switch (stage)
+            {
+                case ShaderStage.Compute:
+                    context.ComputeShader.SetUnorderedAccessViews(slot, UAVs);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

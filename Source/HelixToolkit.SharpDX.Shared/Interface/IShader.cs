@@ -39,6 +39,7 @@ namespace HelixToolkit.UWP.Shaders
         void ClearTextureMappings();
         void ClearUAVMappings();
         int TryGetTextureIndex(string name);
+        int TryGetUAVIndex(string name);
         TextureMapping GetTextureMapping(string name);
         TextureMapping GetTextureMapping(int slot);
         UAVMapping GetUAVMapping(string name);
