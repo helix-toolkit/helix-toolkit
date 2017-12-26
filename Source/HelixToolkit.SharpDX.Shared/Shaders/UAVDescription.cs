@@ -9,19 +9,30 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
-    public class UAVDescription
+    public enum UnorderedAccessViewType
+    {
+        AppendStructured,
+        ConsumeStructured,
+        RWByteAddress,
+        RWStructuredWithCounter,
+        RWTyped
+    };
+    public sealed class UAVDescription
     {
         [DataMember]
         public string Name { set; get; }
         [DataMember]
         public ShaderStage ShaderType;
+        [DataMember]
+        public UnorderedAccessViewType Type;
 
         public UAVDescription() { }
 
-        public UAVDescription(string name, ShaderStage shaderType)
+        public UAVDescription(string name, ShaderStage shaderType, UnorderedAccessViewType type)
         {
             Name = name;
             ShaderType = shaderType;
+            Type = type;
         }
 
         public UAVMapping CreateMapping(int slot)
@@ -31,12 +42,12 @@ namespace HelixToolkit.UWP.Shaders
 
         public UAVDescription Clone()
         {
-            return new UAVDescription(this.Name, this.ShaderType);
+            return new UAVDescription(this.Name, this.ShaderType, this.Type);
         }
     }
 
     [DataContract]
-    public class UAVMapping
+    public sealed class UAVMapping
     {
         [DataMember]
         public int Slot { set; get; }

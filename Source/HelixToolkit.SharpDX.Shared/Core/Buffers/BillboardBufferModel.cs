@@ -24,7 +24,6 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceView textureView;
         public ShaderResourceView TextureView { get { return textureView; } }
-        public virtual string ShaderTextureName { get { return DefaultBufferNames.BillboardTB; } }
 
         public BillboardType Type { private set; get; }
 

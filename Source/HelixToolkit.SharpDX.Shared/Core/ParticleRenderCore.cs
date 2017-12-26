@@ -111,6 +111,29 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni2;
+        /// <summary>
+        /// Particle texture sampler description.
+        /// </summary>
+        public SamplerStateDescription SamplerDescription
+        {
+            set
+            {
+                samplerDescription = value;
+                if (textureSampler == null)
+                {
+                    return;
+                }
+                textureSampler.Description = value;
+            }
+            get
+            {
+                return samplerDescription;
+            }
+        }
+
+        private SamplerProxy textureSampler;
+
         private float totalElapsed = 0;              
 
         public bool HasTexture { get { return particleTexture != null; } }
@@ -201,6 +224,45 @@ namespace HelixToolkit.UWP.Core
         }
 
         public InputLayout VertexLayout { private set; get; }
+        #region Shader Variable Names
+        /// <summary>
+        /// Set current sim state variable name inside compute shader for binding
+        /// </summary>
+        public string CurrentSimStateUAVBufferName
+        {
+            set; get;
+        } = DefaultBufferNames.CurrentSimulationStateUB;
+        /// <summary>
+        /// Set new sim state variable name inside compute shader for binding
+        /// </summary>
+        public string NewSimStateUAVBufferName
+        {
+            set; get;
+        } = DefaultBufferNames.NewSimulationStateUB;
+        /// <summary>
+        /// Set sim state name inside vertex shader for binding
+        /// </summary>
+        public string SimStateBufferName
+        {
+            set; get;
+        } = DefaultBufferNames.SimulationStateTB;
+        /// <summary>
+        /// Set texture variable name inside shader for binding
+        /// </summary>
+        public string ShaderTextureBufferName
+        {
+            set;
+            get;
+        } = DefaultBufferNames.ParticleMapTB;
+        /// <summary>
+        /// Set texture sampler variable name inside shader for binding
+        /// </summary>
+        public string ShaderTextureSamplerName
+        {
+            set;
+            get;
+        } = DefaultSamplerStateNames.ParticleTextureSampler;
+        #endregion
         #endregion
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
@@ -229,26 +291,6 @@ namespace HelixToolkit.UWP.Core
             perFrameCB.UploadDataToBuffer(context, ref FrameVariables);
         }
 
-        public string CurrentSimStateUAVBufferName
-        {
-            set; get;
-        } = DefaultBufferNames.CurrentSimulationStateUB;
-
-        public string NewSimStateUAVBufferName
-        {
-            set; get;
-        } = DefaultBufferNames.NewSimulationStateUB;
-
-        public string SimStateBufferName
-        {
-            set; get;
-        } = DefaultBufferNames.SimulationStateTB;
-
-        public string TextureBufferName
-        {
-            set; get;
-        } = DefaultBufferNames.ParticleMapTB;
-
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
@@ -266,6 +308,8 @@ namespace HelixToolkit.UWP.Core
                 {
                     OnInitialParticleChanged(ParticleCount);
                 }
+                textureSampler = new SamplerProxy(technique.EffectsManager);
+                textureSampler.Description = SamplerDescription;
                 return true;
             }
             else
@@ -325,6 +369,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
+            textureSampler = null;
             DisposeBuffers();
             base.OnDetach();
         }
@@ -447,8 +492,8 @@ namespace HelixToolkit.UWP.Core
             renderPass.BindStates(context.DeviceContext, StateType.RasterState | StateType.DepthStencilState);
 
             renderPass.GetShader(ShaderStage.Vertex).BindTexture(context.DeviceContext, SimStateBufferName, BufferProxies[0].SRV);
-            renderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, TextureBufferName, textureView);
-
+            renderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, ShaderTextureBufferName, textureView);
+            renderPass.GetShader(ShaderStage.Pixel).BindSampler(context.DeviceContext, ShaderTextureSamplerName, textureSampler);
             context.DeviceContext.InputAssembler.InputLayout = VertexLayout;
             context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             InstanceBuffer?.AttachBuffer(context.DeviceContext, 0);

@@ -29,14 +29,14 @@ namespace HelixToolkit.UWP.Model
         private readonly Dictionary<string, ShaderResouceViewProxy> ShaderResourceDict = new Dictionary<string, ShaderResouceViewProxy>();
         private readonly Dictionary<string, SamplerProxy> SamplerDict = new Dictionary<string, SamplerProxy>();
 
-        public virtual string ShaderAlphaTexName { get { return DefaultBufferNames.AlphaMapTB; } }
-        public virtual string ShaderDiffuseTexName { get { return DefaultBufferNames.DiffuseMapTB; } }
-        public virtual string ShaderNormalTexName { get { return DefaultBufferNames.NormalMapTB; } }
-        public virtual string ShaderDisplaceTexName { get { return DefaultBufferNames.DisplacementMapTB; } }
-        public virtual string ShaderSamplerAlphaTexName { get { return DefaultSamplerStateNames.AlphaMapSampler; } }
-        public virtual string ShaderSamplerDiffuseTexName { get { return DefaultSamplerStateNames.DiffuseMapSampler; } }
-        public virtual string ShaderSamplerNormalTexName { get { return DefaultSamplerStateNames.NormalMapSampler; } }
-        public virtual string ShaderSamplerDisplaceTexName { get { return DefaultSamplerStateNames.DisplacementMapSampler; } }
+        public string ShaderAlphaTexName { set; get; } = DefaultBufferNames.AlphaMapTB;
+        public string ShaderDiffuseTexName { set; get; } = DefaultBufferNames.DiffuseMapTB;
+        public string ShaderNormalTexName { set; get; } = DefaultBufferNames.NormalMapTB;
+        public string ShaderDisplaceTexName { set; get; } = DefaultBufferNames.DisplacementMapTB;
+        public string ShaderSamplerAlphaTexName { set; get; } = DefaultSamplerStateNames.AlphaMapSampler;
+        public string ShaderSamplerDiffuseTexName { set; get; } = DefaultSamplerStateNames.DiffuseMapSampler;
+        public string ShaderSamplerNormalTexName { set; get; } = DefaultSamplerStateNames.NormalMapSampler;
+        public string ShaderSamplerDisplaceTexName { set; get; } = DefaultSamplerStateNames.DisplacementMapSampler;
 
         private bool renderDiffuseMap = true;
         public bool RenderDiffuseMap

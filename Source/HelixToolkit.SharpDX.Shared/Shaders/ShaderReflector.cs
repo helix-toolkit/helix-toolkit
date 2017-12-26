@@ -47,22 +47,39 @@ namespace HelixToolkit.UWP.Shaders
                             ConstantBufferMappings.Add(res.Name, cbDesc.CreateMapping(res.BindPoint));
                             break;
                         case ShaderInputType.Texture:
+                            var tDescT = new TextureDescription(res.Name, stage, TextureType.Texture);
+                            TextureMappings.Add(res.Name, tDescT.CreateMapping(res.BindPoint));
+                            break;
                         case ShaderInputType.Structured:
+                            var tDescStr = new TextureDescription(res.Name, stage, TextureType.Structured);
+                            TextureMappings.Add(res.Name, tDescStr.CreateMapping(res.BindPoint));
+                            break;
                         case ShaderInputType.TextureBuffer:
-                            var tDesc = new TextureDescription(res.Name, stage);
-                            TextureMappings.Add(res.Name, tDesc.CreateMapping(res.BindPoint));
+                            var tDescTB = new TextureDescription(res.Name, stage, TextureType.TextureBuffer);
+                            TextureMappings.Add(res.Name, tDescTB.CreateMapping(res.BindPoint));
                             break;
                         case ShaderInputType.UnorderedAccessViewAppendStructured:
+                            var uDescAppend = new UAVDescription(res.Name, stage, UnorderedAccessViewType.AppendStructured);
+                            UAVMappings.Add(res.Name, uDescAppend.CreateMapping(res.BindPoint));
+                            break;
                         case ShaderInputType.UnorderedAccessViewConsumeStructured:
+                            var uDescConsume = new UAVDescription(res.Name, stage, UnorderedAccessViewType.ConsumeStructured);
+                            UAVMappings.Add(res.Name, uDescConsume.CreateMapping(res.BindPoint));
+                            break;
                         case ShaderInputType.UnorderedAccessViewRWByteAddress:
+                            var uDescByte = new UAVDescription(res.Name, stage, UnorderedAccessViewType.RWByteAddress);
+                            UAVMappings.Add(res.Name, uDescByte.CreateMapping(res.BindPoint));
+                            break;
                         case ShaderInputType.UnorderedAccessViewRWStructuredWithCounter:
+                            var uDescStr = new UAVDescription(res.Name, stage, UnorderedAccessViewType.RWStructuredWithCounter);
+                            UAVMappings.Add(res.Name, uDescStr.CreateMapping(res.BindPoint));
+                            break;
                         case ShaderInputType.UnorderedAccessViewRWTyped:
-                            var uDesc = new UAVDescription(res.Name, stage);
-                            UAVMappings.Add(res.Name, uDesc.CreateMapping(res.BindPoint));
+                            var uDescTyped = new UAVDescription(res.Name, stage, UnorderedAccessViewType.RWTyped);
+                            UAVMappings.Add(res.Name, uDescTyped.CreateMapping(res.BindPoint));
                             break;
                         case ShaderInputType.Sampler:
-                            var sDesc = new SamplerDescription(res.Name, stage);
-                            SamplerMappings.Add(res.Name, sDesc.CreateMapping(res.BindPoint));
+                            SamplerMappings.Add(res.Name, new SamplerMapping(res.BindPoint, res.Name, stage));
                             break;
                     }
                 }

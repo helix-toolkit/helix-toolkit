@@ -11,21 +11,27 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
-    [DataContract]
-    public class TextureDescription
+    public enum TextureType
     {
-
+        Texture, Structured, TextureBuffer
+    }
+    [DataContract]
+    public sealed class TextureDescription
+    {
         [DataMember]
         public string Name { set; get; }
         [DataMember]
         public ShaderStage ShaderType;
+        [DataMember]
+        public TextureType Type;
 
         public TextureDescription() { }
 
-        public TextureDescription(string name, ShaderStage shaderType)
+        public TextureDescription(string name, ShaderStage shaderType, TextureType type)
         {
             Name = name;
             ShaderType = shaderType;
+            Type = type;
         }
 
         public TextureMapping CreateMapping(int slot)
@@ -35,12 +41,12 @@ namespace HelixToolkit.UWP.Shaders
 
         public TextureDescription Clone()
         {
-            return new TextureDescription(this.Name, this.ShaderType);
+            return new TextureDescription(this.Name, this.ShaderType, this.Type);
         }
     }
 
     [DataContract]
-    public class TextureMapping 
+    public sealed class TextureMapping 
     {
         [DataMember]
         public int Slot { set; get; }

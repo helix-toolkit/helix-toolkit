@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach(var mapping in SamplerMappings)
                 {
-                    shader.SamplerMapping.AddMapping(mapping.Description.Name, mapping.Slot, mapping);
+                    shader.SamplerMapping.AddMapping(mapping.Name, mapping.Slot, mapping);
                 }
             }
             return shader;

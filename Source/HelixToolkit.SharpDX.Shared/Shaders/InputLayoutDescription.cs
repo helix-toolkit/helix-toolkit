@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
-    public class InputLayoutDescription
+    public sealed class InputLayoutDescription
     {
         public readonly Tuple<byte[], InputElement[]> Description;
         public InputLayoutDescription(byte[] byteCode, InputElement[] elements)

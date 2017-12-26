@@ -15,17 +15,20 @@ namespace HelixToolkit.UWP.Core
     public class BillboardRenderCore : GeometryRenderCore
     {
         public bool FixedSize = true;
-        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni8;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni4;
+        /// <summary>
+        /// Billboard texture sampler description
+        /// </summary>
         public SamplerStateDescription SamplerDescription
         {
             set
             {
                 samplerDescription = value;
-                if (TextureSampler == null)
+                if (textureSampler == null)
                 {
                     return;
                 }
-                TextureSampler.Description = value;
+                textureSampler.Description = value;
             }
             get
             {
@@ -33,16 +36,22 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public SamplerProxy TextureSampler { private set; get; }
-
-        public virtual string ShaderTextureSamplerName { get { return DefaultSamplerStateNames.BillboardTextureSampler; } }
+        private SamplerProxy textureSampler;
+        /// <summary>
+        /// Set texture variable name insider shader for binding
+        /// </summary>
+        public string ShaderTextureName { set; get; } = DefaultBufferNames.BillboardTB;
+        /// <summary>
+        /// Set texture sampler variable name inside shader for binding
+        /// </summary>
+        public string ShaderTextureSamplerName { set; get; } = DefaultSamplerStateNames.BillboardTextureSampler;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
             {
-                TextureSampler = new SamplerProxy(technique.EffectsManager);
-                TextureSampler.Description = SamplerDescription;
+                textureSampler = new SamplerProxy(technique.EffectsManager);
+                textureSampler.Description = SamplerDescription;
                 return true;
             }
             else
@@ -53,7 +62,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
-            TextureSampler = null;
+            textureSampler = null;
             base.OnDetach();
         }
 
@@ -77,8 +86,8 @@ namespace HelixToolkit.UWP.Core
         protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)
         {
             var buffer = GeometryBuffer as IBillboardBufferModel;
-            shader.BindTexture(context, buffer.ShaderTextureName, buffer.TextureView);
-            shader.BindSampler(context, ShaderTextureSamplerName, TextureSampler.SamplerState);
+            shader.BindTexture(context, ShaderTextureName, buffer.TextureView);
+            shader.BindSampler(context, ShaderTextureSamplerName, textureSampler.SamplerState);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)

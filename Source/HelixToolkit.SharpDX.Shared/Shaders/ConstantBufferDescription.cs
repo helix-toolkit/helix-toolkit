@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Shaders
     using Utilities;
 
     [DataContract]
-    public class ConstantBufferDescription
+    public sealed class ConstantBufferDescription
     {
         [DataMember]
         public string Name { set; get; }
@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP.Shaders
     }
 
     [DataContract]
-    public class ConstantBufferMapping
+    public sealed class ConstantBufferMapping
     {
         [DataMember]
         public int Slot { set; get; }
