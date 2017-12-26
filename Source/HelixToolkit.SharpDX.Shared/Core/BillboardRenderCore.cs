@@ -10,9 +10,52 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
+    using Utilities;
+
     public class BillboardRenderCore : GeometryRenderCore
     {
         public bool FixedSize = true;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni8;
+        public SamplerStateDescription SamplerDescription
+        {
+            set
+            {
+                samplerDescription = value;
+                if (TextureSampler == null)
+                {
+                    return;
+                }
+                TextureSampler.Description = value;
+            }
+            get
+            {
+                return samplerDescription;
+            }
+        }
+
+        public SamplerProxy TextureSampler { private set; get; }
+
+        public virtual string ShaderTextureSamplerName { get { return DefaultSamplerStateNames.BillboardTextureSampler; } }
+
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            if (base.OnAttach(technique))
+            {
+                TextureSampler = new SamplerProxy(technique.EffectsManager);
+                TextureSampler.Description = SamplerDescription;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected override void OnDetach()
+        {
+            TextureSampler = null;
+            base.OnDetach();
+        }
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
@@ -34,7 +77,8 @@ namespace HelixToolkit.UWP.Core
         protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)
         {
             var buffer = GeometryBuffer as IBillboardBufferModel;
-            shader.BindTexture(context, buffer.TextureName, buffer.TextureView);
+            shader.BindTexture(context, buffer.ShaderTextureName, buffer.TextureView);
+            shader.BindSampler(context, ShaderTextureSamplerName, TextureSampler.SamplerState);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)

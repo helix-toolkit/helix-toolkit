@@ -154,5 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
         RasterizerState Register(RasterizerStateDescription desc);
 
         DepthStencilState Register(DepthStencilStateDescription desc);
+
+        SamplerState Register(SamplerStateDescription desc);
     }
 }

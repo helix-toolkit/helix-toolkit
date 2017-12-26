@@ -4,7 +4,6 @@
 
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonSamplers.hlsl"
 
 
 float4 main(in ParticlePS_INPUT input) : SV_Target
@@ -12,7 +11,7 @@ float4 main(in ParticlePS_INPUT input) : SV_Target
     float4 color = input.color * input.opacity;
     if (bParams.x)
     {
-        color *= texDiffuseMap.Sample(LinearSampler, input.texcoords);
+        color *= texParticle.Sample(samplerParticle, input.texcoords);
     }
     return color;
 }

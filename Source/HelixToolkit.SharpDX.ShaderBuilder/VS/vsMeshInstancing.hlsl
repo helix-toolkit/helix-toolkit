@@ -60,7 +60,7 @@ PSInput main(VSInstancingInput input)
     {
         const float mipInterval = 20;
         float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(LinearSampler, output.t, mipLevel);
+        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
         output.p.xyz += output.n * mul(h, displacementMapScaleMask);
     }
     output.wp = output.p;

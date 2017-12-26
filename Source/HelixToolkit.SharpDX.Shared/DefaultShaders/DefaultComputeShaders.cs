@@ -1,6 +1,8 @@
 ﻿#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
+using System;
+
 namespace HelixToolkit.UWP.Shaders
 #endif
 {

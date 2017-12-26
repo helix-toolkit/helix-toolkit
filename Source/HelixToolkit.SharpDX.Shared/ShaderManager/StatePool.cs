@@ -70,17 +70,41 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
+    public class SamplerStatePool : ResourcePoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
+    {
+        public SamplerStatePool(Device device) : base(device)
+        {
+        }
+
+        public override SamplerState Register(SamplerStateDescription description)
+        {
+            if (pool.ContainsKey(description))
+            {
+                return pool[description];
+            }
+            else
+            {
+                var state = Collect(new SamplerState(Device, description));
+                pool.Add(description, state);
+                return state;
+            }
+        }
+    }
+
     public class StatePoolManager : DisposeObject, IStatePoolManager
     {
         public BlendStatePool BlendStatePool { private set; get; }
         public RasterStatePool RasterStatePool { private set; get; }
         public DepthStencilStatePool DepthStencilStatePool { private set; get; }
 
+        public SamplerStatePool SamplerStatePool { private set; get; }
+
         public StatePoolManager(Device device)
         {
             BlendStatePool = Collect(new BlendStatePool(device));
             RasterStatePool = Collect(new RasterStatePool(device));
             DepthStencilStatePool = Collect(new DepthStencilStatePool(device));
+            SamplerStatePool = Collect(new SamplerStatePool(device));
         }
 
         public BlendState Register(BlendStateDescription desc)
@@ -96,6 +120,11 @@ namespace HelixToolkit.UWP.ShaderManager
         public DepthStencilState Register(DepthStencilStateDescription desc)
         {
             return DepthStencilStatePool.Register(desc);
+        }
+
+        public SamplerState Register(SamplerStateDescription desc)
+        {
+            return SamplerStatePool.Register(desc);
         }
     }
 }

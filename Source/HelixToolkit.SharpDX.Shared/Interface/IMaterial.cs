@@ -37,6 +37,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Use to select which channel will be used as displacement value. Also scale the selected channel.
         /// </summary>
         Vector4 DisplacementMapScaleMask { set; get; }
+        SamplerStateDescription DiffuseMapSampler { set; get; }
+        SamplerStateDescription NormalMapSampler { set; get; }
+        SamplerStateDescription DiffuseAlphaMapSampler { set; get; }
+        SamplerStateDescription DisplacementMapSampler { set; get; }
     }
 
     /// <summary>

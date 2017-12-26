@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP.Core
                     materialVariables.OnInvalidateRenderer -= InvalidateRenderer;
                     RemoveAndDispose(ref materialVariables);
                 }
-                materialVariables = Collect(CreateEffectMaterialVariables(technique.ConstantBufferPool));
+                materialVariables = Collect(CreateEffectMaterialVariables(technique.EffectsManager));
                 materialVariables.Material = Material;
                 materialVariables.OnInvalidateRenderer += InvalidateRenderer;
                 return true;
@@ -76,9 +76,9 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="effect"></param>
         /// <returns></returns>
-        protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(IConstantBufferPool cbPool)
+        protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(IEffectsManager manager)
         {
-            return new PhongMaterialVariables(cbPool);
+            return new PhongMaterialVariables(manager);
         }
         /// <summary>
         /// Set control variables into material variables object

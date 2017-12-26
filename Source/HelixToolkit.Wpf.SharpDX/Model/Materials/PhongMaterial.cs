@@ -7,18 +7,18 @@
 //   Includes Diffuse, Normal, Displacement, Specular, etc. maps
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using SharpDX;
+using SharpDX.Direct3D11;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.ComponentModel;
-
-    using global::SharpDX;
     using System.Windows;
-    using System.Windows.Media.Imaging;
     using System;
 
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
     using System.IO;
+    using Shaders;
 
     /// <summary>
     /// Implments a phong-material with its all properties
@@ -121,6 +121,31 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DisplacementMapScaleMaskProperty =
             DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty DiffuseMapSamplerProperty =
+            DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static readonly DependencyProperty DiffuseAlphaMapSamplerProperty =
+            DependencyProperty.Register("DiffuseAlphaMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty NormalMapSamplerProperty =
+            DependencyProperty.Register("NormalMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni1));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty DisplacementMapSamplerProperty =
+            DependencyProperty.Register("DisplacementMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni1));
+
         /// <summary>
         /// Constructs a Shading Material which correspnds with 
         /// the Phong and BlinnPhong lighting models.
@@ -230,6 +255,41 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Stream)this.GetValue(DisplacementMapProperty); }
             set { this.SetValue(DisplacementMapProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SamplerStateDescription DiffuseMapSampler
+        {
+            get { return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty); }
+            set { this.SetValue(DiffuseMapSamplerProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SamplerStateDescription DiffuseAlphaMapSampler
+        {
+            get { return (SamplerStateDescription)this.GetValue(DiffuseAlphaMapSamplerProperty); }
+            set { this.SetValue(DiffuseAlphaMapSamplerProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SamplerStateDescription NormalMapSampler
+        {
+            get { return (SamplerStateDescription)this.GetValue(NormalMapSamplerProperty); }
+            set { this.SetValue(NormalMapSamplerProperty, value); }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public SamplerStateDescription DisplacementMapSampler
+        {
+            get { return (SamplerStateDescription)this.GetValue(DisplacementMapSamplerProperty); }
+            set { this.SetValue(DisplacementMapSamplerProperty, value); }
         }
 
         public Vector4 DisplacementMapScaleMask

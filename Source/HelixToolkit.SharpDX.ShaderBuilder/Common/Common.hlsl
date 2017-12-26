@@ -1,7 +1,7 @@
 #ifndef COMMON_HLSL
 #define COMMON_HLSL
 #include"CommonBuffers.hlsl"
-#include"CommonSamplers.hlsl"
+
 #pragma pack_matrix( row_major )
 
 

@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceView textureView;
         public ShaderResourceView TextureView { get { return textureView; } }
-        public virtual string TextureName { get { return DefaultBufferNames.BillboardTB; } }
+        public virtual string ShaderTextureName { get { return DefaultBufferNames.BillboardTB; } }
 
         public BillboardType Type { private set; get; }
 
@@ -51,11 +51,7 @@ namespace HelixToolkit.UWP.Core
               
                 if (billboardGeometry.Texture != null)
                 {
-#if !NETFX_CORE
                     textureView = Collect(global::SharpDX.Toolkit.Graphics.Texture.Load(context.Device, billboardGeometry.Texture));
-#else
-
-#endif
                 }
             }
             else

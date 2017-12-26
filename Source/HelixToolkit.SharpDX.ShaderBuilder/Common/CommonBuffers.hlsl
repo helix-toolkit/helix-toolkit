@@ -104,6 +104,54 @@ Texture2D texDisplacementMap;
 TextureCube texCubeMap;
 Texture2D texShadowMap;
 
+SamplerState samplerDiffuse
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+    MaxAnisotropy = 4;
+};
+
+SamplerState samplerAlpha
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+    MaxAnisotropy = 4;
+};
+
+SamplerState samplerNormal
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+SamplerState samplerDisplace
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+SamplerState samplerCube
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+    MaxAnisotropy = 4;
+};
+
+SamplerComparisonState samplerShadow
+{
+   // sampler state
+    Filter = COMPARISON_MIN_MAG_MIP_LINEAR;
+    AddressU = MIRROR;
+    AddressV = MIRROR;
+   // sampler comparison state
+    ComparisonFunc = LESS_EQUAL;
+};
+
 cbuffer cbShadow
 {
     float2 vShadowMapSize = float2(1024, 1024);
@@ -173,7 +221,14 @@ cbuffer cbParticleCreateParameters
 	float3 InitialAcceleration;
 };
 
-Texture2D texDiffuseMap;
+Texture2D texParticle;
+SamplerState samplerParticle
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+    MaxAnisotropy = 2;
+};
 #endif
 
 #endif

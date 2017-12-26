@@ -33,13 +33,13 @@ float4 main(PSInput input) : SV_Target
     if (bHasDiffuseMap)
     {
 	    // SamplerState is defined in Common.fx.
-        vMaterialTexture *= texDiffuseMap.Sample(LinearSampler, input.t);
+        vMaterialTexture *= texDiffuseMap.Sample(samplerDiffuse, input.t);
     }
 
     float alpha = 1;
     if (bHasAlphaMap)
     {
-        float4 color = texAlphaMap.Sample(LinearSampler, input.t);
+        float4 color = texAlphaMap.Sample(samplerAlpha, input.t);
         alpha = color[3];
         color[3] = 1;
         vMaterialTexture *= color;

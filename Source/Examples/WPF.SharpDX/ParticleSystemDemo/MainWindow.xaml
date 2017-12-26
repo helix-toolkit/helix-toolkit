@@ -85,9 +85,9 @@
                 Direction="0,0,-1"
                 Color="{Binding Light1Color}" />
 
-            <!--<hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
+            <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
             <hx:DraggableGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding EmitterTransform, Mode=TwoWay}" Material="{Binding EmitterMaterial}"  />
-            <hx:DraggableGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding ConsumerTransform, Mode=TwoWay}" Material="{Binding ConsumerMaterial}"  />-->
+            <hx:DraggableGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding ConsumerTransform, Mode=TwoWay}" Material="{Binding ConsumerMaterial}"  />
             <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
                                      ParticleSize="{Binding ParticleSize}" 
                                      EmitterLocation="{Binding EmitterLocation}" 

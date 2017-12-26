@@ -33,9 +33,21 @@ namespace HelixToolkit.UWP.Shaders
         //----------Particle--------------
         public static string ParticleFrameCB = "cbParticleFrame";
         public static string ParticleCreateParameters = "cbParticleCreateParameters";
-        public static string ParticleMapTB = "texDiffuseMap";
+        public static string ParticleMapTB = "texParticle";
         public static string CurrentSimulationStateUB = "CurrentSimulationState";
         public static string NewSimulationStateUB = "NewSimulationState";
         public static string SimulationStateTB = "SimulationState";
+    }
+
+    public static class DefaultSamplerStateNames
+    {
+        public static string DiffuseMapSampler = "samplerDiffuse";
+        public static string AlphaMapSampler = "samplerAlpha";
+        public static string NormalMapSampler = "samplerNormal";
+        public static string DisplacementMapSampler = "samplerDisplace";
+        public static string CubeMapSampler = "samplerCube";
+        public static string ShadowMapSampler = "samplerShadow";
+        public static string ParticleTextureSampler = "samplerParticle";
+        public static string BillboardTextureSampler = "samplerBillboard";
     }
 }

@@ -104,7 +104,9 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="sampler"></param>
         public override void BindSampler(DeviceContext context, string name, SamplerState sampler)
         {
-            context.PixelShader.SetSampler(SamplerMapping.TryGetBindSlot(name), sampler);
+            int slot = SamplerMapping.TryGetBindSlot(name);
+            if (slot < 0) { return; }
+            context.PixelShader.SetSampler(slot, sampler);
         }
 
         /// <summary>

@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultGeometryShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultHullShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultPixelShaders.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultSamplers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultVertexShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
@@ -166,6 +167,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\SamplerProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ShaderResourceViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
   </ItemGroup>

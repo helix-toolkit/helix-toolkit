@@ -51,7 +51,6 @@
   <ItemGroup>
     <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
-    <Content Include="Common\CommonSamplers.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
     <GeometryShader Include="GS\gsParticle.hlsl" />
     <PixelShader Include="PS\psParticle.hlsl" />

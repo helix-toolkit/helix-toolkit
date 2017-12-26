@@ -5,6 +5,7 @@
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 
+
 //--------------------------------------------------------------------------------------
 // normal mapping
 //--------------------------------------------------------------------------------------
@@ -23,7 +24,7 @@ float3 calcNormal(PSInput input)
         input.t2 = normalize(input.t2);
 
 		// Sample the texel in the bump map.
-        float4 bumpMap = texNormalMap.Sample(NormalSampler, input.t);
+        float4 bumpMap = texNormalMap.Sample(samplerNormal, input.t);
 		// Expand the range of the normal value from (0, +1) to (-1, +1).
         bumpMap = (bumpMap * 2.0f) - 1.0f;
 		// Calculate the normal from the data in the bump map.
@@ -51,7 +52,7 @@ float4 cubeMapReflection(PSInput input, float4 I)
 {
     float3 v = normalize((float3) input.wp - vEyePos);
     float3 r = reflect(v, input.n);
-    return (1.0f - vMaterialReflect) * I + vMaterialReflect * texCubeMap.Sample(LinearSampler, r);
+    return (1.0f - vMaterialReflect) * I + vMaterialReflect * texCubeMap.Sample(samplerCube, r);
 }
 
 //--------------------------------------------------------------------------------------
@@ -99,7 +100,7 @@ float shadowStrength(float4 sp)
     {
         for (x = -range; x <= range; x += 1.0)
         {
-            sum += texShadowMap.SampleCmpLevelZero(CmpSampler, sp.xy + texOffset(x, y), sp.z);
+            sum += texShadowMap.SampleCmpLevelZero(samplerShadow, sp.xy + texOffset(x, y), sp.z);
             div++;
         }
     }

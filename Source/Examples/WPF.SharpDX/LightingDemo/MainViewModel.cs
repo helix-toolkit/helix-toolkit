@@ -237,9 +237,10 @@ namespace LightingDemo
             // ----------------------------------------------
             // floor model3d
             var b2 = new MeshBuilder(true, true, true);
-            b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f), 15, 0.1, 15, BoxFaces.All);
-            b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 24, 24);
-            b2.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 24);
+            //b2.AddRectangularMesh(BoxFaces.Left, 10, 10, 10, 10);
+            b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f), 15, 1, 15, BoxFaces.All);
+            b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 24, 64);
+            b2.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 64);
             this.Floor = b2.ToMeshGeometry3D();
             this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.FloorMaterial = new PhongMaterial
@@ -249,7 +250,9 @@ namespace LightingDemo
                 SpecularColor = Color.White,
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
-                NormalMap = ModelMaterial.NormalMap
+                NormalMap = ModelMaterial.NormalMap,
+                DisplacementMap = LoadFileToMemory(new System.Uri("Particle.png", System.UriKind.RelativeOrAbsolute).ToString()),
+                DisplacementMapScaleMask = new Vector4(-1f,0,0,-1f)
             };
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
         }

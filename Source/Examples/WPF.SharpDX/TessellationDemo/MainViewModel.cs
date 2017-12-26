@@ -144,7 +144,7 @@ namespace TessellationDemo
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
-                //DisplacementMap = new BitmapImage(new Uri(@"path", UriKind.RelativeOrAbsolute)),                
+                DisplacementMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
             };
 
             // ---------------------------------------------
