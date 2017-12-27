@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -361,25 +362,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
-            TreeTraversal(root, queue, null, (node) => { node.BuildCurretNodeOnly(); });
-
-            //queue.Clear();
-            //queue.Enqueue(root);
-            //while (queue.Count > 0)
-            //{
-            //    var tree = queue.Dequeue();
-            //    tree.BuildCurretNodeOnly();
-            //    if (tree.HasChildren)
-            //    {
-            //        foreach (var subTree in tree.ChildNodes)
-            //        {
-            //            if (subTree != null)
-            //            {
-            //                queue.Enqueue(subTree);
-            //            }
-            //        }
-            //    }
-            //}
+            TreeTraversal(root, queue, null, (node) => { node.BuildCurretNodeOnly(); }, null, Parameter.EnableParallelBuild);
 #if DEBUG
             sw.Stop();
             if (sw.ElapsedMilliseconds > 0)
@@ -390,27 +373,49 @@ namespace HelixToolkit.Wpf.SharpDX
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TreeTraversal(IOctree<ModelType> root, Queue<IOctree<ModelType>> queue, Func<IOctree<ModelType>, bool> criteria, Action<IOctree<ModelType>> process,
-            Func<bool> breakCriteria = null)
+            Func<bool> breakCriteria = null, bool useParallel = false)
         {
-            queue.Clear();
-            queue.Enqueue(root);
-            while (queue.Count > 0)
+            if (useParallel)
             {
-                var tree = queue.Dequeue();
-                if (criteria == null || criteria(tree))
+                if (criteria == null || criteria(root))
                 {
-                    process(tree);
+                    process(root);
                     if (breakCriteria != null && breakCriteria())
                     {
-                        break;
+                        return;
                     }
-                    if (tree.HasChildren)
+                    if (root.HasChildren)
                     {
-                        foreach (var subTree in tree.ChildNodes)
+                        Parallel.ForEach(root.ChildNodes, (subTree) =>
                         {
-                            if (subTree != null)
+                            TreeTraversal(subTree, new Queue<IOctree<ModelType>>(), criteria, process, breakCriteria, false);
+                        });
+                    }
+                }
+            }
+            else
+            {
+                queue.Clear();
+                queue.Enqueue(root);
+                while (queue.Count > 0)
+                {
+                    int count = queue.Count;
+                    var tree = queue.Dequeue();
+                    if (criteria == null || criteria(tree))
+                    {
+                        process(tree);
+                        if (breakCriteria != null && breakCriteria())
+                        {
+                            break;
+                        }
+                        if (tree.HasChildren)
+                        {
+                            foreach (var subTree in tree.ChildNodes)
                             {
-                                queue.Enqueue(subTree);
+                                if (subTree != null)
+                                {
+                                    queue.Enqueue(subTree);
+                                }
                             }
                         }
                     }
@@ -1178,6 +1183,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Record hit path bounding boxes for debugging or display purpose only
         /// </summary>
         public bool RecordHitPathBoundingBoxes = false;
+        /// <summary>
+        /// Use parallel tree traversal to build the octree
+        /// </summary>
+        public bool EnableParallelBuild = false;
         public OctreeBuildParameter()
         {
         }
