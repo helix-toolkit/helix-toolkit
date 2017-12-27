@@ -86,6 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public ViewBoxModel3D()
         {
+            RelativeScreenLocationX = 0.8;
             ViewBoxMeshModel = new MeshGeometryModel3D();
             var map = new MemoryStream();
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.DefaultViewboxTexture.jpg");

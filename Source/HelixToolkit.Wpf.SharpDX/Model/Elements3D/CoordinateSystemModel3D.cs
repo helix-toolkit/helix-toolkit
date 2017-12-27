@@ -90,9 +90,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public CoordinateSystemModel3D()
         {
             var builder = new MeshBuilder(true, false, false);
-            builder.AddArrow(Vector3.Zero, new Vector3(10, 0, 0), 1, 2, 10);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 10, 0), 1, 2, 10);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, 10), 1, 2, 10);
+            builder.AddArrow(Vector3.Zero, new Vector3(5, 0, 0), 0.5, 1.2, 10);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, 5, 0), 0.5, 1.2, 10);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, 5), 0.5, 1.2, 10);
             var mesh = builder.ToMesh();
             arrowMeshModel.Material = PhongMaterials.White;
             arrowMeshModel.Geometry = mesh;
@@ -124,15 +124,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 case 0:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo("X", new Vector3(14, 0, 0)), BackgroundColor = Color.Transparent, FontSize = 14, FontColor = color };
+                    { TextInfo = new TextInfo("X", new Vector3(7, 0, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = color };
                     break;
                 case 1:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo("Y", new Vector3(0, 14, 0)), BackgroundColor = Color.Transparent, FontSize = 14, FontColor = color };
+                    { TextInfo = new TextInfo("Y", new Vector3(0, 7, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = color };
                     break;
                 case 2:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo("Z", new Vector3(0, 0, 14)), BackgroundColor = Color.Transparent, FontSize = 14, FontColor = color };
+                    { TextInfo = new TextInfo("Z", new Vector3(0, 0, 7)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = color };
                     break;
             }
             int segment = mesh.Positions.Count / 3;

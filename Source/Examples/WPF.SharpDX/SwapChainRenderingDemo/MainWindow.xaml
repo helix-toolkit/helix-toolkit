@@ -45,7 +45,7 @@
                 <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
-                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="MiddleClick" />
             </hx:Viewport3DX.InputBindings>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -103,8 +103,8 @@
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
             <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="0,1,1,1"/>
-            <!--<hx:CoordinateSystemModel3D/>
-            <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>-->
+            <hx:CoordinateSystemModel3D/>
+            <hx:ViewBoxModel3D/>
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
