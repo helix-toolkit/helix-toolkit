@@ -138,8 +138,8 @@ namespace HelixToolkit.UWP.Core
 
         protected Matrix CreateViewMatrix(IRenderMatrices renderContext, out Vector3 eye)
         {
-            eye = -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20 / SizeScale;
 #if !NETFX_CORE
+            eye = -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20 / SizeScale;
             if (IsRightHand)
             {
                 return Matrix.LookAtRH(
@@ -152,7 +152,15 @@ namespace HelixToolkit.UWP.Core
                 return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection.ToVector3());
             }
 #else
-            return Matrix.LookAtRH(-renderContext.Camera.LookDirection.Normalized() * 20, Vector3.Zero, renderContext.Camera.UpDirection);
+            eye = -renderContext.Camera.LookDirection.Normalized() * 20 / SizeScale;
+            if (IsRightHand)
+            {
+                return Matrix.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+            }
+            else
+            {
+                return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+            }
 #endif
         }
 
