@@ -110,7 +110,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             screenSpaceCore.SetScreenSpacedCoordinates(renderContext);
             base.OnRender(renderContext);
-            screenSpaceCore.RestoreCoordinates(renderContext);
         }
     }
 }

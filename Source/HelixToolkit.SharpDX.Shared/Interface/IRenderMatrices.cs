@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         TimeSpan TimeStamp { get; }
         Light3DSceneShared LightScene { get; }
-
+        GlobalTransformStruct GlobalTransform { get; }
         void UpdatePerFrameData();
     }
 }

@@ -388,7 +388,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3 r = zf - zn;
                 r.Normalize();               
 
-                return new Ray(zn, r);
+                return new Ray(zn + r * (float)camera.NearPlaneDistance, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }

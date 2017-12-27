@@ -303,6 +303,7 @@
     <None Include="Resources\hsMeshTriTessellation.cso" />
     <None Include="Resources\psBillboardText.cso" />
     <None Include="Resources\psColor.cso" />
+    <None Include="Resources\psDiffuseMap.cso" />
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
     <None Include="Resources\psMeshClipPlane.cso" />
@@ -313,6 +314,7 @@
     <None Include="Resources\psParticle.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
+    <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBillboardInstancing.cso" />
     <None Include="Resources\vsBoneSkinning.cso" />

@@ -158,6 +158,65 @@ namespace HelixToolkit.UWP
                 }
             };
 
+            var renderDiffuseMap = new TechniqueDescription(DefaultRenderTechniqueNames.Diffuse)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshDiffuseMap
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshTriTessellation)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshTessellation,
+                            DefaultHullShaderDescriptions.HSMeshTessellation,
+                            DefaultDomainShaderDescriptions.DSMeshTessellation,
+                            DefaultPSShaderDescriptions.PSMeshDiffuseMap
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                }
+            };
+
+            var renderViewCube = new TechniqueDescription(DefaultRenderTechniqueNames.ViewCube)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSMeshViewCube
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshTriTessellation)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshTessellation,
+                            DefaultHullShaderDescriptions.HSMeshTessellation,
+                            DefaultDomainShaderDescriptions.DSMeshTessellation,
+                            DefaultPSShaderDescriptions.PSMeshViewCube
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                }
+            };
 
             var renderBlinnInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.InstancingBlinn)
             {
@@ -377,6 +436,8 @@ namespace HelixToolkit.UWP
                 renderNormals,
                 renderColors,
                 renderPositions,
+                renderDiffuseMap,
+                renderViewCube,
                 renderMeshBlinnClipPlane,
                 renderParticle,
             };

@@ -235,4 +235,10 @@
   <data name="vsParticle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsparticle.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psDiffuseMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psdiffusemap.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psViewCube" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psviewcube.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

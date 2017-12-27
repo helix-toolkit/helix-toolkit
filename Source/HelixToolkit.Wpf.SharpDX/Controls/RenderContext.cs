@@ -148,7 +148,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private IBufferProxy cbuffer;
 
         private GlobalTransformStruct globalTransform;
-        
+
+        public GlobalTransformStruct GlobalTransform { get { return globalTransform; } }
+
         public RenderContext(IRenderHost canvas, DeviceContext renderContext, IConstantBufferPool pool)
         {
             this.Canvas = canvas;

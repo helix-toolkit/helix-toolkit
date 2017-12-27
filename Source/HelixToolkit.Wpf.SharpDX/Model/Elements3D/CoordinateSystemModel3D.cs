@@ -143,5 +143,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             mesh.Colors = colors;
         }
+
+        protected override bool CanHitTest()
+        {
+            return false;
+        }
     }
 }

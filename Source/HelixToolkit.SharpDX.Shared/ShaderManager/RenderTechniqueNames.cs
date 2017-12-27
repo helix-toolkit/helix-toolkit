@@ -28,6 +28,7 @@ namespace HelixToolkit.UWP
         public const string BoneSkinBlinn = "RenderBoneSkinBlinn";
         public const string ParticleStorm = "ParticleStorm";
         public const string CrossSection = "RenderCrossSectionBlinn";
+        public const string ViewCube = "RenderViewCube";
     }
 
     public struct DefaultPassNames

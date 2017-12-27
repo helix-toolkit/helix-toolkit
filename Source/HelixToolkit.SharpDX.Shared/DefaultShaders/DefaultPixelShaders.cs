@@ -76,6 +76,33 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
+
+        public static byte[] PSMeshDiffuseMap
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psDiffuseMap;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
+        public static byte[] PSMeshViewCube
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psViewCube;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -220,6 +247,16 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshVertPosition = new ShaderDescription(nameof(PSMeshVertPosition), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshVertPosition);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshDiffuseMap = new ShaderDescription(nameof(PSMeshDiffuseMap), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshDiffuseMap);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshViewCube = new ShaderDescription(nameof(PSMeshViewCube), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshViewCube);
         /// <summary>
         /// 
         /// </summary>

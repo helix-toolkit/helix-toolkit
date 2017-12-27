@@ -321,6 +321,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Loaded += this.ControlLoaded;
             this.Unloaded += this.ControlUnloaded;
             FormMouseMove += Viewport3DX_FormMouseMove;
+
+            AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
         }
 
         /// <summary>
@@ -705,8 +707,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 ShowViewCube = false;
             }
             // update the coordinateview camera
-            this.OnCameraChanged();
+            this.OnCameraChanged();           
         }
+
+
 
         /// <summary>
         /// Detaches the current scene and attaches it again. 
@@ -1670,6 +1674,21 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.InputBindings.Clear();
             }
+        }
+
+        private void ViewCubeClicked(object sender, ViewBoxModel3D.ViewBoxClickedEventArgs e)
+        {
+            var pc = this.Camera as ProjectionCamera;
+            if (pc == null)
+            {
+                return;
+            }
+
+            var target = pc.Position + pc.LookDirection;
+            double distance = pc.LookDirection.Length;
+            e.LookDirection *= distance;
+            var newPosition = target - e.LookDirection;
+            pc.AnimateTo(newPosition, e.LookDirection, e.UpDirection, 500);
         }
 
         /// <summary>

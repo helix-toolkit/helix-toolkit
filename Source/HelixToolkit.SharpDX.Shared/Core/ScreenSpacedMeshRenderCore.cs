@@ -14,15 +14,17 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
+    using Utilities;
+
     /// <summary>
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
     /// <para>Usage: Call SetScreenSpacedCoordinates(RenderHost) to move coordinate system. Call other render functions for sub models. Finally call RestoreCoordinates(RenderHost) to restore original coordinate system.</para>
     /// </summary>
     public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>
     {
-        //private EffectMatrixVariable viewMatrixVar;
-        //private EffectMatrixVariable projectionMatrixVar;
+        private IBufferProxy globalTransformCB;
         private Matrix projectionMatrix;
+        public GlobalTransformStruct GlobalTransform { private set; get; }
         public float ScreenRatio = 1f;
         private float relativeScreenLocX = -0.8f;
         public float RelativeScreenLocationX
@@ -32,7 +34,6 @@ namespace HelixToolkit.UWP.Core
                 if (relativeScreenLocX != value)
                 {
                     relativeScreenLocX = value;
-                    projectionMatrix.M41 = value;
                 }
             }
             get
@@ -49,7 +50,6 @@ namespace HelixToolkit.UWP.Core
                 if (relativeScreenLocY != value)
                 {
                     relativeScreenLocY = value;
-                    projectionMatrix.M42 = value;
                 }
             }
             get
@@ -76,17 +76,53 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        public bool IsPerspective { set; get; } = true;
+        public bool IsRightHand { set; get; } = true;
+
+        private const int DefaultHeight = 4;
+        public float Width { get { return DefaultHeight * ScreenRatio; } }
+        public float Height { get { return DefaultHeight; } }
+
+        private RasterizerState rasterState;
+
+        private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.Back,
+        };
+        public RasterizerStateDescription RasterDescription
+        {
+            set
+            {
+                rasterDescription = value;
+                CreateRasterState(value, false);
+            }
+            get
+            {
+                return RasterDescription;
+            }
+        }
+
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
             return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
+        }
+
+        protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
+        {
+            if (!IsAttached && !force)
+            { return false; }
+            RemoveAndDispose(ref rasterState);
+            rasterState = Collect(new RasterizerState(Device, description));
+            return true;
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
             {
-                //viewMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ViewMatrix).AsMatrix());
-                //projectionMatrixVar = Collect(Effect.GetVariableByName(ShaderVariableNames.ProjectionMatrix).AsMatrix());
+                globalTransformCB = technique.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
+                CreateRasterState(rasterDescription, true);
                 return true;
             }
             else
@@ -95,13 +131,26 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected Matrix CreateViewMatrix(IRenderMatrices renderContext)
+        protected override void OnBindRasterState(DeviceContext context)
         {
+            context.Rasterizer.State = rasterState;
+        }
+
+        protected Matrix CreateViewMatrix(IRenderMatrices renderContext, out Vector3 eye)
+        {
+            eye = -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20 / SizeScale;
 #if !NETFX_CORE
-            return Matrix.LookAtRH(
-                -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20,
-                Vector3.Zero,
-                renderContext.Camera.UpDirection.ToVector3());
+            if (IsRightHand)
+            {
+                return Matrix.LookAtRH(
+                    eye,
+                    Vector3.Zero,
+                    renderContext.Camera.UpDirection.ToVector3());
+            }
+            else
+            {
+                return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection.ToVector3());
+            }
 #else
             return Matrix.LookAtRH(-renderContext.Camera.LookDirection.Normalized() * 20, Vector3.Zero, renderContext.Camera.UpDirection);
 #endif
@@ -109,9 +158,14 @@ namespace HelixToolkit.UWP.Core
 
         protected virtual void OnCreateProjectionMatrix(float scale)
         {
-            projectionMatrix = Matrix.OrthoRH(140 * ScreenRatio / scale, 140 / scale, 1f, 200000);
-            projectionMatrix.M41 = RelativeScreenLocationX;
-            projectionMatrix.M42 = RelativeScreenLocationY;
+            if (IsPerspective)
+            {
+                projectionMatrix = IsRightHand ? Matrix.PerspectiveRH(Width, Height, 1f, 200f) : Matrix.PerspectiveLH(Width, Height, 1f, 200f);
+            }
+            else
+            {
+                projectionMatrix = IsRightHand ? Matrix.OrthoRH(Width, Height, 1f, 200f) : Matrix.OrthoLH(Width, Height, 1f, 200f);
+            }
         }
 
         protected void UpdateProjectionMatrix(double width, double height)
@@ -124,12 +178,10 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        //protected override void SetShaderVariables(IRenderMatrices context)
-        //{
-        //}
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {
-            
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = 0;
         }
 
         protected override bool CanRender()
@@ -156,16 +208,17 @@ namespace HelixToolkit.UWP.Core
 
             context.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
             dsView.Dispose();
-
-         //   this.viewMatrixVar.SetMatrix(CreateViewMatrix(context));
+            var globalTrans = context.GlobalTransform;
             UpdateProjectionMatrix(context.ActualWidth, context.ActualHeight);
-         //   projectionMatrixVar.SetMatrix(projectionMatrix);
-        }
-
-        public virtual void RestoreCoordinates(IRenderMatrices context)
-        {
-          //  viewMatrixVar.SetMatrix(context.ViewMatrix);
-          //  projectionMatrixVar.SetMatrix(context.ProjectionMatrix);
+            globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
+            globalTrans.Projection = projectionMatrix;
+            globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
+            globalTransformCB.UploadDataToBuffer(context.DeviceContext, ref globalTrans);
+            GlobalTransform = globalTrans;
+            context.DeviceContext.Rasterizer.SetViewport(
+                (float)context.ActualWidth / 2 * RelativeScreenLocationX, 
+                -(float)context.ActualHeight / 2 * RelativeScreenLocationY, 
+                (float)context.ActualWidth, (float)context.ActualHeight);
         }
     }
 }
