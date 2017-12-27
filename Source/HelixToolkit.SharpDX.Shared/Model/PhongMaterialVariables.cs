@@ -148,10 +148,10 @@ namespace HelixToolkit.UWP.Model
         {
             materialBuffer = manager.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.MaterialCB, MaterialStruct.SizeInBytes));
             Device = manager.Device;
-            ShaderResourceDict.Add(ShaderDiffuseTexName, Collect(new ShaderResouceViewProxy()));
-            ShaderResourceDict.Add(ShaderNormalTexName, Collect(new ShaderResouceViewProxy()));
-            ShaderResourceDict.Add(ShaderDisplaceTexName, Collect(new ShaderResouceViewProxy()));
-            ShaderResourceDict.Add(ShaderAlphaTexName, Collect(new ShaderResouceViewProxy()));
+            ShaderResourceDict.Add(ShaderDiffuseTexName, Collect(new ShaderResouceViewProxy(Device)));
+            ShaderResourceDict.Add(ShaderNormalTexName, Collect(new ShaderResouceViewProxy(Device)));
+            ShaderResourceDict.Add(ShaderDisplaceTexName, Collect(new ShaderResouceViewProxy(Device)));
+            ShaderResourceDict.Add(ShaderAlphaTexName, Collect(new ShaderResouceViewProxy(Device)));
             SamplerDict.Add(ShaderSamplerDiffuseTexName, new SamplerProxy(manager));
             SamplerDict.Add(ShaderSamplerNormalTexName, new SamplerProxy(manager));
             SamplerDict.Add(ShaderSamplerDisplaceTexName, new SamplerProxy(manager));
@@ -200,7 +200,7 @@ namespace HelixToolkit.UWP.Model
        
         private void CreateTextureView(System.IO.Stream stream, ShaderResouceViewProxy proxy)
         {
-            proxy.CreateTextureView(Device, stream);
+            proxy.CreateView(stream);
         }
 
         private void CreateTextureViews()
@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP.Model
             {
                 foreach(var item in ShaderResourceDict.Values)
                 {
-                    item.CreateTextureView(Device, null);
+                    item.CreateView(null);
                 }
             }
         }
