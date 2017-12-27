@@ -1185,19 +1185,47 @@ namespace HelixToolkit.Wpf.SharpDX
             /// <returns>A WPF material.</returns>
             private Material CreateMaterial(string texturePath)
             {
+                MemoryStream diffuseMapMS = null;
+                if (DiffuseMap != null)
+                {
+                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap)), FileMode.Open))
+                    {
+                        diffuseMapMS = new MemoryStream();
+                        fs.CopyTo(diffuseMapMS);
+                    }
+                }
+                MemoryStream bumpMapMS = null;
+                if (BumpMap != null)
+                {
+                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap)), FileMode.Open))
+                    {
+                        bumpMapMS = new MemoryStream();
+                        fs.CopyTo(bumpMapMS);
+                    }
+                }
+                MemoryStream alphaMapMS = null;
+                if (AlphaMap != null)
+                {
+                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.AlphaMap)), FileMode.Open))
+                    {
+                        alphaMapMS = new MemoryStream();
+                        fs.CopyTo(alphaMapMS);
+                    }
+                }
                 var mat = new PhongMaterial()
                 {
                     AmbientColor = this.Ambient,
                     //AmbientMap = this.AmbientMap,
 
                     DiffuseColor = this.Diffuse,
-                    DiffuseMap = (this.DiffuseMap == null) ? null : new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap)), FileMode.Open),
+                    DiffuseMap = diffuseMapMS,
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
                     //SpecularMap = this.SpecularMap,
 
-                    NormalMap = (this.BumpMap == null) ? null : new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap)), FileMode.Open),
+                    NormalMap = bumpMapMS,
+                    DiffuseAlphaMap = alphaMapMS,
                     //Dissolved = this.Dissolved,
                     //Illumination = this.Illumination,
 
