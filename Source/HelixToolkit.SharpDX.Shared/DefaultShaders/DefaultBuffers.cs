@@ -37,6 +37,8 @@ namespace HelixToolkit.UWP.Shaders
         public static string CurrentSimulationStateUB = "CurrentSimulationState";
         public static string NewSimulationStateUB = "NewSimulationState";
         public static string SimulationStateTB = "SimulationState";
+        //----------ShadowMap---------------
+        public static string ShadowParamCB = "cbShadow";
     }
 
     public static class DefaultSamplerStateNames

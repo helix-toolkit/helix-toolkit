@@ -39,7 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\PatchMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\ShaderVariableNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ShadowMapCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultBuffers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultComputeShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultDomainShaders.cs" />

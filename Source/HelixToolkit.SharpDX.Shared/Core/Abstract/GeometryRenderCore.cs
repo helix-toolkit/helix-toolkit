@@ -63,7 +63,31 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private string defaultShadowPassName = DefaultPassNames.ShadowPass;
+        public string DefaultShadowPassName
+        {
+            set
+            {
+                if (defaultShadowPassName == value)
+                {
+                    return;
+                }
+                defaultShadowPassName = value;
+                if (IsAttached)
+                {
+                    ShadowPass = EffectTechnique[value];
+                }
+            }
+            get
+            {
+                return defaultShadowPassName;
+            }
+        }
+
         protected IShaderPass DefaultShaderPass { private set; get; }
+        protected IShaderPass ShadowPass { private set; get; }
+
+        public bool IsThrowShadow { set; get; } = false;
 
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
@@ -80,6 +104,7 @@ namespace HelixToolkit.UWP.Core
             if(base.OnAttach(technique))
             {
                 DefaultShaderPass = technique[DefaultShaderPassName];
+                ShadowPass = technique[DefaultShadowPassName];
                 this.VertexLayout = technique.Layout;
                 CreateRasterState(rasterDescription, true);
                 return true;
@@ -109,6 +134,20 @@ namespace HelixToolkit.UWP.Core
         {
             return base.CanRender() && GeometryBuffer != null;
         }
+
+        public void RenderShadow(IRenderMatrices context)
+        {
+            if (CanRender())
+            {
+                OnUpdatePerModelStruct(ref modelStruct, context);
+                OnAttachBuffers(context.DeviceContext);
+                OnUploadPerModelConstantBuffers(context.DeviceContext);
+                OnBindRasterState(context.DeviceContext);
+                OnRenderShadow(context);
+            }
+        }
+
+        protected virtual void OnRenderShadow(IRenderMatrices context) { }
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
         {

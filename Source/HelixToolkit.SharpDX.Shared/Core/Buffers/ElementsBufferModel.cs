@@ -46,12 +46,9 @@ namespace HelixToolkit.UWP.Core
 
         public int StructSize { private set; get; }
 
-        public string HasElementsVariableName { private set; get; }
-
-        public ElementsBufferModel(int structSize, string hasElementsVarName)
+        public ElementsBufferModel(int structSize)
         {
             StructSize = structSize;
-            HasElementsVariableName = hasElementsVarName;
         }
 
         public void Initialize()
@@ -84,19 +81,19 @@ namespace HelixToolkit.UWP.Core
     public class MatrixInstanceBufferModel : ElementsBufferModel<Matrix>
     {
         public MatrixInstanceBufferModel()
-            : base(Matrix.SizeInBytes, ShaderVariableNames.HasInstance)
+            : base(Matrix.SizeInBytes)
         {
         }
     }
 
     public class InstanceParamsBufferModel<T> : ElementsBufferModel<T> where T : struct
     {
-        public InstanceParamsBufferModel(int structSize) : base(structSize, ShaderVariableNames.HasInstanceParams)
+        public InstanceParamsBufferModel(int structSize) : base(structSize)
         { }
     }
 
     public class VertexBoneIdBufferModel<T> : ElementsBufferModel<T> where T : struct
     {
-        public VertexBoneIdBufferModel(int structSize) : base(structSize, ShaderVariableNames.HasBones) { }
+        public VertexBoneIdBufferModel(int structSize) : base(structSize) { }
     }
 }

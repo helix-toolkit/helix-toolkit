@@ -157,6 +157,7 @@ cbuffer cbShadow
     float2 vShadowMapSize = float2(1024, 1024);
     float2 paddingShadow0;
     float4 vShadowMapInfo = float4(0.005, 1.0, 0.5, 0.0);
+	float4x4 vLightViewProjection;
 };
 #endif
 

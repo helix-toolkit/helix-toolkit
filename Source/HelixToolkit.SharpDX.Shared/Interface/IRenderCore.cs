@@ -44,7 +44,16 @@ namespace HelixToolkit.UWP
         void ResetInvalidateHandler();
     }
 
-    public interface IGeometryRenderCore
+    public interface IRenderShadow
+    {
+        /// <summary>
+        /// Render shadow map
+        /// </summary>
+        /// <param name="context"></param>
+        void RenderShadow(IRenderMatrices context);
+    }
+
+    public interface IGeometryRenderCore : IRenderShadow
     {
         InputLayout VertexLayout { get; }
         IElementsBufferModel InstanceBuffer { set; get; }

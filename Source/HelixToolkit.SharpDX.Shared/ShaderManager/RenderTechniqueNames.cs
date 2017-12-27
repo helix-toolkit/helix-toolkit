@@ -38,6 +38,7 @@ namespace HelixToolkit.UWP
         public const string MeshQuadTessellation = "MeshQuadTessellation";
         public const string MeshOutline = "RenderMeshOutline";
         public const string MeshXRay = "RenderMeshXRay";
+        public const string ShadowPass = "RenderShadow";
         public const string Backface = "RenderBackface";
         public const string ScreenQuad = "ScreenQuad";
     }

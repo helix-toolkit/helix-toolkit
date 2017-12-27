@@ -196,6 +196,15 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ShadowMapParamStruct
+    {
+        public Vector2 ShadowMapSize;
+        Vector2 paddingShadow0;
+        public Vector4 ShadowMapInfo;
+        public const int SizeInBytes = 4 * (4 * 2);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct GlobalTransformStruct
     {
         public Matrix View;

@@ -223,6 +223,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psLineColor {
+            get {
+                object obj = ResourceManager.GetObject("psLineColor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psMeshBlinnPhong {
             get {
                 object obj = ResourceManager.GetObject("psMeshBlinnPhong", resourceCulture);
@@ -313,6 +323,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psShadow {
+            get {
+                object obj = ResourceManager.GetObject("psShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psViewCube {
             get {
                 object obj = ResourceManager.GetObject("psViewCube", resourceCulture);
@@ -373,6 +393,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] vsBoneSkinningShadow {
+            get {
+                object obj = ResourceManager.GetObject("vsBoneSkinningShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] vsBoneSkinningTessellation {
             get {
                 object obj = ResourceManager.GetObject("vsBoneSkinningTessellation", resourceCulture);
@@ -426,6 +456,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsMeshInstancingTessellation {
             get {
                 object obj = ResourceManager.GetObject("vsMeshInstancingTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshShadow {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshShadow", resourceCulture);
                 return ((byte[])(obj));
             }
         }

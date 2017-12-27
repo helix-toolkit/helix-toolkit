@@ -241,4 +241,16 @@
   <data name="psViewCube" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psviewcube.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psLineColor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pslinecolor.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsBoneSkinningShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsboneskinningshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -33,13 +33,29 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] VSMeshTessellation
         {
             get
             {
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshTessellation;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshShadow
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshShadow;
 #else
                 throw new NotImplementedException();
 #endif
@@ -84,6 +100,21 @@ namespace HelixToolkit.UWP.Shaders
             {
 #if !NETFX_CORE
                 return Properties.Resources.vsBoneSkinning;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshBoneSkinningShadow
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsBoneSkinningShadow;
 #else
                 throw new NotImplementedException();
 #endif
@@ -340,10 +371,18 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, 
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshDefault);
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static ShaderDescription VSMeshTessellation = new ShaderDescription(nameof(VSMeshTessellation), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshTessellation);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshShadow = new ShaderDescription(nameof(VSMeshShadow), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshShadow);
         /// <summary>
         /// 
         /// </summary>
@@ -370,6 +409,12 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshBoneSkinningTessellation = new ShaderDescription(nameof(VSMeshBoneSkinningTessellation), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshBoneSkinningTessellation);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshBoneSkinningShadow = new ShaderDescription(nameof(VSMeshBoneSkinningShadow), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBoneSkinningShadow);
         /// <summary>
         /// 
         /// </summary>

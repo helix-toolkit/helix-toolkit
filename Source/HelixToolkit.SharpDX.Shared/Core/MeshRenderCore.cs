@@ -28,5 +28,12 @@ namespace HelixToolkit.UWP.Core
             }
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
+
+        protected override void OnRenderShadow(IRenderMatrices context)
+        {
+            ShadowPass.BindShader(context.DeviceContext);
+            ShadowPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(context.DeviceContext, InstanceBuffer);
+        }
     }
 }

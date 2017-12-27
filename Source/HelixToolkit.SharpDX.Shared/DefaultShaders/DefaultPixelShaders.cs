@@ -102,6 +102,20 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] PSShadow
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psShadow;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
 
         /// <summary>
         /// 
@@ -127,6 +141,22 @@ namespace HelixToolkit.UWP.Shaders
             {
 #if !NETFX_CORE
                 return Properties.Resources.psLine;
+#else
+                throw new NotImplementedException();
+#endif
+
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] PSLineColor
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psLineColor;
 #else
                 throw new NotImplementedException();
 #endif
@@ -267,7 +297,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSLine = new ShaderDescription(nameof(PSLine), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSLine);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSLineColor = new ShaderDescription(nameof(PSLineColor), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSLineColor);
         /// <summary>
         /// 
         /// </summary>
@@ -278,7 +312,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshXRay = new ShaderDescription(nameof(PSMeshXRay), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshXRay);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSShadow = new ShaderDescription(nameof(PSShadow), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSShadow);
         #region Mesh Clipping
         /// <summary>
         /// 
