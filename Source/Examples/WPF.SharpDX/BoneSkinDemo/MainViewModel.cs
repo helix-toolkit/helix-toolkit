@@ -73,10 +73,19 @@ namespace BoneSkinDemo
         {
             private set;get;
         }
+        public MeshGeometry3D FloorModel
+        {
+            private set;get;
+        }
         public PhongMaterial Material
         {
             private set;get;
         }
+
+        public PhongMaterial FloorMaterial
+        {
+            get;
+        } = PhongMaterials.Indigo;
 
         private IList<BoneIds> vertexBoneParams;
         public IList<BoneIds> VertexBoneParams
@@ -205,6 +214,10 @@ namespace BoneSkinDemo
             {
                 Bones = boneInternal.ToArray()
             };
+
+            builder = new MeshBuilder(true, true, false);
+            builder.AddBox(new Vector3(), 40, 0.5, 40, BoxFaces.All);
+            FloorModel = builder.ToMesh();
 
             int boneId = 0;
             numSegmentPerBone = (int)Math.Max(1, (double)Model.Positions.Count / Theta / (numBonesInModel - 1));
