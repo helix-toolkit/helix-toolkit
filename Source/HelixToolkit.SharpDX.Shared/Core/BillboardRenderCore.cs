@@ -50,20 +50,13 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
-                textureSampler = new SamplerProxy(technique.EffectsManager);
-                textureSampler.Description = SamplerDescription;
+                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.Device, SamplerDescription));
                 return true;
             }
             else
             {
                 return false;
             }
-        }
-
-        protected override void OnDetach()
-        {
-            textureSampler = null;
-            base.OnDetach();
         }
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
@@ -87,7 +80,7 @@ namespace HelixToolkit.UWP.Core
         {
             var buffer = GeometryBuffer as IBillboardBufferModel;
             shader.BindTexture(context, ShaderTextureName, buffer.TextureView);
-            shader.BindSampler(context, ShaderTextureSamplerName, textureSampler.SamplerState);
+            shader.BindSampler(context, ShaderTextureSamplerName, textureSampler);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)

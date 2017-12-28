@@ -308,8 +308,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     OnInitialParticleChanged(ParticleCount);
                 }
-                textureSampler = new SamplerProxy(technique.EffectsManager);
-                textureSampler.Description = SamplerDescription;
+                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.Device, SamplerDescription));
                 return true;
             }
             else
@@ -369,7 +368,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
-            textureSampler = null;
             DisposeBuffers();
             base.OnDetach();
         }

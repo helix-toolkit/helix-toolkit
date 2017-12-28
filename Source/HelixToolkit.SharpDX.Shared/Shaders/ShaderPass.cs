@@ -13,11 +13,14 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Utilities;
     public sealed class NullShaderPass : IShaderPass
     {
         public static readonly NullShaderPass NullPass = new NullShaderPass();
 
-        public BlendState BlendState
+        public bool IsNULL { get; } = true;
+
+        public BlendStateProxy BlendState
         {
             get
             {
@@ -25,7 +28,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
-        public DepthStencilState DepthStencilState
+        public DepthStencilStateProxy DepthStencilState
         {
             get
             {
@@ -41,7 +44,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
-        public RasterizerState RasterState
+        public RasterizerStateProxy RasterState
         {
             get
             {
@@ -65,6 +68,10 @@ namespace HelixToolkit.UWP.Shaders
         public void BindStates(DeviceContext context, StateType type)
         {
 
+        }
+
+        public void Dispose()
+        {
         }
 
         public IShader GetShader(ShaderStage type)
@@ -92,12 +99,13 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// Shader Pass
     /// </summary>
-    public sealed class ShaderPass : IShaderPass
+    public sealed class ShaderPass : DisposeObject, IShaderPass
     {
         /// <summary>
         /// <see cref="IShaderPass.Name"/>
         /// </summary>
         public string Name { private set; get; }
+        public bool IsNULL { get; } = false;
         public const int VertexIdx = 0, HullIdx = 1, DomainIdx = 2, GeometryIdx = 3, PixelIdx = 4, ComputeIdx = 5;
         private readonly IShader[] shaders = new IShader[6];
         /// <summary>
@@ -107,15 +115,15 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// <see cref="IShaderPass.BlendState"/>
         /// </summary>
-        public BlendState BlendState { private set; get; } = null;
+        public BlendStateProxy BlendState { private set; get; } = null;
         /// <summary>
         /// <see cref="IShaderPass.DepthStencilState"/>
         /// </summary>
-        public DepthStencilState DepthStencilState { private set; get; } = null;
+        public DepthStencilStateProxy DepthStencilState { private set; get; } = null;
         /// <summary>
         /// <see cref="IShaderPass.RasterState"/>
         /// </summary>
-        public RasterizerState RasterState { private set; get; } = null;
+        public RasterizerStateProxy RasterState { private set; get; } = null;
 
         /// <summary>
         /// 
@@ -162,11 +170,11 @@ namespace HelixToolkit.UWP.Shaders
                 }
             }
 
-            BlendState = passDescription.BlendStateDescription != null ? manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription) : null;
+            BlendState = passDescription.BlendStateDescription != null ? Collect(new BlendStateProxy(manager.Device, ((BlendStateDescription)passDescription.BlendStateDescription))) : null;
 
-            DepthStencilState = passDescription.DepthStencilStateDescription != null ? manager.StateManager.Register((DepthStencilStateDescription)passDescription.DepthStencilStateDescription) : null;
+            DepthStencilState = passDescription.DepthStencilStateDescription != null ? Collect(new DepthStencilStateProxy(manager.Device, ((DepthStencilStateDescription)passDescription.DepthStencilStateDescription))) : null;
 
-            RasterState = passDescription.RasterStateDescription != null ? manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription) : null;
+            RasterState = passDescription.RasterStateDescription != null ? Collect(new RasterizerStateProxy(manager.Device, ((RasterizerStateDescription)passDescription.RasterStateDescription))) : null;
         }
 
         /// <summary>

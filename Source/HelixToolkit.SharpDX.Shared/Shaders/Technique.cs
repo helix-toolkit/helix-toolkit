@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach(var desc in description.PassDescriptions)
                 {
-                    var pass = new Lazy<IShaderPass>(()=> { return new ShaderPass(desc, manager); }, true);
+                    var pass = new Lazy<IShaderPass>(()=> { return Collect(new ShaderPass(desc, manager)); }, true);
                     passDict.Add(desc.Name, pass);
                     passList.Add(pass);
                 }

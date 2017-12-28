@@ -13,19 +13,29 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using ShaderManager;
     using Shaders;
-    public interface IShaderPass
+    using System;
+    using Utilities;
+
+    public interface IShaderPass : IDisposable
     {
+        /// <summary>
+        /// 
+        /// </summary>
         string Name { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        bool IsNULL { get; }
         IEnumerable<IShader> Shaders { get; }
-        BlendState BlendState { get; }
+        BlendStateProxy BlendState { get; }
         /// <summary>
         /// 
         /// </summary>
-        DepthStencilState DepthStencilState { get; }
+        DepthStencilStateProxy DepthStencilState { get; }
         /// <summary>
         /// 
         /// </summary>
-        RasterizerState RasterState { get; }
+        RasterizerStateProxy RasterState { get; }
 
         void BindShader(DeviceContext context);
 
@@ -33,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         void BindStates(DeviceContext context, StateType type);
     }
-    public interface IRenderTechnique
+    public interface IRenderTechnique : IDisposable
     {
         /// <summary>
         /// 
@@ -111,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        IStatePoolManager StateManager { get; }
+        //IStatePoolManager StateManager { get; }
 
         /// <summary>
         /// 
