@@ -12,16 +12,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX;
 
-    using global::SharpDX.Direct3D;
-
-    using global::SharpDX.Direct3D11;
-
-    using global::SharpDX.DXGI;
-
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
     using Core;
-    using Model;
-    using System;
 
     public class ShadowMap3D : Element3D
     {
