@@ -29,7 +29,7 @@
             Grid.Row="0" Grid.Column="0" MSAA="{Binding MSAA}"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
-            IsShadowMappingEnabled="False"
+            IsShadowMappingEnabled="True"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -48,7 +48,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <!--<hx:ShadowMap3D />-->
+            
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
@@ -72,29 +72,34 @@
                 IsRendering="{Binding RenderLight4}"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light4Color}" />
-
+            <hx:ShadowMap3D />
             <hx:MeshGeometryModel3D
+                IsThrowingShadow="True"
                 Geometry="{Binding Sphere}"
                 IsRendering="{Binding RenderLight1}"
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light1Transform}" />
             <hx:MeshGeometryModel3D
+                IsThrowingShadow="True"
                 Geometry="{Binding Sphere}"
                 IsRendering="{Binding RenderLight2}"
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light2Transform}" />
             <hx:MeshGeometryModel3D
+                IsThrowingShadow="True"
                 Geometry="{Binding Sphere}"
                 IsRendering="{Binding RenderLight3}"
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light3Transform}" />
             <hx:MeshGeometryModel3D
+                IsThrowingShadow="True"
                 Geometry="{Binding Sphere}"
                 IsRendering="{Binding RenderLight4}"
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light4Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model"
+                IsThrowingShadow="True"
                 RenderDiffuseMap="{Binding RenderDiffuseMap}"
                 RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Model}"

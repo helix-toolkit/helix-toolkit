@@ -25,20 +25,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class ShadowMap3D : Element3D
     {
-        //private Texture2D depthBufferSM;
-        //private Texture2D colorBufferSM;
-        //private DepthStencilView depthViewSM;
-       // private RenderTargetView renderTargetSM;
-        //private ShaderResourceView texShadowMapView;
-       // private ShaderResourceView texColorMapView;
-        //private EffectShaderResourceVariable texShadowMapVariable;
-        //private EffectVectorVariable vShadowMapInfoVariable;
-        //private EffectVectorVariable vShadowMapSizeVariable;
-        //private RenderContext shadowPassContext;
-        //private int faktor = 1;
-        //private int oneK = 1024;
-        //private int width = 1024, height = 1024;
-
         public static readonly DependencyProperty ResolutionProperty =
             DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(new Vector2(1024, 1024), (d, e) =>
             {
@@ -120,96 +106,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnAttach(host);
             shadowCore = RenderCore as ShadowMapCore;            
-            // gen shadow map
-            //this.depthBufferSM = new Texture2D(Device, new Texture2DDescription()
-            //{
-            //    Format = Format.R32_Typeless, //!!!! because of depth and shader resource
-            //    //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-            //    ArraySize = 1,
-            //    MipLevels = 1,
-            //    Width = width,
-            //    Height = height,
-            //    SampleDescription = new SampleDescription(1, 0),
-            //    Usage = ResourceUsage.Default,
-            //    BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
-            //    CpuAccessFlags = CpuAccessFlags.None,
-            //    OptionFlags = ResourceOptionFlags.None,
-            //});
-
-            //this.colorBufferSM = new Texture2D(this.Device, new Texture2DDescription
-            //{
-            //    BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-            //    Format = Format.B8G8R8A8_UNorm,
-            //    Width = width,
-            //    Height = height,
-            //    MipLevels = 1,
-            //    SampleDescription = new SampleDescription(1, 0),
-            //    Usage = ResourceUsage.Default,
-            //    OptionFlags = ResourceOptionFlags.None,
-            //    CpuAccessFlags = CpuAccessFlags.None,
-            //    ArraySize = 1
-            //});
-
-            //this.renderTargetSM = new RenderTargetView(this.Device, colorBufferSM)
-            //{
-            //};
-
-            //this.depthViewSM = new DepthStencilView(Device, depthBufferSM, new DepthStencilViewDescription()
-            //{
-            //    Format = Format.D32_Float,
-            //    Dimension = DepthStencilViewDimension.Texture2D,
-            //    Texture2D = new DepthStencilViewDescription.Texture2DResource()
-            //    {
-            //        MipSlice = 0
-            //    }
-            //});
-
-            //this.texShadowMapView = new ShaderResourceView(Device, depthBufferSM, new ShaderResourceViewDescription()
-            //{
-            //    Format = Format.R32_Float,
-            //    Dimension = ShaderResourceViewDimension.Texture2D,
-            //    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-            //    {
-            //        MipLevels = 1,
-            //        MostDetailedMip = 0,
-            //    }
-            //}); //!!!!
-
-            //this.texColorMapView = new ShaderResourceView(this.Device, colorBufferSM, new ShaderResourceViewDescription()
-            //{
-            //    Format = Format.B8G8R8A8_UNorm,
-            //    Dimension = ShaderResourceViewDimension.Texture2D,
-            //    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-            //    {
-            //        MipLevels = 1,
-            //        MostDetailedMip = 0,
-            //    }
-            //});
-
-            //this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
-            //this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
-            //this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
-            //this.shadowPassContext = new RenderContext(host, Device.ImmediateContext, host.EffectsManager.ConstantBufferPool);
             return true;
         }
-
-        //protected override void OnDetach()
-        //{
-        //    Disposer.RemoveAndDispose(ref this.depthBufferSM);
-        //    Disposer.RemoveAndDispose(ref this.depthViewSM);
-        //    //Disposer.RemoveAndDispose(ref this.colorBufferSM);
-        //    //Disposer.RemoveAndDispose(ref this.renderTargetSM);
-        //    //Disposer.RemoveAndDispose(ref this.texColorMapView);
-        //    Disposer.RemoveAndDispose(ref this.texShadowMapView);  
-
-        //    //Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
-        //    //Disposer.RemoveAndDispose(ref this.vShadowMapInfoVariable);
-        //    //Disposer.RemoveAndDispose(ref this.vShadowMapSizeVariable);
-
-        //    Disposer.RemoveAndDispose(ref this.shadowPassContext);
-        //    //this.renderHost.IsShadowMapEnabled = false;            
-        //    base.OnDetach();
-        //}
 
         protected override bool CanRender(IRenderContext context)
         {
@@ -217,88 +115,40 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         protected override void OnRender(IRenderContext context)
         {
-
-            // --- set rasterizes state here with proper shadow-bias, as depth-bias and slope-bias in the rasterizer            
-            //this.Device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
-            //this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            
-            //this.Device.ImmediateContext.ClearDepthStencilView(depthViewSM, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             var root = context.RenderHost.Renderable.Renderables.Where(x=>x is Light3D).Select(x=>(Light3D)x);
             foreach (var light in root)
             {
-                    Camera lightCamera = null;
-                    //if (light is PointLightBase3D)
-                    //{
-                    //    var plight = (PointLightBase3D)light;
-                    //    lightCamera = new PerspectiveCamera()
-                    //    {
-                    //        Position = plight.Position,
-                    //        LookDirection = plight.Direction,
-                    //        UpDirection = Vector3.UnitY.ToVector3D(),
-                    //    };                        
-                    //}
-                    // else 
-                    if (light is DirectionalLight3D)
+                Camera lightCamera = null;
+                //if (light is PointLightBase3D)
+                //{
+                //    var plight = (PointLightBase3D)light;
+                //    lightCamera = new PerspectiveCamera()
+                //    {
+                //        Position = plight.Position,
+                //        LookDirection = plight.Direction,
+                //        UpDirection = Vector3.UnitY.ToVector3D(),
+                //    };                        
+                //}
+                // else 
+                if (light is DirectionalLight3D)
+                {
+                    var dlight = (DirectionalLight3D)light;
+                    var dir = light.DirectionInternal.Normalized();
+                    var pos = -100 * dir;                       
+
+                    lightCamera = new OrthographicCamera()
                     {
-                        var dlight = (DirectionalLight3D)light;
-                        var dir = light.DirectionInternal.Normalized();
-                        var pos = -50 * light.DirectionInternal;
-                        
-                        //lightCamera = new PerspectiveCamera()
-                        //{
-                        //    LookDirection = dir.ToVector3D(),
-                        //    Position = (System.Windows.Media.Media3D.Point3D)(pos.ToVector3D()),
-                        //    UpDirection = Vector3.UnitZ.ToVector3D(),                            
-                        //    NearPlaneDistance = 1,
-                        //    FarPlaneDistance = 100,
-                        //    FieldOfView = 10,
-                        //};
-
-                        lightCamera = new OrthographicCamera()
-                        {
-                            LookDirection = dir.ToVector3D(),
-                            Position = (System.Windows.Media.Media3D.Point3D)(pos.ToVector3D()),                            
-                            UpDirection = Vector3.UnitZ.ToVector3D(),
-                            Width = 25,
-                            NearPlaneDistance = 1,
-                            FarPlaneDistance = 500,
-                        };
-                        shadowCore.LightViewProjectMatrix = lightCamera.GetViewMatrix() * lightCamera.GetProjectionMatrix(shadowCore.Width/shadowCore.Height);
-                        shadowCore.Render(context);
-                    }
-
-                    //if (lightCamera != null)
-                    //{
-                    //    var sceneCamera = context.Camera;
-
-                    //    light.LightViewMatrix = CameraExtensions.GetViewMatrix(lightCamera);
-                    //    light.LightProjectionMatrix = CameraExtensions.GetProjectionMatrix(lightCamera, context.Canvas.ActualWidth / context.Canvas.ActualHeight);
-
-                    //    this.shadowPassContext.IsShadowPass = true;
-                    //     this.shadowPassContext.Camera = lightCamera;
-
-                        //foreach (var e in root)
-                        //{
-                        //    var smodel = e as IThrowingShadow;
-                        //    if (smodel != null)
-                        //    {
-                        //        if (smodel.IsThrowingShadow)
-                        //        {
-                        //            var model = smodel as IRenderable;
-                        //            model.Render(this.shadowPassContext);
-                        //        }
-                        //    }
-                        //}
-                        //context.Camera = sceneCamera;
-                    //}
+                        LookDirection = dir.ToVector3D(),
+                        Position = (System.Windows.Media.Media3D.Point3D)(pos.ToVector3D()),                            
+                        UpDirection = Vector3.UnitZ.ToVector3D(),
+                        Width = 25,
+                        NearPlaneDistance = 1,
+                        FarPlaneDistance = 500,
+                    };
+                    shadowCore.LightViewProjectMatrix = lightCamera.GetViewMatrix() * lightCamera.GetProjectionMatrix(shadowCore.Width/shadowCore.Height);
+                    shadowCore.Render(context);
+                }
             }
-
-            //this.texShadowMapVariable.SetResource(this.texShadowMapView);            
-            ////this.texShadowMapVariable.SetResource(this.texColorMapView);            
-            //this.vShadowMapInfoVariable.Set(new Vector4((float)this.Intensity, (float)this.FactorPCF, (float)this.Bias, 0));
-            //this.vShadowMapSizeVariable.Set(new Vector2(width, height));
-
-            //System.Console.WriteLine("ShadowMap rendered!");
-            //context.Canvas.SetDefaultRenderTargets(false);
         }
     }
 }
