@@ -14,7 +14,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
 
-    public class CrossSectionMeshRenderCore : MeshRenderCore
+    public class CrossSectionMeshRenderCore : PatchMeshRenderCore
     {
         #region Shader Variables
 

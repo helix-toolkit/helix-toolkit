@@ -9,7 +9,11 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
-    public class MeshRenderCore : MaterialGeometryRenderCore
+    public interface IInvertNormal
+    {
+        bool InvertNormal { set; get; }
+    }
+    public class MeshRenderCore : MaterialGeometryRenderCore, IInvertNormal
     {
         public bool InvertNormal { set; get; } = false;       
 
