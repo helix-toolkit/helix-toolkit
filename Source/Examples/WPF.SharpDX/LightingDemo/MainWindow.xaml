@@ -48,8 +48,8 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <hx:ShadowMap3D  FactorPCF="2.5"/>
+            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
                 DirectionTransform="{Binding Light1DirectionTransform}"
@@ -65,14 +65,13 @@
                 IsRendering="{Binding RenderLight3}"
                 Transform="{Binding Light3Transform}"
                 Color="{Binding Light3Color}" />
-            <hx:SpotLight3D
+            <hx:SpotLight3D Range="100" 
                 Attenuation="{Binding Light4Attenuation}"
                 Direction="{Binding Light4Direction}"
                 DirectionTransform="{Binding Light4DirectionTransform}"
                 IsRendering="{Binding RenderLight4}"
                 Transform="{Binding Light4Transform}"
-                Color="{Binding Light4Color}" />
-            <hx:ShadowMap3D />
+                Color="{Binding Light1Color}" />
             <hx:MeshGeometryModel3D
                 IsThrowingShadow="True"
                 Geometry="{Binding Sphere}"

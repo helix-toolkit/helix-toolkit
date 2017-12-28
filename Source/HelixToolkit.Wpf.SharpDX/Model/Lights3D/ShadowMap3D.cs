@@ -25,11 +25,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 ((d as ShadowMap3D).RenderCore as ShadowMapCore).Height = (int)resolution.Y;
             }));
 
-        public static readonly DependencyProperty FactorPCFProperty =
-                DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(1.5, (d,e)=>
-                {
-                    ((d as ShadowMap3D).RenderCore as ShadowMapCore).FactorPCF = (float)(double)e.NewValue;
-                }));
+        //public static readonly DependencyProperty FactorPCFProperty =
+        //        DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(1.5, (d,e)=>
+        //        {
+        //            ((d as ShadowMap3D).RenderCore as ShadowMapCore).FactorPCF = (float)(double)e.NewValue;
+        //        }));
 
         public static readonly DependencyProperty BiasProperty =
                 DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.0015, (d, e)=>
@@ -55,19 +55,25 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Vector2)this.GetValue(ResolutionProperty); }
             set { this.SetValue(ResolutionProperty, value); }
         }
-
-        public double FactorPCF
-        {
-            get { return (double)this.GetValue(FactorPCFProperty); }
-            set { this.SetValue(FactorPCFProperty, value); }
-        }
-
+        /// <summary>
+        /// PCF sampling size
+        /// </summary>
+        //public double FactorPCF
+        //{
+        //    get { return (double)this.GetValue(FactorPCFProperty); }
+        //    set { this.SetValue(FactorPCFProperty, value); }
+        //}
+        /// <summary>
+        /// 
+        /// </summary>
         public double Bias
         {
             get { return (double)this.GetValue(BiasProperty); }
             set { this.SetValue(BiasProperty, value); }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public double Intensity
         {
             get { return (double)this.GetValue(IntensityProperty); }
@@ -97,7 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.AssignDefaultValuesToCore(core);
             var c = core as ShadowMapCore;
-            c.FactorPCF = (float)FactorPCF;
+            //c.FactorPCF = (float)FactorPCF;
             c.Intensity = (float)Intensity;
             c.Bias = (float)Bias;
             c.Width = (int)(Resolution.X);

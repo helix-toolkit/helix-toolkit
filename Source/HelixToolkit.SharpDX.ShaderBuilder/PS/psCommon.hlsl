@@ -55,20 +55,12 @@ float4 cubeMapReflection(PSInput input, float4 I)
     return (1.0f - vMaterialReflect) * I + vMaterialReflect * texCubeMap.Sample(samplerCube, r);
 }
 
-//--------------------------------------------------------------------------------------
-// get shadow color
-//--------------------------------------------------------------------------------------
-float2 texOffset(float u, float v)
-{
-    return float2(u * 1.0f / vShadowMapSize.x, v * 1.0f / vShadowMapSize.y);
-}
 
-SamplerState PointSampler
+
+float lookUp(in float4 loc, in float2 offset)
 {
-    Filter = MIN_MAG_MIP_POINT;
-    AddressU = Wrap;
-    AddressV = Wrap;
-};
+    return texShadowMap.SampleCmpLevelZero(samplerShadow, loc.xy + offset, loc.z);
+}
 
 //--------------------------------------------------------------------------------------
 // get shadow color
@@ -96,20 +88,21 @@ float shadowStrength(float4 sp)
 	//// --- PCF sampling for shadow map
     float sum = 0;
     float x = 0, y = 0;
-    float range = vShadowMapInfo.y;
-    float div = 0.0000001;
+    const float range = 1.5;
+    float2 scale = 1 / vShadowMapSize;
 
 	//// ---perform PCF filtering on a 4 x 4 texel neighborhood
+	[unroll]
     for (y = -range; y <= range; y += 1.0f)
     {
         for (x = -range; x <= range; x += 1.0f)
         {
-            sum += texShadowMap.SampleCmpLevelZero(samplerShadow, sp.xy + texOffset(x, y), sp.z);
-            div++;
+            sum += lookUp(sp, float2(x, y) * scale);
         }
     }
 
-    float shadowFactor = sum / (float) div;
+    float shadowFactor = sum / 16;
+
     float fixTeil = vShadowMapInfo.x;
     float nonTeil = 1 - vShadowMapInfo.x;
 	// now, put the shadow-strengh into the 0-nonTeil range

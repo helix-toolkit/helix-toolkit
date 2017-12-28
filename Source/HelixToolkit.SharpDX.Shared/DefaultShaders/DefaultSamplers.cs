@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP.Shaders
             AddressU = TextureAddressMode.Border,
             AddressV = TextureAddressMode.Border,
             AddressW = TextureAddressMode.Border,
-            Filter = Filter.ComparisonMinMagMipPoint,
+            Filter = Filter.ComparisonMinMagLinearMipPoint,
             ComparisonFunction = Comparison.Less,
             BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(0, 0, 0, 0),
         };

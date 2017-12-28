@@ -55,7 +55,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public float FactorPCF { set; get; } = 1.5f;
+       // public float FactorPCF { set; get; } = 1.5f;
         public float Bias { set; get; } = 0.0015f;
 
         public float Intensity { set; get; } = 0.5f;
@@ -192,7 +192,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, IRenderContext context)
         {
-            model.ShadowMapInfo = new Vector4(Intensity, FactorPCF, Bias, 0);
+            model.ShadowMapInfo = new Vector4(Intensity, 0, Bias, 0);
             model.ShadowMapSize = new Vector2(Width, Height);
             model.LightViewProjection = LightViewProjectMatrix;
             model.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
