@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+//#define TEST
 using System;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -62,7 +63,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Update shadow map every N frames
         /// </summary>
-        public int UpdateFrequency { set; get; } = 2;
+        public int UpdateFrequency { set; get; } = 1;
 
         private int currentFrame = 0;
 
@@ -127,7 +128,11 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool CanRender(IRenderContext context)
         {
+#if TEST
+            if (base.CanRender(context))
+#else
             if(base.CanRender(context) && !context.IsShadowPass)
+#endif
             {
                 ++currentFrame;
                 currentFrame %= Math.Max(1, UpdateFrequency);
@@ -142,6 +147,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderContext context)
         {
             context.IsShadowPass = true;
+#if !TEST
             if (resolutionChanged)
             {
                 RemoveAndDispose(ref viewResource);
@@ -178,6 +184,7 @@ namespace HelixToolkit.UWP.Core
                 context.DeviceContext.Rasterizer.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
                 context.SharedResource.ShadowView = viewResource.TextureView;
             }
+#endif
         }
 
         protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, IRenderContext context)

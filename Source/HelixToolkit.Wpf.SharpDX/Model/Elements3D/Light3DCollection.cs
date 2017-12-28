@@ -6,12 +6,21 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using Model;
     public class Light3DCollection : GroupElement3D, ILight3D
     {
         public Light3DSceneShared Light3DSceneShared
         {
             private set; get;
+        }
+
+        public LightType LightType
+        {
+            get
+            {
+                return LightType.None;
+            }
         }
 
         protected override bool OnAttach(IRenderHost host)

@@ -27,11 +27,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public enum LightType : ushort
     {
-        Ambient = 0, Directional = 1, Point = 2, Spot = 3,
+        Ambient = 0, Directional = 1, Point = 2, Spot = 3, ThreePoint = 4, None = 5
     }
 
     public interface ILight3D
     {
+        LightType LightType
+        {
+            get;
+        }
         Light3DSceneShared Light3DSceneShared { get; }
     }
 

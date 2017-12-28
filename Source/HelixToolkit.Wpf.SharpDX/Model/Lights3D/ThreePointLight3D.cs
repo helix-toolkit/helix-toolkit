@@ -20,6 +20,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
             private set; get;
         }
 
+        public LightType LightType
+        {
+            get
+            {
+                return LightType.ThreePoint;
+            }
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             Light3DSceneShared = host.Light3DSceneShared;

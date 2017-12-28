@@ -62,7 +62,7 @@ float4 main(PSInput input) : SV_Target
         {
             float3 d = normalize((float3) Lights[i].vLightDir); // light dir	
             float3 h = normalize(eye + d);
-            I += s * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
+            I += calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
         else if (Lights[i].iLightType == 2)  // point
         {
@@ -96,6 +96,7 @@ float4 main(PSInput input) : SV_Target
             I += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
     }
+    I *= s;
     I.a = input.cDiffuse.a;
     if (bHasAlphaMap)
     {
