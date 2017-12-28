@@ -12,6 +12,16 @@ namespace HelixToolkit.UWP.Shaders
 {
     public static class DefaultSamplers
     {
+        public static SamplerStateDescription LinearSamplerWrapAni16 = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Wrap,
+            AddressV = TextureAddressMode.Wrap,
+            AddressW = TextureAddressMode.Wrap,
+            Filter = Filter.MinMagMipLinear,
+            MaximumAnisotropy = 16,
+            MaximumLod = float.MaxValue
+        };
+
         public static SamplerStateDescription LinearSamplerWrapAni8 = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Wrap, AddressV = TextureAddressMode.Wrap, AddressW = TextureAddressMode.Wrap,
@@ -25,6 +35,7 @@ namespace HelixToolkit.UWP.Shaders
             AddressW = TextureAddressMode.Wrap,
             Filter = Filter.MinMagMipLinear,
             MaximumAnisotropy = 4,
+            MaximumLod = float.MaxValue
         };
 
         public static SamplerStateDescription LinearSamplerWrapAni2 = new SamplerStateDescription()
@@ -34,6 +45,7 @@ namespace HelixToolkit.UWP.Shaders
             AddressW = TextureAddressMode.Wrap,
             Filter = Filter.MinMagMipLinear,
             MaximumAnisotropy = 2,
+            MaximumLod = float.MaxValue
         };
 
         public static SamplerStateDescription LinearSamplerWrapAni1 = new SamplerStateDescription()
@@ -42,6 +54,7 @@ namespace HelixToolkit.UWP.Shaders
             AddressV = TextureAddressMode.Wrap,
             AddressW = TextureAddressMode.Wrap,
             Filter = Filter.MinMagMipLinear,
+            MaximumLod = float.MaxValue
         };
 
         public static SamplerStateDescription PointSamplerWrap = new SamplerStateDescription()
@@ -50,15 +63,17 @@ namespace HelixToolkit.UWP.Shaders
             AddressV = TextureAddressMode.Wrap,
             AddressW = TextureAddressMode.Wrap,
             Filter = Filter.MinMagMipPoint,
+            MaximumLod = float.MaxValue
         };
 
         public static SamplerStateDescription ShadowSampler = new SamplerStateDescription()
         {
-            AddressU = TextureAddressMode.Mirror,
-            AddressV = TextureAddressMode.Mirror,
-            AddressW = TextureAddressMode.Mirror,
-            Filter = Filter.ComparisonMinMagMipLinear,
-            ComparisonFunction = Comparison.LessEqual
+            AddressU = TextureAddressMode.Border,
+            AddressV = TextureAddressMode.Border,
+            AddressW = TextureAddressMode.Border,
+            Filter = Filter.ComparisonMinMagMipPoint,
+            ComparisonFunction = Comparison.Less,
+            BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(0, 0, 0, 0),
         };
     }
 }

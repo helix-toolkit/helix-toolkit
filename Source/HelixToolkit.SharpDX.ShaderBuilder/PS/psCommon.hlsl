@@ -58,10 +58,17 @@ float4 cubeMapReflection(PSInput input, float4 I)
 //--------------------------------------------------------------------------------------
 // get shadow color
 //--------------------------------------------------------------------------------------
-float2 texOffset(int u, int v)
+float2 texOffset(float u, float v)
 {
     return float2(u * 1.0f / vShadowMapSize.x, v * 1.0f / vShadowMapSize.y);
 }
+
+SamplerState PointSampler
+{
+    Filter = MIN_MAG_MIP_POINT;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
 
 //--------------------------------------------------------------------------------------
 // get shadow color
@@ -73,21 +80,18 @@ float shadowStrength(float4 sp)
     {
         return 1;
     }
-    sp.x = sp.x / +2.0 + 0.5;
-    sp.y = sp.y / -2.0 + 0.5;
+    sp.x = sp.x / 2 + 0.5f;
+    sp.y = sp.y / -2 + 0.5f;
 
 	//apply shadow map bias
     sp.z -= vShadowMapInfo.z;
 
 	//// --- not in shadow, hard cut
-	//float shadowMapDepth = texShadowMap.Sample(PointSampler, sp.xy).r;
-	//if ( shadowMapDepth < sp.z) 
-	//{
-	//	return 0;
-	//}
+    //float shadowMapDepth = texShadowMap.Sample(PointSampler, sp.xy+offsets[1]).r;
+    //return whengt(shadowMapDepth, sp.z);
 
 	//// --- basic hardware PCF - single texel
-	//float shadowFactor = texShadowMap.SampleCmpLevelZero( CmpSampler, sp.xy, sp.z ).r;
+    //float shadowFactor = texShadowMap.SampleCmpLevelZero(samplerShadow, sp.xy, sp.z).r;
 
 	//// --- PCF sampling for shadow map
     float sum = 0;
@@ -95,16 +99,15 @@ float shadowStrength(float4 sp)
     float range = vShadowMapInfo.y;
     float div = 0.0000001;
 
-	// ---perform PCF filtering on a 4 x 4 texel neighborhood
-    for (y = -range; y <= range; y += 1.0)
+	//// ---perform PCF filtering on a 4 x 4 texel neighborhood
+    for (y = -range; y <= range; y += 1.0f)
     {
-        for (x = -range; x <= range; x += 1.0)
+        for (x = -range; x <= range; x += 1.0f)
         {
             sum += texShadowMap.SampleCmpLevelZero(samplerShadow, sp.xy + texOffset(x, y), sp.z);
             div++;
         }
     }
-   // return sum;
 
     float shadowFactor = sum / (float) div;
     float fixTeil = vShadowMapInfo.x;

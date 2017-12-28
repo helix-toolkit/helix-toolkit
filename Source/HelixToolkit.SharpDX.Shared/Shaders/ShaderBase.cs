@@ -28,6 +28,8 @@ namespace HelixToolkit.UWP.Shaders
         /// Bind Stage
         /// </summary>
         public ShaderStage ShaderType { private set; get; }
+
+        public bool IsNULL { private set; get; }
         /// <summary>
         /// Shader Name
         /// </summary>
@@ -37,10 +39,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
-        public ShaderBase(string name, ShaderStage type)
+        public ShaderBase(string name, ShaderStage type, bool isNull = false)
         {
             ShaderType = type;
             Name = name;
+            IsNULL = isNull;
         }
 
         /// <summary>

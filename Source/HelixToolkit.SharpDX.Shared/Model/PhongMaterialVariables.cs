@@ -37,6 +37,7 @@ namespace HelixToolkit.UWP.Model
         public string ShaderSamplerDiffuseTexName { set; get; } = DefaultSamplerStateNames.DiffuseMapSampler;
         public string ShaderSamplerNormalTexName { set; get; } = DefaultSamplerStateNames.NormalMapSampler;
         public string ShaderSamplerDisplaceTexName { set; get; } = DefaultSamplerStateNames.DisplacementMapSampler;
+        public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
         private bool renderDiffuseMap = true;
         public bool RenderDiffuseMap
@@ -101,20 +102,6 @@ namespace HelixToolkit.UWP.Model
                 return renderDisplacementMap;
             }
         }
-        //private bool hasShadowMap = false;
-        //public bool HasShadowMap
-        //{
-        //    set
-        //    {
-        //        if (hasShadowMap == value) { return; }
-        //        hasShadowMap = value;
-        //        needUpdate = true;
-        //    }
-        //    get
-        //    {
-        //        return hasShadowMap;
-        //    }
-        //}
 
         private bool needUpdate = true;
         private MaterialStruct materialStruct;
@@ -136,6 +123,7 @@ namespace HelixToolkit.UWP.Model
                         material.PropertyChanged += Material_OnMaterialPropertyChanged;
                     }
                     CreateTextureViews();
+                    CreateSamplers();
                 }
             }
             get
@@ -156,6 +144,7 @@ namespace HelixToolkit.UWP.Model
             SamplerDict.Add(ShaderSamplerNormalTexName, new SamplerProxy(manager));
             SamplerDict.Add(ShaderSamplerDisplaceTexName, new SamplerProxy(manager));
             SamplerDict.Add(ShaderSamplerAlphaTexName, new SamplerProxy(manager));
+            SamplerDict.Add(ShaderSamplerShadowMapName, new SamplerProxy(manager));
             CreateTextureViews();
             CreateSamplers();
         }               
@@ -229,6 +218,7 @@ namespace HelixToolkit.UWP.Model
                 SamplerDict[ShaderSamplerNormalTexName].Description = material.NormalMapSampler;
                 SamplerDict[ShaderSamplerAlphaTexName].Description = material.DiffuseAlphaMapSampler;
                 SamplerDict[ShaderSamplerDisplaceTexName].Description = material.DisplacementMapSampler;
+                SamplerDict[ShaderSamplerShadowMapName].Description = DefaultSamplers.ShadowSampler;
             }
         }
 
@@ -305,7 +295,7 @@ namespace HelixToolkit.UWP.Model
                 return false;
             }
             var flag = ShaderStage.Vertex | ShaderStage.Pixel | ShaderStage.Domain;
-            foreach (var s in shader.Where(x=> flag.HasFlag(x.ShaderType)))
+            foreach (var s in shader.Where(x=> !x.IsNULL && flag.HasFlag(x.ShaderType)))
             {
                 OnBindMaterialTextures(context, s);
             }
@@ -318,11 +308,15 @@ namespace HelixToolkit.UWP.Model
         /// <param name="shader"></param>
         protected virtual void OnBindMaterialTextures(DeviceContext context, IShader shader)
         {
+            if(shader.IsNULL)
+            {
+                return;
+            }
             foreach(var item in ShaderResourceDict)
             {
                 shader.BindTexture(context, item.Key, item.Value);
             }
-            foreach(var item in SamplerDict)
+            foreach (var item in SamplerDict)
             {
                 shader.BindSampler(context, item.Key, item.Value);
             }

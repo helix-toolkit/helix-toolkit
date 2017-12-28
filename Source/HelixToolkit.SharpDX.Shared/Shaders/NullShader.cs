@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.Shaders
         public static readonly NullShader PixelNull = new NullShader(ShaderStage.Pixel);
         public static readonly NullShader VertexNull = new NullShader(ShaderStage.Vertex);
 
-        public NullShader(ShaderStage type) : base(NULL, type)
+        public NullShader(ShaderStage type) : base(NULL, type, true)
         {
         }
 

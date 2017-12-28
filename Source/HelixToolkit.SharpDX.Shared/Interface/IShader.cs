@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP.Shaders
     {
         string Name { get; }
         ShaderStage ShaderType { get; }
+        bool IsNULL { get; }
         MappingProxy<IBufferProxy> ConstantBufferMapping { get; }
         MappingProxy<TextureMapping> ShaderResourceViewMapping { get; }
         MappingProxy<UAVMapping> UnorderedAccessViewMapping { get; }

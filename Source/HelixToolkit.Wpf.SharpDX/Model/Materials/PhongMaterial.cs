@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapSamplerProperty =
-            DependencyProperty.Register("NormalMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni1));
+            DependencyProperty.Register("NormalMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
 
         /// <summary>
         /// 
@@ -313,7 +313,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 SpecularShininess = this.SpecularShininess,
                 DiffuseMap = this.DiffuseMap,
                 DiffuseAlphaMap = this.DiffuseAlphaMap,
-                DisplacementMapScaleMask = this.DisplacementMapScaleMask
+                DisplacementMapScaleMask = this.DisplacementMapScaleMask,
+                DiffuseAlphaMapSampler = this.DiffuseAlphaMapSampler,
+                DiffuseMapSampler = this.DiffuseMapSampler,
+                DisplacementMapSampler = this.DisplacementMapSampler,
+                NormalMapSampler = this.NormalMapSampler
             };
         }
     }
