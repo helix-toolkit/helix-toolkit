@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Matrix worldMatrix = Matrix.Identity;
         private Matrix viewMatrix;
         private Matrix projectionMatrix;
-        public BoundingFrustum BoundingFrustum { private set; get; }
+        public BoundingFrustum BoundingFrustum { set; get; }
         private ICamera camera; 
 
         private bool matrixChanged = true;

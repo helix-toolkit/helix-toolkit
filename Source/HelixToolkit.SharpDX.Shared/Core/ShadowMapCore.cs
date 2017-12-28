@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Update shadow map every N frames
         /// </summary>
-        public int UpdateFrequency { set; get; } = 1;
+        public int UpdateFrequency { set; get; } = 2;
 
         private int currentFrame = 0;
 
@@ -147,7 +147,9 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderContext context)
         {
             context.IsShadowPass = true;
-#if !TEST
+            var orgFrustum = context.BoundingFrustum;
+            context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);
+#if !TEST            
             if (resolutionChanged)
             {
                 RemoveAndDispose(ref viewResource);
@@ -175,6 +177,7 @@ namespace HelixToolkit.UWP.Core
             finally
             {
                 context.IsShadowPass = false;
+                context.BoundingFrustum = orgFrustum;
                 context.DeviceContext.OutputMerger.SetRenderTargets(orgDSV, orgRT);
                 orgDSV?.Dispose();
                 foreach (var rt in orgRT)

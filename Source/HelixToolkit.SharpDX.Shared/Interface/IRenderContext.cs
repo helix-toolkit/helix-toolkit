@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         bool IsShadowPass { set; get; }
         bool EnableBoundingFrustum { set; get; }
-        BoundingFrustum BoundingFrustum { get; }
+        BoundingFrustum BoundingFrustum { set; get; }
         IRenderHost RenderHost { get; }
 
         IContextSharedResource SharedResource { get; }
