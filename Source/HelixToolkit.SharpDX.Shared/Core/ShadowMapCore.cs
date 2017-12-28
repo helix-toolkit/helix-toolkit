@@ -15,8 +15,10 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.Direct3D;
     using global::SharpDX.DXGI;
     using Shaders;
-    using System.Collections.Generic;
     using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>
     {
         protected ShaderResouceViewProxy viewResource;
@@ -57,6 +59,13 @@ namespace HelixToolkit.UWP.Core
 
         public float Intensity { set; get; } = 0.5f;
         public Matrix LightViewProjectMatrix { set; get; }
+        /// <summary>
+        /// Update shadow map every N frames
+        /// </summary>
+        public int UpdateFrequency { set; get; } = 2;
+
+        private int currentFrame = 0;
+
         protected virtual Texture2DDescription ShadowMapTextureDesc
         {
             get
@@ -118,7 +127,16 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool CanRender(IRenderContext context)
         {
-            return base.CanRender(context) && !context.IsShadowPass;
+            if(base.CanRender(context) && !context.IsShadowPass)
+            {
+                ++currentFrame;
+                currentFrame %= Math.Max(1, UpdateFrequency);
+                return currentFrame == 0;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override void OnRender(IRenderContext context)
